@@ -5,7 +5,6 @@ package org.maiaframework.gen.testing.jdbc.sample.composite_pk
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
@@ -18,14 +17,14 @@ class CompositePrimaryKeyRepo(
     private val logger = getLogger<CompositePrimaryKeyRepo>()
 
 
-    fun findBySomeStringAndSomeIntOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
+    fun findByPrimaryKeyOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
 
         return dao.findBySomeStringAndSomeIntOrNull(someString, someInt)
 
     }
 
 
-    fun findBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity {
+    fun findByPrimaryKey(someString: String, someInt: Int): CompositePrimaryKeyEntity {
 
         return dao.findBySomeStringAndSomeInt(someString, someInt)
 
@@ -87,7 +86,7 @@ class CompositePrimaryKeyRepo(
     }
 
 
-    fun deleteBySomeStringAndSomeInt(someString: String, someInt: Int) {
+    fun deleteByPrimaryKey(someString: String, someInt: Int) {
 
         this.dao.deleteBySomeStringAndSomeInt(someString, someInt)
 
@@ -101,12 +100,12 @@ class CompositePrimaryKeyRepo(
     }
 
 
-    fun removeBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
+    fun removeByPrimaryKey(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
 
-        val found = findBySomeStringAndSomeIntOrNull(someString, someInt)
+        val found = findByPrimaryKeyOrNull(someString, someInt)
        
         if (found != null) {
-            deleteBySomeStringAndSomeInt(someString, someInt)
+            deleteByPrimaryKey(someString, someInt)
         }
        
         return found
