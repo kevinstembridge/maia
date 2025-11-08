@@ -18,16 +18,16 @@ class CompositePrimaryKeyRepo(
     private val logger = getLogger<CompositePrimaryKeyRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): CompositePrimaryKeyEntity? {
+    fun findBySomeStringAndSomeIntOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findBySomeStringAndSomeIntOrNull(someString, someInt)
 
     }
 
 
-    fun findById(id: DomainId): CompositePrimaryKeyEntity {
+    fun findBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity {
 
-        return dao.findById(id)
+        return dao.findBySomeStringAndSomeInt(someString, someInt)
 
     }
 
@@ -69,9 +69,27 @@ class CompositePrimaryKeyRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun setFields(updaters: List<CompositePrimaryKeyEntityUpdater>) {
 
-        this.dao.deleteById(id)
+        logger.debug("setFields $updaters")
+
+        updaters.forEach { setFields(it) }
+
+    }
+
+
+    fun setFields(updater: CompositePrimaryKeyEntityUpdater): Int {
+
+        logger.debug("setFields $updater")
+
+        return this.dao.setFields(updater)
+
+    }
+
+
+    fun deleteBySomeStringAndSomeInt(someString: String, someInt: Int) {
+
+        this.dao.deleteBySomeStringAndSomeInt(someString, someInt)
 
     }
 
@@ -83,12 +101,12 @@ class CompositePrimaryKeyRepo(
     }
 
 
-    fun removeById(id: DomainId): CompositePrimaryKeyEntity? {
+    fun removeBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findBySomeStringAndSomeIntOrNull(someString, someInt)
        
         if (found != null) {
-            deleteById(id)
+            deleteBySomeStringAndSomeInt(someString, someInt)
         }
        
         return found
