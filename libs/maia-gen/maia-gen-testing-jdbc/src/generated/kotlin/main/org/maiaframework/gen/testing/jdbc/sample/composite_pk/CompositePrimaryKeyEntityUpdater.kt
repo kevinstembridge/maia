@@ -14,6 +14,12 @@ data class CompositePrimaryKeyEntityUpdater(
 ) {
 
 
+    val primaryKey = mapOf(
+        "someString" to someString,
+        "someInt" to someInt
+    )
+
+
     class Builder(
         val someString: String,
         val someInt: Int,
