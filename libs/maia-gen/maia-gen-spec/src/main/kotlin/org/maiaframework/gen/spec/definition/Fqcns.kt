@@ -100,6 +100,7 @@ object Fqcns {
     val MAIA_ENTITY_KEY = Fqcn.valueOf("org.maiaframework.domain.EntityKey")
     val MAIA_ENTITY_NOT_FOUND_EXCEPTION = Fqcn.valueOf("org.maiaframework.jdbc.EntityNotFoundException")
     val MAIA_ENTITY_CLASS_AND_ID = Fqcn.valueOf("org.maiaframework.domain.EntityClassAndId")
+    val MAIA_ENTITY_CLASS_AND_PK = Fqcn.valueOf("org.maiaframework.domain.EntityClassAndPk")
     val MAIA_ERROR_CODES = Fqcn.valueOf("org.maiaframework.webapp.domain.ErrorCodes")
     val MAIA_ERROR_RESPONSE_EXCEPTION = Fqcn.valueOf("org.maiaframework.webapp.domain.ErrorResponseRuntimeException")
     val MAIA_ES_DOC_HOLDER = Fqcn.valueOf("org.maiaframework.elasticsearch.EsDocHolder")
