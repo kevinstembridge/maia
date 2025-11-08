@@ -340,6 +340,15 @@ abstract class AbstractKotlinRenderer protected constructor(
     }
 
 
+    protected fun setConstructorArgs(constructorArg: List<ConstructorArg>) {
+
+        constructorArg.forEach { addImportFor(it) }
+        this.constructorArgs.clear()
+        this.constructorArgs.addAll(constructorArg)
+
+    }
+
+
     protected fun append(uqcn: Uqcn) {
 
         super.append(uqcn.toString())
