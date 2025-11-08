@@ -166,9 +166,6 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     private fun `render function forPrimaryKey`() {
 
-        val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
-        val fieldNamesCsv = fieldNamesCsv(this.entityDef.primaryKeyClassFields)
-
         if (this.entityDef.versioned.value) {
 
             blankLine()
@@ -206,7 +203,7 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
                 appendLine("            ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString},")
             }
 
-            appendLine("            init: Builder.() -> Unit): Builder {")
+            appendLine("            init: Builder.() -> Unit")
             appendLine("        ): Builder {")
             blankLine()
             appendLine("            val builder = Builder(id)")

@@ -47,8 +47,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     override fun renderFunctions() {
 
-        `render function findByIdOrNull`()
-        `render function findById`()
+        `render function findByPrimaryKeyOrNull`()
+        `render function findByPrimaryKey`()
         `render function findAllAsSequence`()
         `render function findIdsAsSequence`()
         `render function findAllIdsAsSequence`()
@@ -62,16 +62,16 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         `render function bulkInsertOfCsvRecords`()
         `render function setFields`()
         `render upserts for indexes`()
-        `render function deleteById`()
+        `render function deleteByPrimaryKey`()
         `render function deleteAll`()
         `render deleteBy for indexes`()
-        `render function removeById`()
+        `render function removeByPrimaryKey`()
         `render function idAndNameFor`()
 
     }
 
 
-    private fun `render function findById`() {
+    private fun `render function findByPrimaryKey`() {
 
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
@@ -80,7 +80,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun findById(id: DomainId): ${entityHierarchy.entityDef.entityUqcn} {
+            |    fun findByPrimaryKey(id: DomainId): ${entityHierarchy.entityDef.entityUqcn} {
             |
             |        return cache[id]
             |            ?: dao.findById(id).also {
@@ -95,7 +95,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun findById(id: DomainId): ${entityHierarchy.entityDef.entityUqcn} {
+            |    fun findByPrimaryKey(id: DomainId): ${entityHierarchy.entityDef.entityUqcn} {
             |
             |        return dao.findById(id)
             |
@@ -108,16 +108,14 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     }
 
 
-    private fun `render function findByIdOrNull`() {
-
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+    private fun `render function findByPrimaryKeyOrNull`() {
 
         if (cacheable) {
 
             append("""
             |
             |
-            |    fun findByIdOrNull(id: DomainId): ${entityHierarchy.entityDef.entityUqcn}? {
+            |    fun findByPrimaryKeyOrNull(id: DomainId): ${entityHierarchy.entityDef.entityUqcn}? {
             |
             |        return cache[id]
             |            ?: dao.findByIdOrNull(id).also { entity ->
@@ -132,7 +130,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun findByIdOrNull(id: DomainId): ${entityHierarchy.entityDef.entityUqcn}? {
+            |    fun findByPrimaryKeyOrNull(id: DomainId): ${entityHierarchy.entityDef.entityUqcn}? {
             |
             |        return dao.findByIdOrNull(id)
             |
@@ -602,7 +600,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     }
 
 
-    private fun `render function deleteById`() {
+    private fun `render function deleteByPrimaryKey`() {
 
         if (this.entityDef.isNotDeletable) {
             return
@@ -612,7 +610,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun deleteById(id: DomainId) {
+            |    fun deleteByPrimaryKey(id: DomainId) {
             |
             |        this.dao.deleteById(id)
             |        this.cache.evict(id)
@@ -623,7 +621,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun deleteById(id: DomainId) {
+            |    fun deleteByPrimaryKey(id: DomainId) {
             |
             |        this.dao.deleteById(id)
             |
@@ -688,7 +686,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
 
 
-    private fun `render function removeById`() {
+    private fun `render function removeByPrimaryKey`() {
 
         if (this.entityDef.isNotDeletable) {
             return
@@ -697,7 +695,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         append("""
             |
             |
-            |    fun removeById(id: DomainId): ${this.entityDef.entityUqcn}? {
+            |    fun removeByPrimaryKey(id: DomainId): ${this.entityDef.entityUqcn}? {
             |
             |        val found = findByIdOrNull(id)
             |       
@@ -727,7 +725,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |
             |    fun idAndNameFor(id: DomainId): ${entityIdAndNameDef.dtoUqcn} {
             |
-            |        val entity = findById(id)
+            |        val entity = findByPrimaryKey(id)
             |        return ${entityIdAndNameDef.dtoUqcn}(
             |            entity.id,
             |            entity.${entityIdAndNameDef.nameEntityFieldDef.classFieldName}

@@ -545,41 +545,21 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findById`() {
-
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
-        addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
-        addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_ID)
-
-        blankLine()
-        blankLine()
-        appendLine("    @Throws(EntityNotFoundException::class)")
-        appendLine("    fun findById(id: DomainId): ${entityDef.entityUqcn} {")
-        blankLine()
-        appendLine("        return findByIdOrNull(id)")
-        appendLine("            ?: throw EntityNotFoundException(EntityClassAndId(${entityDef.entityUqcn}::class.java, id), ${entityDef.metaClassDef.uqcn}.TABLE_NAME)")
-        blankLine()
-        appendLine("    }")
-
-    }
-
-
     private fun `render function findByPrimaryKey`() {
 
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
         addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
         addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_PK)
 
-        val fieldNamesAnded = fieldNamesAnded(this.entityDef.primaryKeyClassFields)
         val fieldNamesCsv = fieldNamesCsv(this.entityDef.primaryKeyClassFields)
         val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
 
         blankLine()
         blankLine()
         appendLine("    @Throws(EntityNotFoundException::class)")
-        appendLine("    fun findBy$fieldNamesAnded($fieldNamesAndTypesCsv): ${entityDef.entityUqcn} {")
+        appendLine("    fun findByPrimaryKey($fieldNamesAndTypesCsv): ${entityDef.entityUqcn} {")
         blankLine()
-        appendLine("        return findBy${fieldNamesAnded}OrNull($fieldNamesCsv)")
+        appendLine("        return findByPrimaryKeyOrNull($fieldNamesCsv)")
         appendLine("            ?: throw EntityNotFoundException(")
         appendLine("                EntityClassAndPk(")
         appendLine("                    ${entityDef.entityUqcn}::class.java,")
@@ -599,26 +579,6 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findByIdOrNull`() {
-
-        blankLine()
-        blankLine()
-        appendLine("    fun findByIdOrNull(id: DomainId): ${entityDef.entityUqcn}? {")
-        blankLine()
-        appendLine("        return jdbcOps.queryForList(")
-        appendLine("            \"select * from ${this.entityDef.schemaAndTableName} where id = :id\",")
-        appendLine("            SqlParams().apply {")
-        appendLine("                addValue(\"id\", id)")
-        appendLine("            },")
-        appendLine("            this.entityRowMapper")
-        appendLine("        ).firstOrNull()")
-        blankLine()
-        appendLine("    }")
-
-
-    }
-
-
     private fun `render function findByPrimaryKeyOrNull`() {
 
         val fieldNamesAnded = fieldNamesAnded(this.entityDef.primaryKeyFields.map { it.classFieldDef })
@@ -627,7 +587,7 @@ class JdbcDaoRenderer(
 
         blankLine()
         blankLine()
-        appendLine("    fun findBy${fieldNamesAnded}OrNull($fieldNamesAndTypesCsv): ${entityDef.entityUqcn}? {")
+        appendLine("    fun findByPrimaryKeyOrNull($fieldNamesAndTypesCsv): ${entityDef.entityUqcn}? {")
         blankLine()
         appendLine("        return jdbcOps.queryForList(")
         appendLine("            \"select * from ${this.entityDef.schemaAndTableName} where $whereClauseFields\",")
@@ -905,9 +865,9 @@ class JdbcDaoRenderer(
 
         blankLine()
         blankLine()
-        appendLine("    fun deleteBy$fieldNamesAnded($fieldNamesAndTypesCsv): Boolean {")
+        appendLine("    fun deleteByPrimaryKey($fieldNamesAndTypesCsv): Boolean {")
         blankLine()
-        appendLine("        val existingEntity = findBy$fieldNamesAnded($fieldNamesCsv)")
+        appendLine("        val existingEntity = findByPrimaryKeyOrNull($fieldNamesCsv)")
         blankLine()
         appendLine("        if (existingEntity == null) {")
         appendLine("            return false")
@@ -970,12 +930,12 @@ class JdbcDaoRenderer(
         appendLine("    }")
         blankLine()
         blankLine()
-        appendLine("    fun removeBy$fieldNamesAnded($fieldNamesAndTypesCsv): ${entityDef.entityUqcn}? {")
+        appendLine("    fun removeByPrimaryKey($fieldNamesAndTypesCsv): ${entityDef.entityUqcn}? {")
         blankLine()
-        appendLine("        val found = findBy${fieldNamesAnded}OrNull($fieldNamesCsv)")
+        appendLine("        val found = findByPrimaryKeyOrNull($fieldNamesCsv)")
         blankLine()
         appendLine("        if (found != null) {")
-        appendLine("            deleteBy$fieldNamesAnded($fieldNamesCsv)")
+        appendLine("            deleteByPrimaryKey($fieldNamesCsv)")
         appendLine("        }")
         blankLine()
         appendLine("        return found")
@@ -1686,7 +1646,7 @@ class JdbcDaoRenderer(
             blankLine()
             appendLine("        } else {")
             blankLine()
-            appendLine("            val updatedEntity = findById(updater.id)")
+            appendLine("            val updatedEntity = findByPrimaryKey(updater.id)")
 
             if (entityHierarchy.hasSubclasses()) {
 

@@ -443,13 +443,13 @@ class CrudServiceRenderer(
         if (this.entityDef.crudDef.withCrudListener.value) {
 
             blankLine()
-            appendLine("        val entityToDelete = this.entityRepo.findByIdOrNull(id)")
+            appendLine("        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)")
             appendLine("                ?: return")
 
         }
 
         blankLine()
-        appendLine("        this.entityRepo.deleteById(id)")
+        appendLine("        this.entityRepo.deleteByPrimaryKey(id)")
 
         if (this.entityDef.crudDef.withCrudListener.value) {
             appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityDeleted(entityToDelete)")
