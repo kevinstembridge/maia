@@ -570,9 +570,9 @@ class JdbcDaoRenderer(
         addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
         addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_PK)
 
-        val fieldNamesAnded = fieldNamesAnded(this.entityDef.primaryKeyFields.map { it.classFieldDef })
-        val fieldNamesCsv = this.entityDef.primaryKeyFields.map { it.classFieldName }.joinToString(", ")
-        val fieldNamesAndTypesCsv = this.entityDef.primaryKeyFields.map { "${it.classFieldName}: ${it.fieldType.unqualifiedToString}" }.joinToString(", ")
+        val fieldNamesAnded = fieldNamesAnded(this.entityDef.primaryKeyClassFields)
+        val fieldNamesCsv = fieldNamesCsv(this.entityDef.primaryKeyClassFields)
+        val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
 
         blankLine()
         blankLine()
@@ -1655,14 +1655,17 @@ class JdbcDaoRenderer(
         appendLine("            }.joinToString(\", \")")
         blankLine()
         appendLine("        sql.append(fieldClauses)")
-        appendLine("        sql.append(\" where id = :id\")")
+        appendLine("        sql.append(\" where ${this.entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }}\")")
 
         if (entityDef.versioned.value) {
             appendLine("        sql.append(\" and v = :v\")")
         }
 
         blankLine()
-        appendLine("        sqlParams.addValue(\"id\", updater.id)")
+
+        entityDef.primaryKeyFields.forEach {
+            appendLine("        sqlParams.addValue(\"${it.classFieldName}\", updater.${it.classFieldName})")
+        }
 
         if (entityDef.versioned.value) {
             appendLine("        sqlParams.addValue(\"v\", updater.version)")
@@ -1679,7 +1682,7 @@ class JdbcDaoRenderer(
             blankLine()
             appendLine("        if (updateCount == 0) {")
             blankLine()
-            appendLine("            throw OptimisticLockingException(${entityDef.metaClassDef.uqcn}.TABLE_NAME, updater.id, updater.version)")
+            appendLine("            throw OptimisticLockingException(${entityDef.metaClassDef.uqcn}.TABLE_NAME, updater.primaryKey, updater.version)")
             blankLine()
             appendLine("        } else {")
             blankLine()
