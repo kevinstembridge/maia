@@ -59,6 +59,20 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
     }
 
 
+    override fun renderPreClassFields() {
+
+        blankLine()
+        blankLine()
+        appendLine("    val primaryKey = mapOf(")
+
+        this.entityDef.primaryKeyFields.forEach { fieldDef ->
+            appendLine("        \"${fieldDef.classFieldName}\" to ${fieldDef.classFieldName},")
+        }
+
+        appendLine("    )")
+
+    }
+
     override fun renderFunctions() {
 
         // TODO Only render for Mongo entities
