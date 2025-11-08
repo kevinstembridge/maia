@@ -5,6 +5,7 @@ package org.maiaframework.gen.testing.jdbc.sample.composite_pk
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
+import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -29,17 +30,23 @@ class CompositePrimaryKeyDao(
             insert into testing.composite_primary_key (
                 c_ts,
                 some_int,
-                some_string
+                some_modifiable_string,
+                some_string,
+                v
             ) values (
                 :createdTimestampUtc,
                 :someInt,
-                :someString
+                :someModifiableString,
+                :someString,
+                :version
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("someInt", entity.someInt)
+                addValue("someModifiableString", entity.someModifiableString)
                 addValue("someString", entity.someString)
+                addValue("version", entity.version)
             }
         )
 
@@ -53,18 +60,24 @@ class CompositePrimaryKeyDao(
             insert into testing.composite_primary_key (
                 c_ts,
                 some_int,
-                some_string
+                some_modifiable_string,
+                some_string,
+                v
             ) values (
                 :createdTimestampUtc,
                 :someInt,
-                :someString
+                :someModifiableString,
+                :someString,
+                :version
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("someInt", entity.someInt)
+                    addValue("someModifiableString", entity.someModifiableString)
                     addValue("someString", entity.someString)
+                    addValue("version", entity.version)
                 }
             }
         )
@@ -208,6 +221,52 @@ class CompositePrimaryKeyDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun setFields(updaters: List<CompositePrimaryKeyEntityUpdater>) {
+
+        updaters.forEach { setFields(it) }
+
+    }
+
+
+    fun setFields(updater: CompositePrimaryKeyEntityUpdater): Int {
+
+        val sql = StringBuilder()
+        val sqlParams = SqlParams()
+
+        sql.append("update testing.composite_primary_key set ")
+
+        val fieldClauses = updater.fields
+            .plus(FieldUpdate("v_incremented", "v", updater.version + 1))
+            .map { field ->
+
+                addField(field, sqlParams)
+                "${field.dbColumnName} = :${field.classFieldName}"
+
+            }.joinToString(", ")
+
+        sql.append(fieldClauses)
+        sql.append(" where some_string = :someString and some_int = :someInt")
+        sql.append(" and v = :v")
+
+        sqlParams.addValue("someString", updater.someString)
+        sqlParams.addValue("someInt", updater.someInt)
+        sqlParams.addValue("v", updater.version)
+        sqlParams.addValue("v_incremented", updater.version + 1)
+
+        return this.jdbcOps.update(sql.toString(), sqlParams)
+
+    }
+
+
+    private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
+
+        when (field.classFieldName) {
+            "someModifiableString" -> sqlParams.addValue("someModifiableString", field.value as String)
+        }
 
     }
 
