@@ -104,7 +104,13 @@ class CompositePrimaryKeyDao(
     fun findBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity {
 
         return findBySomeStringAndSomeIntOrNull(someString, someInt)
-            ?: throw EntityNotFoundException(EntityClassAndId(CompositePrimaryKeyEntity::class.java, id), CompositePrimaryKeyEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    CompositePrimaryKeyEntity::class.java,
+                    mapOf("someString" to someString, "someInt" to someInt)
+                ),
+                CompositePrimaryKeyEntityMeta.TABLE_NAME
+            )
 
     }
 
