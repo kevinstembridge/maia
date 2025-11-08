@@ -279,6 +279,9 @@ class EntityDef(
     val primaryKeyFields: List<EntityFieldDef> = allEntityFields.filter { it.isPrimaryKey.value }
 
 
+    val primaryKeyClassFields: List<ClassFieldDef> = allEntityFields.filter { it.isPrimaryKey.value }.map { it.classFieldDef }
+
+
     val hasSurrogatePrimaryKey = primaryKeyFields.size == 1
             && primaryKeyFields.first().classFieldName == ClassFieldName.id
             && primaryKeyFields.first().fieldType is DomainIdFieldType
