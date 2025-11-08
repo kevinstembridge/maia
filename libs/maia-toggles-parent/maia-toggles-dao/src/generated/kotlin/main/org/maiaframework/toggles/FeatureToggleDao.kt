@@ -6,7 +6,7 @@ package org.maiaframework.toggles
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
@@ -182,7 +182,6 @@ class FeatureToggleDao(
         changeType: ChangeType
     ): FeatureToggleHistoryEntity {
 
-        val id = entity.id
         val activationStrategies = entity.activationStrategies
         val attributes = entity.attributes
         val comment = entity.comment
@@ -249,7 +248,10 @@ class FeatureToggleDao(
     fun findByFeatureName(featureName: FeatureName): FeatureToggleEntity {
 
         return findByFeatureNameOrNull(featureName)
-            ?: throw EntityNotFoundException(EntityClassAndId(FeatureToggleEntity::class.java, id), FeatureToggleEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(FeatureToggleEntity::class.java, mapOf<String, Any>("featureName" to featureName)),
+                FeatureToggleEntityMeta.TABLE_NAME
+            )
 
     }
 
@@ -259,7 +261,7 @@ class FeatureToggleDao(
         return jdbcOps.queryForList(
             "select * from toggles.feature_toggle where feature_name = :featureName",
             SqlParams().apply {
-                addValue("featureName", featureName)
+                addValue("featureName", featureName.value)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -414,10 +416,10 @@ class FeatureToggleDao(
             }.joinToString(", ")
 
         sql.append(fieldClauses)
-        sql.append(" where id = :id")
+        sql.append(" where feature_name = :featureName")
         sql.append(" and v = :v")
 
-        sqlParams.addValue("id", updater.id)
+        sqlParams.addValue("featureName", updater.featureName.value)
         sqlParams.addValue("v", updater.version)
         sqlParams.addValue("v_incremented", updater.version + 1)
 
@@ -425,11 +427,11 @@ class FeatureToggleDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(FeatureToggleEntityMeta.TABLE_NAME, updater.id, updater.version)
+            throw OptimisticLockingException(FeatureToggleEntityMeta.TABLE_NAME, mapOf("featureName" to updater.featureName), updater.version)
 
         } else {
 
-            val updatedEntity = findById(updater.id)
+            val updatedEntity = findByFeatureName(updater.featureName)
             insertHistory(updatedEntity, ChangeType.UPDATE)
 
         }
@@ -455,18 +457,18 @@ class FeatureToggleDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByFeatureName(featureName: FeatureName): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByFeatureNameOrNull(featureName)
 
         if (existingEntity == null) {
             return false
         }
 
         val deletedCount = this.jdbcOps.update(
-            "delete from toggles.feature_toggle where id = :id",
+            "delete from toggles.feature_toggle where feature_name = :featureName",
             SqlParams().apply {
-                addValue("id", id)
+                addValue("id", featureName.value)
             }
         )
 
@@ -480,12 +482,12 @@ class FeatureToggleDao(
     }
 
 
-    fun removeById(id: DomainId): FeatureToggleEntity? {
+    fun removeByFeatureName(featureName: FeatureName): FeatureToggleEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByFeatureNameOrNull(featureName)
 
         if (found != null) {
-            deleteById(id)
+            deleteByFeatureName(featureName)
         }
 
         return found

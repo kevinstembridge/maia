@@ -3,8 +3,6 @@
 
 package org.maiaframework.toggles
 
-import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.IdAndVersion
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
@@ -16,12 +14,12 @@ import java.time.LocalDate
 
 data class FeatureToggleEntityUpdater(
     val fields: List<FieldUpdate>,
-    val id: DomainId,
+    val featureName: FeatureName,
     val version: Long
 ) {
 
 
-    class Builder(val id: DomainId, val version: Long) {
+    class Builder(val featureName: FeatureName, val version: Long) {
 
 
         private val fields = mutableListOf<FieldUpdate>()
@@ -29,7 +27,7 @@ data class FeatureToggleEntityUpdater(
 
         fun build(): FeatureToggleEntityUpdater {
 
-            return FeatureToggleEntityUpdater(this.fields, this.id, this.version)
+            return FeatureToggleEntityUpdater(this.fields, this.featureName, this.version)
 
         }
 
@@ -96,18 +94,9 @@ data class FeatureToggleEntityUpdater(
     companion object {
 
 
-        fun forIdAndVersion(id: DomainId, version: Long, init: Builder.() -> Unit): Builder {
+        fun forFeatureNameAndVersion(featureName: FeatureName, version: Long, init: Builder.() -> Unit): Builder {
 
-            val builder = Builder(id, version)
-            builder.init()
-            return builder
-
-        }
-
-
-        fun forIdAndVersion(idAndVersion: IdAndVersion, init: Builder.() -> Unit): Builder {
-
-            val builder = Builder(idAndVersion.id, idAndVersion.version)
+            val builder = Builder(featureName, version)
             builder.init()
             return builder
 

@@ -1,13 +1,13 @@
 package org.maiaframework.jdbc
 
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 
 
 class EntityNotFoundException(message: String, val tableName: TableName): RuntimeException(message) {
 
 
-    constructor(entityClassAndId: EntityClassAndId, tableName: TableName):
-        this("Entity [${entityClassAndId}] not found in table [$tableName]", tableName)
+    constructor(entityClassAndPk: EntityClassAndPk, tableName: TableName):
+        this("Entity [${entityClassAndPk}] not found in table [$tableName]", tableName)
 
 
 }

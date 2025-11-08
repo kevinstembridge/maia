@@ -1,11 +1,9 @@
 package org.maiaframework.jdbc
 
-import org.maiaframework.domain.DomainId
-
 class OptimisticLockingException(
     tableName: TableName,
-    id: DomainId,
+    primaryKey: Map<String, Any>,
     staleVersion: Long
 ): MaiaDataAccessException(
-    "OPTIMISTIC_LOCKING: table=$tableName, id=$id, staleVersion=$staleVersion"
+    "OPTIMISTIC_LOCKING: table=$tableName, id=$primaryKey, staleVersion=$staleVersion"
 )

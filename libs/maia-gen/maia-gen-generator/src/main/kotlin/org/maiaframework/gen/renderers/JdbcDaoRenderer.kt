@@ -479,7 +479,11 @@ class JdbcDaoRenderer(
                 appendLine("        changeType: ChangeType")
                 appendLine("    ): ${entityDef.historyEntityDef!!.entityUqcn} {")
                 blankLine()
-                appendLine("        val id = entity.id")
+
+                if (entityDef.hasSurrogatePrimaryKey) {
+                    appendLine("        val id = entity.id")
+                }
+
                 entityDef.allClassFieldsSorted.filterNot { it.classFieldName == ClassFieldName.id || it.classFieldName == ClassFieldName.version }.forEach { fd ->
                     appendLine("        val ${fd.classFieldName} = entity.${fd.classFieldName}")
                 }
@@ -501,7 +505,11 @@ class JdbcDaoRenderer(
             appendLine("        changeType: ChangeType")
             appendLine("    ): ${historyEntityDef.entityUqcn} {")
             blankLine()
-            appendLine("        val id = entity.id")
+
+            if (entityDef.hasSurrogatePrimaryKey) {
+                appendLine("        val id = entity.id")
+            }
+
             this.entityDef.allClassFieldsSorted.filterNot { it.classFieldName == ClassFieldName.id || it.classFieldName == ClassFieldName.version }.forEach { fd ->
                 appendLine("        val ${fd.classFieldName} = entity.${fd.classFieldName}")
             }
