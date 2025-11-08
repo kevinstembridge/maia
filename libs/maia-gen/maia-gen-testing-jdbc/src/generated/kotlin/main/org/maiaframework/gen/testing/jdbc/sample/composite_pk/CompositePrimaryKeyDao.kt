@@ -101,15 +101,15 @@ class CompositePrimaryKeyDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findBySomeIntAndSomeString(someInt: Int, someString: String): CompositePrimaryKeyEntity {
+    fun findBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity {
 
-        return findBySomeIntAndSomeStringOrNull(someInt, someString)
+        return findBySomeStringAndSomeIntOrNull(someString, someInt)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     CompositePrimaryKeyEntity::class.java,
                     mapOf(
-                        "someInt" to someInt,
                         "someString" to someString,
+                        "someInt" to someInt,
                     )
                 ),
                 CompositePrimaryKeyEntityMeta.TABLE_NAME
@@ -118,13 +118,13 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun findBySomeIntAndSomeStringOrNull(someInt: Int, someString: String): CompositePrimaryKeyEntity? {
+    fun findBySomeStringAndSomeIntOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.composite_primary_key where some_int = :someInt and some_string = :someString",
+            "select * from testing.composite_primary_key where some_string = :someString and some_int = :someInt",
             SqlParams().apply {
-                addValue("someInt", someInt)
                 addValue("someString", someString)
+                addValue("someInt", someInt)
             },
             this.entityRowMapper
         ).firstOrNull()
