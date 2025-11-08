@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-autoconfigure-processor/3.5.6/1951e83057f10b70b682ef3efcdf27267968e416/spring-boot-autoconfigure-processor-3.5.6.jar" />
+        </processorPath>
+        <module name="maia.libs.maia-toggles-parent.maia-toggles-autoconfigure.main" />
+        <module name="maia.libs.maia-props-parent.maia-props-autoconfigure.main" />
+        <module name="maia.libs.maia-http-parent.maia-http-spring-boot-starter.main" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="17" />
+  </component>
+</project>

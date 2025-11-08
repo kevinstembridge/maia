@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <excludedPredefinedLibrary name="maia/apps/littleaircraft/huh/node_modules" />
+    <excludedPredefinedLibrary name="maia/apps/littleaircraft/la-ui/.gradle/nodejs/node-v22.14.0-linux-x64/lib/node_modules" />
+    <excludedPredefinedLibrary name="maia/apps/littleaircraft/la-ui/node_modules" />
+  </component>
+</project>
