@@ -233,12 +233,12 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun removeBySomeIntAndSomeString(someInt: Int, someString: String): CompositePrimaryKeyEntity? {
+    fun removeBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
 
-        val found = findBySomeIntAndSomeStringOrNull(someInt, someString)
+        val found = findBySomeStringAndSomeIntOrNull(someString, someInt)
 
         if (found != null) {
-            deleteBySomeIntAndSomeString(someInt, someString)
+            deleteBySomeStringAndSomeInt(someString, someInt)
         }
 
         return found
