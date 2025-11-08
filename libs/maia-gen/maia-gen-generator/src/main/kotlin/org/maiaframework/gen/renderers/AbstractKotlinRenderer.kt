@@ -474,9 +474,21 @@ abstract class AbstractKotlinRenderer protected constructor(
 
     protected fun fieldNamesAnded(fieldDefs: List<ClassFieldDef>): String {
 
-        return fieldDefs
-            .map { fieldDef -> fieldDef.classFieldName.firstToUpper() }
-            .joinToString("And")
+        return fieldDefs.joinToString("And") { fieldDef -> fieldDef.classFieldName.firstToUpper() }
+
+    }
+
+
+    protected fun fieldNamesCsv(fieldDefs: List<ClassFieldDef>): String {
+
+        return fieldDefs.map { fieldDef -> fieldDef.classFieldName }.joinToString(", ")
+
+    }
+
+
+    protected fun fieldNamesAndTypesCsv(fieldDefs: List<ClassFieldDef>): String {
+
+        return fieldDefs.joinToString(", ") { fieldDef -> "${fieldDef.classFieldName}: ${fieldDef.unqualifiedToString}" }
 
     }
 
