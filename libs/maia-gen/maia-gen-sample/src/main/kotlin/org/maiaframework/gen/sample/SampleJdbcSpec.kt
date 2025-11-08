@@ -793,6 +793,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaNam
         "CompositePrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
+        versioned = true
     ) {
 
         field("someString", FieldTypes.string) {
@@ -801,6 +802,10 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaNam
         }
         field("someInt", FieldTypes.int) {
             primaryKey()
+        }
+        field("someModifiableString", FieldTypes.string) {
+            lengthConstraint(max = 100)
+            modifiableBySystem()
         }
 
     }
