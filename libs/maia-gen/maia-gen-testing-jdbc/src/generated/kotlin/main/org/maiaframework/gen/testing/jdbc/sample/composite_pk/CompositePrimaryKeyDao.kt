@@ -212,19 +212,19 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun deleteBySomeIntAndSomeString(someInt: Int, someString: String): Boolean {
+    fun deleteBySomeStringAndSomeInt(someString: String, someInt: Int): Boolean {
 
-        val existingEntity = findBySomeIntAndSomeStringOrNull(someInt, someString)
+        val existingEntity = findBySomeStringAndSomeInt(someString, someInt)
 
         if (existingEntity == null) {
             return false
         }
 
         val deletedCount = this.jdbcOps.update(
-            "delete from testing.composite_primary_key where some_int = :someInt and some_string = :someString",
+            "delete from testing.composite_primary_key where some_string = :someString and some_int = :someInt",
             SqlParams().apply {
-                addValue("someInt", someInt)
                 addValue("someString", someString)
+                addValue("someInt", someInt)
             }
         )
 
