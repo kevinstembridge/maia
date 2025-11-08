@@ -107,7 +107,10 @@ class CompositePrimaryKeyDao(
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     CompositePrimaryKeyEntity::class.java,
-                    mapOf("someInt" to someInt, "someString" to someString)
+                    mapOf(
+                        "someInt" to someInt,
+                        "someString" to someString,
+                    )
                 ),
                 CompositePrimaryKeyEntityMeta.TABLE_NAME
             )
