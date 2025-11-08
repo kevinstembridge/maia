@@ -1,39 +1,49 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.domain.IdAndVersion
 import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassDef
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
+import org.maiaframework.gen.spec.definition.lang.ConstructorArg
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import java.util.Optional
 
 class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRenderer(entityDef.entityUpdaterClassDef) {
 
 
-
     init {
 
         val fieldUpdatesType = FieldTypes.list(FieldTypes.byFqcn(Fqcns.MAIA_FIELD_UPDATE))
 
-        addConstructorArg(
-            aClassField("id", Fqcns.MAIA_DOMAIN_ID) {
+        val constructorFields = mutableListOf<ClassFieldDef>()
+
+        val fieldsClassFieldDef = aClassField("fields", fieldUpdatesType) {
+            constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
+        }.build()
+
+        constructorFields.add(fieldsClassFieldDef)
+
+        val primaryKeyClassFieldDefs = this.entityDef.primaryKeyFields.map { fieldDef ->
+            aClassField(fieldDef.classFieldName, fieldDef.fieldType) {
                 constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
             }.build()
-        )
+        }
 
-        addConstructorArg(
-            aClassField("fields", fieldUpdatesType) {
-                constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
-            }.build())
+        constructorFields.addAll(primaryKeyClassFieldDefs)
 
         if (entityDef.versioned.value) {
-            addConstructorArg(
-                aClassField("version", FieldTypes.long) {
-                    constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
-                }.build())
+
+            val versionClassFieldDef = aClassField("version", FieldTypes.long) {
+                constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
+            }.build()
+
+            constructorFields.add(versionClassFieldDef)
+
         }
+
+        setConstructorArgs(constructorFields.map { ConstructorArg(it) })
 
     }
 
@@ -135,31 +145,38 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     private fun renderCompanionObjectFunctions() {
 
-        renderForIdMethod()
+        `render function forPrimaryKey`()
 
     }
 
 
-    private fun renderForIdMethod() {
+    private fun `render function forPrimaryKey`() {
+
+        val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
+        val fieldNamesCsv = fieldNamesCsv(this.entityDef.primaryKeyClassFields)
 
         if (this.entityDef.versioned.value) {
 
-            addImportFor(IdAndVersion::class.java)
+            blankLine()
+            blankLine()
+            appendLine("        fun forPrimaryKey(")
 
+            this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
+                appendLine("            ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString},")
+            }
+
+            appendLine("            version: Long,")
+            appendLine("            init: Builder.() -> Unit")
+            appendLine("        ): Builder {")
             blankLine()
-            blankLine()
-            appendLine("        fun forIdAndVersion(id: DomainId, version: Long, init: Builder.() -> Unit): Builder {")
-            blankLine()
-            appendLine("            val builder = Builder(id, version)")
-            appendLine("            builder.init()")
-            appendLine("            return builder")
-            blankLine()
-            appendLine("        }")
-            blankLine()
-            blankLine()
-            appendLine("        fun forIdAndVersion(idAndVersion: IdAndVersion, init: Builder.() -> Unit): Builder {")
-            blankLine()
-            appendLine("            val builder = Builder(idAndVersion.id, idAndVersion.version)")
+            appendLine("            val builder = Builder(")
+
+            this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
+                appendLine("                ${fieldDef.classFieldName},")
+            }
+
+            appendLine("                version")
+            appendLine("            )")
             appendLine("            builder.init()")
             appendLine("            return builder")
             blankLine()
@@ -169,7 +186,14 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
             blankLine()
             blankLine()
-            appendLine("        fun forId(id: DomainId, init: Builder.() -> Unit): Builder {")
+            appendLine("        fun forPrimaryKey(")
+
+            this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
+                appendLine("            ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString},")
+            }
+
+            appendLine("            init: Builder.() -> Unit): Builder {")
+            appendLine("        ): Builder {")
             blankLine()
             appendLine("            val builder = Builder(id)")
             appendLine("            builder.init()")
@@ -186,13 +210,24 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
         addImportFor(Fqcns.MAIA_FIELD_UPDATE)
 
+        val fieldNamesAndTypesCsv = this.entityDef.primaryKeyClassFields.joinToString(", ") { fieldDef ->
+            "val ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString}"
+        }
+
         blankLine()
         blankLine()
 
         if (entityDef.versioned.value) {
-            appendLine("    class Builder(val id: DomainId, val version: Long) {")
+            appendLine("    class Builder(")
+
+            this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
+                appendLine("        val ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString},")
+            }
+
+            appendLine("        val version: Long")
+            appendLine("    ) {")
         } else {
-            appendLine("    class Builder(val id: DomainId) {")
+            appendLine("    class Builder($fieldNamesAndTypesCsv) {")
         }
 
         blankLine()
@@ -204,7 +239,17 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         blankLine()
 
         if (entityDef.versioned.value) {
-            appendLine("            return ${classDef.uqcn}(this.fields, this.id, this.version)")
+
+            appendLine("            return ${classDef.uqcn}(")
+            appendLine("                this.fields,")
+
+            this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
+                appendLine("                this.${fieldDef.classFieldName},")
+            }
+
+            appendLine("                this.version")
+            appendLine("            )")
+
         } else {
             appendLine("            return ${classDef.uqcn}(this.fields, this.id)")
         }
