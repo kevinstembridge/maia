@@ -128,7 +128,7 @@ class JdbcDaoRenderer(
         `render function fetchForEdit`()
         `render upserts for indexes`()
         `render function setFields`()
-        `render function deleteById`()
+        `render function deleteByPrimaryKey`()
         `render function deleteAll`()
         `render deleteBy for indexes`()
 
@@ -568,7 +568,7 @@ class JdbcDaoRenderer(
 
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
         addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
-        addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_ID)
+        addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_PK)
 
         val fieldNamesAnded = fieldNamesAnded(this.entityDef.primaryKeyFields.map { it.classFieldDef })
         val fieldNamesCsv = this.entityDef.primaryKeyFields.map { it.classFieldName }.joinToString(", ")
@@ -580,7 +580,19 @@ class JdbcDaoRenderer(
         appendLine("    fun findBy$fieldNamesAnded($fieldNamesAndTypesCsv): ${entityDef.entityUqcn} {")
         blankLine()
         appendLine("        return findBy${fieldNamesAnded}OrNull($fieldNamesCsv)")
-        appendLine("            ?: throw EntityNotFoundException(EntityClassAndId(${entityDef.entityUqcn}::class.java, id), ${entityDef.metaClassDef.uqcn}.TABLE_NAME)")
+        appendLine("            ?: throw EntityNotFoundException(")
+        appendLine("                EntityClassAndPk(")
+        appendLine("                    ${entityDef.entityUqcn}::class.java,")
+        appendLine("                    mapOf(")
+
+        this.entityDef.primaryKeyFields.forEach { field ->
+            appendLine("                        \"${field.classFieldName}\" to ${field.classFieldName},")
+        }
+
+        appendLine("                    )")
+        appendLine("                ),")
+        appendLine("                ${entityDef.metaClassDef.uqcn}.TABLE_NAME")
+        appendLine("            )")
         blankLine()
         appendLine("    }")
 
@@ -878,26 +890,37 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function deleteById`() {
+    private fun `render function deleteByPrimaryKey`() {
 
         if (this.entityDef.isNotDeletable) {
             return
         }
 
+        addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
+        addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_PK)
+
+        val fieldNamesAnded = fieldNamesAnded(this.entityDef.primaryKeyFields.map { it.classFieldDef })
+        val fieldNamesCsv = this.entityDef.primaryKeyFields.map { it.classFieldName }.joinToString(", ")
+        val fieldNamesAndTypesCsv = this.entityDef.primaryKeyFields.joinToString(", ") { "${it.classFieldName}: ${it.fieldType.unqualifiedToString}" }
+
         blankLine()
         blankLine()
-        appendLine("    fun deleteById(id: DomainId): Boolean {")
+        appendLine("    fun deleteBy$fieldNamesAnded($fieldNamesAndTypesCsv): Boolean {")
         blankLine()
-        appendLine("        val existingEntity = findByIdOrNull(id)")
+        appendLine("        val existingEntity = findBy$fieldNamesAnded($fieldNamesCsv)")
         blankLine()
         appendLine("        if (existingEntity == null) {")
         appendLine("            return false")
         appendLine("        }")
         blankLine()
         appendLine("        val deletedCount = this.jdbcOps.update(")
-        appendLine("            \"delete from ${entityDef.schemaAndTableName} where id = :id\",")
+        appendLine("            \"delete from ${entityDef.schemaAndTableName} where ${this.entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }}\",")
         appendLine("            SqlParams().apply {")
-        appendLine("                addValue(\"id\", id)")
+
+        this.entityDef.primaryKeyFields.forEach {
+            appendLine("                addValue(\"${it.classFieldName}\", ${it.classFieldName})")
+        }
+
         appendLine("            }")
         appendLine("        )")
 
@@ -947,12 +970,12 @@ class JdbcDaoRenderer(
         appendLine("    }")
         blankLine()
         blankLine()
-        appendLine("    fun removeById(id: DomainId): ${entityDef.entityUqcn}? {")
+        appendLine("    fun removeBy$fieldNamesAnded($fieldNamesAndTypesCsv): ${entityDef.entityUqcn}? {")
         blankLine()
-        appendLine("        val found = findByIdOrNull(id)")
+        appendLine("        val found = findBy${fieldNamesAnded}OrNull($fieldNamesCsv)")
         blankLine()
         appendLine("        if (found != null) {")
-        appendLine("            deleteById(id)")
+        appendLine("            deleteBy$fieldNamesAnded($fieldNamesCsv)")
         appendLine("        }")
         blankLine()
         appendLine("        return found")
