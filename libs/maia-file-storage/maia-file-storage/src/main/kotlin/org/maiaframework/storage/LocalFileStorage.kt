@@ -71,7 +71,7 @@ class LocalFileStorage(
 
     override fun fetch(storageEntryId: DomainId): Pair<FileStorageEntryEntity, InputStream> {
 
-        val storageEntryEntity = this.fileStorageEntryDao.findById(storageEntryId)
+        val storageEntryEntity = this.fileStorageEntryDao.findByPrimaryKey(storageEntryId)
 
         val file = File(this.baseDir, storageEntryId.value)
         val fis = FileInputStream(file)

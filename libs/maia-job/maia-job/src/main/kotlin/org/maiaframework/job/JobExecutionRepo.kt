@@ -59,7 +59,7 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
         e: Exception? = null
     ) {
 
-        val builder = JobExecutionEntityUpdater.forId(jobInstanceId) {
+        val builder = JobExecutionEntityUpdater.forPrimaryKey(jobInstanceId) {
             completionStatus(completionStatus)
             endTimestampUtc(Instant.now())
             metrics(jobMetrics.metricsReport())
@@ -94,14 +94,14 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
 
     fun findStacktraceForJob(jobExecutionId: DomainId): String? {
 
-        return this.jobExecutionDao.findById(jobExecutionId).stackTrace
+        return this.jobExecutionDao.findByPrimaryKey(jobExecutionId).stackTrace
 
     }
 
 
     fun findJobExecutionDetail(jobExecutionId: DomainId): JobExecutionEntity? {
 
-        return this.jobExecutionDao.findByIdOrNull(jobExecutionId)
+        return this.jobExecutionDao.findByPrimaryKeyOrNull(jobExecutionId)
 
     }
 
