@@ -56,7 +56,11 @@ data class CompositePrimaryKeyEntityUpdater(
             init: Builder.() -> Unit
         ): Builder {
 
-            val builder = Builder(someString, someInt, version)
+            val builder = Builder(
+                someString,
+                someInt,
+                version
+            )
             builder.init()
             return builder
 
