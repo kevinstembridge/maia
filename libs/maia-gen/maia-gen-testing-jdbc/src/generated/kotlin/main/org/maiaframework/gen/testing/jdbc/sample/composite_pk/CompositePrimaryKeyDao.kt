@@ -114,9 +114,9 @@ class CompositePrimaryKeyDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity {
+    fun findByPrimaryKey(someString: String, someInt: Int): CompositePrimaryKeyEntity {
 
-        return findBySomeStringAndSomeIntOrNull(someString, someInt)
+        return findByPrimaryKeyOrNull(someString, someInt)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     CompositePrimaryKeyEntity::class.java,
@@ -131,7 +131,7 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun findBySomeStringAndSomeIntOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
+    fun findByPrimaryKeyOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.composite_primary_key where some_string = :someString and some_int = :someInt",
@@ -271,9 +271,9 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun deleteBySomeStringAndSomeInt(someString: String, someInt: Int): Boolean {
+    fun deleteByPrimaryKey(someString: String, someInt: Int): Boolean {
 
-        val existingEntity = findBySomeStringAndSomeInt(someString, someInt)
+        val existingEntity = findByPrimaryKeyOrNull(someString, someInt)
 
         if (existingEntity == null) {
             return false
@@ -292,12 +292,12 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun removeBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
+    fun removeByPrimaryKey(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
 
-        val found = findBySomeStringAndSomeIntOrNull(someString, someInt)
+        val found = findByPrimaryKeyOrNull(someString, someInt)
 
         if (found != null) {
-            deleteBySomeStringAndSomeInt(someString, someInt)
+            deleteByPrimaryKey(someString, someInt)
         }
 
         return found
