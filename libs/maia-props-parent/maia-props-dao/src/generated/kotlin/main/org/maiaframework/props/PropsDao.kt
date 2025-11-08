@@ -5,7 +5,7 @@ package org.maiaframework.props
 
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
@@ -190,15 +190,23 @@ class PropsDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): PropsEntity {
+    fun findByPrimaryKey(id: DomainId): PropsEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(PropsEntity::class.java, id), PropsEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    PropsEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                PropsEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): PropsEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): PropsEntity? {
 
         return jdbcOps.queryForList(
             "select * from props.props where id = :id",
@@ -467,11 +475,11 @@ class PropsDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(PropsEntityMeta.TABLE_NAME, updater.id, updater.version)
+            throw OptimisticLockingException(PropsEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
 
         } else {
 
-            val updatedEntity = findById(updater.id)
+            val updatedEntity = findByPrimaryKey(updater.id)
             insertHistory(updatedEntity, ChangeType.UPDATE)
 
         }
@@ -492,9 +500,9 @@ class PropsDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -517,12 +525,12 @@ class PropsDao(
     }
 
 
-    fun removeById(id: DomainId): PropsEntity? {
+    fun removeByPrimaryKey(id: DomainId): PropsEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found
