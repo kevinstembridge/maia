@@ -4,7 +4,7 @@
 package org.maiaframework.gen.testing.jdbc.sample.composite_pk
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -101,13 +101,13 @@ class CompositePrimaryKeyDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findBySomeStringAndSomeInt(someString: String, someInt: Int): CompositePrimaryKeyEntity {
+    fun findBySomeIntAndSomeString(someInt: Int, someString: String): CompositePrimaryKeyEntity {
 
-        return findBySomeStringAndSomeIntOrNull(someString, someInt)
+        return findBySomeIntAndSomeStringOrNull(someInt, someString)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     CompositePrimaryKeyEntity::class.java,
-                    mapOf("someString" to someString, "someInt" to someInt)
+                    mapOf("someInt" to someInt, "someString" to someString)
                 ),
                 CompositePrimaryKeyEntityMeta.TABLE_NAME
             )
@@ -115,13 +115,13 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun findBySomeStringAndSomeIntOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
+    fun findBySomeIntAndSomeStringOrNull(someInt: Int, someString: String): CompositePrimaryKeyEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.composite_primary_key where some_string = :someString and some_int = :someInt",
+            "select * from testing.composite_primary_key where some_int = :someInt and some_string = :someString",
             SqlParams().apply {
-                addValue("someString", someString)
                 addValue("someInt", someInt)
+                addValue("someString", someString)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -209,18 +209,19 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteBySomeIntAndSomeString(someInt: Int, someString: String): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findBySomeIntAndSomeStringOrNull(someInt, someString)
 
         if (existingEntity == null) {
             return false
         }
 
         val deletedCount = this.jdbcOps.update(
-            "delete from testing.composite_primary_key where id = :id",
+            "delete from testing.composite_primary_key where some_int = :someInt and some_string = :someString",
             SqlParams().apply {
-                addValue("id", id)
+                addValue("someInt", someInt)
+                addValue("someString", someString)
             }
         )
 
@@ -229,12 +230,12 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun removeById(id: DomainId): CompositePrimaryKeyEntity? {
+    fun removeBySomeIntAndSomeString(someInt: Int, someString: String): CompositePrimaryKeyEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findBySomeIntAndSomeStringOrNull(someInt, someString)
 
         if (found != null) {
-            deleteById(id)
+            deleteBySomeIntAndSomeString(someInt, someString)
         }
 
         return found
