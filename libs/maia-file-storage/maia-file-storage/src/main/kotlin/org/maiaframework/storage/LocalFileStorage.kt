@@ -21,7 +21,7 @@ import java.time.Instant
 @Component
 @Profile("fileStorage_local")
 class LocalFileStorage(
-        @Value("\${mahana.file-storage.local.base-dir}") private val baseDir: File,
+        @Value("\${maia.file-storage.local.base-dir}") private val baseDir: File,
         private val fileStorageEntryDao: FileStorageEntryDao
 ): FileStorage {
 

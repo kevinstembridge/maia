@@ -64,7 +64,7 @@ class DtoHtmlAgGridTableComponentRenderer(
             |    templateUrl: './${this.dtoHtmlTableDef.tableComponent.htmlFileName}'
         """.trimMargin())
 
-        if (this.dtoHtmlTableDef.searchModelType == SearchModelType.MAHANA) {
+        if (this.dtoHtmlTableDef.searchModelType == SearchModelType.MAIA) {
             appendLine("    styleUrls: ['./${this.dtoHtmlTableDef.tableComponentScssFileName}'],")
         }
 

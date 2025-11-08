@@ -2,9 +2,7 @@ package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.EsDocDef
 import org.maiaframework.gen.spec.definition.Fqcns
-import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
-import org.slf4j.LoggerFactory
 
 class EsDocRepoRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRenderer(esDocDef.esDocRepoClassDef) {
 
@@ -27,7 +25,7 @@ class EsDocRepoRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRenderer
 
     private fun `render function findById`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         appendLine("""
             |

@@ -16,7 +16,7 @@ class ElasticSearchDtoSearchServiceRenderer(
 
     init {
 
-        addConstructorArg(ClassFieldDef.aClassField("esSearchExecutor", Fqcns.MAHANA_ES_SEARCH_EXECUTOR).privat().build())
+        addConstructorArg(ClassFieldDef.aClassField("esSearchExecutor", Fqcns.MAIA_ES_SEARCH_EXECUTOR).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("esIndex", esDocDef.esIndexClassDef.fqcn).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("esDocMapper", searchDtoDef.esDocMapperClassDef.fqcn).privat().build())
 
@@ -34,11 +34,11 @@ class ElasticSearchDtoSearchServiceRenderer(
     private fun `render function search`() {
 
         val searchModelFqcn = when (searchDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL
         }
 
-        addImportFor(Fqcns.MAHANA_INDEX_SEARCH_RESULTS)
+        addImportFor(Fqcns.MAIA_INDEX_SEARCH_RESULTS)
         addImportFor(searchModelFqcn)
 
         appendLine("""
@@ -62,11 +62,11 @@ class ElasticSearchDtoSearchServiceRenderer(
     private fun `render function count`() {
 
         val searchModelFqcn = when (searchDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL
         }
 
-        addImportFor(Fqcns.MAHANA_INDEX_SEARCH_RESULTS)
+        addImportFor(Fqcns.MAIA_INDEX_SEARCH_RESULTS)
         addImportFor(searchModelFqcn)
 
         appendLine("""

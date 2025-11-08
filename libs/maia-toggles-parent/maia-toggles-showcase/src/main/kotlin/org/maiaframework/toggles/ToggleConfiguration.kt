@@ -2,7 +2,7 @@ package org.maiaframework.toggles
 
 import com.hazelcast.config.Config
 import com.hazelcast.config.YamlConfigBuilder
-import org.maiaframework_toggles.hazelcast.Mahana_togglesHazelcastConfig
+import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -20,7 +20,7 @@ class ToggleConfiguration {
 
     @Bean
     fun createNewConfig(
-        hazelcastConfig: Mahana_togglesHazelcastConfig
+        hazelcastConfig: Maia_togglesHazelcastConfig
     ): Config {
 
         val config: Config = YamlConfigBuilder().build()

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 class FeatureToggleEndpoint(private val toggleService: ToggleService) {
 
 
-    @GetMapping("/api/mahana/toggles", produces = ["application/json"])
+    @GetMapping("/api/maia/toggles", produces = ["application/json"])
     fun getFeatureToggles(): List<FeatureToggleResponseDto> {
 
         return this.toggleService.getAllFeatureToggles()

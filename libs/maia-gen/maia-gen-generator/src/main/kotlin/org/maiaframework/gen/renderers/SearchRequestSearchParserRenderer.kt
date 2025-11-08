@@ -18,7 +18,7 @@ class SearchRequestSearchParserRenderer(private val responseDtoDef: ResponseDtoD
 
     override fun renderPreClassFields() {
 
-        addImportFor(Fqcns.MAHANA_SEARCH_REQUEST_PARSER)
+        addImportFor(Fqcns.MAIA_SEARCH_REQUEST_PARSER)
 
         blankLine()
         appendLine("    private val searchRequestParser = SearchRequestParser(fieldNameConverter, fieldConverter)")
@@ -35,7 +35,7 @@ class SearchRequestSearchParserRenderer(private val responseDtoDef: ResponseDtoD
 
     private fun renderMethod_parseSearchRequest() {
 
-        addImportFor(Fqcns.MAHANA_MONGO_PAGEABLE_SEARCH_REQUEST)
+        addImportFor(Fqcns.MAIA_MONGO_PAGEABLE_SEARCH_REQUEST)
 
         blankLine()
         blankLine()

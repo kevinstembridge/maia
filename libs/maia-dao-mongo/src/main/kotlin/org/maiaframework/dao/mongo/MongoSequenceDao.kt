@@ -47,7 +47,7 @@ class MongoSequenceDao(collectionName: CollectionName, sequenceName: String, mon
 
     companion object {
 
-        private val DEFAULT_COLLECTION_NAME = CollectionName("mahanaSequence")
+        private val DEFAULT_COLLECTION_NAME = CollectionName("maiaSequence")
         private const val SEQUENCE_VALUE_FIELD_NAME = "sequenceValue"
 
     }

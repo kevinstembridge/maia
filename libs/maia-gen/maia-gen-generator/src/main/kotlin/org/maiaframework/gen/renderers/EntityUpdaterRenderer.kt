@@ -15,10 +15,10 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     init {
 
-        val fieldUpdatesType = FieldTypes.list(FieldTypes.byFqcn(Fqcns.MAHANA_FIELD_UPDATE))
+        val fieldUpdatesType = FieldTypes.list(FieldTypes.byFqcn(Fqcns.MAIA_FIELD_UPDATE))
 
         addConstructorArg(
-            aClassField("id", Fqcns.MAHANA_DOMAIN_ID) {
+            aClassField("id", Fqcns.MAIA_DOMAIN_ID) {
                 constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
             }.build()
         )
@@ -184,7 +184,7 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     override fun renderInnerClasses() {
 
-        addImportFor(Fqcns.MAHANA_FIELD_UPDATE)
+        addImportFor(Fqcns.MAIA_FIELD_UPDATE)
 
         blankLine()
         blankLine()

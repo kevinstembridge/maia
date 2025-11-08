@@ -583,7 +583,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaNam
         entityDef = bravoEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedDto = WithGeneratedDto.TRUE,
-        searchModelType = SearchModelType.MAHANA
+        searchModelType = SearchModelType.MAIA
     ) {
         field("dtoStringFromAlpha", "alphaId.someString")
         field("dtoIntFromAlpha", "alphaId.someInt")
@@ -600,7 +600,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaNam
         entityDef = charlieEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedDto = WithGeneratedDto.TRUE,
-        searchModelType = SearchModelType.MAHANA
+        searchModelType = SearchModelType.MAIA
     ) {
         field("dtoStringFromCharlie", "someString")
         field("dtoIntFromCharlie", "someInt")
@@ -687,7 +687,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaNam
         entityDef = charlieAgGridEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedDto = WithGeneratedDto.TRUE,
-        searchModelType = SearchModelType.MAHANA
+        searchModelType = SearchModelType.MAIA
     ) {
         field("dtoStringFromCharlie", "someString")
         field("dtoIntFromCharlie", "someInt")

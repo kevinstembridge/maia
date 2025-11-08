@@ -91,7 +91,7 @@ class EsDocDef(
 
     val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${esDocBaseName.firstToUpper()}IndexJob"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
-        .withInterface(ParameterizedType(Fqcns.MAHANA_JOB))
+        .withInterface(ParameterizedType(Fqcns.MAIA_JOB))
         .build()
 
 
@@ -102,7 +102,7 @@ class EsDocDef(
 
     val esDocMapperClassDef = aClassDef(this.dtoDef.fqcn.withSuffix("Mapper"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
-        .withInterface(ParameterizedType(Fqcns.MAHANA_ES_DOC_MAPPER, ParameterizedType(dtoDef.fqcn)))
+        .withInterface(ParameterizedType(Fqcns.MAIA_ES_DOC_MAPPER, ParameterizedType(dtoDef.fqcn)))
         .build()
 
 

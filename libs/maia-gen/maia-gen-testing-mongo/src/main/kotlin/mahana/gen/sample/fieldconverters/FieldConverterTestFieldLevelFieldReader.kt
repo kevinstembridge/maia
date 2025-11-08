@@ -1,4 +1,4 @@
-package mahana.gen.sample.fieldconverters
+package org.maiaframework.gen.sample.fieldconverters
 
 import org.maiaframework.domain.types.CollectionName
 import org.bson.Document

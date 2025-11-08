@@ -73,7 +73,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     private fun `render function findById`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         if (cacheable) {
 
@@ -110,7 +110,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     private fun `render function findByIdOrNull`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         if (cacheable) {
 
@@ -391,7 +391,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     private fun `render function bulkInsert`() {
 
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         blankLine()
         blankLine()
@@ -411,8 +411,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         }
 
         addImportFor<Instant>()
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
-        addImportFor(Fqcns.MAHANA_CSV_PERSISTABLE_RECORD)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_CSV_PERSISTABLE_RECORD)
 
         blankLine()
         blankLine()

@@ -488,12 +488,12 @@ class EntityDef(
 
 
     val rowMapperClassDef = aClassDef(this.rowMapperFqcn)
-        .withInterface(ParameterizedType(Fqcns.MAHANA_JDBC_ROW_MAPPER, ParameterizedType(this.entityFqcn)))
+        .withInterface(ParameterizedType(Fqcns.MAIA_JDBC_ROW_MAPPER, ParameterizedType(this.entityFqcn)))
         .build()
 
 
     val fetchForEditDtoRowMapperClassDef = aClassDef(this.fetchForEditDtoRowMapperFqcn)
-        .withInterface(ParameterizedType(Fqcns.MAHANA_JDBC_ROW_MAPPER, ParameterizedType(this.fetchForEditDtoFqcn)))
+        .withInterface(ParameterizedType(Fqcns.MAIA_JDBC_ROW_MAPPER, ParameterizedType(this.fetchForEditDtoFqcn)))
         .build()
 
 

@@ -34,7 +34,7 @@ class SearchableTableDtoJdbcRepoRenderer(
             return
         }
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         blankLine()
         blankLine()
@@ -51,16 +51,16 @@ class SearchableTableDtoJdbcRepoRenderer(
 
 
         val searchModelTypeFqcn = when (this.searchableDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL
         }
 
         val searchableExceptionFqcn = when (this.searchableDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCHABLE_EXCEPTION
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCHABLE_EXCEPTION
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCHABLE_EXCEPTION
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCHABLE_EXCEPTION
         }
 
-        addImportFor(Fqcns.MAHANA_SEARCH_RESULT_PAGE)
+        addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
         addImportFor(searchableExceptionFqcn)
         addImportFor(searchModelTypeFqcn)
 
@@ -83,16 +83,16 @@ class SearchableTableDtoJdbcRepoRenderer(
 
 
         val searchModelTypeFqcn = when (this.searchableDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL
         }
 
         val searchableExceptionFqcn = when (this.searchableDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCHABLE_EXCEPTION
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCHABLE_EXCEPTION
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCHABLE_EXCEPTION
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCHABLE_EXCEPTION
         }
 
-        addImportFor(Fqcns.MAHANA_SEARCH_RESULT_PAGE)
+        addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
         addImportFor(searchableExceptionFqcn)
         addImportFor(searchModelTypeFqcn)
 

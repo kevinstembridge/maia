@@ -21,7 +21,7 @@ object CurrentUserHolder {
 
     val currentUser: MaiaUserDetails
         get() = currentUserOrNull
-            ?: throw IllegalStateException("current user is not a MahanaUserDetails instance")
+            ?: throw IllegalStateException("current user is not a MaiaUserDetails instance")
 
 
     val currentUserOrNull: MaiaUserDetails?

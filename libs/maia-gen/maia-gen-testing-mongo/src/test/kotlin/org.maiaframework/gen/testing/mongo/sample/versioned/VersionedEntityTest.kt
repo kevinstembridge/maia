@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample.versioned
+package org.maiaframework.gen.testing.mongo.sample.versioned
 
 import org.maiaframework.dao.mongo.OptimisticLockingException
 import org.maiaframework.domain.DomainId

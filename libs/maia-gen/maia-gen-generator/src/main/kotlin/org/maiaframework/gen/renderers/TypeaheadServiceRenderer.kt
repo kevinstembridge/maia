@@ -15,7 +15,7 @@ class TypeaheadServiceRenderer(private val typeaheadDef: TypeaheadDef) : Abstrac
 
         addConstructorArg(ClassFieldDef.aClassField("elasticClient", Fqcns.ELASTIC_CLIENT).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("esIndex", typeaheadDef.esIndexClassDef.fqcn).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("props", Fqcns.MAHANA_PROPS).privat().build())
+        addConstructorArg(ClassFieldDef.aClassField("props", Fqcns.MAIA_PROPS).privat().build())
 
     }
 
@@ -71,7 +71,7 @@ class TypeaheadServiceRenderer(private val typeaheadDef: TypeaheadDef) : Abstrac
 
         addImportFor(Fqcns.ELASTIC_SEARCH_SEARCH_REQUEST)
         addImportFor(Fqcns.ELASTIC_SEARCH_TEXT_QUERY_TYPE)
-        addImportFor(Fqcns.MAHANA_SEARCH_TERM)
+        addImportFor(Fqcns.MAIA_SEARCH_TERM)
 
         val searchTermFieldName = this.typeaheadDef.searchTermFieldName
 

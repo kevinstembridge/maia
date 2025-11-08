@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample.aggrid
+package org.maiaframework.gen.testing.mongo.sample.aggrid
 
 import org.maiaframework.json.JsonFacade
 import org.maiaframework.dao.mongo.MongoClientFacade

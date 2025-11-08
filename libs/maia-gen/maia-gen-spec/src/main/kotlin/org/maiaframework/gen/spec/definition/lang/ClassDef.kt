@@ -75,7 +75,7 @@ class ClassDef(
 
     val rowMapperClassDef: ClassDef
         get() = aClassDef(this.rowMapperFqcn)
-            .withInterface(ParameterizedType(Fqcns.MAHANA_JDBC_ROW_MAPPER, ParameterizedType(this.fqcn)))
+            .withInterface(ParameterizedType(Fqcns.MAIA_JDBC_ROW_MAPPER, ParameterizedType(this.fqcn)))
             .build()
 
 

@@ -42,7 +42,7 @@ class ForeignKeyReferenceServiceRenderer(
     private fun renderFunction_checkForeignKeyReferences() {
 
         addImportFor(Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO)
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         blankLine()
         blankLine()

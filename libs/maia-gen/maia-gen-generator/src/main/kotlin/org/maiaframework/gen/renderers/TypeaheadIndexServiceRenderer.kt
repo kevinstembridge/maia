@@ -15,8 +15,8 @@ class TypeaheadIndexServiceRenderer(
     init {
 
         addConstructorArg(ClassFieldDef.aClassField("elasticClient", Fqcns.ELASTIC_CLIENT).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("esIndexOps", Fqcns.MAHANA_ES_INDEX_OPS).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("props", Fqcns.MAHANA_PROPS).privat().build())
+        addConstructorArg(ClassFieldDef.aClassField("esIndexOps", Fqcns.MAIA_ES_INDEX_OPS).privat().build())
+        addConstructorArg(ClassFieldDef.aClassField("props", Fqcns.MAIA_PROPS).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("esDocRepo", this.typeaheadDef.esDocDef.esDocRepoClassDef.fqcn).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("esIndex", this.typeaheadDef.esIndexClassDef.fqcn).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
@@ -74,7 +74,7 @@ class TypeaheadIndexServiceRenderer(
 
     private fun `render function deleteById`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         appendLine("""
             |
@@ -94,7 +94,7 @@ class TypeaheadIndexServiceRenderer(
 
     private fun `render function refreshIndex`() {
 
-        addImportFor(Fqcns.MAHANA_JOB_METRICS)
+        addImportFor(Fqcns.MAIA_JOB_METRICS)
 
         appendLine("""
             |
@@ -116,7 +116,7 @@ class TypeaheadIndexServiceRenderer(
 
     private fun `render function upsertAllCurrentRecords`() {
 
-        addImportFor(Fqcns.MAHANA_JOB_METRICS)
+        addImportFor(Fqcns.MAIA_JOB_METRICS)
 
         blankLine()
         blankLine()
@@ -156,7 +156,7 @@ class TypeaheadIndexServiceRenderer(
 
     private fun `render function buildEsDocHolder`() {
 
-        addImportFor(Fqcns.MAHANA_ES_DOC_HOLDER)
+        addImportFor(Fqcns.MAIA_ES_DOC_HOLDER)
 
         blankLine()
         blankLine()

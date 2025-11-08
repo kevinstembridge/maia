@@ -12,7 +12,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.mapFieldType
 
 @Suppress("unused")
-class TogglesSpec : AbstractSpec(appKey = AppKey("mahana_toggles"), defaultSchemaName = SchemaName("toggles")) {
+class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaName = SchemaName("toggles")) {
 
 
     val contactPersonValueDef = stringValueClass("org.maiaframework.toggles.fields", "ContactPerson")

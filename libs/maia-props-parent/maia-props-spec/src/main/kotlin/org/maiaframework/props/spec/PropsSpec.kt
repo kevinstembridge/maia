@@ -11,7 +11,7 @@ import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 @Suppress("unused")
-class PropsSpec : AbstractSpec(appKey = AppKey("mahana_props"), defaultSchemaName = SchemaName("props")) {
+class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName = SchemaName("props")) {
 
 
     val propertyEntityDef = entity(

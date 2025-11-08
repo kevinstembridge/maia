@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample.fieldconverters
+package org.maiaframework.gen.testing.mongo.sample.fieldconverters
 
 import org.maiaframework.gen.AbstractIntegrationTest
 import org.maiaframework.domain.DomainId

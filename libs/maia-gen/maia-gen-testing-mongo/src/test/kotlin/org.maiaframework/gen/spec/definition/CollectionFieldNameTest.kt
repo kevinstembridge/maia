@@ -1,4 +1,4 @@
-package mahana.gen.spec.definition
+package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.mongo.CollectionFieldName
 import org.testng.Assert.assertEquals

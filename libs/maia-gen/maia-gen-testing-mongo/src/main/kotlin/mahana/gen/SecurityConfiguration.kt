@@ -1,4 +1,4 @@
-package mahana.gen
+package org.maiaframework.gen
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

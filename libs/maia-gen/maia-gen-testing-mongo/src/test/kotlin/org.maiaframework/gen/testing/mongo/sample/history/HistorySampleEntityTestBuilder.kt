@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample.history
+package org.maiaframework.gen.testing.mongo.sample.history
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.testing.domain.Anys.anyInstant

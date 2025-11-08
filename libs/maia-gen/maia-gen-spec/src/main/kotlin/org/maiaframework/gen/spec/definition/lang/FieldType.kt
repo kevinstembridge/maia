@@ -256,7 +256,7 @@ class StringTypeFieldType(
 
 
 class DomainIdFieldType internal constructor() : FieldType(
-    Fqcns.MAHANA_DOMAIN_ID,
+    Fqcns.MAIA_DOMAIN_ID,
     BsonCompatibleType.DOMAIN_ID,
     TypescriptCompatibleTypes.string,
     JdbcCompatibleType.uuid,
@@ -545,7 +545,7 @@ class StringValueClassFieldType internal constructor(
 class ForeignKeyFieldType internal constructor(
     val foreignKeyFieldDef: ForeignKeyFieldDef
 ) : FieldType(
-    Fqcns.MAHANA_DOMAIN_ID,
+    Fqcns.MAIA_DOMAIN_ID,
     BsonCompatibleType.DOMAIN_ID,
     TypescriptCompatibleTypes.string,
     JdbcCompatibleType.uuid,

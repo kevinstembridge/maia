@@ -27,7 +27,7 @@ class EntityDetailDtoServiceRenderer(
 
     private fun `render function fetch`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         appendLine("""
             |

@@ -50,7 +50,7 @@ class MaiaGenTestConfiguration {
 
 
     @Bean
-    fun mahanaProblems(): MaiaProblems {
+    fun maiaProblems(): MaiaProblems {
         return MaiaProblems { "some_prefix" }
     }
 

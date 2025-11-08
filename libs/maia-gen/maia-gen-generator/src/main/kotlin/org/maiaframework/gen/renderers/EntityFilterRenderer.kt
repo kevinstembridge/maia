@@ -31,7 +31,7 @@ class EntityFilterRenderer(private val entityDef: EntityDef) : AbstractKotlinRen
 
     private fun renderFunctionsForJdbcDatabase() {
 
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         blankLine()
         blankLine()

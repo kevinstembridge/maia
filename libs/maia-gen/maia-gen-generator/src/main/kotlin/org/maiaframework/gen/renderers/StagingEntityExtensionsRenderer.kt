@@ -18,7 +18,7 @@ class StagingEntityExtensionsRenderer(private val entityDef: EntityDef) : Abstra
 
     private fun renderField(field: DataRowStagingEntityFieldDef) {
 
-        addImportFor(Fqcns.MAHANA_STAGED_FIELD_META)
+        addImportFor(Fqcns.MAIA_STAGED_FIELD_META)
 
         val nullableSuffix = when (field.nullability) {
             Nullability.NULLABLE -> "?"
@@ -40,7 +40,7 @@ class StagingEntityExtensionsRenderer(private val entityDef: EntityDef) : Abstra
 
         if (field.isNotNullable) {
 
-            addImportFor(Fqcns.MAHANA_STAGED_FIELD_MISSING_EXCEPTION)
+            addImportFor(Fqcns.MAIA_STAGED_FIELD_MISSING_EXCEPTION)
 
             blankLine()
             appendLine("            if (rawValue.isNullOrBlank()) {")
@@ -65,7 +65,7 @@ class StagingEntityExtensionsRenderer(private val entityDef: EntityDef) : Abstra
 
         } else if (field.isInt) {
 
-            addImportFor(Fqcns.MAHANA_STAGED_FIELD_NUMBER_FORMAT_EXCEPTION)
+            addImportFor(Fqcns.MAIA_STAGED_FIELD_NUMBER_FORMAT_EXCEPTION)
 
             appendLine("            try {")
             appendLine("                return rawValue$nullableSuffix.toInt()")
@@ -88,7 +88,7 @@ class StagingEntityExtensionsRenderer(private val entityDef: EntityDef) : Abstra
             addImportFor(Fqcns.JAVA_DATE_TIME_FORMATTER)
             addImportFor(Fqcns.JAVA_DATE_TIME_PARSE_EXCEPTION)
             addImportFor(LocalDate::class.java)
-            addImportFor(Fqcns.MAHANA_STAGED_FIELD_DATE_FORMAT_EXCEPTION)
+            addImportFor(Fqcns.MAIA_STAGED_FIELD_DATE_FORMAT_EXCEPTION)
 
             val formatter = field.dateTimeFormatterConstant
 

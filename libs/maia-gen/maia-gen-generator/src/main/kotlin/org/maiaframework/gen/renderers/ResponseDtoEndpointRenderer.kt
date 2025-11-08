@@ -53,7 +53,7 @@ class ResponseDtoEndpointRenderer(private val responseDtoDef: ResponseDtoDef) : 
         addImportFor(Fqcns.SPRING_POST_MAPPING)
         addImportFor(Fqcns.SPRING_REQUEST_BODY)
         addImportFor(Fqcns.SPRING_RESPONSE_BODY)
-        addImportFor(Fqcns.MAHANA_MONGO_PAGEABLE_SEARCH_REQUEST)
+        addImportFor(Fqcns.MAIA_MONGO_PAGEABLE_SEARCH_REQUEST)
 
         blankLine()
         blankLine()

@@ -31,7 +31,7 @@ class TypeaheadEndpointRenderer(private val typeaheadDef: TypeaheadDef) : Abstra
         addImportFor(Fqcns.SPRING_GET_MAPPING)
         addImportFor(Fqcns.SPRING_MEDIA_TYPE)
         addImportFor(Fqcns.SPRING_REQUEST_PARAM)
-        addImportFor(Fqcns.MAHANA_SEARCH_TERM)
+        addImportFor(Fqcns.MAIA_SEARCH_TERM)
 
         blankLine()
         blankLine()

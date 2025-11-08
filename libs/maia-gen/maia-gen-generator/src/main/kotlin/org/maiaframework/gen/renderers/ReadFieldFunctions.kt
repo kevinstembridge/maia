@@ -52,7 +52,7 @@ fun renderReadField(classFieldDef: ClassFieldDef, dbColumnFieldDef: DbColumnFiel
 
     } else {
 
-        renderer.addImportFor(Fqcns.MAHANA_DOCUMENT_FACADE)
+        renderer.addImportFor(Fqcns.MAIA_DOCUMENT_FACADE)
         val firstParameterUqcn = TODO() // classFieldDef.fieldType.firstParameterTypeOrNull?.unqualifiedToString
 
         if (classFieldDef.isNullableEnum) {

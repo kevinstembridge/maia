@@ -41,12 +41,12 @@ class JdbcDaoRenderer(
 
     init {
 
-        addConstructorArg(aClassField("jdbcOps", Fqcns.MAHANA_JDBC_OPS).privat().build())
+        addConstructorArg(aClassField("jdbcOps", Fqcns.MAIA_JDBC_OPS).privat().build())
 
         addConstructorArg(aClassField("fieldConverter", entityDef.entityFieldConverterClassDef.fqcn).privat().build())
 
         if (entityHierarchy.requiresObjectMapper) {
-            addConstructorArg(aClassField("jsonFacade", Fqcns.MAHANA_JSON_FACADE).privat().build())
+            addConstructorArg(aClassField("jsonFacade", Fqcns.MAIA_JSON_FACADE).privat().build())
             addConstructorArg(aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
         }
 
@@ -90,10 +90,10 @@ class JdbcDaoRenderer(
         appendLine("    private val entityRowMapper = ${entityDef.rowMapperClassDef.uqcn}($objectMapperParameter)")
 
         if (this.entityDef.isModifiable == false && this.entityDef.isHistoryEntity == false && this.entityDef.uniqueIndexDefs.isNotEmpty()) {
-            addImportFor(Fqcns.MAHANA_JDBC_ROW_MAPPER)
+            addImportFor(Fqcns.MAIA_JDBC_ROW_MAPPER)
             blankLine()
             blankLine()
-            appendLine("    private val idRowMapper = MahanaRowMapper { rs -> rs.readDomainId(\"id\") }")
+            appendLine("    private val idRowMapper = MaiaRowMapper { rs -> rs.readDomainId(\"id\") }")
         }
 
         if (entityDef.isConcrete && entityDef.entityCrudApiDef?.updateApiDef != null) {
@@ -137,7 +137,7 @@ class JdbcDaoRenderer(
 
     private fun `render function insert`() {
 
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         if (entityHierarchy.hasSubclasses()) {
 
@@ -230,7 +230,7 @@ class JdbcDaoRenderer(
 
     private fun `render function bulkInsert`() {
 
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         blankLine()
         blankLine()
@@ -287,8 +287,8 @@ class JdbcDaoRenderer(
         }
 
         addImportFor<Instant>()
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
-        addImportFor(Fqcns.MAHANA_CSV_PERSISTABLE_RECORD)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_CSV_PERSISTABLE_RECORD)
 
         blankLine()
         blankLine()
@@ -539,9 +539,9 @@ class JdbcDaoRenderer(
 
     private fun `render function findById`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
-        addImportFor(Fqcns.MAHANA_ENTITY_NOT_FOUND_EXCEPTION)
-        addImportFor(Fqcns.MAHANA_ENTITY_CLASS_AND_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
+        addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_ID)
 
         blankLine()
         blankLine()
@@ -558,9 +558,9 @@ class JdbcDaoRenderer(
 
     private fun `render function findByPrimaryKey`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
-        addImportFor(Fqcns.MAHANA_ENTITY_NOT_FOUND_EXCEPTION)
-        addImportFor(Fqcns.MAHANA_ENTITY_CLASS_AND_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
+        addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_ID)
 
         val fieldNamesAnded = fieldNamesAnded(this.entityDef.primaryKeyFields.map { it.classFieldDef })
         val fieldNamesCsv = this.entityDef.primaryKeyFields.map { it.classFieldName }.joinToString(", ")
@@ -1322,7 +1322,7 @@ class JdbcDaoRenderer(
     private fun `render upsert by unique fields if entity is modifiable`(entityFieldDefs: List<EntityFieldDef>) {
 
         addImportFor(Fqcns.JDBC_PREPARED_STATEMENT)
-        addImportFor(Fqcns.MAHANA_RESULT_SET_ADAPTER)
+        addImportFor(Fqcns.MAIA_RESULT_SET_ADAPTER)
 
         val uniqueFieldColumnNames = entityFieldDefs.map { it.tableColumnName }
         val uniqueFieldNamesAnded = fieldNamesAnded(entityFieldDefs.map { it.classFieldDef })
@@ -1414,8 +1414,8 @@ class JdbcDaoRenderer(
     private fun `render upsert by unique fields if entity is unmodifiable`(entityFieldDefs: List<EntityFieldDef>) {
 
         addImportFor(Fqcns.JDBC_PREPARED_STATEMENT)
-        addImportFor(Fqcns.MAHANA_RESULT_SET_ADAPTER)
-        addImportFor(Fqcns.MAHANA_JDBC_ROW_MAPPER)
+        addImportFor(Fqcns.MAIA_RESULT_SET_ADAPTER)
+        addImportFor(Fqcns.MAIA_JDBC_ROW_MAPPER)
 
         val uniqueFieldColumnNames = entityFieldDefs.map { it.tableColumnName }
         val uniqueFieldNamesAnded = fieldNamesAnded(entityFieldDefs.map { it.classFieldDef })
@@ -1592,7 +1592,7 @@ class JdbcDaoRenderer(
             return
         }
 
-        addImportFor(Fqcns.MAHANA_FIELD_UPDATE)
+        addImportFor(Fqcns.MAIA_FIELD_UPDATE)
 
         blankLine()
         blankLine()
@@ -1642,7 +1642,7 @@ class JdbcDaoRenderer(
 
         if (entityDef.withVersionHistory.value) {
 
-            addImportFor(Fqcns.MAHANA_JDBC_OPTIMISTIC_LOCKING_EXCEPTION)
+            addImportFor(Fqcns.MAIA_JDBC_OPTIMISTIC_LOCKING_EXCEPTION)
 
             appendLine("        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)")
             blankLine()

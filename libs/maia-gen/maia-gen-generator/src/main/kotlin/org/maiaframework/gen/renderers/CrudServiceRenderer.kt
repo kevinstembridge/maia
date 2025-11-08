@@ -51,7 +51,7 @@ class CrudServiceRenderer(
     init {
 
         addConstructorArg(ClassFieldDef.aClassField("entityRepo", this.entityDef.entityRepoFqcn).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("mahanaProblems", Fqcns.MAHANA_PROBLEMS).privat().build())
+        addConstructorArg(ClassFieldDef.aClassField("maiaProblems", Fqcns.MAIA_PROBLEMS).privat().build())
 
         this.modelDef.entitiesThatReference(this.entityDef).forEach { referencingEntityDef ->
             addConstructorArg(ClassFieldDef.aClassField(referencingEntityDef.entityRepoFqcn.uqcn.firstToLower(), referencingEntityDef.entityRepoFqcn).privat().build())
@@ -133,7 +133,7 @@ class CrudServiceRenderer(
 
         if (this.entityDef.hasCreatedByIdField || this.entityDef.hasCreatedByField) {
 
-            addImportFor(Fqcns.MAHANA_CURRENT_USER_HOLDER)
+            addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
 
             blankLine()
             appendLine("        val currentUser = CurrentUserHolder.currentUser")
@@ -173,11 +173,11 @@ class CrudServiceRenderer(
     private fun `render function buildEntity`(apiDef: EntityCreateApiDef) {
 
         addImportFor<Instant>()
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         val currentUserOrBlank = if (this.entityDef.hasCreatedByIdField || this.entityDef.hasLastModifiedByIdField) {
-            addImportFor(Fqcns.MAHANA_USER_DETAILS)
-            ", currentUser: MahanaUserDetails"
+            addImportFor(Fqcns.MAIA_USER_DETAILS)
+            ", currentUser: MaiaUserDetails"
         } else {
             ""
         }
@@ -204,7 +204,7 @@ class CrudServiceRenderer(
 
         if (this.entityDef.hasCreatedByIdField) {
 
-            addImportFor(Fqcns.MAHANA_CURRENT_USER_HOLDER)
+            addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
 
             appendLine("        val createdById = currentUser.userId")
 
@@ -212,7 +212,7 @@ class CrudServiceRenderer(
 
         if (this.entityDef.hasCreatedByUsernameField) {
 
-            addImportFor(Fqcns.MAHANA_CURRENT_USER_HOLDER)
+            addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
 
             appendLine("        val createdByUsername = currentUser.username")
 
@@ -292,7 +292,7 @@ class CrudServiceRenderer(
         val apiDef = this.entityDef.entityCrudApiDef?.updateApiDef
             ?: return
 
-        addImportFor(Fqcns.MAHANA_CURRENT_USER_HOLDER)
+        addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
         apiDef.requestDtoDef.let { dtoDef ->
 
             blankLine()
@@ -315,7 +315,7 @@ class CrudServiceRenderer(
                 .forEach { field -> appendLine("            ${field.classFieldName}(editDto.${field.classFieldName})") }
 
             if (this.entityDef.hasLastModifiedByIdField) {
-                addImportFor(Fqcns.MAHANA_CURRENT_USER_HOLDER)
+                addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
                 appendLine("            lastModifiedById(CurrentUserHolder.userId)")
             }
 
@@ -346,7 +346,7 @@ class CrudServiceRenderer(
 
     private fun `render inline update function`(dtoDef: InlineEditDtoDef) {
 
-        addImportFor(Fqcns.MAHANA_CURRENT_USER_HOLDER)
+        addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
 
         val dtoUqcn = dtoDef.uqcn
         val fieldName = dtoDef.fieldDef.classFieldDef.classFieldName
@@ -435,7 +435,7 @@ class CrudServiceRenderer(
 
             blankLine()
             appendLine("        if (this.${daoName}.existsBy${fieldName.firstToUpper()}(id)) {")
-            appendLine("            throw this.mahanaProblems.foreignKeyRecordsExist(\"${referencingEntityDef.entityBaseName}\")")
+            appendLine("            throw this.maiaProblems.foreignKeyRecordsExist(\"${referencingEntityDef.entityBaseName}\")")
             appendLine("        }")
 
         }

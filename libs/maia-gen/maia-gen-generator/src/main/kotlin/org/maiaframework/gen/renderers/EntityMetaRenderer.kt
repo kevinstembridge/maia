@@ -24,7 +24,7 @@ class EntityMetaRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         }
 
-        addImportFor(Fqcns.MAHANA_ENTITY_KEY)
+        addImportFor(Fqcns.MAIA_ENTITY_KEY)
         blankLine()
         appendLine("    val ENTITY_KEY = EntityKey(\"${this.entityDef.entityBaseName}\")")
 
@@ -55,9 +55,9 @@ class EntityMetaRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         when (entityDef.databaseType) {
             DatabaseType.JDBC -> {
-                addImportFor(Fqcns.MAHANA_JDBC_SCHEMA_AND_TABLE_NAME)
-                addImportFor(Fqcns.MAHANA_JDBC_TABLE_NAME)
-                addImportFor(Fqcns.MAHANA_SCHEMA_NAME)
+                addImportFor(Fqcns.MAIA_JDBC_SCHEMA_AND_TABLE_NAME)
+                addImportFor(Fqcns.MAIA_JDBC_TABLE_NAME)
+                addImportFor(Fqcns.MAIA_SCHEMA_NAME)
                 appendLine("    val SCHEMA_NAME = SchemaName(\"${this.entityDef.schemaName.value}\")")
                 blankLine()
                 appendLine("    val TABLE_NAME = TableName(\"${this.entityDef.tableName}\")")

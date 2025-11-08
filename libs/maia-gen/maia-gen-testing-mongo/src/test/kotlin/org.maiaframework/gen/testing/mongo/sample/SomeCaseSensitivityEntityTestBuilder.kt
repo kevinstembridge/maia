@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample
+package org.maiaframework.gen.testing.mongo.sample
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.gen.testing.mongo.sample.case_sensitivity.SomeCaseSensitivityEntity

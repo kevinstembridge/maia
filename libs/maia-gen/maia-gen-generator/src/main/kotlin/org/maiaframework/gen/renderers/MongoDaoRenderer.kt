@@ -147,7 +147,7 @@ class MongoDaoRenderer(private val entityHierarchy: EntityHierarchy) : AbstractK
         val historyEntityDef = this.entityDef.historyEntityDef
                 ?: return
 
-        addImportFor(Fqcns.MAHANA_CHANGE_TYPE)
+        addImportFor(Fqcns.MAIA_CHANGE_TYPE)
 
         blankLine()
         blankLine()

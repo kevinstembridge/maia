@@ -20,7 +20,7 @@ class TogglzConfiguration {
 
 
     @Autowired
-    private lateinit var mahanagenProperties: MaiaGenProperties
+    private lateinit var maiagenProperties: MaiaGenProperties
 
 
     @Autowired
@@ -30,7 +30,7 @@ class TogglzConfiguration {
     @Bean
     fun mongoStateRepository(): StateRepository {
 
-        val defaultDatabaseName = this.mahanagenProperties.defaultDatabaseName
+        val defaultDatabaseName = this.maiagenProperties.defaultDatabaseName
 
         val mongoStateRepository = MaiaTogglzStateRepository(
                 this.mongoClient,

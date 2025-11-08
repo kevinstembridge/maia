@@ -3,7 +3,7 @@ package org.maiaframework.gen.spec.definition
 enum class SearchModelType {
 
     AG_GRID,
-    MAHANA;
+    MAIA;
 
     companion object {
 

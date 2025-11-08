@@ -26,14 +26,14 @@ class SearchableDtoJdbcDaoRenderer(
 
 
     private val searchModelFqcn = when (this.searchableDtoDef.searchModelType) {
-        SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL
-        SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL
+        SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL
+        SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL
     }
 
 
     private val searchModelConverterFqcn = when (this.searchableDtoDef.searchModelType) {
-        SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL_CONVERTER
-        SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL_CONVERTER
+        SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL_CONVERTER
+        SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL_CONVERTER
     }
 
 
@@ -62,10 +62,10 @@ class SearchableDtoJdbcDaoRenderer(
 
     init {
 
-        addConstructorArg(aClassField("jdbcOps", Fqcns.MAHANA_JDBC_OPS) { privat() }.build())
+        addConstructorArg(aClassField("jdbcOps", Fqcns.MAIA_JDBC_OPS) { privat() }.build())
 
         if (searchableDtoDef.hasAnyMapFields) {
-            addConstructorArg(aClassField("jsonFacade", Fqcns.MAHANA_JSON_FACADE).privat().build())
+            addConstructorArg(aClassField("jsonFacade", Fqcns.MAIA_JSON_FACADE).privat().build())
             addConstructorArg(aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
         }
 
@@ -129,7 +129,7 @@ class SearchableDtoJdbcDaoRenderer(
 
             }
 
-            SearchModelType.MAHANA -> {
+            SearchModelType.MAIA -> {
 
                 appendLine("""
                     |
@@ -191,7 +191,7 @@ class SearchableDtoJdbcDaoRenderer(
         }
 
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         blankLine()
         blankLine()
@@ -218,8 +218,8 @@ class SearchableDtoJdbcDaoRenderer(
     private fun `render function search`() {
 
         addImportFor(searchModelFqcn)
-        addImportFor(Fqcns.MAHANA_SEARCH_RESULT_PAGE)
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         val typeDiscriminatorText = if (typeDiscriminators.isEmpty()) "" else ", typeDiscriminatorExpression"
 
@@ -270,8 +270,8 @@ class SearchableDtoJdbcDaoRenderer(
     private fun `render function count`() {
 
         addImportFor(searchModelFqcn)
-        addImportFor(Fqcns.MAHANA_SEARCH_RESULT_PAGE)
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         val typeDiscriminatorText = if (typeDiscriminators.isEmpty()) "" else ", typeDiscriminatorExpression"
 
@@ -416,8 +416,8 @@ class SearchableDtoJdbcDaoRenderer(
 
     private fun `render function buildExpressionFor`() {
 
-        addImportFor(Fqcns.MAHANA_FILTER_MODEL_ITEM)
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_FILTER_MODEL_ITEM)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
         addImportFor(Fqcns.SQL_TYPES)
 
         blankLine()
@@ -672,8 +672,8 @@ class SearchableDtoJdbcDaoRenderer(
 
     private fun `render function buildSqlParamsFor`() {
 
-        addImportFor(Fqcns.MAHANA_FILTER_MODEL_HELPER)
-        addImportFor(Fqcns.MAHANA_SQL_PARAMS)
+        addImportFor(Fqcns.MAIA_FILTER_MODEL_HELPER)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         blankLine()
         blankLine()

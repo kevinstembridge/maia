@@ -1,7 +1,7 @@
-package mahana.gen
+package org.maiaframework.gen
 
-import org.maiaframework.dao.mongo.migration.MahanaGenMongoMigrationLockDao
-import org.maiaframework.dao.mongo.migration.MahanaGenMongoMigrationLockNotAvailableException
+import org.maiaframework.dao.mongo.migration.MaiaGenMongoMigrationLockDao
+import org.maiaframework.dao.mongo.migration.MaiaGenMongoMigrationLockNotAvailableException
 import org.maiaframework.dao.mongo.MongoClientFacade
 import org.maiaframework.domain.types.CollectionName
 import org.bson.Document
@@ -14,7 +14,7 @@ class MaiaGenMongoMigrationLockDaoTest : AbstractIntegrationTest() {
 
 
     @Autowired
-    private lateinit var dao: MahanaGenMongoMigrationLockDao
+    private lateinit var dao: MaiaGenMongoMigrationLockDao
 
 
     @Autowired
@@ -30,7 +30,7 @@ class MaiaGenMongoMigrationLockDaoTest : AbstractIntegrationTest() {
 
 
     @Test
-    @Throws(MahanaGenMongoMigrationLockNotAvailableException::class)
+    @Throws(MaiaGenMongoMigrationLockNotAvailableException::class)
     fun testObtainAndReleaseLock() {
 
         this.dao.obtainLock()
@@ -38,7 +38,7 @@ class MaiaGenMongoMigrationLockDaoTest : AbstractIntegrationTest() {
         try {
             this.dao.obtainLock()
             Assert.fail("Expected a MaiaGenMongoMigrationLockNotAvailableException")
-        } catch (e: MahanaGenMongoMigrationLockNotAvailableException) {
+        } catch (e: MaiaGenMongoMigrationLockNotAvailableException) {
             //do nothing
         }
 

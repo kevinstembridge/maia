@@ -31,7 +31,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
     @Test
     fun `should list all feature toggles`(@Autowired mockMvc: MockMvc) {
 
-        mockMvc.get("/api/mahana/toggles")
+        mockMvc.get("/api/maia/toggles")
             .andDo { print() }
             .andExpect {
                 status { isOk() }

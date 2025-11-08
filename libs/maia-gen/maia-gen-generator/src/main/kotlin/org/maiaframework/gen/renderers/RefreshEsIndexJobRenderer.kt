@@ -17,7 +17,7 @@ class RefreshEsIndexJobRenderer(private val esDocDef: EsDocDef) : AbstractKotlin
 
     override fun renderPreClassFields() {
 
-        addImportFor(Fqcns.MAHANA_JOB_NAME)
+        addImportFor(Fqcns.MAIA_JOB_NAME)
 
         blankLine()
         blankLine()
@@ -37,7 +37,7 @@ class RefreshEsIndexJobRenderer(private val esDocDef: EsDocDef) : AbstractKotlin
 
     private fun renderMethod_executeJob() {
 
-        addImportFor(Fqcns.MAHANA_JOB_METRICS)
+        addImportFor(Fqcns.MAIA_JOB_METRICS)
         addImportRaw("kotlinx.coroutines.runBlocking")
 
         blankLine()

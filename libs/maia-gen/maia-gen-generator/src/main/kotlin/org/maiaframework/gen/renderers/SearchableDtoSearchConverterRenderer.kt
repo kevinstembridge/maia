@@ -26,8 +26,8 @@ class SearchableDtoSearchConverterRenderer(private val searchableDtoDef: Searcha
 
         if (this.searchableDtoDef.hasLookupFields) {
 
-            addImportFor(Fqcns.MAHANA_MONGO_LOOKUP_DESCRIPTOR)
-            addImportFor(Fqcns.MAHANA_FOREIGN_FIELD)
+            addImportFor(Fqcns.MAIA_MONGO_LOOKUP_DESCRIPTOR)
+            addImportFor(Fqcns.MAIA_FOREIGN_FIELD)
 
             blankLine()
             appendLine("    private val rootDtoFieldNames = setOf(")
@@ -81,7 +81,7 @@ class SearchableDtoSearchConverterRenderer(private val searchableDtoDef: Searcha
 
     private fun renderMethod_convert() {
 
-        addImportFor(Fqcns.MAHANA_AG_GRID_SEARCH_CONVERTER)
+        addImportFor(Fqcns.MAIA_AG_GRID_SEARCH_CONVERTER)
         addImportFor(Fqcns.JACKSON_JSON_NODE)
 
         if (this.searchableDtoDef.hasLookupFields) {

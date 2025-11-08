@@ -4,7 +4,7 @@ object EnumDefs {
 
 
     val CHANGE_TYPE_ENUM_DEF = EnumDef(
-        Fqcns.MAHANA_CHANGE_TYPE,
+        Fqcns.MAIA_CHANGE_TYPE,
         emptyList(),
         true,
         withTypescript = false,

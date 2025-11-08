@@ -1,4 +1,4 @@
-package mahana.gen
+package org.maiaframework.gen
 
 
 import org.maiaframework.dao.mongo.MongoClientFacade
@@ -18,11 +18,11 @@ import java.net.UnknownHostException
 class MaiaGenTestConfiguration {
 
 
-    @Value("\${mahana.gen.mongoClientUri}")
+    @Value("\${maia.gen.mongoClientUri}")
     private lateinit var mongoClientUri: String
 
 
-    @Value("\${mahana.gen.defaultDatabaseName}")
+    @Value("\${maia.gen.defaultDatabaseName}")
     private lateinit var defaultDatabaseName: String
 
 

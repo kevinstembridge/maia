@@ -46,7 +46,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
 
     private fun `render function fetch`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         append("""
             |

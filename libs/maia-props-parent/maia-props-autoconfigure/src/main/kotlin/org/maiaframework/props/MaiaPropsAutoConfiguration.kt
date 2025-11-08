@@ -28,7 +28,7 @@ import javax.sql.DataSource
 )
 @Configuration
 @ConditionalOnClass(Props::class)
-@EnableConfigurationProperties(MahanaPropsProperties::class)
+@EnableConfigurationProperties(MaiaPropsProperties::class)
 class MaiaPropsAutoConfiguration {
 
 
@@ -52,7 +52,7 @@ class MaiaPropsAutoConfiguration {
 
     @Configuration
     @ConditionalOnMissingBean(PropsRepo::class)
-    class PropsRepoConfiguration(private val properties: MahanaPropsProperties) {
+    class PropsRepoConfiguration(private val properties: MaiaPropsProperties) {
 
 
         @Bean

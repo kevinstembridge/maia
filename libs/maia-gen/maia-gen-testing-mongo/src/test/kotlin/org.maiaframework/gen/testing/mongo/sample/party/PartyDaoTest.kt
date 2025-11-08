@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample.party
+package org.maiaframework.gen.testing.mongo.sample.party
 
 import org.maiaframework.gen.AbstractIntegrationTest
 import org.maiaframework.gen.testing.mongo.sample.org.OrganizationEntityTestBuilder

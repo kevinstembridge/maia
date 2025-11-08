@@ -39,7 +39,7 @@ class DtoSearchEndpointRenderer(
             return
         }
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
         addImportFor(Fqcns.SPRING_GET_MAPPING)
         addImportFor(Fqcns.SPRING_HTTP_STATUS)
         addImportFor(Fqcns.SPRING_MEDIA_TYPE)
@@ -69,12 +69,12 @@ class DtoSearchEndpointRenderer(
 
         val returnType = when (searchDtoDef.dataSourceType) {
             DataSourceType.DATABASE -> {
-                addImportFor(Fqcns.MAHANA_SEARCH_RESULT_PAGE)
-                Fqcns.MAHANA_SEARCH_RESULT_PAGE
+                addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
+                Fqcns.MAIA_SEARCH_RESULT_PAGE
             }
             DataSourceType.ELASTIC_SEARCH -> {
-                addImportFor(Fqcns.MAHANA_INDEX_SEARCH_RESULTS)
-                Fqcns.MAHANA_INDEX_SEARCH_RESULTS
+                addImportFor(Fqcns.MAIA_INDEX_SEARCH_RESULTS)
+                Fqcns.MAIA_INDEX_SEARCH_RESULTS
             }
         }
 
@@ -83,7 +83,7 @@ class DtoSearchEndpointRenderer(
                 addImportFor<AgGridSearchModel>()
                 "AgGridSearchModel"
             }
-            SearchModelType.MAHANA -> {
+            SearchModelType.MAIA -> {
                 addImportFor<SearchModel>()
                 "SearchModel"
             }
@@ -111,7 +111,7 @@ class DtoSearchEndpointRenderer(
                 addImportFor<AgGridSearchModel>()
                 "AgGridSearchModel"
             }
-            SearchModelType.MAHANA -> {
+            SearchModelType.MAIA -> {
                 addImportFor<SearchModel>()
                 "SearchModel"
             }

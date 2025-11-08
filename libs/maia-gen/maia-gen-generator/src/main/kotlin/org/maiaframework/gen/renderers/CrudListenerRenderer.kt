@@ -43,7 +43,7 @@ class CrudListenerRenderer(
 
     private fun renderFunction_onUpdate() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         if (this.entityCrudApiDef.updateApiDef != null || this.entityCrudApiDef.entityDef.hasModifiableFields()) {
             blankLine()

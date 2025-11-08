@@ -74,7 +74,7 @@ class TypeaheadDef(
 
     val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${typeaheadName}TypeaheadIndexJob"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
-        .withInterface(ParameterizedType(Fqcns.MAHANA_JOB))
+        .withInterface(ParameterizedType(Fqcns.MAIA_JOB))
         .build()
 
 

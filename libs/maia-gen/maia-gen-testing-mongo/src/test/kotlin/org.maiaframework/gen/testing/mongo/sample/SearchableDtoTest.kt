@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample
+package org.maiaframework.gen.testing.mongo.sample
 
 import org.maiaframework.json.JsonFacade
 import org.maiaframework.gen.AbstractIntegrationTest

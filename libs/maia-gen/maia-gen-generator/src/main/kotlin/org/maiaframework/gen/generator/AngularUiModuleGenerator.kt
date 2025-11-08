@@ -230,7 +230,7 @@ class AngularUiModuleGenerator(
 
             when (it.searchModelType) {
                 SearchModelType.AG_GRID -> DtoHtmlAgGridTableComponentRenderer(it, this.modelDef.authoritiesDef).renderToDir(this.typescriptOutputDir)
-                SearchModelType.MAHANA -> DtoHtmlTableComponentRenderer(it).renderToDir(this.typescriptOutputDir)
+                SearchModelType.MAIA -> DtoHtmlTableComponentRenderer(it).renderToDir(this.typescriptOutputDir)
             }
 
         }
@@ -277,7 +277,7 @@ class AngularUiModuleGenerator(
 
             when (it.searchModelType) {
                 SearchModelType.AG_GRID -> DtoHtmlAgGridTableHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
-                SearchModelType.MAHANA -> {
+                SearchModelType.MAIA -> {
                     DtoHtmlTableHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
                     DtoHtmlTableScssRenderer(it).renderToDir(this.typescriptOutputDir)
                 }

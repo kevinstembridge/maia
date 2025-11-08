@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample.person
+package org.maiaframework.gen.testing.mongo.sample.person
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.gen.testing.mongo.sample.contact.EmailAddress

@@ -28,7 +28,7 @@ class EntityDetailDtoEndpointRenderer(
 
     private fun `render function fetch`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
         addImportFor(Fqcns.SPRING_GET_MAPPING)
         addImportFor(Fqcns.SPRING_MEDIA_TYPE)
         addImportFor(Fqcns.SPRING_PATH_VARIABLE)

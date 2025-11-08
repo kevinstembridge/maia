@@ -67,7 +67,7 @@ class TypeaheadCrudListenerRenderer(
 
     private fun `render function onUpdate`() {
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         this.entityCrudApiDef.updateApiDef?.let {
             appendLine("""

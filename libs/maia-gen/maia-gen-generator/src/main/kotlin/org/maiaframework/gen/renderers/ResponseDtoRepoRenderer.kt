@@ -15,7 +15,7 @@ class ResponseDtoRepoRenderer(private val responseDtoDef: ResponseDtoDef) : Abst
 
     private fun renderMethod_find() {
 
-        addImportFor(Fqcns.MAHANA_MONGO_PAGEABLE_SEARCH_REQUEST)
+        addImportFor(Fqcns.MAIA_MONGO_PAGEABLE_SEARCH_REQUEST)
         addImportFor(Fqcns.SPRING_PAGE)
 
         blankLine()

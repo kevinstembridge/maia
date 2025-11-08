@@ -14,7 +14,7 @@ class SearchableDtoMongoRepoRenderer(
 
     override fun renderPreClassFields() {
 
-        addImportFor(Fqcns.MAHANA_MONGO_COLLECTION_FACADE)
+        addImportFor(Fqcns.MAIA_MONGO_COLLECTION_FACADE)
 
         blankLine()
         blankLine()
@@ -26,7 +26,7 @@ class SearchableDtoMongoRepoRenderer(
 
     override fun renderConstructor() {
 
-        addImportFor(Fqcns.MAHANA_MONGO_CLIENT_FACADE)
+        addImportFor(Fqcns.MAIA_MONGO_CLIENT_FACADE)
         addImportFor(CollectionName::class.java)
         addImportFor(searchableDtoDef.dtoSearchConverterClassDef.fqcn)
         addImportFor(searchableDtoDef.documentMapperClassDef.fqcn)
@@ -50,11 +50,11 @@ class SearchableDtoMongoRepoRenderer(
     private fun `render function getRows`() {
 
         val searchModelFqcn = when (this.searchableDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL
         }
 
-        addImportFor(Fqcns.MAHANA_SEARCH_RESULT_PAGE)
+        addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
         addImportFor(searchModelFqcn)
 
         blankLine()

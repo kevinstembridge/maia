@@ -62,9 +62,9 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
         when (entityDef.databaseType) {
             DatabaseType.JDBC -> {
-                addImportFor(Fqcns.MAHANA_JDBC_AND_OR)
-                addImportFor(Fqcns.MAHANA_JDBC_SQL_CONDITION_OPERATOR)
-                addImportFor(Fqcns.MAHANA_SQL_PARAMS)
+                addImportFor(Fqcns.MAIA_JDBC_AND_OR)
+                addImportFor(Fqcns.MAIA_JDBC_SQL_CONDITION_OPERATOR)
+                addImportFor(Fqcns.MAIA_SQL_PARAMS)
                 addImportFor(AtomicInteger::class.java)
             }
 

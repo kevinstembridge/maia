@@ -20,7 +20,7 @@ class MongoDaoIndexCreatorRenderer(private val entityDef: EntityDef) : AbstractK
     override fun renderPreClassFields() {
 
         addImportRaw("org.maiaframework.common.logging.getLogger")
-        addImportFor(Fqcns.MAHANA_MONGO_COLLECTION_FACADE)
+        addImportFor(Fqcns.MAIA_MONGO_COLLECTION_FACADE)
 
         blankLine()
         appendLine("    private val logger = getLogger<${classDef.uqcn}>()")

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("\${mahana.jobs.api.base-path}")
+@RequestMapping("\${maia.jobs.api.base-path}")
 class MaiaJobEndpoint(private val jobService: MaiaJobService) {
 
 

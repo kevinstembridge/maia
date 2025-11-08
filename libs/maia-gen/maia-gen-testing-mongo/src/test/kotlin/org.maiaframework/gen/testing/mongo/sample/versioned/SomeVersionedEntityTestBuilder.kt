@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample.versioned
+package org.maiaframework.gen.testing.mongo.sample.versioned
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.testing.domain.Anys.anyString

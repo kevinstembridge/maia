@@ -58,7 +58,7 @@ class RowMapperRenderer(
 
     override fun renderFunctions() {
 
-        addImportFor(Fqcns.MAHANA_RESULT_SET_ADAPTER)
+        addImportFor(Fqcns.MAIA_RESULT_SET_ADAPTER)
 
         blankLine()
         blankLine()

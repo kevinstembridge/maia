@@ -1,4 +1,4 @@
-package mahana.gen.testing.mongo.sample.simple
+package org.maiaframework.gen.testing.mongo.sample.simple
 
 import org.maiaframework.gen.testing.mongo.sample.simple.SomeEnum
 import org.testng.Assert.assertEquals

@@ -36,7 +36,7 @@ class SearchDtoSearchServiceRenderer(
             return
         }
 
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         appendLine("""
             |
@@ -53,11 +53,11 @@ class SearchDtoSearchServiceRenderer(
     private fun `render function search`() {
 
         val searchModelFqcn = when (this.searchDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL
         }
 
-        addImportFor(Fqcns.MAHANA_SEARCH_RESULT_PAGE)
+        addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
         addImportFor(searchModelFqcn)
 
         appendLine("""
@@ -75,8 +75,8 @@ class SearchDtoSearchServiceRenderer(
     private fun `render function count`() {
 
         val searchModelFqcn = when (this.searchDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL
         }
 
         addImportFor(searchModelFqcn)
@@ -100,13 +100,13 @@ class SearchDtoSearchServiceRenderer(
         }
 
         val searchModelFqcn = when (this.searchDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SEARCH_MODEL
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_MODEL
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SEARCH_MODEL
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_MODEL
         }
 
         val sortModelItemFqcn = when (this.searchDtoDef.searchModelType) {
-            SearchModelType.AG_GRID -> Fqcns.MAHANA_AG_GRID_SORT_MODEL_ITEM
-            SearchModelType.MAHANA -> Fqcns.MAHANA_SEARCH_SORT_MODEL_ITEM
+            SearchModelType.AG_GRID -> Fqcns.MAIA_AG_GRID_SORT_MODEL_ITEM
+            SearchModelType.MAIA -> Fqcns.MAIA_SEARCH_SORT_MODEL_ITEM
         }
 
         val defaultSortModel = searchDtoDef.defaultSortModel
@@ -147,7 +147,7 @@ class SearchDtoSearchServiceRenderer(
                 addImportFor(Fqcns.JACKSON_JSON_NODE_FACTORY)
                 appendLine("            JsonNodeFactory.instance.objectNode(),")
             }
-            SearchModelType.MAHANA -> appendLine("            emptyList(),")
+            SearchModelType.MAIA -> appendLine("            emptyList(),")
         }
 
         appendLine("            sortModel,")

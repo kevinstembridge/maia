@@ -1,4 +1,4 @@
-package mahana.gen
+package org.maiaframework.gen
 
 
 import com.fasterxml.jackson.core.JsonGenerator
@@ -54,7 +54,7 @@ class MaiaGenTestingSpringConfiguration {
     @Bean
     fun objectIdModule(): Module {
 
-        val simpleModule = SimpleModule("ObjectIdModule", Version(1, 0, 0, null, "org.maiaframework", "mahana"))
+        val simpleModule = SimpleModule("ObjectIdModule", Version(1, 0, 0, null, "org.maiaframework", "maia"))
 
         simpleModule.addSerializer(ObjectId::class.java, object : JsonSerializer<ObjectId>() {
             @Throws(IOException::class)

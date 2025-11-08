@@ -202,7 +202,7 @@ class HazelcastSerializerRenderer(
     private fun `render read for LocalDate`(field: ClassFieldDef, fieldType: LocalDateFieldType) {
 
         if (field.nullable) {
-            addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_LOCAL_DATE_NULLABLE)
+            addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_LOCAL_DATE_NULLABLE)
             appendLine("        val ${field.classFieldName} = reader.readNullableLocalDate(\"${field.classFieldName}\")")
         } else {
             appendLine("        val ${field.classFieldName} = reader.readLocalDate(\"${field.classFieldName}\")")
@@ -258,7 +258,7 @@ class HazelcastSerializerRenderer(
             is BooleanFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
             is DataClassFieldType -> {
-                addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_LIST_OF_COMPACT)
+                addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_LIST_OF_COMPACT)
                 addImportFor(fieldType.parameterFieldType.fqcn)
                 appendLine("        val ${field.classFieldName} = reader.readListOfCompact(\"${field.classFieldName}\", ${fieldType.parameterFieldType.unqualifiedToString}::class.java)")
             }
@@ -329,7 +329,7 @@ class HazelcastSerializerRenderer(
 
     private fun `render read for Set of Strings`(fieldName: String) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_SET_OF_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_SET_OF_STRINGS)
         addImportFor(Fqcns.STRING)
 
         appendLine("        val $fieldName = reader.readSetOfStrings(\"$fieldName\")")
@@ -339,7 +339,7 @@ class HazelcastSerializerRenderer(
 
     private fun `render read for List of Strings`(fieldName: String) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_LIST_OF_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_LIST_OF_STRINGS)
         addImportFor(Fqcns.STRING)
 
         appendLine("        val $fieldName = reader.readListOfStrings(\"$fieldName\")")
@@ -355,7 +355,7 @@ class HazelcastSerializerRenderer(
 
     private fun `render read for set of enums`(fieldName: String, enumFieldType: EnumFieldType) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
         addImportFor(enumFieldType)
 
         val enumUqcn = enumFieldType.fqcn.uqcn
@@ -443,7 +443,7 @@ class HazelcastSerializerRenderer(
                     is DomainIdFieldType -> TODO()
                     is DoubleFieldType -> TODO()
                     is EnumFieldType -> {
-                        addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_LIST_OF_SETS_FROM_CSV_STRINGS)
+                        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_LIST_OF_SETS_FROM_CSV_STRINGS)
                         appendLine("        val ${field.classFieldName}Values = reader.readListOfSetsFromCsvStrings(\"${field.classFieldName}Values\") { ${setElementFieldType.unqualifiedToString}.valueOf(it) }")
                     }
                     is EsDocFieldType -> TODO()
@@ -473,7 +473,7 @@ class HazelcastSerializerRenderer(
             }
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
             is StringFieldType -> {
-                addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_LIST_OF_STRINGS)
+                addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_LIST_OF_STRINGS)
                 appendLine("        val $valueFieldName = reader.readListOfStrings(\"$valueFieldName\")")
             }
             is StringTypeFieldType -> TODO()
@@ -491,7 +491,7 @@ class HazelcastSerializerRenderer(
         keyFieldType: FieldType
     ) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
         addImportFor(keyFieldType)
 
         appendLine("        val $keyFieldName = reader.readSetFromStrings(\"$keyFieldName\") { ${keyFieldType.fqcn.uqcn}.valueOf(it) }")
@@ -501,7 +501,7 @@ class HazelcastSerializerRenderer(
 
     private fun `render read for Set of ObjectIds`(keyFieldName: String, keyFieldType: FieldType) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
         addImportFor(Fqcns.OBJECT_ID)
 
         appendLine("        val $keyFieldName = reader.readSetFromStrings(\"$keyFieldName\") { ${keyFieldType.unqualifiedToString}(it) }")
@@ -511,8 +511,8 @@ class HazelcastSerializerRenderer(
 
     private fun `render read for Set of DomainIds`(keyFieldName: String, keyFieldType: FieldType) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         appendLine("        val $keyFieldName = reader.readSetFromStrings(\"$keyFieldName\") { ${keyFieldType.unqualifiedToString}(it) }")
 
@@ -521,8 +521,8 @@ class HazelcastSerializerRenderer(
 
     private fun `render read for List of DomainIds`(keyFieldName: String, keyFieldType: FieldType) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_LIST_OF_STRINGS)
-        addImportFor(Fqcns.MAHANA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_LIST_OF_STRINGS)
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         appendLine("        val $keyFieldName = reader.readListOfStrings(\"$keyFieldName\") { ${keyFieldType.unqualifiedToString}(it) }")
 
@@ -537,7 +537,7 @@ class HazelcastSerializerRenderer(
             appendLine("        val ${field.classFieldName} = ${field.unqualifiedToString}(reader.readNullableString(\"${field.classFieldName}\"))")
             appendLine("        val ${field.classFieldName} = reader.readNullableString(\"${field.classFieldName}\")?.let { ${field.unqualifiedToString}(it) })")
         } else {
-            addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_STRING_NON_NULL)
+            addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_STRING_NON_NULL)
             appendLine("        val ${field.classFieldName} = ${field.unqualifiedToString}(reader.readStringNonNull(\"${field.classFieldName}\"))")
         }
     }
@@ -545,7 +545,7 @@ class HazelcastSerializerRenderer(
 
     private fun `render read for Enum`(field: ClassFieldDef, enumFieldType: EnumFieldType) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
         addImportFor(enumFieldType)
 
         val fieldName = field.classFieldName
@@ -568,7 +568,7 @@ class HazelcastSerializerRenderer(
             appendLine("        val ${field.classFieldName} = ${field.unqualifiedToString}(reader.readNullableString(\"${field.classFieldName}\"))")
             appendLine("        val ${field.classFieldName} = reader.readNullableString(\"${field.classFieldName}\")?.let { ${field.unqualifiedToString}(it) })")
         } else {
-            addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_STRING_NON_NULL)
+            addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_STRING_NON_NULL)
             appendLine("        val ${field.classFieldName} = ${field.unqualifiedToString}(reader.readStringNonNull(\"${field.classFieldName}\"))")
         }
 
@@ -582,28 +582,28 @@ class HazelcastSerializerRenderer(
 
         if (nullable) {
             when (fieldType.hazelcastCompatibleType) {
-                HazelcastCompatibleType.COMPACT -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_COMPACT_NON_NULL)
-                HazelcastCompatibleType.INT8 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_INT8_NON_NULL)
-                HazelcastCompatibleType.INT32 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_INT32_NON_NULL)
-                HazelcastCompatibleType.INT64 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_INT64_NON_NULL)
-                HazelcastCompatibleType.FLOAT32 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_FLOAT32_NON_NULL)
-                HazelcastCompatibleType.FLOAT64 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_FLOAT64_NON_NULL)
-                HazelcastCompatibleType.LOCAL_DATE -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_LOCAL_DATE_NULLABLE)
-                HazelcastCompatibleType.OFFSET_DATE_TIME -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_OFFSET_DATE_TIME_NON_NULL)
-                HazelcastCompatibleType.STRING -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_NULLABLE_STRING)
+                HazelcastCompatibleType.COMPACT -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_COMPACT_NON_NULL)
+                HazelcastCompatibleType.INT8 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_INT8_NON_NULL)
+                HazelcastCompatibleType.INT32 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_INT32_NON_NULL)
+                HazelcastCompatibleType.INT64 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_INT64_NON_NULL)
+                HazelcastCompatibleType.FLOAT32 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_FLOAT32_NON_NULL)
+                HazelcastCompatibleType.FLOAT64 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_FLOAT64_NON_NULL)
+                HazelcastCompatibleType.LOCAL_DATE -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_LOCAL_DATE_NULLABLE)
+                HazelcastCompatibleType.OFFSET_DATE_TIME -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_OFFSET_DATE_TIME_NON_NULL)
+                HazelcastCompatibleType.STRING -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_NULLABLE_STRING)
                 else -> {} // do nothing
             }
         } else {
             when (fieldType.hazelcastCompatibleType) {
-                HazelcastCompatibleType.COMPACT -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_COMPACT_NON_NULL)
-                HazelcastCompatibleType.INT8 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_INT8_NON_NULL)
-                HazelcastCompatibleType.INT32 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_INT32_NON_NULL)
-                HazelcastCompatibleType.INT64 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_INT64_NON_NULL)
-                HazelcastCompatibleType.FLOAT32 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_FLOAT32_NON_NULL)
-                HazelcastCompatibleType.FLOAT64 -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_FLOAT64_NON_NULL)
-                HazelcastCompatibleType.LOCAL_DATE -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_LOCAL_DATE_NON_NULL)
-                HazelcastCompatibleType.OFFSET_DATE_TIME -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_INSTANT_NON_NULL)
-                HazelcastCompatibleType.STRING -> addImportFor(Fqcns.MAHANA_COMPACT_READER_EXTENSION_READ_STRING_NON_NULL)
+                HazelcastCompatibleType.COMPACT -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_COMPACT_NON_NULL)
+                HazelcastCompatibleType.INT8 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_INT8_NON_NULL)
+                HazelcastCompatibleType.INT32 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_INT32_NON_NULL)
+                HazelcastCompatibleType.INT64 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_INT64_NON_NULL)
+                HazelcastCompatibleType.FLOAT32 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_FLOAT32_NON_NULL)
+                HazelcastCompatibleType.FLOAT64 -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_FLOAT64_NON_NULL)
+                HazelcastCompatibleType.LOCAL_DATE -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_LOCAL_DATE_NON_NULL)
+                HazelcastCompatibleType.OFFSET_DATE_TIME -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_INSTANT_NON_NULL)
+                HazelcastCompatibleType.STRING -> addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_STRING_NON_NULL)
                 else -> {} // do nothing
             }
         }
@@ -899,7 +899,7 @@ class HazelcastSerializerRenderer(
         appendLine("                $keyFieldName.add(key)")
         appendLine("                $valueFieldName.add(value)")
         appendLine("            }")
-        addImportFor(Fqcns.MAHANA_COMPACT_WRITER_EXTENSION_WRITE_LIST_OF_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_LIST_OF_STRINGS)
         appendLine("            writeListOfStrings(\"$keyFieldName\", $keyFieldName)")
         appendLine("            writeListOfStrings(\"$valueFieldName\", $valueFieldName)")
 
@@ -941,7 +941,7 @@ class HazelcastSerializerRenderer(
                     is DomainIdFieldType -> TODO()
                     is DoubleFieldType -> TODO()
                     is EnumFieldType -> {
-                        addImportFor(Fqcns.MAHANA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS_AS_CSV)
+                        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS_AS_CSV)
                         appendLine("            writer.writeSetOfStringsAsCsv(\"${classFieldDef.classFieldName}Values\", dto.${classFieldDef.classFieldName}.values) { it.name }")
                     }
                     is EsDocFieldType -> TODO()
@@ -979,13 +979,13 @@ class HazelcastSerializerRenderer(
 
 
     private fun `render write for Set of DomainIds`(keyFieldName: String, fieldName: ClassFieldName) {
-        addImportFor(Fqcns.MAHANA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
         appendLine("            writeSetOfStrings(\"$keyFieldName\", dto.${fieldName}.keys.map { it.value }.toSet())")
     }
 
 
     private fun `render write for DomainId keySet`(keyFieldName: String, fieldName: ClassFieldName) {
-        addImportFor(Fqcns.MAHANA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
 
         appendLine("            val $keyFieldName = mutableListOf<String>()")
         appendLine("            writeSetOfStrings(\"$keyFieldName\", dto.${fieldName}.keys.map { it.value }.toSet())")
@@ -994,7 +994,7 @@ class HazelcastSerializerRenderer(
 
     private fun `render write for Set of ObjectIds`(setFieldName: String, classFieldName: ClassFieldName) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
         appendLine("            writeSetOfStrings(\"$setFieldName\", dto.${classFieldName}.keys.map { it.toHexString() }.toSet())")
 
     }
@@ -1041,7 +1041,7 @@ class HazelcastSerializerRenderer(
 
     private fun `render write for Set of Enums`(fieldName: String) {
 
-        addImportFor(Fqcns.MAHANA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
+        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
         appendLine("            writeSetOfStrings(\"$fieldName\", dto.${fieldName}.map { it.name }.toSet())")
 
     }
@@ -1062,7 +1062,7 @@ class HazelcastSerializerRenderer(
             HazelcastCompatibleType.LOCAL_DATE -> {
 
                 if (nullable) {
-                    addImportFor(Fqcns.MAHANA_COMPACT_WRITER_EXTENSION_WRITE_NULLABLE_DATE)
+                    addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_NULLABLE_DATE)
                 }
 
                 "${prefix}Date"

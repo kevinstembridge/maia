@@ -17,7 +17,7 @@ class RefreshTypeaheadIndexJobRenderer(private val typeaheadDef: TypeaheadDef) :
 
     override fun renderPreClassFields() {
 
-        addImportFor(Fqcns.MAHANA_JOB_NAME)
+        addImportFor(Fqcns.MAIA_JOB_NAME)
 
         blankLine()
         appendLine("    override val jobName = JobName(\"refresh${this.typeaheadDef.typeaheadName}TypeaheadIndex\")")
@@ -35,7 +35,7 @@ class RefreshTypeaheadIndexJobRenderer(private val typeaheadDef: TypeaheadDef) :
 
     private fun renderMethod_executeJob() {
 
-        addImportFor(Fqcns.MAHANA_JOB_METRICS)
+        addImportFor(Fqcns.MAIA_JOB_METRICS)
 
         blankLine()
         blankLine()
