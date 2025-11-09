@@ -8,6 +8,7 @@ import org.maiaframework.gen.renderers.EntityFieldConverterRenderer
 import org.maiaframework.gen.renderers.EntityFilterRenderer
 import org.maiaframework.gen.renderers.EntityFiltersRenderer
 import org.maiaframework.gen.renderers.EntityMetaRenderer
+import org.maiaframework.gen.renderers.EntityPkRenderer
 import org.maiaframework.gen.renderers.EntityRenderer
 import org.maiaframework.gen.renderers.EntityUpdaterRenderer
 import org.maiaframework.gen.renderers.EnumRenderer
@@ -195,6 +196,7 @@ class DomainModuleGenerator(
     private fun `process entity`(entityHierarchy: EntityHierarchy) {
 
         `render entity`(entityHierarchy)
+        `render entity primary key`(entityHierarchy)
         `render EntityMeta`(entityHierarchy)
         `render entity FieldConverter interface`(entityHierarchy)
         `render EntityFilter interface`(entityHierarchy)
@@ -209,6 +211,17 @@ class DomainModuleGenerator(
     private fun `render entity`(entityHierarchy: EntityHierarchy) {
 
         EntityRenderer(entityHierarchy).renderToDir(this.kotlinOutputDir)
+
+    }
+
+
+    private fun `render entity primary key`(entityHierarchy: EntityHierarchy) {
+
+        val entityDef = entityHierarchy.entityDef
+
+        if (entityDef.hasCompositePrimaryKey) {
+            EntityPkRenderer(entityDef).renderToDir(this.kotlinOutputDir)
+        }
 
     }
 

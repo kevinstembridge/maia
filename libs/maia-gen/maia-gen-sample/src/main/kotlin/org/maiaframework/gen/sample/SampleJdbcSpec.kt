@@ -34,6 +34,9 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaNam
     }
 
 
+    val someStringValueClassDef = stringValueClass("org.maiaframework.gen.sample.types", "SomeStringValueClass") {}
+
+
     val someProvidedStringTypeDef = stringType("org.maiaframework.gen.sample.types.SomeProvidedStringType") {
         provided()
     }
@@ -793,7 +796,8 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaNam
         "CompositePrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        versioned = true
+        versioned = true,
+        recordVersionHistory = true
     ) {
 
         field("someString", FieldTypes.string) {
@@ -802,6 +806,26 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaNam
         }
         field("someInt", FieldTypes.int) {
             primaryKey()
+        }
+        field("someModifiableString", FieldTypes.string) {
+            lengthConstraint(max = 100)
+            modifiableBySystem()
+        }
+
+    }
+
+
+    val nonSurrogatePrimaryKeyEntityDef = entity(
+        "org.maiaframework.gen.testing.jdbc.sample.non_surrogate_pk",
+        "NonSurrogatePrimaryKey",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        versioned = true,
+        recordVersionHistory = true
+    ) {
+        field("someString", someStringValueClassDef) {
+            primaryKey()
+            lengthConstraint(max = 100)
         }
         field("someModifiableString", FieldTypes.string) {
             lengthConstraint(max = 100)

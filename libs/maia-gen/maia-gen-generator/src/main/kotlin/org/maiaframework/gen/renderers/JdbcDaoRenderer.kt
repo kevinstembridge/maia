@@ -26,6 +26,15 @@ class JdbcDaoRenderer(
     private val entityDef = entityHierarchy.entityDef
 
 
+    private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+
+
+    private val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
+
+
+    private val mapOfPrimaryKeyFields = "mapOf(${entityDef.primaryKeyClassFields.joinToString(", ") { "\"${it.classFieldName}\" to ${it.classFieldName}" }})"
+
+
     private val foreignKeyTableCount = entityDef.allForeignKeyEntityFieldDefs
         .distinctBy(referencedFieldOrTable())
         .groupBy { it.foreignKeyFieldDef!!.foreignEntityDef.schemaAndTableName }
@@ -548,6 +557,7 @@ class JdbcDaoRenderer(
     private fun `render function findByPrimaryKey`() {
 
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
+        this.entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType) }
         addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
         addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_PK)
 
@@ -581,9 +591,13 @@ class JdbcDaoRenderer(
 
     private fun `render function findByPrimaryKeyOrNull`() {
 
-        val fieldNamesAnded = fieldNamesAnded(this.entityDef.primaryKeyFields.map { it.classFieldDef })
-        val fieldNamesAndTypesCsv = this.entityDef.primaryKeyFields.map { "${it.classFieldName}: ${it.fieldType.unqualifiedToString}" }.joinToString(", ")
-        val whereClauseFields = this.entityDef.primaryKeyFields.map { "${it.tableColumnName} = :${it.classFieldName}" }.joinToString(" and ")
+        val fieldNamesAndTypesCsv = this.entityDef.primaryKeyFields.joinToString(", ") {
+            "${it.classFieldName}: ${it.fieldType.unqualifiedToString}"
+        }
+
+        val whereClauseFields = this.entityDef.primaryKeyFields.joinToString(" and ") {
+            "${it.tableColumnName} = :${it.classFieldName}"
+        }
 
         blankLine()
         blankLine()
@@ -594,7 +608,7 @@ class JdbcDaoRenderer(
         appendLine("            SqlParams().apply {")
 
         this.entityDef.primaryKeyFields.forEach {
-            appendLine("                addValue(\"${it.classFieldName}\", ${it.classFieldName})")
+            renderSqlParamAddValueFor(it, "            ", entityParameterName = null, 8, { line -> appendLine(line) })
         }
 
         appendLine("            },")
@@ -878,7 +892,7 @@ class JdbcDaoRenderer(
         appendLine("            SqlParams().apply {")
 
         this.entityDef.primaryKeyFields.forEach {
-            appendLine("                addValue(\"${it.classFieldName}\", ${it.classFieldName})")
+            renderSqlParamAddValueFor(it, "                ", entityParameterName = null, 8, { line -> appendLine(line) })
         }
 
         appendLine("            }")
@@ -1540,7 +1554,7 @@ class JdbcDaoRenderer(
 
         blankLine()
         blankLine()
-        appendLine("    fun fetchForEdit(id: DomainId): ${entityDef.fetchForEditDtoFqcn.uqcn} {")
+        appendLine("    fun fetchForEdit($primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {")
         blankLine()
         appendLine("        return this.jdbcOps.queryForList(")
         appendLine("            \"\"\"")
@@ -1549,14 +1563,19 @@ class JdbcDaoRenderer(
         newLine()
         appendLine("            from ${entityDef.schemaAndTableName}")
         joinClauses.forEach { appendLine("            $it") }
-        appendLine("            where ${entityDef.tableName}.id = :id")
+
+        val primaryKeyClauses = entityDef.primaryKeyFields.joinToString(" and ") { entityFieldDef ->
+            "${entityDef.tableName}.${entityFieldDef.tableColumnName} = :${entityFieldDef.classFieldName}"
+        }
+
+        appendLine("            where $primaryKeyClauses")
         appendLine("            \"\"\",")
         appendLine("            SqlParams().apply {")
         appendLine("                addValue(\"id\", id)")
         appendLine("            },")
         appendLine("            this.fetchForEditDtoRowMapper")
         appendLine("        ).firstOrNull()")
-        appendLine("            ?: throw EntityNotFoundException(EntityClassAndId(${entityDef.entityUqcn}::class.java, id), ${entityDef.metaClassDef.uqcn}.TABLE_NAME)")
+        appendLine("            ?: throw EntityNotFoundException(EntityClassAndPk(${entityDef.entityUqcn}::class.java, $mapOfPrimaryKeyFields), ${entityDef.metaClassDef.uqcn}.TABLE_NAME)")
         blankLine()
         appendLine("    }")
 
@@ -1624,7 +1643,8 @@ class JdbcDaoRenderer(
         blankLine()
 
         entityDef.primaryKeyFields.forEach {
-            appendLine("        sqlParams.addValue(\"${it.classFieldName}\", updater.${it.classFieldName})")
+            append("        sqlParams.")
+            renderSqlParamAddValueFor(it, "", entityParameterName = "updater", 0, { line -> appendLine(line) })
         }
 
         if (entityDef.versioned.value) {
@@ -1646,7 +1666,10 @@ class JdbcDaoRenderer(
             blankLine()
             appendLine("        } else {")
             blankLine()
-            appendLine("            val updatedEntity = findByPrimaryKey(updater.id)")
+
+            val updaterPrimaryKeyFieldsCsv = this.entityDef.primaryKeyClassFields.joinToString(", ") { "updater.${it.classFieldName}" }
+
+            appendLine("            val updatedEntity = findByPrimaryKey($updaterPrimaryKeyFieldsCsv)")
 
             if (entityHierarchy.hasSubclasses()) {
 

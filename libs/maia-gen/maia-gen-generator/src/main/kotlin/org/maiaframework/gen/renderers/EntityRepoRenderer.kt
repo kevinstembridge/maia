@@ -16,6 +16,12 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     private val cacheable = entityDef.cacheableDef != null
 
 
+    private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+
+
+    private val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
+
+
     init {
 
         addConstructorArg(aClassField("dao", entityDef.entityDaoFqcn).privat().build())
@@ -23,6 +29,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         if (cacheable) {
             addConstructorArg(aClassField("hazelcastInstance", Fqcns.HAZELCAST_INSTANCE).privat().build())
         }
+
+        entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType) }
 
     }
 
@@ -36,10 +44,16 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         appendLine("    private val logger = getLogger<${classDef.uqcn}>()")
 
         if (cacheable) {
+
             addImportFor(Fqcns.HAZELCAST_IMAP)
+
+            // TODO cater for composite primary keys
+            val primaryKeyType = entityDef.primaryKeyClassFields.map { it.fieldType.unqualifiedToString }.first()
+
             blankLine()
             blankLine()
-            appendLine("    private val cache: IMap<DomainId, ${entityDef.entityUqcn}> = this.hazelcastInstance.getMap(\"${entityDef.entityCacheName}\")")
+            appendLine("    private val cache: IMap<$primaryKeyType, ${entityDef.entityUqcn}> = this.hazelcastInstance.getMap(\"${entityDef.entityCacheName}\")")
+
         }
 
     }
@@ -73,18 +87,16 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     private fun `render function findByPrimaryKey`() {
 
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
-
         if (cacheable) {
 
             append("""
             |
             |
-            |    fun findByPrimaryKey(id: DomainId): ${entityHierarchy.entityDef.entityUqcn} {
+            |    fun findByPrimaryKey($primaryKeyFieldNamesAndTypesCsv): ${entityHierarchy.entityDef.entityUqcn} {
             |
-            |        return cache[id]
-            |            ?: dao.findById(id).also {
-            |                cache[id] = it
+            |        return cache[$primaryKeyFieldNamesCsv]
+            |            ?: dao.findByPrimaryKey($primaryKeyFieldNamesCsv).also {
+            |                cache[$primaryKeyFieldNamesCsv] = it
             |            }
             |
             |    }
@@ -95,9 +107,9 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun findByPrimaryKey(id: DomainId): ${entityHierarchy.entityDef.entityUqcn} {
+            |    fun findByPrimaryKey($primaryKeyFieldNamesAndTypesCsv): ${entityHierarchy.entityDef.entityUqcn} {
             |
-            |        return dao.findById(id)
+            |        return dao.findByPrimaryKey($primaryKeyFieldNamesCsv)
             |
             |    }
             |""".trimMargin())
@@ -115,11 +127,11 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun findByPrimaryKeyOrNull(id: DomainId): ${entityHierarchy.entityDef.entityUqcn}? {
+            |    fun findByPrimaryKeyOrNull($primaryKeyFieldNamesAndTypesCsv): ${entityHierarchy.entityDef.entityUqcn}? {
             |
-            |        return cache[id]
-            |            ?: dao.findByIdOrNull(id).also { entity ->
-            |                entity?.let { cache[id] = it }
+            |        return cache[$primaryKeyFieldNamesCsv]
+            |            ?: dao.findByPrimaryKeyOrNull($primaryKeyFieldNamesCsv).also { entity ->
+            |                entity?.let { cache[$primaryKeyFieldNamesCsv] = it }
             |            }
             |
             |    }
@@ -130,9 +142,9 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun findByPrimaryKeyOrNull(id: DomainId): ${entityHierarchy.entityDef.entityUqcn}? {
+            |    fun findByPrimaryKeyOrNull($primaryKeyFieldNamesAndTypesCsv): ${entityHierarchy.entityDef.entityUqcn}? {
             |
-            |        return dao.findByIdOrNull(id)
+            |        return dao.findByPrimaryKeyOrNull($primaryKeyFieldNamesCsv)
             |
             |    }
             |""".trimMargin())
@@ -491,6 +503,11 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         if (cacheable) {
 
+            val primaryKeyUpdaterFields = entityDef.primaryKeyClassFields.joinToString(", ") {
+                "updater.${it.classFieldName}"
+            }
+
+
             appendLine("""
                 |
                 |
@@ -501,7 +518,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
                 |        val updatedCount = this.dao.setFields(updater)
                 |
                 |        if (updatedCount > 0) {
-                |            this.cache.evict(updater.id)
+                |            this.cache.evict($primaryKeyUpdaterFields)
                 |        }
                 |
                 |        return updatedCount
@@ -610,10 +627,10 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun deleteByPrimaryKey(id: DomainId) {
+            |    fun deleteByPrimaryKey($primaryKeyFieldNamesAndTypesCsv) {
             |
-            |        this.dao.deleteById(id)
-            |        this.cache.evict(id)
+            |        this.dao.deleteByPrimaryKey($primaryKeyFieldNamesCsv)
+            |        this.cache.evict($primaryKeyFieldNamesCsv)
             |
             |    }
             |""".trimMargin())
@@ -621,9 +638,9 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             append("""
             |
             |
-            |    fun deleteByPrimaryKey(id: DomainId) {
+            |    fun deleteByPrimaryKey($primaryKeyFieldNamesAndTypesCsv) {
             |
-            |        this.dao.deleteById(id)
+            |        this.dao.deleteByPrimaryKey($primaryKeyFieldNamesCsv)
             |
             |    }
             |""".trimMargin())
@@ -695,12 +712,12 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         append("""
             |
             |
-            |    fun removeByPrimaryKey(id: DomainId): ${this.entityDef.entityUqcn}? {
+            |    fun removeByPrimaryKey($primaryKeyFieldNamesAndTypesCsv): ${this.entityDef.entityUqcn}? {
             |
-            |        val found = findByIdOrNull(id)
+            |        val found = findByPrimaryKeyOrNull($primaryKeyFieldNamesCsv)
             |       
             |        if (found != null) {
-            |            deleteById(id)
+            |            deleteByPrimaryKey($primaryKeyFieldNamesCsv)
             |        }
             |       
             |        return found
@@ -723,9 +740,9 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         append("""
             |
             |
-            |    fun idAndNameFor(id: DomainId): ${entityIdAndNameDef.dtoUqcn} {
+            |    fun idAndNameFor($primaryKeyFieldNamesAndTypesCsv): ${entityIdAndNameDef.dtoUqcn} {
             |
-            |        val entity = findByPrimaryKey(id)
+            |        val entity = findByPrimaryKey($primaryKeyFieldNamesCsv)
             |        return ${entityIdAndNameDef.dtoUqcn}(
             |            entity.id,
             |            entity.${entityIdAndNameDef.nameEntityFieldDef.classFieldName}

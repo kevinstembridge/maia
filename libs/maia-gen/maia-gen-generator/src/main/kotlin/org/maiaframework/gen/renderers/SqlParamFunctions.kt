@@ -184,6 +184,7 @@ object SqlParamFunctions {
 
     }
 
+
     fun renderSqlParamAddValueFor(
         entityFieldDef: EntityFieldDef,
         indent: String,
@@ -205,27 +206,27 @@ object SqlParamFunctions {
                 is DataClassFieldType -> renderAddJsonValue(entityFieldDef, lineAppender, indent, fieldName, entityNamePrefix)
                 is DomainIdFieldType -> TODO("YAGNI")
                 is DoubleFieldType -> TODO("YAGNI")
-                is EnumFieldType -> lineAppender("$indent    addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.name })")
+                is EnumFieldType -> lineAppender("${indent}addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.name })")
                 is EsDocFieldType -> TODO("YAGNI")
                 is ForeignKeyFieldType -> TODO("YAGNI")
                 is FqcnFieldType -> TODO("YAGNI")
                 is IdAndNameFieldType -> TODO("YAGNI")
-                is InstantFieldType -> lineAppender("$indent    addListOfInstants(\"$fieldName\", $entityNamePrefix$fieldName)")
+                is InstantFieldType -> lineAppender("${indent}addListOfInstants(\"$fieldName\", $entityNamePrefix$fieldName)")
                 is IntFieldType -> TODO("YAGNI")
                 is IntTypeFieldType -> TODO("YAGNI")
                 is IntValueClassFieldType -> TODO("YAGNI")
                 is ListFieldType -> TODO("YAGNI")
-                is LocalDateFieldType -> lineAppender("$indent    addListOfLocalDates(\"$fieldName\", $entityNamePrefix$fieldName)")
+                is LocalDateFieldType -> lineAppender("${indent}addListOfLocalDates(\"$fieldName\", $entityNamePrefix$fieldName)")
                 is LongFieldType -> TODO("YAGNI")
                 is LongTypeFieldType -> TODO("YAGNI")
                 is MapFieldType -> TODO("YAGNI")
                 is ObjectIdFieldType -> TODO("YAGNI")
-                is PeriodFieldType -> lineAppender("$indent    addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.toString() })")
+                is PeriodFieldType -> lineAppender("${indent}addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.toString() })")
                 is RequestDtoFieldType -> TODO("YAGNI")
                 is SetFieldType -> TODO("YAGNI")
                 is SimpleResponseDtoFieldType -> TODO("YAGNI")
-                is StringFieldType -> lineAppender("$indent    addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName)")
-                is StringTypeFieldType -> lineAppender("$indent    addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.value })")
+                is StringFieldType -> lineAppender("${indent}addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName)")
+                is StringTypeFieldType -> lineAppender("${indent}addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.value })")
                 is StringValueClassFieldType -> TODO("YAGNI")
                 is UrlFieldType -> TODO("YAGNI")
             }
@@ -242,12 +243,12 @@ object SqlParamFunctions {
 
             val fieldName = entityFieldDef.classFieldName
             val nullSafeOperator = if (entityFieldDef.nullable) "?" else ""
-            lineAppender("$indent    addValue(\"$fieldName\", $entityNamePrefix$fieldName$nullSafeOperator.value)")
+            lineAppender("${indent}addValue(\"$fieldName\", $entityNamePrefix$fieldName$nullSafeOperator.value)")
 
         } else {
 
             val fieldName = entityFieldDef.classFieldName
-            lineAppender("$indent    addValue(\"$fieldName\", $entityNamePrefix$fieldName)")
+            lineAppender("${indent}addValue(\"$fieldName\", $entityNamePrefix$fieldName)")
 
         }
 
@@ -264,11 +265,11 @@ object SqlParamFunctions {
 
         if (entityFieldDef.nullable) {
 
-            lineAppender("$indent    addJsonValue(\"$fieldName\", $entityNamePrefix$fieldName?.let { objectMapper.writeValueAsString(it) })")
+            lineAppender("${indent}addJsonValue(\"$fieldName\", $entityNamePrefix$fieldName?.let { objectMapper.writeValueAsString(it) })")
 
         } else {
 
-            lineAppender("$indent    addJsonValue(\"$fieldName\", objectMapper.writeValueAsString($entityNamePrefix$fieldName))")
+            lineAppender("${indent}addJsonValue(\"$fieldName\", objectMapper.writeValueAsString($entityNamePrefix$fieldName))")
 
         }
 
@@ -287,15 +288,15 @@ object SqlParamFunctions {
 
         if (entityFieldDef.classFieldDef.isEnumList) {
 
-            lineAppender("$indent    addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.name })")
+            lineAppender("${indent}addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.name })")
 
         } else if (entityFieldDef.classFieldDef.isMap) {
 
-            lineAppender("$indent    addJsonValue(\"$fieldName\", jsonFacade.writeValueAsString($entityNamePrefix$fieldName))")
+            lineAppender("${indent}addJsonValue(\"$fieldName\", jsonFacade.writeValueAsString($entityNamePrefix$fieldName))")
 
         } else {
 
-            lineAppender("$indent    addJsonValue(\"$fieldName\", jsonFacade.writeValueAsString($entityNamePrefix$fieldName.map { it.toString() }))")
+            lineAppender("${indent}addJsonValue(\"$fieldName\", jsonFacade.writeValueAsString($entityNamePrefix$fieldName.map { it.toString() }))")
 
         }
 

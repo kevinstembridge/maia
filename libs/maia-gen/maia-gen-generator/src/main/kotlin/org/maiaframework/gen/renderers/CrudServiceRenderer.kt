@@ -48,6 +48,17 @@ class CrudServiceRenderer(
 ) {
 
 
+    private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+
+
+    private val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
+
+
+    private val primaryKeyEditDtoFieldNamesCsv = entityDef.primaryKeyClassFields.joinToString(", ") {
+        "editDto.${it.classFieldName.value}"
+    }
+
+
     init {
 
         addConstructorArg(ClassFieldDef.aClassField("entityRepo", this.entityDef.entityRepoFqcn).privat().build())
@@ -173,7 +184,6 @@ class CrudServiceRenderer(
     private fun `render function buildEntity`(apiDef: EntityCreateApiDef) {
 
         addImportFor<Instant>()
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         val currentUserOrBlank = if (this.entityDef.hasCreatedByIdField || this.entityDef.hasLastModifiedByIdField) {
             addImportFor(Fqcns.MAIA_USER_DETAILS)
@@ -218,7 +228,11 @@ class CrudServiceRenderer(
 
         }
 
-        appendLine("        val id = DomainId.newId()")
+        if (entityDef.hasSurrogatePrimaryKey) {
+            addImportFor(Fqcns.MAIA_DOMAIN_ID)
+            appendLine("        val id = DomainId.newId()")
+        }
+
         appendLine("        val createdTimestampUtc = Instant.now()")
 
         if (this.entityDef.hasLastModifiedByIdField) {
@@ -307,7 +321,7 @@ class CrudServiceRenderer(
                 appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forIdAndVersion(id, version) {")
 
             } else {
-                appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forId(id) {")
+                appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forPrimaryKey($primaryKeyFieldNamesCsv) {")
             }
 
             dtoDef.classFieldDefs
@@ -358,19 +372,18 @@ class CrudServiceRenderer(
         appendLine("        val currentUser = CurrentUserHolder.currentUser")
         blankLine()
         appendLine("        logger.info(\"BEGIN: update${fieldName.firstToUpper()}. currentUser=\${currentUser.username}, dto=\$editDto\")")
-        blankLine()
-        appendLine("        val id = editDto.id")
 
         if (this.entityDef.versioned.value) {
 
+            blankLine()
             appendLine("        val version = editDto.version")
             blankLine()
-            appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forIdAndVersion(id, version) {")
+            appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forPrimaryKeyAndVersion($primaryKeyEditDtoFieldNamesCsv, version) {")
 
         } else {
 
             blankLine()
-            appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forId(id) {")
+            appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forPrimaryKey($primaryKeyEditDtoFieldNamesCsv) {")
 
         }
 
@@ -421,7 +434,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
-        appendLine("    fun delete(id: DomainId) {")
+        appendLine("    fun delete($primaryKeyFieldNamesAndTypesCsv) {")
 
         val referencingEntities = this.modelDef.entitiesThatReference(this.entityDef)
 
@@ -434,7 +447,7 @@ class CrudServiceRenderer(
             val fieldName = field!!.classFieldName
 
             blankLine()
-            appendLine("        if (this.${daoName}.existsBy${fieldName.firstToUpper()}(id)) {")
+            appendLine("        if (this.${daoName}.existsByPrimaryKey($primaryKeyFieldNamesCsv)) {")
             appendLine("            throw this.maiaProblems.foreignKeyRecordsExist(\"${referencingEntityDef.entityBaseName}\")")
             appendLine("        }")
 
@@ -443,13 +456,13 @@ class CrudServiceRenderer(
         if (this.entityDef.crudDef.withCrudListener.value) {
 
             blankLine()
-            appendLine("        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)")
+            appendLine("        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull($primaryKeyFieldNamesCsv)")
             appendLine("                ?: return")
 
         }
 
         blankLine()
-        appendLine("        this.entityRepo.deleteByPrimaryKey(id)")
+        appendLine("        this.entityRepo.deleteByPrimaryKey($primaryKeyFieldNamesCsv)")
 
         if (this.entityDef.crudDef.withCrudListener.value) {
             appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityDeleted(entityToDelete)")
