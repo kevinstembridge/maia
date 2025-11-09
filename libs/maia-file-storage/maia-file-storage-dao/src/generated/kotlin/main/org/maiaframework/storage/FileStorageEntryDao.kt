@@ -4,7 +4,7 @@
 package org.maiaframework.storage
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -47,14 +47,14 @@ class FileStorageEntryDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("contentType", entity.contentType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
-                addValue("description", entity.description)
-                addValue("fileName", entity.fileName)
-                addValue("fileTimestampUtc", entity.fileTimestampUtc)
-                addValue("id", entity.id)
-                addValue("lengthInBytes", entity.lengthInBytes)
-                addValue("md5", entity.md5)
+            addValue("contentType", entity.contentType)
+            addValue("createdTimestampUtc", entity.createdTimestampUtc)
+            addValue("description", entity.description)
+            addValue("fileName", entity.fileName)
+            addValue("fileTimestampUtc", entity.fileTimestampUtc)
+            addValue("id", entity.id)
+            addValue("lengthInBytes", entity.lengthInBytes)
+            addValue("md5", entity.md5)
             }
         )
 
@@ -87,14 +87,14 @@ class FileStorageEntryDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("contentType", entity.contentType)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
-                    addValue("description", entity.description)
-                    addValue("fileName", entity.fileName)
-                    addValue("fileTimestampUtc", entity.fileTimestampUtc)
-                    addValue("id", entity.id)
-                    addValue("lengthInBytes", entity.lengthInBytes)
-                    addValue("md5", entity.md5)
+                addValue("contentType", entity.contentType)
+                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("description", entity.description)
+                addValue("fileName", entity.fileName)
+                addValue("fileTimestampUtc", entity.fileTimestampUtc)
+                addValue("id", entity.id)
+                addValue("lengthInBytes", entity.lengthInBytes)
+                addValue("md5", entity.md5)
                 }
             }
         )
@@ -131,20 +131,28 @@ class FileStorageEntryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): FileStorageEntryEntity {
+    fun findByPrimaryKey(id: DomainId): FileStorageEntryEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(FileStorageEntryEntity::class.java, id), FileStorageEntryEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    FileStorageEntryEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                FileStorageEntryEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): FileStorageEntryEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): FileStorageEntryEntity? {
 
         return jdbcOps.queryForList(
             "select * from storage.file_storage_entry where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
