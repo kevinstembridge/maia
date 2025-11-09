@@ -218,6 +218,12 @@ class EntityDef(
     val allClassFieldsSorted: List<ClassFieldDef> = allClassFields.sorted()
 
 
+    val entityPkClassDef = aClassDef(this.entityFqcn.withSuffix("Pk"))
+        .withFieldDefsNotInherited(this.allEntityFields.filter { it.isPrimaryKey.value }.map { it.classFieldDef })
+        .ofType(ClassType.DATA_CLASS)
+        .build()
+
+
     val hasAnyMatSelectFields = allEntityFields.any { it.fieldType is EnumFieldType }
 
 
@@ -285,6 +291,9 @@ class EntityDef(
     val hasSurrogatePrimaryKey = primaryKeyFields.size == 1
             && primaryKeyFields.first().classFieldName == ClassFieldName.id
             && primaryKeyFields.first().fieldType is DomainIdFieldType
+
+
+    val hasCompositePrimaryKey = primaryKeyFields.size > 1
 
 
     val versionField: EntityFieldDef? = findFieldByNameOrNull(ClassFieldName.version.value)
