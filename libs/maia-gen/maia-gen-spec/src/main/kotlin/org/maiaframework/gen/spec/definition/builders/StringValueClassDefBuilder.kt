@@ -14,6 +14,7 @@ class StringValueClassDefBuilder {
     private val fqcn: Fqcn
 
 
+    // TODO we don't currently generate value class
     private var provided: Boolean = true
 
 
