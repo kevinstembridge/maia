@@ -8,7 +8,7 @@ class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
 
     fun sync(featureDefinition: FeatureDefinition) {
 
-        val existingFeatureEntity = this.toggleDao.findOneOrNullByFeatureName(featureDefinition.featureName)
+        val existingFeatureEntity = this.toggleDao.findByPrimaryKeyOrNull(featureDefinition.featureName)
 
         if (existingFeatureEntity == null) {
 
@@ -60,7 +60,6 @@ class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
                 description = featureDefinition.description,
                 enabled = existingFeatureEntity.enabled,
                 featureName = featureDefinition.featureName,
-                id = existingFeatureEntity.id,
                 infoLink = featureDefinition.infoLink,
                 lastModifiedTimestampUtc = Instant.now(),
                 lastModifiedBy = "SYSTEM",
