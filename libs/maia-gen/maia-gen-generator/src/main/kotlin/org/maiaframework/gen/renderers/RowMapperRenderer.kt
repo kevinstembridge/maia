@@ -2,6 +2,7 @@ package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.RowMapperDef
 import org.maiaframework.gen.spec.definition.RowMapperFieldDef
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
@@ -34,22 +35,18 @@ import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.StringFieldType
 import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
-import org.maiaframework.gen.spec.definition.lang.Uqcn
 import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 
 class RowMapperRenderer(
-    private val rowClassUqcn: Uqcn,
-    private val rowMapperFieldDefs: List<RowMapperFieldDef>,
-    rowMapperClassDef: ClassDef,
-    private val isForEditDto: Boolean = false
+    private val rowMapperDef: RowMapperDef
 ): AbstractKotlinRenderer(
-    rowMapperClassDef
+    rowMapperDef.classDef
 ) {
 
 
     init {
 
-        if (rowMapperFieldDefs.any { it.entityFieldDef.classFieldDef.isMap }) {
+        if (rowMapperDef.fieldDefs.any { it.entityFieldDef.classFieldDef.isMap }) {
             addConstructorArg(ClassFieldDef.aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
         }
 
@@ -62,16 +59,16 @@ class RowMapperRenderer(
 
         blankLine()
         blankLine()
-        appendLine("    override fun mapRow(rsa: ResultSetAdapter): $rowClassUqcn {")
+        appendLine("    override fun mapRow(rsa: ResultSetAdapter): ${rowMapperDef.uqcn} {")
         blankLine()
-        appendLine("        return $rowClassUqcn(")
+        appendLine("        return ${rowMapperDef.uqcn}(")
 
-        rowMapperFieldDefs.forEach { rowMapperFieldDef ->
+        rowMapperDef.fieldDefs.forEach { rowMapperFieldDef ->
 
             val entityFieldDef = rowMapperFieldDef.entityFieldDef
             val foreignKeyFieldDef = entityFieldDef.foreignKeyFieldDef
 
-            if (foreignKeyFieldDef == null || isForEditDto == false) {
+            if (foreignKeyFieldDef == null || rowMapperDef.isForEditDto == false) {
 
                 renderRowMapperField(rowMapperFieldDef)
 
@@ -126,11 +123,13 @@ class RowMapperRenderer(
         orElseText: String = ""
     ) {
 
-        val fieldType = entityFieldDef.fieldType
+        val classFieldDef = entityFieldDef.classFieldDef
+
+        val fieldType = classFieldDef.fieldType
 
         val indentStr = "".padEnd(indentSize, ' ')
 
-        val rsaGetterFunctionName = entityFieldDef.resultSetAdapterReadFunctionName(nullable)
+        val rsaGetterFunctionName = classFieldDef.resultSetAdapterReadFunctionName(nullable)
 
         val resultSetColumnName = resultSetFieldName ?: entityFieldDef.tableColumnName
 

@@ -98,6 +98,19 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("    private val entityRowMapper = ${entityDef.rowMapperClassDef.uqcn}($objectMapperParameter)")
 
+        val primaryKeyRowMapperDef = this.entityDef.primaryKeyRowMapperDef
+
+        if (primaryKeyRowMapperDef != null) {
+
+            blankLine()
+            blankLine()
+
+            addImportFor(primaryKeyRowMapperDef.classDef.fqcn)
+
+            appendLine("    private val primaryKeyRowMapper = ${primaryKeyRowMapperDef.classDef.uqcn}()")
+
+        }
+
         if (this.entityDef.isModifiable == false && this.entityDef.isHistoryEntity == false && this.entityDef.uniqueIndexDefs.isNotEmpty()) {
             addImportFor(Fqcns.MAIA_JDBC_ROW_MAPPER)
             blankLine()
@@ -130,7 +143,7 @@ class JdbcDaoRenderer(
         `render function findAllByFilter`()
         `render function findAllByFilterAsSequence`()
         `render function findIdsAsSequence`()
-        `render function findAllIdsAsSequence`()
+        `render function findAllPrimaryKeysAsSequence`()
         `render function findAllByFilterAndPageRequest`()
         `render function findAllAsSequence`()
         `render existsBy functions`()
@@ -847,16 +860,24 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findAllIdsAsSequence`() {
+    private fun `render function findAllPrimaryKeysAsSequence`() {
+
+        val primaryKeyColumnsCsv = entityDef.primaryKeyFields.map { it.tableColumnName }.joinToString(", ")
 
         blankLine()
         blankLine()
-        appendLine("    fun findAllIdsAsSequence(): Sequence<DomainId> {")
+        appendLine("    fun findAllPrimaryKeysAsSequence(): Sequence<${entityDef.primaryKeyType}> {")
         blankLine()
         appendLine("        return this.jdbcOps.queryForSequence(")
-        appendLine("            \"select id from ${entityDef.schemaAndTableName};\",")
+        appendLine("            \"select $primaryKeyColumnsCsv from ${entityDef.schemaAndTableName};\",")
         appendLine("            SqlParams(),")
-        appendLine("            { rsa -> rsa.readDomainId(\"id\") }")
+
+        if (entityDef.primaryKeyRowMapperDef == null) {
+            appendLine("            { rsa -> rsa.readDomainId(\"id\") }")
+        } else {
+            appendLine("            this.primaryKeyRowMapper")
+        }
+
         appendLine("        )")
         blankLine()
         appendLine("    }")

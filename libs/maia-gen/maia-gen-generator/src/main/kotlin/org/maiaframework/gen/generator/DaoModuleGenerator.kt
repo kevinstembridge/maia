@@ -19,6 +19,7 @@ class DaoModuleGenerator(
         `render create-table scripts`()
         `render DaoIndexCreators`()
         `render EntityRowMappers`()
+        `render EntityPkRowMappers`()
         `render ForEditDtoRowMappers`()
         `process SearchableDtoDefs`()
         `render DAOs`()
@@ -53,12 +54,7 @@ class DaoModuleGenerator(
             if (it.dtoRootEntityDef.databaseType == DatabaseType.JDBC) {
 
                 SearchableDtoJdbcDaoRenderer(it, this.modelDef).renderToDir(this.kotlinOutputDir)
-
-                RowMapperRenderer(
-                    it.uqcn,
-                    it.allRowMapperFieldDefs,
-                    it.dtoRowMapperClassDef
-                ).renderToDir(this.kotlinOutputDir)
+                RowMapperRenderer(it.rowMapperDef).renderToDir(this.kotlinOutputDir)
 
             }
 
@@ -109,16 +105,37 @@ class DaoModuleGenerator(
     }
 
 
+    private fun `render EntityPkRowMappers`() {
+
+        this.modelDef.entityHierarchies.forEach { renderEntityPkRowMapper(it) }
+
+    }
+
+
+    private fun renderEntityPkRowMapper(entityHierarchy: EntityHierarchy) {
+
+        if (entityHierarchy.entityDef.databaseType == DatabaseType.JDBC) {
+
+            entityHierarchy.entityDef.primaryKeyRowMapperDef?.let { rowMapperDef ->
+                RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
+            }
+        }
+
+    }
+
+
     private fun `render ForEditDtoRowMappers`() {
 
         this.modelDef.fetchForEditDtoDefs.filter { it.databaseType == DatabaseType.JDBC }.forEach { dtoDef ->
 
-            RowMapperRenderer(
+            val rowMapperDef = RowMapperDef(
                 dtoDef.uqcn,
                 dtoDef.rowMapperFieldDefs,
                 dtoDef.rowMapperClassDef,
                 isForEditDto = true
-            ).renderToDir(this.kotlinOutputDir)
+            )
+
+            RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
 
         }
 

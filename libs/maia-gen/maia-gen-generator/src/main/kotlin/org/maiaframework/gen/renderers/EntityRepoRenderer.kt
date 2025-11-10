@@ -191,9 +191,9 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         blankLine()
         blankLine()
-        appendLine("    fun findAllIdsAsSequence(): Sequence<DomainId> {")
+        appendLine("    fun findAllPrimaryKeysAsSequence(): Sequence<${entityDef.primaryKeyType}> {")
         blankLine()
-        appendLine("        return dao.findAllIdsAsSequence()")
+        appendLine("        return dao.findAllPrimaryKeysAsSequence()")
         blankLine()
         appendLine("    }")
 
