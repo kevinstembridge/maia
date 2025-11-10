@@ -3,11 +3,12 @@
 
 package org.maiaframework.gen.testing.jdbc.sample.composite_pk
 
-import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -16,11 +17,15 @@ import org.springframework.stereotype.Repository
 @Repository
 class CompositePrimaryKeyDao(
     private val fieldConverter: CompositePrimaryKeyEntityFieldConverter,
+    private val historyDao: CompositePrimaryKeyHistoryDao,
     private val jdbcOps: JdbcOps
 ) {
 
 
     private val entityRowMapper = CompositePrimaryKeyEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = CompositePrimaryKeyEntityPkRowMapper()
 
 
     fun insert(entity: CompositePrimaryKeyEntity) {
@@ -49,6 +54,8 @@ class CompositePrimaryKeyDao(
                 addValue("version", entity.version)
             }
         )
+
+        insertHistory(entity, ChangeType.CREATE)
 
     }
 
@@ -81,6 +88,52 @@ class CompositePrimaryKeyDao(
                 }
             }
         )
+
+        bulkInsertHistory(entities, ChangeType.CREATE)
+
+    }
+
+
+    private fun insertHistory(entity: CompositePrimaryKeyEntity, changeType: ChangeType) {
+
+        insertHistory(entity, entity.version, changeType)
+
+    }
+
+
+    private fun insertHistory(entity: CompositePrimaryKeyEntity, version: Long, changeType: ChangeType) {
+
+        this.historyDao.insert(history(entity, version, changeType))
+
+    }
+
+
+    private fun bulkInsertHistory(entities: List<CompositePrimaryKeyEntity>, changeType: ChangeType) {
+
+        val historyEntities = entities.map { history(it, it.version, changeType) }
+        this.historyDao.bulkInsert(historyEntities)
+
+    }
+
+
+    private fun history(
+        entity: CompositePrimaryKeyEntity,
+        version: Long,
+        changeType: ChangeType
+    ): CompositePrimaryKeyHistoryEntity {
+
+        val createdTimestampUtc = entity.createdTimestampUtc
+        val someInt = entity.someInt
+        val someModifiableString = entity.someModifiableString
+        val someString = entity.someString
+
+        return CompositePrimaryKeyHistoryEntity(
+                changeType,
+                createdTimestampUtc,
+                someInt,
+                someModifiableString,
+                someString,
+                version)
 
     }
 
@@ -161,12 +214,12 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<CompositePrimaryKeyEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.composite_primary_key;",
+            "select some_string, some_int from testing.composite_primary_key;",
             SqlParams(),
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }
@@ -257,7 +310,20 @@ class CompositePrimaryKeyDao(
         sqlParams.addValue("v", updater.version)
         sqlParams.addValue("v_incremented", updater.version + 1)
 
-        return this.jdbcOps.update(sql.toString(), sqlParams)
+        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
+
+        if (updateCount == 0) {
+
+            throw OptimisticLockingException(CompositePrimaryKeyEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+
+        } else {
+
+            val updatedEntity = findByPrimaryKey(updater.someString, updater.someInt)
+            insertHistory(updatedEntity, ChangeType.UPDATE)
+
+        }
+
+        return updateCount
 
     }
 
@@ -286,6 +352,11 @@ class CompositePrimaryKeyDao(
                 addValue("someInt", someInt)
             }
         )
+
+        if (deletedCount > 0) {
+
+            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))
+        }
 
         return deletedCount > 0
 
