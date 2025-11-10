@@ -680,13 +680,6 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    protected fun gridFsEntryEntityDef(): EntityDef {
-
-        return EntityDef.GRID_FS_ENTITY_DEF
-
-    }
-
-
     protected fun entityCreateHtmlForm(
         entityDef: EntityDef,
         init: (EntityCreateHtmlFormDefBuilder.() -> Unit)? = null

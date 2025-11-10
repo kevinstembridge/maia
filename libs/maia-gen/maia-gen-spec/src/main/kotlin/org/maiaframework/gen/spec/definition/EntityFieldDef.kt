@@ -142,41 +142,7 @@ class EntityFieldDef(
 
     fun resultSetAdapterReadFunctionName(nullable: Boolean): String {
 
-        val nullableSuffix = if (nullable) "OrNull" else ""
-
-        val fieldType = classFieldDef.fieldType
-
-        return when (fieldType) {
-            is BooleanFieldType -> "readBoolean$nullableSuffix"
-            is BooleanTypeFieldType -> "readBoolean$nullableSuffix"
-            is BooleanValueClassFieldType -> "readBoolean$nullableSuffix"
-            is DataClassFieldType -> TODO("YAGNI?")
-            is DomainIdFieldType -> "readDomainId$nullableSuffix"
-            is DoubleFieldType -> "readDouble$nullableSuffix"
-            is EnumFieldType -> "readEnum$nullableSuffix"
-            is EsDocFieldType -> TODO("YAGNI?")
-            is ForeignKeyFieldType -> "readDomainId$nullableSuffix"
-            is FqcnFieldType -> TODO("YAGNI?")
-            is IdAndNameFieldType -> TODO("YAGNI?")
-            is InstantFieldType -> "readInstant$nullableSuffix"
-            is IntFieldType -> "readInt$nullableSuffix"
-            is IntTypeFieldType -> "readInt$nullableSuffix"
-            is IntValueClassFieldType -> "readInt$nullableSuffix"
-            is ListFieldType -> "TODO" //TODO("YAGNI?") //"read$nullableSuffix"
-            is LocalDateFieldType -> "readLocalDate$nullableSuffix"
-            is LongFieldType -> "readLong$nullableSuffix"
-            is LongTypeFieldType -> "readLong$nullableSuffix"
-            is MapFieldType -> "read${fieldType.uqcn}$nullableSuffix"
-            is ObjectIdFieldType -> TODO("YAGNI?")
-            is PeriodFieldType -> "readPeriod$nullableSuffix"
-            is RequestDtoFieldType -> TODO("YAGNI?")
-            is SetFieldType -> TODO("YAGNI?")
-            is SimpleResponseDtoFieldType -> "readJson$nullableSuffix"
-            is StringFieldType -> "readString$nullableSuffix"
-            is StringTypeFieldType -> "readString$nullableSuffix"
-            is StringValueClassFieldType -> "readString$nullableSuffix"
-            is UrlFieldType -> "readUrl$nullableSuffix"
-        }
+        return classFieldDef.resultSetAdapterReadFunctionName(nullable)
 
     }
 

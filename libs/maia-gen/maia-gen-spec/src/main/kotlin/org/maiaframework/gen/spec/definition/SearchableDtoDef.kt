@@ -49,7 +49,6 @@ class SearchableDtoDef(
 
     val schemaAndTableName = dtoRootEntityDef.schemaAndTableName
 
-
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
 
 
@@ -161,6 +160,14 @@ class SearchableDtoDef(
 
 
     val dtoRowMapperClassDef = this.searchDtoDef.dtoDef.rowMapperClassDef
+
+
+    val rowMapperDef = RowMapperDef(
+        uqcn,
+        allRowMapperFieldDefs,
+        dtoRowMapperClassDef,
+        isForEditDto = false
+    )
 
 
     private fun initAgGridSearchConverterClassDef(): ClassDef {

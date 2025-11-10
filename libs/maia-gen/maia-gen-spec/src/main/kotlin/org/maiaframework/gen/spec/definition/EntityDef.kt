@@ -296,6 +296,13 @@ class EntityDef(
     val hasCompositePrimaryKey = primaryKeyFields.size > 1
 
 
+    val primaryKeyType = if (hasCompositePrimaryKey) {
+        entityPkClassDef.uqcn
+    } else {
+        primaryKeyClassFields.map { it.fieldType.unqualifiedToString }.first()
+    }
+
+
     val versionField: EntityFieldDef? = findFieldByNameOrNull(ClassFieldName.version.value)
 
 
@@ -520,6 +527,18 @@ class EntityDef(
     }
 
 
+    val primaryKeyRowMapperDef = if (hasCompositePrimaryKey) {
+        RowMapperDef(
+            entityPkClassDef.uqcn,
+            this.primaryKeyFields.map { RowMapperFieldDef(it, it.nullability) },
+            entityPkClassDef.rowMapperClassDef,
+            isForEditDto = false
+        )
+    } else {
+        null
+    }
+
+
     val crudAngularComponentNames = AngularComponentNames(this.packageName, "${this.entityBaseName}Crud")
 
 
@@ -699,52 +718,11 @@ class EntityDef(
     }
 
 
-    private fun superclassHasNoLastModifiedTimestampUtcField(): Boolean {
-
-        return superclassEntityDef?.hasNoFieldNamed(ClassFieldName.lastModifiedTimestampUtc) ?: true
-
-    }
-
-
-    private fun superclassHasNoLastModifiedByIdField(): Boolean {
-
-        return superclassEntityDef?.hasNoFieldNamed(ClassFieldName.lastModifiedById) ?: true
-
-    }
-
-
-    private fun superclassHasNoCreatedByIdField(): Boolean {
-
-        return superclassEntityDef?.hasNoFieldNamed(ClassFieldName.createdById) ?: true
-
-    }
-
-
     private fun initTableName(providedTableName: TableName?): TableName {
 
-        return if (superclassIsAbstractEntity()) {
-
-            providedTableName ?: TableName(this.entityBaseName.toSnakeCase())
-
-        } else {
-
-            this.superclassEntityDef?.tableName
+        return this.superclassEntityDef?.tableName
                 ?: providedTableName
                 ?: TableName(this.entityBaseName.toSnakeCase())
-
-        }
-
-    }
-
-
-    private fun superclassIsAbstractEntity(): Boolean {
-
-        return this.superclassEntityDef?.let { entityDef ->
-            entityDef.entityBaseName == ABSTRACT_ENTITY_BASE_NAME
-                    || entityDef.entityBaseName == ABSTRACT_ENTITY_HISTORY_BASE_NAME
-                    || entityDef.entityBaseName == ABSTRACT_VERSIONED_ENTITY_BASE_NAME
-        }
-            ?: false
 
     }
 
@@ -988,224 +966,6 @@ class EntityDef(
 
     companion object {
 
-        private val ABSTRACT_ENTITY_BASE_NAME = EntityBaseName("Abstract")
-        private val ABSTRACT_VERSIONED_ENTITY_BASE_NAME = EntityBaseName("AbstractVersioned")
-        private val ABSTRACT_ENTITY_HISTORY_BASE_NAME = EntityBaseName("AbstractHistory")
-        private val PACKAGE_NAME_IGNORED = PackageName("ignored")
-        private val SCHEMA_NAME_IGNORED = SchemaName("ignored")
-
-        private val VERSION_FIELD_DEF = versionFieldDef(ABSTRACT_ENTITY_BASE_NAME, PACKAGE_NAME_IGNORED)
-        private val CHANGE_TYPE_FIELD_DEF = changeTypeFieldDef(ABSTRACT_ENTITY_BASE_NAME, PACKAGE_NAME_IGNORED)
-
-        private val ENTITY_ID_FIELD_DEF = EntityFieldDef(
-            ABSTRACT_ENTITY_BASE_NAME,
-            PACKAGE_NAME_IGNORED,
-            aClassField(
-                ClassFieldName.entityId,
-                fieldType = FieldTypes.domainId
-            ) {
-                displayName("ID")
-            }.build(),
-            TableColumnName("entity_id"),
-            isDeltaKey = IsDeltaKey.FALSE,
-            isDeltaField = IsDeltaField.FALSE,
-            isCreatableByUser = IsCreatableByUser.FALSE,
-            isDerived = IsDerived.FALSE
-        )
-
-
-        fun abstractEntityDef(databaseType: DatabaseType): EntityDef {
-
-            return initAbstractEntityDef(databaseType)
-
-        }
-
-
-        fun abstractVersionedEntityDef(databaseType: DatabaseType): EntityDef {
-
-            return initAbstractVersionedEntityDef(abstractEntityDef(databaseType))
-
-        }
-
-
-        fun abstractHistoryEntityDef(databaseType: DatabaseType): EntityDef {
-
-            return initAbstractEntityHistoryDef(
-                ABSTRACT_ENTITY_HISTORY_BASE_NAME,
-                abstractVersionedEntityDef(databaseType)
-            )
-
-        }
-
-        private val GRID_FS_ENTRY_ENTITY_BASE_NAME = EntityBaseName("GridFsEntry")
-        val GRID_FS_ENTITY_DEF = initGridFsEntityDef(GRID_FS_ENTRY_ENTITY_BASE_NAME)
-
-
-        private fun initAbstractEntityDef(databaseType: DatabaseType): EntityDef {
-
-            val entityBaseName = ABSTRACT_ENTITY_BASE_NAME
-
-            val abstractEntityFields = mutableListOf<EntityFieldDef>()
-
-            abstractEntityFields.add(
-                EntityFieldDef(
-                    entityBaseName,
-                    PACKAGE_NAME_IGNORED,
-                    aClassField(
-                        ClassFieldName.id,
-                        fieldType = FieldTypes.domainId,
-                    ) {
-                        displayName("ID")
-                    }.build(),
-                    TableColumnName.id(databaseType),
-                    isCreatableByUser = IsCreatableByUser.FALSE
-                )
-            )
-
-            abstractEntityFields.add(
-                EntityFieldDef(
-                    entityBaseName,
-                    PACKAGE_NAME_IGNORED,
-                    aClassField(
-                        ClassFieldName.createdTimestampUtc,
-                        fieldType = FieldTypes.instant
-                    ) {
-                        displayName("Created Timestamp (UTC)")
-                    }.build(),
-                    TableColumnName.createdTimestampUtc,
-                    isCreatableByUser = IsCreatableByUser.FALSE
-                )
-            )
-
-            return EntityDef(
-                ABSTRACT_ENTITY_BASE_NAME,
-                databaseType = DatabaseType.default(),
-                tableNameOrNull = null,
-                schemaName = SCHEMA_NAME_IGNORED,
-                description = null,
-                configurableSchemaPropertyName = null,
-                isCappedCollection = IsCappedCollection.FALSE,
-                cappedSizeInBytes = null,
-                packageName = PackageName("org.maiaframework.domain"),
-                isDeltaEntity = IsDeltaEntity.FALSE,
-                entityFieldsNotInherited = abstractEntityFields,
-                superclassEntityDef = null,
-                isAbstract = true,
-                typeDiscriminatorOrNull = null,
-                withHandCodedDao = WithHandCodedDao.FALSE,
-                withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-                deletable = Deletable.FALSE,
-                allowDeleteAll = AllowDeleteAll.FALSE,
-                allowFindAll = AllowFindAll.FALSE,
-                providedIndexDefs = emptyList(),
-                withVersionHistory = WithVersionHistory.FALSE,
-                versioned = Versioned.FALSE,
-                isHistoryEntity = false,
-                moduleName = null,
-                daoHasSpringAnnotation = DaoHasSpringAnnotation.FALSE,
-                entityDaoHasSpringAnnotation = EntityDaoHasSpringAnnotation.FALSE,
-                hasEffectiveTimestamps = HasEffectiveTimestamps.FALSE,
-                hasEffectiveLocalDates = HasEffectiveLocalDates.FALSE,
-                hasEntityDetailDtoDef = HasEntityDetailDtoDef.FALSE,
-                hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
-                cacheableDef = null,
-                crudDef = CrudDef.EMPTY
-            )
-
-        }
-
-
-        private fun initAbstractEntityHistoryDef(
-            entityBaseName: EntityBaseName,
-            superclassEntityDef: EntityDef
-        ): EntityDef {
-
-            val abstractEntityFields = mutableListOf<EntityFieldDef>()
-
-            abstractEntityFields.add(ENTITY_ID_FIELD_DEF)
-            abstractEntityFields.add(CHANGE_TYPE_FIELD_DEF)
-
-            return EntityDef(
-                entityBaseName,
-                databaseType = superclassEntityDef.databaseType,
-                tableNameOrNull = null,
-                schemaName = SCHEMA_NAME_IGNORED,
-                description = null,
-                configurableSchemaPropertyName = null,
-                isCappedCollection = IsCappedCollection.FALSE,
-                cappedSizeInBytes = null,
-                packageName = PackageName("org.maiaframework.domain"),
-                isDeltaEntity = IsDeltaEntity.FALSE,
-                entityFieldsNotInherited = abstractEntityFields,
-                superclassEntityDef = superclassEntityDef,
-                isAbstract = true,
-                typeDiscriminatorOrNull = null,
-                withHandCodedDao = WithHandCodedDao.FALSE,
-                withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-                deletable = Deletable.FALSE,
-                allowDeleteAll = AllowDeleteAll.FALSE,
-                allowFindAll = AllowFindAll.FALSE,
-                providedIndexDefs = emptyList(),
-                withVersionHistory = WithVersionHistory.FALSE,
-                versioned = Versioned.TRUE,
-                isHistoryEntity = false,
-                moduleName = null,
-                daoHasSpringAnnotation = DaoHasSpringAnnotation.FALSE,
-                entityDaoHasSpringAnnotation = EntityDaoHasSpringAnnotation.FALSE,
-                hasEffectiveTimestamps = HasEffectiveTimestamps.FALSE,
-                hasEffectiveLocalDates = HasEffectiveLocalDates.FALSE,
-                hasEntityDetailDtoDef = HasEntityDetailDtoDef.FALSE,
-                hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
-                cacheableDef = null,
-                crudDef = CrudDef.EMPTY,
-            )
-
-        }
-
-
-        private fun initAbstractVersionedEntityDef(
-            superclassEntityDef: EntityDef
-        ): EntityDef {
-
-            val abstractEntityFields = listOf(VERSION_FIELD_DEF)
-
-            return EntityDef(
-                allowDeleteAll = AllowDeleteAll.FALSE,
-                allowFindAll = AllowFindAll.FALSE,
-                cacheableDef = null,
-                cappedSizeInBytes = null,
-                tableNameOrNull = null,
-                configurableSchemaPropertyName = null,
-                crudDef = CrudDef.EMPTY,
-                daoHasSpringAnnotation = DaoHasSpringAnnotation.FALSE,
-                databaseType = DatabaseType.default(),
-                deletable = Deletable.FALSE,
-                description = null,
-                entityBaseName = ABSTRACT_VERSIONED_ENTITY_BASE_NAME,
-                entityDaoHasSpringAnnotation = EntityDaoHasSpringAnnotation.FALSE,
-                entityFieldsNotInherited = abstractEntityFields,
-                hasEffectiveLocalDates = HasEffectiveLocalDates.FALSE,
-                hasEffectiveTimestamps = HasEffectiveTimestamps.FALSE,
-                hasEntityDetailDtoDef = HasEntityDetailDtoDef.FALSE,
-                hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
-                isAbstract = true,
-                isCappedCollection = IsCappedCollection.FALSE,
-                isDeltaEntity = IsDeltaEntity.FALSE,
-                isHistoryEntity = false,
-                moduleName = null,
-                packageName = PackageName("org.maiaframework.domain"),
-                providedIndexDefs = emptyList(),
-                schemaName = SCHEMA_NAME_IGNORED,
-                superclassEntityDef = superclassEntityDef,
-                typeDiscriminatorOrNull = null,
-                versioned = Versioned.TRUE,
-                withHandCodedDao = WithHandCodedDao.FALSE,
-                withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-                withVersionHistory = WithVersionHistory.FALSE
-            )
-
-        }
-
 
         fun idFieldDef(
             entityBaseName: EntityBaseName,
@@ -1288,86 +1048,6 @@ class EntityDef(
                 }.build(),
                 TableColumnName.changeType,
                 isCreatableByUser = IsCreatableByUser.FALSE
-            )
-
-        }
-
-
-        private fun initGridFsEntityDef(entityBaseName: EntityBaseName): EntityDef {
-
-            val gridFsEntityFields = mutableListOf<EntityFieldDef>()
-
-            gridFsEntityFields.add(
-                EntityFieldDef(
-                    entityBaseName,
-                    PACKAGE_NAME_IGNORED,
-                    aClassField(
-                        classFieldName = "gridFsId",
-                        fieldType = FieldTypes.objectId
-                    ) {
-                        displayName("GridFS ID")
-                        unique()
-                    }.build(),
-                    TableColumnName("gfs-id"),
-                    isDeltaKey = IsDeltaKey.FALSE,
-                    isDeltaField = IsDeltaField.FALSE,
-                    isDerived = IsDerived.FALSE,
-                    isCreatableByUser = IsCreatableByUser.FALSE
-                )
-            )
-
-            gridFsEntityFields.add(
-                EntityFieldDef(
-                    entityBaseName,
-                    PACKAGE_NAME_IGNORED,
-                    aClassField(
-                        ClassFieldName("deleted"),
-                        fieldType = FieldTypes.boolean
-                    ) {
-                        displayName("Deleted")
-                        modifiable()
-                    }.build(),
-                    TableColumnName("del"),
-                    isDeltaKey = IsDeltaKey.FALSE,
-                    isDeltaField = IsDeltaField.FALSE,
-                    isDerived = IsDerived.FALSE,
-                    isCreatableByUser = IsCreatableByUser.FALSE
-                )
-            )
-
-            return EntityDef(
-                GRID_FS_ENTRY_ENTITY_BASE_NAME,
-                databaseType = DatabaseType.default(),
-                tableNameOrNull = null,
-                schemaName = SCHEMA_NAME_IGNORED,
-                configurableSchemaPropertyName = null,
-                description = null,
-                isCappedCollection = IsCappedCollection.FALSE,
-                cappedSizeInBytes = null,
-                packageName = PackageName("org.maiaframework.domain.gridfs"),
-                isDeltaEntity = IsDeltaEntity.FALSE,
-                entityFieldsNotInherited = gridFsEntityFields.toList(),
-                superclassEntityDef = abstractEntityDef(DatabaseType.MONGO),
-                isAbstract = true,
-                typeDiscriminatorOrNull = null,
-                withHandCodedDao = WithHandCodedDao.FALSE,
-                withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-                deletable = Deletable.FALSE,
-                allowDeleteAll = AllowDeleteAll.FALSE,
-                allowFindAll = AllowFindAll.FALSE,
-                providedIndexDefs = listOf(),
-                withVersionHistory = WithVersionHistory.FALSE,
-                versioned = Versioned.FALSE,
-                isHistoryEntity = false,
-                moduleName = null,
-                daoHasSpringAnnotation = DaoHasSpringAnnotation.FALSE,
-                entityDaoHasSpringAnnotation = EntityDaoHasSpringAnnotation.FALSE,
-                hasEffectiveTimestamps = HasEffectiveTimestamps.FALSE,
-                hasEffectiveLocalDates = HasEffectiveLocalDates.FALSE,
-                hasEntityDetailDtoDef = HasEntityDetailDtoDef.FALSE,
-                hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
-                cacheableDef = null,
-                crudDef = CrudDef.EMPTY
             )
 
         }
