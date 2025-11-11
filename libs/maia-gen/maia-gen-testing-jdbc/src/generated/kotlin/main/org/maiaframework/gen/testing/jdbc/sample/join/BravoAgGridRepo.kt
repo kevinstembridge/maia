@@ -18,16 +18,23 @@ class BravoAgGridRepo(
     private val logger = getLogger<BravoAgGridRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): BravoAgGridEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): BravoAgGridEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): BravoAgGridEntity {
+    fun findByPrimaryKey(id: DomainId): BravoAgGridEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class BravoAgGridRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -76,9 +83,9 @@ class BravoAgGridRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -90,12 +97,12 @@ class BravoAgGridRepo(
     }
 
 
-    fun removeById(id: DomainId): BravoAgGridEntity? {
+    fun removeByPrimaryKey(id: DomainId): BravoAgGridEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found
@@ -105,7 +112,7 @@ class BravoAgGridRepo(
 
     fun idAndNameFor(id: DomainId): BravoAgGridIdAndNameDto {
 
-        val entity = findById(id)
+        val entity = findByPrimaryKey(id)
         return BravoAgGridIdAndNameDto(
             entity.id,
             entity.someString
