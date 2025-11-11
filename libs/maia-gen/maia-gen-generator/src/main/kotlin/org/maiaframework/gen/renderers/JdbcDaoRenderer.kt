@@ -4,13 +4,7 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.gen.renderers.SqlParamFunctions.renderSqlParamAddValueFor
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamMapperFunction
-import org.maiaframework.gen.spec.definition.EntityDef
-import org.maiaframework.gen.spec.definition.EntityFieldDef
-import org.maiaframework.gen.spec.definition.EntityHierarchy
-import org.maiaframework.gen.spec.definition.EntityIdAndNameDef
-import org.maiaframework.gen.spec.definition.Fqcns
-import org.maiaframework.gen.spec.definition.IndexDef
-import org.maiaframework.gen.spec.definition.RowMapperFunctions
+import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
@@ -119,15 +113,14 @@ class JdbcDaoRenderer(
                 val primaryKeyField = entityDef.primaryKeyFields.first()
 
 
-                appendLine("    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.${RowMapperFunctions.renderRowMapperField(
+                appendLine("    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> ${RowMapperFunctions.renderRowMapperField(
                     primaryKeyField,
                     resultSetFieldName = primaryKeyField.tableColumnName.value,
                     nullable = primaryKeyField.nullable,
                     indentSize = 0,
                     orElseText = "",
                     ::addImportFor,
-                    ::appendLine
-                )}huh() { huh(it) } }")
+                )} }")
 
             }
 
