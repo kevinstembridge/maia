@@ -38,7 +38,7 @@ class RowMapperRenderer(
 
             if (foreignKeyFieldDef == null || rowMapperDef.isForEditDto == false) {
 
-                RowMapperFunctions.renderRowMapperField(rowMapperFieldDef, indentSize = 16, orElseText = "", ::addImportFor, ::appendLine)
+                appendLine(RowMapperFunctions.renderRowMapperField(rowMapperFieldDef, indentSize = 16, orElseText = "", ::addImportFor))
 
             } else {
 
@@ -51,8 +51,8 @@ class RowMapperRenderer(
                 addImportFor(idAndNameDef.dtoDef.fqcn)
 
                 appendLine("            ${idAndNameDef.dtoUqcn}(")
-                RowMapperFunctions.renderRowMapperField(idEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 16, orElseText = "", ::addImportFor, ::appendLine)
-                RowMapperFunctions.renderRowMapperField(idAndNameDef.nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 16, orElseText = "(blank)", ::addImportFor, ::appendLine)
+                appendLine(RowMapperFunctions.renderRowMapperField(idEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 16, orElseText = "", ::addImportFor) + ",")
+                appendLine(RowMapperFunctions.renderRowMapperField(idAndNameDef.nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 16, orElseText = "(blank)", ::addImportFor) + ",")
                 appendLine("            ),")
 
             }
