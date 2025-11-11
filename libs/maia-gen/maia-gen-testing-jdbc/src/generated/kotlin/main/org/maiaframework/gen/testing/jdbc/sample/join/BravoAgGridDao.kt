@@ -133,18 +133,6 @@ class BravoAgGridDao(
     }
 
 
-    fun existsByPrimaryKey(id: DomainId): Boolean {
-
-        return jdbcOps.queryForInt(
-            "select count(*) from testing.bravo_ag_grid where id = :id",
-            SqlParams().apply {
-                addValue("id", id)
-            }
-        ) > 0
-
-    }
-
-
     fun findByPrimaryKeyOrNull(id: DomainId): BravoAgGridEntity? {
 
         return jdbcOps.queryForList(
@@ -157,6 +145,19 @@ class BravoAgGridDao(
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+       val count = jdbcOps.queryForInt(
+           "select count(*) from testing.bravo_ag_grid where id = :id",
+           SqlParams().apply {
+                addValue("id", id)
+           }
+       )
+       
+       return count > 0
+       
+    }
 
     fun findAllBy(filter: BravoAgGridEntityFilter): List<BravoAgGridEntity> {
 
