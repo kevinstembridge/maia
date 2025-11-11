@@ -26,7 +26,6 @@ import javax.sql.DataSource
         FlywayAutoConfiguration::class
     ]
 )
-@Configuration
 @ConditionalOnClass(Props::class)
 @EnableConfigurationProperties(MaiaPropsProperties::class)
 class MaiaPropsAutoConfiguration {

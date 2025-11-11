@@ -9,6 +9,7 @@ import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
@@ -25,6 +26,9 @@ class PropsDao(
 
 
     private val entityRowMapper = PropsEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: PropsEntity) {
@@ -211,13 +215,26 @@ class PropsDao(
         return jdbcOps.queryForList(
             "select * from props.props where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from props.props where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findOneOrNullByPropertyName(propertyName: String): PropsEntity? {
 
@@ -227,7 +244,7 @@ class PropsDao(
             where property_name = :propertyName
             """.trimIndent(),
             SqlParams().apply {
-                addValue("propertyName", propertyName)
+            addValue("propertyName", propertyName)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -303,7 +320,7 @@ class PropsDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from props.props;",
@@ -375,7 +392,7 @@ class PropsDao(
             where property_name = :propertyName
             """.trimIndent(),
             SqlParams().apply {
-                addValue("propertyName", propertyName)
+            addValue("propertyName", propertyName)
             }
         )
 
@@ -416,14 +433,14 @@ class PropsDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("comment", upsertEntity.comment)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-                addValue("propertyName", upsertEntity.propertyName)
-                addValue("propertyValue", upsertEntity.propertyValue)
-                addValue("version", upsertEntity.version)
+            addValue("comment", upsertEntity.comment)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("propertyName", upsertEntity.propertyName)
+            addValue("propertyValue", upsertEntity.propertyValue)
+            addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

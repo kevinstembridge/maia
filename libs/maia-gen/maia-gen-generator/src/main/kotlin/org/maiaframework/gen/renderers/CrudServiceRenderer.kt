@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.domain.DomainId
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
@@ -71,6 +70,8 @@ class CrudServiceRenderer(
         if (this.entityDef.crudDef.withCrudListener.value) {
             addConstructorArg(ClassFieldDef.aClassField(this.entityDef.crudNotifierClassDef.uqcn.firstToLower(), this.entityDef.crudNotifierClassDef.fqcn).privat().build())
         }
+
+        this.entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType) }
 
     }
 
@@ -429,8 +430,6 @@ class CrudServiceRenderer(
         if (this.entityDef.isNotDeletable) {
             return
         }
-
-        addImportFor<DomainId>()
 
         blankLine()
         blankLine()

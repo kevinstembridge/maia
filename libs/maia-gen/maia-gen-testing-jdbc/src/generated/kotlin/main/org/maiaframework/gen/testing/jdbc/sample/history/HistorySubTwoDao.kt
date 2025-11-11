@@ -5,10 +5,11 @@ package org.maiaframework.gen.testing.jdbc.sample.history
 
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
@@ -25,6 +26,9 @@ class HistorySubTwoDao(
 
 
     private val entityRowMapper = HistorySubTwoEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: HistorySubTwoEntity) {
@@ -186,26 +190,47 @@ class HistorySubTwoDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): HistorySubTwoEntity {
+    fun findByPrimaryKey(id: DomainId): HistorySubTwoEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(HistorySubTwoEntity::class.java, id), HistorySubTwoEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    HistorySubTwoEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                HistorySubTwoEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): HistorySubTwoEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): HistorySubTwoEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.history_super where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.history_super where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: HistorySubTwoEntityFilter): List<HistorySubTwoEntity> {
 
@@ -223,7 +248,7 @@ class HistorySubTwoDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.history_super;",
@@ -295,7 +320,7 @@ class HistorySubTwoDao(
             where created_by_id = :createdById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", createdById)
+            addValue("createdById", createdById)
             }
         )
 
@@ -312,7 +337,7 @@ class HistorySubTwoDao(
             where lm_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedById", lastModifiedById)
             }
         )
 
@@ -356,11 +381,11 @@ class HistorySubTwoDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(HistorySubTwoEntityMeta.TABLE_NAME, updater.id, updater.version)
+            throw OptimisticLockingException(HistorySubTwoEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
 
         } else {
 
-            val updatedEntity = findById(updater.id)
+            val updatedEntity = findByPrimaryKey(updater.id)
             insertHistory(updatedEntity, ChangeType.UPDATE)
 
         }
@@ -381,9 +406,9 @@ class HistorySubTwoDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -406,12 +431,12 @@ class HistorySubTwoDao(
     }
 
 
-    fun removeById(id: DomainId): HistorySubTwoEntity? {
+    fun removeByPrimaryKey(id: DomainId): HistorySubTwoEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

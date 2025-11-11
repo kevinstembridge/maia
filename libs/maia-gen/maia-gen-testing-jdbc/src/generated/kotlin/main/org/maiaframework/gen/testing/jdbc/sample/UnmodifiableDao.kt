@@ -4,7 +4,7 @@
 package org.maiaframework.gen.testing.jdbc.sample
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
@@ -23,6 +23,9 @@ class UnmodifiableDao(
 
 
     private val entityRowMapper = UnmodifiableEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     private val idRowMapper = MaiaRowMapper { rs -> rs.readDomainId("id") }
@@ -107,26 +110,47 @@ class UnmodifiableDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): UnmodifiableEntity {
+    fun findByPrimaryKey(id: DomainId): UnmodifiableEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(UnmodifiableEntity::class.java, id), UnmodifiableEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    UnmodifiableEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                UnmodifiableEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): UnmodifiableEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): UnmodifiableEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.unmodifiable where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.unmodifiable where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findOneOrNullBySomeUniqueInt(someUniqueInt: Int): UnmodifiableEntity? {
 
@@ -136,7 +160,7 @@ class UnmodifiableDao(
             where some_unique_int = :someUniqueInt
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someUniqueInt", someUniqueInt)
+            addValue("someUniqueInt", someUniqueInt)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -169,7 +193,7 @@ class UnmodifiableDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.unmodifiable;",
@@ -241,7 +265,7 @@ class UnmodifiableDao(
             where some_unique_int = :someUniqueInt
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someUniqueInt", someUniqueInt)
+            addValue("someUniqueInt", someUniqueInt)
             }
         )
 
@@ -283,9 +307,9 @@ class UnmodifiableDao(
             join testing.unmodifiable c using (some_unique_int);
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("someUniqueInt", upsertEntity.someUniqueInt)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("someUniqueInt", upsertEntity.someUniqueInt)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

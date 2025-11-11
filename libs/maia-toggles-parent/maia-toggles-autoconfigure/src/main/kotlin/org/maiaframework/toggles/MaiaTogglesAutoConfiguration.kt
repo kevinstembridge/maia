@@ -101,19 +101,39 @@ class MaiaTogglesAutoConfiguration {
     class TogglesRepoConfiguration(private val properties: MaiaTogglesProperties) {
 
 
-//        @Bean
+        //        @Bean
 //        @ConditionalOnMissingBean
         fun toggleRepo(
-    @MaiaTogglesDataSource togglesDataSourceProvider: ObjectProvider<DataSource>,
-    dataSourceProvider: ObjectProvider<DataSource>,
-    toggleJsonFacade: JsonFacade,
-    toggleObjectMapper: ObjectMapper
+            @MaiaTogglesDataSource togglesDataSourceProvider: ObjectProvider<DataSource>,
+            dataSourceProvider: ObjectProvider<DataSource>,
+            toggleJsonFacade: JsonFacade,
+            toggleObjectMapper: ObjectMapper
         ): ToggleRepo {
 
             return when (this.properties.repoType) {
                 MaiaTogglesRepoType.IN_MEMORY -> InMemoryToggleRepo()
-                MaiaTogglesRepoType.JDBC -> jdbcToggleRepo(togglesDataSourceProvider, dataSourceProvider, toggleJsonFacade, toggleObjectMapper)
+                MaiaTogglesRepoType.JDBC -> jdbcToggleRepo(
+                    togglesDataSourceProvider,
+                    dataSourceProvider,
+                    toggleJsonFacade,
+                    toggleObjectMapper
+                )
             }
+
+        }
+
+
+        @Bean
+        @ConditionalOnMissingBean
+        fun toggleHistoryDao(
+            toggleDataSourceProvider: ObjectProvider<DataSource>,
+            dataSourceProvider: ObjectProvider<DataSource>,
+            toggleJsonFacade: JsonFacade,
+            toggleObjectMapper: ObjectMapper
+        ): FeatureToggleHistoryDao {
+
+            val jdbcOps = toggleJdbcOps(toggleDataSourceProvider, dataSourceProvider)
+            return FeatureToggleHistoryDao(FeatureToggleHistoryEntityFieldConverter(), jdbcOps, toggleJsonFacade, toggleObjectMapper)
 
         }
 
@@ -124,11 +144,11 @@ class MaiaTogglesAutoConfiguration {
             toggleDataSourceProvider: ObjectProvider<DataSource>,
             dataSourceProvider: ObjectProvider<DataSource>,
             toggleJsonFacade: JsonFacade,
-            toggleObjectMapper: ObjectMapper
+            toggleObjectMapper: ObjectMapper,
+            toggleHistoryDao: FeatureToggleHistoryDao
         ): FeatureToggleDao {
 
             val jdbcOps = toggleJdbcOps(toggleDataSourceProvider, dataSourceProvider)
-            val toggleHistoryDao = FeatureToggleHistoryDao(FeatureToggleHistoryEntityFieldConverter(), jdbcOps, toggleJsonFacade, toggleObjectMapper)
             return FeatureToggleDao(FeatureToggleEntityFieldConverter(), toggleHistoryDao, jdbcOps, toggleJsonFacade, toggleObjectMapper)
 
         }

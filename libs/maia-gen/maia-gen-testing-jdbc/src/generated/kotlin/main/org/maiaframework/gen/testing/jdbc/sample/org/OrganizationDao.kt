@@ -4,10 +4,11 @@
 package org.maiaframework.gen.testing.jdbc.sample.org
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -22,6 +23,9 @@ class OrganizationDao(
 
 
     private val entityRowMapper = OrganizationEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: OrganizationEntity) {
@@ -121,26 +125,47 @@ class OrganizationDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): OrganizationEntity {
+    fun findByPrimaryKey(id: DomainId): OrganizationEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(OrganizationEntity::class.java, id), OrganizationEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    OrganizationEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                OrganizationEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): OrganizationEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): OrganizationEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.v_party where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.v_party where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: OrganizationEntityFilter): List<OrganizationEntity> {
 
@@ -158,7 +183,7 @@ class OrganizationDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.v_party;",

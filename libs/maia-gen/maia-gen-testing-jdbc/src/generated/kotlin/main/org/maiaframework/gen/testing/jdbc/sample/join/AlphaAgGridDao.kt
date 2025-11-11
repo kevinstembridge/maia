@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -20,6 +21,9 @@ class AlphaAgGridDao(
 
 
     private val entityRowMapper = AlphaAgGridEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: AlphaAgGridEntity) {
@@ -107,26 +111,47 @@ class AlphaAgGridDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): AlphaAgGridEntity {
+    fun findByPrimaryKey(id: DomainId): AlphaAgGridEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(AlphaAgGridEntity::class.java, id), AlphaAgGridEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    AlphaAgGridEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                AlphaAgGridEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): AlphaAgGridEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): AlphaAgGridEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.alpha_ag_grid where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.alpha_ag_grid where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: AlphaAgGridEntityFilter): List<AlphaAgGridEntity> {
 
@@ -144,7 +169,7 @@ class AlphaAgGridDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.alpha_ag_grid;",
@@ -208,9 +233,9 @@ class AlphaAgGridDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -228,12 +253,12 @@ class AlphaAgGridDao(
     }
 
 
-    fun removeById(id: DomainId): AlphaAgGridEntity? {
+    fun removeByPrimaryKey(id: DomainId): AlphaAgGridEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

@@ -18,16 +18,23 @@ class EffectiveTimestampRepo(
     private val logger = getLogger<EffectiveTimestampRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): EffectiveTimestampEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): EffectiveTimestampEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): EffectiveTimestampEntity {
+    fun findByPrimaryKey(id: DomainId): EffectiveTimestampEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class EffectiveTimestampRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -101,9 +108,9 @@ class EffectiveTimestampRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -115,12 +122,12 @@ class EffectiveTimestampRepo(
     }
 
 
-    fun removeById(id: DomainId): EffectiveTimestampEntity? {
+    fun removeByPrimaryKey(id: DomainId): EffectiveTimestampEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found

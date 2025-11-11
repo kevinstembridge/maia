@@ -16,6 +16,11 @@ data class UserEntityUpdater(
 ) {
 
 
+    val primaryKey = mapOf(
+        "id" to id,
+    )
+
+
     class Builder(val id: DomainId) {
 
 
@@ -63,7 +68,10 @@ data class UserEntityUpdater(
     companion object {
 
 
-        fun forId(id: DomainId, init: Builder.() -> Unit): Builder {
+        fun forPrimaryKey(
+            id: DomainId,
+            init: Builder.() -> Unit
+        ): Builder {
 
             val builder = Builder(id)
             builder.init()

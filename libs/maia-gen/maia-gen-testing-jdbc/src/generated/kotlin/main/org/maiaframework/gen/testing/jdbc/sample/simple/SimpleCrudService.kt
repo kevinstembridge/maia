@@ -167,7 +167,7 @@ class SimpleCrudService(
     fun update(editDto: SimpleUpdateRequestDto) {
 
         val id = editDto.id
-        val updater = SimpleEntityUpdater.forId(id) {
+        val updater = SimpleEntityUpdater.forPrimaryKey(id) {
             someInstantModifiable(editDto.someInstantModifiable)
             someIntModifiable(editDto.someIntModifiable)
             someListOfStrings(editDto.someListOfStrings)
@@ -191,9 +191,7 @@ class SimpleCrudService(
 
         logger.info("BEGIN: updateSomeInstantModifiable. currentUser=${currentUser.username}, dto=$editDto")
 
-        val id = editDto.id
-
-        val updater = SimpleEntityUpdater.forId(id) {
+        val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someInstantModifiable(editDto.someInstantModifiable)
         }.build()
 
@@ -208,9 +206,7 @@ class SimpleCrudService(
 
         logger.info("BEGIN: updateSomeInstantModifiableNullable. currentUser=${currentUser.username}, dto=$editDto")
 
-        val id = editDto.id
-
-        val updater = SimpleEntityUpdater.forId(id) {
+        val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someInstantModifiableNullable(editDto.someInstantModifiableNullable)
         }.build()
 
@@ -225,9 +221,7 @@ class SimpleCrudService(
 
         logger.info("BEGIN: updateSomeIntModifiable. currentUser=${currentUser.username}, dto=$editDto")
 
-        val id = editDto.id
-
-        val updater = SimpleEntityUpdater.forId(id) {
+        val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someIntModifiable(editDto.someIntModifiable)
         }.build()
 
@@ -242,9 +236,7 @@ class SimpleCrudService(
 
         logger.info("BEGIN: updateSomeIntNullable. currentUser=${currentUser.username}, dto=$editDto")
 
-        val id = editDto.id
-
-        val updater = SimpleEntityUpdater.forId(id) {
+        val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someIntNullable(editDto.someIntNullable)
         }.build()
 
@@ -259,9 +251,7 @@ class SimpleCrudService(
 
         logger.info("BEGIN: updateSomeLocalDateModifiable. currentUser=${currentUser.username}, dto=$editDto")
 
-        val id = editDto.id
-
-        val updater = SimpleEntityUpdater.forId(id) {
+        val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someLocalDateModifiable(editDto.someLocalDateModifiable)
         }.build()
 
@@ -276,9 +266,7 @@ class SimpleCrudService(
 
         logger.info("BEGIN: updateSomePeriodModifiable. currentUser=${currentUser.username}, dto=$editDto")
 
-        val id = editDto.id
-
-        val updater = SimpleEntityUpdater.forId(id) {
+        val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             somePeriodModifiable(editDto.somePeriodModifiable)
         }.build()
 
@@ -293,9 +281,7 @@ class SimpleCrudService(
 
         logger.info("BEGIN: updateSomeStringModifiable. currentUser=${currentUser.username}, dto=$editDto")
 
-        val id = editDto.id
-
-        val updater = SimpleEntityUpdater.forId(id) {
+        val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someStringModifiable(editDto.someStringModifiable)
         }.build()
 
@@ -310,9 +296,7 @@ class SimpleCrudService(
 
         logger.info("BEGIN: updateSomeListOfStrings. currentUser=${currentUser.username}, dto=$editDto")
 
-        val id = editDto.id
-
-        val updater = SimpleEntityUpdater.forId(id) {
+        val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someListOfStrings(editDto.someListOfStrings)
         }.build()
 
@@ -332,10 +316,10 @@ class SimpleCrudService(
 
     fun delete(id: DomainId) {
 
-        val entityToDelete = this.entityRepo.findByIdOrNull(id)
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return
 
-        this.entityRepo.deleteById(id)
+        this.entityRepo.deleteByPrimaryKey(id)
         this.simpleCrudNotifier.onEntityDeleted(entityToDelete)
 
     }

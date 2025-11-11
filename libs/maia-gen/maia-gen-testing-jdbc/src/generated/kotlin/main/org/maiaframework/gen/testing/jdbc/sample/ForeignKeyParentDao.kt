@@ -4,9 +4,10 @@
 package org.maiaframework.gen.testing.jdbc.sample
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -20,6 +21,9 @@ class ForeignKeyParentDao(
 
 
     private val entityRowMapper = ForeignKeyParentEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: ForeignKeyParentEntity) {
@@ -107,26 +111,47 @@ class ForeignKeyParentDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): ForeignKeyParentEntity {
+    fun findByPrimaryKey(id: DomainId): ForeignKeyParentEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(ForeignKeyParentEntity::class.java, id), ForeignKeyParentEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    ForeignKeyParentEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                ForeignKeyParentEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): ForeignKeyParentEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): ForeignKeyParentEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.foreign_key_parent where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.foreign_key_parent where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: ForeignKeyParentEntityFilter): List<ForeignKeyParentEntity> {
 
@@ -144,7 +169,7 @@ class ForeignKeyParentDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.foreign_key_parent;",

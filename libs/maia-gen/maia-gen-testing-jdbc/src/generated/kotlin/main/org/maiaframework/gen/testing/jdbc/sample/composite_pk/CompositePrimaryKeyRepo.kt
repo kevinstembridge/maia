@@ -4,7 +4,7 @@
 package org.maiaframework.gen.testing.jdbc.sample.composite_pk
 
 import org.maiaframework.common.logging.getLogger
-import org.maiaframework.domain.DomainId
+import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
@@ -19,14 +19,21 @@ class CompositePrimaryKeyRepo(
 
     fun findByPrimaryKeyOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
 
-        return dao.findBySomeStringAndSomeIntOrNull(someString, someInt)
+        return dao.findByPrimaryKeyOrNull(someString, someInt)
 
     }
 
 
     fun findByPrimaryKey(someString: String, someInt: Int): CompositePrimaryKeyEntity {
 
-        return dao.findBySomeStringAndSomeInt(someString, someInt)
+        return dao.findByPrimaryKey(someString, someInt)
+
+    }
+
+
+    fun existsByPrimaryKey(someString: String, someInt: Int): Boolean {
+
+        return dao.existsByPrimaryKey(someString, someInt)
 
     }
 
@@ -38,9 +45,9 @@ class CompositePrimaryKeyRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<CompositePrimaryKeyEntityPk> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -88,7 +95,7 @@ class CompositePrimaryKeyRepo(
 
     fun deleteByPrimaryKey(someString: String, someInt: Int) {
 
-        this.dao.deleteBySomeStringAndSomeInt(someString, someInt)
+        this.dao.deleteByPrimaryKey(someString, someInt)
 
     }
 

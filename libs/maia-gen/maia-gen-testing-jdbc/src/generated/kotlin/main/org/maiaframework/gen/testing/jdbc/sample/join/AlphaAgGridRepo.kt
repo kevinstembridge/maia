@@ -18,16 +18,23 @@ class AlphaAgGridRepo(
     private val logger = getLogger<AlphaAgGridRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): AlphaAgGridEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): AlphaAgGridEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): AlphaAgGridEntity {
+    fun findByPrimaryKey(id: DomainId): AlphaAgGridEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class AlphaAgGridRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -69,9 +76,9 @@ class AlphaAgGridRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -83,12 +90,12 @@ class AlphaAgGridRepo(
     }
 
 
-    fun removeById(id: DomainId): AlphaAgGridEntity? {
+    fun removeByPrimaryKey(id: DomainId): AlphaAgGridEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found
@@ -98,7 +105,7 @@ class AlphaAgGridRepo(
 
     fun idAndNameFor(id: DomainId): AlphaAgGridIdAndNameDto {
 
-        val entity = findById(id)
+        val entity = findByPrimaryKey(id)
         return AlphaAgGridIdAndNameDto(
             entity.id,
             entity.someString

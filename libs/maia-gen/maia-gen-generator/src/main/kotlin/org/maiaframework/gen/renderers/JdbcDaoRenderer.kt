@@ -575,7 +575,7 @@ class JdbcDaoRenderer(
             appendLine("$indent    addValue(\"typeDiscriminator\", ${entityDef.metaClassDef.uqcn}.TYPE_DISCRIMINATOR)")
         }
 
-        renderSqlParamsAddValueLinesFor("entity", entityDef, indentSize)
+        renderSqlParamsAddValueLinesFor("entity", entityDef, indentSize + 4)
 
         appendLine("$indent}")
 

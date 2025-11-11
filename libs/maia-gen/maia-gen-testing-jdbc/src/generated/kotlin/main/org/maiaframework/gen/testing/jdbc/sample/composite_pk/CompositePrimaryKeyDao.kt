@@ -4,6 +4,7 @@
 package org.maiaframework.gen.testing.jdbc.sample.composite_pk
 
 import org.maiaframework.domain.ChangeType
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -189,14 +190,28 @@ class CompositePrimaryKeyDao(
         return jdbcOps.queryForList(
             "select * from testing.composite_primary_key where some_string = :someString and some_int = :someInt",
             SqlParams().apply {
-                addValue("someString", someString)
-                addValue("someInt", someInt)
+            addValue("someString", someString)
+            addValue("someInt", someInt)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(someString: String, someInt: Int): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.composite_primary_key where some_string = :someString and some_int = :someInt",
+            SqlParams().apply {
+                addValue("someString", someString)
+                addValue("someInt", someInt)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: CompositePrimaryKeyEntityFilter): List<CompositePrimaryKeyEntity> {
 

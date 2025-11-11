@@ -22,6 +22,9 @@ class CompositePrimaryKeyHistoryDao(
     private val entityRowMapper = CompositePrimaryKeyHistoryEntityRowMapper()
 
 
+    private val primaryKeyRowMapper = CompositePrimaryKeyHistoryEntityPkRowMapper()
+
+
     fun insert(entity: CompositePrimaryKeyHistoryEntity) {
 
         jdbcOps.update(
@@ -43,12 +46,12 @@ class CompositePrimaryKeyHistoryDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-            addValue("changeType", entity.changeType)
-            addValue("createdTimestampUtc", entity.createdTimestampUtc)
-            addValue("someInt", entity.someInt)
-            addValue("someModifiableString", entity.someModifiableString)
-            addValue("someString", entity.someString)
-            addValue("version", entity.version)
+                addValue("changeType", entity.changeType)
+                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("someInt", entity.someInt)
+                addValue("someModifiableString", entity.someModifiableString)
+                addValue("someString", entity.someString)
+                addValue("version", entity.version)
             }
         )
 
@@ -77,12 +80,12 @@ class CompositePrimaryKeyHistoryDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                addValue("changeType", entity.changeType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
-                addValue("someInt", entity.someInt)
-                addValue("someModifiableString", entity.someModifiableString)
-                addValue("someString", entity.someString)
-                addValue("version", entity.version)
+                    addValue("changeType", entity.changeType)
+                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("someInt", entity.someInt)
+                    addValue("someModifiableString", entity.someModifiableString)
+                    addValue("someString", entity.someString)
+                    addValue("version", entity.version)
                 }
             }
         )
@@ -152,6 +155,21 @@ class CompositePrimaryKeyHistoryDao(
     }
 
 
+    fun existsByPrimaryKey(someString: String, someInt: Int, version: Long): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.composite_primary_key_history where some_string = :someString and some_int = :someInt and v = :version",
+            SqlParams().apply {
+                addValue("someString", someString)
+                addValue("someInt", someInt)
+                addValue("version", version)
+           }
+        )
+       
+        return count > 0
+       
+    }
+
     fun findAllBy(filter: CompositePrimaryKeyHistoryEntityFilter): List<CompositePrimaryKeyHistoryEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
@@ -171,18 +189,9 @@ class CompositePrimaryKeyHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<CompositePrimaryKeyHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select some_string, some_int from testing.composite_primary_key_history;",
+            "select some_string, some_int, v from testing.composite_primary_key_history;",
             SqlParams(),
-            { rsa ->
-                val someString = rsa.readString("some_string")
-                val someInt = rsa.readInt("some_int")
-                val version = rsa.readLong("v")
-                CompositePrimaryKeyHistoryEntityPk(
-                    someInt,
-                    someString,
-                    version
-                )
-            }
+            this.primaryKeyRowMapper
         )
 
     }

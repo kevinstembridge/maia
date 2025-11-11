@@ -18,16 +18,23 @@ class LeftRepo(
     private val logger = getLogger<LeftRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): LeftEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): LeftEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): LeftEntity {
+    fun findByPrimaryKey(id: DomainId): LeftEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class LeftRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -69,9 +76,9 @@ class LeftRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -83,12 +90,12 @@ class LeftRepo(
     }
 
 
-    fun removeById(id: DomainId): LeftEntity? {
+    fun removeByPrimaryKey(id: DomainId): LeftEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found

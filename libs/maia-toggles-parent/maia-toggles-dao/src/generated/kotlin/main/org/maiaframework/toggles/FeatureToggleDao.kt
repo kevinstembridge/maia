@@ -10,6 +10,7 @@ import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
@@ -32,6 +33,9 @@ class FeatureToggleDao(
 
 
     private val entityRowMapper = FeatureToggleEntityRowMapper(objectMapper)
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readString("feature_name") { FeatureName(it) } }
 
 
     fun insert(entity: FeatureToggleEntity) {
@@ -245,29 +249,47 @@ class FeatureToggleDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByFeatureName(featureName: FeatureName): FeatureToggleEntity {
+    fun findByPrimaryKey(featureName: FeatureName): FeatureToggleEntity {
 
-        return findByFeatureNameOrNull(featureName)
+        return findByPrimaryKeyOrNull(featureName)
             ?: throw EntityNotFoundException(
-                EntityClassAndPk(FeatureToggleEntity::class.java, mapOf<String, Any>("featureName" to featureName)),
+                EntityClassAndPk(
+                    FeatureToggleEntity::class.java,
+                    mapOf(
+                        "featureName" to featureName,
+                    )
+                ),
                 FeatureToggleEntityMeta.TABLE_NAME
             )
 
     }
 
 
-    fun findByFeatureNameOrNull(featureName: FeatureName): FeatureToggleEntity? {
+    fun findByPrimaryKeyOrNull(featureName: FeatureName): FeatureToggleEntity? {
 
         return jdbcOps.queryForList(
             "select * from toggles.feature_toggle where feature_name = :featureName",
             SqlParams().apply {
-                addValue("featureName", featureName.value)
+            addValue("featureName", featureName.value)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(featureName: FeatureName): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from toggles.feature_toggle where feature_name = :featureName",
+            SqlParams().apply {
+                addValue("featureName", featureName.value)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAll(): List<FeatureToggleEntity> {
 
@@ -328,12 +350,12 @@ class FeatureToggleDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<FeatureName> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from toggles.feature_toggle;",
+            "select feature_name from toggles.feature_toggle;",
             SqlParams(),
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }
@@ -427,11 +449,11 @@ class FeatureToggleDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(FeatureToggleEntityMeta.TABLE_NAME, mapOf("featureName" to updater.featureName), updater.version)
+            throw OptimisticLockingException(FeatureToggleEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
 
         } else {
 
-            val updatedEntity = findByFeatureName(updater.featureName)
+            val updatedEntity = findByPrimaryKey(updater.featureName)
             insertHistory(updatedEntity, ChangeType.UPDATE)
 
         }
@@ -457,9 +479,9 @@ class FeatureToggleDao(
     }
 
 
-    fun deleteByFeatureName(featureName: FeatureName): Boolean {
+    fun deleteByPrimaryKey(featureName: FeatureName): Boolean {
 
-        val existingEntity = findByFeatureNameOrNull(featureName)
+        val existingEntity = findByPrimaryKeyOrNull(featureName)
 
         if (existingEntity == null) {
             return false
@@ -468,7 +490,7 @@ class FeatureToggleDao(
         val deletedCount = this.jdbcOps.update(
             "delete from toggles.feature_toggle where feature_name = :featureName",
             SqlParams().apply {
-                addValue("id", featureName.value)
+                addValue("featureName", featureName.value)
             }
         )
 
@@ -482,12 +504,12 @@ class FeatureToggleDao(
     }
 
 
-    fun removeByFeatureName(featureName: FeatureName): FeatureToggleEntity? {
+    fun removeByPrimaryKey(featureName: FeatureName): FeatureToggleEntity? {
 
-        val found = findByFeatureNameOrNull(featureName)
+        val found = findByPrimaryKeyOrNull(featureName)
 
         if (found != null) {
-            deleteByFeatureName(featureName)
+            deleteByPrimaryKey(featureName)
         }
 
         return found

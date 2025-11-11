@@ -19,16 +19,23 @@ class TtlRepo(
     private val logger = getLogger<TtlRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): TtlEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): TtlEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): TtlEntity {
+    fun findByPrimaryKey(id: DomainId): TtlEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -40,9 +47,9 @@ class TtlRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

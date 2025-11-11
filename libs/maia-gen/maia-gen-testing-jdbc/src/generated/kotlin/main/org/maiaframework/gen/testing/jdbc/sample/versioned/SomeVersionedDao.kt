@@ -4,10 +4,11 @@
 package org.maiaframework.gen.testing.jdbc.sample.versioned
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
@@ -23,6 +24,9 @@ class SomeVersionedDao(
 
 
     private val entityRowMapper = SomeVersionedEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: SomeVersionedEntity) {
@@ -116,26 +120,47 @@ class SomeVersionedDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): SomeVersionedEntity {
+    fun findByPrimaryKey(id: DomainId): SomeVersionedEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(SomeVersionedEntity::class.java, id), SomeVersionedEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    SomeVersionedEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                SomeVersionedEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): SomeVersionedEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): SomeVersionedEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.some_versioned where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.some_versioned where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findOneOrNullBySomeInt(someInt: Int): SomeVersionedEntity? {
 
@@ -145,7 +170,7 @@ class SomeVersionedDao(
             where some_int = :someInt
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someInt", someInt)
+            addValue("someInt", someInt)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -178,7 +203,7 @@ class SomeVersionedDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.some_versioned;",
@@ -250,7 +275,7 @@ class SomeVersionedDao(
             where some_int = :someInt
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someInt", someInt)
+            addValue("someInt", someInt)
             }
         )
 
@@ -284,11 +309,11 @@ class SomeVersionedDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("someInt", upsertEntity.someInt)
-                addValue("someString", upsertEntity.someString)
-                addValue("version", upsertEntity.version)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("someInt", upsertEntity.someInt)
+            addValue("someString", upsertEntity.someString)
+            addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

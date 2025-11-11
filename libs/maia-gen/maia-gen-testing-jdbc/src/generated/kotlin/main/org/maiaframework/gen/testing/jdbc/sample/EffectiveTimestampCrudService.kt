@@ -37,7 +37,7 @@ class EffectiveTimestampCrudService(
 
     fun delete(id: DomainId) {
 
-        this.entityRepo.deleteById(id)
+        this.entityRepo.deleteByPrimaryKey(id)
 
     }
 

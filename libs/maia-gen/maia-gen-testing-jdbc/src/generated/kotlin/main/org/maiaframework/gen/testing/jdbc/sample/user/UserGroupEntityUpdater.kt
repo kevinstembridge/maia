@@ -5,7 +5,6 @@ package org.maiaframework.gen.testing.jdbc.sample.user
 
 import acme.auth.Authority
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.IdAndVersion
 import org.maiaframework.domain.persist.FieldUpdate
 
 
@@ -16,7 +15,15 @@ data class UserGroupEntityUpdater(
 ) {
 
 
-    class Builder(val id: DomainId, val version: Long) {
+    val primaryKey = mapOf(
+        "id" to id,
+    )
+
+
+    class Builder(
+        val id: DomainId,
+        val version: Long
+    ) {
 
 
         private val fields = mutableListOf<FieldUpdate>()
@@ -24,7 +31,11 @@ data class UserGroupEntityUpdater(
 
         fun build(): UserGroupEntityUpdater {
 
-            return UserGroupEntityUpdater(this.fields, this.id, this.version)
+            return UserGroupEntityUpdater(
+                this.fields,
+                this.id,
+                this.version
+            )
 
         }
 
@@ -63,18 +74,16 @@ data class UserGroupEntityUpdater(
     companion object {
 
 
-        fun forIdAndVersion(id: DomainId, version: Long, init: Builder.() -> Unit): Builder {
+        fun forPrimaryKey(
+            id: DomainId,
+            version: Long,
+            init: Builder.() -> Unit
+        ): Builder {
 
-            val builder = Builder(id, version)
-            builder.init()
-            return builder
-
-        }
-
-
-        fun forIdAndVersion(idAndVersion: IdAndVersion, init: Builder.() -> Unit): Builder {
-
-            val builder = Builder(idAndVersion.id, idAndVersion.version)
+            val builder = Builder(
+                id,
+                version
+            )
             builder.init()
             return builder
 

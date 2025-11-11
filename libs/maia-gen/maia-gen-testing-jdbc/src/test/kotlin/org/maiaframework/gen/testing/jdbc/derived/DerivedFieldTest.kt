@@ -21,8 +21,8 @@ class DerivedFieldTest: AbstractJdbcTest() {
         val somePersonEntity = PersonEntityTestBuilder().build().also { dao.insert(it) }
         val someOrgEntity = OrgEntityTestBuilder().build().also { dao.insert(it) }
 
-        val retrievedPersonEntity = dao.findById(somePersonEntity.id)
-        val retrievedOrgEntity = dao.findById(someOrgEntity.id)
+        val retrievedPersonEntity = dao.findByPrimaryKey(somePersonEntity.id)
+        val retrievedOrgEntity = dao.findByPrimaryKey(someOrgEntity.id)
 
         assertThat(retrievedPersonEntity.displayName).isEqualTo("${somePersonEntity.firstName} ${somePersonEntity.lastName}")
         assertThat(retrievedOrgEntity.displayName).isEqualTo(someOrgEntity.orgName)

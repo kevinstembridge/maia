@@ -5,10 +5,11 @@ package org.maiaframework.gen.testing.jdbc.sample.history
 
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
@@ -27,6 +28,9 @@ class HistorySampleDao(
 
 
     private val entityRowMapper = HistorySampleEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: HistorySampleEntity) {
@@ -192,26 +196,47 @@ class HistorySampleDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): HistorySampleEntity {
+    fun findByPrimaryKey(id: DomainId): HistorySampleEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(HistorySampleEntity::class.java, id), HistorySampleEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    HistorySampleEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                HistorySampleEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): HistorySampleEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): HistorySampleEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.history_sample where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.history_sample where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findOneOrNullBySomeString(someString: String): HistorySampleEntity? {
 
@@ -221,7 +246,7 @@ class HistorySampleDao(
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someString", someString)
+            addValue("someString", someString)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -254,7 +279,7 @@ class HistorySampleDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.history_sample;",
@@ -326,7 +351,7 @@ class HistorySampleDao(
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someString", someString)
+            addValue("someString", someString)
             }
         )
 
@@ -343,7 +368,7 @@ class HistorySampleDao(
             where created_by_id = :createdById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", createdById)
+            addValue("createdById", createdById)
             }
         )
 
@@ -360,7 +385,7 @@ class HistorySampleDao(
             where lm_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedById", lastModifiedById)
             }
         )
 
@@ -402,14 +427,14 @@ class HistorySampleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-                addValue("someInt", upsertEntity.someInt)
-                addValue("someString", upsertEntity.someString)
-                addValue("version", upsertEntity.version)
+            addValue("createdById", upsertEntity.createdById)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedById", upsertEntity.lastModifiedById)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("someInt", upsertEntity.someInt)
+            addValue("someString", upsertEntity.someString)
+            addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
@@ -461,11 +486,11 @@ class HistorySampleDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(HistorySampleEntityMeta.TABLE_NAME, updater.id, updater.version)
+            throw OptimisticLockingException(HistorySampleEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
 
         } else {
 
-            val updatedEntity = findById(updater.id)
+            val updatedEntity = findByPrimaryKey(updater.id)
             insertHistory(updatedEntity, ChangeType.UPDATE)
 
         }
@@ -487,9 +512,9 @@ class HistorySampleDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -512,12 +537,12 @@ class HistorySampleDao(
     }
 
 
-    fun removeById(id: DomainId): HistorySampleEntity? {
+    fun removeByPrimaryKey(id: DomainId): HistorySampleEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

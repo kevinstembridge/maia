@@ -6,7 +6,6 @@ package org.maiaframework.toggles
 import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.map.IMap
 import org.maiaframework.common.logging.getLogger
-import org.maiaframework.domain.DomainId
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
@@ -21,25 +20,32 @@ class FeatureToggleRepo(
     private val logger = getLogger<FeatureToggleRepo>()
 
 
-    private val cache: IMap<DomainId, FeatureToggleEntity> = this.hazelcastInstance.getMap("feature_toggle_entity")
+    private val cache: IMap<FeatureName, FeatureToggleEntity> = this.hazelcastInstance.getMap("feature_toggle_entity")
 
 
-    fun findByIdOrNull(id: DomainId): FeatureToggleEntity? {
+    fun findByPrimaryKeyOrNull(featureName: FeatureName): FeatureToggleEntity? {
 
-        return cache[id]
-            ?: dao.findByIdOrNull(id).also { entity ->
-                entity?.let { cache[id] = it }
+        return cache[featureName]
+            ?: dao.findByPrimaryKeyOrNull(featureName).also { entity ->
+                entity?.let { cache[featureName] = it }
             }
 
     }
 
 
-    fun findById(id: DomainId): FeatureToggleEntity {
+    fun findByPrimaryKey(featureName: FeatureName): FeatureToggleEntity {
 
-        return cache[id]
-            ?: dao.findById(id).also {
-                cache[id] = it
+        return cache[featureName]
+            ?: dao.findByPrimaryKey(featureName).also {
+                cache[featureName] = it
             }
+
+    }
+
+
+    fun existsByPrimaryKey(featureName: FeatureName): Boolean {
+
+        return dao.existsByPrimaryKey(featureName)
 
     }
 
@@ -51,16 +57,9 @@ class FeatureToggleRepo(
     }
 
 
-    fun findIdsAsSequence(filter: FeatureToggleEntityFilter): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<FeatureName> {
 
-        return dao.findIdsAsSequence(filter)
-
-    }
-
-
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
-
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -111,7 +110,7 @@ class FeatureToggleRepo(
         val updatedCount = this.dao.setFields(updater)
 
         if (updatedCount > 0) {
-            this.cache.evict(updater.id)
+            this.cache.evict(updater.featureName)
         }
 
         return updatedCount
@@ -119,20 +118,20 @@ class FeatureToggleRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(featureName: FeatureName) {
 
-        this.dao.deleteById(id)
-        this.cache.evict(id)
+        this.dao.deleteByPrimaryKey(featureName)
+        this.cache.evict(featureName)
 
     }
 
 
-    fun removeById(id: DomainId): FeatureToggleEntity? {
+    fun removeByPrimaryKey(featureName: FeatureName): FeatureToggleEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(featureName)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(featureName)
         }
        
         return found

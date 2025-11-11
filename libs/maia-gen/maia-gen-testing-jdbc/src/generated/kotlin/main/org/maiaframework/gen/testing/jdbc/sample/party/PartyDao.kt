@@ -4,7 +4,7 @@
 package org.maiaframework.gen.testing.jdbc.sample.party
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.gen.testing.jdbc.sample.org.OrganizationEntity
 import org.maiaframework.gen.testing.jdbc.sample.org.OrganizationEntityMeta
@@ -14,6 +14,7 @@ import org.maiaframework.gen.testing.jdbc.sample.user.UserEntity
 import org.maiaframework.gen.testing.jdbc.sample.user.UserEntityMeta
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -28,6 +29,9 @@ class PartyDao(
 
 
     private val entityRowMapper = PartyEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: PartyEntity) {
@@ -217,26 +221,47 @@ class PartyDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): PartyEntity {
+    fun findByPrimaryKey(id: DomainId): PartyEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(PartyEntity::class.java, id), PartyEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    PartyEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                PartyEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): PartyEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): PartyEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.v_party where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.v_party where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: PartyEntityFilter): List<PartyEntity> {
 
@@ -254,7 +279,7 @@ class PartyDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.v_party;",
@@ -359,9 +384,9 @@ class PartyDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -379,12 +404,12 @@ class PartyDao(
     }
 
 
-    fun removeById(id: DomainId): PartyEntity? {
+    fun removeByPrimaryKey(id: DomainId): PartyEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

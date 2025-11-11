@@ -4,9 +4,10 @@
 package org.maiaframework.gen.testing.jdbc.sample.many_to_many
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -20,6 +21,9 @@ class RightDao(
 
 
     private val entityRowMapper = RightEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: RightEntity) {
@@ -107,26 +111,47 @@ class RightDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): RightEntity {
+    fun findByPrimaryKey(id: DomainId): RightEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(RightEntity::class.java, id), RightEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    RightEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                RightEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): RightEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): RightEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.right where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.right where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: RightEntityFilter): List<RightEntity> {
 
@@ -144,7 +169,7 @@ class RightDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.right;",
@@ -208,9 +233,9 @@ class RightDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -228,12 +253,12 @@ class RightDao(
     }
 
 
-    fun removeById(id: DomainId): RightEntity? {
+    fun removeByPrimaryKey(id: DomainId): RightEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

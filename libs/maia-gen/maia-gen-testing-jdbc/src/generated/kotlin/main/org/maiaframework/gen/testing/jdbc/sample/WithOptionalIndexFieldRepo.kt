@@ -19,16 +19,23 @@ class WithOptionalIndexFieldRepo(
     private val logger = getLogger<WithOptionalIndexFieldRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): WithOptionalIndexFieldEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): WithOptionalIndexFieldEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): WithOptionalIndexFieldEntity {
+    fun findByPrimaryKey(id: DomainId): WithOptionalIndexFieldEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -40,9 +47,9 @@ class WithOptionalIndexFieldRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

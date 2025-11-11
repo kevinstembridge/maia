@@ -18,16 +18,23 @@ class UnmodifiableRepo(
     private val logger = getLogger<UnmodifiableRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): UnmodifiableEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): UnmodifiableEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): UnmodifiableEntity {
+    fun findByPrimaryKey(id: DomainId): UnmodifiableEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class UnmodifiableRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

@@ -18,16 +18,23 @@ class ForeignKeyChildRepo(
     private val logger = getLogger<ForeignKeyChildRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): ForeignKeyChildEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): ForeignKeyChildEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): ForeignKeyChildEntity {
+    fun findByPrimaryKey(id: DomainId): ForeignKeyChildEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class ForeignKeyChildRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

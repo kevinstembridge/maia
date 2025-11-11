@@ -63,7 +63,7 @@ class CharlieAgGridCrudService(
     fun update(editDto: CharlieAgGridUpdateRequestDto) {
 
         val id = editDto.id
-        val updater = CharlieAgGridEntityUpdater.forId(id) {
+        val updater = CharlieAgGridEntityUpdater.forPrimaryKey(id) {
             bravoId(editDto.bravoId)
         }.build()
 
@@ -78,9 +78,7 @@ class CharlieAgGridCrudService(
 
         logger.info("BEGIN: updateBravoId. currentUser=${currentUser.username}, dto=$editDto")
 
-        val id = editDto.id
-
-        val updater = CharlieAgGridEntityUpdater.forId(id) {
+        val updater = CharlieAgGridEntityUpdater.forPrimaryKey(editDto.id) {
             bravoId(editDto.bravoId)
         }.build()
 
@@ -100,10 +98,10 @@ class CharlieAgGridCrudService(
 
     fun delete(id: DomainId) {
 
-        val entityToDelete = this.entityRepo.findByIdOrNull(id)
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return
 
-        this.entityRepo.deleteById(id)
+        this.entityRepo.deleteByPrimaryKey(id)
         this.charlieAgGridCrudNotifier.onEntityDeleted(entityToDelete)
 
     }

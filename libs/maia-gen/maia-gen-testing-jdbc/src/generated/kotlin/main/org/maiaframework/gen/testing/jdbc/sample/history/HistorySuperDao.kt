@@ -5,10 +5,11 @@ package org.maiaframework.gen.testing.jdbc.sample.history
 
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
@@ -27,6 +28,9 @@ class HistorySuperDao(
 
 
     private val entityRowMapper = HistorySuperEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: HistorySuperEntity) {
@@ -288,26 +292,47 @@ class HistorySuperDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): HistorySuperEntity {
+    fun findByPrimaryKey(id: DomainId): HistorySuperEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(HistorySuperEntity::class.java, id), HistorySuperEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    HistorySuperEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                HistorySuperEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): HistorySuperEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): HistorySuperEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.history_super where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.history_super where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: HistorySuperEntityFilter): List<HistorySuperEntity> {
 
@@ -325,7 +350,7 @@ class HistorySuperDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.history_super;",
@@ -397,7 +422,7 @@ class HistorySuperDao(
             where created_by_id = :createdById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", createdById)
+            addValue("createdById", createdById)
             }
         )
 
@@ -414,7 +439,7 @@ class HistorySuperDao(
             where lm_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedById", lastModifiedById)
             }
         )
 
@@ -458,11 +483,11 @@ class HistorySuperDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(HistorySuperEntityMeta.TABLE_NAME, updater.id, updater.version)
+            throw OptimisticLockingException(HistorySuperEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
 
         } else {
 
-            val updatedEntity = findById(updater.id)
+            val updatedEntity = findByPrimaryKey(updater.id)
 
             when (updatedEntity) {
                 is HistorySubOneEntity -> insertHistory(updatedEntity, ChangeType.UPDATE)
@@ -486,9 +511,9 @@ class HistorySuperDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -519,12 +544,12 @@ class HistorySuperDao(
     }
 
 
-    fun removeById(id: DomainId): HistorySuperEntity? {
+    fun removeByPrimaryKey(id: DomainId): HistorySuperEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

@@ -3,7 +3,6 @@
 
 package org.maiaframework.gen.testing.jdbc.sample.composite_pk
 
-import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -27,9 +26,17 @@ class CompositePrimaryKeyCrudService(
     }
 
 
-    fun delete(id: DomainId) {
+    fun setFields(updater: CompositePrimaryKeyEntityUpdater): Int {
+        
+        val count = this.entityRepo.setFields(updater)
+        return count
+        
+    }
 
-        this.entityRepo.deleteById(id)
+
+    fun delete(someString: String, someInt: Int) {
+
+        this.entityRepo.deleteByPrimaryKey(someString, someInt)
 
     }
 

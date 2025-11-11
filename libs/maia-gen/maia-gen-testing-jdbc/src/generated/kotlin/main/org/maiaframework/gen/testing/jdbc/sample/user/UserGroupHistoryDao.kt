@@ -4,7 +4,7 @@
 package org.maiaframework.gen.testing.jdbc.sample.user
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.gen.testing.jdbc.sample.org.OrgUserGroupHistoryEntity
 import org.maiaframework.gen.testing.jdbc.sample.org.OrgUserGroupHistoryEntityMeta
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -22,6 +22,9 @@ class UserGroupHistoryDao(
 
 
     private val entityRowMapper = UserGroupHistoryEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = UserGroupHistoryEntityPkRowMapper()
 
 
     fun insert(entity: UserGroupHistoryEntity) {
@@ -194,27 +197,50 @@ class UserGroupHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByIdAndVersion(id: DomainId, version: Long): UserGroupHistoryEntity {
+    fun findByPrimaryKey(id: DomainId, version: Long): UserGroupHistoryEntity {
 
-        return findByIdAndVersionOrNull(id, version)
-            ?: throw EntityNotFoundException(EntityClassAndId(UserGroupHistoryEntity::class.java, id), UserGroupHistoryEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id, version)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    UserGroupHistoryEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                        "version" to version,
+                    )
+                ),
+                UserGroupHistoryEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdAndVersionOrNull(id: DomainId, version: Long): UserGroupHistoryEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): UserGroupHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.user_group_history where id = :id and v = :version",
             SqlParams().apply {
-                addValue("id", id)
-                addValue("version", version)
+            addValue("id", id)
+            addValue("version", version)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.user_group_history where id = :id and v = :version",
+            SqlParams().apply {
+                addValue("id", id)
+                addValue("version", version)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: UserGroupHistoryEntityFilter): List<UserGroupHistoryEntity> {
 
@@ -232,12 +258,12 @@ class UserGroupHistoryDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<UserGroupHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.user_group_history;",
+            "select id, v from testing.user_group_history;",
             SqlParams(),
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }

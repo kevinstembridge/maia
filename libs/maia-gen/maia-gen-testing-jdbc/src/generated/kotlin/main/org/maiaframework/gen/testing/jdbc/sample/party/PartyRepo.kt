@@ -18,16 +18,23 @@ class PartyRepo(
     private val logger = getLogger<PartyRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): PartyEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): PartyEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): PartyEntity {
+    fun findByPrimaryKey(id: DomainId): PartyEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class PartyRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -87,9 +94,9 @@ class PartyRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -101,12 +108,12 @@ class PartyRepo(
     }
 
 
-    fun removeById(id: DomainId): PartyEntity? {
+    fun removeByPrimaryKey(id: DomainId): PartyEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found
@@ -116,7 +123,7 @@ class PartyRepo(
 
     fun idAndNameFor(id: DomainId): PartyIdAndNameDto {
 
-        val entity = findById(id)
+        val entity = findByPrimaryKey(id)
         return PartyIdAndNameDto(
             entity.id,
             entity.displayName

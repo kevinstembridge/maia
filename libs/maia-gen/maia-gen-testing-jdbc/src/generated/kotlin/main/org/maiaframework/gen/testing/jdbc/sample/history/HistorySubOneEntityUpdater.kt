@@ -4,7 +4,6 @@
 package org.maiaframework.gen.testing.jdbc.sample.history
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.IdAndVersion
 import org.maiaframework.domain.persist.FieldUpdate
 import java.time.Instant
 
@@ -16,7 +15,15 @@ data class HistorySubOneEntityUpdater(
 ) {
 
 
-    class Builder(val id: DomainId, val version: Long) {
+    val primaryKey = mapOf(
+        "id" to id,
+    )
+
+
+    class Builder(
+        val id: DomainId,
+        val version: Long
+    ) {
 
 
         private val fields = mutableListOf<FieldUpdate>()
@@ -24,7 +31,11 @@ data class HistorySubOneEntityUpdater(
 
         fun build(): HistorySubOneEntityUpdater {
 
-            return HistorySubOneEntityUpdater(this.fields, this.id, this.version)
+            return HistorySubOneEntityUpdater(
+                this.fields,
+                this.id,
+                this.version
+            )
 
         }
 
@@ -56,18 +67,16 @@ data class HistorySubOneEntityUpdater(
     companion object {
 
 
-        fun forIdAndVersion(id: DomainId, version: Long, init: Builder.() -> Unit): Builder {
+        fun forPrimaryKey(
+            id: DomainId,
+            version: Long,
+            init: Builder.() -> Unit
+        ): Builder {
 
-            val builder = Builder(id, version)
-            builder.init()
-            return builder
-
-        }
-
-
-        fun forIdAndVersion(idAndVersion: IdAndVersion, init: Builder.() -> Unit): Builder {
-
-            val builder = Builder(idAndVersion.id, idAndVersion.version)
+            val builder = Builder(
+                id,
+                version
+            )
             builder.init()
             return builder
 

@@ -9,7 +9,9 @@ import java.time.Instant
 class CompositePrimaryKeyEntity(
     val createdTimestampUtc: Instant,
     val someInt: Int,
-    val someString: String
+    val someModifiableString: String,
+    val someString: String,
+    val version: Long
 ) {
 
 
@@ -18,7 +20,9 @@ class CompositePrimaryKeyEntity(
         return "CompositePrimaryKeyEntity{" +
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
-                "someString = '" + this.someString + '\'' +
+                "someModifiableString = '" + this.someModifiableString + '\'' + ", " + 
+                "someString = '" + this.someString + '\'' + ", " + 
+                "version = '" + this.version + '\'' +
                 "}"
 
     }
@@ -32,15 +36,19 @@ class CompositePrimaryKeyEntity(
         @JvmStatic
         fun newInstance(
             someInt: Int,
+            someModifiableString: String,
             someString: String
         ): CompositePrimaryKeyEntity {
 
             val createdTimestampUtc = Instant.now()
+            val version = 1L
 
             return CompositePrimaryKeyEntity(
                 createdTimestampUtc,
                 someInt,
-                someString
+                someModifiableString,
+                someString,
+                version
             )
 
         }

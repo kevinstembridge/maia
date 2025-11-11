@@ -4,10 +4,11 @@
 package org.maiaframework.gen.testing.jdbc.sample.join
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -21,6 +22,9 @@ class CharlieAgGridDao(
 
 
     private val entityRowMapper = CharlieAgGridEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
     private val fetchForEditDtoRowMapper = CharlieAgGridFetchForEditDtoRowMapper()
 
 
@@ -115,26 +119,47 @@ class CharlieAgGridDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): CharlieAgGridEntity {
+    fun findByPrimaryKey(id: DomainId): CharlieAgGridEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(CharlieAgGridEntity::class.java, id), CharlieAgGridEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    CharlieAgGridEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                CharlieAgGridEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): CharlieAgGridEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): CharlieAgGridEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.charlie_ag_grid where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.charlie_ag_grid where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: CharlieAgGridEntityFilter): List<CharlieAgGridEntity> {
 
@@ -152,7 +177,7 @@ class CharlieAgGridDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.charlie_ag_grid;",
@@ -224,7 +249,7 @@ class CharlieAgGridDao(
             where bravo_id = :bravoId
             """.trimIndent(),
             SqlParams().apply {
-                addValue("bravoId", bravoId)
+            addValue("bravoId", bravoId)
             }
         )
 
@@ -254,7 +279,7 @@ class CharlieAgGridDao(
             },
             this.fetchForEditDtoRowMapper
         ).firstOrNull()
-            ?: throw EntityNotFoundException(EntityClassAndId(CharlieAgGridEntity::class.java, id), CharlieAgGridEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException(EntityClassAndPk(CharlieAgGridEntity::class.java, mapOf("id" to id)), CharlieAgGridEntityMeta.TABLE_NAME)
 
     }
 
@@ -300,9 +325,9 @@ class CharlieAgGridDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -320,12 +345,12 @@ class CharlieAgGridDao(
     }
 
 
-    fun removeById(id: DomainId): CharlieAgGridEntity? {
+    fun removeByPrimaryKey(id: DomainId): CharlieAgGridEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

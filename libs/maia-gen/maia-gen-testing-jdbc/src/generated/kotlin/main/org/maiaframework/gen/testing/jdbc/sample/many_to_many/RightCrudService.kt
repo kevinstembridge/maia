@@ -30,11 +30,11 @@ class RightCrudService(
 
     fun delete(id: DomainId) {
 
-        if (this.manyToManyJoinRepo.existsByRightId(id)) {
+        if (this.manyToManyJoinRepo.existsByPrimaryKey(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("ManyToManyJoin")
         }
 
-        this.entityRepo.deleteById(id)
+        this.entityRepo.deleteByPrimaryKey(id)
 
     }
 

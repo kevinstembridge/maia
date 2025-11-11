@@ -4,10 +4,11 @@
 package org.maiaframework.gen.testing.jdbc.sample
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -22,6 +23,9 @@ class EffectiveTimestampDao(
 
 
     private val entityRowMapper = EffectiveTimestampEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: EffectiveTimestampEntity) {
@@ -115,26 +119,47 @@ class EffectiveTimestampDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): EffectiveTimestampEntity {
+    fun findByPrimaryKey(id: DomainId): EffectiveTimestampEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(EffectiveTimestampEntity::class.java, id), EffectiveTimestampEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    EffectiveTimestampEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                EffectiveTimestampEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): EffectiveTimestampEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): EffectiveTimestampEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.effective_timestamp where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.effective_timestamp where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findBySomeString(someString: String): List<EffectiveTimestampEntity> {
 
@@ -144,7 +169,7 @@ class EffectiveTimestampDao(
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someString", someString)
+            addValue("someString", someString)
             },
             this.entityRowMapper
         )
@@ -186,7 +211,7 @@ class EffectiveTimestampDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.effective_timestamp;",
@@ -292,9 +317,9 @@ class EffectiveTimestampDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -312,12 +337,12 @@ class EffectiveTimestampDao(
     }
 
 
-    fun removeById(id: DomainId): EffectiveTimestampEntity? {
+    fun removeByPrimaryKey(id: DomainId): EffectiveTimestampEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

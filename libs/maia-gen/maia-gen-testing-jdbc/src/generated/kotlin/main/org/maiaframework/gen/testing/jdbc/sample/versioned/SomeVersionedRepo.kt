@@ -18,16 +18,23 @@ class SomeVersionedRepo(
     private val logger = getLogger<SomeVersionedRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): SomeVersionedEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): SomeVersionedEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): SomeVersionedEntity {
+    fun findByPrimaryKey(id: DomainId): SomeVersionedEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class SomeVersionedRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

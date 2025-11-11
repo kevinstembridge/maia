@@ -18,16 +18,23 @@ class HistorySubTwoRepo(
     private val logger = getLogger<HistorySubTwoRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): HistorySubTwoEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): HistorySubTwoEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): HistorySubTwoEntity {
+    fun findByPrimaryKey(id: DomainId): HistorySubTwoEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class HistorySubTwoRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -101,19 +108,19 @@ class HistorySubTwoRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
 
-    fun removeById(id: DomainId): HistorySubTwoEntity? {
+    fun removeByPrimaryKey(id: DomainId): HistorySubTwoEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found

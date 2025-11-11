@@ -19,7 +19,15 @@ data class FeatureToggleEntityUpdater(
 ) {
 
 
-    class Builder(val featureName: FeatureName, val version: Long) {
+    val primaryKey = mapOf(
+        "featureName" to featureName,
+    )
+
+
+    class Builder(
+        val featureName: FeatureName,
+        val version: Long
+    ) {
 
 
         private val fields = mutableListOf<FieldUpdate>()
@@ -27,7 +35,11 @@ data class FeatureToggleEntityUpdater(
 
         fun build(): FeatureToggleEntityUpdater {
 
-            return FeatureToggleEntityUpdater(this.fields, this.featureName, this.version)
+            return FeatureToggleEntityUpdater(
+                this.fields,
+                this.featureName,
+                this.version
+            )
 
         }
 
@@ -94,9 +106,16 @@ data class FeatureToggleEntityUpdater(
     companion object {
 
 
-        fun forFeatureNameAndVersion(featureName: FeatureName, version: Long, init: Builder.() -> Unit): Builder {
+        fun forPrimaryKey(
+            featureName: FeatureName,
+            version: Long,
+            init: Builder.() -> Unit
+        ): Builder {
 
-            val builder = Builder(featureName, version)
+            val builder = Builder(
+                featureName,
+                version
+            )
             builder.init()
             return builder
 

@@ -51,16 +51,16 @@ class HistorySuperDaoTest: AbstractJdbcTest() {
         this.historySubOneDao.insert(historySubOneEntity)
 
         // THEN we can find version 1 of the inserted entity
-        val actualEntityV1 = this.historySubOneDao.findById(entitySubOneId)
+        val actualEntityV1 = this.historySubOneDao.findByPrimaryKey(entitySubOneId)
         assertThat(actualEntityV1.version).isEqualTo(1)
 
         // AND version 1 of the history entity
-        val actualHistoryEntityV1 = this.historySubOneHistoryDao.findOneByIdAndVersion(entitySubOneId, 1)
+        val actualHistoryEntityV1 = this.historySubOneHistoryDao.findByPrimaryKey(entitySubOneId, 1)
         assertHistoryEntity(actualHistoryEntityV1, actualEntityV1, ChangeType.CREATE)
 
         // WHEN we update the entity
         val someStringUpdated = actualEntityV1.someString + "_updated"
-        val updater = HistorySubOneEntityUpdater.forIdAndVersion(actualEntityV1.id, actualEntityV1.version) {
+        val updater = HistorySubOneEntityUpdater.forPrimaryKey(actualEntityV1.id, actualEntityV1.version) {
             someString(someStringUpdated)
         }.build()
         this.historySubOneDao.setFields(updater)
@@ -75,21 +75,21 @@ class HistorySuperDaoTest: AbstractJdbcTest() {
         assertThat(this.historySubOneDao.count(filter)).isZero()
 
         // AND we can find version 2 of the entity
-        val actualEntityV2 = this.historySubOneDao.findById(entitySubOneId)
+        val actualEntityV2 = this.historySubOneDao.findByPrimaryKey(entitySubOneId)
         assertThat(actualEntityV2.version).isEqualTo(2)
 
         // AND we can find version 2 of the history entity
-        val actualHistoryEntityV2 = this.historySubOneHistoryDao.findOneByIdAndVersion(entitySubOneId, 2)
+        val actualHistoryEntityV2 = this.historySubOneHistoryDao.findByPrimaryKey(entitySubOneId, 2)
         assertHistoryEntity(actualHistoryEntityV2, actualEntityV2, ChangeType.UPDATE)
 
         // WHEN we delete the entity
-        this.historySubOneDao.deleteById(entitySubOneId)
+        this.historySubOneDao.deleteByPrimaryKey(entitySubOneId)
 
         // THEN we can no longer find a version of the entity
-        assertThat(this.historySubOneDao.findByIdOrNull(entitySubOneId)).isNull()
+        assertThat(this.historySubOneDao.findByPrimaryKeyOrNull(entitySubOneId)).isNull()
 
         // AND we can find version 3 of the history entity
-        val actualHistoryEntityV3 = this.historySubOneHistoryDao.findOneByIdAndVersion(entitySubOneId, 3)
+        val actualHistoryEntityV3 = this.historySubOneHistoryDao.findByPrimaryKey(entitySubOneId, 3)
         assertHistoryEntity(actualHistoryEntityV3, actualEntityV2, 3, ChangeType.DELETE)
 
     }

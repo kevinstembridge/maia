@@ -30,11 +30,11 @@ class BravoCrudService(
 
     fun delete(id: DomainId) {
 
-        if (this.charlieRepo.existsByBravoId(id)) {
+        if (this.charlieRepo.existsByPrimaryKey(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("Charlie")
         }
 
-        this.entityRepo.deleteById(id)
+        this.entityRepo.deleteByPrimaryKey(id)
 
     }
 

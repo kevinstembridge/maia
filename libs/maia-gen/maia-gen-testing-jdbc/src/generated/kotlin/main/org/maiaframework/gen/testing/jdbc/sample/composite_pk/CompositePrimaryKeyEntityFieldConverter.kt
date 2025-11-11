@@ -20,7 +20,11 @@ class CompositePrimaryKeyEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "some_int" -> // someInt
                 return inputValue
+            "some_modifiable_string" -> // someModifiableString
+                return inputValue
             "some_string" -> // someString
+                return inputValue
+            "v" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

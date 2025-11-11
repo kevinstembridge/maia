@@ -4,7 +4,7 @@
 package org.maiaframework.props
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -18,6 +18,9 @@ class PropsHistoryDao(
 
 
     private val entityRowMapper = PropsHistoryEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = PropsHistoryEntityPkRowMapper()
 
 
     fun insert(entity: PropsHistoryEntity) {
@@ -135,27 +138,50 @@ class PropsHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByIdAndVersion(id: DomainId, version: Long): PropsHistoryEntity {
+    fun findByPrimaryKey(id: DomainId, version: Long): PropsHistoryEntity {
 
-        return findByIdAndVersionOrNull(id, version)
-            ?: throw EntityNotFoundException(EntityClassAndId(PropsHistoryEntity::class.java, id), PropsHistoryEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id, version)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    PropsHistoryEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                        "version" to version,
+                    )
+                ),
+                PropsHistoryEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdAndVersionOrNull(id: DomainId, version: Long): PropsHistoryEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): PropsHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from props.props_history where id = :id and v = :version",
             SqlParams().apply {
-                addValue("id", id)
-                addValue("version", version)
+            addValue("id", id)
+            addValue("version", version)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from props.props_history where id = :id and v = :version",
+            SqlParams().apply {
+                addValue("id", id)
+                addValue("version", version)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findByPropertyName(propertyName: String): List<PropsHistoryEntity> {
 
@@ -165,7 +191,7 @@ class PropsHistoryDao(
             where property_name = :propertyName
             """.trimIndent(),
             SqlParams().apply {
-                addValue("propertyName", propertyName)
+            addValue("propertyName", propertyName)
             },
             this.entityRowMapper
         )
@@ -189,12 +215,12 @@ class PropsHistoryDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<PropsHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from props.props_history;",
+            "select id, v from props.props_history;",
             SqlParams(),
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }

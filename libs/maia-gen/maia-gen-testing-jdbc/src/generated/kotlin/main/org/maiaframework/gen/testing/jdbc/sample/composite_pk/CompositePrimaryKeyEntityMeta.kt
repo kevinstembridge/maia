@@ -16,7 +16,11 @@ object CompositePrimaryKeyEntityMeta {
 
     const val someInt = "some_int"
 
+    const val someModifiableString = "some_modifiable_string"
+
     const val someString = "some_string"
+
+    const val version = "v"
 
     val ENTITY_KEY = EntityKey("CompositePrimaryKey")
 
@@ -34,7 +38,9 @@ object CompositePrimaryKeyEntityMeta {
         return when(classFieldName) {
             "createdTimestampUtc" -> "c_ts"
             "someInt" -> "some_int"
+            "someModifiableString" -> "some_modifiable_string"
             "someString" -> "some_string"
+            "version" -> "v"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

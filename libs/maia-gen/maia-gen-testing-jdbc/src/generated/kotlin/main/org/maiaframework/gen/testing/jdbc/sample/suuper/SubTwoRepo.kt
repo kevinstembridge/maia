@@ -18,16 +18,23 @@ class SubTwoRepo(
     private val logger = getLogger<SubTwoRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): SubTwoEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): SubTwoEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): SubTwoEntity {
+    fun findByPrimaryKey(id: DomainId): SubTwoEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class SubTwoRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -131,9 +138,9 @@ class SubTwoRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -152,12 +159,12 @@ class SubTwoRepo(
     }
 
 
-    fun removeById(id: DomainId): SubTwoEntity? {
+    fun removeByPrimaryKey(id: DomainId): SubTwoEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found

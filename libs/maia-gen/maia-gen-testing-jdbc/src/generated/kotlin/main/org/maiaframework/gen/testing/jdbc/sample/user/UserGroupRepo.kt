@@ -18,16 +18,23 @@ class UserGroupRepo(
     private val logger = getLogger<UserGroupRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): UserGroupEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): UserGroupEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): UserGroupEntity {
+    fun findByPrimaryKey(id: DomainId): UserGroupEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class UserGroupRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

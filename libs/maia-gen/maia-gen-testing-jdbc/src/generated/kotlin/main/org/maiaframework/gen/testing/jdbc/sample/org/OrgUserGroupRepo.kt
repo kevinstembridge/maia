@@ -18,16 +18,23 @@ class OrgUserGroupRepo(
     private val logger = getLogger<OrgUserGroupRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): OrgUserGroupEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): OrgUserGroupEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): OrgUserGroupEntity {
+    fun findByPrimaryKey(id: DomainId): OrgUserGroupEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class OrgUserGroupRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

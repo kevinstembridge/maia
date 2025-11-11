@@ -13,7 +13,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.mock.env.MockEnvironment
 
 @Configuration
-@ComponentScan(basePackages = ["org.maiaframework", "org.maiaframework.gen.testing"])
+@ComponentScan(basePackages = [
+    "org.maiaframework.gen.testing",
+    "org.maiaframework.json",
+])
 class MaiaGenTestConfiguration {
 
 

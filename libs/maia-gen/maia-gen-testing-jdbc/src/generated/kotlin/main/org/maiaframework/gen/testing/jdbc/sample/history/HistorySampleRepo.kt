@@ -18,16 +18,23 @@ class HistorySampleRepo(
     private val logger = getLogger<HistorySampleRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): HistorySampleEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): HistorySampleEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): HistorySampleEntity {
+    fun findByPrimaryKey(id: DomainId): HistorySampleEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class HistorySampleRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -131,9 +138,9 @@ class HistorySampleRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -145,12 +152,12 @@ class HistorySampleRepo(
     }
 
 
-    fun removeById(id: DomainId): HistorySampleEntity? {
+    fun removeByPrimaryKey(id: DomainId): HistorySampleEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found

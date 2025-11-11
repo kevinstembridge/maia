@@ -6,10 +6,11 @@ package org.maiaframework.gen.testing.jdbc.sample.org
 import acme.auth.Authority
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
@@ -25,6 +26,9 @@ class OrgUserGroupDao(
 
 
     private val entityRowMapper = OrgUserGroupEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: OrgUserGroupEntity) {
@@ -194,26 +198,47 @@ class OrgUserGroupDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): OrgUserGroupEntity {
+    fun findByPrimaryKey(id: DomainId): OrgUserGroupEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(OrgUserGroupEntity::class.java, id), OrgUserGroupEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    OrgUserGroupEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                OrgUserGroupEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): OrgUserGroupEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): OrgUserGroupEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.user_group where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.user_group where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: OrgUserGroupEntityFilter): List<OrgUserGroupEntity> {
 
@@ -231,7 +256,7 @@ class OrgUserGroupDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.user_group;",
@@ -303,7 +328,7 @@ class OrgUserGroupDao(
             where org_id = :orgId
             """.trimIndent(),
             SqlParams().apply {
-                addValue("orgId", orgId)
+            addValue("orgId", orgId)
             }
         )
 
@@ -347,11 +372,11 @@ class OrgUserGroupDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(OrgUserGroupEntityMeta.TABLE_NAME, updater.id, updater.version)
+            throw OptimisticLockingException(OrgUserGroupEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
 
         } else {
 
-            val updatedEntity = findById(updater.id)
+            val updatedEntity = findByPrimaryKey(updater.id)
             insertHistory(updatedEntity, ChangeType.UPDATE)
 
         }

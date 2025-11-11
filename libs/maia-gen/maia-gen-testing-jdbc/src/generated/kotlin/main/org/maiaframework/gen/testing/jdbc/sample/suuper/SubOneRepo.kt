@@ -18,16 +18,23 @@ class SubOneRepo(
     private val logger = getLogger<SubOneRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): SubOneEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): SubOneEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): SubOneEntity {
+    fun findByPrimaryKey(id: DomainId): SubOneEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class SubOneRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -131,9 +138,9 @@ class SubOneRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -152,12 +159,12 @@ class SubOneRepo(
     }
 
 
-    fun removeById(id: DomainId): SubOneEntity? {
+    fun removeByPrimaryKey(id: DomainId): SubOneEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found

@@ -4,7 +4,7 @@
 package org.maiaframework.gen.testing.jdbc.sample.history
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -20,6 +20,9 @@ class HistorySampleHistoryDao(
 
 
     private val entityRowMapper = HistorySampleHistoryEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = HistorySampleHistoryEntityPkRowMapper()
 
 
     fun insert(entity: HistorySampleHistoryEntity) {
@@ -137,27 +140,50 @@ class HistorySampleHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByIdAndVersion(id: DomainId, version: Long): HistorySampleHistoryEntity {
+    fun findByPrimaryKey(id: DomainId, version: Long): HistorySampleHistoryEntity {
 
-        return findByIdAndVersionOrNull(id, version)
-            ?: throw EntityNotFoundException(EntityClassAndId(HistorySampleHistoryEntity::class.java, id), HistorySampleHistoryEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id, version)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    HistorySampleHistoryEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                        "version" to version,
+                    )
+                ),
+                HistorySampleHistoryEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdAndVersionOrNull(id: DomainId, version: Long): HistorySampleHistoryEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): HistorySampleHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.history_sample_history where id = :id and v = :version",
             SqlParams().apply {
-                addValue("id", id)
-                addValue("version", version)
+            addValue("id", id)
+            addValue("version", version)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.history_sample_history where id = :id and v = :version",
+            SqlParams().apply {
+                addValue("id", id)
+                addValue("version", version)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findBySomeString(someString: String): List<HistorySampleHistoryEntity> {
 
@@ -167,7 +193,7 @@ class HistorySampleHistoryDao(
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someString", someString)
+            addValue("someString", someString)
             },
             this.entityRowMapper
         )
@@ -191,12 +217,12 @@ class HistorySampleHistoryDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<HistorySampleHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.history_sample_history;",
+            "select id, v from testing.history_sample_history;",
             SqlParams(),
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }
@@ -263,7 +289,7 @@ class HistorySampleHistoryDao(
             where created_by_id = :createdById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", createdById)
+            addValue("createdById", createdById)
             }
         )
 
@@ -280,7 +306,7 @@ class HistorySampleHistoryDao(
             where lm_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedById", lastModifiedById)
             }
         )
 

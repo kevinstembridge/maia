@@ -5,10 +5,11 @@ package org.maiaframework.job
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
 import org.springframework.data.domain.Pageable
@@ -26,6 +27,9 @@ class JobExecutionDao(
 
 
     private val entityRowMapper = JobExecutionEntityRowMapper(objectMapper)
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: JobExecutionEntity) {
@@ -155,26 +159,47 @@ class JobExecutionDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): JobExecutionEntity {
+    fun findByPrimaryKey(id: DomainId): JobExecutionEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(JobExecutionEntity::class.java, id), JobExecutionEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    JobExecutionEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                JobExecutionEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): JobExecutionEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): JobExecutionEntity? {
 
         return jdbcOps.queryForList(
             "select * from jobs.job_execution where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from jobs.job_execution where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findByJobName(jobName: JobName): List<JobExecutionEntity> {
 
@@ -184,7 +209,7 @@ class JobExecutionDao(
             where job_name = :jobName
             """.trimIndent(),
             SqlParams().apply {
-                addValue("jobName", jobName)
+            addValue("jobName", jobName)
             },
             this.entityRowMapper
         )
@@ -208,7 +233,7 @@ class JobExecutionDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from jobs.job_execution;",

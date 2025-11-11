@@ -5,13 +5,14 @@ package org.maiaframework.gen.testing.jdbc.sample.simple
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.gen.sample.types.SomeStringType
 import org.maiaframework.gen.testing.jdbc.sample.types.SomeIntType
 import org.maiaframework.gen.testing.jdbc.sample.types.SomeLongType
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
@@ -33,6 +34,9 @@ class SimpleDao(
 
 
     private val entityRowMapper = SimpleEntityRowMapper(objectMapper)
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
     private val fetchForEditDtoRowMapper = SimpleFetchForEditDtoRowMapper(objectMapper)
 
 
@@ -397,26 +401,47 @@ class SimpleDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): SimpleEntity {
+    fun findByPrimaryKey(id: DomainId): SimpleEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(SimpleEntity::class.java, id), SimpleEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    SimpleEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                SimpleEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): SimpleEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): SimpleEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.simple where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.simple where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findOneOrNullBySomeIntType(someIntType: SomeIntType): SimpleEntity? {
 
@@ -426,7 +451,7 @@ class SimpleDao(
             where some_int_type = :someIntType
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someIntType", someIntType)
+            addValue("someIntType", someIntType)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -451,7 +476,7 @@ class SimpleDao(
             where some_long_type = :someLongType
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someLongType", someLongType)
+            addValue("someLongType", someLongType)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -476,7 +501,7 @@ class SimpleDao(
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someString", someString)
+            addValue("someString", someString)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -501,7 +526,7 @@ class SimpleDao(
             where some_string_nullable = :someStringNullable
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someStringNullable", someStringNullable)
+            addValue("someStringNullable", someStringNullable)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -526,7 +551,7 @@ class SimpleDao(
             where some_string_type = :someStringType
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someStringType", someStringType)
+            addValue("someStringType", someStringType)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -555,8 +580,8 @@ class SimpleDao(
             and some_string_modifiable = :someStringModifiable
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someBoolean", someBoolean)
-                addValue("someStringModifiable", someStringModifiable)
+            addValue("someBoolean", someBoolean)
+            addValue("someStringModifiable", someStringModifiable)
             },
             this.entityRowMapper
         )
@@ -623,7 +648,7 @@ class SimpleDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.simple;",
@@ -695,7 +720,7 @@ class SimpleDao(
             where some_int_type = :someIntType
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someIntType", someIntType)
+            addValue("someIntType", someIntType)
             }
         )
 
@@ -712,7 +737,7 @@ class SimpleDao(
             where some_long_type = :someLongType
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someLongType", someLongType)
+            addValue("someLongType", someLongType)
             }
         )
 
@@ -729,7 +754,7 @@ class SimpleDao(
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someString", someString)
+            addValue("someString", someString)
             }
         )
 
@@ -746,7 +771,7 @@ class SimpleDao(
             where some_string_nullable = :someStringNullable
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someStringNullable", someStringNullable)
+            addValue("someStringNullable", someStringNullable)
             }
         )
 
@@ -763,7 +788,7 @@ class SimpleDao(
             where some_string_type = :someStringType
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someStringType", someStringType)
+            addValue("someStringType", someStringType)
             }
         )
 
@@ -780,7 +805,7 @@ class SimpleDao(
             where created_by_id = :createdById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", createdById)
+            addValue("createdById", createdById)
             }
         )
 
@@ -797,7 +822,7 @@ class SimpleDao(
             where lm_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedById", lastModifiedById)
             }
         )
 
@@ -875,7 +900,7 @@ class SimpleDao(
             },
             this.fetchForEditDtoRowMapper
         ).firstOrNull()
-            ?: throw EntityNotFoundException(EntityClassAndId(SimpleEntity::class.java, id), SimpleEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException(EntityClassAndPk(SimpleEntity::class.java, mapOf("id" to id)), SimpleEntityMeta.TABLE_NAME)
 
     }
 
@@ -1003,56 +1028,56 @@ class SimpleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
-                addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
-                addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-                addValue("someBoolean", upsertEntity.someBoolean)
-                addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
-                addValue("someBooleanType", upsertEntity.someBooleanType)
-                addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
-                addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
-                addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
-                addValue("someEnum", upsertEntity.someEnum)
-                addValue("someEnumNullable", upsertEntity.someEnumNullable)
-                addValue("someInstant", upsertEntity.someInstant)
-                addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
-                addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
-                addValue("someInstantNullable", upsertEntity.someInstantNullable)
-                addValue("someInt", upsertEntity.someInt)
-                addValue("someIntModifiable", upsertEntity.someIntModifiable)
-                addValue("someIntNullable", upsertEntity.someIntNullable)
-                addValue("someIntType", upsertEntity.someIntType)
-                addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
-                addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
-                addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
-                addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
-                addValue("someLongType", upsertEntity.someLongType)
-                addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
-                addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
-                addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
-                addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
-                addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
-                addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
-                addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
-                addValue("someString", upsertEntity.someString)
-                addValue("someStringModifiable", upsertEntity.someStringModifiable)
-                addValue("someStringNullable", upsertEntity.someStringNullable)
-                addValue("someStringType", upsertEntity.someStringType)
-                addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
+            addValue("createdById", upsertEntity.createdById)
+            addValue("createdByUsername", upsertEntity.createdByUsername)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedById", upsertEntity.lastModifiedById)
+            addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("someBoolean", upsertEntity.someBoolean)
+            addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
+            addValue("someBooleanType", upsertEntity.someBooleanType)
+            addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
+            addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
+            addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
+            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addValue("someEnum", upsertEntity.someEnum)
+            addValue("someEnumNullable", upsertEntity.someEnumNullable)
+            addValue("someInstant", upsertEntity.someInstant)
+            addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
+            addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
+            addValue("someInstantNullable", upsertEntity.someInstantNullable)
+            addValue("someInt", upsertEntity.someInt)
+            addValue("someIntModifiable", upsertEntity.someIntModifiable)
+            addValue("someIntNullable", upsertEntity.someIntNullable)
+            addValue("someIntType", upsertEntity.someIntType)
+            addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
+            addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
+            addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+            addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
+            addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
+            addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
+            addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
+            addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
+            addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
+            addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
+            addValue("someLongType", upsertEntity.someLongType)
+            addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
+            addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
+            addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
+            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
+            addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
+            addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
+            addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
+            addValue("someString", upsertEntity.someString)
+            addValue("someStringModifiable", upsertEntity.someStringModifiable)
+            addValue("someStringNullable", upsertEntity.someStringNullable)
+            addValue("someStringType", upsertEntity.someStringType)
+            addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
@@ -1189,56 +1214,56 @@ class SimpleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
-                addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
-                addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-                addValue("someBoolean", upsertEntity.someBoolean)
-                addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
-                addValue("someBooleanType", upsertEntity.someBooleanType)
-                addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
-                addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
-                addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
-                addValue("someEnum", upsertEntity.someEnum)
-                addValue("someEnumNullable", upsertEntity.someEnumNullable)
-                addValue("someInstant", upsertEntity.someInstant)
-                addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
-                addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
-                addValue("someInstantNullable", upsertEntity.someInstantNullable)
-                addValue("someInt", upsertEntity.someInt)
-                addValue("someIntModifiable", upsertEntity.someIntModifiable)
-                addValue("someIntNullable", upsertEntity.someIntNullable)
-                addValue("someIntType", upsertEntity.someIntType)
-                addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
-                addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
-                addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
-                addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
-                addValue("someLongType", upsertEntity.someLongType)
-                addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
-                addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
-                addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
-                addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
-                addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
-                addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
-                addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
-                addValue("someString", upsertEntity.someString)
-                addValue("someStringModifiable", upsertEntity.someStringModifiable)
-                addValue("someStringNullable", upsertEntity.someStringNullable)
-                addValue("someStringType", upsertEntity.someStringType)
-                addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
+            addValue("createdById", upsertEntity.createdById)
+            addValue("createdByUsername", upsertEntity.createdByUsername)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedById", upsertEntity.lastModifiedById)
+            addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("someBoolean", upsertEntity.someBoolean)
+            addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
+            addValue("someBooleanType", upsertEntity.someBooleanType)
+            addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
+            addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
+            addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
+            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addValue("someEnum", upsertEntity.someEnum)
+            addValue("someEnumNullable", upsertEntity.someEnumNullable)
+            addValue("someInstant", upsertEntity.someInstant)
+            addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
+            addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
+            addValue("someInstantNullable", upsertEntity.someInstantNullable)
+            addValue("someInt", upsertEntity.someInt)
+            addValue("someIntModifiable", upsertEntity.someIntModifiable)
+            addValue("someIntNullable", upsertEntity.someIntNullable)
+            addValue("someIntType", upsertEntity.someIntType)
+            addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
+            addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
+            addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+            addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
+            addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
+            addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
+            addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
+            addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
+            addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
+            addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
+            addValue("someLongType", upsertEntity.someLongType)
+            addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
+            addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
+            addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
+            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
+            addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
+            addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
+            addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
+            addValue("someString", upsertEntity.someString)
+            addValue("someStringModifiable", upsertEntity.someStringModifiable)
+            addValue("someStringNullable", upsertEntity.someStringNullable)
+            addValue("someStringType", upsertEntity.someStringType)
+            addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
@@ -1375,56 +1400,56 @@ class SimpleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
-                addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
-                addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-                addValue("someBoolean", upsertEntity.someBoolean)
-                addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
-                addValue("someBooleanType", upsertEntity.someBooleanType)
-                addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
-                addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
-                addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
-                addValue("someEnum", upsertEntity.someEnum)
-                addValue("someEnumNullable", upsertEntity.someEnumNullable)
-                addValue("someInstant", upsertEntity.someInstant)
-                addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
-                addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
-                addValue("someInstantNullable", upsertEntity.someInstantNullable)
-                addValue("someInt", upsertEntity.someInt)
-                addValue("someIntModifiable", upsertEntity.someIntModifiable)
-                addValue("someIntNullable", upsertEntity.someIntNullable)
-                addValue("someIntType", upsertEntity.someIntType)
-                addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
-                addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
-                addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
-                addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
-                addValue("someLongType", upsertEntity.someLongType)
-                addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
-                addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
-                addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
-                addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
-                addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
-                addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
-                addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
-                addValue("someString", upsertEntity.someString)
-                addValue("someStringModifiable", upsertEntity.someStringModifiable)
-                addValue("someStringNullable", upsertEntity.someStringNullable)
-                addValue("someStringType", upsertEntity.someStringType)
-                addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
+            addValue("createdById", upsertEntity.createdById)
+            addValue("createdByUsername", upsertEntity.createdByUsername)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedById", upsertEntity.lastModifiedById)
+            addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("someBoolean", upsertEntity.someBoolean)
+            addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
+            addValue("someBooleanType", upsertEntity.someBooleanType)
+            addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
+            addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
+            addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
+            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addValue("someEnum", upsertEntity.someEnum)
+            addValue("someEnumNullable", upsertEntity.someEnumNullable)
+            addValue("someInstant", upsertEntity.someInstant)
+            addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
+            addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
+            addValue("someInstantNullable", upsertEntity.someInstantNullable)
+            addValue("someInt", upsertEntity.someInt)
+            addValue("someIntModifiable", upsertEntity.someIntModifiable)
+            addValue("someIntNullable", upsertEntity.someIntNullable)
+            addValue("someIntType", upsertEntity.someIntType)
+            addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
+            addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
+            addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+            addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
+            addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
+            addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
+            addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
+            addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
+            addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
+            addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
+            addValue("someLongType", upsertEntity.someLongType)
+            addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
+            addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
+            addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
+            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
+            addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
+            addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
+            addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
+            addValue("someString", upsertEntity.someString)
+            addValue("someStringModifiable", upsertEntity.someStringModifiable)
+            addValue("someStringNullable", upsertEntity.someStringNullable)
+            addValue("someStringType", upsertEntity.someStringType)
+            addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
@@ -1561,56 +1586,56 @@ class SimpleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
-                addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
-                addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-                addValue("someBoolean", upsertEntity.someBoolean)
-                addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
-                addValue("someBooleanType", upsertEntity.someBooleanType)
-                addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
-                addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
-                addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
-                addValue("someEnum", upsertEntity.someEnum)
-                addValue("someEnumNullable", upsertEntity.someEnumNullable)
-                addValue("someInstant", upsertEntity.someInstant)
-                addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
-                addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
-                addValue("someInstantNullable", upsertEntity.someInstantNullable)
-                addValue("someInt", upsertEntity.someInt)
-                addValue("someIntModifiable", upsertEntity.someIntModifiable)
-                addValue("someIntNullable", upsertEntity.someIntNullable)
-                addValue("someIntType", upsertEntity.someIntType)
-                addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
-                addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
-                addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
-                addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
-                addValue("someLongType", upsertEntity.someLongType)
-                addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
-                addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
-                addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
-                addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
-                addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
-                addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
-                addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
-                addValue("someString", upsertEntity.someString)
-                addValue("someStringModifiable", upsertEntity.someStringModifiable)
-                addValue("someStringNullable", upsertEntity.someStringNullable)
-                addValue("someStringType", upsertEntity.someStringType)
-                addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
+            addValue("createdById", upsertEntity.createdById)
+            addValue("createdByUsername", upsertEntity.createdByUsername)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedById", upsertEntity.lastModifiedById)
+            addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("someBoolean", upsertEntity.someBoolean)
+            addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
+            addValue("someBooleanType", upsertEntity.someBooleanType)
+            addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
+            addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
+            addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
+            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addValue("someEnum", upsertEntity.someEnum)
+            addValue("someEnumNullable", upsertEntity.someEnumNullable)
+            addValue("someInstant", upsertEntity.someInstant)
+            addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
+            addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
+            addValue("someInstantNullable", upsertEntity.someInstantNullable)
+            addValue("someInt", upsertEntity.someInt)
+            addValue("someIntModifiable", upsertEntity.someIntModifiable)
+            addValue("someIntNullable", upsertEntity.someIntNullable)
+            addValue("someIntType", upsertEntity.someIntType)
+            addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
+            addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
+            addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+            addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
+            addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
+            addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
+            addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
+            addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
+            addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
+            addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
+            addValue("someLongType", upsertEntity.someLongType)
+            addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
+            addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
+            addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
+            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
+            addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
+            addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
+            addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
+            addValue("someString", upsertEntity.someString)
+            addValue("someStringModifiable", upsertEntity.someStringModifiable)
+            addValue("someStringNullable", upsertEntity.someStringNullable)
+            addValue("someStringType", upsertEntity.someStringType)
+            addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
@@ -1747,56 +1772,56 @@ class SimpleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
-                addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
-                addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-                addValue("someBoolean", upsertEntity.someBoolean)
-                addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
-                addValue("someBooleanType", upsertEntity.someBooleanType)
-                addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
-                addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
-                addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
-                addValue("someEnum", upsertEntity.someEnum)
-                addValue("someEnumNullable", upsertEntity.someEnumNullable)
-                addValue("someInstant", upsertEntity.someInstant)
-                addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
-                addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
-                addValue("someInstantNullable", upsertEntity.someInstantNullable)
-                addValue("someInt", upsertEntity.someInt)
-                addValue("someIntModifiable", upsertEntity.someIntModifiable)
-                addValue("someIntNullable", upsertEntity.someIntNullable)
-                addValue("someIntType", upsertEntity.someIntType)
-                addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
-                addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
-                addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
-                addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
-                addValue("someLongType", upsertEntity.someLongType)
-                addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
-                addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
-                addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
-                addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
-                addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
-                addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
-                addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
-                addValue("someString", upsertEntity.someString)
-                addValue("someStringModifiable", upsertEntity.someStringModifiable)
-                addValue("someStringNullable", upsertEntity.someStringNullable)
-                addValue("someStringType", upsertEntity.someStringType)
-                addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
+            addValue("createdById", upsertEntity.createdById)
+            addValue("createdByUsername", upsertEntity.createdByUsername)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedById", upsertEntity.lastModifiedById)
+            addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("someBoolean", upsertEntity.someBoolean)
+            addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
+            addValue("someBooleanType", upsertEntity.someBooleanType)
+            addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
+            addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
+            addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
+            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addValue("someEnum", upsertEntity.someEnum)
+            addValue("someEnumNullable", upsertEntity.someEnumNullable)
+            addValue("someInstant", upsertEntity.someInstant)
+            addValue("someInstantModifiable", upsertEntity.someInstantModifiable)
+            addValue("someInstantModifiableNullable", upsertEntity.someInstantModifiableNullable)
+            addValue("someInstantNullable", upsertEntity.someInstantNullable)
+            addValue("someInt", upsertEntity.someInt)
+            addValue("someIntModifiable", upsertEntity.someIntModifiable)
+            addValue("someIntNullable", upsertEntity.someIntNullable)
+            addValue("someIntType", upsertEntity.someIntType)
+            addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
+            addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
+            addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+            addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
+            addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
+            addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
+            addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
+            addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
+            addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
+            addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
+            addValue("someLongType", upsertEntity.someLongType)
+            addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
+            addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
+            addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
+            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
+            addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
+            addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
+            addValue("someProvidedStringTypeNullable", upsertEntity.someProvidedStringTypeNullable)
+            addValue("someString", upsertEntity.someString)
+            addValue("someStringModifiable", upsertEntity.someStringModifiable)
+            addValue("someStringNullable", upsertEntity.someStringNullable)
+            addValue("someStringType", upsertEntity.someStringType)
+            addValue("someStringTypeNullable", upsertEntity.someStringTypeNullable)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
@@ -1861,9 +1886,9 @@ class SimpleDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -1881,12 +1906,12 @@ class SimpleDao(
     }
 
 
-    fun removeById(id: DomainId): SimpleEntity? {
+    fun removeByPrimaryKey(id: DomainId): SimpleEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

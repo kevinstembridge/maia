@@ -5,7 +5,7 @@ package org.maiaframework.toggles
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -22,6 +22,9 @@ class FeatureToggleHistoryDao(
 
 
     private val entityRowMapper = FeatureToggleHistoryEntityRowMapper(objectMapper)
+
+
+    private val primaryKeyRowMapper = FeatureToggleHistoryEntityPkRowMapper()
 
 
     fun insert(entity: FeatureToggleHistoryEntity) {
@@ -175,27 +178,50 @@ class FeatureToggleHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByFeatureNameAndVersion(featureName: FeatureName, version: Long): FeatureToggleHistoryEntity {
+    fun findByPrimaryKey(featureName: FeatureName, version: Long): FeatureToggleHistoryEntity {
 
-        return findByFeatureNameAndVersionOrNull(featureName, version)
-            ?: throw EntityNotFoundException(EntityClassAndId(FeatureToggleHistoryEntity::class.java, id), FeatureToggleHistoryEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(featureName, version)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    FeatureToggleHistoryEntity::class.java,
+                    mapOf(
+                        "featureName" to featureName,
+                        "version" to version,
+                    )
+                ),
+                FeatureToggleHistoryEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByFeatureNameAndVersionOrNull(featureName: FeatureName, version: Long): FeatureToggleHistoryEntity? {
+    fun findByPrimaryKeyOrNull(featureName: FeatureName, version: Long): FeatureToggleHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from toggles.feature_toggle_history where feature_name = :featureName and v = :version",
             SqlParams().apply {
-                addValue("featureName", featureName)
-                addValue("version", version)
+            addValue("featureName", featureName.value)
+            addValue("version", version)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(featureName: FeatureName, version: Long): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from toggles.feature_toggle_history where feature_name = :featureName and v = :version",
+            SqlParams().apply {
+                addValue("featureName", featureName.value)
+                addValue("version", version)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: FeatureToggleHistoryEntityFilter): List<FeatureToggleHistoryEntity> {
 
@@ -213,12 +239,12 @@ class FeatureToggleHistoryDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<FeatureToggleHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from toggles.feature_toggle_history;",
+            "select feature_name, v from toggles.feature_toggle_history;",
             SqlParams(),
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }

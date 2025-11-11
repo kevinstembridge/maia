@@ -18,16 +18,23 @@ class NullableFieldsRepo(
     private val logger = getLogger<NullableFieldsRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): NullableFieldsEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): NullableFieldsEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): NullableFieldsEntity {
+    fun findByPrimaryKey(id: DomainId): NullableFieldsEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class NullableFieldsRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

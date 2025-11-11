@@ -34,17 +34,17 @@ class HistoryEntityTest: AbstractJdbcTest() {
         this.dao.insert(historySampleEntity)
 
         // THEN we can find version 1 of the inserted entity
-        val actualEntityV1 = this.dao.findById(entityId)
+        val actualEntityV1 = this.dao.findByPrimaryKey(entityId)
         assertThat(actualEntityV1.version).isEqualTo(1)
 
         // AND version 1 of the history entity
-        val actualHistoryEntityV1 = this.historyDao.findOneByIdAndVersion(entityId, 1)
+        val actualHistoryEntityV1 = this.historyDao.findByPrimaryKey(entityId, 1)
         assertHistoryEntity(actualHistoryEntityV1, actualEntityV1, ChangeType.CREATE)
 
         // WHEN we update the entity
         val someIntUpdated = actualEntityV1.someInt + 1
         val someStringUpdated = actualEntityV1.someString + "_updated"
-        val updater = HistorySampleEntityUpdater.forIdAndVersion(actualEntityV1.id, actualEntityV1.version) {
+        val updater = HistorySampleEntityUpdater.forPrimaryKey(actualEntityV1.id, actualEntityV1.version) {
             someInt(someIntUpdated)
             someString(someStringUpdated)
         }.build()
@@ -60,21 +60,21 @@ class HistoryEntityTest: AbstractJdbcTest() {
         assertThat(this.dao.count(filter)).isZero()
 
         // AND we can find version 2 of the entity
-        val actualEntityV2 = this.dao.findById(entityId)
+        val actualEntityV2 = this.dao.findByPrimaryKey(entityId)
         assertThat(actualEntityV2.version).isEqualTo(2)
 
         // AND we can find version 2 of the history entity
-        val actualHistoryEntityV2 = this.historyDao.findOneByIdAndVersion(entityId, 2)
+        val actualHistoryEntityV2 = this.historyDao.findByPrimaryKey(entityId, 2)
         assertHistoryEntity(actualHistoryEntityV2, actualEntityV2, ChangeType.UPDATE)
 
         // WHEN we delete the entity
-        this.dao.deleteById(entityId)
+        this.dao.deleteByPrimaryKey(entityId)
 
         // THEN we can no longer find a version of the entity
-        assertThat(this.dao.findByIdOrNull(entityId)).isNull()
+        assertThat(this.dao.findByPrimaryKeyOrNull(entityId)).isNull()
 
         // AND we can find version 3 of the history entity
-        val actualHistoryEntityV3 = this.historyDao.findOneByIdAndVersion(entityId, 3)
+        val actualHistoryEntityV3 = this.historyDao.findByPrimaryKey(entityId, 3)
         assertHistoryEntity(actualHistoryEntityV3, actualEntityV2, 3, ChangeType.DELETE)
 
     }
@@ -91,11 +91,11 @@ class HistoryEntityTest: AbstractJdbcTest() {
         this.dao.insert(entity)
 
         // THEN we can find version 1 of the inserted entity
-        val actualEntityV1 = this.dao.findById(entityId)
+        val actualEntityV1 = this.dao.findByPrimaryKey(entityId)
         assertThat(actualEntityV1.version).isEqualTo(1)
 
         // AND version 1 of the history entity
-        val actualHistoryEntityV1 = this.historyDao.findOneByIdAndVersion(entityId, 1)
+        val actualHistoryEntityV1 = this.historyDao.findByPrimaryKey(entityId, 1)
         assertHistoryEntity(actualHistoryEntityV1, actualEntityV1, ChangeType.CREATE)
 
         // WHEN we update the entity
@@ -122,11 +122,11 @@ class HistoryEntityTest: AbstractJdbcTest() {
         assertThat(this.dao.count(filterForVersion1)).isZero()
 
         // AND we can find version 2 of the entity
-        val actualEntityV2 = this.dao.findById(entityId)
+        val actualEntityV2 = this.dao.findByPrimaryKey(entityId)
         assertThat(actualEntityV2.version).isEqualTo(2)
 
         // AND we can find version 2 of the history entity
-        val actualHistoryEntityV2 = this.historyDao.findOneByIdAndVersion(entityId, 2)
+        val actualHistoryEntityV2 = this.historyDao.findByPrimaryKey(entityId, 2)
         assertHistoryEntity(actualHistoryEntityV2, actualEntityV2, ChangeType.UPDATE)
 
     }
@@ -147,11 +147,11 @@ class HistoryEntityTest: AbstractJdbcTest() {
         this.dao.insert(entity)
 
         // THEN we can find the initial version of the inserted entity
-        val actualEntityV1 = this.dao.findById(entityId)
+        val actualEntityV1 = this.dao.findByPrimaryKey(entityId)
         assertThat(actualEntityV1.version).isEqualTo(initialVersion)
 
         // AND the initial version of the history entity
-        val actualHistoryEntityV1 = this.historyDao.findOneByIdAndVersion(entityId, initialVersion)
+        val actualHistoryEntityV1 = this.historyDao.findByPrimaryKey(entityId, initialVersion)
         assertHistoryEntity(actualHistoryEntityV1, actualEntityV1, ChangeType.CREATE)
 
         // WHEN we update the entity
@@ -178,11 +178,11 @@ class HistoryEntityTest: AbstractJdbcTest() {
         assertThat(this.dao.count(filterForVersion1)).isZero()
 
         // AND we can find initial version + 1 of the entity
-        val actualEntityV2 = this.dao.findById(entityId)
+        val actualEntityV2 = this.dao.findByPrimaryKey(entityId)
         assertThat(actualEntityV2.version).isEqualTo(incrementedVersion)
 
         // AND we can find the incremented version of the history entity
-        val actualHistoryEntityV2 = this.historyDao.findOneByIdAndVersion(entityId, incrementedVersion)
+        val actualHistoryEntityV2 = this.historyDao.findByPrimaryKey(entityId, incrementedVersion)
         assertHistoryEntity(actualHistoryEntityV2, actualEntityV2, ChangeType.UPDATE)
 
     }

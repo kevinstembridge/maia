@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -20,6 +21,9 @@ class FileStorageEntryDao(
 
 
     private val entityRowMapper = FileStorageEntryEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: FileStorageEntryEntity) {
@@ -47,14 +51,14 @@ class FileStorageEntryDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-            addValue("contentType", entity.contentType)
-            addValue("createdTimestampUtc", entity.createdTimestampUtc)
-            addValue("description", entity.description)
-            addValue("fileName", entity.fileName)
-            addValue("fileTimestampUtc", entity.fileTimestampUtc)
-            addValue("id", entity.id)
-            addValue("lengthInBytes", entity.lengthInBytes)
-            addValue("md5", entity.md5)
+                addValue("contentType", entity.contentType)
+                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("description", entity.description)
+                addValue("fileName", entity.fileName)
+                addValue("fileTimestampUtc", entity.fileTimestampUtc)
+                addValue("id", entity.id)
+                addValue("lengthInBytes", entity.lengthInBytes)
+                addValue("md5", entity.md5)
             }
         )
 
@@ -87,14 +91,14 @@ class FileStorageEntryDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                addValue("contentType", entity.contentType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
-                addValue("description", entity.description)
-                addValue("fileName", entity.fileName)
-                addValue("fileTimestampUtc", entity.fileTimestampUtc)
-                addValue("id", entity.id)
-                addValue("lengthInBytes", entity.lengthInBytes)
-                addValue("md5", entity.md5)
+                    addValue("contentType", entity.contentType)
+                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("description", entity.description)
+                    addValue("fileName", entity.fileName)
+                    addValue("fileTimestampUtc", entity.fileTimestampUtc)
+                    addValue("id", entity.id)
+                    addValue("lengthInBytes", entity.lengthInBytes)
+                    addValue("md5", entity.md5)
                 }
             }
         )
@@ -160,6 +164,19 @@ class FileStorageEntryDao(
     }
 
 
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from storage.file_storage_entry where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
+
     fun findAllBy(filter: FileStorageEntryEntityFilter): List<FileStorageEntryEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
@@ -176,7 +193,7 @@ class FileStorageEntryDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from storage.file_storage_entry;",

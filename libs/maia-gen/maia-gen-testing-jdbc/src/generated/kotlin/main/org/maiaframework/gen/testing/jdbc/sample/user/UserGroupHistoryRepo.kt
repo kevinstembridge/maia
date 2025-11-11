@@ -18,16 +18,23 @@ class UserGroupHistoryRepo(
     private val logger = getLogger<UserGroupHistoryRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): UserGroupHistoryEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): UserGroupHistoryEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id, version)
 
     }
 
 
-    fun findById(id: DomainId): UserGroupHistoryEntity {
+    fun findByPrimaryKey(id: DomainId, version: Long): UserGroupHistoryEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id, version)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
+
+        return dao.existsByPrimaryKey(id, version)
 
     }
 
@@ -39,9 +46,9 @@ class UserGroupHistoryRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<UserGroupHistoryEntityPk> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

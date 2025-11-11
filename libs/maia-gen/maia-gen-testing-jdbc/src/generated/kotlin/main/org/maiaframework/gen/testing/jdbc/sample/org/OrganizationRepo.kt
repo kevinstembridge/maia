@@ -18,16 +18,23 @@ class OrganizationRepo(
     private val logger = getLogger<OrganizationRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): OrganizationEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): OrganizationEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): OrganizationEntity {
+    fun findByPrimaryKey(id: DomainId): OrganizationEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class OrganizationRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

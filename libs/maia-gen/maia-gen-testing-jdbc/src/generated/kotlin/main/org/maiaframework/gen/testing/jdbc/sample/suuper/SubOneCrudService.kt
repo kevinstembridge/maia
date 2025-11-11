@@ -37,7 +37,7 @@ class SubOneCrudService(
 
     fun delete(id: DomainId) {
 
-        this.entityRepo.deleteById(id)
+        this.entityRepo.deleteByPrimaryKey(id)
 
     }
 

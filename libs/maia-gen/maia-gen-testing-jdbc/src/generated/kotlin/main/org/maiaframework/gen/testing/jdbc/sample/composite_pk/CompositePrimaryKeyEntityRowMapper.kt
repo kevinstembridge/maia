@@ -14,12 +14,16 @@ class CompositePrimaryKeyEntityRowMapper : MaiaRowMapper<CompositePrimaryKeyEnti
 
         val createdTimestampUtc = rsa.readInstant("c_ts")
         val someInt = rsa.readInt("some_int")
+        val someModifiableString = rsa.readString("some_modifiable_string")
         val someString = rsa.readString("some_string")
+        val version = rsa.readLong("v")
 
         return CompositePrimaryKeyEntity(
                 createdTimestampUtc,
                 someInt,
-                someString
+                someModifiableString,
+                someString,
+                version
         )
 
     }

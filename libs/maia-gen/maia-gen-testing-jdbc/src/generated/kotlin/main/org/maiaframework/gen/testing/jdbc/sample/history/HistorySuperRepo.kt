@@ -18,16 +18,23 @@ class HistorySuperRepo(
     private val logger = getLogger<HistorySuperRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): HistorySuperEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): HistorySuperEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): HistorySuperEntity {
+    fun findByPrimaryKey(id: DomainId): HistorySuperEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class HistorySuperRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -101,19 +108,19 @@ class HistorySuperRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
 
-    fun removeById(id: DomainId): HistorySuperEntity? {
+    fun removeByPrimaryKey(id: DomainId): HistorySuperEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found

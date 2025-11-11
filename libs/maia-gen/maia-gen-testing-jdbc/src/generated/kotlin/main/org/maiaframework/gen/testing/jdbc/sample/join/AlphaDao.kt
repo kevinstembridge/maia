@@ -4,9 +4,10 @@
 package org.maiaframework.gen.testing.jdbc.sample.join
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -20,6 +21,9 @@ class AlphaDao(
 
 
     private val entityRowMapper = AlphaEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: AlphaEntity) {
@@ -107,26 +111,47 @@ class AlphaDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): AlphaEntity {
+    fun findByPrimaryKey(id: DomainId): AlphaEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(AlphaEntity::class.java, id), AlphaEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    AlphaEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                AlphaEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): AlphaEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): AlphaEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.alpha where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.alpha where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: AlphaEntityFilter): List<AlphaEntity> {
 
@@ -144,7 +169,7 @@ class AlphaDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.alpha;",
@@ -208,9 +233,9 @@ class AlphaDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -228,12 +253,12 @@ class AlphaDao(
     }
 
 
-    fun removeById(id: DomainId): AlphaEntity? {
+    fun removeByPrimaryKey(id: DomainId): AlphaEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

@@ -18,16 +18,23 @@ class PersonRepo(
     private val logger = getLogger<PersonRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): PersonEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): PersonEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): PersonEntity {
+    fun findByPrimaryKey(id: DomainId): PersonEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class PersonRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

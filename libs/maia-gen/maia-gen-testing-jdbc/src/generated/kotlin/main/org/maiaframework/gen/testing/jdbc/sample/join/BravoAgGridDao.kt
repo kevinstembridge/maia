@@ -45,11 +45,11 @@ class BravoAgGridDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-            addValue("alphaId", entity.alphaId)
-            addValue("createdTimestampUtc", entity.createdTimestampUtc)
-            addValue("id", entity.id)
-            addValue("someInt", entity.someInt)
-            addValue("someString", entity.someString)
+                addValue("alphaId", entity.alphaId)
+                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("id", entity.id)
+                addValue("someInt", entity.someInt)
+                addValue("someString", entity.someString)
             }
         )
 
@@ -76,11 +76,11 @@ class BravoAgGridDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                addValue("alphaId", entity.alphaId)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
-                addValue("id", entity.id)
-                addValue("someInt", entity.someInt)
-                addValue("someString", entity.someString)
+                    addValue("alphaId", entity.alphaId)
+                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("id", entity.id)
+                    addValue("someInt", entity.someInt)
+                    addValue("someString", entity.someString)
                 }
             }
         )

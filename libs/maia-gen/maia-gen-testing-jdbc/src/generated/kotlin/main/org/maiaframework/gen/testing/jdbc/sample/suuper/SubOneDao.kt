@@ -4,10 +4,11 @@
 package org.maiaframework.gen.testing.jdbc.sample.suuper
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
@@ -24,6 +25,9 @@ class SubOneDao(
 
 
     private val entityRowMapper = SubOneEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: SubOneEntity) {
@@ -133,26 +137,47 @@ class SubOneDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): SubOneEntity {
+    fun findByPrimaryKey(id: DomainId): SubOneEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(SubOneEntity::class.java, id), SubOneEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    SubOneEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                SubOneEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): SubOneEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): SubOneEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.super where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.super where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findOneOrNullBySomeUniqueString(someUniqueString: String): SubOneEntity? {
 
@@ -163,7 +188,7 @@ class SubOneDao(
             and type_discriminator = 'SUB1'
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someUniqueString", someUniqueString)
+            addValue("someUniqueString", someUniqueString)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -196,7 +221,7 @@ class SubOneDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.super;",
@@ -268,7 +293,7 @@ class SubOneDao(
             where some_unique_string = :someUniqueString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someUniqueString", someUniqueString)
+            addValue("someUniqueString", someUniqueString)
             }
         )
 
@@ -285,7 +310,7 @@ class SubOneDao(
             where created_by_id = :createdById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", createdById)
+            addValue("createdById", createdById)
             }
         )
 
@@ -302,7 +327,7 @@ class SubOneDao(
             where lm_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedById", lastModifiedById)
             }
         )
 
@@ -341,13 +366,13 @@ class SubOneDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-                addValue("someString", upsertEntity.someString)
-                addValue("someUniqueString", upsertEntity.someUniqueString)
+            addValue("createdById", upsertEntity.createdById)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedById", upsertEntity.lastModifiedById)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("someString", upsertEntity.someString)
+            addValue("someUniqueString", upsertEntity.someUniqueString)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
@@ -405,9 +430,9 @@ class SubOneDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -425,12 +450,12 @@ class SubOneDao(
     }
 
 
-    fun removeById(id: DomainId): SubOneEntity? {
+    fun removeByPrimaryKey(id: DomainId): SubOneEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found

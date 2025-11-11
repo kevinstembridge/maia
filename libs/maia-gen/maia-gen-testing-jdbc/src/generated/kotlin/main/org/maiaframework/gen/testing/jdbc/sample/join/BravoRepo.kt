@@ -18,16 +18,23 @@ class BravoRepo(
     private val logger = getLogger<BravoRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): BravoEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): BravoEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): BravoEntity {
+    fun findByPrimaryKey(id: DomainId): BravoEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class BravoRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -76,9 +83,9 @@ class BravoRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -90,12 +97,12 @@ class BravoRepo(
     }
 
 
-    fun removeById(id: DomainId): BravoEntity? {
+    fun removeByPrimaryKey(id: DomainId): BravoEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found
@@ -105,7 +112,7 @@ class BravoRepo(
 
     fun idAndNameFor(id: DomainId): BravoIdAndNameDto {
 
-        val entity = findById(id)
+        val entity = findByPrimaryKey(id)
         return BravoIdAndNameDto(
             entity.id,
             entity.someString

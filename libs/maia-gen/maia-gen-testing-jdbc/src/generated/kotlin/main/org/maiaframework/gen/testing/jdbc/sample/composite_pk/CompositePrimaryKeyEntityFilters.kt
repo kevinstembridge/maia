@@ -56,10 +56,26 @@ class CompositePrimaryKeyEntityFilters {
         }
 
 
+    val someModifiableString: FieldFilter<String> 
+        get() {
+
+            return FieldFilter("some_modifiable_string", Types.VARCHAR, this.sqlParamCounter) { value -> value }
+
+        }
+
+
     val someString: FieldFilter<String> 
         get() {
 
             return FieldFilter("some_string", Types.VARCHAR, this.sqlParamCounter) { value -> value }
+
+        }
+
+
+    val version: FieldFilter<Long> 
+        get() {
+
+            return FieldFilter("v", Types.BIGINT, this.sqlParamCounter) { value -> value }
 
         }
 

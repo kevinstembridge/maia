@@ -38,7 +38,7 @@ class RowMapperRenderer(
 
             if (foreignKeyFieldDef == null || rowMapperDef.isForEditDto == false) {
 
-                appendLine(RowMapperFunctions.renderRowMapperField(rowMapperFieldDef, indentSize = 16, orElseText = "", ::addImportFor) + ",")
+                appendLine(RowMapperFunctions.renderRowMapperField(rowMapperFieldDef, indentSize = 12, orElseText = "", ::addImportFor) + ",")
 
             } else {
 

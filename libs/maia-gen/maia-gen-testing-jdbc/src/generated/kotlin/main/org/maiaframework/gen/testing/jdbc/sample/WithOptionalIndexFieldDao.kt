@@ -4,10 +4,11 @@
 package org.maiaframework.gen.testing.jdbc.sample
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.gen.sample.types.SomeStringType
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -21,6 +22,9 @@ class WithOptionalIndexFieldDao(
 
 
     private val entityRowMapper = WithOptionalIndexFieldEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: WithOptionalIndexFieldEntity) {
@@ -114,26 +118,47 @@ class WithOptionalIndexFieldDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): WithOptionalIndexFieldEntity {
+    fun findByPrimaryKey(id: DomainId): WithOptionalIndexFieldEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(WithOptionalIndexFieldEntity::class.java, id), WithOptionalIndexFieldEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    WithOptionalIndexFieldEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                WithOptionalIndexFieldEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): WithOptionalIndexFieldEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): WithOptionalIndexFieldEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.with_optional_index_field where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.with_optional_index_field where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findBySomeOptionalString1(someOptionalString1: SomeStringType): List<WithOptionalIndexFieldEntity> {
 
@@ -143,7 +168,7 @@ class WithOptionalIndexFieldDao(
             where some_optional_string1 = :someOptionalString1
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someOptionalString1", someOptionalString1)
+            addValue("someOptionalString1", someOptionalString1)
             },
             this.entityRowMapper
         )
@@ -163,8 +188,8 @@ class WithOptionalIndexFieldDao(
             and some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someOptionalString2", someOptionalString2)
-                addValue("someString", someString)
+            addValue("someOptionalString2", someOptionalString2)
+            addValue("someString", someString)
             },
             this.entityRowMapper
         )
@@ -188,7 +213,7 @@ class WithOptionalIndexFieldDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.with_optional_index_field;",

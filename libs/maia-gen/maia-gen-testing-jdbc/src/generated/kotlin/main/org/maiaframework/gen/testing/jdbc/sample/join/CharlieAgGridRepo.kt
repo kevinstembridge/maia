@@ -18,16 +18,23 @@ class CharlieAgGridRepo(
     private val logger = getLogger<CharlieAgGridRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): CharlieAgGridEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): CharlieAgGridEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): CharlieAgGridEntity {
+    fun findByPrimaryKey(id: DomainId): CharlieAgGridEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class CharlieAgGridRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 
@@ -94,9 +101,9 @@ class CharlieAgGridRepo(
     }
 
 
-    fun deleteById(id: DomainId) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteById(id)
+        this.dao.deleteByPrimaryKey(id)
 
     }
 
@@ -108,12 +115,12 @@ class CharlieAgGridRepo(
     }
 
 
-    fun removeById(id: DomainId): CharlieAgGridEntity? {
+    fun removeByPrimaryKey(id: DomainId): CharlieAgGridEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
        
         return found

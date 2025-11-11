@@ -18,16 +18,23 @@ class VerySimpleRepo(
     private val logger = getLogger<VerySimpleRepo>()
 
 
-    fun findByIdOrNull(id: DomainId): VerySimpleEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): VerySimpleEntity? {
 
-        return dao.findByIdOrNull(id)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findById(id: DomainId): VerySimpleEntity {
+    fun findByPrimaryKey(id: DomainId): VerySimpleEntity {
 
-        return dao.findById(id)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -39,9 +46,9 @@ class VerySimpleRepo(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
-        return dao.findAllIdsAsSequence()
+        return dao.findAllPrimaryKeysAsSequence()
 
     }
 

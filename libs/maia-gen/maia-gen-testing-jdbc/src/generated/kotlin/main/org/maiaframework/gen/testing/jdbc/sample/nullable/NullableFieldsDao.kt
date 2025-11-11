@@ -4,7 +4,7 @@
 package org.maiaframework.gen.testing.jdbc.sample.nullable
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
@@ -23,6 +23,9 @@ class NullableFieldsDao(
 
 
     private val entityRowMapper = NullableFieldsEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     private val idRowMapper = MaiaRowMapper { rs -> rs.readDomainId("id") }
@@ -191,26 +194,47 @@ class NullableFieldsDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): NullableFieldsEntity {
+    fun findByPrimaryKey(id: DomainId): NullableFieldsEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(NullableFieldsEntity::class.java, id), NullableFieldsEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    NullableFieldsEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                NullableFieldsEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): NullableFieldsEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): NullableFieldsEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.nullable_fields where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.nullable_fields where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findOneOrNullBySomeString(someString: String): NullableFieldsEntity? {
 
@@ -220,7 +244,7 @@ class NullableFieldsDao(
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someString", someString)
+            addValue("someString", someString)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -253,7 +277,7 @@ class NullableFieldsDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.nullable_fields;",
@@ -325,7 +349,7 @@ class NullableFieldsDao(
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-                addValue("someString", someString)
+            addValue("someString", someString)
             }
         )
 
@@ -409,23 +433,23 @@ class NullableFieldsDao(
             join testing.nullable_fields c using (some_string);
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("id", upsertEntity.id)
-                addValue("someBoolean", upsertEntity.someBoolean)
-                addValue("someBooleanType", upsertEntity.someBooleanType)
-                addValue("someEnum", upsertEntity.someEnum)
-                addValue("someInstant", upsertEntity.someInstant)
-                addValue("someInt", upsertEntity.someInt)
-                addValue("someIntType", upsertEntity.someIntType)
-                addValue("someLocalDate", upsertEntity.someLocalDate)
-                addValue("someLongType", upsertEntity.someLongType)
-                addValue("somePeriod", upsertEntity.somePeriod)
-                addValue("someProvidedBooleanType", upsertEntity.someProvidedBooleanType)
-                addValue("someProvidedIntType", upsertEntity.someProvidedIntType)
-                addValue("someProvidedLongType", upsertEntity.someProvidedLongType)
-                addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
-                addValue("someString", upsertEntity.someString)
-                addValue("someStringType", upsertEntity.someStringType)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("someBoolean", upsertEntity.someBoolean)
+            addValue("someBooleanType", upsertEntity.someBooleanType)
+            addValue("someEnum", upsertEntity.someEnum)
+            addValue("someInstant", upsertEntity.someInstant)
+            addValue("someInt", upsertEntity.someInt)
+            addValue("someIntType", upsertEntity.someIntType)
+            addValue("someLocalDate", upsertEntity.someLocalDate)
+            addValue("someLongType", upsertEntity.someLongType)
+            addValue("somePeriod", upsertEntity.somePeriod)
+            addValue("someProvidedBooleanType", upsertEntity.someProvidedBooleanType)
+            addValue("someProvidedIntType", upsertEntity.someProvidedIntType)
+            addValue("someProvidedLongType", upsertEntity.someProvidedLongType)
+            addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
+            addValue("someString", upsertEntity.someString)
+            addValue("someStringType", upsertEntity.someStringType)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

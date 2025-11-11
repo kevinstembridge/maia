@@ -4,7 +4,7 @@
 package org.maiaframework.gen.testing.jdbc.sample.history
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -20,6 +20,9 @@ class HistorySuperHistoryDao(
 
 
     private val entityRowMapper = HistorySuperHistoryEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = HistorySuperHistoryEntityPkRowMapper()
 
 
     fun insert(entity: HistorySuperHistoryEntity) {
@@ -183,27 +186,50 @@ class HistorySuperHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByIdAndVersion(id: DomainId, version: Long): HistorySuperHistoryEntity {
+    fun findByPrimaryKey(id: DomainId, version: Long): HistorySuperHistoryEntity {
 
-        return findByIdAndVersionOrNull(id, version)
-            ?: throw EntityNotFoundException(EntityClassAndId(HistorySuperHistoryEntity::class.java, id), HistorySuperHistoryEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id, version)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    HistorySuperHistoryEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                        "version" to version,
+                    )
+                ),
+                HistorySuperHistoryEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdAndVersionOrNull(id: DomainId, version: Long): HistorySuperHistoryEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): HistorySuperHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.history_super_history where id = :id and v = :version",
             SqlParams().apply {
-                addValue("id", id)
-                addValue("version", version)
+            addValue("id", id)
+            addValue("version", version)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.history_super_history where id = :id and v = :version",
+            SqlParams().apply {
+                addValue("id", id)
+                addValue("version", version)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: HistorySuperHistoryEntityFilter): List<HistorySuperHistoryEntity> {
 
@@ -221,12 +247,12 @@ class HistorySuperHistoryDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<HistorySuperHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.history_super_history;",
+            "select id, v from testing.history_super_history;",
             SqlParams(),
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }
@@ -293,7 +319,7 @@ class HistorySuperHistoryDao(
             where created_by_id = :createdById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", createdById)
+            addValue("createdById", createdById)
             }
         )
 
@@ -310,7 +336,7 @@ class HistorySuperHistoryDao(
             where lm_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
-                addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedById", lastModifiedById)
             }
         )
 

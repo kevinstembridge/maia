@@ -46,7 +46,7 @@ class SimpleDaoTest : AbstractJdbcTest() {
 
         this.simpleDao.insert(simpleEntity)
 
-        val actual = this.simpleDao.findById(simpleEntity.id)
+        val actual = this.simpleDao.findByPrimaryKey(simpleEntity.id)
 
         assertThat(actual).isNotNull()
 
@@ -84,7 +84,7 @@ class SimpleDaoTest : AbstractJdbcTest() {
 
         assertThat(deleteResult).isTrue()
 
-        val shouldBeNullAfterDelete = this.simpleDao.findByIdOrNull(simpleEntity.id)
+        val shouldBeNullAfterDelete = this.simpleDao.findByPrimaryKeyOrNull(simpleEntity.id)
         assertThat(shouldBeNullAfterDelete).isNull()
 
     }
@@ -109,7 +109,7 @@ class SimpleDaoTest : AbstractJdbcTest() {
 
         assertThat(deleteResult).isTrue()
 
-        val shouldBeNullAfterDelete = this.simpleDao.findByIdOrNull(simpleEntity.id)
+        val shouldBeNullAfterDelete = this.simpleDao.findByPrimaryKeyOrNull(simpleEntity.id)
         assertThat(shouldBeNullAfterDelete).isNull()
 
     }
@@ -311,7 +311,7 @@ class SimpleDaoTest : AbstractJdbcTest() {
         assertThat(actualOriginal.id).isEqualTo(simpleEntityOriginal.id)
         assertEntityFields(actualOriginal, simpleEntityOriginal)
 
-        val actualOriginalDirectFromDb = this.simpleDao.findById(simpleEntityOriginal.id)
+        val actualOriginalDirectFromDb = this.simpleDao.findByPrimaryKey(simpleEntityOriginal.id)
         assertEntityFields(actualOriginalDirectFromDb, actualOriginal)
 
         val expectedUpdatedEntity = simpleEntityTestBuilder1.copy(
@@ -341,7 +341,7 @@ class SimpleDaoTest : AbstractJdbcTest() {
         assertThat(actualOriginal.id).isEqualTo(simpleEntityOriginal.id)
         assertEntityFields(actualOriginal, simpleEntityOriginal)
 
-        val actualOriginalDirectFromDb = this.simpleDao.findById(simpleEntityOriginal.id)
+        val actualOriginalDirectFromDb = this.simpleDao.findByPrimaryKey(simpleEntityOriginal.id)
         assertEntityFields(actualOriginalDirectFromDb, actualOriginal)
 
         val expectedUpdatedEntity = simpleEntityTestBuilder.copy(
@@ -447,7 +447,7 @@ class SimpleDaoTest : AbstractJdbcTest() {
 
         this.simpleDao.insert(entityBeforeUpdate)
 
-        val entityUpdater = SimpleEntityUpdater.forId(id) {
+        val entityUpdater = SimpleEntityUpdater.forPrimaryKey(id) {
             someInstantModifiable(modifiedInstant)
             someStringModifiable(modifiedString)
             someInstantModifiableNullable(null)
@@ -455,7 +455,7 @@ class SimpleDaoTest : AbstractJdbcTest() {
 
         this.simpleDao.setFields(entityUpdater)
 
-        val entityAfterUpdate = this.simpleDao.findById(id)
+        val entityAfterUpdate = this.simpleDao.findByPrimaryKey(id)
 
         assertEntityFields(entityAfterUpdate, expectedEntity)
 

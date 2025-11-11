@@ -73,7 +73,7 @@ abstract class AbstractJdbcTest {
 
     private fun getOrInsertDefaultCreatedByUser(): UserEntity {
 
-        val existing = this.userDao.findByIdOrNull(Anys.defaultCreatedById)
+        val existing = this.userDao.findByPrimaryKeyOrNull(Anys.defaultCreatedById)
 
         if (existing != null) {
             return existing

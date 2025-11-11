@@ -4,12 +4,13 @@
 package org.maiaframework.gen.testing.jdbc.sample.user
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -24,6 +25,9 @@ class UserDao(
 
 
     private val entityRowMapper = UserEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
     private val fetchForEditDtoRowMapper = UserFetchForEditDtoRowMapper()
 
 
@@ -142,26 +146,47 @@ class UserDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): UserEntity {
+    fun findByPrimaryKey(id: DomainId): UserEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(UserEntity::class.java, id), UserEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    UserEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                UserEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): UserEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): UserEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.v_party where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
 
     }
 
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.v_party where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+           }
+        )
+       
+        return count > 0
+       
+    }
 
     fun findAllBy(filter: UserEntityFilter): List<UserEntity> {
 
@@ -179,7 +204,7 @@ class UserDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.v_party;",
@@ -265,7 +290,7 @@ class UserDao(
             },
             this.fetchForEditDtoRowMapper
         ).firstOrNull()
-            ?: throw EntityNotFoundException(EntityClassAndId(UserEntity::class.java, id), UserEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException(EntityClassAndPk(UserEntity::class.java, mapOf("id" to id)), UserEntityMeta.TABLE_NAME)
 
     }
 

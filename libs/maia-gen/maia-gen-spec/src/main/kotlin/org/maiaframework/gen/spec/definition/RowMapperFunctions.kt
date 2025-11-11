@@ -149,6 +149,8 @@ object RowMapperFunctions {
 
         val listElementFieldType = fieldType.parameterFieldType
 
+        fqcnImporter.invoke(listElementFieldType.fqcn)
+
         return when (listElementFieldType) {
             is BooleanFieldType -> TODO()
             is BooleanTypeFieldType -> TODO()
