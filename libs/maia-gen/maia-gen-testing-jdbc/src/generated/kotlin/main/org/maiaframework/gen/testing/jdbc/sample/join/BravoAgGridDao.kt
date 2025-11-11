@@ -148,14 +148,14 @@ class BravoAgGridDao(
 
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
-       val count = jdbcOps.queryForInt(
-           "select count(*) from testing.bravo_ag_grid where id = :id",
-           SqlParams().apply {
+        val count = jdbcOps.queryForInt(
+            "select count(*) from testing.bravo_ag_grid where id = :id",
+            SqlParams().apply {
                 addValue("id", id)
            }
-       )
+        )
        
-       return count > 0
+        return count > 0
        
     }
 
