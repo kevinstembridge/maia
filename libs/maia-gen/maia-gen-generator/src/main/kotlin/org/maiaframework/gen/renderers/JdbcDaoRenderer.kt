@@ -1078,9 +1078,9 @@ class JdbcDaoRenderer(
             |
             |    fun existsByPrimaryKey($fieldNamesAndTypesCsv): Boolean {
             |
-            |       val count = jdbcOps.queryForInt(
-            |           "select count(*) from ${this.entityDef.schemaAndTableName} where $whereClause",
-            |           SqlParams().apply {
+            |        val count = jdbcOps.queryForInt(
+            |            "select count(*) from ${this.entityDef.schemaAndTableName} where $whereClause",
+            |            SqlParams().apply {
             |""".trimMargin())
 
         this.entityDef.primaryKeyFields.forEach { field ->
@@ -1089,9 +1089,9 @@ class JdbcDaoRenderer(
 
         append("""
             |           }
-            |       )
+            |        )
             |       
-            |       return count > 0
+            |        return count > 0
             |       
             |    }
             """.trimMargin())
