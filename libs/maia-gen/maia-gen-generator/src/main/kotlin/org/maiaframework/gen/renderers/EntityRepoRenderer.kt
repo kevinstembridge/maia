@@ -63,9 +63,9 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         `render function findByPrimaryKeyOrNull`()
         `render function findByPrimaryKey`()
+        `render function existsByPrimaryKey`()
         `render function findAllAsSequence`()
-        `render function findIdsAsSequence`()
-        `render function findAllIdsAsSequence`()
+        `render function findAllPrimaryKeysAsSequence`()
         `render function findAllEffective`()
         `render function findAllByFilter`()
         `render function findAllByFilterAsSequence`()
@@ -155,6 +155,24 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     }
 
 
+    private fun `render function existsByPrimaryKey`() {
+
+        val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+        val fieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
+
+        append("""
+            |
+            |
+            |    fun existsByPrimaryKey($fieldNamesAndTypesCsv): Boolean {
+            |
+            |        return dao.existsByPrimaryKey($fieldNamesCsv)
+            |
+            |    }
+            |""".trimMargin())
+
+    }
+
+
     private fun `render function findAllAsSequence`() {
 
         append("""
@@ -170,24 +188,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     }
 
 
-    private fun `render function findIdsAsSequence`() {
-
-        if (this.entityDef.allowFindAll.value == false) {
-            return
-        }
-
-        blankLine()
-        blankLine()
-        appendLine("    fun findIdsAsSequence(filter: ${this.entityDef.entityFilterClassDef.uqcn}): Sequence<DomainId> {")
-        blankLine()
-        appendLine("        return dao.findIdsAsSequence(filter)")
-        blankLine()
-        appendLine("    }")
-
-    }
-
-
-    private fun `render function findAllIdsAsSequence`() {
+    private fun `render function findAllPrimaryKeysAsSequence`() {
 
         blankLine()
         blankLine()
