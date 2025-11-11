@@ -909,7 +909,6 @@ class JdbcDaoRenderer(
         addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
         addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_PK)
 
-        val fieldNamesAnded = fieldNamesAnded(this.entityDef.primaryKeyFields.map { it.classFieldDef })
         val fieldNamesCsv = this.entityDef.primaryKeyFields.map { it.classFieldName }.joinToString(", ")
         val fieldNamesAndTypesCsv = this.entityDef.primaryKeyFields.joinToString(", ") { "${it.classFieldName}: ${it.fieldType.unqualifiedToString}" }
 
