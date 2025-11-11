@@ -40,17 +40,15 @@ object RowMapperFunctions {
         indentSize: Int = 12,
         orElseText: String = "",
         fqcnImporter: (Fqcn) -> Unit,
-        lineAppender: (String) -> Unit
-    ) {
+    ): String {
 
-        renderRowMapperField(
+        return renderRowMapperField(
             rowMapperFieldDef.entityFieldDef,
             rowMapperFieldDef.resultSetFieldName,
             rowMapperFieldDef.nullability.nullable,
             indentSize,
             orElseText,
             fqcnImporter,
-            lineAppender
         )
 
     }
@@ -63,8 +61,7 @@ object RowMapperFunctions {
         indentSize: Int = 12,
         orElseText: String = "",
         fqcnImporter: (Fqcn) -> Unit,
-        lineAppender: (String) -> Unit
-    ) {
+    ): String {
 
         val classFieldDef = entityFieldDef.classFieldDef
 
@@ -78,36 +75,36 @@ object RowMapperFunctions {
 
         val orElseClause = if (orElseText.isNotBlank()) " ?: \"$orElseText\"" else ""
 
-        when (fieldType) {
-            is BooleanFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
-            is BooleanTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter, lineAppender)
-            is BooleanValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter, lineAppender)
+        return when (fieldType) {
+            is BooleanFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is BooleanTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
+            is BooleanValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
             is DataClassFieldType -> TODO()
-            is DomainIdFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
-            is DoubleFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
-            is EnumFieldType -> renderForEnum(entityFieldDef, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter, lineAppender)
+            is DomainIdFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is DoubleFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is EnumFieldType -> renderForEnum(entityFieldDef, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
             is EsDocFieldType -> TODO()
-            is ForeignKeyFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
+            is ForeignKeyFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is FqcnFieldType -> TODO()
             is IdAndNameFieldType -> TODO()
-            is InstantFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
-            is IntFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
-            is IntTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter, lineAppender)
-            is IntValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter, lineAppender)
-            is ListFieldType -> renderForListField(entityFieldDef, fieldType, indentStr, resultSetColumnName, fqcnImporter, lineAppender)
-            is LocalDateFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
-            is LongFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
-            is LongTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter, lineAppender)
-            is MapFieldType -> renderForListSetOrMap(entityFieldDef, indentStr, resultSetColumnName, fqcnImporter, lineAppender)
-            is ObjectIdFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
-            is PeriodFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
+            is InstantFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is IntFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is IntTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
+            is IntValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
+            is ListFieldType -> renderForListField(entityFieldDef, fieldType, indentStr, resultSetColumnName, fqcnImporter)
+            is LocalDateFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is LongFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is LongTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
+            is MapFieldType -> renderForListSetOrMap(entityFieldDef, indentStr, resultSetColumnName, fqcnImporter)
+            is ObjectIdFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is PeriodFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is RequestDtoFieldType -> TODO()
-            is SetFieldType -> renderForListSetOrMap(entityFieldDef, indentStr, resultSetColumnName, fqcnImporter, lineAppender)
-            is SimpleResponseDtoFieldType -> renderForDto(entityFieldDef, indentStr, fqcnImporter, lineAppender)
-            is StringFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, lineAppender)
-            is StringTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter, lineAppender)
-            is StringValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter, lineAppender)
-            is UrlFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter, lineAppender)
+            is SetFieldType -> renderForListSetOrMap(entityFieldDef, indentStr, resultSetColumnName, fqcnImporter)
+            is SimpleResponseDtoFieldType -> renderForDto(entityFieldDef, indentStr, fqcnImporter)
+            is StringFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is StringTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
+            is StringValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
+            is UrlFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
         }
 
     }
@@ -118,10 +115,9 @@ object RowMapperFunctions {
         rsaGetterFunctionName: String,
         resultSetColumnName: Any,
         orElseClause: String,
-        lineAppender: (String) -> Unit
-    ) {
+    ): String {
 
-        lineAppender.invoke("${indentStr}rsa.$rsaGetterFunctionName(\"${resultSetColumnName}\")$orElseClause,")
+        return "${indentStr}rsa.$rsaGetterFunctionName(\"${resultSetColumnName}\")$orElseClause"
 
     }
 
@@ -132,12 +128,11 @@ object RowMapperFunctions {
         rsaGetterFunctionName: String,
         resultSetColumnName: Any,
         fqcnImporter: (Fqcn) -> Unit,
-        lineAppender: (String) -> Unit
-    ) {
+    ): String {
 
         fqcnImporter.invoke(entityFieldDef.fieldType.fqcn)
 
-        lineAppender.invoke("${indentStr}rsa.${rsaGetterFunctionName}(\"${resultSetColumnName}\", ${entityFieldDef.fieldType.fqcn.uqcn}::class.java),")
+        return "${indentStr}rsa.${rsaGetterFunctionName}(\"${resultSetColumnName}\", ${entityFieldDef.fieldType.fqcn.uqcn}::class.java)"
 
     }
 
@@ -148,41 +143,40 @@ object RowMapperFunctions {
         indentStr: String,
         resultSetColumnName: Any,
         fqcnImporter: (Fqcn) -> Unit,
-        lineAppender: (String) -> Unit
-    ) {
+    ): String {
 
         fqcnImporter.invoke(fieldType.fqcn)
 
         val listElementFieldType = fieldType.parameterFieldType
 
-        when (listElementFieldType) {
+        return when (listElementFieldType) {
             is BooleanFieldType -> TODO()
             is BooleanTypeFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
             is DataClassFieldType -> TODO()
             is DomainIdFieldType -> TODO()
             is DoubleFieldType -> TODO()
-            is EnumFieldType -> lineAppender.invoke("${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}.valueOf(it) },")
+            is EnumFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}.valueOf(it) }"
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> TODO()
             is IdAndNameFieldType -> TODO()
-            is InstantFieldType -> lineAppender.invoke("${indentStr}rsa.readListOfInstants(\"${resultSetColumnName}\"),")
+            is InstantFieldType -> "${indentStr}rsa.readListOfInstants(\"${resultSetColumnName}\")"
             is IntFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
-            is LocalDateFieldType -> lineAppender.invoke("${indentStr}rsa.readListOfLocalDates(\"${resultSetColumnName}\"),")
+            is LocalDateFieldType -> "${indentStr}rsa.readListOfLocalDates(\"${resultSetColumnName}\")"
             is LongFieldType -> TODO()
             is LongTypeFieldType -> TODO()
-            is MapFieldType -> lineAppender.invoke("${indentStr}rsa.readString(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) },")
+            is MapFieldType -> "${indentStr}rsa.readString(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
             is ObjectIdFieldType -> TODO()
-            is PeriodFieldType -> lineAppender.invoke("${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { Period.parse(it) },")
+            is PeriodFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { Period.parse(it) }"
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()
-            is StringFieldType -> lineAppender.invoke("${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\"),")
-            is StringTypeFieldType -> lineAppender.invoke("${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}(it) },")
+            is StringFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\")"
+            is StringTypeFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}(it) }"
             is StringValueClassFieldType -> TODO()
             is UrlFieldType -> TODO()
         }
@@ -195,13 +189,12 @@ object RowMapperFunctions {
         indentStr: String,
         resultSetColumnName: Any,
         fqcnImporter: (Fqcn) -> Unit,
-        lineAppender: (String) -> Unit
-    ) {
+    ): String {
 
         fqcnImporter.invoke(Fqcns.JACKSON_TYPE_REFERENCE)
         fqcnImporter.invoke(entityFieldDef.fieldType.fqcn)
 
-        lineAppender.invoke("${indentStr}rsa.readString(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) },")
+        return "${indentStr}rsa.readString(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
 
     }
 
@@ -212,12 +205,11 @@ object RowMapperFunctions {
         rsaGetterFunctionName: String,
         resultSetColumnName: Any,
         fieldTypeImporter: (Fqcn) -> Unit,
-        lineAppender: (String) -> Unit
-    ) {
+    ): String {
 
         fieldTypeImporter.invoke(fieldType.fqcn)
 
-        lineAppender.invoke("${indentStr}rsa.${rsaGetterFunctionName}(\"${resultSetColumnName}\") { ${fieldType.uqcn}(it) },")
+        return "${indentStr}rsa.${rsaGetterFunctionName}(\"${resultSetColumnName}\") { ${fieldType.uqcn}(it) }"
 
     }
 
@@ -226,14 +218,13 @@ object RowMapperFunctions {
         entityFieldDef: EntityFieldDef,
         indentStr: String,
         fqcnImporter: (Fqcn) -> Unit,
-        lineAppender: (String) -> Unit
-    ) {
+    ): String {
 
         fqcnImporter.invoke(entityFieldDef.fieldType.fqcn)
 
         val nullableSuffix = if (entityFieldDef.nullability.nullable) "OrNull" else ""
 
-        lineAppender.invoke("${indentStr}rsa.readString$nullableSuffix(\"${entityFieldDef.classFieldName}\") { objectMapper.readValue(it, ${entityFieldDef.classFieldDef.fqcn.uqcn}::class.java) },")
+        return "${indentStr}rsa.readString$nullableSuffix(\"${entityFieldDef.classFieldName}\") { objectMapper.readValue(it, ${entityFieldDef.classFieldDef.fqcn.uqcn}::class.java) }"
 
     }
 
