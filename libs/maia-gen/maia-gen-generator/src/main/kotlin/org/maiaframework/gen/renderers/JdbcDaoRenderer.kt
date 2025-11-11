@@ -95,42 +95,41 @@ class JdbcDaoRenderer(
 
         val primaryKeyRowMapperDef = this.entityDef.primaryKeyRowMapperDef
 
-        if (primaryKeyRowMapperDef != null) {
+        if (primaryKeyRowMapperDef == null) {
+
+            addImportFor(Fqcns.MAIA_JDBC_ROW_MAPPER)
+
+            val primaryKeyField = entityDef.primaryKeyFields.first()
 
             blankLine()
             blankLine()
+            appendLine("    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> ${RowMapperFunctions.renderRowMapperField(
+                primaryKeyField,
+                resultSetFieldName = primaryKeyField.tableColumnName.value,
+                nullable = primaryKeyField.nullable,
+                indentSize = 0,
+                orElseText = "",
+                ::addImportFor,
+            )} }")
 
-            if (entityDef.hasCompositePrimaryKey) {
+        } else {
 
-                addImportFor(primaryKeyRowMapperDef.classDef.fqcn)
+            addImportFor(primaryKeyRowMapperDef.classDef.fqcn)
 
-                appendLine("    private val primaryKeyRowMapper = ${primaryKeyRowMapperDef.classDef.uqcn}()")
-
-            } else {
-
-                addImportFor(Fqcns.MAIA_JDBC_ROW_MAPPER)
-
-                val primaryKeyField = entityDef.primaryKeyFields.first()
-
-
-                appendLine("    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> ${RowMapperFunctions.renderRowMapperField(
-                    primaryKeyField,
-                    resultSetFieldName = primaryKeyField.tableColumnName.value,
-                    nullable = primaryKeyField.nullable,
-                    indentSize = 0,
-                    orElseText = "",
-                    ::addImportFor,
-                )} }")
-
-            }
+            blankLine()
+            blankLine()
+            appendLine("    private val primaryKeyRowMapper = ${primaryKeyRowMapperDef.classDef.uqcn}()")
 
         }
 
         if (this.entityDef.isModifiable == false && this.entityDef.isHistoryEntity == false && this.entityDef.uniqueIndexDefs.isNotEmpty()) {
+
             addImportFor(Fqcns.MAIA_JDBC_ROW_MAPPER)
+
             blankLine()
             blankLine()
             appendLine("    private val idRowMapper = MaiaRowMapper { rs -> rs.readDomainId(\"id\") }")
+            
         }
 
         if (entityDef.isConcrete && entityDef.entityCrudApiDef?.updateApiDef != null) {
@@ -152,6 +151,7 @@ class JdbcDaoRenderer(
         `render function countWithFilter`()
         `render function findByPrimaryKey`()
         `render function findByPrimaryKeyOrNull`()
+        `render function existsByPrimaryKey`()
         `render finders for indexes`()
         `render findAll`()
         `render findAllEffective`()
@@ -887,7 +887,7 @@ class JdbcDaoRenderer(
         appendLine("            \"select $primaryKeyColumnsCsv from ${entityDef.schemaAndTableName};\",")
         appendLine("            SqlParams(),")
 
-        if (entityDef.primaryKeyRowMapperDef == null) {
+        if (entityDef.hasSurrogatePrimaryKey) {
             appendLine("            { rsa -> rsa.readDomainId(\"id\") }")
         } else {
             appendLine("            this.primaryKeyRowMapper")
@@ -1064,6 +1064,38 @@ class JdbcDaoRenderer(
         appendLine("        }")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render function existsByPrimaryKey`() {
+
+        val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
+        val whereClause = this.entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }
+
+
+        append("""
+            |
+            |
+            |    fun existsByPrimaryKey($fieldNamesAndTypesCsv): Boolean {
+            |
+            |       val count = jdbcOps.queryForInt(
+            |           "select count(*) from ${this.entityDef.schemaAndTableName} where $whereClause",
+            |           SqlParams().apply {
+            |""".trimMargin())
+
+        this.entityDef.primaryKeyFields.forEach { field ->
+            renderSqlParamAddValueFor(field, "                ", entityParameterName = null, 12, { line -> appendLine(line) })
+        }
+
+        append("""
+            |           }
+            |       )
+            |       
+            |       return count > 0
+            |       
+            |    }
+            """.trimMargin())
 
     }
 
