@@ -527,15 +527,15 @@ class EntityDef(
     }
 
 
-    val primaryKeyRowMapperDef = if (hasSurrogatePrimaryKey) {
-        null
-    } else {
+    val primaryKeyRowMapperDef = if (hasCompositePrimaryKey) {
         RowMapperDef(
             entityPkClassDef.uqcn,
             this.primaryKeyFields.map { RowMapperFieldDef(it, it.nullability) },
             entityPkClassDef.rowMapperClassDef,
             isForEditDto = false
         )
+    } else {
+        null
     }
 
 
