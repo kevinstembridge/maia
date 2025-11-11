@@ -4,9 +4,10 @@
 package org.maiaframework.gen.testing.jdbc.sample.join
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.EntityClassAndId
+import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -20,6 +21,9 @@ class BravoAgGridDao(
 
 
     private val entityRowMapper = BravoAgGridEntityRowMapper()
+
+
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: BravoAgGridEntity) {
@@ -41,11 +45,11 @@ class BravoAgGridDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("alphaId", entity.alphaId)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
-                addValue("id", entity.id)
-                addValue("someInt", entity.someInt)
-                addValue("someString", entity.someString)
+            addValue("alphaId", entity.alphaId)
+            addValue("createdTimestampUtc", entity.createdTimestampUtc)
+            addValue("id", entity.id)
+            addValue("someInt", entity.someInt)
+            addValue("someString", entity.someString)
             }
         )
 
@@ -72,11 +76,11 @@ class BravoAgGridDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("alphaId", entity.alphaId)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
-                    addValue("id", entity.id)
-                    addValue("someInt", entity.someInt)
-                    addValue("someString", entity.someString)
+                addValue("alphaId", entity.alphaId)
+                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("id", entity.id)
+                addValue("someInt", entity.someInt)
+                addValue("someString", entity.someString)
                 }
             }
         )
@@ -113,20 +117,40 @@ class BravoAgGridDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id: DomainId): BravoAgGridEntity {
+    fun findByPrimaryKey(id: DomainId): BravoAgGridEntity {
 
-        return findByIdOrNull(id)
-            ?: throw EntityNotFoundException(EntityClassAndId(BravoAgGridEntity::class.java, id), BravoAgGridEntityMeta.TABLE_NAME)
+        return findByPrimaryKeyOrNull(id)
+            ?: throw EntityNotFoundException(
+                EntityClassAndPk(
+                    BravoAgGridEntity::class.java,
+                    mapOf(
+                        "id" to id,
+                    )
+                ),
+                BravoAgGridEntityMeta.TABLE_NAME
+            )
 
     }
 
 
-    fun findByIdOrNull(id: DomainId): BravoAgGridEntity? {
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return jdbcOps.queryForInt(
+            "select count(*) from testing.bravo_ag_grid where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        ) > 0
+
+    }
+
+
+    fun findByPrimaryKeyOrNull(id: DomainId): BravoAgGridEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.bravo_ag_grid where id = :id",
             SqlParams().apply {
-                addValue("id", id)
+            addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -150,7 +174,7 @@ class BravoAgGridDao(
     }
 
 
-    fun findAllIdsAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
             "select id from testing.bravo_ag_grid;",
@@ -222,7 +246,7 @@ class BravoAgGridDao(
             where alpha_id = :alphaId
             """.trimIndent(),
             SqlParams().apply {
-                addValue("alphaId", alphaId)
+            addValue("alphaId", alphaId)
             }
         )
 
@@ -231,9 +255,9 @@ class BravoAgGridDao(
     }
 
 
-    fun deleteById(id: DomainId): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByIdOrNull(id)
+        val existingEntity = findByPrimaryKeyOrNull(id)
 
         if (existingEntity == null) {
             return false
@@ -251,12 +275,12 @@ class BravoAgGridDao(
     }
 
 
-    fun removeById(id: DomainId): BravoAgGridEntity? {
+    fun removeByPrimaryKey(id: DomainId): BravoAgGridEntity? {
 
-        val found = findByIdOrNull(id)
+        val found = findByPrimaryKeyOrNull(id)
 
         if (found != null) {
-            deleteById(id)
+            deleteByPrimaryKey(id)
         }
 
         return found
