@@ -10,6 +10,7 @@ import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.EntityIdAndNameDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.IndexDef
+import org.maiaframework.gen.spec.definition.RowMapperFunctions
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
@@ -105,9 +106,30 @@ class JdbcDaoRenderer(
             blankLine()
             blankLine()
 
-            addImportFor(primaryKeyRowMapperDef.classDef.fqcn)
+            if (entityDef.hasCompositePrimaryKey) {
 
-            appendLine("    private val primaryKeyRowMapper = ${primaryKeyRowMapperDef.classDef.uqcn}()")
+                addImportFor(primaryKeyRowMapperDef.classDef.fqcn)
+
+                appendLine("    private val primaryKeyRowMapper = ${primaryKeyRowMapperDef.classDef.uqcn}()")
+
+            } else {
+
+                addImportFor(Fqcns.MAIA_JDBC_ROW_MAPPER)
+
+                val primaryKeyField = entityDef.primaryKeyFields.first()
+
+
+                appendLine("    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.${RowMapperFunctions.renderRowMapperField(
+                    primaryKeyField,
+                    resultSetFieldName = primaryKeyField.tableColumnName.value,
+                    nullable = primaryKeyField.nullable,
+                    indentSize = 0,
+                    orElseText = "",
+                    ::addImportFor,
+                    ::appendLine
+                )}huh() { huh(it) } }")
+
+            }
 
         }
 
