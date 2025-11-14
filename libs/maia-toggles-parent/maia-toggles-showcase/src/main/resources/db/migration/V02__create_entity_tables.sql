@@ -1,0 +1,39 @@
+
+
+CREATE TABLE toggles.feature_toggle (
+    activation_strategies jsonb NOT NULL,
+    attributes jsonb NOT NULL,
+    comment text NULL,
+    contact_person text NULL,
+    c_ts timestamp(3) with time zone NOT NULL,
+    description text NULL,
+    enabled boolean NOT NULL,
+    feature_name text NOT NULL,
+    info_link text NULL,
+    last_modified_by text NOT NULL,
+    lm_ts timestamp(3) with time zone NOT NULL,
+    review_date date NULL,
+    ticket_key text NULL,
+    v bigint NOT NULL,
+    PRIMARY KEY(feature_name)
+);
+
+
+CREATE TABLE toggles.feature_toggle_history (
+    activation_strategies jsonb NOT NULL,
+    attributes jsonb NOT NULL,
+    change_type text NOT NULL,
+    comment text NULL,
+    contact_person text NULL,
+    c_ts timestamp(3) with time zone NOT NULL,
+    description text NULL,
+    enabled boolean NOT NULL,
+    feature_name text NOT NULL,
+    info_link text NULL,
+    last_modified_by text NOT NULL,
+    lm_ts timestamp(3) with time zone NOT NULL,
+    review_date date NULL,
+    ticket_key text NULL,
+    v bigint NOT NULL,
+    PRIMARY KEY(feature_name, v)
+);

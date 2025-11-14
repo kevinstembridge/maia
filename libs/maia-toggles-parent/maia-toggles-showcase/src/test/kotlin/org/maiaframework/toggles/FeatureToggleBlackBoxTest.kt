@@ -42,10 +42,10 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
                     jsonResultMatcher.asJson(
                         listOf(
                             mapOf(
-                                "featureName" to "SAMPLE_ONE"
+                                "featureName" to "SampleFeatureOne"
                             ),
                             mapOf(
-                                "featureName" to "SAMPLE_TWO"
+                                "featureName" to "SampleFeatureTwo"
                             ),
                         )
                     )

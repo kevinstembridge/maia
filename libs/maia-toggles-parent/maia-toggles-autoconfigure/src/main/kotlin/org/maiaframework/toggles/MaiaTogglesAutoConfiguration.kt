@@ -1,6 +1,8 @@
 package org.maiaframework.toggles
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
 import org.maiaframework.json.JsonFacade
 import org.maiaframework.toggles.repo.DatabaseToggleRepo
 import org.maiaframework.toggles.repo.InMemoryToggleRepo
@@ -36,6 +38,7 @@ class MaiaTogglesAutoConfiguration {
     fun toggleObjectMapper(): ObjectMapper {
 
         return ObjectMapper()
+            .registerModule(KotlinModule.Builder().build())
 
     }
 
@@ -44,6 +47,22 @@ class MaiaTogglesAutoConfiguration {
     fun toggleJsonFacade(objectMapper: ObjectMapper): JsonFacade {
 
         return JsonFacade(objectMapper)
+
+    }
+
+
+    @Bean
+    fun featureToggleSerializer(): FeatureToggleSerializer {
+
+        return FeatureToggleSerializer()
+
+    }
+
+
+    @Bean
+    fun toggleHazelcastConfig(featureToggleSerializer: FeatureToggleSerializer): Maia_togglesHazelcastConfig {
+
+        return Maia_togglesHazelcastConfig(featureToggleSerializer)
 
     }
 
@@ -101,8 +120,8 @@ class MaiaTogglesAutoConfiguration {
     class TogglesRepoConfiguration(private val properties: MaiaTogglesProperties) {
 
 
-        //        @Bean
-//        @ConditionalOnMissingBean
+        @Bean
+        @ConditionalOnMissingBean
         fun toggleRepo(
             @MaiaTogglesDataSource togglesDataSourceProvider: ObjectProvider<DataSource>,
             dataSourceProvider: ObjectProvider<DataSource>,
