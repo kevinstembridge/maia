@@ -1,17 +1,19 @@
 package org.maiaframework.gen.persist
 
 
-enum class HazelcastCompatibleType {
+enum class HazelcastCompatibleType(val kotlinUqcn: String) {
 
-    BOOLEAN,
-    COMPACT,
-    INT8,
-    INT32,
-    INT64,
-    FLOAT32,
-    FLOAT64,
-    LOCAL_DATE,
-    OFFSET_DATE_TIME,
-    STRING
+    BOOLEAN("Boolean"),
+    COMPACT("YAGNI"),
+    INT8("Byte"),
+    INT32("Integer"),
+    INT64("Long"),
+    FLOAT32("Float"),
+    FLOAT64("Double"),
+    LOCAL_DATE("YAGNI"),
+    OFFSET_DATE_TIME("Instant"),
+    STRING("String");
+
+
 
 }

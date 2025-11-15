@@ -25,18 +25,22 @@ class EsDocRepoRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRenderer
 
     private fun `render function findById`() {
 
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+        val entityDef = esDocDef.entityDef!!
+        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+        val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
 
-        appendLine("""
+        entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
+
+        append("""
             |
             |
-            |    fun findById(id: DomainId): ${this.esDocDef.uqcn} {
+            |    fun findByPrimaryKey($primaryKeyFieldNamesAndTypesCsv): ${esDocDef.uqcn} {
             |
-            |        val entity = this.entityRepo.findById(id)
+            |        val entity = this.entityRepo.findByPrimaryKey($primaryKeyFieldNamesCsv)
             |        return buildEsDoc(entity)
             |
             |    }
-            """.trimMargin())
+            |""".trimMargin())
 
     }
 

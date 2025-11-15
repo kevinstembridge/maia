@@ -86,6 +86,7 @@ object Fqcns {
     val MAIA_COMPACT_READER_EXTENSION_READ_SET_OF_STRINGS = Fqcn.valueOf("org.maiaframework.hazelcast.serializers.CompactReaderExtension.readSetOfStrings")
     val MAIA_COMPACT_READER_EXTENSION_READ_STRING_NON_NULL = Fqcn.valueOf("org.maiaframework.hazelcast.serializers.CompactReaderExtension.readStringNonNull")
     val MAIA_COMPACT_WRITER_EXTENSION_WRITE_LIST_OF_STRINGS = Fqcn.valueOf("org.maiaframework.hazelcast.serializers.CompactWriterExtension.writeListOfStrings")
+    val MAIA_COMPACT_WRITER_EXTENSION_WRITE_LIST_OF_STRINGS_AS_CSV = Fqcn.valueOf("org.maiaframework.hazelcast.serializers.CompactWriterExtension.writeListOfStringsAsCsv")
     val MAIA_COMPACT_WRITER_EXTENSION_WRITE_NULLABLE_DATE = Fqcn.valueOf("org.maiaframework.hazelcast.serializers.CompactWriterExtension.writeNullableDate")
     val MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS = Fqcn.valueOf("org.maiaframework.hazelcast.serializers.CompactWriterExtension.writeSetOfStrings")
     val MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS_AS_CSV = Fqcn.valueOf("org.maiaframework.hazelcast.serializers.CompactWriterExtension.writeSetOfStringsAsCsv")

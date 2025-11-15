@@ -10,7 +10,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 
 class EntityDetailDtoDef(
-    private val entityDef: EntityDef
+    val entityDef: EntityDef
 ) {
 
 

@@ -56,7 +56,7 @@ class TypeaheadIndexServiceRenderer(
             |
             |        logger.debug("BEGIN: Refreshing typeahead index ${"$"}{this.esIndex.indexName()} for id ${"$"}id")
             |
-            |        val esDoc = this.esDocRepo.findById(id)
+            |        val esDoc = this.esDocRepo.findByPrimaryKey(id)
             |        val (id, doc, indexName) = buildEsDocHolder(esDoc)
             |
             |        val indexResponse = this.elasticClient.index { i ->

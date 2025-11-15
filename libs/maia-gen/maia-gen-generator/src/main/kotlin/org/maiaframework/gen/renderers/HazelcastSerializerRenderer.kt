@@ -672,7 +672,7 @@ class HazelcastSerializerRenderer(
             is LocalDateFieldType -> `render write for LocalDate`(field)
             is LongFieldType -> `render write for`(field)
             is LongTypeFieldType -> TODO()
-            is MapFieldType -> `render write for Map`(field, field.classFieldName, fieldType)
+            is MapFieldType -> `render write for Map`(field, fieldType)
             is ObjectIdFieldType -> appendLine("            writeString(\"${field.classFieldName}\", dto.${field.classFieldName}.toHexString())")
             is PeriodFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
@@ -818,21 +818,83 @@ class HazelcastSerializerRenderer(
 
     private fun `render write for Map`(
         field: ClassFieldDef,
-        classFieldName: ClassFieldName,
         mapFieldType: MapFieldType
     ) {
 
+        val classFieldName = field.classFieldName
         val keyFieldName = "${field.classFieldName}Keys"
         val valueFieldName = "${field.classFieldName}Values"
         val mapEntryKeyType = mapFieldType.keyFieldType
         val mapEntryValueType = mapFieldType.valueFieldType
 
+        `render temp holder for Map keys`(mapEntryKeyType, keyFieldName, classFieldName)
+        `render temp holder for Map values`(mapEntryValueType, field, valueFieldName)
+
+        appendLine("            dto.${field.classFieldName}.forEach { (key, value) ->")
+        `render adding the key to the temp holder`(keyFieldName, mapEntryKeyType)
+        `render adding the value to the temp holder`(valueFieldName, mapEntryValueType)
+        appendLine("            }")
+
+        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_LIST_OF_STRINGS)
+
+        `render write for Map keys holder`(keyFieldName)
+
+        `render write for Map values holder`(valueFieldName, mapEntryValueType)
+
+    }
+
+
+    private fun `render adding the key to the temp holder`(
+        keyFieldName: String,
+        mapEntryKeyType: FieldType
+    ) {
+
+        when (mapEntryKeyType) {
+            is BooleanFieldType -> TODO()
+            is BooleanTypeFieldType -> TODO()
+            is BooleanValueClassFieldType -> TODO()
+            is DataClassFieldType -> TODO()
+            is DomainIdFieldType -> appendLine("                $keyFieldName.add(key.value)")
+            is DoubleFieldType -> TODO()
+            is EnumFieldType -> TODO()
+            is EsDocFieldType -> TODO()
+            is ForeignKeyFieldType -> TODO()
+            is FqcnFieldType -> TODO()
+            is IdAndNameFieldType -> TODO()
+            is InstantFieldType -> TODO()
+            is IntFieldType -> TODO()
+            is IntTypeFieldType -> TODO()
+            is IntValueClassFieldType -> TODO()
+            is ListFieldType -> TODO()
+            is LocalDateFieldType -> TODO()
+            is LongFieldType -> TODO()
+            is LongTypeFieldType -> TODO()
+            is MapFieldType -> TODO()
+            is ObjectIdFieldType -> TODO()
+            is PeriodFieldType -> TODO()
+            is RequestDtoFieldType -> TODO()
+            is SetFieldType -> TODO()
+            is SimpleResponseDtoFieldType -> TODO()
+            is StringFieldType -> appendLine("                $keyFieldName.add(key)")
+            is StringTypeFieldType -> TODO()
+            is StringValueClassFieldType -> TODO()
+            is UrlFieldType -> TODO()
+        }
+
+    }
+
+
+    private fun `render temp holder for Map keys`(
+        mapEntryKeyType: FieldType,
+        keyFieldName: String,
+        classFieldName: ClassFieldName
+    ) {
         when (mapEntryKeyType) {
             is BooleanFieldType -> TODO("YAGNI?")
             is BooleanTypeFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
             is DataClassFieldType -> TODO()
-            is DomainIdFieldType -> `render write for DomainId keySet`(keyFieldName, classFieldName)
+            is DomainIdFieldType -> `render temp holder for Map keys of type DomainId`(keyFieldName)
             is DoubleFieldType -> TODO()
             is EnumFieldType -> TODO("YAGNI?")
             is EsDocFieldType -> TODO()
@@ -856,10 +918,20 @@ class HazelcastSerializerRenderer(
             is StringFieldType -> {
                 appendLine("            val $keyFieldName = mutableListOf<${mapEntryKeyType.uqcn}>()")
             }
+
             is StringTypeFieldType -> TODO()
             is StringValueClassFieldType -> TODO()
             is UrlFieldType -> TODO()
         }
+
+    }
+
+
+    private fun `render temp holder for Map values`(
+        mapEntryValueType: FieldType,
+        field: ClassFieldDef,
+        valueFieldName: String
+    ) {
 
         when (mapEntryValueType) {
             is BooleanFieldType -> TODO()
@@ -885,30 +957,168 @@ class HazelcastSerializerRenderer(
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
-            is SetFieldType -> `render write for Map entry Set`(field, mapEntryValueType)
+            is SetFieldType -> `render temp holder for Map values of type Set`(valueFieldName, mapEntryValueType)
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
             is StringFieldType -> {
                 appendLine("            val $valueFieldName = mutableListOf<${mapEntryValueType.uqcn}>()")
             }
+
+            is StringTypeFieldType -> TODO()
+            is StringValueClassFieldType -> TODO()
+            is UrlFieldType -> TODO()
+        }
+    }
+
+
+    private fun `render adding the value to the temp holder`(valueFieldName: String, mapEntryValueType: FieldType) {
+
+        when (mapEntryValueType) {
+            is BooleanFieldType -> TODO()
+            is BooleanTypeFieldType -> TODO()
+            is BooleanValueClassFieldType -> TODO()
+            is DataClassFieldType -> TODO()
+            is DomainIdFieldType -> TODO()
+            is DoubleFieldType -> TODO()
+            is EnumFieldType -> TODO()
+            is EsDocFieldType -> TODO()
+            is ForeignKeyFieldType -> TODO()
+            is FqcnFieldType -> TODO()
+            is IdAndNameFieldType -> TODO()
+            is InstantFieldType -> TODO()
+            is IntFieldType -> TODO()
+            is IntTypeFieldType -> TODO()
+            is IntValueClassFieldType -> TODO()
+            is ListFieldType -> TODO()
+            is LocalDateFieldType -> TODO()
+            is LongFieldType -> TODO()
+            is LongTypeFieldType -> TODO()
+            is MapFieldType -> TODO()
+            is ObjectIdFieldType -> TODO()
+            is PeriodFieldType -> TODO()
+            is RequestDtoFieldType -> TODO()
+            is SetFieldType -> `render write to Map key temp holder for SetFieldType`(valueFieldName, mapEntryValueType)
+            is SimpleResponseDtoFieldType -> TODO()
+            is StringFieldType -> appendLine("                $valueFieldName.add(value)")
             is StringTypeFieldType -> TODO()
             is StringValueClassFieldType -> TODO()
             is UrlFieldType -> TODO()
         }
 
-        appendLine("            dto.${field.classFieldName}.forEach { (key, value) ->")
-        appendLine("                $keyFieldName.add(key)")
-        appendLine("                $valueFieldName.add(value)")
-        appendLine("            }")
-        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_LIST_OF_STRINGS)
-        appendLine("            writeListOfStrings(\"$keyFieldName\", $keyFieldName)")
-        appendLine("            writeListOfStrings(\"$valueFieldName\", $valueFieldName)")
+    }
+
+
+    private fun `render write to Map key temp holder for SetFieldType`(
+        valueFieldName: String,
+        mapEntryValueType: SetFieldType
+    ) {
+
+        val setElementFieldType = mapEntryValueType.parameterFieldType
+
+        when (setElementFieldType) {
+            is BooleanFieldType -> TODO()
+            is BooleanTypeFieldType -> TODO()
+            is BooleanValueClassFieldType -> TODO()
+            is DataClassFieldType -> TODO()
+            is DomainIdFieldType -> TODO()
+            is DoubleFieldType -> TODO()
+            is EnumFieldType -> appendLine("                $valueFieldName.add(value.map { it.name }.toList())")
+            is EsDocFieldType -> TODO()
+            is ForeignKeyFieldType -> TODO()
+            is FqcnFieldType -> TODO()
+            is IdAndNameFieldType -> TODO()
+            is InstantFieldType -> TODO()
+            is IntFieldType -> TODO()
+            is IntTypeFieldType -> TODO()
+            is IntValueClassFieldType -> TODO()
+            is ListFieldType -> TODO()
+            is LocalDateFieldType -> TODO()
+            is LongFieldType -> TODO()
+            is LongTypeFieldType -> TODO()
+            is MapFieldType -> TODO()
+            is ObjectIdFieldType -> TODO()
+            is PeriodFieldType -> TODO()
+            is RequestDtoFieldType -> TODO()
+            is SetFieldType -> TODO()
+            is SimpleResponseDtoFieldType -> TODO()
+            is StringFieldType -> appendLine("                $valueFieldName.add(value)")
+            is StringTypeFieldType -> TODO()
+            is StringValueClassFieldType -> TODO()
+            is UrlFieldType -> TODO()
+        }
+
+
+
 
     }
 
 
-    private fun `render write for Map entry Set`(classFieldDef: ClassFieldDef, mapEntryFieldType: FieldType) {
+    private fun `render temp holder for Map values of type Set`(
+        valueFieldName: String,
+        mapEntryValueType: SetFieldType
+    ) {
 
-        when (mapEntryFieldType) {
+        val setElementType = mapEntryValueType.parameterFieldType.hazelcastCompatibleType!!.kotlinUqcn
+
+        appendLine("            val $valueFieldName = mutableListOf<List<${setElementType}>>()")
+
+    }
+
+
+    private fun `render write for Map values holder`(valueFieldName: String, mapEntryValueType: FieldType) {
+
+        when (mapEntryValueType) {
+            is BooleanFieldType -> TODO("YAGNI?")
+            is BooleanTypeFieldType -> TODO("YAGNI?")
+            is BooleanValueClassFieldType -> TODO("YAGNI?")
+            is DataClassFieldType -> TODO("YAGNI?")
+            is DomainIdFieldType -> TODO("YAGNI?")
+            is DoubleFieldType -> TODO("YAGNI?")
+            is EnumFieldType -> TODO("YAGNI?")
+            is EsDocFieldType -> TODO("YAGNI?")
+            is ForeignKeyFieldType -> TODO("YAGNI?")
+            is FqcnFieldType -> TODO("YAGNI?")
+            is IdAndNameFieldType -> TODO("YAGNI?")
+            is InstantFieldType -> TODO("YAGNI?")
+            is IntFieldType -> TODO("YAGNI?")
+            is IntTypeFieldType -> TODO("YAGNI?")
+            is IntValueClassFieldType -> TODO("YAGNI?")
+            is ListFieldType -> TODO("YAGNI?")
+            is LocalDateFieldType -> TODO("YAGNI?")
+            is LongFieldType -> TODO("YAGNI?")
+            is LongTypeFieldType -> TODO("YAGNI?")
+            is MapFieldType -> TODO("YAGNI?")
+            is ObjectIdFieldType -> TODO("YAGNI?")
+            is PeriodFieldType -> TODO("YAGNI?")
+            is RequestDtoFieldType -> TODO("YAGNI?")
+            is SetFieldType -> {
+
+                addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_LIST_OF_STRINGS_AS_CSV)
+                appendLine("            writeListOfStringsAsCsv(\"$valueFieldName\", $valueFieldName)")
+
+            }
+            is SimpleResponseDtoFieldType -> TODO("YAGNI?")
+            is StringFieldType -> appendLine("            writeListOfStrings(\"$valueFieldName\", $valueFieldName)")
+            is StringTypeFieldType -> TODO("YAGNI?")
+            is StringValueClassFieldType -> TODO("YAGNI?")
+            is UrlFieldType -> TODO("YAGNI?")
+        }
+
+    }
+
+
+    private fun `render write for Map keys holder`(keyFieldName: String) {
+
+        appendLine("            writeListOfStrings(\"$keyFieldName\", $keyFieldName)")
+
+    }
+
+
+    private fun `render write for Map entry Set`(
+        classFieldDef: ClassFieldDef,
+        mapEntryValueFieldType: FieldType
+    ) {
+
+        when (mapEntryValueFieldType) {
             is BooleanFieldType -> TODO()
             is BooleanTypeFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
@@ -933,7 +1143,7 @@ class HazelcastSerializerRenderer(
             is PeriodFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> {
-                when (mapEntryFieldType.parameterFieldType) {
+                when (mapEntryValueFieldType.parameterFieldType) {
                     is BooleanFieldType -> TODO()
                     is BooleanTypeFieldType -> TODO()
                     is BooleanValueClassFieldType -> TODO()
@@ -979,12 +1189,25 @@ class HazelcastSerializerRenderer(
 
 
     private fun `render write for Set of DomainIds`(keyFieldName: String, fieldName: ClassFieldName) {
+
         addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
+
         appendLine("            writeSetOfStrings(\"$keyFieldName\", dto.${fieldName}.keys.map { it.value }.toSet())")
+
     }
 
 
-    private fun `render write for DomainId keySet`(keyFieldName: String, fieldName: ClassFieldName) {
+    private fun `render temp holder for Map keys of type DomainId`(keyFieldName: String) {
+
+        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
+
+        appendLine("            val $keyFieldName = mutableListOf<String>()")
+
+    }
+
+
+    private fun `huh render temp holder for Map keys of type DomainId`(keyFieldName: String, fieldName: ClassFieldName) {
+
         addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
 
         appendLine("            val $keyFieldName = mutableListOf<String>()")
@@ -995,6 +1218,7 @@ class HazelcastSerializerRenderer(
     private fun `render write for Set of ObjectIds`(setFieldName: String, classFieldName: ClassFieldName) {
 
         addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
+
         appendLine("            writeSetOfStrings(\"$setFieldName\", dto.${classFieldName}.keys.map { it.toHexString() }.toSet())")
 
     }

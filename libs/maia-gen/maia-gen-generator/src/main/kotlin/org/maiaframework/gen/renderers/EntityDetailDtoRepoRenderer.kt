@@ -46,14 +46,17 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
 
     private fun `render function fetch`() {
 
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDetailDtoDef.entityDef.primaryKeyClassFields)
+        val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDetailDtoDef.entityDef.primaryKeyClassFields)
+
+        entityDetailDtoDef.entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
 
         append("""
             |
             |
-            |    fun fetch(entityId: DomainId): ${entityDetailDtoDef.dtoDef.uqcn} {
+            |    fun fetch($primaryKeyFieldNamesAndTypesCsv): ${entityDetailDtoDef.dtoDef.uqcn} {
             |
-            |        val entity = this.entityRepo.findById(entityId)
+            |        val entity = this.entityRepo.findByPrimaryKey($primaryKeyFieldNamesCsv)
             |        
             |        return ${entityDetailDtoDef.dtoDef.uqcn}(
             |""".trimMargin()
