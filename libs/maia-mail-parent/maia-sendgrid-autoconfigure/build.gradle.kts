@@ -6,7 +6,7 @@ plugins {
 
 dependencies {
 
-    api(project(":libs:maia-mail:maia-sendgrid"))
+    api(project(":libs:maia-mail-parent:maia-sendgrid"))
     implementation("org.springframework.boot:spring-boot-starter")
 
 }
