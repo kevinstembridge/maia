@@ -2,7 +2,7 @@
 val maiagen by configurations.creating
 
 plugins {
-    id("maia.kotlin-library-spring-conventions")
+    id("maia.kotlin-library-conventions")
 }
 
 
@@ -11,14 +11,13 @@ dependencies {
     implementation(kotlin("reflect"))
 
     api(project(":libs:maia-common"))
-    api(project(":libs:maia-job:maia-job"))
-    api(project(":libs:maia-job:maia-job-domain"))
-    api(project(":libs:maia-webapp:maia-webapp-domain"))
+    api(project(":libs:maia-domain"))
+    api(project(":libs:maia-hazelcast"))
+    api(project(":libs:maia-jdbc"))
+    api(project(":libs:maia-metrics"))
+    implementation("org.springframework:spring-context")
 
-    api("org.springframework.boot:spring-boot-starter-security")
-    api("org.springframework.boot:spring-boot-starter-web")
-
-    maiagen(project(":libs:maia-job:maia-job-spec"))
+    maiagen(project(":libs:maia-job-parent:maia-job-spec"))
     maiagen(project(":libs:maia-gen:maia-gen-generator"))
 
 }
@@ -53,7 +52,7 @@ tasks.register<JavaExec>("generateModel") {
     outputs.dir("src/generated/resources/test")
 
     classpath = configurations["maiagen"].asFileTree
-    mainClass.set("org.maiaframework.gen.generator.EndpointsModuleGeneratorMain")
+    mainClass.set("org.maiaframework.gen.generator.DomainModuleGeneratorMain")
     args("specificationClassNames=org.maiaframework.job.spec.MaiaJobSpec")
 
 }
