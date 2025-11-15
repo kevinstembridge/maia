@@ -9,9 +9,9 @@ val maiagen by configurations.creating
 
 dependencies {
 
-    api(project(":libs:maia-file-storage:maia-file-storage-domain"))
+    api(project(":libs:maia-file-storage-parent:maia-file-storage-domain"))
 
-    maiagen(project(":libs:maia-file-storage:maia-file-storage-spec"))
+    maiagen(project(":libs:maia-file-storage-parent:maia-file-storage-spec"))
     maiagen(project(":libs:maia-gen:maia-gen-generator"))
 
 }
