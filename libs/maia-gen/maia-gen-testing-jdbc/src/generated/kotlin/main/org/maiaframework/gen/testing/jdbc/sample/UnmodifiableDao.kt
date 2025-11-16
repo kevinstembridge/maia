@@ -193,6 +193,22 @@ class UnmodifiableDao(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: UnmodifiableEntityFilter): Sequence<DomainId> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select id from testing.unmodifiable where $whereClause",
+            sqlParams,
+            { rsa -> rsa.readDomainId("id") }
+        )
+
+    }
+
+
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
@@ -274,7 +290,7 @@ class UnmodifiableDao(
     }
 
 
-    fun upsertBySomeUniqueInt(upsertEntity: UnmodifiableEntity): DomainId {
+    fun upsertBySomeUniqueInt(upsertEntity: UnmodifiableEntity): UnmodifiableEntityPk {
 
         return jdbcOps.execute(
             """
@@ -314,7 +330,7 @@ class UnmodifiableDao(
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
                 rs.next()
-                idRowMapper.mapRow(ResultSetAdapter(rs))
+                primaryKeyRowMapper.mapRow(ResultSetAdapter(rs))
             }
         )!!
 

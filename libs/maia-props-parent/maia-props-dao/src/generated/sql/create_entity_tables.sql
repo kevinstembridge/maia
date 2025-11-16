@@ -5,27 +5,23 @@
 CREATE TABLE props.props (
     comment text NULL,
     c_ts timestamp(3) with time zone NOT NULL,
-    id uuid NOT NULL,
     last_modified_by text NOT NULL,
     lm_ts timestamp(3) with time zone NOT NULL,
     property_name text NOT NULL,
     property_value text NOT NULL,
     v bigint NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(property_name)
 );
-CREATE UNIQUE INDEX props_idx ON props.props(property_name);
 
 
 CREATE TABLE props.props_history (
     change_type text NOT NULL,
     comment text NULL,
     c_ts timestamp(3) with time zone NOT NULL,
-    id uuid NOT NULL,
     last_modified_by text NOT NULL,
     lm_ts timestamp(3) with time zone NOT NULL,
     property_name text NOT NULL,
     property_value text NOT NULL,
     v bigint NOT NULL,
-    PRIMARY KEY(id, v)
+    PRIMARY KEY(property_name, v)
 );
-CREATE INDEX hist_props_idx ON props.props_history(property_name);

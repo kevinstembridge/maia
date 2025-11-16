@@ -15,6 +15,9 @@ class NonSurrogatePrimaryKeyEntity(
 ) {
 
 
+    val primaryKey = someString
+
+
     override fun toString(): String {
 
         return "NonSurrogatePrimaryKeyEntity{" +

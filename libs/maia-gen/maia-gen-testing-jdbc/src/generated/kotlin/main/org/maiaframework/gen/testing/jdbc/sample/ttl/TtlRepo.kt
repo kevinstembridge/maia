@@ -54,6 +54,13 @@ class TtlRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: TtlEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: TtlEntityFilter): List<TtlEntity> {
 
         return this.dao.findAllBy(filter)

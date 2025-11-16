@@ -53,6 +53,13 @@ class ForeignKeyChildRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: ForeignKeyChildEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: ForeignKeyChildEntityFilter): List<ForeignKeyChildEntity> {
 
         return this.dao.findAllBy(filter)

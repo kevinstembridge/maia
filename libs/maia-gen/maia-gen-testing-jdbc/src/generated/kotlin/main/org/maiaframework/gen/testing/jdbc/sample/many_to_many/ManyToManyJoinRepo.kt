@@ -53,6 +53,13 @@ class ManyToManyJoinRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: ManyToManyJoinEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: ManyToManyJoinEntityFilter): List<ManyToManyJoinEntity> {
 
         return this.dao.findAllBy(filter)

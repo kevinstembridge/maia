@@ -53,6 +53,13 @@ class HistorySuperRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: HistorySuperEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: HistorySuperEntityFilter): List<HistorySuperEntity> {
 
         return this.dao.findAllBy(filter)

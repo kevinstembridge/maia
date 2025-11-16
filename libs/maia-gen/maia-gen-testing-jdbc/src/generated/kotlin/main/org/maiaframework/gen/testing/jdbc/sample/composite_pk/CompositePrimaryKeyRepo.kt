@@ -52,6 +52,13 @@ class CompositePrimaryKeyRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: CompositePrimaryKeyEntityFilter): Sequence<CompositePrimaryKeyEntityPk> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: CompositePrimaryKeyEntityFilter): List<CompositePrimaryKeyEntity> {
 
         return this.dao.findAllBy(filter)

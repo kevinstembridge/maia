@@ -53,6 +53,13 @@ class OrganizationRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: OrganizationEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: OrganizationEntityFilter): List<OrganizationEntity> {
 
         return this.dao.findAllBy(filter)

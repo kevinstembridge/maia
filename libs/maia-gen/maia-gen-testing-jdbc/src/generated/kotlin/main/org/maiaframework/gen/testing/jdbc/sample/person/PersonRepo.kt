@@ -53,6 +53,13 @@ class PersonRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: PersonEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: PersonEntityFilter): List<PersonEntity> {
 
         return this.dao.findAllBy(filter)

@@ -18,6 +18,9 @@ class OrgUserGroupMembershipHistoryEntity(
 ) {
 
 
+    val primaryKey = OrgUserGroupMembershipHistoryEntityPk(id, version)
+
+
     override fun toString(): String {
 
         return "OrgUserGroupMembershipHistoryEntity{" +

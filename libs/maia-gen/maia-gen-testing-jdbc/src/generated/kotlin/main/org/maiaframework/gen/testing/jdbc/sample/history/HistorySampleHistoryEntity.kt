@@ -21,6 +21,9 @@ class HistorySampleHistoryEntity(
 ) {
 
 
+    val primaryKey = HistorySampleHistoryEntityPk(id, version)
+
+
     override fun toString(): String {
 
         return "HistorySampleHistoryEntity{" +

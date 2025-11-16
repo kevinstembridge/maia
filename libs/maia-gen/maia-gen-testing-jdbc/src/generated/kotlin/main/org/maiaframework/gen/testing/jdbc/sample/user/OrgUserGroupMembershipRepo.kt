@@ -53,6 +53,13 @@ class OrgUserGroupMembershipRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: OrgUserGroupMembershipEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: OrgUserGroupMembershipEntityFilter): List<OrgUserGroupMembershipEntity> {
 
         return this.dao.findAllBy(filter)

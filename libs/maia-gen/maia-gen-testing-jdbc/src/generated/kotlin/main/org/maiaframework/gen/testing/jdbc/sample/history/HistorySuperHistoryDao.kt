@@ -7,9 +7,12 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
+import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.PreparedStatement
 
 
 @Repository
@@ -247,6 +250,22 @@ class HistorySuperHistoryDao(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: HistorySuperHistoryEntityFilter): Sequence<HistorySuperHistoryEntityPk> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select id, v from testing.history_super_history where $whereClause",
+            sqlParams,
+            this.primaryKeyRowMapper
+        )
+
+    }
+
+
     fun findAllPrimaryKeysAsSequence(): Sequence<HistorySuperHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
@@ -341,6 +360,69 @@ class HistorySuperHistoryDao(
         )
 
         return count > 0
+
+    }
+
+
+    fun upsertByIdAndVersion(upsertEntity: HistorySuperHistoryEntity): HistorySuperHistoryEntityPk {
+
+        return jdbcOps.execute(
+            """
+            with input_rows(
+                change_type,
+                created_by_id,
+                c_ts,
+                id,
+                lm_by_id,
+                lm_ts,
+                v
+            ) as (
+                values (
+                    cast(:changeType as text),
+                    cast(:createdById as uuid),
+                    cast(:createdTimestampUtc as timestamp(3) with time zone),
+                    cast(:id as uuid),
+                    cast(:lastModifiedById as uuid),
+                    cast(:lastModifiedTimestampUtc as timestamp(3) with time zone),
+                    cast(:version as bigint)
+                )
+            )
+            , ins as (
+                insert into testing.history_super_history (
+                    change_type,
+                    created_by_id,
+                    c_ts,
+                    id,
+                    lm_by_id,
+                    lm_ts,
+                    v
+                )
+                select * from input_rows
+                on conflict (id, v) do nothing
+                returning id
+            )
+            select 'i' as source, id
+            from ins
+            union all
+            select 's' as source, c.id
+            from input_rows
+            join testing.history_super_history c using (id, v);
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("changeType", upsertEntity.changeType)
+            addValue("createdById", upsertEntity.createdById)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedById", upsertEntity.lastModifiedById)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("version", upsertEntity.version)
+            },
+            { ps: PreparedStatement ->
+                val rs = ps.executeQuery()
+                rs.next()
+                primaryKeyRowMapper.mapRow(ResultSetAdapter(rs))
+            }
+        )!!
 
     }
 

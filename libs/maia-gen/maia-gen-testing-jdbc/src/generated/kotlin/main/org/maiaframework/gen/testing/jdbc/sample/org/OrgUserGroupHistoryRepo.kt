@@ -53,6 +53,13 @@ class OrgUserGroupHistoryRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: OrgUserGroupHistoryEntityFilter): Sequence<OrgUserGroupHistoryEntityPk> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: OrgUserGroupHistoryEntityFilter): List<OrgUserGroupHistoryEntity> {
 
         return this.dao.findAllBy(filter)

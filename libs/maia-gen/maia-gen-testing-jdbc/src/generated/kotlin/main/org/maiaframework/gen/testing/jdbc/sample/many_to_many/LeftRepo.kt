@@ -53,6 +53,13 @@ class LeftRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: LeftEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: LeftEntityFilter): List<LeftEntity> {
 
         return this.dao.findAllBy(filter)

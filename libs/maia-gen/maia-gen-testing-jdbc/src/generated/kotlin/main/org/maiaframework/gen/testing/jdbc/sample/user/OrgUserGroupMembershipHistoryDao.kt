@@ -7,9 +7,12 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.MaiaRowMapper
+import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.PreparedStatement
 
 
 @Repository
@@ -220,6 +223,22 @@ class OrgUserGroupMembershipHistoryDao(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: OrgUserGroupMembershipHistoryEntityFilter): Sequence<OrgUserGroupMembershipHistoryEntityPk> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select id, v from testing.org_user_group_membership_history where $whereClause",
+            sqlParams,
+            this.primaryKeyRowMapper
+        )
+
+    }
+
+
     fun findAllPrimaryKeysAsSequence(): Sequence<OrgUserGroupMembershipHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
@@ -280,6 +299,65 @@ class OrgUserGroupMembershipHistoryDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun upsertByIdAndVersion(upsertEntity: OrgUserGroupMembershipHistoryEntity): OrgUserGroupMembershipHistoryEntityPk {
+
+        return jdbcOps.execute(
+            """
+            with input_rows(
+                change_type,
+                c_ts,
+                id,
+                org_user_group_id,
+                user_id,
+                v
+            ) as (
+                values (
+                    cast(:changeType as text),
+                    cast(:createdTimestampUtc as timestamp(3) with time zone),
+                    cast(:id as uuid),
+                    cast(:orgUserGroupId as uuid),
+                    cast(:userId as uuid),
+                    cast(:version as bigint)
+                )
+            )
+            , ins as (
+                insert into testing.org_user_group_membership_history (
+                    change_type,
+                    c_ts,
+                    id,
+                    org_user_group_id,
+                    user_id,
+                    v
+                )
+                select * from input_rows
+                on conflict (id, v) do nothing
+                returning id
+            )
+            select 'i' as source, id
+            from ins
+            union all
+            select 's' as source, c.id
+            from input_rows
+            join testing.org_user_group_membership_history c using (id, v);
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("changeType", upsertEntity.changeType)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("orgUserGroupId", upsertEntity.orgUserGroupId)
+            addValue("userId", upsertEntity.userId)
+            addValue("version", upsertEntity.version)
+            },
+            { ps: PreparedStatement ->
+                val rs = ps.executeQuery()
+                rs.next()
+                primaryKeyRowMapper.mapRow(ResultSetAdapter(rs))
+            }
+        )!!
 
     }
 

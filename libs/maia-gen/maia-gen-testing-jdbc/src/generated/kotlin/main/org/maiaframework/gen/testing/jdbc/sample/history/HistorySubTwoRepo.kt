@@ -53,6 +53,13 @@ class HistorySubTwoRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: HistorySubTwoEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: HistorySubTwoEntityFilter): List<HistorySubTwoEntity> {
 
         return this.dao.findAllBy(filter)

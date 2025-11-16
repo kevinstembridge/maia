@@ -54,6 +54,13 @@ class WithOptionalIndexFieldRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: WithOptionalIndexFieldEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: WithOptionalIndexFieldEntityFilter): List<WithOptionalIndexFieldEntity> {
 
         return this.dao.findAllBy(filter)

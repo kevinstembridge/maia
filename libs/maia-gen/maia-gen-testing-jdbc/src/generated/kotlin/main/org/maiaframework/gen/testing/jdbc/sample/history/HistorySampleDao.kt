@@ -279,6 +279,22 @@ class HistorySampleDao(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: HistorySampleEntityFilter): Sequence<DomainId> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select id from testing.history_sample where $whereClause",
+            sqlParams,
+            { rsa -> rsa.readDomainId("id") }
+        )
+
+    }
+
+
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(

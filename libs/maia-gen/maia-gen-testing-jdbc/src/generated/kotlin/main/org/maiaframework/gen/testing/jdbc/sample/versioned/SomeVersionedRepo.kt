@@ -53,6 +53,13 @@ class SomeVersionedRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: SomeVersionedEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: SomeVersionedEntityFilter): List<SomeVersionedEntity> {
 
         return this.dao.findAllBy(filter)

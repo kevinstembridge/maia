@@ -53,6 +53,13 @@ class AlphaRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: AlphaEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: AlphaEntityFilter): List<AlphaEntity> {
 
         return this.dao.findAllBy(filter)

@@ -53,6 +53,13 @@ class CharlieAgGridRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: CharlieAgGridEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: CharlieAgGridEntityFilter): List<CharlieAgGridEntity> {
 
         return this.dao.findAllBy(filter)

@@ -40,6 +40,29 @@ class EntityRenderer(
     }
 
 
+    override fun renderPreClassFields() {
+
+        if (this.entityDef.hasSurrogatePrimaryKey == false && this.entityDef.isRootEntity) {
+
+            blankLine()
+            blankLine()
+
+            if (entityDef.hasCompositePrimaryKey) {
+
+                val primaryKeyFieldNames = fieldNamesCsv(entityDef.primaryKeyClassFields)
+
+                appendLine("    val primaryKey = ${entityDef.entityPkClassDef.uqcn}($primaryKeyFieldNames)")
+
+            } else {
+
+                appendLine("    val primaryKey = ${entityDef.primaryKeyClassFields.first().classFieldName}")
+
+            }
+
+        }
+
+    }
+
     override fun renderFunctions() {
 
         if (this.entityDef.isDeltaEntity.value) {

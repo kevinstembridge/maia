@@ -18,8 +18,6 @@ object PropsHistoryEntityMeta {
 
     const val createdTimestampUtc = "c_ts"
 
-    const val id = "id"
-
     const val lastModifiedBy = "last_modified_by"
 
     const val lastModifiedTimestampUtc = "lm_ts"
@@ -41,20 +39,12 @@ object PropsHistoryEntityMeta {
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
 
-    object IndexName {
-
-        const val hist_props_idx = "hist_props_idx"
-
-    }
-
-
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
             "changeType" -> "change_type"
             "comment" -> "comment"
             "createdTimestampUtc" -> "c_ts"
-            "id" -> "id"
             "lastModifiedBy" -> "last_modified_by"
             "lastModifiedTimestampUtc" -> "lm_ts"
             "propertyName" -> "property_name"

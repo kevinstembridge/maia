@@ -53,6 +53,13 @@ class OrgUserGroupRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: OrgUserGroupEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: OrgUserGroupEntityFilter): List<OrgUserGroupEntity> {
 
         return this.dao.findAllBy(filter)

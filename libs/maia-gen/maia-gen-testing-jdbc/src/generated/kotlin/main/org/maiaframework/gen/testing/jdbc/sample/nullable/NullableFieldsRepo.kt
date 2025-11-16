@@ -53,6 +53,13 @@ class NullableFieldsRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: NullableFieldsEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: NullableFieldsEntityFilter): List<NullableFieldsEntity> {
 
         return this.dao.findAllBy(filter)

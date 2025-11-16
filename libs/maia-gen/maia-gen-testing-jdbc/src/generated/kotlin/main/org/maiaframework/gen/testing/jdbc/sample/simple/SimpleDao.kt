@@ -632,7 +632,7 @@ class SimpleDao(
     }
 
 
-    fun findIdsAsSequence(filter: SimpleEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: SimpleEntityFilter): Sequence<DomainId> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()

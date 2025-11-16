@@ -53,6 +53,13 @@ class UserRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: UserEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: UserEntityFilter): List<UserEntity> {
 
         return this.dao.findAllBy(filter)

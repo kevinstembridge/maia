@@ -53,6 +53,13 @@ class EffectiveTimestampRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: EffectiveTimestampEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: EffectiveTimestampEntityFilter): List<EffectiveTimestampEntity> {
 
         return this.dao.findAllBy(filter)

@@ -4,7 +4,6 @@
 package org.maiaframework.props
 
 import org.maiaframework.domain.ChangeType
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityFieldConverter
 import org.springframework.stereotype.Component
 import java.time.Instant
@@ -24,8 +23,6 @@ class PropsHistoryEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "c_ts" -> // createdTimestampUtc
                 return inputValue
-            "id" -> // id
-                return (inputValue as DomainId).value
             "last_modified_by" -> // lastModifiedBy
                 return inputValue
             "lm_ts" -> // lastModifiedTimestampUtc

@@ -12,9 +12,11 @@ import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
+import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.PreparedStatement
 
 
 @Repository
@@ -220,6 +222,22 @@ class NonSurrogatePrimaryKeyDao(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: NonSurrogatePrimaryKeyEntityFilter): Sequence<SomeStringValueClass> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select some_string from testing.non_surrogate_primary_key where $whereClause",
+            sqlParams,
+            this.primaryKeyRowMapper
+        )
+
+    }
+
+
     fun findAllPrimaryKeysAsSequence(): Sequence<SomeStringValueClass> {
 
         return this.jdbcOps.queryForSequence(
@@ -280,6 +298,48 @@ class NonSurrogatePrimaryKeyDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun upsertBySomeString(upsertEntity: NonSurrogatePrimaryKeyEntity): NonSurrogatePrimaryKeyEntity {
+
+        val persistedEntity = jdbcOps.execute(
+            """
+            insert into testing.non_surrogate_primary_key (
+                c_ts,
+                some_modifiable_string,
+                some_string,
+                v
+            ) values (
+                :createdTimestampUtc,
+                :someModifiableString,
+                :someString,
+                :version
+            )
+            on conflict (some_string)
+            do update set
+                some_modifiable_string = :someModifiableString,
+                v = testing.non_surrogate_primary_key.v + 1
+            returning *;
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("someModifiableString", upsertEntity.someModifiableString)
+            addValue("someString", upsertEntity.someString.value)
+            addValue("version", upsertEntity.version)
+            },
+            { ps: PreparedStatement ->
+                val rs = ps.executeQuery()
+                rs.next()
+                entityRowMapper.mapRow(ResultSetAdapter(rs))
+            }
+        )
+
+        val changeType = if (persistedEntity!!.primaryKey != upsertEntity.primaryKey) ChangeType.UPDATE else ChangeType.CREATE
+        insertHistory(persistedEntity, persistedEntity.version, changeType)
+
+        return persistedEntity!!
 
     }
 

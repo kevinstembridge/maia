@@ -279,6 +279,22 @@ class PartyDao(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: PartyEntityFilter): Sequence<DomainId> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select id from testing.v_party where $whereClause",
+            sqlParams,
+            { rsa -> rsa.readDomainId("id") }
+        )
+
+    }
+
+
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(

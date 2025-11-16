@@ -17,6 +17,9 @@ class NonSurrogatePrimaryKeyHistoryEntity(
 ) {
 
 
+    val primaryKey = NonSurrogatePrimaryKeyHistoryEntityPk(someString, version)
+
+
     override fun toString(): String {
 
         return "NonSurrogatePrimaryKeyHistoryEntity{" +

@@ -53,6 +53,13 @@ class AlphaAgGridRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: AlphaAgGridEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: AlphaAgGridEntityFilter): List<AlphaAgGridEntity> {
 
         return this.dao.findAllBy(filter)

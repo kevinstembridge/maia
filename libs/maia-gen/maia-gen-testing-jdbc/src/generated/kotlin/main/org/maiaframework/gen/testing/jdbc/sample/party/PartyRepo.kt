@@ -53,6 +53,13 @@ class PartyRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: PartyEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: PartyEntityFilter): List<PartyEntity> {
 
         return this.dao.findAllBy(filter)

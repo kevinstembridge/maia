@@ -4,7 +4,6 @@
 package org.maiaframework.props
 
 import org.maiaframework.domain.ChangeType
-import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
@@ -12,7 +11,6 @@ class PropsHistoryEntity(
     val changeType: ChangeType,
     val comment: String?,
     val createdTimestampUtc: Instant,
-    val id: DomainId,
     val lastModifiedBy: String,
     val lastModifiedTimestampUtc: Instant,
     val propertyName: String,
@@ -21,13 +19,15 @@ class PropsHistoryEntity(
 ) {
 
 
+    val primaryKey = PropsHistoryEntityPk(propertyName, version)
+
+
     override fun toString(): String {
 
         return "PropsHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "comment = '" + this.comment + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
-                "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "propertyName = '" + this.propertyName + '\'' + ", " + 

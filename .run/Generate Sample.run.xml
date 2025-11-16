@@ -2,7 +2,7 @@
   <configuration default="false" name="Generate Sample" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$/libs/maia-gen" />
+      <option name="externalProjectPath" value="maia/libs/maia-gen" />
       <option name="externalSystemIdString" value="GRADLE" />
       <option name="scriptParameters" value="" />
       <option name="taskDescriptions">

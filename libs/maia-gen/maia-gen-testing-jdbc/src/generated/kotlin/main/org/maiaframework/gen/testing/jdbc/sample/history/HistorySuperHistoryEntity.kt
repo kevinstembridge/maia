@@ -19,6 +19,9 @@ abstract class HistorySuperHistoryEntity(
 ) {
 
 
+    val primaryKey = HistorySuperHistoryEntityPk(id, version)
+
+
     override fun toString(): String {
 
         return "HistorySuperHistoryEntity{" +

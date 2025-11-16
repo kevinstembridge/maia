@@ -17,6 +17,9 @@ class CompositePrimaryKeyHistoryEntity(
 ) {
 
 
+    val primaryKey = CompositePrimaryKeyHistoryEntityPk(someString, someInt, version)
+
+
     override fun toString(): String {
 
         return "CompositePrimaryKeyHistoryEntity{" +

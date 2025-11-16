@@ -163,6 +163,7 @@ class JdbcDaoRenderer(
         `render function findAllAsSequence`()
         `render existsBy functions`()
         `render function fetchForEdit`()
+        `render upsert for primary key`()
         `render upserts for indexes`()
         `render function setFields`()
         `render function deleteByPrimaryKey`()
@@ -1387,6 +1388,17 @@ class JdbcDaoRenderer(
     }
 
 
+    private fun `render upsert for primary key`() {
+
+        if (this.entityDef.hasSurrogatePrimaryKey == false && this.entityDef.isHistoryEntity == false) {
+
+            renderUpsertForUniqueFields(this.entityDef.primaryKeyFields)
+
+        }
+
+    }
+
+
     private fun renderUpsertForUniqueFields(entityFieldDefs: List<EntityFieldDef>) {
 
         if (this.entityDef.isModifiable) {
@@ -1459,7 +1471,9 @@ class JdbcDaoRenderer(
 
         if (entityDef.withVersionHistory.value) {
             blankLine()
-            appendLine("        val changeType = if (persistedEntity!!.id != upsertEntity.id) ChangeType.UPDATE else ChangeType.CREATE")
+
+            val primaryKeyPlaceholder = if (entityDef.hasSurrogatePrimaryKey) "id" else "primaryKey"
+            appendLine("        val changeType = if (persistedEntity!!.$primaryKeyPlaceholder != upsertEntity.$primaryKeyPlaceholder) ChangeType.UPDATE else ChangeType.CREATE")
 
             if (entityHierarchy.hasSubclasses()) {
 
@@ -1501,7 +1515,7 @@ class JdbcDaoRenderer(
 
         blankLine()
         blankLine()
-        appendLine("    fun upsertBy${uniqueFieldNamesAnded}(upsertEntity: ${this.entityDef.entityUqcn}): DomainId {")
+        appendLine("    fun upsertBy${uniqueFieldNamesAnded}(upsertEntity: ${this.entityDef.entityUqcn}): ${entityDef.primaryKeyType} {")
         blankLine()
         appendLine("        return jdbcOps.execute(")
         appendLine("            \"\"\"")
@@ -1548,7 +1562,7 @@ class JdbcDaoRenderer(
         appendLine("            { ps: PreparedStatement ->")
         appendLine("                val rs = ps.executeQuery()")
         appendLine("                rs.next()")
-        appendLine("                idRowMapper.mapRow(ResultSetAdapter(rs))")
+        appendLine("                primaryKeyRowMapper.mapRow(ResultSetAdapter(rs))")
         appendLine("            }")
         appendLine("        )!!")
         blankLine()

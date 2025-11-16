@@ -3,11 +3,11 @@
 
 package org.maiaframework.props
 
-import org.maiaframework.domain.DomainId
+
 
 
 data class PropsHistoryEntityPk(
-    val id: DomainId,
+    val propertyName: String,
     val version: Long
 ) {
 

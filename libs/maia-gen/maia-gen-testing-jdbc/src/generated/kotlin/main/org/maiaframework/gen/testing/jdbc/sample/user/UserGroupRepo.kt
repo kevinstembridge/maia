@@ -53,6 +53,13 @@ class UserGroupRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: UserGroupEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: UserGroupEntityFilter): List<UserGroupEntity> {
 
         return this.dao.findAllBy(filter)

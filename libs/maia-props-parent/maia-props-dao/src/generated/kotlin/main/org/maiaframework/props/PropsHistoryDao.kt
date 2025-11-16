@@ -31,7 +31,6 @@ class PropsHistoryDao(
                 change_type,
                 comment,
                 c_ts,
-                id,
                 last_modified_by,
                 lm_ts,
                 property_name,
@@ -41,7 +40,6 @@ class PropsHistoryDao(
                 :changeType,
                 :comment,
                 :createdTimestampUtc,
-                :id,
                 :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :propertyName,
@@ -53,7 +51,6 @@ class PropsHistoryDao(
                 addValue("changeType", entity.changeType)
                 addValue("comment", entity.comment)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
-                addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("propertyName", entity.propertyName)
@@ -73,7 +70,6 @@ class PropsHistoryDao(
                 change_type,
                 comment,
                 c_ts,
-                id,
                 last_modified_by,
                 lm_ts,
                 property_name,
@@ -83,7 +79,6 @@ class PropsHistoryDao(
                 :changeType,
                 :comment,
                 :createdTimestampUtc,
-                :id,
                 :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :propertyName,
@@ -96,7 +91,6 @@ class PropsHistoryDao(
                     addValue("changeType", entity.changeType)
                     addValue("comment", entity.comment)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
-                    addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("propertyName", entity.propertyName)
@@ -138,14 +132,14 @@ class PropsHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(id: DomainId, version: Long): PropsHistoryEntity {
+    fun findByPrimaryKey(propertyName: String, version: Long): PropsHistoryEntity {
 
-        return findByPrimaryKeyOrNull(id, version)
+        return findByPrimaryKeyOrNull(propertyName, version)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     PropsHistoryEntity::class.java,
                     mapOf(
-                        "id" to id,
+                        "propertyName" to propertyName,
                         "version" to version,
                     )
                 ),
@@ -155,12 +149,12 @@ class PropsHistoryDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): PropsHistoryEntity? {
+    fun findByPrimaryKeyOrNull(propertyName: String, version: Long): PropsHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from props.props_history where id = :id and v = :version",
+            "select * from props.props_history where property_name = :propertyName and v = :version",
             SqlParams().apply {
-            addValue("id", id)
+            addValue("propertyName", propertyName)
             addValue("version", version)
             },
             this.entityRowMapper
@@ -169,12 +163,12 @@ class PropsHistoryDao(
     }
 
 
-    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
+    fun existsByPrimaryKey(propertyName: String, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from props.props_history where id = :id and v = :version",
+            "select count(*) from props.props_history where property_name = :propertyName and v = :version",
             SqlParams().apply {
-                addValue("id", id)
+                addValue("propertyName", propertyName)
                 addValue("version", version)
            }
         )
@@ -182,22 +176,6 @@ class PropsHistoryDao(
         return count > 0
        
     }
-
-    fun findByPropertyName(propertyName: String): List<PropsHistoryEntity> {
-
-        return jdbcOps.queryForList(
-            """
-            select * from props.props_history
-            where property_name = :propertyName
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("propertyName", propertyName)
-            },
-            this.entityRowMapper
-        )
-
-    }
-
 
     fun findAllBy(filter: PropsHistoryEntityFilter): List<PropsHistoryEntity> {
 
@@ -223,7 +201,7 @@ class PropsHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from props.props_history where $whereClause",
+            "select property_name, v from props.props_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -234,7 +212,7 @@ class PropsHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<PropsHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from props.props_history;",
+            "select property_name, v from props.props_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )

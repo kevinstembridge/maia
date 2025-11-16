@@ -53,6 +53,13 @@ class UnmodifiableRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: UnmodifiableEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: UnmodifiableEntityFilter): List<UnmodifiableEntity> {
 
         return this.dao.findAllBy(filter)

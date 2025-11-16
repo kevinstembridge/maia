@@ -21,6 +21,9 @@ open class UserGroupHistoryEntity(
 ) {
 
 
+    val primaryKey = UserGroupHistoryEntityPk(id, version)
+
+
     override fun toString(): String {
 
         return "UserGroupHistoryEntity{" +

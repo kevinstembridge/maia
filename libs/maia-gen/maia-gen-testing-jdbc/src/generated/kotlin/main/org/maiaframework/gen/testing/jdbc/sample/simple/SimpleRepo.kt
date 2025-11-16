@@ -56,6 +56,13 @@ class SimpleRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: SimpleEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: SimpleEntityFilter): List<SimpleEntity> {
 
         return this.dao.findAllBy(filter)

@@ -25,6 +25,7 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
         tableName(name = "props")
         daoHasSpringAnnotation = false
         field("propertyName", FieldTypes.string) {
+            primaryKey()
             lengthConstraint(max = 200)
         }
         field("propertyValue", FieldTypes.string) {
@@ -39,12 +40,6 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
         field("comment", FieldTypes.string) {
             nullable()
             lengthConstraint(max = 200)
-        }
-        index {
-            indexName("props_idx")
-            unique()
-            sparse()
-            withFieldAscending("propertyName")
         }
     }
 

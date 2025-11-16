@@ -277,6 +277,22 @@ class NullableFieldsDao(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: NullableFieldsEntityFilter): Sequence<DomainId> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select id from testing.nullable_fields where $whereClause",
+            sqlParams,
+            { rsa -> rsa.readDomainId("id") }
+        )
+
+    }
+
+
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
@@ -358,7 +374,7 @@ class NullableFieldsDao(
     }
 
 
-    fun upsertBySomeString(upsertEntity: NullableFieldsEntity): DomainId {
+    fun upsertBySomeString(upsertEntity: NullableFieldsEntity): NullableFieldsEntityPk {
 
         return jdbcOps.execute(
             """
@@ -454,7 +470,7 @@ class NullableFieldsDao(
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
                 rs.next()
-                idRowMapper.mapRow(ResultSetAdapter(rs))
+                primaryKeyRowMapper.mapRow(ResultSetAdapter(rs))
             }
         )!!
 

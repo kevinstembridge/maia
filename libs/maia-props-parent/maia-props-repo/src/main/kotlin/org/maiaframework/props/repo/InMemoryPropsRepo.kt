@@ -24,15 +24,11 @@ class InMemoryPropsRepo: PropsRepo {
         comment: String?
     ) {
 
-        val propsEntity = PropsEntity(
+        val propsEntity = PropsEntity.newInstance(
                 comment,
-                Instant.now(),
-                DomainId.newId(),
                 modifiedBy,
-                Instant.now(),
                 propertyName,
-                propertyValue,
-                1
+                propertyValue
         )
 
         this.properties[propertyName] = propsEntity

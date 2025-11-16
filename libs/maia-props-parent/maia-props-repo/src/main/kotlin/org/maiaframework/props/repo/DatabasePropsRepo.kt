@@ -1,10 +1,8 @@
 package org.maiaframework.props.repo
 
-import org.maiaframework.domain.DomainId
 import org.maiaframework.props.*
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
-import java.time.Instant
 import java.util.*
 
 
@@ -36,15 +34,11 @@ class DatabasePropsRepo(
         comment: String?
     ) {
 
-        val propsEntity = PropsEntity(
+        val propsEntity = PropsEntity.newInstance(
             comment,
-            Instant.now(),
-            DomainId.newId(),
             modifiedBy,
-            Instant.now(),
             propertyName,
-            propertyValue,
-            1
+            propertyValue
         )
 
         this.propsDao.upsertByPropertyName(propsEntity)
@@ -59,7 +53,7 @@ class DatabasePropsRepo(
         comment: String?
     ) {
 
-        this.propsDao.deleteByPropertyName(propertyName)
+        this.propsDao.deleteByPrimaryKey(propertyName)
 
     }
 

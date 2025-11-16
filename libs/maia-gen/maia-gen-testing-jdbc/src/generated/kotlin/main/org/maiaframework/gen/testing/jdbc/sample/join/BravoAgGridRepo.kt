@@ -53,6 +53,13 @@ class BravoAgGridRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: BravoAgGridEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: BravoAgGridEntityFilter): List<BravoAgGridEntity> {
 
         return this.dao.findAllBy(filter)

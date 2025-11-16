@@ -279,6 +279,22 @@ class OrgUserGroupMembershipDao(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: OrgUserGroupMembershipEntityFilter): Sequence<DomainId> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select id from testing.org_user_group_membership where $whereClause",
+            sqlParams,
+            { rsa -> rsa.readDomainId("id") }
+        )
+
+    }
+
+
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
@@ -365,7 +381,7 @@ class OrgUserGroupMembershipDao(
     }
 
 
-    fun upsertByOrgUserGroupIdAndUserId(upsertEntity: OrgUserGroupMembershipEntity): DomainId {
+    fun upsertByOrgUserGroupIdAndUserId(upsertEntity: OrgUserGroupMembershipEntity): OrgUserGroupMembershipEntityPk {
 
         return jdbcOps.execute(
             """
@@ -413,7 +429,7 @@ class OrgUserGroupMembershipDao(
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
                 rs.next()
-                idRowMapper.mapRow(ResultSetAdapter(rs))
+                primaryKeyRowMapper.mapRow(ResultSetAdapter(rs))
             }
         )!!
 

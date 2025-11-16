@@ -53,6 +53,13 @@ class NonSurrogatePrimaryKeyRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: NonSurrogatePrimaryKeyEntityFilter): Sequence<SomeStringValueClass> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: NonSurrogatePrimaryKeyEntityFilter): List<NonSurrogatePrimaryKeyEntity> {
 
         return this.dao.findAllBy(filter)

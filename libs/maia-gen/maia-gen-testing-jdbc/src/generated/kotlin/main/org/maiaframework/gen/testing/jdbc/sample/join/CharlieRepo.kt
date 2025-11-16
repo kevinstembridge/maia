@@ -53,6 +53,13 @@ class CharlieRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: CharlieEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: CharlieEntityFilter): List<CharlieEntity> {
 
         return this.dao.findAllBy(filter)

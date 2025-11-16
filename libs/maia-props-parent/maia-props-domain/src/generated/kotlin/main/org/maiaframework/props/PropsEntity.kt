@@ -3,14 +3,12 @@
 
 package org.maiaframework.props
 
-import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
 class PropsEntity(
     val comment: String?,
     val createdTimestampUtc: Instant,
-    val id: DomainId,
     val lastModifiedBy: String,
     val lastModifiedTimestampUtc: Instant,
     val propertyName: String,
@@ -19,12 +17,14 @@ class PropsEntity(
 ) {
 
 
+    val primaryKey = propertyName
+
+
     override fun toString(): String {
 
         return "PropsEntity{" +
                 "comment = '" + this.comment + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
-                "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "propertyName = '" + this.propertyName + '\'' + ", " + 
@@ -38,9 +38,6 @@ class PropsEntity(
     companion object {
 
 
-        fun newId(): DomainId {
-            return DomainId.newId()
-        }
 
 
         @JvmStatic
@@ -52,14 +49,12 @@ class PropsEntity(
         ): PropsEntity {
 
             val createdTimestampUtc = Instant.now()
-            val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
             val version = 1L
 
             return PropsEntity(
                 comment,
                 createdTimestampUtc,
-                id,
                 lastModifiedBy,
                 lastModifiedTimestampUtc,
                 propertyName,

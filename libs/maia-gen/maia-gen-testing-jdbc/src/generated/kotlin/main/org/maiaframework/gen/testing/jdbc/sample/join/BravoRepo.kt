@@ -53,6 +53,13 @@ class BravoRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: BravoEntityFilter): Sequence<DomainId> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: BravoEntityFilter): List<BravoEntity> {
 
         return this.dao.findAllBy(filter)

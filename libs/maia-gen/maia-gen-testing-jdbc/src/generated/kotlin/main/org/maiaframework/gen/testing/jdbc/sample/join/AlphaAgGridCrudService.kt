@@ -30,7 +30,7 @@ class AlphaAgGridCrudService(
 
     fun delete(id: DomainId) {
 
-        if (this.bravoAgGridRepo.existsByPrimaryKey(id)) {
+        if (this.bravoAgGridRepo.existsByAlphaId(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("BravoAgGrid")
         }
 
