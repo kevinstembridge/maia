@@ -297,7 +297,7 @@ class EntityDef(
 
 
     val primaryKeyType = if (hasCompositePrimaryKey) {
-        entityPkClassDef.uqcn
+        entityPkClassDef.uqcn.value
     } else {
         primaryKeyClassFields.map { it.fieldType.unqualifiedToString }.first()
     }

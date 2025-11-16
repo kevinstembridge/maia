@@ -1,1 +1,1 @@
-mahana.http.MahanaHttpAutoConfiguration
+org.maiaframework.http.MaiaHttpAutoConfiguration

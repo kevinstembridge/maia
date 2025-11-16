@@ -304,7 +304,7 @@ class PropsDao(
     }
 
 
-    fun findIdsAsSequence(filter: PropsEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: PropsEntityFilter): Sequence<DomainId> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()

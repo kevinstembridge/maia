@@ -24,10 +24,13 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     init {
 
-        addConstructorArg(aClassField("dao", entityDef.entityDaoFqcn).privat().build())
+        addConstructorArg(aClassField("dao", entityDef.entityDaoFqcn) {
+
+
+        }.privat().build())
 
         if (cacheable) {
-            addConstructorArg(aClassField("hazelcastInstance", Fqcns.HAZELCAST_INSTANCE).privat().build())
+            addConstructorArg(aClassField("hazelcastInstance", Fqcns.HAZELCAST_INSTANCE) { }.privat().build())
         }
 
         entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType) }
@@ -66,6 +69,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         `render function existsByPrimaryKey`()
         `render function findAllAsSequence`()
         `render function findAllPrimaryKeysAsSequence`()
+        `render function findPrimaryKeysAsSequence`()
         `render function findAllEffective`()
         `render function findAllByFilter`()
         `render function findAllByFilterAsSequence`()
@@ -89,7 +93,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         if (cacheable) {
 
-            append("""
+            append(
+                """
             |
             |
             |    fun findByPrimaryKey($primaryKeyFieldNamesAndTypesCsv): ${entityHierarchy.entityDef.entityUqcn} {
@@ -100,11 +105,13 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |            }
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+            )
 
         } else {
 
-            append("""
+            append(
+                """
             |
             |
             |    fun findByPrimaryKey($primaryKeyFieldNamesAndTypesCsv): ${entityHierarchy.entityDef.entityUqcn} {
@@ -112,7 +119,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |        return dao.findByPrimaryKey($primaryKeyFieldNamesCsv)
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+            )
 
         }
 
@@ -124,7 +132,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         if (cacheable) {
 
-            append("""
+            append(
+                """
             |
             |
             |    fun findByPrimaryKeyOrNull($primaryKeyFieldNamesAndTypesCsv): ${entityHierarchy.entityDef.entityUqcn}? {
@@ -135,11 +144,13 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |            }
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+            )
 
         } else {
 
-            append("""
+            append(
+                """
             |
             |
             |    fun findByPrimaryKeyOrNull($primaryKeyFieldNamesAndTypesCsv): ${entityHierarchy.entityDef.entityUqcn}? {
@@ -147,7 +158,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |        return dao.findByPrimaryKeyOrNull($primaryKeyFieldNamesCsv)
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+            )
 
         }
 
@@ -160,7 +172,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
         val fieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
 
-        append("""
+        append(
+            """
             |
             |
             |    fun existsByPrimaryKey($fieldNamesAndTypesCsv): Boolean {
@@ -168,14 +181,16 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |        return dao.existsByPrimaryKey($fieldNamesCsv)
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
     }
 
 
     private fun `render function findAllAsSequence`() {
 
-        append("""
+        append(
+            """
             |
             |
             |    fun findAllAsSequence(): Sequence<${entityDef.entityUqcn}> {
@@ -183,7 +198,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |        return this.dao.findAllAsSequence()
             |        
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
     }
 
@@ -201,13 +217,29 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     }
 
 
+    private fun `render function findPrimaryKeysAsSequence`() {
+
+        append("""
+            |
+            |
+            |    fun findPrimaryKeysAsSequence(filter: ${this.entityDef.entityFilterClassDef.uqcn}): Sequence<${this.entityDef.primaryKeyType}> {
+            |
+            |        return dao.findPrimaryKeysAsSequence(filter)
+            |
+            |    }
+            |""".trimMargin())
+
+    }
+
+
     private fun `render finders for indexes`() {
 
         this.entityDef.databaseIndexDefs.filter { it.isUnique }.forEach { `render function findOneByForFields`(it.indexDef.entityFieldDefs) }
         this.entityDef.databaseIndexDefs.filter { it.isUnique == false }.forEach { `render function findBy for fields`(it.indexDef.entityFieldDefs) }
 
         if (this.entityDef.hasEffectiveTimestamps.value || this.entityDef.hasEffectiveLocalDates.value) {
-            this.entityDef.databaseIndexDefs.filter { it.isUnique == false }.forEach { `render function findEffectiveBy for fields`(it.indexDef.entityFieldDefs) }
+            this.entityDef.databaseIndexDefs.filter { it.isUnique == false }
+                .forEach { `render function findEffectiveBy for fields`(it.indexDef.entityFieldDefs) }
         }
 
     }
@@ -243,7 +275,6 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
 
     }
-
 
 
     private fun `render function findOneByForFields`(entityFieldDefs: List<EntityFieldDef>) {
@@ -335,7 +366,6 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     }
 
 
-
     private fun `render existsBy functions`() {
 
         val uniqueIndexFields: List<List<EntityFieldDef>> = this.entityDef.databaseIndexDefs.filter { it.isUnique }.map { it.indexDef.entityFieldDefs }
@@ -382,10 +412,10 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     }
 
 
-
     private fun `render function insert`() {
 
-        append("""
+        append(
+            """
             |
             |
             |    fun insert(entity: ${this.entityDef.entityUqcn}) {
@@ -395,7 +425,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |        this.dao.insert(entity)
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
     }
 
@@ -489,7 +520,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             return
         }
 
-        append("""
+        append(
+            """
             |
             |
             |    fun setFields(updaters: List<${entityDef.entityUpdaterClassDef.uqcn}>) {
@@ -509,7 +541,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             }
 
 
-            appendLine("""
+            appendLine(
+                """
                 |
                 |
                 |    fun setFields(updater: ${this.entityDef.entityUpdaterClassDef.uqcn}): Int {
@@ -529,7 +562,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         } else {
 
-            appendLine("""
+            appendLine(
+                """
                 |
                 |
                 |    fun setFields(updater: ${this.entityDef.entityUpdaterClassDef.uqcn}): Int {
@@ -568,6 +602,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
 
     }
+
     private fun `render upsert for unique fields for modifiable entity`(entityFieldDefs: List<EntityFieldDef>) {
 
         val uniqueFieldNamesAnded = fieldNamesAnded(entityFieldDefs.map { it.classFieldDef })
@@ -625,7 +660,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         }
 
         if (cacheable) {
-            append("""
+            append(
+                """
             |
             |
             |    fun deleteByPrimaryKey($primaryKeyFieldNamesAndTypesCsv) {
@@ -634,9 +670,11 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |        this.cache.evict($primaryKeyFieldNamesCsv)
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+            )
         } else {
-            append("""
+            append(
+                """
             |
             |
             |    fun deleteByPrimaryKey($primaryKeyFieldNamesAndTypesCsv) {
@@ -644,7 +682,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |        this.dao.deleteByPrimaryKey($primaryKeyFieldNamesCsv)
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+            )
 
         }
 
@@ -657,14 +696,16 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             return
         }
 
-        appendLine("""
+        appendLine(
+            """
             |
             |
             |    fun deleteAll() {
             |    
             |       this.dao.deleteAll()
             |       
-            |    }""".trimMargin())
+            |    }""".trimMargin()
+        )
 
     }
 
@@ -691,17 +732,18 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         val fieldNamesAnded = fieldNamesAnded(classFieldDefs)
         val fieldNamesCsv = classFieldDefs.map { it.classFieldName }.joinToString()
 
-        appendLine("""
+        appendLine(
+            """
             |
             |
             |    fun deleteBy$fieldNamesAnded($functionParameters): Boolean {
             |
             |        return dao.deleteBy$fieldNamesAnded($fieldNamesCsv)
             |
-            |    }""".trimMargin())
+            |    }""".trimMargin()
+        )
 
     }
-
 
 
     private fun `render function removeByPrimaryKey`() {
@@ -710,7 +752,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             return
         }
 
-        append("""
+        append(
+            """
             |
             |
             |    fun removeByPrimaryKey($primaryKeyFieldNamesAndTypesCsv): ${this.entityDef.entityUqcn}? {
@@ -724,7 +767,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |        return found
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
     }
 
@@ -738,7 +782,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         val entityIdAndNameDef = entityDef.entityIdAndNameDef
         addImportFor(entityIdAndNameDef.idAndNameDtoFqcn)
 
-        append("""
+        append(
+            """
             |
             |
             |    fun idAndNameFor($primaryKeyFieldNamesAndTypesCsv): ${entityIdAndNameDef.dtoUqcn} {
@@ -750,7 +795,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |        )
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
     }
 

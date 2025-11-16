@@ -215,6 +215,22 @@ class PropsHistoryDao(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: PropsHistoryEntityFilter): Sequence<PropsHistoryEntityPk> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select id, v from props.props_history where $whereClause",
+            sqlParams,
+            this.primaryKeyRowMapper
+        )
+
+    }
+
+
     fun findAllPrimaryKeysAsSequence(): Sequence<PropsHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(

@@ -16,7 +16,7 @@ class MaiaProblemAutoConfiguration {
     @ConditionalOnMissingBean
     fun maiaProblems(props: Props): MaiaProblems {
 
-        return MaiaProblems { props.getString("org.maiaframework.problems.type_prefix") }
+        return MaiaProblems { props.getString("maia.problems.type_prefix") }
 
     }
 

@@ -157,7 +157,7 @@ class JdbcDaoRenderer(
         `render findAllEffective`()
         `render function findAllByFilter`()
         `render function findAllByFilterAsSequence`()
-        `render function findIdsAsSequence`()
+        `render function findPrimaryKeysAsSequence`()
         `render function findAllPrimaryKeysAsSequence`()
         `render function findAllByFilterAndPageRequest`()
         `render function findAllAsSequence`()
@@ -782,15 +782,16 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findIdsAsSequence`() {
+    private fun `render function findPrimaryKeysAsSequence`() {
 
-        if (this.entityDef.allowFindAll.value == false) {
-            return
-        }
+        val fieldNamesCsv = fieldNamesCsv(this.entityDef.primaryKeyClassFields)
+
+        val primaryKeyTableColumnNames = this.entityDef.primaryKeyFields.map { it.tableColumnName }.joinToString(", ")
+        val primaryKeyTypeUqcn = this.entityDef.primaryKeyType
 
         blankLine()
         blankLine()
-        appendLine("    fun findIdsAsSequence(filter: ${this.entityDef.entityFilterClassDef.uqcn}): Sequence<DomainId> {")
+        appendLine("    fun findPrimaryKeysAsSequence(filter: ${this.entityDef.entityFilterClassDef.uqcn}): Sequence<$primaryKeyTypeUqcn> {")
         blankLine()
         appendLine("        val whereClause = filter.whereClause(this.fieldConverter)")
         appendLine("        val sqlParams = SqlParams()")
@@ -798,9 +799,15 @@ class JdbcDaoRenderer(
         appendLine("        filter.populateSqlParams(sqlParams)")
         blankLine()
         appendLine("        return this.jdbcOps.queryForSequence(")
-        appendLine("            \"select id from ${entityDef.schemaAndTableName} where \$whereClause\",")
+        appendLine("            \"select $primaryKeyTableColumnNames from ${entityDef.schemaAndTableName} where \$whereClause\",")
         appendLine("            sqlParams,")
-        appendLine("            { rsa -> rsa.readDomainId(\"id\") }")
+
+        if (entityDef.hasSurrogatePrimaryKey) {
+            appendLine("            { rsa -> rsa.readDomainId(\"id\") }")
+        } else {
+            appendLine("            this.primaryKeyRowMapper")
+        }
+
         appendLine("        )")
         blankLine()
         appendLine("    }")

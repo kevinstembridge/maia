@@ -443,10 +443,10 @@ class CrudServiceRenderer(
 
             val field = referencingEntityDef.allForeignKeyEntityFieldDefs.find { it.foreignKeyFieldDef?.foreignEntityBaseName == this.entityDef.entityBaseName }
 
-            val fieldName = field!!.classFieldName
+            val fieldName = field!!.classFieldName.firstToUpper()
 
             blankLine()
-            appendLine("        if (this.${daoName}.existsByPrimaryKey($primaryKeyFieldNamesCsv)) {")
+            appendLine("        if (this.${daoName}.existsBy$fieldName($primaryKeyFieldNamesCsv)) {")
             appendLine("            throw this.maiaProblems.foreignKeyRecordsExist(\"${referencingEntityDef.entityBaseName}\")")
             appendLine("        }")
 
