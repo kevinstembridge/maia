@@ -319,7 +319,7 @@ class CrudServiceRenderer(
             if (this.entityDef.versioned.value) {
 
                 appendLine("        val version = editDto.version")
-                appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forIdAndVersion(id, version) {")
+                appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forPrimaryKey($primaryKeyFieldNamesCsv, version) {")
 
             } else {
                 appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forPrimaryKey($primaryKeyFieldNamesCsv) {")
@@ -379,7 +379,7 @@ class CrudServiceRenderer(
             blankLine()
             appendLine("        val version = editDto.version")
             blankLine()
-            appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forPrimaryKeyAndVersion($primaryKeyEditDtoFieldNamesCsv, version) {")
+            appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forPrimaryKey($primaryKeyEditDtoFieldNamesCsv, version) {")
 
         } else {
 
