@@ -522,7 +522,7 @@ class JdbcDaoRenderer(
                     appendLine("        val id = entity.id")
                 }
 
-                entityDef.allClassFieldsSorted.filterNot { it.classFieldName == ClassFieldName.id || it.classFieldName == ClassFieldName.version }.forEach { fd ->
+                entityDef.allEntityFieldsSorted.filterNot { it.isPrimaryKey.isSurrogate || it.classFieldName == ClassFieldName.version }.forEach { fd ->
                     appendLine("        val ${fd.classFieldName} = entity.${fd.classFieldName}")
                 }
 
@@ -548,7 +548,7 @@ class JdbcDaoRenderer(
                 appendLine("        val id = entity.id")
             }
 
-            this.entityDef.allClassFieldsSorted.filterNot { it.classFieldName == ClassFieldName.id || it.classFieldName == ClassFieldName.version }.forEach { fd ->
+            this.entityDef.allEntityFieldsSorted.filterNot { it.isPrimaryKey.isSurrogate || it.classFieldName == ClassFieldName.version }.forEach { fd ->
                 appendLine("        val ${fd.classFieldName} = entity.${fd.classFieldName}")
             }
 

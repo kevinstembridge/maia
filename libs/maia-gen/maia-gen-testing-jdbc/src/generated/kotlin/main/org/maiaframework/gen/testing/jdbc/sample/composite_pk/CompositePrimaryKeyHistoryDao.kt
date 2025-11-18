@@ -7,12 +7,9 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
-import org.maiaframework.jdbc.MaiaRowMapper
-import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
-import java.sql.PreparedStatement
 
 
 @Repository
@@ -265,65 +262,6 @@ class CompositePrimaryKeyHistoryDao(
             SqlParams(),
             this.entityRowMapper,
         )
-
-    }
-
-
-    fun upsertBySomeStringAndSomeIntAndVersion(upsertEntity: CompositePrimaryKeyHistoryEntity): CompositePrimaryKeyHistoryEntityPk {
-
-        return jdbcOps.execute(
-            """
-            with input_rows(
-                change_type,
-                c_ts,
-                some_int,
-                some_modifiable_string,
-                some_string,
-                v
-            ) as (
-                values (
-                    cast(:changeType as text),
-                    cast(:createdTimestampUtc as timestamp(3) with time zone),
-                    cast(:someInt as integer),
-                    cast(:someModifiableString as text),
-                    cast(:someString as text),
-                    cast(:version as bigint)
-                )
-            )
-            , ins as (
-                insert into testing.composite_primary_key_history (
-                    change_type,
-                    c_ts,
-                    some_int,
-                    some_modifiable_string,
-                    some_string,
-                    v
-                )
-                select * from input_rows
-                on conflict (some_string, some_int, v) do nothing
-                returning id
-            )
-            select 'i' as source, id
-            from ins
-            union all
-            select 's' as source, c.id
-            from input_rows
-            join testing.composite_primary_key_history c using (some_string, some_int, v);
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("changeType", upsertEntity.changeType)
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("someInt", upsertEntity.someInt)
-            addValue("someModifiableString", upsertEntity.someModifiableString)
-            addValue("someString", upsertEntity.someString)
-            addValue("version", upsertEntity.version)
-            },
-            { ps: PreparedStatement ->
-                val rs = ps.executeQuery()
-                rs.next()
-                primaryKeyRowMapper.mapRow(ResultSetAdapter(rs))
-            }
-        )!!
 
     }
 

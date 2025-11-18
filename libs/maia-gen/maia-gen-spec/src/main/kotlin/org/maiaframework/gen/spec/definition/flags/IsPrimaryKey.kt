@@ -1,15 +1,13 @@
 package org.maiaframework.gen.spec.definition.flags
 
-import org.maiaframework.types.BooleanType
-
-class IsPrimaryKey(value: Boolean) : BooleanType<IsPrimaryKey>(value) {
+data class IsPrimaryKey(val value: Boolean, val isSurrogate: Boolean) {
 
 
     companion object {
 
-        val TRUE = IsPrimaryKey(true)
+        val SURROGATE = IsPrimaryKey(value = true, isSurrogate = true)
 
-        val FALSE = IsPrimaryKey(false)
+        val FALSE = IsPrimaryKey(value = false, isSurrogate = false)
 
     }
 

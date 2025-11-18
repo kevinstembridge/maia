@@ -289,8 +289,7 @@ class EntityDef(
 
 
     val hasSurrogatePrimaryKey = primaryKeyFields.size == 1
-            && primaryKeyFields.first().classFieldName == ClassFieldName.id
-            && primaryKeyFields.first().fieldType is DomainIdFieldType
+            && primaryKeyFields.first().isPrimaryKey.isSurrogate
 
 
     val hasCompositePrimaryKey = primaryKeyFields.size > 1
@@ -384,7 +383,7 @@ class EntityDef(
                     fd.isPrimaryKey.value
                     || fd.classFieldDef.classFieldName == ClassFieldName.version
                 ) {
-                    IsPrimaryKey.TRUE
+                    IsPrimaryKey(value = true, isSurrogate = false)
                 } else {
                     IsPrimaryKey.FALSE
                 }
@@ -984,7 +983,7 @@ class EntityDef(
                 TableColumnName.id,
                 isDeltaKey = IsDeltaKey.FALSE,
                 isDeltaField = IsDeltaField.FALSE,
-                isPrimaryKey = IsPrimaryKey.TRUE,
+                isPrimaryKey = IsPrimaryKey.SURROGATE,
                 isDerived = IsDerived.FALSE,
                 isCreatableByUser = IsCreatableByUser.FALSE
             )

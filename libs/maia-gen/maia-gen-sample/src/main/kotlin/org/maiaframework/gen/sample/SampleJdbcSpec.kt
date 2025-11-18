@@ -835,4 +835,24 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaNam
     }
 
 
+    val nonSurrogateIdPrimaryKeyEntityDef = entity(
+        "org.maiaframework.gen.testing.jdbc.sample.non_surrogate_pk",
+        "NonSurrogateIdPrimaryKey",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        versioned = true,
+        recordVersionHistory = true
+    ) {
+        field("id", someStringValueClassDef) {
+            primaryKey()
+            lengthConstraint(max = 100)
+        }
+        field("someModifiableString", FieldTypes.string) {
+            lengthConstraint(max = 100)
+            modifiableBySystem()
+        }
+
+    }
+
+
 }

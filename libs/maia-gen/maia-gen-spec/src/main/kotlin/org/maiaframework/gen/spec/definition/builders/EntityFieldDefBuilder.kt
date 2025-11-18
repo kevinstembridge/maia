@@ -341,7 +341,7 @@ class EntityFieldDefBuilder(
 
     fun primaryKey() {
 
-        this.isPrimaryKey = IsPrimaryKey.TRUE
+        this.isPrimaryKey = IsPrimaryKey(value = true, isSurrogate = false)
 
     }
 
