@@ -290,7 +290,7 @@ class UnmodifiableDao(
     }
 
 
-    fun upsertBySomeUniqueInt(upsertEntity: UnmodifiableEntity): UnmodifiableEntityPk {
+    fun upsertBySomeUniqueInt(upsertEntity: UnmodifiableEntity): DomainId {
 
         return jdbcOps.execute(
             """

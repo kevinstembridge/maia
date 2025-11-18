@@ -374,7 +374,7 @@ class NullableFieldsDao(
     }
 
 
-    fun upsertBySomeString(upsertEntity: NullableFieldsEntity): NullableFieldsEntityPk {
+    fun upsertBySomeString(upsertEntity: NullableFieldsEntity): DomainId {
 
         return jdbcOps.execute(
             """

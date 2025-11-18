@@ -381,7 +381,7 @@ class OrgUserGroupMembershipDao(
     }
 
 
-    fun upsertByOrgUserGroupIdAndUserId(upsertEntity: OrgUserGroupMembershipEntity): OrgUserGroupMembershipEntityPk {
+    fun upsertByOrgUserGroupIdAndUserId(upsertEntity: OrgUserGroupMembershipEntity): DomainId {
 
         return jdbcOps.execute(
             """
