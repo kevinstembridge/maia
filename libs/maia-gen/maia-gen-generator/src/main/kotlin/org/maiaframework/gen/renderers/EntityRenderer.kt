@@ -29,7 +29,7 @@ class EntityRenderer(
                 .filter {
                     val classFieldName = it.classFieldDef.classFieldName
                     (
-                        classFieldName != ClassFieldName.id
+                        (classFieldName != ClassFieldName.id || entityDef.hasSurrogatePrimaryKey == false)
                         && classFieldName != ClassFieldName.createdTimestampUtc
                         && classFieldName != ClassFieldName.version
                         && classFieldName != ClassFieldName.lastModifiedById
