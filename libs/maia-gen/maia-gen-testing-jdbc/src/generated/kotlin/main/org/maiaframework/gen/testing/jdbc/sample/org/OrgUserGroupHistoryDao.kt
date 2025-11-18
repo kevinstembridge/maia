@@ -7,12 +7,9 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
-import org.maiaframework.jdbc.MaiaRowMapper
-import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
-import java.sql.PreparedStatement
 
 
 @Repository
@@ -301,77 +298,6 @@ class OrgUserGroupHistoryDao(
         )
 
         return count > 0
-
-    }
-
-
-    fun upsertByIdAndVersion(upsertEntity: OrgUserGroupHistoryEntity): OrgUserGroupHistoryEntityPk {
-
-        return jdbcOps.execute(
-            """
-            with input_rows(
-                authorities,
-                change_type,
-                c_ts,
-                description,
-                id,
-                name,
-                org_id,
-                system_managed,
-                v
-            ) as (
-                values (
-                    cast(:authorities as text[]),
-                    cast(:changeType as text),
-                    cast(:createdTimestampUtc as timestamp(3) with time zone),
-                    cast(:description as text),
-                    cast(:id as uuid),
-                    cast(:name as text),
-                    cast(:orgId as uuid),
-                    cast(:systemManaged as boolean),
-                    cast(:version as bigint)
-                )
-            )
-            , ins as (
-                insert into testing.user_group_history (
-                    authorities,
-                    change_type,
-                    c_ts,
-                    description,
-                    id,
-                    name,
-                    org_id,
-                    system_managed,
-                    v
-                )
-                select * from input_rows
-                on conflict (id, v) do nothing
-                returning id
-            )
-            select 'i' as source, id
-            from ins
-            union all
-            select 's' as source, c.id
-            from input_rows
-            join testing.user_group_history c using (id, v);
-            """.trimIndent(),
-            SqlParams().apply {
-            addListOfStrings("authorities", upsertEntity.authorities.map { it.name })
-            addValue("changeType", upsertEntity.changeType)
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("description", upsertEntity.description)
-            addValue("id", upsertEntity.id)
-            addValue("name", upsertEntity.name)
-            addValue("orgId", upsertEntity.orgId)
-            addValue("systemManaged", upsertEntity.systemManaged)
-            addValue("version", upsertEntity.version)
-            },
-            { ps: PreparedStatement ->
-                val rs = ps.executeQuery()
-                rs.next()
-                primaryKeyRowMapper.mapRow(ResultSetAdapter(rs))
-            }
-        )!!
 
     }
 
