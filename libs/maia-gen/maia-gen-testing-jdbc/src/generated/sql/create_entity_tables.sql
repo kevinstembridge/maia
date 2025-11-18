@@ -361,3 +361,22 @@ CREATE TABLE testing.non_surrogate_primary_key_history (
     v bigint NOT NULL,
     PRIMARY KEY(some_string, v)
 );
+
+
+CREATE TABLE testing.non_surrogate_id_primary_key (
+    c_ts timestamp(3) with time zone NOT NULL,
+    id text NOT NULL,
+    some_modifiable_string text NOT NULL,
+    v bigint NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE testing.non_surrogate_id_primary_key_history (
+    change_type text NOT NULL,
+    c_ts timestamp(3) with time zone NOT NULL,
+    id text NOT NULL,
+    some_modifiable_string text NOT NULL,
+    v bigint NOT NULL,
+    PRIMARY KEY(id, v)
+);
