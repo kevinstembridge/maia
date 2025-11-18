@@ -37,6 +37,7 @@ class NonSurrogateIdPrimaryKeyEntity(
 
         @JvmStatic
         fun newInstance(
+            id: SomeStringValueClass,
             someModifiableString: String
         ): NonSurrogateIdPrimaryKeyEntity {
 
@@ -45,6 +46,7 @@ class NonSurrogateIdPrimaryKeyEntity(
 
             return NonSurrogateIdPrimaryKeyEntity(
                 createdTimestampUtc,
+                id,
                 someModifiableString,
                 version
             )
