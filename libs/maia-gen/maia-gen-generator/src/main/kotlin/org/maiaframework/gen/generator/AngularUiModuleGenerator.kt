@@ -44,6 +44,26 @@ import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 
 
+fun main(args: Array<String>) {
+
+    try {
+
+        val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
+
+        moduleGeneratorFixture.modelDefs.forEach {
+
+            val modelGenerator = AngularUiModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource()
+
+        }
+
+    } catch (throwable: Throwable) {
+        throwable.printStackTrace()
+    }
+
+}
+
+
 class AngularUiModuleGenerator(
     modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext

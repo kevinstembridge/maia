@@ -53,7 +53,7 @@ tasks.register<JavaExec>("generateModel") {
     outputs.dir("src/generated/resources/test")
 
     classpath = configurations["maiagen"].asFileTree
-    mainClass.set("org.maiaframework.gen.generator.EndpointsModuleGeneratorMain")
+    mainClass.set("org.maiaframework.gen.generator.EndpointsModuleGeneratorKt")
     args("specificationClassNames=org.maiaframework.job.spec.MaiaJobSpec")
 
 }

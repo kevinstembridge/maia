@@ -49,7 +49,7 @@ tasks.register<JavaExec>("generateModel") {
     outputs.dir("src/generated/sql")
 
     classpath = configurations["maiagen"].asFileTree
-    mainClass.set("org.maiaframework.gen.generator.DaoModuleGeneratorMain")
+    mainClass.set("org.maiaframework.gen.generator.DaoModuleGeneratorKt")
     args("specificationClassNames=org.maiaframework.toggles.spec.TogglesSpec")
 
 }

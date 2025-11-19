@@ -7,6 +7,26 @@ import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 
 
+fun main(args: Array<String>) {
+
+    try {
+
+        val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
+
+        moduleGeneratorFixture.modelDefs.forEach {
+
+            val modelGenerator = AppModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource()
+
+        }
+
+    } catch (throwable: Throwable) {
+        throwable.printStackTrace()
+    }
+
+}
+
+
 class AppModuleGenerator(
     modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext

@@ -5,6 +5,26 @@ import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 
 
+fun main(args: Array<String>) {
+
+    try {
+
+        val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
+
+        moduleGeneratorFixture.modelDefs.forEach {
+
+            val modelGenerator = EndpointsModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource()
+
+        }
+
+    } catch (throwable: Throwable) {
+        throwable.printStackTrace()
+    }
+
+}
+
+
 class EndpointsModuleGenerator(
     modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext

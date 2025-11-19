@@ -5,6 +5,26 @@ import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 
 
+fun main(args: Array<String>) {
+
+    try {
+
+        val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
+
+        moduleGeneratorFixture.modelDefs.forEach {
+
+            val modelGenerator = DaoModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource()
+
+        }
+
+    } catch (throwable: Throwable) {
+        throwable.printStackTrace()
+    }
+
+}
+
+
 class DaoModuleGenerator(
     modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
