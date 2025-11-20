@@ -19,7 +19,7 @@ data class ModuleGeneratorFixture(
                 modelGeneratorArgs.resourcesOutputDir,
                 modelGeneratorArgs.typescriptOutputDir,
                 modelGeneratorArgs.sqlCreateScriptsDir,
-                modelGeneratorArgs.createTablesSqlScriptRenderedFilePath,
+                modelGeneratorArgs.createTablesSqlScriptPrefix,
             )
 
             val modelDefs = modelGeneratorArgs.specificationClassNames.map { ModelDefInstantiator.instantiate(it) }

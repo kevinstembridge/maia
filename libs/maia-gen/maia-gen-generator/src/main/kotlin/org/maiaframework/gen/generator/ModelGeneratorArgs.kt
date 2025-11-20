@@ -29,7 +29,7 @@ class ModelGeneratorArgs(args: Array<String>) {
     val sqlCreateScriptsDir: File
 
 
-    val createTablesSqlScriptRenderedFilePath: String
+    val createTablesSqlScriptPrefix: String
 
 
     init {
@@ -48,7 +48,7 @@ class ModelGeneratorArgs(args: Array<String>) {
         this.resourcesTestOutputDir = File(this.generatedSourceDir, "resources/test")
         this.typescriptOutputDir = File(this.generatedSourceDir, "typescript/main")
         this.sqlCreateScriptsDir = File(this.generatedSourceDir, argsMap["sqlCreateScriptsDir"] ?: "sql")
-        this.createTablesSqlScriptRenderedFilePath = argsMap["createTablesSqlScriptName"] ?: "create_entity_tables.sql"
+        this.createTablesSqlScriptPrefix = argsMap["createTablesSqlScriptName"] ?: "create_entity_tables"
 
     }
 

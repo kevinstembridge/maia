@@ -43,9 +43,6 @@ class DaoModuleGenerator(
         `render ForEditDtoRowMappers`()
         `process SearchableDtoDefs`()
         `render DAOs`()
-        `render DaoIndexCreators`()
-        `render EntityRowMappers`()
-        `render ForEditDtoRowMappers`()
         `render SearchableDtoSearchConverters`()
         `render DtoDocumentMappers`()
         `render TableDtoDocumentMappers`()
@@ -56,12 +53,12 @@ class DaoModuleGenerator(
     private fun `render create-table scripts`() {
 
         val sqlScriptsDir = this.modelGeneratorContext.sqlCreateScriptsDir
-        val renderedFilePath = this.modelGeneratorContext.createTablesSqlScriptRenderedFilePath
 
         val jdbcRootEntityHierarchies = this.modelDef.rootEntityHierarchies.filter { it.entityDef.databaseType == DatabaseType.JDBC }
+        val renderedFileName = "${this.modelGeneratorContext.createTablesSqlScriptPrefix}_${this.modelDef.appKey}.sql"
 
         if (jdbcRootEntityHierarchies.isNotEmpty()) {
-            CreateTableSqlRenderer(jdbcRootEntityHierarchies, renderedFilePath).renderToDir(sqlScriptsDir)
+            CreateTableSqlRenderer(jdbcRootEntityHierarchies, renderedFileName).renderToDir(sqlScriptsDir)
         }
 
     }

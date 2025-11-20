@@ -17,7 +17,7 @@ import org.maiaframework.gen.spec.definition.lang.Fqcn
 import java.util.concurrent.TimeUnit
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-class SampleJdbcSpec : AbstractSpec(appKey = AppKey("testing"), defaultSchemaName = SchemaName("testing")) {
+class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchemaName = SchemaName("testing")) {
 
 
     private val partySpec = SamplePartyJdbcSpec()

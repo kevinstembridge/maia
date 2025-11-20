@@ -70,7 +70,7 @@ tasks.register<JavaExec>("generateModel") {
     outputs.dir("src/generated/kotlin/test")
 
     classpath = configurations["maiagen"].asFileTree
-    mainClass.set("org.maiaframework.gen.generator.ModelGeneratorMain")
+    mainClass.set("org.maiaframework.gen.generator.ModelGeneratorKt")
     args("specificationClassNames=org.maiaframework.gen.sample.SamplePartyJdbcSpec,org.maiaframework.gen.sample.SampleJdbcSpec")
 
 }

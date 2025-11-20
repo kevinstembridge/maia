@@ -7,5 +7,5 @@ data class ModelGeneratorContext(
     val srcMainResourcesDir: File,
     val typescriptOutputDir: File,
     val sqlCreateScriptsDir: File,
-    val createTablesSqlScriptRenderedFilePath: String,
+    val createTablesSqlScriptPrefix: String,
 )
