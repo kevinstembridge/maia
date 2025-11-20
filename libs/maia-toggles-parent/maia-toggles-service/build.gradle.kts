@@ -1,5 +1,4 @@
 
-
 plugins {
     id("maia.kotlin-library-spring-conventions")
 }
@@ -7,8 +6,10 @@ plugins {
 
 dependencies {
 
-    api(project(":libs:maia-toggles-parent:maia-toggles-dao"))
-    api(project(":libs:maia-toggles-parent:maia-toggles-repo"))
+    api(project(":libs:maia-toggles-parent:maia-toggles-domain"))
+
+    implementation(project(":libs:maia-toggles-parent:maia-toggles-dao"))
+    implementation(project(":libs:maia-toggles-parent:maia-toggles-repo"))
 
 }
 

@@ -14,7 +14,7 @@ import java.time.LocalDate
 
 class FeatureToggleEntity(
     val activationStrategies: List<ActivationStrategyDescriptor>,
-    val attributes: Map<String, String>,
+    val attributes: Map<String, String>?,
     val comment: String?,
     val contactPerson: ContactPerson?,
     val createdTimestampUtc: Instant,
@@ -28,6 +28,9 @@ class FeatureToggleEntity(
     val ticketKey: TicketKey?,
     val version: Long
 ) {
+
+
+    val primaryKey = featureName
 
 
     override fun toString(): String {
@@ -60,7 +63,7 @@ class FeatureToggleEntity(
         @JvmStatic
         fun newInstance(
             activationStrategies: List<ActivationStrategyDescriptor>,
-            attributes: Map<String, String>,
+            attributes: Map<String, String>?,
             comment: String?,
             contactPerson: ContactPerson?,
             description: Description?,

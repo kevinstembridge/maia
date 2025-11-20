@@ -2,7 +2,7 @@
 
 CREATE TABLE toggles.feature_toggle (
     activation_strategies jsonb NOT NULL,
-    attributes jsonb NOT NULL,
+    attributes jsonb NULL,
     comment text NULL,
     contact_person text NULL,
     c_ts timestamp(3) with time zone NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE toggles.feature_toggle (
 
 CREATE TABLE toggles.feature_toggle_history (
     activation_strategies jsonb NOT NULL,
-    attributes jsonb NOT NULL,
+    attributes jsonb NULL,
     change_type text NOT NULL,
     comment text NULL,
     contact_person text NULL,

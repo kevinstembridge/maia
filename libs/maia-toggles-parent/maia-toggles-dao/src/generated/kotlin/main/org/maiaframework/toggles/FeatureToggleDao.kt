@@ -12,6 +12,7 @@ import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
+import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
 import org.maiaframework.toggles.fields.ContactPerson
@@ -19,6 +20,7 @@ import org.maiaframework.toggles.fields.Description
 import org.maiaframework.toggles.fields.InfoLink
 import org.maiaframework.toggles.fields.TicketKey
 import org.springframework.data.domain.Pageable
+import java.sql.PreparedStatement
 import java.time.Instant
 import java.time.LocalDate
 
@@ -76,7 +78,7 @@ class FeatureToggleDao(
             """.trimIndent(),
             SqlParams().apply {
                 addJsonValue("activationStrategies", objectMapper.writeValueAsString(entity.activationStrategies))
-                addJsonValue("attributes", objectMapper.writeValueAsString(entity.attributes))
+                addJsonValue("attributes", entity.attributes?.let { objectMapper.writeValueAsString(it) })
                 addValue("comment", entity.comment)
                 addValue("contactPerson", entity.contactPerson?.value)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
@@ -136,7 +138,7 @@ class FeatureToggleDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addJsonValue("activationStrategies", objectMapper.writeValueAsString(entity.activationStrategies))
-                    addJsonValue("attributes", objectMapper.writeValueAsString(entity.attributes))
+                    addJsonValue("attributes", entity.attributes?.let { objectMapper.writeValueAsString(it) })
                     addValue("comment", entity.comment)
                     addValue("contactPerson", entity.contactPerson?.value)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
@@ -334,7 +336,7 @@ class FeatureToggleDao(
     }
 
 
-    fun findIdsAsSequence(filter: FeatureToggleEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: FeatureToggleEntityFilter): Sequence<FeatureName> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -342,9 +344,9 @@ class FeatureToggleDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from toggles.feature_toggle where $whereClause",
+            "select feature_name from toggles.feature_toggle where $whereClause",
             sqlParams,
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }
@@ -410,6 +412,85 @@ class FeatureToggleDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun upsertByFeatureName(upsertEntity: FeatureToggleEntity): FeatureToggleEntity {
+
+        val persistedEntity = jdbcOps.execute(
+            """
+            insert into toggles.feature_toggle (
+                activation_strategies,
+                attributes,
+                comment,
+                contact_person,
+                c_ts,
+                description,
+                enabled,
+                feature_name,
+                info_link,
+                last_modified_by,
+                lm_ts,
+                review_date,
+                ticket_key,
+                v
+            ) values (
+                :activationStrategies,
+                :attributes,
+                :comment,
+                :contactPerson,
+                :createdTimestampUtc,
+                :description,
+                :enabled,
+                :featureName,
+                :infoLink,
+                :lastModifiedBy,
+                :lastModifiedTimestampUtc,
+                :reviewDate,
+                :ticketKey,
+                :version
+            )
+            on conflict (feature_name)
+            do update set
+                contact_person = :contactPerson,
+                description = :description,
+                enabled = :enabled,
+                info_link = :infoLink,
+                last_modified_by = :lastModifiedBy,
+                lm_ts = :lastModifiedTimestampUtc,
+                review_date = :reviewDate,
+                ticket_key = :ticketKey,
+                v = toggles.feature_toggle.v + 1
+            returning *;
+            """.trimIndent(),
+            SqlParams().apply {
+            addJsonValue("activationStrategies", objectMapper.writeValueAsString(upsertEntity.activationStrategies))
+            addJsonValue("attributes", upsertEntity.attributes?.let { objectMapper.writeValueAsString(it) })
+            addValue("comment", upsertEntity.comment)
+            addValue("contactPerson", upsertEntity.contactPerson?.value)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("description", upsertEntity.description?.value)
+            addValue("enabled", upsertEntity.enabled)
+            addValue("featureName", upsertEntity.featureName.value)
+            addValue("infoLink", upsertEntity.infoLink?.value)
+            addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("reviewDate", upsertEntity.reviewDate)
+            addValue("ticketKey", upsertEntity.ticketKey?.value)
+            addValue("version", upsertEntity.version)
+            },
+            { ps: PreparedStatement ->
+                val rs = ps.executeQuery()
+                rs.next()
+                entityRowMapper.mapRow(ResultSetAdapter(rs))
+            }
+        )
+
+        val changeType = if (persistedEntity!!.primaryKey != upsertEntity.primaryKey) ChangeType.UPDATE else ChangeType.CREATE
+        insertHistory(persistedEntity, persistedEntity.version, changeType)
+
+        return persistedEntity!!
 
     }
 

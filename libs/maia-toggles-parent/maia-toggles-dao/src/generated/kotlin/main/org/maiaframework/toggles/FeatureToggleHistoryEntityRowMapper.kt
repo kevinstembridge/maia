@@ -23,7 +23,7 @@ class FeatureToggleHistoryEntityRowMapper(
     override fun mapRow(rsa: ResultSetAdapter): FeatureToggleHistoryEntity {
 
         val activationStrategies = rsa.readString("activation_strategies") { objectMapper.readValue(it, object : TypeReference<List<ActivationStrategyDescriptor>>() {}) }
-        val attributes = rsa.readString("attributes") { objectMapper.readValue(it, object : TypeReference<Map<String, String>>() {}) }
+        val attributes = rsa.readStringOrNull("attributes") { objectMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) }
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val comment = rsa.readStringOrNull("comment")
         val contactPerson = rsa.readStringOrNull("contact_person") { ContactPerson(it) }

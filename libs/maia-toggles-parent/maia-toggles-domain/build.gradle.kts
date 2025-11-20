@@ -9,12 +9,12 @@ plugins {
 
 dependencies {
 
-    implementation(kotlin("reflect"))
-
     api(project(":libs:maia-common"))
     api(project(":libs:maia-domain"))
-    api(project(":libs:maia-hazelcast"))
-    api(project(":libs:maia-jdbc"))
+    api(project(":libs:maia-toggles-parent:maia-toggles-api"))
+
+    implementation(project(":libs:maia-hazelcast"))
+    implementation(project(":libs:maia-jdbc"))
 
     implementation("org.springframework:spring-context")
 

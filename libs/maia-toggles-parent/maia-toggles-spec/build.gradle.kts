@@ -7,6 +7,7 @@ plugins {
 dependencies {
 
     implementation(project(":libs:maia-gen:maia-gen-spec"))
+
     implementation("org.slf4j:slf4j-api")
 
 }

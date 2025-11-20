@@ -6,9 +6,9 @@ import java.time.Instant
 class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
 
 
-    fun sync(featureDefinition: FeatureDefinition) {
+    fun sync(featureDefinition: Feature) {
 
-        val existingFeatureEntity = this.toggleDao.findByPrimaryKeyOrNull(featureDefinition.featureName)
+        val existingFeatureEntity = this.toggleDao.findByPrimaryKeyOrNull(featureDefinition.name)
 
         if (existingFeatureEntity == null) {
 
@@ -23,20 +23,20 @@ class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
     }
 
 
-    private fun persistNewFeatureEntity(featureDefinition: FeatureDefinition) {
+    private fun persistNewFeatureEntity(feature: Feature) {
 
         val featureToggleEntity = FeatureToggleEntity.newInstance(
             activationStrategies = emptyList(),
-            attributes = featureDefinition.attributes,
+            attributes = feature.attributes,
             comment = "Initial creation by system",
-            contactPerson = featureDefinition.contactPerson,
-            description = featureDefinition.description,
-            enabled = featureDefinition.enabledByDefault,
-            featureName = featureDefinition.featureName,
+            contactPerson = feature.contactPerson,
+            description = feature.description,
+            enabled = feature.enabledByDefault,
+            featureName = feature.name,
             lastModifiedBy = "SYSTEM",
-            reviewDate = featureDefinition.reviewDate,
-            ticketKey = featureDefinition.ticketKey,
-            infoLink = featureDefinition.infoLink,
+            reviewDate = feature.reviewDate,
+            ticketKey = feature.ticketKey,
+            infoLink = feature.infoLink,
         )
 
         this.toggleDao.insert(featureToggleEntity)
@@ -46,25 +46,25 @@ class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
 
     private fun syncExistingFeatureState(
         existingFeatureEntity: FeatureToggleEntity,
-        featureDefinition: FeatureDefinition
+        feature: Feature
     ) {
 
-        if (featureDefinitionHasChanged(featureDefinition, existingFeatureEntity)) {
+        if (featureDefinitionHasChanged(feature, existingFeatureEntity)) {
 
             val updatedEntity = FeatureToggleEntity(
                 activationStrategies = existingFeatureEntity.activationStrategies,
-                attributes = featureDefinition.attributes,
+                attributes = feature.attributes,
                 comment = "Updated by system",
-                contactPerson = featureDefinition.contactPerson,
+                contactPerson = feature.contactPerson,
                 createdTimestampUtc = existingFeatureEntity.createdTimestampUtc,
-                description = featureDefinition.description,
+                description = feature.description,
                 enabled = existingFeatureEntity.enabled,
-                featureName = featureDefinition.featureName,
-                infoLink = featureDefinition.infoLink,
+                featureName = feature.name,
+                infoLink = feature.infoLink,
                 lastModifiedTimestampUtc = Instant.now(),
                 lastModifiedBy = "SYSTEM",
-                reviewDate = featureDefinition.reviewDate,
-                ticketKey = featureDefinition.ticketKey,
+                reviewDate = feature.reviewDate,
+                ticketKey = feature.ticketKey,
                 version = existingFeatureEntity.version + 1
             )
 
@@ -76,17 +76,17 @@ class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
 
 
     private fun featureDefinitionHasChanged(
-        featureDefinition: FeatureDefinition,
+        feature: Feature,
         featureToggleEntity: FeatureToggleEntity
     ): Boolean {
 
-        return featureDefinition.description != featureToggleEntity.description
-                || featureDefinition.attributes != featureToggleEntity.attributes
-                || featureDefinition.reviewDate != featureToggleEntity.reviewDate
-                || featureDefinition.ticketKey != featureToggleEntity.ticketKey
-                || featureDefinition.contactPerson != featureToggleEntity.contactPerson
-                || featureDefinition.infoLink != featureToggleEntity.infoLink
-                || featureDefinition.ticketKey != featureToggleEntity.ticketKey
+        return feature.description != featureToggleEntity.description
+                || feature.attributes != featureToggleEntity.attributes
+                || feature.reviewDate != featureToggleEntity.reviewDate
+                || feature.ticketKey != featureToggleEntity.ticketKey
+                || feature.contactPerson != featureToggleEntity.contactPerson
+                || feature.infoLink != featureToggleEntity.infoLink
+                || feature.ticketKey != featureToggleEntity.ticketKey
 
     }
 

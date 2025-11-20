@@ -816,6 +816,7 @@ class HazelcastSerializerRenderer(
     }
 
 
+    @Suppress("DANGEROUS_CHARACTERS")
     private fun `render write for Map`(
         field: ClassFieldDef,
         mapFieldType: MapFieldType
@@ -830,7 +831,13 @@ class HazelcastSerializerRenderer(
         `render temp holder for Map keys`(mapEntryKeyType, keyFieldName, classFieldName)
         `render temp holder for Map values`(mapEntryValueType, field, valueFieldName)
 
-        appendLine("            dto.${field.classFieldName}.forEach { (key, value) ->")
+        val `?` = if (field.nullable) {
+            "?"
+        } else {
+            ""
+        }
+
+        appendLine("            dto.${field.classFieldName}$`?`.forEach { (key, value) ->")
         `render adding the key to the temp holder`(keyFieldName, mapEntryKeyType)
         `render adding the value to the temp holder`(valueFieldName, mapEntryValueType)
         appendLine("            }")

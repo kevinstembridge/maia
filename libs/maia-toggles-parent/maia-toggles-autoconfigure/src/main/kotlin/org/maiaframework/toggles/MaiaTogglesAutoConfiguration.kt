@@ -29,7 +29,7 @@ import javax.sql.DataSource
     ]
 )
 @Configuration
-@ConditionalOnClass(Toggles::class)
+@ConditionalOnClass(TogglesImpl::class)
 @EnableConfigurationProperties(MaiaTogglesProperties::class)
 class MaiaTogglesAutoConfiguration {
 
@@ -78,9 +78,9 @@ class MaiaTogglesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun toggles(toggleRepo: ToggleRepo): Toggles {
+    fun toggles(toggleRepo: ToggleRepo): TogglesImpl {
 
-        return Toggles(toggleRepo)
+        return TogglesImpl(toggleRepo)
 
     }
 

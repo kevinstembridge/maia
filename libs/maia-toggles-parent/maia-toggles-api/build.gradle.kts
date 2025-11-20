@@ -6,6 +6,6 @@ plugins {
 
 dependencies {
 
-    implementation(project(":libs:maia-toggles-parent:maia-toggles-service"))
+    implementation("com.fasterxml.jackson.core:jackson-annotations")
 
 }

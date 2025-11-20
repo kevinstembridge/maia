@@ -88,7 +88,7 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
             writeArrayOfCompact("activationStrategies", dto.activationStrategies.toTypedArray())
             val attributesKeys = mutableListOf<String>()
             val attributesValues = mutableListOf<String>()
-            dto.attributes.forEach { (key, value) ->
+            dto.attributes?.forEach { (key, value) ->
                 attributesKeys.add(key)
                 attributesValues.add(value)
             }

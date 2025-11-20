@@ -67,7 +67,7 @@ class FeatureToggleHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addJsonValue("activationStrategies", objectMapper.writeValueAsString(entity.activationStrategies))
-                addJsonValue("attributes", objectMapper.writeValueAsString(entity.attributes))
+                addJsonValue("attributes", entity.attributes?.let { objectMapper.writeValueAsString(it) })
                 addValue("changeType", entity.changeType)
                 addValue("comment", entity.comment)
                 addValue("contactPerson", entity.contactPerson?.value)
@@ -128,7 +128,7 @@ class FeatureToggleHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addJsonValue("activationStrategies", objectMapper.writeValueAsString(entity.activationStrategies))
-                    addJsonValue("attributes", objectMapper.writeValueAsString(entity.attributes))
+                    addJsonValue("attributes", entity.attributes?.let { objectMapper.writeValueAsString(it) })
                     addValue("changeType", entity.changeType)
                     addValue("comment", entity.comment)
                     addValue("contactPerson", entity.contactPerson?.value)
@@ -234,6 +234,22 @@ class FeatureToggleHistoryDao(
             "select * from toggles.feature_toggle_history where $whereClause",
             sqlParams,
             this.entityRowMapper
+        )
+
+    }
+
+
+    fun findPrimaryKeysAsSequence(filter: FeatureToggleHistoryEntityFilter): Sequence<FeatureToggleHistoryEntityPk> {
+
+        val whereClause = filter.whereClause(this.fieldConverter)
+        val sqlParams = SqlParams()
+
+        filter.populateSqlParams(sqlParams)
+
+        return this.jdbcOps.queryForSequence(
+            "select feature_name, v from toggles.feature_toggle_history where $whereClause",
+            sqlParams,
+            this.primaryKeyRowMapper
         )
 
     }

@@ -6,6 +6,4 @@ interface ActivationStrategy {
     val name: String
 
 
-
-
 }

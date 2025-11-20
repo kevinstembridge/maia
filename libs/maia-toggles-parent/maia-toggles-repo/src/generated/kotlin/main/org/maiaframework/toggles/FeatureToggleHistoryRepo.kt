@@ -52,6 +52,13 @@ class FeatureToggleHistoryRepo(
     }
 
 
+    fun findPrimaryKeysAsSequence(filter: FeatureToggleHistoryEntityFilter): Sequence<FeatureToggleHistoryEntityPk> {
+
+        return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
     fun findAllBy(filter: FeatureToggleHistoryEntityFilter): List<FeatureToggleHistoryEntity> {
 
         return this.dao.findAllBy(filter)

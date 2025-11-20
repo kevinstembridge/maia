@@ -6,9 +6,7 @@ plugins {
 
 dependencies {
 
-    implementation(kotlin("reflect"))
-
-    api(project(":libs:maia-toggles-parent:maia-toggles-service"))
+    implementation(project(":libs:maia-toggles-parent:maia-toggles-service"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
 

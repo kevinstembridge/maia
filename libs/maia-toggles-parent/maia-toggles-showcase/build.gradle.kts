@@ -1,5 +1,4 @@
 
-
 plugins {
     id("maia.kotlin-library-spring-conventions")
 }
@@ -13,8 +12,6 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-web")
 
     implementation(project(":libs:maia-toggles-parent:maia-toggles-spring-boot-starter"))
-
-//    implementation("org.flywaydb:flyway-core")
 
     runtimeOnly("com.zaxxer:HikariCP")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")

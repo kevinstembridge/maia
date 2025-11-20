@@ -1,22 +1,9 @@
 package org.maiaframework.toggles
 
-import org.maiaframework.toggles.repo.ToggleRepo
-
-class Toggles(private val toggleRepo: ToggleRepo) {
+interface Toggles {
 
 
-    fun isActive(featureName: FeatureName) {
-
-        TODO()
-
-        // TODO get the current feature state, including any activation strategies
-
-        val featureState = toggleRepo.getFeatureState(featureName)
-
-
-
-
-    }
+    fun isActive(feature: Feature): Boolean
 
 
 }

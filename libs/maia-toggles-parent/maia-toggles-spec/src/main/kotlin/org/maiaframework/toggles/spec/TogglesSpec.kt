@@ -58,9 +58,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
         allowFindAll = AllowFindAll.TRUE,
     ) {
         moduleName("sys_ops")
-        cacheable {
-
-        }
+        cacheable { }
         daoHasSpringAnnotation = false
         field("featureName", featureNameValueDef) {
             primaryKey()
@@ -93,7 +91,9 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
             lengthConstraint(max = 300)
             modifiableBySystem()
         }
-        field("attributes", mapFieldType(FieldTypes.string, FieldTypes.string))
+        field("attributes", mapFieldType(FieldTypes.string, FieldTypes.string)) {
+            nullable()
+        }
         field("lastModifiedBy", FieldTypes.string) {
             modifiableBySystem()
             lengthConstraint(max = 100)
