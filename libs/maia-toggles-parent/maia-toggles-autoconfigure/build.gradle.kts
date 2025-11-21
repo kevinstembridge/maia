@@ -16,6 +16,8 @@ dependencies {
 
     implementation(project(":libs:maia-jdbc"))
 
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springframework.boot:spring-boot-starter")
 
     annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")

@@ -1,5 +1,6 @@
 package org.maiaframework.toggles
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.hazelcast.config.Config
 import com.hazelcast.config.YamlConfigBuilder
 import maia_toggles.hazelcast.Maia_togglesHazelcastConfig

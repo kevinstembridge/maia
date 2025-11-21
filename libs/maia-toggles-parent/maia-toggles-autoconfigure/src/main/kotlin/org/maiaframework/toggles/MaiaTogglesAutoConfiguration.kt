@@ -35,11 +35,18 @@ class MaiaTogglesAutoConfiguration {
 
 
     @Bean
-    fun toggleObjectMapper(): ObjectMapper {
+    @ConditionalOnMissingBean
+    fun toggleObjectMapper(): KotlinModule {
 
-        return ObjectMapper()
-            .registerModule(KotlinModule.Builder().build())
+        return KotlinModule.Builder().build()
 
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun javaTimeModule(): JavaTimeModule {
+        return JavaTimeModule()
     }
 
 

@@ -112,6 +112,18 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
         "FeatureToggle"
     ) {
         field("featureName", featureNameValueDef)
+        field("enabled", FieldTypes.boolean)
+        field("description", descriptionValueDef) { nullable() }
+        field("ticketKey", ticketKeyValueDef ) { nullable() }
+        field("reviewDate", FieldTypes.localDate ) { nullable() }
+        field("contactPerson", contactPersonValueDef ) { nullable() }
+        field("infoLink", infoLinkValueDef ) { nullable() }
+        field("attributes", mapFieldType(FieldTypes.string, FieldTypes.string) ) { nullable() }
+        field("comment", FieldTypes.string) { nullable() }
+        field("activationStrategies", fieldListOf(activationStrategyDescriptorDef))
+        field("lastModifiedBy", FieldTypes.string)
+        field("lastModifiedTimestampUtc", FieldTypes.instant)
+        field("createdTimestampUtc", FieldTypes.instant)
     }
 
 
