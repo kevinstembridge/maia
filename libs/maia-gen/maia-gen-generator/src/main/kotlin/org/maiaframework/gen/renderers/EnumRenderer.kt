@@ -26,7 +26,6 @@ open class EnumRenderer(private val enumDef: EnumDef) : AbstractKotlinRenderer(e
             val enumValueDef = itr.next()
 
             blankLine()
-            blankLine()
 
             if (enumValueDef.description != null) {
 

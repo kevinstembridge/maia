@@ -5,7 +5,6 @@ package org.maiaframework.toggles
 
 
 
-
 interface SetFeatureToggleRequestDtoHandler {
 
 

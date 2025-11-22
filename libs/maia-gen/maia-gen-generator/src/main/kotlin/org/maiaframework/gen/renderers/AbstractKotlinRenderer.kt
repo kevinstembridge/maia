@@ -41,8 +41,13 @@ abstract class AbstractKotlinRenderer protected constructor(
         renderClassBody()
         blankLine()
 
+        val newLinesForImportPlaceholder = if (importStatements.isEmpty()) "" else "\n"
+
         val sourceWithImportPlaceholder = sourceCode
-        val renderedImportStatements = importStatements.joinToString("\n") { "import $it" }
+        val renderedImportStatements = importStatements.joinToString(
+            prefix = newLinesForImportPlaceholder,
+            separator = "\n",
+        ) { "import $it" }
 
         return sourceWithImportPlaceholder.replace(IMPORTS_PLACEHOLDER.toRegex(), renderedImportStatements)
 
@@ -71,7 +76,6 @@ abstract class AbstractKotlinRenderer protected constructor(
      */
     private fun renderImportsPlaceholder() {
 
-        blankLine()
         appendLine(IMPORTS_PLACEHOLDER)
 
     }

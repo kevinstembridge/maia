@@ -5,7 +5,6 @@ package org.maiaframework.toggles.activation
 
 
 
-
 data class ActivationStrategyParameter(
     val name: String,
     val value: String

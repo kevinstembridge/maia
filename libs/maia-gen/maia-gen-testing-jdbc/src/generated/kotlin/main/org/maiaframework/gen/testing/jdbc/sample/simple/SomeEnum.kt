@@ -5,12 +5,9 @@ package org.maiaframework.gen.testing.jdbc.sample.simple
 
 
 
-
 enum class SomeEnum {
 
-
     OK,
-
 
     NOT_OK;
 

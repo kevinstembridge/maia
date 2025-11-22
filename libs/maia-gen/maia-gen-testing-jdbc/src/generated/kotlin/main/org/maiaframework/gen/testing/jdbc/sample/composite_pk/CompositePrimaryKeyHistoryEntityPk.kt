@@ -5,7 +5,6 @@ package org.maiaframework.gen.testing.jdbc.sample.composite_pk
 
 
 
-
 data class CompositePrimaryKeyHistoryEntityPk(
     val someString: String,
     val someInt: Int,

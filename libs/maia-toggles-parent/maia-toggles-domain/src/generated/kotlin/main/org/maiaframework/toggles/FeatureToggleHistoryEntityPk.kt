@@ -5,7 +5,6 @@ package org.maiaframework.toggles
 
 
 
-
 data class FeatureToggleHistoryEntityPk(
     val featureName: FeatureName,
     val version: Long

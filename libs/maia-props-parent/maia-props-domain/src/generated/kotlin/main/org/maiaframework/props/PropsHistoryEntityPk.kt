@@ -5,7 +5,6 @@ package org.maiaframework.props
 
 
 
-
 data class PropsHistoryEntityPk(
     val propertyName: String,
     val version: Long

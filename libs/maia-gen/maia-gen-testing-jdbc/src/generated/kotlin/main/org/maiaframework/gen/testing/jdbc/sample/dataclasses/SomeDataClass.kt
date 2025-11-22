@@ -5,7 +5,6 @@ package org.maiaframework.gen.testing.jdbc.sample.dataclasses
 
 
 
-
 data class SomeDataClass(
     val someOptionalBooleanField: Boolean?,
     val someStringField: String
