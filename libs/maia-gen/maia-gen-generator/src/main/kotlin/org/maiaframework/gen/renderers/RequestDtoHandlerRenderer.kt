@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.renderers.AbstractKotlinRenderer
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 
 class RequestDtoHandlerRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKotlinRenderer(requestDtoDef.handlerClassDef) {
