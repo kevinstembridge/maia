@@ -3,20 +3,20 @@ package org.maiaframework.toggles
 import java.time.Instant
 
 
-class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
+class ToggleSyncer(private val toggleRepo: FeatureToggleRepo) {
 
 
-    fun sync(featureDefinition: Feature) {
+    fun sync(feature: Feature) {
 
-        val existingFeatureEntity = this.toggleDao.findByPrimaryKeyOrNull(featureDefinition.name)
+        val existingFeatureEntity = this.toggleRepo.findByPrimaryKeyOrNull(feature.name)
 
         if (existingFeatureEntity == null) {
 
-            persistNewFeatureEntity(featureDefinition)
+            persistNewFeatureEntity(feature)
 
         } else {
 
-            syncExistingFeatureState(existingFeatureEntity, featureDefinition)
+            syncExistingFeatureState(existingFeatureEntity, feature)
 
         }
 
@@ -39,7 +39,7 @@ class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
             infoLink = feature.infoLink,
         )
 
-        this.toggleDao.insert(featureToggleEntity)
+        this.toggleRepo.insert(featureToggleEntity)
 
     }
 
@@ -49,7 +49,7 @@ class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
         feature: Feature
     ) {
 
-        if (featureDefinitionHasChanged(feature, existingFeatureEntity)) {
+        if (feature.isDifferentThan(existingFeatureEntity)) {
 
             val updatedEntity = FeatureToggleEntity(
                 activationStrategies = existingFeatureEntity.activationStrategies,
@@ -68,25 +68,22 @@ class ToggleSyncer(private val toggleDao: FeatureToggleDao) {
                 version = existingFeatureEntity.version + 1
             )
 
-            this.toggleDao.insert(updatedEntity)
+            this.toggleRepo.insert(updatedEntity)
 
         }
 
     }
 
 
-    private fun featureDefinitionHasChanged(
-        feature: Feature,
-        featureToggleEntity: FeatureToggleEntity
-    ): Boolean {
+    private fun Feature.isDifferentThan(featureToggleEntity: FeatureToggleEntity): Boolean {
 
-        return feature.description != featureToggleEntity.description
-                || feature.attributes != featureToggleEntity.attributes
-                || feature.reviewDate != featureToggleEntity.reviewDate
-                || feature.ticketKey != featureToggleEntity.ticketKey
-                || feature.contactPerson != featureToggleEntity.contactPerson
-                || feature.infoLink != featureToggleEntity.infoLink
-                || feature.ticketKey != featureToggleEntity.ticketKey
+        return description != featureToggleEntity.description
+                || attributes != featureToggleEntity.attributes
+                || reviewDate != featureToggleEntity.reviewDate
+                || ticketKey != featureToggleEntity.ticketKey
+                || contactPerson != featureToggleEntity.contactPerson
+                || infoLink != featureToggleEntity.infoLink
+                || ticketKey != featureToggleEntity.ticketKey
 
     }
 

@@ -1,9 +1,10 @@
 package org.maiaframework.toggles
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.hazelcast.config.Config
 import com.hazelcast.config.YamlConfigBuilder
 import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
+import org.maiaframework.toggles.sample.SampleFeatureOne
+import org.maiaframework.toggles.sample.SampleFeatureTwo
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

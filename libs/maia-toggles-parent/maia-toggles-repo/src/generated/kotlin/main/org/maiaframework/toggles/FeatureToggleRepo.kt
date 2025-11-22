@@ -90,7 +90,6 @@ class FeatureToggleRepo(
         logger.debug("insert $entity")
 
         this.dao.insert(entity)
-        this.cache.get(entity.featureName)
 
     }
 

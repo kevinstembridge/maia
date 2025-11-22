@@ -38,7 +38,7 @@ class RequestDtoDef(
         .build()
 
 
-    val handlerClassDef = aClassDef(packageName.uqcn("${dtoBaseName}DtoHandler"))
+    val handlerClassDef = aClassDef(packageName.uqcn("${dtoBaseName}RequestDtoHandler"))
         .ofType(ClassType.INTERFACE)
         .build()
 

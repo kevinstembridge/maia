@@ -30,20 +30,14 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
     val ticketKeyValueDef = stringValueClass("org.maiaframework.toggles.fields", "TicketKey")
 
 
-    val activationStrategyParameterDef = dataClass(
-        "org.maiaframework.toggles.activation",
-        "ActivationStrategyParameter"
-    ) {
+    val activationStrategyParameterDef = dataClass("org.maiaframework.toggles.activation", "ActivationStrategyParameter") {
         cacheable {}
         field("name", FieldTypes.string)
         field("value", FieldTypes.string)
     }
 
 
-    val activationStrategyDescriptorDef = dataClass(
-        "org.maiaframework.toggles.activation",
-        "ActivationStrategyDescriptor"
-    ) {
+    val activationStrategyDescriptorDef = dataClass("org.maiaframework.toggles.activation", "ActivationStrategyDescriptor") {
         cacheable {}
         field("id", FieldTypes.string)
         field("parameter", fieldListOf(activationStrategyParameterDef))
@@ -107,10 +101,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
     }
 
 
-    val featureToggleResponseDtoDef = simpleResponseDto(
-        "org.maiaframework.toggles",
-        "FeatureToggle"
-    ) {
+    val featureToggleResponseDtoDef = simpleResponseDto("org.maiaframework.toggles", "FeatureToggle") {
         field("featureName", featureNameValueDef)
         field("enabled", FieldTypes.boolean)
         field("description", descriptionValueDef) { nullable() }
@@ -130,6 +121,14 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
     val featureStateHzDef = hazelcastDtoDef("org.maiaframework.toggles", "FeatureState") {
         field("featureName", featureNameValueDef)
         field("enabled", FieldTypes.boolean)
+    }
+
+
+    val setFeatureToggleRequestDtoDef = requestDto("org.maiaframework.toggles", "SetFeatureToggle") {
+        field("featureName", featureNameValueDef)
+        field("enabled", FieldTypes.boolean)
+        field("comment", FieldTypes.string) { nullable() }
+        field("version", FieldTypes.long)
     }
 
 

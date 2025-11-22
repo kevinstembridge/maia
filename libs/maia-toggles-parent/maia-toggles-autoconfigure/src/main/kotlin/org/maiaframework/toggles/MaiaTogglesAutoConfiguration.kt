@@ -1,6 +1,7 @@
 package org.maiaframework.toggles
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
 import org.maiaframework.json.JsonFacade
@@ -36,7 +37,7 @@ class MaiaTogglesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun toggleObjectMapper(): KotlinModule {
+    fun jacksonKotlinModule(): KotlinModule {
 
         return KotlinModule.Builder().build()
 
@@ -45,7 +46,7 @@ class MaiaTogglesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun javaTimeModule(): JavaTimeModule {
+    fun jacksonJavaTimeModule(): JavaTimeModule {
         return JavaTimeModule()
     }
 
@@ -103,9 +104,9 @@ class MaiaTogglesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun toggleSyncer(featureToggleDao: FeatureToggleDao): ToggleSyncer {
+    fun toggleSyncer(featureToggleRepo: FeatureToggleRepo): ToggleSyncer {
 
-        return ToggleSyncer(featureToggleDao)
+        return ToggleSyncer(featureToggleRepo)
 
     }
 

@@ -20,7 +20,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
     private val createdTimestampUtcCustomization = Customization.customization("**.createdTimestampUtc", ignoreValueMatcher)
 
 
-    private val lastModifiedTimestampUtcCustomization = Customization.customization("**.createdTimestampUtc", ignoreValueMatcher)
+    private val lastModifiedTimestampUtcCustomization = Customization.customization("**.lastModifiedTimestampUtc", ignoreValueMatcher)
 
 
     private val jsonResultMatcher = JsonResultMatcher(
@@ -42,10 +42,22 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
                     jsonResultMatcher.asJson(
                         listOf(
                             mapOf(
-                                "featureName" to "SampleFeatureOne"
+                                "featureName" to "SampleFeatureOne",
+                                "comment" to "Initial creation by system",
+                                "contactPerson" to "Muriel",
+                                "createdTimestampUtc" to "ignored",
+                                "enabled" to false,
+                                "lastModifiedBy" to "SYSTEM",
+                                "lastModifiedTimestampUtc" to "ignored",
                             ),
                             mapOf(
-                                "featureName" to "SampleFeatureTwo"
+                                "featureName" to "SampleFeatureTwo",
+                                "comment" to "Initial creation by system",
+                                "contactPerson" to "Muriel",
+                                "createdTimestampUtc" to "ignored",
+                                "enabled" to true,
+                                "lastModifiedBy" to "SYSTEM",
+                                "lastModifiedTimestampUtc" to "ignored",
                             ),
                         )
                     )
