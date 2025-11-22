@@ -13,6 +13,7 @@ class RequestDtoDef(
     val dtoBaseName: DtoBaseName,
     dtoSuffix: DtoSuffix = DtoSuffix("RequestDto"),
     val packageName: PackageName,
+    moduleName: ModuleName?,
     requestMappingPath: String? = null,
     dtoFieldDefs: List<RequestDtoFieldDef>,
     val preAuthorizeExpression: PreAuthorizeExpression?,
@@ -28,7 +29,10 @@ class RequestDtoDef(
     val classFieldDefs = this.dtoFieldDefs.map { it.classFieldDef }
 
 
-    val requestMappingPath = requestMappingPath ?: "/api/${dtoBaseName.toSnakeCase()}"
+    private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
+
+
+    val requestMappingPath = requestMappingPath ?: "/api/$modulePath${dtoBaseName.toSnakeCase()}"
 
 
     val classDef = aClassDef(packageName.uqcn(dtoBaseName.withSuffix(dtoSuffix).value))

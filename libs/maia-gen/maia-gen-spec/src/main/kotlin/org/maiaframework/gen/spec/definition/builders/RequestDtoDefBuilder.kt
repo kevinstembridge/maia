@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.DtoBaseName
 import org.maiaframework.gen.spec.definition.DtoSuffix
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EnumDef
+import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.PreAuthorizeExpression
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.RequestDtoFieldDef
@@ -23,6 +24,7 @@ class RequestDtoDefBuilder(
     private val packageName: PackageName,
     private val dtoBaseName: DtoBaseName,
     private val dtoSuffix: DtoSuffix = DtoSuffix("RequestDto"),
+    private val moduleName: ModuleName?,
     private val requestMappingPath: String?,
     private val withGeneratedEndpoint: WithGeneratedEndpoint
 ) {
@@ -43,6 +45,7 @@ class RequestDtoDefBuilder(
             dtoBaseName = this.dtoBaseName,
             dtoSuffix = this.dtoSuffix,
             requestMappingPath = this.requestMappingPath,
+            moduleName = this.moduleName,
             dtoFieldDefs = fieldDefs,
             preAuthorizeExpression = this.preAuthorizeExpression,
             withGeneratedEndpoint = this.withGeneratedEndpoint

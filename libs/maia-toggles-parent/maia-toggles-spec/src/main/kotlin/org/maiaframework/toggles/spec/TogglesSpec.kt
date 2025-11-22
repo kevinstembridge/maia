@@ -6,6 +6,7 @@ package org.maiaframework.toggles.spec
 import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.AppKey
+import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.flags.AllowFindAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
@@ -14,6 +15,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes.mapFieldType
 @Suppress("unused")
 class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaName = SchemaName("toggles")) {
 
+    val moduleName = ModuleName.of("maia_toggles")
 
     val contactPersonValueDef = stringValueClass("org.maiaframework.toggles.fields", "ContactPerson")
 
@@ -124,7 +126,11 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
     }
 
 
-    val setFeatureToggleRequestDtoDef = requestDto("org.maiaframework.toggles", "SetFeatureToggle") {
+    val setFeatureToggleRequestDtoDef = requestDto(
+        "org.maiaframework.toggles",
+        "SetFeatureToggle",
+        moduleName = moduleName,
+    ) {
         field("featureName", featureNameValueDef)
         field("enabled", FieldTypes.boolean)
         field("comment", FieldTypes.string) { nullable() }

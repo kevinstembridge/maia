@@ -94,7 +94,8 @@ class EntityCreateApiDef(
         dtoBaseName,
         packageName = entityDef.packageName,
         dtoFieldDefs = this.dtoFields,
-        preAuthorizeExpression = preAuthorizeExpression
+        preAuthorizeExpression = preAuthorizeExpression,
+        moduleName = moduleName
     )
 
 

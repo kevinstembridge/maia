@@ -37,6 +37,7 @@ import org.maiaframework.gen.spec.definition.IntTypeDef
 import org.maiaframework.gen.spec.definition.LongTypeDef
 import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.ModelDefProvider
+import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.ResponseDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
@@ -728,6 +729,7 @@ abstract class AbstractSpec protected constructor(
         packageName: String,
         dtoBaseName: String,
         requestMappingPath: String? = null,
+        moduleName: ModuleName? = null,
         withGeneratedEndpoint: Boolean = true,
         init: RequestDtoDefBuilder.() -> Unit
     ): RequestDtoDef {
@@ -736,6 +738,7 @@ abstract class AbstractSpec protected constructor(
             packageName = PackageName(packageName),
             dtoBaseName = DtoBaseName(dtoBaseName),
             requestMappingPath = requestMappingPath,
+            moduleName = moduleName,
             withGeneratedEndpoint = WithGeneratedEndpoint(withGeneratedEndpoint)
         )
 

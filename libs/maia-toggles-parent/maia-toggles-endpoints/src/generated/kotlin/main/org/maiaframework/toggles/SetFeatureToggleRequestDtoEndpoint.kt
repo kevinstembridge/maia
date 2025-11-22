@@ -15,7 +15,7 @@ class SetFeatureToggleRequestDtoEndpoint(
 ) {
 
 
-    @PostMapping("/api/set_feature_toggle")
+    @PostMapping("/api/maia_toggles/set_feature_toggle")
     fun post(@RequestBody @Valid requestDto: SetFeatureToggleRequestDto) {
 
         this.handler.handleSetFeatureToggleRequestDto(requestDto)

@@ -11,7 +11,7 @@ import java.util.TreeSet
 class EntityUpdateApiDef(
     entityDef: EntityDef,
     val crudApiDef: CrudApiDef,
-    moduleName: ModuleName?
+    private val moduleName: ModuleName?
 ) : AbstractEntityApiDef(entityDef) {
 
 
@@ -106,7 +106,8 @@ class EntityUpdateApiDef(
         dtoBaseName,
         packageName = entityDef.packageName,
         dtoFieldDefs = this.dtoFields,
-        preAuthorizeExpression = preAuthorizeExpression
+        preAuthorizeExpression = preAuthorizeExpression,
+        moduleName = moduleName
     )
 
 
@@ -130,7 +131,8 @@ class EntityUpdateApiDef(
                     dtoBaseName = inlineEditDtoBaseName,
                     packageName = this.entityDef.packageName,
                     dtoFieldDefs = requestDtoFieldDefs,
-                    preAuthorizeExpression = this.preAuthorizeExpression
+                    preAuthorizeExpression = this.preAuthorizeExpression,
+                    moduleName = moduleName
                 )
                 InlineEditDtoDef(requestDtoDef, entityFieldDef)
 

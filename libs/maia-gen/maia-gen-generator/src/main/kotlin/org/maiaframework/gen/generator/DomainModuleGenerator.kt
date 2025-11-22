@@ -366,6 +366,7 @@ class DomainModuleGenerator(
                 dtoBaseName = dtoBaseName,
                 dtoSuffix = dtoSuffix,
                 packageName = entityDef.packageName,
+                moduleName = null,
                 dtoFieldDefs = classFieldDefs,
                 withGeneratedEndpoint = WithGeneratedEndpoint.FALSE,
                 preAuthorizeExpression = null
