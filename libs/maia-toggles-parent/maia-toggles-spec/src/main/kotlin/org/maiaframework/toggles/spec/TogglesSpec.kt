@@ -15,7 +15,9 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes.mapFieldType
 @Suppress("unused")
 class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaName = SchemaName("toggles")) {
 
+
     val moduleName = ModuleName.of("maia_toggles")
+
 
     val contactPersonValueDef = stringValueClass("org.maiaframework.toggles.fields", "ContactPerson")
 
@@ -129,7 +131,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
     val setFeatureToggleRequestDtoDef = requestDto(
         "org.maiaframework.toggles",
         "SetFeatureToggle",
-        moduleName = moduleName,
+        moduleName = moduleName
     ) {
         field("featureName", featureNameValueDef)
         field("enabled", FieldTypes.boolean)
