@@ -127,7 +127,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
     }
 
 
-    val userDetailsHzDef = hazelcastDtoDef("org.maiaframework.toggles", "FeatureState") {
+    val featureStateHzDef = hazelcastDtoDef("org.maiaframework.toggles", "FeatureState") {
         field("featureName", featureNameValueDef)
         field("enabled", FieldTypes.boolean)
     }
