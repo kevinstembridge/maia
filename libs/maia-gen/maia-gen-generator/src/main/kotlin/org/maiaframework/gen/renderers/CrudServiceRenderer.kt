@@ -99,42 +99,6 @@ class CrudServiceRenderer(
     }
 
 
-    private fun `render create`() {
-
-        val createApiDef = this.entityDef.entityCrudApiDef?.createApiDef
-
-        val createContext = createApiDef?.crudApiDef?.context
-
-        blankLine()
-        blankLine()
-
-        if (createContext != null) {
-            appendLine("    fun create(entity: ${this.entityDef.entityUqcn}, context: ${createContext.uqcn}): ${this.entityDef.entityUqcn} {")
-        } else {
-            appendLine("    fun create(entity: ${this.entityDef.entityUqcn}): ${this.entityDef.entityUqcn} {")
-        }
-
-        blankLine()
-        appendLine("        this.entityRepo.insert(entity)")
-
-        if (this.entityDef.crudDef.withCrudListener.value) {
-
-            if (createContext == null) {
-                appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityCreated(entity)")
-            } else {
-                appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityCreated(entity, context)")
-            }
-
-        }
-
-        appendLine("        return entity")
-        blankLine()
-        appendLine("    }")
-
-    }
-
-
-
     private fun `render create by API`() {
 
         val createApiDef = this.entityDef.entityCrudApiDef?.createApiDef ?: return
@@ -178,6 +142,42 @@ class CrudServiceRenderer(
         appendLine("    }")
 
         `render function buildEntity`(createApiDef)
+
+    }
+
+
+
+    private fun `render create`() {
+
+        val createApiDef = this.entityDef.entityCrudApiDef?.createApiDef
+
+        val createContext = createApiDef?.crudApiDef?.context
+
+        blankLine()
+        blankLine()
+
+        if (createContext != null) {
+            appendLine("    fun create(entity: ${this.entityDef.entityUqcn}, context: ${createContext.uqcn}): ${this.entityDef.entityUqcn} {")
+        } else {
+            appendLine("    fun create(entity: ${this.entityDef.entityUqcn}): ${this.entityDef.entityUqcn} {")
+        }
+
+        blankLine()
+        appendLine("        this.entityRepo.insert(entity)")
+
+        if (this.entityDef.crudDef.withCrudListener.value) {
+
+            if (createContext == null) {
+                appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityCreated(entity)")
+            } else {
+                appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityCreated(entity, context)")
+            }
+
+        }
+
+        appendLine("        return entity")
+        blankLine()
+        appendLine("    }")
 
     }
 
