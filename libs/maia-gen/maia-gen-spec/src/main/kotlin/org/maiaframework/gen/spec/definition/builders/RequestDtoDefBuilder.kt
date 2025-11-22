@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.PreAuthorizeExpression
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.RequestDtoFieldDef
 import org.maiaframework.gen.spec.definition.StringTypeDef
+import org.maiaframework.gen.spec.definition.StringValueClassDef
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.FieldType
@@ -130,6 +131,22 @@ class RequestDtoDefBuilder(
         val builder = RequestDtoFieldDefBuilder(
             ClassFieldName(fieldName),
             stringTypeDef
+        )
+        init?.invoke(builder)
+        fieldDefBuilders.add(builder)
+
+    }
+
+
+    fun field(
+        fieldName: String,
+        stringValueClassDef: StringValueClassDef,
+        init: (RequestDtoFieldDefBuilder.() -> Unit)? = null
+    ) {
+
+        val builder = RequestDtoFieldDefBuilder(
+            ClassFieldName(fieldName),
+            stringValueClassDef
         )
         init?.invoke(builder)
         fieldDefBuilders.add(builder)

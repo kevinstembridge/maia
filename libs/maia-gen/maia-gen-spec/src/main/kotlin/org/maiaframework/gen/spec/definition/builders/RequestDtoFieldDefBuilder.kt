@@ -3,13 +3,13 @@ package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.gen.spec.definition.DatabaseIndexDef
 import org.maiaframework.gen.spec.definition.Description
-import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EnumDef
 import org.maiaframework.gen.spec.definition.FieldDisplayName
 import org.maiaframework.gen.spec.definition.FormPlaceholderText
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.RequestDtoFieldDef
 import org.maiaframework.gen.spec.definition.StringTypeDef
+import org.maiaframework.gen.spec.definition.StringValueClassDef
 import org.maiaframework.gen.spec.definition.TypeaheadDef
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
@@ -95,6 +95,16 @@ class RequestDtoFieldDefBuilder private constructor(
     ) : this(
         classFieldName = classFieldName,
         fieldType = FieldTypes.stringType(stringTypeDef),
+        typeaheadDef = null,
+    )
+
+
+    constructor(
+        classFieldName: ClassFieldName,
+        stringValueClassDef: StringValueClassDef
+    ) : this(
+        classFieldName = classFieldName,
+        fieldType = FieldTypes.stringValueClass(stringValueClassDef),
         typeaheadDef = null,
     )
 
