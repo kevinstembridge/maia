@@ -27,7 +27,7 @@ class FeatureToggleUpdateRequestDto
 
     @get:JsonIgnore
     val featureName
-        get() = featureName_raw!!
+        get() = FeatureName(featureName_raw!!)
 
 
     @get:JsonIgnore
