@@ -55,7 +55,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
         deletable = Deletable.TRUE,
         allowFindAll = AllowFindAll.TRUE,
     ) {
-        moduleName("sys_ops")
+        moduleName("maia_toggles")
         cacheable { }
         daoHasSpringAnnotation = false
         field("featureName", featureNameValueDef) {
