@@ -86,6 +86,13 @@ data class FeatureToggleEntityUpdater(
         }
 
 
+        fun attributes(attributes: Map<String, String>?) {
+
+            this.fields.add(FieldUpdate("attributes", "attributes", attributes))
+
+        }
+
+
         fun lastModifiedBy(lastModifiedBy: String) {
 
             this.fields.add(FieldUpdate("lastModifiedBy", "last_modified_by", lastModifiedBy))
@@ -127,17 +134,6 @@ data class FeatureToggleEntityUpdater(
             return builder.build()
 
         }
-
-        /*
-
-
-        builder.init()
-
-        val entityDef = builder.build()
-        this.entityDefs.add(entityDef)
-        return entityDef
-
-         */
 
 
     }
