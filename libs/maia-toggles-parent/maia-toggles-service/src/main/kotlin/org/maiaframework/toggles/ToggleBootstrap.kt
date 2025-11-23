@@ -8,7 +8,7 @@ class ToggleBootstrap(
 
     init {
 
-        toggleRegistry.featuresByName.values.forEach(toggleSyncer::sync)
+        toggleRegistry.features.forEach(toggleSyncer::sync)
 
     }
 

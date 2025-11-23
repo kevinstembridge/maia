@@ -81,16 +81,17 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
         }
         field("contactPerson", contactPersonValueDef) {
             nullable()
-            lengthConstraint(max = 100)
             modifiableBySystem()
+            lengthConstraint(max = 100)
         }
         field("infoLink", infoLinkValueDef) {
             nullable()
-            lengthConstraint(max = 300)
             modifiableBySystem()
+            lengthConstraint(max = 300)
         }
         field("attributes", mapFieldType(FieldTypes.string, FieldTypes.string)) {
             nullable()
+            modifiableBySystem()
         }
         field("lastModifiedBy", FieldTypes.string) {
             modifiableBySystem()
@@ -100,8 +101,11 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
         field("comment", FieldTypes.string) {
             nullable()
             lengthConstraint(max = 200)
+            modifiableBySystem()
         }
-        field("activationStrategies", fieldListOf(activationStrategyDescriptorDef))
+        field("activationStrategies", fieldListOf(activationStrategyDescriptorDef)) {
+            modifiableBySystem()
+        }
     }
 
 
@@ -122,9 +126,8 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
     }
 
 
-    val featureStateHzDef = hazelcastDtoDef("org.maiaframework.toggles", "FeatureState") {
-        field("featureName", featureNameValueDef)
-        field("enabled", FieldTypes.boolean)
+    val featureToggleIsActiveResponseDtoDef = simpleResponseDto("org.maiaframework.toggles", "FeatureToggleIsActive") {
+        field("active", FieldTypes.boolean)
     }
 
 

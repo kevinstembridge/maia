@@ -11,6 +11,7 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-jdbc")
     api("org.springframework.boot:spring-boot-starter-web")
 
+    implementation(project(":libs:maia-props-parent:maia-props-spring-boot-starter"))
     implementation(project(":libs:maia-toggles-parent:maia-toggles-spring-boot-starter"))
 
     runtimeOnly("com.zaxxer:HikariCP")

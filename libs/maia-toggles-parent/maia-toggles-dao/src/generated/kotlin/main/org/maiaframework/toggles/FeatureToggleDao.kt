@@ -453,6 +453,7 @@ class FeatureToggleDao(
             )
             on conflict (feature_name)
             do update set
+                comment = :comment,
                 contact_person = :contactPerson,
                 description = :description,
                 enabled = :enabled,
@@ -547,6 +548,7 @@ class FeatureToggleDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "comment" -> sqlParams.addValue("comment", field.value as String?)
             "contactPerson" -> sqlParams.addValue("contactPerson", (field.value as ContactPerson?)?.value)
             "description" -> sqlParams.addValue("description", (field.value as Description?)?.value)
             "enabled" -> sqlParams.addValue("enabled", field.value as Boolean)

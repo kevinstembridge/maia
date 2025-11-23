@@ -3,12 +3,10 @@ package org.maiaframework.toggles
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.hazelcast.core.HazelcastInstance
 import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
-import org.maiaframework.json.JsonFacade
-import org.maiaframework.toggles.repo.DatabaseToggleRepo
-import org.maiaframework.toggles.repo.InMemoryToggleRepo
-import org.maiaframework.toggles.repo.ToggleRepo
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.json.JsonFacade
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -77,16 +75,20 @@ class MaiaTogglesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun toggleService(toggleDao: FeatureToggleDao): ToggleService {
+    fun toggleService(
+        toggleRepo: FeatureToggleRepo,
+        toggles: Toggles,
+        toggleRegistry: ToggleRegistry
+    ): ToggleService {
 
-        return ToggleService(toggleDao)
+        return ToggleService(toggleRepo, toggles, toggleRegistry)
 
     }
 
 
     @Bean
     @ConditionalOnMissingBean
-    fun toggles(toggleRepo: ToggleRepo): TogglesImpl {
+    fun toggles(toggleRepo: FeatureToggleRepo): Toggles {
 
         return TogglesImpl(toggleRepo)
 
@@ -124,28 +126,17 @@ class MaiaTogglesAutoConfiguration {
 
 
     @Configuration
-    @ConditionalOnMissingBean(ToggleRepo::class)
-    class TogglesRepoConfiguration(private val properties: MaiaTogglesProperties) {
+    class TogglesRepoConfiguration() {
 
 
         @Bean
         @ConditionalOnMissingBean
-        fun toggleRepo(
-            @MaiaTogglesDataSource togglesDataSourceProvider: ObjectProvider<DataSource>,
-            dataSourceProvider: ObjectProvider<DataSource>,
-            toggleJsonFacade: JsonFacade,
-            toggleObjectMapper: ObjectMapper
-        ): ToggleRepo {
+        fun featureToggleRepo(
+            featureToggleDao: FeatureToggleDao,
+            hazelcastInstance: HazelcastInstance
+        ): FeatureToggleRepo {
 
-            return when (this.properties.repoType) {
-                MaiaTogglesRepoType.IN_MEMORY -> InMemoryToggleRepo()
-                MaiaTogglesRepoType.JDBC -> jdbcToggleRepo(
-                    togglesDataSourceProvider,
-                    dataSourceProvider,
-                    toggleJsonFacade,
-                    toggleObjectMapper
-                )
-            }
+            return FeatureToggleRepo(featureToggleDao, hazelcastInstance)
 
         }
 
@@ -177,25 +168,6 @@ class MaiaTogglesAutoConfiguration {
 
             val jdbcOps = toggleJdbcOps(toggleDataSourceProvider, dataSourceProvider)
             return FeatureToggleDao(FeatureToggleEntityFieldConverter(), toggleHistoryDao, jdbcOps, toggleJsonFacade, toggleObjectMapper)
-
-        }
-
-
-        private fun jdbcToggleRepo(
-            toggleDataSourceProvider: ObjectProvider<DataSource>,
-            dataSourceProvider: ObjectProvider<DataSource>,
-            toggleJsonFacade: JsonFacade,
-            toggleObjectMapper: ObjectMapper
-        ): ToggleRepo {
-
-            val jdbcOps = toggleJdbcOps(toggleDataSourceProvider, dataSourceProvider)
-            val toggleHistoryDao = FeatureToggleHistoryDao(FeatureToggleHistoryEntityFieldConverter(), jdbcOps, toggleJsonFacade, toggleObjectMapper)
-            val toggleDao = FeatureToggleDao(FeatureToggleEntityFieldConverter(), toggleHistoryDao, jdbcOps, toggleJsonFacade, toggleObjectMapper)
-
-            return DatabaseToggleRepo(
-                toggleDao,
-                toggleHistoryDao
-            )
 
         }
 

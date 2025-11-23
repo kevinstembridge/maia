@@ -1,4 +1,8 @@
 
+maia:
+  problems:
+    type_prefix: "toggles_showcase"
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver

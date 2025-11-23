@@ -4,7 +4,7 @@ package org.maiaframework.toggles
 class ToggleRegistry(toggleProvider: FeatureToggleProvider) {
 
 
-    val featuresByName: Map<FeatureName, Feature>
+    private val featuresByName: Map<FeatureName, Feature>
 
 
     init {
@@ -22,6 +22,18 @@ class ToggleRegistry(toggleProvider: FeatureToggleProvider) {
         }
 
         this.featuresByName = map
+
+    }
+
+
+    val features: Collection<Feature>
+        get() = featuresByName.values
+
+
+    fun getFeature(featureName: FeatureName): Feature {
+
+        return featuresByName[featureName]
+            ?: throw IllegalArgumentException("No feature exists with the name '$featureName'")
 
     }
 

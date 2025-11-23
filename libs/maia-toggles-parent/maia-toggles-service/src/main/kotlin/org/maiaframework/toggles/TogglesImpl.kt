@@ -1,20 +1,19 @@
 package org.maiaframework.toggles
 
-import org.maiaframework.toggles.repo.ToggleRepo
-
-class TogglesImpl(private val toggleRepo: ToggleRepo) {
+class TogglesImpl(private val toggleRepo: FeatureToggleRepo) : Toggles {
 
 
-    fun isActive(featureName: FeatureName) {
+    override fun isActive(feature: Feature): Boolean {
 
-        TODO()
+        val featureToggleEntity = toggleRepo.findByPrimaryKey(feature.name)
 
-        // TODO get the current feature state, including any activation strategies
+        if (featureToggleEntity.enabled == false) {
+            return false
+        }
 
-        val featureState = toggleRepo.getFeatureState(featureName)
+        // TODO check activation strategies
 
-
-
+        return featureToggleEntity.enabled
 
     }
 

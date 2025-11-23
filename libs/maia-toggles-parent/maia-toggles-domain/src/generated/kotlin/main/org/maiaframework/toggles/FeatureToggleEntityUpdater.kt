@@ -100,6 +100,13 @@ data class FeatureToggleEntityUpdater(
         }
 
 
+        fun comment(comment: String?) {
+
+            this.fields.add(FieldUpdate("comment", "comment", comment))
+
+        }
+
+
     }
 
 
@@ -110,16 +117,27 @@ data class FeatureToggleEntityUpdater(
             featureName: FeatureName,
             version: Long,
             init: Builder.() -> Unit
-        ): Builder {
+        ): FeatureToggleEntityUpdater {
 
             val builder = Builder(
                 featureName,
                 version
             )
             builder.init()
-            return builder
+            return builder.build()
 
         }
+
+        /*
+
+
+        builder.init()
+
+        val entityDef = builder.build()
+        this.entityDefs.add(entityDef)
+        return entityDef
+
+         */
 
 
     }
