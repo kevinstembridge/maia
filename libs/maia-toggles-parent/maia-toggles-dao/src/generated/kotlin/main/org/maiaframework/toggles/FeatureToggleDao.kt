@@ -5,7 +5,6 @@ package org.maiaframework.toggles
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.maiaframework.domain.ChangeType
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -15,6 +14,7 @@ import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
+import org.maiaframework.toggles.activation.ActivationStrategy
 import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
 import org.maiaframework.toggles.fields.InfoLink
@@ -486,6 +486,7 @@ class FeatureToggleDao(
             )
             on conflict (feature_name)
             do update set
+                activation_strategies = :activationStrategies,
                 attributes = :attributes,
                 comment = :comment,
                 contact_person = :contactPerson,
@@ -582,6 +583,7 @@ class FeatureToggleDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "activationStrategies" -> sqlParams.addJsonValue("activationStrategies", this.objectMapper.writeValueAsString(field.value as List<ActivationStrategy>))
             "attributes" -> sqlParams.addJsonValue("attributes", this.objectMapper.writeValueAsString(field.value as Map<String, String>?))
             "comment" -> sqlParams.addValue("comment", field.value as String?)
             "contactPerson" -> sqlParams.addValue("contactPerson", (field.value as ContactPerson?)?.value)
