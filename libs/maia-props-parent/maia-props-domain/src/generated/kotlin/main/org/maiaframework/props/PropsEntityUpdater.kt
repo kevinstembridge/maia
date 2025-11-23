@@ -70,14 +70,14 @@ data class PropsEntityUpdater(
             propertyName: String,
             version: Long,
             init: Builder.() -> Unit
-        ): Builder {
+        ): PropsEntityUpdater {
 
             val builder = Builder(
                 propertyName,
                 version
             )
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

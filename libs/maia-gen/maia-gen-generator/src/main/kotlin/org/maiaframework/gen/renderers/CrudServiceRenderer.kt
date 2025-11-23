@@ -339,7 +339,7 @@ class CrudServiceRenderer(
                 appendLine("            lastModifiedTimestampUtc(Instant.now())")
             }
 
-            appendLine("        }.build()")
+            appendLine("        }")
             blankLine()
             appendLine("        setFields(updater)")
 
@@ -389,7 +389,7 @@ class CrudServiceRenderer(
         }
 
         appendLine("            $fieldName(editDto.$fieldName)")
-        appendLine("        }.build()")
+        appendLine("        }")
         blankLine()
         appendLine("        setFields(updater)")
         blankLine()

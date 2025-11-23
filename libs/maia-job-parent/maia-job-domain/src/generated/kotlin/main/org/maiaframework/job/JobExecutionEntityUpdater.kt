@@ -83,11 +83,11 @@ data class JobExecutionEntityUpdater(
         fun forPrimaryKey(
             id: DomainId,
             init: Builder.() -> Unit
-        ): Builder {
+        ): JobExecutionEntityUpdater {
 
             val builder = Builder(id)
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

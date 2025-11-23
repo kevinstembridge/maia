@@ -1,8 +1,8 @@
 package org.maiaframework.job
 
 import org.maiaframework.common.ExceptionUtil
-import org.maiaframework.metrics.JobMetrics
 import org.maiaframework.domain.DomainId
+import org.maiaframework.metrics.JobMetrics
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Repository
@@ -59,18 +59,17 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
         e: Exception? = null
     ) {
 
-        val builder = JobExecutionEntityUpdater.forPrimaryKey(jobInstanceId) {
+        val updater = JobExecutionEntityUpdater.forPrimaryKey(jobInstanceId) {
             completionStatus(completionStatus)
             endTimestampUtc(Instant.now())
             metrics(jobMetrics.metricsReport())
-        }
 
-        e?.let {
-            builder.errorMessage(it.message?.take(10_000))
-            builder.stackTrace(ExceptionUtil.stackTrace(it).take(10_000))
-        }
+            if (e != null) {
+                errorMessage(e.message?.take(10_000))
+                stackTrace(ExceptionUtil.stackTrace(e).take(10_000))
+            }
 
-        val updater = builder.build()
+        }
 
         this.jobExecutionDao.setFields(updater)
 

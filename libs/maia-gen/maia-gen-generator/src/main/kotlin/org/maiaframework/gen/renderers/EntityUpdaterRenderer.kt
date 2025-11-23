@@ -204,11 +204,11 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
             }
 
             appendLine("            init: Builder.() -> Unit")
-            appendLine("        ): Builder {")
+            appendLine("        ): ${entityDef.entityUpdaterClassDef.uqcn} {")
             blankLine()
             appendLine("            val builder = Builder(id)")
             appendLine("            builder.init()")
-            appendLine("            return builder")
+            appendLine("            return builder.build()")
             blankLine()
             appendLine("        }")
 
