@@ -43,12 +43,12 @@ class CrudListenerRenderer(
 
     private fun renderFunction_onUpdate() {
 
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityCrudApiDef.entityDef.primaryKeyClassFields)
 
         if (this.entityCrudApiDef.updateApiDef != null || this.entityCrudApiDef.entityDef.hasModifiableFields()) {
             blankLine()
             blankLine()
-            appendLine("    fun on${this.entityCrudApiDef.entityDef.entityUqcn}Updated(id: DomainId)")
+            appendLine("    fun on${this.entityCrudApiDef.entityDef.entityUqcn}Updated($primaryKeyFieldNamesAndTypesCsv)")
         }
 
     }
