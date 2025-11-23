@@ -73,11 +73,23 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
             val isEnum = classField.fieldType is EnumFieldType
             val isUrl = classField.fieldType is UrlFieldType
             val isValueFieldWrapper = classField.fieldType.isValueFieldWrapper()
-            val usageSite =
-                if (isEnum || isValueFieldWrapper || isUrl || classField.fieldType is DomainIdFieldType || classField.fieldType is ForeignKeyFieldType) null else AnnotationUsageSite.field
+
+            val usageSite = if (
+                isEnum
+                || isValueFieldWrapper
+                || isUrl
+                || classField.fieldType is DomainIdFieldType
+                || classField.fieldType is ForeignKeyFieldType
+            ) {
+                null
+            } else {
+                AnnotationUsageSite.field
+            }
+
             val annotationString = constructorArg.annotationDefs.map { "${it.toStringInKotlin(usageSite)} " }.joinToString("")
-            val jsonPropertyAnnotation = if (fieldRequiresJsonPropertyAnnotation) "@JsonProperty(\"$fieldName\", access = JsonProperty.Access.READ_WRITE) " else ""
+            val jsonPropertyAnnotation = if (fieldRequiresJsonPropertyAnnotation) "@param:JsonProperty(\"$fieldName\", access = JsonProperty.Access.READ_WRITE) " else ""
             val visibility = if (fieldIsNotNullable) "private " else ""
+
             val variableType = if (isEnum || isValueFieldWrapper) {
                 if (fieldIsNotNullable) {
                     "val "
@@ -87,9 +99,11 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
             } else {
                 "val "
             }
+
             val constructorArgName = if (fieldIsNotNullable || isUrl) "${fieldName}_raw" else fieldName
             val unwrappedFieldType = classField.unWrapIfComplexType()
             addImportFor(unwrappedFieldType.fieldType)
+
             appendLine("    $annotationString$jsonPropertyAnnotation$visibility$variableType$constructorArgName: ${unwrappedFieldType.convertToNullable().unqualifiedToString}$commaOrNot")
 
         }
