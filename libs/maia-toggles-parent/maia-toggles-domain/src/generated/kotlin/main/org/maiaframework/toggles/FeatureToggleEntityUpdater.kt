@@ -4,6 +4,7 @@
 package org.maiaframework.toggles
 
 import org.maiaframework.domain.persist.FieldUpdate
+import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
 import org.maiaframework.toggles.fields.InfoLink
@@ -110,6 +111,13 @@ data class FeatureToggleEntityUpdater(
         fun comment(comment: String?) {
 
             this.fields.add(FieldUpdate("comment", "comment", comment))
+
+        }
+
+
+        fun activationStrategies(activationStrategies: List<ActivationStrategyDescriptor>) {
+
+            this.fields.add(FieldUpdate("activationStrategies", "activation_strategies", activationStrategies))
 
         }
 
