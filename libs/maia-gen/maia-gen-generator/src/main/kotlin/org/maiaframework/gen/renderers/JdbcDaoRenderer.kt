@@ -6,9 +6,39 @@ import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamMapperFunction
 import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef
+import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.ConstructorArg
+import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
+import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
+import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
+import org.maiaframework.gen.spec.definition.lang.EnumFieldType
+import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
+import org.maiaframework.gen.spec.definition.lang.FieldType
+import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
+import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.IntFieldType
+import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.ListFieldType
+import org.maiaframework.gen.spec.definition.lang.LocalDateFieldType
+import org.maiaframework.gen.spec.definition.lang.LongFieldType
+import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.MapFieldType
+import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
+import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
+import org.maiaframework.gen.spec.definition.lang.SetFieldType
+import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
+import org.maiaframework.gen.spec.definition.lang.StringFieldType
+import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 import java.time.Instant
 
 class JdbcDaoRenderer(
@@ -1659,7 +1689,11 @@ class JdbcDaoRenderer(
         appendLine("            where $primaryKeyClauses")
         appendLine("            \"\"\",")
         appendLine("            SqlParams().apply {")
-        appendLine("                addValue(\"id\", id)")
+
+        entityDef.primaryKeyFields.forEach { entityFieldDef ->
+            renderSqlParamAddValueFor(entityFieldDef, "                ", entityParameterName = null, 12, { line -> appendLine(line) })
+        }
+
         appendLine("            },")
         appendLine("            this.fetchForEditDtoRowMapper")
         appendLine("        ).firstOrNull()")
@@ -1797,34 +1831,115 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("        when (field.classFieldName) {")
 
-        this.entityDef.allEntityFieldsSorted.filter { it.classFieldDef.isModifiableBySystem || it.classFieldDef.isEditableByUser.value }.forEach { entityFieldDef ->
+        this.entityDef.allEntityFieldsSorted
+            .filter { it.classFieldDef.isModifiableBySystem || it.classFieldDef.isEditableByUser.value }
+            .forEach { entityFieldDef ->
 
-            val classFieldDef = entityFieldDef.classFieldDef
-            val fieldType = classFieldDef.fieldType
+                val classFieldDef = entityFieldDef.classFieldDef
+                val fieldType = classFieldDef.fieldType
 
-            addImportFor(fieldType)
+                addImportFor(fieldType)
 
-            val classFieldName = entityFieldDef.classFieldName
-            val sqlParamsAddFunc = sqlParamAddFunctionName(fieldType)
-            val sqlParamsMapperFunc = sqlParamMapperFunction(fieldType)
+                val classFieldName = entityFieldDef.classFieldName
+                val sqlParamsAddFunc = sqlParamAddFunctionName(fieldType)
+                val sqlParamsMapperFunc = sqlParamMapperFunction(fieldType)
 
-            val fieldValueAs = "field.value as ${classFieldDef.unqualifiedToString}"
+                val fieldValueAs = "field.value as ${classFieldDef.unqualifiedToString}"
 
-            val fieldValueParameter = if (classFieldDef.isMap) {
-                "this.objectMapper.writeValueAsString($fieldValueAs)"
-            } else if (classFieldDef.isValueClass) {
-                "($fieldValueAs)?.value"
-            } else {
-                fieldValueAs
+                val fieldValueParameter = if (classFieldDef.isMap || classFieldDef.isListSetOrMap) {
+                    "this.objectMapper.writeValueAsString($fieldValueAs)"
+                } else if (classFieldDef.isValueClass) {
+                    "($fieldValueAs)?.value"
+                } else {
+                    fieldValueAs
+                }
+
+                val fieldValueAsClause = fieldValueAsClauseFor(fieldType)
+
+
+                appendLine("            \"${classFieldName}\" -> sqlParams.$sqlParamsAddFunc(\"$classFieldName\", $fieldValueAsClause)$sqlParamsMapperFunc")
+
             }
-
-            appendLine("            \"${classFieldName}\" -> sqlParams.$sqlParamsAddFunc(\"$classFieldName\", $fieldValueParameter)$sqlParamsMapperFunc")
-
-        }
 
         appendLine("        }")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun fieldValueAsClauseFor(fieldType: FieldType): String {
+
+        return when (fieldType) {
+            is BooleanFieldType -> TODO()
+            is BooleanTypeFieldType -> TODO()
+            is BooleanValueClassFieldType -> TODO()
+            is DataClassFieldType -> TODO()
+            is DomainIdFieldType -> TODO()
+            is DoubleFieldType -> TODO()
+            is EnumFieldType -> TODO()
+            is EsDocFieldType -> TODO()
+            is ForeignKeyFieldType -> TODO()
+            is FqcnFieldType -> TODO()
+            is IdAndNameFieldType -> TODO()
+            is InstantFieldType -> TODO()
+            is IntFieldType -> TODO()
+            is IntTypeFieldType -> TODO()
+            is IntValueClassFieldType -> TODO()
+            is ListFieldType -> fieldValueAsClauseForListFieldType(fieldType)
+            is LocalDateFieldType -> TODO()
+            is LongFieldType -> TODO()
+            is LongTypeFieldType -> TODO()
+            is MapFieldType -> "field.value as Map<huh, huh>"
+            is ObjectIdFieldType -> TODO()
+            is PeriodFieldType -> TODO()
+            is RequestDtoFieldType -> TODO()
+            is SetFieldType -> TODO()
+            is SimpleResponseDtoFieldType -> TODO()
+            is StringFieldType -> TODO()
+            is StringTypeFieldType -> TODO()
+            is StringValueClassFieldType -> TODO()
+            is UrlFieldType -> TODO()
+        }
+
+    }
+
+
+    private fun fieldValueAsClauseForListFieldType(listFieldType: ListFieldType): String {
+
+        val parameterFieldType = listFieldType.parameterFieldType
+
+        return when(parameterFieldType) {
+            is BooleanFieldType -> TODO()
+            is BooleanTypeFieldType -> TODO()
+            is BooleanValueClassFieldType -> TODO()
+            is DataClassFieldType -> "field.value as List<${parameterFieldType.uqcn}>"
+            is DomainIdFieldType -> TODO()
+            is DoubleFieldType -> TODO()
+            is EnumFieldType -> TODO()
+            is EsDocFieldType -> TODO()
+            is ForeignKeyFieldType -> TODO()
+            is FqcnFieldType -> TODO()
+            is IdAndNameFieldType -> TODO()
+            is InstantFieldType -> TODO()
+            is IntFieldType -> TODO()
+            is IntTypeFieldType -> TODO()
+            is IntValueClassFieldType -> TODO()
+            is ListFieldType -> TODO()
+            is LocalDateFieldType -> TODO()
+            is LongFieldType -> TODO()
+            is LongTypeFieldType -> TODO()
+            is MapFieldType -> TODO()
+            is ObjectIdFieldType -> TODO()
+            is PeriodFieldType -> TODO()
+            is RequestDtoFieldType -> TODO()
+            is SetFieldType -> TODO()
+            is SimpleResponseDtoFieldType -> TODO()
+            is StringFieldType -> TODO()
+            is StringTypeFieldType -> TODO()
+            is StringValueClassFieldType -> TODO()
+            is UrlFieldType -> TODO()
+        }
 
     }
 
