@@ -1,6 +1,11 @@
 package org.maiaframework.toggles
 
-class TogglesImpl(private val toggleRepo: FeatureToggleRepo) : Toggles {
+import org.maiaframework.toggles.activation.ActivationStrategyRegistry
+
+class TogglesImpl(
+    private val toggleRepo: FeatureToggleRepo,
+    private val activationStrategyRegistry: ActivationStrategyRegistry
+) : Toggles {
 
 
     override fun isActive(feature: Feature): Boolean {
@@ -11,9 +16,9 @@ class TogglesImpl(private val toggleRepo: FeatureToggleRepo) : Toggles {
             return false
         }
 
-        // TODO check activation strategies
+        val activationStrategies = activationStrategyRegistry.getStrategiesFor(featureToggleEntity.activationStrategies)
 
-        return featureToggleEntity.enabled
+        return activationStrategies.all { it.invoke() }
 
     }
 

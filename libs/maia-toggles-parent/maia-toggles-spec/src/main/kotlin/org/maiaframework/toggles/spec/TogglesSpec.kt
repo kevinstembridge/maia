@@ -44,7 +44,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
     val activationStrategyDescriptorDef = dataClass("org.maiaframework.toggles.activation", "ActivationStrategyDescriptor") {
         cacheable {}
         field("id", FieldTypes.string)
-        field("parameter", fieldListOf(activationStrategyParameterDef))
+        field("parameters", fieldListOf(activationStrategyParameterDef))
     }
 
 
