@@ -559,7 +559,6 @@ abstract class AbstractSpec protected constructor(
             databaseType ?: this.defaultDatabaseType
         )
 
-
         builder.init()
 
         val entityDef = builder.build()
