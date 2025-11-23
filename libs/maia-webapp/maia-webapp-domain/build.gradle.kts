@@ -7,6 +7,8 @@ plugins {
 dependencies {
 
     api(project(":libs:maia-domain"))
+    
+    api("org.springframework.security:spring-security-core")
 
     implementation(project(":libs:maia-common"))
 
