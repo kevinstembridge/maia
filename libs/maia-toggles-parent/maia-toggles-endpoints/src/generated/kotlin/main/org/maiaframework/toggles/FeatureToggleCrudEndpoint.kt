@@ -24,5 +24,13 @@ class FeatureToggleCrudEndpoint(
     }
 
 
+    @PutMapping("/api/feature_toggle/inline/activation_strategies", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateActivationStrategies(@RequestBody @Valid editDto: FeatureToggleUpdate_activationStrategiesRequestDto) {
+
+        this.crudService.updateActivationStrategies(editDto)
+
+    }
+
+
 }
 
