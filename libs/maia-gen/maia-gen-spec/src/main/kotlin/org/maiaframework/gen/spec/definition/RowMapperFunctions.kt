@@ -155,7 +155,7 @@ object RowMapperFunctions {
             is BooleanFieldType -> TODO()
             is BooleanTypeFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
-            is DataClassFieldType -> TODO()
+            is DataClassFieldType -> "${indentStr}rsa.readString(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
             is DomainIdFieldType -> TODO()
             is DoubleFieldType -> TODO()
             is EnumFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}.valueOf(it) }"
