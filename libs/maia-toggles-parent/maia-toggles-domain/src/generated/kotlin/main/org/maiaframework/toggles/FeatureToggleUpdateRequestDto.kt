@@ -7,28 +7,20 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class SetFeatureToggleRequestDto
+class FeatureToggleUpdateRequestDto
 @JsonCreator constructor(
-    val comment: String?,
-    @field:NotNull @param:JsonProperty("enabled", access = JsonProperty.Access.READ_WRITE) private val enabled_raw: Boolean?,
-    @NotBlank @param:JsonProperty("featureName", access = JsonProperty.Access.READ_WRITE) private val featureName_raw: String?,
+    @field:NotNull @param:JsonProperty("featureName", access = JsonProperty.Access.READ_WRITE) private val featureName_raw: FeatureName?,
     @field:NotNull @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) private val version_raw: Long?
 ) {
 
 
     @get:JsonIgnore
-    val enabled
-        get() = enabled_raw!!
-
-
-    @get:JsonIgnore
     val featureName
-        get() = FeatureName(featureName_raw!!)
+        get() = featureName_raw!!
 
 
     @get:JsonIgnore
@@ -38,11 +30,9 @@ class SetFeatureToggleRequestDto
 
     override fun toString(): String {
 
-        return "SetFeatureToggleRequestDto{" +
-                "enabled = '" + this.enabled + '\'' + ", " + 
-                "featureName = '" + this.featureName + '\'' + ", " + 
-                "version = '" + this.version + '\'' + ", " + 
-                "comment = '" + this.comment + '\'' +
+        return "FeatureToggleUpdateRequestDto{" +
+                "featureName = '" + this.featureName + '\'' +
+                "version = '" + this.version + '\'' +
                 "}"
 
     }

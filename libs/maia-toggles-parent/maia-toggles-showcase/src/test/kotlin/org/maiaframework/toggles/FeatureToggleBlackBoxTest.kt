@@ -73,9 +73,32 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `should get a specific feature toggle`(@Autowired mockMvc: MockMvcTester) {
+    fun `should set a specific feature toggle`(@Autowired mockMvc: MockMvcTester) {
 
         assertThat(mockMvc.post().uri("/api/maia_toggles/set_feature_toggle")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(asJson(mapOf(
+                "featureName" to "SampleFeatureOne",
+                "comment" to "Updated comment",
+                "enabled" to true,
+                "version" to 1
+            ))))
+            .debug()
+            .hasStatusOk()
+
+        assertThat(mockMvc.get().uri("/api/maia_toggles/SampleFeatureOne/is_active"))
+            .debug()
+            .hasStatusOk()
+            .bodyJson()
+            .isEqualTo(asJson(mapOf("active" to true)), this.jsonAssertComparator)
+
+    }
+
+
+    @Test
+    fun `should return false if an ActivationStrategy does not pass`(@Autowired mockMvc: MockMvcTester) {
+
+        assertThat(mockMvc.put().uri("/api/maia_toggles/set_feature_toggle")
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJson(mapOf(
                 "featureName" to "SampleFeatureOne",

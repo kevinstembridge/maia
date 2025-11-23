@@ -4,13 +4,16 @@
 package org.maiaframework.toggles
 
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class FeatureToggleCrudService(
     private val entityRepo: FeatureToggleRepo,
+    private val featureToggleCrudNotifier: FeatureToggleCrudNotifier,
     private val maiaProblems: MaiaProblems
 ) {
 
@@ -21,7 +24,21 @@ class FeatureToggleCrudService(
     fun create(entity: FeatureToggleEntity): FeatureToggleEntity {
 
         this.entityRepo.insert(entity)
+        this.featureToggleCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    fun update(editDto: FeatureToggleUpdateRequestDto) {
+
+        val featureName = editDto.featureName
+        val version = editDto.version
+        val updater = FeatureToggleEntityUpdater.forPrimaryKey(featureName, version) {
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
 
     }
 
@@ -29,6 +46,7 @@ class FeatureToggleCrudService(
     fun setFields(updater: FeatureToggleEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
+        this.featureToggleCrudNotifier.onEntityUpdated(updater.featureName)
         return count
         
     }
@@ -36,7 +54,11 @@ class FeatureToggleCrudService(
 
     fun delete(featureName: FeatureName) {
 
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(featureName)
+                ?: return
+
         this.entityRepo.deleteByPrimaryKey(featureName)
+        this.featureToggleCrudNotifier.onEntityDeleted(entityToDelete)
 
     }
 

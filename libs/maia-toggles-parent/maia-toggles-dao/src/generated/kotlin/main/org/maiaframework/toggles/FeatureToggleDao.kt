@@ -38,6 +38,7 @@ class FeatureToggleDao(
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readString("feature_name") { FeatureName(it) } }
+    private val fetchForEditDtoRowMapper = FeatureToggleFetchForEditDtoRowMapper(objectMapper)
 
 
     fun insert(entity: FeatureToggleEntity) {
@@ -412,6 +413,38 @@ class FeatureToggleDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun fetchForEdit(featureName: FeatureName): FeatureToggleFetchForEditDto {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                feature_toggle.activation_strategies as activationStrategies,
+                feature_toggle.attributes as attributes,
+                feature_toggle.comment as comment,
+                feature_toggle.contact_person as contactPerson,
+                feature_toggle.c_ts as createdTimestampUtc,
+                feature_toggle.description as description,
+                feature_toggle.enabled as enabled,
+                feature_toggle.feature_name as featureName,
+                feature_toggle.info_link as infoLink,
+                feature_toggle.last_modified_by as lastModifiedBy,
+                feature_toggle.lm_ts as lastModifiedTimestampUtc,
+                feature_toggle.review_date as reviewDate,
+                feature_toggle.ticket_key as ticketKey,
+                feature_toggle.v as version
+            from toggles.feature_toggle
+            where feature_toggle.feature_name = :featureName
+            """,
+            SqlParams().apply {
+                addValue("featureName", featureName.value)
+            },
+            this.fetchForEditDtoRowMapper
+        ).firstOrNull()
+            ?: throw EntityNotFoundException(EntityClassAndPk(FeatureToggleEntity::class.java, mapOf("featureName" to featureName)), FeatureToggleEntityMeta.TABLE_NAME)
 
     }
 

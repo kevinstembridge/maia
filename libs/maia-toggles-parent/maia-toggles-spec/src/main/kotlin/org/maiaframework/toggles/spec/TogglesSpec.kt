@@ -106,6 +106,11 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
         field("activationStrategies", fieldListOf(activationStrategyDescriptorDef)) {
 //            modifiableBySystem()
         }
+        crud {
+            apis {
+                update()
+            }
+        }
     }
 
 

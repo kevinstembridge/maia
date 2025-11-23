@@ -41,7 +41,7 @@ class ActivationStrategyRegistry : ApplicationContextAware, InitializingBean {
 
             val strategy = strategiesByName[descriptor.id]
 
-            ({ strategy?.isActive(descriptor.parameter) ?: true })
+            ({ strategy?.isActive(descriptor.parameters) ?: true })
 
         }
 

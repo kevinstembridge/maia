@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":libs:maia-problem-parent:maia-problem-starter"))
     implementation(project(":libs:maia-toggles-parent:maia-toggles-dao"))
     implementation(project(":libs:maia-toggles-parent:maia-toggles-repo"))
+    implementation(project(":libs:maia-webapp:maia-webapp-domain"))
 
     maiagen(project(":libs:maia-toggles-parent:maia-toggles-spec"))
     maiagen(project(":libs:maia-gen:maia-gen-generator"))

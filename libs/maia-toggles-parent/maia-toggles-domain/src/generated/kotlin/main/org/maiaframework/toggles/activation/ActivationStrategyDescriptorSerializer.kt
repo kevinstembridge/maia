@@ -32,11 +32,11 @@ class ActivationStrategyDescriptorSerializer : CompactSerializer<ActivationStrat
     override fun read(reader: CompactReader): ActivationStrategyDescriptor {
 
         val id = reader.readStringNonNull("id")
-        val parameter = reader.readListOfCompact("parameter", ActivationStrategyParameter::class.java)
+        val parameters = reader.readListOfCompact("parameters", ActivationStrategyParameter::class.java)
 
         return ActivationStrategyDescriptor(
             id,
-            parameter,
+            parameters,
         )
 
     }
@@ -47,7 +47,7 @@ class ActivationStrategyDescriptorSerializer : CompactSerializer<ActivationStrat
         writer.apply {
 
             writeString("id", dto.id)
-            writeArrayOfCompact("parameter", dto.parameter.toTypedArray())
+            writeArrayOfCompact("parameters", dto.parameters.toTypedArray())
 
         }
 
