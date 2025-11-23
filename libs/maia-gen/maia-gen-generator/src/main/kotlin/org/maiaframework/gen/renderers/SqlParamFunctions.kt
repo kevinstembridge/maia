@@ -80,7 +80,7 @@ object SqlParamFunctions {
             is BooleanFieldType -> "addValue"
             is BooleanTypeFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
-            is DataClassFieldType -> TODO()
+            is DataClassFieldType -> "addJsonValue"
             is DomainIdFieldType -> TODO()
             is DoubleFieldType -> TODO()
             is EnumFieldType -> "addListOfStrings"
