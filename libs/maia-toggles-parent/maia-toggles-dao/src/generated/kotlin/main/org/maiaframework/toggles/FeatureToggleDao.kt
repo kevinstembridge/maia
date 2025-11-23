@@ -14,7 +14,7 @@ import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
-import org.maiaframework.toggles.activation.ActivationStrategy
+import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
 import org.maiaframework.toggles.fields.InfoLink
