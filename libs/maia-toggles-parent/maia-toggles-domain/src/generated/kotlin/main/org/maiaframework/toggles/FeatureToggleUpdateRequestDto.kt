@@ -8,14 +8,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotNull
+import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class FeatureToggleUpdateRequestDto
 @JsonCreator constructor(
-    @field:NotNull @param:JsonProperty("featureName", access = JsonProperty.Access.READ_WRITE) private val featureName_raw: FeatureName?,
+    @field:NotNull @param:JsonProperty("activationStrategies", access = JsonProperty.Access.READ_WRITE) private val activationStrategies_raw: List<ActivationStrategyDescriptor>?,
+    @field:NotNull @param:JsonProperty("featureName", access = JsonProperty.Access.READ_WRITE) private val featureName_raw: String?,
     @field:NotNull @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) private val version_raw: Long?
 ) {
+
+
+    @get:JsonIgnore
+    val activationStrategies
+        get() = activationStrategies_raw!!
 
 
     @get:JsonIgnore
@@ -31,7 +38,8 @@ class FeatureToggleUpdateRequestDto
     override fun toString(): String {
 
         return "FeatureToggleUpdateRequestDto{" +
-                "featureName = '" + this.featureName + '\'' +
+                "activationStrategies = '" + this.activationStrategies + '\'' + ", " + 
+                "featureName = '" + this.featureName + '\'' + ", " +
                 "version = '" + this.version + '\'' +
                 "}"
 
