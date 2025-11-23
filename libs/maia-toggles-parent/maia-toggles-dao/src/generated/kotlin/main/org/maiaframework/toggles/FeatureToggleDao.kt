@@ -583,7 +583,7 @@ class FeatureToggleDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "activationStrategies" -> sqlParams.addJsonValue("activationStrategies", this.objectMapper.writeValueAsString(field.value as List<ActivationStrategy>))
+            "activationStrategies" -> sqlParams.addJsonValue("activationStrategies", this.objectMapper.writeValueAsString(field.value as List<ActivationStrategyDescriptor>))
             "attributes" -> sqlParams.addJsonValue("attributes", this.objectMapper.writeValueAsString(field.value as Map<String, String>?))
             "comment" -> sqlParams.addValue("comment", field.value as String?)
             "contactPerson" -> sqlParams.addValue("contactPerson", (field.value as ContactPerson?)?.value)
