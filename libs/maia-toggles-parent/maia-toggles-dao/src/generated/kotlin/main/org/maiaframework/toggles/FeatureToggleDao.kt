@@ -453,6 +453,7 @@ class FeatureToggleDao(
             )
             on conflict (feature_name)
             do update set
+                attributes = :attributes,
                 comment = :comment,
                 contact_person = :contactPerson,
                 description = :description,
@@ -548,6 +549,7 @@ class FeatureToggleDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "attributes" -> sqlParams.addJsonValue("attributes", this.objectMapper.writeValueAsString(field.value as Map<String, String>?))
             "comment" -> sqlParams.addValue("comment", field.value as String?)
             "contactPerson" -> sqlParams.addValue("contactPerson", (field.value as ContactPerson?)?.value)
             "description" -> sqlParams.addValue("description", (field.value as Description?)?.value)
