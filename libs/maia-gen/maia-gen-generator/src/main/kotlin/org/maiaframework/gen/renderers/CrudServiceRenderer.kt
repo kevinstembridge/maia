@@ -314,7 +314,10 @@ class CrudServiceRenderer(
             blankLine()
             appendLine("    fun update(editDto: ${dtoDef.uqcn}) {")
             blankLine()
-            appendLine("        val id = editDto.id")
+
+            this.entityDef.primaryKeyClassFields.forEach { field ->
+                appendLine("        val ${field.classFieldName.value} = editDto.${field.classFieldName.value}")
+            }
 
             if (this.entityDef.versioned.value) {
 
@@ -404,6 +407,11 @@ class CrudServiceRenderer(
             return
         }
 
+        val primaryKeyFieldNamesCsv = this.entityDef.primaryKeyClassFields.map {
+            "updater.${it.classFieldName.value}"
+        }.joinToString(", ")
+
+
         appendLine("""
             |
             |
@@ -413,7 +421,7 @@ class CrudServiceRenderer(
         )
 
         if (this.entityDef.crudDef.withCrudListener.value) {
-            appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityUpdated(updater.id)")
+            appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityUpdated($primaryKeyFieldNamesCsv)")
         }
 
         appendLine("""
