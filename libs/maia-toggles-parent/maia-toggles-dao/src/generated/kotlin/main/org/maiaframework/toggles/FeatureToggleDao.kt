@@ -5,6 +5,7 @@ package org.maiaframework.toggles
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.maiaframework.domain.ChangeType
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -584,7 +585,7 @@ class FeatureToggleDao(
 
         when (field.classFieldName) {
             "activationStrategies" -> sqlParams.addJsonValue("activationStrategies", this.objectMapper.writeValueAsString(field.value as List<ActivationStrategyDescriptor>))
-            "attributes" -> sqlParams.addJsonValue("attributes", this.objectMapper.writeValueAsString(field.value as Map<String, String>?))
+            "attributes" -> sqlParams.addJsonValue("attributes", this.objectMapper.writeValueAsString(field.value as Map<*, *>?))
             "comment" -> sqlParams.addValue("comment", field.value as String?)
             "contactPerson" -> sqlParams.addValue("contactPerson", (field.value as ContactPerson?)?.value)
             "description" -> sqlParams.addValue("description", (field.value as Description?)?.value)
