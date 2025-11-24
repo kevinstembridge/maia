@@ -9,6 +9,7 @@ import org.maiaframework.gen.spec.definition.lang.AnnotationDef
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.ConstructorArg
@@ -17,7 +18,6 @@ import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
-import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
@@ -1854,7 +1854,7 @@ class JdbcDaoRenderer(
                     fieldValueAs
                 }
 
-                val fieldValueAsClause = fieldValueAsClauseFor(fieldType)
+                val fieldValueAsClause = fieldValueAsClauseFor(classFieldDef)
 
 
                 appendLine("            \"${classFieldName}\" -> sqlParams.$sqlParamsAddFunc(\"$classFieldName\", $fieldValueAsClause)$sqlParamsMapperFunc")
@@ -1868,12 +1868,15 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun fieldValueAsClauseFor(fieldType: FieldType): String {
+    private fun fieldValueAsClauseFor(classFieldDef: ClassFieldDef): String {
+
+        val fieldType = classFieldDef.fieldType
+        val q = if (classFieldDef.nullable) "?" else ""
 
         return when (fieldType) {
-            is BooleanFieldType -> TODO()
-            is BooleanTypeFieldType -> TODO()
-            is BooleanValueClassFieldType -> TODO()
+            is BooleanFieldType -> "field.value as Boolean${q}"
+            is BooleanTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
+            is BooleanValueClassFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is DataClassFieldType -> TODO()
             is DomainIdFieldType -> TODO()
             is DoubleFieldType -> TODO()
@@ -1882,30 +1885,45 @@ class JdbcDaoRenderer(
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> TODO()
             is IdAndNameFieldType -> TODO()
-            is InstantFieldType -> TODO()
-            is IntFieldType -> TODO()
-            is IntTypeFieldType -> TODO()
-            is IntValueClassFieldType -> TODO()
-            is ListFieldType -> fieldValueAsClauseForListFieldType(fieldType)
-            is LocalDateFieldType -> TODO()
-            is LongFieldType -> TODO()
-            is LongTypeFieldType -> TODO()
-            is MapFieldType -> "field.value as Map<huh, huh>"
+            is InstantFieldType -> "field.value as Instant"
+            is IntFieldType -> "field.value as Int${q}"
+            is IntTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
+            is IntValueClassFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
+            is ListFieldType -> fieldValueAsClauseForListFieldType(fieldType, q)
+            is LocalDateFieldType -> "field.value as LocalDate$q"
+            is LongFieldType -> "field.value as Long${q}"
+            is LongTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
+            is MapFieldType -> "this.objectMapper.writeValueAsString(field.value as Map<*, *>${q})"
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()
-            is StringFieldType -> TODO()
-            is StringTypeFieldType -> TODO()
-            is StringValueClassFieldType -> TODO()
+            is StringFieldType -> "field.value as String${q}"
+            is StringTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
+            is StringValueClassFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is UrlFieldType -> TODO()
         }
 
     }
 
 
-    private fun fieldValueAsClauseForListFieldType(listFieldType: ListFieldType): String {
+    private fun fieldValueAsClauseForValueWrapper(classFieldDef: ClassFieldDef): String {
+
+        return if (classFieldDef.nullable) {
+
+            "(field.value as ${classFieldDef.unqualifiedToString})?.value"
+
+        } else {
+
+            "(field.value as ${classFieldDef.unqualifiedToString}).value"
+
+        }
+
+    }
+
+
+    private fun fieldValueAsClauseForListFieldType(listFieldType: ListFieldType, q: String): String {
 
         val parameterFieldType = listFieldType.parameterFieldType
 
@@ -1913,7 +1931,7 @@ class JdbcDaoRenderer(
             is BooleanFieldType -> TODO()
             is BooleanTypeFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
-            is DataClassFieldType -> "field.value as List<${parameterFieldType.uqcn}>"
+            is DataClassFieldType -> "this.objectMapper.writeValueAsString(field.value as List<${parameterFieldType.uqcn}>${q})"
             is DomainIdFieldType -> TODO()
             is DoubleFieldType -> TODO()
             is EnumFieldType -> TODO()

@@ -213,9 +213,11 @@ class CrudNotifierRenderer(
 
         if (someEntityDef.crudDef.withCrudListener.value) {
 
+            val primaryKeyFieldNamesCsv = fieldNamesCsv(someEntityDef.primaryKeyClassFields)
+
             blankLine()
             appendLine("        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
-            appendLine("            listener.on${someEntityDef.entityUqcn}Updated(id)")
+            appendLine("            listener.on${someEntityDef.entityUqcn}Updated($primaryKeyFieldNamesCsv)")
             appendLine("        }")
 
         }
@@ -244,7 +246,6 @@ class CrudNotifierRenderer(
     private fun `render function buildEntity`(apiDef: EntityCreateApiDef) {
 
         addImportFor<Instant>()
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         val currentUserOrBlank = if (this.entityDef.hasCreatedByIdField || this.entityDef.hasLastModifiedByIdField) {
             addImportFor(Fqcns.MAIA_USER_DETAILS)
@@ -461,12 +462,12 @@ class CrudNotifierRenderer(
             return
         }
 
-        addImportFor<DomainId>()
+        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
 
         appendLine("""
             |
             |
-            |    fun onEntityUpdated(id: DomainId) {""".trimMargin()
+            |    fun onEntityUpdated($primaryKeyFieldNamesAndTypesCsv) {""".trimMargin()
         )
 
         if (this.entityDef.crudDef.withCrudListener.value) {
@@ -486,8 +487,6 @@ class CrudNotifierRenderer(
         if (this.entityDef.isNotDeletable) {
             return
         }
-
-        addImportFor<DomainId>()
 
         blankLine()
         blankLine()
