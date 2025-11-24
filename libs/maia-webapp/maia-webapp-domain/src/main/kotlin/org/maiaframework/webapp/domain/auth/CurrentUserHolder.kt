@@ -1,8 +1,8 @@
 package org.maiaframework.webapp.domain.auth
 
-import org.maiaframework.webapp.domain.user.UserSummaryDto
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.contact.EmailAddress
+import org.maiaframework.webapp.domain.user.UserSummaryDto
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import java.util.SortedSet
@@ -29,11 +29,7 @@ object CurrentUserHolder {
 
             val principal = authentication.principal
 
-            if (principal is MaiaUserDetails) {
-                principal
-            } else {
-                null
-            }
+            principal as? MaiaUserDetails
 
         }
 
@@ -52,11 +48,13 @@ object CurrentUserHolder {
         }
 
 
-    @JvmStatic
     val grantedAuthorities: SortedSet<String>
-        get () {
-            return SecurityContextHolder.getContext().authentication?.authorities?.map { it.authority }.orEmpty().toSortedSet()
-        }
+        get () = SecurityContextHolder.getContext()
+            .authentication
+            ?.authorities
+            ?.map { it.authority }
+            .orEmpty()
+            .toSortedSet()
 
 
     fun currentUserSummary(): UserSummaryDto {
@@ -65,7 +63,13 @@ object CurrentUserHolder {
         val lastName = currentUser.lastName
         val emailAddress = EmailAddress(currentUser.username)
 
-        return UserSummaryDto(firstName, lastName, emailAddress, grantedAuthorities, currentUser.userId)
+        return UserSummaryDto(
+            firstName,
+            lastName,
+            emailAddress,
+            grantedAuthorities,
+            currentUser.userId
+        )
 
     }
 
