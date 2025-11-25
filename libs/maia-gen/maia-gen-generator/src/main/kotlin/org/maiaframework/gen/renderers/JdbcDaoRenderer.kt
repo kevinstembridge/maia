@@ -1874,19 +1874,19 @@ class JdbcDaoRenderer(
         val q = if (classFieldDef.nullable) "?" else ""
 
         return when (fieldType) {
-            is BooleanFieldType -> "field.value as Boolean${q}"
+            is BooleanFieldType -> "field.value as ${fieldType.unqualifiedToString}"
             is BooleanTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is BooleanValueClassFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is DataClassFieldType -> TODO()
-            is DomainIdFieldType -> TODO()
+            is DomainIdFieldType -> "field.value as DomainId${q}"
             is DoubleFieldType -> TODO()
-            is EnumFieldType -> TODO()
+            is EnumFieldType -> "field.value as ${fieldType.unqualifiedToString}"
             is EsDocFieldType -> TODO()
-            is ForeignKeyFieldType -> TODO()
+            is ForeignKeyFieldType -> "field.value as DomainId${q}"
             is FqcnFieldType -> TODO()
             is IdAndNameFieldType -> TODO()
-            is InstantFieldType -> "field.value as Instant"
-            is IntFieldType -> "field.value as Int${q}"
+            is InstantFieldType -> "field.value as ${fieldType.unqualifiedToString}${q}"
+            is IntFieldType -> "field.value as ${fieldType.unqualifiedToString}${q}"
             is IntTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is IntValueClassFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is ListFieldType -> fieldValueAsClauseForListFieldType(fieldType, q)
@@ -1899,8 +1899,8 @@ class JdbcDaoRenderer(
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()
-            is StringFieldType -> "field.value as String${q}"
-            is StringTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
+            is StringFieldType -> "field.value as ${fieldType.unqualifiedToString}${q}"
+            is StringTypeFieldType -> "field.value as ${fieldType.unqualifiedToString}${q}"
             is StringValueClassFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is UrlFieldType -> TODO()
         }
@@ -1934,7 +1934,7 @@ class JdbcDaoRenderer(
             is DataClassFieldType -> "this.objectMapper.writeValueAsString(field.value as List<${parameterFieldType.uqcn}>${q})"
             is DomainIdFieldType -> TODO()
             is DoubleFieldType -> TODO()
-            is EnumFieldType -> TODO()
+            is EnumFieldType -> "field.value as List<${parameterFieldType.unqualifiedToString}>"
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> TODO()

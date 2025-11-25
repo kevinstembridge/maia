@@ -464,6 +464,8 @@ class CrudNotifierRenderer(
 
         val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
 
+        this.entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType)}
+
         appendLine("""
             |
             |
