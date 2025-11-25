@@ -110,6 +110,9 @@ class EntityFieldDef(
     val typeaheadRequiredValidatorTypescriptImport = TypescriptImport(typeaheadRequiredValidatorFunctionName, "@app/gen-components/${packageName.asTypescriptDirs()}/$typeaheadRequiredValidatorFileName")
 
 
+    val isVersionField = this.classFieldDef.isVersionField
+
+
     init {
 
         if (isDeltaKey.value && isDeltaField.value) {

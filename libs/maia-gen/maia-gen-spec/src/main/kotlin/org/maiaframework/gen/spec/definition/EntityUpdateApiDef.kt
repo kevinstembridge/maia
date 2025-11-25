@@ -94,8 +94,8 @@ class EntityUpdateApiDef(
 
 
     private val dtoFields: List<RequestDtoFieldDef> = this.entityDef.allEntityFields
+        .filter { it.classFieldDef.isEditableByUser.value || it.isPrimaryKey.value || it.isVersionField }
         .map { it.classFieldDef }
-        .filter { it.isEditableByUser.value || it.classFieldName == ClassFieldName.id || it.classFieldName == ClassFieldName.version }
         .map { RequestDtoFieldDef(it, this.entityDef.findUniqueDatabaseIndexDefFor(it.classFieldName)) }
 
 

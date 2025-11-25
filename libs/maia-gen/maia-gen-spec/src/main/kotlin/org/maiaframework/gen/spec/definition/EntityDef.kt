@@ -963,6 +963,13 @@ class EntityDef(
     }
 
 
+    fun isPrimaryKey(classFieldName: ClassFieldName): Boolean {
+
+        return primaryKeyFields.any { it.classFieldName == classFieldName }
+
+    }
+
+
     companion object {
 
 
