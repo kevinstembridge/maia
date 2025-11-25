@@ -116,6 +116,9 @@ data class ClassFieldDef(
     val isNumeric = this.fieldType.isNumeric()
 
 
+    val isVersionField = this.classFieldName == ClassFieldName.version
+
+
     init {
 
         val questionMark = if (this.nullable) "?" else ""
