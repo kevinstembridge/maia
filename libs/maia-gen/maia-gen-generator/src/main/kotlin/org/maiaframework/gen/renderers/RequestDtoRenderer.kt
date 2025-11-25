@@ -57,11 +57,8 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
         args.forEachIndexed { index, constructorArg ->
 
             val commaOrNot = if (index + 1 == argCount) "" else ","
-
             val classField = constructorArg.classFieldDef
-
-            val fieldIsNotNullable = classField.nullable == false
-
+            val fieldIsNullable = classField.nullable
             val fieldRequiresJsonPropertyAnnotation = doesFieldRequireJsonPropertyAnnotation(classField)
 
             if (fieldRequiresJsonPropertyAnnotation) {
@@ -84,27 +81,27 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
                 AnnotationUsageSite.param
             }
 
-            val annotationStrings = constructorArg.annotationDefs.map { "    ${it.toStringInKotlin(usageSite)} " }
-            val jsonPropertyAnnotation = if (fieldRequiresJsonPropertyAnnotation) "    @param:JsonProperty(\"$fieldName\", access = JsonProperty.Access.READ_WRITE) " else null
-            val visibility = if (fieldIsNotNullable) "private " else ""
+            constructorArg.annotationDefs.forEach { appendLine("    ${it.toStringInKotlin(usageSite)} ") }
+
+            if (fieldRequiresJsonPropertyAnnotation) {
+                appendLine("    @param:JsonProperty(\"$fieldName\", access = JsonProperty.Access.READ_WRITE) ")
+            }
+
+            val visibility = if (fieldIsNullable) "" else "private "
 
             val variableType = if (isEnum || isValueFieldWrapper) {
-                if (fieldIsNotNullable) {
-                    "val "
-                } else {
+                if (fieldIsNullable) {
                     ""
+                } else {
+                    "val "
                 }
             } else {
                 "val "
             }
 
-            val constructorArgName = if (fieldIsNotNullable || isUrl) "${fieldName}_raw" else fieldName
+            val constructorArgName = if (fieldIsNullable == false || isUrl) "${fieldName}_raw" else fieldName
             val unwrappedFieldType = classField.unWrapIfComplexType()
             addImportFor(unwrappedFieldType.fieldType)
-
-            annotationStrings.forEach { appendLine(it) }
-
-            jsonPropertyAnnotation?.let { appendLine(it) }
 
             appendLine("    $visibility$variableType$constructorArgName: ${unwrappedFieldType.convertToNullable().unqualifiedToString}$commaOrNot")
 
