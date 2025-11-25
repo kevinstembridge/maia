@@ -16,15 +16,15 @@ import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 @JsonIgnoreProperties(ignoreUnknown = true)
 class FeatureToggleUpdateRequestDto
 @JsonCreator constructor(
-    @param:NotNull
-    @param:JsonProperty("activationStrategies", access = JsonProperty.Access.READ_WRITE)
+    @param:NotNull 
+    @param:JsonProperty("activationStrategies", access = JsonProperty.Access.READ_WRITE) 
     private val activationStrategies_raw: List<ActivationStrategyDescriptor>?,
-    @param:NotBlank
-    @param:Length(max = 200)
-    @param:JsonProperty("featureName", access = JsonProperty.Access.READ_WRITE)
+    @param:NotBlank 
+    @param:Length(max = 200) 
+    @param:JsonProperty("featureName", access = JsonProperty.Access.READ_WRITE) 
     private val featureName_raw: String?,
-    @param:NotNull
-    @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE)
+    @param:NotNull 
+    @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
     private val version_raw: Long?
 ) {
 

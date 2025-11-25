@@ -35,7 +35,6 @@ import org.maiaframework.gen.spec.definition.lang.StringFieldType
 import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.UrlFieldType
-import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
 
 
 class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKotlinRenderer(requestDtoDef.classDef) {
@@ -85,7 +84,7 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
                 AnnotationUsageSite.param
             }
 
-            val annotationString = constructorArg.annotationDefs.map { "${it.toStringInKotlin(usageSite)} " }.joinToString("")
+            val annotationStrings = constructorArg.annotationDefs.map { "    ${it.toStringInKotlin(usageSite)} " }
             val jsonPropertyAnnotation = if (fieldRequiresJsonPropertyAnnotation) "@param:JsonProperty(\"$fieldName\", access = JsonProperty.Access.READ_WRITE) " else ""
             val visibility = if (fieldIsNotNullable) "private " else ""
 
@@ -103,7 +102,10 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
             val unwrappedFieldType = classField.unWrapIfComplexType()
             addImportFor(unwrappedFieldType.fieldType)
 
-            appendLine("    $annotationString$jsonPropertyAnnotation$visibility$variableType$constructorArgName: ${unwrappedFieldType.convertToNullable().unqualifiedToString}$commaOrNot")
+            annotationStrings.forEach { appendLine(it) }
+
+            appendLine("    $jsonPropertyAnnotation")
+            appendLine("    $visibility$variableType$constructorArgName: ${unwrappedFieldType.convertToNullable().unqualifiedToString}$commaOrNot")
 
         }
 
