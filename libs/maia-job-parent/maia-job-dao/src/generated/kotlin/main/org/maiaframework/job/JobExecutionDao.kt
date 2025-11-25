@@ -348,11 +348,11 @@ class JobExecutionDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "completionStatus" -> sqlParams.addValue("completionStatus", field.value as JobCompletionStatus?)
+            "completionStatus" -> sqlParams.addValue("completionStatus", field.value as JobCompletionStatus)
             "endTimestampUtc" -> sqlParams.addValue("endTimestampUtc", field.value as Instant?)
             "errorMessage" -> sqlParams.addValue("errorMessage", field.value as String?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
-            "metrics" -> sqlParams.addJsonValue("metrics", this.objectMapper.writeValueAsString(field.value as Map<String, Any>))
+            "metrics" -> sqlParams.addJsonValue("metrics", this.objectMapper.writeValueAsString(field.value as Map<*, *>))
             "stackTrace" -> sqlParams.addValue("stackTrace", field.value as String?)
         }
 
