@@ -416,7 +416,9 @@ class DomainModuleGenerator(
 
     private fun `process CrudApiDefs`() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { processCrudApiDef(it) }
+        this.modelDef.entityCrudApiDefs
+            .filter { it.entityDef.isConcrete }
+            .forEach { processCrudApiDef(it) }
 
     }
 
