@@ -329,7 +329,8 @@ class CrudServiceRenderer(
             }
 
             dtoDef.classFieldDefs
-                .filter { it.classFieldName != ClassFieldName.id && it.classFieldName != ClassFieldName.version }
+                .filterNot { entityDef.isPrimaryKey(it.classFieldName) }
+                .filterNot { it.isVersionField }
                 .forEach { field -> appendLine("            ${field.classFieldName}(editDto.${field.classFieldName})") }
 
             if (this.entityDef.hasLastModifiedByIdField) {
