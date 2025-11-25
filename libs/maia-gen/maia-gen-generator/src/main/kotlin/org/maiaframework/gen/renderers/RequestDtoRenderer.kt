@@ -85,7 +85,7 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
             }
 
             val annotationStrings = constructorArg.annotationDefs.map { "    ${it.toStringInKotlin(usageSite)} " }
-            val jsonPropertyAnnotation = if (fieldRequiresJsonPropertyAnnotation) "@param:JsonProperty(\"$fieldName\", access = JsonProperty.Access.READ_WRITE) " else ""
+            val jsonPropertyAnnotation = if (fieldRequiresJsonPropertyAnnotation) "    @param:JsonProperty(\"$fieldName\", access = JsonProperty.Access.READ_WRITE) " else null
             val visibility = if (fieldIsNotNullable) "private " else ""
 
             val variableType = if (isEnum || isValueFieldWrapper) {
@@ -104,7 +104,8 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
 
             annotationStrings.forEach { appendLine(it) }
 
-            appendLine("    $jsonPropertyAnnotation")
+            jsonPropertyAnnotation?.let { appendLine(it) }
+
             appendLine("    $visibility$variableType$constructorArgName: ${unwrappedFieldType.convertToNullable().unqualifiedToString}$commaOrNot")
 
         }
