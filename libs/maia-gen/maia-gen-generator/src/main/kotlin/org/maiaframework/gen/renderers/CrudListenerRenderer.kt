@@ -1,7 +1,6 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.EntityCrudApiDef
-import org.maiaframework.gen.spec.definition.Fqcns
 
 class CrudListenerRenderer(
     private val entityCrudApiDef: EntityCrudApiDef
@@ -12,14 +11,14 @@ class CrudListenerRenderer(
 
     override fun renderFunctions() {
 
-        renderFunction_onCreate()
-        renderFunction_onUpdate()
-        renderFunction_onDelete()
+        `render function onCreate`()
+        `render function onEntityUpdated`()
+        `render function onDelete`()
 
     }
 
 
-    private fun renderFunction_onCreate() {
+    private fun `render function onCreate`() {
 
         this.entityCrudApiDef.createApiDef?.let { apiDef ->
 
@@ -41,9 +40,11 @@ class CrudListenerRenderer(
     }
 
 
-    private fun renderFunction_onUpdate() {
+    private fun `render function onEntityUpdated`() {
 
         val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityCrudApiDef.entityDef.primaryKeyClassFields)
+
+        this.entityCrudApiDef.entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
 
         if (this.entityCrudApiDef.updateApiDef != null || this.entityCrudApiDef.entityDef.hasModifiableFields()) {
             blankLine()
@@ -54,7 +55,7 @@ class CrudListenerRenderer(
     }
 
 
-    private fun renderFunction_onDelete() {
+    private fun `render function onDelete`() {
 
         this.entityCrudApiDef.deleteApiDef?.let {
             blankLine()
