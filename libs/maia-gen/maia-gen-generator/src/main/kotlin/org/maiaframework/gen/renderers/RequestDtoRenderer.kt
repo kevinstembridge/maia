@@ -76,14 +76,13 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
 
             val usageSite = if (
                 isEnum
-                || isValueFieldWrapper
                 || isUrl
                 || classField.fieldType is DomainIdFieldType
                 || classField.fieldType is ForeignKeyFieldType
             ) {
                 null
             } else {
-                AnnotationUsageSite.field
+                AnnotationUsageSite.param
             }
 
             val annotationString = constructorArg.annotationDefs.map { "${it.toStringInKotlin(usageSite)} " }.joinToString("")
