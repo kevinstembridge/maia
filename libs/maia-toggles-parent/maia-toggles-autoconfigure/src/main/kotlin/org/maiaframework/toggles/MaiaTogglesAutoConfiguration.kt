@@ -7,6 +7,7 @@ import com.hazelcast.core.HazelcastInstance
 import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.json.JsonFacade
+import org.maiaframework.toggles.activation.ActivationStrategyRegistry
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -45,7 +46,9 @@ class MaiaTogglesAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     fun jacksonJavaTimeModule(): JavaTimeModule {
+
         return JavaTimeModule()
+
     }
 
 
@@ -75,6 +78,15 @@ class MaiaTogglesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    fun activationStrategyRegistry(): ActivationStrategyRegistry {
+
+        return ActivationStrategyRegistry()
+
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
     fun toggleService(
         toggleRepo: FeatureToggleRepo,
         toggles: Toggles,
@@ -88,9 +100,12 @@ class MaiaTogglesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun toggles(toggleRepo: FeatureToggleRepo): Toggles {
+    fun toggles(
+        toggleRepo: FeatureToggleRepo,
+        activationStrategyRegistry: ActivationStrategyRegistry
+    ): Toggles {
 
-        return TogglesImpl(toggleRepo)
+        return TogglesImpl(toggleRepo, activationStrategyRegistry)
 
     }
 
