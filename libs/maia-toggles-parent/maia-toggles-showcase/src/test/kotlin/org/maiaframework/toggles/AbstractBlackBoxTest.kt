@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.servlet.assertj.MockMvcTester
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
+import org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 import org.springframework.web.context.WebApplicationContext
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -38,7 +41,11 @@ abstract class AbstractBlackBoxTest {
     @BeforeAll
     fun beforeAll() {
 
-        this.mockMvc = MockMvcTester.from(this.context)
+        this.mockMvc = MockMvcTester.create(
+            webAppContextSetup(context)
+                .apply<DefaultMockMvcBuilder>(springSecurity())
+                .build()
+        )
 
     }
 

@@ -48,6 +48,22 @@ object CurrentUserHolder {
         }
 
 
+    val currentUsername: String
+        get() {
+            return SecurityContextHolder.getContext().authentication?.let { authentication ->
+
+                val principal = authentication.principal
+
+                if (principal is User) {
+                    principal.username
+                } else {
+                    principal.toString()
+                }
+
+            } ?: throw RuntimeException("No currently-authenticated user")
+        }
+
+
     val grantedAuthorities: SortedSet<String>
         get () = SecurityContextHolder.getContext()
             .authentication
