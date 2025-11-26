@@ -48,14 +48,14 @@ class FeatureToggleCrudService(
 
         val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateActivationStrategies. currentUser=${currentUsername}, dto=$editDto")
+        logger.info("BEGIN: updateActivationStrategies. currentUsername=${currentUsername}, dto=$editDto")
 
         val version = editDto.version
 
         val updater = FeatureToggleEntityUpdater.forPrimaryKey(editDto.featureName, version) {
             activationStrategies(editDto.activationStrategies)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
-            lastModifiedBy(currentUsername)
         }
 
         setFields(updater)
