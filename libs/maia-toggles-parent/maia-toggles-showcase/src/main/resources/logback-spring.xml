@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <logger name="com.novemberain.quartz" level="warn"/>
+    <logger name="org.flyway" level="debug"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <logger name="org.springframework.boot" level="info"/>
+    <logger name="org.springframework.web.servlet" level="info"/>
+    <logger name="org.springframework.security" level="debug"/>
+    <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="info"/>
+    <logger name="la" level="info"/>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
