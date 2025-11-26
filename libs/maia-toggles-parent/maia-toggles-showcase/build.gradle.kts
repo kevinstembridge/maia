@@ -9,6 +9,7 @@ dependencies {
     api(project(":libs:maia-common"))
 
     api("org.springframework.boot:spring-boot-starter-jdbc")
+    api("org.springframework.boot:spring-boot-starter-security")
     api("org.springframework.boot:spring-boot-starter-web")
 
     implementation(project(":libs:maia-props-parent:maia-props-spring-boot-starter"))
@@ -25,6 +26,7 @@ dependencies {
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.testcontainers:junit-jupiter")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
