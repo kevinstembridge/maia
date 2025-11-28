@@ -93,10 +93,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
             nullable()
             modifiableBySystem()
         }
-        field("lastModifiedBy", FieldTypes.string) {
-            modifiableBySystem()
-            lengthConstraint(max = 100)
-        }
+        field_lastModifiedByName()
         field_lastModifiedTimestampUtc()
         field("comment", FieldTypes.string) {
             nullable()

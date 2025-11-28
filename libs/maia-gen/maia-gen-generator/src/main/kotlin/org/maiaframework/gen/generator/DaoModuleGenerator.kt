@@ -59,6 +59,7 @@ class DaoModuleGenerator(
 
         if (jdbcRootEntityHierarchies.isNotEmpty()) {
             CreateTableSqlRenderer(jdbcRootEntityHierarchies, renderedFileName).renderToDir(sqlScriptsDir)
+            RenameColumnsSqlRenderer(jdbcRootEntityHierarchies, renderedFileName).renderToDir(sqlScriptsDir)
         }
 
     }

@@ -16,6 +16,8 @@ import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
+import org.maiaframework.gen.spec.definition.lang.FieldType
+import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
@@ -370,13 +372,15 @@ class CrudServiceRenderer(
         val dtoUqcn = dtoDef.uqcn
         val fieldName = dtoDef.fieldDef.classFieldDef.classFieldName
 
+        // TODO if the entity has a lastModifiedByUsername field
+
         blankLine()
         blankLine()
         appendLine("    fun update${fieldName.firstToUpper()}(editDto: $dtoUqcn) {")
         blankLine()
-        appendLine("        val currentUser = CurrentUserHolder.currentUser")
+        appendLine("        val currentUsername = CurrentUserHolder.currentUsername")
         blankLine()
-        appendLine("        logger.info(\"BEGIN: update${fieldName.firstToUpper()}. currentUser=\${currentUser.username}, dto=\$editDto\")")
+        appendLine("        logger.info(\"BEGIN: update${fieldName.firstToUpper()}. currentUsername=\${currentUsername}, dto=\$editDto\")")
 
         if (this.entityDef.versioned.value) {
 
@@ -393,6 +397,22 @@ class CrudServiceRenderer(
         }
 
         appendLine("            $fieldName(editDto.$fieldName)")
+
+        if (entityDef.hasLastModifiedByIdField) {
+            addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
+            appendLine("            lastModifiedById(CurrentUserHolder.userId)")
+        }
+
+        if (entityDef.hasLastModifiedByUsernameField) {
+            addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
+            appendLine("            lastModifiedByUsername(CurrentUserHolder.currentUsername)")
+        }
+
+        if (entityDef.hasLastModifiedTimestampUtcField) {
+            addImportFor(FieldTypes.instant)
+            appendLine("            lastModifiedTimestampUtc(Instant.now())")
+        }
+
         appendLine("        }")
         blankLine()
         appendLine("        setFields(updater)")

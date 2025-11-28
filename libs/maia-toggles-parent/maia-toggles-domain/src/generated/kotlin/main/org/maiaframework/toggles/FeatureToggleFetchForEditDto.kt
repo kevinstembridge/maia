@@ -22,7 +22,7 @@ data class FeatureToggleFetchForEditDto(
     val enabled: Boolean,
     val featureName: FeatureName,
     val infoLink: InfoLink?,
-    val lastModifiedBy: String,
+    val lastModifiedByUsername: String,
     val lastModifiedTimestampUtc: Instant,
     val reviewDate: LocalDate?,
     val ticketKey: TicketKey?,

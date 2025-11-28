@@ -37,16 +37,16 @@ class FeatureToggleHistoryDao(
                 change_type,
                 comment,
                 contact_person,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 enabled,
                 feature_name,
                 info_link,
-                last_modified_by,
-                lm_ts,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 review_date,
                 ticket_key,
-                v
+                version
             ) values (
                 :activationStrategies,
                 :attributes,
@@ -58,7 +58,7 @@ class FeatureToggleHistoryDao(
                 :enabled,
                 :featureName,
                 :infoLink,
-                :lastModifiedBy,
+                :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :reviewDate,
                 :ticketKey,
@@ -76,7 +76,7 @@ class FeatureToggleHistoryDao(
                 addValue("enabled", entity.enabled)
                 addValue("featureName", entity.featureName.value)
                 addValue("infoLink", entity.infoLink?.value)
-                addValue("lastModifiedBy", entity.lastModifiedBy)
+                addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("reviewDate", entity.reviewDate)
                 addValue("ticketKey", entity.ticketKey?.value)
@@ -97,16 +97,16 @@ class FeatureToggleHistoryDao(
                 change_type,
                 comment,
                 contact_person,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 enabled,
                 feature_name,
                 info_link,
-                last_modified_by,
-                lm_ts,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 review_date,
                 ticket_key,
-                v
+                version
             ) values (
                 :activationStrategies,
                 :attributes,
@@ -118,7 +118,7 @@ class FeatureToggleHistoryDao(
                 :enabled,
                 :featureName,
                 :infoLink,
-                :lastModifiedBy,
+                :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :reviewDate,
                 :ticketKey,
@@ -137,7 +137,7 @@ class FeatureToggleHistoryDao(
                     addValue("enabled", entity.enabled)
                     addValue("featureName", entity.featureName.value)
                     addValue("infoLink", entity.infoLink?.value)
-                    addValue("lastModifiedBy", entity.lastModifiedBy)
+                    addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("reviewDate", entity.reviewDate)
                     addValue("ticketKey", entity.ticketKey?.value)
@@ -198,7 +198,7 @@ class FeatureToggleHistoryDao(
     fun findByPrimaryKeyOrNull(featureName: FeatureName, version: Long): FeatureToggleHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from toggles.feature_toggle_history where feature_name = :featureName and v = :version",
+            "select * from toggles.feature_toggle_history where feature_name = :featureName and version = :version",
             SqlParams().apply {
             addValue("featureName", featureName.value)
             addValue("version", version)
@@ -212,7 +212,7 @@ class FeatureToggleHistoryDao(
     fun existsByPrimaryKey(featureName: FeatureName, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from toggles.feature_toggle_history where feature_name = :featureName and v = :version",
+            "select count(*) from toggles.feature_toggle_history where feature_name = :featureName and version = :version",
             SqlParams().apply {
                 addValue("featureName", featureName.value)
                 addValue("version", version)
@@ -247,7 +247,7 @@ class FeatureToggleHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select feature_name, v from toggles.feature_toggle_history where $whereClause",
+            "select feature_name, version from toggles.feature_toggle_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -258,7 +258,7 @@ class FeatureToggleHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<FeatureToggleHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select feature_name, v from toggles.feature_toggle_history;",
+            "select feature_name, version from toggles.feature_toggle_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )

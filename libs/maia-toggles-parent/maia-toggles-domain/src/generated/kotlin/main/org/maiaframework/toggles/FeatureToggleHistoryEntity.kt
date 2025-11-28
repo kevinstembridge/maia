@@ -24,7 +24,7 @@ class FeatureToggleHistoryEntity(
     val enabled: Boolean,
     val featureName: FeatureName,
     val infoLink: InfoLink?,
-    val lastModifiedBy: String,
+    val lastModifiedByUsername: String,
     val lastModifiedTimestampUtc: Instant,
     val reviewDate: LocalDate?,
     val ticketKey: TicketKey?,
@@ -48,7 +48,7 @@ class FeatureToggleHistoryEntity(
                 "enabled = '" + this.enabled + '\'' + ", " + 
                 "featureName = '" + this.featureName + '\'' + ", " + 
                 "infoLink = '" + this.infoLink + '\'' + ", " + 
-                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
+                "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "reviewDate = '" + this.reviewDate + '\'' + ", " + 
                 "ticketKey = '" + this.ticketKey + '\'' + ", " + 

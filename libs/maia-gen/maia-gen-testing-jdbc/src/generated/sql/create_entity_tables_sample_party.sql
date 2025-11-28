@@ -4,12 +4,12 @@
 
 CREATE TABLE testing.party (
     type_discriminator text not null,
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     email_address text NOT NULL,
     encrypted_password text NULL,
     first_name text NULL,
     id uuid NOT NULL,
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     last_name text NULL,
     org_name text NULL,
     some_strings text[] NULL,
@@ -20,13 +20,13 @@ CREATE TABLE testing.party (
 CREATE TABLE testing.user_group (
     type_discriminator text not null,
     authorities text[] NOT NULL,
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     description text NOT NULL,
     id uuid NOT NULL,
     name text NOT NULL,
     org_id uuid NULL REFERENCES testing.party(id),
     system_managed boolean NOT NULL,
-    v bigint NOT NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -35,23 +35,23 @@ CREATE TABLE testing.user_group_history (
     type_discriminator text not null,
     authorities text[] NOT NULL,
     change_type text NOT NULL,
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     description text NOT NULL,
     id uuid NOT NULL,
     name text NOT NULL,
     org_id uuid NULL REFERENCES testing.party(id),
     system_managed boolean NOT NULL,
-    v bigint NOT NULL,
-    PRIMARY KEY(id, v)
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
 );
 
 
 CREATE TABLE testing.org_user_group_membership (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     org_user_group_id uuid NOT NULL,
     user_id uuid NOT NULL,
-    v bigint NOT NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(id)
 );
 CREATE UNIQUE INDEX org_user_group_membership_org_user_group_id_user_id_uidx ON testing.org_user_group_membership(org_user_group_id, user_id);
@@ -60,12 +60,12 @@ CREATE INDEX org_user_group_membership_user_id_idx ON testing.org_user_group_mem
 
 CREATE TABLE testing.org_user_group_membership_history (
     change_type text NOT NULL,
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     org_user_group_id uuid NOT NULL,
     user_id uuid NOT NULL,
-    v bigint NOT NULL,
-    PRIMARY KEY(id, v)
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
 );
 CREATE INDEX hist_org_user_group_membership_org_user_group_id_user_id_uidx ON testing.org_user_group_membership_history(org_user_group_id, user_id);
 CREATE INDEX hist_org_user_group_membership_user_id_idx ON testing.org_user_group_membership_history(user_id);

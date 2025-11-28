@@ -31,7 +31,7 @@ class FeatureToggleFetchForEditDtoRowMapper(
             rsa.readBoolean("enabled"),
             rsa.readString("featureName") { FeatureName(it) },
             rsa.readStringOrNull("infoLink") { InfoLink(it) },
-            rsa.readString("lastModifiedBy"),
+            rsa.readString("lastModifiedByUsername"),
             rsa.readInstant("lastModifiedTimestampUtc"),
             rsa.readLocalDateOrNull("reviewDate"),
             rsa.readStringOrNull("ticketKey") { TicketKey(it) },

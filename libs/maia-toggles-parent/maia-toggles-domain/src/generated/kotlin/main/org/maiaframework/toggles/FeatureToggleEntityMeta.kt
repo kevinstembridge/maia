@@ -20,7 +20,7 @@ object FeatureToggleEntityMeta {
 
     const val contactPerson = "contact_person"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val description = "description"
 
@@ -30,15 +30,15 @@ object FeatureToggleEntityMeta {
 
     const val infoLink = "info_link"
 
-    const val lastModifiedBy = "last_modified_by"
+    const val lastModifiedByUsername = "last_modified_by_name"
 
-    const val lastModifiedTimestampUtc = "lm_ts"
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
     const val reviewDate = "review_date"
 
     const val ticketKey = "ticket_key"
 
-    const val version = "v"
+    const val version = "version"
 
     val ENTITY_KEY = EntityKey("FeatureToggle")
 
@@ -58,16 +58,16 @@ object FeatureToggleEntityMeta {
             "attributes" -> "attributes"
             "comment" -> "comment"
             "contactPerson" -> "contact_person"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "description" -> "description"
             "enabled" -> "enabled"
             "featureName" -> "feature_name"
             "infoLink" -> "info_link"
-            "lastModifiedBy" -> "last_modified_by"
-            "lastModifiedTimestampUtc" -> "lm_ts"
+            "lastModifiedByUsername" -> "last_modified_by_name"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "reviewDate" -> "review_date"
             "ticketKey" -> "ticket_key"
-            "version" -> "v"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

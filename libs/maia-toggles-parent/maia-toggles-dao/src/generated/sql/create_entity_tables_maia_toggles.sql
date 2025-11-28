@@ -7,16 +7,16 @@ CREATE TABLE toggles.feature_toggle (
     attributes jsonb NULL,
     comment text NULL,
     contact_person text NULL,
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     description text NULL,
     enabled boolean NOT NULL,
     feature_name text NOT NULL,
     info_link text NULL,
-    last_modified_by text NOT NULL,
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_by_name text NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     review_date date NULL,
     ticket_key text NULL,
-    v bigint NOT NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(feature_name)
 );
 
@@ -27,15 +27,15 @@ CREATE TABLE toggles.feature_toggle_history (
     change_type text NOT NULL,
     comment text NULL,
     contact_person text NULL,
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     description text NULL,
     enabled boolean NOT NULL,
     feature_name text NOT NULL,
     info_link text NULL,
-    last_modified_by text NOT NULL,
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_by_name text NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     review_date date NULL,
     ticket_key text NULL,
-    v bigint NOT NULL,
-    PRIMARY KEY(feature_name, v)
+    version bigint NOT NULL,
+    PRIMARY KEY(feature_name, version)
 );

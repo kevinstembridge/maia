@@ -27,16 +27,16 @@ class FeatureToggleHistoryEntityRowMapper(
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val comment = rsa.readStringOrNull("comment")
         val contactPerson = rsa.readStringOrNull("contact_person") { ContactPerson(it) }
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val description = rsa.readStringOrNull("description") { Description(it) }
         val enabled = rsa.readBoolean("enabled")
         val featureName = rsa.readString("feature_name") { FeatureName(it) }
         val infoLink = rsa.readStringOrNull("info_link") { InfoLink(it) }
-        val lastModifiedBy = rsa.readString("last_modified_by")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedByUsername = rsa.readString("last_modified_by_name")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val reviewDate = rsa.readLocalDateOrNull("review_date")
         val ticketKey = rsa.readStringOrNull("ticket_key") { TicketKey(it) }
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return FeatureToggleHistoryEntity(
                 activationStrategies,
@@ -49,7 +49,7 @@ class FeatureToggleHistoryEntityRowMapper(
                 enabled,
                 featureName,
                 infoLink,
-                lastModifiedBy,
+                lastModifiedByUsername,
                 lastModifiedTimestampUtc,
                 reviewDate,
                 ticketKey,

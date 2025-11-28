@@ -55,7 +55,7 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
         val enabled = reader.readBoolean("enabled")
         val featureName = FeatureName(reader.readStringNonNull("featureName"))
         val infoLink = reader.readNullableString("infoLink")?.let { InfoLink(it) }
-        val lastModifiedBy = reader.readStringNonNull("lastModifiedBy")
+        val lastModifiedByUsername = reader.readStringNonNull("lastModifiedByUsername")
         val lastModifiedTimestampUtc = reader.readInstantNonNull("lastModifiedTimestampUtc")
         val reviewDate = reader.readNullableLocalDate("reviewDate")
         val ticketKey = reader.readNullableString("ticketKey")?.let { TicketKey(it) }
@@ -71,7 +71,7 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
             enabled,
             featureName,
             infoLink,
-            lastModifiedBy,
+            lastModifiedByUsername,
             lastModifiedTimestampUtc,
             reviewDate,
             ticketKey,
@@ -101,7 +101,7 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
             writeBoolean("enabled", dto.enabled)
             writeString("featureName", dto.featureName.value)
             writeString("infoLink", dto.infoLink?.value)
-            writeString("lastModifiedBy", dto.lastModifiedBy)
+            writeString("lastModifiedByUsername", dto.lastModifiedByUsername)
             writeTimestampWithTimezone("lastModifiedTimestampUtc", dto.lastModifiedTimestampUtc.atOffset(ZoneOffset.UTC))
             writeNullableDate("reviewDate", dto.reviewDate)
             writeString("ticketKey", dto.ticketKey?.value)

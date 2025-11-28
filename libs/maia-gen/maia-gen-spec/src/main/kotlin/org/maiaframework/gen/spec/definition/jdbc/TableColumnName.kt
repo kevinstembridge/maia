@@ -42,10 +42,7 @@ class TableColumnName(value: String) : StringType<TableColumnName>(value) {
         val createdByName = TableColumnName("created_by_name")
 
 
-        val createdTimestampUtc = TableColumnName("c_ts")
-
-
-        val entityId = TableColumnName("entityId")
+        val createdTimestampUtc = TableColumnName("created_timestamp_utc")
 
 
         fun id(databaseType: DatabaseType) = when (databaseType) {
@@ -54,19 +51,19 @@ class TableColumnName(value: String) : StringType<TableColumnName>(value) {
         }
 
 
-        val lastModifiedById = TableColumnName("lm_by_id")
+        val lastModifiedById = TableColumnName("last_modified_by_id")
 
 
-        val lastModifiedByName = TableColumnName("lm_by_name")
+        val lastModifiedByName = TableColumnName("last_modified_by_name")
 
 
-        val lastModifiedTimestampUtc = TableColumnName("lm_ts")
+        val lastModifiedTimestampUtc = TableColumnName("last_modified_timestamp_utc")
 
 
         val id = TableColumnName("id")
 
 
-        val version = TableColumnName("v")
+        val version = TableColumnName("version")
 
 
     }

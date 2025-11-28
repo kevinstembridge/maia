@@ -51,16 +51,16 @@ class FeatureToggleDao(
                 attributes,
                 comment,
                 contact_person,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 enabled,
                 feature_name,
                 info_link,
-                last_modified_by,
-                lm_ts,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 review_date,
                 ticket_key,
-                v
+                version
             ) values (
                 :activationStrategies,
                 :attributes,
@@ -71,7 +71,7 @@ class FeatureToggleDao(
                 :enabled,
                 :featureName,
                 :infoLink,
-                :lastModifiedBy,
+                :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :reviewDate,
                 :ticketKey,
@@ -88,7 +88,7 @@ class FeatureToggleDao(
                 addValue("enabled", entity.enabled)
                 addValue("featureName", entity.featureName.value)
                 addValue("infoLink", entity.infoLink?.value)
-                addValue("lastModifiedBy", entity.lastModifiedBy)
+                addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("reviewDate", entity.reviewDate)
                 addValue("ticketKey", entity.ticketKey?.value)
@@ -110,16 +110,16 @@ class FeatureToggleDao(
                 attributes,
                 comment,
                 contact_person,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 enabled,
                 feature_name,
                 info_link,
-                last_modified_by,
-                lm_ts,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 review_date,
                 ticket_key,
-                v
+                version
             ) values (
                 :activationStrategies,
                 :attributes,
@@ -130,7 +130,7 @@ class FeatureToggleDao(
                 :enabled,
                 :featureName,
                 :infoLink,
-                :lastModifiedBy,
+                :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :reviewDate,
                 :ticketKey,
@@ -148,7 +148,7 @@ class FeatureToggleDao(
                     addValue("enabled", entity.enabled)
                     addValue("featureName", entity.featureName.value)
                     addValue("infoLink", entity.infoLink?.value)
-                    addValue("lastModifiedBy", entity.lastModifiedBy)
+                    addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("reviewDate", entity.reviewDate)
                     addValue("ticketKey", entity.ticketKey?.value)
@@ -199,7 +199,7 @@ class FeatureToggleDao(
         val enabled = entity.enabled
         val featureName = entity.featureName
         val infoLink = entity.infoLink
-        val lastModifiedBy = entity.lastModifiedBy
+        val lastModifiedByUsername = entity.lastModifiedByUsername
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val reviewDate = entity.reviewDate
         val ticketKey = entity.ticketKey
@@ -215,7 +215,7 @@ class FeatureToggleDao(
                 enabled,
                 featureName,
                 infoLink,
-                lastModifiedBy,
+                lastModifiedByUsername,
                 lastModifiedTimestampUtc,
                 reviewDate,
                 ticketKey,
@@ -427,16 +427,16 @@ class FeatureToggleDao(
                 feature_toggle.attributes as attributes,
                 feature_toggle.comment as comment,
                 feature_toggle.contact_person as contactPerson,
-                feature_toggle.c_ts as createdTimestampUtc,
+                feature_toggle.created_timestamp_utc as createdTimestampUtc,
                 feature_toggle.description as description,
                 feature_toggle.enabled as enabled,
                 feature_toggle.feature_name as featureName,
                 feature_toggle.info_link as infoLink,
-                feature_toggle.last_modified_by as lastModifiedBy,
-                feature_toggle.lm_ts as lastModifiedTimestampUtc,
+                feature_toggle.last_modified_by_name as lastModifiedByUsername,
+                feature_toggle.last_modified_timestamp_utc as lastModifiedTimestampUtc,
                 feature_toggle.review_date as reviewDate,
                 feature_toggle.ticket_key as ticketKey,
-                feature_toggle.v as version
+                feature_toggle.version as version
             from toggles.feature_toggle
             where feature_toggle.feature_name = :featureName
             """,
@@ -459,16 +459,16 @@ class FeatureToggleDao(
                 attributes,
                 comment,
                 contact_person,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 enabled,
                 feature_name,
                 info_link,
-                last_modified_by,
-                lm_ts,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 review_date,
                 ticket_key,
-                v
+                version
             ) values (
                 :activationStrategies,
                 :attributes,
@@ -479,7 +479,7 @@ class FeatureToggleDao(
                 :enabled,
                 :featureName,
                 :infoLink,
-                :lastModifiedBy,
+                :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :reviewDate,
                 :ticketKey,
@@ -494,8 +494,8 @@ class FeatureToggleDao(
                 description = :description,
                 enabled = :enabled,
                 info_link = :infoLink,
-                last_modified_by = :lastModifiedBy,
-                lm_ts = :lastModifiedTimestampUtc,
+                last_modified_by_name = :lastModifiedByUsername,
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 review_date = :reviewDate,
                 ticket_key = :ticketKey,
                 v = toggles.feature_toggle.v + 1
@@ -511,7 +511,7 @@ class FeatureToggleDao(
             addValue("enabled", upsertEntity.enabled)
             addValue("featureName", upsertEntity.featureName.value)
             addValue("infoLink", upsertEntity.infoLink?.value)
-            addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
+            addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
             addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
             addValue("reviewDate", upsertEntity.reviewDate)
             addValue("ticketKey", upsertEntity.ticketKey?.value)
@@ -591,7 +591,7 @@ class FeatureToggleDao(
             "description" -> sqlParams.addValue("description", (field.value as Description?)?.value)
             "enabled" -> sqlParams.addValue("enabled", field.value as Boolean)
             "infoLink" -> sqlParams.addValue("infoLink", (field.value as InfoLink?)?.value)
-            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as String)
+            "lastModifiedByUsername" -> sqlParams.addValue("lastModifiedByUsername", field.value as String)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "reviewDate" -> sqlParams.addValue("reviewDate", field.value as LocalDate?)
             "ticketKey" -> sqlParams.addValue("ticketKey", (field.value as TicketKey?)?.value)

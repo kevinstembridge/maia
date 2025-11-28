@@ -14,7 +14,7 @@ class FeatureToggleHistoryEntityPkRowMapper : MaiaRowMapper<FeatureToggleHistory
 
         return FeatureToggleHistoryEntityPk(
             rsa.readString("feature_name") { FeatureName(it) },
-            rsa.readLong("v"),
+            rsa.readLong("version"),
         )
 
     }

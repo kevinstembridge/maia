@@ -18,7 +18,7 @@ abstract class AbstractEntityUpdater protected constructor(
     fun filterBson(): Bson {
 
         val filter = Document("_id", this.id)
-        this.version?.let { v -> filter.append("v", v) }
+        this.version?.let { v -> filter.append("v", version) }
         return filter
 
     }

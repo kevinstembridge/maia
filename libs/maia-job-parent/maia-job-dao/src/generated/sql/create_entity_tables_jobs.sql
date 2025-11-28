@@ -4,13 +4,13 @@
 
 CREATE TABLE jobs.job_execution (
     completion_status text NULL,
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     end_timestamp_utc timestamp(3) with time zone NULL,
     error_message text NULL,
     id uuid NOT NULL,
     invoked_by text NOT NULL,
     job_name text NOT NULL,
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     metrics jsonb NOT NULL,
     stack_trace text NULL,
     start_timestamp_utc timestamp(3) with time zone NOT NULL,

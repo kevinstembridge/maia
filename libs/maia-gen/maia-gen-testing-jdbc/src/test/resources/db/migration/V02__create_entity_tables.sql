@@ -1,6 +1,6 @@
 
 CREATE TABLE testing.nullable_fields (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_boolean boolean NULL,
     some_boolean_type boolean NULL,
@@ -23,7 +23,7 @@ CREATE UNIQUE INDEX nullable_fields_some_string_uidx ON testing.nullable_fields(
 
 
 CREATE TABLE testing.effective_timestamp (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     effective_from timestamp(3) with time zone NULL,
     effective_to timestamp(3) with time zone NULL,
     id uuid NOT NULL,
@@ -35,12 +35,12 @@ CREATE INDEX effective_timestamp_some_string_idx ON testing.effective_timestamp(
 
 CREATE TABLE testing.party (
     type_discriminator text not null,
-    c_ts timestamp(3) with time zone not null,
+    created_timestamp_utc timestamp(3) with time zone not null,
     email_address text not null,
     encrypted_password text null,
     first_name text null,
     id uuid primary key not null,
-    lm_ts timestamp(3) with time zone not null,
+    last_modified_timestamp_utc timestamp(3) with time zone not null,
     last_name text null,
     org_name text null,
     some_strings text[] null
@@ -60,13 +60,13 @@ CREATE OR REPLACE VIEW testing.v_party as
 CREATE TABLE testing.user_group (
     type_discriminator text not null,
     authorities text[] not null,
-    c_ts timestamp(3) with time zone not null,
+    created_timestamp_utc timestamp(3) with time zone not null,
     description text not null,
     id uuid primary key not null,
     name text not null,
     org_id uuid null references testing.party(id),
     system_managed boolean not null,
-    v bigint not null
+    version bigint not null
 );
 
 
@@ -74,25 +74,25 @@ CREATE TABLE testing.user_group_history (
     type_discriminator text not null,
     authorities text[] not null,
     change_type text null,
-    c_ts timestamp(3) with time zone not null,
+    created_timestamp_utc timestamp(3) with time zone not null,
     description text not null,
     entity_id uuid null,
     id uuid primary key not null,
     name text not null,
     org_id uuid null references testing.party(id),
     system_managed boolean not null,
-    v bigint not null
+    version bigint not null
 );
 CREATE UNIQUE INDEX user_group_entity_id_v_uidx ON testing.user_group_history(entity_id, v, type_discriminator);
 CREATE INDEX user_group_entity_id_idx ON testing.user_group_history(entity_id, type_discriminator);
 
 
 CREATE TABLE testing.org_user_group_membership (
-    c_ts timestamp(3) with time zone not null,
+    created_timestamp_utc timestamp(3) with time zone not null,
     id uuid primary key not null,
     org_user_group_id uuid not null,
     user_id uuid not null,
-    v bigint not null
+    version bigint not null
 );
 CREATE UNIQUE INDEX org_user_group_membership_org_user_group_id_user_id_uidx ON testing.org_user_group_membership(org_user_group_id, user_id);
 CREATE INDEX org_user_group_membership_user_id_idx ON testing.org_user_group_membership(user_id);
@@ -100,14 +100,14 @@ CREATE INDEX org_user_group_membership_user_id_idx ON testing.org_user_group_mem
 
 CREATE TABLE testing.org_user_group_membership_history (
     change_type text null,
-    c_ts timestamp(3) with time zone not null,
+    created_timestamp_utc timestamp(3) with time zone not null,
     entity_id uuid null,
     id uuid primary key not null,
     org_user_group_id uuid not null,
     user_id uuid not null,
-    v bigint not null
+    version bigint not null
 );
-CREATE UNIQUE INDEX org_user_group_membership_entity_id_v_uidx ON testing.org_user_group_membership_history(entity_id, v);
+CREATE UNIQUE INDEX org_user_group_membership_entity_id_v_uidx ON testing.org_user_group_membership_history(entity_id, version);
 CREATE INDEX org_user_group_membership_entity_id_idx ON testing.org_user_group_membership_history(entity_id);
 CREATE INDEX hist_org_user_group_membership_org_user_group_id_user_id_uidx ON testing.org_user_group_membership_history(org_user_group_id, user_id);
 CREATE INDEX hist_org_user_group_membership_user_id_idx ON testing.org_user_group_membership_history(user_id);
@@ -116,11 +116,11 @@ CREATE INDEX hist_org_user_group_membership_user_id_idx ON testing.org_user_grou
 CREATE TABLE testing.simple (
     created_by_id uuid NOT NULL REFERENCES testing.party(id),
     created_by_name text NOT NULL,
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    lm_by_id uuid NOT NULL REFERENCES testing.party(id),
+    last_modified_by_id uuid NOT NULL REFERENCES testing.party(id),
     lm_by_name text NOT NULL,
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_boolean boolean NOT NULL,
     some_boolean_nullable boolean NULL,
     some_boolean_type boolean NOT NULL,
@@ -176,7 +176,7 @@ CREATE INDEX simple_some_boolean_some_string_modifiable_idx ON testing.simple(so
 
 CREATE TABLE testing.ttl (
     created_at timestamp(3) with time zone NOT NULL,
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     PRIMARY KEY(id)
 );
@@ -185,13 +185,13 @@ CREATE INDEX ttl_c_ts_idx ON testing.ttl(c_ts);
 
 CREATE TABLE testing.history_sample (
     created_by_id uuid NOT NULL REFERENCES testing.party(id),
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    lm_by_id uuid NOT NULL REFERENCES testing.party(id),
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES testing.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
-    v bigint NOT NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(id)
 );
 CREATE UNIQUE INDEX history_sample_some_string_uidx ON testing.history_sample(some_string);
@@ -200,26 +200,26 @@ CREATE UNIQUE INDEX history_sample_some_string_uidx ON testing.history_sample(so
 CREATE TABLE testing.history_sample_history (
     change_type text NOT NULL,
     created_by_id uuid NOT NULL REFERENCES testing.party(id),
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    lm_by_id uuid NOT NULL REFERENCES testing.party(id),
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES testing.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
-    v bigint NOT NULL,
-    PRIMARY KEY(id, v)
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
 );
-CREATE UNIQUE INDEX history_sample_id_v_uidx ON testing.history_sample_history(id, v);
+CREATE UNIQUE INDEX history_sample_id_v_uidx ON testing.history_sample_history(id, version);
 CREATE INDEX hist_history_sample_some_string_uidx ON testing.history_sample_history(some_string);
 
 
 CREATE TABLE testing.super (
     type_discriminator text not null,
     created_by_id uuid NOT NULL REFERENCES testing.party(id),
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    lm_by_id uuid NOT NULL REFERENCES testing.party(id),
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES testing.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_int integer NULL,
     some_string text NULL,
     some_unique_string text NULL,
@@ -231,13 +231,13 @@ CREATE UNIQUE INDEX sub_two_some_unique_string_uidx ON testing.super(some_unique
 CREATE TABLE testing.history_super (
     type_discriminator text not null,
     created_by_id uuid NOT NULL REFERENCES testing.party(id),
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    lm_by_id uuid NOT NULL REFERENCES testing.party(id),
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES testing.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_int integer NULL,
     some_string text NULL,
-    v bigint NOT NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -246,31 +246,31 @@ CREATE TABLE testing.history_super_history (
     type_discriminator text not null,
     change_type text NOT NULL,
     created_by_id uuid NOT NULL REFERENCES testing.party(id),
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    lm_by_id uuid NOT NULL REFERENCES testing.party(id),
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES testing.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_int integer NULL,
     some_string text NULL,
-    v bigint NOT NULL,
-    PRIMARY KEY(id, v)
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
 );
 CREATE UNIQUE INDEX history_super_id_v_uidx ON testing.history_super_history(id, v, type_discriminator);
 
 
 CREATE TABLE testing.some_versioned (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
-    v bigint NOT NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(id)
 );
 CREATE UNIQUE INDEX some_versioned_some_int_uidx ON testing.some_versioned(some_int);
 
 
 CREATE TABLE testing.with_optional_index_field (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_optional_string1 text NULL,
     some_optional_string2 text NULL,
@@ -282,7 +282,7 @@ CREATE INDEX with_optional_index_field_some_optional_string2_some_string_idx ON 
 
 
 CREATE TABLE testing.very_simple (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_string text NOT NULL,
     PRIMARY KEY(id)
@@ -290,7 +290,7 @@ CREATE TABLE testing.very_simple (
 
 
 CREATE TABLE testing.foreign_key_parent (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -299,7 +299,7 @@ CREATE TABLE testing.foreign_key_parent (
 
 
 CREATE TABLE testing.foreign_key_child (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     parent_id uuid NOT NULL,
     some_string text NOT NULL,
@@ -308,7 +308,7 @@ CREATE TABLE testing.foreign_key_child (
 
 
 CREATE TABLE testing.alpha (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -318,7 +318,7 @@ CREATE TABLE testing.alpha (
 
 CREATE TABLE testing.bravo (
     alpha_id uuid NOT NULL REFERENCES testing.alpha(id),
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -328,7 +328,7 @@ CREATE TABLE testing.bravo (
 
 CREATE TABLE testing.charlie (
     bravo_id uuid NOT NULL REFERENCES testing.bravo(id),
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -337,7 +337,7 @@ CREATE TABLE testing.charlie (
 
 
 CREATE TABLE testing.alpha_ag_grid (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -347,7 +347,7 @@ CREATE TABLE testing.alpha_ag_grid (
 
 CREATE TABLE testing.bravo_ag_grid (
     alpha_id uuid NOT NULL REFERENCES testing.alpha_ag_grid(id),
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -357,7 +357,7 @@ CREATE TABLE testing.bravo_ag_grid (
 
 CREATE TABLE testing.charlie_ag_grid (
     bravo_id uuid NOT NULL REFERENCES testing.bravo_ag_grid(id),
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -366,7 +366,7 @@ CREATE TABLE testing.charlie_ag_grid (
 
 
 CREATE TABLE testing.left (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -375,7 +375,7 @@ CREATE TABLE testing.left (
 
 
 CREATE TABLE testing.right (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -384,9 +384,9 @@ CREATE TABLE testing.right (
 
 
 CREATE TABLE testing.many_to_many_join (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    lm_ts timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     left_id uuid NOT NULL REFERENCES testing.left(id),
     right_id uuid NOT NULL REFERENCES testing.right(id),
     PRIMARY KEY(id)
@@ -394,7 +394,7 @@ CREATE TABLE testing.many_to_many_join (
 
 
 CREATE TABLE testing.unmodifiable (
-    c_ts timestamp(3) with time zone NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_unique_int integer NOT NULL,
     PRIMARY KEY(id)

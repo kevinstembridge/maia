@@ -33,7 +33,7 @@ class FeatureToggleHistoryEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "contact_person" -> // contactPerson
                 return (inputValue as ContactPerson).value
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "description" -> // description
                 return (inputValue as Description).value
@@ -43,15 +43,15 @@ class FeatureToggleHistoryEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as FeatureName).value
             "info_link" -> // infoLink
                 return (inputValue as InfoLink).value
-            "last_modified_by" -> // lastModifiedBy
+            "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue
-            "lm_ts" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
             "review_date" -> // reviewDate
                 return inputValue
             "ticket_key" -> // ticketKey
                 return (inputValue as TicketKey).value
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }
