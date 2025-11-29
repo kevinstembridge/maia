@@ -498,7 +498,7 @@ class FeatureToggleDao(
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 review_date = :reviewDate,
                 ticket_key = :ticketKey,
-                v = toggles.feature_toggle.v + 1
+                version = toggles.feature_toggle.version + 1
             returning *;
             """.trimIndent(),
             SqlParams().apply {
@@ -547,7 +547,7 @@ class FeatureToggleDao(
         sql.append("update toggles.feature_toggle set ")
 
         val fieldClauses = updater.fields
-            .plus(FieldUpdate("v_incremented", "v", updater.version + 1))
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -557,11 +557,11 @@ class FeatureToggleDao(
 
         sql.append(fieldClauses)
         sql.append(" where feature_name = :featureName")
-        sql.append(" and v = :v")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("featureName", updater.featureName.value)
-        sqlParams.addValue("v", updater.version)
-        sqlParams.addValue("v_incremented", updater.version + 1)
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
 
         val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
 

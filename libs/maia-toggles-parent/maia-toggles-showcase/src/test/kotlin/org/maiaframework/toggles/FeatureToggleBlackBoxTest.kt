@@ -38,6 +38,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
 
 
     @Test
+    @WithMockUser
     @Order(1)
     fun `should list all feature toggles`(@Autowired mockMvc: MockMvcTester) {
 
@@ -76,9 +77,12 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
 
 
     @Test
+    @WithMockUser
     fun `should set the enabled flag of a specific feature toggle`(@Autowired mockMvc: MockMvcTester) {
 
-        assertThat(mockMvc.post().uri("/api/maia_toggles/set_feature_toggle")
+        assertThat(mockMvc.post()
+            .uri("/api/maia_toggles/set_feature_toggle")
+            .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJson(mapOf(
                 "featureName" to "SampleFeatureOne",
@@ -103,8 +107,8 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
     fun `should return false if an ActivationStrategy does not pass`(@Autowired mockMvc: MockMvcTester) {
 
         assertThat(mockMvc.post()
-            .with(csrf())
             .uri("/api/maia_toggles/set_feature_toggle")
+            .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJson(mapOf(
                 "featureName" to "SampleFeatureOne",

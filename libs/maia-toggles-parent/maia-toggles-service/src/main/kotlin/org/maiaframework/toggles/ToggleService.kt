@@ -21,7 +21,7 @@ class ToggleService(
                 it.enabled,
                 it.featureName,
                 it.infoLink,
-                it.lastModifiedBy,
+                it.lastModifiedByUsername,
                 it.lastModifiedTimestampUtc,
                 it.reviewDate,
                 it.ticketKey

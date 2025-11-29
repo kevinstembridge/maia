@@ -1477,7 +1477,7 @@ class JdbcDaoRenderer(
         if (entityDef.versioned.value) {
             append(",")
             newLine()
-            appendLine("                v = ${entityDef.schemaAndTableName}.v + 1")
+            appendLine("                version = ${entityDef.schemaAndTableName}.version + 1")
         } else {
             newLine()
         }
@@ -1745,7 +1745,7 @@ class JdbcDaoRenderer(
         appendLine("        val fieldClauses = updater.fields")
 
         if (entityDef.versioned.value) {
-            appendLine("            .plus(FieldUpdate(\"v_incremented\", \"v\", updater.version + 1))")
+            appendLine("            .plus(FieldUpdate(\"version_incremented\", \"version\", updater.version + 1))")
         }
 
         appendLine("            .map { field ->")
@@ -1759,7 +1759,7 @@ class JdbcDaoRenderer(
         appendLine("        sql.append(\" where ${this.entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }}\")")
 
         if (entityDef.versioned.value) {
-            appendLine("        sql.append(\" and v = :v\")")
+            appendLine("        sql.append(\" and version = :version\")")
         }
 
         blankLine()
@@ -1770,8 +1770,11 @@ class JdbcDaoRenderer(
         }
 
         if (entityDef.versioned.value) {
-            appendLine("        sqlParams.addValue(\"v\", updater.version)")
-            appendLine("        sqlParams.addValue(\"v_incremented\", updater.version + 1)")
+            append("""
+                |
+                |        sqlParams.addValue(\"version\", updater.version)
+                |        sqlParams.addValue(\"version_incremented\", updater.version + 1)
+                |""".trimMargin())
         }
 
         blankLine()
