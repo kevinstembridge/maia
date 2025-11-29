@@ -14,7 +14,7 @@ class PropsHistoryEntityPkRowMapper : MaiaRowMapper<PropsHistoryEntityPk> {
 
         return PropsHistoryEntityPk(
             rsa.readString("property_name"),
-            rsa.readLong("v"),
+            rsa.readLong("version"),
         )
 
     }

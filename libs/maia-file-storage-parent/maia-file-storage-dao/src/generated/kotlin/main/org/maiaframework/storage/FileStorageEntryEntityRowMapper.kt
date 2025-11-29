@@ -16,7 +16,7 @@ class FileStorageEntryEntityRowMapper : MaiaRowMapper<FileStorageEntryEntity> {
     override fun mapRow(rsa: ResultSetAdapter): FileStorageEntryEntity {
 
         val contentType = rsa.readString("content_type") { ContentType(it) }
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val description = rsa.readStringOrNull("description")
         val fileName = rsa.readString("file_name") { FileName(it) }
         val fileTimestampUtc = rsa.readInstant("file_timestamp_utc")

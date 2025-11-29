@@ -12,6 +12,7 @@ val maiagen by configurations.creating
 dependencies {
 
     api(project(":libs:maia-hazelcast"))
+    api(project(":libs:maia-toggles-parent:maia-toggles-domain"))
 
     implementation(project(":libs:maia-gen:maia-gen-library"))
     implementation(project(":libs:maia-toggles-parent:maia-toggles-dao"))

@@ -16,17 +16,17 @@ object PropsHistoryEntityMeta {
 
     const val comment = "comment"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
-    const val lastModifiedBy = "last_modified_by"
+    const val lastModifiedByUsername = "last_modified_by_name"
 
-    const val lastModifiedTimestampUtc = "lm_ts"
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
     const val propertyName = "property_name"
 
     const val propertyValue = "property_value"
 
-    const val version = "v"
+    const val version = "version"
 
     val ENTITY_KEY = EntityKey("PropsHistory")
 
@@ -44,12 +44,12 @@ object PropsHistoryEntityMeta {
         return when(classFieldName) {
             "changeType" -> "change_type"
             "comment" -> "comment"
-            "createdTimestampUtc" -> "c_ts"
-            "lastModifiedBy" -> "last_modified_by"
-            "lastModifiedTimestampUtc" -> "lm_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
+            "lastModifiedByUsername" -> "last_modified_by_name"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "propertyName" -> "property_name"
             "propertyValue" -> "property_value"
-            "version" -> "v"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

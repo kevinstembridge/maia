@@ -46,16 +46,16 @@ data class PropsEntityUpdater(
         }
 
 
-        fun lastModifiedBy(lastModifiedBy: String) {
+        fun lastModifiedByUsername(lastModifiedByUsername: String) {
 
-            this.fields.add(FieldUpdate("lastModifiedBy", "last_modified_by", lastModifiedBy))
+            this.fields.add(FieldUpdate("lastModifiedByUsername", "last_modified_by_name", lastModifiedByUsername))
 
         }
 
 
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
-            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "lm_ts", lastModifiedTimestampUtc))
+            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))
 
         }
 

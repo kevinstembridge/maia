@@ -18,17 +18,17 @@ class PropsEntityFieldConverter : EntityFieldConverter {
 
             "comment" -> // comment
                 return inputValue
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
-            "last_modified_by" -> // lastModifiedBy
+            "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue
-            "lm_ts" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
             "property_name" -> // propertyName
                 return inputValue
             "property_value" -> // propertyValue
                 return inputValue
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

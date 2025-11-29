@@ -32,7 +32,7 @@ class FileStorageEntryDao(
             """
             insert into storage.file_storage_entry (
                 content_type,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 file_name,
                 file_timestamp_utc,
@@ -71,7 +71,7 @@ class FileStorageEntryDao(
             """
             insert into storage.file_storage_entry (
                 content_type,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 file_name,
                 file_timestamp_utc,

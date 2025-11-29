@@ -15,18 +15,18 @@ class PropsHistoryEntityRowMapper : MaiaRowMapper<PropsHistoryEntity> {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val comment = rsa.readStringOrNull("comment")
-        val createdTimestampUtc = rsa.readInstant("c_ts")
-        val lastModifiedBy = rsa.readString("last_modified_by")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val lastModifiedByUsername = rsa.readString("last_modified_by_name")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val propertyName = rsa.readString("property_name")
         val propertyValue = rsa.readString("property_value")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return PropsHistoryEntity(
                 changeType,
                 comment,
                 createdTimestampUtc,
-                lastModifiedBy,
+                lastModifiedByUsername,
                 lastModifiedTimestampUtc,
                 propertyName,
                 propertyValue,

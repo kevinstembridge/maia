@@ -1772,8 +1772,8 @@ class JdbcDaoRenderer(
         if (entityDef.versioned.value) {
             append("""
                 |
-                |        sqlParams.addValue(\"version\", updater.version)
-                |        sqlParams.addValue(\"version_incremented\", updater.version + 1)
+                |        sqlParams.addValue("version", updater.version)
+                |        sqlParams.addValue("version_incremented", updater.version + 1)
                 |""".trimMargin())
         }
 

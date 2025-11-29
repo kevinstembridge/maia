@@ -560,6 +560,7 @@ class FeatureToggleDao(
         sql.append(" and version = :version")
 
         sqlParams.addValue("featureName", updater.featureName.value)
+
         sqlParams.addValue("version", updater.version)
         sqlParams.addValue("version_incremented", updater.version + 1)
 

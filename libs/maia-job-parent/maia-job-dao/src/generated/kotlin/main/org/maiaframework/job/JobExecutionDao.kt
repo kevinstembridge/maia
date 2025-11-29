@@ -38,13 +38,13 @@ class JobExecutionDao(
             """
             insert into jobs.job_execution (
                 completion_status,
-                c_ts,
+                created_timestamp_utc,
                 end_timestamp_utc,
                 error_message,
                 id,
                 invoked_by,
                 job_name,
-                lm_ts,
+                last_modified_timestamp_utc,
                 metrics,
                 stack_trace,
                 start_timestamp_utc
@@ -86,13 +86,13 @@ class JobExecutionDao(
             """
             insert into jobs.job_execution (
                 completion_status,
-                c_ts,
+                created_timestamp_utc,
                 end_timestamp_utc,
                 error_message,
                 id,
                 invoked_by,
                 job_name,
-                lm_ts,
+                last_modified_timestamp_utc,
                 metrics,
                 stack_trace,
                 start_timestamp_utc

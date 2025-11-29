@@ -17,13 +17,13 @@ class JobExecutionEntityRowMapper(
     override fun mapRow(rsa: ResultSetAdapter): JobExecutionEntity {
 
         val completionStatus = rsa.readEnumOrNull("completion_status", JobCompletionStatus::class.java)
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val endTimestampUtc = rsa.readInstantOrNull("end_timestamp_utc")
         val errorMessage = rsa.readStringOrNull("error_message")
         val id = rsa.readDomainId("id")
         val invokedBy = rsa.readString("invoked_by")
         val jobName = rsa.readString("job_name") { JobName(it) }
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val metrics = rsa.readString("metrics") { objectMapper.readValue(it, object : TypeReference<Map<String, Any>>() {}) }
         val stackTrace = rsa.readStringOrNull("stack_trace")
         val startTimestampUtc = rsa.readInstant("start_timestamp_utc")

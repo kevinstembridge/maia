@@ -19,7 +19,7 @@ class JobExecutionEntityFieldConverter : EntityFieldConverter {
 
             "completion_status" -> // completionStatus
                 return (inputValue as JobCompletionStatus).name
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "end_timestamp_utc" -> // endTimestampUtc
                 return inputValue
@@ -31,7 +31,7 @@ class JobExecutionEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "job_name" -> // jobName
                 return (inputValue as JobName).value
-            "lm_ts" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
             "metrics" -> // metrics
                 return inputValue

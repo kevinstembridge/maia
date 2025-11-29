@@ -33,7 +33,7 @@ class ToggleSyncer(private val toggleRepo: FeatureToggleRepo) {
             description = feature.description,
             enabled = feature.enabledByDefault,
             featureName = feature.name,
-            lastModifiedBy = "SYSTEM",
+            lastModifiedByUsername = "SYSTEM",
             reviewDate = feature.reviewDate,
             ticketKey = feature.ticketKey,
             infoLink = feature.infoLink,
@@ -62,7 +62,7 @@ class ToggleSyncer(private val toggleRepo: FeatureToggleRepo) {
                 featureName = feature.name,
                 infoLink = feature.infoLink,
                 lastModifiedTimestampUtc = Instant.now(),
-                lastModifiedBy = "SYSTEM",
+                lastModifiedByUsername = "SYSTEM",
                 reviewDate = feature.reviewDate,
                 ticketKey = feature.ticketKey,
                 version = existingFeatureEntity.version + 1

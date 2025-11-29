@@ -11,7 +11,7 @@ class PropsHistoryEntity(
     val changeType: ChangeType,
     val comment: String?,
     val createdTimestampUtc: Instant,
-    val lastModifiedBy: String,
+    val lastModifiedByUsername: String,
     val lastModifiedTimestampUtc: Instant,
     val propertyName: String,
     val propertyValue: String,
@@ -28,7 +28,7 @@ class PropsHistoryEntity(
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "comment = '" + this.comment + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
-                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
+                "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "propertyName = '" + this.propertyName + '\'' + ", " + 
                 "propertyValue = '" + this.propertyValue + '\'' + ", " + 

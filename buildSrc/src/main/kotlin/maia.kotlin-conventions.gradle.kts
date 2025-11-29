@@ -9,8 +9,6 @@ repositories {
     mavenCentral()
 }
 
-val togglzVersion = "4.4.0"
-
 // NOTE: We use the Spring Dependency Management plugin to manage dependencies across the multi-project build
 // https://docs.spring.io/dependency-management-plugin/docs/current/reference/html
 
@@ -48,13 +46,6 @@ dependencyManagement {
         dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.1")
         dependency("org.springdoc:springdoc-openapi-ui:1.8.0")
         dependency("org.testng:testng:7.11.0")
-        dependency("org.togglz:togglz-console:$togglzVersion")
-        dependency("org.togglz:togglz-core:$togglzVersion")
-        dependency("org.togglz:togglz-kotlin:$togglzVersion") {
-            exclude("io.kotlintest:kotlintest-runner-junit5")
-        }
-        dependency("org.togglz:togglz-spring-boot-starter:$togglzVersion")
-        dependency("org.togglz:togglz-spring-security:$togglzVersion")
     }
 
 }
