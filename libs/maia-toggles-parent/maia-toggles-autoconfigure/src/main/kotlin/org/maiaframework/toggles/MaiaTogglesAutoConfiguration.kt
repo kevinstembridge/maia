@@ -8,6 +8,7 @@ import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.json.JsonFacade
 import org.maiaframework.toggles.activation.ActivationStrategyRegistry
+import org.maiaframework.toggles.activation.UsernameActivationStrategy
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -136,6 +137,15 @@ class MaiaTogglesAutoConfiguration {
     ): ToggleBootstrap {
 
         return ToggleBootstrap(toggleRegistry, toggleSyncer)
+
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean(name = ["maiaTogglesUsernameActivation"])
+    fun maiaTogglesUsernameActivationStrategy(): UsernameActivationStrategy {
+
+        return UsernameActivationStrategy()
 
     }
 

@@ -37,7 +37,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
 
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "muriel")
     fun `journey test`(@Autowired mockMvc: MockMvcTester) {
 
         `list all toggles`(mockMvc)
@@ -50,13 +50,21 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
 
         `assert that the toggle is active`("SampleFeatureOne", mockMvc)
 
-        `add an activation strategy named`("alwaysActiveStrategy", 2, mockMvc)
+        `set an activation strategy named`("alwaysActiveStrategy", 2, mockMvc)
 
         `assert that the toggle is active`("SampleFeatureOne", mockMvc)
 
-        `add an activation strategy named`("alwaysInactiveStrategy", 3, mockMvc)
+        `set an activation strategy named`("alwaysInactiveStrategy", 3, mockMvc)
 
         `assert that the toggle is inactive`(mockMvc)
+
+        `set an activation strategy named`("maiaTogglesUsernameActivationStrategy", 4, mockMvc, listOf(ActivationStrategyParameter("usernames", "kathleen")))
+
+        `assert that the toggle is inactive`(mockMvc)
+
+        `set an activation strategy named`("maiaTogglesUsernameActivationStrategy", 5, mockMvc, listOf(ActivationStrategyParameter("usernames", "muriel")))
+
+        `assert that the toggle is active`("SampleFeatureOne", mockMvc)
 
     }
 
@@ -153,10 +161,11 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
     }
 
 
-    private fun `add an activation strategy named`(
+    private fun `set an activation strategy named`(
         activationStrategyName: String,
         version: Long,
-        mockMvc: MockMvcTester
+        mockMvc: MockMvcTester,
+        strategyParameters: List<ActivationStrategyParameter> = emptyList()
     ) {
 
         assertThat(mockMvc.put()
@@ -167,7 +176,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
                 "activationStrategies" to listOf(
                     mapOf(
                         "id" to activationStrategyName,
-                        "parameters" to emptyList<ActivationStrategyParameter>()
+                        "parameters" to strategyParameters
                     )
                 ),
                 "featureName" to "SampleFeatureOne",

@@ -7,6 +7,7 @@ plugins {
 dependencies {
 
     api(project(":libs:maia-hazelcast"))
+    api(project(":libs:maia-toggles-parent:maia-toggles-activation"))
     api(project(":libs:maia-toggles-parent:maia-toggles-api"))
     api(project(":libs:maia-toggles-parent:maia-toggles-domain"))
 
