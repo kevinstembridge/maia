@@ -394,7 +394,7 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("                val sqlParams = SqlParams()")
         appendLine("                sqlParams.addValue(\"id\", DomainId.newId())")
-        appendLine("                sqlParams.addValue(\"c_ts\", Instant.now())")
+        appendLine("                sqlParams.addValue(\"created_timestamp_utc\", Instant.now())")
         appendLine("                sqlParams.addValue(\"file_storage_id\", csvPersistableRecord.fileStorageId)")
         appendLine("                sqlParams.addValue(\"line_number\", csvPersistableRecord.lineNumber)")
         blankLine()
