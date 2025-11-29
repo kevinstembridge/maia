@@ -2,7 +2,6 @@ package org.maiaframework.toggles
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.MethodOrderer
-import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import org.maiaframework.toggles.activation.ActivationStrategyParameter
@@ -39,8 +38,30 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
 
     @Test
     @WithMockUser
-    @Order(1)
-    fun `should list all feature toggles`(@Autowired mockMvc: MockMvcTester) {
+    fun `journey test`(@Autowired mockMvc: MockMvcTester) {
+
+        `list all toggles`(mockMvc)
+
+        `assert that the toggle is inactive`(mockMvc)
+
+        `assert that the toggle is active`("SampleFeatureTwo", mockMvc)
+
+        `enable SampleFeatureOne`(mockMvc)
+
+        `assert that the toggle is active`("SampleFeatureOne", mockMvc)
+
+        `add an activation strategy named`("alwaysActiveStrategy", 2, mockMvc)
+
+        `assert that the toggle is active`("SampleFeatureOne", mockMvc)
+
+        `add an activation strategy named`("alwaysInactiveStrategy", 3, mockMvc)
+
+        `assert that the toggle is inactive`(mockMvc)
+
+    }
+
+
+    private fun `list all toggles`(mockMvc: MockMvcTester) {
 
         assertThat(mockMvc.get().uri("/api/maia_toggles/toggles"))
             .debug()
@@ -76,48 +97,67 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
     }
 
 
-    @Test
-    @WithMockUser
-    fun `should set the enabled flag of a specific feature toggle`(@Autowired mockMvc: MockMvcTester) {
+    private fun `enable SampleFeatureOne`(mockMvc: MockMvcTester) {
 
-        assertThat(mockMvc.post()
-            .uri("/api/maia_toggles/set_feature_toggle")
-            .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(asJson(mapOf(
-                "featureName" to "SampleFeatureOne",
-                "comment" to "Updated comment",
-                "enabled" to true,
-                "version" to 1
-            ))))
+        assertThat(
+            mockMvc.post()
+                .uri("/api/maia_toggles/set_feature_toggle")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    asJson(
+                        mapOf(
+                            "featureName" to "SampleFeatureOne",
+                            "comment" to "Updated comment",
+                            "enabled" to true,
+                            "version" to 1
+                        )
+                    )
+                )
+        )
             .debug()
             .hasStatusOk()
-
-        assertThat(mockMvc.get().uri("/api/maia_toggles/SampleFeatureOne/is_active"))
-            .debug()
-            .hasStatusOk()
-            .bodyJson()
-            .isEqualTo(asJson(mapOf("active" to true)), this.jsonAssertComparator)
 
     }
 
 
-    @Test
-    @WithMockUser
-    fun `should return false if an ActivationStrategy does not pass`(@Autowired mockMvc: MockMvcTester) {
+    private fun `assert that the toggle is active`(
+        featureName: String,
+        mockMvc: MockMvcTester
+    ) {
 
-        assertThat(mockMvc.post()
-            .uri("/api/maia_toggles/set_feature_toggle")
-            .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(asJson(mapOf(
-                "featureName" to "SampleFeatureOne",
-                "comment" to "Updated comment",
-                "enabled" to true,
-                "version" to 1
-            ))))
+        `assert that the toggle has active state`(mockMvc, featureName, true)
+
+    }
+
+
+    private fun `assert that the toggle is inactive`(mockMvc: MockMvcTester) {
+
+        `assert that the toggle has active state`(mockMvc, "SampleFeatureOne", false)
+
+    }
+
+
+    private fun `assert that the toggle has active state`(
+        mockMvc: MockMvcTester,
+        featureName: String,
+        activeFlag: Boolean
+    ) {
+
+        assertThat(mockMvc.get().uri("/api/maia_toggles/$featureName/is_active"))
             .debug()
             .hasStatusOk()
+            .bodyJson()
+            .isEqualTo(asJson(mapOf("active" to activeFlag)), this.jsonAssertComparator)
+
+    }
+
+
+    private fun `add an activation strategy named`(
+        activationStrategyName: String,
+        version: Long,
+        mockMvc: MockMvcTester
+    ) {
 
         assertThat(mockMvc.put()
             .with(csrf())
@@ -126,25 +166,16 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
             .content(asJson(mapOf(
                 "activationStrategies" to listOf(
                     mapOf(
-                        "id" to "alwaysTrueStrategy",
-                        "parameters" to emptyList<ActivationStrategyParameter>()
-                    ),
-                    mapOf(
-                        "id" to "alwaysFalseStrategy",
+                        "id" to activationStrategyName,
                         "parameters" to emptyList<ActivationStrategyParameter>()
                     )
                 ),
                 "featureName" to "SampleFeatureOne",
-                "version" to 2
-            ))))
-            .debug()
-            .hasStatusOk()
+                "version" to version
+            )))
 
-        assertThat(mockMvc.get().uri("/api/maia_toggles/SampleFeatureOne/is_active"))
-            .debug()
+        ).debug()
             .hasStatusOk()
-            .bodyJson()
-            .isEqualTo(asJson(mapOf("active" to false)), this.jsonAssertComparator)
 
     }
 

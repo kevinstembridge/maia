@@ -24,10 +24,10 @@ class ActivationStrategyRegistry : ApplicationContextAware, InitializingBean {
 
         this.applicationContext.getBeansOfType(ActivationStrategy::class.java).forEach { (beanName, bean) ->
 
-            val existingBean = this.strategiesByName.put(bean.name, bean)
+            val existingBean = this.strategiesByName.put(beanName, bean)
 
             if (existingBean != null) {
-                throw RuntimeException("Duplicate ActivationStrategy: name='${bean.name}', springBeanName='$beanName', type='${bean.javaClass.name}'")
+                throw RuntimeException("Duplicate ActivationStrategy: springBeanName='$beanName', type='${bean.javaClass.name}'")
             }
 
         }

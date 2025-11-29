@@ -1,9 +1,6 @@
 package org.maiaframework.toggles.activation
 
-interface ActivationStrategy {
-
-
-    val name: String
+fun interface ActivationStrategy {
 
 
     fun isActive(parameters: List<ActivationStrategyParameter>): Boolean
