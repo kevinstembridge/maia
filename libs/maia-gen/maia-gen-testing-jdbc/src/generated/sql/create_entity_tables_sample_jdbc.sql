@@ -42,7 +42,7 @@ CREATE TABLE testing.simple (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES testing.party(id),
-    lm_by_name text NOT NULL,
+    last_modified_by_name text NOT NULL,
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_boolean boolean NOT NULL,
     some_boolean_nullable boolean NULL,
@@ -103,7 +103,7 @@ CREATE TABLE testing.ttl (
     id uuid NOT NULL,
     PRIMARY KEY(id)
 );
-CREATE INDEX ttl_c_ts_idx ON testing.ttl(c_ts);
+CREATE INDEX ttl_created_timestamp_utc_idx ON testing.ttl(created_timestamp_utc);
 
 
 CREATE TABLE testing.history_sample (
