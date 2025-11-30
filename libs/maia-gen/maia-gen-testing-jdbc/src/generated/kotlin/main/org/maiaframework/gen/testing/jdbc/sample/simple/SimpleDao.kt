@@ -1877,9 +1877,9 @@ class SimpleDao(
             "someInstantModifiableNullable" -> sqlParams.addValue("someInstantModifiableNullable", field.value as Instant?)
             "someIntModifiable" -> sqlParams.addValue("someIntModifiable", field.value as Int)
             "someIntNullable" -> sqlParams.addValue("someIntNullable", field.value as Int?)
-            "someListOfStrings" -> sqlParams.addListOfStrings("someListOfStrings", TODO: String)
+            "someListOfStrings" -> sqlParams.addListOfStrings("someListOfStrings", field.value as List<String>)
             "someLocalDateModifiable" -> sqlParams.addValue("someLocalDateModifiable", field.value as LocalDate)
-            "somePeriodModifiable" -> sqlParams.addValue("somePeriodModifiable", TODO: ClassFieldDef{classFieldName=somePeriodModifiable, fieldType=Period, modifiable=false, nullability=NOT_NULLABLE})
+            "somePeriodModifiable" -> sqlParams.addValue("somePeriodModifiable", field.value as Period)
             "someStringModifiable" -> sqlParams.addValue("someStringModifiable", field.value as String)
         }
 
