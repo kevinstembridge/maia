@@ -32,13 +32,13 @@ class HistorySampleHistoryDao(
             insert into testing.history_sample_history (
                 change_type,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_string,
-                v
+                version
             ) values (
                 :changeType,
                 :createdById,
@@ -74,13 +74,13 @@ class HistorySampleHistoryDao(
             insert into testing.history_sample_history (
                 change_type,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_string,
-                v
+                version
             ) values (
                 :changeType,
                 :createdById,
@@ -160,7 +160,7 @@ class HistorySampleHistoryDao(
     fun findByPrimaryKeyOrNull(id: DomainId, version: Long): HistorySampleHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.history_sample_history where id = :id and v = :version",
+            "select * from testing.history_sample_history where id = :id and version = :version",
             SqlParams().apply {
             addValue("id", id)
             addValue("version", version)
@@ -174,7 +174,7 @@ class HistorySampleHistoryDao(
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.history_sample_history where id = :id and v = :version",
+            "select count(*) from testing.history_sample_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", id)
                 addValue("version", version)
@@ -225,7 +225,7 @@ class HistorySampleHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.history_sample_history where $whereClause",
+            "select id, version from testing.history_sample_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -236,7 +236,7 @@ class HistorySampleHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<HistorySampleHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.history_sample_history;",
+            "select id, version from testing.history_sample_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )
@@ -319,7 +319,7 @@ class HistorySampleHistoryDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*) from testing.history_sample_history
-            where lm_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
             addValue("lastModifiedById", lastModifiedById)

@@ -39,13 +39,13 @@ class HistorySampleDao(
             """
             insert into testing.history_sample (
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_string,
-                v
+                version
             ) values (
                 :createdById,
                 :createdTimestampUtc,
@@ -80,13 +80,13 @@ class HistorySampleDao(
             """
             insert into testing.history_sample (
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_string,
-                v
+                version
             ) values (
                 :createdById,
                 :createdTimestampUtc,
@@ -398,7 +398,7 @@ class HistorySampleDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*) from testing.history_sample
-            where lm_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
             addValue("lastModifiedById", lastModifiedById)
@@ -416,13 +416,13 @@ class HistorySampleDao(
             """
             insert into testing.history_sample (
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_string,
-                v
+                version
             ) values (
                 :createdById,
                 :createdTimestampUtc,
@@ -435,11 +435,11 @@ class HistorySampleDao(
             )
             on conflict (some_string)
             do update set
-                lm_by_id = :lastModifiedById,
-                lm_ts = :lastModifiedTimestampUtc,
+                last_modified_by_id = :lastModifiedById,
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_int = :someInt,
                 some_string = :someString,
-                v = testing.history_sample.v + 1
+                version = testing.history_sample.version + 1
             returning *;
             """.trimIndent(),
             SqlParams().apply {
@@ -482,7 +482,7 @@ class HistorySampleDao(
         sql.append("update testing.history_sample set ")
 
         val fieldClauses = updater.fields
-            .plus(FieldUpdate("v_incremented", "v", updater.version + 1))
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -492,11 +492,12 @@ class HistorySampleDao(
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
-        sql.append(" and v = :v")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("id", updater.id)
-        sqlParams.addValue("v", updater.version)
-        sqlParams.addValue("v_incremented", updater.version + 1)
+
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
 
         val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
 

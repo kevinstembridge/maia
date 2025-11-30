@@ -16,17 +16,17 @@ object HistorySubTwoHistoryEntityMeta {
 
     const val createdById = "created_by_id"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
-    const val lastModifiedById = "lm_by_id"
+    const val lastModifiedById = "last_modified_by_id"
 
-    const val lastModifiedTimestampUtc = "lm_ts"
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
     const val someInt = "some_int"
 
-    const val version = "v"
+    const val version = "version"
 
     val ENTITY_KEY = EntityKey("HistorySubTwoHistory")
 
@@ -46,12 +46,12 @@ object HistorySubTwoHistoryEntityMeta {
         return when(classFieldName) {
             "changeType" -> "change_type"
             "createdById" -> "created_by_id"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "lastModifiedById" -> "lm_by_id"
-            "lastModifiedTimestampUtc" -> "lm_ts"
+            "lastModifiedById" -> "last_modified_by_id"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "someInt" -> "some_int"
-            "version" -> "v"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

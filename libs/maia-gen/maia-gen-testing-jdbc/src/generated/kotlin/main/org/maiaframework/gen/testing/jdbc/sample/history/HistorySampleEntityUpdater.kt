@@ -56,14 +56,14 @@ data class HistorySampleEntityUpdater(
 
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
-            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "lm_ts", lastModifiedTimestampUtc))
+            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))
 
         }
 
 
         fun lastModifiedById(lastModifiedById: DomainId) {
 
-            this.fields.add(FieldUpdate("lastModifiedById", "lm_by_id", lastModifiedById))
+            this.fields.add(FieldUpdate("lastModifiedById", "last_modified_by_id", lastModifiedById))
 
         }
 
@@ -78,14 +78,14 @@ data class HistorySampleEntityUpdater(
             id: DomainId,
             version: Long,
             init: Builder.() -> Unit
-        ): Builder {
+        ): HistorySampleEntityUpdater {
 
             val builder = Builder(
                 id,
                 version
             )
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

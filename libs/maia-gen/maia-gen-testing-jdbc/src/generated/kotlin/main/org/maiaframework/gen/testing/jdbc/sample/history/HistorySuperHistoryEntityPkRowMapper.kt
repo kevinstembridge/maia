@@ -14,7 +14,7 @@ class HistorySuperHistoryEntityPkRowMapper : MaiaRowMapper<HistorySuperHistoryEn
 
         return HistorySuperHistoryEntityPk(
             rsa.readDomainId("id"),
-            rsa.readLong("v"),
+            rsa.readLong("version"),
         )
 
     }

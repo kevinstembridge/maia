@@ -16,15 +16,15 @@ object HistorySuperHistoryEntityMeta {
 
     const val createdById = "created_by_id"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
-    const val lastModifiedById = "lm_by_id"
+    const val lastModifiedById = "last_modified_by_id"
 
-    const val lastModifiedTimestampUtc = "lm_ts"
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
-    const val version = "v"
+    const val version = "version"
 
     val ENTITY_KEY = EntityKey("HistorySuperHistory")
 
@@ -53,11 +53,11 @@ object HistorySuperHistoryEntityMeta {
         return when(classFieldName) {
             "changeType" -> "change_type"
             "createdById" -> "created_by_id"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "lastModifiedById" -> "lm_by_id"
-            "lastModifiedTimestampUtc" -> "lm_ts"
-            "version" -> "v"
+            "lastModifiedById" -> "last_modified_by_id"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

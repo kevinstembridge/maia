@@ -30,12 +30,12 @@ class HistorySuperEntityRowMapper : MaiaRowMapper<HistorySuperEntity> {
     private fun historySubOneEntityFrom(rsa: ResultSetAdapter): HistorySubOneEntity {
 
         val createdById = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainId("lm_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedById = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val someString = rsa.readString("some_string")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return HistorySubOneEntity(
                 createdById,
@@ -53,12 +53,12 @@ class HistorySuperEntityRowMapper : MaiaRowMapper<HistorySuperEntity> {
     private fun historySubTwoEntityFrom(rsa: ResultSetAdapter): HistorySubTwoEntity {
 
         val createdById = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainId("lm_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedById = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val someInt = rsa.readInt("some_int")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return HistorySubTwoEntity(
                 createdById,

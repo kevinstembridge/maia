@@ -14,7 +14,7 @@ class HistorySampleHistoryEntityPkRowMapper : MaiaRowMapper<HistorySampleHistory
 
         return HistorySampleHistoryEntityPk(
             rsa.readDomainId("id"),
-            rsa.readLong("v"),
+            rsa.readLong("version"),
         )
 
     }

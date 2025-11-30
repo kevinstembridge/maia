@@ -32,12 +32,12 @@ class HistorySuperHistoryEntityRowMapper : MaiaRowMapper<HistorySuperHistoryEnti
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdById = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainId("lm_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedById = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val someString = rsa.readString("some_string")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return HistorySubOneHistoryEntity(
                 changeType,
@@ -57,12 +57,12 @@ class HistorySuperHistoryEntityRowMapper : MaiaRowMapper<HistorySuperHistoryEnti
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdById = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainId("lm_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedById = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val someInt = rsa.readInt("some_int")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return HistorySubTwoHistoryEntity(
                 changeType,

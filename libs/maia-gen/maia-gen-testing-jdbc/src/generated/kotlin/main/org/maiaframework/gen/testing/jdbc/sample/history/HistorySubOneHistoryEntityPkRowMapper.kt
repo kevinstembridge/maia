@@ -14,7 +14,7 @@ class HistorySubOneHistoryEntityPkRowMapper : MaiaRowMapper<HistorySubOneHistory
 
         return HistorySubOneHistoryEntityPk(
             rsa.readDomainId("id"),
-            rsa.readLong("v"),
+            rsa.readLong("version"),
         )
 
     }

@@ -43,12 +43,12 @@ class HistorySuperHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_string,
-                v
+                version
             ) values (
                 :typeDiscriminator,
                 :changeType,
@@ -85,12 +85,12 @@ class HistorySuperHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
-                v
+                version
             ) values (
                 :typeDiscriminator,
                 :changeType,
@@ -126,11 +126,11 @@ class HistorySuperHistoryDao(
             insert into testing.history_super_history (
                 change_type,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
-                v
+                last_modified_by_id,
+                last_modified_timestamp_utc,
+                version
             ) values (
                 :changeType,
                 :createdById,
@@ -206,7 +206,7 @@ class HistorySuperHistoryDao(
     fun findByPrimaryKeyOrNull(id: DomainId, version: Long): HistorySuperHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.history_super_history where id = :id and v = :version",
+            "select * from testing.history_super_history where id = :id and version = :version",
             SqlParams().apply {
             addValue("id", id)
             addValue("version", version)
@@ -220,7 +220,7 @@ class HistorySuperHistoryDao(
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.history_super_history where id = :id and v = :version",
+            "select count(*) from testing.history_super_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", id)
                 addValue("version", version)
@@ -255,7 +255,7 @@ class HistorySuperHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.history_super_history where $whereClause",
+            "select id, version from testing.history_super_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -266,7 +266,7 @@ class HistorySuperHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<HistorySuperHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.history_super_history;",
+            "select id, version from testing.history_super_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )
@@ -349,7 +349,7 @@ class HistorySuperHistoryDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*) from testing.history_super_history
-            where lm_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
             addValue("lastModifiedById", lastModifiedById)

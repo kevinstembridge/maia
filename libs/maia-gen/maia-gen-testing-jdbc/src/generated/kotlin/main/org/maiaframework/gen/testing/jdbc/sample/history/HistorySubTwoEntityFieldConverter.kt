@@ -19,17 +19,17 @@ class HistorySubTwoEntityFieldConverter : EntityFieldConverter {
 
             "created_by_id" -> // createdById
                 return (inputValue as DomainId).value
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
-            "lm_by_id" -> // lastModifiedById
+            "last_modified_by_id" -> // lastModifiedById
                 return (inputValue as DomainId).value
-            "lm_ts" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
             "some_int" -> // someInt
                 return inputValue
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

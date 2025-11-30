@@ -61,7 +61,7 @@ class HistorySampleHistoryEntityFilters {
     val createdTimestampUtc: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("c_ts", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("created_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
@@ -77,7 +77,7 @@ class HistorySampleHistoryEntityFilters {
     val lastModifiedById: FieldFilter<DomainId> 
         get() {
 
-            return FieldFilter("lm_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+            return FieldFilter("last_modified_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 
@@ -85,7 +85,7 @@ class HistorySampleHistoryEntityFilters {
     val lastModifiedTimestampUtc: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("lm_ts", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("last_modified_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
@@ -109,7 +109,7 @@ class HistorySampleHistoryEntityFilters {
     val version: FieldFilter<Long> 
         get() {
 
-            return FieldFilter("v", Types.BIGINT, this.sqlParamCounter) { value -> value }
+            return FieldFilter("version", Types.BIGINT, this.sqlParamCounter) { value -> value }
 
         }
 

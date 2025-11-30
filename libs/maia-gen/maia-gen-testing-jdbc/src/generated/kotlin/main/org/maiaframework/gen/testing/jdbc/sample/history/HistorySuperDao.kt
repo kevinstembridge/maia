@@ -50,12 +50,12 @@ class HistorySuperDao(
             insert into testing.history_super (
                 type_discriminator,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_string,
-                v
+                version
             ) values (
                 :typeDiscriminator,
                 :createdById,
@@ -91,12 +91,12 @@ class HistorySuperDao(
             insert into testing.history_super (
                 type_discriminator,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
-                v
+                version
             ) values (
                 :typeDiscriminator,
                 :createdById,
@@ -131,11 +131,11 @@ class HistorySuperDao(
             """
             insert into testing.history_super (
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
-                v
+                last_modified_by_id,
+                last_modified_timestamp_utc,
+                version
             ) values (
                 :createdById,
                 :createdTimestampUtc,
@@ -452,7 +452,7 @@ class HistorySuperDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*) from testing.history_super
-            where lm_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
             addValue("lastModifiedById", lastModifiedById)
@@ -479,7 +479,7 @@ class HistorySuperDao(
         sql.append("update testing.history_super set ")
 
         val fieldClauses = updater.fields
-            .plus(FieldUpdate("v_incremented", "v", updater.version + 1))
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -489,11 +489,12 @@ class HistorySuperDao(
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
-        sql.append(" and v = :v")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("id", updater.id)
-        sqlParams.addValue("v", updater.version)
-        sqlParams.addValue("v_incremented", updater.version + 1)
+
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
 
         val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
 

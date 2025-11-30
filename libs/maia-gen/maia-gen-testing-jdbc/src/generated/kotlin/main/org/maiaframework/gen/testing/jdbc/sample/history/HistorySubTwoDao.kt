@@ -38,12 +38,12 @@ class HistorySubTwoDao(
             insert into testing.history_super (
                 type_discriminator,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
-                v
+                version
             ) values (
                 'SUB2',
                 :createdById,
@@ -78,12 +78,12 @@ class HistorySubTwoDao(
             insert into testing.history_super (
                 type_discriminator,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
-                v
+                version
             ) values (
                 'SUB2',
                 :createdById,
@@ -350,7 +350,7 @@ class HistorySubTwoDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*) from testing.history_super
-            where lm_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
             addValue("lastModifiedById", lastModifiedById)
@@ -377,7 +377,7 @@ class HistorySubTwoDao(
         sql.append("update testing.history_super set ")
 
         val fieldClauses = updater.fields
-            .plus(FieldUpdate("v_incremented", "v", updater.version + 1))
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -387,11 +387,12 @@ class HistorySubTwoDao(
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
-        sql.append(" and v = :v")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("id", updater.id)
-        sqlParams.addValue("v", updater.version)
-        sqlParams.addValue("v_incremented", updater.version + 1)
+
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
 
         val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
 
