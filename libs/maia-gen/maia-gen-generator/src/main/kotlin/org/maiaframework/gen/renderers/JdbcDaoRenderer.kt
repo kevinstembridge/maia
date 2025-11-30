@@ -4,7 +4,14 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.gen.renderers.SqlParamFunctions.renderSqlParamAddValueFor
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamMapperFunction
-import org.maiaframework.gen.spec.definition.*
+import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.EntityFieldDef
+import org.maiaframework.gen.spec.definition.EntityHierarchy
+import org.maiaframework.gen.spec.definition.EntityIdAndNameDef
+import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.IndexDef
+import org.maiaframework.gen.spec.definition.RowMapperFunctions
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
@@ -1445,7 +1452,8 @@ class JdbcDaoRenderer(
         addImportFor(Fqcns.JDBC_PREPARED_STATEMENT)
         addImportFor(Fqcns.MAIA_RESULT_SET_ADAPTER)
 
-        val uniqueFieldColumnNames = entityFieldDefs.map { it.tableColumnName }
+        val typeDiscriminatorField = if (entityHierarchy.hasSubclasses() || entityDef.isRootEntity == false) listOf(TableColumnName("type_discriminator")) else emptyList()
+        val uniqueFieldColumnNames = entityFieldDefs.map { it.tableColumnName }.plus(typeDiscriminatorField)
         val uniqueFieldNamesAnded = fieldNamesAnded(entityFieldDefs.map { it.classFieldDef })
 
         blankLine()
@@ -1540,7 +1548,8 @@ class JdbcDaoRenderer(
         addImportFor(Fqcns.MAIA_RESULT_SET_ADAPTER)
         addImportFor(Fqcns.MAIA_JDBC_ROW_MAPPER)
 
-        val uniqueFieldColumnNames = entityFieldDefs.map { it.tableColumnName }
+        val typeDiscriminatorField = if (entityHierarchy.hasSubclasses()) listOf(TableColumnName("type_discriminator")) else emptyList()
+        val uniqueFieldColumnNames = entityFieldDefs.map { it.tableColumnName }.plus(typeDiscriminatorField)
         val uniqueFieldNamesAnded = fieldNamesAnded(entityFieldDefs.map { it.classFieldDef })
 
         blankLine()
