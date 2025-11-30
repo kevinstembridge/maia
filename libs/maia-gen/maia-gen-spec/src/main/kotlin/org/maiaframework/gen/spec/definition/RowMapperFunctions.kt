@@ -104,7 +104,7 @@ object RowMapperFunctions {
             is StringFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is StringTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
             is StringValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
-            is UrlFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
+            is UrlFieldType -> renderForUrl(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
         }
 
     }
@@ -212,6 +212,21 @@ object RowMapperFunctions {
         fieldTypeImporter.invoke(fieldType.fqcn)
 
         return "${indentStr}rsa.${rsaGetterFunctionName}(\"${resultSetColumnName}\") { ${fieldType.uqcn}(it) }"
+
+    }
+
+
+    private fun renderForUrl(
+        fieldType: FieldType,
+        indentStr: String,
+        rsaGetterFunctionName: String,
+        resultSetColumnName: Any,
+        fieldTypeImporter: (Fqcn) -> Unit,
+    ): String {
+
+        fieldTypeImporter.invoke(fieldType.fqcn)
+
+        return "${indentStr}rsa.${rsaGetterFunctionName}(\"${resultSetColumnName}\")"
 
     }
 
