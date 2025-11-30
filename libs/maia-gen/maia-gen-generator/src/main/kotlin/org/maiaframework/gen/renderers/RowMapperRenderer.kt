@@ -2,7 +2,7 @@ package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.RowMapperDef
-import org.maiaframework.gen.spec.definition.RowMapperFunctions
+import org.maiaframework.gen.spec.definition.RowMapperFunctions.renderRowMapperField
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 
 class RowMapperRenderer(
@@ -38,7 +38,7 @@ class RowMapperRenderer(
 
             if (foreignKeyFieldDef == null || rowMapperDef.isForEditDto == false) {
 
-                appendLine(RowMapperFunctions.renderRowMapperField(rowMapperFieldDef, indentSize = 12, orElseText = "", ::addImportFor) + ",")
+                appendLine(renderRowMapperField(rowMapperFieldDef, indentSize = 12, orElseText = "", ::addImportFor) + ",")
 
             } else {
 
@@ -51,8 +51,8 @@ class RowMapperRenderer(
                 addImportFor(idAndNameDef.dtoDef.fqcn)
 
                 appendLine("            ${idAndNameDef.dtoUqcn}(")
-                appendLine(RowMapperFunctions.renderRowMapperField(idEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 16, orElseText = "", ::addImportFor) + ",")
-                appendLine(RowMapperFunctions.renderRowMapperField(idAndNameDef.nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 16, orElseText = "(blank)", ::addImportFor) + ",")
+                appendLine(renderRowMapperField(idEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 16, orElseText = "", ::addImportFor) + ",")
+                appendLine(renderRowMapperField(idAndNameDef.nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 16, orElseText = "(blank)", ::addImportFor) + ",")
                 appendLine("            ),")
 
             }
