@@ -1898,7 +1898,7 @@ class JdbcDaoRenderer(
             is LongTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is MapFieldType -> "this.objectMapper.writeValueAsString(field.value as Map<*, *>${q})"
             is ObjectIdFieldType -> TODO()
-            is PeriodFieldType -> TODO()
+            is PeriodFieldType -> "field.value as Period"
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()
@@ -1956,7 +1956,7 @@ class JdbcDaoRenderer(
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()
-            is StringFieldType -> TODO()
+            is StringFieldType -> "field.value as List<String>"
             is StringTypeFieldType -> TODO()
             is StringValueClassFieldType -> TODO()
             is UrlFieldType -> TODO()
