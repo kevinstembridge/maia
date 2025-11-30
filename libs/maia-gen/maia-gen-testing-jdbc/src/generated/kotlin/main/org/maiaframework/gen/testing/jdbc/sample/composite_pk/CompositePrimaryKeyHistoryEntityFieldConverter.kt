@@ -19,7 +19,7 @@ class CompositePrimaryKeyHistoryEntityFieldConverter : EntityFieldConverter {
 
             "change_type" -> // changeType
                 return (inputValue as ChangeType).name
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "some_int" -> // someInt
                 return inputValue
@@ -27,7 +27,7 @@ class CompositePrimaryKeyHistoryEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "some_string" -> // someString
                 return inputValue
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object CompositePrimaryKeyEntityMeta {
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val someInt = "some_int"
 
@@ -20,7 +20,7 @@ object CompositePrimaryKeyEntityMeta {
 
     const val someString = "some_string"
 
-    const val version = "v"
+    const val version = "version"
 
     val ENTITY_KEY = EntityKey("CompositePrimaryKey")
 
@@ -36,11 +36,11 @@ object CompositePrimaryKeyEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "someInt" -> "some_int"
             "someModifiableString" -> "some_modifiable_string"
             "someString" -> "some_string"
-            "version" -> "v"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

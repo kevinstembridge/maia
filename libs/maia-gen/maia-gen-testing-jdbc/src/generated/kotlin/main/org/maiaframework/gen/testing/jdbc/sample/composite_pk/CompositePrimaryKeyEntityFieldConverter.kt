@@ -16,7 +16,7 @@ class CompositePrimaryKeyEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "some_int" -> // someInt
                 return inputValue
@@ -24,7 +24,7 @@ class CompositePrimaryKeyEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "some_string" -> // someString
                 return inputValue
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

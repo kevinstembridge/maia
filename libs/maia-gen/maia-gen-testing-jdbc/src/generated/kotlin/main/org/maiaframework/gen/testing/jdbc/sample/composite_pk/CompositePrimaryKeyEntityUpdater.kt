@@ -60,7 +60,7 @@ data class CompositePrimaryKeyEntityUpdater(
             someInt: Int,
             version: Long,
             init: Builder.() -> Unit
-        ): Builder {
+        ): CompositePrimaryKeyEntityUpdater {
 
             val builder = Builder(
                 someString,
@@ -68,7 +68,7 @@ data class CompositePrimaryKeyEntityUpdater(
                 version
             )
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

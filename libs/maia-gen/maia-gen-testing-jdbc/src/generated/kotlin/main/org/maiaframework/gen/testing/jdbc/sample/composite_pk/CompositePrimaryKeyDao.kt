@@ -36,11 +36,11 @@ class CompositePrimaryKeyDao(
         jdbcOps.update(
             """
             insert into testing.composite_primary_key (
-                c_ts,
+                created_timestamp_utc,
                 some_int,
                 some_modifiable_string,
                 some_string,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :someInt,
@@ -68,11 +68,11 @@ class CompositePrimaryKeyDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.composite_primary_key (
-                c_ts,
+                created_timestamp_utc,
                 some_int,
                 some_modifiable_string,
                 some_string,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :someInt,
@@ -316,11 +316,11 @@ class CompositePrimaryKeyDao(
         val persistedEntity = jdbcOps.execute(
             """
             insert into testing.composite_primary_key (
-                c_ts,
+                created_timestamp_utc,
                 some_int,
                 some_modifiable_string,
                 some_string,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :someInt,
@@ -331,7 +331,7 @@ class CompositePrimaryKeyDao(
             on conflict (some_string, some_int)
             do update set
                 some_modifiable_string = :someModifiableString,
-                v = testing.composite_primary_key.v + 1
+                version = testing.composite_primary_key.version + 1
             returning *;
             """.trimIndent(),
             SqlParams().apply {
@@ -371,7 +371,7 @@ class CompositePrimaryKeyDao(
         sql.append("update testing.composite_primary_key set ")
 
         val fieldClauses = updater.fields
-            .plus(FieldUpdate("v_incremented", "v", updater.version + 1))
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -381,12 +381,13 @@ class CompositePrimaryKeyDao(
 
         sql.append(fieldClauses)
         sql.append(" where some_string = :someString and some_int = :someInt")
-        sql.append(" and v = :v")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("someString", updater.someString)
         sqlParams.addValue("someInt", updater.someInt)
-        sqlParams.addValue("v", updater.version)
-        sqlParams.addValue("v_incremented", updater.version + 1)
+
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
 
         val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
 

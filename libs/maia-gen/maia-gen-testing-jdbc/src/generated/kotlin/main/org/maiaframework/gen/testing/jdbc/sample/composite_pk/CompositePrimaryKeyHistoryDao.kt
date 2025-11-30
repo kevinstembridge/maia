@@ -31,11 +31,11 @@ class CompositePrimaryKeyHistoryDao(
             """
             insert into testing.composite_primary_key_history (
                 change_type,
-                c_ts,
+                created_timestamp_utc,
                 some_int,
                 some_modifiable_string,
                 some_string,
-                v
+                version
             ) values (
                 :changeType,
                 :createdTimestampUtc,
@@ -64,11 +64,11 @@ class CompositePrimaryKeyHistoryDao(
             """
             insert into testing.composite_primary_key_history (
                 change_type,
-                c_ts,
+                created_timestamp_utc,
                 some_int,
                 some_modifiable_string,
                 some_string,
-                v
+                version
             ) values (
                 :changeType,
                 :createdTimestampUtc,
@@ -143,7 +143,7 @@ class CompositePrimaryKeyHistoryDao(
     fun findByPrimaryKeyOrNull(someString: String, someInt: Int, version: Long): CompositePrimaryKeyHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.composite_primary_key_history where some_string = :someString and some_int = :someInt and v = :version",
+            "select * from testing.composite_primary_key_history where some_string = :someString and some_int = :someInt and version = :version",
             SqlParams().apply {
             addValue("someString", someString)
             addValue("someInt", someInt)
@@ -158,7 +158,7 @@ class CompositePrimaryKeyHistoryDao(
     fun existsByPrimaryKey(someString: String, someInt: Int, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.composite_primary_key_history where some_string = :someString and some_int = :someInt and v = :version",
+            "select count(*) from testing.composite_primary_key_history where some_string = :someString and some_int = :someInt and version = :version",
             SqlParams().apply {
                 addValue("someString", someString)
                 addValue("someInt", someInt)
@@ -194,7 +194,7 @@ class CompositePrimaryKeyHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select some_string, some_int, v from testing.composite_primary_key_history where $whereClause",
+            "select some_string, some_int, version from testing.composite_primary_key_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -205,7 +205,7 @@ class CompositePrimaryKeyHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<CompositePrimaryKeyHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select some_string, some_int, v from testing.composite_primary_key_history;",
+            "select some_string, some_int, version from testing.composite_primary_key_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )

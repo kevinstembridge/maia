@@ -12,11 +12,11 @@ class CompositePrimaryKeyEntityRowMapper : MaiaRowMapper<CompositePrimaryKeyEnti
 
     override fun mapRow(rsa: ResultSetAdapter): CompositePrimaryKeyEntity {
 
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val someInt = rsa.readInt("some_int")
         val someModifiableString = rsa.readString("some_modifiable_string")
         val someString = rsa.readString("some_string")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return CompositePrimaryKeyEntity(
                 createdTimestampUtc,

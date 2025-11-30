@@ -15,7 +15,7 @@ class CompositePrimaryKeyHistoryEntityPkRowMapper : MaiaRowMapper<CompositePrima
         return CompositePrimaryKeyHistoryEntityPk(
             rsa.readString("some_string"),
             rsa.readInt("some_int"),
-            rsa.readLong("v"),
+            rsa.readLong("version"),
         )
 
     }

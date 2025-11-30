@@ -14,11 +14,11 @@ class CompositePrimaryKeyHistoryEntityRowMapper : MaiaRowMapper<CompositePrimary
     override fun mapRow(rsa: ResultSetAdapter): CompositePrimaryKeyHistoryEntity {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val someInt = rsa.readInt("some_int")
         val someModifiableString = rsa.readString("some_modifiable_string")
         val someString = rsa.readString("some_string")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return CompositePrimaryKeyHistoryEntity(
                 changeType,
