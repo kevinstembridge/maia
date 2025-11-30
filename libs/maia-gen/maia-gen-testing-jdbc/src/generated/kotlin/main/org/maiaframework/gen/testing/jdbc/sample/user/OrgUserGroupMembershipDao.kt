@@ -38,11 +38,11 @@ class OrgUserGroupMembershipDao(
         jdbcOps.update(
             """
             insert into testing.org_user_group_membership (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 org_user_group_id,
                 user_id,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :id,
@@ -70,11 +70,11 @@ class OrgUserGroupMembershipDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.org_user_group_membership (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 org_user_group_id,
                 user_id,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :id,
@@ -386,11 +386,11 @@ class OrgUserGroupMembershipDao(
         return jdbcOps.execute(
             """
             with input_rows(
-                c_ts,
+                created_timestamp_utc,
                 id,
                 org_user_group_id,
                 user_id,
-                v
+                version
             ) as (
                 values (
                     cast(:createdTimestampUtc as timestamp(3) with time zone),
@@ -402,11 +402,11 @@ class OrgUserGroupMembershipDao(
             )
             , ins as (
                 insert into testing.org_user_group_membership (
-                    c_ts,
+                    created_timestamp_utc,
                     id,
                     org_user_group_id,
                     user_id,
-                    v
+                    version
                 )
                 select * from input_rows
                 on conflict (org_user_group_id, user_id) do nothing

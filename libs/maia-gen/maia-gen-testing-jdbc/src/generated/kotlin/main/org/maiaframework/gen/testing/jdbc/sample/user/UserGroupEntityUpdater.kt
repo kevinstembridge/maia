@@ -78,14 +78,14 @@ data class UserGroupEntityUpdater(
             id: DomainId,
             version: Long,
             init: Builder.() -> Unit
-        ): Builder {
+        ): UserGroupEntityUpdater {
 
             val builder = Builder(
                 id,
                 version
             )
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

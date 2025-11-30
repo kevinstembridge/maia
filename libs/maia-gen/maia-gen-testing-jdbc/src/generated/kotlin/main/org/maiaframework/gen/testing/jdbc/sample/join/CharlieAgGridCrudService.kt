@@ -65,7 +65,7 @@ class CharlieAgGridCrudService(
         val id = editDto.id
         val updater = CharlieAgGridEntityUpdater.forPrimaryKey(id) {
             bravoId(editDto.bravoId)
-        }.build()
+        }
 
         setFields(updater)
 
@@ -74,13 +74,13 @@ class CharlieAgGridCrudService(
 
     fun updateBravoId(editDto: CharlieAgGridUpdate_bravoIdRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateBravoId. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateBravoId. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = CharlieAgGridEntityUpdater.forPrimaryKey(editDto.id) {
             bravoId(editDto.bravoId)
-        }.build()
+        }
 
         setFields(updater)
 

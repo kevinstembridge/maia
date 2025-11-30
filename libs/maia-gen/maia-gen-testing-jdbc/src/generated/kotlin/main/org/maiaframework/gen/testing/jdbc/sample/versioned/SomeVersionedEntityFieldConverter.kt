@@ -17,7 +17,7 @@ class SomeVersionedEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
@@ -25,7 +25,7 @@ class SomeVersionedEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "some_string" -> // someString
                 return inputValue
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

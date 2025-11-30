@@ -14,7 +14,7 @@ class CharlieTableDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "dtoStringFromAlpha" -> "some_string"
             "dtoStringFromBravo" -> "some_string"
             "dtoStringFromCharlie" -> "some_string"

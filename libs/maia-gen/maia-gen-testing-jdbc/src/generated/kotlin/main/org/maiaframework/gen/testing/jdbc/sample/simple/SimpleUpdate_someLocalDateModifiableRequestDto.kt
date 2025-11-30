@@ -15,8 +15,12 @@ import java.time.LocalDate
 @JsonIgnoreProperties(ignoreUnknown = true)
 class SimpleUpdate_someLocalDateModifiableRequestDto
 @JsonCreator constructor(
-    @NotNull @JsonProperty("id", access = JsonProperty.Access.READ_WRITE) private val id_raw: DomainId?,
-    @field:NotNull @JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) private val someLocalDateModifiable_raw: LocalDate?
+    @NotNull 
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    private val id_raw: DomainId?,
+    @param:NotNull 
+    @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val someLocalDateModifiable_raw: LocalDate?
 ) {
 
 

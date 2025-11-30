@@ -38,13 +38,13 @@ class OrgUserGroupDao(
             insert into testing.user_group (
                 type_discriminator,
                 authorities,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 id,
                 name,
                 org_id,
                 system_managed,
-                v
+                version
             ) values (
                 'OUG',
                 :authorities,
@@ -81,13 +81,13 @@ class OrgUserGroupDao(
             insert into testing.user_group (
                 type_discriminator,
                 authorities,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 id,
                 name,
                 org_id,
                 system_managed,
-                v
+                version
             ) values (
                 'OUG',
                 :authorities,
@@ -368,7 +368,7 @@ class OrgUserGroupDao(
         sql.append("update testing.user_group set ")
 
         val fieldClauses = updater.fields
-            .plus(FieldUpdate("v_incremented", "v", updater.version + 1))
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -378,11 +378,12 @@ class OrgUserGroupDao(
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
-        sql.append(" and v = :v")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("id", updater.id)
-        sqlParams.addValue("v", updater.version)
-        sqlParams.addValue("v_incremented", updater.version + 1)
+
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
 
         val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
 

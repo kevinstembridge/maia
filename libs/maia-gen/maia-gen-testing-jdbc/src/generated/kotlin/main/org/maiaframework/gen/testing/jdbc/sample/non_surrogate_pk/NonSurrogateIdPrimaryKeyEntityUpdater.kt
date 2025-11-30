@@ -56,14 +56,14 @@ data class NonSurrogateIdPrimaryKeyEntityUpdater(
             id: SomeStringValueClass,
             version: Long,
             init: Builder.() -> Unit
-        ): Builder {
+        ): NonSurrogateIdPrimaryKeyEntityUpdater {
 
             val builder = Builder(
                 id,
                 version
             )
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

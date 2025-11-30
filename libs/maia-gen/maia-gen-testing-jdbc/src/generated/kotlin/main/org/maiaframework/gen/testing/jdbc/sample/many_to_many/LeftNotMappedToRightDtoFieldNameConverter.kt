@@ -14,7 +14,7 @@ class LeftNotMappedToRightDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             "rightId" -> "right_id"
             "someIntFromLeft" -> "some_int"

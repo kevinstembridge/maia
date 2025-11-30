@@ -31,7 +31,7 @@ class ForeignKeyChildDao(
         jdbcOps.update(
             """
             insert into testing.foreign_key_child (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 parent_id,
                 some_string
@@ -58,7 +58,7 @@ class ForeignKeyChildDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.foreign_key_child (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 parent_id,
                 some_string

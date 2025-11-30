@@ -12,7 +12,7 @@ object PersonSummaryDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.v_party.c_ts"
+            "createdTimestampUtc" -> "testing.v_party.created_timestamp_utc"
             "emailAddress" -> "testing.v_party.email_address"
             "firstName" -> "testing.v_party.first_name"
             "id" -> "testing.v_party.id"

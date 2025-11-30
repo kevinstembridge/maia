@@ -18,7 +18,7 @@ class OrganizationEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "display_name" -> // displayName
                 return inputValue
@@ -26,7 +26,7 @@ class OrganizationEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as EmailAddress).value
             "id" -> // id
                 return (inputValue as DomainId).value
-            "lm_ts" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
             "org_name" -> // orgName
                 return inputValue

@@ -14,7 +14,7 @@ class CharlieTableDtoFieldConverter : SearchFieldConverter {
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
 
         when(tableColumnPath) {
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "some_string" -> // dtoStringFromAlpha
                 return inputValue

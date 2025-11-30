@@ -45,13 +45,13 @@ class UserGroupHistoryDao(
                 type_discriminator,
                 authorities,
                 change_type,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 id,
                 name,
                 org_id,
                 system_managed,
-                v
+                version
             ) values (
                 :typeDiscriminator,
                 :authorities,
@@ -90,12 +90,12 @@ class UserGroupHistoryDao(
                 type_discriminator,
                 authorities,
                 change_type,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 id,
                 name,
                 system_managed,
-                v
+                version
             ) values (
                 :typeDiscriminator,
                 :authorities,
@@ -132,12 +132,12 @@ class UserGroupHistoryDao(
                 type_discriminator,
                 authorities,
                 change_type,
-                c_ts,
+                created_timestamp_utc,
                 description,
                 id,
                 name,
                 system_managed,
-                v
+                version
             ) values (
                 :typeDiscriminator,
                 :authorities,
@@ -217,7 +217,7 @@ class UserGroupHistoryDao(
     fun findByPrimaryKeyOrNull(id: DomainId, version: Long): UserGroupHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.user_group_history where id = :id and v = :version",
+            "select * from testing.user_group_history where id = :id and version = :version",
             SqlParams().apply {
             addValue("id", id)
             addValue("version", version)
@@ -231,7 +231,7 @@ class UserGroupHistoryDao(
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.user_group_history where id = :id and v = :version",
+            "select count(*) from testing.user_group_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", id)
                 addValue("version", version)
@@ -266,7 +266,7 @@ class UserGroupHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.user_group_history where $whereClause",
+            "select id, version from testing.user_group_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -277,7 +277,7 @@ class UserGroupHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<UserGroupHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.user_group_history;",
+            "select id, version from testing.user_group_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )

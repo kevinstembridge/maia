@@ -47,11 +47,11 @@ data class CharlieAgGridEntityUpdater(
         fun forPrimaryKey(
             id: DomainId,
             init: Builder.() -> Unit
-        ): Builder {
+        ): CharlieAgGridEntityUpdater {
 
             val builder = Builder(id)
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

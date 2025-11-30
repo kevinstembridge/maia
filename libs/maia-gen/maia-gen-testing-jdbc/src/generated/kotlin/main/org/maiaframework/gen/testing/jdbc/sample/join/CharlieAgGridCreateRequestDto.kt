@@ -16,9 +16,16 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class CharlieAgGridCreateRequestDto
 @JsonCreator constructor(
-    @NotNull @JsonProperty("bravoId", access = JsonProperty.Access.READ_WRITE) private val bravoId_raw: DomainId?,
-    @field:NotNull @JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) private val someInt_raw: Int?,
-    @field:NotBlank @field:Length(max = 100) @JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) private val someString_raw: String?
+    @NotNull 
+    @param:JsonProperty("bravoId", access = JsonProperty.Access.READ_WRITE) 
+    private val bravoId_raw: DomainId?,
+    @param:NotNull 
+    @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
+    private val someInt_raw: Int?,
+    @param:NotBlank 
+    @param:Length(max = 100) 
+    @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
+    private val someString_raw: String?
 ) {
 
 

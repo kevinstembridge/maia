@@ -12,9 +12,9 @@ class ManyToManyJoinEntityRowMapper : MaiaRowMapper<ManyToManyJoinEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): ManyToManyJoinEntity {
 
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val leftId = rsa.readDomainId("left_id")
         val rightId = rsa.readDomainId("right_id")
 

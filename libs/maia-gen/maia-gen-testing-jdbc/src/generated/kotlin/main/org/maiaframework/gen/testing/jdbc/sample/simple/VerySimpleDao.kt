@@ -31,7 +31,7 @@ class VerySimpleDao(
         jdbcOps.update(
             """
             insert into testing.very_simple (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_string
             ) values (
@@ -55,7 +55,7 @@ class VerySimpleDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.very_simple (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_string
             ) values (

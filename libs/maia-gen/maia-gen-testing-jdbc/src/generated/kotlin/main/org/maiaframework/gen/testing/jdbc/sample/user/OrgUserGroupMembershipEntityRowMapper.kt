@@ -12,11 +12,11 @@ class OrgUserGroupMembershipEntityRowMapper : MaiaRowMapper<OrgUserGroupMembersh
 
     override fun mapRow(rsa: ResultSetAdapter): OrgUserGroupMembershipEntity {
 
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val orgUserGroupId = rsa.readDomainId("org_user_group_id")
         val userId = rsa.readDomainId("user_id")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return OrgUserGroupMembershipEntity(
                 createdTimestampUtc,

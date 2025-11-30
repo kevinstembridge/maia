@@ -57,7 +57,7 @@ data class UserEntityUpdater(
 
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
-            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "lm_ts", lastModifiedTimestampUtc))
+            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))
 
         }
 
@@ -71,11 +71,11 @@ data class UserEntityUpdater(
         fun forPrimaryKey(
             id: DomainId,
             init: Builder.() -> Unit
-        ): Builder {
+        ): UserEntityUpdater {
 
             val builder = Builder(id)
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

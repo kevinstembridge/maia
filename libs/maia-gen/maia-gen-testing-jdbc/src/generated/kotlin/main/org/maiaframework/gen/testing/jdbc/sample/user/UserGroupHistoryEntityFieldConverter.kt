@@ -29,7 +29,7 @@ class UserGroupHistoryEntityFieldConverter : EntityFieldConverter {
                 }
             "change_type" -> // changeType
                 return (inputValue as ChangeType).name
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "description" -> // description
                 return inputValue
@@ -39,7 +39,7 @@ class UserGroupHistoryEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "system_managed" -> // systemManaged
                 return inputValue
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

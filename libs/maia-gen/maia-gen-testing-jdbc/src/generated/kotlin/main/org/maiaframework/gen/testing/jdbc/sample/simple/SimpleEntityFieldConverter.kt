@@ -32,15 +32,15 @@ class SimpleEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "created_by_name" -> // createdByUsername
                 return inputValue
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
-            "lm_by_id" -> // lastModifiedById
+            "last_modified_by_id" -> // lastModifiedById
                 return (inputValue as DomainId).value
-            "lm_by_name" -> // lastModifiedByUsername
+            "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue
-            "lm_ts" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
             "some_boolean" -> // someBoolean
                 return inputValue

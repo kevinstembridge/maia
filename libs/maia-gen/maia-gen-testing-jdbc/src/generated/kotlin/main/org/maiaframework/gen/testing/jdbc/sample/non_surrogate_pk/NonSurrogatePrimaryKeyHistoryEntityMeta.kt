@@ -14,13 +14,13 @@ object NonSurrogatePrimaryKeyHistoryEntityMeta {
 
     const val changeType = "change_type"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val someModifiableString = "some_modifiable_string"
 
     const val someString = "some_string"
 
-    const val version = "v"
+    const val version = "version"
 
     val ENTITY_KEY = EntityKey("NonSurrogatePrimaryKeyHistory")
 
@@ -37,10 +37,10 @@ object NonSurrogatePrimaryKeyHistoryEntityMeta {
 
         return when(classFieldName) {
             "changeType" -> "change_type"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "someModifiableString" -> "some_modifiable_string"
             "someString" -> "some_string"
-            "version" -> "v"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

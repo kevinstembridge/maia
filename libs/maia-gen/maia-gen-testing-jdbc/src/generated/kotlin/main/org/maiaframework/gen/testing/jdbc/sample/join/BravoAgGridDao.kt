@@ -32,7 +32,7 @@ class BravoAgGridDao(
             """
             insert into testing.bravo_ag_grid (
                 alpha_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -62,7 +62,7 @@ class BravoAgGridDao(
             """
             insert into testing.bravo_ag_grid (
                 alpha_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string

@@ -19,11 +19,24 @@ import org.maiaframework.domain.party.LastName
 @JsonIgnoreProperties(ignoreUnknown = true)
 class UserCreateRequestDto
 @JsonCreator constructor(
-    @Email @NotBlank @Length(min = 5, max = 500) @JsonProperty("emailAddress", access = JsonProperty.Access.READ_WRITE) private val emailAddress_raw: String?,
-    @field:NotBlank @field:Length(max = 100) @JsonProperty("encryptedPassword", access = JsonProperty.Access.READ_WRITE) private val encryptedPassword_raw: String?,
-    @Length(max = 100) firstName: String?,
-    @NotBlank @Length(max = 100) @JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) private val lastName_raw: String?,
-    @field:NotNull @JsonProperty("someStrings", access = JsonProperty.Access.READ_WRITE) private val someStrings_raw: List<String>?
+    @param:Email 
+    @param:NotBlank 
+    @param:Length(min = 5, max = 500) 
+    @param:JsonProperty("emailAddress", access = JsonProperty.Access.READ_WRITE) 
+    private val emailAddress_raw: String?,
+    @param:NotBlank 
+    @param:Length(max = 100) 
+    @param:JsonProperty("encryptedPassword", access = JsonProperty.Access.READ_WRITE) 
+    private val encryptedPassword_raw: String?,
+    @param:Length(max = 100) 
+    firstName: String?,
+    @param:NotBlank 
+    @param:Length(max = 100) 
+    @param:JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) 
+    private val lastName_raw: String?,
+    @param:NotNull 
+    @param:JsonProperty("someStrings", access = JsonProperty.Access.READ_WRITE) 
+    private val someStrings_raw: List<String>?
 ) {
 
 

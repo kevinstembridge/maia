@@ -34,7 +34,7 @@ data class ManyToManyJoinEntityUpdater(
 
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
-            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "lm_ts", lastModifiedTimestampUtc))
+            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))
 
         }
 
@@ -62,11 +62,11 @@ data class ManyToManyJoinEntityUpdater(
         fun forPrimaryKey(
             id: DomainId,
             init: Builder.() -> Unit
-        ): Builder {
+        ): ManyToManyJoinEntityUpdater {
 
             val builder = Builder(id)
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

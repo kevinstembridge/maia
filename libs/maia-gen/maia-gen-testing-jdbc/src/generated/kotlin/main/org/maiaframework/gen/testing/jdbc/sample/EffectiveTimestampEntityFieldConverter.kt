@@ -17,7 +17,7 @@ class EffectiveTimestampEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "effective_from" -> // effectiveFrom
                 return inputValue

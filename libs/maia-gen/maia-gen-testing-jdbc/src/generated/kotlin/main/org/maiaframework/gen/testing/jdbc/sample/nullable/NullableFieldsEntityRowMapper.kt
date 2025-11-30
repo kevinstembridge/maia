@@ -21,7 +21,7 @@ class NullableFieldsEntityRowMapper : MaiaRowMapper<NullableFieldsEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): NullableFieldsEntity {
 
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val someBoolean = rsa.readBooleanOrNull("some_boolean")
         val someBooleanType = rsa.readBooleanOrNull("some_boolean_type") { SomeBooleanType(it) }

@@ -18,9 +18,15 @@ import org.maiaframework.domain.party.LastName
 @JsonIgnoreProperties(ignoreUnknown = true)
 class UserUpdateRequestDto
 @JsonCreator constructor(
-    @Length(max = 100) firstName: String?,
-    @NotNull @JsonProperty("id", access = JsonProperty.Access.READ_WRITE) private val id_raw: DomainId?,
-    @NotBlank @Length(max = 100) @JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) private val lastName_raw: String?
+    @param:Length(max = 100) 
+    firstName: String?,
+    @NotNull 
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    private val id_raw: DomainId?,
+    @param:NotBlank 
+    @param:Length(max = 100) 
+    @param:JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) 
+    private val lastName_raw: String?
 ) {
 
 

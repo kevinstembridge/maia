@@ -12,7 +12,7 @@ object LeftNotMappedToRightDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.left.c_ts"
+            "createdTimestampUtc" -> "testing.left.created_timestamp_utc"
             "id" -> "testing.left.id"
             "rightId" -> "testing.many_to_many_join.right_id"
             "someIntFromLeft" -> "testing.left.some_int"

@@ -92,21 +92,21 @@ data class SimpleEntityUpdater(
 
         fun lastModifiedByUsername(lastModifiedByUsername: String) {
 
-            this.fields.add(FieldUpdate("lastModifiedByUsername", "lm_by_name", lastModifiedByUsername))
+            this.fields.add(FieldUpdate("lastModifiedByUsername", "last_modified_by_name", lastModifiedByUsername))
 
         }
 
 
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
-            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "lm_ts", lastModifiedTimestampUtc))
+            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))
 
         }
 
 
         fun lastModifiedById(lastModifiedById: DomainId) {
 
-            this.fields.add(FieldUpdate("lastModifiedById", "lm_by_id", lastModifiedById))
+            this.fields.add(FieldUpdate("lastModifiedById", "last_modified_by_id", lastModifiedById))
 
         }
 
@@ -120,11 +120,11 @@ data class SimpleEntityUpdater(
         fun forPrimaryKey(
             id: DomainId,
             init: Builder.() -> Unit
-        ): Builder {
+        ): SimpleEntityUpdater {
 
             val builder = Builder(id)
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

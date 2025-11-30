@@ -17,13 +17,13 @@ class NonSurrogatePrimaryKeyEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "some_modifiable_string" -> // someModifiableString
                 return inputValue
             "some_string" -> // someString
                 return (inputValue as SomeStringValueClass).value
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

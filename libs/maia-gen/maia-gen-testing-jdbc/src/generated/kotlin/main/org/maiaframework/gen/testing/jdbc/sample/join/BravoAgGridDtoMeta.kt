@@ -12,7 +12,7 @@ object BravoAgGridDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.bravo_ag_grid.c_ts"
+            "createdTimestampUtc" -> "testing.bravo_ag_grid.created_timestamp_utc"
             "dtoIntFromAlpha" -> "testing.alpha_ag_grid.some_int"
             "dtoIntFromBravo" -> "testing.bravo_ag_grid.some_int"
             "dtoStringFromAlpha" -> "testing.alpha_ag_grid.some_string"

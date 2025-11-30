@@ -17,11 +17,11 @@ class ManyToManyJoinEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
-            "lm_ts" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
             "left_id" -> // leftId
                 return (inputValue as DomainId).value

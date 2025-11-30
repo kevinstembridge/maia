@@ -15,10 +15,10 @@ class NonSurrogateIdPrimaryKeyHistoryEntityRowMapper : MaiaRowMapper<NonSurrogat
     override fun mapRow(rsa: ResultSetAdapter): NonSurrogateIdPrimaryKeyHistoryEntity {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readString("id") { SomeStringValueClass(it) }
         val someModifiableString = rsa.readString("some_modifiable_string")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return NonSurrogateIdPrimaryKeyHistoryEntity(
                 changeType,

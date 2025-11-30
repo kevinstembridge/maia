@@ -12,7 +12,7 @@ object CharlieTableDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.charlie.c_ts"
+            "createdTimestampUtc" -> "testing.charlie.created_timestamp_utc"
             "dtoStringFromAlpha" -> "testing.alpha.some_string"
             "dtoStringFromBravo" -> "testing.bravo.some_string"
             "dtoStringFromCharlie" -> "testing.charlie.some_string"

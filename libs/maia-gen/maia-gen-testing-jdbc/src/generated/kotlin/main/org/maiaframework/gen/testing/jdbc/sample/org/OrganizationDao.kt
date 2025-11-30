@@ -34,10 +34,10 @@ class OrganizationDao(
             """
             insert into testing.v_party (
                 type_discriminator,
-                c_ts,
+                created_timestamp_utc,
                 email_address,
                 id,
-                lm_ts,
+                last_modified_timestamp_utc,
                 org_name
             ) values (
                 'ORG',
@@ -67,10 +67,10 @@ class OrganizationDao(
             """
             insert into testing.v_party (
                 type_discriminator,
-                c_ts,
+                created_timestamp_utc,
                 email_address,
                 id,
-                lm_ts,
+                last_modified_timestamp_utc,
                 org_name
             ) values (
                 'ORG',

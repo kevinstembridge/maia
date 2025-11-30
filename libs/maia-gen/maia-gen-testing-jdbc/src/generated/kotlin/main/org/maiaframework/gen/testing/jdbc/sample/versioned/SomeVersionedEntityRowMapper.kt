@@ -12,11 +12,11 @@ class SomeVersionedEntityRowMapper : MaiaRowMapper<SomeVersionedEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): SomeVersionedEntity {
 
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return SomeVersionedEntity(
                 createdTimestampUtc,

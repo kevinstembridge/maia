@@ -31,7 +31,7 @@ class LeftDao(
         jdbcOps.update(
             """
             insert into testing.left (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -58,7 +58,7 @@ class LeftDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.left (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string

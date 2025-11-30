@@ -37,12 +37,12 @@ class UserDao(
             """
             insert into testing.v_party (
                 type_discriminator,
-                c_ts,
+                created_timestamp_utc,
                 email_address,
                 encrypted_password,
                 first_name,
                 id,
-                lm_ts,
+                last_modified_timestamp_utc,
                 last_name,
                 some_strings
             ) values (
@@ -79,12 +79,12 @@ class UserDao(
             """
             insert into testing.v_party (
                 type_discriminator,
-                c_ts,
+                created_timestamp_utc,
                 email_address,
                 encrypted_password,
                 first_name,
                 id,
-                lm_ts,
+                last_modified_timestamp_utc,
                 last_name,
                 some_strings
             ) values (
@@ -289,13 +289,13 @@ class UserDao(
         return this.jdbcOps.queryForList(
             """
             select
-                v_party.c_ts as createdTimestampUtc,
+                v_party.created_timestamp_utc as createdTimestampUtc,
                 v_party.display_name as displayName,
                 v_party.email_address as emailAddress,
                 v_party.encrypted_password as encryptedPassword,
                 v_party.first_name as firstName,
                 v_party.id as id,
-                v_party.lm_ts as lastModifiedTimestampUtc,
+                v_party.last_modified_timestamp_utc as lastModifiedTimestampUtc,
                 v_party.last_name as lastName,
                 v_party.some_strings as someStrings
             from testing.v_party

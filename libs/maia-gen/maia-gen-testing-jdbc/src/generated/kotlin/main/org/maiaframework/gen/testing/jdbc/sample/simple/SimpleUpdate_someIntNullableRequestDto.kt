@@ -14,7 +14,9 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class SimpleUpdate_someIntNullableRequestDto
 @JsonCreator constructor(
-    @NotNull @JsonProperty("id", access = JsonProperty.Access.READ_WRITE) private val id_raw: DomainId?,
+    @NotNull 
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    private val id_raw: DomainId?,
     val someIntNullable: Int?
 ) {
 

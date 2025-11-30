@@ -31,7 +31,7 @@ class AlphaDao(
         jdbcOps.update(
             """
             insert into testing.alpha (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -58,7 +58,7 @@ class AlphaDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.alpha (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string

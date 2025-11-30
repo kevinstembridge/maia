@@ -43,7 +43,7 @@ class LeftNotMappedToRightDtoDao(
 
         val sqlForPage = """
             select
-                testing.left.c_ts as createdTimestampUtc,
+                testing.left.created_timestamp_utc as createdTimestampUtc,
                 testing.left.id as id,
                 testing.many_to_many_join.right_id as rightId,
                 testing.left.some_int as someIntFromLeft,

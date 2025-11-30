@@ -12,7 +12,7 @@ object BravoDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.bravo.c_ts"
+            "createdTimestampUtc" -> "testing.bravo.created_timestamp_utc"
             "dtoIntFromAlpha" -> "testing.alpha.some_int"
             "dtoIntFromBravo" -> "testing.bravo.some_int"
             "dtoStringFromAlpha" -> "testing.alpha.some_string"

@@ -13,7 +13,7 @@ class TtlEntityRowMapper : MaiaRowMapper<TtlEntity> {
     override fun mapRow(rsa: ResultSetAdapter): TtlEntity {
 
         val createdAt = rsa.readInstant("created_at")
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
 
         return TtlEntity(

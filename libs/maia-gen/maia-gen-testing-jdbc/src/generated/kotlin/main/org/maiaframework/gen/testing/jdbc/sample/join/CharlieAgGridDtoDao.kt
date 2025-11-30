@@ -44,7 +44,7 @@ class CharlieAgGridDtoDao(
 
         val sqlForPage = """
             select
-                testing.charlie_ag_grid.c_ts as createdTimestampUtc,
+                testing.charlie_ag_grid.created_timestamp_utc as createdTimestampUtc,
                 testing.alpha_ag_grid.some_int as dtoIntFromAlpha,
                 testing.bravo_ag_grid.some_int as dtoIntFromBravo,
                 testing.charlie_ag_grid.some_int as dtoIntFromCharlie,

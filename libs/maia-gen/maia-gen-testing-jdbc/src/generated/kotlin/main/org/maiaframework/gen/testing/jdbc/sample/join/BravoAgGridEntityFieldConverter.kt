@@ -19,7 +19,7 @@ class BravoAgGridEntityFieldConverter : EntityFieldConverter {
 
             "alpha_id" -> // alphaId
                 return (inputValue as DomainId).value
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value

@@ -44,7 +44,7 @@ class LeftEntityFilters {
     val createdTimestampUtc: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("c_ts", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("created_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 

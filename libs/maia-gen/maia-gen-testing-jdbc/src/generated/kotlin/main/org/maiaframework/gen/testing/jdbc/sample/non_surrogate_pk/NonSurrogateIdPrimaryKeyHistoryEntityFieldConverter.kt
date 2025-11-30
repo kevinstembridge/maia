@@ -20,13 +20,13 @@ class NonSurrogateIdPrimaryKeyHistoryEntityFieldConverter : EntityFieldConverter
 
             "change_type" -> // changeType
                 return (inputValue as ChangeType).name
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id
                 return (inputValue as SomeStringValueClass).value
             "some_modifiable_string" -> // someModifiableString
                 return inputValue
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

@@ -34,7 +34,7 @@ data class PartyEntityUpdater(
 
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
-            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "lm_ts", lastModifiedTimestampUtc))
+            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))
 
         }
 
@@ -48,11 +48,11 @@ data class PartyEntityUpdater(
         fun forPrimaryKey(
             id: DomainId,
             init: Builder.() -> Unit
-        ): Builder {
+        ): PartyEntityUpdater {
 
             val builder = Builder(id)
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

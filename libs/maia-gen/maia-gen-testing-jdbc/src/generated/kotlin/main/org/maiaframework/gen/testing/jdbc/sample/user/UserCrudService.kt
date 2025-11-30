@@ -78,7 +78,7 @@ class UserCrudService(
             lastName(editDto.lastName)
             firstName(editDto.firstName)
             lastModifiedTimestampUtc(Instant.now())
-        }.build()
+        }
 
         setFields(updater)
 
@@ -87,13 +87,14 @@ class UserCrudService(
 
     fun updateFirstName(editDto: UserUpdate_firstNameRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateFirstName. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateFirstName. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id) {
             firstName(editDto.firstName)
-        }.build()
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 
@@ -102,13 +103,14 @@ class UserCrudService(
 
     fun updateLastName(editDto: UserUpdate_lastNameRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateLastName. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateLastName. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id) {
             lastName(editDto.lastName)
-        }.build()
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 

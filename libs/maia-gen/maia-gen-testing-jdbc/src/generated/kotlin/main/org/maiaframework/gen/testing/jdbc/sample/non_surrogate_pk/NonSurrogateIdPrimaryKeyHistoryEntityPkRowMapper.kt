@@ -15,7 +15,7 @@ class NonSurrogateIdPrimaryKeyHistoryEntityPkRowMapper : MaiaRowMapper<NonSurrog
 
         return NonSurrogateIdPrimaryKeyHistoryEntityPk(
             rsa.readString("id") { SomeStringValueClass(it) },
-            rsa.readLong("v"),
+            rsa.readLong("version"),
         )
 
     }

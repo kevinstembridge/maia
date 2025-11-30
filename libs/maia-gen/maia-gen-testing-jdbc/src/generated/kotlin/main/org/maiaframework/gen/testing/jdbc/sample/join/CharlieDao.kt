@@ -34,7 +34,7 @@ class CharlieDao(
             """
             insert into testing.charlie (
                 bravo_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -64,7 +64,7 @@ class CharlieDao(
             """
             insert into testing.charlie (
                 bravo_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -281,7 +281,7 @@ class CharlieDao(
             select
                 testing.bravo.id as bravoId,
                 testing.bravo.some_string as bravoName,
-                charlie.c_ts as createdTimestampUtc,
+                charlie.created_timestamp_utc as createdTimestampUtc,
                 charlie.id as id,
                 charlie.some_int as someInt,
                 charlie.some_string as someString

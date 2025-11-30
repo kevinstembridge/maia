@@ -33,9 +33,9 @@ class ManyToManyJoinDao(
         jdbcOps.update(
             """
             insert into testing.many_to_many_join (
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_ts,
+                last_modified_timestamp_utc,
                 left_id,
                 right_id
             ) values (
@@ -63,9 +63,9 @@ class ManyToManyJoinDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.many_to_many_join (
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_ts,
+                last_modified_timestamp_utc,
                 left_id,
                 right_id
             ) values (

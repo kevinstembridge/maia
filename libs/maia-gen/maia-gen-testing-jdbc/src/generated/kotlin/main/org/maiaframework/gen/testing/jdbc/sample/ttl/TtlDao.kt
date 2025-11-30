@@ -33,7 +33,7 @@ class TtlDao(
             """
             insert into testing.ttl (
                 created_at,
-                c_ts,
+                created_timestamp_utc,
                 id
             ) values (
                 :createdAt,
@@ -57,7 +57,7 @@ class TtlDao(
             """
             insert into testing.ttl (
                 created_at,
-                c_ts,
+                created_timestamp_utc,
                 id
             ) values (
                 :createdAt,
@@ -153,7 +153,7 @@ class TtlDao(
         return jdbcOps.queryForList(
             """
             select * from testing.ttl
-            where c_ts = :createdTimestampUtc
+            where created_timestamp_utc = :createdTimestampUtc
             """.trimIndent(),
             SqlParams().apply {
             addValue("createdTimestampUtc", createdTimestampUtc)

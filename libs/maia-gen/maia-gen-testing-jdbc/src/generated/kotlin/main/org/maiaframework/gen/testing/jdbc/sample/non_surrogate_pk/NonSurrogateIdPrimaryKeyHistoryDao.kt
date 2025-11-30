@@ -32,10 +32,10 @@ class NonSurrogateIdPrimaryKeyHistoryDao(
             """
             insert into testing.non_surrogate_id_primary_key_history (
                 change_type,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_modifiable_string,
-                v
+                version
             ) values (
                 :changeType,
                 :createdTimestampUtc,
@@ -62,10 +62,10 @@ class NonSurrogateIdPrimaryKeyHistoryDao(
             """
             insert into testing.non_surrogate_id_primary_key_history (
                 change_type,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_modifiable_string,
-                v
+                version
             ) values (
                 :changeType,
                 :createdTimestampUtc,
@@ -137,7 +137,7 @@ class NonSurrogateIdPrimaryKeyHistoryDao(
     fun findByPrimaryKeyOrNull(id: SomeStringValueClass, version: Long): NonSurrogateIdPrimaryKeyHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.non_surrogate_id_primary_key_history where id = :id and v = :version",
+            "select * from testing.non_surrogate_id_primary_key_history where id = :id and version = :version",
             SqlParams().apply {
             addValue("id", id.value)
             addValue("version", version)
@@ -151,7 +151,7 @@ class NonSurrogateIdPrimaryKeyHistoryDao(
     fun existsByPrimaryKey(id: SomeStringValueClass, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.non_surrogate_id_primary_key_history where id = :id and v = :version",
+            "select count(*) from testing.non_surrogate_id_primary_key_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", id.value)
                 addValue("version", version)
@@ -186,7 +186,7 @@ class NonSurrogateIdPrimaryKeyHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.non_surrogate_id_primary_key_history where $whereClause",
+            "select id, version from testing.non_surrogate_id_primary_key_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -197,7 +197,7 @@ class NonSurrogateIdPrimaryKeyHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<NonSurrogateIdPrimaryKeyHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.non_surrogate_id_primary_key_history;",
+            "select id, version from testing.non_surrogate_id_primary_key_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )

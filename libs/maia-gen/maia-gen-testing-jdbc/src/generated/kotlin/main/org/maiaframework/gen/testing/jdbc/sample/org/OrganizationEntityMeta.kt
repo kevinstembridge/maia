@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object OrganizationEntityMeta {
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val displayName = "display_name"
 
@@ -20,7 +20,7 @@ object OrganizationEntityMeta {
 
     const val id = "id"
 
-    const val lastModifiedTimestampUtc = "lm_ts"
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
     const val orgName = "org_name"
 
@@ -40,11 +40,11 @@ object OrganizationEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "displayName" -> "display_name"
             "emailAddress" -> "email_address"
             "id" -> "id"
-            "lastModifiedTimestampUtc" -> "lm_ts"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "orgName" -> "org_name"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")

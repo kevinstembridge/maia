@@ -12,7 +12,7 @@ object UserDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.v_party.c_ts"
+            "createdTimestampUtc" -> "testing.v_party.created_timestamp_utc"
             "displayName" -> "testing.v_party.display_name"
             "encryptedPassword" -> "testing.v_party.encrypted_password"
             "firstName" -> "testing.v_party.first_name"

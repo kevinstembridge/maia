@@ -20,7 +20,7 @@ class UserEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "display_name" -> // displayName
                 return inputValue
@@ -32,7 +32,7 @@ class UserEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as FirstName).value
             "id" -> // id
                 return (inputValue as DomainId).value
-            "lm_ts" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
             "last_name" -> // lastName
                 return (inputValue as LastName).value

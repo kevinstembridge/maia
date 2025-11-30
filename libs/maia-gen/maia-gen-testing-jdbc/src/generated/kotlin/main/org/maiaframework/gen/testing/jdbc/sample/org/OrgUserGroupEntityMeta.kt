@@ -14,7 +14,7 @@ object OrgUserGroupEntityMeta {
 
     const val authorities = "authorities"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val description = "description"
 
@@ -26,7 +26,7 @@ object OrgUserGroupEntityMeta {
 
     const val systemManaged = "system_managed"
 
-    const val version = "v"
+    const val version = "version"
 
     val ENTITY_KEY = EntityKey("OrgUserGroup")
 
@@ -45,13 +45,13 @@ object OrgUserGroupEntityMeta {
 
         return when(classFieldName) {
             "authorities" -> "authorities"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "description" -> "description"
             "id" -> "id"
             "name" -> "name"
             "orgId" -> "org_id"
             "systemManaged" -> "system_managed"
-            "version" -> "v"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

@@ -31,7 +31,7 @@ class RightDao(
         jdbcOps.update(
             """
             insert into testing.right (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -58,7 +58,7 @@ class RightDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.right (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string

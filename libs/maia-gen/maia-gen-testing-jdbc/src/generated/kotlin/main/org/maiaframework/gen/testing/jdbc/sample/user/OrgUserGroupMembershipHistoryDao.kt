@@ -31,11 +31,11 @@ class OrgUserGroupMembershipHistoryDao(
             """
             insert into testing.org_user_group_membership_history (
                 change_type,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 org_user_group_id,
                 user_id,
-                v
+                version
             ) values (
                 :changeType,
                 :createdTimestampUtc,
@@ -64,11 +64,11 @@ class OrgUserGroupMembershipHistoryDao(
             """
             insert into testing.org_user_group_membership_history (
                 change_type,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 org_user_group_id,
                 user_id,
-                v
+                version
             ) values (
                 :changeType,
                 :createdTimestampUtc,
@@ -142,7 +142,7 @@ class OrgUserGroupMembershipHistoryDao(
     fun findByPrimaryKeyOrNull(id: DomainId, version: Long): OrgUserGroupMembershipHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.org_user_group_membership_history where id = :id and v = :version",
+            "select * from testing.org_user_group_membership_history where id = :id and version = :version",
             SqlParams().apply {
             addValue("id", id)
             addValue("version", version)
@@ -156,7 +156,7 @@ class OrgUserGroupMembershipHistoryDao(
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.org_user_group_membership_history where id = :id and v = :version",
+            "select count(*) from testing.org_user_group_membership_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", id)
                 addValue("version", version)
@@ -228,7 +228,7 @@ class OrgUserGroupMembershipHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.org_user_group_membership_history where $whereClause",
+            "select id, version from testing.org_user_group_membership_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -239,7 +239,7 @@ class OrgUserGroupMembershipHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<OrgUserGroupMembershipHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, v from testing.org_user_group_membership_history;",
+            "select id, version from testing.org_user_group_membership_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )

@@ -45,10 +45,10 @@ class SuperDao(
             insert into testing.super (
                 type_discriminator,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_string,
                 some_unique_string
             ) values (
@@ -84,10 +84,10 @@ class SuperDao(
             insert into testing.super (
                 type_discriminator,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_unique_string
             ) values (
@@ -122,10 +122,10 @@ class SuperDao(
             """
             insert into testing.super (
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts
+                last_modified_by_id,
+                last_modified_timestamp_utc
             ) values (
                 :createdById,
                 :createdTimestampUtc,
@@ -337,7 +337,7 @@ class SuperDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*) from testing.super
-            where lm_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
             addValue("lastModifiedById", lastModifiedById)

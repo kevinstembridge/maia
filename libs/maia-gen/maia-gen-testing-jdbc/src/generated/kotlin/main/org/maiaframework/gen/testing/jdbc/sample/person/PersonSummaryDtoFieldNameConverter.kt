@@ -14,7 +14,7 @@ class PersonSummaryDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "emailAddress" -> "email_address"
             "firstName" -> "first_name"
             "id" -> "id"

@@ -14,8 +14,12 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class SimpleUpdate_someIntModifiableRequestDto
 @JsonCreator constructor(
-    @NotNull @JsonProperty("id", access = JsonProperty.Access.READ_WRITE) private val id_raw: DomainId?,
-    @field:NotNull @JsonProperty("someIntModifiable", access = JsonProperty.Access.READ_WRITE) private val someIntModifiable_raw: Int?
+    @NotNull 
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    private val id_raw: DomainId?,
+    @param:NotNull 
+    @param:JsonProperty("someIntModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val someIntModifiable_raw: Int?
 ) {
 
 

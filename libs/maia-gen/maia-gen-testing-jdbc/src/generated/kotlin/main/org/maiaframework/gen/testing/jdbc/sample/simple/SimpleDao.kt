@@ -47,11 +47,11 @@ class SimpleDao(
             insert into testing.simple (
                 created_by_id,
                 created_by_name,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_by_name,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -212,11 +212,11 @@ class SimpleDao(
             insert into testing.simple (
                 created_by_id,
                 created_by_name,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_by_name,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -819,7 +819,7 @@ class SimpleDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*) from testing.simple
-            where lm_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
             addValue("lastModifiedById", lastModifiedById)
@@ -839,12 +839,12 @@ class SimpleDao(
                 created_by_v_party.id as createdById,
                 created_by_v_party.display_name as createdByName,
                 simple.created_by_name as createdByUsername,
-                simple.c_ts as createdTimestampUtc,
+                simple.created_timestamp_utc as createdTimestampUtc,
                 simple.id as id,
                 last_modified_by_v_party.id as lastModifiedById,
                 last_modified_by_v_party.display_name as lastModifiedByName,
-                simple.lm_by_name as lastModifiedByUsername,
-                simple.lm_ts as lastModifiedTimestampUtc,
+                simple.last_modified_by_name as lastModifiedByUsername,
+                simple.last_modified_timestamp_utc as lastModifiedTimestampUtc,
                 simple.some_boolean as someBoolean,
                 simple.some_boolean_nullable as someBooleanNullable,
                 simple.some_boolean_type as someBooleanType,
@@ -892,7 +892,7 @@ class SimpleDao(
             join testing.v_party created_by_v_party
                 on created_by_v_party.id = simple.created_by_id
             join testing.v_party last_modified_by_v_party
-                on last_modified_by_v_party.id = simple.lm_by_id
+                on last_modified_by_v_party.id = simple.last_modified_by_id
             where simple.id = :id
             """,
             SqlParams().apply {
@@ -912,11 +912,11 @@ class SimpleDao(
             insert into testing.simple (
                 created_by_id,
                 created_by_name,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_by_name,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1014,9 +1014,9 @@ class SimpleDao(
             )
             on conflict (some_int_type)
             do update set
-                lm_by_id = :lastModifiedById,
-                lm_by_name = :lastModifiedByUsername,
-                lm_ts = :lastModifiedTimestampUtc,
+                last_modified_by_id = :lastModifiedById,
+                last_modified_by_name = :lastModifiedByUsername,
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1098,11 +1098,11 @@ class SimpleDao(
             insert into testing.simple (
                 created_by_id,
                 created_by_name,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_by_name,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1200,9 +1200,9 @@ class SimpleDao(
             )
             on conflict (some_long_type)
             do update set
-                lm_by_id = :lastModifiedById,
-                lm_by_name = :lastModifiedByUsername,
-                lm_ts = :lastModifiedTimestampUtc,
+                last_modified_by_id = :lastModifiedById,
+                last_modified_by_name = :lastModifiedByUsername,
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1284,11 +1284,11 @@ class SimpleDao(
             insert into testing.simple (
                 created_by_id,
                 created_by_name,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_by_name,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1386,9 +1386,9 @@ class SimpleDao(
             )
             on conflict (some_string)
             do update set
-                lm_by_id = :lastModifiedById,
-                lm_by_name = :lastModifiedByUsername,
-                lm_ts = :lastModifiedTimestampUtc,
+                last_modified_by_id = :lastModifiedById,
+                last_modified_by_name = :lastModifiedByUsername,
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1470,11 +1470,11 @@ class SimpleDao(
             insert into testing.simple (
                 created_by_id,
                 created_by_name,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_by_name,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1572,9 +1572,9 @@ class SimpleDao(
             )
             on conflict (some_string_nullable)
             do update set
-                lm_by_id = :lastModifiedById,
-                lm_by_name = :lastModifiedByUsername,
-                lm_ts = :lastModifiedTimestampUtc,
+                last_modified_by_id = :lastModifiedById,
+                last_modified_by_name = :lastModifiedByUsername,
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1656,11 +1656,11 @@ class SimpleDao(
             insert into testing.simple (
                 created_by_id,
                 created_by_name,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_by_name,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_by_name,
+                last_modified_timestamp_utc,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1758,9 +1758,9 @@ class SimpleDao(
             )
             on conflict (some_string_type)
             do update set
-                lm_by_id = :lastModifiedById,
-                lm_by_name = :lastModifiedByUsername,
-                lm_ts = :lastModifiedTimestampUtc,
+                last_modified_by_id = :lastModifiedById,
+                last_modified_by_name = :lastModifiedByUsername,
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1877,9 +1877,9 @@ class SimpleDao(
             "someInstantModifiableNullable" -> sqlParams.addValue("someInstantModifiableNullable", field.value as Instant?)
             "someIntModifiable" -> sqlParams.addValue("someIntModifiable", field.value as Int)
             "someIntNullable" -> sqlParams.addValue("someIntNullable", field.value as Int?)
-            "someListOfStrings" -> sqlParams.addListOfStrings("someListOfStrings", field.value as List<String>)
+            "someListOfStrings" -> sqlParams.addListOfStrings("someListOfStrings", TODO: String)
             "someLocalDateModifiable" -> sqlParams.addValue("someLocalDateModifiable", field.value as LocalDate)
-            "somePeriodModifiable" -> sqlParams.addValue("somePeriodModifiable", field.value as Period)
+            "somePeriodModifiable" -> sqlParams.addValue("somePeriodModifiable", TODO: ClassFieldDef{classFieldName=somePeriodModifiable, fieldType=Period, modifiable=false, nullability=NOT_NULLABLE})
             "someStringModifiable" -> sqlParams.addValue("someStringModifiable", field.value as String)
         }
 

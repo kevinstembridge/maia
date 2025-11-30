@@ -43,7 +43,7 @@ class OrgDtoDao(
 
         val sqlForPage = """
             select
-                testing.v_party.c_ts as createdTimestampUtc,
+                testing.v_party.created_timestamp_utc as createdTimestampUtc,
                 testing.v_party.display_name as displayName,
                 testing.v_party.id as id,
                 testing.v_party.org_name as orgName,

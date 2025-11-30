@@ -13,7 +13,7 @@ class BravoEntityRowMapper : MaiaRowMapper<BravoEntity> {
     override fun mapRow(rsa: ResultSetAdapter): BravoEntity {
 
         val alphaId = rsa.readDomainId("alpha_id")
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")

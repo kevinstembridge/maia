@@ -36,7 +36,7 @@ class UnmodifiableDao(
         jdbcOps.update(
             """
             insert into testing.unmodifiable (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_unique_int
             ) values (
@@ -60,7 +60,7 @@ class UnmodifiableDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.unmodifiable (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_unique_int
             ) values (
@@ -295,7 +295,7 @@ class UnmodifiableDao(
         return jdbcOps.execute(
             """
             with input_rows(
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_unique_int
             ) as (
@@ -307,7 +307,7 @@ class UnmodifiableDao(
             )
             , ins as (
                 insert into testing.unmodifiable (
-                    c_ts,
+                    created_timestamp_utc,
                     id,
                     some_unique_int
                 )

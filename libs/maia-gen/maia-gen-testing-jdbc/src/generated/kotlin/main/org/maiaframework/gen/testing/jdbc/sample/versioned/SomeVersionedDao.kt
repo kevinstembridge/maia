@@ -34,11 +34,11 @@ class SomeVersionedDao(
         jdbcOps.update(
             """
             insert into testing.some_versioned (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :id,
@@ -64,11 +64,11 @@ class SomeVersionedDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.some_versioned (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :id,
@@ -305,11 +305,11 @@ class SomeVersionedDao(
         val persistedEntity = jdbcOps.execute(
             """
             insert into testing.some_versioned (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :id,
@@ -321,7 +321,7 @@ class SomeVersionedDao(
             do update set
                 some_int = :someInt,
                 some_string = :someString,
-                v = testing.some_versioned.v + 1
+                version = testing.some_versioned.version + 1
             returning *;
             """.trimIndent(),
             SqlParams().apply {
@@ -358,7 +358,7 @@ class SomeVersionedDao(
         sql.append("update testing.some_versioned set ")
 
         val fieldClauses = updater.fields
-            .plus(FieldUpdate("v_incremented", "v", updater.version + 1))
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -368,11 +368,12 @@ class SomeVersionedDao(
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
-        sql.append(" and v = :v")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("id", updater.id)
-        sqlParams.addValue("v", updater.version)
-        sqlParams.addValue("v_incremented", updater.version + 1)
+
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
 
         return this.jdbcOps.update(sql.toString(), sqlParams)
 

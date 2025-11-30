@@ -14,7 +14,7 @@ object BravoAgGridEntityMeta {
 
     const val alphaId = "alpha_id"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
@@ -37,7 +37,7 @@ object BravoAgGridEntityMeta {
 
         return when(classFieldName) {
             "alphaId" -> "alpha_id"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             "someInt" -> "some_int"
             "someString" -> "some_string"

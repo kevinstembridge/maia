@@ -31,7 +31,7 @@ class AlphaAgGridDao(
         jdbcOps.update(
             """
             insert into testing.alpha_ag_grid (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -58,7 +58,7 @@ class AlphaAgGridDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.alpha_ag_grid (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string

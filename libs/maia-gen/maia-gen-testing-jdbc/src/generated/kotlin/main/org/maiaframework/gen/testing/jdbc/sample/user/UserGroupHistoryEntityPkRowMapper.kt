@@ -14,7 +14,7 @@ class UserGroupHistoryEntityPkRowMapper : MaiaRowMapper<UserGroupHistoryEntityPk
 
         return UserGroupHistoryEntityPk(
             rsa.readDomainId("id"),
-            rsa.readLong("v"),
+            rsa.readLong("version"),
         )
 
     }

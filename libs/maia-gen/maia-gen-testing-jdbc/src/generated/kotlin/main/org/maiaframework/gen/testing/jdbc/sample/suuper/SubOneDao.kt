@@ -37,10 +37,10 @@ class SubOneDao(
             insert into testing.super (
                 type_discriminator,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_string,
                 some_unique_string
             ) values (
@@ -75,10 +75,10 @@ class SubOneDao(
             insert into testing.super (
                 type_discriminator,
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_string,
                 some_unique_string
             ) values (
@@ -340,7 +340,7 @@ class SubOneDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*) from testing.super
-            where lm_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
             addValue("lastModifiedById", lastModifiedById)
@@ -358,10 +358,10 @@ class SubOneDao(
             """
             insert into testing.super (
                 created_by_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
-                lm_by_id,
-                lm_ts,
+                last_modified_by_id,
+                last_modified_timestamp_utc,
                 some_string,
                 some_unique_string
             ) values (
@@ -375,8 +375,8 @@ class SubOneDao(
             )
             on conflict (some_unique_string)
             do update set
-                lm_by_id = :lastModifiedById,
-                lm_ts = :lastModifiedTimestampUtc,
+                last_modified_by_id = :lastModifiedById,
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_string = :someString,
                 some_unique_string = :someUniqueString
             returning *;

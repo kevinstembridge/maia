@@ -13,7 +13,7 @@ class CharlieEntityRowMapper : MaiaRowMapper<CharlieEntity> {
     override fun mapRow(rsa: ResultSetAdapter): CharlieEntity {
 
         val bravoId = rsa.readDomainId("bravo_id")
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")

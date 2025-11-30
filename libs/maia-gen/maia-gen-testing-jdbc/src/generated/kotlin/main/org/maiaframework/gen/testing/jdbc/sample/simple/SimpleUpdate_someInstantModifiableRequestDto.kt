@@ -15,8 +15,12 @@ import java.time.Instant
 @JsonIgnoreProperties(ignoreUnknown = true)
 class SimpleUpdate_someInstantModifiableRequestDto
 @JsonCreator constructor(
-    @NotNull @JsonProperty("id", access = JsonProperty.Access.READ_WRITE) private val id_raw: DomainId?,
-    @field:NotNull @JsonProperty("someInstantModifiable", access = JsonProperty.Access.READ_WRITE) private val someInstantModifiable_raw: Instant?
+    @NotNull 
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    private val id_raw: DomainId?,
+    @param:NotNull 
+    @param:JsonProperty("someInstantModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val someInstantModifiable_raw: Instant?
 ) {
 
 

@@ -45,7 +45,7 @@ class CharlieTableDtoDao(
 
         val sqlForPage = """
             select
-                testing.charlie.c_ts as createdTimestampUtc,
+                testing.charlie.created_timestamp_utc as createdTimestampUtc,
                 testing.alpha.some_string as dtoStringFromAlpha,
                 testing.bravo.some_string as dtoStringFromBravo,
                 testing.charlie.some_string as dtoStringFromCharlie

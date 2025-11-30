@@ -14,11 +14,11 @@ class OrgUserGroupMembershipHistoryEntityRowMapper : MaiaRowMapper<OrgUserGroupM
     override fun mapRow(rsa: ResultSetAdapter): OrgUserGroupMembershipHistoryEntity {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val orgUserGroupId = rsa.readDomainId("org_user_group_id")
         val userId = rsa.readDomainId("user_id")
-        val version = rsa.readLong("v")
+        val version = rsa.readLong("version")
 
         return OrgUserGroupMembershipHistoryEntity(
                 changeType,

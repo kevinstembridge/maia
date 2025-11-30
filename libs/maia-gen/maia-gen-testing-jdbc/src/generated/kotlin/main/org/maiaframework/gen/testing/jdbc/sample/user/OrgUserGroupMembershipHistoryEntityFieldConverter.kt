@@ -20,7 +20,7 @@ class OrgUserGroupMembershipHistoryEntityFieldConverter : EntityFieldConverter {
 
             "change_type" -> // changeType
                 return (inputValue as ChangeType).name
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
@@ -28,7 +28,7 @@ class OrgUserGroupMembershipHistoryEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "user_id" -> // userId
                 return (inputValue as DomainId).value
-            "v" -> // version
+            "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

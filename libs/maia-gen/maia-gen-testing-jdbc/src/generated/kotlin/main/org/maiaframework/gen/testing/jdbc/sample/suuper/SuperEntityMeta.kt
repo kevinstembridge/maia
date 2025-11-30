@@ -14,13 +14,13 @@ object SuperEntityMeta {
 
     const val createdById = "created_by_id"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
-    const val lastModifiedById = "lm_by_id"
+    const val lastModifiedById = "last_modified_by_id"
 
-    const val lastModifiedTimestampUtc = "lm_ts"
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
     val ENTITY_KEY = EntityKey("Super")
 
@@ -48,10 +48,10 @@ object SuperEntityMeta {
 
         return when(classFieldName) {
             "createdById" -> "created_by_id"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "lastModifiedById" -> "lm_by_id"
-            "lastModifiedTimestampUtc" -> "lm_ts"
+            "lastModifiedById" -> "last_modified_by_id"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

@@ -18,7 +18,7 @@ class PartyEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "display_name" -> // displayName
                 return inputValue
@@ -26,7 +26,7 @@ class PartyEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as EmailAddress).value
             "id" -> // id
                 return (inputValue as DomainId).value
-            "lm_ts" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

@@ -14,7 +14,7 @@ class UserDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "displayName" -> "display_name"
             "encryptedPassword" -> "encrypted_password"
             "firstName" -> "first_name"

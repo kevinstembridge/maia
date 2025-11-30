@@ -34,7 +34,7 @@ class CharlieAgGridDao(
             """
             insert into testing.charlie_ag_grid (
                 bravo_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -64,7 +64,7 @@ class CharlieAgGridDao(
             """
             insert into testing.charlie_ag_grid (
                 bravo_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -281,7 +281,7 @@ class CharlieAgGridDao(
             select
                 testing.bravo_ag_grid.id as bravoId,
                 testing.bravo_ag_grid.some_string as bravoName,
-                charlie_ag_grid.c_ts as createdTimestampUtc,
+                charlie_ag_grid.created_timestamp_utc as createdTimestampUtc,
                 charlie_ag_grid.id as id,
                 charlie_ag_grid.some_int as someInt,
                 charlie_ag_grid.some_string as someString

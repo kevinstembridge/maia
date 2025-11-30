@@ -51,10 +51,10 @@ class PartyDao(
             """
             insert into testing.v_party (
                 type_discriminator,
-                c_ts,
+                created_timestamp_utc,
                 email_address,
                 id,
-                lm_ts,
+                last_modified_timestamp_utc,
                 org_name
             ) values (
                 :typeDiscriminator,
@@ -85,12 +85,12 @@ class PartyDao(
             """
             insert into testing.v_party (
                 type_discriminator,
-                c_ts,
+                created_timestamp_utc,
                 email_address,
                 encrypted_password,
                 first_name,
                 id,
-                lm_ts,
+                last_modified_timestamp_utc,
                 last_name,
                 some_strings
             ) values (
@@ -128,11 +128,11 @@ class PartyDao(
             """
             insert into testing.v_party (
                 type_discriminator,
-                c_ts,
+                created_timestamp_utc,
                 email_address,
                 first_name,
                 id,
-                lm_ts,
+                last_modified_timestamp_utc,
                 last_name
             ) values (
                 :typeDiscriminator,
@@ -165,10 +165,10 @@ class PartyDao(
             """
             insert into testing.v_party (
                 type_discriminator,
-                c_ts,
+                created_timestamp_utc,
                 email_address,
                 id,
-                lm_ts
+                last_modified_timestamp_utc
             ) values (
                 :typeDiscriminator,
                 :createdTimestampUtc,

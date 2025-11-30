@@ -45,7 +45,7 @@ class LeftDetailDtoDao(
 
         val sqlForPage = """
             select
-                testing.left.c_ts as createdTimestampUtc,
+                testing.left.created_timestamp_utc as createdTimestampUtc,
                 testing.left.id as id,
                 testing.left.some_int as someIntFromLeft,
                 testing.right.some_int as someIntFromRight,

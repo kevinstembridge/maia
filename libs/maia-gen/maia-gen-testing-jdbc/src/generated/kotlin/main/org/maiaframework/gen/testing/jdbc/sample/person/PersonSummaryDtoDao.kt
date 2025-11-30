@@ -43,7 +43,7 @@ class PersonSummaryDtoDao(
 
         val sqlForPage = """
             select
-                testing.v_party.c_ts as createdTimestampUtc,
+                testing.v_party.created_timestamp_utc as createdTimestampUtc,
                 testing.v_party.email_address as emailAddress,
                 testing.v_party.first_name as firstName,
                 testing.v_party.id as id,

@@ -30,11 +30,11 @@ class SimpleEntityRowMapper(
 
         val createdById = rsa.readDomainId("created_by_id")
         val createdByUsername = rsa.readString("created_by_name")
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainId("lm_by_id")
-        val lastModifiedByUsername = rsa.readString("lm_by_name")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedById = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedByUsername = rsa.readString("last_modified_by_name")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val someBoolean = rsa.readBoolean("some_boolean")
         val someBooleanNullable = rsa.readBooleanOrNull("some_boolean_nullable")
         val someBooleanType = rsa.readBoolean("some_boolean_type") { SomeBooleanType(it) }

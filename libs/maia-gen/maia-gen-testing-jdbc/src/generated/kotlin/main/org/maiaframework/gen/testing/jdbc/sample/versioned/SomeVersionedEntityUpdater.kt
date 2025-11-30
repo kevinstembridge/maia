@@ -63,14 +63,14 @@ data class SomeVersionedEntityUpdater(
             id: DomainId,
             version: Long,
             init: Builder.() -> Unit
-        ): Builder {
+        ): SomeVersionedEntityUpdater {
 
             val builder = Builder(
                 id,
                 version
             )
             builder.init()
-            return builder
+            return builder.build()
 
         }
 

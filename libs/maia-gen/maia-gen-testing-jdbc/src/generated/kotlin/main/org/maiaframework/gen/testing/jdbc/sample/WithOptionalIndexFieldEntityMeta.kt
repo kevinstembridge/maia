@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object WithOptionalIndexFieldEntityMeta {
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
@@ -45,7 +45,7 @@ object WithOptionalIndexFieldEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             "someOptionalString1" -> "some_optional_string1"
             "someOptionalString2" -> "some_optional_string2"

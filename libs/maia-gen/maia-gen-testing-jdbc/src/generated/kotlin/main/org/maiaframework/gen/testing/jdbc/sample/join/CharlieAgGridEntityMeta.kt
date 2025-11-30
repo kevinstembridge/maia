@@ -14,7 +14,7 @@ object CharlieAgGridEntityMeta {
 
     const val bravoId = "bravo_id"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
@@ -37,7 +37,7 @@ object CharlieAgGridEntityMeta {
 
         return when(classFieldName) {
             "bravoId" -> "bravo_id"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             "someInt" -> "some_int"
             "someString" -> "some_string"

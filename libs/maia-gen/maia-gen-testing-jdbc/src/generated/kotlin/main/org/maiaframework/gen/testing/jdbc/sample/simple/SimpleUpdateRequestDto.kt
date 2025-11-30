@@ -19,15 +19,31 @@ import java.time.Period
 @JsonIgnoreProperties(ignoreUnknown = true)
 class SimpleUpdateRequestDto
 @JsonCreator constructor(
-    @NotNull @JsonProperty("id", access = JsonProperty.Access.READ_WRITE) private val id_raw: DomainId?,
-    @field:NotNull @JsonProperty("someInstantModifiable", access = JsonProperty.Access.READ_WRITE) private val someInstantModifiable_raw: Instant?,
+    @NotNull 
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    private val id_raw: DomainId?,
+    @param:NotNull 
+    @param:JsonProperty("someInstantModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val someInstantModifiable_raw: Instant?,
     val someInstantModifiableNullable: Instant?,
-    @field:NotNull @JsonProperty("someIntModifiable", access = JsonProperty.Access.READ_WRITE) private val someIntModifiable_raw: Int?,
+    @param:NotNull 
+    @param:JsonProperty("someIntModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val someIntModifiable_raw: Int?,
     val someIntNullable: Int?,
-    @field:NotNull @JsonProperty("someListOfStrings", access = JsonProperty.Access.READ_WRITE) private val someListOfStrings_raw: List<String>?,
-    @field:NotNull @JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) private val someLocalDateModifiable_raw: LocalDate?,
-    @field:NotBlank @field:Length(max = 100) @JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) private val somePeriodModifiable_raw: Period?,
-    @field:NotBlank @field:Length(max = 100) @JsonProperty("someStringModifiable", access = JsonProperty.Access.READ_WRITE) private val someStringModifiable_raw: String?
+    @param:NotNull 
+    @param:JsonProperty("someListOfStrings", access = JsonProperty.Access.READ_WRITE) 
+    private val someListOfStrings_raw: List<String>?,
+    @param:NotNull 
+    @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val someLocalDateModifiable_raw: LocalDate?,
+    @param:NotBlank 
+    @param:Length(max = 100) 
+    @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val somePeriodModifiable_raw: Period?,
+    @param:NotBlank 
+    @param:Length(max = 100) 
+    @param:JsonProperty("someStringModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val someStringModifiable_raw: String?
 ) {
 
 

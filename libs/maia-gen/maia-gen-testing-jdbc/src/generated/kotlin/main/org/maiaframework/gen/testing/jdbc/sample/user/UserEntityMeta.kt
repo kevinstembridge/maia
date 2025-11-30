@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object UserEntityMeta {
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val displayName = "display_name"
 
@@ -24,7 +24,7 @@ object UserEntityMeta {
 
     const val id = "id"
 
-    const val lastModifiedTimestampUtc = "lm_ts"
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
     const val lastName = "last_name"
 
@@ -46,13 +46,13 @@ object UserEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "displayName" -> "display_name"
             "emailAddress" -> "email_address"
             "encryptedPassword" -> "encrypted_password"
             "firstName" -> "first_name"
             "id" -> "id"
-            "lastModifiedTimestampUtc" -> "lm_ts"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "lastName" -> "last_name"
             "someStrings" -> "some_strings"
             else ->

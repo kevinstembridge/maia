@@ -32,7 +32,7 @@ class BravoDao(
             """
             insert into testing.bravo (
                 alpha_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string
@@ -62,7 +62,7 @@ class BravoDao(
             """
             insert into testing.bravo (
                 alpha_id,
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_int,
                 some_string

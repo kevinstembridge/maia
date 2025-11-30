@@ -15,13 +15,13 @@ class UserEntityRowMapper : MaiaRowMapper<UserEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): UserEntity {
 
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")
         val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val encryptedPassword = rsa.readString("encrypted_password")
         val firstName = rsa.readStringOrNull("first_name") { FirstName(it) }
         val id = rsa.readDomainId("id")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val someStrings = rsa.readListOfStrings("some_strings")
 

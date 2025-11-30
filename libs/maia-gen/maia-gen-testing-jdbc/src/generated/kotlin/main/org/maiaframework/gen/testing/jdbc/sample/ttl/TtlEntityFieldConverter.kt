@@ -19,7 +19,7 @@ class TtlEntityFieldConverter : EntityFieldConverter {
 
             "created_at" -> // createdAt
                 return inputValue
-            "c_ts" -> // createdTimestampUtc
+            "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value

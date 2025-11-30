@@ -12,7 +12,7 @@ object CharlieAgGridDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.charlie_ag_grid.c_ts"
+            "createdTimestampUtc" -> "testing.charlie_ag_grid.created_timestamp_utc"
             "dtoIntFromAlpha" -> "testing.alpha_ag_grid.some_int"
             "dtoIntFromBravo" -> "testing.bravo_ag_grid.some_int"
             "dtoIntFromCharlie" -> "testing.charlie_ag_grid.some_int"

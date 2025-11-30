@@ -36,7 +36,7 @@ class NullableFieldsDao(
         jdbcOps.update(
             """
             insert into testing.nullable_fields (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_boolean,
                 some_boolean_type,
@@ -102,7 +102,7 @@ class NullableFieldsDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.nullable_fields (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_boolean,
                 some_boolean_type,
@@ -379,7 +379,7 @@ class NullableFieldsDao(
         return jdbcOps.execute(
             """
             with input_rows(
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_boolean,
                 some_boolean_type,
@@ -419,7 +419,7 @@ class NullableFieldsDao(
             )
             , ins as (
                 insert into testing.nullable_fields (
-                    c_ts,
+                    created_timestamp_utc,
                     id,
                     some_boolean,
                     some_boolean_type,

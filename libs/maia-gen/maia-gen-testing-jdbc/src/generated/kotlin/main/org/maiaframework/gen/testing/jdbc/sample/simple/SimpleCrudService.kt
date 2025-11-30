@@ -178,7 +178,7 @@ class SimpleCrudService(
             someIntNullable(editDto.someIntNullable)
             lastModifiedById(CurrentUserHolder.userId)
             lastModifiedTimestampUtc(Instant.now())
-        }.build()
+        }
 
         setFields(updater)
 
@@ -187,13 +187,16 @@ class SimpleCrudService(
 
     fun updateSomeInstantModifiable(editDto: SimpleUpdate_someInstantModifiableRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateSomeInstantModifiable. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateSomeInstantModifiable. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someInstantModifiable(editDto.someInstantModifiable)
-        }.build()
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 
@@ -202,13 +205,16 @@ class SimpleCrudService(
 
     fun updateSomeInstantModifiableNullable(editDto: SimpleUpdate_someInstantModifiableNullableRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateSomeInstantModifiableNullable. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateSomeInstantModifiableNullable. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someInstantModifiableNullable(editDto.someInstantModifiableNullable)
-        }.build()
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 
@@ -217,13 +223,16 @@ class SimpleCrudService(
 
     fun updateSomeIntModifiable(editDto: SimpleUpdate_someIntModifiableRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateSomeIntModifiable. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateSomeIntModifiable. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someIntModifiable(editDto.someIntModifiable)
-        }.build()
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 
@@ -232,13 +241,16 @@ class SimpleCrudService(
 
     fun updateSomeIntNullable(editDto: SimpleUpdate_someIntNullableRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateSomeIntNullable. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateSomeIntNullable. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someIntNullable(editDto.someIntNullable)
-        }.build()
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 
@@ -247,13 +259,16 @@ class SimpleCrudService(
 
     fun updateSomeLocalDateModifiable(editDto: SimpleUpdate_someLocalDateModifiableRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateSomeLocalDateModifiable. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateSomeLocalDateModifiable. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someLocalDateModifiable(editDto.someLocalDateModifiable)
-        }.build()
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 
@@ -262,13 +277,16 @@ class SimpleCrudService(
 
     fun updateSomePeriodModifiable(editDto: SimpleUpdate_somePeriodModifiableRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateSomePeriodModifiable. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateSomePeriodModifiable. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             somePeriodModifiable(editDto.somePeriodModifiable)
-        }.build()
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 
@@ -277,13 +295,16 @@ class SimpleCrudService(
 
     fun updateSomeStringModifiable(editDto: SimpleUpdate_someStringModifiableRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateSomeStringModifiable. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateSomeStringModifiable. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someStringModifiable(editDto.someStringModifiable)
-        }.build()
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 
@@ -292,13 +313,16 @@ class SimpleCrudService(
 
     fun updateSomeListOfStrings(editDto: SimpleUpdate_someListOfStringsRequestDto) {
 
-        val currentUser = CurrentUserHolder.currentUser
+        val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateSomeListOfStrings. currentUser=${currentUser.username}, dto=$editDto")
+        logger.info("BEGIN: updateSomeListOfStrings. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
             someListOfStrings(editDto.someListOfStrings)
-        }.build()
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestampUtc(Instant.now())
+        }
 
         setFields(updater)
 

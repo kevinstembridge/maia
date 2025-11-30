@@ -17,8 +17,13 @@ import java.time.Period
 @JsonIgnoreProperties(ignoreUnknown = true)
 class SimpleUpdate_somePeriodModifiableRequestDto
 @JsonCreator constructor(
-    @NotNull @JsonProperty("id", access = JsonProperty.Access.READ_WRITE) private val id_raw: DomainId?,
-    @field:NotBlank @field:Length(max = 100) @JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) private val somePeriodModifiable_raw: Period?
+    @NotNull 
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    private val id_raw: DomainId?,
+    @param:NotBlank 
+    @param:Length(max = 100) 
+    @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val somePeriodModifiable_raw: Period?
 ) {
 
 

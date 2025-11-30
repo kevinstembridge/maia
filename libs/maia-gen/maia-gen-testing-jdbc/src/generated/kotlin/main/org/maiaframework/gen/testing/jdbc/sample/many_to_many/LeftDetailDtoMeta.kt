@@ -12,7 +12,7 @@ object LeftDetailDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.left.c_ts"
+            "createdTimestampUtc" -> "testing.left.created_timestamp_utc"
             "id" -> "testing.left.id"
             "someIntFromLeft" -> "testing.left.some_int"
             "someIntFromRight" -> "testing.right.some_int"

@@ -12,7 +12,7 @@ class VerySimpleEntityRowMapper : MaiaRowMapper<VerySimpleEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): VerySimpleEntity {
 
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val someString = rsa.readString("some_string")
 

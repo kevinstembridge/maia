@@ -12,13 +12,13 @@ import org.maiaframework.jdbc.TableName
 
 object NonSurrogateIdPrimaryKeyEntityMeta {
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
     const val someModifiableString = "some_modifiable_string"
 
-    const val version = "v"
+    const val version = "version"
 
     val ENTITY_KEY = EntityKey("NonSurrogateIdPrimaryKey")
 
@@ -34,10 +34,10 @@ object NonSurrogateIdPrimaryKeyEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             "someModifiableString" -> "some_modifiable_string"
-            "version" -> "v"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

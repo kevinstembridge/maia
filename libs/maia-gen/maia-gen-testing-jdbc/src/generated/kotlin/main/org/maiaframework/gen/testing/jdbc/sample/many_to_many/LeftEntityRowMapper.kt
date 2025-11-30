@@ -12,7 +12,7 @@ class LeftEntityRowMapper : MaiaRowMapper<LeftEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): LeftEntity {
 
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")

@@ -12,11 +12,11 @@ import org.maiaframework.jdbc.TableName
 
 object ManyToManyJoinEntityMeta {
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
-    const val lastModifiedTimestampUtc = "lm_ts"
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
     const val leftId = "left_id"
 
@@ -36,9 +36,9 @@ object ManyToManyJoinEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "lastModifiedTimestampUtc" -> "lm_ts"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "leftId" -> "left_id"
             "rightId" -> "right_id"
             else ->

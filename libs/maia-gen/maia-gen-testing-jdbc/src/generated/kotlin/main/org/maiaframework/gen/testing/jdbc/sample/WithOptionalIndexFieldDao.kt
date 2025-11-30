@@ -32,7 +32,7 @@ class WithOptionalIndexFieldDao(
         jdbcOps.update(
             """
             insert into testing.with_optional_index_field (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_optional_string1,
                 some_optional_string2,
@@ -62,7 +62,7 @@ class WithOptionalIndexFieldDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.with_optional_index_field (
-                c_ts,
+                created_timestamp_utc,
                 id,
                 some_optional_string1,
                 some_optional_string2,

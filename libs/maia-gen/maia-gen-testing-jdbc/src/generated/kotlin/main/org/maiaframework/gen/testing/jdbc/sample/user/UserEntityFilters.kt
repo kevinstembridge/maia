@@ -47,7 +47,7 @@ class UserEntityFilters {
     val createdTimestampUtc: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("c_ts", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("created_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
@@ -95,7 +95,7 @@ class UserEntityFilters {
     val lastModifiedTimestampUtc: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("lm_ts", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("last_modified_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 

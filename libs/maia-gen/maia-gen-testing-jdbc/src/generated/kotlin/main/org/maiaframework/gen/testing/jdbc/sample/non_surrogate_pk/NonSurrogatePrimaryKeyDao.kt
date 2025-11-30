@@ -38,10 +38,10 @@ class NonSurrogatePrimaryKeyDao(
         jdbcOps.update(
             """
             insert into testing.non_surrogate_primary_key (
-                c_ts,
+                created_timestamp_utc,
                 some_modifiable_string,
                 some_string,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :someModifiableString,
@@ -67,10 +67,10 @@ class NonSurrogatePrimaryKeyDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.non_surrogate_primary_key (
-                c_ts,
+                created_timestamp_utc,
                 some_modifiable_string,
                 some_string,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :someModifiableString,
@@ -307,10 +307,10 @@ class NonSurrogatePrimaryKeyDao(
         val persistedEntity = jdbcOps.execute(
             """
             insert into testing.non_surrogate_primary_key (
-                c_ts,
+                created_timestamp_utc,
                 some_modifiable_string,
                 some_string,
-                v
+                version
             ) values (
                 :createdTimestampUtc,
                 :someModifiableString,
@@ -320,7 +320,7 @@ class NonSurrogatePrimaryKeyDao(
             on conflict (some_string)
             do update set
                 some_modifiable_string = :someModifiableString,
-                v = testing.non_surrogate_primary_key.v + 1
+                version = testing.non_surrogate_primary_key.version + 1
             returning *;
             """.trimIndent(),
             SqlParams().apply {
@@ -359,7 +359,7 @@ class NonSurrogatePrimaryKeyDao(
         sql.append("update testing.non_surrogate_primary_key set ")
 
         val fieldClauses = updater.fields
-            .plus(FieldUpdate("v_incremented", "v", updater.version + 1))
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -369,11 +369,12 @@ class NonSurrogatePrimaryKeyDao(
 
         sql.append(fieldClauses)
         sql.append(" where some_string = :someString")
-        sql.append(" and v = :v")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("someString", updater.someString.value)
-        sqlParams.addValue("v", updater.version)
-        sqlParams.addValue("v_incremented", updater.version + 1)
+
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
 
         val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
 

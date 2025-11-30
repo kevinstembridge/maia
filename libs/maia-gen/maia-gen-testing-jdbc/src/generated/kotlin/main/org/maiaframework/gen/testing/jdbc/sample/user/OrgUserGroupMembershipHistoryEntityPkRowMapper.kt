@@ -14,7 +14,7 @@ class OrgUserGroupMembershipHistoryEntityPkRowMapper : MaiaRowMapper<OrgUserGrou
 
         return OrgUserGroupMembershipHistoryEntityPk(
             rsa.readDomainId("id"),
-            rsa.readLong("v"),
+            rsa.readLong("version"),
         )
 
     }

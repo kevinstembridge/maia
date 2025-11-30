@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object NullableFieldsEntityMeta {
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
@@ -67,7 +67,7 @@ object NullableFieldsEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             "someBoolean" -> "some_boolean"
             "someBooleanType" -> "some_boolean_type"

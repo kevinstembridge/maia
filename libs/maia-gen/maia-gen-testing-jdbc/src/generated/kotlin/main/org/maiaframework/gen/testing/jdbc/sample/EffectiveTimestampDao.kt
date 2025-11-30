@@ -33,7 +33,7 @@ class EffectiveTimestampDao(
         jdbcOps.update(
             """
             insert into testing.effective_timestamp (
-                c_ts,
+                created_timestamp_utc,
                 effective_from,
                 effective_to,
                 id,
@@ -63,7 +63,7 @@ class EffectiveTimestampDao(
         jdbcOps.batchUpdate(
             """
             insert into testing.effective_timestamp (
-                c_ts,
+                created_timestamp_utc,
                 effective_from,
                 effective_to,
                 id,

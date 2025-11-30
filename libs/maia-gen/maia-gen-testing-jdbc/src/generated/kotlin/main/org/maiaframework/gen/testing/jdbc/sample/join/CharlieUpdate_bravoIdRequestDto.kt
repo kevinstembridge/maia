@@ -14,8 +14,12 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class CharlieUpdate_bravoIdRequestDto
 @JsonCreator constructor(
-    @NotNull @JsonProperty("bravoId", access = JsonProperty.Access.READ_WRITE) private val bravoId_raw: DomainId?,
-    @NotNull @JsonProperty("id", access = JsonProperty.Access.READ_WRITE) private val id_raw: DomainId?
+    @NotNull 
+    @param:JsonProperty("bravoId", access = JsonProperty.Access.READ_WRITE) 
+    private val bravoId_raw: DomainId?,
+    @NotNull 
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    private val id_raw: DomainId?
 ) {
 
 

@@ -14,7 +14,7 @@ object TtlEntityMeta {
 
     const val createdAt = "created_at"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
@@ -31,7 +31,7 @@ object TtlEntityMeta {
 
     object IndexName {
 
-        const val ttl_c_ts_idx = "ttl_c_ts_idx"
+        const val ttl_created_timestamp_utc_idx = "ttl_created_timestamp_utc_idx"
 
     }
 
@@ -40,7 +40,7 @@ object TtlEntityMeta {
 
         return when(classFieldName) {
             "createdAt" -> "created_at"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")

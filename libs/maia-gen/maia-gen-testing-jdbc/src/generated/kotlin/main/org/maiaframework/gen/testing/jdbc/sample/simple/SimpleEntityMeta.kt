@@ -16,15 +16,15 @@ object SimpleEntityMeta {
 
     const val createdByUsername = "created_by_name"
 
-    const val createdTimestampUtc = "c_ts"
+    const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
 
-    const val lastModifiedById = "lm_by_id"
+    const val lastModifiedById = "last_modified_by_id"
 
-    const val lastModifiedByUsername = "lm_by_name"
+    const val lastModifiedByUsername = "last_modified_by_name"
 
-    const val lastModifiedTimestampUtc = "lm_ts"
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
     const val someBoolean = "some_boolean"
 
@@ -145,11 +145,11 @@ object SimpleEntityMeta {
         return when(classFieldName) {
             "createdById" -> "created_by_id"
             "createdByUsername" -> "created_by_name"
-            "createdTimestampUtc" -> "c_ts"
+            "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "lastModifiedById" -> "lm_by_id"
-            "lastModifiedByUsername" -> "lm_by_name"
-            "lastModifiedTimestampUtc" -> "lm_ts"
+            "lastModifiedById" -> "last_modified_by_id"
+            "lastModifiedByUsername" -> "last_modified_by_name"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "someBoolean" -> "some_boolean"
             "someBooleanNullable" -> "some_boolean_nullable"
             "someBooleanType" -> "some_boolean_type"

@@ -44,7 +44,7 @@ class SomeVersionedEntityFilters {
     val createdTimestampUtc: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("c_ts", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("created_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
@@ -76,7 +76,7 @@ class SomeVersionedEntityFilters {
     val version: FieldFilter<Long> 
         get() {
 
-            return FieldFilter("v", Types.BIGINT, this.sqlParamCounter) { value -> value }
+            return FieldFilter("version", Types.BIGINT, this.sqlParamCounter) { value -> value }
 
         }
 

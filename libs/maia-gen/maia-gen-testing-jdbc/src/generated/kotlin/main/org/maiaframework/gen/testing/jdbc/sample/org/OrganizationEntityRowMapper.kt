@@ -13,11 +13,11 @@ class OrganizationEntityRowMapper : MaiaRowMapper<OrganizationEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): OrganizationEntity {
 
-        val createdTimestampUtc = rsa.readInstant("c_ts")
+        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")
         val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val id = rsa.readDomainId("id")
-        val lastModifiedTimestampUtc = rsa.readInstant("lm_ts")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val orgName = rsa.readString("org_name")
 
         return OrganizationEntity(
