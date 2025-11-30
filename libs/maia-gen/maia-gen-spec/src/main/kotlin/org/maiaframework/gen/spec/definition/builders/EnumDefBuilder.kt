@@ -49,12 +49,11 @@ class EnumDefBuilder(
     fun value(
         name: String,
         init: (EnumValueDefBuilder.() -> Unit)? = null
-    ): EnumValueDefBuilder {
+    ) {
 
         val builder = EnumValueDefBuilder(name)
         this.enumValueDefs.add(builder)
         init?.invoke(builder)
-        return builder
 
     }
 
