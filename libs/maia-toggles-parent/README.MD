@@ -16,11 +16,9 @@ With toggles, we can ‘turn off’ bugs in a matter of seconds.
 ## Avoid Rollbacks
 We sometimes do rollbacks to fix problems in production. Rollbacks are bad.
 
-Rollbacks take away features that our users have requested.
-
-Rollbacks may re-introduce bugs that were fixed in the current version.
-
-Rollbacks might not be possible due to changes in data models.
+- Rollbacks take away features that our users have requested.
+- Rollbacks may re-introduce bugs that were fixed in the current version.
+- Rollbacks might not be possible due to changes in data models.
 
 It is far better to leave the current version in place but just turn off the bad feature, fix it and then roll out a new version.
 
