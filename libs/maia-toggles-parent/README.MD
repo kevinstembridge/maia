@@ -31,7 +31,7 @@ We may be tempted to build features on feature branches so that production relea
 Sometimes we need to make a change in collaboration with an upstream or downstream system. Instead of having to co-ordinate with other teams to synchronise our deployments, we can instead deploy on our own schedule and then just co-ordinate the turning on of the toggle.
 
 ## Gradual Rollout
-Some feature toggles libraries, such as the one we use (Togglz), allow us to enable a feature based on conditions. For example, we could enable it for just a single user or subset of users, for a given IP address or for a given percentage of incoming requests.
+Some feature toggles libraries allow us to enable a feature based on conditions. For example, we could enable it for just a single user or subset of users, for a given IP address or for a given percentage of incoming requests.
 
 # What Are the Downsides?
 
@@ -58,7 +58,7 @@ It’s not hard to understand, but it is a little more complex having more execu
 
 ## State Management
 
-We need to persist the state of a toggle across application restarts. The Togglz library provides various integrations for doing this (file-based, JDBC, caches).
+We need to persist the state of a toggle across application restarts.
 
 We need to manage the state of a toggle across environments. Beware of testing in one environment and then expecting it to behave the same in the next environment.
 
