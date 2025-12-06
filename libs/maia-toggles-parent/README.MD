@@ -39,7 +39,9 @@ Some feature toggles libraries, such as the one we use (Togglz), allow us to ena
 
 Instead of having a statement like this…
 
-```doSomethingTheOldWay()```
+```
+doSomethingTheOldWay()
+```
 
 We would have a statement like this…
 
