@@ -7,7 +7,7 @@ Feature toggles are a way to change the behaviour of an application at runtime. 
 # Why?
 ## 'Fix' Bugs in Seconds
 
-One of the 4 DORA Metrics, the metrics that correlate with high performing organisations, is Time To Restore Service (TTR). This is the amount of time it takes between discovering a problem in production and making the problem go away.
+One of the 4 [DORA Metrics](https://cloud.google.com/blog/products/devops-sre/using-the-four-keys-to-measure-your-devops-performance), the metrics that correlate with high performing organisations, is Time To Restore Service (TTR). This is the amount of time it takes between discovering a problem in production and making the problem go away.
 
 If we have to do a code change or even just a configuration change with an application restart, this is going to take anywhere from several minutes, to hours, or even days.
 
