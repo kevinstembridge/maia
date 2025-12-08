@@ -495,14 +495,14 @@ class JdbcDaoRenderer(
             appendLine("    private fun bulkInsertHistory(entities: List<${entityDef.entityUqcn}>, changeType: ChangeType) {")
             blankLine()
             appendLine("        val entitiesByType: Map<String, List<${entityDef.entityUqcn}>> = entities.groupBy { entity ->")
-            appendLine("                when (entity) {")
+            appendLine("            when (entity) {")
 
             entityHierarchy.concreteEntityDefs.forEach { entityDef ->
-                appendLine("                    is ${entityDef.entityUqcn} -> \"${entityDef.typeDiscriminator}\"")
+                appendLine("                is ${entityDef.entityUqcn} -> \"${entityDef.typeDiscriminator}\"")
             }
 
-            appendLine("                    else -> throw RuntimeException(\"Not going to happen (tm)\")")
-            appendLine("                }")
+            appendLine("                else -> throw RuntimeException(\"Not going to happen (tm)\")")
+            appendLine("            }")
             appendLine("        }")
 
             entityHierarchy.concreteEntityDefs.forEach { entityDef ->

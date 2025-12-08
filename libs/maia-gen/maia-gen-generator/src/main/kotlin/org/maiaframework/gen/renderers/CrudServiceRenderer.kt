@@ -188,17 +188,32 @@ class CrudServiceRenderer(
 
         addImportFor<Instant>()
 
-        val currentUserOrBlank = if (this.entityDef.hasCreatedByIdField || this.entityDef.hasLastModifiedByIdField) {
-            addImportFor(Fqcns.MAIA_USER_DETAILS)
-            ", currentUser: MaiaUserDetails"
-        } else {
-            ""
-        }
+        if (this.entityDef.hasCreatedByIdField || this.entityDef.hasLastModifiedByIdField) {
 
-        blankLine()
-        blankLine()
-        appendLine("    private fun buildEntity(createDto: ${apiDef.requestDtoDef.uqcn}$currentUserOrBlank): ${this.entityDef.entityUqcn} {")
-        blankLine()
+            addImportFor(Fqcns.MAIA_USER_DETAILS)
+
+            append("""
+                |
+                |
+                |    private fun buildEntity(
+                |        createDto: ${apiDef.requestDtoDef.uqcn},
+                |        currentUser: MaiaUserDetails
+                |    ): ${this.entityDef.entityUqcn} {
+                |
+                |""".trimMargin()
+            )
+
+        } else {
+
+            append("""
+                |
+                |
+                |    private fun buildEntity(createDto: ${apiDef.requestDtoDef.uqcn}): ${this.entityDef.entityUqcn} {")
+                |
+                |""".trimMargin()
+            )
+
+        }
 
         this.entityDef.allFieldsRequiredInCreateRequest.forEach { field ->
 

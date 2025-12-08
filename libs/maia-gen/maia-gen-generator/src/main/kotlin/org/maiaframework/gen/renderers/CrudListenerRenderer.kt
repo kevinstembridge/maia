@@ -30,7 +30,7 @@ class CrudListenerRenderer(
 
             if (contextDtoDef != null) {
                 addImportFor(contextDtoDef.fqcn)
-                appendLine("    fun on${entityUqcn}Created(entity: $entityUqcn, context: ${contextDtoDef.uqcn})")
+                appendLine("    fun on${entityUqcn}Created(entity: $entityUqcn, context: ${contextDtoDef.uqcn}?)")
             } else {
                 appendLine("    fun on${entityUqcn}Created(entity: $entityUqcn)")
             }

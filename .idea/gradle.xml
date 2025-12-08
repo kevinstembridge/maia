@@ -93,6 +93,7 @@
             <option value="$PROJECT_DIR$/libs/maia-testing/maia-testing-postgresql" />
             <option value="$PROJECT_DIR$/libs/maia-testing/maia-testing-spring-test" />
             <option value="$PROJECT_DIR$/libs/maia-toggles-parent" />
+            <option value="$PROJECT_DIR$/libs/maia-toggles-parent/maia-toggles-activation" />
             <option value="$PROJECT_DIR$/libs/maia-toggles-parent/maia-toggles-api" />
             <option value="$PROJECT_DIR$/libs/maia-toggles-parent/maia-toggles-autoconfigure" />
             <option value="$PROJECT_DIR$/libs/maia-toggles-parent/maia-toggles-dao" />
@@ -103,7 +104,6 @@
             <option value="$PROJECT_DIR$/libs/maia-toggles-parent/maia-toggles-showcase" />
             <option value="$PROJECT_DIR$/libs/maia-toggles-parent/maia-toggles-spec" />
             <option value="$PROJECT_DIR$/libs/maia-toggles-parent/maia-toggles-spring-boot-starter" />
-            <option value="$PROJECT_DIR$/libs/maia-togglz-mongo" />
             <option value="$PROJECT_DIR$/libs/maia-types" />
             <option value="$PROJECT_DIR$/libs/maia-web-testing" />
             <option value="$PROJECT_DIR$/libs/maia-webapp" />
