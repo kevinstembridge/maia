@@ -31,8 +31,7 @@ class DataClassDef private constructor(
         get() = this.classDef.uqcn
 
 
-    val isWithHandcodedSubclass: Boolean
-        get() = this.withHandcodedSubclass.value
+    val isWithHandcodedSubclass: Boolean = this.withHandcodedSubclass.value
 
 
     val classFieldDefs: List<ClassFieldDef>

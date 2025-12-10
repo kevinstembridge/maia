@@ -3,8 +3,10 @@ package org.maiaframework.gen.spec.definition.builders
 import org.maiaframework.gen.spec.definition.Authority
 import org.maiaframework.gen.spec.definition.CrudApiDef
 import org.maiaframework.gen.spec.definition.CrudApiDefs
+import org.maiaframework.gen.spec.definition.CustomCrudServiceFqcn
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
+import org.maiaframework.gen.spec.definition.lang.Fqcn
 
 
 class CrudApiDefsBuilder(
@@ -21,15 +23,17 @@ class CrudApiDefsBuilder(
     private var deleteApiDef: CrudApiDef? = null
 
 
+    private var customCrudServiceFqcn: CustomCrudServiceFqcn? = null
+
+
     fun create(
         authority: String? = null,
         contextDto: RequestDtoDef? = null,
         withEntityForm: Boolean = false,
-    ): CrudApiDefsBuilder {
+    ) {
 
         val authorityToUse = authority?.let { Authority(it) } ?: this.defaultAuthority
         this.createApiDef = CrudApiDef(authorityToUse, contextDto, withEntityForm)
-        return this
 
     }
 
@@ -38,11 +42,10 @@ class CrudApiDefsBuilder(
         authority: String? = null,
         contextDto: RequestDtoDef? = null,
         withEntityForm: Boolean = false
-    ): CrudApiDefsBuilder {
+    ) {
 
         val authorityToUse = authority?.let { Authority(it) } ?: this.defaultAuthority
         this.updateApiDef = CrudApiDef(authorityToUse, contextDto, withEntityForm)
-        return this
 
     }
 
@@ -50,11 +53,17 @@ class CrudApiDefsBuilder(
     fun delete(
         authority: String? = null,
         contextDto: RequestDtoDef? = null
-    ): CrudApiDefsBuilder {
+    ) {
 
         val authorityToUse = authority?.let { Authority(it) } ?: this.defaultAuthority
         this.deleteApiDef = CrudApiDef(authorityToUse, contextDto, withEntityForm = false)
-        return this
+
+    }
+
+
+    fun customCrudService(crudServiceFqcn: String) {
+
+        this.customCrudServiceFqcn = CustomCrudServiceFqcn(Fqcn.valueOf(crudServiceFqcn))
 
     }
 
@@ -65,7 +74,8 @@ class CrudApiDefsBuilder(
             this.createApiDef,
             this.updateApiDef,
             this.deleteApiDef,
-            superclassEntityDef?.entityCrudApiDef
+            superclassEntityDef?.entityCrudApiDef,
+            this.customCrudServiceFqcn
         )
 
     }

@@ -1,16 +1,26 @@
 package org.maiaframework.gen.spec.definition
 
+
 class CrudApiDefs(
     val createApiDef: CrudApiDef?,
     val updateApiDef: CrudApiDef?,
     val deleteApiDef: CrudApiDef?,
-    val superclassCrudApiDef: EntityCrudApiDef?
+    val superclassCrudApiDef: EntityCrudApiDef?,
+    val customCrudServiceFqcn: CustomCrudServiceFqcn?
 ) {
+
 
     companion object {
 
-        val EMPTY = CrudApiDefs(null, null, null, superclassCrudApiDef = null)
+        val EMPTY = CrudApiDefs(
+            null,
+            null,
+            null,
+            superclassCrudApiDef = null,
+            customCrudServiceFqcn = null
+        )
 
     }
+
 
 }
