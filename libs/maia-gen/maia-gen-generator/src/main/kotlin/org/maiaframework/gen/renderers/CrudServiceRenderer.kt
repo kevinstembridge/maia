@@ -10,13 +10,11 @@ import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
-import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
 import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
-import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
@@ -92,7 +90,7 @@ class CrudServiceRenderer(
     override fun renderFunctions() {
 
         `render create by API`()
-        `render create`()
+        `render function create`()
         `render update function`()
         `render inline update functions`()
         `render setFields function`()
@@ -133,13 +131,8 @@ class CrudServiceRenderer(
 
         blankLine()
         appendLine("        val entity: ${this.entityDef.entityUqcn} = buildEntity(createDto${currentUserOrBlank})")
-
-        if (createApiDef.crudApiDef.context != null) {
-            appendLine("        return create(entity, createDto.context)")
-        } else {
-            appendLine("        return create(entity)")
-        }
-
+        blankLine()
+        appendLine("        return create(entity)")
         blankLine()
         appendLine("    }")
 
@@ -149,31 +142,17 @@ class CrudServiceRenderer(
 
 
 
-    private fun `render create`() {
-
-        val createApiDef = this.entityDef.entityCrudApiDef?.createApiDef
-
-        val createContext = createApiDef?.crudApiDef?.context
+    private fun `render function create`() {
 
         blankLine()
         blankLine()
-
-        if (createContext != null) {
-            appendLine("    fun create(entity: ${this.entityDef.entityUqcn}, context: ${createContext.uqcn}): ${this.entityDef.entityUqcn} {")
-        } else {
-            appendLine("    fun create(entity: ${this.entityDef.entityUqcn}): ${this.entityDef.entityUqcn} {")
-        }
-
+        appendLine("    fun create(entity: ${this.entityDef.entityUqcn}): ${this.entityDef.entityUqcn} {")
         blankLine()
         appendLine("        this.entityRepo.insert(entity)")
 
         if (this.entityDef.crudDef.withCrudListener.value) {
 
-            if (createContext == null) {
-                appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityCreated(entity)")
-            } else {
-                appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityCreated(entity, context)")
-            }
+            appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityCreated(entity)")
 
         }
 
