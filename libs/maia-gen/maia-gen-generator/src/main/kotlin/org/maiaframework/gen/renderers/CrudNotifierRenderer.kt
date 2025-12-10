@@ -48,21 +48,25 @@ class CrudNotifierRenderer(
 
         addImportFor(Fqcns.SPRING_APPLICATION_CONTEXT)
 
-        blankLine()
-        blankLine()
-        appendLine("    private lateinit var applicationContext: ApplicationContext")
+        append("""
+            |
+            |
+            |    private lateinit var applicationContext: ApplicationContext
+            |""".trimMargin())
 
         renderFieldForCrudListeners(entityDef)
 
-        blankLine()
-        blankLine()
-        appendLine("    override fun setApplicationContext(applicationContext: ApplicationContext) {")
-        appendLine("        this.applicationContext = applicationContext")
-        appendLine("    }")
-        blankLine()
-        blankLine()
-        appendLine("    override fun afterPropertiesSet() {")
-        blankLine()
+        append("""
+            |
+            |
+            |    override fun setApplicationContext(applicationContext: ApplicationContext) {
+            |        this.applicationContext = applicationContext
+            |    }
+            |
+            |
+            |    override fun afterPropertiesSet() {
+            |
+            |""".trimMargin())
 
         renderAssignmentOfCrudListeners(entityDef)
 
@@ -77,9 +81,11 @@ class CrudNotifierRenderer(
         if (someEntityDef.crudDef.withCrudListener.value) {
             addImportFor(someEntityDef.crudListenerClassDef.fqcn)
             val listenersCollectionFieldName = listenersCollectionFieldName(someEntityDef)
+
             blankLine()
             blankLine()
             appendLine("    private lateinit var ${listenersCollectionFieldName}: Map<String, ${someEntityDef.crudListenerClassDef.uqcn}>")
+
         }
 
         someEntityDef.superclassEntityDef?.let { superEntityDef ->
