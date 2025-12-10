@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.domain.DomainId
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
@@ -117,18 +116,9 @@ class CrudNotifierRenderer(
 
     private fun `render function onEntityCreated`() {
 
-        val createApiDef = this.entityDef.entityCrudApiDef?.createApiDef
-
-        val createContext = createApiDef?.crudApiDef?.context
-
         blankLine()
         blankLine()
-
-        if (createContext != null) {
-            appendLine("    fun onEntityCreated(entity: ${this.entityDef.entityUqcn}, context: ${createContext.uqcn}) {")
-        } else {
-            appendLine("    fun onEntityCreated(entity: ${this.entityDef.entityUqcn}) {")
-        }
+        appendLine("    fun onEntityCreated(entity: ${this.entityDef.entityUqcn}) {")
 
         if (this.entityDef.crudDef.withCrudListener.value) {
             renderNotificationOfCreateListeners(this.entityDef)
@@ -172,13 +162,8 @@ class CrudNotifierRenderer(
 
         blankLine()
         appendLine("        val entity: ${this.entityDef.entityUqcn} = buildEntity(createDto${currentUserOrBlank})")
-
-        if (createApiDef.crudApiDef.context != null) {
-            appendLine("        return create(entity, createDto.context)")
-        } else {
-            appendLine("        return create(entity)")
-        }
-
+        blankLine()
+        appendLine("        return create(entity)")
         blankLine()
         appendLine("    }")
 
@@ -189,17 +174,11 @@ class CrudNotifierRenderer(
 
     private fun renderNotificationOfCreateListeners(someEntityDef: EntityDef) {
 
-        someEntityDef.entityCrudApiDef?.createApiDef?.let { createApiDef ->
+        someEntityDef.entityCrudApiDef?.createApiDef?.let { _ ->
 
             blankLine()
             appendLine("        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
-
-            if (createApiDef.crudApiDef.context != null) {
-                appendLine("            listener.on${someEntityDef.entityUqcn}Created(entity, context)")
-            } else {
-                appendLine("            listener.on${someEntityDef.entityUqcn}Created(entity)")
-            }
-
+            appendLine("            listener.on${someEntityDef.entityUqcn}Created(entity)")
             appendLine("        }")
 
         }

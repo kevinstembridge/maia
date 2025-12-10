@@ -20,20 +20,13 @@ class CrudListenerRenderer(
 
     private fun `render function onCreate`() {
 
-        this.entityCrudApiDef.createApiDef?.let { apiDef ->
+        this.entityCrudApiDef.createApiDef?.let { _ ->
 
-            val contextDtoDef = apiDef.crudApiDef.context
             val entityUqcn = this.entityCrudApiDef.entityDef.entityUqcn
 
             blankLine()
             blankLine()
-
-            if (contextDtoDef != null) {
-                addImportFor(contextDtoDef.fqcn)
-                appendLine("    fun on${entityUqcn}Created(entity: $entityUqcn, context: ${contextDtoDef.uqcn}?)")
-            } else {
-                appendLine("    fun on${entityUqcn}Created(entity: $entityUqcn)")
-            }
+            appendLine("    fun on${entityUqcn}Created(entity: $entityUqcn)")
 
         }
 

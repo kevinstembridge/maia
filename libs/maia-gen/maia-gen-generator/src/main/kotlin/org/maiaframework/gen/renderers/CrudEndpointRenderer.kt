@@ -21,7 +21,9 @@ class CrudEndpointRenderer(
 
     init {
 
-        val crudServiceFqcn = this.entityDef.crudServiceClassDef.fqcn
+        val crudServiceFqcn = this.entityDef.crudDef.crudApiDefs.customCrudServiceFqcn?.fqcn
+            ?: this.entityDef.crudServiceClassDef.fqcn
+
         addConstructorArg(aClassField("crudService", crudServiceFqcn).build())
 
         if (this.entityDef.uniqueIndexDefs.any { it.withExistsEndpoint }) {
