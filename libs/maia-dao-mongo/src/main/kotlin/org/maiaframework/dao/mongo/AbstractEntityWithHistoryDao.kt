@@ -13,6 +13,7 @@ import org.maiaframework.domain.DomainId
 import org.bson.conversions.Bson
 import org.springframework.stereotype.Repository
 
+@Deprecated("The functionality provided by this class is now rendered directly into the generated DAOs")
 @Repository
 abstract class AbstractEntityWithHistoryDao<ENTITY : AbstractVersionedEntity, HISTORY_ENTITY: AbstractHistoryEntity>
 protected constructor(
