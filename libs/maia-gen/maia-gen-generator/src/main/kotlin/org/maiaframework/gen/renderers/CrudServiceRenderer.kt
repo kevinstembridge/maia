@@ -244,6 +244,11 @@ class CrudServiceRenderer(
             appendLine("        val lastModifiedTimestampUtc = createdTimestampUtc")
         }
 
+        if (this.entityDef.hasLifecycleStateField) {
+            addImportFor(Fqcns.MAIA_LIFECYCLE_STATE)
+            appendLine("        val lifecycleState = LifecycleState.ACTIVE")
+        }
+
         if (this.entityDef.hasVersionField) {
             appendLine("        val version = 1L")
         }
