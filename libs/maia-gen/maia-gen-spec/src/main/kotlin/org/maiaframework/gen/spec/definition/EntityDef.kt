@@ -363,6 +363,7 @@ class EntityDef(
             .filterNot(byName(ClassFieldName.lastModifiedById))
             .filterNot(byName(ClassFieldName.lastModifiedByUsername))
             .filterNot(byName(ClassFieldName.lastModifiedTimestampUtc))
+            .filterNot(byName(ClassFieldName.lifecycleState))
             .filterNot(byName(ClassFieldName.version))
             .toList()
 

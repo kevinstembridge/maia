@@ -33,6 +33,7 @@ import org.maiaframework.gen.spec.definition.FormModelDef
 import org.maiaframework.gen.spec.definition.HazelcastDtoDef
 import org.maiaframework.gen.spec.definition.HtmlFormDef
 import org.maiaframework.gen.spec.definition.ElasticIndexBaseName
+import org.maiaframework.gen.spec.definition.EnumDefs
 import org.maiaframework.gen.spec.definition.IntTypeDef
 import org.maiaframework.gen.spec.definition.LongTypeDef
 import org.maiaframework.gen.spec.definition.ModelDef
@@ -120,7 +121,7 @@ abstract class AbstractSpec protected constructor(
     private val entityCreateHtmlFormDefs = mutableListOf<EntityHtmlFormDef>()
     private val requestDtoHtmlFormDefs = mutableListOf<HtmlFormDef>()
     private val angularFormDefs = mutableListOf<AngularFormDef>()
-    private val enumDefs = mutableListOf<EnumDef>()
+    private val enumDefs = mutableListOf<EnumDef>().also { it.add(EnumDefs.LIFECYCLE_STATE_ENUM_DEF) }
     private val stringTypeDefs = mutableListOf<StringTypeDef>()
     private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
     private val stringValueClassDefs = mutableListOf<StringValueClassDef>()
