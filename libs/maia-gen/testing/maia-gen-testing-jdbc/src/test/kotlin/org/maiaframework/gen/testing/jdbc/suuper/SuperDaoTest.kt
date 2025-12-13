@@ -63,4 +63,22 @@ class SuperDaoTest : AbstractJdbcTest() {
     }
 
 
+    @Test
+    fun `test upsert by a unique field`() {
+
+        val subOneEntity1 = SubOneEntityTestBuilder().build()
+        this.subOneDao.insert(subOneEntity1)
+
+        val subOneEntity2 = SubOneEntityTestBuilder(someUniqueString = subOneEntity1.someUniqueString).build()
+        this.subOneDao.upsertBySomeUniqueString(subOneEntity2)
+
+        val sub2Exists = this.subOneDao.existsBySomeUniqueString(subOneEntity2.someUniqueString)
+        assertThat(sub2Exists).isFalse()
+
+        val updatedSubOne = this.subOneDao.findOneBySomeUniqueString(subOneEntity2.someUniqueString)
+        assertThat(updatedSubOne.id).isEqualTo(subOneEntity1.id)
+
+    }
+
+
 }

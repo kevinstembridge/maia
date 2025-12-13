@@ -357,6 +357,7 @@ class SubTwoDao(
         val persistedEntity = jdbcOps.execute(
             """
             insert into testing.super (
+                type_discriminator,
                 created_by_id,
                 created_timestamp_utc,
                 id,
@@ -365,6 +366,7 @@ class SubTwoDao(
                 some_int,
                 some_unique_string
             ) values (
+                'SUB2',
                 :createdById,
                 :createdTimestampUtc,
                 :id,
