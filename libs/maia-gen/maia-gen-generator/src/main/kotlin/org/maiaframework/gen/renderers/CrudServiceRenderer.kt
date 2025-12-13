@@ -187,7 +187,7 @@ class CrudServiceRenderer(
             append("""
                 |
                 |
-                |    private fun buildEntity(createDto: ${apiDef.requestDtoDef.uqcn}): ${this.entityDef.entityUqcn} {")
+                |    private fun buildEntity(createDto: ${apiDef.requestDtoDef.uqcn}): ${this.entityDef.entityUqcn} {
                 |
                 |""".trimMargin()
             )

@@ -1,11 +1,12 @@
 package org.maiaframework.gen.testing.jdbc.party
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.LifecycleState
 import org.maiaframework.domain.auth.EncryptedPassword
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
-import org.maiaframework.gen.testing.jdbc.sample.user.UserEntity
+import org.maiaframework.gen.testing.sample.user.UserEntity
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyDomainId
 import org.maiaframework.testing.domain.Anys.anyEmailAddress
@@ -24,7 +25,9 @@ data class UserEntityTestBuilder(
     val lastModifiedById: DomainId = createdById,
     val lastModifiedTimestampUtc: Instant = createdTimestampUtc,
     val lastName: LastName = anyLastName(),
-    val someStrings: List<String> = emptyList()
+    val lifecycleState: LifecycleState = LifecycleState.ACTIVE,
+    val someStrings: List<String> = emptyList(),
+    val version: Long = 1L
 ) {
 
 
@@ -41,7 +44,9 @@ data class UserEntityTestBuilder(
             id,
             lastModifiedTimestampUtc,
             lastName,
-            someStrings
+            lifecycleState,
+            someStrings,
+            version
         )
 
     }

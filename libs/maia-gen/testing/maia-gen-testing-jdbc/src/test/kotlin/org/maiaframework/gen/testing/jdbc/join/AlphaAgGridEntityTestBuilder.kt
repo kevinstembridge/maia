@@ -1,7 +1,7 @@
 package org.maiaframework.gen.testing.jdbc.join
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.gen.testing.jdbc.sample.join.AlphaAgGridEntity
+import org.maiaframework.gen.testing.sample.join.AlphaAgGridEntity
 import org.maiaframework.testing.domain.Anys.anyInstant
 import org.maiaframework.testing.domain.Anys.anyInt
 import org.maiaframework.testing.domain.Anys.anyString

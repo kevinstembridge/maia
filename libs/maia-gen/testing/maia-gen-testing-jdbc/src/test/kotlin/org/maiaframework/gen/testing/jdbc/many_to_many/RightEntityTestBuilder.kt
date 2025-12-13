@@ -1,8 +1,8 @@
 package org.maiaframework.gen.testing.jdbc.many_to_many
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.gen.testing.jdbc.sample.many_to_many.LeftEntity
-import org.maiaframework.gen.testing.jdbc.sample.many_to_many.RightEntity
+import org.maiaframework.gen.testing.sample.many_to_many.LeftEntity
+import org.maiaframework.gen.testing.sample.many_to_many.RightEntity
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyInstant
 import org.maiaframework.testing.domain.Anys.anyInt

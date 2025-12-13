@@ -1,7 +1,7 @@
 package org.maiaframework.gen.testing.jdbc.effective_dated
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.gen.testing.jdbc.sample.EffectiveTimestampEntity
+import org.maiaframework.gen.testing.sample.EffectiveTimestampEntity
 import org.maiaframework.testing.domain.Anys
 import java.time.Instant
 import java.time.Period

@@ -1,7 +1,7 @@
 package org.maiaframework.gen.testing.jdbc.unmodifiable
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.gen.testing.jdbc.sample.UnmodifiableEntity
+import org.maiaframework.gen.testing.sample.UnmodifiableEntity
 import org.maiaframework.testing.domain.Anys.anyInt
 import java.time.Instant
 

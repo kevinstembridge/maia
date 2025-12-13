@@ -2,17 +2,17 @@ package org.maiaframework.gen.testing.jdbc.history
 
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubOneDao
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubOneEntity
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubOneEntityFilters
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubOneEntityUpdater
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubOneHistoryDao
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubOneHistoryEntity
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubTwoDao
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubTwoEntity
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubTwoHistoryDao
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubTwoHistoryEntity
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySuperHistoryDao
+import org.maiaframework.gen.testing.sample.history.HistorySubOneDao
+import org.maiaframework.gen.testing.sample.history.HistorySubOneEntity
+import org.maiaframework.gen.testing.sample.history.HistorySubOneEntityFilters
+import org.maiaframework.gen.testing.sample.history.HistorySubOneEntityUpdater
+import org.maiaframework.gen.testing.sample.history.HistorySubOneHistoryDao
+import org.maiaframework.gen.testing.sample.history.HistorySubOneHistoryEntity
+import org.maiaframework.gen.testing.sample.history.HistorySubTwoDao
+import org.maiaframework.gen.testing.sample.history.HistorySubTwoEntity
+import org.maiaframework.gen.testing.sample.history.HistorySubTwoHistoryDao
+import org.maiaframework.gen.testing.sample.history.HistorySubTwoHistoryEntity
+import org.maiaframework.gen.testing.sample.history.HistorySuperHistoryDao
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -62,7 +62,7 @@ class HistorySuperDaoTest: AbstractJdbcTest() {
         val someStringUpdated = actualEntityV1.someString + "_updated"
         val updater = HistorySubOneEntityUpdater.forPrimaryKey(actualEntityV1.id, actualEntityV1.version) {
             someString(someStringUpdated)
-        }.build()
+        }
         this.historySubOneDao.setFields(updater)
 
         // THEN we can no longer find version 1 of the entity

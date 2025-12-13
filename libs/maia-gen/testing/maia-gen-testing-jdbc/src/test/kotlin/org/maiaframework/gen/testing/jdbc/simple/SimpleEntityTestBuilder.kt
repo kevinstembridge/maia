@@ -2,12 +2,12 @@ package org.maiaframework.gen.testing.jdbc.simple
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.gen.sample.types.*
-import org.maiaframework.gen.testing.jdbc.sample.SimpleResponseDto
-import org.maiaframework.gen.testing.jdbc.sample.simple.SimpleEntity
-import org.maiaframework.gen.testing.jdbc.sample.simple.SomeEnum
-import org.maiaframework.gen.testing.jdbc.sample.types.SomeBooleanType
-import org.maiaframework.gen.testing.jdbc.sample.types.SomeIntType
-import org.maiaframework.gen.testing.jdbc.sample.types.SomeLongType
+import org.maiaframework.gen.testing.sample.SimpleResponseDto
+import org.maiaframework.gen.testing.sample.simple.SimpleEntity
+import org.maiaframework.gen.testing.sample.simple.SomeEnum
+import org.maiaframework.gen.testing.sample.types.SomeBooleanType
+import org.maiaframework.gen.testing.sample.types.SomeIntType
+import org.maiaframework.gen.testing.sample.types.SomeLongType
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyAlphaNumeric
 import org.maiaframework.testing.domain.Anys.anyBoolean

@@ -3,10 +3,10 @@ package org.maiaframework.gen.testing.jdbc.searchable
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
 import org.maiaframework.gen.testing.jdbc.join.AlphaEntityTestBuilder
 import org.maiaframework.gen.testing.jdbc.join.BravoEntityTestBuilder
-import org.maiaframework.gen.testing.jdbc.sample.join.AlphaDao
-import org.maiaframework.gen.testing.jdbc.sample.join.AlphaEntity
-import org.maiaframework.gen.testing.jdbc.sample.join.BravoDao
-import org.maiaframework.gen.testing.jdbc.sample.join.BravoEntity
+import org.maiaframework.gen.testing.sample.join.AlphaDao
+import org.maiaframework.gen.testing.sample.join.AlphaEntity
+import org.maiaframework.gen.testing.sample.join.BravoDao
+import org.maiaframework.gen.testing.sample.join.BravoEntity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled

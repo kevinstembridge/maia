@@ -3,10 +3,10 @@ package org.maiaframework.gen.testing.jdbc.searchable
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
 import org.maiaframework.gen.testing.jdbc.join.AlphaAgGridEntityTestBuilder
 import org.maiaframework.gen.testing.jdbc.join.BravoAgGridEntityTestBuilder
-import org.maiaframework.gen.testing.jdbc.sample.join.AlphaAgGridDao
-import org.maiaframework.gen.testing.jdbc.sample.join.AlphaAgGridEntity
-import org.maiaframework.gen.testing.jdbc.sample.join.BravoAgGridDao
-import org.maiaframework.gen.testing.jdbc.sample.join.BravoAgGridEntity
+import org.maiaframework.gen.testing.sample.join.AlphaAgGridDao
+import org.maiaframework.gen.testing.sample.join.AlphaAgGridEntity
+import org.maiaframework.gen.testing.sample.join.BravoAgGridDao
+import org.maiaframework.gen.testing.sample.join.BravoAgGridEntity
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

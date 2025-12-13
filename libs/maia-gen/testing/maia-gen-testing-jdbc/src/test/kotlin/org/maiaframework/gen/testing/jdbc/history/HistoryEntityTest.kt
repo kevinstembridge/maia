@@ -2,12 +2,12 @@ package org.maiaframework.gen.testing.jdbc.history
 
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySampleDao
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySampleEntity
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySampleEntityFilters
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySampleEntityUpdater
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySampleHistoryDao
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySampleHistoryEntity
+import org.maiaframework.gen.testing.sample.history.HistorySampleDao
+import org.maiaframework.gen.testing.sample.history.HistorySampleEntity
+import org.maiaframework.gen.testing.sample.history.HistorySampleEntityFilters
+import org.maiaframework.gen.testing.sample.history.HistorySampleEntityUpdater
+import org.maiaframework.gen.testing.sample.history.HistorySampleHistoryDao
+import org.maiaframework.gen.testing.sample.history.HistorySampleHistoryEntity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -47,7 +47,7 @@ class HistoryEntityTest: AbstractJdbcTest() {
         val updater = HistorySampleEntityUpdater.forPrimaryKey(actualEntityV1.id, actualEntityV1.version) {
             someInt(someIntUpdated)
             someString(someStringUpdated)
-        }.build()
+        }
         this.dao.setFields(updater)
 
         // THEN we can no longer find version 1 of the entity

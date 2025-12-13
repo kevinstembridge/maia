@@ -3,8 +3,8 @@ package org.maiaframework.gen.testing.jdbc.simple
 import org.maiaframework.domain.DomainId
 import org.maiaframework.gen.sample.types.SomeStringType
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
-import org.maiaframework.gen.testing.jdbc.sample.simple.*
-import org.maiaframework.gen.testing.jdbc.sample.types.SomeIntType
+import org.maiaframework.gen.testing.sample.simple.*
+import org.maiaframework.gen.testing.sample.types.SomeIntType
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.testing.domain.Anys.anyAlphaNumeric
 import org.maiaframework.testing.domain.Anys.anyBoolean
@@ -451,7 +451,7 @@ class SimpleDaoTest : AbstractJdbcTest() {
             someInstantModifiable(modifiedInstant)
             someStringModifiable(modifiedString)
             someInstantModifiableNullable(null)
-        }.build()
+        }
 
         this.simpleDao.setFields(entityUpdater)
 

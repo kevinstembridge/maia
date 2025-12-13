@@ -4,6 +4,6 @@ enum class LifecycleState {
 
     ACTIVE,
 
-    DEACTIVATED
+    INACTIVE
 
 }

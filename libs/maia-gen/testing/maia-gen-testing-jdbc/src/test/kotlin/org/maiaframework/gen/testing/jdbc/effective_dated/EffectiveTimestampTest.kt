@@ -1,8 +1,8 @@
 package org.maiaframework.gen.testing.jdbc.effective_dated
 
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
-import org.maiaframework.gen.testing.jdbc.sample.EffectiveTimestampDao
-import org.maiaframework.gen.testing.jdbc.sample.EffectiveTimestampEntity
+import org.maiaframework.gen.testing.sample.EffectiveTimestampDao
+import org.maiaframework.gen.testing.sample.EffectiveTimestampEntity
 import org.maiaframework.testing.domain.Anys.anyFutureInstantWithin
 import org.maiaframework.testing.domain.Anys.anyPastInstantWithin
 import org.maiaframework.testing.domain.Anys.anyString

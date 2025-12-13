@@ -1,9 +1,9 @@
 package org.maiaframework.gen.testing.jdbc.suuper
 
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
-import org.maiaframework.gen.testing.jdbc.sample.suuper.SubOneDao
-import org.maiaframework.gen.testing.jdbc.sample.suuper.SubOneEntityMeta
-import org.maiaframework.gen.testing.jdbc.sample.suuper.SubTwoDao
+import org.maiaframework.gen.testing.sample.suuper.SubOneDao
+import org.maiaframework.gen.testing.sample.suuper.SubOneEntityMeta
+import org.maiaframework.gen.testing.sample.suuper.SubTwoDao
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.testing.domain.Anys.anyString
 import org.assertj.core.api.Assertions.assertThat

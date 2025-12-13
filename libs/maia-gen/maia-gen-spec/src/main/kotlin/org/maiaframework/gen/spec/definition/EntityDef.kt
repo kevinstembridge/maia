@@ -70,7 +70,7 @@ class EntityDef(
     private val providedIndexDefs: List<IndexDef>,
     val crudDef: CrudDef,
     val withVersionHistory: WithVersionHistory,
-    val versioned: Versioned,
+    versioned: Versioned,
     val isHistoryEntity: Boolean,
     /**
      * If an entity is referenced by a foreign key field in some other entity, then when
@@ -161,6 +161,9 @@ class EntityDef(
         aClassDef(packageName.uqcn("${entityBaseName}ForeignKeyReferencesService"))
             .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
             .build()
+
+
+    val versioned: Versioned = superclassEntityDef?.versioned ?: versioned
 
 
     val daoFqcn: Fqcn = packageName.uqcn("${entityBaseName}Dao")

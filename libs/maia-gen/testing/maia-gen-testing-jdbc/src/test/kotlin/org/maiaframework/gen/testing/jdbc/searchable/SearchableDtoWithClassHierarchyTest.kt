@@ -1,14 +1,13 @@
 package org.maiaframework.gen.testing.jdbc.searchable
 
-import org.maiaframework.json.JsonFacade
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
 import org.maiaframework.gen.testing.jdbc.party.OrgEntityTestBuilder
 import org.maiaframework.gen.testing.jdbc.party.PersonEntityTestBuilder
 import org.maiaframework.gen.testing.jdbc.party.UserEntityTestBuilder
-import org.maiaframework.gen.testing.jdbc.sample.party.PartyDao
-import org.maiaframework.gen.testing.jdbc.sample.party.PartyEntity
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.maiaframework.gen.testing.sample.party.PartyDao
+import org.maiaframework.gen.testing.sample.party.PartyEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user

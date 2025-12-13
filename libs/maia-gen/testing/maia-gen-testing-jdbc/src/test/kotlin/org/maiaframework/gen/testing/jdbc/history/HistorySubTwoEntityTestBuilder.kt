@@ -1,8 +1,8 @@
 package org.maiaframework.gen.testing.jdbc.history
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubOneEntity
-import org.maiaframework.gen.testing.jdbc.sample.history.HistorySubTwoEntity
+import org.maiaframework.gen.testing.sample.history.HistorySubOneEntity
+import org.maiaframework.gen.testing.sample.history.HistorySubTwoEntity
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyInstant
 import org.maiaframework.testing.domain.Anys.anyIntOfLength

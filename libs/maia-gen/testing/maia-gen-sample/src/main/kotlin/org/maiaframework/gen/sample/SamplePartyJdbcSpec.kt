@@ -56,7 +56,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
     }
 
 
-    val someIntTypeDef = intType("org.maiaframework.gen.testing.jdbc.sample.types", "SomeIntType")
+    val someIntTypeDef = intType("org.maiaframework.gen.testing.sample.types", "SomeIntType")
 
 
     val someProvidedIntTypeDef = intType("org.maiaframework.gen.sample.types.SomeProvidedIntType") {
@@ -64,7 +64,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
     }
 
 
-    val someLongTypeDef = longType("org.maiaframework.gen.testing.jdbc.sample.types", "SomeLongType")
+    val someLongTypeDef = longType("org.maiaframework.gen.testing.sample.types", "SomeLongType")
 
 
     val someProvidedLongTypeDef = longType("org.maiaframework.gen.sample.types.SomeProvidedLongType") {
@@ -72,7 +72,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
     }
 
 
-    val someBooleanTypeDef = booleanType("org.maiaframework.gen.testing.jdbc.sample.types", "SomeBooleanType")
+    val someBooleanTypeDef = booleanType("org.maiaframework.gen.testing.sample.types", "SomeBooleanType")
 
 
     val someProvidedBooleanTypeDef = booleanType("org.maiaframework.gen.sample.types.SomeProvidedBooleanType") {
@@ -81,7 +81,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val someDataClass = dataClass(
-        "org.maiaframework.gen.testing.jdbc.sample.dataclasses",
+        "org.maiaframework.gen.testing.sample.dataclasses",
         "SomeDataClass"
     ) {
         field("someStringField", FieldTypes.string)
@@ -89,7 +89,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
     }
 
 
-    val simpleResponseDto = simpleResponseDto("org.maiaframework.gen.testing.jdbc.sample", "Simple") {
+    val simpleResponseDto = simpleResponseDto("org.maiaframework.gen.testing.sample", "Simple") {
         field("someString", FieldTypes.string)
         field("someInt", FieldTypes.int) { nullable() }
         field("someBoolean", FieldTypes.boolean) { nullable() }
@@ -97,15 +97,16 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val partyEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.party",
+        "org.maiaframework.gen.testing.sample.party",
         "Party",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        idAndNameFieldName = "displayName"
+        idAndNameFieldName = "displayName",
+        versioned = true,
+        recordVersionHistory = true,
     ) {
         isAbstract = true
         tableName(name = "party", viewName = "v_party")
-        typeDiscriminator("PA")
         field("emailAddress", emailAddressStringType) {
             withEmailConstraint()
         }
@@ -118,7 +119,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val orgEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.org",
+        "org.maiaframework.gen.testing.sample.org",
         "Organization"
     ) {
         superclass(partyEntityDef)
@@ -132,7 +133,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val orgSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample",
+        "org.maiaframework.gen.testing.sample",
         "Org",
         entityDef = orgEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -146,11 +147,11 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val personEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.person",
+        "org.maiaframework.gen.testing.sample.person",
         "Person"
     ) {
         superclass(partyEntityDef)
-        typeDiscriminator("PE")
+        typeDiscriminator("PER")
         field("firstName", firstNameStringTypeDef) {
             nullable()
             editableByUser()
@@ -164,7 +165,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val personSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample",
+        "org.maiaframework.gen.testing.sample",
         "Person",
         entityDef = personEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -179,7 +180,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val userEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.user",
+        "org.maiaframework.gen.testing.sample.user",
         "User"
     ) {
         superclass(personEntityDef)
@@ -200,7 +201,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val userSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample",
+        "org.maiaframework.gen.testing.sample",
         "User",
         entityDef = userEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -216,7 +217,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val userGroupEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.user",
+        "org.maiaframework.gen.testing.sample.user",
         "UserGroup",
         recordVersionHistory = true
     ) {
@@ -240,7 +241,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val orgUserGroupEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.org",
+        "org.maiaframework.gen.testing.sample.org",
         "OrgUserGroup",
         recordVersionHistory = true
     ) {
@@ -252,7 +253,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val userGroupMembershipEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.user",
+        "org.maiaframework.gen.testing.sample.user",
         "OrgUserGroupMembership",
         recordVersionHistory = true
     ) {
@@ -271,7 +272,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val orgUserGroupMembershipSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample.org",
+        "org.maiaframework.gen.testing.sample.org",
         "OrgUserGroupMembership",
         userGroupMembershipEntityDef,
         withGeneratedDto = WithGeneratedDto.TRUE
@@ -296,7 +297,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
 
 
     val personSummarySearchableDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample.person",
+        "org.maiaframework.gen.testing.sample.person",
         "PersonSummary",
         entityDef = personEntityDef,
         withGeneratedDto = WithGeneratedDto.TRUE,

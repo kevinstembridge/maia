@@ -23,7 +23,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     private val partySpec = SamplePartyJdbcSpec()
 
 
-    val someEnumDef = enumDef("org.maiaframework.gen.testing.jdbc.sample.simple.SomeEnum") {
+    val someEnumDef = enumDef("org.maiaframework.gen.testing.sample.simple.SomeEnum") {
         value("OK")
         value("NOT_OK")
     }
@@ -47,7 +47,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     }
 
 
-    val someIntTypeDef = intType("org.maiaframework.gen.testing.jdbc.sample.types", "SomeIntType")
+    val someIntTypeDef = intType("org.maiaframework.gen.testing.sample.types", "SomeIntType")
 
 
     val someProvidedIntTypeDef = intType("org.maiaframework.gen.sample.types.SomeProvidedIntType") {
@@ -55,7 +55,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     }
 
 
-    val someLongTypeDef = longType("org.maiaframework.gen.testing.jdbc.sample.types", "SomeLongType")
+    val someLongTypeDef = longType("org.maiaframework.gen.testing.sample.types", "SomeLongType")
 
 
     val someProvidedLongTypeDef = longType("org.maiaframework.gen.sample.types.SomeProvidedLongType") {
@@ -63,7 +63,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     }
 
 
-    val someBooleanTypeDef = booleanType("org.maiaframework.gen.testing.jdbc.sample.types", "SomeBooleanType")
+    val someBooleanTypeDef = booleanType("org.maiaframework.gen.testing.sample.types", "SomeBooleanType")
 
 
     val someProvidedBooleanTypeDef = booleanType("org.maiaframework.gen.sample.types.SomeProvidedBooleanType") {
@@ -72,7 +72,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val someDataClass = dataClass(
-        "org.maiaframework.gen.testing.jdbc.sample.dataclasses",
+        "org.maiaframework.gen.testing.sample.dataclasses",
         "SomeDataClass"
     ) {
         field("someStringField", FieldTypes.string)
@@ -80,7 +80,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     }
 
 
-    val simpleResponseDto = simpleResponseDto("org.maiaframework.gen.testing.jdbc.sample", "Simple") {
+    val simpleResponseDto = simpleResponseDto("org.maiaframework.gen.testing.sample", "Simple") {
         field("someString", FieldTypes.string)
         field("someInt", FieldTypes.int) { nullable() }
         field("someBoolean", FieldTypes.boolean) { nullable() }
@@ -88,7 +88,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val nullableEntityFieldsEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.nullable",
+        "org.maiaframework.gen.testing.sample.nullable",
         "NullableFields"
     ) {
         field("someString", FieldTypes.string) {
@@ -146,7 +146,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val effectiveTimestampEntity = entity(
-        "org.maiaframework.gen.testing.jdbc.sample",
+        "org.maiaframework.gen.testing.sample",
         "EffectiveTimestamp",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
@@ -162,7 +162,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val simpleEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.simple",
+        "org.maiaframework.gen.testing.sample.simple",
         "Simple",
         deletable = Deletable.TRUE,
         allowFindAll = AllowFindAll.TRUE,
@@ -297,7 +297,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val ttlEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.ttl",
+        "org.maiaframework.gen.testing.sample.ttl",
         "Ttl"
     ) {
         field("createdAt", FieldTypes.instant)
@@ -308,7 +308,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val historySampleEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.history",
+        "org.maiaframework.gen.testing.sample.history",
         "HistorySample",
         recordVersionHistory = true,
         deletable = Deletable.TRUE
@@ -331,7 +331,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val superEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.suuper",
+        "org.maiaframework.gen.testing.sample.suuper",
         "Super",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
@@ -344,7 +344,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val subOneEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.suuper",
+        "org.maiaframework.gen.testing.sample.suuper",
         "SubOne",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
@@ -364,7 +364,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val subTwoEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.suuper",
+        "org.maiaframework.gen.testing.sample.suuper",
         "SubTwo",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
@@ -383,7 +383,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val historySuperEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.history",
+        "org.maiaframework.gen.testing.sample.history",
         "HistorySuper",
         recordVersionHistory = true,
         deletable = Deletable.TRUE
@@ -396,7 +396,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val historySubOneEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.history",
+        "org.maiaframework.gen.testing.sample.history",
         "HistorySubOne",
         recordVersionHistory = true,
         deletable = Deletable.TRUE
@@ -411,7 +411,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val historySubTwoEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.history",
+        "org.maiaframework.gen.testing.sample.history",
         "HistorySubTwo",
         recordVersionHistory = true,
         deletable = Deletable.TRUE
@@ -425,7 +425,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val someVersionedEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.versioned",
+        "org.maiaframework.gen.testing.sample.versioned",
         "SomeVersioned",
         versioned = true
     ) {
@@ -444,7 +444,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val withOptionalIndexFieldEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample",
+        "org.maiaframework.gen.testing.sample",
         "WithOptionalIndexField"
     ) {
         field("someOptionalString1", someStringTypeDef) {
@@ -469,7 +469,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val verySimpleEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.simple",
+        "org.maiaframework.gen.testing.sample.simple",
         "VerySimple"
     ) {
         field("someString", FieldTypes.string) {
@@ -478,7 +478,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     }
 
 
-//        searchableEntityDef("org.maiaframework.gen.testing.jdbc.sample", "SomeCaseSensitivity", entityDef = someCaseSensitivityEntityDef, generateDto = WithGeneratedDto.TRUE)
+//        searchableEntityDef("org.maiaframework.gen.testing.sample", "SomeCaseSensitivity", entityDef = someCaseSensitivityEntityDef, generateDto = WithGeneratedDto.TRUE)
 //                .withPreAuthorize("hasAuthority('ROLE_ADMIN')")
 //                .field("id").and()
 //                .field("caseSensitiveString", caseSensitive = true).and()
@@ -488,13 +488,13 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     // TODO uncomment and implement
-//    val verySimpleSearchableDef = searchableEntityDef("org.maiaframework.gen.testing.jdbc.sample.simple", "VerySimple", entityDef = verySimpleEntityDef, generateDto = WithGeneratedDto.TRUE)
+//    val verySimpleSearchableDef = searchableEntityDef("org.maiaframework.gen.testing.sample.simple", "VerySimple", entityDef = verySimpleEntityDef, generateDto = WithGeneratedDto.TRUE)
 //            .field("someString").and()
 //            .build()
 
 
     val foreignKeyParentEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample",
+        "org.maiaframework.gen.testing.sample",
         "ForeignKeyParent"
     ) {
         field("someString", FieldTypes.string) {
@@ -505,7 +505,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val foreignKeyEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample",
+        "org.maiaframework.gen.testing.sample",
         "ForeignKeyChild"
     ) {
         field("parentId", FieldTypes.domainId)
@@ -516,7 +516,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     // TODO uncomment and implement
-//    val foreignKeyChildSummarySearchableDef = searchableEntityDef("org.maiaframework.gen.testing.jdbc.sample.summary_dto", "ForeignKeyChildSummary", entityDef = foreignKeyEntityDef, generateDto = WithGeneratedDto.TRUE)
+//    val foreignKeyChildSummarySearchableDef = searchableEntityDef("org.maiaframework.gen.testing.sample.summary_dto", "ForeignKeyChildSummary", entityDef = foreignKeyEntityDef, generateDto = WithGeneratedDto.TRUE)
 //            .field("id").and()
 //            .field("createdTimestampUtc").and()
 //            .field("someString").and()
@@ -529,7 +529,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val alphaEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "Alpha",
         idAndNameFieldName = "someString",
         deletable = Deletable.TRUE,
@@ -543,7 +543,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val bravoEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "Bravo",
         idAndNameFieldName = "someString",
         deletable = Deletable.TRUE,
@@ -558,7 +558,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val charlieEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "Charlie",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
@@ -581,7 +581,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val bravoSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "Bravo",
         entityDef = bravoEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -598,7 +598,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val charlieSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "Charlie",
         entityDef = charlieEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -616,7 +616,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val alphaAgGridEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "AlphaAgGrid",
         idAndNameFieldName = "someString",
         deletable = Deletable.TRUE,
@@ -630,7 +630,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val bravoAgGridEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "BravoAgGrid",
         idAndNameFieldName = "someString",
         deletable = Deletable.TRUE,
@@ -645,7 +645,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val charlieAgGridEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "CharlieAgGrid",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
@@ -668,7 +668,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val bravoAgGridSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "BravoAgGrid",
         entityDef = bravoAgGridEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -685,7 +685,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val charlieAgGridSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample.join",
+        "org.maiaframework.gen.testing.sample.join",
         "CharlieAgGrid",
         entityDef = charlieAgGridEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -711,7 +711,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val leftEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.many_to_many",
+        "org.maiaframework.gen.testing.sample.many_to_many",
         "Left",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
@@ -724,7 +724,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val rightEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.many_to_many",
+        "org.maiaframework.gen.testing.sample.many_to_many",
         "Right",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
@@ -737,7 +737,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val manyToManyJoinEntityDef = manyToManyEntity(
-        "org.maiaframework.gen.testing.jdbc.sample.many_to_many",
+        "org.maiaframework.gen.testing.sample.many_to_many",
         "ManyToManyJoin",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
@@ -749,7 +749,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val leftSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample.many_to_many",
+        "org.maiaframework.gen.testing.sample.many_to_many",
         "LeftDetail",
         entityDef = leftEntityDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
@@ -767,7 +767,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val leftNotMappedToRightSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.gen.testing.jdbc.sample.many_to_many",
+        "org.maiaframework.gen.testing.sample.many_to_many",
         "LeftNotMappedToRight",
         entityDef = leftEntityDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
@@ -784,7 +784,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val unmodifiableEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample",
+        "org.maiaframework.gen.testing.sample",
         "Unmodifiable"
     ) {
         field("someUniqueInt", FieldTypes.int) { unique() }
@@ -792,7 +792,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val compositePrimaryKeyEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.composite_pk",
+        "org.maiaframework.gen.testing.sample.composite_pk",
         "CompositePrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
@@ -816,7 +816,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val nonSurrogatePrimaryKeyEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.non_surrogate_pk",
+        "org.maiaframework.gen.testing.sample.non_surrogate_pk",
         "NonSurrogatePrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
@@ -836,7 +836,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
 
 
     val nonSurrogateIdPrimaryKeyEntityDef = entity(
-        "org.maiaframework.gen.testing.jdbc.sample.non_surrogate_pk",
+        "org.maiaframework.gen.testing.sample.non_surrogate_pk",
         "NonSurrogateIdPrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,

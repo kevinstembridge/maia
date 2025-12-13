@@ -1,8 +1,9 @@
 package org.maiaframework.gen.testing.jdbc.party
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.LifecycleState
 import org.maiaframework.domain.contact.EmailAddress
-import org.maiaframework.gen.testing.jdbc.sample.org.OrganizationEntity
+import org.maiaframework.gen.testing.sample.org.OrganizationEntity
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyDomainId
 import org.maiaframework.testing.domain.Anys.anyEmailAddress
@@ -17,7 +18,9 @@ data class OrgEntityTestBuilder(
     val id: DomainId = anyDomainId(),
     val lastModifiedById: DomainId = createdById,
     val lastModifiedTimestampUtc: Instant = createdTimestampUtc,
-    val name: String = anyOrgName()
+    val lifecycleState: LifecycleState = LifecycleState.ACTIVE,
+    val name: String = anyOrgName(),
+    val version: Long = 1L
 ) {
 
 
@@ -31,7 +34,9 @@ data class OrgEntityTestBuilder(
             emailAddress,
             id,
             lastModifiedTimestampUtc,
-            name
+            lifecycleState,
+            name,
+            version
         )
 
     }

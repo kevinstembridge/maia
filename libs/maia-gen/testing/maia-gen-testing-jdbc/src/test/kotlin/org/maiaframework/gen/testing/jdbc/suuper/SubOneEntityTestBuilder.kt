@@ -1,7 +1,7 @@
 package org.maiaframework.gen.testing.jdbc.suuper
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.gen.testing.jdbc.sample.suuper.SubOneEntity
+import org.maiaframework.gen.testing.sample.suuper.SubOneEntity
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyAlphaNumeric
 import org.maiaframework.testing.domain.Anys.anyInstant

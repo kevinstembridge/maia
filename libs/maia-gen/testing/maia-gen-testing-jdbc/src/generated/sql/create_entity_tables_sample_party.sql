@@ -14,7 +14,26 @@ CREATE TABLE testing.party (
     lifecycle_state text NOT NULL,
     org_name text NULL,
     some_strings text[] NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(id)
+);
+
+
+CREATE TABLE testing.party_history (
+    type_discriminator text not null,
+    change_type text NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    email_address text NOT NULL,
+    encrypted_password text NULL,
+    first_name text NULL,
+    id uuid NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_name text NULL,
+    lifecycle_state text NOT NULL,
+    org_name text NULL,
+    some_strings text[] NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
 );
 
 

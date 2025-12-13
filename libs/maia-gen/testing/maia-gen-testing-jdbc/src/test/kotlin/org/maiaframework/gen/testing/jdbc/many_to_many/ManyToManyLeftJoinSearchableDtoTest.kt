@@ -1,9 +1,9 @@
 package org.maiaframework.gen.testing.jdbc.many_to_many
 
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
-import org.maiaframework.gen.testing.jdbc.sample.many_to_many.LeftDao
-import org.maiaframework.gen.testing.jdbc.sample.many_to_many.LeftEntity
-import org.maiaframework.gen.testing.jdbc.sample.many_to_many.ManyToManyJoinDao
+import org.maiaframework.gen.testing.sample.many_to_many.LeftDao
+import org.maiaframework.gen.testing.sample.many_to_many.LeftEntity
+import org.maiaframework.gen.testing.sample.many_to_many.ManyToManyJoinDao
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

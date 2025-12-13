@@ -1,9 +1,9 @@
 package org.maiaframework.gen.testing.jdbc.filters
 
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
-import org.maiaframework.gen.testing.jdbc.sample.simple.VerySimpleDao
-import org.maiaframework.gen.testing.jdbc.sample.simple.VerySimpleEntity
-import org.maiaframework.gen.testing.jdbc.sample.simple.VerySimpleEntityFilters
+import org.maiaframework.gen.testing.sample.simple.VerySimpleDao
+import org.maiaframework.gen.testing.sample.simple.VerySimpleEntity
+import org.maiaframework.gen.testing.sample.simple.VerySimpleEntityFilters
 import org.maiaframework.testing.domain.Anys.anyString
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

@@ -1,7 +1,7 @@
 package org.maiaframework.gen.testing.jdbc.unmodifiable
 
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
-import org.maiaframework.gen.testing.jdbc.sample.UnmodifiableDao
+import org.maiaframework.gen.testing.sample.UnmodifiableDao
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
