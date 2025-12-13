@@ -58,13 +58,13 @@ class OrganizationEntity(
         fun newInstance(
             displayName: String,
             emailAddress: EmailAddress,
-            lifecycleState: LifecycleState,
             orgName: String
         ): OrganizationEntity {
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
+            val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
 
             return OrganizationEntity(
