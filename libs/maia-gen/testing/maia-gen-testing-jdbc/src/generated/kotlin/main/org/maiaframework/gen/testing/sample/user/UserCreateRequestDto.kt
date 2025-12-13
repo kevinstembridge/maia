@@ -11,8 +11,6 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
-import org.maiaframework.common.validation.EnumConstraint
-import org.maiaframework.domain.LifecycleState
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
@@ -36,10 +34,6 @@ class UserCreateRequestDto
     @param:Length(max = 100) 
     @param:JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) 
     private val lastName_raw: String?,
-    @NotBlank 
-    @EnumConstraint(enumClass = org.maiaframework.domain.LifecycleState::class) 
-    @param:JsonProperty("lifecycleState", access = JsonProperty.Access.READ_WRITE) 
-    private val lifecycleState_raw: String?,
     @param:NotNull 
     @param:JsonProperty("someStrings", access = JsonProperty.Access.READ_WRITE) 
     private val someStrings_raw: List<String>?
@@ -62,11 +56,6 @@ class UserCreateRequestDto
 
 
     @get:JsonIgnore
-    val lifecycleState
-        get() = LifecycleState.valueOf(lifecycleState_raw!!)
-
-
-    @get:JsonIgnore
     val someStrings
         get() = someStrings_raw!!
 
@@ -81,7 +70,6 @@ class UserCreateRequestDto
                 "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
-                "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "someStrings = '" + this.someStrings + '\'' + ", " + 
                 "firstName = '" + this.firstName + '\'' +
                 "}"
