@@ -1464,11 +1464,25 @@ class JdbcDaoRenderer(
         appendLine("            \"\"\"")
         appendLine("            insert into ${entityDef.schemaAndTableName} (")
 
+        if (entityDef.typeDiscriminatorOrNull != null) {
+            appendLine("                type_discriminator,")
+        }
+
         val fieldCollectionNames = entityDef.allEntityFieldsSorted.map { entityFieldDef -> entityFieldDef.tableColumnName.value }
         renderStrings(fieldCollectionNames, indent = 16)
         newLine()
 
         appendLine("            ) values (")
+
+        if (entityDef.typeDiscriminatorOrNull != null) {
+
+            if (entityHierarchy.hasSubclasses()) {
+                appendLine("                :typeDiscriminator,")
+            } else {
+                appendLine("                '${entityDef.typeDiscriminator}',")
+            }
+
+        }
 
         val fieldNames = entityDef.allEntityFieldsSorted.map { entityFieldDef -> ":" + entityFieldDef.classFieldName.value }
         renderStrings(fieldNames, indent = 16)
