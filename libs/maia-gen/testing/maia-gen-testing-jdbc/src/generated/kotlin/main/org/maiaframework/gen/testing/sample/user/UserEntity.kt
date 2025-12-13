@@ -71,13 +71,13 @@ class UserEntity(
             encryptedPassword: String,
             firstName: FirstName?,
             lastName: LastName,
-            lifecycleState: LifecycleState,
             someStrings: List<String>
         ): UserEntity {
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
+            val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
 
             return UserEntity(

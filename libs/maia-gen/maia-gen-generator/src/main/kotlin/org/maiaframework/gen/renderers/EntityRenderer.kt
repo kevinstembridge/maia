@@ -34,6 +34,7 @@ class EntityRenderer(
                         && classFieldName != ClassFieldName.version
                         && classFieldName != ClassFieldName.lastModifiedById
                         && classFieldName != ClassFieldName.lastModifiedTimestampUtc
+                        && classFieldName != ClassFieldName.lifecycleState
                     )
                 }
 
@@ -194,6 +195,11 @@ class EntityRenderer(
 
             fieldNamesNotProvidedAsArguments.add("lastModifiedTimestampUtc")
 
+        }
+
+        if (this.entityDef.hasLifecycleStateField) {
+            appendLine("            val lifecycleState = LifecycleState.ACTIVE")
+            fieldNamesNotProvidedAsArguments.add("lifecycleState")
         }
 
         if (this.entityDef.versioned.value) {

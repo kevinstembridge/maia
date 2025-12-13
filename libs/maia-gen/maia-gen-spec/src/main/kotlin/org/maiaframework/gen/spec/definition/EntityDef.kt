@@ -952,6 +952,10 @@ class EntityDef(
         get() = hasFieldNamed(ClassFieldName.lastModifiedTimestampUtc)
 
 
+    val hasLifecycleStateField: Boolean
+        get() = hasFieldNamed(ClassFieldName.lifecycleState)
+
+
     fun hasFieldNamed(classFieldName: ClassFieldName): Boolean {
 
         return allClassFieldsSorted.any { it.classFieldName == classFieldName }

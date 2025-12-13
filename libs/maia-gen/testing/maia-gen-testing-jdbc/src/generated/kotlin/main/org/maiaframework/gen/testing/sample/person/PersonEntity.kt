@@ -63,13 +63,13 @@ open class PersonEntity(
             displayName: String,
             emailAddress: EmailAddress,
             firstName: FirstName?,
-            lastName: LastName,
-            lifecycleState: LifecycleState
+            lastName: LastName
         ): PersonEntity {
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
+            val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
 
             return PersonEntity(
