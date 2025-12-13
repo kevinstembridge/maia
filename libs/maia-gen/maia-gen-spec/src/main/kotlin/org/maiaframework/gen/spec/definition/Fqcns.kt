@@ -122,6 +122,7 @@ object Fqcns {
     val MAIA_JOB_METRICS = Fqcn.valueOf("org.maiaframework.metrics.JobMetrics")
     val MAIA_JOB_NAME = Fqcn.valueOf("org.maiaframework.job.JobName")
     val MAIA_JSON_FACADE = Fqcn.valueOf("org.maiaframework.json.JsonFacade")
+    val MAIA_LIFECYCLE_STATE = Fqcn.valueOf("org.maiaframework.domain.LifecycleState")
     val MAIA_MONGO_CLIENT_FACADE = Fqcn.valueOf("org.maiaframework.dao.mongo.MongoClientFacade")
     val MAIA_MONGO_COLLECTION_FACADE = Fqcn.valueOf("org.maiaframework.dao.mongo.MongoCollectionFacade")
     val MAIA_MONGO_LOOKUP_DESCRIPTOR = Fqcn.valueOf("org.maiaframework.dao.mongo.MongoLookupDescriptor")

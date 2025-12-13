@@ -12,4 +12,13 @@ object EnumDefs {
     )
 
 
+    val LIFECYCLE_STATE_ENUM_DEF = EnumDef(
+        Fqcns.MAIA_LIFECYCLE_STATE,
+        emptyList(),
+        true,
+        withTypescript = true,
+        withEnumSelectionOptions = false
+    )
+
+
 }

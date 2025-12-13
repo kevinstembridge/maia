@@ -51,6 +51,9 @@ class TableColumnName(value: String) : StringType<TableColumnName>(value) {
         }
 
 
+        val id = TableColumnName("id")
+
+
         val lastModifiedById = TableColumnName("last_modified_by_id")
 
 
@@ -60,7 +63,7 @@ class TableColumnName(value: String) : StringType<TableColumnName>(value) {
         val lastModifiedTimestampUtc = TableColumnName("last_modified_timestamp_utc")
 
 
-        val id = TableColumnName("id")
+        val lifecycleState = TableColumnName("lifecycle_state")
 
 
         val version = TableColumnName("version")

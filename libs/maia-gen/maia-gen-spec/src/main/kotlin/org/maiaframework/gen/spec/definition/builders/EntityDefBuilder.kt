@@ -10,6 +10,7 @@ import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EnumDef
+import org.maiaframework.gen.spec.definition.EnumDefs
 import org.maiaframework.gen.spec.definition.ForeignKeyFieldDef
 import org.maiaframework.gen.spec.definition.IndexDef
 import org.maiaframework.gen.spec.definition.IntTypeDef
@@ -618,7 +619,7 @@ class EntityDefBuilder(
 
     fun field_lastModifiedByName(nullable: Boolean = false, maxLength: Long = 100) {
 
-        field(ClassFieldName.lastModifiedByUsername.value, StringFieldType()) {
+        field(ClassFieldName.lastModifiedByUsername.value, FieldTypes.string) {
             fieldDisplayName("Last Modified By")
             tableColumnName(TableColumnName.lastModifiedByName.value)
             notCreatableByUser()
@@ -632,9 +633,21 @@ class EntityDefBuilder(
 
     fun field_lastModifiedTimestampUtc() {
 
-        field(ClassFieldName.lastModifiedTimestampUtc.value, InstantFieldType()) {
+        field(ClassFieldName.lastModifiedTimestampUtc.value, FieldTypes.instant) {
             fieldDisplayName("Last Modified Timestamp (UTC)")
             tableColumnName(TableColumnName.lastModifiedTimestampUtc.value)
+            notCreatableByUser()
+            modifiableBySystem()
+        }
+
+    }
+
+
+    fun field_lifecycleState() {
+
+        field(ClassFieldName.lifecycleState.value, FieldTypes.enum(EnumDefs.LIFECYCLE_STATE_ENUM_DEF)) {
+            fieldDisplayName("Lifecycle State")
+            tableColumnName(TableColumnName.lifecycleState.value)
             notCreatableByUser()
             modifiableBySystem()
         }
