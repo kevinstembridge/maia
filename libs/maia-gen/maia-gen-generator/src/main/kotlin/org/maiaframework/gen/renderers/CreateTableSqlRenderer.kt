@@ -47,6 +47,11 @@ class CreateTableSqlRenderer(
 
         blankLine()
         blankLine()
+
+        if (entityHierarchy.hasSubclasses()) {
+            appendLine("-- Type Discriminators: ${entityHierarchy.entityDefs.filter { it.typeDiscriminatorOrNull != null }.map { "${it.entityBaseName} -> ${it.typeDiscriminatorOrNull}" }.joinToString(", ")}")
+        }
+
         appendLine("CREATE TABLE ${schemaAndTableNameFor(baseEntityDef)} (")
 
         val typeDiscriminatorLineOrNull = if (entityHierarchy.hasSubclasses()) {
