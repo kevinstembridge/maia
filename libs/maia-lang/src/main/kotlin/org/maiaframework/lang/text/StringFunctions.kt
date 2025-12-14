@@ -100,34 +100,34 @@ object StringFunctions {
 
 
     fun padWithLeadingZeroes(
-            input: Int,
-            paddedLength: Int,
-            dontAllowOverflow: Boolean = false
+        input: Int,
+        paddedLength: Int,
+        dontAllowOverflow: Boolean = false
     ): String {
 
         return padWithLeadingCharacters(
-                input.toString(),
-                paddedLength,
-                '0',
-                dontAllowOverflow
+            input.toString(),
+            paddedLength,
+            '0',
+            dontAllowOverflow
         )
 
     }
 
 
     fun padWithLeadingCharacters(
-            input: String?,
-            paddedLength: Int,
-            padChar: Char,
-            dontAllowOverflow: Boolean = false
+        input: String?,
+        paddedLength: Int,
+        padChar: Char,
+        dontAllowOverflow: Boolean = false
     ): String {
 
         return padWithCharacters(
-                input,
-                paddedLength,
-                padChar,
-                leading = true,
-                dontAllowOverflow
+            input,
+            paddedLength,
+            padChar,
+            leading = true,
+            dontAllowOverflow
         )
 
     }
@@ -141,10 +141,10 @@ object StringFunctions {
 
 
     fun padWithTrailingCharacters(
-            input: String?,
-            paddedLength: Int,
-            padChar: Char,
-            dontAllowOverflow: Boolean = false
+        input: String?,
+        paddedLength: Int,
+        padChar: Char,
+        dontAllowOverflow: Boolean = false
     ): String {
 
         return padWithCharacters(input, paddedLength, padChar, leading = false, dontAllowOverflow)
@@ -153,11 +153,11 @@ object StringFunctions {
 
 
     private fun padWithCharacters(
-            input: String?,
-            paddedLength: Int,
-            padChar: Char,
-            leading: Boolean,
-            dontAllowOverflow: Boolean
+        input: String?,
+        paddedLength: Int,
+        padChar: Char,
+        leading: Boolean,
+        dontAllowOverflow: Boolean
     ): String {
 
         if (input == null) {
