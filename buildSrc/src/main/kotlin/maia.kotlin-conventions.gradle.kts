@@ -22,7 +22,7 @@ dependencyManagement {
 
     imports {
         mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES) {
-            bomProperty("kotlin.version", "2.1.10")
+            bomProperty("kotlin.version", "2.3.0")
         }
         mavenBom("dev.forkhandles:forkhandles-bom:2.20.0.0")
         mavenBom("io.dropwizard.metrics:metrics-bom:4.2.30")
