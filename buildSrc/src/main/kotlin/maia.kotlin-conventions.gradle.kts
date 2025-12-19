@@ -53,14 +53,14 @@ dependencyManagement {
 kotlin {
     compilerOptions {
         suppressWarnings.set(true)
-        jvmTarget.set(JvmTarget.JVM_17)
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 
 
 tasks.withType<JavaCompile> {
-    sourceCompatibility = "17"
-    targetCompatibility = "17"
+    sourceCompatibility = "21"
+    targetCompatibility = "21"
 }
 
 
