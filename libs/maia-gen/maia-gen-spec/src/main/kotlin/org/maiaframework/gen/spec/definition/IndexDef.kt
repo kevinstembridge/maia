@@ -51,7 +51,7 @@ class IndexDef(
         return if (isUnique) {
             IndexDef(
                 entityBaseName,
-                indexName,
+                indexName.replaceUidxSuffix(),
                 indexFieldDefs,
                 isUnique = false,
                 isSparse,
