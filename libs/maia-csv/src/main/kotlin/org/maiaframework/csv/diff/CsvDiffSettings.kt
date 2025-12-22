@@ -3,6 +3,6 @@ package org.maiaframework.csv.diff
 import org.supercsv.prefs.CsvPreference
 
 data class CsvDiffSettings(
-        val keyFieldColumnNames: List<String>,
-        val csvPreference: CsvPreference
+    val keyFieldColumnNames: List<String>,
+    val csvPreference: CsvPreference
 )

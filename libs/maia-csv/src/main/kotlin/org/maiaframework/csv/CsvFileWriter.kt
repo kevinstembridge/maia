@@ -8,11 +8,11 @@ import java.io.File
 import java.io.FileWriter
 
 class CsvFileWriter(
-        private val csvListWriter: CsvListWriter,
-        private val headers: List<String>,
-        private val actionOnClose: () -> Unit,
-        override val outputFile: File
-): TabularFileWriter {
+    private val csvListWriter: CsvListWriter,
+    private val headers: List<String>,
+    private val actionOnClose: () -> Unit,
+    override val outputFile: File
+) : TabularFileWriter {
 
 
     init {
@@ -61,10 +61,12 @@ class CsvFileWriter(
             val writer = FileWriter(outputFile)
             val csvListWriter = CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE)
 
-            return CsvFileWriter(csvListWriter,
-                    headers,
-                    {logger.info("CSV written to ${outputFile.absolutePath}")},
-                    outputFile)
+            return CsvFileWriter(
+                csvListWriter,
+                headers,
+                { logger.info("CSV written to ${outputFile.absolutePath}") },
+                outputFile
+            )
 
         }
 

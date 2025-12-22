@@ -4,8 +4,12 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class DiffSummary {
 
+
     private val differenceCount = AtomicInteger()
+
+
     private val totalCompared = AtomicInteger()
+
 
     val differencesFound: Int
         get() = differenceCount.get()

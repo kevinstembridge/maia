@@ -13,7 +13,9 @@ interface DiffReporter {
 
     fun onDifferenceFound(compoundKey: String, data1: List<CsvData.CsvRow>, data2: List<CsvData.CsvRow>)
 
+
     fun onCompletion()
+
 
     class DifferencesToSingleFile(
             private val config: CsvDifferConfiguration,
@@ -106,8 +108,12 @@ interface DiffReporter {
             private val dataColumnNames: List<String>
     ): DiffReporter {
 
+
         private val writerSource1: CsvFileWriter
+
+
         private val writerSource2: CsvFileWriter
+
 
         init {
 
@@ -166,6 +172,7 @@ interface DiffReporter {
 
 
     companion object {
+
 
         val timestampFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss")!!
 

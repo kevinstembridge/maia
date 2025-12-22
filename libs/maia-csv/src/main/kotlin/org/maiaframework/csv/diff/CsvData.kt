@@ -3,9 +3,10 @@ package org.maiaframework.csv.diff
 import java.util.concurrent.atomic.AtomicInteger
 
 class CsvData(
-        fileShortName: String,
-        val columnNames: List<String>,
-        private val rows: List<CsvRow>) {
+    fileShortName: String,
+    val columnNames: List<String>,
+    private val rows: List<CsvRow>
+) {
 
 
     init {
@@ -37,7 +38,7 @@ class CsvData(
     }
 
 
-    class CsvRow(private val rowData: Map<String, String?>, val rowNum: Int): Comparable<CsvRow> {
+    class CsvRow(private val rowData: Map<String, String?>, val rowNum: Int) : Comparable<CsvRow> {
 
 
         internal fun size(): Int {
