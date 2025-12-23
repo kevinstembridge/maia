@@ -26,22 +26,30 @@ class CsvDiffer {
     }
 
 
-    private fun confirmColumnHeadersMatch(configuration: CsvDifferConfiguration, data1: CsvData, data2: CsvData) {
+    private fun confirmColumnHeadersMatch(
+        configuration: CsvDifferConfiguration,
+        data1: CsvData,
+        data2: CsvData
+    ) {
 
         val columnNames1 = data1.columnNames
         val columnNames2 = data2.columnNames
 
         if (columnNames1 != columnNames2) {
             throw IllegalArgumentException(
-                    "columns/headers in the two files for resource " + configuration.diffTaskName + " do not match (after filtering) :\n    "
+                "columns/headers in the two files for resource " + configuration.diffTaskName + " do not match (after filtering) :\n    "
                         + configuration.sourceName1 + " = " + columnNames1 + "\n    "
-                        + configuration.sourceName2 + " = " + columnNames2)
+                        + configuration.sourceName2 + " = " + columnNames2
+            )
         }
 
     }
 
 
-    private fun getCsvData(configuration: CsvDifferConfiguration, sourceConfig: SourceConfig): CsvData {
+    private fun getCsvData(
+        configuration: CsvDifferConfiguration,
+        sourceConfig: SourceConfig
+    ): CsvData {
 
         val lines = CsvHelper.readLines(sourceConfig.file, sourceConfig.name, configuration.csvPreference)
         return CsvData.createCsvData(lines.toMutableList(), sourceConfig.name, sourceConfig.transformers)
@@ -49,7 +57,10 @@ class CsvDiffer {
     }
 
 
-    private fun makeDifferenceReporter(configuration: CsvDifferConfiguration, dataColumnNames: List<String>): DiffReporter {
+    private fun makeDifferenceReporter(
+        configuration: CsvDifferConfiguration,
+        dataColumnNames: List<String>
+    ): DiffReporter {
 
         return when (configuration.diffReportStyle) {
             DiffReportStyle.CSV_FILE -> DiffReporter.differencesToSingleCsvFile(configuration, dataColumnNames)
@@ -60,10 +71,10 @@ class CsvDiffer {
 
 
     private fun writeComparisonTo(
-            diffReporter: DiffReporter,
-            data1: CsvData,
-            data2: CsvData,
-            configuration: CsvDifferConfiguration
+        diffReporter: DiffReporter,
+        data1: CsvData,
+        data2: CsvData,
+        configuration: CsvDifferConfiguration
     ): DiffSummary {
 
         val data1Mapped = data1.mapRowsBy(configuration.keyFieldColumnNames)
@@ -108,7 +119,10 @@ class CsvDiffer {
     companion object {
 
 
-        internal fun uniqueSortedKeys(m1: Map<String, *>, m2: Map<String, *>): List<String> {
+        internal fun uniqueSortedKeys(
+            m1: Map<String, *>,
+            m2: Map<String, *>
+        ): List<String> {
 
             return setOf(m1.keys, m2.keys).flatten().sorted()
 
