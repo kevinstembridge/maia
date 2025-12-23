@@ -8,14 +8,12 @@ object CsvDiffer {
 
     fun diffCsvFiles(configuration: CsvDifferConfiguration): DiffSummary {
 
-        val csvDiffFixture = loadCsvDiffFixture(configuration)
+        val fixture = loadCsvDiffFixture(configuration)
 
-        val nonKeyColumnNames = csvDiffFixture.getNonKeyColumnNames()
-
-        val differenceReporter = makeDifferenceReporter(configuration, nonKeyColumnNames)
+        val differenceReporter = makeDifferenceReporter(fixture)
 
         try {
-            return writeComparisonTo(differenceReporter, csvDiffFixture)
+            return writeComparisonTo(differenceReporter, fixture)
         } finally {
             differenceReporter.onCompletion()
         }
@@ -44,14 +42,11 @@ object CsvDiffer {
     }
 
 
-    private fun makeDifferenceReporter(
-        configuration: CsvDifferConfiguration,
-        dataColumnNames: List<String>
-    ): DiffReporter {
+    private fun makeDifferenceReporter(fixture: CsvDiffFixture): DiffReporter {
 
-        return when (configuration.diffReportStyle) {
-            DiffReportStyle.CSV_FILE -> DiffReporter.differencesToSingleCsvFile(configuration, dataColumnNames)
-            DiffReportStyle.TWO_DIFFABLE_CSV_FILES -> DiffReporter.differencesToTwoDiffableCsvFiles(configuration, dataColumnNames)
+        return when (fixture.diffReportStyle) {
+            DiffReportStyle.CSV_FILE -> DiffReporter.differencesToSingleCsvFile(fixture)
+            DiffReportStyle.TWO_DIFFABLE_CSV_FILES -> DiffReporter.differencesToTwoDiffableCsvFiles(fixture)
         }
 
     }
@@ -87,7 +82,7 @@ object CsvDiffer {
 
         }
 
-        println("\nComparison finished [${csvDiffFixture.configuration.diffTaskName}]")
+        println("\nComparison finished [${csvDiffFixture.diffTaskName}]")
         printStatus()
         println()
 

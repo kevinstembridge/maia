@@ -1,9 +1,8 @@
 package org.maiaframework.csv.diff.reporter
 
 import org.maiaframework.csv.CsvFileWriter
-import org.maiaframework.csv.diff.CsvData
 import org.maiaframework.csv.diff.CsvDataDiff
-import org.maiaframework.csv.diff.CsvDifferConfiguration
+import org.maiaframework.csv.diff.CsvDiffFixture
 import java.io.File
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -23,28 +22,27 @@ interface DiffReporter {
         val timestampFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss")!!
 
 
-        fun differencesToSingleCsvFile(
-            config: CsvDifferConfiguration,
-            dataColumnNames: List<String>
-        ): DifferencesToSingleFile {
+        fun differencesToSingleCsvFile(fixture: CsvDiffFixture): DifferencesToSingleFile {
 
-            val outputFile = File(config.differencesOutputFileDirectory, config.outputFileName + ".csv")
+            val outputDir = fixture.differencesOutputFileDirectory
+            val fileName = fixture.outputFileName + ".csv"
 
-            return DifferencesToSingleFile(config, dataColumnNames, { headers -> CsvFileWriter.Companion.createCsvWriter(outputFile, headers) })
+            val outputFile = File(outputDir, fileName)
+
+            return DifferencesToSingleFile(fixture) { headers ->
+                CsvFileWriter.createCsvWriter(outputFile, headers)
+            }
 
         }
 
 
-        fun differencesToTwoDiffableCsvFiles(
-            configuration: CsvDifferConfiguration,
-            dataColumnNames: List<String>
-        ): DiffReporter {
+        fun differencesToTwoDiffableCsvFiles(fixture: CsvDiffFixture): DiffReporter {
 
             val timestamp = timestampFormatter.format(Instant.now())
 
-            val outputDirectory = configuration.differencesOutputFileDirectory
+            val outputDirectory = fixture.differencesOutputFileDirectory
             val outputFileNamePattern = "differences_%s_$timestamp.csv"
-            return DifferencesToTwoDiffableCsvFiles(configuration, outputDirectory, outputFileNamePattern, dataColumnNames)
+            return DifferencesToTwoDiffableCsvFiles(fixture, outputDirectory, outputFileNamePattern)
 
         }
 

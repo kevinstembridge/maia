@@ -1,18 +1,19 @@
 package org.maiaframework.csv.diff.reporter
 
 import org.maiaframework.csv.CsvFileWriter
-import org.maiaframework.csv.diff.CsvData
 import org.maiaframework.csv.diff.CsvDataDiff
-import org.maiaframework.csv.diff.CsvDifferConfiguration
+import org.maiaframework.csv.diff.CsvDiffFixture
 import java.io.File
-import java.util.Optional
+import java.util.*
 
 class DifferencesToTwoDiffableCsvFiles(
-    configuration: CsvDifferConfiguration,
+    fixture: CsvDiffFixture,
     outputDir: String,
-    outputFileName: String,
-    private val dataColumnNames: List<String>
+    outputFileName: String
 ): DiffReporter {
+
+
+    private val dataColumnNames = fixture.nonKeyColumnNames
 
 
     private val writerSource1: CsvFileWriter
@@ -24,12 +25,12 @@ class DifferencesToTwoDiffableCsvFiles(
     init {
 
         val outputColumnNames = mutableListOf<String>()
-        outputColumnNames.add(configuration.keyFieldColumnNames.joinToString(" | "))
+        outputColumnNames.add(fixture.keyFieldColumnNames.joinToString(" | "))
         outputColumnNames.add("occurrence")
         outputColumnNames.addAll(dataColumnNames)
 
-        this.writerSource1 = CsvFileWriter.createCsvWriter(File(outputDir), String.format(outputFileName, configuration.sourceName1), outputColumnNames)
-        this.writerSource2 = CsvFileWriter.createCsvWriter(File(outputDir), String.format(outputFileName, configuration.sourceName2), outputColumnNames)
+        this.writerSource1 = CsvFileWriter.createCsvWriter(File(outputDir), String.format(outputFileName, fixture.sourceName1), outputColumnNames)
+        this.writerSource2 = CsvFileWriter.createCsvWriter(File(outputDir), String.format(outputFileName, fixture.sourceName2), outputColumnNames)
 
     }
 

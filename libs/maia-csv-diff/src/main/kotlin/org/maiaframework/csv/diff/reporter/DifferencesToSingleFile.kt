@@ -3,28 +3,32 @@ package org.maiaframework.csv.diff.reporter
 import org.maiaframework.csv.TabularFileWriter
 import org.maiaframework.csv.diff.CsvData
 import org.maiaframework.csv.diff.CsvDataDiff
-import org.maiaframework.csv.diff.CsvDifferConfiguration
+import org.maiaframework.csv.diff.CsvDiffFixture
 
 class DifferencesToSingleFile(
-    private val config: CsvDifferConfiguration,
-    private val dataColumnNames: List<String>,
+    private val fixture: CsvDiffFixture,
     outputFileWriter: (List<String>) -> TabularFileWriter
 ): DiffReporter {
 
+
+    private val dataColumnNames = fixture.nonKeyColumnNames
+
+
     private val outputWriter: TabularFileWriter
+
 
     init {
 
         val outputColumnNames = mutableListOf<String>()
 
-        config.keyFieldColumnNames.forEach {keyField -> outputColumnNames.add("$keyField (key)")}
+        fixture.keyFieldColumnNames.forEach {keyField -> outputColumnNames.add("$keyField (key)")}
 
         outputColumnNames.add("differingFields")
-        outputColumnNames.add("differingFieldValues [${config.sourceName1} | ${config.sourceName2}]")
+        outputColumnNames.add("differingFieldValues [${fixture.sourceName1} | ${fixture.sourceName2}]")
 
         dataColumnNames.forEach { dataColumnName ->
-            outputColumnNames.add("$dataColumnName(${config.sourceName1})")
-            outputColumnNames.add("$dataColumnName(${config.sourceName2})")
+            outputColumnNames.add("$dataColumnName(${fixture.sourceName1})")
+            outputColumnNames.add("$dataColumnName(${fixture.sourceName2})")
         }
 
         this.outputWriter = outputFileWriter(outputColumnNames)
@@ -40,13 +44,13 @@ class DifferencesToSingleFile(
 
         when {
             csvDataDiff.rowsInSource1.isEmpty() -> {
-                outputRow.add("missing in ${config.sourceName1}")
-                outputRow.add("missing in ${config.sourceName1}")
+                outputRow.add("missing in ${fixture.sourceName1}")
+                outputRow.add("missing in ${fixture.sourceName1}")
             }
 
             csvDataDiff.rowsInSource2.isEmpty() -> {
-                outputRow.add("missing in ${config.sourceName2}")
-                outputRow.add("missing in ${config.sourceName2}")
+                outputRow.add("missing in ${fixture.sourceName2}")
+                outputRow.add("missing in ${fixture.sourceName2}")
             }
 
             else -> {
@@ -58,7 +62,7 @@ class DifferencesToSingleFile(
                 outputRow.add(differingFieldNames)
 
                 val differingFieldValues = differingFields
-                    .filterNot { config.isIgnoredColumn(it.columnName) }
+                    .filterNot { fixture.isIgnoredColumn(it.columnName) }
                     .map { differingField ->
                         "${differingField.value1} vs ${differingField.value2}"
                     }
@@ -89,7 +93,7 @@ class DifferencesToSingleFile(
         outputRow: MutableList<Any?>
     ) {
 
-        config.keyFieldColumnNames.forEach { keyFieldColumnName ->
+        fixture.keyFieldColumnNames.forEach { keyFieldColumnName ->
 
             val keyFieldValue = listOf(rowsInSource1, rowsInSource2)
                 .flatten()

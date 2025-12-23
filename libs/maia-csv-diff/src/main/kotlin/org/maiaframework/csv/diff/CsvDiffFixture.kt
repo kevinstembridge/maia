@@ -7,13 +7,37 @@ data class CsvDiffFixture(
 ) {
 
 
-    private val data1MappedByKey = data1MappedByKey()
+    val diffTaskName = configuration.diffTaskName
 
 
-    private val data2MappedByKey = data2MappedByKey()
+    val diffReportStyle = configuration.diffReportStyle
+
+
+    val outputFileName = configuration.outputFileName
+
+
+    val differencesOutputFileDirectory = configuration.differencesOutputFileDirectory
+
+
+    val sourceName1 = configuration.sourceName1
+
+
+    val sourceName2 = configuration.sourceName2
+
+
+    val keyFieldColumnNames = configuration.keyFieldColumnNames
+
+
+    private val data1MappedByKey = data1.mapRowsBy(configuration.keyFieldColumnNames)
+
+
+    private val data2MappedByKey = data2.mapRowsBy(configuration.keyFieldColumnNames)
 
 
     val uniqueSortedKeys = setOf(data1MappedByKey.keys, data2MappedByKey.keys).flatten().sorted()
+
+
+    val nonKeyColumnNames = data1.columnNames.filterNot<String> { configuration.isKeyColumn(it) }
 
 
     init {
@@ -36,27 +60,6 @@ data class CsvDiffFixture(
     }
 
 
-    fun getNonKeyColumnNames(): List<String> {
-
-        return data1.columnNames.filterNot { configuration.isKeyColumn(it) }
-
-    }
-
-
-    fun data1MappedByKey(): Map<String, List<CsvData.CsvRow>> {
-
-        return data1.mapRowsBy(configuration.keyFieldColumnNames)
-
-    }
-
-
-    fun data2MappedByKey(): Map<String, List<CsvData.CsvRow>> {
-
-        return data2.mapRowsBy(configuration.keyFieldColumnNames)
-
-    }
-
-
     fun rowsFromSource1ByKey(key: String): List<CsvData.CsvRow> {
 
         return data1MappedByKey[key].orEmpty()
@@ -71,21 +74,14 @@ data class CsvDiffFixture(
     }
 
 
-    fun isIgnoredColumn(columnName: String): Boolean {
-
-        return configuration.isIgnoredColumn(columnName)
-
-    }
-
-
     fun getDifferingFieldsByKey(key: String): List<CellDiff> {
 
-        val nonKeyColumnNames = getNonKeyColumnNames()
+        val nonKeyColumnNames = data1.columnNames.filterNot { configuration.isKeyColumn(it) }
         val rowsInSource1 = rowsFromSource1ByKey(key)
         val rowsInSource2 = rowsFromSource2ByKey(key)
 
         return nonKeyColumnNames
-            .filterNot { isIgnoredColumn(it) }
+            .filterNot { configuration.isIgnoredColumn(it) }
             .mapNotNull { columnName ->
 
                 val value1 = getValues(rowsInSource1, columnName)
@@ -116,6 +112,7 @@ data class CsvDiffFixture(
         } else {
             rows.map { r -> r.getColumnValue(columnName) }.toString()
         }
+
     }
 
 
