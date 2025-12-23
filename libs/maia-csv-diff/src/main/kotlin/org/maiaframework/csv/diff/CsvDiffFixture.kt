@@ -1,9 +1,9 @@
 package org.maiaframework.csv.diff
 
-data class CsvDataPair(
+data class CsvDiffFixture(
     val data1: CsvData,
     val data2: CsvData,
-    private val configuration: CsvDifferConfiguration
+    val configuration: CsvDifferConfiguration
 ) {
 
 
@@ -27,6 +27,10 @@ data class CsvDataPair(
                         + configuration.sourceName1 + " = " + columnNames1 + "\n    "
                         + configuration.sourceName2 + " = " + columnNames2
             )
+        }
+
+        if (configuration.sourceConfig1.file == configuration.sourceConfig2.file) {
+            throw AssertionError("No point comparing a file with itself: ${configuration.sourceConfig1.file.absolutePath}")
         }
 
     }
@@ -94,30 +98,6 @@ data class CsvDataPair(
                 }
 
             }
-
-    }
-
-
-    fun getDifferingFieldNamesByKey_old(key: String): Map<String, Pair<String?, String?>> {
-
-        val nonKeyColumnNames = getNonKeyColumnNames()
-        val rowsInSource1 = rowsFromSource1ByKey(key)
-        val rowsInSource2 = rowsFromSource2ByKey(key)
-
-        return nonKeyColumnNames
-            .filterNot { isIgnoredColumn(it) }
-            .mapNotNull { columnName ->
-
-                val value1 = getValues(rowsInSource1, columnName)
-                val value2 = getValues(rowsInSource2, columnName)
-
-                if (value1 != value2) {
-                    columnName to Pair(value1, value2)
-                } else {
-                    null
-                }
-
-            }.toMap()
 
     }
 

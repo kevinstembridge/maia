@@ -33,15 +33,6 @@ class CsvDifferConfiguration(
     val differencesOutputFileDirectory: String = this.sourceConfig1.file.parent
 
 
-    fun assertFilesNotSame() {
-
-        if (sourceConfig1.file == sourceConfig2.file) {
-            throw AssertionError("No point comparing a file with itself: ${sourceConfig1.file.absolutePath}")
-        }
-
-    }
-
-
     fun isNotKeyColumn(columnName: String): Boolean {
 
         return diffSettings.keyFieldColumnNames.contains(columnName) == false

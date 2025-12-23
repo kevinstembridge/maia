@@ -8,16 +8,14 @@ object CsvDiffer {
 
     fun diffCsvFiles(configuration: CsvDifferConfiguration): DiffSummary {
 
-        configuration.assertFilesNotSame()
+        val csvDiffFixture = loadCsvDiffFixture(configuration)
 
-        val csvDataPair = loadCsvData(configuration)
-
-        val nonKeyColumnNames = csvDataPair.getNonKeyColumnNames()
+        val nonKeyColumnNames = csvDiffFixture.getNonKeyColumnNames()
 
         val differenceReporter = makeDifferenceReporter(configuration, nonKeyColumnNames)
 
         try {
-            return writeComparisonTo(differenceReporter, csvDataPair, configuration)
+            return writeComparisonTo(differenceReporter, csvDiffFixture)
         } finally {
             differenceReporter.onCompletion()
         }
@@ -25,12 +23,12 @@ object CsvDiffer {
     }
 
 
-    private fun loadCsvData(configuration: CsvDifferConfiguration): CsvDataPair {
+    private fun loadCsvDiffFixture(configuration: CsvDifferConfiguration): CsvDiffFixture {
 
         val data1 = getCsvData(configuration, configuration.sourceConfig1)
         val data2 = getCsvData(configuration, configuration.sourceConfig2)
 
-        return CsvDataPair(data1, data2, configuration)
+        return CsvDiffFixture(data1, data2, configuration)
 
     }
 
@@ -61,8 +59,7 @@ object CsvDiffer {
 
     private fun writeComparisonTo(
         diffReporter: DiffReporter,
-        csvDataPair: CsvDataPair,
-        configuration: CsvDifferConfiguration
+        csvDiffFixture: CsvDiffFixture
     ): DiffSummary {
 
         val comparisonSummary = DiffSummary()
@@ -71,9 +68,9 @@ object CsvDiffer {
             println("Rows processed: ${comparisonSummary.getTotalCompared()}\nDifferences Found: ${comparisonSummary.differencesFound}")
         }
 
-        for (compoundKey in csvDataPair.uniqueSortedKeys) {
+        for (compoundKey in csvDiffFixture.uniqueSortedKeys) {
 
-            val diff = checkForDifferences(compoundKey, csvDataPair)
+            val diff = checkForDifferences(compoundKey, csvDiffFixture)
 
             if (diff != null) {
 
@@ -90,7 +87,7 @@ object CsvDiffer {
 
         }
 
-        println("\nComparison finished [${configuration.diffTaskName}]")
+        println("\nComparison finished [${csvDiffFixture.configuration.diffTaskName}]")
         printStatus()
         println()
 
@@ -101,13 +98,13 @@ object CsvDiffer {
 
     private fun checkForDifferences(
         key: String,
-        csvDataPair: CsvDataPair
+        csvDiffFixture: CsvDiffFixture
     ): CsvDataDiff? {
 
-        val rowsInSource1 = csvDataPair.rowsFromSource1ByKey(key)
-        val rowsInSource2 = csvDataPair.rowsFromSource2ByKey(key)
+        val rowsInSource1 = csvDiffFixture.rowsFromSource1ByKey(key)
+        val rowsInSource2 = csvDiffFixture.rowsFromSource2ByKey(key)
 
-        val differingFields = csvDataPair.getDifferingFieldsByKey(key)
+        val differingFields = csvDiffFixture.getDifferingFieldsByKey(key)
 
         if (differingFields.isEmpty()) {
             return null
