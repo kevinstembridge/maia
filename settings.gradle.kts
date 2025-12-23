@@ -5,7 +5,7 @@ rootProject.name = "maia"
 
 include("libs:maia-common")
 include("libs:maia-coroutines")
-include("libs:maia-csv")
+include("libs:maia-csv-diff")
 include("libs:maia-staging-csv")
 include("libs:maia-dao-mongo")
 include("libs:maia-data-row")
@@ -82,3 +82,4 @@ include("libs:maia-webapp:maia-webapp-app")
 include("libs:maia-webapp:maia-webapp-domain")
 include("libs:maia-webapp:maia-webapp-endpoints")
 include("libs:maia-webapp:maia-webapp-service")
+include("plugins:maia-gradle-plugin")
