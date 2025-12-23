@@ -57,7 +57,7 @@ class CsvDifferConfiguration(
 
     fun matcherForColumn(columnName: String): (String?, String?) -> Boolean {
 
-        return columnMatchers[columnName] ?: { _, _ -> true }
+        return columnMatchers[columnName] ?: { value1, value2 -> value1 == value2 }
 
     }
 
