@@ -1,24 +1,23 @@
 package org.maiaframework.csv.diff
 
+import org.maiaframework.csv.diff.reporter.DiffReporter
 
-class CsvDiffer {
+
+object CsvDiffer {
 
 
     fun diffCsvFiles(configuration: CsvDifferConfiguration): DiffSummary {
 
         configuration.assertFilesNotSame()
 
-        val data1 = getCsvData(configuration, configuration.sourceConfig1)
-        val data2 = getCsvData(configuration, configuration.sourceConfig2)
+        val csvDataPair = loadCsvData(configuration)
 
-        confirmColumnHeadersMatch(configuration, data1, data2)
-
-        val nonKeyColumnNames = data1.getColumnsFiltered { configuration.isNotKeyColumn(it) }
+        val nonKeyColumnNames = csvDataPair.getNonKeyColumnNames()
 
         val differenceReporter = makeDifferenceReporter(configuration, nonKeyColumnNames)
 
         try {
-            return writeComparisonTo(differenceReporter, data1, data2, configuration)
+            return writeComparisonTo(differenceReporter, csvDataPair, configuration)
         } finally {
             differenceReporter.onCompletion()
         }
@@ -26,22 +25,12 @@ class CsvDiffer {
     }
 
 
-    private fun confirmColumnHeadersMatch(
-        configuration: CsvDifferConfiguration,
-        data1: CsvData,
-        data2: CsvData
-    ) {
+    private fun loadCsvData(configuration: CsvDifferConfiguration): CsvDataPair {
 
-        val columnNames1 = data1.columnNames
-        val columnNames2 = data2.columnNames
+        val data1 = getCsvData(configuration, configuration.sourceConfig1)
+        val data2 = getCsvData(configuration, configuration.sourceConfig2)
 
-        if (columnNames1 != columnNames2) {
-            throw IllegalArgumentException(
-                "columns/headers in the two files for resource " + configuration.diffTaskName + " do not match (after filtering) :\n    "
-                        + configuration.sourceName1 + " = " + columnNames1 + "\n    "
-                        + configuration.sourceName2 + " = " + columnNames2
-            )
-        }
+        return CsvDataPair(data1, data2, configuration)
 
     }
 
@@ -72,14 +61,9 @@ class CsvDiffer {
 
     private fun writeComparisonTo(
         diffReporter: DiffReporter,
-        data1: CsvData,
-        data2: CsvData,
+        csvDataPair: CsvDataPair,
         configuration: CsvDifferConfiguration
     ): DiffSummary {
-
-        val data1Mapped = data1.mapRowsBy(configuration.keyFieldColumnNames)
-        val data2Mapped = data2.mapRowsBy(configuration.keyFieldColumnNames)
-        val compoundKeys = uniqueSortedKeys(data1Mapped, data2Mapped)
 
         val comparisonSummary = DiffSummary()
 
@@ -87,16 +71,15 @@ class CsvDiffer {
             println("Rows processed: ${comparisonSummary.getTotalCompared()}\nDifferences Found: ${comparisonSummary.differencesFound}")
         }
 
-        for (compoundKey in compoundKeys) {
+        for (compoundKey in csvDataPair.uniqueSortedKeys) {
 
-            val rowsInSource1 = data1Mapped[compoundKey] ?: emptyList()
-            val rowsInSource2 = data2Mapped[compoundKey] ?: emptyList()
+            val diff = checkForDifferences(compoundKey, csvDataPair)
 
-            if (rowsInSource1 != rowsInSource2) {
+            if (diff != null) {
 
-                diffReporter.onDifferenceFound(compoundKey, rowsInSource1, rowsInSource2)
-
+                diffReporter.onDifferenceFound(diff)
                 comparisonSummary.incrementDifferences()
+
             }
 
             comparisonSummary.incrementTotalCompared()
@@ -116,18 +99,26 @@ class CsvDiffer {
     }
 
 
-    companion object {
+    private fun checkForDifferences(
+        key: String,
+        csvDataPair: CsvDataPair
+    ): CsvDataDiff? {
 
+        val rowsInSource1 = csvDataPair.rowsFromSource1ByKey(key)
+        val rowsInSource2 = csvDataPair.rowsFromSource2ByKey(key)
 
-        internal fun uniqueSortedKeys(
-            m1: Map<String, *>,
-            m2: Map<String, *>
-        ): List<String> {
+        val differingFields = csvDataPair.getDifferingFieldsByKey(key)
 
-            return setOf(m1.keys, m2.keys).flatten().sorted()
-
+        if (differingFields.isEmpty()) {
+            return null
         }
 
+        return CsvDataDiff(
+            key,
+            differingFields,
+            rowsInSource1,
+            rowsInSource2
+        )
 
     }
 

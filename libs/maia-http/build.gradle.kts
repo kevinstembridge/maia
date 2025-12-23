@@ -8,7 +8,8 @@ dependencies {
 
     implementation(project(":libs:maia-common"))
     implementation(project(":libs:maia-domain"))
-    implementation(project(":libs:maia-csv"))
+    // TODO do we need this or not?
+//    implementation(project(":libs:maia-csv"))
     api(project(":libs:maia-json"))
     
     implementation("net.sf.supercsv:super-csv-java8")

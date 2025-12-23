@@ -9,7 +9,7 @@ class CsvDifferConfiguration(
     val sourceConfig1: SourceConfig,
     val sourceConfig2: SourceConfig,
     private val diffSettings: CsvDiffSettings,
-    val diffReportStyle: DiffReportStyle,
+    val diffReportStyle: DiffReportStyle = DiffReportStyle.CSV_FILE,
     outputFileName: String?
 ) {
 
@@ -20,7 +20,8 @@ class CsvDifferConfiguration(
     val sourceName2 = this.sourceConfig2.name
 
 
-    val outputFileName = outputFileName ?: "${diffTaskName}_diff_${sourceName1}_${sourceName2}_${FILE_TIMESTAMP_FORMATTER.format(Instant.now())}"
+    val outputFileName = outputFileName
+        ?: "${diffTaskName}_diff_${sourceName1}_${sourceName2}_${FILE_TIMESTAMP_FORMATTER.format(Instant.now())}"
 
 
     val csvPreference: CsvPreference = this.diffSettings.csvPreference
@@ -44,6 +45,20 @@ class CsvDifferConfiguration(
     fun isNotKeyColumn(columnName: String): Boolean {
 
         return diffSettings.keyFieldColumnNames.contains(columnName) == false
+
+    }
+
+
+    fun isKeyColumn(columnName: String): Boolean {
+
+        return diffSettings.keyFieldColumnNames.contains(columnName)
+
+    }
+
+
+    fun isIgnoredColumn(columnName: String): Boolean {
+
+        return diffSettings.ignoredColumnNames.contains(columnName)
 
     }
 
