@@ -5,6 +5,7 @@ rootProject.name = "maia"
 
 include("libs:maia-common")
 include("libs:maia-coroutines")
+include("libs:maia-csv")
 include("libs:maia-csv-diff")
 include("libs:maia-staging-csv")
 include("libs:maia-dao-mongo")

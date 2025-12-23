@@ -3,7 +3,7 @@ package org.maiaframework.csv.diff
 data class CsvDiffFixture(
     val data1: CsvData,
     val data2: CsvData,
-    val configuration: CsvDifferConfiguration
+    private val configuration: CsvDifferConfiguration
 ) {
 
 
@@ -37,7 +37,7 @@ data class CsvDiffFixture(
     val uniqueSortedKeys = setOf(data1MappedByKey.keys, data2MappedByKey.keys).flatten().sorted()
 
 
-    val nonKeyColumnNames = data1.columnNames.filterNot<String> { configuration.isKeyColumn(it) }
+    val nonKeyColumnNames = data1.columnNames.filterNot { configuration.isKeyColumn(it) }
 
 
     init {
