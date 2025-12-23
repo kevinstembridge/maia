@@ -84,13 +84,15 @@ data class CsvDiffFixture(
             .filterNot { configuration.isIgnoredColumn(it) }
             .mapNotNull { columnName ->
 
-                val value1 = getValues(rowsInSource1, columnName)
-                val value2 = getValues(rowsInSource2, columnName)
+                val cellValue1 = getValues(rowsInSource1, columnName)
+                val cellValue2 = getValues(rowsInSource2, columnName)
 
-                if (value1 != value2) {
-                    CellDiff(columnName, value1, value2)
-                } else {
+                val matcher = configuration.matcherForColumn(columnName)
+
+                if (matcher.invoke(cellValue1, cellValue2)) {
                     null
+                } else {
+                    CellDiff(columnName, cellValue1, cellValue2)
                 }
 
             }

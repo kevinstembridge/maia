@@ -10,7 +10,8 @@ class CsvDifferConfiguration(
     val sourceConfig2: SourceConfig,
     private val diffSettings: CsvDiffSettings,
     val diffReportStyle: DiffReportStyle = DiffReportStyle.CSV_FILE,
-    outputFileName: String?
+    outputFileName: String?,
+    private val columnMatchers: Map<String, (String?, String?) -> Boolean> = emptyMap()
 ) {
 
 
@@ -50,6 +51,13 @@ class CsvDifferConfiguration(
     fun isIgnoredColumn(columnName: String): Boolean {
 
         return diffSettings.ignoredColumnNames.contains(columnName)
+
+    }
+
+
+    fun matcherForColumn(columnName: String): (String?, String?) -> Boolean {
+
+        return columnMatchers[columnName] ?: { _, _ -> true }
 
     }
 

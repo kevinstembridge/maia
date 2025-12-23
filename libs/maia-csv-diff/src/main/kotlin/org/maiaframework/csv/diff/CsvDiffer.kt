@@ -13,7 +13,7 @@ object CsvDiffer {
         val differenceReporter = makeDifferenceReporter(fixture)
 
         try {
-            return writeComparisonTo(differenceReporter, fixture)
+            return performDiff(fixture, differenceReporter)
         } finally {
             differenceReporter.onCompletion()
         }
@@ -52,9 +52,9 @@ object CsvDiffer {
     }
 
 
-    private fun writeComparisonTo(
-        diffReporter: DiffReporter,
-        csvDiffFixture: CsvDiffFixture
+    private fun performDiff(
+        csvDiffFixture: CsvDiffFixture,
+        diffReporter: DiffReporter
     ): DiffSummary {
 
         val comparisonSummary = DiffSummary()
