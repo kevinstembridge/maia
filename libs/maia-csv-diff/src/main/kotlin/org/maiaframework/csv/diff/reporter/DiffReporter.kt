@@ -7,13 +7,10 @@ import java.io.File
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 
-interface DiffReporter {
+interface DiffReporter : AutoCloseable {
 
 
     fun onDifferenceFound(csvDataDiff: CsvDataDiff)
-
-
-    fun onCompletion()
 
 
     companion object {

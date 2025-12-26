@@ -15,6 +15,9 @@ class CsvDifferConfiguration(
 ) {
 
 
+    private val FILE_TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmm")
+
+
     val sourceName1 = this.sourceConfig1.name
 
 
@@ -34,13 +37,6 @@ class CsvDifferConfiguration(
     val differencesOutputFileDirectory: String = this.sourceConfig1.file.parent
 
 
-    fun isNotKeyColumn(columnName: String): Boolean {
-
-        return diffSettings.keyFieldColumnNames.contains(columnName) == false
-
-    }
-
-
     fun isKeyColumn(columnName: String): Boolean {
 
         return diffSettings.keyFieldColumnNames.contains(columnName)
@@ -58,13 +54,6 @@ class CsvDifferConfiguration(
     fun matcherForColumn(columnName: String): (String?, String?) -> Boolean {
 
         return columnMatchers[columnName] ?: { value1, value2 -> value1 == value2 }
-
-    }
-
-
-    companion object {
-
-        private val FILE_TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmm")
 
     }
 

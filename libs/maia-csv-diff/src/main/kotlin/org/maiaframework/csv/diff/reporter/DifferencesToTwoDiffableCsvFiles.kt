@@ -70,7 +70,7 @@ class DifferencesToTwoDiffableCsvFiles(
     }
 
 
-    override fun onCompletion() {
+    override fun close() {
 
         writerSource1.close()
         writerSource2.close()

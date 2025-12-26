@@ -124,8 +124,7 @@ class DifferencesToSingleFile(
 
     }
 
-
-    override fun onCompletion() {
+    override fun close() {
 
         outputWriter.close()
         println("\nComparison written to: ${outputWriter.outputFile.absolutePath}")

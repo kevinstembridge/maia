@@ -1,4 +1,4 @@
-package org.maiaframework.csv.diff
+ package org.maiaframework.csv.diff
 
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -29,7 +29,9 @@ class CsvData(
     }
 
 
-    fun mapRowsBy(keyFieldColumnNames: List<String>): Map<String, List<CsvRow>> {
+    fun mapRowsBy(
+        keyFieldColumnNames: List<String>
+    ): Map<String, List<CsvRow>> {
 
         val toKey: (CsvRow) -> String = { row: CsvRow -> keyFieldColumnNames.map { row.getColumnValue(it) }.joinToString(" | ") }
         val groupBy: Map<String, List<CsvRow>> = rows.groupBy(toKey)
@@ -38,7 +40,10 @@ class CsvData(
     }
 
 
-    class CsvRow(private val rowData: Map<String, String?>, val rowNum: Int) : Comparable<CsvRow> {
+    class CsvRow(
+        private val rowData: Map<String, String?>,
+        val rowNum: Int
+    ) : Comparable<CsvRow> {
 
 
         internal fun size(): Int {
@@ -53,7 +58,7 @@ class CsvData(
 
         override fun compareTo(other: CsvRow): Int {
 
-            return Integer.compare(this.rowNum, other.rowNum)
+            return this.rowNum.compareTo(other.rowNum)
 
         }
 
@@ -63,30 +68,50 @@ class CsvData(
     companion object {
 
 
-        fun createCsvData(lines: MutableList<List<String?>>, fileShortName: String, transformers: List<CsvDataTransformer>): CsvData {
+        fun createCsvData(
+            lines: List<List<String?>>,
+            fileShortName: String,
+            transformers: List<CsvDataTransformer>
+        ): CsvData {
 
-            val allColumnNames: List<String> = lines.removeAt(0).map { trim(it)!! }
+            val columnNames = getColumnNames(lines.first(), transformers)
+            val transformedRows = getRows(lines, columnNames, transformers)
+
+            return CsvData(fileShortName, columnNames, transformedRows)
+
+        }
+
+
+        private fun getColumnNames(
+            firstLine: List<String?>,
+            transformers: List<CsvDataTransformer>
+        ): List<String> {
+
+            val allColumnNames: List<String> = firstLine.map { trim(it)!! }
+
+            return transformers.fold(allColumnNames) { acc, transformer -> transformer.transformColumnNames(acc) }
+
+        }
+
+
+        private fun getRows(
+            lines: List<List<String?>>,
+            columnNames: List<String>,
+            transformers: List<CsvDataTransformer>
+        ): List<CsvRow> {
 
             val rowNum = AtomicInteger(1)
 
-            val allRows = lines.map { row ->
+            val allRows = lines.drop(1).map { row ->
 
                 val fields = mutableMapOf<String, String?>()
-                allColumnNames.zip(row).forEach { fields[it.first] = it.second }
+                columnNames.zip(row).forEach { fields[it.first] = it.second }
 
                 CsvRow(fields, rowNum.getAndIncrement())
 
             }
 
-            var transformedColumns = allColumnNames
-            var transformedRows = allRows
-
-            for (transformer in transformers) {
-                transformedColumns = transformer.transformColumnNames(allColumnNames)
-                transformedRows = transformer.transformRow(allRows)
-            }
-
-            return CsvData(fileShortName, transformedColumns, transformedRows)
+            return transformers.fold(allRows) { acc, transformer -> transformer.transformRow(acc) }
 
         }
 

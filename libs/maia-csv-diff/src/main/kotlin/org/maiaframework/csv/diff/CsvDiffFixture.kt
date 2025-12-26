@@ -1,5 +1,6 @@
 package org.maiaframework.csv.diff
 
+
 data class CsvDiffFixture(
     val data1: CsvData,
     val data2: CsvData,
@@ -114,6 +115,13 @@ data class CsvDiffFixture(
         } else {
             rows.map { r -> r.getColumnValue(columnName) }.toString()
         }
+
+    }
+
+
+    fun isIgnoredColumn(columnName: String): Boolean {
+
+        return configuration.isIgnoredColumn(columnName)
 
     }
 

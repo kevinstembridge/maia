@@ -8,36 +8,39 @@ object CsvDiffer {
 
     fun diffCsvFiles(configuration: CsvDifferConfiguration): DiffSummary {
 
-        val fixture = loadCsvDiffFixture(configuration)
+        val fixture = prepareFixture(configuration)
 
-        val differenceReporter = makeDifferenceReporter(fixture)
-
-        try {
-            return performDiff(fixture, differenceReporter)
-        } finally {
-            differenceReporter.onCompletion()
-        }
+        return performDiff(fixture)
 
     }
 
 
-    private fun loadCsvDiffFixture(configuration: CsvDifferConfiguration): CsvDiffFixture {
+    private fun prepareFixture(configuration: CsvDifferConfiguration): CsvDiffFixture {
 
-        val data1 = getCsvData(configuration, configuration.sourceConfig1)
-        val data2 = getCsvData(configuration, configuration.sourceConfig2)
+        val data1 = loadCsvData(configuration, configuration.sourceConfig1)
+        val data2 = loadCsvData(configuration, configuration.sourceConfig2)
 
         return CsvDiffFixture(data1, data2, configuration)
 
     }
 
 
-    private fun getCsvData(
+    private fun performDiff(fixture: CsvDiffFixture): DiffSummary {
+
+        return makeDifferenceReporter(fixture).use { diffReporter ->
+            performDiff(fixture, diffReporter)
+        }
+
+    }
+
+
+    private fun loadCsvData(
         configuration: CsvDifferConfiguration,
         sourceConfig: SourceConfig
     ): CsvData {
 
         val lines = CsvHelper.readLines(sourceConfig.file, sourceConfig.name, configuration.csvPreference)
-        return CsvData.createCsvData(lines.toMutableList(), sourceConfig.name, sourceConfig.transformers)
+        return CsvData.createCsvData(lines, sourceConfig.name, sourceConfig.transformers)
 
     }
 
