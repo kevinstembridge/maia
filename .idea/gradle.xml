@@ -25,6 +25,7 @@
             <option value="$PROJECT_DIR$/libs/maia-common" />
             <option value="$PROJECT_DIR$/libs/maia-coroutines" />
             <option value="$PROJECT_DIR$/libs/maia-csv" />
+            <option value="$PROJECT_DIR$/libs/maia-csv-diff" />
             <option value="$PROJECT_DIR$/libs/maia-dao-mongo" />
             <option value="$PROJECT_DIR$/libs/maia-data-row" />
             <option value="$PROJECT_DIR$/libs/maia-domain" />
@@ -47,9 +48,10 @@
             <option value="$PROJECT_DIR$/libs/maia-gen/maia-gen-json" />
             <option value="$PROJECT_DIR$/libs/maia-gen/maia-gen-library" />
             <option value="$PROJECT_DIR$/libs/maia-gen/maia-gen-mongo" />
-            <option value="$PROJECT_DIR$/libs/maia-gen/maia-gen-sample" />
             <option value="$PROJECT_DIR$/libs/maia-gen/maia-gen-spec" />
-            <option value="$PROJECT_DIR$/libs/maia-gen/maia-gen-testing-jdbc" />
+            <option value="$PROJECT_DIR$/libs/maia-gen/testing" />
+            <option value="$PROJECT_DIR$/libs/maia-gen/testing/maia-gen-sample" />
+            <option value="$PROJECT_DIR$/libs/maia-gen/testing/maia-gen-testing-jdbc" />
             <option value="$PROJECT_DIR$/libs/maia-google-charts" />
             <option value="$PROJECT_DIR$/libs/maia-hazelcast" />
             <option value="$PROJECT_DIR$/libs/maia-http" />
@@ -111,6 +113,8 @@
             <option value="$PROJECT_DIR$/libs/maia-webapp/maia-webapp-domain" />
             <option value="$PROJECT_DIR$/libs/maia-webapp/maia-webapp-endpoints" />
             <option value="$PROJECT_DIR$/libs/maia-webapp/maia-webapp-service" />
+            <option value="$PROJECT_DIR$/plugins" />
+            <option value="$PROJECT_DIR$/plugins/maia-gradle-plugin" />
           </set>
         </option>
       </GradleProjectSettings>

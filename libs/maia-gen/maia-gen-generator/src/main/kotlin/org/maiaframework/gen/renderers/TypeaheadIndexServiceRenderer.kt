@@ -2,8 +2,7 @@ package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.TypeaheadDef
-import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
-import org.slf4j.LoggerFactory
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 
 class TypeaheadIndexServiceRenderer(
     private val typeaheadDef: TypeaheadDef
@@ -14,19 +13,19 @@ class TypeaheadIndexServiceRenderer(
 
     init {
 
-        addConstructorArg(ClassFieldDef.aClassField("elasticClient", Fqcns.ELASTIC_CLIENT).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("esIndexOps", Fqcns.MAIA_ES_INDEX_OPS).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("props", Fqcns.MAIA_PROPS).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("esDocRepo", this.typeaheadDef.esDocDef.esDocRepoClassDef.fqcn).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("esIndex", this.typeaheadDef.esIndexClassDef.fqcn).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
+        addConstructorArg(aClassField("elasticClient", Fqcns.ELASTIC_CLIENT).privat().build())
+        addConstructorArg(aClassField("esIndexOps", Fqcns.MAIA_ES_INDEX_OPS).privat().build())
+        addConstructorArg(aClassField("props", Fqcns.MAIA_PROPS).privat().build())
+        addConstructorArg(aClassField("esDocRepo", this.typeaheadDef.esDocDef.esDocRepoClassDef.fqcn).privat().build())
+        addConstructorArg(aClassField("esIndex", this.typeaheadDef.esIndexClassDef.fqcn).privat().build())
+        addConstructorArg(aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
 
     }
 
 
     override fun renderPreClassFields() {
 
-        addImportFor(LoggerFactory::class.java)
+        addImportFor(Fqcns.SLF4J_LOGGER_FACTORY)
 
         blankLine()
         blankLine()
