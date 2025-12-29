@@ -37,7 +37,6 @@ dependencyManagement {
         dependency("com.ninja-squad:springmockk:4.0.2")
         dependency("com.opencsv:opencsv:5.10")
         dependency("commons-io:commons-io:2.18.0")
-        dependency("io.fluidsonic.mirror:quartz-mongodb:2.2.0-rc2")
         dependency("io.jsonwebtoken:jjwt:0.7.0")
         dependency("io.mockk:mockk:1.13.17")
         dependency("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
