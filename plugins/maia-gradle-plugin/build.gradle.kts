@@ -1,7 +1,8 @@
 plugins {
-    `kotlin-dsl`
+//    `kotlin-dsl`
     `java-gradle-plugin`
-    id("maia.kotlin-conventions")
+//    id("maia.kotlin-conventions")
+//    `maven-publish`
 }
 
 
@@ -19,5 +20,10 @@ dependencies {
 
     implementation(project(":libs:maia-gen:maia-gen-generator"))
     implementation(project(":libs:maia-gen:maia-gen-spec"))
+
+    testImplementation("org.assertj:assertj-core")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 }

@@ -84,3 +84,6 @@ include("libs:maia-webapp:maia-webapp-domain")
 include("libs:maia-webapp:maia-webapp-endpoints")
 include("libs:maia-webapp:maia-webapp-service")
 include("plugins:maia-gradle-plugin")
+
+
+includeBuild("plugins/consumer")
