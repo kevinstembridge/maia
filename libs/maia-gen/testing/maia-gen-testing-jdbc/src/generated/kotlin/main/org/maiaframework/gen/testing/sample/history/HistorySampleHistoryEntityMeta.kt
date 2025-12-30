@@ -43,7 +43,7 @@ object HistorySampleHistoryEntityMeta {
 
     object IndexName {
 
-        const val hist_history_sample_some_string_uidx = "hist_history_sample_some_string_uidx"
+        const val hist_history_sample_some_string_idx = "hist_history_sample_some_string_idx"
 
     }
 

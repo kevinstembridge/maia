@@ -2,6 +2,7 @@
 -- Renderer class: class org.maiaframework.gen.renderers.CreateTableSqlRenderer
 
 
+-- Type Discriminators: Organization -> ORG, User -> USR, Person -> PER
 CREATE TABLE testing.party (
     type_discriminator text not null,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
@@ -19,6 +20,7 @@ CREATE TABLE testing.party (
 );
 
 
+-- Type Discriminators: OrganizationHistory -> ORG, UserHistory -> USR, PersonHistory -> PER
 CREATE TABLE testing.party_history (
     type_discriminator text not null,
     change_type text NOT NULL,
@@ -37,6 +39,7 @@ CREATE TABLE testing.party_history (
 );
 
 
+-- Type Discriminators: OrgUserGroup -> OUG, UserGroup -> UG
 CREATE TABLE testing.user_group (
     type_discriminator text not null,
     authorities text[] NOT NULL,
@@ -51,6 +54,7 @@ CREATE TABLE testing.user_group (
 );
 
 
+-- Type Discriminators: OrgUserGroupHistory -> OUG, UserGroupHistory -> UG
 CREATE TABLE testing.user_group_history (
     type_discriminator text not null,
     authorities text[] NOT NULL,
@@ -87,5 +91,5 @@ CREATE TABLE testing.org_user_group_membership_history (
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );
-CREATE INDEX hist_org_user_group_membership_org_user_group_id_user_id_uidx ON testing.org_user_group_membership_history(org_user_group_id, user_id);
+CREATE INDEX hist_org_user_group_membership_org_user_group_id_user_id_idx ON testing.org_user_group_membership_history(org_user_group_id, user_id);
 CREATE INDEX hist_org_user_group_membership_user_id_idx ON testing.org_user_group_membership_history(user_id);

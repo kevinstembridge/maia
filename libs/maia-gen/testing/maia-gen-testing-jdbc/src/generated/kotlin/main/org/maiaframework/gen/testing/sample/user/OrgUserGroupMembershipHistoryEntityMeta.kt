@@ -37,7 +37,7 @@ object OrgUserGroupMembershipHistoryEntityMeta {
 
     object IndexName {
 
-        const val hist_org_user_group_membership_org_user_group_id_user_id_uidx = "hist_org_user_group_membership_org_user_group_id_user_id_uidx"
+        const val hist_org_user_group_membership_org_user_group_id_user_id_idx = "hist_org_user_group_membership_org_user_group_id_user_id_idx"
 
         const val hist_org_user_group_membership_user_id_idx = "hist_org_user_group_membership_user_id_idx"
 

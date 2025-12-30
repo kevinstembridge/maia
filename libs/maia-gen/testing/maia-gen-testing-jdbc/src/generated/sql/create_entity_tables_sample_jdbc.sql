@@ -132,9 +132,10 @@ CREATE TABLE testing.history_sample_history (
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );
-CREATE INDEX hist_history_sample_some_string_uidx ON testing.history_sample_history(some_string);
+CREATE INDEX hist_history_sample_some_string_idx ON testing.history_sample_history(some_string);
 
 
+-- Type Discriminators: SubOne -> SUB1, SubTwo -> SUB2
 CREATE TABLE testing.super (
     type_discriminator text not null,
     created_by_id uuid NOT NULL REFERENCES testing.party(id),
@@ -150,6 +151,7 @@ CREATE TABLE testing.super (
 CREATE UNIQUE INDEX sub_two_some_unique_string_uidx ON testing.super(some_unique_string, type_discriminator);
 
 
+-- Type Discriminators: HistorySubOne -> SUB1, HistorySubTwo -> SUB2
 CREATE TABLE testing.history_super (
     type_discriminator text not null,
     created_by_id uuid NOT NULL REFERENCES testing.party(id),
@@ -164,6 +166,7 @@ CREATE TABLE testing.history_super (
 );
 
 
+-- Type Discriminators: HistorySubOneHistory -> SUB1, HistorySubTwoHistory -> SUB2
 CREATE TABLE testing.history_super_history (
     type_discriminator text not null,
     change_type text NOT NULL,
