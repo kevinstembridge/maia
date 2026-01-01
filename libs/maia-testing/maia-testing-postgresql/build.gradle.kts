@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     api("org.testcontainers:postgresql")
 
 }

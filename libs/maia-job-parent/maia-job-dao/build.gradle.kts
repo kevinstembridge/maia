@@ -9,6 +9,8 @@ val maiagen by configurations.creating
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     api(project(":libs:maia-job-parent:maia-job-domain"))
 
     maiagen(project(":libs:maia-job-parent:maia-job-spec"))

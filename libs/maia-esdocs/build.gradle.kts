@@ -6,6 +6,8 @@ plugins {
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     implementation("org.springframework:spring-context")
 
     testImplementation("org.assertj:assertj-core")

@@ -6,6 +6,8 @@ plugins {
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     api("org.slf4j:slf4j-api")
 
     api(project(":libs:maia-dynamic-regex"))

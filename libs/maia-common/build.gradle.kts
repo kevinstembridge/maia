@@ -5,6 +5,8 @@ plugins {
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     api("com.fasterxml.jackson.core:jackson-annotations")
     api("org.slf4j:slf4j-api")
 

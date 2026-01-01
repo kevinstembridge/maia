@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
 
-    implementation(kotlin("reflect"))
+    api(platform(project(":maia-platform")))
 
     api(project(":libs:maia-common"))
     api(project(":libs:maia-domain"))

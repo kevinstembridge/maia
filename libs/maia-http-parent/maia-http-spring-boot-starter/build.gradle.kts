@@ -6,6 +6,8 @@ plugins {
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     implementation("org.apache.httpcomponents.client5:httpclient5")
     implementation("org.springframework.boot:spring-boot-starter")
 

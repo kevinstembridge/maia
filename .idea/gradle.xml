@@ -12,6 +12,11 @@
                   <project path="$PROJECT_DIR$/buildSrc" />
                 </projects>
               </build>
+              <build path="$PROJECT_DIR$/plugins/consumer" name="consumer">
+                <projects>
+                  <project path="$PROJECT_DIR$/plugins/consumer" />
+                </projects>
+              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
@@ -113,7 +118,9 @@
             <option value="$PROJECT_DIR$/libs/maia-webapp/maia-webapp-domain" />
             <option value="$PROJECT_DIR$/libs/maia-webapp/maia-webapp-endpoints" />
             <option value="$PROJECT_DIR$/libs/maia-webapp/maia-webapp-service" />
+            <option value="$PROJECT_DIR$/maia-platform" />
             <option value="$PROJECT_DIR$/plugins" />
+            <option value="$PROJECT_DIR$/plugins/consumer" />
             <option value="$PROJECT_DIR$/plugins/maia-gradle-plugin" />
           </set>
         </option>

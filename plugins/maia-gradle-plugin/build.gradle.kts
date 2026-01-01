@@ -1,14 +1,19 @@
 plugins {
-//    `kotlin-dsl`
+    `kotlin-dsl`
     `java-gradle-plugin`
-//    id("maia.kotlin-conventions")
-//    `maven-publish`
+    id("maia.kotlin-conventions")
+}
+
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
 }
 
 
 gradlePlugin {
     plugins {
-        create("maiaPlugin") {
+        create("maiaGenPlugin") {
             id = "org.maiaframework.maia-gen"
             implementationClass = "org.maiaframework.gen.plugin.MaiaGenPlugin"
         }

@@ -1,6 +1,8 @@
 pluginManagement {
-    includeBuild("../maia-gradle-plugin")
+    includeBuild("../..")
     repositories {
         gradlePluginPortal()
     }
 }
+
+//include(":sample")

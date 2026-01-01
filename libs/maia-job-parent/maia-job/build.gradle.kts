@@ -6,6 +6,8 @@ plugins {
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     api(project(":libs:maia-data-row"))
     api(project(":libs:maia-job-parent:maia-job-domain"))
 

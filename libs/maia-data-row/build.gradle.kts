@@ -5,6 +5,8 @@ plugins {
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.junit.jupiter:junit-jupiter")
 

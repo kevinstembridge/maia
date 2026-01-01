@@ -6,6 +6,8 @@ plugins {
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     implementation("com.fasterxml.jackson.core:jackson-annotations")
 
 }

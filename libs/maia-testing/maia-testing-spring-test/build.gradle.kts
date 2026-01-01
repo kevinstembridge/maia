@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
 
+    api(platform(project(":maia-platform")))
+
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("jakarta.servlet:jakarta.servlet-api")
     implementation("org.skyscreamer:jsonassert")

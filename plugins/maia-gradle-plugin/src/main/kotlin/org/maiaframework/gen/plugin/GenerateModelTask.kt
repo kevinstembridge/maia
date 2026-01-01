@@ -88,6 +88,10 @@ abstract class GenerateModelTask : DefaultTask() {
             ModuleType.UI -> TODO()
         }
 
+        if (specificationClassNames.get().isEmpty()) {
+            throw RuntimeException("No specification class names have been provided. Please set the 'specificationClassNames' property to a non-empty list of fully qualified class names.")
+        }
+
         specificationClassNames.get().forEach { specificationClassName ->
             workQueue.submit(GenerateModelWorkAction::class.java, object : Action<GenerateModelWorkParameters> {
                 override fun execute(parameters: GenerateModelWorkParameters) {
