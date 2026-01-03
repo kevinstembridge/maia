@@ -1,17 +1,17 @@
 package org.maiaframework.gen.testing.jdbc.suuper
 
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.maiaframework.gen.testing.jdbc.AbstractJdbcTest
 import org.maiaframework.gen.testing.sample.suuper.SubOneDao
 import org.maiaframework.gen.testing.sample.suuper.SubOneEntityMeta
 import org.maiaframework.gen.testing.sample.suuper.SubTwoDao
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.testing.domain.Anys.anyString
-import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.UUID
+import java.util.*
 
 class SuperDaoTest : AbstractJdbcTest() {
 
@@ -77,6 +77,7 @@ class SuperDaoTest : AbstractJdbcTest() {
 
         val updatedSubOne = this.subOneDao.findOneBySomeUniqueString(subOneEntity2.someUniqueString)
         assertThat(updatedSubOne.id).isEqualTo(subOneEntity1.id)
+        assertThat(updatedSubOne.someString).isEqualTo(subOneEntity2.someString)
 
     }
 
