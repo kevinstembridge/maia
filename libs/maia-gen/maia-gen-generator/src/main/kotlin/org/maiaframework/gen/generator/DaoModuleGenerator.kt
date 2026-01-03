@@ -13,8 +13,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = DaoModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = DaoModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -26,10 +26,8 @@ fun main(args: Array<String>) {
 
 
 class DaoModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ): AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 

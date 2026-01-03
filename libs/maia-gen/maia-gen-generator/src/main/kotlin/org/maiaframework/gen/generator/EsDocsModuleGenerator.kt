@@ -3,7 +3,6 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.EsDocMapperRenderer
 import org.maiaframework.gen.renderers.EsDocTableDtoMapperRenderer
 import org.maiaframework.gen.spec.definition.EsDocDef
-import org.maiaframework.gen.spec.definition.ModelDef
 
 
 fun main(args: Array<String>) {
@@ -14,8 +13,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = EsDocsModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = EsDocsModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -27,10 +26,8 @@ fun main(args: Array<String>) {
 
 
 class EsDocsModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ) : AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 

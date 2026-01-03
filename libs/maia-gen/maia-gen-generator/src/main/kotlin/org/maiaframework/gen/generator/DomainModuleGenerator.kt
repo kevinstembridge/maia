@@ -1,43 +1,7 @@
 package org.maiaframework.gen.generator
 
-import org.maiaframework.gen.renderers.AuthorityEnumRenderer
-import org.maiaframework.gen.renderers.CrudListenerRenderer
-import org.maiaframework.gen.renderers.DataClassRenderer
-import org.maiaframework.gen.renderers.DtoRenderer
-import org.maiaframework.gen.renderers.EntityFieldConverterRenderer
-import org.maiaframework.gen.renderers.EntityFilterRenderer
-import org.maiaframework.gen.renderers.EntityFiltersRenderer
-import org.maiaframework.gen.renderers.EntityMetaRenderer
-import org.maiaframework.gen.renderers.EntityPkRenderer
-import org.maiaframework.gen.renderers.EntityRenderer
-import org.maiaframework.gen.renderers.EntityUpdaterRenderer
-import org.maiaframework.gen.renderers.EnumRenderer
-import org.maiaframework.gen.renderers.FormModelRenderer
-import org.maiaframework.gen.renderers.HazelcastEntityConfigRenderer
-import org.maiaframework.gen.renderers.HazelcastSerializerRenderer
-import org.maiaframework.gen.renderers.RequestDtoRenderer
-import org.maiaframework.gen.renderers.ResponseDtoCsvHelperRenderer
-import org.maiaframework.gen.renderers.SearchRequestFieldConverterRenderer
-import org.maiaframework.gen.renderers.SearchRequestFieldNameConverterRenderer
-import org.maiaframework.gen.renderers.SearchRequestSearchParserRenderer
-import org.maiaframework.gen.renderers.SearchableDtoMetaRenderer
-import org.maiaframework.gen.renderers.SimpleTypeRenderer
-import org.maiaframework.gen.renderers.StagingEntityExtensionsRenderer
-import org.maiaframework.gen.renderers.StringTypeRenderer
-import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
-import org.maiaframework.gen.spec.definition.EntityCrudApiDef
-import org.maiaframework.gen.spec.definition.EntityDef
-import org.maiaframework.gen.spec.definition.EntityHierarchy
-import org.maiaframework.gen.spec.definition.EsDocDef
-import org.maiaframework.gen.spec.definition.FormModelDef
-import org.maiaframework.gen.spec.definition.HazelcastDtoDef
-import org.maiaframework.gen.spec.definition.InlineEditDtoDef
-import org.maiaframework.gen.spec.definition.ModelDef
-import org.maiaframework.gen.spec.definition.RequestDtoDef
-import org.maiaframework.gen.spec.definition.RequestDtoFieldDef
-import org.maiaframework.gen.spec.definition.ResponseDtoDef
-import org.maiaframework.gen.spec.definition.SearchableDtoDef
-import org.maiaframework.gen.spec.definition.SimpleResponseDtoDef
+import org.maiaframework.gen.renderers.*
+import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
@@ -51,8 +15,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = DomainModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = DomainModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -64,10 +28,8 @@ fun main(args: Array<String>) {
 
 
 class DomainModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ): AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 

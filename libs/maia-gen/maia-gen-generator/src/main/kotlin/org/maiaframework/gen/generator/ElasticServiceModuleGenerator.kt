@@ -2,7 +2,6 @@ package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.EsDocRepoRenderer
 import org.maiaframework.gen.renderers.TypeaheadIndexServiceRenderer
-import org.maiaframework.gen.spec.definition.ModelDef
 
 
 fun main(args: Array<String>) {
@@ -13,8 +12,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = ElasticServiceModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = ElasticServiceModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -26,10 +25,8 @@ fun main(args: Array<String>) {
 
 
 class ElasticServiceModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ): AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 

@@ -6,16 +6,8 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
-import org.maiaframework.gen.generator.AbstractModuleGenerator
-import org.maiaframework.gen.generator.DomainModuleGenerator
+import org.gradle.api.tasks.*
 import org.maiaframework.gen.generator.ModelGeneratorContext
-import org.maiaframework.gen.spec.definition.ModelDef
 import javax.inject.Inject
 
 abstract class GenerateModelTask : DefaultTask() {
@@ -29,7 +21,7 @@ abstract class GenerateModelTask : DefaultTask() {
 
 
     @get:Input
-    abstract val moduleType: Property<ModuleType>
+    abstract val moduleGeneratorClassName: Property<String>
 
 
     @get:OutputDirectory
@@ -75,19 +67,6 @@ abstract class GenerateModelTask : DefaultTask() {
             this.createTableSqlScriptRenderedFilePath.get()
         )
 
-        val moduleGeneratorFactory: (ModelDef) -> AbstractModuleGenerator = when (moduleType.get()) {
-            ModuleType.DAO -> TODO()
-            ModuleType.DOMAIN -> { modelDef: ModelDef -> DomainModuleGenerator(modelDef, modelGeneratorContext) }
-            ModuleType.ELASTICSEARCH -> TODO()
-            ModuleType.ELASTICSEARCH_SERVICE -> TODO()
-            ModuleType.ELASTICSEARCH_DOC -> TODO()
-            ModuleType.ENDPOINT -> TODO()
-            ModuleType.JOB -> TODO()
-            ModuleType.REPOSITORY -> TODO()
-            ModuleType.SERVICE -> TODO()
-            ModuleType.UI -> TODO()
-        }
-
         if (specificationClassNames.get().isEmpty()) {
             throw RuntimeException("No specification class names have been provided. Please set the 'specificationClassNames' property to a non-empty list of fully qualified class names.")
         }
@@ -96,6 +75,12 @@ abstract class GenerateModelTask : DefaultTask() {
             workQueue.submit(GenerateModelWorkAction::class.java, object : Action<GenerateModelWorkParameters> {
                 override fun execute(parameters: GenerateModelWorkParameters) {
                     parameters.specificationClassName.set(specificationClassName)
+                    parameters.moduleGeneratorClassName.set(moduleGeneratorClassName)
+                    parameters.srcMainKotlinDir.set(srcMainKotlinDir)
+                    parameters.srcMainResourcesDir.set(srcMainResourcesDir)
+                    parameters.typescriptOutputDir.set(typescriptOutputDir)
+                    parameters.sqlCreateScriptDir.set(sqlCreateScriptDir)
+                    parameters.createTableSqlScriptRenderedFilePath.set(createTableSqlScriptRenderedFilePath)
                 }
             })
         }

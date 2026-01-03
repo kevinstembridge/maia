@@ -11,8 +11,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = ModelGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = ModelGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -24,26 +24,24 @@ fun main(args: Array<String>) {
 
 
 class ModelGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ) : AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 
 
     override fun onGenerateSource() {
 
-        AppModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
-        DaoModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
-        DomainModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
-        ElasticSearchModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
-        ElasticServiceModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
-        EndpointsModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
-        EsDocsModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
-        JobModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
-        RepoModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
-        ServiceModuleGenerator(this.modelDef, this.modelGeneratorContext).generateSource()
+        AppModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        DaoModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        DomainModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        ElasticSearchModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        ElasticServiceModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        EndpointsModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        EsDocsModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        JobModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        RepoModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        ServiceModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
 
     }
 

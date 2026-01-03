@@ -4,7 +4,6 @@ import org.maiaframework.gen.renderers.EsDocFieldNameMapperRenderer
 import org.maiaframework.gen.renderers.EsIndexControlRenderer
 import org.maiaframework.gen.renderers.EsIndexMetaClassRenderer
 import org.maiaframework.gen.renderers.EsIndexRenderer
-import org.maiaframework.gen.spec.definition.ModelDef
 
 
 fun main(args: Array<String>) {
@@ -15,8 +14,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = ElasticSearchModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = ElasticSearchModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -28,10 +27,8 @@ fun main(args: Array<String>) {
 
 
 class ElasticSearchModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ): AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 

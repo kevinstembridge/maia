@@ -13,8 +13,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = EndpointsModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = EndpointsModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -26,10 +26,8 @@ fun main(args: Array<String>) {
 
 
 class EndpointsModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ): AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 

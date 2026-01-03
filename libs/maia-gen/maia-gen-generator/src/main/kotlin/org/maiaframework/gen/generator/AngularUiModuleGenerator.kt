@@ -1,43 +1,7 @@
 package org.maiaframework.gen.generator
 
-import org.maiaframework.gen.renderers.ui.AgGridDatasourceRenderer
-import org.maiaframework.gen.renderers.ui.AngularFormServiceRenderer
-import org.maiaframework.gen.renderers.ui.AsyncValidatorRenderer
-import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
-import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
-import org.maiaframework.gen.renderers.ui.CrudTableComponentRenderer
-import org.maiaframework.gen.renderers.ui.CrudTableHtmlRenderer
-import org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableComponentRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableHtmlRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlTableComponentRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlTableHtmlRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlTableScssRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlTableServiceTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityCreateDialogScssRenderer
-import org.maiaframework.gen.renderers.ui.EntityCreateFormHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityCreateFormScssRenderer
-import org.maiaframework.gen.renderers.ui.EntityDeleteDialogComponentRenderer
-import org.maiaframework.gen.renderers.ui.EntityDeleteDialogHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityDetailDtoComponentRenderer
-import org.maiaframework.gen.renderers.ui.EntityDetailDtoHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityDetailDtoServiceTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.EntityEditDialogHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityEditDialogScssRenderer
-import org.maiaframework.gen.renderers.ui.EntityEditFormHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityFormComponentRenderer
-import org.maiaframework.gen.renderers.ui.EnumSelectionOptionsTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.EnumTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
-import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
-import org.maiaframework.gen.renderers.ui.FormScssRenderer
-import org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.TypeaheadAngularServiceRenderer
-import org.maiaframework.gen.renderers.ui.TypeaheadFieldValidatorRenderer
-import org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
+import org.maiaframework.gen.renderers.ui.*
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
-import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ClassDef
@@ -52,8 +16,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = AngularUiModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = AngularUiModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -65,10 +29,8 @@ fun main(args: Array<String>) {
 
 
 class AngularUiModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ): AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 

@@ -11,7 +11,7 @@ abstract class MaiaGenExtension @Inject constructor(objects: ObjectFactory) {
     val specificationClassNames = objects.listProperty(String::class.java)
 
 
-    val moduleType = objects.property(ModuleType::class.java)
+    val moduleGeneratorClassName = objects.property(String::class.java)
 
 
     val kotlinOutputDir = objects.directoryProperty()

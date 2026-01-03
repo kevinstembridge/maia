@@ -1,12 +1,7 @@
 package org.maiaframework.gen.generator
 
-import org.maiaframework.gen.renderers.EntityDetailDtoRepoRenderer
-import org.maiaframework.gen.renderers.EntityRepoRenderer
-import org.maiaframework.gen.renderers.ResponseDtoRepoRenderer
-import org.maiaframework.gen.renderers.SearchableDtoMongoRepoRenderer
-import org.maiaframework.gen.renderers.SearchableTableDtoJdbcRepoRenderer
+import org.maiaframework.gen.renderers.*
 import org.maiaframework.gen.spec.definition.DatabaseType
-import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 
 
@@ -18,8 +13,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = RepoModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = RepoModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -31,10 +26,8 @@ fun main(args: Array<String>) {
 
 
 class RepoModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ) : AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 

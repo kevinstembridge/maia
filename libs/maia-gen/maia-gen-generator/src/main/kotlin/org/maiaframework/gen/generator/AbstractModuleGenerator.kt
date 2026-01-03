@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException
 
 
 abstract class AbstractModuleGenerator(
-    protected val modelDef: ModelDef,
     protected val modelGeneratorContext: ModelGeneratorContext
 ) {
 
@@ -19,10 +18,14 @@ abstract class AbstractModuleGenerator(
     protected val typescriptOutputDir = modelGeneratorContext.typescriptOutputDir
 
 
-    fun generateSource() {
+    protected lateinit var modelDef: ModelDef
+
+
+    fun generateSource(modelDef: ModelDef) {
 
         try {
 
+            this.modelDef = modelDef
             onGenerateSource()
 
         } catch (e: InvocationTargetException) {

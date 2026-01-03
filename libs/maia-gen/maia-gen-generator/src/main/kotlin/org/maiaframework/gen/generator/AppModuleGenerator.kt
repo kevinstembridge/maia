@@ -3,7 +3,6 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.EntityFieldEnumConstantsRenderer
 import org.maiaframework.gen.spec.definition.EntityHtmlFormDef
 import org.maiaframework.gen.spec.definition.HtmlFormDef
-import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 
 
@@ -15,8 +14,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = AppModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = AppModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -28,10 +27,8 @@ fun main(args: Array<String>) {
 
 
 class AppModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ): AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 

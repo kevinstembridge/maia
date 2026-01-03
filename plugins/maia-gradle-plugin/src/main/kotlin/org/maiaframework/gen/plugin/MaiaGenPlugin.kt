@@ -3,8 +3,6 @@ package org.maiaframework.gen.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
-import org.gradle.api.plugins.JavaPlugin
-
 
 
 abstract class MaiaGenPlugin : Plugin<Project> {
@@ -38,8 +36,8 @@ abstract class MaiaGenPlugin : Plugin<Project> {
                 description = "Generates Maia model classes from the provided specification files."
                 group = "build"
                 generatorClasspath.from(project.configurations.getByName("maiaGenImplementation"))
-                moduleType.set(extension.moduleType)
                 specificationClassNames.set(extension.specificationClassNames)
+                moduleGeneratorClassName.set(extension.moduleGeneratorClassName)
                 sqlCreateScriptDir.set(extension.sqlCreateScriptsDir)
                 srcMainKotlinDir.set(extension.kotlinOutputDir)
                 srcMainResourcesDir.set(extension.resourcesOutputDir)

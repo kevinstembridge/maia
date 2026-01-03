@@ -87,4 +87,4 @@ include("maia-platform")
 include("plugins:maia-gradle-plugin")
 
 
-includeBuild("plugins/consumer")
+includeBuild("plugins/testing")

@@ -1,7 +1,6 @@
 package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.EntityRepoRenderer
-import org.maiaframework.gen.spec.definition.ModelDef
 
 
 fun main(args: Array<String>) {
@@ -12,8 +11,8 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = EntityRepoModuleGenerator(it, moduleGeneratorFixture.modelGeneratorContext)
-            modelGenerator.generateSource()
+            val modelGenerator = EntityRepoModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            modelGenerator.generateSource(it)
 
         }
 
@@ -25,10 +24,8 @@ fun main(args: Array<String>) {
 
 
 class EntityRepoModuleGenerator(
-    modelDef: ModelDef,
     modelGeneratorContext: ModelGeneratorContext
 ) : AbstractModuleGenerator(
-    modelDef,
     modelGeneratorContext
 ) {
 
