@@ -1,5 +1,3 @@
-import org.maiaframework.gen.plugin.ModuleType
-
 plugins {
     id("org.maiaframework.maia-gen")
 }
@@ -7,7 +5,6 @@ plugins {
 
 maia {
 
-    moduleType.set(ModuleType.DOMAIN)
     specificationClassNames.set(listOf("org.maiaframework.gen.sample.SampleJdbcSpec"))
     moduleGeneratorClassName.set("org.maiaframework.gen.generator.ModelGenerator")
 

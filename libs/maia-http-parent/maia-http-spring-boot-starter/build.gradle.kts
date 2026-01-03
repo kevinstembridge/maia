@@ -11,6 +11,6 @@ dependencies {
     implementation("org.apache.httpcomponents.client5:httpclient5")
     implementation("org.springframework.boot:spring-boot-starter")
 
-    annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
+    annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor:3.5.6")
 
 }

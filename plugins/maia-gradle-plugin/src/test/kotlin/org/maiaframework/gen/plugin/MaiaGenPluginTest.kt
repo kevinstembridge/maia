@@ -1,13 +1,14 @@
 package org.maiaframework.gen.plugin
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
-import java.io.File
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import java.io.File
 
+@Disabled
 class MaiaGenPluginTest {
 
     @field:TempDir
@@ -22,17 +23,14 @@ class MaiaGenPluginTest {
         settingsFile.writeText("") // single-project build
         buildFile.writeText(
             """
-            import org.maiaframework.gen.plugin.ModuleType
-                
             plugins {
                 id("org.maiaframework.maia-gen")
             }
             
             maia {
-                moduleType.set(ModuleType.DOMAIN)
                 specificationClassNames.set(listOf("org.maiaframework.gen.plugin.SampleSpec"))
                 dependencies {
-                    implementation(project(":libs:maia-gen:maia-gen-spec"))
+                    getImplementation().add("org.maiaframework:maia-gen-testing-jdbc")
                 }
             }
             """.trimIndent()

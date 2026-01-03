@@ -16,7 +16,7 @@ class ToggleShowcaseConfiguration {
     @Bean
     fun alwaysActiveStrategy(): ActivationStrategy {
 
-        return { true } as ActivationStrategy
+        return ActivationStrategy { true }
 
     }
 
@@ -24,7 +24,7 @@ class ToggleShowcaseConfiguration {
     @Bean
     fun alwaysInactiveStrategy(): ActivationStrategy {
 
-        return { false } as ActivationStrategy
+        return ActivationStrategy { false }
 
     }
 
