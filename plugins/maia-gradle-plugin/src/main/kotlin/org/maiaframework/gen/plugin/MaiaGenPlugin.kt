@@ -19,11 +19,13 @@ abstract class MaiaGenPlugin : Plugin<Project> {
 
             val extension = extensions.create("maia", MaiaGenExtension::class.java).apply {
 
-                kotlinOutputDir.convention(project.layout.projectDirectory.dir("src/generated/kotlin/main"))
-                resourcesOutputDir.convention(project.layout.projectDirectory.dir("src/generated/resources/main"))
+                createTablesSqlScriptPrefix.convention("create_entity_tables.sql")
                 sqlCreateScriptsDir.convention(project.layout.projectDirectory.dir("src/generated/sql"))
+                srcMainKotlinOutputDir.convention(project.layout.projectDirectory.dir("src/generated/kotlin/main"))
+                srcMainResourcesOutputDir.convention(project.layout.projectDirectory.dir("src/generated/resources/main"))
+                srcTestKotlinOutputDir.convention(project.layout.projectDirectory.dir("src/generated/kotlin/test"))
+                srcTestResourcesOutputDir.convention(project.layout.projectDirectory.dir("src/generated/resources/test"))
                 typescriptOutputDir.convention(project.layout.projectDirectory.dir("src/generated/typescript"))
-                createTablesSqlScriptRenderedFilePath.convention("create_entity_tables.sql")
 
             }
 
@@ -32,16 +34,33 @@ abstract class MaiaGenPlugin : Plugin<Project> {
             }
 
             tasks.register("generateMaiaModel", GenerateModelTask::class.java) {
-                createTableSqlScriptRenderedFilePath.set(extension.createTablesSqlScriptRenderedFilePath)
+
                 description = "Generates Maia model classes from the provided specification files."
                 group = "build"
+
+                outputs.dir(extension.sqlCreateScriptsDir)
+                outputs.dir(extension.srcMainKotlinOutputDir)
+                outputs.dir(extension.srcMainResourcesOutputDir)
+                outputs.dir(extension.srcTestKotlinOutputDir)
+                outputs.dir(extension.srcTestResourcesOutputDir)
+                outputs.dir(extension.typescriptOutputDir)
+
                 generatorClasspath.from(project.configurations.getByName("maiaGenImplementation"))
-                specificationClassNames.set(extension.specificationClassNames)
+
+                createTablesSqlScriptPrefix.set(extension.createTablesSqlScriptPrefix)
                 moduleGeneratorClassName.set(extension.moduleGeneratorClassName)
-                sqlCreateScriptDir.set(extension.sqlCreateScriptsDir)
-                srcMainKotlinDir.set(extension.kotlinOutputDir)
-                srcMainResourcesDir.set(extension.resourcesOutputDir)
+                specificationClassNames.set(extension.specificationClassNames)
+                sqlCreateScriptsDir.set(extension.sqlCreateScriptsDir)
+                srcMainKotlinDir.set(extension.srcMainKotlinOutputDir)
+                srcMainResourcesDir.set(extension.srcMainResourcesOutputDir)
+                srcTestKotlinDir.set(extension.srcTestKotlinOutputDir)
+                srcTestResourcesDir.set(extension.srcTestResourcesOutputDir)
                 typescriptOutputDir.set(extension.typescriptOutputDir)
+
+            }
+
+            tasks.named("compileKotlin") {
+                dependsOn("generateMaiaModel")
             }
 
         }

@@ -11,10 +11,10 @@ class ModelGeneratorArgs(args: Array<String>) {
     val generatedSourceDir: File
 
 
-    val kotlinOutputDir: File
+    val kotlinMainOutputDir: File
 
 
-    val resourcesOutputDir: File
+    val resourcesMainOutputDir: File
 
 
     val kotlinTestOutputDir: File
@@ -42,8 +42,8 @@ class ModelGeneratorArgs(args: Array<String>) {
         this.specificationClassNames = specificationClassNamesCsv.split(",")
 
         this.generatedSourceDir = File(argsMap["generatedSourceDir"] ?: "src/generated")
-        this.kotlinOutputDir = File(this.generatedSourceDir, "kotlin/main")
-        this.resourcesOutputDir = File(this.generatedSourceDir, "resources/main")
+        this.kotlinMainOutputDir = File(this.generatedSourceDir, "kotlin/main")
+        this.resourcesMainOutputDir = File(this.generatedSourceDir, "resources/main")
         this.kotlinTestOutputDir = File(this.generatedSourceDir, "kotlin/test")
         this.resourcesTestOutputDir = File(this.generatedSourceDir, "resources/test")
         this.typescriptOutputDir = File(this.generatedSourceDir, "typescript/main")

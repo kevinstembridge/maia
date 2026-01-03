@@ -31,7 +31,17 @@ abstract class GenerateModelTask : DefaultTask() {
 
     @get:OutputDirectory
     @get:Optional
+    abstract val srcTestKotlinDir: DirectoryProperty
+
+
+    @get:OutputDirectory
+    @get:Optional
     abstract val srcMainResourcesDir: DirectoryProperty
+
+
+    @get:OutputDirectory
+    @get:Optional
+    abstract val srcTestResourcesDir: DirectoryProperty
 
 
     @get:OutputDirectory
@@ -41,16 +51,17 @@ abstract class GenerateModelTask : DefaultTask() {
 
     @get:OutputDirectory
     @get:Optional
-    abstract val sqlCreateScriptDir: DirectoryProperty
+    abstract val sqlCreateScriptsDir: DirectoryProperty
 
 
     @get:OutputFile
     @get:Optional
-    abstract val createTableSqlScriptRenderedFilePath: Property<String>
+    abstract val createTablesSqlScriptPrefix: Property<String>
 
 
     @get:Inject
     abstract val workerExecutor: org.gradle.workers.WorkerExecutor
+
 
     @TaskAction
     fun generateModel() {
@@ -60,11 +71,13 @@ abstract class GenerateModelTask : DefaultTask() {
         }
 
         val modelGeneratorContext = ModelGeneratorContext(
-            this.srcMainKotlinDir.get().asFile,
-            this.srcMainResourcesDir.get().asFile,
-            this.typescriptOutputDir.get().asFile,
-            this.sqlCreateScriptDir.get().asFile,
-            this.createTableSqlScriptRenderedFilePath.get()
+            srcMainKotlinOutputDir = this.srcMainKotlinDir.get().asFile,
+            srcTestKotlinOutputDir = this.srcTestKotlinDir.get().asFile,
+            srcMainResourcesDir = this.srcMainResourcesDir.get().asFile,
+            srcTestResourcesDir = this.srcTestKotlinDir.get().asFile,
+            typescriptOutputDir = this.typescriptOutputDir.get().asFile,
+            sqlCreateScriptsDir = this.sqlCreateScriptsDir.get().asFile,
+            createTablesSqlScriptPrefix = this.createTablesSqlScriptPrefix.get()
         )
 
         if (specificationClassNames.get().isEmpty()) {
@@ -78,9 +91,11 @@ abstract class GenerateModelTask : DefaultTask() {
                     parameters.moduleGeneratorClassName.set(moduleGeneratorClassName)
                     parameters.srcMainKotlinDir.set(srcMainKotlinDir)
                     parameters.srcMainResourcesDir.set(srcMainResourcesDir)
+                    parameters.srcTestKotlinDir.set(srcTestKotlinDir)
+                    parameters.srcTestResourcesDir.set(srcTestResourcesDir)
                     parameters.typescriptOutputDir.set(typescriptOutputDir)
-                    parameters.sqlCreateScriptDir.set(sqlCreateScriptDir)
-                    parameters.createTableSqlScriptRenderedFilePath.set(createTableSqlScriptRenderedFilePath)
+                    parameters.sqlCreateScriptDir.set(sqlCreateScriptsDir)
+                    parameters.createTableSqlScriptPrefix.set(createTablesSqlScriptPrefix)
                 }
             })
         }

@@ -9,7 +9,7 @@ abstract class AbstractModuleGenerator(
 ) {
 
 
-    protected val kotlinOutputDir = modelGeneratorContext.kotlinOutputDir
+    protected val kotlinOutputDir = modelGeneratorContext.srcMainKotlinOutputDir
 
 
     protected val resourcesOutputDir = modelGeneratorContext.srcMainResourcesDir

@@ -16,7 +16,13 @@ interface GenerateModelWorkParameters : WorkParameters {
     val srcMainKotlinDir: DirectoryProperty
 
 
+    val srcTestKotlinDir: DirectoryProperty
+
+
     val srcMainResourcesDir: DirectoryProperty
+
+
+    val srcTestResourcesDir: DirectoryProperty
 
 
     val typescriptOutputDir: DirectoryProperty
@@ -25,7 +31,7 @@ interface GenerateModelWorkParameters : WorkParameters {
     val sqlCreateScriptDir: DirectoryProperty
 
 
-    val createTableSqlScriptRenderedFilePath: Property<String>
+    val createTableSqlScriptPrefix: Property<String>
 
 
 }

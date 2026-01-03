@@ -14,10 +14,16 @@ abstract class MaiaGenExtension @Inject constructor(objects: ObjectFactory) {
     val moduleGeneratorClassName = objects.property(String::class.java)
 
 
-    val kotlinOutputDir = objects.directoryProperty()
+    val srcMainKotlinOutputDir = objects.directoryProperty()
 
 
-    val resourcesOutputDir = objects.directoryProperty()
+    val srcTestKotlinOutputDir = objects.directoryProperty()
+
+
+    val srcMainResourcesOutputDir = objects.directoryProperty()
+
+
+    val srcTestResourcesOutputDir = objects.directoryProperty()
 
 
     val typescriptOutputDir = objects.directoryProperty()
@@ -26,7 +32,7 @@ abstract class MaiaGenExtension @Inject constructor(objects: ObjectFactory) {
     val sqlCreateScriptsDir = objects.directoryProperty()
 
 
-    val createTablesSqlScriptRenderedFilePath = objects.property(String::class.java)
+    val createTablesSqlScriptPrefix = objects.property(String::class.java)
 
 
     @Nested
