@@ -7,7 +7,6 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
-import org.maiaframework.gen.generator.ModelGeneratorContext
 import javax.inject.Inject
 
 abstract class GenerateModelTask : DefaultTask() {
@@ -70,16 +69,6 @@ abstract class GenerateModelTask : DefaultTask() {
             classpath.from(generatorClasspath)
         }
 
-        val modelGeneratorContext = ModelGeneratorContext(
-            srcMainKotlinOutputDir = this.srcMainKotlinDir.get().asFile,
-            srcTestKotlinOutputDir = this.srcTestKotlinDir.get().asFile,
-            srcMainResourcesDir = this.srcMainResourcesDir.get().asFile,
-            srcTestResourcesDir = this.srcTestKotlinDir.get().asFile,
-            typescriptOutputDir = this.typescriptOutputDir.get().asFile,
-            sqlCreateScriptsDir = this.sqlCreateScriptsDir.get().asFile,
-            createTablesSqlScriptPrefix = this.createTablesSqlScriptPrefix.get()
-        )
-
         if (specificationClassNames.get().isEmpty()) {
             throw RuntimeException("No specification class names have been provided. Please set the 'specificationClassNames' property to a non-empty list of fully qualified class names.")
         }
@@ -87,15 +76,15 @@ abstract class GenerateModelTask : DefaultTask() {
         specificationClassNames.get().forEach { specificationClassName ->
             workQueue.submit(GenerateModelWorkAction::class.java, object : Action<GenerateModelWorkParameters> {
                 override fun execute(parameters: GenerateModelWorkParameters) {
-                    parameters.specificationClassName.set(specificationClassName)
+                    parameters.createTableSqlScriptPrefix.set(createTablesSqlScriptPrefix)
                     parameters.moduleGeneratorClassName.set(moduleGeneratorClassName)
+                    parameters.specificationClassName.set(specificationClassName)
+                    parameters.sqlCreateScriptDir.set(sqlCreateScriptsDir)
                     parameters.srcMainKotlinDir.set(srcMainKotlinDir)
                     parameters.srcMainResourcesDir.set(srcMainResourcesDir)
                     parameters.srcTestKotlinDir.set(srcTestKotlinDir)
                     parameters.srcTestResourcesDir.set(srcTestResourcesDir)
                     parameters.typescriptOutputDir.set(typescriptOutputDir)
-                    parameters.sqlCreateScriptDir.set(sqlCreateScriptsDir)
-                    parameters.createTableSqlScriptPrefix.set(createTablesSqlScriptPrefix)
                 }
             })
         }
