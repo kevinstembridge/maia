@@ -16,13 +16,13 @@ data class ModuleGeneratorFixture(
             val modelGeneratorArgs = ModelGeneratorArgs(args)
 
             val modelGeneratorContext = ModelGeneratorContext(
+                createTablesSqlScriptPrefix = modelGeneratorArgs.createTablesSqlScriptPrefix,
+                sqlCreateScriptsDir = modelGeneratorArgs.sqlCreateScriptsDir,
                 srcMainKotlinOutputDir = modelGeneratorArgs.kotlinMainOutputDir,
-                srcTestKotlinOutputDir = modelGeneratorArgs.kotlinTestOutputDir,
                 srcMainResourcesDir = modelGeneratorArgs.resourcesMainOutputDir,
+                srcTestKotlinOutputDir = modelGeneratorArgs.kotlinTestOutputDir,
                 srcTestResourcesDir = modelGeneratorArgs.resourcesTestOutputDir,
                 typescriptOutputDir = modelGeneratorArgs.typescriptOutputDir,
-                sqlCreateScriptsDir = modelGeneratorArgs.sqlCreateScriptsDir,
-                createTablesSqlScriptPrefix = modelGeneratorArgs.createTablesSqlScriptPrefix,
             )
 
             val modelDefs = modelGeneratorArgs.specificationClassNames.map { ModelDefInstantiator.instantiate(it) }
