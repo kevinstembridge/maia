@@ -11,6 +11,7 @@ import javax.inject.Inject
 
 abstract class GenerateModelTask : DefaultTask() {
 
+
     @get:InputFiles
     abstract val generatorClasspath: ConfigurableFileCollection
 
