@@ -62,6 +62,7 @@ abstract class GenerateModelTask : DefaultTask() {
     abstract val workerExecutor: org.gradle.workers.WorkerExecutor
 
 
+    @Suppress("ObjectLiteralToLambda")
     @TaskAction
     fun generateModel() {
 
