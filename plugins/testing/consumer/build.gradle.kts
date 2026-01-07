@@ -1,5 +1,6 @@
 plugins {
     id("org.maiaframework.maia-gen")
+    idea
 }
 
 

@@ -1,8 +1,14 @@
 package org.maiaframework.gen.plugin
 
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
+import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.kotlin.dsl.withType
+import org.gradle.plugins.ide.idea.IdeaPlugin
+import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 abstract class MaiaGenPlugin : Plugin<Project> {
@@ -59,8 +65,52 @@ abstract class MaiaGenPlugin : Plugin<Project> {
 
             }
 
-            tasks.named("compileKotlin") {
+            plugins.withType(IdeaPlugin::class, object : Action<IdeaPlugin> {
+
+                override fun execute(ideaPlugin: IdeaPlugin) {
+
+                    ideaPlugin.model.module {
+                        generatedSourceDirs.add(extension.srcMainKotlinOutputDir.get().asFile)
+                        generatedSourceDirs.add(extension.srcMainResourcesOutputDir.get().asFile)
+                        generatedSourceDirs.add(extension.srcTestKotlinOutputDir.get().asFile)
+                        generatedSourceDirs.add(extension.srcTestResourcesOutputDir.get().asFile)
+                    }
+
+                }
+
+            })
+
+            plugins.withType(KotlinBasePlugin::class, object: Action<KotlinBasePlugin> {
+
+                override fun execute(plugin: KotlinBasePlugin) {
+
+                    val sourceSetsContainer = project.properties["sourceSets"] as SourceSetContainer
+
+                    sourceSetsContainer.getByName("main").apply {
+                        java.srcDirs(extension.srcMainKotlinOutputDir)
+                        java.srcDirs(extension.srcMainResourcesOutputDir)
+                    }
+
+                    sourceSetsContainer.getByName("test").apply {
+                        java.srcDirs(extension.srcTestKotlinOutputDir)
+                        java.srcDirs(extension.srcTestResourcesOutputDir)
+                    }
+
+                }
+
+            })
+
+            tasks.withType<KotlinCompile> {
                 dependsOn("generateMaiaModel")
+            }
+
+            tasks.named("clean") {
+                delete(extension.sqlCreateScriptsDir)
+                delete(extension.srcMainKotlinOutputDir)
+                delete(extension.srcMainResourcesOutputDir)
+                delete(extension.srcTestKotlinOutputDir)
+                delete(extension.srcTestResourcesOutputDir)
+                delete(extension.typescriptOutputDir)
             }
 
         }
