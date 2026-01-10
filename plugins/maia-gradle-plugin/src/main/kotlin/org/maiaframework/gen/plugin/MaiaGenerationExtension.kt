@@ -5,7 +5,7 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Nested
 import javax.inject.Inject
 
-abstract class MaiaGenExtension @Inject constructor(objects: ObjectFactory) {
+abstract class MaiaGenerationExtension @Inject constructor(objects: ObjectFactory) {
 
 
     val specificationClassNames = objects.listProperty(String::class.java)
@@ -36,10 +36,10 @@ abstract class MaiaGenExtension @Inject constructor(objects: ObjectFactory) {
 
 
     @Nested
-    val dependencies: MaiaGenDependencies = objects.newInstance(MaiaGenDependencies::class.java)
+    val dependencies: MaiaGenerationDependencies = objects.newInstance(MaiaGenerationDependencies::class.java)
 
 
-    fun dependencies(action: Action<MaiaGenDependencies>) {
+    fun dependencies(action: Action<MaiaGenerationDependencies>) {
         action.execute(dependencies)
     }
 

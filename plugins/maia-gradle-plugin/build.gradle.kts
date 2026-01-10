@@ -13,9 +13,9 @@ repositories {
 
 gradlePlugin {
     plugins {
-        create("maiaGenPlugin") {
-            id = "org.maiaframework.maia-gen"
-            implementationClass = "org.maiaframework.gen.plugin.MaiaGenPlugin"
+        create("maiaGenerationPlugin") {
+            id = "org.maiaframework.maia-generation"
+            implementationClass = "org.maiaframework.gen.plugin.MaiaGenerationPlugin"
         }
     }
 }

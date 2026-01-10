@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
-abstract class MaiaGenPlugin : Plugin<Project> {
+abstract class MaiaGenerationPlugin : Plugin<Project> {
 
 
     override fun apply(project: Project) {
@@ -45,9 +45,9 @@ abstract class MaiaGenPlugin : Plugin<Project> {
     }
 
 
-    private fun `add the MaiaGenExtension to the project`(project: Project): MaiaGenExtension {
+    private fun `add the MaiaGenExtension to the project`(project: Project): MaiaGenerationExtension {
 
-        return project.extensions.create("maia", MaiaGenExtension::class.java).apply {
+        return project.extensions.create("maia", MaiaGenerationExtension::class.java).apply {
 
             createTablesSqlScriptPrefix.convention("create_entity_tables.sql")
             sqlCreateScriptsDir.convention(project.layout.projectDirectory.dir("src/generated/sql"))
@@ -64,7 +64,7 @@ abstract class MaiaGenPlugin : Plugin<Project> {
 
     private fun `register the maiaGenImplementation configuration`(
         project: Project,
-        extension: MaiaGenExtension
+        extension: MaiaGenerationExtension
     ) {
 
         project.configurations.register("maiaGenImplementation") {
@@ -76,7 +76,7 @@ abstract class MaiaGenPlugin : Plugin<Project> {
 
     private fun `register the generateMaiaModel task`(
         project: Project,
-        extension: MaiaGenExtension
+        extension: MaiaGenerationExtension
     ) {
 
         project.tasks.register("maiaGeneration", MaiaGenerationTask::class.java) {
@@ -109,7 +109,7 @@ abstract class MaiaGenPlugin : Plugin<Project> {
 
     private fun `configure the IdeaPlugin for generated output dirs`(
         project: Project,
-        extension: MaiaGenExtension
+        extension: MaiaGenerationExtension
     ) {
 
         project.plugins.withType(IdeaPlugin::class, object : Action<IdeaPlugin> {
@@ -132,7 +132,7 @@ abstract class MaiaGenPlugin : Plugin<Project> {
 
     private fun `add the generated output dirs as SourceSets`(
         project: Project,
-        extension: MaiaGenExtension
+        extension: MaiaGenerationExtension
     ) {
 
         project.plugins.withType(KotlinBasePlugin::class, object : Action<KotlinBasePlugin> {
@@ -169,7 +169,7 @@ abstract class MaiaGenPlugin : Plugin<Project> {
 
     private fun `include the generated output dirs when the Gradle clean task is run`(
         project: Project,
-        extension: MaiaGenExtension
+        extension: MaiaGenerationExtension
     ) {
 
         with(project) {

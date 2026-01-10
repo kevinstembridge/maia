@@ -9,7 +9,7 @@ import org.junit.jupiter.api.io.TempDir
 import java.io.File
 
 @Disabled
-class MaiaGenPluginTest {
+class MaiaGenerationPluginTest {
 
     @field:TempDir
     lateinit var projectDir: File
