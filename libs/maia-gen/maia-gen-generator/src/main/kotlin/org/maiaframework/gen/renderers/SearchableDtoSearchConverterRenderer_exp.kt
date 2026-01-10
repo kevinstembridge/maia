@@ -5,14 +5,37 @@ import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ConstructorArg
 
-class SearchableDtoSearchConverterRenderer_exp(private val searchableDtoDef: SearchableDtoDef) : AbstractKotlinRenderer(searchableDtoDef.dtoSearchConverterClassDef) {
+
+class SearchableDtoSearchConverterRenderer_exp(
+    private val searchableDtoDef: SearchableDtoDef
+) : AbstractKotlinRenderer(
+    searchableDtoDef.dtoSearchConverterClassDef
+) {
 
 
     init {
 
-        addConstructorArg(ConstructorArg(ClassFieldDef.aClassField("fieldConverter", searchableDtoDef.fieldConverterClassDef.fqcn).build()))
-        addConstructorArg(ConstructorArg(ClassFieldDef.aClassField("fieldNameConverter", searchableDtoDef.fieldNameConverterClassDef.fqcn).build()))
-        addConstructorArg(ConstructorArg(ClassFieldDef.aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).build()))
+        addConstructorArg(
+            ConstructorArg(
+                ClassFieldDef.aClassField(
+                    "fieldConverter",
+                    searchableDtoDef.fieldConverterClassDef.fqcn
+                ).build()
+            )
+        )
+        addConstructorArg(
+            ConstructorArg(
+                ClassFieldDef.aClassField(
+                    "fieldNameConverter",
+                    searchableDtoDef.fieldNameConverterClassDef.fqcn
+                ).build()
+            )
+        )
+        addConstructorArg(
+            ConstructorArg(
+                ClassFieldDef.aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).build()
+            )
+        )
 
     }
 
@@ -22,7 +45,11 @@ class SearchableDtoSearchConverterRenderer_exp(private val searchableDtoDef: Sea
         addImportFor(searchableDtoDef.dtoRootEntityDef.metaClassDef.fqcn)
 
         blankLine()
-        appendLine("    private val fieldNames = setOf(${searchableDtoDef.allFields.asSequence().map { "\"${it.classFieldName}\"" }.joinToString(", ")})")
+        appendLine(
+            "    private val fieldNames = setOf(${
+                searchableDtoDef.allFields.asSequence().map { "\"${it.classFieldName}\"" }.joinToString(", ")
+            })"
+        )
 
         if (this.searchableDtoDef.hasLookupFields) {
 
@@ -109,9 +136,9 @@ class SearchableDtoSearchConverterRenderer_exp(private val searchableDtoDef: Sea
             appendLine("    }")
 
         } else {
-            
+
             addImportFor(Fqcns.MONGO_SEARCH_REQUEST)
-            
+
             blankLine()
             blankLine()
             appendLine("    fun convert(searchModel: SearchModel): MongoSearchRequest {")
@@ -126,7 +153,7 @@ class SearchableDtoSearchConverterRenderer_exp(private val searchableDtoDef: Sea
             appendLine("        TODO()")
             blankLine()
             appendLine("    }")
-            
+
         }
 
     }

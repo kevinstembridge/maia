@@ -57,7 +57,6 @@ class DaoLayerModuleGenerator(
 
         if (jdbcRootEntityHierarchies.isNotEmpty()) {
             CreateTableSqlRenderer(jdbcRootEntityHierarchies, renderedFileName).renderToDir(sqlScriptsDir)
-//            RenameColumnsSqlRenderer(jdbcRootEntityHierarchies, renderedFileName).renderToDir(sqlScriptsDir)
         }
 
     }
@@ -168,7 +167,6 @@ class DaoLayerModuleGenerator(
     private fun renderSearchableDtoSearchConverter(searchableDtoDef: SearchableDtoDef) {
 
         if (searchableDtoDef.dtoRootEntityDef.databaseType == DatabaseType.MONGO) {
-//            SearchableDtoSearchConverterRenderer(searchableDtoDef).renderToDir(this.outputDir)
             SearchableDtoSearchConverterRenderer_exp(searchableDtoDef).renderToDir(this.kotlinOutputDir)
         }
 
