@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = EndpointsModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = WebLayerModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
             modelGenerator.generateSource(it)
 
         }
@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
 }
 
 
-class EndpointsModuleGenerator(
+class WebLayerModuleGenerator(
     modelGeneratorContext: ModelGeneratorContext
 ): AbstractModuleGenerator(
     modelGeneratorContext

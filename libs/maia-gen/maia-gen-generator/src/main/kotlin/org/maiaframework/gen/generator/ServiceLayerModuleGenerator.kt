@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = ServiceModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = ServiceLayerModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
             modelGenerator.generateSource(it)
 
         }
@@ -24,7 +24,7 @@ fun main(args: Array<String>) {
 }
 
 
-class ServiceModuleGenerator(
+class ServiceLayerModuleGenerator(
     modelGeneratorContext: ModelGeneratorContext
 ) : AbstractModuleGenerator(
     modelGeneratorContext
