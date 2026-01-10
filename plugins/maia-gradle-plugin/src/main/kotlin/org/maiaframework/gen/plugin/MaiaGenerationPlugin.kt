@@ -6,9 +6,13 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.withType
+import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+
+private const val MAIA_GENERATION_TASK_NAME = "maiaGeneration"
 
 
 abstract class MaiaGenerationPlugin : Plugin<Project> {
@@ -28,7 +32,9 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
 
         `add the generated output dirs as SourceSets`(project, extension)
 
-        `the generateMaiaModel task depends on KotlinCompile`(project)
+        `the KotlinCompile task depends on maiaGeneration`(project)
+
+        `the processResources task depends on maiaGeneration`(project)
 
         `include the generated output dirs when the Gradle clean task is run`(project, extension)
 
@@ -68,7 +74,7 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
     ) {
 
         project.configurations.register("maiaGenImplementation") {
-            fromDependencyCollector(extension.dependencies.getImplementation())
+            fromDependencyCollector(extension.getDependencies().getImplementation())
         }
 
     }
@@ -79,7 +85,7 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
         extension: MaiaGenerationExtension
     ) {
 
-        project.tasks.register("maiaGeneration", MaiaGenerationTask::class.java) {
+        project.tasks.register(MAIA_GENERATION_TASK_NAME, MaiaGenerationTask::class.java) {
 
             description = "Generates source code based on a Maia model specification."
             group = "build"
@@ -158,10 +164,19 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
     }
 
 
-    private fun `the generateMaiaModel task depends on KotlinCompile`(project: Project) {
+    private fun `the KotlinCompile task depends on maiaGeneration`(project: Project) {
 
         project.tasks.withType<KotlinCompile> {
-            dependsOn("generateMaiaModel")
+            dependsOn(MAIA_GENERATION_TASK_NAME)
+        }
+
+    }
+
+
+    private fun `the processResources task depends on maiaGeneration`(project: Project) {
+
+        project.tasks.withType<ProcessResources> {
+            dependsOn(MAIA_GENERATION_TASK_NAME)
         }
 
     }

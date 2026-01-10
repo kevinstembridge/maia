@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val maiagen by configurations.creating
 
@@ -43,7 +44,7 @@ tasks {
 }
 
 
-tasks.register<JavaExec>("generateModel") {
+tasks.register<JavaExec>("maiaGeneration") {
 
     group = BasePlugin.BUILD_GROUP
     inputs.files(file("../maia-job-spec/src/main/kotlin/org/maiaframework/job/spec/MaiaJobSpec"))
@@ -53,17 +54,17 @@ tasks.register<JavaExec>("generateModel") {
     outputs.dir("src/generated/resources/test")
 
     classpath = configurations["maiagen"].asFileTree
-    mainClass.set("org.maiaframework.gen.generator.EndpointsModuleGeneratorKt")
+    mainClass.set("org.maiaframework.gen.generator.WebLayerModuleGeneratorKt")
     args("specificationClassNames=org.maiaframework.job.spec.MaiaJobSpec")
 
 }
 
 
-tasks.named("compileKotlin") {
-    dependsOn("generateModel")
+tasks.withType<KotlinCompile>() {
+    dependsOn("maiaGeneration")
 }
 
 
-tasks.named("processResources") {
-    dependsOn("generateModel")
+tasks.withType<ProcessResources>() {
+    dependsOn("maiaGeneration")
 }

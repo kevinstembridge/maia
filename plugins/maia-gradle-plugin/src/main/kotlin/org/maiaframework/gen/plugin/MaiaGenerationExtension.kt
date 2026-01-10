@@ -36,11 +36,11 @@ abstract class MaiaGenerationExtension @Inject constructor(objects: ObjectFactor
 
 
     @Nested
-    val dependencies: MaiaGenerationDependencies = objects.newInstance(MaiaGenerationDependencies::class.java)
+    abstract fun getDependencies(): MaiaGenerationDependencies // = objects.newInstance(MaiaGenerationDependencies::class.java)
 
 
     fun dependencies(action: Action<MaiaGenerationDependencies>) {
-        action.execute(dependencies)
+        action.execute(getDependencies())
     }
 
 

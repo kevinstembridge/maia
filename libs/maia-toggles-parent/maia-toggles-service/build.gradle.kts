@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("maia.kotlin-library-spring-conventions")
@@ -58,7 +59,7 @@ tasks {
 }
 
 
-tasks.register<JavaExec>("generateModel") {
+tasks.register<JavaExec>("maiaGeneration") {
 
     group = BasePlugin.BUILD_GROUP
     inputs.files(file("../maia-toggles-spec/src/main/kotlin/org/maiaframework/toggles/spec/TogglesSpec"))
@@ -68,17 +69,17 @@ tasks.register<JavaExec>("generateModel") {
     outputs.dir("src/generated/resources/test")
 
     classpath = configurations["maiagen"].asFileTree
-    mainClass.set("org.maiaframework.gen.generator.ServiceModuleGeneratorKt")
+    mainClass.set("org.maiaframework.gen.generator.ServiceLayerModuleGeneratorKt")
     args("specificationClassNames=org.maiaframework.toggles.spec.TogglesSpec")
 
 }
 
 
-tasks.named("compileKotlin") {
-    dependsOn("generateModel")
+tasks.withType<KotlinCompile>() {
+    dependsOn("maiaGeneration")
 }
 
 
-tasks.named("processResources") {
-    dependsOn("generateModel")
+tasks.withType<ProcessResources>() {
+    dependsOn("maiaGeneration")
 }

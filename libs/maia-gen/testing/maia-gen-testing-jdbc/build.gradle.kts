@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("maia.kotlin-library-spring-conventions")
@@ -63,7 +64,7 @@ tasks {
 }
 
 
-tasks.register<JavaExec>("generateModel") {
+tasks.register<JavaExec>("maiaGeneration") {
 
     inputs.files(file("../maia-gen-sample/src/main/kotlin/org/maiaframework/gen/sample/SampleJdbcSpec"))
     outputs.dir("src/generated/kotlin/main")
@@ -77,7 +78,7 @@ tasks.register<JavaExec>("generateModel") {
 
 
 
-tasks.named("compileKotlin") {
-    dependsOn("generateModel")
+tasks.withType<KotlinCompile>() {
+    dependsOn("maiaGeneration")
 }
 

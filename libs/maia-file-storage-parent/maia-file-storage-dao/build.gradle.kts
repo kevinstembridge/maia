@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("maia.kotlin-library-spring-conventions")
@@ -36,7 +37,7 @@ tasks {
 }
 
 
-tasks.register<JavaExec>("generateModel") {
+tasks.register<JavaExec>("maiaGeneration") {
 
     group = BasePlugin.BUILD_GROUP
     inputs.files(file("../maia-file-storage-spec/src/main/kotlin/org/maiaframework/storage/spec/StorageSpec"))
@@ -46,17 +47,17 @@ tasks.register<JavaExec>("generateModel") {
     outputs.dir("src/generated/resources/test")
 
     classpath = configurations["maiagen"].asFileTree
-    mainClass.set("org.maiaframework.gen.generator.DaoModuleGeneratorKt")
+    mainClass.set("org.maiaframework.gen.generator.DaoLayerModuleGeneratorKt")
     args("specificationClassNames=org.maiaframework.storage.spec.StorageSpec")
 
 }
 
 
-tasks.named("compileKotlin") {
-    dependsOn("generateModel")
+tasks.withType<KotlinCompile>() {
+    dependsOn("maiaGeneration")
 }
 
 
-tasks.named("processResources") {
-    dependsOn("generateModel")
+tasks.withType<ProcessResources>() {
+    dependsOn("maiaGeneration")
 }

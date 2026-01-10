@@ -58,7 +58,7 @@ tasks {
 }
 
 
-tasks.register<JavaExec>("generateModel") {
+tasks.register<JavaExec>("maiaGeneration") {
 
     inputs.files(file("../maia-gen-sample/src/main/kotlin/org/maiaframework/gen/sample/SampleMongoSpec"))
     outputs.dir("src/generated/kotlin/main")
@@ -83,7 +83,7 @@ tasks.register<JavaExec>("generateFieldConverterSample") {
 
 }
 
-tasks.named("compileKotlin") {
+tasks.withType<KotlinCompile>() {
     dependsOn("generateModel", "generateFieldConverterSample")
 }
 

@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val maiagen by configurations.creating
 
@@ -41,7 +42,7 @@ tasks {
 }
 
 
-tasks.register<JavaExec>("generateModel") {
+tasks.register<JavaExec>("maiaGeneration") {
 
     group = BasePlugin.BUILD_GROUP
     inputs.files(file("../maia-file-storage-spec/src/main/kotlin/org/maiaframework/storage/spec/StorageSpec"))
@@ -57,11 +58,11 @@ tasks.register<JavaExec>("generateModel") {
 }
 
 
-tasks.named("compileKotlin") {
-    dependsOn("generateModel")
+tasks.withType<KotlinCompile>() {
+    dependsOn("maiaGeneration")
 }
 
 
-tasks.named("processResources") {
-    dependsOn("generateModel")
+tasks.withType<ProcessResources>() {
+    dependsOn("maiaGeneration")
 }
