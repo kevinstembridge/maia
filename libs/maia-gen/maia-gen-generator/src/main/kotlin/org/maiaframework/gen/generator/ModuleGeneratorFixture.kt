@@ -3,7 +3,7 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.spec.definition.ModelDef
 
 data class ModuleGeneratorFixture(
-    val modelGeneratorContext: ModelGeneratorContext,
+    val maiaGenerationContext: MaiaGenerationContext,
     val modelDefs: List<ModelDef>,
 ) {
 
@@ -15,7 +15,7 @@ data class ModuleGeneratorFixture(
 
             val moduleGeneratorArgs = ModuleGeneratorArgs(args)
 
-            val modelGeneratorContext = ModelGeneratorContext(
+            val maiaGenerationContext = MaiaGenerationContext(
                 createTablesSqlScriptPrefix = moduleGeneratorArgs.createTablesSqlScriptPrefix,
                 sqlCreateScriptsDir = moduleGeneratorArgs.sqlCreateScriptsDir,
                 srcMainKotlinOutputDir = moduleGeneratorArgs.kotlinMainOutputDir,
@@ -27,7 +27,7 @@ data class ModuleGeneratorFixture(
 
             val modelDefs = moduleGeneratorArgs.specificationClassNames.map { ModelDefInstantiator.instantiate(it) }
 
-            return ModuleGeneratorFixture(modelGeneratorContext, modelDefs)
+            return ModuleGeneratorFixture(maiaGenerationContext, modelDefs)
 
         }
 

@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = EntityRepoModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = EntityRepoModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
             modelGenerator.generateSource(it)
 
         }
@@ -24,9 +24,9 @@ fun main(args: Array<String>) {
 
 
 class EntityRepoModuleGenerator(
-    modelGeneratorContext: ModelGeneratorContext
+    maiaGenerationContext: MaiaGenerationContext
 ) : AbstractModuleGenerator(
-    modelGeneratorContext
+    maiaGenerationContext
 ) {
 
 

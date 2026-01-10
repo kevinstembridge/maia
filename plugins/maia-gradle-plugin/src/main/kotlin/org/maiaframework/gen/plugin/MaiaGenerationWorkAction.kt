@@ -2,15 +2,15 @@ package org.maiaframework.gen.plugin
 
 import org.gradle.workers.WorkAction
 import org.maiaframework.gen.generator.ModelDefInstantiator
-import org.maiaframework.gen.generator.ModelGeneratorContext
+import org.maiaframework.gen.generator.MaiaGenerationContext
 import org.maiaframework.gen.generator.ModuleGeneratorInstantiator
 
-abstract class GenerateModelWorkAction : WorkAction<GenerateModelWorkParameters> {
+abstract class MaiaGenerationWorkAction : WorkAction<MaiaGenerationWorkParameters> {
 
 
     override fun execute() {
 
-        val modelGeneratorContext = ModelGeneratorContext(
+        val maiaGenerationContext = MaiaGenerationContext(
             createTablesSqlScriptPrefix = this.parameters.createTableSqlScriptPrefix.get(),
             sqlCreateScriptsDir = this.parameters.sqlCreateScriptDir.get().asFile,
             srcMainKotlinOutputDir = this.parameters.srcMainKotlinDir.get().asFile,
@@ -26,7 +26,7 @@ abstract class GenerateModelWorkAction : WorkAction<GenerateModelWorkParameters>
 
         val moduleGeneratorClassName = parameters.moduleGeneratorClassName.get()
 
-        val moduleGenerator = ModuleGeneratorInstantiator.instantiate(moduleGeneratorClassName, modelGeneratorContext)
+        val moduleGenerator = ModuleGeneratorInstantiator.instantiate(moduleGeneratorClassName, maiaGenerationContext)
 
         moduleGenerator.generateSource(modelDef)
 

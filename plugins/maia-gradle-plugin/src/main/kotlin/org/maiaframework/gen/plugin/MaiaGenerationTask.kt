@@ -9,7 +9,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
 import javax.inject.Inject
 
-abstract class GenerateModelTask : DefaultTask() {
+abstract class MaiaGenerationTask : DefaultTask() {
 
 
     @get:InputFiles
@@ -76,8 +76,8 @@ abstract class GenerateModelTask : DefaultTask() {
         }
 
         specificationClassNames.get().forEach { specificationClassName ->
-            workQueue.submit(GenerateModelWorkAction::class.java, object : Action<GenerateModelWorkParameters> {
-                override fun execute(parameters: GenerateModelWorkParameters) {
+            workQueue.submit(MaiaGenerationWorkAction::class.java, object : Action<MaiaGenerationWorkParameters> {
+                override fun execute(parameters: MaiaGenerationWorkParameters) {
                     parameters.createTableSqlScriptPrefix.set(createTablesSqlScriptPrefix)
                     parameters.moduleGeneratorClassName.set(moduleGeneratorClassName)
                     parameters.specificationClassName.set(specificationClassName)

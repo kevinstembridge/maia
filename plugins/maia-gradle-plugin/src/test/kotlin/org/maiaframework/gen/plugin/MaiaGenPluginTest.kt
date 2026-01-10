@@ -40,7 +40,7 @@ class MaiaGenPluginTest {
         val result = GradleRunner.create()
             .withProjectDir(projectDir)
             .withPluginClasspath()      // picks up your plugin-under-test from the test classpath
-            .withArguments("generateMaiaModel", "-i", "--stacktrace")
+            .withArguments("maiaGeneration", "-i", "--stacktrace")
             .forwardOutput()
             .build()
 

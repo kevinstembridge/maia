@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = ElasticServiceModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = ElasticServiceModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
             modelGenerator.generateSource(it)
 
         }
@@ -25,9 +25,9 @@ fun main(args: Array<String>) {
 
 
 class ElasticServiceModuleGenerator(
-    modelGeneratorContext: ModelGeneratorContext
+    maiaGenerationContext: MaiaGenerationContext
 ): AbstractModuleGenerator(
-    modelGeneratorContext
+    maiaGenerationContext
 ) {
 
 

@@ -4,7 +4,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.workers.WorkParameters
 
-interface GenerateModelWorkParameters : WorkParameters {
+interface MaiaGenerationWorkParameters : WorkParameters {
 
 
     val specificationClassName: Property<String>

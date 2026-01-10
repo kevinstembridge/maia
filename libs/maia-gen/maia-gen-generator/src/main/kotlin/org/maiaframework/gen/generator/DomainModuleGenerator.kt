@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = DomainModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = DomainModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
             modelGenerator.generateSource(it)
 
         }
@@ -28,9 +28,9 @@ fun main(args: Array<String>) {
 
 
 class DomainModuleGenerator(
-    modelGeneratorContext: ModelGeneratorContext
+    maiaGenerationContext: MaiaGenerationContext
 ): AbstractModuleGenerator(
-    modelGeneratorContext
+    maiaGenerationContext
 ) {
 
 

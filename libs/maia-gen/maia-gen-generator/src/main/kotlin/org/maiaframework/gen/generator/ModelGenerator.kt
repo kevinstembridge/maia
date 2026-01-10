@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = ModelGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = ModelGenerator(moduleGeneratorFixture.maiaGenerationContext)
             modelGenerator.generateSource(it)
 
         }
@@ -22,24 +22,24 @@ fun main(args: Array<String>) {
 
 
 class ModelGenerator(
-    modelGeneratorContext: ModelGeneratorContext
+    maiaGenerationContext: MaiaGenerationContext
 ) : AbstractModuleGenerator(
-    modelGeneratorContext
+    maiaGenerationContext
 ) {
 
 
     override fun onGenerateSource() {
 
-        AppModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
-        DaoLayerModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
-        DomainModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
-        ElasticSearchModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
-        ElasticServiceModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
-        EsDocsModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
-        JobModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
-        RepoLayerModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
-        ServiceLayerModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
-        WebLayerModuleGenerator(this.modelGeneratorContext).generateSource(this.modelDef)
+        AppModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
+        DaoLayerModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
+        DomainModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
+        ElasticSearchModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
+        ElasticServiceModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
+        EsDocsModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
+        JobModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
+        RepoLayerModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
+        ServiceLayerModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
+        WebLayerModuleGenerator(this.maiaGenerationContext).generateSource(this.modelDef)
 
     }
 

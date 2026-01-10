@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = ElasticSearchModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = ElasticSearchModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
             modelGenerator.generateSource(it)
 
         }
@@ -27,9 +27,9 @@ fun main(args: Array<String>) {
 
 
 class ElasticSearchModuleGenerator(
-    modelGeneratorContext: ModelGeneratorContext
+    maiaGenerationContext: MaiaGenerationContext
 ): AbstractModuleGenerator(
-    modelGeneratorContext
+    maiaGenerationContext
 ) {
 
 

@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = DaoLayerModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = DaoLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
             modelGenerator.generateSource(it)
 
         }
@@ -26,9 +26,9 @@ fun main(args: Array<String>) {
 
 
 class DaoLayerModuleGenerator(
-    modelGeneratorContext: ModelGeneratorContext
+    maiaGenerationContext: MaiaGenerationContext
 ): AbstractModuleGenerator(
-    modelGeneratorContext
+    maiaGenerationContext
 ) {
 
 
@@ -50,10 +50,10 @@ class DaoLayerModuleGenerator(
 
     private fun `render create-table scripts`() {
 
-        val sqlScriptsDir = this.modelGeneratorContext.sqlCreateScriptsDir
+        val sqlScriptsDir = this.maiaGenerationContext.sqlCreateScriptsDir
 
         val jdbcRootEntityHierarchies = this.modelDef.rootEntityHierarchies.filter { it.entityDef.databaseType == DatabaseType.JDBC }
-        val renderedFileName = "${this.modelGeneratorContext.createTablesSqlScriptPrefix}_${this.modelDef.appKey}.sql"
+        val renderedFileName = "${this.maiaGenerationContext.createTablesSqlScriptPrefix}_${this.modelDef.appKey}.sql"
 
         if (jdbcRootEntityHierarchies.isNotEmpty()) {
             CreateTableSqlRenderer(jdbcRootEntityHierarchies, renderedFileName).renderToDir(sqlScriptsDir)

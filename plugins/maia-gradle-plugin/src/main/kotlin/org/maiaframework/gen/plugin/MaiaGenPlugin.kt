@@ -79,9 +79,9 @@ abstract class MaiaGenPlugin : Plugin<Project> {
         extension: MaiaGenExtension
     ) {
 
-        project.tasks.register("generateMaiaModel", GenerateModelTask::class.java) {
+        project.tasks.register("maiaGeneration", MaiaGenerationTask::class.java) {
 
-            description = "Generates Maia model classes from the provided specification files."
+            description = "Generates source code based on a Maia model specification."
             group = "build"
 
             outputs.dir(extension.sqlCreateScriptsDir)

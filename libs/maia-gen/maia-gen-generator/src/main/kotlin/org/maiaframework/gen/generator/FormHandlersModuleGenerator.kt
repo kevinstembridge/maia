@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = FormHandlersModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = FormHandlersModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
             modelGenerator.generateSource(it)
 
         }
@@ -25,9 +25,9 @@ fun main(args: Array<String>) {
 
 
 class FormHandlersModuleGenerator(
-    modelGeneratorContext: ModelGeneratorContext
+    maiaGenerationContext: MaiaGenerationContext
 ): AbstractModuleGenerator(
-    modelGeneratorContext
+    maiaGenerationContext
 ) {
 
 

@@ -5,17 +5,17 @@ import java.lang.reflect.InvocationTargetException
 
 
 abstract class AbstractModuleGenerator(
-    protected val modelGeneratorContext: ModelGeneratorContext
+    protected val maiaGenerationContext: MaiaGenerationContext
 ) {
 
 
-    protected val kotlinOutputDir = modelGeneratorContext.srcMainKotlinOutputDir
+    protected val kotlinOutputDir = maiaGenerationContext.srcMainKotlinOutputDir
 
 
-    protected val resourcesOutputDir = modelGeneratorContext.srcMainResourcesDir
+    protected val resourcesOutputDir = maiaGenerationContext.srcMainResourcesDir
 
 
-    protected val typescriptOutputDir = modelGeneratorContext.typescriptOutputDir
+    protected val typescriptOutputDir = maiaGenerationContext.typescriptOutputDir
 
 
     protected lateinit var modelDef: ModelDef

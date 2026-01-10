@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = AngularUiModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = AngularUiModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
             modelGenerator.generateSource(it)
 
         }
@@ -29,9 +29,9 @@ fun main(args: Array<String>) {
 
 
 class AngularUiModuleGenerator(
-    modelGeneratorContext: ModelGeneratorContext
+    maiaGenerationContext: MaiaGenerationContext
 ): AbstractModuleGenerator(
-    modelGeneratorContext
+    maiaGenerationContext
 ) {
 
 

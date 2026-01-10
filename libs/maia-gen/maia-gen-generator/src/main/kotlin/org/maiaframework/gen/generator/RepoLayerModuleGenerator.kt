@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 
         moduleGeneratorFixture.modelDefs.forEach {
 
-            val modelGenerator = RepoLayerModuleGenerator(moduleGeneratorFixture.modelGeneratorContext)
+            val modelGenerator = RepoLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
             modelGenerator.generateSource(it)
 
         }
@@ -26,9 +26,9 @@ fun main(args: Array<String>) {
 
 
 class RepoLayerModuleGenerator(
-    modelGeneratorContext: ModelGeneratorContext
+    maiaGenerationContext: MaiaGenerationContext
 ) : AbstractModuleGenerator(
-    modelGeneratorContext
+    maiaGenerationContext
 ) {
 
 

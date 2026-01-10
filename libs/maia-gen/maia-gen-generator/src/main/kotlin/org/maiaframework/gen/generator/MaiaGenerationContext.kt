@@ -2,7 +2,7 @@ package org.maiaframework.gen.generator
 
 import java.io.File
 
-data class ModelGeneratorContext(
+data class MaiaGenerationContext(
     val srcMainKotlinOutputDir: File,
     val srcTestKotlinOutputDir: File,
     val srcMainResourcesDir: File,

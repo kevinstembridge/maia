@@ -6,12 +6,12 @@ object ModuleGeneratorInstantiator {
 
     fun instantiate(
         specClassname: String,
-        modelGeneratorContext: ModelGeneratorContext
+        maiaGenerationContext: MaiaGenerationContext
     ): AbstractModuleGenerator {
 
         val clazz = Class.forName(specClassname)
         val constructor = clazz.constructors[0]
-        val provider = constructor.newInstance(modelGeneratorContext) as AbstractModuleGenerator
+        val provider = constructor.newInstance(maiaGenerationContext) as AbstractModuleGenerator
         return provider
 
     }
