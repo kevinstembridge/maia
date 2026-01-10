@@ -167,7 +167,7 @@ class DaoLayerModuleGenerator(
     private fun renderSearchableDtoSearchConverter(searchableDtoDef: SearchableDtoDef) {
 
         if (searchableDtoDef.dtoRootEntityDef.databaseType == DatabaseType.MONGO) {
-            SearchableDtoSearchConverterRenderer_exp(searchableDtoDef).renderToDir(this.kotlinOutputDir)
+            SearchableDtoSearchConverterRenderer(searchableDtoDef).renderToDir(this.kotlinOutputDir)
         }
 
     }

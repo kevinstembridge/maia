@@ -6,7 +6,7 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ConstructorArg
 
 
-class SearchableDtoSearchConverterRenderer_exp(
+class SearchableDtoSearchConverterRenderer(
     private val searchableDtoDef: SearchableDtoDef
 ) : AbstractKotlinRenderer(
     searchableDtoDef.dtoSearchConverterClassDef
