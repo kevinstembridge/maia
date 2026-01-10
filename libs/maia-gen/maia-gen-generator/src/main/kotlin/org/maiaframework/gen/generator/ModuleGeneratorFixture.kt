@@ -13,19 +13,19 @@ data class ModuleGeneratorFixture(
 
         fun from(args: Array<String>): ModuleGeneratorFixture {
 
-            val modelGeneratorArgs = ModelGeneratorArgs(args)
+            val moduleGeneratorArgs = ModuleGeneratorArgs(args)
 
             val modelGeneratorContext = ModelGeneratorContext(
-                createTablesSqlScriptPrefix = modelGeneratorArgs.createTablesSqlScriptPrefix,
-                sqlCreateScriptsDir = modelGeneratorArgs.sqlCreateScriptsDir,
-                srcMainKotlinOutputDir = modelGeneratorArgs.kotlinMainOutputDir,
-                srcMainResourcesDir = modelGeneratorArgs.resourcesMainOutputDir,
-                srcTestKotlinOutputDir = modelGeneratorArgs.kotlinTestOutputDir,
-                srcTestResourcesDir = modelGeneratorArgs.resourcesTestOutputDir,
-                typescriptOutputDir = modelGeneratorArgs.typescriptOutputDir,
+                createTablesSqlScriptPrefix = moduleGeneratorArgs.createTablesSqlScriptPrefix,
+                sqlCreateScriptsDir = moduleGeneratorArgs.sqlCreateScriptsDir,
+                srcMainKotlinOutputDir = moduleGeneratorArgs.kotlinMainOutputDir,
+                srcMainResourcesDir = moduleGeneratorArgs.resourcesMainOutputDir,
+                srcTestKotlinOutputDir = moduleGeneratorArgs.kotlinTestOutputDir,
+                srcTestResourcesDir = moduleGeneratorArgs.resourcesTestOutputDir,
+                typescriptOutputDir = moduleGeneratorArgs.typescriptOutputDir,
             )
 
-            val modelDefs = modelGeneratorArgs.specificationClassNames.map { ModelDefInstantiator.instantiate(it) }
+            val modelDefs = moduleGeneratorArgs.specificationClassNames.map { ModelDefInstantiator.instantiate(it) }
 
             return ModuleGeneratorFixture(modelGeneratorContext, modelDefs)
 

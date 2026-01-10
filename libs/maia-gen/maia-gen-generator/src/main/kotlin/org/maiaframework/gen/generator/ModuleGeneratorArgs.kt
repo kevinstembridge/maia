@@ -2,7 +2,7 @@ package org.maiaframework.gen.generator
 
 import java.io.File
 
-class ModelGeneratorArgs(args: Array<String>) {
+class ModuleGeneratorArgs(args: Array<String>) {
 
 
     val specificationClassNames: List<String>
