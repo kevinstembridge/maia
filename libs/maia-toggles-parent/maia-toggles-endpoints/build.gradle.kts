@@ -43,7 +43,7 @@ sourceSets {
     }
     test {
         java.srcDir(generatedKotlinTest)
-        java.srcDir(generatedResourcesTest)
+        resources.srcDir(generatedResourcesTest)
     }
 }
 
