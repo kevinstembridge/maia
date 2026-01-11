@@ -55,13 +55,13 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
 
         return project.extensions.create("maia", MaiaGenerationExtension::class.java).apply {
 
-            createTablesSqlScriptPrefix.convention("create_entity_tables.sql")
+            createTablesSqlScriptPrefix.convention("create_entity_tables")
             sqlCreateScriptsDir.convention(project.layout.projectDirectory.dir("src/generated/sql"))
             srcMainKotlinOutputDir.convention(project.layout.projectDirectory.dir("src/generated/kotlin/main"))
             srcMainResourcesOutputDir.convention(project.layout.projectDirectory.dir("src/generated/resources/main"))
             srcTestKotlinOutputDir.convention(project.layout.projectDirectory.dir("src/generated/kotlin/test"))
             srcTestResourcesOutputDir.convention(project.layout.projectDirectory.dir("src/generated/resources/test"))
-            typescriptOutputDir.convention(project.layout.projectDirectory.dir("src/generated/typescript"))
+            typescriptOutputDir.convention(project.layout.projectDirectory.dir("src/generated/typescript/main"))
 
         }
 
