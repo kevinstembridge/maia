@@ -63,9 +63,7 @@ class RepoLayerModuleGenerator(
     private fun `render SearchableDto repos`() {
 
         modelDef.allSearchableDtoDefs.forEach {
-
             processSearchableDtoDef(it)
-
         }
 
     }
@@ -84,9 +82,7 @@ class RepoLayerModuleGenerator(
     private fun `render EntityDetailDto repos`() {
 
         modelDef.entityDetailDtoDefs.forEach {
-
             EntityDetailDtoRepoRenderer(it).renderToDir(kotlinOutputDir)
-
         }
 
     }

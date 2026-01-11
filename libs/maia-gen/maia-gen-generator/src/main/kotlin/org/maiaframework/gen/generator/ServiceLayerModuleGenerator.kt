@@ -49,28 +49,27 @@ class ServiceLayerModuleGenerator(
 
     private fun `render CrudServices`() {
 
-        this.modelDef.entityHierarchies.filter { it.entityDef.isConcrete && it.entityDef.isHistoryEntity == false }.forEach {
-            CrudServiceRenderer(it.entityDef, modelDef).renderToDir(this.kotlinOutputDir)
-        }
+        this.modelDef.entityHierarchies
+            .filter { it.entityDef.isConcrete && it.entityDef.isHistoryEntity == false }
+            .forEach { CrudServiceRenderer(it.entityDef, modelDef).renderToDir(this.kotlinOutputDir) }
 
     }
 
 
     private fun `render CrudNotifiers`() {
 
-        this.modelDef.entityHierarchies.filter { it.entityDef.isConcrete && it.entityDef.isHistoryEntity == false && it.entityDef.crudDef.withCrudListener.value }
-            .forEach {
-                CrudNotifierRenderer(it.entityDef).renderToDir(this.kotlinOutputDir)
-            }
+        this.modelDef.entityHierarchies
+            .filter { it.entityDef.isConcrete && it.entityDef.isHistoryEntity == false && it.entityDef.crudDef.withCrudListener.value }
+            .forEach { CrudNotifierRenderer(it.entityDef).renderToDir(this.kotlinOutputDir) }
 
     }
 
 
     private fun `render CrudListeners for typeaheads`() {
 
-        this.modelDef.typeaheadDefs.filter { it.crudListenerClassDef != null && it.entityCrudApiDef != null }.forEach { typeaheadDef ->
-            TypeaheadCrudListenerRenderer(typeaheadDef).renderToDir(this.kotlinOutputDir)
-        }
+        this.modelDef.typeaheadDefs
+            .filter { it.crudListenerClassDef != null && it.entityCrudApiDef != null }
+            .forEach { typeaheadDef -> TypeaheadCrudListenerRenderer(typeaheadDef).renderToDir(this.kotlinOutputDir) }
 
     }
 

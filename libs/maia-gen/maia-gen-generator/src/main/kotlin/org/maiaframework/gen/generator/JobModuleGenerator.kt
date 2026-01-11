@@ -55,10 +55,9 @@ class JobModuleGenerator(
 
     private fun renderEsIndexRefreshJobs(esDocDefs: List<EsDocDef>) {
 
-        esDocDefs.filter { it.generateRefreshIndexJob }.forEach { esDocDef ->
-            val renderer = RefreshEsIndexJobRenderer(esDocDef)
-            renderer.renderToDir(this.kotlinOutputDir)
-        }
+        esDocDefs
+            .filter { it.generateRefreshIndexJob }
+            .forEach { esDocDef -> RefreshEsIndexJobRenderer(esDocDef).renderToDir(this.kotlinOutputDir) }
 
     }
 

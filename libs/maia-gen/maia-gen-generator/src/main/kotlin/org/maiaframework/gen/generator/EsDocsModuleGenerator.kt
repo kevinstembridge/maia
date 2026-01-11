@@ -54,11 +54,9 @@ class EsDocsModuleGenerator(
 
     private fun renderEsDocMappersForTableDtos() {
 
-        this.modelDef.dtoHtmlTableDefs.filter { it.dtoHtmlTableSourceDef.esDocDef != null }.forEach {
-
-            EsDocTableDtoMapperRenderer(it).renderToDir(this.kotlinOutputDir)
-
-        }
+        this.modelDef.dtoHtmlTableDefs
+            .filter { it.dtoHtmlTableSourceDef.esDocDef != null }
+            .forEach { EsDocTableDtoMapperRenderer(it).renderToDir(this.kotlinOutputDir) }
 
     }
 

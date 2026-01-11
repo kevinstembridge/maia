@@ -74,28 +74,18 @@ class DomainModuleGenerator(
 
     private fun `render StringTypes`() {
 
-        this.modelDef.stringTypeDefs.forEach {
-
-            if (it.isNotProvided) {
-
-                StringTypeRenderer(it).renderToDir(this.kotlinOutputDir)
-
-            }
-
-        }
+        this.modelDef.stringTypeDefs
+            .filter { it.isNotProvided }
+            .forEach { StringTypeRenderer(it).renderToDir(this.kotlinOutputDir) }
 
     }
 
 
     private fun `render BooleanTypes`() {
 
-        this.modelDef.booleanTypeDefs.forEach {
-            if (it.isNotProvided) {
-
-                SimpleTypeRenderer(it).renderToDir(this.kotlinOutputDir)
-
-            }
-        }
+        this.modelDef.booleanTypeDefs
+            .filter { it.isNotProvided }
+            .forEach { SimpleTypeRenderer(it).renderToDir(this.kotlinOutputDir) }
 
     }
 
@@ -113,48 +103,36 @@ class DomainModuleGenerator(
 
     private fun `render IdAndNameDtos`() {
 
-        this.modelDef.entityHierarchies.map { it.entityDef }.filter { it.hasIdAndNameDtoDef }.forEach { entityDef ->
-            DtoRenderer(entityDef.entityIdAndNameDef.dtoDef).renderToDir(this.kotlinOutputDir)
-        }
+        this.modelDef.entityHierarchies
+            .map { it.entityDef }
+            .filter { it.hasIdAndNameDtoDef }
+            .map { it.entityIdAndNameDef.dtoDef }
+            .forEach { renderDto(it) }
 
     }
 
 
     private fun `render IntTypes`() {
 
-        this.modelDef.intTypeDefs.forEach {
-
-            if (it.isNotProvided) {
-
-                SimpleTypeRenderer(it).renderToDir(this.kotlinOutputDir)
-
-            }
-
-        }
+        this.modelDef.intTypeDefs
+            .filter { it.isNotProvided }
+            .forEach { SimpleTypeRenderer(it).renderToDir(this.kotlinOutputDir) }
 
     }
 
 
     private fun `render LongTypes`() {
 
-        this.modelDef.longTypeDefs.forEach {
-
-            if (it.isNotProvided) {
-
-                SimpleTypeRenderer(it).renderToDir(this.kotlinOutputDir)
-
-            }
-
-        }
+        this.modelDef.longTypeDefs
+            .filter { it.isNotProvided }
+            .forEach { SimpleTypeRenderer(it).renderToDir(this.kotlinOutputDir) }
 
     }
 
 
     private fun `render EntityDetailDtos`() {
 
-        this.modelDef.entityDetailDtoDefs.forEach {
-            it.let { DtoRenderer(it.dtoDef).renderToDir(kotlinOutputDir) }
-        }
+        this.modelDef.entityDetailDtoDefs.forEach { renderDto(it.dtoDef) }
 
     }
 
@@ -224,8 +202,7 @@ class DomainModuleGenerator(
 
     private fun `render entity FieldConverter interface`(entityHierarchy: EntityHierarchy) {
 
-        val renderer = EntityFieldConverterRenderer(entityHierarchy.entityDef)
-        renderer.renderToDir(this.kotlinOutputDir)
+        EntityFieldConverterRenderer(entityHierarchy.entityDef).renderToDir(this.kotlinOutputDir)
 
     }
 
@@ -249,9 +226,7 @@ class DomainModuleGenerator(
         val entityDef = entityHierarchy.entityDef
 
         if (entityDef.hasModifiableFields()) {
-
             EntityUpdaterRenderer(entityDef).renderToDir(this.kotlinOutputDir)
-
         }
 
     }
@@ -350,7 +325,7 @@ class DomainModuleGenerator(
 
     private fun `render FetchForEditDtos`() {
 
-        this.modelDef.fetchForEditDtoDefs.forEach { DtoRenderer(it.dtoDef).renderToDir(this.kotlinOutputDir) }
+        this.modelDef.fetchForEditDtoDefs.forEach { renderDto(it.dtoDef) }
 
     }
 
@@ -371,7 +346,9 @@ class DomainModuleGenerator(
 
     private fun `render TableDtos`() {
 
-        this.modelDef.dtoHtmlTableDefs.filter { it.withGeneratedDto.value }.forEach { processDtoHtmlTableDef(it) }
+        this.modelDef.dtoHtmlTableDefs
+            .filter { it.withGeneratedDto.value }
+            .forEach { processDtoHtmlTableDef(it) }
 
     }
 
@@ -468,11 +445,10 @@ class DomainModuleGenerator(
 
     private fun renderResponseDtoFieldNameConverter(responseDtoDef: ResponseDtoDef) {
 
-        val renderer = SearchRequestFieldNameConverterRenderer(
+        SearchRequestFieldNameConverterRenderer(
             responseDtoDef.searchRequestFieldNameConverterClassDef,
             responseDtoDef.allFields
-        )
-        renderer.renderToDir(this.kotlinOutputDir)
+        ).renderToDir(this.kotlinOutputDir)
 
     }
 
@@ -536,13 +512,6 @@ class DomainModuleGenerator(
     }
 
 
-    private fun renderDto(dtoDef: ClassDef) {
-
-        DtoRenderer(dtoDef).renderToDir(this.kotlinOutputDir)
-
-    }
-
-
     private fun renderInlineEditDtos(inlineEditDtoDefs: List<InlineEditDtoDef>) {
 
         inlineEditDtoDefs.forEach { inlineEditDtoDef -> renderRequestDto(inlineEditDtoDef.requestDtoDef) }
@@ -570,7 +539,7 @@ class DomainModuleGenerator(
 
     private fun renderEsDoc(esDocDef: EsDocDef) {
 
-        DtoRenderer(esDocDef.dtoDef).renderToDir(this.kotlinOutputDir)
+        renderDto(esDocDef.dtoDef)
 
         esDocDef.fieldEnumDef?.let { enumDef ->
             EnumRenderer(enumDef).renderToDir(this.kotlinOutputDir)
@@ -591,7 +560,7 @@ class DomainModuleGenerator(
 
     private fun renderHzDto(hazelcastDtoDef: HazelcastDtoDef) {
 
-        DtoRenderer(hazelcastDtoDef.dtoDef).renderToDir(this.kotlinOutputDir)
+        renderDto(hazelcastDtoDef.dtoDef)
 
     }
 
@@ -612,6 +581,13 @@ class DomainModuleGenerator(
         this.modelDef.entityCrudApiDefs.forEach { entityCrudApiDef ->
             CrudListenerRenderer(entityCrudApiDef).renderToDir(this.kotlinOutputDir)
         }
+
+    }
+
+
+    private fun renderDto(dtoDef: ClassDef) {
+
+        DtoRenderer(dtoDef).renderToDir(this.kotlinOutputDir)
 
     }
 

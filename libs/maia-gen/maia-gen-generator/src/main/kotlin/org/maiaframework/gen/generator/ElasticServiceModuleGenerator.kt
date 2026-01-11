@@ -50,9 +50,9 @@ class ElasticServiceModuleGenerator(
 
     private fun renderTypeaheadEsDocRepos() {
 
-        this.modelDef.typeaheadDefs.filter { it.withHandCodedEsDocRepo.value == false && it.entityUqcn != null }.forEach {
-            EsDocRepoRenderer(it.esDocDef).renderToDir(this.kotlinOutputDir)
-        }
+        this.modelDef.typeaheadDefs
+            .filter { it.withHandCodedEsDocRepo.value == false && it.entityUqcn != null }
+            .forEach { EsDocRepoRenderer(it.esDocDef).renderToDir(this.kotlinOutputDir) }
 
     }
 

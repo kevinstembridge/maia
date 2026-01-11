@@ -49,7 +49,9 @@ class WebLayerModuleGenerator(
 
     private fun processEntityCrudApiDefs() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { processEntityCrudApiDef(it) }
+        this.modelDef.entityCrudApiDefs
+            .filter { it.entityDef.isConcrete }
+            .forEach { processEntityCrudApiDef(it) }
 
     }
 
@@ -111,7 +113,9 @@ class WebLayerModuleGenerator(
 
     private fun renderTableDtoEndpoints() {
 
-        this.modelDef.dtoHtmlTableDefs.filter { it.withGeneratedDto.value }.forEach { processDtoHtmlDef(it) }
+        this.modelDef.dtoHtmlTableDefs
+            .filter { it.withGeneratedDto.value }
+            .forEach { processDtoHtmlDef(it) }
 
     }
 

@@ -47,8 +47,7 @@ class FormHandlersModuleGenerator(
 
     private fun renderFormModelHandler(formModelDef: FormModelDef) {
 
-        val renderer = FormModelHandlerRenderer(formModelDef)
-        renderer.renderToDir(this.kotlinOutputDir)
+        FormModelHandlerRenderer(formModelDef).renderToDir(this.kotlinOutputDir)
 
     }
 

@@ -159,7 +159,9 @@ class DaoLayerModuleGenerator(
 
     private fun `render SearchableDtoSearchConverters`() {
 
-        this.modelDef.allSearchableDtoDefs.filter { it.withGeneratedDto == WithGeneratedDto.TRUE }.forEach { renderSearchableDtoSearchConverter(it) }
+        this.modelDef.allSearchableDtoDefs
+            .filter { it.withGeneratedDto == WithGeneratedDto.TRUE }
+            .forEach { renderSearchableDtoSearchConverter(it) }
 
     }
 
@@ -175,7 +177,9 @@ class DaoLayerModuleGenerator(
 
     private fun `render DtoDocumentMappers`() {
 
-        this.modelDef.allSearchableDtoDefs.filter { it.withGeneratedDto == WithGeneratedDto.TRUE }.forEach { this.renderDocumentMapper(it) }
+        this.modelDef.allSearchableDtoDefs
+            .filter { it.withGeneratedDto == WithGeneratedDto.TRUE }
+            .forEach { this.renderDocumentMapper(it) }
 
     }
 

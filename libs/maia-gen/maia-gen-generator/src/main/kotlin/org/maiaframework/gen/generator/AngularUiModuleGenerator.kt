@@ -6,6 +6,8 @@ import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
+import org.maiaframework.gen.spec.definition.lang.Uqcn
 
 
 fun main(args: Array<String>) {
@@ -142,16 +144,14 @@ class AngularUiModuleGenerator(
 
         this.modelDef.dtoHtmlTableDefs.filter { it.disableRendering == false }.forEach { dtoHtmlTableDef ->
 
-            val renderedFilePath = dtoHtmlTableDef.dtoDef.typescriptRenderedFilePath
-            val className = dtoHtmlTableDef.dtoDef.uqcn
-            val fields = dtoHtmlTableDef.dtoHtmlTableColumnFields.map { ClassFieldDef.aClassField(it.dtoFieldName, it.fieldType).build() }
-
-            TypescriptInterfaceDtoRenderer(
-                renderedFilePath,
-                className,
-                fields,
-                setOf(DtoCharacteristic.RESPONSE_DTO)
-            ).renderToDir(this.typescriptOutputDir)
+            renderTypescriptInterface(
+                renderedFilePath = dtoHtmlTableDef.dtoDef.typescriptRenderedFilePath,
+                className = dtoHtmlTableDef.dtoDef.uqcn,
+                fields = dtoHtmlTableDef.dtoHtmlTableColumnFields.map {
+                    aClassField(it.dtoFieldName, it.fieldType).build()
+                },
+                dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
+            )
 
         }
 
@@ -183,16 +183,12 @@ class AngularUiModuleGenerator(
 
     private fun renderRequestDto(requestDtoDef: RequestDtoDef) {
 
-        val renderedFilePath = requestDtoDef.typescriptDtoRenderedFilePath
-        val className = requestDtoDef.uqcn
-        val fields = requestDtoDef.classFieldDefs
-
-        TypescriptInterfaceDtoRenderer(
-            renderedFilePath,
-            className,
-            fields,
-            emptySet()
-        ).renderToDir(this.typescriptOutputDir)
+        renderTypescriptInterface(
+            renderedFilePath = requestDtoDef.typescriptDtoRenderedFilePath,
+            className = requestDtoDef.uqcn,
+            fields = requestDtoDef.classFieldDefs,
+            dtoCharacteristics = emptySet()
+        )
 
     }
 
@@ -338,12 +334,15 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityCreateDialogComponent() {
 
-        this.modelDef.entityCrudApiDefs.mapNotNull { it.createApiDef }.filter { it.entityDef.isConcrete }.forEach {
+        this.modelDef.entityCrudApiDefs
+            .mapNotNull { it.createApiDef }
+            .filter { it.entityDef.isConcrete }
+            .forEach {
 
-            EntityFormComponentRenderer(it.angularDialogDef, it.angularDialogComponentNames).renderToDir(this.typescriptOutputDir)
-            EntityCreateDialogScssRenderer(it).renderToDir(this.typescriptOutputDir)
+                EntityFormComponentRenderer(it.angularDialogDef, it.angularDialogComponentNames).renderToDir(this.typescriptOutputDir)
+                EntityCreateDialogScssRenderer(it).renderToDir(this.typescriptOutputDir)
 
-        }
+            }
 
     }
 
@@ -419,15 +418,9 @@ class AngularUiModuleGenerator(
 
     private fun renderTypeaheadDtos() {
 
-        this.modelDef.typeaheadDefs.forEach {
-            val dtoDef = it.esDocDef.dtoDef
-            TypescriptInterfaceDtoRenderer(
-                dtoDef.typescriptRenderedFilePath,
-                dtoDef.uqcn,
-                dtoDef.allFieldsSorted,
-                setOf(DtoCharacteristic.RESPONSE_DTO)
-            ).renderToDir(this.typescriptOutputDir)
-        }
+        this.modelDef.typeaheadDefs
+            .map { it.esDocDef.dtoDef }
+            .forEach { renderTypescriptInterface(it) }
 
     }
 
@@ -469,16 +462,12 @@ class AngularUiModuleGenerator(
 
             entityCrudApiDef.entityDef.databaseIndexDefs.forEach { entityIndexDef ->
 
-                val renderedFilePath = entityIndexDef.asyncValidator.asyncValidationDtoRenderedFilePath
-                val className = entityIndexDef.asyncValidator.asyncValidationDtoUqcn
-                val fields = entityIndexDef.indexDef.indexFieldDefs.map { it.entityFieldDef.classFieldDef }
-
-                TypescriptInterfaceDtoRenderer(
-                    renderedFilePath,
-                    className,
-                    fields,
-                    emptySet()
-                ).renderToDir(this.typescriptOutputDir)
+                renderTypescriptInterface(
+                    renderedFilePath = entityIndexDef.asyncValidator.asyncValidationDtoRenderedFilePath,
+                    className = entityIndexDef.asyncValidator.asyncValidationDtoUqcn,
+                    fields = entityIndexDef.indexDef.indexFieldDefs.map { it.entityFieldDef.classFieldDef },
+                    dtoCharacteristics = emptySet()
+                )
 
             }
 
@@ -512,106 +501,58 @@ class AngularUiModuleGenerator(
 
     private fun renderFetchForEditDtos() {
 
-        this.modelDef.fetchForEditDtoDefs.forEach { fetchForEditDtoDef ->
-
-            val dtoDef = fetchForEditDtoDef.dtoDef
-            val renderedFilePath = dtoDef.typescriptRenderedFilePath
-            val className = dtoDef.uqcn
-            val fields = dtoDef.allFieldsSorted
-
-            TypescriptInterfaceDtoRenderer(
-                renderedFilePath,
-                className,
-                fields,
-                setOf(DtoCharacteristic.RESPONSE_DTO)
-            ).renderToDir(typescriptOutputDir)
-
-        }
+        modelDef.fetchForEditDtoDefs
+            .map { it.dtoDef }
+            .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
     }
 
 
     private fun renderEntityDetailsDtos() {
 
-        this.modelDef.entityDetailDtoDefs.forEach { entityDetailDtoDef ->
-
-            val dtoDef = entityDetailDtoDef.dtoDef
-            val renderedFilePath = dtoDef.typescriptRenderedFilePath
-            val className = dtoDef.uqcn
-            val fields = dtoDef.allFieldsSorted
-
-            TypescriptInterfaceDtoRenderer(
-                renderedFilePath,
-                className,
-                fields,
-                setOf(DtoCharacteristic.RESPONSE_DTO)
-            ).renderToDir(typescriptOutputDir)
-
-        }
+        modelDef.entityDetailDtoDefs
+            .map { it.dtoDef }
+            .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
     }
 
 
     private fun renderEsDocs() {
 
-        this.modelDef.esDocsDefs.filter { it.disableRendering == false }.forEach { esDocDef ->
-
-            renderDtoDef(esDocDef.dtoDef)
-
-        }
+        modelDef.esDocsDefs
+            .filter { it.disableRendering == false }
+            .map { it.dtoDef }
+            .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
     }
 
 
     private fun renderSimpleResponseDtos() {
 
-        this.modelDef.simpleResponseDtoDefs.map { it.dtoDef }.forEach { dtoDef ->
-
-            renderDtoDef(dtoDef)
-
-        }
+        this.modelDef.simpleResponseDtoDefs
+            .map { it.dtoDef }
+            .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
     }
 
 
     private fun renderSearchableResponseDtos() {
 
-        this.modelDef.searchableDtoDefs.filter { it.withGeneratedDto.value }.map { it.dtoDef }.forEach { dtoDef ->
-
-            renderDtoDef(dtoDef)
-
-        }
-
-    }
-
-
-    private fun renderDtoDef(classDef: ClassDef) {
-
-        val renderedFilePath = classDef.typescriptRenderedFilePath
-        val className = classDef.uqcn
-        val fields = classDef.allFieldsSorted
-
-        TypescriptInterfaceDtoRenderer(
-            renderedFilePath,
-            className,
-            fields,
-            setOf(DtoCharacteristic.RESPONSE_DTO)
-        ).renderToDir(this.typescriptOutputDir)
+        this.modelDef.searchableDtoDefs
+            .filter { it.withGeneratedDto.value }
+            .map { it.dtoDef }
+            .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
     }
 
 
     private fun renderIdAndNameDtos() {
 
-        this.modelDef.entityHierarchies.map { it.entityDef }.filter { it.hasIdAndNameDtoDef }.forEach { entityDef ->
-            val dtoDef = entityDef.entityIdAndNameDef.dtoDef
-            TypescriptInterfaceDtoRenderer(
-                dtoDef.typescriptRenderedFilePath,
-                dtoDef.uqcn,
-                dtoDef.allFieldsSorted,
-                setOf(DtoCharacteristic.RESPONSE_DTO)
-            ).renderToDir(this.typescriptOutputDir)
-        }
+        this.modelDef.entityHierarchies
+            .map { it.entityDef }
+            .filter { it.hasIdAndNameDtoDef }
+            .map { it.entityIdAndNameDef.dtoDef }
+            .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
     }
 
@@ -620,18 +561,43 @@ class AngularUiModuleGenerator(
 
         this.modelDef.requestDtoDefs.forEach { requestDtoDef ->
 
-            val renderedFilePath = requestDtoDef.typescriptDtoRenderedFilePath
-            val className = requestDtoDef.classDef.uqcn
-            val fields = requestDtoDef.classDef.allFieldsSorted
-
-            TypescriptInterfaceDtoRenderer(
-                renderedFilePath,
-                className,
-                fields,
-                emptySet()
-            ).renderToDir(this.typescriptOutputDir)
+            renderTypescriptInterface(
+                renderedFilePath = requestDtoDef.typescriptDtoRenderedFilePath,
+                className = requestDtoDef.classDef.uqcn,
+                fields = requestDtoDef.classDef.allFieldsSorted,
+                dtoCharacteristics = emptySet()
+            )
 
         }
+
+    }
+
+
+    private fun renderTypescriptInterface(classDef: ClassDef) {
+
+        renderTypescriptInterface(
+            renderedFilePath = classDef.typescriptRenderedFilePath,
+            className = classDef.uqcn,
+            fields = classDef.allFieldsSorted,
+            dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
+        )
+
+    }
+
+
+    private fun renderTypescriptInterface(
+        renderedFilePath: String,
+        className: Uqcn,
+        fields: List<ClassFieldDef>,
+        dtoCharacteristics: Set<DtoCharacteristic>
+    ) {
+
+        TypescriptInterfaceDtoRenderer(
+            renderedFilePath,
+            className,
+            fields,
+            dtoCharacteristics
+        ).renderToDir(this.typescriptOutputDir)
 
     }
 
