@@ -61,7 +61,7 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
             srcMainResourcesOutputDir.convention(project.layout.projectDirectory.dir("src/generated/resources/main"))
             srcTestKotlinOutputDir.convention(project.layout.projectDirectory.dir("src/generated/kotlin/test"))
             srcTestResourcesOutputDir.convention(project.layout.projectDirectory.dir("src/generated/resources/test"))
-            typescriptOutputDir.convention(project.layout.projectDirectory.dir("src/generated/typescript/main"))
+            typescriptOutputDir.convention(project.layout.projectDirectory.dir("src/generated/typescript"))
 
         }
 
