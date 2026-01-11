@@ -1,6 +1,7 @@
 package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.*
+import org.maiaframework.gen.renderers.RequestDtoEndpointRenderer
 import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 
@@ -154,7 +155,9 @@ class WebLayerModuleGenerator(
 
     private fun processRequestDto(requestDtoDef: RequestDtoDef) {
 
-        renderRequestDtoEndpoint(requestDtoDef)
+        if (requestDtoDef.withGeneratedEndpoint.value) {
+            RequestDtoEndpointRenderer(requestDtoDef).renderToDir(kotlinOutputDir)
+        }
 
     }
 
@@ -190,15 +193,6 @@ class WebLayerModuleGenerator(
     private fun renderCheckForeignKeyReferencesEndpoint(entityDef: EntityDef) {
 
         ForeignKeyReferencesEndpointRenderer(entityDef).renderToDir(this.kotlinOutputDir)
-
-    }
-
-
-    private fun renderRequestDtoEndpoint(requestDtoDef: RequestDtoDef) {
-
-        if (requestDtoDef.withGeneratedEndpoint.value) {
-            RequestDtoEndpointRenderer(requestDtoDef).renderToDir(this.kotlinOutputDir)
-        }
 
     }
 
