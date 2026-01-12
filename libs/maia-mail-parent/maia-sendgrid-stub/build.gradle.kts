@@ -13,6 +13,6 @@ dependencies {
     implementation("org.assertj:assertj-core")
     implementation("org.springframework:spring-context")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("org.springframework.retry:spring-retry")
+//    implementation("org.springframework.retry:spring-retry")
 
 }

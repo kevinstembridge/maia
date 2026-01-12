@@ -68,7 +68,7 @@ object CurrentUserHolder {
         get () = SecurityContextHolder.getContext()
             .authentication
             ?.authorities
-            ?.map { it.authority }
+            ?.mapNotNull { it.authority }
             .orEmpty()
             .toSortedSet()
 

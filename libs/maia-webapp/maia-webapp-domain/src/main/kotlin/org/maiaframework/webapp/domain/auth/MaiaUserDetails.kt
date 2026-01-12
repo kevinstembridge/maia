@@ -27,6 +27,6 @@ class MaiaUserDetails(
 ) {
 
 
-    val grantedAuthoritiesSorted = grantedAuthorities.map { it.authority }.toSortedSet()
+    val grantedAuthoritiesSorted = grantedAuthorities.mapNotNull { it.authority }.toSortedSet()
 
 }

@@ -6,12 +6,12 @@ import com.sendgrid.Request
 import com.sendgrid.Response
 import com.sendgrid.SendGridAPI
 import org.maiaframework.domain.contact.EmailAddress
-import org.springframework.classify.BinaryExceptionClassifier
+//import org.springframework.classify.BinaryExceptionClassifier
 import org.springframework.context.annotation.Profile
-import org.springframework.retry.backoff.ExponentialBackOffPolicy
-import org.springframework.retry.policy.SimpleRetryPolicy
-import org.springframework.retry.support.RetryTemplate
+import org.springframework.core.retry.RetryPolicy
+import org.springframework.core.retry.RetryTemplate
 import org.springframework.stereotype.Component
+import org.springframework.util.backoff.ExponentialBackOff
 import org.thymeleaf.TemplateEngine
 import java.time.Instant
 
@@ -19,17 +19,18 @@ import java.time.Instant
 @Profile("emailStub")
 class SendGridApiStub(private val jsonFacade: JsonFacade, private val templateEngine: TemplateEngine) : SendGridAPI {
 
+
     private val logger = getLogger<SendGridApiStub>()
+
 
     private val emails = mutableListOf<EmailAsserter>()
 
-    private val maxAttempts = 8
-    private val retryableExceptions = listOf(AssertionError::class.java, Exception::class.java)
 
-    private val retryTemplate = RetryTemplate().apply {
-        setBackOffPolicy(ExponentialBackOffPolicy())
-        setRetryPolicy(SimpleRetryPolicy(maxAttempts, BinaryExceptionClassifier(retryableExceptions)))
-    }
+    private val retryTemplate = RetryTemplate(RetryPolicy.builder()
+        .maxRetries(8L)
+        .backOff(ExponentialBackOff())
+        .includes(AssertionError::class.java, Exception::class.java)
+        .build())
 
 
     override fun initialize(auth: String?, host: String?) {
@@ -108,7 +109,7 @@ class SendGridApiStub(private val jsonFacade: JsonFacade, private val templateEn
 
     fun getLatestEmail(): EmailAsserter {
 
-        return this.retryTemplate.execute<EmailAsserter, Throwable> {
+        return this.retryTemplate.execute {
             getLatestEmailWithoutRetry()
         }
 
