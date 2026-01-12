@@ -13,7 +13,7 @@ dependencies {
     api(project(":libs:maia-types"))
 
     api("com.fasterxml.jackson.core:jackson-annotations")
-    api("com.fasterxml.jackson.core:jackson-databind")
+    api("tools.jackson.core:jackson-databind")
     api("org.hibernate.validator:hibernate-validator")
     api("org.springframework.data:spring-data-commons")
 

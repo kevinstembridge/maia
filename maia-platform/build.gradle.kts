@@ -9,8 +9,8 @@ javaPlatform {
 
 dependencies {
 
-    api(platform("dev.forkhandles:forkhandles-bom:2.20.0.0"))
-    api(platform("io.dropwizard.metrics:metrics-bom:4.2.30"))
+    api(platform("dev.forkhandles:forkhandles-bom:2.25.0.0"))
+    api(platform("io.dropwizard.metrics:metrics-bom:4.2.37"))
     api(platform("org.springframework.boot:spring-boot-dependencies:4.0.1"))
 
     constraints {
@@ -27,6 +27,7 @@ dependencies {
         api("org.testcontainers:junit-jupiter:1.21.4")
         api("org.testcontainers:postgresql:1.21.4")
         api("org.testng:testng:7.11.0")
+        api("tools.jackson.module:jackson-kotlin-module:3.0.3")
 
     }
 

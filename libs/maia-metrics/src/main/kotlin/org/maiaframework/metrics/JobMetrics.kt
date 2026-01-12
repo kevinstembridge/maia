@@ -5,7 +5,7 @@ import com.codahale.metrics.RatioGauge
 import com.codahale.metrics.Timer
 import com.codahale.metrics.UniformReservoir
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import kotlin.time.Duration.Companion.nanoseconds
 
 class JobMetrics(val jobName: String) : Comparable<JobMetrics> {

@@ -3,7 +3,7 @@
 
 package org.maiaframework.gen.testing.sample.many_to_many
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import tools.jackson.databind.node.JsonNodeFactory
 import org.maiaframework.domain.search.AgGridSearchModel
 import org.maiaframework.domain.search.AgGridSortModelItem
 import org.maiaframework.domain.search.SearchResultPage

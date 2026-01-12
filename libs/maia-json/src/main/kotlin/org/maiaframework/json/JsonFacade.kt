@@ -1,20 +1,20 @@
 package org.maiaframework.json
 
-import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.core.JacksonException
+import tools.jackson.databind.JsonNode
+import tools.jackson.databind.json.JsonMapper
 import org.springframework.stereotype.Component
 import java.io.IOException
 
 @Component
-class JsonFacade(private val objectMapper: ObjectMapper) {
+class JsonFacade(private val objectMapper: JsonMapper) {
 
 
     fun writeValueAsString(pojo: Any): String {
 
         try {
             return this.objectMapper.writeValueAsString(pojo)
-        } catch (e: JsonProcessingException) {
+        } catch (e: JacksonException) {
             throw JsonRuntimeException(e)
         }
 

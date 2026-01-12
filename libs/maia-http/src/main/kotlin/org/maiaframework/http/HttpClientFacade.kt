@@ -1,6 +1,6 @@
 package org.maiaframework.http
 
-import com.fasterxml.jackson.databind.JsonNode
+import tools.jackson.databind.JsonNode
 import org.maiaframework.json.JsonFacade
 import org.apache.hc.client5.http.fluent.Request
 import org.apache.hc.client5.http.fluent.Response

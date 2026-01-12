@@ -1,6 +1,6 @@
 package org.maiaframework.gen.search
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import org.maiaframework.domain.search.SearchFieldConverter
 import org.maiaframework.domain.search.SearchFieldNameConverter
 import org.maiaframework.domain.search.mongo.SearchRequestParser

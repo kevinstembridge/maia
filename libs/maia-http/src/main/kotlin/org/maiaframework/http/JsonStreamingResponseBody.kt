@@ -1,7 +1,7 @@
 package org.maiaframework.http
 
 import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.IOException
 import java.io.OutputStream

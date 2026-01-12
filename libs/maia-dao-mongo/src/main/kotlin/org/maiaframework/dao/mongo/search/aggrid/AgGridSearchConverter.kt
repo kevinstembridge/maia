@@ -1,8 +1,8 @@
 package org.maiaframework.dao.mongo.search.aggrid
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
+import tools.jackson.databind.JsonNode
+import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.node.ObjectNode
 import org.maiaframework.json.JsonNodeExtensions.getArrayNodeOrNull
 import org.maiaframework.json.JsonNodeExtensions.getIntOrNull
 import org.maiaframework.json.JsonNodeExtensions.getInt

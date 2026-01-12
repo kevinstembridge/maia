@@ -1,6 +1,6 @@
 package org.maiaframework.gen.testing.jdbc
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName

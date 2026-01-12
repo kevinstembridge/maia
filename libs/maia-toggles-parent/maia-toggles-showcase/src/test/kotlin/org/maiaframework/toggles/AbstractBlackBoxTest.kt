@@ -1,6 +1,6 @@
 package org.maiaframework.toggles
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.maiaframework.testing.postgresql.SingletonPostgresqlContainer
