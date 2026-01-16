@@ -1,7 +1,7 @@
 package org.maiaframework.domain.search.mongo
 
 import tools.jackson.databind.JsonNode
-import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.json.JsonMapper
 import tools.jackson.databind.node.ArrayNode
 import tools.jackson.databind.node.ObjectNode
 import org.maiaframework.types.StringType
@@ -57,7 +57,7 @@ class SearchRequestParser(
         collectionFieldPath: CollectionFieldPath?
     ) {
 
-        objectNode.fields().forEachRemaining { nodeEntry ->
+        objectNode.properties().forEach { nodeEntry ->
 
             val fieldName = nodeEntry.key
             val childNode = nodeEntry.value
@@ -188,7 +188,7 @@ class SearchRequestParser(
     private fun parseRaw(json: String): ObjectNode {
 
         try {
-            val jsonNode = OBJECT_MAPPER.readTree(json)
+            val jsonNode = jsonMapper.readTree(json)
 
             return if (jsonNode.isObject) {
                 jsonNode as ObjectNode
@@ -265,9 +265,9 @@ class SearchRequestParser(
             sortNode.forEach { propertyNode ->
                 if (propertyNode.isObject) {
 
-                    propertyNode.fields().forEachRemaining { s ->
+                    propertyNode.properties().forEach { s ->
                         val propertyName = s.key
-                        val rawDirection = s.value.textValue()
+                        val rawDirection = s.value.asString()
                         val direction = Sort.Direction.fromString(rawDirection)
                         orders.add(Sort.Order(direction, propertyName))
 
@@ -285,7 +285,7 @@ class SearchRequestParser(
 
     companion object {
 
-        private val OBJECT_MAPPER = ObjectMapper()
+        private val jsonMapper = JsonMapper()
 
         private val VALID_OPERATOR_NAMES = setOf(
             "\$eq",

@@ -3,10 +3,8 @@
 
 package org.maiaframework.toggles
 
-import com.fasterxml.jackson.annotation.JsonInclude
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class FeatureToggleIsActiveResponseDto(
     val active: Boolean
 ) {

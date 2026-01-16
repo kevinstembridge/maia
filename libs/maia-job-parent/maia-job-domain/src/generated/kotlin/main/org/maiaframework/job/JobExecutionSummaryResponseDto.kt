@@ -3,12 +3,10 @@
 
 package org.maiaframework.job
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class JobExecutionSummaryResponseDto(
     val endTimestampUtc: Instant?,
     val errorMessage: String?,

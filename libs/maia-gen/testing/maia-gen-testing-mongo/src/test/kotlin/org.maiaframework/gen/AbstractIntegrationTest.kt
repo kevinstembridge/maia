@@ -1,6 +1,6 @@
 package org.maiaframework.gen
 
-import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.json.JsonMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity

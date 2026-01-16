@@ -3,7 +3,6 @@
 
 package org.maiaframework.job
 
-import tools.jackson.databind.ObjectMapper
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
@@ -14,6 +13,7 @@ import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
 
 
@@ -22,11 +22,11 @@ class JobExecutionDao(
     private val fieldConverter: JobExecutionEntityFieldConverter,
     private val jdbcOps: JdbcOps,
     private val jsonFacade: JsonFacade,
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) {
 
 
-    private val entityRowMapper = JobExecutionEntityRowMapper(objectMapper)
+    private val entityRowMapper = JobExecutionEntityRowMapper(jsonMapper)
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
@@ -71,7 +71,7 @@ class JobExecutionDao(
                 addValue("invokedBy", entity.invokedBy)
                 addValue("jobName", entity.jobName)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
-                addJsonValue("metrics", objectMapper.writeValueAsString(entity.metrics))
+                addJsonValue("metrics", jsonMapper.writeValueAsString(entity.metrics))
                 addValue("stackTrace", entity.stackTrace)
                 addValue("startTimestampUtc", entity.startTimestampUtc)
             }
@@ -120,7 +120,7 @@ class JobExecutionDao(
                     addValue("invokedBy", entity.invokedBy)
                     addValue("jobName", entity.jobName)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
-                    addJsonValue("metrics", objectMapper.writeValueAsString(entity.metrics))
+                    addJsonValue("metrics", jsonMapper.writeValueAsString(entity.metrics))
                     addValue("stackTrace", entity.stackTrace)
                     addValue("startTimestampUtc", entity.startTimestampUtc)
                 }
@@ -352,7 +352,7 @@ class JobExecutionDao(
             "endTimestampUtc" -> sqlParams.addValue("endTimestampUtc", field.value as Instant?)
             "errorMessage" -> sqlParams.addValue("errorMessage", field.value as String?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
-            "metrics" -> sqlParams.addJsonValue("metrics", this.objectMapper.writeValueAsString(field.value as Map<*, *>))
+            "metrics" -> sqlParams.addJsonValue("metrics", this.jsonMapper.writeValueAsString(field.value as Map<*, *>))
             "stackTrace" -> sqlParams.addValue("stackTrace", field.value as String?)
         }
 

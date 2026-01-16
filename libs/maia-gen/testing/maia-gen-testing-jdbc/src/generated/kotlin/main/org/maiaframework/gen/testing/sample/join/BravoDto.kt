@@ -3,12 +3,10 @@
 
 package org.maiaframework.gen.testing.sample.join
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class BravoDto(
     val createdTimestampUtc: Instant,
     val dtoIntFromAlpha: Int,

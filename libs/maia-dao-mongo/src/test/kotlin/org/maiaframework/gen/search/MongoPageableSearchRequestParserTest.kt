@@ -1,13 +1,13 @@
 package org.maiaframework.gen.search
 
-import tools.jackson.databind.ObjectMapper
+import org.assertj.core.api.Assertions.assertThat
+import org.bson.Document
 import org.maiaframework.domain.search.SearchFieldConverter
 import org.maiaframework.domain.search.SearchFieldNameConverter
 import org.maiaframework.domain.search.mongo.SearchRequestParser
-import org.assertj.core.api.Assertions.assertThat
-import org.bson.Document
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
 import java.util.Date
 
@@ -66,7 +66,7 @@ class MongoPageableSearchRequestParserTest {
     fun test_simple() {
 
         // GIVEN
-        val json = MongoPageableSearchRequestParserTest.Companion.OBJECT_MAPPER.writeValueAsString(mapOf(
+        val json = MongoPageableSearchRequestParserTest.Companion.jsonMapper.writeValueAsString(mapOf(
                 "query" to mapOf(
                         "someField1" to "someValue1",
                         "someField2" to "someValue2",
@@ -90,7 +90,7 @@ class MongoPageableSearchRequestParserTest {
     fun test_with_nested_OR_operator() {
 
         // GIVEN
-        val json = MongoPageableSearchRequestParserTest.Companion.OBJECT_MAPPER.writeValueAsString(mapOf(
+        val json = MongoPageableSearchRequestParserTest.Companion.jsonMapper.writeValueAsString(mapOf(
                 "query" to mapOf(
                         "someField1" to "someValue1",
                         "\$or" to mapOf("someField2" to "someValue2")
@@ -120,12 +120,12 @@ class MongoPageableSearchRequestParserTest {
     fun should_convert_field_names() {
 
         // GIVEN
-        val rootNode = OBJECT_MAPPER.createObjectNode()
+        val rootNode = jsonMapper.createObjectNode()
         rootNode.putObject("query")
                 .put("someField1", "someValue1")
                 .putArray("\$or")
-                .add(OBJECT_MAPPER.createObjectNode().put("someField2", "someValue2"))
-                .add(OBJECT_MAPPER.createObjectNode().put("someField3", "someValue3"))
+                .add(jsonMapper.createObjectNode().put("someField2", "someValue2"))
+                .add(jsonMapper.createObjectNode().put("someField3", "someValue3"))
 
         val expectedBson = Document()
         expectedBson["someField1_converted"] = "someValue1"
@@ -158,7 +158,7 @@ class MongoPageableSearchRequestParserTest {
 
         val someDate = Date.from(someInstant)
 
-        val rootNode = OBJECT_MAPPER.createObjectNode()
+        val rootNode = jsonMapper.createObjectNode()
         rootNode.putObject("query")
                 .put("someInstant", someInstantAsString)
 
@@ -184,7 +184,7 @@ class MongoPageableSearchRequestParserTest {
         val fromDate = Date.from(fromTimestamp)
         val toDate = Date.from(toTimestamp)
 
-        val rootNode = OBJECT_MAPPER.createObjectNode()
+        val rootNode = jsonMapper.createObjectNode()
         val queryNode = rootNode.putObject("query")
         queryNode.putObject("someInstant")
                 .put("\$gt", fromTimestamp.toString())
@@ -213,7 +213,7 @@ class MongoPageableSearchRequestParserTest {
 
         // GIVEN
 
-        val rootNode = OBJECT_MAPPER.createObjectNode()
+        val rootNode = jsonMapper.createObjectNode()
         val expectedPageNumber = 3
         val expectedPageSize = 10
 
@@ -221,8 +221,8 @@ class MongoPageableSearchRequestParserTest {
                 .put("page", expectedPageNumber)
                 .put("size", expectedPageSize)
                 .putArray("sort")
-                .add(OBJECT_MAPPER.createObjectNode().put("someField1", "asc"))
-                .add(OBJECT_MAPPER.createObjectNode().put("someField2", "desc"))
+                .add(jsonMapper.createObjectNode().put("someField1", "asc"))
+                .add(jsonMapper.createObjectNode().put("someField2", "desc"))
 
         val expectedSort = Sort.by(
             Sort.Order(Sort.Direction.ASC, "someField1"),
@@ -244,7 +244,7 @@ class MongoPageableSearchRequestParserTest {
 
     companion object {
 
-        private val OBJECT_MAPPER = ObjectMapper()
+        private val jsonMapper = JsonMapper()
 
     }
 

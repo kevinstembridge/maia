@@ -3,14 +3,14 @@
 
 package org.maiaframework.job
 
-import com.fasterxml.jackson.core.type.TypeReference
-import tools.jackson.databind.ObjectMapper
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
 
 
 class JobExecutionEntityRowMapper(
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) : MaiaRowMapper<JobExecutionEntity> {
 
 
@@ -24,7 +24,7 @@ class JobExecutionEntityRowMapper(
         val invokedBy = rsa.readString("invoked_by")
         val jobName = rsa.readString("job_name") { JobName(it) }
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
-        val metrics = rsa.readString("metrics") { objectMapper.readValue(it, object : TypeReference<Map<String, Any>>() {}) }
+        val metrics = rsa.readString("metrics") { jsonMapper.readValue(it, object : TypeReference<Map<String, Any>>() {}) }
         val stackTrace = rsa.readStringOrNull("stack_trace")
         val startTimestampUtc = rsa.readInstant("start_timestamp_utc")
 

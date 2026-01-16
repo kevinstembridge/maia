@@ -17,8 +17,9 @@ dependencies {
     implementation(project(":libs:maia-props-parent:maia-props-repo"))
     implementation(project(":libs:maia-webapp:maia-webapp-domain"))
 
-    implementation("tools.jackson.module::jackson-module-kotlin")
+    implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("org.springframework:spring-web")
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.security:spring-security-core")
 

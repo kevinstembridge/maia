@@ -3,10 +3,8 @@
 
 package org.maiaframework.gen.testing.sample
 
-import com.fasterxml.jackson.annotation.JsonInclude
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class SimpleResponseDto(
     val someBoolean: Boolean?,
     val someInt: Int?,

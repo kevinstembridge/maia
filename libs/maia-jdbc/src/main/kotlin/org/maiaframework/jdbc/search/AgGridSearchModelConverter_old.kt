@@ -41,7 +41,7 @@ class AgGridSearchModelConverter_old(
         sqlParams: SqlParams
     ): String {
 
-        return filterModelItemNode.fields().asSequence().mapIndexed { index, entry ->
+        return filterModelItemNode.properties().mapIndexed { index, entry ->
 
             val classFieldName = entry.key
             val fieldNode = entry.value as ObjectNode
@@ -104,7 +104,7 @@ class AgGridSearchModelConverter_old(
 
         val expressions = mutableListOf<String>()
 
-        fieldNode.fields().asSequence().forEachIndexed { index, conditionEntry: Map.Entry<String, JsonNode> ->
+        fieldNode.properties().forEachIndexed { index, conditionEntry: Map.Entry<String, JsonNode> ->
 
             val sqlParamName = "${sqlParamNamePrefix}_$index"
 

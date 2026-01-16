@@ -1,7 +1,7 @@
 package org.maiaframework.dao.mongo.search.aggrid
 
 import tools.jackson.databind.JsonNode
-import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.json.JsonMapper
 import tools.jackson.databind.node.ObjectNode
 import org.maiaframework.json.JsonNodeExtensions.getArrayNodeOrNull
 import org.maiaframework.json.JsonNodeExtensions.getIntOrNull
@@ -25,7 +25,7 @@ import java.util.regex.Pattern
 abstract class AgGridSearchConverter(
     private val searchFieldConverter: SearchFieldConverter,
     private val searchFieldNameConverter: SearchFieldNameConverter,
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) {
 
 
@@ -39,7 +39,7 @@ abstract class AgGridSearchConverter(
             projectedFieldNames: Set<String>
     ): MongoSearchRequest {
 
-        val rootNode: JsonNode = this.objectMapper.readTree(agGridSearchRawJson)!!
+        val rootNode: JsonNode = this.jsonMapper.readTree(agGridSearchRawJson)!!
         return convert(rootNode, projectedFieldNames)
 
     }
@@ -68,7 +68,7 @@ abstract class AgGridSearchConverter(
             lookupDescriptors: List<MongoLookupDescriptor>
     ): MongoAggregationSearchRequest {
 
-        val rootNode: JsonNode = this.objectMapper.readTree(searchRawJson)!!
+        val rootNode: JsonNode = this.jsonMapper.readTree(searchRawJson)!!
 
         return convertToAggregatePipeline(
                 rootNode,
@@ -194,7 +194,7 @@ abstract class AgGridSearchConverter(
 
         val fieldNames = mutableSetOf<String>()
 
-        filterModelNode.fields().forEachRemaining { mutableEntry: MutableMap.MutableEntry<String, JsonNode> ->
+        filterModelNode.properties().forEach { mutableEntry: MutableMap.MutableEntry<String, JsonNode> ->
 
             val classFieldName = mutableEntry.key
             fieldNames.add(classFieldName)
@@ -346,7 +346,7 @@ abstract class AgGridSearchConverter(
 
         val filterModelNode: ObjectNode = rootNode.getObjectNode("filterModel")
 
-        filterModelNode.fields().forEachRemaining { mutableEntry: MutableMap.MutableEntry<String, JsonNode> ->
+        filterModelNode.properties().forEach { mutableEntry: MutableMap.MutableEntry<String, JsonNode> ->
 
             val classFieldName = mutableEntry.key
 
@@ -433,7 +433,7 @@ abstract class AgGridSearchConverter(
 
         val conditionDocuments = mutableListOf<Document>()
 
-        fieldNode.fields().forEachRemaining { conditionEntry: MutableMap.MutableEntry<String, JsonNode> ->
+        fieldNode.properties().forEach { conditionEntry: MutableMap.MutableEntry<String, JsonNode> ->
 
             val conditionNameOrOperator = conditionEntry.key
 

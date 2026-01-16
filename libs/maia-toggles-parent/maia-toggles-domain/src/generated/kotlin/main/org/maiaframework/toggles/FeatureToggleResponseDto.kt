@@ -3,7 +3,6 @@
 
 package org.maiaframework.toggles
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
@@ -13,7 +12,6 @@ import java.time.Instant
 import java.time.LocalDate
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class FeatureToggleResponseDto(
     val activationStrategies: List<ActivationStrategyDescriptor>,
     val attributes: Map<String, String>?,

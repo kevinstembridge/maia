@@ -47,8 +47,8 @@ class EntityRowMapperRenderer(
 
     init {
 
-        if (entityHierarchy.requiresObjectMapper) {
-            addConstructorArg(ClassFieldDef.aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
+        if (entityHierarchy.requiresJsonMapper) {
+            addConstructorArg(ClassFieldDef.aClassField("jsonMapper", Fqcns.JACKSON_JSON_MAPPER).privat().build())
         }
 
     }
@@ -232,7 +232,7 @@ class EntityRowMapperRenderer(
 
         val nullableSuffix = if (entityFieldDef.nullable) "OrNull" else ""
 
-        appendLine("${indentStr}val $classFieldName = rsa.readString$nullableSuffix(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }")
+        appendLine("${indentStr}val $classFieldName = rsa.readString$nullableSuffix(\"$resultSetColumnName\") { jsonMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }")
 
     }
 
@@ -269,7 +269,7 @@ class EntityRowMapperRenderer(
             is LocalDateFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readListOfLocalDates(\"${resultSetColumnName}\")")
             is LongFieldType -> TODO("YAGNI?")
             is LongTypeFieldType -> TODO("YAGNI?")
-            is MapFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readString(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }")
+            is MapFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readString(\"$resultSetColumnName\") { jsonMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }")
             is ObjectIdFieldType -> TODO("YAGNI?")
             is PeriodFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readListOfStrings(\"${resultSetColumnName}\") { Period.parse(it) }")
             is RequestDtoFieldType -> TODO("YAGNI?")

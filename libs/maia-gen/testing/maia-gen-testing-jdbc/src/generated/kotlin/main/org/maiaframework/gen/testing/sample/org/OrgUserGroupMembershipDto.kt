@@ -3,11 +3,9 @@
 
 package org.maiaframework.gen.testing.sample.org
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import org.maiaframework.domain.DomainId
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class OrgUserGroupMembershipDto(
     val id: DomainId,
     val orgUserGroupId: DomainId,

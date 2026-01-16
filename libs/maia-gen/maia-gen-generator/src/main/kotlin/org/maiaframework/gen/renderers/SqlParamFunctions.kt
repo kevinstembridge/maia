@@ -265,11 +265,11 @@ object SqlParamFunctions {
 
         if (entityFieldDef.nullable) {
 
-            lineAppender("${indent}addJsonValue(\"$fieldName\", $entityNamePrefix$fieldName?.let { objectMapper.writeValueAsString(it) })")
+            lineAppender("${indent}addJsonValue(\"$fieldName\", $entityNamePrefix$fieldName?.let { jsonMapper.writeValueAsString(it) })")
 
         } else {
 
-            lineAppender("${indent}addJsonValue(\"$fieldName\", objectMapper.writeValueAsString($entityNamePrefix$fieldName))")
+            lineAppender("${indent}addJsonValue(\"$fieldName\", jsonMapper.writeValueAsString($entityNamePrefix$fieldName))")
 
         }
 

@@ -1,25 +1,30 @@
 package org.maiaframework.dao.mongo.search
 
-import tools.jackson.databind.JsonNode
-import tools.jackson.databind.ObjectMapper
-import tools.jackson.databind.node.ObjectNode
-import org.maiaframework.json.JsonNodeExtensions.getLocalDate
-import org.maiaframework.json.JsonNodeExtensions.getNumber
-import org.maiaframework.json.JsonNodeExtensions.getString
-import org.maiaframework.dao.mongo.MongoLookupDescriptor
-import org.maiaframework.domain.search.*
-import org.maiaframework.domain.search.mongo.MongoSearchRequest
-import org.maiaframework.domain.types.TypeDiscriminator
 import org.bson.Document
 import org.bson.conversions.Bson
 import org.bson.types.ObjectId
-import java.util.*
+import org.maiaframework.dao.mongo.MongoLookupDescriptor
+import org.maiaframework.domain.search.AgGridSearchModel
+import org.maiaframework.domain.search.FilterModelItem
+import org.maiaframework.domain.search.SearchFieldConverter
+import org.maiaframework.domain.search.SearchFieldNameConverter
+import org.maiaframework.domain.search.SearchModel
+import org.maiaframework.domain.search.mongo.MongoSearchRequest
+import org.maiaframework.domain.types.TypeDiscriminator
+import org.maiaframework.json.JsonNodeExtensions.getLocalDate
+import org.maiaframework.json.JsonNodeExtensions.getNumber
+import org.maiaframework.json.JsonNodeExtensions.getString
+import tools.jackson.databind.JsonNode
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.databind.node.ObjectNode
+import java.util.Locale
+import java.util.SortedSet
 import java.util.regex.Pattern
 
 abstract class MongoSearchRequestFactory(
     private val searchFieldConverter: SearchFieldConverter,
     private val searchFieldNameConverter: SearchFieldNameConverter,
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) {
 
 
@@ -61,7 +66,7 @@ abstract class MongoSearchRequestFactory(
             lookupDescriptors: List<MongoLookupDescriptor>
     ): MongoAggregationSearchRequest {
 
-        val searchModel = this.objectMapper.readValue(searchRawJson, SearchModel::class.java)
+        val searchModel = this.jsonMapper.readValue(searchRawJson, SearchModel::class.java)
 
         return convertToAggregatePipeline(
                 searchModel,
@@ -413,7 +418,7 @@ abstract class MongoSearchRequestFactory(
 
         val conditionDocuments = mutableListOf<Document>()
 
-        fieldNode.fields().forEachRemaining { conditionEntry: MutableMap.MutableEntry<String, JsonNode> ->
+        fieldNode.properties().forEach { conditionEntry: MutableMap.MutableEntry<String, JsonNode> ->
 
             val conditionNameOrOperator = conditionEntry.key
 

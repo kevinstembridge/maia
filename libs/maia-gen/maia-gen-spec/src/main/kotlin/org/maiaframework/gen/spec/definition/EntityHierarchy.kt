@@ -74,7 +74,7 @@ class EntityHierarchy(val entityDef: EntityDef) {
     }
 
 
-    val requiresObjectMapper
+    val requiresJsonMapper
         get() = entityDefs.any { it.hasAnyJsonFields } || entityDefs.any { it.hasAnyMapFields }
 
 

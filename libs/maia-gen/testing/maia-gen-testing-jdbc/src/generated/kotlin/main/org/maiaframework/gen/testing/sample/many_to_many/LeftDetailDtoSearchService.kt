@@ -3,11 +3,11 @@
 
 package org.maiaframework.gen.testing.sample.many_to_many
 
-import tools.jackson.databind.node.JsonNodeFactory
 import org.maiaframework.domain.search.AgGridSearchModel
 import org.maiaframework.domain.search.AgGridSortModelItem
 import org.maiaframework.domain.search.SearchResultPage
 import org.springframework.stereotype.Service
+import tools.jackson.databind.node.JsonNodeFactory
 
 
 @Service

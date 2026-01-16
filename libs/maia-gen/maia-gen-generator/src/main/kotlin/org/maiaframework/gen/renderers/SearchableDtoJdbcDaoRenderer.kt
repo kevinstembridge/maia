@@ -66,7 +66,7 @@ class SearchableDtoJdbcDaoRenderer(
 
         if (searchableDtoDef.hasAnyMapFields) {
             addConstructorArg(aClassField("jsonFacade", Fqcns.MAIA_JSON_FACADE).privat().build())
-            addConstructorArg(aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
+            addConstructorArg(aClassField("jsonMapper", Fqcns.JACKSON_JSON_MAPPER).privat().build())
         }
 
         this.entityDef.configurableSchemaPropertyName?.let { propertyName ->
@@ -88,22 +88,22 @@ class SearchableDtoJdbcDaoRenderer(
 
     override fun renderPreClassFields() {
 
-        renderObjectMapperClassField()
+        renderJsonMapperClassField()
         renderSearchModelConverterClassField()
         renderTypeDiscriminatorExpressionClassField()
 
     }
 
 
-    private fun renderObjectMapperClassField() {
+    private fun renderJsonMapperClassField() {
 
         addImportFor(searchableDtoDef.dtoRowMapperClassDef.fqcn)
 
-        val objectMapperParameter = if (searchableDtoDef.hasAnyMapFields) "objectMapper" else ""
+        val jsonMapperParameter = if (searchableDtoDef.hasAnyMapFields) "jsonMapper" else ""
 
         blankLine()
         blankLine()
-        appendLine("    private val dtoRowMapper = ${searchableDtoDef.dtoRowMapperClassDef.uqcn}($objectMapperParameter)")
+        appendLine("    private val dtoRowMapper = ${searchableDtoDef.dtoRowMapperClassDef.uqcn}($jsonMapperParameter)")
 
     }
 

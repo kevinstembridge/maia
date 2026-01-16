@@ -1,13 +1,13 @@
 package org.maiaframework.toggles
 
-import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.json.JsonMapper
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.maiaframework.testing.postgresql.SingletonPostgresqlContainer
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
@@ -35,7 +35,7 @@ abstract class AbstractBlackBoxTest {
 
 
     @Autowired
-    private lateinit var objectMapper: ObjectMapper
+    private lateinit var jsonMapper: JsonMapper
 
 
     @BeforeAll
@@ -52,7 +52,7 @@ abstract class AbstractBlackBoxTest {
 
     protected fun asJson(obj: Any): String {
 
-        return this.objectMapper.writeValueAsString(obj)
+        return this.jsonMapper.writeValueAsString(obj)
 
     }
 

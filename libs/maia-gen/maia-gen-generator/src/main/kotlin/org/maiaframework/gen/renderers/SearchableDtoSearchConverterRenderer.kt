@@ -33,7 +33,7 @@ class SearchableDtoSearchConverterRenderer(
         )
         addConstructorArg(
             ConstructorArg(
-                ClassFieldDef.aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).build()
+                ClassFieldDef.aClassField("jsonMapper", Fqcns.JACKSON_JSON_MAPPER).build()
             )
         )
 

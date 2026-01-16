@@ -69,7 +69,7 @@ class EsSearchRequestFactory {
         boolQueryBuilder: BoolQuery.Builder
     ): BoolQuery.Builder {
 
-        searchModel.filterModel.fields().forEachRemaining { filterModelItem ->
+        searchModel.filterModel.properties().forEach { filterModelItem ->
             val fieldPath = fieldNameMapper.invoke(filterModelItem.key)
             boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filterModelItem.value.getStringOrNull("filter")) } }
         }

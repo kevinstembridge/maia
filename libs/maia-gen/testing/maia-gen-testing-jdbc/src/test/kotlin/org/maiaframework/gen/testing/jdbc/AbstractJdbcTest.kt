@@ -1,6 +1,6 @@
 package org.maiaframework.gen.testing.jdbc
 
-import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.json.JsonMapper
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
@@ -36,7 +36,7 @@ abstract class AbstractJdbcTest {
 
 
     @Autowired
-    private lateinit var objectMapper: ObjectMapper
+    private lateinit var jsonMapper: JsonMapper
 
 
     @Autowired
@@ -57,7 +57,7 @@ abstract class AbstractJdbcTest {
     protected lateinit var defaultUser: UserEntity
 
 
-    protected fun asJson(any: Any): String = this.objectMapper.writeValueAsString(any)
+    protected fun asJson(any: Any): String = this.jsonMapper.writeValueAsString(any)
 
 
     @BeforeEach

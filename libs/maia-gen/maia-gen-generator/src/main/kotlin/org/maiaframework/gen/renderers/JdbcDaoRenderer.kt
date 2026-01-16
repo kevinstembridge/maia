@@ -86,9 +86,9 @@ class JdbcDaoRenderer(
 
         addConstructorArg(aClassField("fieldConverter", entityDef.entityFieldConverterClassDef.fqcn).privat().build())
 
-        if (entityHierarchy.requiresObjectMapper) {
+        if (entityHierarchy.requiresJsonMapper) {
             addConstructorArg(aClassField("jsonFacade", Fqcns.MAIA_JSON_FACADE).privat().build())
-            addConstructorArg(aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
+            addConstructorArg(aClassField("jsonMapper", Fqcns.JACKSON_JSON_MAPPER).privat().build())
         }
 
         this.entityDef.configurableSchemaPropertyName?.let { propertyName ->
@@ -124,11 +124,11 @@ class JdbcDaoRenderer(
 
         addImportFor(this.entityDef.rowMapperClassDef.fqcn)
 
-        val objectMapperParameter = if (entityHierarchy.requiresObjectMapper) "objectMapper" else ""
+        val jsonMapperParameter = if (entityHierarchy.requiresJsonMapper) "jsonMapper" else ""
 
         blankLine()
         blankLine()
-        appendLine("    private val entityRowMapper = ${entityDef.rowMapperClassDef.uqcn}($objectMapperParameter)")
+        appendLine("    private val entityRowMapper = ${entityDef.rowMapperClassDef.uqcn}($jsonMapperParameter)")
 
         val primaryKeyRowMapperDef = this.entityDef.primaryKeyRowMapperDef
 
@@ -170,7 +170,7 @@ class JdbcDaoRenderer(
         }
 
         if (entityDef.isConcrete && entityDef.entityCrudApiDef?.updateApiDef != null) {
-            appendLine("    private val fetchForEditDtoRowMapper = ${entityDef.fetchForEditDtoRowMapperClassDef.uqcn}($objectMapperParameter)")
+            appendLine("    private val fetchForEditDtoRowMapper = ${entityDef.fetchForEditDtoRowMapperClassDef.uqcn}($jsonMapperParameter)")
         }
 
     }
@@ -1873,7 +1873,7 @@ class JdbcDaoRenderer(
                 val fieldValueAs = "field.value as ${classFieldDef.unqualifiedToString}"
 
                 val fieldValueParameter = if (classFieldDef.isMap || classFieldDef.isListSetOrMap) {
-                    "this.objectMapper.writeValueAsString($fieldValueAs)"
+                    "this.jsonMapper.writeValueAsString($fieldValueAs)"
                 } else if (classFieldDef.isValueClass) {
                     "($fieldValueAs)?.value"
                 } else {
@@ -1919,7 +1919,7 @@ class JdbcDaoRenderer(
             is LocalDateFieldType -> "field.value as LocalDate$q"
             is LongFieldType -> "field.value as Long${q}"
             is LongTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
-            is MapFieldType -> "this.objectMapper.writeValueAsString(field.value as Map<*, *>${q})"
+            is MapFieldType -> "this.jsonMapper.writeValueAsString(field.value as Map<*, *>${q})"
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> "field.value as Period"
             is RequestDtoFieldType -> TODO()
@@ -1957,7 +1957,7 @@ class JdbcDaoRenderer(
             is BooleanFieldType -> TODO()
             is BooleanTypeFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
-            is DataClassFieldType -> "this.objectMapper.writeValueAsString(field.value as List<${parameterFieldType.uqcn}>${q})"
+            is DataClassFieldType -> "this.jsonMapper.writeValueAsString(field.value as List<${parameterFieldType.uqcn}>${q})"
             is DomainIdFieldType -> TODO()
             is DoubleFieldType -> TODO()
             is EnumFieldType -> "field.value as List<${parameterFieldType.unqualifiedToString}>"

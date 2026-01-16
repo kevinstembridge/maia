@@ -3,7 +3,6 @@
 
 package org.maiaframework.gen.testing.sample.person
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
@@ -11,7 +10,6 @@ import org.maiaframework.domain.party.LastName
 import java.time.Instant
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class PersonSummaryDto(
     val createdTimestampUtc: Instant,
     val emailAddress: EmailAddress,

@@ -27,7 +27,6 @@ class SendGridApiStub(private val jsonFacade: JsonFacade, private val templateEn
 
 
     private val retryTemplate = RetryTemplate(RetryPolicy.builder()
-        .maxRetries(8L)
         .backOff(ExponentialBackOff())
         .includes(AssertionError::class.java, Exception::class.java)
         .build())

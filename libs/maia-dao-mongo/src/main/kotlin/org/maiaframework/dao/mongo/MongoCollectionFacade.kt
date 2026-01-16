@@ -271,7 +271,7 @@ class MongoCollectionFacade(
     }
 
 
-    fun <T> findPage(
+    fun <T : Any> findPage(
         mongoPageableSearchRequest: MongoPageableSearchRequest,
         documentMapper: (Document) -> T,
         propertyNameToCollectionFieldNameMapper: (String) -> String
@@ -324,7 +324,7 @@ class MongoCollectionFacade(
     }
 
 
-    fun <T> findPage(
+    fun <T : Any> findPage(
             query: Bson,
             pageable: Pageable,
             documentMapper: (Document) -> T,
@@ -341,7 +341,7 @@ class MongoCollectionFacade(
     }
 
 
-    fun <T> findPage(
+    fun <T : Any> findPage(
             query: Bson,
             sort: Bson,
             pageable: Pageable,
@@ -357,7 +357,7 @@ class MongoCollectionFacade(
     }
 
 
-    fun <T> find(
+    fun <T : Any> find(
         mongoSearchRequest: MongoSearchRequest,
         documentMapper: (Document) -> T
     ): List<T> {

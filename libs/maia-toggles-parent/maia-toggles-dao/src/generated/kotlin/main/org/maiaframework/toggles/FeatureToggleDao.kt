@@ -3,7 +3,6 @@
 
 package org.maiaframework.toggles
 
-import tools.jackson.databind.ObjectMapper
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
@@ -21,6 +20,7 @@ import org.maiaframework.toggles.fields.Description
 import org.maiaframework.toggles.fields.InfoLink
 import org.maiaframework.toggles.fields.TicketKey
 import org.springframework.data.domain.Pageable
+import tools.jackson.databind.json.JsonMapper
 import java.sql.PreparedStatement
 import java.time.Instant
 import java.time.LocalDate
@@ -31,15 +31,15 @@ class FeatureToggleDao(
     private val historyDao: FeatureToggleHistoryDao,
     private val jdbcOps: JdbcOps,
     private val jsonFacade: JsonFacade,
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) {
 
 
-    private val entityRowMapper = FeatureToggleEntityRowMapper(objectMapper)
+    private val entityRowMapper = FeatureToggleEntityRowMapper(jsonMapper)
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readString("feature_name") { FeatureName(it) } }
-    private val fetchForEditDtoRowMapper = FeatureToggleFetchForEditDtoRowMapper(objectMapper)
+    private val fetchForEditDtoRowMapper = FeatureToggleFetchForEditDtoRowMapper(jsonMapper)
 
 
     fun insert(entity: FeatureToggleEntity) {
@@ -79,8 +79,8 @@ class FeatureToggleDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addJsonValue("activationStrategies", objectMapper.writeValueAsString(entity.activationStrategies))
-                addJsonValue("attributes", entity.attributes?.let { objectMapper.writeValueAsString(it) })
+                addJsonValue("activationStrategies", jsonMapper.writeValueAsString(entity.activationStrategies))
+                addJsonValue("attributes", entity.attributes?.let { jsonMapper.writeValueAsString(it) })
                 addValue("comment", entity.comment)
                 addValue("contactPerson", entity.contactPerson?.value)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
@@ -139,8 +139,8 @@ class FeatureToggleDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addJsonValue("activationStrategies", objectMapper.writeValueAsString(entity.activationStrategies))
-                    addJsonValue("attributes", entity.attributes?.let { objectMapper.writeValueAsString(it) })
+                    addJsonValue("activationStrategies", jsonMapper.writeValueAsString(entity.activationStrategies))
+                    addJsonValue("attributes", entity.attributes?.let { jsonMapper.writeValueAsString(it) })
                     addValue("comment", entity.comment)
                     addValue("contactPerson", entity.contactPerson?.value)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
@@ -502,8 +502,8 @@ class FeatureToggleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-            addJsonValue("activationStrategies", objectMapper.writeValueAsString(upsertEntity.activationStrategies))
-            addJsonValue("attributes", upsertEntity.attributes?.let { objectMapper.writeValueAsString(it) })
+            addJsonValue("activationStrategies", jsonMapper.writeValueAsString(upsertEntity.activationStrategies))
+            addJsonValue("attributes", upsertEntity.attributes?.let { jsonMapper.writeValueAsString(it) })
             addValue("comment", upsertEntity.comment)
             addValue("contactPerson", upsertEntity.contactPerson?.value)
             addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
@@ -585,8 +585,8 @@ class FeatureToggleDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "activationStrategies" -> sqlParams.addJsonValue("activationStrategies", this.objectMapper.writeValueAsString(field.value as List<ActivationStrategyDescriptor>))
-            "attributes" -> sqlParams.addJsonValue("attributes", this.objectMapper.writeValueAsString(field.value as Map<*, *>?))
+            "activationStrategies" -> sqlParams.addJsonValue("activationStrategies", this.jsonMapper.writeValueAsString(field.value as List<ActivationStrategyDescriptor>))
+            "attributes" -> sqlParams.addJsonValue("attributes", this.jsonMapper.writeValueAsString(field.value as Map<*, *>?))
             "comment" -> sqlParams.addValue("comment", field.value as String?)
             "contactPerson" -> sqlParams.addValue("contactPerson", (field.value as ContactPerson?)?.value)
             "description" -> sqlParams.addValue("description", (field.value as Description?)?.value)

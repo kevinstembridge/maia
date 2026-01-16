@@ -155,7 +155,7 @@ object RowMapperFunctions {
             is BooleanFieldType -> TODO()
             is BooleanTypeFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
-            is DataClassFieldType -> "${indentStr}rsa.readString(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
+            is DataClassFieldType -> "${indentStr}rsa.readString(\"$resultSetColumnName\") { jsonMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
             is DomainIdFieldType -> TODO()
             is DoubleFieldType -> TODO()
             is EnumFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}.valueOf(it) }"
@@ -171,7 +171,7 @@ object RowMapperFunctions {
             is LocalDateFieldType -> "${indentStr}rsa.readListOfLocalDates(\"${resultSetColumnName}\")"
             is LongFieldType -> TODO()
             is LongTypeFieldType -> TODO()
-            is MapFieldType -> "${indentStr}rsa.readString(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
+            is MapFieldType -> "${indentStr}rsa.readString(\"$resultSetColumnName\") { jsonMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { Period.parse(it) }"
             is RequestDtoFieldType -> TODO()
@@ -196,7 +196,7 @@ object RowMapperFunctions {
         fqcnImporter.invoke(Fqcns.JACKSON_TYPE_REFERENCE)
         fqcnImporter.invoke(entityFieldDef.fieldType.fqcn)
 
-        return "${indentStr}rsa.readString(\"$resultSetColumnName\") { objectMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
+        return "${indentStr}rsa.readString(\"$resultSetColumnName\") { jsonMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
 
     }
 
@@ -241,7 +241,7 @@ object RowMapperFunctions {
 
         val nullableSuffix = if (entityFieldDef.nullability.nullable) "OrNull" else ""
 
-        return "${indentStr}rsa.readString$nullableSuffix(\"${entityFieldDef.classFieldName}\") { objectMapper.readValue(it, ${entityFieldDef.classFieldDef.fqcn.uqcn}::class.java) }"
+        return "${indentStr}rsa.readString$nullableSuffix(\"${entityFieldDef.classFieldName}\") { jsonMapper.readValue(it, ${entityFieldDef.classFieldDef.fqcn.uqcn}::class.java) }"
 
     }
 

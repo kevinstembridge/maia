@@ -3,7 +3,6 @@
 
 package org.maiaframework.gen.testing.sample.simple
 
-import tools.jackson.databind.ObjectMapper
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
@@ -18,6 +17,7 @@ import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import tools.jackson.databind.json.JsonMapper
 import java.sql.PreparedStatement
 import java.time.Instant
 import java.time.LocalDate
@@ -29,15 +29,15 @@ class SimpleDao(
     private val fieldConverter: SimpleEntityFieldConverter,
     private val jdbcOps: JdbcOps,
     private val jsonFacade: JsonFacade,
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) {
 
 
-    private val entityRowMapper = SimpleEntityRowMapper(objectMapper)
+    private val entityRowMapper = SimpleEntityRowMapper(jsonMapper)
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
-    private val fetchForEditDtoRowMapper = SimpleFetchForEditDtoRowMapper(objectMapper)
+    private val fetchForEditDtoRowMapper = SimpleFetchForEditDtoRowMapper(jsonMapper)
 
 
     fun insert(entity: SimpleEntity) {
@@ -162,8 +162,8 @@ class SimpleDao(
                 addValue("someBooleanTypeNullable", entity.someBooleanTypeNullable)
                 addValue("someBooleanTypeProvided", entity.someBooleanTypeProvided)
                 addValue("someBooleanTypeProvidedNullable", entity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", objectMapper.writeValueAsString(entity.someDto))
-                addJsonValue("someDtoNullable", entity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+                addJsonValue("someDto", jsonMapper.writeValueAsString(entity.someDto))
+                addJsonValue("someDtoNullable", entity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
                 addValue("someEnum", entity.someEnum)
                 addValue("someEnumNullable", entity.someEnumNullable)
                 addValue("someInstant", entity.someInstant)
@@ -188,8 +188,8 @@ class SimpleDao(
                 addValue("someLongTypeNullable", entity.someLongTypeNullable)
                 addValue("someLongTypeProvided", entity.someLongTypeProvided)
                 addValue("someLongTypeProvidedNullable", entity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(entity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(entity.someMapOfStringTypeToStringType))
+                addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(entity.someMapOfStringToInteger))
+                addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(entity.someMapOfStringTypeToStringType))
                 addValue("somePeriodModifiable", entity.somePeriodModifiable)
                 addValue("somePeriodNullable", entity.somePeriodNullable)
                 addValue("someProvidedStringType", entity.someProvidedStringType)
@@ -328,8 +328,8 @@ class SimpleDao(
                     addValue("someBooleanTypeNullable", entity.someBooleanTypeNullable)
                     addValue("someBooleanTypeProvided", entity.someBooleanTypeProvided)
                     addValue("someBooleanTypeProvidedNullable", entity.someBooleanTypeProvidedNullable)
-                    addJsonValue("someDto", objectMapper.writeValueAsString(entity.someDto))
-                    addJsonValue("someDtoNullable", entity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+                    addJsonValue("someDto", jsonMapper.writeValueAsString(entity.someDto))
+                    addJsonValue("someDtoNullable", entity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
                     addValue("someEnum", entity.someEnum)
                     addValue("someEnumNullable", entity.someEnumNullable)
                     addValue("someInstant", entity.someInstant)
@@ -354,8 +354,8 @@ class SimpleDao(
                     addValue("someLongTypeNullable", entity.someLongTypeNullable)
                     addValue("someLongTypeProvided", entity.someLongTypeProvided)
                     addValue("someLongTypeProvidedNullable", entity.someLongTypeProvidedNullable)
-                    addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(entity.someMapOfStringToInteger))
-                    addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(entity.someMapOfStringTypeToStringType))
+                    addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(entity.someMapOfStringToInteger))
+                    addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(entity.someMapOfStringTypeToStringType))
                     addValue("somePeriodModifiable", entity.somePeriodModifiable)
                     addValue("somePeriodNullable", entity.somePeriodNullable)
                     addValue("someProvidedStringType", entity.someProvidedStringType)
@@ -1041,8 +1041,8 @@ class SimpleDao(
             addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
             addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
             addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
             addValue("someEnum", upsertEntity.someEnum)
             addValue("someEnumNullable", upsertEntity.someEnumNullable)
             addValue("someInstant", upsertEntity.someInstant)
@@ -1067,8 +1067,8 @@ class SimpleDao(
             addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
             addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
             addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
             addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
             addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
             addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
@@ -1227,8 +1227,8 @@ class SimpleDao(
             addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
             addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
             addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
             addValue("someEnum", upsertEntity.someEnum)
             addValue("someEnumNullable", upsertEntity.someEnumNullable)
             addValue("someInstant", upsertEntity.someInstant)
@@ -1253,8 +1253,8 @@ class SimpleDao(
             addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
             addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
             addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
             addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
             addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
             addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
@@ -1413,8 +1413,8 @@ class SimpleDao(
             addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
             addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
             addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
             addValue("someEnum", upsertEntity.someEnum)
             addValue("someEnumNullable", upsertEntity.someEnumNullable)
             addValue("someInstant", upsertEntity.someInstant)
@@ -1439,8 +1439,8 @@ class SimpleDao(
             addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
             addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
             addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
             addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
             addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
             addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
@@ -1599,8 +1599,8 @@ class SimpleDao(
             addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
             addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
             addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
             addValue("someEnum", upsertEntity.someEnum)
             addValue("someEnumNullable", upsertEntity.someEnumNullable)
             addValue("someInstant", upsertEntity.someInstant)
@@ -1625,8 +1625,8 @@ class SimpleDao(
             addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
             addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
             addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
             addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
             addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
             addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
@@ -1785,8 +1785,8 @@ class SimpleDao(
             addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
             addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
             addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-            addJsonValue("someDto", objectMapper.writeValueAsString(upsertEntity.someDto))
-            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { objectMapper.writeValueAsString(it) })
+            addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
+            addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
             addValue("someEnum", upsertEntity.someEnum)
             addValue("someEnumNullable", upsertEntity.someEnumNullable)
             addValue("someInstant", upsertEntity.someInstant)
@@ -1811,8 +1811,8 @@ class SimpleDao(
             addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
             addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
             addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-            addJsonValue("someMapOfStringToInteger", objectMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-            addJsonValue("someMapOfStringTypeToStringType", objectMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
+            addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
+            addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
             addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
             addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
             addValue("someProvidedStringType", upsertEntity.someProvidedStringType)

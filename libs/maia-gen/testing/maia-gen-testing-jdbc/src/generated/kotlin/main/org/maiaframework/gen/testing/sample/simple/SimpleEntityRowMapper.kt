@@ -3,8 +3,6 @@
 
 package org.maiaframework.gen.testing.sample.simple
 
-import com.fasterxml.jackson.core.type.TypeReference
-import tools.jackson.databind.ObjectMapper
 import org.maiaframework.gen.sample.types.SomeProvidedBooleanType
 import org.maiaframework.gen.sample.types.SomeProvidedIntType
 import org.maiaframework.gen.sample.types.SomeProvidedLongType
@@ -16,13 +14,15 @@ import org.maiaframework.gen.testing.sample.types.SomeIntType
 import org.maiaframework.gen.testing.sample.types.SomeLongType
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
 
 
 class SimpleEntityRowMapper(
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) : MaiaRowMapper<SimpleEntity> {
 
 
@@ -41,8 +41,8 @@ class SimpleEntityRowMapper(
         val someBooleanTypeNullable = rsa.readBooleanOrNull("some_boolean_type_nullable") { SomeBooleanType(it) }
         val someBooleanTypeProvided = rsa.readBoolean("some_boolean_type_provided") { SomeProvidedBooleanType(it) }
         val someBooleanTypeProvidedNullable = rsa.readBooleanOrNull("some_boolean_type_provided_nullable") { SomeProvidedBooleanType(it) }
-        val someDto = rsa.readString("some_dto") { objectMapper.readValue(it, object : TypeReference<SimpleResponseDto>() {}) }
-        val someDtoNullable = rsa.readStringOrNull("some_dto_nullable") { objectMapper.readValue(it, object : TypeReference<SimpleResponseDto?>() {}) }
+        val someDto = rsa.readString("some_dto") { jsonMapper.readValue(it, object : TypeReference<SimpleResponseDto>() {}) }
+        val someDtoNullable = rsa.readStringOrNull("some_dto_nullable") { jsonMapper.readValue(it, object : TypeReference<SimpleResponseDto?>() {}) }
         val someEnum = rsa.readEnum("some_enum", SomeEnum::class.java)
         val someEnumNullable = rsa.readEnumOrNull("some_enum_nullable", SomeEnum::class.java)
         val someInstant = rsa.readInstant("some_instant")
@@ -67,8 +67,8 @@ class SimpleEntityRowMapper(
         val someLongTypeNullable = rsa.readLongOrNull("some_long_type_nullable") { SomeLongType(it) }
         val someLongTypeProvided = rsa.readLong("some_long_type_provided") { SomeProvidedLongType(it) }
         val someLongTypeProvidedNullable = rsa.readLongOrNull("some_long_type_provided_nullable") { SomeProvidedLongType(it) }
-        val someMapOfStringToInteger = rsa.readString("some_map_of_string_to_integer") { objectMapper.readValue(it, object : TypeReference<Map<String, Int>>() {}) }
-        val someMapOfStringTypeToStringType = rsa.readString("some_map_of_string_type_to_string_type") { objectMapper.readValue(it, object : TypeReference<Map<SomeStringType, SomeStringType>>() {}) }
+        val someMapOfStringToInteger = rsa.readString("some_map_of_string_to_integer") { jsonMapper.readValue(it, object : TypeReference<Map<String, Int>>() {}) }
+        val someMapOfStringTypeToStringType = rsa.readString("some_map_of_string_type_to_string_type") { jsonMapper.readValue(it, object : TypeReference<Map<SomeStringType, SomeStringType>>() {}) }
         val somePeriodModifiable = rsa.readPeriod("some_period_modifiable")
         val somePeriodNullable = rsa.readPeriodOrNull("some_period_nullable")
         val someProvidedStringType = rsa.readString("some_provided_string_type") { SomeProvidedStringType(it) }

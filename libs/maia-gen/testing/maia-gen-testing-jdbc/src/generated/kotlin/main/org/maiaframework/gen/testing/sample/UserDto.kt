@@ -3,14 +3,12 @@
 
 package org.maiaframework.gen.testing.sample
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import java.time.Instant
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class UserDto(
     val createdTimestampUtc: Instant,
     val displayName: String,

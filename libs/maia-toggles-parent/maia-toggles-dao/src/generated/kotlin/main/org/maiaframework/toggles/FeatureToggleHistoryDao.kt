@@ -3,7 +3,6 @@
 
 package org.maiaframework.toggles
 
-import tools.jackson.databind.ObjectMapper
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -11,17 +10,18 @@ import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
 import org.springframework.data.domain.Pageable
+import tools.jackson.databind.json.JsonMapper
 
 
 class FeatureToggleHistoryDao(
     private val fieldConverter: FeatureToggleHistoryEntityFieldConverter,
     private val jdbcOps: JdbcOps,
     private val jsonFacade: JsonFacade,
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) {
 
 
-    private val entityRowMapper = FeatureToggleHistoryEntityRowMapper(objectMapper)
+    private val entityRowMapper = FeatureToggleHistoryEntityRowMapper(jsonMapper)
 
 
     private val primaryKeyRowMapper = FeatureToggleHistoryEntityPkRowMapper()
@@ -66,8 +66,8 @@ class FeatureToggleHistoryDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addJsonValue("activationStrategies", objectMapper.writeValueAsString(entity.activationStrategies))
-                addJsonValue("attributes", entity.attributes?.let { objectMapper.writeValueAsString(it) })
+                addJsonValue("activationStrategies", jsonMapper.writeValueAsString(entity.activationStrategies))
+                addJsonValue("attributes", entity.attributes?.let { jsonMapper.writeValueAsString(it) })
                 addValue("changeType", entity.changeType)
                 addValue("comment", entity.comment)
                 addValue("contactPerson", entity.contactPerson?.value)
@@ -127,8 +127,8 @@ class FeatureToggleHistoryDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addJsonValue("activationStrategies", objectMapper.writeValueAsString(entity.activationStrategies))
-                    addJsonValue("attributes", entity.attributes?.let { objectMapper.writeValueAsString(it) })
+                    addJsonValue("activationStrategies", jsonMapper.writeValueAsString(entity.activationStrategies))
+                    addJsonValue("attributes", entity.attributes?.let { jsonMapper.writeValueAsString(it) })
                     addValue("changeType", entity.changeType)
                     addValue("comment", entity.comment)
                     addValue("contactPerson", entity.contactPerson?.value)

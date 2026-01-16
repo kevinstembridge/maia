@@ -40,9 +40,11 @@ class DtoDefBuilder(
 
         val annotationDefs = mutableSetOf<AnnotationDef>()
 
-        if (this.characteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-            annotationDefs.add(AnnotationDefs.JSON_INCLUDE)
-        }
+          // TODO Unable to use JsonInclude.NON_EMPTY due to a bug in Jackson 3
+          // https://github.com/FasterXML/jackson-module-kotlin/issues/1065
+//        if (this.characteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
+//            annotationDefs.add(AnnotationDefs.JSON_INCLUDE)
+//        }
 
         return annotationDefs.toTypedArray()
 

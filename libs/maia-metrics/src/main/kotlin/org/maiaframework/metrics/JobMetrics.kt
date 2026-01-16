@@ -5,7 +5,7 @@ import com.codahale.metrics.RatioGauge
 import com.codahale.metrics.Timer
 import com.codahale.metrics.UniformReservoir
 import com.fasterxml.jackson.core.JsonProcessingException
-import tools.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.json.JsonMapper
 import kotlin.time.Duration.Companion.nanoseconds
 
 class JobMetrics(val jobName: String) : Comparable<JobMetrics> {
@@ -26,7 +26,7 @@ class JobMetrics(val jobName: String) : Comparable<JobMetrics> {
     fun getMetricsReportAsJson(): String {
 
         try {
-            return OBJECT_MAPPER.writeValueAsString(metricsReport())
+            return JSON_MAPPER.writeValueAsString(metricsReport())
         } catch (e: JsonProcessingException) {
             throw RuntimeException(e)
         }
@@ -251,7 +251,7 @@ class JobMetrics(val jobName: String) : Comparable<JobMetrics> {
 
     companion object {
 
-        private val OBJECT_MAPPER = ObjectMapper()
+        private val JSON_MAPPER = JsonMapper()
 
     }
 

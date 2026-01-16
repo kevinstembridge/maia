@@ -172,7 +172,7 @@ class SearchableDtoDef(
 
     private fun initAgGridSearchConverterClassDef(): ClassDef {
 
-        val objectMapperFieldDef = aClassField("objectMapper", FieldTypes.byFqcn(Fqcns.JACKSON_OBJECT_MAPPER)).build()
+        val objectMapperFieldDef = aClassField("jsonMapper", FieldTypes.byFqcn(Fqcns.JACKSON_JSON_MAPPER)).build()
         val searchFieldNameConverterFieldDef = aClassField("fieldNameConverter", FieldTypes.byFqcn(Fqcns.SEARCH_FIELD_NAME_CONVERTER)).build()
         val searchFieldConverterFieldDef = aClassField("fieldConverter", FieldTypes.byFqcn(Fqcns.SEARCH_FIELD_CONVERTER)).build()
 
@@ -266,7 +266,7 @@ class SearchableDtoDef(
 
     private fun initMongoSearchRequestFactoryClassDef(): ClassDef {
 
-        val objectMapperFieldDef = aClassField("objectMapper", FieldTypes.byFqcn(Fqcns.JACKSON_OBJECT_MAPPER)).build()
+        val objectMapperFieldDef = aClassField("jsonMapper", FieldTypes.byFqcn(Fqcns.JACKSON_JSON_MAPPER)).build()
         val searchFieldNameConverterFieldDef = aClassField("fieldNameConverter", FieldTypes.byFqcn(Fqcns.SEARCH_FIELD_NAME_CONVERTER)).build()
         val searchFieldConverterFieldDef = aClassField("fieldConverter", FieldTypes.byFqcn(Fqcns.SEARCH_FIELD_CONVERTER)).build()
 

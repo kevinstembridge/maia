@@ -3,12 +3,10 @@
 
 package org.maiaframework.gen.testing.sample.many_to_many
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class LeftDetailDto(
     val createdTimestampUtc: Instant,
     val id: DomainId,

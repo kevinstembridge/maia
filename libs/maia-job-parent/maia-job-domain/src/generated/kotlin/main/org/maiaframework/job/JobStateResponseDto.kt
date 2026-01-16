@@ -3,10 +3,8 @@
 
 package org.maiaframework.job
 
-import com.fasterxml.jackson.annotation.JsonInclude
 
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class JobStateResponseDto(
     val description: String?,
     val jobName: JobName,

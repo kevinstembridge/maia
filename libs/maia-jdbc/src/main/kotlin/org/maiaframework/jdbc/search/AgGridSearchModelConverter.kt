@@ -24,8 +24,7 @@ class AgGridSearchModelConverter(
     ): String {
 
         val expressions = filterModel
-            .fields()
-            .asSequence()
+            .properties()
             .mapIndexed { index, filterModelEntry ->
                 buildExpressionFor(
                     filterModelEntry.key,

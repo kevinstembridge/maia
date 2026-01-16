@@ -3,8 +3,6 @@
 
 package org.maiaframework.gen.testing.sample.simple
 
-import com.fasterxml.jackson.core.type.TypeReference
-import tools.jackson.databind.ObjectMapper
 import org.maiaframework.gen.sample.types.SomeProvidedBooleanType
 import org.maiaframework.gen.sample.types.SomeProvidedIntType
 import org.maiaframework.gen.sample.types.SomeProvidedLongType
@@ -17,13 +15,15 @@ import org.maiaframework.gen.testing.sample.types.SomeIntType
 import org.maiaframework.gen.testing.sample.types.SomeLongType
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
 
 
 class SimpleFetchForEditDtoRowMapper(
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) : MaiaRowMapper<SimpleFetchForEditDto> {
 
 
@@ -49,8 +49,8 @@ class SimpleFetchForEditDtoRowMapper(
             rsa.readBooleanOrNull("someBooleanTypeNullable") { SomeBooleanType(it) },
             rsa.readBoolean("someBooleanTypeProvided") { SomeProvidedBooleanType(it) },
             rsa.readBooleanOrNull("someBooleanTypeProvidedNullable") { SomeProvidedBooleanType(it) },
-            rsa.readString("someDto") { objectMapper.readValue(it, SimpleResponseDto::class.java) },
-            rsa.readStringOrNull("someDtoNullable") { objectMapper.readValue(it, SimpleResponseDto::class.java) },
+            rsa.readString("someDto") { jsonMapper.readValue(it, SimpleResponseDto::class.java) },
+            rsa.readStringOrNull("someDtoNullable") { jsonMapper.readValue(it, SimpleResponseDto::class.java) },
             rsa.readEnum("someEnum", SomeEnum::class.java),
             rsa.readEnumOrNull("someEnumNullable", SomeEnum::class.java),
             rsa.readInstant("someInstant"),
@@ -75,8 +75,8 @@ class SimpleFetchForEditDtoRowMapper(
             rsa.readLongOrNull("someLongTypeNullable") { SomeLongType(it) },
             rsa.readLong("someLongTypeProvided") { SomeProvidedLongType(it) },
             rsa.readLongOrNull("someLongTypeProvidedNullable") { SomeProvidedLongType(it) },
-            rsa.readString("someMapOfStringToInteger") { objectMapper.readValue(it, object : TypeReference<Map<String, Int>>() {}) },
-            rsa.readString("someMapOfStringTypeToStringType") { objectMapper.readValue(it, object : TypeReference<Map<SomeStringType, SomeStringType>>() {}) },
+            rsa.readString("someMapOfStringToInteger") { jsonMapper.readValue(it, object : TypeReference<Map<String, Int>>() {}) },
+            rsa.readString("someMapOfStringTypeToStringType") { jsonMapper.readValue(it, object : TypeReference<Map<SomeStringType, SomeStringType>>() {}) },
             rsa.readPeriod("somePeriodModifiable"),
             rsa.readPeriodOrNull("somePeriodNullable"),
             rsa.readString("someProvidedStringType") { SomeProvidedStringType(it) },

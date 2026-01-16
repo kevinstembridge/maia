@@ -3,8 +3,6 @@
 
 package org.maiaframework.toggles
 
-import com.fasterxml.jackson.core.type.TypeReference
-import tools.jackson.databind.ObjectMapper
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
@@ -13,17 +11,19 @@ import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
 import org.maiaframework.toggles.fields.InfoLink
 import org.maiaframework.toggles.fields.TicketKey
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
 
 
 class FeatureToggleHistoryEntityRowMapper(
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) : MaiaRowMapper<FeatureToggleHistoryEntity> {
 
 
     override fun mapRow(rsa: ResultSetAdapter): FeatureToggleHistoryEntity {
 
-        val activationStrategies = rsa.readString("activation_strategies") { objectMapper.readValue(it, object : TypeReference<List<ActivationStrategyDescriptor>>() {}) }
-        val attributes = rsa.readStringOrNull("attributes") { objectMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) }
+        val activationStrategies = rsa.readString("activation_strategies") { jsonMapper.readValue(it, object : TypeReference<List<ActivationStrategyDescriptor>>() {}) }
+        val attributes = rsa.readStringOrNull("attributes") { jsonMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) }
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val comment = rsa.readStringOrNull("comment")
         val contactPerson = rsa.readStringOrNull("contact_person") { ContactPerson(it) }

@@ -15,7 +15,7 @@ class RowMapperRenderer(
     init {
 
         if (rowMapperDef.fieldDefs.any { it.entityFieldDef.classFieldDef.isMap }) {
-            addConstructorArg(ClassFieldDef.aClassField("objectMapper", Fqcns.JACKSON_OBJECT_MAPPER).privat().build())
+            addConstructorArg(ClassFieldDef.aClassField("jsonMapper", Fqcns.JACKSON_JSON_MAPPER).privat().build())
         }
 
     }

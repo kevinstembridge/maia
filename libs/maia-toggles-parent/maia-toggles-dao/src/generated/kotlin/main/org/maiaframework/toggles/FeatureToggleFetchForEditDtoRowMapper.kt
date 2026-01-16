@@ -3,8 +3,6 @@
 
 package org.maiaframework.toggles
 
-import com.fasterxml.jackson.core.type.TypeReference
-import tools.jackson.databind.ObjectMapper
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
@@ -12,18 +10,20 @@ import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
 import org.maiaframework.toggles.fields.InfoLink
 import org.maiaframework.toggles.fields.TicketKey
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
 
 
 class FeatureToggleFetchForEditDtoRowMapper(
-    private val objectMapper: ObjectMapper
+    private val jsonMapper: JsonMapper
 ) : MaiaRowMapper<FeatureToggleFetchForEditDto> {
 
 
     override fun mapRow(rsa: ResultSetAdapter): FeatureToggleFetchForEditDto {
 
         return FeatureToggleFetchForEditDto(
-            rsa.readString("activationStrategies") { objectMapper.readValue(it, object : TypeReference<List<ActivationStrategyDescriptor>>() {}) },
-            rsa.readString("attributes") { objectMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) },
+            rsa.readString("activationStrategies") { jsonMapper.readValue(it, object : TypeReference<List<ActivationStrategyDescriptor>>() {}) },
+            rsa.readString("attributes") { jsonMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) },
             rsa.readStringOrNull("comment"),
             rsa.readStringOrNull("contactPerson") { ContactPerson(it) },
             rsa.readInstant("createdTimestampUtc"),
