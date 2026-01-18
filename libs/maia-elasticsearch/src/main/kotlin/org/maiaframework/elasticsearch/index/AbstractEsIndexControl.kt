@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory
 
 abstract class AbstractEsIndexControl(
     private val client: ElasticsearchClient,
-    private val esIndexActiveVersionManager: org.maiaframework.elasticsearch.index.EsIndexActiveVersionManager,
-    private val esIndexNameProvider: org.maiaframework.elasticsearch.index.EsIndexNameOverrider
-): org.maiaframework.elasticsearch.index.EsIndexControl {
+    private val esIndexActiveVersionManager: EsIndexActiveVersionManager,
+    private val esIndexNameProvider: EsIndexNameOverrider
+): EsIndexControl {
 
 
     private val logger = LoggerFactory.getLogger(AbstractEsIndexControl::class.java)

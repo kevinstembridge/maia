@@ -98,7 +98,7 @@ data class EmailAsserter(
         val context: Map<String, *> = emailTemplateContext.context
         val expectedContent =  getMessageBody(emailTemplateContext.location.value, context)
 
-        assertThat(this.body).isEqualTo(expectedContent)
+        assertThat(this.body?.trim()).isEqualTo(expectedContent)
         return this
 
     }

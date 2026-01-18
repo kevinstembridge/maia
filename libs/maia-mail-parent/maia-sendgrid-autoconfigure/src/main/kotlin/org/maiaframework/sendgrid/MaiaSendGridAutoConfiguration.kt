@@ -24,7 +24,10 @@ class MaiaSendGridAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun emailFacade(emailService: SendGridEmailService, templateEngine: TemplateEngine): EmailFacade {
+    fun emailFacade(
+        emailService: SendGridEmailService,
+        templateEngine: TemplateEngine
+    ): EmailFacade {
 
         return EmailFacade(emailService, templateEngine)
 
