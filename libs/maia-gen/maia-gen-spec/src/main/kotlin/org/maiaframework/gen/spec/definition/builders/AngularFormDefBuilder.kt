@@ -261,7 +261,7 @@ class AngularFormDefBuilder(
         }
 
 
-        fun withAutocomplete(autocomplete: String) {
+        fun withHtmlAutocompleteAttribute(autocomplete: String) {
 
             this.autocomplete = if (autocomplete.isNotBlank()) FormAutocompleteText(autocomplete) else null
 
