@@ -11,7 +11,6 @@ import org.maiaframework.gen.spec.definition.ObjectTypescriptType
 import org.maiaframework.gen.spec.definition.ReadonlyArrayTypescriptType
 import org.maiaframework.gen.spec.definition.RecordTypescriptType
 import org.maiaframework.gen.spec.definition.StringTypescriptType
-import org.maiaframework.gen.spec.definition.TypescriptCompatibleType
 import org.maiaframework.gen.spec.definition.TypescriptCompatibleTypes
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
@@ -68,7 +67,7 @@ class TypescriptInterfaceDtoRenderer(
                 addImportsFor(listElementType)
 
                 if (listElementType is ForeignKeyFieldType && dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-                    addImport(listElementType.foreignKeyFieldDef.foreignEntityDef.entityIdAndNameDef.idAndNameDtoTypescriptImport)
+                    addImport(listElementType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
                 }
 
             }
@@ -80,7 +79,7 @@ class TypescriptInterfaceDtoRenderer(
             addImportsFor(fieldType)
 
             if (fieldType is ForeignKeyFieldType && dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-                addImport(fieldType.foreignKeyFieldDef.foreignEntityDef.entityIdAndNameDef.idAndNameDtoTypescriptImport)
+                addImport(fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
             }
 
         }
@@ -225,11 +224,11 @@ class TypescriptInterfaceDtoRenderer(
         }
 
         if (fieldType is ForeignKeyFieldType && dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-            importStatements.add(fieldType.foreignKeyFieldDef.foreignEntityDef.entityIdAndNameDef.idAndNameDtoImportStatement)
+            importStatements.add(fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef.pkAndNameDtoImportStatement)
         }
 
         if (fieldType is IdAndNameFieldType) {
-            importStatements.add(fieldType.idAndNameDef.idAndNameDtoImportStatement)
+            importStatements.add(fieldType.idAndNameDef.pkAndNameDtoImportStatement)
         }
 
     }
@@ -242,7 +241,7 @@ class TypescriptInterfaceDtoRenderer(
     ) {
 
         if (dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-            appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.foreignKeyFieldDef.foreignEntityDef.entityIdAndNameDef.dtoUqcn};")
+            appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef.dtoUqcn};")
         } else {
             appendLine("    ${fieldDef.classFieldName}$nullableClause: string;")
         }

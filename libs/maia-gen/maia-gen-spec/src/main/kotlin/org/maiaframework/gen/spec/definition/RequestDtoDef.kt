@@ -4,6 +4,7 @@ package org.maiaframework.gen.spec.definition
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.ClassType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
@@ -70,10 +71,10 @@ class RequestDtoDef(
     val typescriptImport = TypescriptImport(uqcn.value, "@$typescriptFilePathWithoutSuffix")
 
 
-    fun findFieldByName(fieldName: String): RequestDtoFieldDef {
+    fun findFieldByName(fieldName: ClassFieldName): RequestDtoFieldDef {
 
-        return this.dtoFieldDefs.firstOrNull { it.classFieldDef.classFieldName.value == fieldName }
-            ?: throw IllegalArgumentException("No field named $fieldName is defined on dto $dtoBaseName")
+        return this.dtoFieldDefs.firstOrNull { it.classFieldDef.classFieldName == fieldName }
+            ?: throw ClassFieldNotExistsException(fieldName, "RequestDto '$dtoBaseName'")
 
     }
 

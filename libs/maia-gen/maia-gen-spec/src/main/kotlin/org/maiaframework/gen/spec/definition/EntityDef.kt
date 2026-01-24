@@ -31,7 +31,6 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.ClassType
-import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
@@ -244,22 +243,27 @@ class EntityDef(
     val isConcrete: Boolean = this.isAbstract == false
 
 
-    val hasIdAndNameDtoDef: Boolean
-        get() = this.nameFieldForIdAndNameDto != null
+    val hasIdAndNameDtoDef = this.nameFieldForIdAndNameDto != null
 
 
-    val entityIdAndNameDef: EntityIdAndNameDef
+    val entityPkAndNameDef: EntityPkAndNameDef
         get() {
 
             requireNotNull(this.nameFieldForIdAndNameDto) { "nameFieldForIdAndNameDto for entity $entityBaseName must not be null if idAndNameDef is required." }
 
-            val idEntityFieldDef = findFieldByName("id")
+            if (primaryKeyFields.size > 1) {
+                throw ModelDefinitionException("YAGNI: idAndName DTOs are not yet supported for Entities with composite primary keys")
+            }
+
+            val primaryKeyEntityFieldDef = primaryKeyFields.firstOrNull()
+                ?: throw RuntimeException("Entity $entityBaseName has no primary key field")
+
             val nameEntityFieldDef = findFieldByName(this.nameFieldForIdAndNameDto)
 
-            return EntityIdAndNameDef(
+            return EntityPkAndNameDef(
                 packageName,
                 DtoBaseName(entityBaseName.value),
-                idEntityFieldDef,
+                primaryKeyEntityFieldDef,
                 nameEntityFieldDef,
                 entityRepoClassDef
             )
@@ -402,6 +406,7 @@ class EntityDef(
                     isPrimaryKey,
                     IsDeltaField.TRUE,
                     fd.isDerived,
+                    fd.isHardcoded,
                     isCreatableByUser = IsCreatableByUser.FALSE,
                     fd.dbColumnFieldDef.fieldReaderParameterizedType,
                     fd.dbColumnFieldDef.fieldWriterParameterizedType

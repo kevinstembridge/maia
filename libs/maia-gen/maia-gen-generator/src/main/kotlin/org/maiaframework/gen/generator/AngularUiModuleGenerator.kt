@@ -551,7 +551,7 @@ class AngularUiModuleGenerator(
         this.modelDef.entityHierarchies
             .map { it.entityDef }
             .filter { it.hasIdAndNameDtoDef }
-            .map { it.entityIdAndNameDef.dtoDef }
+            .map { it.entityPkAndNameDef.dtoDef }
             .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
     }

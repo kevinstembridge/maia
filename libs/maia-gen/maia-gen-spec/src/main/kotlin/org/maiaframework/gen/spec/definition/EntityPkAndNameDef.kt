@@ -6,10 +6,10 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClass
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 
-class EntityIdAndNameDef(
+class EntityPkAndNameDef(
     val packageName: PackageName,
     val dtoBaseName: DtoBaseName,
-    val idEntityFieldDef: EntityFieldDef,
+    val pkEntityFieldDef: EntityFieldDef,
     val nameEntityFieldDef: EntityFieldDef,
     val entityRepoClassDef: ClassDef
 ) {
@@ -17,25 +17,25 @@ class EntityIdAndNameDef(
 
     val dtoDef = DtoDefBuilder(
         packageName,
-        dtoBaseName.withSuffix("IdAndName"),
+        dtoBaseName.withSuffix("PkAndName"),
         DtoSuffix("Dto"),
         listOf(
-            aClassField(idEntityFieldDef.classFieldName.value, idEntityFieldDef.fieldType).build(),
+            aClassField(pkEntityFieldDef.classFieldName.value, pkEntityFieldDef.fieldType).build(),
             aClassField("name", nameEntityFieldDef.fieldType).build(),
         )
     ).build()
 
 
-    val idAndNameDtoFqcn = dtoDef.fqcn
+    val pkAndNameDtoFqcn = dtoDef.fqcn
 
 
     val dtoUqcn = dtoDef.uqcn
 
 
-    val idAndNameDtoImportStatement = "import { ${idAndNameDtoFqcn.uqcn} } from '@${GeneratedTypescriptDir.forPackage(idAndNameDtoFqcn.packageName)}/${idAndNameDtoFqcn.uqcn}';"
+    val pkAndNameDtoImportStatement = "import { ${pkAndNameDtoFqcn.uqcn} } from '@${GeneratedTypescriptDir.forPackage(pkAndNameDtoFqcn.packageName)}/${pkAndNameDtoFqcn.uqcn}';"
 
 
-    val idAndNameDtoTypescriptImport = TypescriptImport(idAndNameDtoFqcn.uqcn.value, "@${GeneratedTypescriptDir.forPackage(idAndNameDtoFqcn.packageName)}/${idAndNameDtoFqcn.uqcn}")
+    val pkAndNameDtoTypescriptImport = TypescriptImport(pkAndNameDtoFqcn.uqcn.value, "@${GeneratedTypescriptDir.forPackage(pkAndNameDtoFqcn.packageName)}/${pkAndNameDtoFqcn.uqcn}")
 
 
 }

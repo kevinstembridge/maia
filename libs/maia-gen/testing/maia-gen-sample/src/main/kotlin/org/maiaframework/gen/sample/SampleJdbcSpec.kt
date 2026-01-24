@@ -531,7 +531,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     val alphaEntityDef = entity(
         "org.maiaframework.gen.testing.sample.join",
         "Alpha",
-        idAndNameFieldName = "someString",
+        nameFieldForPkAndNameDto = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
     ) {
@@ -545,7 +545,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     val bravoEntityDef = entity(
         "org.maiaframework.gen.testing.sample.join",
         "Bravo",
-        idAndNameFieldName = "someString",
+        nameFieldForPkAndNameDto = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
@@ -618,7 +618,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     val alphaAgGridEntityDef = entity(
         "org.maiaframework.gen.testing.sample.join",
         "AlphaAgGrid",
-        idAndNameFieldName = "someString",
+        nameFieldForPkAndNameDto = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
@@ -632,7 +632,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
     val bravoAgGridEntityDef = entity(
         "org.maiaframework.gen.testing.sample.join",
         "BravoAgGrid",
-        idAndNameFieldName = "someString",
+        nameFieldForPkAndNameDto = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {

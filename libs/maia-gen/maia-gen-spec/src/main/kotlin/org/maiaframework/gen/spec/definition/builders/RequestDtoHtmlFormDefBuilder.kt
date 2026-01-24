@@ -1,14 +1,13 @@
 package org.maiaframework.gen.spec.definition.builders
 
-import org.maiaframework.common.BlankStringException.Companion.throwIfBlank
-import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.FieldLabel
 import org.maiaframework.gen.spec.definition.FormPlaceholderText
 import org.maiaframework.gen.spec.definition.HtmlFormDef
 import org.maiaframework.gen.spec.definition.HtmlFormFieldDef
 import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.RequestDtoDef
-import java.util.ArrayList
+import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 
 
 @MaiaDslMarker
@@ -16,13 +15,17 @@ class RequestDtoHtmlFormDefBuilder(private val requestDtoDef: RequestDtoDef) {
 
 
     private val fieldBuilders = ArrayList<FieldBuilder>()
+
+
     private var onSuccessUrl: String? = null
+
+
     private val withPreAuthorize: WithPreAuthorize? = null
 
 
     fun field(fieldName: String): FieldBuilder {
 
-        val fieldBuilder = FieldBuilder(fieldName, this)
+        val fieldBuilder = FieldBuilder(fieldName)
         this.fieldBuilders.add(fieldBuilder)
 
         return fieldBuilder
@@ -30,10 +33,9 @@ class RequestDtoHtmlFormDefBuilder(private val requestDtoDef: RequestDtoDef) {
     }
 
 
-    fun onSuccessUrl(onSuccessUrl: String): RequestDtoHtmlFormDefBuilder {
+    fun onSuccessUrl(onSuccessUrl: String) {
 
         this.onSuccessUrl = if (onSuccessUrl.isNotBlank()) onSuccessUrl else null
-        return this
 
     }
 
@@ -65,41 +67,38 @@ class RequestDtoHtmlFormDefBuilder(private val requestDtoDef: RequestDtoDef) {
     }
 
 
-    class FieldBuilder(fieldName: String, private val enclosingBuilder: RequestDtoHtmlFormDefBuilder) {
+    class FieldBuilder(fieldName: String) {
 
-        val fieldName: String = throwIfBlank(fieldName, "fieldName")
+
+        val fieldName: ClassFieldName = ClassFieldName(fieldName)
+
+
         var fieldLabel: FieldLabel? = null
+
+
         var placeholder: FormPlaceholderText? = null
+
+
         var htmlInputType = HtmlInputType.text
 
 
-        fun withLabel(fieldLabel: String): FieldBuilder {
+        fun withLabel(fieldLabel: String) {
 
             this.fieldLabel = if (fieldLabel.isNotBlank()) FieldLabel(fieldLabel) else null
-            return this
 
         }
 
 
-        fun withPlaceholder(placeholder: String): FieldBuilder {
+        fun withPlaceholder(placeholder: String) {
 
             this.placeholder = if (placeholder.isNotBlank()) FormPlaceholderText(placeholder) else null
-            return this
 
         }
 
 
-        fun and(): RequestDtoHtmlFormDefBuilder {
-
-            return this.enclosingBuilder
-
-        }
-
-
-        fun withHtmlInputType(htmlInputType: HtmlInputType): FieldBuilder {
+        fun withHtmlInputType(htmlInputType: HtmlInputType) {
 
             this.htmlInputType = htmlInputType
-            return this
 
         }
 

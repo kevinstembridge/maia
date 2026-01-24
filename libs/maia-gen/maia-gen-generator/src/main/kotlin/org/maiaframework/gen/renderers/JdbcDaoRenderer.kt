@@ -7,7 +7,7 @@ import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamMapperFunction
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
-import org.maiaframework.gen.spec.definition.EntityIdAndNameDef
+import org.maiaframework.gen.spec.definition.EntityPkAndNameDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.IndexDef
 import org.maiaframework.gen.spec.definition.RowMapperFunctions
@@ -1730,10 +1730,10 @@ class JdbcDaoRenderer(
     private fun foreignKeyIdAndNameDef(
         foreignKeyEntity: EntityDef,
         entityFieldDef: EntityFieldDef
-    ): EntityIdAndNameDef {
+    ): EntityPkAndNameDef {
 
         try {
-            return foreignKeyEntity.entityIdAndNameDef
+            return foreignKeyEntity.entityPkAndNameDef
         } catch (e: IllegalArgumentException) {
             throw IllegalStateException("Foreign key field $entityFieldDef references an Entity that does not have an idAndNameDef", e)
         }

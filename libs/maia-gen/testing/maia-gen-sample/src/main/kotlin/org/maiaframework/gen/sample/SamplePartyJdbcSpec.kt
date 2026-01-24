@@ -101,7 +101,7 @@ class SamplePartyJdbcSpec : AbstractSpec(appKey = AppKey("sample_party"), defaul
         "Party",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        idAndNameFieldName = "displayName",
+        nameFieldForPkAndNameDto = "displayName",
         versioned = true,
         recordVersionHistory = true,
     ) {

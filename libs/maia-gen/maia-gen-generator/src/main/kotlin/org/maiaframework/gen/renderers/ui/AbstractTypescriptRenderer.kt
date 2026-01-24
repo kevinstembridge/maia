@@ -57,7 +57,7 @@ abstract class AbstractTypescriptRenderer: AbstractSourceFileRenderer() {
         }
 
         if (fieldType is IdAndNameFieldType) {
-            addImport(fieldType.idAndNameDef.idAndNameDtoTypescriptImport)
+            addImport(fieldType.idAndNameDef.pkAndNameDtoTypescriptImport)
         }
 
         if (fieldType is MapFieldType) {

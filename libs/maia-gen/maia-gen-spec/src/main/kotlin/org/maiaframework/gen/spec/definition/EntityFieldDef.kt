@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.flags.IsCreatableByUser
 import org.maiaframework.gen.spec.definition.flags.IsDeltaField
 import org.maiaframework.gen.spec.definition.flags.IsDeltaKey
 import org.maiaframework.gen.spec.definition.flags.IsDerived
+import org.maiaframework.gen.spec.definition.flags.IsHardcoded
 import org.maiaframework.gen.spec.definition.flags.IsPrimaryKey
 import org.maiaframework.gen.spec.definition.jdbc.DbColumnFieldDef
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
@@ -56,6 +57,7 @@ class EntityFieldDef(
     val isPrimaryKey: IsPrimaryKey = IsPrimaryKey.FALSE,
     val isDeltaField: IsDeltaField = IsDeltaField.FALSE,
     val isDerived: IsDerived = IsDerived.FALSE,
+    val isHardcoded: IsHardcoded = IsHardcoded.FALSE,
     val isCreatableByUser: IsCreatableByUser,
     val fieldReaderParameterizedType: ParameterizedType? = null,
     val fieldWriterParameterizedType: ParameterizedType? = null

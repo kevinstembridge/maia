@@ -42,8 +42,8 @@ class RowMapperRenderer(
 
             } else {
 
-                val idAndNameDef = foreignKeyFieldDef.foreignEntityDef.entityIdAndNameDef
-                val idEntityFieldDef = idAndNameDef.idEntityFieldDef
+                val idAndNameDef = foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef
+                val idEntityFieldDef = idAndNameDef.pkEntityFieldDef
 
                 val idResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Id"
                 val nameResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Name"

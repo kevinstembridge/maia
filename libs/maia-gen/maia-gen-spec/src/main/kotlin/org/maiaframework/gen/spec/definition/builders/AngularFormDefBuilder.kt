@@ -16,6 +16,7 @@ import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.flags.TextCase
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.validation.AbstractValidationConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 
@@ -209,7 +210,7 @@ class AngularFormDefBuilder(
     ) {
 
 
-        val fieldName: String = throwIfBlank(fieldName, "fieldName")
+        val fieldName: ClassFieldName = ClassFieldName(fieldName)
 
 
         var fieldLabel: FieldLabel? = null

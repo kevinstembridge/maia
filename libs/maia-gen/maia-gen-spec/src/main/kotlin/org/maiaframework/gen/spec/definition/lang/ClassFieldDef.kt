@@ -180,7 +180,7 @@ data class ClassFieldDef(
 
                 return aClassField(
                     fieldType.foreignKeyFieldDef.foreignKeyFieldName.value,
-                    FieldTypes.idAndName(fieldType.foreignKeyFieldDef.foreignEntityDef.entityIdAndNameDef)
+                    FieldTypes.idAndName(fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef)
                 ).build()
 
             } else {

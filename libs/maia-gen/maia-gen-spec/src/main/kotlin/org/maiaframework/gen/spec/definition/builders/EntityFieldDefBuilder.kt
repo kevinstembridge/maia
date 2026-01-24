@@ -13,6 +13,7 @@ import org.maiaframework.gen.spec.definition.flags.IsDeltaField
 import org.maiaframework.gen.spec.definition.flags.IsDeltaKey
 import org.maiaframework.gen.spec.definition.flags.IsDerived
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
+import org.maiaframework.gen.spec.definition.flags.IsHardcoded
 import org.maiaframework.gen.spec.definition.flags.IsPrimaryKey
 import org.maiaframework.gen.spec.definition.flags.TextCase
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
@@ -54,6 +55,9 @@ class EntityFieldDefBuilder(
 
 
     private var derived = IsDerived.FALSE
+
+
+    private var hardcoded = IsHardcoded.FALSE
 
 
     private var isCreatableByUser = IsCreatableByUser.TRUE
@@ -168,6 +172,7 @@ class EntityFieldDefBuilder(
             this.isPrimaryKey,
             this.isDeltaField,
             this.derived,
+            this.hardcoded,
             this.isCreatableByUser,
             fieldReaderClassName,
             fieldWriterClassName
@@ -334,6 +339,14 @@ class EntityFieldDefBuilder(
     fun derived() {
 
         this.derived = IsDerived.TRUE
+        notCreatableByUser()
+
+    }
+
+
+    fun hardcoded() {
+
+        this.hardcoded = IsHardcoded.TRUE
         notCreatableByUser()
 
     }

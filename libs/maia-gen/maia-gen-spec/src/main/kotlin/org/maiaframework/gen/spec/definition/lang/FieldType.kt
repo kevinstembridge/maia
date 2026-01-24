@@ -5,7 +5,7 @@ import org.maiaframework.gen.persist.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
 import org.maiaframework.gen.spec.definition.DataClassDef
-import org.maiaframework.gen.spec.definition.EntityIdAndNameDef
+import org.maiaframework.gen.spec.definition.EntityPkAndNameDef
 import org.maiaframework.gen.spec.definition.EnumDef
 import org.maiaframework.gen.spec.definition.EsDocDef
 import org.maiaframework.gen.spec.definition.EsDocMappingType
@@ -55,6 +55,23 @@ sealed class FieldType(
 
 
     abstract fun unwrap(): FieldType
+
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FieldType
+
+        return fqcn == other.fqcn
+    }
+
+
+    override fun hashCode(): Int {
+
+        return fqcn.hashCode()
+
+    }
 
 
 }
@@ -606,7 +623,7 @@ class SimpleResponseDtoFieldType internal constructor(
 
 
 class IdAndNameFieldType internal constructor(
-    val idAndNameDef: EntityIdAndNameDef
+    val idAndNameDef: EntityPkAndNameDef
 ) : FieldType(
     idAndNameDef.dtoDef.fqcn,
     BsonCompatibleType.DOCUMENT,

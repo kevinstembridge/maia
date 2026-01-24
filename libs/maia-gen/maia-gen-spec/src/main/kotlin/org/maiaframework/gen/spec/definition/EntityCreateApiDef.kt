@@ -62,6 +62,7 @@ class EntityCreateApiDef(
     private val dtoFields = this.entityDef.allEntityFields
         .asSequence()
         .filterNot { it.isDerived.value }
+        .filterNot { it.isHardcoded.value }
         .map { it.classFieldDef }
         .plus(crudApiDef.context?.let {
             ClassFieldDef(

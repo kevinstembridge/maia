@@ -5,7 +5,7 @@ import org.maiaframework.gen.persist.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
 import org.maiaframework.gen.spec.definition.DataClassDef
-import org.maiaframework.gen.spec.definition.EntityIdAndNameDef
+import org.maiaframework.gen.spec.definition.EntityPkAndNameDef
 import org.maiaframework.gen.spec.definition.EnumDef
 import org.maiaframework.gen.spec.definition.EsDocDef
 import org.maiaframework.gen.spec.definition.EsDocMappingType
@@ -114,7 +114,7 @@ object FieldTypes {
     fun responseDto(responseDtoDef: SimpleResponseDtoDef) = SimpleResponseDtoFieldType(responseDtoDef)
 
 
-    fun idAndName(idAndNameDef: EntityIdAndNameDef) = IdAndNameFieldType(idAndNameDef)
+    fun idAndName(idAndNameDef: EntityPkAndNameDef) = IdAndNameFieldType(idAndNameDef)
 
 
     fun list(fieldType: FieldType) = ListFieldType(fieldType)

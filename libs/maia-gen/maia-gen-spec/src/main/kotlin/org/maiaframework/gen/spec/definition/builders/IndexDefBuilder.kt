@@ -72,7 +72,7 @@ class IndexDefBuilder(
                 }.toList()
 
         if (indexFieldDefs.isEmpty()) {
-            throw IllegalStateException("Expected to find field(s) on entity " + this.entityBaseName + " named " + this.sortDirectionByFieldName.keys + ". Found " + entityFieldDefs.map { it.classFieldName })
+            throw IllegalStateException("An index definition for entity '$entityBaseName' declares fields named ${sortDirectionByFieldName.keys} but the entity only has fields name ${entityFieldDefs.map { it.classFieldName }}.")
         }
 
         return IndexDef(

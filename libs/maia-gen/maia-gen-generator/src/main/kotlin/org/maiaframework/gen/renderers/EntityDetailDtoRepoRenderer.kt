@@ -1,7 +1,6 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.EntityDetailDtoDef
-import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isValueFieldWrapper
 import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
@@ -150,7 +149,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
                 val idAndNameDef = (classFieldDef.fieldType as IdAndNameFieldType).idAndNameDef
                 val entityRepoClassDef = idAndNameDef.entityRepoClassDef
 
-                addImportFor(idAndNameDef.idAndNameDtoFqcn)
+                addImportFor(idAndNameDef.pkAndNameDtoFqcn)
 
                 append("""
                     |

@@ -537,7 +537,7 @@ abstract class AbstractSpec protected constructor(
         allowFindAll: AllowFindAll = AllowFindAll.FALSE,
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-        idAndNameFieldName: String? = null,
+        nameFieldForPkAndNameDto: String? = null,
         databaseType: DatabaseType? = null,
         init: EntityDefBuilder.() -> Unit
     ): EntityDef {
@@ -553,7 +553,7 @@ abstract class AbstractSpec protected constructor(
             deletable,
             allowDeleteAll,
             allowFindAll,
-            idAndNameFieldName,
+            nameFieldForPkAndNameDto,
             withHandcodedDao,
             withHandcodedEntityDao,
             this.defaultSchemaName,

@@ -779,8 +779,8 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             return
         }
 
-        val entityIdAndNameDef = entityDef.entityIdAndNameDef
-        addImportFor(entityIdAndNameDef.idAndNameDtoFqcn)
+        val entityIdAndNameDef = entityDef.entityPkAndNameDef
+        addImportFor(entityIdAndNameDef.pkAndNameDtoFqcn)
 
         append(
             """
@@ -790,7 +790,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |
             |        val entity = findByPrimaryKey($primaryKeyFieldNamesCsv)
             |        return ${entityIdAndNameDef.dtoUqcn}(
-            |            entity.id,
+            |            entity.${entityIdAndNameDef.pkEntityFieldDef.classFieldName},
             |            entity.${entityIdAndNameDef.nameEntityFieldDef.classFieldName}
             |        )
             |
