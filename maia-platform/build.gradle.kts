@@ -11,7 +11,7 @@ dependencies {
 
     api(platform("dev.forkhandles:forkhandles-bom:2.25.0.0"))
     api(platform("io.dropwizard.metrics:metrics-bom:4.2.37"))
-    api(platform("org.springframework.boot:spring-boot-dependencies:4.0.1"))
+    api(platform("org.springframework.boot:spring-boot-dependencies:4.0.2"))
 
     constraints {
         api("com.fasterxml.uuid:java-uuid-generator:5.1.0")
