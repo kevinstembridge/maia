@@ -84,6 +84,7 @@ class DtoHtmlAgGridTableComponentRenderer(
         }
 
         blankLine()
+        blankLine()
         appendLine("    public columnDefs: ColDef[] = [")
 
         this.dtoHtmlTableDef.dtoHtmlTableColumnDefs.forEach { fieldDef ->
