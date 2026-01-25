@@ -18,7 +18,7 @@ dependencies {
     implementation("org.springframework:spring-context")
 
     maiagen(project(":libs:maia-file-storage-parent:maia-file-storage-spec"))
-    maiagen(project(":libs:maia-gen:maia-gen-generator"))
+    maiagen(project(":maia-gen:maia-gen-generator"))
 
 }
 

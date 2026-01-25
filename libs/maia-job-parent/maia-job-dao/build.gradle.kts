@@ -15,7 +15,7 @@ dependencies {
     api(project(":libs:maia-job-parent:maia-job-domain"))
 
     maiagen(project(":libs:maia-job-parent:maia-job-spec"))
-    maiagen(project(":libs:maia-gen:maia-gen-generator"))
+    maiagen(project(":maia-gen:maia-gen-generator"))
 
 }
 

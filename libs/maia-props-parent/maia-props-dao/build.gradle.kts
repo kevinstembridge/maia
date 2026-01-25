@@ -13,7 +13,7 @@ dependencies {
     api(project(":libs:maia-props-parent:maia-props-domain"))
 
     maiagen(project(":libs:maia-props-parent:maia-props-spec"))
-    maiagen(project(":libs:maia-gen:maia-gen-generator"))
+    maiagen(project(":maia-gen:maia-gen-generator"))
 
 }
 
