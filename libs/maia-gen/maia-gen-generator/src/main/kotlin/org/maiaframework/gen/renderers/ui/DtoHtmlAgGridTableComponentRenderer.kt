@@ -33,8 +33,7 @@ class DtoHtmlAgGridTableComponentRenderer(
         }
 
         this.dtoHtmlTableDef.dtoHtmlTableColumnDefs
-            .map { it.cellRenderer }
-            .filterNotNull()
+            .mapNotNull { it.cellRenderer }
             .map { it.importStatement }
             .toSet()
             .forEach {
@@ -53,6 +52,7 @@ class DtoHtmlAgGridTableComponentRenderer(
             |import { MatButtonModule } from '@angular/material/button';
             |import { FormsModule } from '@angular/forms';
             |import { AgGridAngular } from 'ag-grid-angular';
+            |import { agGridTheme } from '@app/themes/ag-grid-theme';
             |import { ${cellClickedEventImportText}ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType } from 'ag-grid-community';
             |${this.dtoHtmlTableDef.agGridDatasourceImportStatement}
             |
@@ -108,7 +108,12 @@ class DtoHtmlAgGridTableComponentRenderer(
             |    public rowBuffer = 0;
             |
             |
-            |    public rowSelection: 'single' | 'multiple' = 'multiple';
+            |    public rowSelection = {
+            |         mode: 'multiRow',
+            |    };
+            |    
+            |    
+            |    public agGridTheme = agGridTheme;
             |
             |
             |    public rowModelType: RowModelType = 'infinite';

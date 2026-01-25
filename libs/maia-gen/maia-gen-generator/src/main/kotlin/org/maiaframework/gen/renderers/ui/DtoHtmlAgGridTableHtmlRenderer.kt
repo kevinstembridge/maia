@@ -41,6 +41,7 @@ class DtoHtmlAgGridTableHtmlRenderer(private val dtoDef: DtoHtmlTableDef) : Abst
             |        [maxBlocksInCache]="maxBlocksInCache"
             |        [rowData]="rowData"
             |        [class]="themeClass"
+            |        [theme]="agGridTheme"
             |        (gridReady)="onGridReady(${'$'}event)"
             |""".trimMargin()
         )
