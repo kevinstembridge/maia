@@ -138,9 +138,6 @@ class DtoHtmlAgGridTableComponentRenderer(
             |    public rowData!: ${dtoHtmlTableDef.dtoUqcn}[];
             |
             |
-            |    public themeClass = 'ag-theme-material';
-            |
-            |
             |    private gridApi!: GridApi<${dtoHtmlTableDef.dtoUqcn}>;
             |
             |

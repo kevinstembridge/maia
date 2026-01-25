@@ -24,7 +24,8 @@ class DtoHtmlAgGridTableHtmlRenderer(private val dtoDef: DtoHtmlTableDef) : Abst
                  |}""".trimMargin())
         }
 
-        append("""
+        append(
+            $$"""
             |
             |<div class="h-screen">
             |    <ag-grid-angular
@@ -40,14 +41,13 @@ class DtoHtmlAgGridTableHtmlRenderer(private val dtoDef: DtoHtmlTableDef) : Abst
             |        [infiniteInitialRowCount]="infiniteInitialRowCount"
             |        [maxBlocksInCache]="maxBlocksInCache"
             |        [rowData]="rowData"
-            |        [class]="themeClass"
             |        [theme]="agGridTheme"
-            |        (gridReady)="onGridReady(${'$'}event)"
+            |        (gridReady)="onGridReady($event)"
             |""".trimMargin()
         )
 
         if (dtoDef.requiresCellClickedEvent) {
-            appendLine("        (cellClicked)=\"onCellClicked(\$event)\"")
+            appendLine($$"        (cellClicked)=\"onCellClicked($event)\"")
         }
 
         append("""
