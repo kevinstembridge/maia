@@ -8,21 +8,19 @@ import org.maiaframework.domain.persist.FieldUpdate
 
 data class CompositePrimaryKeyEntityUpdater(
     val fields: List<FieldUpdate>,
-    val someString: String,
-    val someInt: Int,
+    val primaryKey: CompositePrimaryKeyEntityPk,
     val version: Long
 ) {
 
 
-    val primaryKey = mapOf(
-        "someString" to someString,
-        "someInt" to someInt,
+    val primaryKeyMap = mapOf(
+        "someString" to primaryKey.someString,
+        "someInt" to primaryKey.someInt,
     )
 
 
     class Builder(
-        val someString: String,
-        val someInt: Int,
+        val primaryKey: CompositePrimaryKeyEntityPk,
         val version: Long
     ) {
 
@@ -34,8 +32,7 @@ data class CompositePrimaryKeyEntityUpdater(
 
             return CompositePrimaryKeyEntityUpdater(
                 this.fields,
-                this.someString,
-                this.someInt,
+                this.primaryKey,
                 this.version
             )
 
@@ -56,15 +53,13 @@ data class CompositePrimaryKeyEntityUpdater(
 
 
         fun forPrimaryKey(
-            someString: String,
-            someInt: Int,
+            primaryKey: CompositePrimaryKeyEntityPk,
             version: Long,
             init: Builder.() -> Unit
         ): CompositePrimaryKeyEntityUpdater {
 
             val builder = Builder(
-                someString,
-                someInt,
+                primaryKey,
                 version
             )
             builder.init()

@@ -79,6 +79,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         `render function bulkInsert`()
         `render function bulkInsertOfCsvRecords`()
         `render function setFields`()
+        `render upsert for primary key`()
         `render upserts for indexes`()
         `render function deleteByPrimaryKey`()
         `render function deleteAll`()
@@ -579,6 +580,18 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     }
 
+
+    private fun `render upsert for primary key`() {
+
+        if (this.entityDef.hasSurrogatePrimaryKey == false && this.entityDef.isHistoryEntity == false) {
+
+            renderUpsertForUniqueFields(this.entityDef.primaryKeyFields)
+
+        }
+
+    }
+
+
     private fun `render upserts for indexes`() {
 
         if (this.entityDef.isHistoryEntity) {
@@ -611,12 +624,12 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         blankLine()
         appendLine("    fun upsertBy${uniqueFieldNamesAnded}(upsertEntity: ${this.entityDef.entityUqcn}): ${entityDef.entityUqcn} {")
         blankLine()
-        appendLine("        logger.debug(\"upsert \$upsertEntity\")")
+        appendLine($$"        logger.debug(\"upsert $upsertEntity\")")
         blankLine()
 
         if (cacheable) {
             appendLine("        val upsertedEntity = dao.upsertBy${uniqueFieldNamesAnded}(upsertEntity)")
-            appendLine("        this.cache.evict(upsertedEntity.id)")
+            appendLine("        this.cache.evict(upsertedEntity.primaryKey)")
             appendLine("        return upsertedEntity")
         } else {
             appendLine("        return dao.upsertBy${uniqueFieldNamesAnded}(upsertEntity)")
@@ -640,9 +653,9 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         blankLine()
 
         if (cacheable) {
-            appendLine("        val id = dao.upsertBy${uniqueFieldNamesAnded}(upsertEntity)")
-            appendLine("        this.cache.evict(id)")
-            appendLine("        return id")
+            appendLine("        val pk = dao.upsertBy${uniqueFieldNamesAnded}(upsertEntity)")
+            appendLine("        this.cache.evict(pk)")
+            appendLine("        return pk")
         } else {
             appendLine("        return dao.upsertBy${uniqueFieldNamesAnded}(upsertEntity)")
         }

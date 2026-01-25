@@ -101,6 +101,15 @@ class NonSurrogateIdPrimaryKeyRepo(
     }
 
 
+    fun upsertById(upsertEntity: NonSurrogateIdPrimaryKeyEntity): NonSurrogateIdPrimaryKeyEntity {
+
+        logger.debug("upsert $upsertEntity")
+
+        return dao.upsertById(upsertEntity)
+
+    }
+
+
     fun deleteByPrimaryKey(id: SomeStringValueClass) {
 
         this.dao.deleteByPrimaryKey(id)

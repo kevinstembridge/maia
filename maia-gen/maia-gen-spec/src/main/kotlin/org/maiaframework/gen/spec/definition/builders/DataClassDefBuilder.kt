@@ -1,7 +1,7 @@
 package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.common.BlankStringException
-import org.maiaframework.gen.cache.CacheName
+import org.maiaframework.gen.spec.definition.CacheName
 import org.maiaframework.gen.spec.definition.DataClassDef
 import org.maiaframework.gen.spec.definition.DataClassKey
 import org.maiaframework.gen.spec.definition.DataClassName

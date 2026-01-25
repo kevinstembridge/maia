@@ -3,30 +3,41 @@
 
 package org.maiaframework.gen.testing.sample.composite_pk
 
+import com.hazelcast.core.HazelcastInstance
+import com.hazelcast.map.IMap
 import org.maiaframework.common.logging.getLogger
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
 @Repository
 class CompositePrimaryKeyRepo(
-    private val dao: CompositePrimaryKeyDao
+    private val dao: CompositePrimaryKeyDao,
+    private val hazelcastInstance: HazelcastInstance
 ) {
 
 
     private val logger = getLogger<CompositePrimaryKeyRepo>()
 
 
-    fun findByPrimaryKeyOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
+    private val cache: IMap<CompositePrimaryKeyEntityPk, CompositePrimaryKeyEntity> = this.hazelcastInstance.getMap("composite_primary_key_entity")
 
-        return dao.findByPrimaryKeyOrNull(someString, someInt)
+
+    fun findByPrimaryKeyOrNull(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyEntity? {
+
+        return cache[primaryKey]
+            ?: dao.findByPrimaryKeyOrNull(primaryKey).also { entity ->
+                entity?.let { cache[primaryKey] = it }
+            }
 
     }
 
 
-    fun findByPrimaryKey(someString: String, someInt: Int): CompositePrimaryKeyEntity {
+    fun findByPrimaryKey(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyEntity {
 
-        return dao.findByPrimaryKey(someString, someInt)
+        return cache[primaryKey]
+            ?: dao.findByPrimaryKey(primaryKey).also {
+                cache[primaryKey] = it
+            }
 
     }
 
@@ -95,14 +106,32 @@ class CompositePrimaryKeyRepo(
 
         logger.debug("setFields $updater")
 
-        return this.dao.setFields(updater)
+        val updatedCount = this.dao.setFields(updater)
+
+        if (updatedCount > 0) {
+            this.cache.evict(updater.primaryKey)
+        }
+
+        return updatedCount
 
     }
 
 
-    fun deleteByPrimaryKey(someString: String, someInt: Int) {
+    fun upsertBySomeStringAndSomeInt(upsertEntity: CompositePrimaryKeyEntity): CompositePrimaryKeyEntity {
 
-        this.dao.deleteByPrimaryKey(someString, someInt)
+        logger.debug("upsert $upsertEntity")
+
+        val upsertedEntity = dao.upsertBySomeStringAndSomeInt(upsertEntity)
+        this.cache.evict(upsertedEntity.primaryKey)
+        return upsertedEntity
+
+    }
+
+
+    fun deleteByPrimaryKey(primaryKey: CompositePrimaryKeyEntityPk) {
+
+        this.dao.deleteByPrimaryKey(primaryKey)
+        this.cache.evict(primaryKey)
 
     }
 
@@ -114,12 +143,12 @@ class CompositePrimaryKeyRepo(
     }
 
 
-    fun removeByPrimaryKey(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
+    fun removeByPrimaryKey(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyEntity? {
 
-        val found = findByPrimaryKeyOrNull(someString, someInt)
+        val found = findByPrimaryKeyOrNull(primaryKey)
        
         if (found != null) {
-            deleteByPrimaryKey(someString, someInt)
+            deleteByPrimaryKey(primaryKey)
         }
        
         return found

@@ -1,7 +1,7 @@
 package org.maiaframework.gen.spec.definition.lang
 
 import org.maiaframework.gen.persist.BsonCompatibleType
-import org.maiaframework.gen.persist.HazelcastCompatibleType
+import org.maiaframework.gen.spec.definition.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
 import org.maiaframework.gen.spec.definition.DataClassDef

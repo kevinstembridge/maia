@@ -5,14 +5,19 @@ package sample_jdbc.hazelcast
 
 import com.hazelcast.config.MapConfig
 import com.hazelcast.nio.serialization.compact.CompactSerializer
+import org.maiaframework.gen.testing.sample.composite_pk.CompositePrimaryKeyEntity
+import org.maiaframework.gen.testing.sample.composite_pk.CompositePrimaryKeySerializer
 import org.springframework.stereotype.Component
 
 
 @Component
-class Sample_jdbcHazelcastConfig {
+class Sample_jdbcHazelcastConfig(
+    private val compositePrimaryKeySerializer: CompositePrimaryKeySerializer
+) {
 
 
     val serializers: List<CompactSerializer<out Any>> = listOf(
+        compositePrimaryKeySerializer,
     )
 
 

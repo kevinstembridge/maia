@@ -1,7 +1,6 @@
 package org.maiaframework.gen.spec.definition
 
 
-import org.maiaframework.gen.cache.CacheName
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder
 import org.maiaframework.gen.spec.definition.builders.DtoDefBuilder
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef

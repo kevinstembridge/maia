@@ -799,7 +799,7 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
         versioned = true,
         recordVersionHistory = true
     ) {
-
+        cacheable {  }
         field("someString", FieldTypes.string) {
             primaryKey()
             lengthConstraint(max = 100)

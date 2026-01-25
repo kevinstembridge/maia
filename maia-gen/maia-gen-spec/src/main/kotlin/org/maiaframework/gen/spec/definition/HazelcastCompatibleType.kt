@@ -1,5 +1,4 @@
-package org.maiaframework.gen.persist
-
+package org.maiaframework.gen.spec.definition
 
 enum class HazelcastCompatibleType(val kotlinUqcn: String) {
 

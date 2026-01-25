@@ -1,6 +1,6 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.persist.HazelcastCompatibleType
+import org.maiaframework.gen.spec.definition.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.CacheableDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType

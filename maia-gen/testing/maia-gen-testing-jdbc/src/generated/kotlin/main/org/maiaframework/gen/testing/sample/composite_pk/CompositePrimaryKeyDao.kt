@@ -4,7 +4,6 @@
 package org.maiaframework.gen.testing.sample.composite_pk
 
 import org.maiaframework.domain.ChangeType
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -170,15 +169,15 @@ class CompositePrimaryKeyDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(someString: String, someInt: Int): CompositePrimaryKeyEntity {
+    fun findByPrimaryKey(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyEntity {
 
-        return findByPrimaryKeyOrNull(someString, someInt)
+        return findByPrimaryKeyOrNull(primaryKey)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     CompositePrimaryKeyEntity::class.java,
                     mapOf(
-                        "someString" to someString,
-                        "someInt" to someInt,
+                        "someString" to primaryKey.someString,
+                        "someInt" to primaryKey.someInt,
                     )
                 ),
                 CompositePrimaryKeyEntityMeta.TABLE_NAME
@@ -187,13 +186,13 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.composite_primary_key where some_string = :someString and some_int = :someInt",
             SqlParams().apply {
-            addValue("someString", someString)
-            addValue("someInt", someInt)
+                addValue("someString", primaryKey.someString)
+                addValue("someInt", primaryKey.someInt)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -383,8 +382,8 @@ class CompositePrimaryKeyDao(
         sql.append(" where some_string = :someString and some_int = :someInt")
         sql.append(" and version = :version")
 
-        sqlParams.addValue("someString", updater.someString)
-        sqlParams.addValue("someInt", updater.someInt)
+        sqlParams.addValue("someString", updater.primaryKey.someString)
+        sqlParams.addValue("someInt", updater.primaryKey.someInt)
 
         sqlParams.addValue("version", updater.version)
         sqlParams.addValue("version_incremented", updater.version + 1)
@@ -393,11 +392,11 @@ class CompositePrimaryKeyDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(CompositePrimaryKeyEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(CompositePrimaryKeyEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 
-            val updatedEntity = findByPrimaryKey(updater.someString, updater.someInt)
+            val updatedEntity = findByPrimaryKey(updater.primaryKey)
             insertHistory(updatedEntity, ChangeType.UPDATE)
 
         }
@@ -416,9 +415,9 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun deleteByPrimaryKey(someString: String, someInt: Int): Boolean {
+    fun deleteByPrimaryKey(primaryKey: CompositePrimaryKeyEntityPk): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(someString, someInt)
+        val existingEntity = findByPrimaryKeyOrNull(primaryKey)
 
         if (existingEntity == null) {
             return false
@@ -427,8 +426,8 @@ class CompositePrimaryKeyDao(
         val deletedCount = this.jdbcOps.update(
             "delete from testing.composite_primary_key where some_string = :someString and some_int = :someInt",
             SqlParams().apply {
-                addValue("someString", someString)
-                addValue("someInt", someInt)
+                addValue("someString", primaryKey.someString)
+                addValue("someInt", primaryKey.someInt)
             }
         )
 
@@ -442,12 +441,12 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun removeByPrimaryKey(someString: String, someInt: Int): CompositePrimaryKeyEntity? {
+    fun removeByPrimaryKey(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyEntity? {
 
-        val found = findByPrimaryKeyOrNull(someString, someInt)
+        val found = findByPrimaryKeyOrNull(primaryKey)
 
         if (found != null) {
-            deleteByPrimaryKey(someString, someInt)
+            deleteByPrimaryKey(primaryKey)
         }
 
         return found
