@@ -262,8 +262,9 @@ class DtoHtmlAgGridTableComponentRenderer(
             |        {
             |            field: '${fieldDef.actionName}',
             |            headerName: '${fieldDef.columnHeader}',
-            |            width: 50,
-            |            maxWidth: 50,
+            |            width: 100,
+            |            maxWidth: 100,
+            |            filter: false,
             |            cellRenderer: ${fieldDef.cellRenderer!!.componentClassName},
             |            cellRendererParams: { iconName: '${fieldDef.icon}' },
             |            onCellClicked: event => {
