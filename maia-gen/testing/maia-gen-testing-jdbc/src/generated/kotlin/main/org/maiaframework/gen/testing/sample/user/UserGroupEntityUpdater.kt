@@ -15,7 +15,7 @@ data class UserGroupEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "id" to id,
     )
 

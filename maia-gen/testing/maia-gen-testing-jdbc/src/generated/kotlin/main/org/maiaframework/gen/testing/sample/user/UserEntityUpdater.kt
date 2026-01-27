@@ -18,7 +18,7 @@ data class UserEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "id" to id,
     )
 
