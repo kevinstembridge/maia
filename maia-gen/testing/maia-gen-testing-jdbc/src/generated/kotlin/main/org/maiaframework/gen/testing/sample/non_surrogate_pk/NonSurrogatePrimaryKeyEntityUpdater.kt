@@ -14,7 +14,7 @@ data class NonSurrogatePrimaryKeyEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "someString" to someString,
     )
 

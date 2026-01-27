@@ -14,7 +14,7 @@ data class NonSurrogateIdPrimaryKeyEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "id" to id,
     )
 
