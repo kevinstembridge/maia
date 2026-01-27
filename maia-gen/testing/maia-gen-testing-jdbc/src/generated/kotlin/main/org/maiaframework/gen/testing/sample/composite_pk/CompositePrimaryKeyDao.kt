@@ -392,7 +392,7 @@ class CompositePrimaryKeyDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(CompositePrimaryKeyEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
+            throw OptimisticLockingException(CompositePrimaryKeyEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
 
         } else {
 
