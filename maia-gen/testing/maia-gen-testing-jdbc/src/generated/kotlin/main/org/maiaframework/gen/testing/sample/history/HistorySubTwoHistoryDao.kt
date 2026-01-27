@@ -138,15 +138,15 @@ class HistorySubTwoHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(id: DomainId, version: Long): HistorySubTwoHistoryEntity {
+    fun findByPrimaryKey(primaryKey: HistorySubTwoHistoryEntityPk): HistorySubTwoHistoryEntity {
 
-        return findByPrimaryKeyOrNull(id, version)
+        return findByPrimaryKeyOrNull(primaryKey)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     HistorySubTwoHistoryEntity::class.java,
                     mapOf(
-                        "id" to id,
-                        "version" to version,
+                        "id" to primaryKey.id,
+                        "version" to primaryKey.version,
                     )
                 ),
                 HistorySubTwoHistoryEntityMeta.TABLE_NAME
@@ -155,13 +155,13 @@ class HistorySubTwoHistoryDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): HistorySubTwoHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: HistorySubTwoHistoryEntityPk): HistorySubTwoHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.history_super_history where id = :id and version = :version",
             SqlParams().apply {
-            addValue("id", id)
-            addValue("version", version)
+                addValue("id", primaryKey.id)
+                addValue("version", primaryKey.version)
             },
             this.entityRowMapper
         ).firstOrNull()
