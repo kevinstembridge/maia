@@ -13,12 +13,14 @@ data class CharlieEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "id" to id,
     )
 
 
-    class Builder(val id: DomainId) {
+    class Builder(
+        val id: DomainId,
+    ) {
 
 
         private val fields = mutableListOf<FieldUpdate>()
