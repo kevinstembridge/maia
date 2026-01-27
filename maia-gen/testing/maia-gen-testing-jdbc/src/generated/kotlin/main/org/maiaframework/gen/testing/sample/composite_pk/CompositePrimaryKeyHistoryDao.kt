@@ -3,7 +3,6 @@
 
 package org.maiaframework.gen.testing.sample.composite_pk
 
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
@@ -122,16 +121,16 @@ class CompositePrimaryKeyHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(someString: String, someInt: Int, version: Long): CompositePrimaryKeyHistoryEntity {
+    fun findByPrimaryKey(primaryKey: CompositePrimaryKeyHistoryEntityPk): CompositePrimaryKeyHistoryEntity {
 
-        return findByPrimaryKeyOrNull(someString, someInt, version)
+        return findByPrimaryKeyOrNull(primaryKey)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     CompositePrimaryKeyHistoryEntity::class.java,
                     mapOf(
-                        "someString" to someString,
-                        "someInt" to someInt,
-                        "version" to version,
+                        "someString" to primaryKey.someString,
+                        "someInt" to primaryKey.someInt,
+                        "version" to primaryKey.version,
                     )
                 ),
                 CompositePrimaryKeyHistoryEntityMeta.TABLE_NAME
@@ -140,14 +139,14 @@ class CompositePrimaryKeyHistoryDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(someString: String, someInt: Int, version: Long): CompositePrimaryKeyHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: CompositePrimaryKeyHistoryEntityPk): CompositePrimaryKeyHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.composite_primary_key_history where some_string = :someString and some_int = :someInt and version = :version",
             SqlParams().apply {
-            addValue("someString", someString)
-            addValue("someInt", someInt)
-            addValue("version", version)
+                addValue("someString", primaryKey.someString)
+                addValue("someInt", primaryKey.someInt)
+                addValue("version", primaryKey.version)
             },
             this.entityRowMapper
         ).firstOrNull()
