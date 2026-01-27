@@ -3,7 +3,6 @@
 
 package org.maiaframework.gen.testing.sample.non_surrogate_pk
 
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.gen.sample.types.SomeStringValueClass
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -117,15 +116,15 @@ class NonSurrogatePrimaryKeyHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(someString: SomeStringValueClass, version: Long): NonSurrogatePrimaryKeyHistoryEntity {
+    fun findByPrimaryKey(primaryKey: NonSurrogatePrimaryKeyHistoryEntityPk): NonSurrogatePrimaryKeyHistoryEntity {
 
-        return findByPrimaryKeyOrNull(someString, version)
+        return findByPrimaryKeyOrNull(primaryKey)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     NonSurrogatePrimaryKeyHistoryEntity::class.java,
                     mapOf(
-                        "someString" to someString,
-                        "version" to version,
+                        "someString" to primaryKey.someString,
+                        "version" to primaryKey.version,
                     )
                 ),
                 NonSurrogatePrimaryKeyHistoryEntityMeta.TABLE_NAME
@@ -134,13 +133,13 @@ class NonSurrogatePrimaryKeyHistoryDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(someString: SomeStringValueClass, version: Long): NonSurrogatePrimaryKeyHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: NonSurrogatePrimaryKeyHistoryEntityPk): NonSurrogatePrimaryKeyHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.non_surrogate_primary_key_history where some_string = :someString and version = :version",
             SqlParams().apply {
-            addValue("someString", someString.value)
-            addValue("version", version)
+                addValue("someString", primaryKey.someString.value)
+                addValue("version", primaryKey.version)
             },
             this.entityRowMapper
         ).firstOrNull()

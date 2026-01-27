@@ -3,7 +3,6 @@
 
 package org.maiaframework.gen.testing.sample.non_surrogate_pk
 
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.gen.sample.types.SomeStringValueClass
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -117,15 +116,15 @@ class NonSurrogateIdPrimaryKeyHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(id: SomeStringValueClass, version: Long): NonSurrogateIdPrimaryKeyHistoryEntity {
+    fun findByPrimaryKey(primaryKey: NonSurrogateIdPrimaryKeyHistoryEntityPk): NonSurrogateIdPrimaryKeyHistoryEntity {
 
-        return findByPrimaryKeyOrNull(id, version)
+        return findByPrimaryKeyOrNull(primaryKey)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     NonSurrogateIdPrimaryKeyHistoryEntity::class.java,
                     mapOf(
-                        "id" to id,
-                        "version" to version,
+                        "id" to primaryKey.id,
+                        "version" to primaryKey.version,
                     )
                 ),
                 NonSurrogateIdPrimaryKeyHistoryEntityMeta.TABLE_NAME
@@ -134,13 +133,13 @@ class NonSurrogateIdPrimaryKeyHistoryDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(id: SomeStringValueClass, version: Long): NonSurrogateIdPrimaryKeyHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: NonSurrogateIdPrimaryKeyHistoryEntityPk): NonSurrogateIdPrimaryKeyHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.non_surrogate_id_primary_key_history where id = :id and version = :version",
             SqlParams().apply {
-            addValue("id", id.value)
-            addValue("version", version)
+                addValue("id", primaryKey.id.value)
+                addValue("version", primaryKey.version)
             },
             this.entityRowMapper
         ).firstOrNull()

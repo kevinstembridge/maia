@@ -4,7 +4,6 @@
 package org.maiaframework.gen.testing.sample.non_surrogate_pk
 
 import org.maiaframework.domain.ChangeType
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.gen.sample.types.SomeStringValueClass
