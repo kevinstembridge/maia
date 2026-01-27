@@ -122,15 +122,15 @@ class OrgUserGroupMembershipHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(id: DomainId, version: Long): OrgUserGroupMembershipHistoryEntity {
+    fun findByPrimaryKey(primaryKey: OrgUserGroupMembershipHistoryEntityPk): OrgUserGroupMembershipHistoryEntity {
 
-        return findByPrimaryKeyOrNull(id, version)
+        return findByPrimaryKeyOrNull(primaryKey)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     OrgUserGroupMembershipHistoryEntity::class.java,
                     mapOf(
-                        "id" to id,
-                        "version" to version,
+                        "id" to primaryKey.id,
+                        "version" to primaryKey.version,
                     )
                 ),
                 OrgUserGroupMembershipHistoryEntityMeta.TABLE_NAME
@@ -139,13 +139,13 @@ class OrgUserGroupMembershipHistoryDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): OrgUserGroupMembershipHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: OrgUserGroupMembershipHistoryEntityPk): OrgUserGroupMembershipHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.org_user_group_membership_history where id = :id and version = :version",
             SqlParams().apply {
-            addValue("id", id)
-            addValue("version", version)
+                addValue("id", primaryKey.id)
+                addValue("version", primaryKey.version)
             },
             this.entityRowMapper
         ).firstOrNull()

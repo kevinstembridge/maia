@@ -158,15 +158,15 @@ class UserHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(id: DomainId, version: Long): UserHistoryEntity {
+    fun findByPrimaryKey(primaryKey: UserHistoryEntityPk): UserHistoryEntity {
 
-        return findByPrimaryKeyOrNull(id, version)
+        return findByPrimaryKeyOrNull(primaryKey)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     UserHistoryEntity::class.java,
                     mapOf(
-                        "id" to id,
-                        "version" to version,
+                        "id" to primaryKey.id,
+                        "version" to primaryKey.version,
                     )
                 ),
                 UserHistoryEntityMeta.TABLE_NAME
@@ -175,13 +175,13 @@ class UserHistoryDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): UserHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: UserHistoryEntityPk): UserHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from testing.v_party_history where id = :id and version = :version",
             SqlParams().apply {
-            addValue("id", id)
-            addValue("version", version)
+                addValue("id", primaryKey.id)
+                addValue("version", primaryKey.version)
             },
             this.entityRowMapper
         ).firstOrNull()
