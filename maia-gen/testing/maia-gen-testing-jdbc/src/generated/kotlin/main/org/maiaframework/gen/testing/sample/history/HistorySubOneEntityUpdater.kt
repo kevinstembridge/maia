@@ -15,7 +15,7 @@ data class HistorySubOneEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "id" to id,
     )
 

@@ -15,7 +15,7 @@ data class HistorySampleEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "id" to id,
     )
 

@@ -15,7 +15,7 @@ data class HistorySuperEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "id" to id,
     )
 
