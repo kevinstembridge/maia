@@ -41,19 +41,19 @@ class ToggleShowcaseConfiguration {
 
 
     @Bean
-    fun createNewConfig(
-        hazelcastConfig: Maia_togglesHazelcastConfig
+    fun hazelcastConfig(
+        togglesHazelcastConfig: Maia_togglesHazelcastConfig
     ): Config {
 
         val config: Config = YamlConfigBuilder().build()
 
         val compactSerializationConfig = config.serializationConfig.compactSerializationConfig
 
-        hazelcastConfig.serializers.forEach {
+        togglesHazelcastConfig.serializers.forEach {
             compactSerializationConfig.addSerializer(it)
         }
 
-        hazelcastConfig.mapConfigs.forEach {
+        togglesHazelcastConfig.mapConfigs.forEach {
             config.addMapConfig(it)
         }
 
