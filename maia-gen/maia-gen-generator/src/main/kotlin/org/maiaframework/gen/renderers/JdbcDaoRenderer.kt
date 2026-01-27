@@ -622,7 +622,6 @@ class JdbcDaoRenderer(
 
     private fun `render function findByPrimaryKey`() {
 
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
         this.entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType) }
         addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
         addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_PK)
@@ -633,16 +632,38 @@ class JdbcDaoRenderer(
         blankLine()
         blankLine()
         appendLine("    @Throws(EntityNotFoundException::class)")
-        appendLine("    fun findByPrimaryKey($fieldNamesAndTypesCsv): ${entityDef.entityUqcn} {")
-        blankLine()
-        appendLine("        return findByPrimaryKeyOrNull($fieldNamesCsv)")
+
+        if (entityDef.hasCompositePrimaryKey) {
+
+            appendLine("    fun findByPrimaryKey(primaryKey: ${entityDef.entityPkClassDef.uqcn}): ${entityDef.entityUqcn} {")
+            blankLine()
+            appendLine("        return findByPrimaryKeyOrNull(primaryKey)")
+
+        } else {
+
+            appendLine("    fun findByPrimaryKey($fieldNamesAndTypesCsv): ${entityDef.entityUqcn} {")
+            blankLine()
+            appendLine("        return findByPrimaryKeyOrNull($fieldNamesCsv)")
+
+        }
+
         appendLine("            ?: throw EntityNotFoundException(")
         appendLine("                EntityClassAndPk(")
         appendLine("                    ${entityDef.entityUqcn}::class.java,")
         appendLine("                    mapOf(")
 
-        this.entityDef.primaryKeyFields.forEach { field ->
-            appendLine("                        \"${field.classFieldName}\" to ${field.classFieldName},")
+        if (entityDef.hasCompositePrimaryKey) {
+
+            this.entityDef.primaryKeyFields.forEach { field ->
+                appendLine("                        \"${field.classFieldName}\" to primaryKey.${field.classFieldName},")
+            }
+
+        } else {
+
+            this.entityDef.primaryKeyFields.forEach { field ->
+                appendLine("                        \"${field.classFieldName}\" to ${field.classFieldName},")
+            }
+
         }
 
         appendLine("                    )")
@@ -667,14 +688,30 @@ class JdbcDaoRenderer(
 
         blankLine()
         blankLine()
-        appendLine("    fun findByPrimaryKeyOrNull($fieldNamesAndTypesCsv): ${entityDef.entityUqcn}? {")
+
+        if (entityDef.hasCompositePrimaryKey) {
+            appendLine("    fun findByPrimaryKeyOrNull(primaryKey: ${entityDef.entityPkClassDef.uqcn}): ${entityDef.entityUqcn}? {")
+        } else {
+            appendLine("    fun findByPrimaryKeyOrNull($fieldNamesAndTypesCsv): ${entityDef.entityUqcn}? {")
+        }
+
         blankLine()
         appendLine("        return jdbcOps.queryForList(")
         appendLine("            \"select * from ${this.entityDef.schemaAndTableName} where $whereClauseFields\",")
         appendLine("            SqlParams().apply {")
 
-        this.entityDef.primaryKeyFields.forEach {
-            renderSqlParamAddValueFor(it, "            ", entityParameterName = null, 8, { line -> appendLine(line) })
+        if (entityDef.hasCompositePrimaryKey) {
+
+            this.entityDef.primaryKeyFields.forEach {
+                renderSqlParamAddValueFor(it, "                ", entityParameterName = "primaryKey", 12, { line -> appendLine(line) })
+            }
+
+        } else {
+
+            this.entityDef.primaryKeyFields.forEach {
+                renderSqlParamAddValueFor(it, "            ", entityParameterName = null, 8, { line -> appendLine(line) })
+            }
+
         }
 
         appendLine("            },")
@@ -959,9 +996,21 @@ class JdbcDaoRenderer(
 
         blankLine()
         blankLine()
-        appendLine("    fun deleteByPrimaryKey($fieldNamesAndTypesCsv): Boolean {")
+
+        if (entityDef.hasCompositePrimaryKey) {
+            appendLine("    fun deleteByPrimaryKey(primaryKey: ${entityDef.entityPkClassDef.uqcn}): Boolean {")
+        } else {
+            appendLine("    fun deleteByPrimaryKey($fieldNamesAndTypesCsv): Boolean {")
+        }
+
         blankLine()
-        appendLine("        val existingEntity = findByPrimaryKeyOrNull($fieldNamesCsv)")
+
+        if (entityDef.hasCompositePrimaryKey) {
+            appendLine("        val existingEntity = findByPrimaryKeyOrNull(primaryKey)")
+        } else {
+            appendLine("        val existingEntity = findByPrimaryKeyOrNull($fieldNamesCsv)")
+        }
+
         blankLine()
         appendLine("        if (existingEntity == null) {")
         appendLine("            return false")
@@ -971,8 +1020,18 @@ class JdbcDaoRenderer(
         appendLine("            \"delete from ${entityDef.schemaAndTableName} where ${this.entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }}\",")
         appendLine("            SqlParams().apply {")
 
-        this.entityDef.primaryKeyFields.forEach {
-            renderSqlParamAddValueFor(it, "                ", entityParameterName = null, 8, { line -> appendLine(line) })
+        if (entityDef.hasCompositePrimaryKey) {
+
+            this.entityDef.primaryKeyFields.forEach {
+                renderSqlParamAddValueFor(it, "                ", entityParameterName = "primaryKey", 8, { line -> appendLine(line) })
+            }
+
+        } else {
+
+            this.entityDef.primaryKeyFields.forEach {
+                renderSqlParamAddValueFor(it, "                ", entityParameterName = null, 8, { line -> appendLine(line) })
+            }
+
         }
 
         appendLine("            }")
@@ -1024,12 +1083,30 @@ class JdbcDaoRenderer(
         appendLine("    }")
         blankLine()
         blankLine()
-        appendLine("    fun removeByPrimaryKey($fieldNamesAndTypesCsv): ${entityDef.entityUqcn}? {")
+
+        if (entityDef.hasCompositePrimaryKey) {
+            appendLine("    fun removeByPrimaryKey(primaryKey: ${entityDef.entityPkClassDef.uqcn}): ${entityDef.entityUqcn}? {")
+        } else {
+            appendLine("    fun removeByPrimaryKey($fieldNamesAndTypesCsv): ${entityDef.entityUqcn}? {")
+        }
+
         blankLine()
-        appendLine("        val found = findByPrimaryKeyOrNull($fieldNamesCsv)")
+
+        if (entityDef.hasCompositePrimaryKey) {
+            appendLine("        val found = findByPrimaryKeyOrNull(primaryKey)")
+        } else {
+            appendLine("        val found = findByPrimaryKeyOrNull($fieldNamesCsv)")
+        }
+
         blankLine()
         appendLine("        if (found != null) {")
-        appendLine("            deleteByPrimaryKey($fieldNamesCsv)")
+
+        if (entityDef.hasCompositePrimaryKey) {
+            appendLine("            deleteByPrimaryKey(primaryKey)")
+        } else {
+            appendLine("            deleteByPrimaryKey($fieldNamesCsv)")
+        }
+
         appendLine("        }")
         blankLine()
         appendLine("        return found")
@@ -1774,7 +1851,7 @@ class JdbcDaoRenderer(
         appendLine("            .map { field ->")
         blankLine()
         appendLine("                addField(field, sqlParams)")
-        appendLine("                \"\${field.dbColumnName} = :\${field.classFieldName}\"")
+        appendLine($$"                \"${field.dbColumnName} = :${field.classFieldName}\"")
         blankLine()
         appendLine("            }.joinToString(\", \")")
         blankLine()
@@ -1787,9 +1864,20 @@ class JdbcDaoRenderer(
 
         blankLine()
 
-        entityDef.primaryKeyFields.forEach {
-            append("        sqlParams.")
-            renderSqlParamAddValueFor(it, "", entityParameterName = "updater", 0, { line -> appendLine(line) })
+        if (entityDef.hasCompositePrimaryKey) {
+
+            entityDef.primaryKeyFields.forEach {
+                append("        sqlParams.")
+                renderSqlParamAddValueFor(it, "", entityParameterName = "updater.primaryKey", 0, { line -> appendLine(line) })
+            }
+
+        } else {
+
+            entityDef.primaryKeyFields.forEach {
+                append("        sqlParams.")
+                renderSqlParamAddValueFor(it, "", entityParameterName = "updater", 0, { line -> appendLine(line) })
+            }
+
         }
 
         if (entityDef.versioned.value) {
@@ -1817,7 +1905,11 @@ class JdbcDaoRenderer(
 
             val updaterPrimaryKeyFieldsCsv = this.entityDef.primaryKeyClassFields.joinToString(", ") { "updater.${it.classFieldName}" }
 
-            appendLine("            val updatedEntity = findByPrimaryKey($updaterPrimaryKeyFieldsCsv)")
+            if (entityDef.hasCompositePrimaryKey) {
+                appendLine("            val updatedEntity = findByPrimaryKey(updater.primaryKey)")
+            } else {
+                appendLine("            val updatedEntity = findByPrimaryKey($updaterPrimaryKeyFieldsCsv)")
+            }
 
             if (entityHierarchy.hasSubclasses()) {
 
