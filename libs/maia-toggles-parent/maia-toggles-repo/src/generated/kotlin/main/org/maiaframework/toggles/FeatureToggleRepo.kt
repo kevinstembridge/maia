@@ -6,7 +6,6 @@ package org.maiaframework.toggles
 import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.map.IMap
 import org.maiaframework.common.logging.getLogger
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 

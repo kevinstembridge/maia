@@ -4,7 +4,6 @@
 package org.maiaframework.toggles
 
 import org.maiaframework.common.logging.getLogger
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
@@ -17,16 +16,16 @@ class FeatureToggleHistoryRepo(
     private val logger = getLogger<FeatureToggleHistoryRepo>()
 
 
-    fun findByPrimaryKeyOrNull(featureName: FeatureName, version: Long): FeatureToggleHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: FeatureToggleHistoryEntityPk): FeatureToggleHistoryEntity? {
 
-        return dao.findByPrimaryKeyOrNull(featureName, version)
+        return dao.findByPrimaryKeyOrNull(primaryKey)
 
     }
 
 
-    fun findByPrimaryKey(featureName: FeatureName, version: Long): FeatureToggleHistoryEntity {
+    fun findByPrimaryKey(primaryKey: FeatureToggleHistoryEntityPk): FeatureToggleHistoryEntity {
 
-        return dao.findByPrimaryKey(featureName, version)
+        return dao.findByPrimaryKey(primaryKey)
 
     }
 

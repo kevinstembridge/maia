@@ -4,7 +4,6 @@
 package org.maiaframework.props
 
 import org.maiaframework.domain.ChangeType
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -440,7 +439,7 @@ class PropsDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(PropsEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(PropsEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

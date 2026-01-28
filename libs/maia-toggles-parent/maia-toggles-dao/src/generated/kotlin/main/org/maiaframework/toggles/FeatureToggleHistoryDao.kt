@@ -3,7 +3,6 @@
 
 package org.maiaframework.toggles
 
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
@@ -178,15 +177,15 @@ class FeatureToggleHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(featureName: FeatureName, version: Long): FeatureToggleHistoryEntity {
+    fun findByPrimaryKey(primaryKey: FeatureToggleHistoryEntityPk): FeatureToggleHistoryEntity {
 
-        return findByPrimaryKeyOrNull(featureName, version)
+        return findByPrimaryKeyOrNull(primaryKey)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     FeatureToggleHistoryEntity::class.java,
                     mapOf(
-                        "featureName" to featureName,
-                        "version" to version,
+                        "featureName" to primaryKey.featureName,
+                        "version" to primaryKey.version,
                     )
                 ),
                 FeatureToggleHistoryEntityMeta.TABLE_NAME
@@ -195,13 +194,13 @@ class FeatureToggleHistoryDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(featureName: FeatureName, version: Long): FeatureToggleHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: FeatureToggleHistoryEntityPk): FeatureToggleHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from toggles.feature_toggle_history where feature_name = :featureName and version = :version",
             SqlParams().apply {
-            addValue("featureName", featureName.value)
-            addValue("version", version)
+                addValue("featureName", primaryKey.featureName.value)
+                addValue("version", primaryKey.version)
             },
             this.entityRowMapper
         ).firstOrNull()

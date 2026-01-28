@@ -14,7 +14,7 @@ data class PropsEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "propertyName" to propertyName,
     )
 

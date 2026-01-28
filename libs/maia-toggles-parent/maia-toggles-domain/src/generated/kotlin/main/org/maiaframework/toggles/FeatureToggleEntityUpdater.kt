@@ -20,7 +20,7 @@ data class FeatureToggleEntityUpdater(
 ) {
 
 
-    val primaryKey = mapOf(
+    val primaryKeyMap = mapOf(
         "featureName" to featureName,
     )
 

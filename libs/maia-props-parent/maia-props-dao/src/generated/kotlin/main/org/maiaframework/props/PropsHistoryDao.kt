@@ -3,7 +3,6 @@
 
 package org.maiaframework.props
 
-import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
@@ -132,15 +131,15 @@ class PropsHistoryDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(propertyName: String, version: Long): PropsHistoryEntity {
+    fun findByPrimaryKey(primaryKey: PropsHistoryEntityPk): PropsHistoryEntity {
 
-        return findByPrimaryKeyOrNull(propertyName, version)
+        return findByPrimaryKeyOrNull(primaryKey)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     PropsHistoryEntity::class.java,
                     mapOf(
-                        "propertyName" to propertyName,
-                        "version" to version,
+                        "propertyName" to primaryKey.propertyName,
+                        "version" to primaryKey.version,
                     )
                 ),
                 PropsHistoryEntityMeta.TABLE_NAME
@@ -149,13 +148,13 @@ class PropsHistoryDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(propertyName: String, version: Long): PropsHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: PropsHistoryEntityPk): PropsHistoryEntity? {
 
         return jdbcOps.queryForList(
             "select * from props.props_history where property_name = :propertyName and version = :version",
             SqlParams().apply {
-            addValue("propertyName", propertyName)
-            addValue("version", version)
+                addValue("propertyName", primaryKey.propertyName)
+                addValue("version", primaryKey.version)
             },
             this.entityRowMapper
         ).firstOrNull()
