@@ -47,10 +47,18 @@ class CrudServiceRenderer(
 ) {
 
 
-    private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+    private val primaryKeyFieldNamesAndTypesCsv = if (entityDef.hasCompositePrimaryKey) {
+        "primaryKey: ${entityDef.entityPkClassDef.uqcn}"
+    } else {
+        fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+    }
 
 
-    private val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
+    private val primaryKeyFieldNamesCsv = if (entityDef.hasCompositePrimaryKey) {
+        "primaryKey"
+    } else {
+        fieldNamesCsv(entityDef.primaryKeyClassFields)
+    }
 
 
     private val primaryKeyEditDtoFieldNamesCsv = entityDef.primaryKeyClassFields.joinToString(", ") {

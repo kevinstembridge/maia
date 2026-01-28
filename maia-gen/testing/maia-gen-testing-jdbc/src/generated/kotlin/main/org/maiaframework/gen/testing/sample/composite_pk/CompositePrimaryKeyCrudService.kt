@@ -34,9 +34,9 @@ class CompositePrimaryKeyCrudService(
     }
 
 
-    fun delete(someString: String, someInt: Int) {
+    fun delete(primaryKey: CompositePrimaryKeyEntityPk) {
 
-        this.entityRepo.deleteByPrimaryKey(someString, someInt)
+        this.entityRepo.deleteByPrimaryKey(primaryKey)
 
     }
 
