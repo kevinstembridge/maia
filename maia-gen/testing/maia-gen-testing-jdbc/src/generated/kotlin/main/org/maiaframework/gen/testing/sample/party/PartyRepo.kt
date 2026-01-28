@@ -5,7 +5,6 @@ package org.maiaframework.gen.testing.sample.party
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
