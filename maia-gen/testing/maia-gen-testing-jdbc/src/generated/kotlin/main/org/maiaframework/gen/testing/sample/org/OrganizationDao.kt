@@ -369,7 +369,7 @@ class OrganizationDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(OrganizationEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(OrganizationEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

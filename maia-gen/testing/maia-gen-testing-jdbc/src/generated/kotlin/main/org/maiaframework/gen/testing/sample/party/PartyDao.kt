@@ -597,7 +597,7 @@ class PartyDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(PartyEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(PartyEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

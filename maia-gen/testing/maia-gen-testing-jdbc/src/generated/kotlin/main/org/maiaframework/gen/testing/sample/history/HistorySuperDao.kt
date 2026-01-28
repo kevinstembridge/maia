@@ -500,7 +500,7 @@ class HistorySuperDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(HistorySuperEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(HistorySuperEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

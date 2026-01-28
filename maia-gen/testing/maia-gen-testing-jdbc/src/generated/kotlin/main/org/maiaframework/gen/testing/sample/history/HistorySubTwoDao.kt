@@ -398,7 +398,7 @@ class HistorySubTwoDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(HistorySubTwoEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(HistorySubTwoEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

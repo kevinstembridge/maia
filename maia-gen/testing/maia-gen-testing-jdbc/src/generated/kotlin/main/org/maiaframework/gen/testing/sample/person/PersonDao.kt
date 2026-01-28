@@ -509,7 +509,7 @@ class PersonDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(PersonEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(PersonEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

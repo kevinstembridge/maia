@@ -425,7 +425,7 @@ class UserDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(UserEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(UserEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

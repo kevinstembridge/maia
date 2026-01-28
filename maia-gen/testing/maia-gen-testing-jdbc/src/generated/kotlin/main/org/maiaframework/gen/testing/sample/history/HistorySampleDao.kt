@@ -503,7 +503,7 @@ class HistorySampleDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(HistorySampleEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(HistorySampleEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

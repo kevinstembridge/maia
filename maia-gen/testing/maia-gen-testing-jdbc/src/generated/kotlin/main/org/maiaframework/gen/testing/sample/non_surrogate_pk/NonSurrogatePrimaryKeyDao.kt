@@ -379,7 +379,7 @@ class NonSurrogatePrimaryKeyDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(NonSurrogatePrimaryKeyEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(NonSurrogatePrimaryKeyEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

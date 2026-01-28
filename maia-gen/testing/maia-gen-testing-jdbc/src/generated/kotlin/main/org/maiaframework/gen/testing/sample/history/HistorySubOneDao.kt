@@ -398,7 +398,7 @@ class HistorySubOneDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(HistorySubOneEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(HistorySubOneEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

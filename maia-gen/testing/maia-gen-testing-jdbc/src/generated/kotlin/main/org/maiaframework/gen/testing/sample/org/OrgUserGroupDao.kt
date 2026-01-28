@@ -389,7 +389,7 @@ class OrgUserGroupDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(OrgUserGroupEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(OrgUserGroupEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 

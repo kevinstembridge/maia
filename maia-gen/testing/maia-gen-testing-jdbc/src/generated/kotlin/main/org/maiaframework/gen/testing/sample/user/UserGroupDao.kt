@@ -481,7 +481,7 @@ class UserGroupDao(
 
         if (updateCount == 0) {
 
-            throw OptimisticLockingException(UserGroupEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
+            throw OptimisticLockingException(UserGroupEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
 
         } else {
 
