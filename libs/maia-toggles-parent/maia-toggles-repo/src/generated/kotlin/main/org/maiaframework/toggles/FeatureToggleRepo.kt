@@ -125,6 +125,17 @@ class FeatureToggleRepo(
     }
 
 
+    fun upsertByFeatureName(upsertEntity: FeatureToggleEntity): FeatureToggleEntity {
+
+        logger.debug("upsert $upsertEntity")
+
+        val upsertedEntity = dao.upsertByFeatureName(upsertEntity)
+        this.cache.evict(upsertedEntity.primaryKey)
+        return upsertedEntity
+
+    }
+
+
     fun deleteByPrimaryKey(featureName: FeatureName) {
 
         this.dao.deleteByPrimaryKey(featureName)
