@@ -68,7 +68,7 @@ class ToggleSyncer(private val toggleRepo: FeatureToggleRepo) {
                 version = existingFeatureEntity.version + 1
             )
 
-            this.toggleRepo.insert(updatedEntity)
+            this.toggleRepo.upsertByFeatureName(updatedEntity)
 
         }
 
