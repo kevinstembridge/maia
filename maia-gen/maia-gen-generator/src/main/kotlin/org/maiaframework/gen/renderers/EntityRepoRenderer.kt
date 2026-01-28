@@ -16,10 +16,18 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     private val cacheable = entityDef.cacheableDef != null
 
 
-    private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+    private val primaryKeyFieldNamesAndTypesCsv = if (entityDef.hasCompositePrimaryKey) {
+        "primaryKey: ${entityDef.entityPkClassDef.uqcn}"
+    } else {
+        fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+    }
 
 
-    private val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
+    private val primaryKeyFieldNamesCsv = if (entityDef.hasCompositePrimaryKey) {
+        "primaryKey"
+    } else {
+        fieldNamesCsv(entityDef.primaryKeyClassFields)
+    }
 
 
     init {
@@ -51,7 +59,11 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             addImportFor(Fqcns.HAZELCAST_IMAP)
 
             // TODO cater for composite primary keys
-            val primaryKeyType = entityDef.primaryKeyClassFields.map { it.fieldType.unqualifiedToString }.first()
+            val primaryKeyType = if (entityDef.hasCompositePrimaryKey) {
+                entityDef.entityPkClassDef.uqcn.value
+            } else {
+                entityDef.primaryKeyClassFields.map { it.fieldType.unqualifiedToString }.first()
+            }
 
             blankLine()
             blankLine()
@@ -434,8 +446,6 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     private fun `render function bulkInsert`() {
 
-        addImportFor(Fqcns.MAIA_SQL_PARAMS)
-
         blankLine()
         blankLine()
         appendLine("    fun bulkInsert(entities: List<${entityDef.entityUqcn}>) {")
@@ -537,23 +547,29 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         if (cacheable) {
 
-            val primaryKeyUpdaterFields = entityDef.primaryKeyClassFields.joinToString(", ") {
-                "updater.${it.classFieldName}"
+            val primaryKeyUpdaterFields = if (entityDef.hasCompositePrimaryKey) {
+                "updater.primaryKey"
+            } else {
+
+                entityDef.primaryKeyClassFields.joinToString(", ") {
+                    "updater.${it.classFieldName}"
+                }
+
             }
 
 
             appendLine(
-                """
+                $$"""
                 |
                 |
-                |    fun setFields(updater: ${this.entityDef.entityUpdaterClassDef.uqcn}): Int {
+                |    fun setFields(updater: $${this.entityDef.entityUpdaterClassDef.uqcn}): Int {
                 |
-                |        logger.debug("setFields ${"$"}updater")
+                |        logger.debug("setFields $updater")
                 |
                 |        val updatedCount = this.dao.setFields(updater)
                 |
                 |        if (updatedCount > 0) {
-                |            this.cache.evict($primaryKeyUpdaterFields)
+                |            this.cache.evict($$primaryKeyUpdaterFields)
                 |        }
                 |
                 |        return updatedCount

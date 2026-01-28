@@ -25,13 +25,21 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
         constructorFields.add(fieldsClassFieldDef)
 
-        val primaryKeyClassFieldDefs = this.entityDef.primaryKeyFields.map { fieldDef ->
-            aClassField(fieldDef.classFieldName, fieldDef.fieldType) {
-                constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
-            }.build()
-        }
+        if (entityDef.hasCompositePrimaryKey) {
 
-        constructorFields.addAll(primaryKeyClassFieldDefs)
+            constructorFields.add(aClassField("primaryKey", entityDef.entityPkClassDef.fieldType).build())
+
+        } else {
+
+            val primaryKeyClassFieldDefs = this.entityDef.primaryKeyFields.map { fieldDef ->
+                aClassField(fieldDef.classFieldName, fieldDef.fieldType) {
+                    constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
+                }.build()
+            }
+
+            constructorFields.addAll(primaryKeyClassFieldDefs)
+
+        }
 
         if (entityDef.versioned.value) {
 
@@ -61,12 +69,14 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     override fun renderPreClassFields() {
 
+        val pkPrefix = if (entityDef.hasCompositePrimaryKey) "primaryKey." else ""
+
         blankLine()
         blankLine()
-        appendLine("    val primaryKey = mapOf(")
+        appendLine("    val primaryKeyMap = mapOf(")
 
         this.entityDef.primaryKeyFields.forEach { fieldDef ->
-            appendLine("        \"${fieldDef.classFieldName}\" to ${fieldDef.classFieldName},")
+            appendLine("        \"${fieldDef.classFieldName}\" to ${pkPrefix}${fieldDef.classFieldName},")
         }
 
         appendLine("    )")
@@ -172,8 +182,16 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
             blankLine()
             appendLine("        fun forPrimaryKey(")
 
-            this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
-                appendLine("            ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString},")
+            if (entityDef.hasCompositePrimaryKey) {
+
+                appendLine("            primaryKey: ${entityDef.entityPkClassDef.uqcn},")
+
+            } else {
+
+                this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
+                    appendLine("            ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString},")
+                }
+
             }
 
             appendLine("            version: Long,")
@@ -182,8 +200,16 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
             blankLine()
             appendLine("            val builder = Builder(")
 
-            this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
-                appendLine("                ${fieldDef.classFieldName},")
+            if (entityDef.hasCompositePrimaryKey) {
+
+                appendLine("                primaryKey,")
+
+            } else {
+
+                this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
+                    appendLine("                ${fieldDef.classFieldName},")
+                }
+
             }
 
             appendLine("                version")
@@ -227,19 +253,25 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
         blankLine()
         blankLine()
+        appendLine("    class Builder(")
 
-        if (entityDef.versioned.value) {
-            appendLine("    class Builder(")
+        if (entityDef.hasCompositePrimaryKey) {
+            appendLine("        val primaryKey: ${entityDef.entityPkClassDef.uqcn},")
+        } else {
 
             this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
                 appendLine("        val ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString},")
             }
 
-            appendLine("        val version: Long")
-            appendLine("    ) {")
-        } else {
-            appendLine("    class Builder($fieldNamesAndTypesCsv) {")
         }
+
+        if (entityDef.versioned.value) {
+
+            appendLine("        val version: Long")
+
+        }
+
+        appendLine("    ) {")
 
         blankLine()
         blankLine()
@@ -254,8 +286,16 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
             appendLine("            return ${classDef.uqcn}(")
             appendLine("                this.fields,")
 
-            this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
-                appendLine("                this.${fieldDef.classFieldName},")
+            if (entityDef.hasCompositePrimaryKey) {
+
+                appendLine("                this.primaryKey,")
+
+            } else {
+
+                this.entityDef.primaryKeyClassFields.forEach { fieldDef ->
+                    appendLine("                this.${fieldDef.classFieldName},")
+                }
+
             }
 
             appendLine("                this.version")

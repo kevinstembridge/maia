@@ -4,48 +4,10 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.gen.renderers.SqlParamFunctions.renderSqlParamAddValueFor
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamMapperFunction
-import org.maiaframework.gen.spec.definition.EntityDef
-import org.maiaframework.gen.spec.definition.EntityFieldDef
-import org.maiaframework.gen.spec.definition.EntityHierarchy
-import org.maiaframework.gen.spec.definition.EntityPkAndNameDef
-import org.maiaframework.gen.spec.definition.Fqcns
-import org.maiaframework.gen.spec.definition.IndexDef
-import org.maiaframework.gen.spec.definition.RowMapperFunctions
+import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
-import org.maiaframework.gen.spec.definition.lang.AnnotationDef
-import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
-import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
-import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
-import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
+import org.maiaframework.gen.spec.definition.lang.*
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
-import org.maiaframework.gen.spec.definition.lang.ClassFieldName
-import org.maiaframework.gen.spec.definition.lang.ConstructorArg
-import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
-import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
-import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
-import org.maiaframework.gen.spec.definition.lang.EnumFieldType
-import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
-import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
-import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
-import org.maiaframework.gen.spec.definition.lang.InstantFieldType
-import org.maiaframework.gen.spec.definition.lang.IntFieldType
-import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
-import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
-import org.maiaframework.gen.spec.definition.lang.ListFieldType
-import org.maiaframework.gen.spec.definition.lang.LocalDateFieldType
-import org.maiaframework.gen.spec.definition.lang.LongFieldType
-import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
-import org.maiaframework.gen.spec.definition.lang.MapFieldType
-import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
-import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
-import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.SetFieldType
-import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.StringFieldType
-import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
-import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
-import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 import java.time.Instant
 
 class JdbcDaoRenderer(
@@ -62,6 +24,20 @@ class JdbcDaoRenderer(
 
 
     private val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
+
+
+    private val primaryKeyFieldNames = if (entityDef.hasCompositePrimaryKey) {
+        "primaryKey"
+    } else {
+        fieldNamesCsv(this.entityDef.primaryKeyClassFields)
+    }
+
+
+    private val primaryKeyNameAndType = if (entityDef.hasCompositePrimaryKey) {
+        "primaryKey: ${entityDef.entityPkClassDef.uqcn}"
+    } else {
+        fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
+    }
 
 
     private val mapOfPrimaryKeyFields = "mapOf(${entityDef.primaryKeyClassFields.joinToString(", ") { "\"${it.classFieldName}\" to ${it.classFieldName}" }})"
@@ -626,27 +602,12 @@ class JdbcDaoRenderer(
         addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
         addImportFor(Fqcns.MAIA_ENTITY_CLASS_AND_PK)
 
-        val fieldNamesCsv = fieldNamesCsv(this.entityDef.primaryKeyClassFields)
-        val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
-
         blankLine()
         blankLine()
         appendLine("    @Throws(EntityNotFoundException::class)")
-
-        if (entityDef.hasCompositePrimaryKey) {
-
-            appendLine("    fun findByPrimaryKey(primaryKey: ${entityDef.entityPkClassDef.uqcn}): ${entityDef.entityUqcn} {")
-            blankLine()
-            appendLine("        return findByPrimaryKeyOrNull(primaryKey)")
-
-        } else {
-
-            appendLine("    fun findByPrimaryKey($fieldNamesAndTypesCsv): ${entityDef.entityUqcn} {")
-            blankLine()
-            appendLine("        return findByPrimaryKeyOrNull($fieldNamesCsv)")
-
-        }
-
+        appendLine("    fun findByPrimaryKey($primaryKeyNameAndType): ${entityDef.entityUqcn} {")
+        blankLine()
+        appendLine("        return findByPrimaryKeyOrNull($primaryKeyFieldNames)")
         appendLine("            ?: throw EntityNotFoundException(")
         appendLine("                EntityClassAndPk(")
         appendLine("                    ${entityDef.entityUqcn}::class.java,")
