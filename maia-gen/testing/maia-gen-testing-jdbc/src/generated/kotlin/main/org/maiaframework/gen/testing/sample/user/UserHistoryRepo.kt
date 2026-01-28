@@ -5,7 +5,6 @@ package org.maiaframework.gen.testing.sample.user
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
@@ -18,16 +17,16 @@ class UserHistoryRepo(
     private val logger = getLogger<UserHistoryRepo>()
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId, version: Long): UserHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: UserHistoryEntityPk): UserHistoryEntity? {
 
-        return dao.findByPrimaryKeyOrNull(id, version)
+        return dao.findByPrimaryKeyOrNull(primaryKey)
 
     }
 
 
-    fun findByPrimaryKey(id: DomainId, version: Long): UserHistoryEntity {
+    fun findByPrimaryKey(primaryKey: UserHistoryEntityPk): UserHistoryEntity {
 
-        return dao.findByPrimaryKey(id, version)
+        return dao.findByPrimaryKey(primaryKey)
 
     }
 
