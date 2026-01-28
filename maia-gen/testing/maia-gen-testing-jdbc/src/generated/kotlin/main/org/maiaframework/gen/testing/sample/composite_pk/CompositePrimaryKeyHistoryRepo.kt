@@ -4,7 +4,6 @@
 package org.maiaframework.gen.testing.sample.composite_pk
 
 import org.maiaframework.common.logging.getLogger
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
@@ -17,16 +16,16 @@ class CompositePrimaryKeyHistoryRepo(
     private val logger = getLogger<CompositePrimaryKeyHistoryRepo>()
 
 
-    fun findByPrimaryKeyOrNull(someString: String, someInt: Int, version: Long): CompositePrimaryKeyHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: CompositePrimaryKeyHistoryEntityPk): CompositePrimaryKeyHistoryEntity? {
 
-        return dao.findByPrimaryKeyOrNull(someString, someInt, version)
+        return dao.findByPrimaryKeyOrNull(primaryKey)
 
     }
 
 
-    fun findByPrimaryKey(someString: String, someInt: Int, version: Long): CompositePrimaryKeyHistoryEntity {
+    fun findByPrimaryKey(primaryKey: CompositePrimaryKeyHistoryEntityPk): CompositePrimaryKeyHistoryEntity {
 
-        return dao.findByPrimaryKey(someString, someInt, version)
+        return dao.findByPrimaryKey(primaryKey)
 
     }
 
