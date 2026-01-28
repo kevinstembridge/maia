@@ -5,7 +5,6 @@ package org.maiaframework.gen.testing.sample.non_surrogate_pk
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.gen.sample.types.SomeStringValueClass
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
@@ -18,16 +17,16 @@ class NonSurrogateIdPrimaryKeyHistoryRepo(
     private val logger = getLogger<NonSurrogateIdPrimaryKeyHistoryRepo>()
 
 
-    fun findByPrimaryKeyOrNull(id: SomeStringValueClass, version: Long): NonSurrogateIdPrimaryKeyHistoryEntity? {
+    fun findByPrimaryKeyOrNull(primaryKey: NonSurrogateIdPrimaryKeyHistoryEntityPk): NonSurrogateIdPrimaryKeyHistoryEntity? {
 
-        return dao.findByPrimaryKeyOrNull(id, version)
+        return dao.findByPrimaryKeyOrNull(primaryKey)
 
     }
 
 
-    fun findByPrimaryKey(id: SomeStringValueClass, version: Long): NonSurrogateIdPrimaryKeyHistoryEntity {
+    fun findByPrimaryKey(primaryKey: NonSurrogateIdPrimaryKeyHistoryEntityPk): NonSurrogateIdPrimaryKeyHistoryEntity {
 
-        return dao.findByPrimaryKey(id, version)
+        return dao.findByPrimaryKey(primaryKey)
 
     }
 

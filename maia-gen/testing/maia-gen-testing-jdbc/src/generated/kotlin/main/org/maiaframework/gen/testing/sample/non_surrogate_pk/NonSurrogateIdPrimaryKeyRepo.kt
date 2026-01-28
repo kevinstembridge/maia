@@ -5,7 +5,6 @@ package org.maiaframework.gen.testing.sample.non_surrogate_pk
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.gen.sample.types.SomeStringValueClass
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
