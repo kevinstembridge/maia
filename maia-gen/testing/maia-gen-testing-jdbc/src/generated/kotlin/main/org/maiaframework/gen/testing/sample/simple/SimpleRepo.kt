@@ -8,7 +8,6 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.gen.sample.types.SomeStringType
 import org.maiaframework.gen.testing.sample.types.SomeIntType
 import org.maiaframework.gen.testing.sample.types.SomeLongType
-import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
