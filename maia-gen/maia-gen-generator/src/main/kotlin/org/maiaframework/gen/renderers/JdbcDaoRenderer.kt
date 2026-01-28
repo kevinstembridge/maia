@@ -1855,11 +1855,17 @@ class JdbcDaoRenderer(
 
             addImportFor(Fqcns.MAIA_JDBC_OPTIMISTIC_LOCKING_EXCEPTION)
 
+            val primaryKeyName = if (entityDef.hasCompositePrimaryKey) {
+                "primaryKey"
+            } else {
+                "primaryKeyMap"
+            }
+
             appendLine("        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)")
             blankLine()
             appendLine("        if (updateCount == 0) {")
             blankLine()
-            appendLine("            throw OptimisticLockingException(${entityDef.metaClassDef.uqcn}.TABLE_NAME, updater.primaryKey, updater.version)")
+            appendLine("            throw OptimisticLockingException(${entityDef.metaClassDef.uqcn}.TABLE_NAME, updater.$primaryKeyName, updater.version)")
             blankLine()
             appendLine("        } else {")
             blankLine()
