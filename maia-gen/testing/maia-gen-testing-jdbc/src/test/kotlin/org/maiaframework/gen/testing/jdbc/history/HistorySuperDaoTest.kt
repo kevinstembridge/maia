@@ -15,6 +15,7 @@ import org.maiaframework.gen.testing.sample.history.HistorySubTwoHistoryEntity
 import org.maiaframework.gen.testing.sample.history.HistorySuperHistoryDao
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.maiaframework.gen.testing.sample.history.HistorySubOneHistoryEntityPk
 import org.springframework.beans.factory.annotation.Autowired
 
 class HistorySuperDaoTest: AbstractJdbcTest() {
@@ -55,7 +56,7 @@ class HistorySuperDaoTest: AbstractJdbcTest() {
         assertThat(actualEntityV1.version).isEqualTo(1)
 
         // AND version 1 of the history entity
-        val actualHistoryEntityV1 = this.historySubOneHistoryDao.findByPrimaryKey(entitySubOneId, 1)
+        val actualHistoryEntityV1 = this.historySubOneHistoryDao.findByPrimaryKey(HistorySubOneHistoryEntityPk(entitySubOneId, 1))
         assertHistoryEntity(actualHistoryEntityV1, actualEntityV1, ChangeType.CREATE)
 
         // WHEN we update the entity
@@ -79,7 +80,7 @@ class HistorySuperDaoTest: AbstractJdbcTest() {
         assertThat(actualEntityV2.version).isEqualTo(2)
 
         // AND we can find version 2 of the history entity
-        val actualHistoryEntityV2 = this.historySubOneHistoryDao.findByPrimaryKey(entitySubOneId, 2)
+        val actualHistoryEntityV2 = this.historySubOneHistoryDao.findByPrimaryKey(HistorySubOneHistoryEntityPk(entitySubOneId, 2))
         assertHistoryEntity(actualHistoryEntityV2, actualEntityV2, ChangeType.UPDATE)
 
         // WHEN we delete the entity
@@ -89,7 +90,7 @@ class HistorySuperDaoTest: AbstractJdbcTest() {
         assertThat(this.historySubOneDao.findByPrimaryKeyOrNull(entitySubOneId)).isNull()
 
         // AND we can find version 3 of the history entity
-        val actualHistoryEntityV3 = this.historySubOneHistoryDao.findByPrimaryKey(entitySubOneId, 3)
+        val actualHistoryEntityV3 = this.historySubOneHistoryDao.findByPrimaryKey(HistorySubOneHistoryEntityPk(entitySubOneId, 3))
         assertHistoryEntity(actualHistoryEntityV3, actualEntityV2, 3, ChangeType.DELETE)
 
     }
