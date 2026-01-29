@@ -167,6 +167,12 @@ object MatFormFieldRenderer {
             r.appendLine("$indent    }")
         }
 
+        if (classFieldDef.isUnique) {
+            r.appendLine("$indent    @if (formGroup.controls['$classFieldName'].hasError('notUnique')) {")
+            r.appendLine("$indent        <mat-error>{{ formGroup.controls['$classFieldName'].errors.message }}</mat-error>")
+            r.appendLine("$indent    }")
+        }
+
         r.appendLine("$indent</mat-form-field>")
 
     }

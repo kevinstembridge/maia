@@ -205,7 +205,7 @@ class EntityDef(
     private val entityFieldsInherited: List<EntityFieldDef> = this.superclassEntityDef?.allEntityFields.orEmpty()
 
 
-    val allEntityFields: List<EntityFieldDef> = listOf(this.entityFieldsNotInherited, entityFieldsInherited).flatten()
+    val allEntityFields: List<EntityFieldDef> = listOf(this.entityFieldsNotInherited, this.entityFieldsInherited).flatten()
 
 
     val allEntityFieldsSorted: List<EntityFieldDef> = allEntityFields.sorted()
