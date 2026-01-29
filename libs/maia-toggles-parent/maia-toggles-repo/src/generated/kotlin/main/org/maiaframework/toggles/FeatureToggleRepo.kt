@@ -129,7 +129,7 @@ class FeatureToggleRepo(
         logger.debug("upsert $upsertEntity")
 
         val upsertedEntity = dao.upsertByFeatureName(upsertEntity)
-        this.cache.evict(upsertedEntity.primaryKey)
+        this.cache.evict(upsertedEntity.featureName)
         return upsertedEntity
 
     }

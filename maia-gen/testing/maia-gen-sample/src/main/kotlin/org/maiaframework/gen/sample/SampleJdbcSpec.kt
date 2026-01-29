@@ -472,8 +472,11 @@ class SampleJdbcSpec : AbstractSpec(appKey = AppKey("sample_jdbc"), defaultSchem
         "org.maiaframework.gen.testing.sample.simple",
         "VerySimple"
     ) {
+        cacheable {  }
         field("someString", FieldTypes.string) {
             lengthConstraint(max = 100)
+            editableByUser()
+            unique()
         }
     }
 

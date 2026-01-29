@@ -7,16 +7,20 @@ import com.hazelcast.config.MapConfig
 import com.hazelcast.nio.serialization.compact.CompactSerializer
 import org.maiaframework.gen.testing.sample.composite_pk.CompositePrimaryKeyEntity
 import org.maiaframework.gen.testing.sample.composite_pk.CompositePrimaryKeySerializer
+import org.maiaframework.gen.testing.sample.simple.VerySimpleEntity
+import org.maiaframework.gen.testing.sample.simple.VerySimpleSerializer
 import org.springframework.stereotype.Component
 
 
 @Component
 class Sample_jdbcHazelcastConfig(
-    private val compositePrimaryKeySerializer: CompositePrimaryKeySerializer
+    private val compositePrimaryKeySerializer: CompositePrimaryKeySerializer,
+    private val verySimpleSerializer: VerySimpleSerializer
 ) {
 
 
     val serializers: List<CompactSerializer<out Any>> = listOf(
+        verySimpleSerializer,
         compositePrimaryKeySerializer,
     )
 

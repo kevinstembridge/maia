@@ -5,12 +5,15 @@ package org.maiaframework.gen.testing.sample.simple
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
+import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
+import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.PreparedStatement
 
 
 @Repository
@@ -147,6 +150,31 @@ class VerySimpleDao(
        
     }
 
+    fun findOneOrNullBySomeString(someString: String): VerySimpleEntity? {
+
+        return jdbcOps.queryForList(
+            """
+            select * from testing.very_simple
+            where some_string = :someString
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("someString", someString)
+            },
+            this.entityRowMapper
+        ).firstOrNull()
+
+    }
+
+
+    @Throws(EntityNotFoundException::class)
+    fun findOneBySomeString(someString: String): VerySimpleEntity {
+
+        return findOneOrNullBySomeString(someString)
+            ?: throw EntityNotFoundException("No record with column [some_string = $someString] found in table testing.very_simple.", VerySimpleEntityMeta.TABLE_NAME)
+
+    }
+
+
     fun findAllBy(filter: VerySimpleEntityFilter): List<VerySimpleEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
@@ -239,6 +267,99 @@ class VerySimpleDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun existsBySomeString(someString: String): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            """
+            select count(*) from testing.very_simple
+            where some_string = :someString
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("someString", someString)
+            }
+        )
+
+        return count > 0
+
+    }
+
+
+    fun upsertBySomeString(upsertEntity: VerySimpleEntity): VerySimpleEntity {
+
+        val persistedEntity = jdbcOps.execute(
+            """
+            insert into testing.very_simple (
+                created_timestamp_utc,
+                id,
+                some_string
+            ) values (
+                :createdTimestampUtc,
+                :id,
+                :someString
+            )
+            on conflict (some_string)
+            do update set
+                some_string = :someString
+            returning *;
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("id", upsertEntity.id)
+            addValue("someString", upsertEntity.someString)
+            },
+            { ps: PreparedStatement ->
+                val rs = ps.executeQuery()
+                rs.next()
+                entityRowMapper.mapRow(ResultSetAdapter(rs))
+            }
+        )
+
+        return persistedEntity!!
+
+    }
+
+
+    fun setFields(updaters: List<VerySimpleEntityUpdater>) {
+
+        updaters.forEach { setFields(it) }
+
+    }
+
+
+    fun setFields(updater: VerySimpleEntityUpdater): Int {
+
+        val sql = StringBuilder()
+        val sqlParams = SqlParams()
+
+        sql.append("update testing.very_simple set ")
+
+        val fieldClauses = updater.fields
+            .map { field ->
+
+                addField(field, sqlParams)
+                "${field.dbColumnName} = :${field.classFieldName}"
+
+            }.joinToString(", ")
+
+        sql.append(fieldClauses)
+        sql.append(" where id = :id")
+
+        sqlParams.addValue("id", updater.id)
+
+        return this.jdbcOps.update(sql.toString(), sqlParams)
+
+    }
+
+
+    private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
+
+        when (field.classFieldName) {
+            "someString" -> sqlParams.addValue("someString", field.value as String)
+        }
 
     }
 

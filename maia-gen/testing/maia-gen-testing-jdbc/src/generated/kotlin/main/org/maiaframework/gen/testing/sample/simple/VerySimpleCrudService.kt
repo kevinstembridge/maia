@@ -27,5 +27,13 @@ class VerySimpleCrudService(
     }
 
 
+    fun setFields(updater: VerySimpleEntityUpdater): Int {
+        
+        val count = this.entityRepo.setFields(updater)
+        return count
+        
+    }
+
+
 }
 

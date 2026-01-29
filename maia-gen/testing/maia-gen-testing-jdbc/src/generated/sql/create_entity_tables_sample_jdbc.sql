@@ -211,6 +211,7 @@ CREATE TABLE testing.very_simple (
     some_string text NOT NULL,
     PRIMARY KEY(id)
 );
+CREATE UNIQUE INDEX very_simple_some_string_uidx ON testing.very_simple(some_string);
 
 
 CREATE TABLE testing.foreign_key_parent (

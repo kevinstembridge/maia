@@ -3,6 +3,8 @@
 
 package org.maiaframework.gen.testing.sample.simple
 
+import com.hazelcast.core.HazelcastInstance
+import com.hazelcast.map.IMap
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Repository
@@ -10,23 +12,33 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class VerySimpleRepo(
-    private val dao: VerySimpleDao
+    private val dao: VerySimpleDao,
+    private val hazelcastInstance: HazelcastInstance
 ) {
 
 
     private val logger = getLogger<VerySimpleRepo>()
 
 
+    private val cache: IMap<DomainId, VerySimpleEntity> = this.hazelcastInstance.getMap("very_simple_entity")
+
+
     fun findByPrimaryKeyOrNull(id: DomainId): VerySimpleEntity? {
 
-        return dao.findByPrimaryKeyOrNull(id)
+        return cache[id]
+            ?: dao.findByPrimaryKeyOrNull(id).also { entity ->
+                entity?.let { cache[id] = it }
+            }
 
     }
 
 
     fun findByPrimaryKey(id: DomainId): VerySimpleEntity {
 
-        return dao.findByPrimaryKey(id)
+        return cache[id]
+            ?: dao.findByPrimaryKey(id).also {
+                cache[id] = it
+            }
 
     }
 
@@ -66,6 +78,27 @@ class VerySimpleRepo(
     }
 
 
+    fun findOneOrNullBySomeString(someString: String): VerySimpleEntity? {
+
+        return dao.findOneOrNullBySomeString(someString)
+
+    }
+
+
+    fun findOneBySomeString(someString: String): VerySimpleEntity {
+
+        return dao.findOneBySomeString(someString)
+
+    }
+
+
+    fun existsBySomeString(someString: String): Boolean {
+
+        return dao.existsBySomeString(someString)
+
+    }
+
+
     fun insert(entity: VerySimpleEntity) {
 
         logger.debug("insert $entity")
@@ -78,6 +111,41 @@ class VerySimpleRepo(
     fun bulkInsert(entities: List<VerySimpleEntity>) {
 
         this.dao.bulkInsert(entities)
+
+    }
+
+
+    fun setFields(updaters: List<VerySimpleEntityUpdater>) {
+
+        logger.debug("setFields $updaters")
+
+        updaters.forEach { setFields(it) }
+
+    }
+
+
+    fun setFields(updater: VerySimpleEntityUpdater): Int {
+
+        logger.debug("setFields $updater")
+
+        val updatedCount = this.dao.setFields(updater)
+
+        if (updatedCount > 0) {
+            this.cache.evict(updater.id)
+        }
+
+        return updatedCount
+
+    }
+
+
+    fun upsertBySomeString(upsertEntity: VerySimpleEntity): VerySimpleEntity {
+
+        logger.debug("upsert $upsertEntity")
+
+        val upsertedEntity = dao.upsertBySomeString(upsertEntity)
+        this.cache.evict(upsertedEntity.id)
+        return upsertedEntity
 
     }
 

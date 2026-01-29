@@ -557,7 +557,6 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
             }
 
-
             appendLine(
                 $$"""
                 |
@@ -636,6 +635,12 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         val uniqueFieldNamesAnded = fieldNamesAnded(entityFieldDefs.map { it.classFieldDef })
 
+        val cacheKey = if (entityDef.hasCompositePrimaryKey) {
+            "primaryKey"
+        } else {
+            entityDef.primaryKeyClassFields.map { it.classFieldName }.joinToString(", ")
+        }
+
         blankLine()
         blankLine()
         appendLine("    fun upsertBy${uniqueFieldNamesAnded}(upsertEntity: ${this.entityDef.entityUqcn}): ${entityDef.entityUqcn} {")
@@ -645,7 +650,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         if (cacheable) {
             appendLine("        val upsertedEntity = dao.upsertBy${uniqueFieldNamesAnded}(upsertEntity)")
-            appendLine("        this.cache.evict(upsertedEntity.primaryKey)")
+            appendLine("        this.cache.evict(upsertedEntity.$cacheKey)")
             appendLine("        return upsertedEntity")
         } else {
             appendLine("        return dao.upsertBy${uniqueFieldNamesAnded}(upsertEntity)")
