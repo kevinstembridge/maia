@@ -4,10 +4,48 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.gen.renderers.SqlParamFunctions.renderSqlParamAddValueFor
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamMapperFunction
-import org.maiaframework.gen.spec.definition.*
+import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.EntityFieldDef
+import org.maiaframework.gen.spec.definition.EntityHierarchy
+import org.maiaframework.gen.spec.definition.EntityPkAndNameDef
+import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.IndexDef
+import org.maiaframework.gen.spec.definition.RowMapperFunctions
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
-import org.maiaframework.gen.spec.definition.lang.*
+import org.maiaframework.gen.spec.definition.lang.AnnotationDef
+import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
+import org.maiaframework.gen.spec.definition.lang.ConstructorArg
+import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
+import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
+import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
+import org.maiaframework.gen.spec.definition.lang.EnumFieldType
+import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
+import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
+import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.IntFieldType
+import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.ListFieldType
+import org.maiaframework.gen.spec.definition.lang.LocalDateFieldType
+import org.maiaframework.gen.spec.definition.lang.LongFieldType
+import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.MapFieldType
+import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
+import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
+import org.maiaframework.gen.spec.definition.lang.SetFieldType
+import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
+import org.maiaframework.gen.spec.definition.lang.StringFieldType
+import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 import java.time.Instant
 
 class JdbcDaoRenderer(
@@ -21,9 +59,6 @@ class JdbcDaoRenderer(
 
 
     private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
-
-
-    private val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDef.primaryKeyClassFields)
 
 
     private val primaryKeyFieldNames = if (entityDef.hasCompositePrimaryKey) {
@@ -102,9 +137,11 @@ class JdbcDaoRenderer(
 
         val jsonMapperParameter = if (entityHierarchy.requiresJsonMapper) "jsonMapper" else ""
 
-        blankLine()
-        blankLine()
-        appendLine("    private val entityRowMapper = ${entityDef.rowMapperClassDef.uqcn}($jsonMapperParameter)")
+        append("""
+            |
+            |
+            |    private val entityRowMapper = ${entityDef.rowMapperClassDef.uqcn}($jsonMapperParameter)
+            |""".trimMargin())
 
         val primaryKeyRowMapperDef = this.entityDef.primaryKeyRowMapperDef
 
@@ -129,9 +166,11 @@ class JdbcDaoRenderer(
 
             addImportFor(primaryKeyRowMapperDef.classDef.fqcn)
 
-            blankLine()
-            blankLine()
-            appendLine("    private val primaryKeyRowMapper = ${primaryKeyRowMapperDef.classDef.uqcn}()")
+            append("""
+                |
+                |
+                |    private val primaryKeyRowMapper = ${primaryKeyRowMapperDef.classDef.uqcn}()
+                |""".trimMargin())
 
         }
 
@@ -139,16 +178,22 @@ class JdbcDaoRenderer(
 
             addImportFor(Fqcns.MAIA_JDBC_ROW_MAPPER)
 
-            blankLine()
-            blankLine()
-            appendLine("    private val idRowMapper = MaiaRowMapper { rs -> rs.readDomainId(\"id\") }")
-            
+            append("""
+                |
+                |
+                |    private val idRowMapper = MaiaRowMapper { rs -> rs.readDomainId("id") }
+                |""".trimMargin())
+
         }
 
         if (entityDef.isConcrete && entityDef.entityCrudApiDef?.updateApiDef != null) {
-            blankLine()
-            blankLine()
-            appendLine("    private val fetchForEditDtoRowMapper = ${entityDef.fetchForEditDtoRowMapperClassDef.uqcn}($jsonMapperParameter)")
+
+            append("""
+                |
+                |
+                |    private val fetchForEditDtoRowMapper = ${entityDef.fetchForEditDtoRowMapperClassDef.uqcn}($jsonMapperParameter)
+                |""".trimMargin())
+
         }
 
     }
@@ -194,20 +239,24 @@ class JdbcDaoRenderer(
 
         if (entityHierarchy.hasSubclasses()) {
 
-            blankLine()
-            blankLine()
-            appendLine("    fun insert(entity: ${entityDef.entityUqcn}) {")
-            blankLine()
-            appendLine("        when (entity) {")
+            append("""
+                |
+                |
+                |    fun insert(entity: ${entityDef.entityUqcn}) {
+                |
+                |        when (entity) {
+                |""".trimMargin())
 
             entityHierarchy.concreteEntityDefs.forEach { entityDef ->
                 addImportFor(entityDef.entityClassDef.fqcn)
                 appendLine("            is ${entityDef.entityUqcn} -> insert${entityDef.entityUqcn}(entity)")
             }
 
-            appendLine("        }")
-            blankLine()
-            appendLine("    }")
+            append("""
+                |        }
+                |
+                |    }
+                |""".trimMargin())
 
             entityHierarchy.concreteEntityDefs.forEach { entityDef ->
                 `render function insertSubclass`(entityDef)
@@ -215,14 +264,19 @@ class JdbcDaoRenderer(
 
         } else {
 
-            blankLine()
-            blankLine()
-            appendLine("    fun insert(entity: ${entityDef.entityUqcn}) {")
+            append("""
+                |
+                |
+                |    fun insert(entity: ${entityDef.entityUqcn}) {
+                |""".trimMargin())
 
             renderFunctionInsertFor(entityDef)
 
-            blankLine()
-            appendLine("    }")
+            append("""
+                |
+                |    }
+                |""".trimMargin())
+
         }
 
     }
@@ -230,12 +284,18 @@ class JdbcDaoRenderer(
 
     private fun `render function insertSubclass`(entityDef: EntityDef) {
 
-        blankLine()
-        blankLine()
-        appendLine("    private fun insert${entityDef.entityUqcn}(entity: ${entityDef.entityUqcn}) {")
+        append("""
+            |
+            |
+            |    private fun insert${entityDef.entityUqcn}(entity: ${entityDef.entityUqcn}) {
+            |""".trimMargin())
+
         renderFunctionInsertFor(entityDef)
-        blankLine()
-        appendLine("    }")
+
+        append("""
+            |
+            |    }
+            |""".trimMargin())
 
     }
 
