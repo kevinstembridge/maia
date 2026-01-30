@@ -146,6 +146,8 @@ class JdbcDaoRenderer(
         }
 
         if (entityDef.isConcrete && entityDef.entityCrudApiDef?.updateApiDef != null) {
+            blankLine()
+            blankLine()
             appendLine("    private val fetchForEditDtoRowMapper = ${entityDef.fetchForEditDtoRowMapperClassDef.uqcn}($jsonMapperParameter)")
         }
 
