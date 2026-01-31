@@ -82,6 +82,7 @@ include("maia-gen:maia-gen-spec")
 include("maia-gen:testing:maia-gen-sample")
 include("maia-gen:testing:maia-gen-testing-jdbc")
 include("maia-platform")
+include("maia-showcase:app")
 include("plugins:maia-gradle-plugin")
 
 
