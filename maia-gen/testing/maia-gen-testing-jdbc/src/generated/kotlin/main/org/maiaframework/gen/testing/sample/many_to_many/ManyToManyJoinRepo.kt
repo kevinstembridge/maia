@@ -82,7 +82,7 @@ class ManyToManyJoinRepo(
 
     fun insert(entity: ManyToManyJoinEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -98,7 +98,7 @@ class ManyToManyJoinRepo(
 
     fun setFields(updaters: List<ManyToManyJoinEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -107,7 +107,7 @@ class ManyToManyJoinRepo(
 
     fun setFields(updater: ManyToManyJoinEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 

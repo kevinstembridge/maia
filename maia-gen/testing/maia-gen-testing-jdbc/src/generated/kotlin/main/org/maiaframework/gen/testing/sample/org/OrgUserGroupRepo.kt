@@ -75,7 +75,7 @@ class OrgUserGroupRepo(
 
     fun insert(entity: OrgUserGroupEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -91,7 +91,7 @@ class OrgUserGroupRepo(
 
     fun setFields(updaters: List<OrgUserGroupEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -100,7 +100,7 @@ class OrgUserGroupRepo(
 
     fun setFields(updater: OrgUserGroupEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 

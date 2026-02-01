@@ -207,7 +207,7 @@ class SimpleRepo(
 
     fun insert(entity: SimpleEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -223,7 +223,7 @@ class SimpleRepo(
 
     fun setFields(updaters: List<SimpleEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -232,7 +232,7 @@ class SimpleRepo(
 
     fun setFields(updater: SimpleEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 
@@ -241,7 +241,7 @@ class SimpleRepo(
 
     fun upsertBySomeIntType(upsertEntity: SimpleEntity): SimpleEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeIntType(upsertEntity)
 
@@ -250,7 +250,7 @@ class SimpleRepo(
 
     fun upsertBySomeLongType(upsertEntity: SimpleEntity): SimpleEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeLongType(upsertEntity)
 
@@ -259,7 +259,7 @@ class SimpleRepo(
 
     fun upsertBySomeString(upsertEntity: SimpleEntity): SimpleEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeString(upsertEntity)
 
@@ -268,7 +268,7 @@ class SimpleRepo(
 
     fun upsertBySomeStringNullable(upsertEntity: SimpleEntity): SimpleEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeStringNullable(upsertEntity)
 
@@ -277,7 +277,7 @@ class SimpleRepo(
 
     fun upsertBySomeStringType(upsertEntity: SimpleEntity): SimpleEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeStringType(upsertEntity)
 

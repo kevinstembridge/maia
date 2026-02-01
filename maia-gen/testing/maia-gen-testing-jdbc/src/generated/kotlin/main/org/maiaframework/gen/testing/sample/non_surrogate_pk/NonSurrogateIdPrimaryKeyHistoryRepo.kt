@@ -68,7 +68,7 @@ class NonSurrogateIdPrimaryKeyHistoryRepo(
 
     fun insert(entity: NonSurrogateIdPrimaryKeyHistoryEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

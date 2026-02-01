@@ -105,7 +105,7 @@ class OrgUserGroupMembershipRepo(
 
     fun insert(entity: OrgUserGroupMembershipEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -121,7 +121,7 @@ class OrgUserGroupMembershipRepo(
 
     fun upsertByOrgUserGroupIdAndUserId(upsertEntity: OrgUserGroupMembershipEntity): DomainId {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertByOrgUserGroupIdAndUserId(upsertEntity)
 

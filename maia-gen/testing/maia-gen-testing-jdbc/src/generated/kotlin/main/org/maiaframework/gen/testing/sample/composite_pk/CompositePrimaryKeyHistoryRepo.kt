@@ -67,7 +67,7 @@ class CompositePrimaryKeyHistoryRepo(
 
     fun insert(entity: CompositePrimaryKeyHistoryEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

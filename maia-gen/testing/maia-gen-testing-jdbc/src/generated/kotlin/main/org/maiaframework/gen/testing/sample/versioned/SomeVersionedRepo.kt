@@ -89,7 +89,7 @@ class SomeVersionedRepo(
 
     fun insert(entity: SomeVersionedEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -105,7 +105,7 @@ class SomeVersionedRepo(
 
     fun setFields(updaters: List<SomeVersionedEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -114,7 +114,7 @@ class SomeVersionedRepo(
 
     fun setFields(updater: SomeVersionedEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 
@@ -123,7 +123,7 @@ class SomeVersionedRepo(
 
     fun upsertBySomeInt(upsertEntity: SomeVersionedEntity): SomeVersionedEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeInt(upsertEntity)
 

@@ -68,7 +68,7 @@ class RightRepo(
 
     fun insert(entity: RightEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

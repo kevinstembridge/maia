@@ -86,7 +86,7 @@ class WithOptionalIndexFieldRepo(
 
     fun insert(entity: WithOptionalIndexFieldEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

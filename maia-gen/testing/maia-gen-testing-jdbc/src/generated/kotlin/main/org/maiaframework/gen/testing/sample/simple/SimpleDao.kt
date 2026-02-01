@@ -37,6 +37,8 @@ class SimpleDao(
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
+
+
     private val fetchForEditDtoRowMapper = SimpleFetchForEditDtoRowMapper(jsonMapper)
 
 

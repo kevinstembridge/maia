@@ -89,7 +89,7 @@ class UnmodifiableRepo(
 
     fun insert(entity: UnmodifiableEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -105,7 +105,7 @@ class UnmodifiableRepo(
 
     fun upsertBySomeUniqueInt(upsertEntity: UnmodifiableEntity): DomainId {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeUniqueInt(upsertEntity)
 

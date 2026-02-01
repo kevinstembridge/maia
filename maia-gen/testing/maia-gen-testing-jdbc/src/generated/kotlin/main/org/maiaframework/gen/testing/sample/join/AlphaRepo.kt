@@ -68,7 +68,7 @@ class AlphaRepo(
 
     fun insert(entity: AlphaEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

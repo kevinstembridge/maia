@@ -75,7 +75,7 @@ class CharlieAgGridRepo(
 
     fun insert(entity: CharlieAgGridEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -91,7 +91,7 @@ class CharlieAgGridRepo(
 
     fun setFields(updaters: List<CharlieAgGridEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -100,7 +100,7 @@ class CharlieAgGridRepo(
 
     fun setFields(updater: CharlieAgGridEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 

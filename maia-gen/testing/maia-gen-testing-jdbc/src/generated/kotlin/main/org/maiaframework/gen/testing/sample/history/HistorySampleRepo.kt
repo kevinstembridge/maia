@@ -103,7 +103,7 @@ class HistorySampleRepo(
 
     fun insert(entity: HistorySampleEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -119,7 +119,7 @@ class HistorySampleRepo(
 
     fun setFields(updaters: List<HistorySampleEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -128,7 +128,7 @@ class HistorySampleRepo(
 
     fun setFields(updater: HistorySampleEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 
@@ -137,7 +137,7 @@ class HistorySampleRepo(
 
     fun upsertBySomeString(upsertEntity: HistorySampleEntity): HistorySampleEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeString(upsertEntity)
 

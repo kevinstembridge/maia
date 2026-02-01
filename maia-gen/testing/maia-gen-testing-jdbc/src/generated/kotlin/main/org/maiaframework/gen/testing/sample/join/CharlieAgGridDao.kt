@@ -25,6 +25,8 @@ class CharlieAgGridDao(
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
+
+
     private val fetchForEditDtoRowMapper = CharlieAgGridFetchForEditDtoRowMapper()
 
 

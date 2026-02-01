@@ -25,6 +25,8 @@ class CharlieDao(
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
+
+
     private val fetchForEditDtoRowMapper = CharlieFetchForEditDtoRowMapper()
 
 

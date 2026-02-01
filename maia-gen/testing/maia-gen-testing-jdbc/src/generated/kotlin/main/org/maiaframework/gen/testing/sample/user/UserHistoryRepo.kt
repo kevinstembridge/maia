@@ -68,7 +68,7 @@ class UserHistoryRepo(
 
     fun insert(entity: UserHistoryEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

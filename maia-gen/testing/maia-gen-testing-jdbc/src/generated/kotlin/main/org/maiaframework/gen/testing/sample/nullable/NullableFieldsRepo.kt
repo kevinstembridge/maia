@@ -89,7 +89,7 @@ class NullableFieldsRepo(
 
     fun insert(entity: NullableFieldsEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -105,7 +105,7 @@ class NullableFieldsRepo(
 
     fun upsertBySomeString(upsertEntity: NullableFieldsEntity): DomainId {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeString(upsertEntity)
 

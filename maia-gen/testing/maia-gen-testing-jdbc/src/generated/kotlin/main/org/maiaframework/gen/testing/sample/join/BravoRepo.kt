@@ -75,7 +75,7 @@ class BravoRepo(
 
     fun insert(entity: BravoEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

@@ -433,7 +433,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |
             |    fun insert(entity: ${this.entityDef.entityUqcn}) {
             |
-            |        logger.debug("insert ${"$"}entity")
+            |        logger.debug("insert {}", entity)
             |
             |        this.dao.insert(entity)
             |
@@ -537,7 +537,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             |
             |    fun setFields(updaters: List<${entityDef.entityUpdaterClassDef.uqcn}>) {
             |
-            |        logger.debug("setFields ${"$"}updaters")
+            |        logger.debug("setFields {}", updaters)
             |
             |        updaters.forEach { setFields(it) }
             |
@@ -563,7 +563,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
                 |
                 |    fun setFields(updater: $${this.entityDef.entityUpdaterClassDef.uqcn}): Int {
                 |
-                |        logger.debug("setFields $updater")
+                |        logger.debug("setFields {}", updater)
                 |
                 |        val updatedCount = this.dao.setFields(updater)
                 |
@@ -584,7 +584,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
                 |
                 |    fun setFields(updater: ${this.entityDef.entityUpdaterClassDef.uqcn}): Int {
                 |
-                |        logger.debug("setFields ${"$"}updater")
+                |        logger.debug("setFields {}", updater)
                 |
                 |        return this.dao.setFields(updater)
                 |
@@ -645,7 +645,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         blankLine()
         appendLine("    fun upsertBy${uniqueFieldNamesAnded}(upsertEntity: ${this.entityDef.entityUqcn}): ${entityDef.entityUqcn} {")
         blankLine()
-        appendLine($$"        logger.debug(\"upsert $upsertEntity\")")
+        appendLine($$"        logger.debug(\"upsert {}\", upsertEntity)")
         blankLine()
 
         if (cacheable) {
@@ -670,7 +670,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         blankLine()
         appendLine("    fun upsertBy${uniqueFieldNamesAnded}(upsertEntity: ${this.entityDef.entityUqcn}): DomainId {")
         blankLine()
-        appendLine("        logger.debug(\"upsert \$upsertEntity\")")
+        appendLine("        logger.debug(\"upsert {}\", upsertEntity)")
         blankLine()
 
         if (cacheable) {

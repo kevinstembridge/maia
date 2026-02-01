@@ -75,7 +75,7 @@ class CharlieRepo(
 
     fun insert(entity: CharlieEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -91,7 +91,7 @@ class CharlieRepo(
 
     fun setFields(updaters: List<CharlieEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -100,7 +100,7 @@ class CharlieRepo(
 
     fun setFields(updater: CharlieEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 

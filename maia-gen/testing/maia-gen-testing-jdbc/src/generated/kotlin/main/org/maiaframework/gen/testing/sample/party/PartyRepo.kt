@@ -68,7 +68,7 @@ class PartyRepo(
 
     fun insert(entity: PartyEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -84,7 +84,7 @@ class PartyRepo(
 
     fun setFields(updaters: List<PartyEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -93,7 +93,7 @@ class PartyRepo(
 
     fun setFields(updater: PartyEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 

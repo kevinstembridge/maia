@@ -76,7 +76,7 @@ class TtlRepo(
 
     fun insert(entity: TtlEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

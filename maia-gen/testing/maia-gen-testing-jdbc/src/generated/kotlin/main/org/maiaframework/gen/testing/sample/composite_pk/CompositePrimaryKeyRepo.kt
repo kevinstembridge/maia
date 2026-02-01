@@ -79,7 +79,7 @@ class CompositePrimaryKeyRepo(
 
     fun insert(entity: CompositePrimaryKeyEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -95,7 +95,7 @@ class CompositePrimaryKeyRepo(
 
     fun setFields(updaters: List<CompositePrimaryKeyEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -104,7 +104,7 @@ class CompositePrimaryKeyRepo(
 
     fun setFields(updater: CompositePrimaryKeyEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         val updatedCount = this.dao.setFields(updater)
 
@@ -119,7 +119,7 @@ class CompositePrimaryKeyRepo(
 
     fun upsertBySomeStringAndSomeInt(upsertEntity: CompositePrimaryKeyEntity): CompositePrimaryKeyEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         val upsertedEntity = dao.upsertBySomeStringAndSomeInt(upsertEntity)
         this.cache.evict(upsertedEntity.primaryKey)

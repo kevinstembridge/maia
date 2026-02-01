@@ -32,6 +32,8 @@ class UserDao(
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
+
+
     private val fetchForEditDtoRowMapper = UserFetchForEditDtoRowMapper()
 
 

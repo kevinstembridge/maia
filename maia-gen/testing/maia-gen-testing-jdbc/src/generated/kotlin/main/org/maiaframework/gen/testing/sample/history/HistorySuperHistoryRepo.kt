@@ -82,7 +82,7 @@ class HistorySuperHistoryRepo(
 
     fun insert(entity: HistorySuperHistoryEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

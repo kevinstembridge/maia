@@ -68,7 +68,7 @@ class NonSurrogateIdPrimaryKeyRepo(
 
     fun insert(entity: NonSurrogateIdPrimaryKeyEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -84,7 +84,7 @@ class NonSurrogateIdPrimaryKeyRepo(
 
     fun setFields(updaters: List<NonSurrogateIdPrimaryKeyEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -93,7 +93,7 @@ class NonSurrogateIdPrimaryKeyRepo(
 
     fun setFields(updater: NonSurrogateIdPrimaryKeyEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 
@@ -102,7 +102,7 @@ class NonSurrogateIdPrimaryKeyRepo(
 
     fun upsertById(upsertEntity: NonSurrogateIdPrimaryKeyEntity): NonSurrogateIdPrimaryKeyEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertById(upsertEntity)
 

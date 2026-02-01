@@ -85,7 +85,7 @@ class OrgUserGroupMembershipHistoryRepo(
 
     fun insert(entity: OrgUserGroupMembershipHistoryEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

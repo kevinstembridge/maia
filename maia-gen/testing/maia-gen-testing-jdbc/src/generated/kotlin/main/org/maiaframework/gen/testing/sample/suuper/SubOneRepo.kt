@@ -103,7 +103,7 @@ class SubOneRepo(
 
     fun insert(entity: SubOneEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -119,7 +119,7 @@ class SubOneRepo(
 
     fun setFields(updaters: List<SubOneEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -128,7 +128,7 @@ class SubOneRepo(
 
     fun setFields(updater: SubOneEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 
@@ -137,7 +137,7 @@ class SubOneRepo(
 
     fun upsertBySomeUniqueString(upsertEntity: SubOneEntity): SubOneEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeUniqueString(upsertEntity)
 

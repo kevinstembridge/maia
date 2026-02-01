@@ -101,7 +101,7 @@ class VerySimpleRepo(
 
     fun insert(entity: VerySimpleEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -117,7 +117,7 @@ class VerySimpleRepo(
 
     fun setFields(updaters: List<VerySimpleEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -126,7 +126,7 @@ class VerySimpleRepo(
 
     fun setFields(updater: VerySimpleEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         val updatedCount = this.dao.setFields(updater)
 
@@ -141,7 +141,7 @@ class VerySimpleRepo(
 
     fun upsertBySomeString(upsertEntity: VerySimpleEntity): VerySimpleEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         val upsertedEntity = dao.upsertBySomeString(upsertEntity)
         this.cache.evict(upsertedEntity.id)

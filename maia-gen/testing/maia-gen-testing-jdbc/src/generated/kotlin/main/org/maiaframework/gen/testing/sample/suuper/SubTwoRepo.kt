@@ -103,7 +103,7 @@ class SubTwoRepo(
 
     fun insert(entity: SubTwoEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -119,7 +119,7 @@ class SubTwoRepo(
 
     fun setFields(updaters: List<SubTwoEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -128,7 +128,7 @@ class SubTwoRepo(
 
     fun setFields(updater: SubTwoEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
 
@@ -137,7 +137,7 @@ class SubTwoRepo(
 
     fun upsertBySomeUniqueString(upsertEntity: SubTwoEntity): SubTwoEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeUniqueString(upsertEntity)
 

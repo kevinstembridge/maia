@@ -68,7 +68,7 @@ class PartyHistoryRepo(
 
     fun insert(entity: PartyHistoryEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

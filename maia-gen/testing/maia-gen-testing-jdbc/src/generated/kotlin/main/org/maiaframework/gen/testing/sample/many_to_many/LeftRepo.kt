@@ -68,7 +68,7 @@ class LeftRepo(
 
     fun insert(entity: LeftEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
