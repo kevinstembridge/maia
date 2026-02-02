@@ -1,0 +1,12 @@
+
+server:
+  port: 3200
+
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5433/maia_db"
+    password: maia_app_password
+    username: maia_app
+  flyway:
+    user: maia_owner
+    password: maia_owner_password
