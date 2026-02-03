@@ -8,6 +8,8 @@ dependencies {
 
     implementation(platform(project(":maia-platform")))
 
+    implementation(project(":libs:maia-props-parent:maia-props-spring-boot-starter"))
+
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.springframework.boot:spring-boot-starter-hazelcast")
@@ -19,6 +21,11 @@ dependencies {
     implementation("tools.jackson.module:jackson-module-kotlin")
 
     runtimeOnly("org.postgresql:postgresql")
+
+    testImplementation(project(":libs:maia-domain"))
+    testImplementation(project(":libs:maia-jdbc"))
+    testImplementation(project(":libs:maia-testing:maia-testing-domain"))
+    testImplementation(project(":libs:maia-testing:maia-testing-postgresql"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
     testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")

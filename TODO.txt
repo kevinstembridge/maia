@@ -1,0 +1,6 @@
+
+TODO * Maia Showcase
+    TODO * Create a test harness
+        TODO * Create AbstractBlackBoxTest in maia-showcase:app
+        TODO * Create test for AllFieldTypesEntity
+    TODO * Generate DAO layer
