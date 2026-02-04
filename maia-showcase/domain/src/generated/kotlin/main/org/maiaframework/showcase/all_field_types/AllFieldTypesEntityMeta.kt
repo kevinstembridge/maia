@@ -12,11 +12,15 @@ import org.maiaframework.jdbc.TableName
 
 object AllFieldTypesEntityMeta {
 
+    const val createdById = "created_by_id"
+
     const val createdByUsername = "created_by_name"
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
     const val id = "id"
+
+    const val lastModifiedById = "last_modified_by_id"
 
     const val lastModifiedByUsername = "last_modified_by_name"
 
@@ -112,7 +116,7 @@ object AllFieldTypesEntityMeta {
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
 
-    val SCHEMA_NAME = SchemaName("maia-showcase")
+    val SCHEMA_NAME = SchemaName("maia_showcase")
 
     val TABLE_NAME = TableName("all_field_types")
 
@@ -139,9 +143,11 @@ object AllFieldTypesEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
+            "createdById" -> "created_by_id"
             "createdByUsername" -> "created_by_name"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
+            "lastModifiedById" -> "last_modified_by_id"
             "lastModifiedByUsername" -> "last_modified_by_name"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "someBoolean" -> "some_boolean"

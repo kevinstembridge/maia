@@ -9,6 +9,7 @@ dependencies {
     implementation(platform(project(":maia-platform")))
 
     implementation(project(":libs:maia-props-parent:maia-props-spring-boot-starter"))
+    implementation(project(":libs:maia-problem-parent:maia-problem-starter"))
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
@@ -26,6 +27,8 @@ dependencies {
     testImplementation(project(":libs:maia-jdbc"))
     testImplementation(project(":libs:maia-testing:maia-testing-domain"))
     testImplementation(project(":libs:maia-testing:maia-testing-postgresql"))
+    testImplementation(project(":maia-showcase:dao"))
+    testImplementation(project(":maia-showcase:domain"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
     testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")

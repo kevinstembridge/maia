@@ -53,6 +53,14 @@ class AllFieldTypesEntityFilters {
     }
 
 
+    val createdById: FieldFilter<DomainId> 
+        get() {
+
+            return FieldFilter("created_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+
+        }
+
+
     val createdByUsername: FieldFilter<String> 
         get() {
 
@@ -73,6 +81,14 @@ class AllFieldTypesEntityFilters {
         get() {
 
             return FieldFilter("id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+
+        }
+
+
+    val lastModifiedById: FieldFilter<DomainId> 
+        get() {
+
+            return FieldFilter("last_modified_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 

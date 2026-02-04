@@ -38,6 +38,8 @@ class FeatureToggleDao(
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readString("feature_name") { FeatureName(it) } }
+
+
     private val fetchForEditDtoRowMapper = FeatureToggleFetchForEditDtoRowMapper(jsonMapper)
 
 

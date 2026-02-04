@@ -86,7 +86,7 @@ class FeatureToggleRepo(
 
     fun insert(entity: FeatureToggleEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 
@@ -102,7 +102,7 @@ class FeatureToggleRepo(
 
     fun setFields(updaters: List<FeatureToggleEntityUpdater>) {
 
-        logger.debug("setFields $updaters")
+        logger.debug("setFields {}", updaters)
 
         updaters.forEach { setFields(it) }
 
@@ -111,7 +111,7 @@ class FeatureToggleRepo(
 
     fun setFields(updater: FeatureToggleEntityUpdater): Int {
 
-        logger.debug("setFields $updater")
+        logger.debug("setFields {}", updater)
 
         val updatedCount = this.dao.setFields(updater)
 
@@ -126,7 +126,7 @@ class FeatureToggleRepo(
 
     fun upsertByFeatureName(upsertEntity: FeatureToggleEntity): FeatureToggleEntity {
 
-        logger.debug("upsert $upsertEntity")
+        logger.debug("upsert {}", upsertEntity)
 
         val upsertedEntity = dao.upsertByFeatureName(upsertEntity)
         this.cache.evict(upsertedEntity.featureName)

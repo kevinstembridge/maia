@@ -20,9 +20,11 @@ import java.time.Period
 
 
 class AllFieldTypesEntity(
+    val createdById: DomainId,
     val createdByUsername: String,
     val createdTimestampUtc: Instant,
     val id: DomainId,
+    val lastModifiedById: DomainId,
     val lastModifiedByUsername: String,
     val lastModifiedTimestampUtc: Instant,
     val someBoolean: Boolean,
@@ -74,9 +76,11 @@ class AllFieldTypesEntity(
     override fun toString(): String {
 
         return "AllFieldTypesEntity{" +
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdByUsername = '" + this.createdByUsername + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "someBoolean = '" + this.someBoolean + '\'' + ", " + 
@@ -137,6 +141,7 @@ class AllFieldTypesEntity(
 
         @JvmStatic
         fun newInstance(
+            createdById: DomainId,
             createdByUsername: String,
             lastModifiedByUsername: String,
             someBoolean: Boolean,
@@ -187,11 +192,14 @@ class AllFieldTypesEntity(
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedById = createdById
 
             return AllFieldTypesEntity(
+                createdById,
                 createdByUsername,
                 createdTimestampUtc,
                 id,
+                lastModifiedById,
                 lastModifiedByUsername,
                 lastModifiedTimestampUtc,
                 someBoolean,

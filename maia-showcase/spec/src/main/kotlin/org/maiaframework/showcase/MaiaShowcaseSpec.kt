@@ -9,7 +9,10 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.Fqcn
 
 
-class MaiaShowcaseSpec : AbstractSpec(AppKey("maia-showcase")) {
+class MaiaShowcaseSpec : AbstractSpec(AppKey("maia_showcase")) {
+
+
+    private val partySpec = MaiaShowcasePartySpec()
 
 
     val someEnumDef = enumDef("org.maiaframework.showcase.enums.SomeEnum") {
@@ -183,7 +186,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia-showcase")) {
         field("someMapOfStringTypeToStringType", fieldMapOf(someStringTypeDef).to(someStringTypeDef))
         field("someDto", simpleResponseDtoDef)
         field("someDtoNullable", simpleResponseDtoDef) { nullable() }
+        field_createdById(partySpec.partyEntityDef)
         field_createdByName()
+        field_lastModifiedById(partySpec.partyEntityDef)
         field_lastModifiedByName()
         field_lastModifiedTimestampUtc()
         index {
@@ -191,7 +196,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia-showcase")) {
             withFieldAscending("someBoolean")
         }
         crud {
-            apis {
+            apis(defaultAuthority = partySpec.adminAuthority) {
                 create()
                 update()
                 delete()

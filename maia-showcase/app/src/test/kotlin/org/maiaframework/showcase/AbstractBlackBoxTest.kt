@@ -4,14 +4,14 @@ import tools.jackson.databind.json.JsonMapper
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
-import org.maiaframework.gen.testing.sample.user.UserDao
-import org.maiaframework.gen.testing.sample.user.UserEntity
-import org.maiaframework.gen.testing.sample.user.UserEntityMeta
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.postgresql.SingletonPostgresqlContainer
 import org.junit.jupiter.api.BeforeEach
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.showcase.user.UserDao
+import org.maiaframework.showcase.user.UserEntity
+import org.maiaframework.showcase.user.UserEntityMeta
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest

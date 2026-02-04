@@ -67,7 +67,7 @@ class FeatureToggleHistoryRepo(
 
     fun insert(entity: FeatureToggleHistoryEntity) {
 
-        logger.debug("insert $entity")
+        logger.debug("insert {}", entity)
 
         this.dao.insert(entity)
 

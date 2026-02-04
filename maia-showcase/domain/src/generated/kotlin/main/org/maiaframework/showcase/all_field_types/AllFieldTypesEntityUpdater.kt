@@ -106,6 +106,13 @@ data class AllFieldTypesEntityUpdater(
         }
 
 
+        fun lastModifiedById(lastModifiedById: DomainId) {
+
+            this.fields.add(FieldUpdate("lastModifiedById", "last_modified_by_id", lastModifiedById))
+
+        }
+
+
     }
 
 

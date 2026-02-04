@@ -29,11 +29,15 @@ class AllFieldTypesEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
+            "created_by_id" -> // createdById
+                return (inputValue as DomainId).value
             "created_by_name" -> // createdByUsername
                 return inputValue
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id
+                return (inputValue as DomainId).value
+            "last_modified_by_id" -> // lastModifiedById
                 return (inputValue as DomainId).value
             "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue
