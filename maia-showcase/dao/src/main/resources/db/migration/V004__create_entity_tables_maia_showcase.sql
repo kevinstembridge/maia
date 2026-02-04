@@ -63,6 +63,15 @@ CREATE UNIQUE INDEX all_field_types_some_string_type_uidx ON maia.all_field_type
 CREATE INDEX all_field_types_some_boolean_some_string_modifiable_idx ON maia.all_field_types(some_boolean, some_string_modifiable);
 
 
+CREATE TABLE maia.simple (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+CREATE UNIQUE INDEX simple_some_string_uidx ON maia.simple(some_string);
+
+
 CREATE TABLE maia.effective_timestamp (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     effective_from timestamp(3) with time zone NULL,

@@ -205,6 +205,19 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val simpleEntityDef = entity(
+        "org.maiaframework.showcase.simple",
+        "Simple"
+    ) {
+        cacheable {  }
+        field("someString", FieldTypes.string) {
+            lengthConstraint(max = 100)
+            editableByUser()
+            unique()
+        }
+    }
+
+
     val effectiveTimestampEntityDef = entity(
         "org.maiaframework.showcase.effective_dated",
         "EffectiveTimestamp",

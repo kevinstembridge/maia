@@ -5,14 +5,19 @@ package maia.hazelcast
 
 import com.hazelcast.config.MapConfig
 import com.hazelcast.nio.serialization.compact.CompactSerializer
+import org.maiaframework.showcase.simple.SimpleEntity
+import org.maiaframework.showcase.simple.SimpleSerializer
 import org.springframework.stereotype.Component
 
 
 @Component
-class MaiaHazelcastConfig {
+class MaiaHazelcastConfig(
+    private val simpleSerializer: SimpleSerializer
+) {
 
 
     val serializers: List<CompactSerializer<out Any>> = listOf(
+        simpleSerializer,
     )
 
 
