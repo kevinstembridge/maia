@@ -205,4 +205,20 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val effectiveTimestampEntityDef = entity(
+        "org.maiaframework.showcase.effective_dated",
+        "EffectiveTimestamp",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE
+    ) {
+        withEffectiveTimestamps()
+        field("someString", FieldTypes.string) {
+            lengthConstraint(max = 100)
+        }
+        index {
+            withFieldAscending("someString")
+        }
+    }
+
+
 }
