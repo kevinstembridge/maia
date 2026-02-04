@@ -41,7 +41,7 @@ class UserGroupHistoryDao(
 
         jdbcOps.update(
             """
-            insert into testing.user_group_history (
+            insert into maia.user_group_history (
                 type_discriminator,
                 authorities,
                 change_type,
@@ -86,7 +86,7 @@ class UserGroupHistoryDao(
 
         jdbcOps.update(
             """
-            insert into testing.user_group_history (
+            insert into maia.user_group_history (
                 type_discriminator,
                 authorities,
                 change_type,
@@ -128,7 +128,7 @@ class UserGroupHistoryDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.user_group_history (
+            insert into maia.user_group_history (
                 type_discriminator,
                 authorities,
                 change_type,
@@ -171,7 +171,7 @@ class UserGroupHistoryDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.user_group_history",
+            "select count(*) from maia.user_group_history",
             SqlParams()
         )
 
@@ -187,7 +187,7 @@ class UserGroupHistoryDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.user_group_history
+            select count(*) from maia.user_group_history
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -217,7 +217,7 @@ class UserGroupHistoryDao(
     fun findByPrimaryKeyOrNull(primaryKey: UserGroupHistoryEntityPk): UserGroupHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.user_group_history where id = :id and version = :version",
+            "select * from maia.user_group_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", primaryKey.id)
                 addValue("version", primaryKey.version)
@@ -231,7 +231,7 @@ class UserGroupHistoryDao(
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.user_group_history where id = :id and version = :version",
+            "select count(*) from maia.user_group_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", id)
                 addValue("version", version)
@@ -250,7 +250,7 @@ class UserGroupHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.user_group_history where $whereClause",
+            "select * from maia.user_group_history where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -266,7 +266,7 @@ class UserGroupHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, version from testing.user_group_history where $whereClause",
+            "select id, version from maia.user_group_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -277,7 +277,7 @@ class UserGroupHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<UserGroupHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, version from testing.user_group_history;",
+            "select id, version from maia.user_group_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )
@@ -297,7 +297,7 @@ class UserGroupHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.user_group_history where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.user_group_history where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -330,7 +330,7 @@ class UserGroupHistoryDao(
     fun findAllAsSequence(): Sequence<UserGroupHistoryEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.user_group_history;",
+            "select * from maia.user_group_history;",
             SqlParams(),
             this.entityRowMapper,
         )

@@ -10,7 +10,7 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("sample_party"), defaultSchemaName = SchemaName("testing")) {
+class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("sample_party"), defaultSchemaName = SchemaName("maia")) {
 
 
     val opsAuthority = authority("SYS___OPS") {

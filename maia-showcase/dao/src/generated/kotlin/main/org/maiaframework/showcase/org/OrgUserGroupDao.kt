@@ -35,7 +35,7 @@ class OrgUserGroupDao(
 
         jdbcOps.update(
             """
-            insert into testing.user_group (
+            insert into maia.user_group (
                 type_discriminator,
                 authorities,
                 created_timestamp_utc,
@@ -78,7 +78,7 @@ class OrgUserGroupDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.user_group (
+            insert into maia.user_group (
                 type_discriminator,
                 authorities,
                 created_timestamp_utc,
@@ -172,7 +172,7 @@ class OrgUserGroupDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.user_group",
+            "select count(*) from maia.user_group",
             SqlParams()
         )
 
@@ -188,7 +188,7 @@ class OrgUserGroupDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.user_group
+            select count(*) from maia.user_group
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -217,7 +217,7 @@ class OrgUserGroupDao(
     fun findByPrimaryKeyOrNull(id: DomainId): OrgUserGroupEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.user_group where id = :id",
+            "select * from maia.user_group where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -230,7 +230,7 @@ class OrgUserGroupDao(
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.user_group where id = :id",
+            "select count(*) from maia.user_group where id = :id",
             SqlParams().apply {
                 addValue("id", id)
            }
@@ -248,7 +248,7 @@ class OrgUserGroupDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.user_group where $whereClause",
+            "select * from maia.user_group where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -264,7 +264,7 @@ class OrgUserGroupDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.user_group where $whereClause",
+            "select id from maia.user_group where $whereClause",
             sqlParams,
             { rsa -> rsa.readDomainId("id") }
         )
@@ -275,7 +275,7 @@ class OrgUserGroupDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.user_group;",
+            "select id from maia.user_group;",
             SqlParams(),
             { rsa -> rsa.readDomainId("id") }
         )
@@ -295,7 +295,7 @@ class OrgUserGroupDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.user_group where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.user_group where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -328,7 +328,7 @@ class OrgUserGroupDao(
     fun findAllAsSequence(): Sequence<OrgUserGroupEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.user_group;",
+            "select * from maia.user_group;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -340,7 +340,7 @@ class OrgUserGroupDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from testing.user_group
+            select count(*) from maia.user_group
             where org_id = :orgId
             """.trimIndent(),
             SqlParams().apply {
@@ -365,7 +365,7 @@ class OrgUserGroupDao(
         val sql = StringBuilder()
         val sqlParams = SqlParams()
 
-        sql.append("update testing.user_group set ")
+        sql.append("update maia.user_group set ")
 
         val fieldClauses = updater.fields
             .plus(FieldUpdate("version_incremented", "version", updater.version + 1))

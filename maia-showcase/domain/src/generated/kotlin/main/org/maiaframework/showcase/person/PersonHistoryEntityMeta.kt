@@ -39,7 +39,7 @@ object PersonHistoryEntityMeta {
 
     val TYPE_DISCRIMINATORS = sortedSetOf(TypeDiscriminator("PER"), TypeDiscriminator("USR"))
 
-    val SCHEMA_NAME = SchemaName("testing")
+    val SCHEMA_NAME = SchemaName("maia")
 
     val TABLE_NAME = TableName("v_party_history")
 

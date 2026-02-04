@@ -29,7 +29,7 @@ class OrgUserGroupMembershipHistoryDao(
 
         jdbcOps.update(
             """
-            insert into testing.org_user_group_membership_history (
+            insert into maia.org_user_group_membership_history (
                 change_type,
                 created_timestamp_utc,
                 id,
@@ -62,7 +62,7 @@ class OrgUserGroupMembershipHistoryDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.org_user_group_membership_history (
+            insert into maia.org_user_group_membership_history (
                 change_type,
                 created_timestamp_utc,
                 id,
@@ -96,7 +96,7 @@ class OrgUserGroupMembershipHistoryDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.org_user_group_membership_history",
+            "select count(*) from maia.org_user_group_membership_history",
             SqlParams()
         )
 
@@ -112,7 +112,7 @@ class OrgUserGroupMembershipHistoryDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.org_user_group_membership_history
+            select count(*) from maia.org_user_group_membership_history
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -142,7 +142,7 @@ class OrgUserGroupMembershipHistoryDao(
     fun findByPrimaryKeyOrNull(primaryKey: OrgUserGroupMembershipHistoryEntityPk): OrgUserGroupMembershipHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.org_user_group_membership_history where id = :id and version = :version",
+            "select * from maia.org_user_group_membership_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", primaryKey.id)
                 addValue("version", primaryKey.version)
@@ -156,7 +156,7 @@ class OrgUserGroupMembershipHistoryDao(
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.org_user_group_membership_history where id = :id and version = :version",
+            "select count(*) from maia.org_user_group_membership_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", id)
                 addValue("version", version)
@@ -174,7 +174,7 @@ class OrgUserGroupMembershipHistoryDao(
 
         return jdbcOps.queryForList(
             """
-            select * from testing.org_user_group_membership_history
+            select * from maia.org_user_group_membership_history
             where org_user_group_id = :orgUserGroupId
             and user_id = :userId
             """.trimIndent(),
@@ -192,7 +192,7 @@ class OrgUserGroupMembershipHistoryDao(
 
         return jdbcOps.queryForList(
             """
-            select * from testing.org_user_group_membership_history
+            select * from maia.org_user_group_membership_history
             where user_id = :userId
             """.trimIndent(),
             SqlParams().apply {
@@ -212,7 +212,7 @@ class OrgUserGroupMembershipHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.org_user_group_membership_history where $whereClause",
+            "select * from maia.org_user_group_membership_history where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -228,7 +228,7 @@ class OrgUserGroupMembershipHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, version from testing.org_user_group_membership_history where $whereClause",
+            "select id, version from maia.org_user_group_membership_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -239,7 +239,7 @@ class OrgUserGroupMembershipHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<OrgUserGroupMembershipHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, version from testing.org_user_group_membership_history;",
+            "select id, version from maia.org_user_group_membership_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )
@@ -259,7 +259,7 @@ class OrgUserGroupMembershipHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.org_user_group_membership_history where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.org_user_group_membership_history where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -292,7 +292,7 @@ class OrgUserGroupMembershipHistoryDao(
     fun findAllAsSequence(): Sequence<OrgUserGroupMembershipHistoryEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.org_user_group_membership_history;",
+            "select * from maia.org_user_group_membership_history;",
             SqlParams(),
             this.entityRowMapper,
         )

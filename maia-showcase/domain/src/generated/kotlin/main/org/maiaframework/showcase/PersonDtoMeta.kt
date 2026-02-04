@@ -12,11 +12,11 @@ object PersonDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.v_party.created_timestamp_utc"
-            "displayName" -> "testing.v_party.display_name"
-            "firstName" -> "testing.v_party.first_name"
-            "id" -> "testing.v_party.id"
-            "lastName" -> "testing.v_party.last_name"
+            "createdTimestampUtc" -> "maia.v_party.created_timestamp_utc"
+            "displayName" -> "maia.v_party.display_name"
+            "firstName" -> "maia.v_party.first_name"
+            "id" -> "maia.v_party.id"
+            "lastName" -> "maia.v_party.last_name"
             else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, displayName, firstName, id, lastName]")
         }
 

@@ -29,7 +29,7 @@ class OrganizationHistoryDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party_history (
+            insert into maia.v_party_history (
                 type_discriminator,
                 change_type,
                 created_timestamp_utc,
@@ -71,7 +71,7 @@ class OrganizationHistoryDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.v_party_history (
+            insert into maia.v_party_history (
                 type_discriminator,
                 change_type,
                 created_timestamp_utc,
@@ -114,7 +114,7 @@ class OrganizationHistoryDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.v_party_history",
+            "select count(*) from maia.v_party_history",
             SqlParams()
         )
 
@@ -130,7 +130,7 @@ class OrganizationHistoryDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.v_party_history
+            select count(*) from maia.v_party_history
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -160,7 +160,7 @@ class OrganizationHistoryDao(
     fun findByPrimaryKeyOrNull(primaryKey: OrganizationHistoryEntityPk): OrganizationHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.v_party_history where id = :id and version = :version",
+            "select * from maia.v_party_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", primaryKey.id)
                 addValue("version", primaryKey.version)
@@ -174,7 +174,7 @@ class OrganizationHistoryDao(
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.v_party_history where id = :id and version = :version",
+            "select count(*) from maia.v_party_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", id)
                 addValue("version", version)
@@ -193,7 +193,7 @@ class OrganizationHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party_history where $whereClause",
+            "select * from maia.v_party_history where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -209,7 +209,7 @@ class OrganizationHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, version from testing.v_party_history where $whereClause",
+            "select id, version from maia.v_party_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -220,7 +220,7 @@ class OrganizationHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<OrganizationHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, version from testing.v_party_history;",
+            "select id, version from maia.v_party_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )
@@ -240,7 +240,7 @@ class OrganizationHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party_history where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.v_party_history where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -273,7 +273,7 @@ class OrganizationHistoryDao(
     fun findAllAsSequence(): Sequence<OrganizationHistoryEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.v_party_history;",
+            "select * from maia.v_party_history;",
             SqlParams(),
             this.entityRowMapper,
         )

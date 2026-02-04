@@ -12,10 +12,10 @@ object OrgDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "testing.v_party.created_timestamp_utc"
-            "displayName" -> "testing.v_party.display_name"
-            "id" -> "testing.v_party.id"
-            "orgName" -> "testing.v_party.org_name"
+            "createdTimestampUtc" -> "maia.v_party.created_timestamp_utc"
+            "displayName" -> "maia.v_party.display_name"
+            "id" -> "maia.v_party.id"
+            "orgName" -> "maia.v_party.org_name"
             else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, displayName, id, orgName]")
         }
 

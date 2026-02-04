@@ -26,7 +26,7 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 @SpringBootTest(
-    classes = [MaiaShowcaseTestConfiguration::class],
+//    classes = [MaiaShowcaseTestConfiguration::class],
     properties = ["debug=false"],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )

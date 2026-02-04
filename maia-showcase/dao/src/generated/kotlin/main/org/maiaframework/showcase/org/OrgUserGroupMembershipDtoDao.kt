@@ -35,16 +35,16 @@ class OrgUserGroupMembershipDtoDao(
 
         val sqlForTotalCount = """
             select count(*)
-            from testing.org_user_group_membership
+            from maia.org_user_group_membership
             $whereClause
             """.trimIndent()
 
         val sqlForPage = """
             select
-                testing.org_user_group_membership.id as id,
-                testing.org_user_group_membership.org_user_group_id as orgUserGroupId,
-                testing.org_user_group_membership.user_id as userId
-            from testing.org_user_group_membership
+                maia.org_user_group_membership.id as id,
+                maia.org_user_group_membership.org_user_group_id as orgUserGroupId,
+                maia.org_user_group_membership.user_id as userId
+            from maia.org_user_group_membership
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -72,7 +72,7 @@ class OrgUserGroupMembershipDtoDao(
 
         val sqlForTotalCount = """
             select count(*)
-            from testing.org_user_group_membership
+            from maia.org_user_group_membership
             $whereClause
             """.trimIndent()
 

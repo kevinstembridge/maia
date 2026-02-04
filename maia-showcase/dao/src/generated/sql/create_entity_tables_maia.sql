@@ -2,12 +2,12 @@
 -- Renderer class: class org.maiaframework.gen.renderers.CreateTableSqlRenderer
 
 
-CREATE TABLE maia_showcase.all_field_types (
-    created_by_id uuid NOT NULL REFERENCES testing.party(id),
+CREATE TABLE maia.all_field_types (
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
     created_by_name text NOT NULL,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    last_modified_by_id uuid NOT NULL REFERENCES testing.party(id),
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
     last_modified_by_name text NOT NULL,
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_boolean boolean NOT NULL,
@@ -55,9 +55,9 @@ CREATE TABLE maia_showcase.all_field_types (
     some_string_type_nullable text NULL,
     PRIMARY KEY(id)
 );
-CREATE UNIQUE INDEX all_field_types_some_int_type_uidx ON maia_showcase.all_field_types(some_int_type);
-CREATE UNIQUE INDEX all_field_types_some_long_type_uidx ON maia_showcase.all_field_types(some_long_type);
-CREATE UNIQUE INDEX all_field_types_some_string_uidx ON maia_showcase.all_field_types(some_string);
-CREATE UNIQUE INDEX all_field_types_some_string_nullable_uidx ON maia_showcase.all_field_types(some_string_nullable);
-CREATE UNIQUE INDEX all_field_types_some_string_type_uidx ON maia_showcase.all_field_types(some_string_type);
-CREATE INDEX all_field_types_some_boolean_some_string_modifiable_idx ON maia_showcase.all_field_types(some_boolean, some_string_modifiable);
+CREATE UNIQUE INDEX all_field_types_some_int_type_uidx ON maia.all_field_types(some_int_type);
+CREATE UNIQUE INDEX all_field_types_some_long_type_uidx ON maia.all_field_types(some_long_type);
+CREATE UNIQUE INDEX all_field_types_some_string_uidx ON maia.all_field_types(some_string);
+CREATE UNIQUE INDEX all_field_types_some_string_nullable_uidx ON maia.all_field_types(some_string_nullable);
+CREATE UNIQUE INDEX all_field_types_some_string_type_uidx ON maia.all_field_types(some_string_type);
+CREATE INDEX all_field_types_some_boolean_some_string_modifiable_idx ON maia.all_field_types(some_boolean, some_string_modifiable);

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.mock.env.MockEnvironment
 
-@Configuration
+//@Configuration
 class MaiaShowcaseTestConfiguration {
 
 

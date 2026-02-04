@@ -37,20 +37,20 @@ class UserDtoDao(
 
         val sqlForTotalCount = """
             select count(*)
-            from testing.v_party
+            from maia.v_party
             $whereClause
             """.trimIndent()
 
         val sqlForPage = """
             select
-                testing.v_party.created_timestamp_utc as createdTimestampUtc,
-                testing.v_party.display_name as displayName,
-                testing.v_party.encrypted_password as encryptedPassword,
-                testing.v_party.first_name as firstName,
-                testing.v_party.id as id,
-                testing.v_party.last_name as lastName,
-                testing.v_party.type_discriminator as typeDiscriminator
-            from testing.v_party
+                maia.v_party.created_timestamp_utc as createdTimestampUtc,
+                maia.v_party.display_name as displayName,
+                maia.v_party.encrypted_password as encryptedPassword,
+                maia.v_party.first_name as firstName,
+                maia.v_party.id as id,
+                maia.v_party.last_name as lastName,
+                maia.v_party.type_discriminator as typeDiscriminator
+            from maia.v_party
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -78,7 +78,7 @@ class UserDtoDao(
 
         val sqlForTotalCount = """
             select count(*)
-            from testing.v_party
+            from maia.v_party
             $whereClause
             """.trimIndent()
 

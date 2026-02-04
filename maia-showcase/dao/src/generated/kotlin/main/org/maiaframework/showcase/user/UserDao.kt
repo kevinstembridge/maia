@@ -41,7 +41,7 @@ class UserDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -91,7 +91,7 @@ class UserDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -198,7 +198,7 @@ class UserDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.v_party",
+            "select count(*) from maia.v_party",
             SqlParams()
         )
 
@@ -214,7 +214,7 @@ class UserDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.v_party
+            select count(*) from maia.v_party
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -243,7 +243,7 @@ class UserDao(
     fun findByPrimaryKeyOrNull(id: DomainId): UserEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.v_party where id = :id",
+            "select * from maia.v_party where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -256,7 +256,7 @@ class UserDao(
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.v_party where id = :id",
+            "select count(*) from maia.v_party where id = :id",
             SqlParams().apply {
                 addValue("id", id)
            }
@@ -274,7 +274,7 @@ class UserDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party where $whereClause",
+            "select * from maia.v_party where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -290,7 +290,7 @@ class UserDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.v_party where $whereClause",
+            "select id from maia.v_party where $whereClause",
             sqlParams,
             { rsa -> rsa.readDomainId("id") }
         )
@@ -301,7 +301,7 @@ class UserDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.v_party;",
+            "select id from maia.v_party;",
             SqlParams(),
             { rsa -> rsa.readDomainId("id") }
         )
@@ -321,7 +321,7 @@ class UserDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.v_party where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -354,7 +354,7 @@ class UserDao(
     fun findAllAsSequence(): Sequence<UserEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.v_party;",
+            "select * from maia.v_party;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -378,7 +378,7 @@ class UserDao(
                 v_party.lifecycle_state as lifecycleState,
                 v_party.some_strings as someStrings,
                 v_party.version as version
-            from testing.v_party
+            from maia.v_party
             where v_party.id = :id
             """,
             SqlParams().apply {
@@ -403,7 +403,7 @@ class UserDao(
         val sql = StringBuilder()
         val sqlParams = SqlParams()
 
-        sql.append("update testing.v_party set ")
+        sql.append("update maia.v_party set ")
 
         val fieldClauses = updater.fields
             .plus(FieldUpdate("version_incremented", "version", updater.version + 1))

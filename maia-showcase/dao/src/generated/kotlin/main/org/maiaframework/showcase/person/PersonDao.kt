@@ -54,7 +54,7 @@ class PersonDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -105,7 +105,7 @@ class PersonDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -150,7 +150,7 @@ class PersonDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -309,7 +309,7 @@ class PersonDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.v_party",
+            "select count(*) from maia.v_party",
             SqlParams()
         )
 
@@ -325,7 +325,7 @@ class PersonDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.v_party
+            select count(*) from maia.v_party
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -354,7 +354,7 @@ class PersonDao(
     fun findByPrimaryKeyOrNull(id: DomainId): PersonEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.v_party where id = :id",
+            "select * from maia.v_party where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -367,7 +367,7 @@ class PersonDao(
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.v_party where id = :id",
+            "select count(*) from maia.v_party where id = :id",
             SqlParams().apply {
                 addValue("id", id)
            }
@@ -385,7 +385,7 @@ class PersonDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party where $whereClause",
+            "select * from maia.v_party where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -401,7 +401,7 @@ class PersonDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.v_party where $whereClause",
+            "select id from maia.v_party where $whereClause",
             sqlParams,
             { rsa -> rsa.readDomainId("id") }
         )
@@ -412,7 +412,7 @@ class PersonDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.v_party;",
+            "select id from maia.v_party;",
             SqlParams(),
             { rsa -> rsa.readDomainId("id") }
         )
@@ -432,7 +432,7 @@ class PersonDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.v_party where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -465,7 +465,7 @@ class PersonDao(
     fun findAllAsSequence(): Sequence<PersonEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.v_party;",
+            "select * from maia.v_party;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -485,7 +485,7 @@ class PersonDao(
         val sql = StringBuilder()
         val sqlParams = SqlParams()
 
-        sql.append("update testing.v_party set ")
+        sql.append("update maia.v_party set ")
 
         val fieldClauses = updater.fields
             .plus(FieldUpdate("version_incremented", "version", updater.version + 1))

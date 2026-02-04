@@ -26,7 +26,7 @@ object OrgUserGroupMembershipEntityMeta {
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
 
-    val SCHEMA_NAME = SchemaName("testing")
+    val SCHEMA_NAME = SchemaName("maia")
 
     val TABLE_NAME = TableName("org_user_group_membership")
 

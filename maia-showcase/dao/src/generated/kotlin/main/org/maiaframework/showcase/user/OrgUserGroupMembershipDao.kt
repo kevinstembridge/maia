@@ -37,7 +37,7 @@ class OrgUserGroupMembershipDao(
 
         jdbcOps.update(
             """
-            insert into testing.org_user_group_membership (
+            insert into maia.org_user_group_membership (
                 created_timestamp_utc,
                 id,
                 org_user_group_id,
@@ -69,7 +69,7 @@ class OrgUserGroupMembershipDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.org_user_group_membership (
+            insert into maia.org_user_group_membership (
                 created_timestamp_utc,
                 id,
                 org_user_group_id,
@@ -146,7 +146,7 @@ class OrgUserGroupMembershipDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.org_user_group_membership",
+            "select count(*) from maia.org_user_group_membership",
             SqlParams()
         )
 
@@ -162,7 +162,7 @@ class OrgUserGroupMembershipDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.org_user_group_membership
+            select count(*) from maia.org_user_group_membership
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -191,7 +191,7 @@ class OrgUserGroupMembershipDao(
     fun findByPrimaryKeyOrNull(id: DomainId): OrgUserGroupMembershipEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.org_user_group_membership where id = :id",
+            "select * from maia.org_user_group_membership where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -204,7 +204,7 @@ class OrgUserGroupMembershipDao(
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.org_user_group_membership where id = :id",
+            "select count(*) from maia.org_user_group_membership where id = :id",
             SqlParams().apply {
                 addValue("id", id)
            }
@@ -221,7 +221,7 @@ class OrgUserGroupMembershipDao(
 
         return jdbcOps.queryForList(
             """
-            select * from testing.org_user_group_membership
+            select * from maia.org_user_group_membership
             where org_user_group_id = :orgUserGroupId
             and user_id = :userId
             """.trimIndent(),
@@ -242,7 +242,7 @@ class OrgUserGroupMembershipDao(
     ): OrgUserGroupMembershipEntity {
 
         return findOneOrNullByOrgUserGroupIdAndUserId(orgUserGroupId, userId)
-            ?: throw EntityNotFoundException("No record with column [org_user_group_id = $orgUserGroupId, user_id = $userId] found in table testing.org_user_group_membership.", OrgUserGroupMembershipEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException("No record with column [org_user_group_id = $orgUserGroupId, user_id = $userId] found in table maia.org_user_group_membership.", OrgUserGroupMembershipEntityMeta.TABLE_NAME)
 
     }
 
@@ -251,7 +251,7 @@ class OrgUserGroupMembershipDao(
 
         return jdbcOps.queryForList(
             """
-            select * from testing.org_user_group_membership
+            select * from maia.org_user_group_membership
             where user_id = :userId
             """.trimIndent(),
             SqlParams().apply {
@@ -271,7 +271,7 @@ class OrgUserGroupMembershipDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.org_user_group_membership where $whereClause",
+            "select * from maia.org_user_group_membership where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -287,7 +287,7 @@ class OrgUserGroupMembershipDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.org_user_group_membership where $whereClause",
+            "select id from maia.org_user_group_membership where $whereClause",
             sqlParams,
             { rsa -> rsa.readDomainId("id") }
         )
@@ -298,7 +298,7 @@ class OrgUserGroupMembershipDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.org_user_group_membership;",
+            "select id from maia.org_user_group_membership;",
             SqlParams(),
             { rsa -> rsa.readDomainId("id") }
         )
@@ -318,7 +318,7 @@ class OrgUserGroupMembershipDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.org_user_group_membership where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.org_user_group_membership where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -351,7 +351,7 @@ class OrgUserGroupMembershipDao(
     fun findAllAsSequence(): Sequence<OrgUserGroupMembershipEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.org_user_group_membership;",
+            "select * from maia.org_user_group_membership;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -366,7 +366,7 @@ class OrgUserGroupMembershipDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from testing.org_user_group_membership
+            select count(*) from maia.org_user_group_membership
             where org_user_group_id = :orgUserGroupId
             and user_id = :userId
             """.trimIndent(),
@@ -401,7 +401,7 @@ class OrgUserGroupMembershipDao(
                 )
             )
             , ins as (
-                insert into testing.org_user_group_membership (
+                insert into maia.org_user_group_membership (
                     created_timestamp_utc,
                     id,
                     org_user_group_id,
@@ -417,7 +417,7 @@ class OrgUserGroupMembershipDao(
             union all
             select 's' as source, c.id
             from input_rows
-            join testing.org_user_group_membership c using (org_user_group_id, user_id);
+            join maia.org_user_group_membership c using (org_user_group_id, user_id);
             """.trimIndent(),
             SqlParams().apply {
             addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)

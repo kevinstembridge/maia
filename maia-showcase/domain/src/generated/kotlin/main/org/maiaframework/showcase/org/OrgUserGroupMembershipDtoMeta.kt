@@ -12,9 +12,9 @@ object OrgUserGroupMembershipDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "id" -> "testing.org_user_group_membership.id"
-            "orgUserGroupId" -> "testing.org_user_group_membership.org_user_group_id"
-            "userId" -> "testing.org_user_group_membership.user_id"
+            "id" -> "maia.org_user_group_membership.id"
+            "orgUserGroupId" -> "maia.org_user_group_membership.org_user_group_id"
+            "userId" -> "maia.org_user_group_membership.user_id"
             else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [id, orgUserGroupId, userId]")
         }
 

@@ -36,7 +36,7 @@ class OrganizationDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -77,7 +77,7 @@ class OrganizationDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -169,7 +169,7 @@ class OrganizationDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.v_party",
+            "select count(*) from maia.v_party",
             SqlParams()
         )
 
@@ -185,7 +185,7 @@ class OrganizationDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.v_party
+            select count(*) from maia.v_party
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -214,7 +214,7 @@ class OrganizationDao(
     fun findByPrimaryKeyOrNull(id: DomainId): OrganizationEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.v_party where id = :id",
+            "select * from maia.v_party where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -227,7 +227,7 @@ class OrganizationDao(
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.v_party where id = :id",
+            "select count(*) from maia.v_party where id = :id",
             SqlParams().apply {
                 addValue("id", id)
            }
@@ -245,7 +245,7 @@ class OrganizationDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party where $whereClause",
+            "select * from maia.v_party where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -261,7 +261,7 @@ class OrganizationDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.v_party where $whereClause",
+            "select id from maia.v_party where $whereClause",
             sqlParams,
             { rsa -> rsa.readDomainId("id") }
         )
@@ -272,7 +272,7 @@ class OrganizationDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.v_party;",
+            "select id from maia.v_party;",
             SqlParams(),
             { rsa -> rsa.readDomainId("id") }
         )
@@ -292,7 +292,7 @@ class OrganizationDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.v_party where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -325,7 +325,7 @@ class OrganizationDao(
     fun findAllAsSequence(): Sequence<OrganizationEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.v_party;",
+            "select * from maia.v_party;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -345,7 +345,7 @@ class OrganizationDao(
         val sql = StringBuilder()
         val sqlParams = SqlParams()
 
-        sql.append("update testing.v_party set ")
+        sql.append("update maia.v_party set ")
 
         val fieldClauses = updater.fields
             .plus(FieldUpdate("version_incremented", "version", updater.version + 1))

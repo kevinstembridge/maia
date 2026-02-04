@@ -46,7 +46,7 @@ class AllFieldTypesDao(
 
         jdbcOps.update(
             """
-            insert into maia_showcase.all_field_types (
+            insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
                 created_timestamp_utc,
@@ -211,7 +211,7 @@ class AllFieldTypesDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into maia_showcase.all_field_types (
+            insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
                 created_timestamp_utc,
@@ -377,7 +377,7 @@ class AllFieldTypesDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from maia_showcase.all_field_types",
+            "select count(*) from maia.all_field_types",
             SqlParams()
         )
 
@@ -393,7 +393,7 @@ class AllFieldTypesDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from maia_showcase.all_field_types
+            select count(*) from maia.all_field_types
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -422,7 +422,7 @@ class AllFieldTypesDao(
     fun findByPrimaryKeyOrNull(id: DomainId): AllFieldTypesEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia_showcase.all_field_types where id = :id",
+            "select * from maia.all_field_types where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -435,7 +435,7 @@ class AllFieldTypesDao(
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from maia_showcase.all_field_types where id = :id",
+            "select count(*) from maia.all_field_types where id = :id",
             SqlParams().apply {
                 addValue("id", id)
            }
@@ -449,7 +449,7 @@ class AllFieldTypesDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia_showcase.all_field_types
+            select * from maia.all_field_types
             where some_int_type = :someIntType
             """.trimIndent(),
             SqlParams().apply {
@@ -465,7 +465,7 @@ class AllFieldTypesDao(
     fun findOneBySomeIntType(someIntType: SomeIntType): AllFieldTypesEntity {
 
         return findOneOrNullBySomeIntType(someIntType)
-            ?: throw EntityNotFoundException("No record with column [some_int_type = $someIntType] found in table maia_showcase.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException("No record with column [some_int_type = $someIntType] found in table maia.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
 
     }
 
@@ -474,7 +474,7 @@ class AllFieldTypesDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia_showcase.all_field_types
+            select * from maia.all_field_types
             where some_long_type = :someLongType
             """.trimIndent(),
             SqlParams().apply {
@@ -490,7 +490,7 @@ class AllFieldTypesDao(
     fun findOneBySomeLongType(someLongType: SomeLongType): AllFieldTypesEntity {
 
         return findOneOrNullBySomeLongType(someLongType)
-            ?: throw EntityNotFoundException("No record with column [some_long_type = $someLongType] found in table maia_showcase.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException("No record with column [some_long_type = $someLongType] found in table maia.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
 
     }
 
@@ -499,7 +499,7 @@ class AllFieldTypesDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia_showcase.all_field_types
+            select * from maia.all_field_types
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
@@ -515,7 +515,7 @@ class AllFieldTypesDao(
     fun findOneBySomeString(someString: String): AllFieldTypesEntity {
 
         return findOneOrNullBySomeString(someString)
-            ?: throw EntityNotFoundException("No record with column [some_string = $someString] found in table maia_showcase.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException("No record with column [some_string = $someString] found in table maia.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
 
     }
 
@@ -524,7 +524,7 @@ class AllFieldTypesDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia_showcase.all_field_types
+            select * from maia.all_field_types
             where some_string_nullable = :someStringNullable
             """.trimIndent(),
             SqlParams().apply {
@@ -540,7 +540,7 @@ class AllFieldTypesDao(
     fun findOneBySomeStringNullable(someStringNullable: String): AllFieldTypesEntity {
 
         return findOneOrNullBySomeStringNullable(someStringNullable)
-            ?: throw EntityNotFoundException("No record with column [some_string_nullable = $someStringNullable] found in table maia_showcase.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException("No record with column [some_string_nullable = $someStringNullable] found in table maia.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
 
     }
 
@@ -549,7 +549,7 @@ class AllFieldTypesDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia_showcase.all_field_types
+            select * from maia.all_field_types
             where some_string_type = :someStringType
             """.trimIndent(),
             SqlParams().apply {
@@ -565,7 +565,7 @@ class AllFieldTypesDao(
     fun findOneBySomeStringType(someStringType: SomeStringType): AllFieldTypesEntity {
 
         return findOneOrNullBySomeStringType(someStringType)
-            ?: throw EntityNotFoundException("No record with column [some_string_type = $someStringType] found in table maia_showcase.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException("No record with column [some_string_type = $someStringType] found in table maia.all_field_types.", AllFieldTypesEntityMeta.TABLE_NAME)
 
     }
 
@@ -577,7 +577,7 @@ class AllFieldTypesDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia_showcase.all_field_types
+            select * from maia.all_field_types
             where some_boolean = :someBoolean
             and some_string_modifiable = :someStringModifiable
             """.trimIndent(),
@@ -594,7 +594,7 @@ class AllFieldTypesDao(
     fun findAll(): List<AllFieldTypesEntity> {
 
         return this.jdbcOps.queryForList(
-            "select * from maia_showcase.all_field_types",
+            "select * from maia.all_field_types",
             SqlParams(),
             this.entityRowMapper
         )
@@ -610,7 +610,7 @@ class AllFieldTypesDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia_showcase.all_field_types where $whereClause",
+            "select * from maia.all_field_types where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -626,7 +626,7 @@ class AllFieldTypesDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select * from maia_showcase.all_field_types where $whereClause",
+            "select * from maia.all_field_types where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -642,7 +642,7 @@ class AllFieldTypesDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from maia_showcase.all_field_types where $whereClause",
+            "select id from maia.all_field_types where $whereClause",
             sqlParams,
             { rsa -> rsa.readDomainId("id") }
         )
@@ -653,7 +653,7 @@ class AllFieldTypesDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from maia_showcase.all_field_types;",
+            "select id from maia.all_field_types;",
             SqlParams(),
             { rsa -> rsa.readDomainId("id") }
         )
@@ -673,7 +673,7 @@ class AllFieldTypesDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia_showcase.all_field_types where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.all_field_types where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -706,7 +706,7 @@ class AllFieldTypesDao(
     fun findAllAsSequence(): Sequence<AllFieldTypesEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from maia_showcase.all_field_types;",
+            "select * from maia.all_field_types;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -718,7 +718,7 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia_showcase.all_field_types
+            select count(*) from maia.all_field_types
             where some_int_type = :someIntType
             """.trimIndent(),
             SqlParams().apply {
@@ -735,7 +735,7 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia_showcase.all_field_types
+            select count(*) from maia.all_field_types
             where some_long_type = :someLongType
             """.trimIndent(),
             SqlParams().apply {
@@ -752,7 +752,7 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia_showcase.all_field_types
+            select count(*) from maia.all_field_types
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
@@ -769,7 +769,7 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia_showcase.all_field_types
+            select count(*) from maia.all_field_types
             where some_string_nullable = :someStringNullable
             """.trimIndent(),
             SqlParams().apply {
@@ -786,7 +786,7 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia_showcase.all_field_types
+            select count(*) from maia.all_field_types
             where some_string_type = :someStringType
             """.trimIndent(),
             SqlParams().apply {
@@ -803,7 +803,7 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia_showcase.all_field_types
+            select count(*) from maia.all_field_types
             where created_by_id = :createdById
             """.trimIndent(),
             SqlParams().apply {
@@ -820,7 +820,7 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia_showcase.all_field_types
+            select count(*) from maia.all_field_types
             where last_modified_by_id = :lastModifiedById
             """.trimIndent(),
             SqlParams().apply {
@@ -890,10 +890,10 @@ class AllFieldTypesDao(
                 all_field_types.some_string_nullable as someStringNullable,
                 all_field_types.some_string_type as someStringType,
                 all_field_types.some_string_type_nullable as someStringTypeNullable
-            from maia_showcase.all_field_types
-            join testing.v_party created_by_v_party
+            from maia.all_field_types
+            join maia.v_party created_by_v_party
                 on created_by_v_party.id = all_field_types.created_by_id
-            join testing.v_party last_modified_by_v_party
+            join maia.v_party last_modified_by_v_party
                 on last_modified_by_v_party.id = all_field_types.last_modified_by_id
             where all_field_types.id = :id
             """,
@@ -911,7 +911,7 @@ class AllFieldTypesDao(
 
         val persistedEntity = jdbcOps.execute(
             """
-            insert into maia_showcase.all_field_types (
+            insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
                 created_timestamp_utc,
@@ -1097,7 +1097,7 @@ class AllFieldTypesDao(
 
         val persistedEntity = jdbcOps.execute(
             """
-            insert into maia_showcase.all_field_types (
+            insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
                 created_timestamp_utc,
@@ -1283,7 +1283,7 @@ class AllFieldTypesDao(
 
         val persistedEntity = jdbcOps.execute(
             """
-            insert into maia_showcase.all_field_types (
+            insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
                 created_timestamp_utc,
@@ -1469,7 +1469,7 @@ class AllFieldTypesDao(
 
         val persistedEntity = jdbcOps.execute(
             """
-            insert into maia_showcase.all_field_types (
+            insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
                 created_timestamp_utc,
@@ -1655,7 +1655,7 @@ class AllFieldTypesDao(
 
         val persistedEntity = jdbcOps.execute(
             """
-            insert into maia_showcase.all_field_types (
+            insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
                 created_timestamp_utc,
@@ -1849,7 +1849,7 @@ class AllFieldTypesDao(
         val sql = StringBuilder()
         val sqlParams = SqlParams()
 
-        sql.append("update maia_showcase.all_field_types set ")
+        sql.append("update maia.all_field_types set ")
 
         val fieldClauses = updater.fields
             .map { field ->
@@ -1897,7 +1897,7 @@ class AllFieldTypesDao(
         }
 
         val deletedCount = this.jdbcOps.update(
-            "delete from maia_showcase.all_field_types where id = :id",
+            "delete from maia.all_field_types where id = :id",
             SqlParams().apply {
                 addValue("id", id)
             }
@@ -1922,7 +1922,7 @@ class AllFieldTypesDao(
 
 
     fun deleteAll() {
-        this.jdbcOps.update("delete from maia_showcase.all_field_types")
+        this.jdbcOps.update("delete from maia.all_field_types")
     }
 
 
@@ -1933,7 +1933,7 @@ class AllFieldTypesDao(
         if (existingEntity != null) {
 
             val deletedCount = this.jdbcOps.update(
-                "delete from maia_showcase.all_field_types where id = :id",
+                "delete from maia.all_field_types where id = :id",
                 SqlParams().apply {
                     addValue("id", existingEntity.id)
                 }
@@ -1957,7 +1957,7 @@ class AllFieldTypesDao(
         if (existingEntity != null) {
 
             val deletedCount = this.jdbcOps.update(
-                "delete from maia_showcase.all_field_types where id = :id",
+                "delete from maia.all_field_types where id = :id",
                 SqlParams().apply {
                     addValue("id", existingEntity.id)
                 }
@@ -1981,7 +1981,7 @@ class AllFieldTypesDao(
         if (existingEntity != null) {
 
             val deletedCount = this.jdbcOps.update(
-                "delete from maia_showcase.all_field_types where id = :id",
+                "delete from maia.all_field_types where id = :id",
                 SqlParams().apply {
                     addValue("id", existingEntity.id)
                 }
@@ -2005,7 +2005,7 @@ class AllFieldTypesDao(
         if (existingEntity != null) {
 
             val deletedCount = this.jdbcOps.update(
-                "delete from maia_showcase.all_field_types where id = :id",
+                "delete from maia.all_field_types where id = :id",
                 SqlParams().apply {
                     addValue("id", existingEntity.id)
                 }
@@ -2029,7 +2029,7 @@ class AllFieldTypesDao(
         if (existingEntity != null) {
 
             val deletedCount = this.jdbcOps.update(
-                "delete from maia_showcase.all_field_types where id = :id",
+                "delete from maia.all_field_types where id = :id",
                 SqlParams().apply {
                     addValue("id", existingEntity.id)
                 }

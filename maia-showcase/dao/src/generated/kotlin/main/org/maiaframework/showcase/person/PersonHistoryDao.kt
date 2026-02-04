@@ -41,7 +41,7 @@ class PersonHistoryDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party_history (
+            insert into maia.v_party_history (
                 type_discriminator,
                 change_type,
                 created_timestamp_utc,
@@ -93,7 +93,7 @@ class PersonHistoryDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party_history (
+            insert into maia.v_party_history (
                 type_discriminator,
                 change_type,
                 created_timestamp_utc,
@@ -139,7 +139,7 @@ class PersonHistoryDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.v_party_history (
+            insert into maia.v_party_history (
                 type_discriminator,
                 change_type,
                 created_timestamp_utc,
@@ -186,7 +186,7 @@ class PersonHistoryDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.v_party_history",
+            "select count(*) from maia.v_party_history",
             SqlParams()
         )
 
@@ -202,7 +202,7 @@ class PersonHistoryDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.v_party_history
+            select count(*) from maia.v_party_history
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -232,7 +232,7 @@ class PersonHistoryDao(
     fun findByPrimaryKeyOrNull(primaryKey: PersonHistoryEntityPk): PersonHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.v_party_history where id = :id and version = :version",
+            "select * from maia.v_party_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", primaryKey.id)
                 addValue("version", primaryKey.version)
@@ -246,7 +246,7 @@ class PersonHistoryDao(
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.v_party_history where id = :id and version = :version",
+            "select count(*) from maia.v_party_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", id)
                 addValue("version", version)
@@ -265,7 +265,7 @@ class PersonHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party_history where $whereClause",
+            "select * from maia.v_party_history where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -281,7 +281,7 @@ class PersonHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id, version from testing.v_party_history where $whereClause",
+            "select id, version from maia.v_party_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -292,7 +292,7 @@ class PersonHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<PersonHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select id, version from testing.v_party_history;",
+            "select id, version from maia.v_party_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )
@@ -312,7 +312,7 @@ class PersonHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party_history where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.v_party_history where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -345,7 +345,7 @@ class PersonHistoryDao(
     fun findAllAsSequence(): Sequence<PersonHistoryEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.v_party_history;",
+            "select * from maia.v_party_history;",
             SqlParams(),
             this.entityRowMapper,
         )

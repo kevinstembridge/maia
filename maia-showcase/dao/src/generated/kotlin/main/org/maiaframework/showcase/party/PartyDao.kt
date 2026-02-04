@@ -62,7 +62,7 @@ class PartyDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -104,7 +104,7 @@ class PartyDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -155,7 +155,7 @@ class PartyDao(
 
         jdbcOps.update(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 type_discriminator,
                 created_timestamp_utc,
                 email_address,
@@ -200,7 +200,7 @@ class PartyDao(
 
         jdbcOps.batchUpdate(
             """
-            insert into testing.v_party (
+            insert into maia.v_party (
                 created_timestamp_utc,
                 email_address,
                 id,
@@ -397,7 +397,7 @@ class PartyDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from testing.v_party",
+            "select count(*) from maia.v_party",
             SqlParams()
         )
 
@@ -413,7 +413,7 @@ class PartyDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from testing.v_party
+            select count(*) from maia.v_party
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -442,7 +442,7 @@ class PartyDao(
     fun findByPrimaryKeyOrNull(id: DomainId): PartyEntity? {
 
         return jdbcOps.queryForList(
-            "select * from testing.v_party where id = :id",
+            "select * from maia.v_party where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -455,7 +455,7 @@ class PartyDao(
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from testing.v_party where id = :id",
+            "select count(*) from maia.v_party where id = :id",
             SqlParams().apply {
                 addValue("id", id)
            }
@@ -473,7 +473,7 @@ class PartyDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party where $whereClause",
+            "select * from maia.v_party where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -489,7 +489,7 @@ class PartyDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.v_party where $whereClause",
+            "select id from maia.v_party where $whereClause",
             sqlParams,
             { rsa -> rsa.readDomainId("id") }
         )
@@ -500,7 +500,7 @@ class PartyDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from testing.v_party;",
+            "select id from maia.v_party;",
             SqlParams(),
             { rsa -> rsa.readDomainId("id") }
         )
@@ -520,7 +520,7 @@ class PartyDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from testing.v_party where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.v_party where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -553,7 +553,7 @@ class PartyDao(
     fun findAllAsSequence(): Sequence<PartyEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from testing.v_party;",
+            "select * from maia.v_party;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -573,7 +573,7 @@ class PartyDao(
         val sql = StringBuilder()
         val sqlParams = SqlParams()
 
-        sql.append("update testing.v_party set ")
+        sql.append("update maia.v_party set ")
 
         val fieldClauses = updater.fields
             .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
@@ -635,7 +635,7 @@ class PartyDao(
         }
 
         val deletedCount = this.jdbcOps.update(
-            "delete from testing.v_party where id = :id",
+            "delete from maia.v_party where id = :id",
             SqlParams().apply {
                 addValue("id", id)
             }
@@ -674,7 +674,7 @@ class PartyDao(
 
 
     fun deleteAll() {
-        this.jdbcOps.update("delete from testing.v_party")
+        this.jdbcOps.update("delete from maia.v_party")
     }
 
 

@@ -116,7 +116,7 @@ object AllFieldTypesEntityMeta {
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
 
-    val SCHEMA_NAME = SchemaName("maia_showcase")
+    val SCHEMA_NAME = SchemaName("maia")
 
     val TABLE_NAME = TableName("all_field_types")
 

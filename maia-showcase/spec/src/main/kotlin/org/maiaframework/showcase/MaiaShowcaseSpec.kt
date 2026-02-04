@@ -9,7 +9,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.Fqcn
 
 
-class MaiaShowcaseSpec : AbstractSpec(AppKey("maia_showcase")) {
+class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     private val partySpec = MaiaShowcasePartySpec()
