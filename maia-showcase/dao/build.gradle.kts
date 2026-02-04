@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("maia.kotlin-library-conventions")
+    id("maia.kotlin-library-spring-conventions")
     idea
 }
 

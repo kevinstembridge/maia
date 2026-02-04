@@ -1,6 +1,17 @@
 
+logging:
+  level:
+    org.flywaydb: DEBUG
+    org.springframework.boot.flyway: DEBUG
+
+maia:
+  problems:
+    type_prefix: "showcase_"
+
+
 server:
   port: 3200
+
 
 spring:
   datasource:
@@ -10,3 +21,5 @@ spring:
   flyway:
     user: maia_owner
     password: maia_owner_password
+    default-schema: maia
+
