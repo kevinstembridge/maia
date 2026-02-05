@@ -1,13 +1,5 @@
 
 TODO * Maia Showcase
-    TODO * Testing
-        TODO *
-            - join
-            - many_to_many
-            - party
-            - searchable
-            - suuper
-            - unmodifiable
     TODO * Delete redundant tests and samples. e.g. SampleJdbcSpec
 TODO * Rename maia-webapp-endpoints to maia-webapp-web-layer, service-layer
 TODO * Remove all dependencies and add back in as needed, the goal is for application modules to not have to declare

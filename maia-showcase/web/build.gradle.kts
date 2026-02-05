@@ -13,7 +13,7 @@ dependencies {
 
     implementation(kotlin("reflect"))
 
-    implementation(project(":libs:maia-webapp:maia-webapp-endpoints"))
+    implementation(project(":libs:maia-webapp:maia-webapp-web"))
     implementation(project(":maia-showcase:service"))
 
     api("org.maiaframework:maia-common")
