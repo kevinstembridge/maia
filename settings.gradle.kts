@@ -85,7 +85,10 @@ include("maia-platform")
 include("maia-showcase:app")
 include("maia-showcase:dao")
 include("maia-showcase:domain")
+include("maia-showcase:repo")
+include("maia-showcase:service")
 include("maia-showcase:spec")
+include("maia-showcase:web")
 include("plugins:maia-gradle-plugin")
 
 

@@ -12,8 +12,8 @@ dependencies {
     implementation(project(":libs:maia-webapp:maia-webapp-domain"))
     implementation(project(":libs:maia-webapp:maia-webapp-service"))
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    api("org.springframework.boot:spring-boot-starter-web")
+    api("org.springframework.boot:spring-boot-starter-security")
 
 }
 
