@@ -11,8 +11,6 @@ val maiagen by configurations.creating
 
 dependencies {
 
-    implementation(kotlin("reflect"))
-
     implementation(project(":maia-showcase:domain"))
 
     api("org.maiaframework:maia-common")

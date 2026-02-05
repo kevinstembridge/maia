@@ -11,8 +11,6 @@ val maiagen by configurations.creating
 
 dependencies {
 
-    implementation(kotlin("reflect"))
-
     api("org.maiaframework:maia-common")
     api("org.maiaframework:maia-csv")
     api("org.maiaframework:maia-domain")
