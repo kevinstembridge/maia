@@ -5,6 +5,8 @@ package maia.hazelcast
 
 import com.hazelcast.config.MapConfig
 import com.hazelcast.nio.serialization.compact.CompactSerializer
+import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyEntity
+import org.maiaframework.showcase.composite_pk.CompositePrimaryKeySerializer
 import org.maiaframework.showcase.simple.SimpleEntity
 import org.maiaframework.showcase.simple.SimpleSerializer
 import org.springframework.stereotype.Component
@@ -12,12 +14,14 @@ import org.springframework.stereotype.Component
 
 @Component
 class MaiaHazelcastConfig(
+    private val compositePrimaryKeySerializer: CompositePrimaryKeySerializer,
     private val simpleSerializer: SimpleSerializer
 ) {
 
 
     val serializers: List<CompactSerializer<out Any>> = listOf(
         simpleSerializer,
+        compositePrimaryKeySerializer,
     )
 
 

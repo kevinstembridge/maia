@@ -2,6 +2,40 @@
 -- Renderer class: class org.maiaframework.gen.renderers.CreateTableSqlRenderer
 
 
+CREATE TABLE maia.nullable_fields (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_boolean boolean NULL,
+    some_boolean_type boolean NULL,
+    some_enum text NULL,
+    some_instant timestamp(3) with time zone NULL,
+    some_int integer NULL,
+    some_int_type integer NULL,
+    some_local_date date NULL,
+    some_long_type bigint NULL,
+    some_period text NULL,
+    some_provided_boolean_type boolean NULL,
+    some_provided_int_type integer NULL,
+    some_provided_long_type bigint NULL,
+    some_provided_string_type text NULL,
+    some_string text NULL,
+    some_string_type text NULL,
+    PRIMARY KEY(id)
+);
+CREATE UNIQUE INDEX nullable_fields_some_string_uidx ON maia.nullable_fields(some_string);
+
+
+CREATE TABLE maia.effective_timestamp (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    effective_from timestamp(3) with time zone NULL,
+    effective_to timestamp(3) with time zone NULL,
+    id uuid NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+CREATE INDEX effective_timestamp_some_string_idx ON maia.effective_timestamp(some_string);
+
+
 CREATE TABLE maia.all_field_types (
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
     created_by_name text NOT NULL,
@@ -72,17 +106,6 @@ CREATE TABLE maia.simple (
 CREATE UNIQUE INDEX simple_some_string_uidx ON maia.simple(some_string);
 
 
-CREATE TABLE maia.effective_timestamp (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    effective_from timestamp(3) with time zone NULL,
-    effective_to timestamp(3) with time zone NULL,
-    id uuid NOT NULL,
-    some_string text NOT NULL,
-    PRIMARY KEY(id)
-);
-CREATE INDEX effective_timestamp_some_string_idx ON maia.effective_timestamp(some_string);
-
-
 CREATE TABLE maia.history_sample (
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
@@ -112,6 +135,22 @@ CREATE TABLE maia.history_sample_history (
 CREATE INDEX hist_history_sample_some_string_idx ON maia.history_sample_history(some_string);
 
 
+-- Type Discriminators: SubOne -> SUB1, SubTwo -> SUB2
+CREATE TABLE maia.super (
+    type_discriminator text not null,
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    some_int integer NULL,
+    some_string text NULL,
+    some_unique_string text NULL,
+    PRIMARY KEY(id)
+);
+CREATE UNIQUE INDEX sub_two_some_unique_string_uidx ON maia.super(some_unique_string, type_discriminator);
+
+
 -- Type Discriminators: HistorySubOne -> SUB1, HistorySubTwo -> SUB2
 CREATE TABLE maia.history_super (
     type_discriminator text not null,
@@ -138,6 +177,201 @@ CREATE TABLE maia.history_super_history (
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_int integer NULL,
     some_string text NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
+);
+
+
+CREATE TABLE maia.some_versioned (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id)
+);
+CREATE UNIQUE INDEX some_versioned_some_int_uidx ON maia.some_versioned(some_int);
+
+
+CREATE TABLE maia.with_optional_index_field (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_optional_string1 text NULL,
+    some_optional_string2 text NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+CREATE INDEX with_optional_index_field_some_optional_string1_idx ON maia.with_optional_index_field(some_optional_string1);
+CREATE INDEX with_optional_index_field_some_optional_string2_some_string_idx ON maia.with_optional_index_field(some_optional_string2, some_string);
+
+
+CREATE TABLE maia.foreign_key_parent (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.foreign_key_child (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    parent_id uuid NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.alpha (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.bravo (
+    alpha_id uuid NOT NULL REFERENCES maia.alpha(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.charlie (
+    bravo_id uuid NOT NULL REFERENCES maia.bravo(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.alpha_ag_grid (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.bravo_ag_grid (
+    alpha_id uuid NOT NULL REFERENCES maia.alpha_ag_grid(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.charlie_ag_grid (
+    bravo_id uuid NOT NULL REFERENCES maia.bravo_ag_grid(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.left (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.right (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.many_to_many_join (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    left_id uuid NOT NULL REFERENCES maia.left(id),
+    right_id uuid NOT NULL REFERENCES maia.right(id),
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.unmodifiable (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_unique_int integer NOT NULL,
+    PRIMARY KEY(id)
+);
+CREATE UNIQUE INDEX unmodifiable_some_unique_int_uidx ON maia.unmodifiable(some_unique_int);
+
+
+CREATE TABLE maia.composite_primary_key (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    some_int integer NOT NULL,
+    some_modifiable_string text NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(some_int, some_string)
+);
+
+
+CREATE TABLE maia.composite_primary_key_history (
+    change_type text NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    some_int integer NOT NULL,
+    some_modifiable_string text NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(some_int, some_string, version)
+);
+
+
+CREATE TABLE maia.non_surrogate_primary_key (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    some_modifiable_string text NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(some_string)
+);
+
+
+CREATE TABLE maia.non_surrogate_primary_key_history (
+    change_type text NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    some_modifiable_string text NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(some_string, version)
+);
+
+
+CREATE TABLE maia.non_surrogate_id_primary_key (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id text NOT NULL,
+    some_modifiable_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.non_surrogate_id_primary_key_history (
+    change_type text NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id text NOT NULL,
+    some_modifiable_string text NOT NULL,
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );

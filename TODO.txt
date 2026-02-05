@@ -2,7 +2,6 @@
 TODO * Maia Showcase
     TODO * Testing
         TODO *
-            - history
             - join
             - many_to_many
             - party
