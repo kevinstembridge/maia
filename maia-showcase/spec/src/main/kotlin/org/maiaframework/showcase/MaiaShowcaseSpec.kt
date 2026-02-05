@@ -234,4 +234,69 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val historySampleEntityDef = entity(
+        "org.maiaframework.showcase.history",
+        "HistorySample",
+        recordVersionHistory = true,
+        deletable = Deletable.TRUE
+    ) {
+        field("someString", FieldTypes.string) {
+            editableByUser()
+            lengthConstraint(max = 100)
+        }
+        field("someInt", FieldTypes.int) {
+            editableByUser()
+        }
+        field_createdById(partySpec.partyEntityDef)
+        field_lastModifiedById(partySpec.partyEntityDef)
+        field_lastModifiedTimestampUtc()
+        index {
+            unique()
+            withFieldAscending("someString")
+        }
+    }
+
+
+    val historySuperEntityDef = entity(
+        "org.maiaframework.showcase.history",
+        "HistorySuper",
+        recordVersionHistory = true,
+        deletable = Deletable.TRUE
+    ) {
+        isAbstract = true
+        field_createdById(partySpec.partyEntityDef)
+        field_lastModifiedById(partySpec.partyEntityDef)
+        field_lastModifiedTimestampUtc()
+    }
+
+
+    val historySubOneEntityDef = entity(
+        "org.maiaframework.showcase.history",
+        "HistorySubOne",
+        recordVersionHistory = true,
+        deletable = Deletable.TRUE
+    ) {
+        superclass(historySuperEntityDef)
+        typeDiscriminator("SUB1")
+        field("someString", FieldTypes.string) {
+            editableByUser()
+            lengthConstraint(max = 100)
+        }
+    }
+
+
+    val historySubTwoEntityDef = entity(
+        "org.maiaframework.showcase.history",
+        "HistorySubTwo",
+        recordVersionHistory = true,
+        deletable = Deletable.TRUE
+    ) {
+        superclass(historySuperEntityDef)
+        typeDiscriminator("SUB2")
+        field("someInt", FieldTypes.int) {
+            editableByUser()
+        }
+    }
+
+
 }

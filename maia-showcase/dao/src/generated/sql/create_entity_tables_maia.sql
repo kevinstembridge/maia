@@ -81,3 +81,63 @@ CREATE TABLE maia.effective_timestamp (
     PRIMARY KEY(id)
 );
 CREATE INDEX effective_timestamp_some_string_idx ON maia.effective_timestamp(some_string);
+
+
+CREATE TABLE maia.history_sample (
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id)
+);
+CREATE UNIQUE INDEX history_sample_some_string_uidx ON maia.history_sample(some_string);
+
+
+CREATE TABLE maia.history_sample_history (
+    change_type text NOT NULL,
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
+);
+CREATE INDEX hist_history_sample_some_string_idx ON maia.history_sample_history(some_string);
+
+
+-- Type Discriminators: HistorySubOne -> SUB1, HistorySubTwo -> SUB2
+CREATE TABLE maia.history_super (
+    type_discriminator text not null,
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    some_int integer NULL,
+    some_string text NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+-- Type Discriminators: HistorySubOneHistory -> SUB1, HistorySubTwoHistory -> SUB2
+CREATE TABLE maia.history_super_history (
+    type_discriminator text not null,
+    change_type text NOT NULL,
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    some_int integer NULL,
+    some_string text NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
+);

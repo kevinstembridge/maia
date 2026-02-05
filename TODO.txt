@@ -1,6 +1,12 @@
 
 TODO * Maia Showcase
-    TODO * Generate DAO layer
     TODO * Testing
-
+        TODO *
+            - history
+            - join
+            - many_to_many
+            - party
+            - searchable
+            - suuper
+            - unmodifiable
     TODO * Delete redundant tests and samples. e.g. SampleJdbcSpec
