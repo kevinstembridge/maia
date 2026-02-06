@@ -23,7 +23,7 @@ dependencies {
     api("org.maiaframework:maia-domain")
     api("org.maiaframework:maia-lang")
 //    api("org.maiaframework:maia-staging-csv")
-//    api("org.maiaframework:maia-webapp-domain")
+    implementation("org.maiaframework:maia-webapp-domain")
 
 //    implementation("org.maiaframework:maia-hazelcast")
     implementation("org.maiaframework:maia-jdbc")

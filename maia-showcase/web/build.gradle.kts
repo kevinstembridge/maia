@@ -16,12 +16,12 @@ dependencies {
     implementation(project(":libs:maia-webapp:maia-webapp-web"))
     implementation(project(":maia-showcase:service"))
 
-    api("org.maiaframework:maia-common")
-//    api("org.maiaframework:maia-csv")
-    api("org.maiaframework:maia-domain")
-    api("org.maiaframework:maia-lang")
-//    api("org.maiaframework:maia-staging-csv")
-//    api("org.maiaframework:maia-webapp-domain")
+    implementation("org.maiaframework:maia-common")
+//    implementation("org.maiaframework:maia-csv")
+    implementation("org.maiaframework:maia-domain")
+    implementation("org.maiaframework:maia-lang")
+//    implementation("org.maiaframework:maia-staging-csv")
+    implementation("org.maiaframework:maia-webapp-domain")
 
 //    implementation("org.maiaframework:maia-hazelcast")
     implementation("org.maiaframework:maia-jdbc")

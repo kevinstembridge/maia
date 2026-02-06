@@ -11,18 +11,16 @@ val maiagen by configurations.creating
 
 dependencies {
 
-    api("org.maiaframework:maia-common")
-    api("org.maiaframework:maia-csv")
+//    api("org.maiaframework:maia-common")
     api("org.maiaframework:maia-domain")
-    api("org.maiaframework:maia-lang")
-    api("org.maiaframework:maia-staging-csv")
-    api("org.maiaframework:maia-webapp-domain")
+//    api("org.maiaframework:maia-lang")
 
     implementation("org.maiaframework:maia-hazelcast")
     implementation("org.maiaframework:maia-jdbc")
+//    implementation("org.maiaframework:maia-webapp-domain")
 
-    implementation("com.hazelcast:hazelcast")
-    implementation("org.hibernate.validator:hibernate-validator")
+//    implementation("com.hazelcast:hazelcast")
+//    implementation("org.hibernate.validator:hibernate-validator")
 
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core")
