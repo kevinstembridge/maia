@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Edit</h1>
+<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+    <div mat-dialog-content>
+        @if (problemDetail()) {
+            <mat-error>
+                <p class="alert alert-warning">{{ problemDetail().title }}</p>
+            </mat-error>
+        }
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="bravoId"
+                name="bravoId"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['bravoId'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-flat-button type="submit" color="primary">Submit</button>
+        <button mat-flat-button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+</form>

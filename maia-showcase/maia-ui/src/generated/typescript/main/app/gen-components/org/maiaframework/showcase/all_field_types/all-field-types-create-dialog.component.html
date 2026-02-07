@@ -1,0 +1,541 @@
+<h1 mat-dialog-title>Create</h1>
+<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+    <div mat-dialog-content>
+        @if (problemDetail()) {
+            <mat-error>
+                <p class="alert alert-warning">{{ problemDetail().title }}</p>
+            </mat-error>
+        }
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someBoolean"
+                name="someBoolean"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someBoolean'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someBooleanNullable"
+                name="someBooleanNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someBooleanType"
+                name="someBooleanType"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someBooleanType'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someBooleanTypeNullable"
+                name="someBooleanTypeNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someBooleanTypeProvided"
+                name="someBooleanTypeProvided"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someBooleanTypeProvided'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someBooleanTypeProvidedNullable"
+                name="someBooleanTypeProvidedNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someInstant"
+                name="someInstant"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someInstant'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someInstantNullable"
+                name="someInstantNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someInstantModifiable"
+                name="someInstantModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someInstantModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someInstantModifiableNullable"
+                name="someInstantModifiableNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someInt"
+                name="someInt"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someInt'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someIntModifiable"
+                name="someIntModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someIntModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someIntNullable"
+                name="someIntNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someIntType"
+                name="someIntType"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someIntType'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['someIntType'].hasError('message')) {
+                <mat-error>{{ formGroup.controls['someIntType'].errors.message }}</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someIntTypeNullable"
+                name="someIntTypeNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someIntTypeProvided"
+                name="someIntTypeProvided"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someIntTypeProvided'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someIntTypeProvidedNullable"
+                name="someIntTypeProvidedNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someLongType"
+                name="someLongType"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someLongType'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['someLongType'].hasError('message')) {
+                <mat-error>{{ formGroup.controls['someLongType'].errors.message }}</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someLongTypeNullable"
+                name="someLongTypeNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someLongTypeProvided"
+                name="someLongTypeProvided"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someLongTypeProvided'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someLongTypeProvidedNullable"
+                name="someLongTypeProvidedNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someLocalDateModifiable"
+                name="someLocalDateModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someLocalDateModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="somePeriodModifiable"
+                name="somePeriodModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['somePeriodModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['somePeriodModifiable'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="somePeriodNullable"
+                name="somePeriodNullable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['somePeriodNullable'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <mat-select formControlName="someEnum">
+                @for (someEnum of SomeEnumSelectOptions; track someEnum.name) {
+                    <div [matTooltip]="someEnum.description" matTooltipShowDelay="1000">
+                        <mat-option [value]="someEnum.name">{{someEnum.displayName}}</mat-option>
+                    </div>
+                }
+            </mat-select>
+            @if (formGroup.controls['someEnum'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <mat-select formControlName="someEnumNullable">
+                @for (someEnumNullable of SomeEnumSelectOptions; track someEnumNullable.name) {
+                    <div [matTooltip]="someEnumNullable.description" matTooltipShowDelay="1000">
+                        <mat-option [value]="someEnumNullable.name">{{someEnumNullable.displayName}}</mat-option>
+                    </div>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someString"
+                name="someString"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someString'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['someString'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+            @if (formGroup.controls['someString'].hasError('message')) {
+                <mat-error>{{ formGroup.controls['someString'].errors.message }}</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someStringModifiable"
+                name="someStringModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someStringModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['someStringModifiable'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someStringNullable"
+                name="someStringNullable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someStringNullable'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+            @if (formGroup.controls['someStringNullable'].hasError('message')) {
+                <mat-error>{{ formGroup.controls['someStringNullable'].errors.message }}</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someStringType"
+                name="someStringType"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someStringType'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['someStringType'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+            @if (formGroup.controls['someStringType'].hasError('message')) {
+                <mat-error>{{ formGroup.controls['someStringType'].errors.message }}</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someStringTypeNullable"
+                name="someStringTypeNullable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someStringTypeNullable'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someProvidedStringType"
+                name="someProvidedStringType"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someProvidedStringType'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['someProvidedStringType'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someProvidedStringTypeNullable"
+                name="someProvidedStringTypeNullable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someProvidedStringTypeNullable'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someListOfEnums"
+                name="someListOfEnums"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someListOfEnums'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someListOfInstants"
+                name="someListOfInstants"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someListOfInstants'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someListOfLocalDates"
+                name="someListOfLocalDates"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someListOfLocalDates'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someListOfPeriods"
+                name="someListOfPeriods"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someListOfPeriods'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someListOfStrings"
+                name="someListOfStrings"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someListOfStrings'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someListOfStringTypes"
+                name="someListOfStringTypes"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someListOfStringTypes'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someMapOfStringToInteger"
+                name="someMapOfStringToInteger"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someMapOfStringToInteger'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someMapOfStringTypeToStringType"
+                name="someMapOfStringTypeToStringType"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someMapOfStringTypeToStringType'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someDto"
+                name="someDto"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someDto'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someDtoNullable"
+                name="someDtoNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Created By</mat-label>
+            <input
+                formControlName="createdByUsername"
+                name="createdByUsername"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['createdByUsername'].hasError('required')) {
+                <mat-error>Created By is required.</mat-error>
+            }
+            @if (formGroup.controls['createdByUsername'].hasError('maxlength')) {
+                <mat-error>Created By must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-flat-button type="submit" color="primary">Submit</button>
+        <button mat-flat-button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+</form>

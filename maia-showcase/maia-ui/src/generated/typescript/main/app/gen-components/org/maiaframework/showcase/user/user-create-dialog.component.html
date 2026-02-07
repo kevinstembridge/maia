@@ -1,0 +1,89 @@
+<h1 mat-dialog-title>Create</h1>
+<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+    <div mat-dialog-content>
+        @if (problemDetail()) {
+            <mat-error>
+                <p class="alert alert-warning">{{ problemDetail().title }}</p>
+            </mat-error>
+        }
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="encryptedPassword"
+                name="encryptedPassword"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['encryptedPassword'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['encryptedPassword'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someStrings"
+                name="someStrings"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someStrings'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="firstName"
+                name="firstName"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['firstName'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="lastName"
+                name="lastName"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['lastName'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['lastName'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="emailAddress"
+                name="emailAddress"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['emailAddress'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['emailAddress'].hasError('email')) {
+                <mat-error>null must be valid.</mat-error>
+            }
+            @if (formGroup.controls['emailAddress'].hasError('minlength')) {
+                <mat-error>null must be at least 5 characters.</mat-error>
+            }
+            @if (formGroup.controls['emailAddress'].hasError('maxlength')) {
+                <mat-error>null must not be more than 500 characters.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-flat-button type="submit" color="primary">Submit</button>
+        <button mat-flat-button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+</form>

@@ -22,10 +22,8 @@ class EnumTypescriptRenderer(private val enumDef: EnumDef) : AbstractTypescriptR
             blankLine()
             blankLine()
 
-            if (enumValueDef.description != null) {
-
-                appendLine("    // ${enumValueDef.description}")
-
+            enumValueDef.description?.let {
+                appendLine("    // ${it.value.replace("\n", "\n    // ")}")
             }
 
             appendLine("    ${enumValueDef.name} = '${enumValueDef.name}',")

@@ -25,7 +25,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         authority("SYS__ADMIN") {
             description = """Grants access to administer the system. This is only for internal employees.
                 |These functions would not normally be for day-to-day operations. 
-            """.trimMargin()
+                """.trimMargin()
         }
         authority("SYS__DEVOPS")
         authority("SYS__DEVOPS_READONLY")

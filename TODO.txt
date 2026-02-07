@@ -1,6 +1,5 @@
 
 TODO * Maia Showcase
-    TODO * Delete redundant tests and samples. e.g. SampleJdbcSpec
     TODO * Add UI to showcase
     TODO * Remove all dependencies and add back in as needed, the goal is for application modules to not have to declare
         a dependency on something that Maia needs.

@@ -161,33 +161,33 @@ class TypescriptInterfaceDtoRenderer(
     private fun collectionElementFieldType(parameterFieldType: FieldType): String {
 
         return when (parameterFieldType) {
-            is BooleanFieldType -> TODO()
-            is BooleanTypeFieldType -> TODO()
-            is BooleanValueClassFieldType -> TODO()
+            is BooleanFieldType -> "boolean"
+            is BooleanTypeFieldType -> "boolean"
+            is BooleanValueClassFieldType -> "boolean"
             is DomainIdFieldType -> "string"
-            is DoubleFieldType -> TODO()
+            is DoubleFieldType -> "number"
             is EnumFieldType -> parameterFieldType.uqcn.value
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> TODO()
             is IdAndNameFieldType -> TODO()
-            is InstantFieldType -> TODO()
-            is IntFieldType -> TODO()
-            is IntTypeFieldType -> TODO()
-            is IntValueClassFieldType -> TODO()
+            is InstantFieldType -> "string"
+            is IntFieldType -> "number"
+            is IntTypeFieldType -> "number"
+            is IntValueClassFieldType -> "number"
             is ListFieldType -> TODO()
-            is LocalDateFieldType -> TODO()
-            is LongFieldType -> TODO()
-            is LongTypeFieldType -> TODO()
+            is LocalDateFieldType -> "string"
+            is LongFieldType -> "number"
+            is LongTypeFieldType -> "number"
             is MapFieldType -> TODO()
-            is ObjectIdFieldType -> TODO()
-            is PeriodFieldType -> TODO()
+            is ObjectIdFieldType -> "string"
+            is PeriodFieldType -> "string"
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> parameterFieldType.uqcn.value
-            is StringFieldType -> TODO()
-            is StringTypeFieldType -> TODO()
-            is StringValueClassFieldType -> TODO()
+            is StringFieldType -> "string"
+            is StringTypeFieldType -> "string"
+            is StringValueClassFieldType -> "string"
             else -> {
                 val typescriptCompatibleType = parameterFieldType.typescriptCompatibleType
                 when (typescriptCompatibleType) {

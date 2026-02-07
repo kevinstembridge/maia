@@ -1,0 +1,110 @@
+<h1 mat-dialog-title>Edit</h1>
+<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+    <div mat-dialog-content>
+        @if (problemDetail()) {
+            <mat-error>
+                <p class="alert alert-warning">{{ problemDetail().title }}</p>
+            </mat-error>
+        }
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someInstantModifiable"
+                name="someInstantModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someInstantModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someInstantModifiableNullable"
+                name="someInstantModifiableNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someIntModifiable"
+                name="someIntModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someIntModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someIntNullable"
+                name="someIntNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someLocalDateModifiable"
+                name="someLocalDateModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someLocalDateModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="somePeriodModifiable"
+                name="somePeriodModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['somePeriodModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['somePeriodModifiable'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someStringModifiable"
+                name="someStringModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someStringModifiable'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+            @if (formGroup.controls['someStringModifiable'].hasError('maxlength')) {
+                <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>null</mat-label>
+            <input
+                formControlName="someListOfStrings"
+                name="someListOfStrings"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someListOfStrings'].hasError('required')) {
+                <mat-error>null is required.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-flat-button type="submit" color="primary">Submit</button>
+        <button mat-flat-button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+</form>
