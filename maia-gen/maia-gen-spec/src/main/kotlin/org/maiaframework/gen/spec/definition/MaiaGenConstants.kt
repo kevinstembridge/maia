@@ -21,4 +21,7 @@ object MaiaGenConstants {
     const val FORM_VALIDATION_RESPONSE_DTO_RENDERED_FILE_PATH = "/app/gen-components/common/model/FormValidationResponseDto.ts"
 
 
+    const val TOTAL_HITS_RELATION_RENDERED_FILE_PATH = "/app/gen-components/common/model/TotalHitsRelation.ts"
+
+
 }

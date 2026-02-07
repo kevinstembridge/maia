@@ -2,7 +2,7 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.EnumDef
 
-class EnumTypescriptRenderer(private val enumDef: EnumDef) : AbstractTypescriptRenderer() {
+open class EnumTypescriptRenderer(private val enumDef: EnumDef) : AbstractTypescriptRenderer() {
 
 
     override fun renderedFilePath(): String {

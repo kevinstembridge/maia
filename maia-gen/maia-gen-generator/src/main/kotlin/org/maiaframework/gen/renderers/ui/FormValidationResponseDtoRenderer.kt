@@ -10,7 +10,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.Uqcn
 
 
-class FormValidationResponseDtoRenderer() : TypescriptInterfaceDtoRenderer(
+class FormValidationResponseDtoRenderer : TypescriptInterfaceDtoRenderer(
     renderedFilePath = MaiaGenConstants.FORM_VALIDATION_RESPONSE_DTO_RENDERED_FILE_PATH,
     className = Uqcn("FormValidationResponseDto"),
     fields = listOf(

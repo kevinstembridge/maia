@@ -336,6 +336,8 @@ class AngularUiModuleGenerator(
     private fun renderCommonModel() {
 
         FormValidationResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
+        TotalHitsRelationRenderer().renderToDir(this.typescriptOutputDir)
+        ProblemDetailRenderer().renderToDir(this.typescriptOutputDir)
 
     }
 
