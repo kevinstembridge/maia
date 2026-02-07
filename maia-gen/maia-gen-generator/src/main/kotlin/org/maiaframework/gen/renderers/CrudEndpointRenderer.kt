@@ -183,7 +183,7 @@ class CrudEndpointRenderer(
         }
 
         blankLine()
-        appendLine("        val invalid = this.${this.entityDef.daoFqcn.uqcn.firstToLower()}.$functionName(${fieldNames.joinToString(", ")})")
+        appendLine("        val invalid = this.crudService.$functionName(${fieldNames.joinToString(", ")})")
         blankLine()
         appendLine("        val message = if (invalid) {")
 

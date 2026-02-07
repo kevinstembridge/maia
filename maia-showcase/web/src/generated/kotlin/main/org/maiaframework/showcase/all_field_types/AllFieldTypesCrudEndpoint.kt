@@ -5,6 +5,7 @@ package org.maiaframework.showcase.all_field_types
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
+import org.maiaframework.webapp.domain.FormValidationResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -107,6 +108,96 @@ class AllFieldTypesCrudEndpoint(
     fun updateSomeListOfStrings(@RequestBody @Valid editDto: AllFieldTypesUpdate_someListOfStringsRequestDto) {
 
         this.crudService.updateSomeListOfStrings(editDto)
+
+    }
+
+
+    @PostMapping("/api/all_field_types/exists_by_some_int_type", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun existsBySomeIntType(@RequestBody @Valid dto: AllFieldTypesSomeIntTypeRequestDto): FormValidationResponseDto {
+
+        val someIntType = dto.someIntType
+
+        val invalid = this.crudService.existsBySomeIntType(someIntType)
+
+        val message = if (invalid) {
+            "This Some Int Type is already in use."
+        } else {
+            null
+        }
+
+        return FormValidationResponseDto(invalid = invalid, message = message)
+
+    }
+
+
+    @PostMapping("/api/all_field_types/exists_by_some_long_type", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun existsBySomeLongType(@RequestBody @Valid dto: AllFieldTypesSomeLongTypeRequestDto): FormValidationResponseDto {
+
+        val someLongType = dto.someLongType
+
+        val invalid = this.crudService.existsBySomeLongType(someLongType)
+
+        val message = if (invalid) {
+            "This Some Long Type is already in use."
+        } else {
+            null
+        }
+
+        return FormValidationResponseDto(invalid = invalid, message = message)
+
+    }
+
+
+    @PostMapping("/api/all_field_types/exists_by_some_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun existsBySomeString(@RequestBody @Valid dto: AllFieldTypesSomeStringRequestDto): FormValidationResponseDto {
+
+        val someString = dto.someString
+
+        val invalid = this.crudService.existsBySomeString(someString)
+
+        val message = if (invalid) {
+            "This Some String is already in use."
+        } else {
+            null
+        }
+
+        return FormValidationResponseDto(invalid = invalid, message = message)
+
+    }
+
+
+    @PostMapping("/api/all_field_types/exists_by_some_string_nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun existsBySomeStringNullable(@RequestBody @Valid dto: AllFieldTypesSomeStringNullableRequestDto): FormValidationResponseDto {
+
+        val someStringNullable = dto.someStringNullable
+
+        val invalid = this.crudService.existsBySomeStringNullable(someStringNullable)
+
+        val message = if (invalid) {
+            "This Some String Nullable is already in use."
+        } else {
+            null
+        }
+
+        return FormValidationResponseDto(invalid = invalid, message = message)
+
+    }
+
+
+    @PostMapping("/api/all_field_types/exists_by_some_string_type", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun existsBySomeStringType(@RequestBody @Valid dto: AllFieldTypesSomeStringTypeRequestDto): FormValidationResponseDto {
+
+        val someStringType = dto.someStringType
+
+        val invalid = this.crudService.existsBySomeStringType(someStringType)
+
+        val message = if (invalid) {
+            "This Some String Type is already in use."
+        } else {
+            null
+        }
+
+        return FormValidationResponseDto(invalid = invalid, message = message)
 
     }
 

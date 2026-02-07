@@ -55,4 +55,39 @@ export class AllFieldTypesCrudService {
     }
 
 
+    public existsBySomeIntType(requestBody: AllFieldTypesSomeIntTypeRequestDto): Observable<FormValidationResponseDto> {
+
+        return this.http.post<FormValidationResponseDto>('/api/all_field_types/exists_by_some_int_type', requestBody, this.httpOptions);
+
+    }
+
+
+    public existsBySomeLongType(requestBody: AllFieldTypesSomeLongTypeRequestDto): Observable<FormValidationResponseDto> {
+
+        return this.http.post<FormValidationResponseDto>('/api/all_field_types/exists_by_some_long_type', requestBody, this.httpOptions);
+
+    }
+
+
+    public existsBySomeString(requestBody: AllFieldTypesSomeStringRequestDto): Observable<FormValidationResponseDto> {
+
+        return this.http.post<FormValidationResponseDto>('/api/all_field_types/exists_by_some_string', requestBody, this.httpOptions);
+
+    }
+
+
+    public existsBySomeStringNullable(requestBody: AllFieldTypesSomeStringNullableRequestDto): Observable<FormValidationResponseDto> {
+
+        return this.http.post<FormValidationResponseDto>('/api/all_field_types/exists_by_some_string_nullable', requestBody, this.httpOptions);
+
+    }
+
+
+    public existsBySomeStringType(requestBody: AllFieldTypesSomeStringTypeRequestDto): Observable<FormValidationResponseDto> {
+
+        return this.http.post<FormValidationResponseDto>('/api/all_field_types/exists_by_some_string_type', requestBody, this.httpOptions);
+
+    }
+
+
 }

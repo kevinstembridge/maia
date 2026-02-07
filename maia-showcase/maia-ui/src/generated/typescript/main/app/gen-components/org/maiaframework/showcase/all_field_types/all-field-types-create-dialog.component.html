@@ -145,7 +145,7 @@
             />
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some Int Type</mat-label>
             <input
                 formControlName="someIntType"
                 name="someIntType"
@@ -153,10 +153,10 @@
                 matInput
             />
             @if (formGroup.controls['someIntType'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some Int Type is required.</mat-error>
             }
             @if (formGroup.controls['someIntType'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someIntType'].errors.message }}</mat-error>
+                <mat-error>{{ formGroup.controls['someIntType'].errors!.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -190,7 +190,7 @@
             />
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some Long Type</mat-label>
             <input
                 formControlName="someLongType"
                 name="someLongType"
@@ -198,10 +198,10 @@
                 matInput
             />
             @if (formGroup.controls['someLongType'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some Long Type is required.</mat-error>
             }
             @if (formGroup.controls['someLongType'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someLongType'].errors.message }}</mat-error>
+                <mat-error>{{ formGroup.controls['someLongType'].errors!.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -297,7 +297,7 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some String</mat-label>
             <input
                 formControlName="someString"
                 name="someString"
@@ -305,13 +305,13 @@
                 matInput
             />
             @if (formGroup.controls['someString'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some String is required.</mat-error>
             }
             @if (formGroup.controls['someString'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
+                <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
             @if (formGroup.controls['someString'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someString'].errors.message }}</mat-error>
+                <mat-error>{{ formGroup.controls['someString'].errors!.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -330,7 +330,7 @@
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some String Nullable</mat-label>
             <input
                 formControlName="someStringNullable"
                 name="someStringNullable"
@@ -338,14 +338,14 @@
                 matInput
             />
             @if (formGroup.controls['someStringNullable'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
+                <mat-error>Some String Nullable must not be more than 100 characters.</mat-error>
             }
             @if (formGroup.controls['someStringNullable'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someStringNullable'].errors.message }}</mat-error>
+                <mat-error>{{ formGroup.controls['someStringNullable'].errors!.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some String Type</mat-label>
             <input
                 formControlName="someStringType"
                 name="someStringType"
@@ -353,13 +353,13 @@
                 matInput
             />
             @if (formGroup.controls['someStringType'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some String Type is required.</mat-error>
             }
             @if (formGroup.controls['someStringType'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
+                <mat-error>Some String Type must not be more than 100 characters.</mat-error>
             }
             @if (formGroup.controls['someStringType'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someStringType'].errors.message }}</mat-error>
+                <mat-error>{{ formGroup.controls['someStringType'].errors!.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">

@@ -22,6 +22,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val someEnumDef = enumDef("org.maiaframework.showcase.enums.SomeEnum") {
+        withTypescript()
         value("OK")
         value("NOT_OK")
     }
@@ -198,7 +199,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             nullable()
         }
         field("someIntType", someIntTypeDef) {
-            unique()
+            fieldDisplayName("Some Int Type")
+            unique(withExistsEndpoint = true)
         }
         field("someIntTypeNullable", someIntTypeDef) {
             nullable()
@@ -208,7 +210,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             nullable()
         }
         field("someLongType", someLongTypeDef) {
-            unique()
+            fieldDisplayName("Some Long Type")
+            unique(withExistsEndpoint = true)
         }
         field("someLongTypeNullable", someLongTypeDef) {
             nullable()
@@ -236,7 +239,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             lengthConstraint(max = 100)
         }
         field("someString", FieldTypes.string) {
-            unique()
+            fieldDisplayName("Some String")
+            unique(withExistsEndpoint = true)
             lengthConstraint(max = 100)
         }
         field("someStringModifiable", FieldTypes.string) {
@@ -244,12 +248,14 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             lengthConstraint(max = 100)
         }
         field("someStringNullable", FieldTypes.string) {
+            fieldDisplayName("Some String Nullable")
             nullable()
-            unique()
+            unique(withExistsEndpoint = true)
             lengthConstraint(max = 100)
         }
         field("someStringType", someStringTypeDef) {
-            unique()
+            fieldDisplayName("Some String Type")
+            unique(withExistsEndpoint = true)
             lengthConstraint(max = 100)
         }
         field("someStringTypeNullable", someStringTypeDef) {
