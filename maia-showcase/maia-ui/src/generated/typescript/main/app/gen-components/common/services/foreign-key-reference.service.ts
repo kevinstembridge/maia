@@ -3,7 +3,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ForeignKeyReferencesExistResponseDto } from '@app/models/ForeignKeyReferencesExistResponseDto';
+import {ForeignKeyReferencesExistResponseDto} from '@app/gen-components/common/model/ForeignKeyReferencesExistResponseDto';
 
 
 @Injectable({providedIn: 'root'})
