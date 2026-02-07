@@ -10,7 +10,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.Uqcn
 
 
-class ForeignKeyReferencesExistResponseDtoRenderer() : TypescriptInterfaceDtoRenderer(
+class ForeignKeyReferencesExistResponseDtoRenderer : TypescriptInterfaceDtoRenderer(
     renderedFilePath = MaiaGenConstants.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO_RENDERED_FILE_PATH,
     className = Uqcn("ForeignKeyReferencesExistResponseDto"),
     fields = listOf(

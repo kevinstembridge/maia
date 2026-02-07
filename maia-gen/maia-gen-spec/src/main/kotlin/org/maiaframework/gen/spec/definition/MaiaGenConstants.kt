@@ -24,4 +24,7 @@ object MaiaGenConstants {
     const val TOTAL_HITS_RELATION_RENDERED_FILE_PATH = "/app/gen-components/common/model/TotalHitsRelation.ts"
 
 
+    const val TOTAL_HITS_RENDERED_FILE_PATH = "/app/gen-components/common/model/TotalHits.ts"
+
+
 }

@@ -21,4 +21,16 @@ object EnumDefs {
     )
 
 
+    val TOTAL_HITS_RELATION_ENUM_DEF = EnumDef(
+        fqcn = Fqcns.TOTAL_HITS_RELATION,
+        enumValueDefs = listOf(
+            EnumValueDef("eq"),
+            EnumValueDef("gte")
+        ),
+        isProvided = false,
+        withTypescript = true,
+        withEnumSelectionOptions = false
+    )
+
+
 }

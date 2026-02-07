@@ -198,6 +198,7 @@ object Fqcns {
     val SQL_TYPES = Fqcn.valueOf("java.sql.Types")
     val STRING = Fqcn.valueOf("java.lang.String")
     val STRING_TYPE = Fqcn.valueOf("org.maiaframework.types.StringType")
+    val TOTAL_HITS = Fqcn.valueOf("common.model.TotalHits")
     val TOTAL_HITS_RELATION = Fqcn.valueOf("common.model.TotalHitsRelation")
     val UNIQUE_INDEX_VIOLATION_HELPER = Fqcn.valueOf("org.maiaframework.webapp.domain.UniqueIndexViolationHelper")
     val VALIDATOR_CONSTRAINT_EMAIL = Fqcn.valueOf("jakarta.validation.constraints.Email")
