@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.Uqcn
+import javax.naming.directory.SearchResult
 
 
 fun main(args: Array<String>) {
@@ -339,6 +340,7 @@ class AngularUiModuleGenerator(
         TotalHitsRelationRenderer().renderToDir(this.typescriptOutputDir)
         TotalHitsResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
         ProblemDetailRenderer().renderToDir(this.typescriptOutputDir)
+        SearchResultPageResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
 
     }
 
