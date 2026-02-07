@@ -156,7 +156,7 @@
                 <mat-error>Some Int Type is required.</mat-error>
             }
             @if (formGroup.controls['someIntType'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someIntType'].errors!.['message'] }}</mat-error>
+                <mat-error>{{ formGroup.controls['someIntType']?.['errors']?.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
