@@ -39,18 +39,18 @@ class CharlieAgGridCrudEndpoint(
     }
 
 
-    @DeleteMapping("/api/charlie_ag_grid/{id}")
-    fun deleteById(@PathVariable("id") id: DomainId) {
-
-        this.crudService.delete(id)
-
-    }
-
-
     @PutMapping("/api/charlie_ag_grid/inline/bravo_id", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateBravoId(@RequestBody @Valid editDto: CharlieAgGridUpdate_bravoIdRequestDto) {
 
         this.crudService.updateBravoId(editDto)
+
+    }
+
+
+    @DeleteMapping("/api/charlie_ag_grid/{id}")
+    fun deleteById(@PathVariable("id") id: DomainId) {
+
+        this.crudService.delete(id)
 
     }
 

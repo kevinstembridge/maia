@@ -32,10 +32,10 @@ class CrudEndpointRenderer(
     override fun renderFunctions() {
 
         `render function create`()
-        `render function update`()
-        `render function delete`()
-        `render inline endpoints`()
         `render existsBy for unique indexes`()
+        `render function update`()
+        `render inline endpoints`()
+        `render function delete`()
 
     }
 

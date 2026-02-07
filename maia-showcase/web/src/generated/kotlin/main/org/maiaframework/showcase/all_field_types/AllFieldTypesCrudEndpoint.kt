@@ -32,86 +32,6 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/update", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun update(@RequestBody @Valid editDto: AllFieldTypesUpdateRequestDto) {
-
-        this.crudService.update(editDto)
-
-    }
-
-
-    @DeleteMapping("/api/all_field_types/{id}")
-    fun deleteById(@PathVariable("id") id: DomainId) {
-
-        this.crudService.delete(id)
-
-    }
-
-
-    @PutMapping("/api/all_field_types/inline/some_instant_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateSomeInstantModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someInstantModifiableRequestDto) {
-
-        this.crudService.updateSomeInstantModifiable(editDto)
-
-    }
-
-
-    @PutMapping("/api/all_field_types/inline/some_instant_modifiable_nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateSomeInstantModifiableNullable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someInstantModifiableNullableRequestDto) {
-
-        this.crudService.updateSomeInstantModifiableNullable(editDto)
-
-    }
-
-
-    @PutMapping("/api/all_field_types/inline/some_int_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateSomeIntModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someIntModifiableRequestDto) {
-
-        this.crudService.updateSomeIntModifiable(editDto)
-
-    }
-
-
-    @PutMapping("/api/all_field_types/inline/some_int_nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateSomeIntNullable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someIntNullableRequestDto) {
-
-        this.crudService.updateSomeIntNullable(editDto)
-
-    }
-
-
-    @PutMapping("/api/all_field_types/inline/some_local_date_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateSomeLocalDateModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someLocalDateModifiableRequestDto) {
-
-        this.crudService.updateSomeLocalDateModifiable(editDto)
-
-    }
-
-
-    @PutMapping("/api/all_field_types/inline/some_period_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateSomePeriodModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_somePeriodModifiableRequestDto) {
-
-        this.crudService.updateSomePeriodModifiable(editDto)
-
-    }
-
-
-    @PutMapping("/api/all_field_types/inline/some_string_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateSomeStringModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someStringModifiableRequestDto) {
-
-        this.crudService.updateSomeStringModifiable(editDto)
-
-    }
-
-
-    @PutMapping("/api/all_field_types/inline/some_list_of_strings", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateSomeListOfStrings(@RequestBody @Valid editDto: AllFieldTypesUpdate_someListOfStringsRequestDto) {
-
-        this.crudService.updateSomeListOfStrings(editDto)
-
-    }
-
-
     @PostMapping("/api/all_field_types/exists_by_some_int_type", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun existsBySomeIntType(@RequestBody @Valid dto: AllFieldTypesSomeIntTypeRequestDto): FormValidationResponseDto {
 
@@ -198,6 +118,86 @@ class AllFieldTypesCrudEndpoint(
         }
 
         return FormValidationResponseDto(invalid = invalid, message = message)
+
+    }
+
+
+    @PutMapping("/api/all_field_types/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun update(@RequestBody @Valid editDto: AllFieldTypesUpdateRequestDto) {
+
+        this.crudService.update(editDto)
+
+    }
+
+
+    @PutMapping("/api/all_field_types/inline/some_instant_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateSomeInstantModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someInstantModifiableRequestDto) {
+
+        this.crudService.updateSomeInstantModifiable(editDto)
+
+    }
+
+
+    @PutMapping("/api/all_field_types/inline/some_instant_modifiable_nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateSomeInstantModifiableNullable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someInstantModifiableNullableRequestDto) {
+
+        this.crudService.updateSomeInstantModifiableNullable(editDto)
+
+    }
+
+
+    @PutMapping("/api/all_field_types/inline/some_int_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateSomeIntModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someIntModifiableRequestDto) {
+
+        this.crudService.updateSomeIntModifiable(editDto)
+
+    }
+
+
+    @PutMapping("/api/all_field_types/inline/some_int_nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateSomeIntNullable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someIntNullableRequestDto) {
+
+        this.crudService.updateSomeIntNullable(editDto)
+
+    }
+
+
+    @PutMapping("/api/all_field_types/inline/some_local_date_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateSomeLocalDateModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someLocalDateModifiableRequestDto) {
+
+        this.crudService.updateSomeLocalDateModifiable(editDto)
+
+    }
+
+
+    @PutMapping("/api/all_field_types/inline/some_period_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateSomePeriodModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_somePeriodModifiableRequestDto) {
+
+        this.crudService.updateSomePeriodModifiable(editDto)
+
+    }
+
+
+    @PutMapping("/api/all_field_types/inline/some_string_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateSomeStringModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someStringModifiableRequestDto) {
+
+        this.crudService.updateSomeStringModifiable(editDto)
+
+    }
+
+
+    @PutMapping("/api/all_field_types/inline/some_list_of_strings", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateSomeListOfStrings(@RequestBody @Valid editDto: AllFieldTypesUpdate_someListOfStringsRequestDto) {
+
+        this.crudService.updateSomeListOfStrings(editDto)
+
+    }
+
+
+    @DeleteMapping("/api/all_field_types/{id}")
+    fun deleteById(@PathVariable("id") id: DomainId) {
+
+        this.crudService.delete(id)
 
     }
 
