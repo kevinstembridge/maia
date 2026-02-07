@@ -44,20 +44,21 @@ class AngularUiModuleGenerator(
         renderAngularForms()
         renderAsyncValidatorsForIndexes()
         renderAuthorityEnum()
-        renderEntityCreateDialogComponent()
-        renderEntityCreateFormComponent()
-        renderEntityCreateDialogHtml()
-        renderEntityCreateFormHtml()
-        renderEntityEditFormHtml()
+        renderCommonModel()
         renderCrudServices()
         renderCrudTables()
-        renderEntityDeleteDialogComponent()
-        renderEntityDeleteDialogHtml()
         renderDtoHtmlTables()
         renderDtoServices()
         renderDtoTableComponents()
         renderDtosForAsyncValidation()
         renderDtosForFormDefs()
+        renderEntityCreateDialogComponent()
+        renderEntityCreateFormComponent()
+        renderEntityCreateDialogHtml()
+        renderEntityCreateFormHtml()
+        renderEntityEditFormHtml()
+        renderEntityDeleteDialogComponent()
+        renderEntityDeleteDialogHtml()
         renderEntityEditDialogComponent()
         renderEntityEditDialogHtml()
         renderEntityDetailDtoComponents()
@@ -328,6 +329,13 @@ class AngularUiModuleGenerator(
     private fun renderAuthorityEnum() {
 
         this.modelDef.authoritiesDef?.let { EnumTypescriptRenderer(it.enumDef).renderToDir(this.typescriptOutputDir) }
+
+    }
+
+
+    private fun renderCommonModel() {
+
+        FormValidationResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
 
     }
 

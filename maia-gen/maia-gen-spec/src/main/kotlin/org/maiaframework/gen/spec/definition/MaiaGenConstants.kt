@@ -18,4 +18,7 @@ object MaiaGenConstants {
     const val FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO_RENDERED_FILE_PATH = "/app/gen-components/common/model/ForeignKeyReferencesExistResponseDto.ts"
 
 
+    const val FORM_VALIDATION_RESPONSE_DTO_RENDERED_FILE_PATH = "/app/gen-components/common/model/FormValidationResponseDto.ts"
+
+
 }
