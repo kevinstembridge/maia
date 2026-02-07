@@ -190,6 +190,20 @@ class AllFieldTypesCrudService(
     }
 
 
+    fun existsBySomeStringNullable(someStringNullable: String): Boolean {
+
+        return this.entityRepo.existsBySomeStringNullable(someStringNullable)
+
+    }
+
+
+    fun existsBySomeStringType(someStringType: SomeStringType): Boolean {
+
+        return this.entityRepo.existsBySomeStringType(someStringType)
+
+    }
+
+
     fun update(editDto: AllFieldTypesUpdateRequestDto) {
 
         val id = editDto.id

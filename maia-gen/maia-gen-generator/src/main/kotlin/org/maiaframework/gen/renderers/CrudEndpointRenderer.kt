@@ -26,13 +26,6 @@ class CrudEndpointRenderer(
 
         addConstructorArg(aClassField("crudService", crudServiceFqcn).build())
 
-        if (this.entityDef.uniqueIndexDefs.any { it.withExistsEndpoint }) {
-
-            val daoFqcn = this.entityDef.daoFqcn
-            addConstructorArg(aClassField(daoFqcn.uqcn.firstToLower(), daoFqcn).build())
-
-        }
-
     }
 
 
@@ -154,7 +147,9 @@ class CrudEndpointRenderer(
 
     private fun `render existsBy for unique indexes`() {
 
-        this.entityDef.uniqueIndexDefs.filter { it.withExistsEndpoint }.forEach { renderExistsByForUniqueIndex(it) }
+        this.entityDef.uniqueIndexDefs
+            .filter { it.withExistsEndpoint }
+            .forEach { renderExistsByForUniqueIndex(it) }
 
     }
 

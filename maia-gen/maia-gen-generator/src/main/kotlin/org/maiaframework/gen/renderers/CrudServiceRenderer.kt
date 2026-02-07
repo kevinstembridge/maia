@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.definition.DatabaseIndexDef
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
@@ -99,6 +100,7 @@ class CrudServiceRenderer(
 
         `render create by API`()
         `render function create`()
+        `render existsBy for unique indexes`()
         `render update function`()
         `render inline update functions`()
         `render setFields function`()
@@ -307,6 +309,32 @@ class CrudServiceRenderer(
             is StringValueClassFieldType -> TODO("YAGNI?")
             is UrlFieldType -> TODO("YAGNI?")
         }
+
+    }
+
+
+    private fun `render existsBy for unique indexes`() {
+
+        this.entityDef.uniqueIndexDefs.filter { it.withExistsEndpoint }.forEach { renderExistsByForUniqueIndex(it) }
+
+    }
+
+
+    private fun renderExistsByForUniqueIndex(databaseIndexDef: DatabaseIndexDef) {
+
+        val functionName = databaseIndexDef.existsByFunctionName
+        val fieldNameAndTypesCsv = databaseIndexDef.indexDef.classFieldDefs.joinToString(", ") { "${it.classFieldName}: ${it.fieldType.unqualifiedToString}" }
+        val fieldNamesCsv = databaseIndexDef.indexDef.classFieldDefs.map { it.classFieldName }.joinToString(", ")
+
+        append("""
+            |
+            |
+            |    fun $functionName($fieldNameAndTypesCsv): Boolean {
+            |
+            |        return this.entityRepo.$functionName(${fieldNamesCsv})
+            |
+            |    }
+            |""".trimMargin())
 
     }
 
