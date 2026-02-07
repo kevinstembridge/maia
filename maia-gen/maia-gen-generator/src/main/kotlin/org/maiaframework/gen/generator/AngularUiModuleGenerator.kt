@@ -341,6 +341,7 @@ class AngularUiModuleGenerator(
         TotalHitsResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
         ProblemDetailRenderer().renderToDir(this.typescriptOutputDir)
         SearchResultPageResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
+        IndexSearchResultResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
 
     }
 
