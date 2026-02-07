@@ -17,22 +17,11 @@ dependencies {
     implementation(project(":maia-showcase:service"))
 
     implementation("org.maiaframework:maia-common")
-//    implementation("org.maiaframework:maia-csv")
     implementation("org.maiaframework:maia-domain")
     implementation("org.maiaframework:maia-lang")
-//    implementation("org.maiaframework:maia-staging-csv")
     implementation("org.maiaframework:maia-webapp-domain")
 
-//    implementation("org.maiaframework:maia-hazelcast")
     implementation("org.maiaframework:maia-jdbc")
-
-//    implementation("com.hazelcast:hazelcast")
-//    implementation("org.hibernate.validator:hibernate-validator")
-
-//    testImplementation("org.junit.jupiter:junit-jupiter")
-//    testImplementation("org.assertj:assertj-core")
-
-//    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     maiagen(project(":maia-gen:maia-gen-generator"))
     maiagen(project(":maia-showcase:spec"))
