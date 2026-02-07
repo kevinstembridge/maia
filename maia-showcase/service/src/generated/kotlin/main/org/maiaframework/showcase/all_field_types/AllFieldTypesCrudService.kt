@@ -169,6 +169,27 @@ class AllFieldTypesCrudService(
     }
 
 
+    fun existsBySomeIntType(someIntType: SomeIntType): Boolean {
+
+        return this.entityRepo.existsBySomeIntType(someIntType)
+
+    }
+
+
+    fun existsBySomeLongType(someLongType: SomeLongType): Boolean {
+
+        return this.entityRepo.existsBySomeLongType(someLongType)
+
+    }
+
+
+    fun existsBySomeString(someString: String): Boolean {
+
+        return this.entityRepo.existsBySomeString(someString)
+
+    }
+
+
     fun update(editDto: AllFieldTypesUpdateRequestDto) {
 
         val id = editDto.id
