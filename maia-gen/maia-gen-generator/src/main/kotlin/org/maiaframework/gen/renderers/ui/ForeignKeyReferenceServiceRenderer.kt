@@ -3,6 +3,7 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.MaiaGenConstants
 
+
 class ForeignKeyReferenceServiceRenderer(private val entityDefs: Set<EntityDef>) : AbstractTypescriptRenderer() {
 
 

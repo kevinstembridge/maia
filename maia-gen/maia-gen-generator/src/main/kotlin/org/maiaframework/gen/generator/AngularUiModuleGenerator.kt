@@ -482,6 +482,7 @@ class AngularUiModuleGenerator(
 
         if (foreignKeyEntityDefs.isNotEmpty()) {
             ForeignKeyReferenceServiceRenderer(foreignKeyEntityDefs).renderToDir(this.typescriptOutputDir)
+            ForeignKeyReferencesExistResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
         }
 
     }

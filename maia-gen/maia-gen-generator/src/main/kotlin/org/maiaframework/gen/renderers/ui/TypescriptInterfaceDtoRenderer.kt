@@ -45,7 +45,7 @@ import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.Uqcn
 import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 
-class TypescriptInterfaceDtoRenderer(
+open class TypescriptInterfaceDtoRenderer(
     private val renderedFilePath: String,
     private val className: Uqcn,
     private val fields: List<ClassFieldDef>,
