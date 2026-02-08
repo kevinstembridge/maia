@@ -174,6 +174,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowFindAll = AllowFindAll.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
+        angularFormSystem(AngularFormSystem.SIGNAL)
         field("someBoolean", FieldTypes.boolean)
         field("someBooleanNullable", FieldTypes.boolean) {
             nullable()
@@ -314,7 +315,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
         cacheable {  }
-        angularFormType(AngularFormSystem.SIGNAL)
+        angularFormSystem(AngularFormSystem.SIGNAL)
         field("someString", FieldTypes.string) {
             fieldDisplayName("Some String")
             lengthConstraint(min = 3, max = 100)

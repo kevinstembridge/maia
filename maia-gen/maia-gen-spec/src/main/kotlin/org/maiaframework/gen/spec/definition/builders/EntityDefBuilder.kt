@@ -364,7 +364,7 @@ class EntityDefBuilder(
     }
 
 
-    fun angularFormType(angularFormSystem: AngularFormSystem) {
+    fun angularFormSystem(angularFormSystem: AngularFormSystem) {
 
         this.angularFormSystem = angularFormSystem
 
@@ -609,6 +609,7 @@ class EntityDefBuilder(
             tableColumnName(TableColumnName.createdByName.value)
             if (nullable) nullable()
             lengthConstraint(max = maxLength)
+            notCreatableByUser()
         }
 
     }
