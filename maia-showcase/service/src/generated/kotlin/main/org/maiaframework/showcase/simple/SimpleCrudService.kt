@@ -57,6 +57,13 @@ class SimpleCrudService(
     }
 
 
+    fun existsBySomeString(someString: String): Boolean {
+
+        return this.entityRepo.existsBySomeString(someString)
+
+    }
+
+
     fun update(editDto: SimpleUpdateRequestDto) {
 
         val id = editDto.id

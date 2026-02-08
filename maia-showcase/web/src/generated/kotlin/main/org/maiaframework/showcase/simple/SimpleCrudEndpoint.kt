@@ -5,6 +5,7 @@ package org.maiaframework.showcase.simple
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
+import org.maiaframework.webapp.domain.FormValidationResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -27,6 +28,24 @@ class SimpleCrudEndpoint(
     fun create(@RequestBody @Valid createDto: SimpleCreateRequestDto) {
 
         this.crudService.create(createDto)
+
+    }
+
+
+    @PostMapping("/api/simple/exists_by_some_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun existsBySomeString(@RequestBody @Valid dto: SimpleSomeStringRequestDto): FormValidationResponseDto {
+
+        val someString = dto.someString
+
+        val invalid = this.crudService.existsBySomeString(someString)
+
+        val message = if (invalid) {
+            "This Some String is already in use."
+        } else {
+            null
+        }
+
+        return FormValidationResponseDto(invalid = invalid, message = message)
 
     }
 

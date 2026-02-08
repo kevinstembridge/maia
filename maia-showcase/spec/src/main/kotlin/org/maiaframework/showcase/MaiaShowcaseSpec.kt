@@ -314,6 +314,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         cacheable {  }
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
             lengthConstraint(max = 100)
             editableByUser()
             unique(withExistsEndpoint = true)
