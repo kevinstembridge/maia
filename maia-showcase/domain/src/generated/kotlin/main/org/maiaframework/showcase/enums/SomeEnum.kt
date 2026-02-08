@@ -5,11 +5,16 @@ package org.maiaframework.showcase.enums
 
 
 
-enum class SomeEnum {
+enum class SomeEnum(
+    val displayName: String
+) {
 
-    OK,
+    /**
+     * All good
+     */
+    OK("OK"),
 
-    NOT_OK;
+    NOT_OK("Not so good");
 
 
 }
