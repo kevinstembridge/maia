@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Create</h1>
-<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+<form novalidate (submit)="onSubmit($event)">
     <div mat-dialog-content>
         @if (problemDetail()) {
             <mat-error>
@@ -9,269 +9,302 @@
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someBoolean"
-                name="someBoolean"
+                [formField]="dialogForm.someBoolean"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someBoolean'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someBoolean().touched() && dialogForm.someBoolean().invalid()) {
+                @for (error of dialogForm.someBoolean().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someBooleanNullable"
-                name="someBooleanNullable"
+                [formField]="dialogForm.someBooleanNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someBooleanType"
-                name="someBooleanType"
+                [formField]="dialogForm.someBooleanType"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someBooleanType'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someBooleanType().touched() && dialogForm.someBooleanType().invalid()) {
+                @for (error of dialogForm.someBooleanType().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someBooleanTypeNullable"
-                name="someBooleanTypeNullable"
+                [formField]="dialogForm.someBooleanTypeNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someBooleanTypeProvided"
-                name="someBooleanTypeProvided"
+                [formField]="dialogForm.someBooleanTypeProvided"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someBooleanTypeProvided'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someBooleanTypeProvided().touched() && dialogForm.someBooleanTypeProvided().invalid()) {
+                @for (error of dialogForm.someBooleanTypeProvided().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someBooleanTypeProvidedNullable"
-                name="someBooleanTypeProvidedNullable"
+                [formField]="dialogForm.someBooleanTypeProvidedNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someInstant"
-                name="someInstant"
+                [formField]="dialogForm.someInstant"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someInstant'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someInstant().touched() && dialogForm.someInstant().invalid()) {
+                @for (error of dialogForm.someInstant().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someInstantNullable"
-                name="someInstantNullable"
+                [formField]="dialogForm.someInstantNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someInstantModifiable"
-                name="someInstantModifiable"
+                [formField]="dialogForm.someInstantModifiable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someInstantModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someInstantModifiable().touched() && dialogForm.someInstantModifiable().invalid()) {
+                @for (error of dialogForm.someInstantModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someInstantModifiableNullable"
-                name="someInstantModifiableNullable"
+                [formField]="dialogForm.someInstantModifiableNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someInt"
-                name="someInt"
+                [formField]="dialogForm.someInt"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someInt'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someInt().touched() && dialogForm.someInt().invalid()) {
+                @for (error of dialogForm.someInt().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someIntModifiable"
-                name="someIntModifiable"
+                [formField]="dialogForm.someIntModifiable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someIntModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someIntModifiable().touched() && dialogForm.someIntModifiable().invalid()) {
+                @for (error of dialogForm.someIntModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someIntNullable"
-                name="someIntNullable"
+                [formField]="dialogForm.someIntNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some Int Type</mat-label>
             <input
-                formControlName="someIntType"
-                name="someIntType"
+                [formField]="dialogForm.someIntType"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someIntType'].hasError('required')) {
-                <mat-error>Some Int Type is required.</mat-error>
+
+            @if (dialogForm.someIntType().touched() && dialogForm.someIntType().invalid()) {
+                @for (error of dialogForm.someIntType().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someIntType'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someIntType']?.['errors']?.['message'] }}</mat-error>
-            }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someIntTypeNullable"
-                name="someIntTypeNullable"
+                [formField]="dialogForm.someIntTypeNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someIntTypeProvided"
-                name="someIntTypeProvided"
+                [formField]="dialogForm.someIntTypeProvided"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someIntTypeProvided'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someIntTypeProvided().touched() && dialogForm.someIntTypeProvided().invalid()) {
+                @for (error of dialogForm.someIntTypeProvided().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someIntTypeProvidedNullable"
-                name="someIntTypeProvidedNullable"
+                [formField]="dialogForm.someIntTypeProvidedNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some Long Type</mat-label>
             <input
-                formControlName="someLongType"
-                name="someLongType"
+                [formField]="dialogForm.someLongType"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someLongType'].hasError('required')) {
-                <mat-error>Some Long Type is required.</mat-error>
+
+            @if (dialogForm.someLongType().touched() && dialogForm.someLongType().invalid()) {
+                @for (error of dialogForm.someLongType().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someLongType'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someLongType']?.['errors']?.['message'] }}</mat-error>
-            }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someLongTypeNullable"
-                name="someLongTypeNullable"
+                [formField]="dialogForm.someLongTypeNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someLongTypeProvided"
-                name="someLongTypeProvided"
+                [formField]="dialogForm.someLongTypeProvided"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someLongTypeProvided'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someLongTypeProvided().touched() && dialogForm.someLongTypeProvided().invalid()) {
+                @for (error of dialogForm.someLongTypeProvided().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someLongTypeProvidedNullable"
-                name="someLongTypeProvidedNullable"
+                [formField]="dialogForm.someLongTypeProvidedNullable"
                 type="text"
                 matInput
             />
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someLocalDateModifiable"
-                name="someLocalDateModifiable"
+                [formField]="dialogForm.someLocalDateModifiable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someLocalDateModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someLocalDateModifiable().touched() && dialogForm.someLocalDateModifiable().invalid()) {
+                @for (error of dialogForm.someLocalDateModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="somePeriodModifiable"
-                name="somePeriodModifiable"
+                [formField]="dialogForm.somePeriodModifiable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['somePeriodModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.somePeriodModifiable().touched() && dialogForm.somePeriodModifiable().invalid()) {
+                @for (error of dialogForm.somePeriodModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['somePeriodModifiable'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="somePeriodNullable"
-                name="somePeriodNullable"
+                [formField]="dialogForm.somePeriodNullable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['somePeriodNullable'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
+
+            @if (dialogForm.somePeriodNullable().touched() && dialogForm.somePeriodNullable().invalid()) {
+                @for (error of dialogForm.somePeriodNullable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
@@ -299,239 +332,251 @@
         <mat-form-field appearance="outline">
             <mat-label>Some String</mat-label>
             <input
-                formControlName="someString"
-                name="someString"
+                [formField]="dialogForm.someString"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someString'].hasError('required')) {
-                <mat-error>Some String is required.</mat-error>
+
+            @if (dialogForm.someString().touched() && dialogForm.someString().invalid()) {
+                @for (error of dialogForm.someString().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someString'].hasError('maxlength')) {
-                <mat-error>Some String must not be more than 100 characters.</mat-error>
-            }
-            @if (formGroup.controls['someString'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someString']?.['errors']?.['message'] }}</mat-error>
-            }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someStringModifiable"
-                name="someStringModifiable"
+                [formField]="dialogForm.someStringModifiable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someStringModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someStringModifiable().touched() && dialogForm.someStringModifiable().invalid()) {
+                @for (error of dialogForm.someStringModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someStringModifiable'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some String Nullable</mat-label>
             <input
-                formControlName="someStringNullable"
-                name="someStringNullable"
+                [formField]="dialogForm.someStringNullable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someStringNullable'].hasError('maxlength')) {
-                <mat-error>Some String Nullable must not be more than 100 characters.</mat-error>
+
+            @if (dialogForm.someStringNullable().touched() && dialogForm.someStringNullable().invalid()) {
+                @for (error of dialogForm.someStringNullable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someStringNullable'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someStringNullable']?.['errors']?.['message'] }}</mat-error>
-            }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some String Type</mat-label>
             <input
-                formControlName="someStringType"
-                name="someStringType"
+                [formField]="dialogForm.someStringType"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someStringType'].hasError('required')) {
-                <mat-error>Some String Type is required.</mat-error>
+
+            @if (dialogForm.someStringType().touched() && dialogForm.someStringType().invalid()) {
+                @for (error of dialogForm.someStringType().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someStringType'].hasError('maxlength')) {
-                <mat-error>Some String Type must not be more than 100 characters.</mat-error>
-            }
-            @if (formGroup.controls['someStringType'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someStringType']?.['errors']?.['message'] }}</mat-error>
-            }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someStringTypeNullable"
-                name="someStringTypeNullable"
+                [formField]="dialogForm.someStringTypeNullable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someStringTypeNullable'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
+
+            @if (dialogForm.someStringTypeNullable().touched() && dialogForm.someStringTypeNullable().invalid()) {
+                @for (error of dialogForm.someStringTypeNullable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someProvidedStringType"
-                name="someProvidedStringType"
+                [formField]="dialogForm.someProvidedStringType"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someProvidedStringType'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someProvidedStringType().touched() && dialogForm.someProvidedStringType().invalid()) {
+                @for (error of dialogForm.someProvidedStringType().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someProvidedStringType'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someProvidedStringTypeNullable"
-                name="someProvidedStringTypeNullable"
+                [formField]="dialogForm.someProvidedStringTypeNullable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someProvidedStringTypeNullable'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
+
+            @if (dialogForm.someProvidedStringTypeNullable().touched() && dialogForm.someProvidedStringTypeNullable().invalid()) {
+                @for (error of dialogForm.someProvidedStringTypeNullable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someListOfEnums"
-                name="someListOfEnums"
+                [formField]="dialogForm.someListOfEnums"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someListOfEnums'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someListOfEnums().touched() && dialogForm.someListOfEnums().invalid()) {
+                @for (error of dialogForm.someListOfEnums().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someListOfInstants"
-                name="someListOfInstants"
+                [formField]="dialogForm.someListOfInstants"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someListOfInstants'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someListOfInstants().touched() && dialogForm.someListOfInstants().invalid()) {
+                @for (error of dialogForm.someListOfInstants().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someListOfLocalDates"
-                name="someListOfLocalDates"
+                [formField]="dialogForm.someListOfLocalDates"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someListOfLocalDates'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someListOfLocalDates().touched() && dialogForm.someListOfLocalDates().invalid()) {
+                @for (error of dialogForm.someListOfLocalDates().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someListOfPeriods"
-                name="someListOfPeriods"
+                [formField]="dialogForm.someListOfPeriods"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someListOfPeriods'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someListOfPeriods().touched() && dialogForm.someListOfPeriods().invalid()) {
+                @for (error of dialogForm.someListOfPeriods().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someListOfStrings"
-                name="someListOfStrings"
+                [formField]="dialogForm.someListOfStrings"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someListOfStrings'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someListOfStrings().touched() && dialogForm.someListOfStrings().invalid()) {
+                @for (error of dialogForm.someListOfStrings().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someListOfStringTypes"
-                name="someListOfStringTypes"
+                [formField]="dialogForm.someListOfStringTypes"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someListOfStringTypes'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someListOfStringTypes().touched() && dialogForm.someListOfStringTypes().invalid()) {
+                @for (error of dialogForm.someListOfStringTypes().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someMapOfStringToInteger"
-                name="someMapOfStringToInteger"
+                [formField]="dialogForm.someMapOfStringToInteger"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someMapOfStringToInteger'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someMapOfStringToInteger().touched() && dialogForm.someMapOfStringToInteger().invalid()) {
+                @for (error of dialogForm.someMapOfStringToInteger().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someMapOfStringTypeToStringType"
-                name="someMapOfStringTypeToStringType"
+                [formField]="dialogForm.someMapOfStringTypeToStringType"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someMapOfStringTypeToStringType'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someMapOfStringTypeToStringType().touched() && dialogForm.someMapOfStringTypeToStringType().invalid()) {
+                @for (error of dialogForm.someMapOfStringTypeToStringType().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someDto"
-                name="someDto"
+                [formField]="dialogForm.someDto"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someDto'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+
+            @if (dialogForm.someDto().touched() && dialogForm.someDto().invalid()) {
+                @for (error of dialogForm.someDto().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="someDtoNullable"
-                name="someDtoNullable"
+                [formField]="dialogForm.someDtoNullable"
                 type="text"
                 matInput
             />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Created By</mat-label>
-            <input
-                formControlName="createdByUsername"
-                name="createdByUsername"
-                type="text"
-                matInput
-            />
-            @if (formGroup.controls['createdByUsername'].hasError('required')) {
-                <mat-error>Created By is required.</mat-error>
-            }
-            @if (formGroup.controls['createdByUsername'].hasError('maxlength')) {
-                <mat-error>Created By must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
     </div>
     <div mat-dialog-actions>
