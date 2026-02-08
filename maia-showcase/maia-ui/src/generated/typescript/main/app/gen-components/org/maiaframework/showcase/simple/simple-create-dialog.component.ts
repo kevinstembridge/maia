@@ -2,6 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityFormComponentRenderer
 
 import {Component, OnInit, signal} from '@angular/core';
+import {form, FormField, max, min, required, submit, validateHttp} from '@angular/forms/signals';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
@@ -12,7 +13,6 @@ import {MatInputModule} from '@angular/material/input';
 import {ProblemDetail} from '@app/gen-components/common/model/ProblemDetail';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
 import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud.service';
-import {form, FormField, required, submit, validateHttp} from '@angular/forms/signals';
 
 
 @Component({
@@ -40,8 +40,11 @@ export class SimpleCreateDialogComponent implements OnInit {
         someString: '',
     });
 
+
     dialogForm = form(this.dialogFormModel, (schemaPath) => {
         required(schemaPath.someString, { message: 'Some String is required' })
+        min(schemaPath.someString, 3)
+        max(schemaPath.someString, 100)
         validateHttp(schemaPath.someString, {
             request: ({value}) => {
                 return {
