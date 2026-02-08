@@ -3,16 +3,19 @@
 
 import {Component, OnInit, signal} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {FormField, form, required, submit, validateHttp, minLength, maxLength} from '@angular/forms/signals';
+import {FormField, form, maxLength, minLength, required, submit, validateHttp} from '@angular/forms/signals';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
 import {MatOptionModule} from '@angular/material/core';
-import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {ProblemDetail} from '@app/gen-components/common/model/ProblemDetail';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
 import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud.service';
+import {Observable, Subject, of} from 'rxjs';
+import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
+
 
 
 @Component({
@@ -53,17 +56,17 @@ export class SimpleCreateDialogComponent implements OnInit {
                 }
             },
             onSuccess: (response: any) => {
-                if (response.taken) {
+                if (response.huh) {
                     return {
-                        kind: 'usernameTaken',
-                        message: 'Username is already taken',
+                        kind: 'huh',
+                        message: 'huh'
                     };
                 }
                 return null;
             },
             onError: (error) => ({
-                kind: 'networkError',
-                message: 'Could not verify Some String',
+                kind: 'huh',
+                message: 'huh'
             }),
         });
     });
@@ -75,10 +78,7 @@ export class SimpleCreateDialogComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<SimpleCreateDialogComponent>,
         private formService: SimpleCrudService,
-    ) {
-
-
-    }
+    ) {}
 
 
     ngOnInit() {
@@ -115,3 +115,4 @@ export class SimpleCreateDialogComponent implements OnInit {
 
 
 }
+
