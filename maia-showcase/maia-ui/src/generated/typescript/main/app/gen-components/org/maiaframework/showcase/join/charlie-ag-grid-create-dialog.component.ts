@@ -9,9 +9,9 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {ProblemDetail} from '@app/gen-components/common/model/ProblemDetail';
 import {CharlieAgGridCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieAgGridCreateRequestDto';
 import {CharlieAgGridCrudService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-ag-grid-crud.service';
-import {ProblemDetail} from '@app/models/ProblemDetail';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 

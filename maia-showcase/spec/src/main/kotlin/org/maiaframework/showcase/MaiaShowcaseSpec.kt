@@ -22,9 +22,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val someEnumDef = enumDef("org.maiaframework.showcase.enums.SomeEnum") {
-        withTypescript()
-        value("OK")
-        value("NOT_OK")
+        withTypescript(withEnumSelectionOptions = true)
+        value("OK") {
+            displayName = "OK"
+            description = "All good"
+        }
+        value("NOT_OK") {
+            displayName = "Not OK"
+            displayName = "Not so good"
+        }
     }
 
 
