@@ -10,7 +10,7 @@ import {AllFieldTypesSomeLongTypeRequestDto} from '@app/gen-components/org/maiaf
 import {AllFieldTypesSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringRequestDto';
 import {AllFieldTypesSomeStringNullableRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringNullableRequestDto';
 import {AllFieldTypesSomeStringTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringTypeRequestDto';
-import { FormValidationResponseDto } from '@app/models/FormValidationResponseDto';
+import { FormValidationResponseDto } from '@app/gen-components/common/model/FormValidationResponseDto';
 
 
 @Injectable({providedIn: 'root'})
@@ -34,23 +34,6 @@ export class AllFieldTypesCrudService {
                 '/api/all_field_types/create',
                 requestDto,
                 this.httpOptions);
-
-    }
-
-
-    public edit(dto: AllFieldTypesUpdateRequestDto): Observable<void> {
-
-        return this.http.put<void>(
-                '/api/all_field_types/update',
-                dto,
-                this.httpOptions);
-
-    }
-
-
-    public delete(id: string): Observable<any> {
-
-        return this.http.delete('/api/all_field_types/' + id, this.httpOptions);
 
     }
 
@@ -86,6 +69,23 @@ export class AllFieldTypesCrudService {
     public existsBySomeStringType(requestBody: AllFieldTypesSomeStringTypeRequestDto): Observable<FormValidationResponseDto> {
 
         return this.http.post<FormValidationResponseDto>('/api/all_field_types/exists_by_some_string_type', requestBody, this.httpOptions);
+
+    }
+
+
+    public edit(dto: AllFieldTypesUpdateRequestDto): Observable<void> {
+
+        return this.http.put<void>(
+                '/api/all_field_types/update',
+                dto,
+                this.httpOptions);
+
+    }
+
+
+    public delete(id: string): Observable<any> {
+
+        return this.http.delete('/api/all_field_types/' + id, this.httpOptions);
 
     }
 
