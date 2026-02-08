@@ -45,19 +45,19 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
             |    constructor(
             |        private http: HttpClient
             |    ) { }
-            |  
+            |
             |    rowCount: number = undefined;
-            |  
-            |  
+            |
+            |
             |    getRows(params: IGetRowsParams): void {
-            |  
+            |
             |        this.http.post<$searchResultUqcn<${dtoHtmlTableDef.dtoUqcn}>>(
             |            '${dtoHtmlTableDef.searchDtoDef.searchApiUrl}',
             |            params
             |        ).subscribe({
-            |           next: searchResultPage => params.successCallback(searchResultPage.$hitsOrResults, searchResultPage.$totalResultsOrTotalHitCount)           
+            |           next: searchResultPage => params.successCallback(searchResultPage.$hitsOrResults, searchResultPage.$totalResultsOrTotalHitCount)
             |        });
-            |         
+            |
             |    }
             |
             |
