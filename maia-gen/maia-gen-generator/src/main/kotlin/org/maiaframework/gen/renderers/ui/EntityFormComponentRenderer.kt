@@ -228,7 +228,7 @@ class EntityFormComponentRenderer(
             |""".trimMargin()
         )
 
-        this.angularFormDef.formModelFields.forEach { fieldDef ->
+        this.angularFormDef.formModelFields.sortedBy { it.fieldName }.forEach { fieldDef ->
 
             append(
                 """

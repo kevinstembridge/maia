@@ -78,7 +78,6 @@ object MatFormFieldRenderer {
         }
 
         r.appendLine("$indent    <input")
-        r.appendLine("$indent        name=\"$classFieldName\"")
         r.appendLine("$indent        [formField]=\"dialogForm.$classFieldName\"")
 
         htmlFormField.placeholder?.let {
@@ -330,7 +329,7 @@ object MatFormFieldRenderer {
         r.appendLine("$indent    </mat-autocomplete>")
         r.appendLine("$indent    <mat-label>${classFieldDef.displayName}</mat-label>")
         r.appendLine("$indent    <input")
-        r.appendLine("$indent        formControlName=\"$formGroupFieldName\"")
+        r.appendLine("$indent        [formField]=\"dialogForm.$formGroupFieldName\"")
         r.appendLine("$indent        matInput")
         r.appendLine("$indent        type=\"text\"")
         r.appendLine("$indent        [matAutocomplete]=\"${classFieldName}Auto\"")
