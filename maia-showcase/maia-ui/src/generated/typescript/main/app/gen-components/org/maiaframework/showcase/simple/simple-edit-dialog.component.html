@@ -7,7 +7,7 @@
             </mat-error>
         }
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some String</mat-label>
             <input
                 formControlName="someString"
                 name="someString"
@@ -15,10 +15,10 @@
                 matInput
             />
             @if (formGroup.controls['someString'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some String is required.</mat-error>
             }
             @if (formGroup.controls['someString'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
+                <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
             @if (formGroup.controls['someString'].hasError('message')) {
                 <mat-error>{{ formGroup.controls['someString']?.['errors']?.['message'] }}</mat-error>
