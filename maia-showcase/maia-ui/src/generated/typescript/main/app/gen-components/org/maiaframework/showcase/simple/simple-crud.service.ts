@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
 import {SimpleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleUpdateRequestDto';
 import {SimpleSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringRequestDto';
-import { FormValidationResponseDto } from '@app/models/FormValidationResponseDto';
+import { FormValidationResponseDto } from '@app/gen-components/common/model/FormValidationResponseDto';
 
 
 @Injectable({providedIn: 'root'})
@@ -30,6 +30,13 @@ export class SimpleCrudService {
                 '/api/simple/create',
                 requestDto,
                 this.httpOptions);
+
+    }
+
+
+    public existsBySomeString(requestBody: SimpleSomeStringRequestDto): Observable<FormValidationResponseDto> {
+
+        return this.http.post<FormValidationResponseDto>('/api/simple/exists_by_some_string', requestBody, this.httpOptions);
 
     }
 
