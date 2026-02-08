@@ -23,13 +23,11 @@ import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/Som
 import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnumSelectOptions';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
-import {FormField} from '@angular/forms/signals';
 
 
 @Component({
     imports: [
         FormsModule,
-        FormField,
         MatAutocompleteModule,
         MatButtonModule,
         MatDialogActions,
@@ -84,14 +82,7 @@ export class AllFieldTypesCreateDialogComponent implements OnInit {
                 someInt: new FormControl('', { updateOn: 'change' }),
                 someIntModifiable: new FormControl('', { updateOn: 'change' }),
                 someIntNullable: new FormControl('', { updateOn: 'change' }),
-                someIntType: new FormControl(
-                    '',
-                    {
-                        asyncValidators: [
-                            this.allFieldTypesSomeIntTypeAsyncValidator.validate.bind(this.allFieldTypesSomeIntTypeAsyncValidator)
-                        ],
-                        updateOn: 'change'
-                    }),
+                someIntType: new FormControl('', { updateOn: 'change', asyncValidators: [this.allFieldTypesSomeIntTypeAsyncValidator.validate.bind(this.allFieldTypesSomeIntTypeAsyncValidator)] }),
                 someIntTypeNullable: new FormControl('', { updateOn: 'change' }),
                 someIntTypeProvided: new FormControl('', { updateOn: 'change' }),
                 someIntTypeProvidedNullable: new FormControl('', { updateOn: 'change' }),

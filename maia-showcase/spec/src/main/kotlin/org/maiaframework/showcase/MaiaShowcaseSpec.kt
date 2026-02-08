@@ -308,7 +308,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val simpleEntityDef = entity(
         "org.maiaframework.showcase.simple",
-        "Simple"
+        "Simple",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE
     ) {
         cacheable {  }
         field("someString", FieldTypes.string) {
@@ -316,7 +318,44 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
             unique()
         }
+        crud {
+            apis(defaultAuthority = partySpec.adminAuthority) {
+                create()
+                update()
+                delete()
+            }
+        }
     }
+
+
+    val simpleSearchableDtoDef = searchableEntityDef(
+        "org.maiaframework.showcase.simple",
+        "Simple",
+        entityDef = simpleEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        searchModelType = SearchModelType.AG_GRID
+    ) {
+        field("someString")
+        field("id", "id")
+        field("createdTimestampUtc")
+    }
+
+
+    val simpleDtoHtmlTableDef = dtoHtmlTable(
+        simpleSearchableDtoDef,
+        withAddButton = true,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
+    ) {
+        columnFromDto("someString")
+        columnFromDto("id")
+        columnFromDto("createdTimestampUtc")
+    }
+
+
+    val simpleCrudDef = crudTableDef(simpleDtoHtmlTableDef, simpleEntityDef.entityCrudApiDef!!)
 
 
     val historySampleEntityDef = entity(

@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Edit</h1>
+<h1 mat-dialog-title>Create</h1>
 <form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
     <div mat-dialog-content>
         @if (problemDetail()) {
@@ -9,28 +9,19 @@
         <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
-                formControlName="firstName"
-                name="firstName"
+                formControlName="someString"
+                name="someString"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['firstName'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
-            }
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
-            <input
-                formControlName="lastName"
-                name="lastName"
-                type="text"
-                matInput
-            />
-            @if (formGroup.controls['lastName'].hasError('required')) {
+            @if (formGroup.controls['someString'].hasError('required')) {
                 <mat-error>null is required.</mat-error>
             }
-            @if (formGroup.controls['lastName'].hasError('maxlength')) {
+            @if (formGroup.controls['someString'].hasError('maxlength')) {
                 <mat-error>null must not be more than 100 characters.</mat-error>
+            }
+            @if (formGroup.controls['someString'].hasError('message')) {
+                <mat-error>{{ formGroup.controls['someString']?.['errors']?.['message'] }}</mat-error>
             }
         </mat-form-field>
     </div>

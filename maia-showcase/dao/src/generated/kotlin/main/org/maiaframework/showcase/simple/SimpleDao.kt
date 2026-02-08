@@ -29,6 +29,9 @@ class SimpleDao(
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
+    private val fetchForEditDtoRowMapper = SimpleFetchForEditDtoRowMapper()
+
+
     fun insert(entity: SimpleEntity) {
 
         jdbcOps.update(
@@ -288,6 +291,27 @@ class SimpleDao(
     }
 
 
+    fun fetchForEdit(id: DomainId): SimpleFetchForEditDto {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                simple.created_timestamp_utc as createdTimestampUtc,
+                simple.id as id,
+                simple.some_string as someString
+            from maia.simple
+            where simple.id = :id
+            """,
+            SqlParams().apply {
+                addValue("id", id)
+            },
+            this.fetchForEditDtoRowMapper
+        ).firstOrNull()
+            ?: throw EntityNotFoundException(EntityClassAndPk(SimpleEntity::class.java, mapOf("id" to id)), SimpleEntityMeta.TABLE_NAME)
+
+    }
+
+
     fun upsertBySomeString(upsertEntity: SimpleEntity): SimpleEntity {
 
         val persistedEntity = jdbcOps.execute(
@@ -359,6 +383,68 @@ class SimpleDao(
 
         when (field.classFieldName) {
             "someString" -> sqlParams.addValue("someString", field.value as String)
+        }
+
+    }
+
+
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
+
+        val existingEntity = findByPrimaryKeyOrNull(id)
+
+        if (existingEntity == null) {
+            return false
+        }
+
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.simple where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+        return deletedCount > 0
+
+    }
+
+
+    fun removeByPrimaryKey(id: DomainId): SimpleEntity? {
+
+        val found = findByPrimaryKeyOrNull(id)
+
+        if (found != null) {
+            deleteByPrimaryKey(id)
+        }
+
+        return found
+
+    }
+
+
+    fun deleteAll() {
+        this.jdbcOps.update("delete from maia.simple")
+    }
+
+
+    fun deleteBySomeString(someString: String): Boolean {
+
+        val existingEntity = findOneOrNullBySomeString(someString)
+
+        if (existingEntity != null) {
+
+            val deletedCount = this.jdbcOps.update(
+                "delete from maia.simple where id = :id",
+                SqlParams().apply {
+                    addValue("id", existingEntity.id)
+                }
+            )
+
+            return deletedCount > 0
+
+        } else {
+
+            return false
+
         }
 
     }

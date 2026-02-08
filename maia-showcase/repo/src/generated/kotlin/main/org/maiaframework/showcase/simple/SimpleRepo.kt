@@ -150,5 +150,40 @@ class SimpleRepo(
     }
 
 
+    fun deleteByPrimaryKey(id: DomainId) {
+
+        this.dao.deleteByPrimaryKey(id)
+        this.cache.evict(id)
+
+    }
+
+
+    fun deleteAll() {
+    
+       this.dao.deleteAll()
+       
+    }
+
+
+    fun deleteBySomeString(someString: String): Boolean {
+
+        return dao.deleteBySomeString(someString)
+
+    }
+
+
+    fun removeByPrimaryKey(id: DomainId): SimpleEntity? {
+
+        val found = findByPrimaryKeyOrNull(id)
+       
+        if (found != null) {
+            deleteByPrimaryKey(id)
+        }
+       
+        return found
+
+    }
+
+
 }
 

@@ -5,24 +5,81 @@ package org.maiaframework.showcase.simple
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class SimpleCrudService(
     private val entityRepo: SimpleRepo,
-    private val maiaProblems: MaiaProblems
+    private val maiaProblems: MaiaProblems,
+    private val simpleCrudNotifier: SimpleCrudNotifier
 ) {
 
 
     private val logger = LoggerFactory.getLogger(SimpleCrudService::class.java)
 
 
+    fun create(createDto: SimpleCreateRequestDto): SimpleEntity {
+
+        logger.info("BEGIN: create Simple. dto=$createDto")
+
+        val entity: SimpleEntity = buildEntity(createDto)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(createDto: SimpleCreateRequestDto): SimpleEntity {
+
+        val someString: String = createDto.someString
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+
+        return SimpleEntity(
+            createdTimestampUtc,
+            id,
+            someString
+        )
+
+    }
+
+
     fun create(entity: SimpleEntity): SimpleEntity {
 
         this.entityRepo.insert(entity)
+        this.simpleCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    fun update(editDto: SimpleUpdateRequestDto) {
+
+        val id = editDto.id
+        val updater = SimpleEntityUpdater.forPrimaryKey(id) {
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun updateSomeString(editDto: SimpleUpdate_someStringRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeString. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = SimpleEntityUpdater.forPrimaryKey(editDto.id) {
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
 
     }
 
@@ -30,8 +87,20 @@ class SimpleCrudService(
     fun setFields(updater: SimpleEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
+        this.simpleCrudNotifier.onEntityUpdated(updater.id)
         return count
         
+    }
+
+
+    fun delete(id: DomainId) {
+
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
+                ?: return
+
+        this.entityRepo.deleteByPrimaryKey(id)
+        this.simpleCrudNotifier.onEntityDeleted(entityToDelete)
+
     }
 
 
