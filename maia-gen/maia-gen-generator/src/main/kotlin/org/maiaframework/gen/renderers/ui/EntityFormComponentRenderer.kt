@@ -71,7 +71,7 @@ class EntityFormComponentRenderer(
         addImport("@angular/material/autocomplete", "MatAutocompleteModule", isModule = true)
         addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
-        addImport("@app/models/ProblemDetail", "ProblemDetail")
+        addImport("@app/gen-components/common/model/ProblemDetail", "ProblemDetail")
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
             addImport(typeaheadDef.typescriptServiceImport)
@@ -183,7 +183,10 @@ class EntityFormComponentRenderer(
             |    problemDetail = signal<ProblemDetail | null>(null);
             |""".trimMargin())
 
-        this.angularFormDef.enumsForMatSelectFields.filter { it.withEnumSelectionOptions }.forEach { enumDef ->
+        this.angularFormDef.enumsForMatSelectFields
+            .filter { it.withEnumSelectionOptions }
+            .distinctBy { it.selectOptionsUqcn }
+            .forEach { enumDef ->
 
             append("""
                 |

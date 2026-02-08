@@ -33,7 +33,7 @@ abstract class AbstractCrudFormHtmlRenderer(
             |    <div$matDialogContentText>
             |        @if (problemDetail()) {
             |            <mat-error>
-            |                <p class="alert alert-warning">{{ problemDetail().title }}</p>
+            |                <p class="alert alert-warning">{{ problemDetail()!.title }}</p>
             |            </mat-error>
             |        }""".trimMargin())
 
