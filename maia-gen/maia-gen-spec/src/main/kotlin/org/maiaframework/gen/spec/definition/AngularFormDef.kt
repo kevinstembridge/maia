@@ -18,7 +18,7 @@ class AngularFormDef(
     val requestDtoDef: RequestDtoDef,
     val featureNames: SortedSet<String>,
     val htmlFormFields: List<AngularFormFieldDef>,
-    val formGroupFields: List<AngularFormFieldDef>,
+    val formModelFields: List<AngularFormFieldDef>,
     val delegateFormSubmission: DelegateFormSubmission,
     val emitEventOnSuccess: EmitEventsOnSuccess,
     val emitEventOnError: EmitEventsOnError,
@@ -30,7 +30,8 @@ class AngularFormDef(
     val dialogTitle: String?,
     val multiFieldDatabaseIndexDefs: List<DatabaseIndexDef>,
     val onSubmitServiceFunctionName: String,
-    formServiceTypescriptImport: TypescriptImport? = null
+    formServiceTypescriptImport: TypescriptImport? = null,
+    val angularFormType: AngularFormType
 ) {
 
 
@@ -90,6 +91,9 @@ class AngularFormDef(
 
 
     val hasAnyMatSelectFields = htmlFormFields.any { it.isEnum }
+
+
+    val hasAnyValidationConstraints = this.formModelFields.any { it.hasAnyValidationConstraint() }
 
 
     val enumsForMatSelectFields = htmlFormFields.filter { it.isEnum }.map { it.enumDef!! }

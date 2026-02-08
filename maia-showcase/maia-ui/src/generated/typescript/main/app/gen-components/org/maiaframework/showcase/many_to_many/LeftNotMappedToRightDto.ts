@@ -3,6 +3,7 @@
 
 import {RightPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/RightPkAndNameDto';
 
+
 export interface LeftNotMappedToRightDto {
     createdTimestampUtc: string;
     id: string;
@@ -10,3 +11,4 @@ export interface LeftNotMappedToRightDto {
     someIntFromLeft: number;
     someStringFromLeft: string;
 }
+

@@ -3,6 +3,7 @@
 
 import {BravoPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoPkAndNameDto';
 
+
 export interface CharlieFetchForEditDto {
     bravo: BravoPkAndNameDto;
     createdTimestampUtc: string;
@@ -10,3 +11,4 @@ export interface CharlieFetchForEditDto {
     someInt: number;
     someString: string;
 }
+

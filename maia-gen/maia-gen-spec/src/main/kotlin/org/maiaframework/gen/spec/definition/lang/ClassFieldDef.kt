@@ -166,6 +166,13 @@ data class ClassFieldDef(
     }
 
 
+    fun hasAnyValidationConstraint() : Boolean {
+
+        return this.validationConstraints.isNotEmpty()
+
+    }
+
+
     fun hasValidationConstraint(validationConstraintType: Class<out AbstractValidationConstraintDef>): Boolean {
 
         return this.validationConstraints.any { v -> validationConstraintType.isAssignableFrom(v.javaClass) }

@@ -1,6 +1,7 @@
 package org.maiaframework.showcase
 
 import org.maiaframework.gen.spec.AbstractSpec
+import org.maiaframework.gen.spec.definition.AngularFormType
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.JoinType
 import org.maiaframework.gen.spec.definition.SearchModelType
@@ -313,9 +314,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
         cacheable {  }
+        angularFormType(AngularFormType.SIGNAL)
         field("someString", FieldTypes.string) {
             fieldDisplayName("Some String")
-            lengthConstraint(max = 100)
+            lengthConstraint(min = 3, max = 100)
             editableByUser()
             unique(withExistsEndpoint = true)
         }

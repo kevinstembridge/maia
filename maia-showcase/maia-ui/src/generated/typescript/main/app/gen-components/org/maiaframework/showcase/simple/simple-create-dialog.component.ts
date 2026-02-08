@@ -51,7 +51,7 @@ export class SimpleCreateDialogComponent implements OnInit {
         validateHttp(schemaPath.someString, {
             request: ({value}) => {
                 return {
-                    url: '/api/simple/exists_by_some_string',
+                    url: 'someString.huh',
                     body: value(),
                 }
             },

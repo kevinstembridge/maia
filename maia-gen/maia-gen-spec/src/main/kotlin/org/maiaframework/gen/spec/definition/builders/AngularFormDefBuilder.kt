@@ -4,6 +4,7 @@ import org.maiaframework.common.BlankStringException.Companion.throwIfBlank
 import org.maiaframework.gen.spec.definition.AngularComponentBaseName
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
+import org.maiaframework.gen.spec.definition.AngularFormType
 import org.maiaframework.gen.spec.definition.FieldLabel
 import org.maiaframework.gen.spec.definition.FormAutocompleteText
 import org.maiaframework.gen.spec.definition.FormPlaceholderText
@@ -61,6 +62,9 @@ class AngularFormDefBuilder(
     private var createOrEdit: CreateOrEdit? = null
 
 
+    private var angularFormType: AngularFormType = AngularFormType.REACTIVE
+
+
     fun field(
         fieldName: String,
         init: (FieldBuilder.() -> Unit)? = null
@@ -94,7 +98,8 @@ class AngularFormDefBuilder(
             this.context,
             this.dialogTitle,
             multiFieldDatabaseIndexDefs = emptyList(),
-            onSubmitServiceFunctionName = "sendRequest"
+            onSubmitServiceFunctionName = "sendRequest",
+            angularFormType = this.angularFormType
         )
 
     }
@@ -200,6 +205,14 @@ class AngularFormDefBuilder(
     fun asCreateOrEdit(createOrEdit: CreateOrEdit): AngularFormDefBuilder {
 
         this.createOrEdit = createOrEdit
+        return this
+
+    }
+
+
+    fun ofType(angularFormType: AngularFormType): AngularFormDefBuilder {
+
+        this.angularFormType = angularFormType
         return this
 
     }

@@ -3,6 +3,7 @@
 
 import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/LifecycleState';
 
+
 export interface UserFetchForEditDto {
     createdTimestampUtc: string;
     displayName: string;
@@ -16,3 +17,4 @@ export interface UserFetchForEditDto {
     someStrings: ReadonlyArray<string>;
     version: number;
 }
+

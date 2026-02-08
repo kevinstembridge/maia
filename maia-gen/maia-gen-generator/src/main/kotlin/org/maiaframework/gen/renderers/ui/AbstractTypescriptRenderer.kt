@@ -75,27 +75,48 @@ abstract class AbstractTypescriptRenderer: AbstractSourceFileRenderer() {
     override fun renderSource(): String {
 
         renderGeneratedCodeStatement()
+        renderImportsPlaceholder()
         renderImportStatements()
         renderSourceBody()
-        return sourceCode.toString()
+
+        val newLinesForImportPlaceholder = if (this.typescriptImports.isEmpty()) "" else "\n"
+
+        val sourceWithImportPlaceholder = sourceCode
+        val renderedImportStatements = renderImportStatements().joinToString(
+            prefix = newLinesForImportPlaceholder,
+            separator = "\n",
+        ) { it }
+
+        return sourceWithImportPlaceholder.replace(IMPORTS_PLACEHOLDER.toRegex(), renderedImportStatements)
 
     }
 
 
-    protected fun renderImportStatements() {
+    /**
+     * We don't know what all the imports will be until after the subclass has rendered the methods in the class
+     * body. So we just insert a placeholder for now and it will be replaced later.
+     */
+    private fun renderImportsPlaceholder() {
+
+        appendLine(IMPORTS_PLACEHOLDER)
+
+    }
+
+
+    protected fun renderImportStatements(): List<String> {
 
         if (typescriptImports.isEmpty()) {
-            return
+            return emptyList()
         }
 
         blankLine()
 
-        typescriptImports.groupBy { it.from }
+        return typescriptImports.groupBy { it.from }
             .toSortedMap()
-            .forEach { (from, imports) ->
+            .map { (from, imports) ->
 
                 val sortedNames = imports.map { it.name }.toSortedSet().joinToString(", ")
-                appendLine("import {$sortedNames} from '$from';")
+                "import {$sortedNames} from '$from';"
 
             }
 
@@ -118,5 +139,11 @@ abstract class AbstractTypescriptRenderer: AbstractSourceFileRenderer() {
 
     }
 
+
+    companion object {
+
+        private const val IMPORTS_PLACEHOLDER = "IMPORTS_PLACEHOLDER"
+
+    }
 
 }

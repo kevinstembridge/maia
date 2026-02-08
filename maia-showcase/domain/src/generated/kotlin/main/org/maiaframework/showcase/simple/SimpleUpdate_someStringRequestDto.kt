@@ -20,7 +20,7 @@ class SimpleUpdate_someStringRequestDto
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
     @param:NotBlank 
-    @param:Length(max = 100) 
+    @param:Length(min = 3, max = 100) 
     @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
     private val someString_raw: String?
 ) {

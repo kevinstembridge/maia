@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.Length
 class SimpleCreateRequestDto
 @JsonCreator constructor(
     @param:NotBlank 
-    @param:Length(max = 100) 
+    @param:Length(min = 3, max = 100) 
     @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
     private val someString_raw: String?
 ) {

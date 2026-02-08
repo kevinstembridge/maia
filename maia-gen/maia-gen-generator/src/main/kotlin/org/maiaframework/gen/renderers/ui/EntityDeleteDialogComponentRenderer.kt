@@ -19,7 +19,7 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
             |import { Component, Inject, signal } from '@angular/core';
             |import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
             |${this.apiDef.entityDef.crudAngularComponentNames.serviceImportStatement}
-            |import { ProblemDetail } from '@app/models/ProblemDetail';
+            |import { ProblemDetail } from '@app/gen-components/common/model/ProblemDetail';
             |import { MatButtonModule } from '@angular/material/button';
             |import { MatFormFieldModule } from '@angular/material/form-field';
             |

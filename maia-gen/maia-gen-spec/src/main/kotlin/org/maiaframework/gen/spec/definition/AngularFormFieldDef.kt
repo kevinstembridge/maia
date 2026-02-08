@@ -62,6 +62,13 @@ class AngularFormFieldDef(
     }
 
 
+    fun hasAnyValidationConstraint(): Boolean {
+
+        return this.classFieldDef.hasAnyValidationConstraint()
+
+    }
+
+
     val inputEventText = when (classFieldDef.textCase) {
         TextCase.ORIGINAL -> null
         TextCase.LOWER -> "(input)=\"formGroup.controls['${classFieldDef.classFieldName}'].setValue(formGroup.controls['${classFieldDef.classFieldName}'].value.toLowerCase())\""

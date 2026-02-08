@@ -2,6 +2,7 @@ package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.domain.types.TypeDiscriminator
+import org.maiaframework.gen.spec.definition.AngularFormType
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.ConfigurableSchemaPropertyName
 import org.maiaframework.gen.spec.definition.DatabaseType
@@ -82,6 +83,9 @@ class EntityDefBuilder(
 
 
     private var moduleName: ModuleName? = null
+
+
+    private var angularFormType: AngularFormType = AngularFormType.REACTIVE
 
 
     private var description: Description? = null
@@ -179,7 +183,8 @@ class EntityDefBuilder(
             HasEffectiveLocalDates(this.hasEffectiveLocalDates),
             HasSingleEffectiveRecord(this.hasSingleEffectiveRecord),
             hasEntityDetailDtoDef,
-            cacheableDef
+            cacheableDef,
+            this.angularFormType
         )
 
     }
@@ -358,6 +363,13 @@ class EntityDefBuilder(
     fun typeDiscriminator(typeDiscriminator: String) {
 
         this.typeDiscriminator = TypeDiscriminator(typeDiscriminator)
+
+    }
+
+
+    fun angularFormType(angularFormType: AngularFormType) {
+
+        this.angularFormType = angularFormType
 
     }
 

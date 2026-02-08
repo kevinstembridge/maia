@@ -36,7 +36,7 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
             |import {HttpClient} from '@angular/common/http';
             |import {IDatasource, IGetRowsParams} from 'ag-grid-community';
             |${dtoHtmlTableDef.dtoImportStatement}
-            |import {$searchResultUqcn} from '@app/models/$searchResultUqcn';
+            |import {$searchResultUqcn} from '@app/gen-components/common/model/$searchResultUqcn';
             |
             |
             |@Injectable({providedIn: 'root'})

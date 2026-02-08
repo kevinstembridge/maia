@@ -14,7 +14,8 @@ import java.util.TreeSet
 class EntityCreateApiDef(
     entityDef: EntityDef,
     val crudApiDef: CrudApiDef,
-    moduleName: ModuleName?
+    moduleName: ModuleName?,
+    angularFormType: AngularFormType
 ) : AbstractEntityApiDef(entityDef) {
 
 
@@ -148,8 +149,8 @@ class EntityCreateApiDef(
         dialogTitle = null,
         multiFieldDatabaseIndexDefs = entityDef.multiFieldUniqueIndexDefs,
         onSubmitServiceFunctionName = "create",
-        entityDef.crudAngularComponentNames.serviceTypescriptImport
-
+        entityDef.crudAngularComponentNames.serviceTypescriptImport,
+        angularFormType
     )
 
 
@@ -171,7 +172,8 @@ class EntityCreateApiDef(
             dialogTitle = null,
             multiFieldDatabaseIndexDefs = entityDef.databaseIndexDefs,
             onSubmitServiceFunctionName = "create",
-            entityDef.crudAngularComponentNames.serviceTypescriptImport
+            entityDef.crudAngularComponentNames.serviceTypescriptImport,
+            angularFormType
         )
     } else {
         null

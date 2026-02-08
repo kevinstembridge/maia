@@ -1,6 +1,52 @@
 package org.maiaframework.gen.generator
 
-import org.maiaframework.gen.renderers.ui.*
+import org.maiaframework.gen.renderers.ui.AgGridDatasourceRenderer
+import org.maiaframework.gen.renderers.ui.AngularFormServiceRenderer
+import org.maiaframework.gen.renderers.ui.AsyncValidatorRenderer
+import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
+import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
+import org.maiaframework.gen.renderers.ui.CrudTableComponentRenderer
+import org.maiaframework.gen.renderers.ui.CrudTableHtmlRenderer
+import org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableComponentRenderer
+import org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableHtmlRenderer
+import org.maiaframework.gen.renderers.ui.DtoHtmlTableComponentRenderer
+import org.maiaframework.gen.renderers.ui.DtoHtmlTableHtmlRenderer
+import org.maiaframework.gen.renderers.ui.DtoHtmlTableScssRenderer
+import org.maiaframework.gen.renderers.ui.DtoHtmlTableServiceTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreateDialogScssRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreateFormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreateFormScssRenderer
+import org.maiaframework.gen.renderers.ui.EntityDeleteDialogComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityDeleteDialogHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityDetailDtoComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityDetailDtoHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityDetailDtoServiceTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditDialogHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditDialogScssRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditFormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityFormComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityReactiveFormComponentRenderer
+import org.maiaframework.gen.renderers.ui.EnumSelectionOptionsTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.EnumTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
+import org.maiaframework.gen.renderers.ui.ForeignKeyReferencesExistResponseDtoRenderer
+import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.FormScssRenderer
+import org.maiaframework.gen.renderers.ui.FormValidationResponseDtoRenderer
+import org.maiaframework.gen.renderers.ui.IndexSearchResultResponseDtoRenderer
+import org.maiaframework.gen.renderers.ui.ProblemDetailRenderer
+import org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.SearchResultPageResponseDtoRenderer
+import org.maiaframework.gen.renderers.ui.TotalHitsRelationRenderer
+import org.maiaframework.gen.renderers.ui.TotalHitsResponseDtoRenderer
+import org.maiaframework.gen.renderers.ui.TypeaheadAngularServiceRenderer
+import org.maiaframework.gen.renderers.ui.TypeaheadFieldValidatorRenderer
+import org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
+import org.maiaframework.gen.spec.definition.AngularComponentNames
+import org.maiaframework.gen.spec.definition.AngularFormDef
+import org.maiaframework.gen.spec.definition.AngularFormType
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
@@ -8,7 +54,6 @@ import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.Uqcn
-import javax.naming.directory.SearchResult
 
 
 fun main(args: Array<String>) {
@@ -124,10 +169,20 @@ class AngularUiModuleGenerator(
         this.modelDef.angularFormDefs.forEach {
 
             FormHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
-            EntityFormComponentRenderer(it, it.componentNames).renderToDir(this.typescriptOutputDir)
+            renderEntityForm(it, it.componentNames)
             FormScssRenderer(it).renderToDir(this.typescriptOutputDir)
             AngularFormServiceRenderer(it).renderToDir(this.typescriptOutputDir)
 
+        }
+
+    }
+
+
+    private fun renderEntityForm(def: AngularFormDef, angularComponentNames: AngularComponentNames) {
+
+        when (def.angularFormType) {
+            AngularFormType.REACTIVE -> EntityReactiveFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
+            AngularFormType.SIGNAL -> EntityFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
         }
 
     }
@@ -353,7 +408,7 @@ class AngularUiModuleGenerator(
             .filter { it.entityDef.isConcrete }
             .forEach {
 
-                EntityFormComponentRenderer(it.angularDialogDef, it.angularDialogComponentNames).renderToDir(this.typescriptOutputDir)
+                renderEntityForm(it.angularDialogDef, it.angularDialogComponentNames)
                 EntityCreateDialogScssRenderer(it).renderToDir(this.typescriptOutputDir)
 
             }
@@ -366,7 +421,7 @@ class AngularUiModuleGenerator(
         this.modelDef.entityCrudApiDefs.mapNotNull { it.createApiDef }.filter { it.entityDef.isConcrete && it.crudApiDef.withEntityForm }.forEach {
 
             it.angularInlineFormDef?.let { formDef ->
-                EntityFormComponentRenderer(formDef, it.angularFormComponentNames).renderToDir(this.typescriptOutputDir)
+                renderEntityForm(formDef, it.angularFormComponentNames)
                 EntityCreateFormScssRenderer(it).renderToDir(this.typescriptOutputDir)
             }
 
@@ -396,7 +451,7 @@ class AngularUiModuleGenerator(
         this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
             entityCrudApiDef.updateApiDef?.let { apiDef ->
                 if (entityCrudApiDef.entityDef.isModifiable) {
-                    EntityFormComponentRenderer(apiDef.angularDialogDef, apiDef.angularDialogComponentNames).renderToDir(this.typescriptOutputDir)
+                    renderEntityForm(apiDef.angularDialogDef, apiDef.angularDialogComponentNames)
                 }
             }
         }

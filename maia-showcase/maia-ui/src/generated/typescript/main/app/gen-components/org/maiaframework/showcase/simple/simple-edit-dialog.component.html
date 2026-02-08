@@ -17,6 +17,9 @@
             @if (formGroup.controls['someString'].hasError('required')) {
                 <mat-error>Some String is required.</mat-error>
             }
+            @if (formGroup.controls['someString'].hasError('minlength')) {
+                <mat-error>Some String must be at least 3 characters.</mat-error>
+            }
             @if (formGroup.controls['someString'].hasError('maxlength')) {
                 <mat-error>Some String must not be more than 100 characters.</mat-error>
             }

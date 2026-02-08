@@ -3,7 +3,9 @@
 
 import {TotalHitsRelation} from '@app/gen-components/common/model/TotalHitsRelation';
 
+
 export interface TotalHits {
     count: number;
     relation: TotalHitsRelation;
 }
+

@@ -3,18 +3,14 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
-import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
-import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
-import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
-import org.maiaframework.gen.spec.definition.validation.NotNullConstraintDef
 import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
 import org.maiaframework.lang.text.StringFunctions
 
 
-class EntityFormComponentRenderer(
+class EntityReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     angularComponentNames: AngularComponentNames
 ) : AbstractAngularComponentRenderer(angularComponentNames) {
@@ -32,20 +28,22 @@ class EntityFormComponentRenderer(
     init {
 
         addImport("@angular/core", "Component")
+        addImport("@angular/core", "EventEmitter")
+        addImport("@angular/core", "Inject")
         addImport("@angular/core", "OnInit")
+        addImport("@angular/core", "Output")
         addImport("@angular/core", "signal")
 
-        addImport("@angular/forms/signals", "form")
-        addImport("@angular/forms/signals", "FormField", isModule = true)
-        addImport("@angular/forms/signals", "submit")
+        addImport("@angular/forms", "FormControl")
+        addImport("@angular/forms", "FormGroup")
+        addImport("@angular/forms", "Validators")
         addImport("@angular/forms", "FormsModule", isModule = true)
         addImport("@angular/forms", "ReactiveFormsModule", isModule = true)
 
         if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
             addImport("@angular/material/dialog", "MatDialog")
             addImport("@angular/material/dialog", "MatDialogRef")
-            // TODO probably only needed for Edit forms
-//            addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
+            addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
             addImport("@angular/material/dialog", "MatDialogTitle", isModule = true)
             addImport("@angular/material/dialog", "MatDialogContent", isModule = true)
             addImport("@angular/material/dialog", "MatDialogActions", isModule = true)
@@ -83,17 +81,13 @@ class EntityFormComponentRenderer(
             angularFieldDef.typeaheadRequiredValidatorTypescriptImport?.let { addImport(it) }
         }
 
-//        this.angularFormDef.uniqueIndexDefs.forEach { databaseIndexDef ->
-//            addImport(databaseIndexDef.asyncValidator.asyncValidatorTypescriptImport)
-//        }
-
-        if (this.angularFormDef.uniqueIndexDefs.isNotEmpty()) {
-            addImport("@angular/forms/signals", "validateHttp")
+        this.angularFormDef.uniqueIndexDefs.forEach { databaseIndexDef ->
+            addImport(databaseIndexDef.asyncValidator.asyncValidatorTypescriptImport)
         }
 
-//        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-//            addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
-//        }
+        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+            addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
+        }
 
         if (this.angularFormDef.hasAnyMatSelectFields) {
 
@@ -120,10 +114,15 @@ class EntityFormComponentRenderer(
         appendLine("export class $className implements OnInit {")
 
         `render class fields`()
+
         `render constructor`()
+
         `render function ngOnInit`()
+
         `render TypeaheadResultFormatters`()
+
         `render function onSubmit`()
+
         `render function onCancel`()
 
         blankLine()
@@ -134,10 +133,6 @@ class EntityFormComponentRenderer(
 
 
     private fun `render class fields`() {
-
-        `render class field dialogFormModel`()
-        `render class field dialogForm`()
-        `render class field problemDetail`()
 
         if (this.angularFormDef.delegateFormSubmission.value) {
 
@@ -182,6 +177,11 @@ class EntityFormComponentRenderer(
 
         }
 
+        append("""
+            |
+            |
+            |    problemDetail = signal<ProblemDetail | null>(null);
+            |""".trimMargin())
 
         this.angularFormDef.enumsForMatSelectFields
             .filter { it.withEnumSelectionOptions }
@@ -196,6 +196,12 @@ class EntityFormComponentRenderer(
 
         }
 
+        append("""
+            |
+            |
+            |    formGroup: FormGroup;
+            |""".trimMargin())
+
         this.angularFormDef.formModelFields.filter { it.linksToAField }.forEach { fieldDef ->
 
             append("""
@@ -203,169 +209,6 @@ class EntityFormComponentRenderer(
                 |
                 |    ${fieldDef.classFieldDef.classFieldName}IsVisible = signal<boolean>(false);
                 |""".trimMargin())
-
-        }
-
-    }
-
-    private fun `render class field problemDetail`() {
-        append(
-            """
-                |
-                |
-                |    problemDetail = signal<ProblemDetail | null>(null);
-                |""".trimMargin()
-        )
-    }
-
-
-    private fun `render class field dialogFormModel`() {
-
-        append("""
-            |
-            |
-            |    dialogFormModel = signal<${this.angularFormDef.requestDtoDef.uqcn}>({
-            |""".trimMargin()
-        )
-
-        this.angularFormDef.formModelFields.forEach { fieldDef ->
-
-            append(
-                """
-                    |        ${fieldDef.classFieldDef.classFieldName}: '',
-                    |""".trimMargin()
-            )
-
-        }
-
-        append("""
-            |    });
-            |""".trimMargin()
-        )
-
-    }
-
-
-    private fun `render class field dialogForm`() {
-
-        blankLine()
-        blankLine()
-
-        if (this.angularFormDef.hasAnyValidationConstraints) {
-            appendLine("    dialogForm = form(this.dialogFormModel, (schemaPath) => {")
-        } else {
-            appendLine("    dialogForm = form(this.dialogFormModel)")
-        }
-
-        this.angularFormDef.formModelFields.forEach { `render dialogForm field`(it) }
-
-        this.angularFormDef.formModelFields.filter { it.linksToAField }.forEach { fieldDef ->
-
-            append("""
-                |        ${fieldDef.classFieldDef.classFieldName}: '',
-                ||""".trimMargin()
-            )
-
-        }
-
-        appendLine("    });")
-
-    }
-
-    
-    private fun `render dialogForm field`(angularFormFieldDef: AngularFormFieldDef) {
-        
-        val classFieldDef = angularFormFieldDef.classFieldDef
-        val classFieldName = classFieldDef.classFieldName
-        val fieldLabel = angularFormFieldDef.fieldLabel
-
-        if (classFieldDef.hasAnyValidationConstraints() || classFieldDef.isUnique) {
-
-            if (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
-                || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java)
-            ) {
-
-                addImport("@angular/forms/signals", "required")
-
-                appendLine("        required(schemaPath.$classFieldName, { message: '$fieldLabel is required' })")
-
-            }
-
-            if (classFieldDef.hasValidationConstraint(EmailConstraintDef::class.java)) {
-
-                addImport("@angular/forms/signals", "email")
-
-                appendLine("        email(schemaPath.$classFieldName, { message: '$fieldLabel must be valid' })")
-
-            }
-
-            if (classFieldDef.hasValidationConstraint(UrlConstraintDef::class.java)) {
-                appendLine("        @if (formGroup.controls['$classFieldName'].hasError('invalidUrl')) {")
-                appendLine("            <mat-error>${fieldLabel} must be a valid URL.</mat-error>")
-                appendLine("        }")
-            }
-
-            classFieldDef.minConstraint?.minValue?.let { minValue ->
-
-                addImport("@angular/forms/signals", "min")
-
-                appendLine("        min(schemaPath.$classFieldName, { message: '$fieldLabel must be at least $minValue.'})")
-
-            }
-
-            classFieldDef.maxConstraint?.maxValue?.let { maxValue ->
-
-                addImport("@angular/forms/signals", "max")
-
-                appendLine("        max(schemaPath.$classFieldName, { message: '$fieldLabel must not be more than $maxValue.'})")
-
-            }
-
-            classFieldDef.lengthConstraint?.min?.let { minLength ->
-
-                addImport("@angular/forms/signals", "minLength")
-
-                appendLine("        minLength(schemaPath.$classFieldName, $minLength)")
-
-            }
-
-            classFieldDef.lengthConstraint?.max?.let { maxLength ->
-
-                addImport("@angular/forms/signals", "maxLength")
-
-                appendLine("        maxLength(schemaPath.$classFieldName, $maxLength)")
-
-            }
-
-            if (classFieldDef.isUnique) {
-
-                addImport("@angular/forms/signals", "validateHttp")
-
-                append("""
-                    |        validateHttp(schemaPath.$classFieldName, {
-                    |            request: ({value}) => {
-                    |                return {
-                    |                    url: '${classFieldDef.classFieldName}.huh',
-                    |                    body: value(),
-                    |                }
-                    |            },
-                    |            onSuccess: (response: any) => {
-                    |                if (response.huh) {
-                    |                    return {
-                    |                        kind: 'huh',
-                    |                        message: 'huh'
-                    |                    };
-                    |                }
-                    |                return null;
-                    |            },
-                    |            onError: (error) => ({
-                    |                kind: 'huh',
-                    |                message: 'huh'
-                    |            }),
-                    |        });
-                    |""".trimMargin())
-
-            }
 
         }
 
@@ -409,17 +252,8 @@ class EntityFormComponentRenderer(
             appendLine("        private ${databaseIndexDef.validatorFieldName}: ${databaseIndexDef.validatorName},")
         }
 
-//        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-//            appendLine("        private ${asyncValidatorDef.validatorFieldName}: ${asyncValidatorDef.asyncValidatorName},")
-//        }
-
-        if (true) {
-            append("""
-                |    ) {}
-                |""".trimMargin())
-
-            return
-
+        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+            appendLine("        private ${asyncValidatorDef.validatorFieldName}: ${asyncValidatorDef.asyncValidatorName},")
         }
 
         append("""
@@ -581,15 +415,19 @@ class EntityFormComponentRenderer(
         append("""
             |
             |
-            |    async onSubmit(e: Event) {
-            |
-            |        e.preventDefault();
+            |    onSubmit() {
             |
             |        this.problemDetail.set(null);
             |
-            |        await submit(this.dialogForm, async (form) => {
+            |        if (this.formGroup.invalid) {
+            |            return;
+            |        }
             |
             |""".trimMargin())
+
+        renderRequestDtoConstruction()
+
+        blankLine()
 
         if (this.angularFormDef.delegateFormSubmission.value) {
 
@@ -602,8 +440,6 @@ class EntityFormComponentRenderer(
         }
 
         blankLine()
-        appendLine("        });")
-        blankLine()
         appendLine("    }")
 
     }
@@ -612,15 +448,15 @@ class EntityFormComponentRenderer(
     private fun `render formService request`() {
 
         append("""
-            |            this.formService.${angularFormDef.onSubmitServiceFunctionName}(form().value())
-            |                .subscribe({
+            |        this.formService.${angularFormDef.onSubmitServiceFunctionName}(requestDto)
+            |            .subscribe({
             |""".trimMargin()
         )
 
         `render formService request next function`()
         `render formService request error function`()
 
-        appendLine("                });")
+        appendLine("            });")
 
     }
 
@@ -636,17 +472,17 @@ class EntityFormComponentRenderer(
                     if (this.angularFormDef.emitEventOnSuccess.value) {
 
                         append("""
-                            |                    next: () => {
-                            |                        this.onSuccessEvent.emit();
-                            |                    },
+                            |                next: () => {
+                            |                    this.onSuccessEvent.emit();
+                            |                },
                             |""".trimMargin())
 
                     } else {
 
                         append("""
-                            |                    next: () => {
-                            |                        // TODO maybe emit an event?
-                            |                    },
+                            |                next: () => {
+                            |                    // TODO maybe emit an event?
+                            |                },
                             |""".trimMargin())
 
                     }
@@ -658,17 +494,17 @@ class EntityFormComponentRenderer(
                     if (this.angularFormDef.emitEventOnSuccess.value) {
 
                         append("""
-                            |                    next: () => {
-                            |                        this.onSuccessEvent.emit();
-                            |                    },
+                            |                next: () => {
+                            |                    this.onSuccessEvent.emit();
+                            |                },
                             |""".trimMargin())
 
                     } else {
 
                         append("""
-                            |                    next: () => {
-                            |                        this.dialogRef.close(true);
-                            |                    },
+                            |                next: () => {
+                            |                    this.dialogRef.close(true);
+                            |                },
                             |""".trimMargin())
 
                     }
@@ -680,9 +516,9 @@ class EntityFormComponentRenderer(
         } else {
 
             append("""
-                |                    next: (_) => {
-                |                        this.router.navigate(['${this.angularFormDef.onSuccessUrl}']);
-                |                    },
+                |                next: (_) => {
+                |                    this.router.navigate(['${this.angularFormDef.onSuccessUrl}']);
+                |                },
                 |""".trimMargin())
 
         }
@@ -695,17 +531,17 @@ class EntityFormComponentRenderer(
         if (this.angularFormDef.emitEventOnError.value) {
 
             append("""
-                |                    error: err => {
-                |                        this.onErrorEvent.emit(err);
-                |                    }
+                |                error: err => {
+                |                    this.onErrorEvent.emit(err);
+                |                }
                 |""".trimMargin())
 
         } else {
 
             append("""
-                |                    error: err => {
-                |                        this.problemDetail.set(err.error);
-                |                    }
+                |                error: err => {
+                |                    this.problemDetail.set(err.error);
+                |                }
                 |""".trimMargin())
 
         }

@@ -3,6 +3,7 @@
 
 import {BravoAgGridPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoAgGridPkAndNameDto';
 
+
 export interface CharlieAgGridFetchForEditDto {
     bravo: BravoAgGridPkAndNameDto;
     createdTimestampUtc: string;
@@ -10,3 +11,4 @@ export interface CharlieAgGridFetchForEditDto {
     someInt: number;
     someString: string;
 }
+

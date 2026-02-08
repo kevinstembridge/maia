@@ -4,6 +4,7 @@
 import {SimpleResponseDto} from '@app/gen-components/org/maiaframework/showcase/SimpleResponseDto';
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 
+
 export interface AllFieldTypesCreateRequestDto {
     someBoolean: boolean;
     someBooleanNullable?: boolean;
@@ -49,3 +50,4 @@ export interface AllFieldTypesCreateRequestDto {
     someStringType: string;
     someStringTypeNullable?: string;
 }
+

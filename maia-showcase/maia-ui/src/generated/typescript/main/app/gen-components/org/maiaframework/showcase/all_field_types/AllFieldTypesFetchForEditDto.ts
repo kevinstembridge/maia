@@ -5,6 +5,7 @@ import {SimpleResponseDto} from '@app/gen-components/org/maiaframework/showcase/
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 import {PartyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/party/PartyPkAndNameDto';
 
+
 export interface AllFieldTypesFetchForEditDto {
     createdBy: PartyPkAndNameDto;
     createdByUsername: string;
@@ -57,3 +58,4 @@ export interface AllFieldTypesFetchForEditDto {
     someStringType: string;
     someStringTypeNullable?: string;
 }
+

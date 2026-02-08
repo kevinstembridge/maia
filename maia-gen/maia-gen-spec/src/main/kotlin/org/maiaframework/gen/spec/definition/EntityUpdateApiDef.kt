@@ -11,7 +11,8 @@ import java.util.TreeSet
 class EntityUpdateApiDef(
     entityDef: EntityDef,
     val crudApiDef: CrudApiDef,
-    private val moduleName: ModuleName?
+    private val moduleName: ModuleName?,
+    angularFormType: AngularFormType
 ) : AbstractEntityApiDef(entityDef) {
 
 
@@ -168,7 +169,8 @@ class EntityUpdateApiDef(
         dialogTitle = null,
         multiFieldDatabaseIndexDefs = entityDef.multiFieldUniqueIndexDefs,
         onSubmitServiceFunctionName = "edit",
-        entityDef.crudAngularComponentNames.serviceTypescriptImport
+        entityDef.crudAngularComponentNames.serviceTypescriptImport,
+        angularFormType
     )
 
 
@@ -190,7 +192,8 @@ class EntityUpdateApiDef(
             dialogTitle = null,
             multiFieldDatabaseIndexDefs = entityDef.databaseIndexDefs,
             onSubmitServiceFunctionName = "edit",
-            entityDef.crudAngularComponentNames.serviceTypescriptImport
+            entityDef.crudAngularComponentNames.serviceTypescriptImport,
+            angularFormType
         )
     } else {
         null

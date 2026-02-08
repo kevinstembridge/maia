@@ -23,7 +23,7 @@ class DtoHtmlTableServiceTypescriptRenderer(private val dtoHtmlTableDef: DtoHtml
         appendLine("import {Injectable} from '@angular/core';")
         appendLine("import {HttpClient, HttpHeaders} from '@angular/common/http';")
         appendLine("import {Observable} from 'rxjs';")
-        appendLine("import {$searchResultType} from '@app/models/$searchResultType';")
+        appendLine("import {$searchResultType} from '@app/gen-components/common/model/$searchResultType';")
         appendLine("import {${this.dtoHtmlTableDef.dtoUqcn}} from './${this.dtoHtmlTableDef.dtoUqcn}';")
         blankLine()
         blankLine()
