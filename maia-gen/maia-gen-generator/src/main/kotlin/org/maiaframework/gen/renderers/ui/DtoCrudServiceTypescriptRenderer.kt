@@ -34,7 +34,7 @@ class DtoCrudServiceTypescriptRenderer(
                 appendLine(entityIndexDef.asyncValidator.asyncValidationDtoImportStatement)
             }
 
-            appendLine("import { FormValidationResponseDto } from '@app/models/FormValidationResponseDto';")
+            appendLine("import { FormValidationResponseDto } from '@app/gen-components/common/model/FormValidationResponseDto';")
 
         }
 
@@ -70,6 +70,18 @@ class DtoCrudServiceTypescriptRenderer(
             appendLine("    }")
         }
 
+        this.entityCrudApiDef.entityDef.uniqueIndexDefs.filter { it.withExistsEndpoint }.forEach { entityIndexDef ->
+
+            blankLine()
+            blankLine()
+            appendLine("    public ${entityIndexDef.existsByFunctionName}(requestBody: ${entityIndexDef.asyncValidator.asyncValidationDtoName}): Observable<FormValidationResponseDto> {")
+            blankLine()
+            appendLine("        return this.http.post<FormValidationResponseDto>('${entityIndexDef.existsByUrl}', requestBody, this.httpOptions);")
+            blankLine()
+            appendLine("    }")
+
+        }
+
         this.entityCrudApiDef.updateApiDef?.let { apiDef ->
 
             val requestDtoDef = apiDef.requestDtoDef
@@ -96,19 +108,6 @@ class DtoCrudServiceTypescriptRenderer(
             appendLine("        return this.http.delete('${apiDef.endpointUrl}' + id, this.httpOptions);")
             blankLine()
             appendLine("    }")
-        }
-
-
-        this.entityCrudApiDef.entityDef.uniqueIndexDefs.filter { it.withExistsEndpoint }.forEach { entityIndexDef ->
-
-            blankLine()
-            blankLine()
-            appendLine("    public ${entityIndexDef.existsByFunctionName}(requestBody: ${entityIndexDef.asyncValidator.asyncValidationDtoName}): Observable<FormValidationResponseDto> {")
-            blankLine()
-            appendLine("        return this.http.post<FormValidationResponseDto>('${entityIndexDef.existsByUrl}', requestBody, this.httpOptions);")
-            blankLine()
-            appendLine("    }")
-
         }
 
         blankLine()
