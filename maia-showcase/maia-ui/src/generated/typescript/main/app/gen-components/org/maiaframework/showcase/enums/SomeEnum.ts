@@ -7,6 +7,7 @@ export enum SomeEnum {
     NOT_OK = 'NOT_OK',
 
 
+    // All good
     OK = 'OK',
 
 
