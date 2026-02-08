@@ -40,8 +40,8 @@ export class SimpleEditDialogComponent implements OnInit {
 
 
     dialogFormModel = signal<SimpleUpdateRequestDto>({
-        someString: '',
         id: '',
+        someString: '',
     });
 
 
