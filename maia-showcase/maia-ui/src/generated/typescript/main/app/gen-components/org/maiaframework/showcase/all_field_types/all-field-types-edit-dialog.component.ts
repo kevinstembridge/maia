@@ -9,6 +9,7 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {ProblemDetail} from '@app/gen-components/common/model/ProblemDetail';
 import {AllFieldTypesSomeIntTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeIntTypeAsyncValidator';
 import {AllFieldTypesSomeLongTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeLongTypeAsyncValidator';
 import {AllFieldTypesSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringAsyncValidator';
@@ -16,7 +17,6 @@ import {AllFieldTypesSomeStringNullableAsyncValidator} from '@app/gen-components
 import {AllFieldTypesSomeStringTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringTypeAsyncValidator';
 import {AllFieldTypesUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesUpdateRequestDto';
 import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
-import {ProblemDetail} from '@app/models/ProblemDetail';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 

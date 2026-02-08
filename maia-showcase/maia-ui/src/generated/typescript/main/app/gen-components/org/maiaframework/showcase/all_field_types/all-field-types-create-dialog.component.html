@@ -3,7 +3,7 @@
     <div mat-dialog-content>
         @if (problemDetail()) {
             <mat-error>
-                <p class="alert alert-warning">{{ problemDetail().title }}</p>
+                <p class="alert alert-warning">{{ problemDetail()!.title }}</p>
             </mat-error>
         }
         <mat-form-field appearance="outline">
@@ -201,7 +201,7 @@
                 <mat-error>Some Long Type is required.</mat-error>
             }
             @if (formGroup.controls['someLongType'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someLongType'].errors!.['message'] }}</mat-error>
+                <mat-error>{{ formGroup.controls['someLongType']?.['errors']?.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -311,7 +311,7 @@
                 <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
             @if (formGroup.controls['someString'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someString'].errors!.['message'] }}</mat-error>
+                <mat-error>{{ formGroup.controls['someString']?.['errors']?.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -341,7 +341,7 @@
                 <mat-error>Some String Nullable must not be more than 100 characters.</mat-error>
             }
             @if (formGroup.controls['someStringNullable'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someStringNullable'].errors!.['message'] }}</mat-error>
+                <mat-error>{{ formGroup.controls['someStringNullable']?.['errors']?.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -359,7 +359,7 @@
                 <mat-error>Some String Type must not be more than 100 characters.</mat-error>
             }
             @if (formGroup.controls['someStringType'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['someStringType'].errors!.['message'] }}</mat-error>
+                <mat-error>{{ formGroup.controls['someStringType']?.['errors']?.['message'] }}</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">

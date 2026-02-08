@@ -11,6 +11,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatTooltip} from '@angular/material/tooltip';
+import {ProblemDetail} from '@app/gen-components/common/model/ProblemDetail';
 import {AllFieldTypesCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesCreateRequestDto';
 import {AllFieldTypesSomeIntTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeIntTypeAsyncValidator';
 import {AllFieldTypesSomeLongTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeLongTypeAsyncValidator';
@@ -20,14 +21,15 @@ import {AllFieldTypesSomeStringTypeAsyncValidator} from '@app/gen-components/org
 import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnumSelectOptions';
-import {ProblemDetail} from '@app/models/ProblemDetail';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
+import {FormField} from '@angular/forms/signals';
 
 
 @Component({
     imports: [
         FormsModule,
+        FormField,
         MatAutocompleteModule,
         MatButtonModule,
         MatDialogActions,
@@ -49,6 +51,9 @@ export class AllFieldTypesCreateDialogComponent implements OnInit {
 
 
     problemDetail = signal<ProblemDetail | null>(null);
+
+
+    protected readonly SomeEnumSelectOptions = SomeEnumSelectOptions;
 
 
     formGroup: FormGroup;
@@ -79,7 +84,14 @@ export class AllFieldTypesCreateDialogComponent implements OnInit {
                 someInt: new FormControl('', { updateOn: 'change' }),
                 someIntModifiable: new FormControl('', { updateOn: 'change' }),
                 someIntNullable: new FormControl('', { updateOn: 'change' }),
-                someIntType: new FormControl('', { updateOn: 'change', asyncValidators: [this.allFieldTypesSomeIntTypeAsyncValidator.validate.bind(this.allFieldTypesSomeIntTypeAsyncValidator)] }),
+                someIntType: new FormControl(
+                    '',
+                    {
+                        asyncValidators: [
+                            this.allFieldTypesSomeIntTypeAsyncValidator.validate.bind(this.allFieldTypesSomeIntTypeAsyncValidator)
+                        ],
+                        updateOn: 'change'
+                    }),
                 someIntTypeNullable: new FormControl('', { updateOn: 'change' }),
                 someIntTypeProvided: new FormControl('', { updateOn: 'change' }),
                 someIntTypeProvidedNullable: new FormControl('', { updateOn: 'change' }),
