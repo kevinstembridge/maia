@@ -42,11 +42,13 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
             |@Injectable({providedIn: 'root'})
             |export class ${dtoHtmlTableDef.agGridDatasourceClassName} implements IDatasource {
             |
+            |
+            |    rowCount: number = undefined;
+            |
+            |
             |    constructor(
             |        private http: HttpClient
             |    ) { }
-            |
-            |    rowCount: number = undefined;
             |
             |
             |    getRows(params: IGetRowsParams): void {

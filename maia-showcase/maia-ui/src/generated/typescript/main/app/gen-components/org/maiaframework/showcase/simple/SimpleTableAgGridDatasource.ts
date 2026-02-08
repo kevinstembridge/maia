@@ -11,11 +11,13 @@ import {SearchResultPage} from '@app/gen-components/common/model/SearchResultPag
 @Injectable({providedIn: 'root'})
 export class SimpleTableAgGridDatasource implements IDatasource {
 
+
+    rowCount: number = undefined;
+
+
     constructor(
         private http: HttpClient
     ) { }
-
-    rowCount: number = undefined;
 
 
     getRows(params: IGetRowsParams): void {
