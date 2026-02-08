@@ -316,7 +316,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("someString", FieldTypes.string) {
             lengthConstraint(max = 100)
             editableByUser()
-            unique()
+            unique(withExistsEndpoint = true)
         }
         crud {
             apis(defaultAuthority = partySpec.adminAuthority) {
