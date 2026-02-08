@@ -43,7 +43,12 @@ export class SimpleCreateDialogComponent implements OnInit {
     dialogForm = form(this.dialogFormModel, (schemaPath) => {
         required(schemaPath.someString, { message: 'Some String is required' })
         validateHttp(schemaPath.someString, {
-            request: ({value}) => `/api/simple/check-username?username=${value()}`,
+            request: ({value}) => {
+                return {
+                    url: '/api/simple/exists_by_some_string',
+                    body: value(),
+                }
+            },
             onSuccess: (response: any) => {
                 if (response.taken) {
                     return {
@@ -59,6 +64,7 @@ export class SimpleCreateDialogComponent implements OnInit {
             }),
         });
     });
+
 
     problemDetail = signal<ProblemDetail | null>(null);
 
