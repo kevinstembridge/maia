@@ -15,7 +15,7 @@ class EntityCreateApiDef(
     entityDef: EntityDef,
     val crudApiDef: CrudApiDef,
     moduleName: ModuleName?,
-    angularFormType: AngularFormType
+    angularFormSystem: AngularFormSystem
 ) : AbstractEntityApiDef(entityDef) {
 
 
@@ -150,7 +150,7 @@ class EntityCreateApiDef(
         multiFieldDatabaseIndexDefs = entityDef.multiFieldUniqueIndexDefs,
         onSubmitServiceFunctionName = "create",
         entityDef.crudAngularComponentNames.serviceTypescriptImport,
-        angularFormType
+        angularFormSystem
     )
 
 
@@ -173,7 +173,7 @@ class EntityCreateApiDef(
             multiFieldDatabaseIndexDefs = entityDef.databaseIndexDefs,
             onSubmitServiceFunctionName = "create",
             entityDef.crudAngularComponentNames.serviceTypescriptImport,
-            angularFormType
+            angularFormSystem
         )
     } else {
         null

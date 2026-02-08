@@ -86,7 +86,7 @@ class EntityDef(
     val hasSingleEffectiveRecord: HasSingleEffectiveRecord,
     private val hasEntityDetailDtoDef: HasEntityDetailDtoDef,
     val cacheableDef: CacheableDef?,
-    val angularFormType: AngularFormType
+    val angularFormSystem: AngularFormSystem
 ) {
 
 
@@ -422,7 +422,7 @@ class EntityDef(
         EntityDef(
             allowDeleteAll = AllowDeleteAll.FALSE,
             allowFindAll = AllowFindAll.FALSE,
-            angularFormType = this.angularFormType,
+            angularFormSystem = this.angularFormSystem,
             cacheableDef = null,
             cappedSizeInBytes = null,
             tableNameOrNull = historyTableName,
@@ -573,13 +573,13 @@ class EntityDef(
 
     private fun initCrudApiDef(): EntityCrudApiDef? {
 
-        val createApiDef = this.crudDef.crudApiDefs.createApiDef?.let { EntityCreateApiDef(this, it, this.moduleName, this.angularFormType) }
+        val createApiDef = this.crudDef.crudApiDefs.createApiDef?.let { EntityCreateApiDef(this, it, this.moduleName, this.angularFormSystem) }
 
         val updateApiDef = this.crudDef.crudApiDefs.updateApiDef?.let {
             if (this.entityClassDef.isModifiable == false && this.isAbstract == false) {
                 throw RuntimeException("Entity $entityBaseName is declared with a Update API but has no modifiable fields.")
             }
-            EntityUpdateApiDef(this, it, this.moduleName, this.angularFormType)
+            EntityUpdateApiDef(this, it, this.moduleName, this.angularFormSystem)
         }
 
         val deleteApiDef = this.crudDef.crudApiDefs.deleteApiDef?.let {

@@ -1,7 +1,7 @@
 package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.domain.persist.SchemaName
-import org.maiaframework.gen.spec.definition.AngularFormType
+import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.ConfigurableSchemaPropertyName
 import org.maiaframework.gen.spec.definition.CrudDef
 import org.maiaframework.gen.spec.definition.DataRowHeaderName
@@ -103,7 +103,7 @@ class FixedWidthFileStagingEntityDefBuilder(
             hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
             cacheableDef = null,
             crudDef = CrudDef.EMPTY,
-            angularFormType = AngularFormType.SIGNAL
+            angularFormSystem = AngularFormSystem.SIGNAL
         )
 
     }

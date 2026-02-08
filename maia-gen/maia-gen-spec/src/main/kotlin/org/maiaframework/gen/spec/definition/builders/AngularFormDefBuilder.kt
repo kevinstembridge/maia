@@ -1,10 +1,9 @@
 package org.maiaframework.gen.spec.definition.builders
 
-import org.maiaframework.common.BlankStringException.Companion.throwIfBlank
 import org.maiaframework.gen.spec.definition.AngularComponentBaseName
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
-import org.maiaframework.gen.spec.definition.AngularFormType
+import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.FieldLabel
 import org.maiaframework.gen.spec.definition.FormAutocompleteText
 import org.maiaframework.gen.spec.definition.FormPlaceholderText
@@ -62,7 +61,7 @@ class AngularFormDefBuilder(
     private var createOrEdit: CreateOrEdit? = null
 
 
-    private var angularFormType: AngularFormType = AngularFormType.REACTIVE
+    private var angularFormSystem: AngularFormSystem = AngularFormSystem.REACTIVE
 
 
     fun field(
@@ -99,7 +98,7 @@ class AngularFormDefBuilder(
             this.dialogTitle,
             multiFieldDatabaseIndexDefs = emptyList(),
             onSubmitServiceFunctionName = "sendRequest",
-            angularFormType = this.angularFormType
+            angularFormSystem = this.angularFormSystem
         )
 
     }
@@ -210,9 +209,9 @@ class AngularFormDefBuilder(
     }
 
 
-    fun ofType(angularFormType: AngularFormType): AngularFormDefBuilder {
+    fun ofType(angularFormSystem: AngularFormSystem): AngularFormDefBuilder {
 
-        this.angularFormType = angularFormType
+        this.angularFormSystem = angularFormSystem
         return this
 
     }

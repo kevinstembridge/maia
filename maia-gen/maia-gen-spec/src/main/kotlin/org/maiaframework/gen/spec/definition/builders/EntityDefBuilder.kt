@@ -2,7 +2,7 @@ package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.domain.types.TypeDiscriminator
-import org.maiaframework.gen.spec.definition.AngularFormType
+import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.ConfigurableSchemaPropertyName
 import org.maiaframework.gen.spec.definition.DatabaseType
@@ -40,14 +40,11 @@ import org.maiaframework.gen.spec.definition.flags.WithVersionHistory
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
-import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
-import org.maiaframework.gen.spec.definition.lang.StringFieldType
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
-import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.jdbc.TableName
 
 @MaiaDslMarker
@@ -85,7 +82,7 @@ class EntityDefBuilder(
     private var moduleName: ModuleName? = null
 
 
-    private var angularFormType: AngularFormType = AngularFormType.REACTIVE
+    private var angularFormSystem: AngularFormSystem = AngularFormSystem.REACTIVE
 
 
     private var description: Description? = null
@@ -184,7 +181,7 @@ class EntityDefBuilder(
             HasSingleEffectiveRecord(this.hasSingleEffectiveRecord),
             hasEntityDetailDtoDef,
             cacheableDef,
-            this.angularFormType
+            this.angularFormSystem
         )
 
     }
@@ -367,9 +364,9 @@ class EntityDefBuilder(
     }
 
 
-    fun angularFormType(angularFormType: AngularFormType) {
+    fun angularFormType(angularFormSystem: AngularFormSystem) {
 
-        this.angularFormType = angularFormType
+        this.angularFormSystem = angularFormSystem
 
     }
 

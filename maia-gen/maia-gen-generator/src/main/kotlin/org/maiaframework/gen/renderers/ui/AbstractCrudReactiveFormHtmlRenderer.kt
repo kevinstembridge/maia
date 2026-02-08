@@ -5,7 +5,7 @@ import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
-abstract class AbstractCrudFormHtmlRenderer(
+abstract class AbstractCrudReactiveFormHtmlRenderer(
     protected val entityDef: EntityDef,
     private val inlineFormOrDialog: InlineFormOrDialog
 ) : AbstractSourceFileRenderer() {
@@ -28,9 +28,9 @@ abstract class AbstractCrudFormHtmlRenderer(
             appendLine("<h1 mat-dialog-title>${this.dialogTitle}</h1>")
         }
 
-        appendLine($$"""
-            |<form novalidate (submit)="onSubmit($event)">
-            |    <div$$matDialogContentText>
+        appendLine("""
+            |<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+            |    <div$matDialogContentText>
             |        @if (problemDetail()) {
             |            <mat-error>
             |                <p class="alert alert-warning">{{ problemDetail()!.title }}</p>
@@ -47,7 +47,7 @@ abstract class AbstractCrudFormHtmlRenderer(
         }
 
         formFields.forEach { formFieldDef ->
-            MatFormFieldRenderer.renderSignalFormField(formFieldDef, this)
+            MatFormFieldRenderer.renderFormField(formFieldDef, this)
         }
 
         val matDialogActionsText = when (inlineFormOrDialog) {

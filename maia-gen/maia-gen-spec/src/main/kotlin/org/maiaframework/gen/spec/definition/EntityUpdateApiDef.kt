@@ -12,7 +12,7 @@ class EntityUpdateApiDef(
     entityDef: EntityDef,
     val crudApiDef: CrudApiDef,
     private val moduleName: ModuleName?,
-    angularFormType: AngularFormType
+    angularFormSystem: AngularFormSystem
 ) : AbstractEntityApiDef(entityDef) {
 
 
@@ -170,7 +170,7 @@ class EntityUpdateApiDef(
         multiFieldDatabaseIndexDefs = entityDef.multiFieldUniqueIndexDefs,
         onSubmitServiceFunctionName = "edit",
         entityDef.crudAngularComponentNames.serviceTypescriptImport,
-        angularFormType
+        angularFormSystem
     )
 
 
@@ -193,7 +193,7 @@ class EntityUpdateApiDef(
             multiFieldDatabaseIndexDefs = entityDef.databaseIndexDefs,
             onSubmitServiceFunctionName = "edit",
             entityDef.crudAngularComponentNames.serviceTypescriptImport,
-            angularFormType
+            angularFormSystem
         )
     } else {
         null

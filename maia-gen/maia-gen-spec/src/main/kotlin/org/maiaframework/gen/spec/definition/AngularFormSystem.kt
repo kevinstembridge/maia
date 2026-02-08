@@ -1,6 +1,6 @@
 package org.maiaframework.gen.spec.definition
 
-enum class AngularFormType {
+enum class AngularFormSystem {
 
     REACTIVE,
 

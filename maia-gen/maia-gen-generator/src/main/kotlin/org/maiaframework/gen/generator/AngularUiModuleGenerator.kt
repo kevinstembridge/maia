@@ -15,9 +15,11 @@ import org.maiaframework.gen.renderers.ui.DtoHtmlTableHtmlRenderer
 import org.maiaframework.gen.renderers.ui.DtoHtmlTableScssRenderer
 import org.maiaframework.gen.renderers.ui.DtoHtmlTableServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreateDialogReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormScssRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreateReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailDtoComponentRenderer
@@ -26,6 +28,8 @@ import org.maiaframework.gen.renderers.ui.EntityDetailDtoServiceTypescriptRender
 import org.maiaframework.gen.renderers.ui.EntityEditDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditReactiveDialogHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityReactiveFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.EnumSelectionOptionsTypescriptRenderer
@@ -46,8 +50,10 @@ import org.maiaframework.gen.renderers.ui.TypeaheadFieldValidatorRenderer
 import org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
-import org.maiaframework.gen.spec.definition.AngularFormType
+import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
+import org.maiaframework.gen.spec.definition.EntityCreateApiDef
+import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ClassDef
@@ -180,9 +186,9 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityForm(def: AngularFormDef, angularComponentNames: AngularComponentNames) {
 
-        when (def.angularFormType) {
-            AngularFormType.REACTIVE -> EntityReactiveFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
-            AngularFormType.SIGNAL -> EntityFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
+        when (def.angularFormSystem) {
+            AngularFormSystem.REACTIVE -> EntityReactiveFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.SIGNAL -> EntityFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
         }
 
     }
@@ -349,8 +355,18 @@ class AngularUiModuleGenerator(
 
         this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
             entityCrudApiDef.createApiDef?.let { apiDef ->
-                EntityCreateDialogHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+                renderEntityCreateDialogHtml(apiDef)
             }
+        }
+
+    }
+
+
+    private fun renderEntityCreateDialogHtml(apiDef: EntityCreateApiDef) {
+
+        when (apiDef.angularDialogDef.angularFormSystem) {
+            AngularFormSystem.REACTIVE -> EntityCreateDialogReactiveFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.SIGNAL -> EntityCreateDialogHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
         }
 
     }
@@ -362,9 +378,20 @@ class AngularUiModuleGenerator(
             .filter { it.entityDef.isConcrete && (it.createApiDef?.crudApiDef?.withEntityForm ?: false) }
             .forEach { entityCrudApiDef ->
                 entityCrudApiDef.createApiDef?.let { apiDef ->
-                    EntityCreateFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+                    renderEntityCreateHtmlForm(apiDef)
                 }
            }
+
+    }
+
+
+    private fun renderEntityCreateHtmlForm(apiDef: EntityCreateApiDef) {
+
+        when (apiDef.angularDialogDef.angularFormSystem) {
+            AngularFormSystem.REACTIVE -> EntityCreateReactiveFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.SIGNAL -> EntityCreateFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+        }
+
 
     }
 
@@ -375,9 +402,19 @@ class AngularUiModuleGenerator(
             .filter { it.entityDef.isConcrete && (it.updateApiDef?.crudApiDef?.withEntityForm ?: false) }
             .forEach { entityCrudApiDef ->
                 entityCrudApiDef.updateApiDef?.let { apiDef ->
-                    EntityEditFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+                    renderEntityEditHtmlForm(apiDef)
                 }
            }
+
+    }
+
+
+    private fun renderEntityEditHtmlForm(apiDef: EntityUpdateApiDef) {
+
+        when (apiDef.angularDialogDef.angularFormSystem) {
+            AngularFormSystem.REACTIVE -> EntityEditReactiveFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.SIGNAL -> EntityEditFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+        }
 
     }
 
@@ -436,11 +473,21 @@ class AngularUiModuleGenerator(
 
             entityCrudApiDef.updateApiDef?.let { apiDef ->
 
-                EntityEditDialogHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+                renderEntityEditDialogHtml(apiDef)
                 EntityEditDialogScssRenderer(apiDef).renderToDir(this.typescriptOutputDir)
 
             }
 
+        }
+
+    }
+
+
+    private fun renderEntityEditDialogHtml(apiDef: EntityUpdateApiDef) {
+
+        when (apiDef.angularDialogDef.angularFormSystem) {
+            AngularFormSystem.REACTIVE -> EntityEditReactiveDialogHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.SIGNAL -> EntityEditDialogHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
         }
 
     }
