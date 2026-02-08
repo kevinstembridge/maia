@@ -3,25 +3,24 @@
 
 import {Component, OnInit, signal} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {form, FormField, maxLength, required, submit, validateHttp} from '@angular/forms/signals';
+import {FormField, form, maxLength, required, submit, validateHttp} from '@angular/forms/signals';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
 import {MatOptionModule} from '@angular/material/core';
-import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatTooltip} from '@angular/material/tooltip';
 import {ProblemDetail} from '@app/gen-components/common/model/ProblemDetail';
-import {
-    AllFieldTypesCreateRequestDto
-} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesCreateRequestDto';
-import {
-    AllFieldTypesCrudService
-} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
+import {AllFieldTypesCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesCreateRequestDto';
+import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnumSelectOptions';
+import {Observable, Subject, of} from 'rxjs';
+import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 import {SimpleResponseDto} from '@app/gen-components/org/maiaframework/showcase/SimpleResponseDto';
+
 
 
 @Component({
@@ -247,8 +246,6 @@ export class AllFieldTypesCreateDialogComponent implements OnInit {
         required(schemaPath.someMapOfStringToInteger, { message: 'null is required' })
         required(schemaPath.someMapOfStringTypeToStringType, { message: 'null is required' })
         required(schemaPath.someDto, { message: 'null is required' })
-        required(schemaPath.createdByUsername, { message: 'Created By is required' })
-        maxLength(schemaPath.createdByUsername, 100)
     });
 
 
