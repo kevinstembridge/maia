@@ -48,4 +48,7 @@ class EnumDef(
     val hasDisplayName = enumValueDefs.any { it.displayName != null }
 
 
+    val defaultFormFieldValue = "$uqcn.${(enumValueDefs.firstOrNull { it.isDefaultFormValue }?.name ?: enumValueDefs.firstOrNull()?.name ?: error("No enum values defined for $uqcn"))}"
+
+
 }

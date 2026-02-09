@@ -17,6 +17,7 @@ import org.maiaframework.gen.spec.definition.DataClassName
 import org.maiaframework.gen.spec.definition.DataSourceType
 import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.gen.spec.definition.Description
+import org.maiaframework.gen.spec.definition.DisplayName
 import org.maiaframework.gen.spec.definition.DtoBaseName
 import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableSourceDef
@@ -674,9 +675,19 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    protected fun enumValue(name: String): EnumValueDef {
+    protected fun enumValue(
+        name: String,
+        description: String? = null,
+        displayName: String? = null,
+        isDefaultFormValue: Boolean = false
+    ): EnumValueDef {
 
-        return EnumValueDef(name)
+        return EnumValueDef(
+            name,
+            description?.let { Description(it) },
+            displayName?.let { DisplayName(it) },
+            isDefaultFormValue
+        )
 
     }
 
@@ -1103,7 +1114,12 @@ abstract class AbstractSpec protected constructor(
             val authorityDefsFromBuilders = this.authorityBuilders.map { it.build() }
 
             val enumValueDefs = this.authorityDefs.plus(authorityDefsFromBuilders).map {
-                EnumValueDef(it.name, it.description)
+                EnumValueDef(
+                    name = it.name,
+                    description = it.description,
+                    displayName = null,
+                    isDefaultFormValue = false
+                )
             }
 
             val enumDef = EnumDef(

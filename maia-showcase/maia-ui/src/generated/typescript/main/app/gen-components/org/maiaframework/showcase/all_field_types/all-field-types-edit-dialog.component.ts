@@ -59,8 +59,8 @@ export class AllFieldTypesEditDialogComponent implements OnInit {
             someInt: 0,
             someString: ''
         },
-        someEnum: '',
-        someEnumNullable: '',
+        someEnum: SomeEnum.OK,
+        someEnumNullable: SomeEnum.OK,
         someInstant: '',
         someInstantModifiable: '',
         someInstantModifiableNullable: '',

@@ -5,6 +5,7 @@ class EnumValueDef(
     val name: String,
     val description: Description? = null,
     val displayName: DisplayName? = null,
+    val isDefaultFormValue: Boolean = false
 ) {
 
 

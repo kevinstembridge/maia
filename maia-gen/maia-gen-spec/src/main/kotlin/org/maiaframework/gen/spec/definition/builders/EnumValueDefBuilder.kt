@@ -15,9 +15,12 @@ class EnumValueDefBuilder(private val name: String) {
     var displayName: String? = null
 
 
+    var isDefaultFormValue: Boolean = false
+
+
     fun build(): EnumValueDef {
 
-        return EnumValueDef(name, description(), displayName())
+        return EnumValueDef(name, description(), displayName(), isDefaultFormValue)
 
     }
 

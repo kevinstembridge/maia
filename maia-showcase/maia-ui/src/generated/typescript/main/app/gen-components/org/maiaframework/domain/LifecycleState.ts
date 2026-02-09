@@ -5,4 +5,10 @@
 export enum LifecycleState {
 
 
+    ACTIVE = 'ACTIVE',
+
+
+    INACTIVE = 'INACTIVE',
+
+
 }

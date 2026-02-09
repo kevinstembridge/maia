@@ -332,7 +332,7 @@ class EnumFieldType(
     "VARCHAR",
     EsDocMappingTypes.keyword,
     HazelcastCompatibleType.STRING,
-    defaultFormFieldValue = "''"
+    defaultFormFieldValue = enumDef.defaultFormFieldValue
 ) {
 
 
