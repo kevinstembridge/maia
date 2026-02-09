@@ -232,7 +232,7 @@ class EntityFormComponentRenderer(
 
             append(
                 """
-                    |        ${fieldDef.classFieldDef.classFieldName}: '',
+                    |        ${fieldDef.classFieldDef.classFieldName}: ${fieldDef.classFieldDef.defaultFormFieldValue},
                     |""".trimMargin()
             )
 

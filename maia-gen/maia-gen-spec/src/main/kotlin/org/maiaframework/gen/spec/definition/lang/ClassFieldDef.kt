@@ -38,7 +38,8 @@ data class ClassFieldDef(
     val pipes: List<String> = emptyList(),
     private val providedValidationConstraints: SortedSet<AbstractValidationConstraintDef> = sortedSetOf(),
     val valueMappings: Map<String, String>? = null,
-    val fieldLinkedTo: ClassFieldDef? = null
+    val fieldLinkedTo: ClassFieldDef? = null,
+    val providedDefaultFormFieldValue: String? = null
 ) : Comparable<ClassFieldDef> {
 
 
@@ -117,6 +118,9 @@ data class ClassFieldDef(
 
 
     val isVersionField = this.classFieldName == ClassFieldName.version
+
+
+    val defaultFormFieldValue = providedDefaultFormFieldValue ?: fieldType.defaultFormFieldValue
 
 
     init {

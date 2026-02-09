@@ -33,7 +33,8 @@ sealed class FieldType(
     val sqlType: String?,
     val elasticMappingType: EsDocMappingType?,
     val hazelcastCompatibleType: HazelcastCompatibleType?,
-    parameters: List<FieldType> = emptyList()
+    parameters: List<FieldType> = emptyList(),
+    val defaultFormFieldValue: String
 ) {
 
 
@@ -84,7 +85,8 @@ class BooleanFieldType internal constructor() : FieldType(
     JdbcCompatibleType.boolean,
     "BIT",
     EsDocMappingTypes.boolean,
-    HazelcastCompatibleType.BOOLEAN
+    HazelcastCompatibleType.BOOLEAN,
+    defaultFormFieldValue = "false"
 ) {
 
     override fun unwrap(): FieldType {
@@ -103,7 +105,8 @@ class BooleanTypeFieldType internal constructor(
     JdbcCompatibleType.boolean,
     "BIT",
     EsDocMappingTypes.boolean,
-    HazelcastCompatibleType.BOOLEAN
+    HazelcastCompatibleType.BOOLEAN,
+    defaultFormFieldValue = "false"
 ) {
 
 
@@ -122,7 +125,8 @@ class IntFieldType internal constructor() : FieldType(
     JdbcCompatibleType.integer,
     "INTEGER",
     EsDocMappingTypes.long,
-    HazelcastCompatibleType.INT32
+    HazelcastCompatibleType.INT32,
+    defaultFormFieldValue = "0"
 ) {
 
 
@@ -143,7 +147,8 @@ class IntTypeFieldType internal constructor(
     JdbcCompatibleType.integer,
     "INTEGER",
     EsDocMappingTypes.long,
-    HazelcastCompatibleType.INT32
+    HazelcastCompatibleType.INT32,
+    defaultFormFieldValue = "0"
 ) {
 
 
@@ -162,7 +167,8 @@ class DoubleFieldType internal constructor() : FieldType(
     JdbcCompatibleType.decimal,
     "NUMERIC",
     EsDocMappingTypes.double,
-    HazelcastCompatibleType.FLOAT64
+    HazelcastCompatibleType.FLOAT64,
+    defaultFormFieldValue = "0.0"
 ) {
 
 
@@ -181,7 +187,8 @@ class LongFieldType internal constructor() : FieldType(
     JdbcCompatibleType.bigint,
     "BIGINT",
     EsDocMappingTypes.long,
-    HazelcastCompatibleType.INT64
+    HazelcastCompatibleType.INT64,
+    defaultFormFieldValue = "0"
 ) {
 
     override fun unwrap(): FieldType {
@@ -201,7 +208,8 @@ class LongTypeFieldType internal constructor(
     JdbcCompatibleType.bigint,
     "BIGINT",
     EsDocMappingTypes.long,
-    HazelcastCompatibleType.INT64
+    HazelcastCompatibleType.INT64,
+    defaultFormFieldValue = "0"
 ) {
 
 
@@ -220,7 +228,8 @@ class UrlFieldType internal constructor() : FieldType(
     JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.text,
-    HazelcastCompatibleType.STRING
+    HazelcastCompatibleType.STRING,
+    defaultFormFieldValue = "https://example.com"
 ) {
 
 
@@ -239,7 +248,8 @@ class StringFieldType internal constructor() : FieldType(
     JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.text,
-    HazelcastCompatibleType.STRING
+    HazelcastCompatibleType.STRING,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -260,7 +270,8 @@ class StringTypeFieldType(
     JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.text,
-    HazelcastCompatibleType.STRING
+    HazelcastCompatibleType.STRING,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -279,7 +290,8 @@ class DomainIdFieldType internal constructor() : FieldType(
     JdbcCompatibleType.uuid,
     "OTHER",
     EsDocMappingTypes.keyword,
-    HazelcastCompatibleType.STRING
+    HazelcastCompatibleType.STRING,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -298,7 +310,8 @@ class ObjectIdFieldType internal constructor() : FieldType(
     JdbcCompatibleType.text,
     null,
     EsDocMappingTypes.keyword,
-    HazelcastCompatibleType.STRING
+    HazelcastCompatibleType.STRING,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -318,7 +331,8 @@ class EnumFieldType(
     JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.keyword,
-    HazelcastCompatibleType.STRING
+    HazelcastCompatibleType.STRING,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -339,7 +353,8 @@ class EsDocFieldType(
     JdbcCompatibleType.jsonb,
     null,
     EsDocMappingTypes.text,
-    HazelcastCompatibleType.STRING
+    HazelcastCompatibleType.STRING,
+    defaultFormFieldValue = "{}"
 ) {
 
 
@@ -360,7 +375,8 @@ class DataClassFieldType(
     JdbcCompatibleType.jsonb,
     null,
     EsDocMappingTypes.`object`,
-    HazelcastCompatibleType.COMPACT
+    HazelcastCompatibleType.COMPACT,
+    defaultFormFieldValue = "{}"
 ) {
 
 
@@ -379,7 +395,8 @@ class InstantFieldType internal constructor() : FieldType(
     JdbcCompatibleType.timestamp_with_time_zone,
     "TIMESTAMP",
     EsDocMappingTypes.text,
-    HazelcastCompatibleType.OFFSET_DATE_TIME
+    HazelcastCompatibleType.OFFSET_DATE_TIME,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -398,7 +415,8 @@ class LocalDateFieldType internal constructor() : FieldType(
     JdbcCompatibleType.date,
     "DATE",
     EsDocMappingTypes.date,
-    HazelcastCompatibleType.LOCAL_DATE
+    HazelcastCompatibleType.LOCAL_DATE,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -417,7 +435,8 @@ class PeriodFieldType internal constructor() : FieldType(
     JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.text,
-    HazelcastCompatibleType.STRING
+    HazelcastCompatibleType.STRING,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -439,7 +458,8 @@ class ListFieldType internal constructor(
     sqlType = null,
     elasticMappingType = null,
     hazelcastCompatibleType = null,
-    parameters = listOf(parameterFieldType)
+    parameters = listOf(parameterFieldType),
+    defaultFormFieldValue = "[]"
 ) {
 
 
@@ -461,7 +481,8 @@ class SetFieldType internal constructor(
     sqlType = null,
     elasticMappingType = null,
     hazelcastCompatibleType = null,
-    parameters = listOf(parameterFieldType)
+    parameters = listOf(parameterFieldType),
+    defaultFormFieldValue = "[]"
 ) {
 
 
@@ -484,7 +505,8 @@ class MapFieldType internal constructor(
     sqlType = null,
     elasticMappingType = null,
     hazelcastCompatibleType = null,
-    parameters = listOf(keyFieldType, valueFieldType)
+    parameters = listOf(keyFieldType, valueFieldType),
+    defaultFormFieldValue = "{}"
 ) {
 
 
@@ -505,7 +527,8 @@ class BooleanValueClassFieldType internal constructor(
     valueClassDef.underlyingFieldType.jdbcCompatibleType,
     valueClassDef.underlyingFieldType.sqlType,
     valueClassDef.underlyingFieldType.elasticMappingType,
-    valueClassDef.underlyingFieldType.hazelcastCompatibleType
+    valueClassDef.underlyingFieldType.hazelcastCompatibleType,
+    defaultFormFieldValue = "false"
 ) {
 
 
@@ -526,7 +549,8 @@ class IntValueClassFieldType internal constructor(
     valueClassDef.underlyingFieldType.jdbcCompatibleType,
     valueClassDef.underlyingFieldType.sqlType,
     valueClassDef.underlyingFieldType.elasticMappingType,
-    valueClassDef.underlyingFieldType.hazelcastCompatibleType
+    valueClassDef.underlyingFieldType.hazelcastCompatibleType,
+    defaultFormFieldValue = "0"
 ) {
 
 
@@ -547,7 +571,8 @@ class StringValueClassFieldType internal constructor(
     valueClassDef.underlyingFieldType.jdbcCompatibleType,
     valueClassDef.underlyingFieldType.sqlType,
     valueClassDef.underlyingFieldType.elasticMappingType,
-    valueClassDef.underlyingFieldType.hazelcastCompatibleType
+    valueClassDef.underlyingFieldType.hazelcastCompatibleType,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -568,7 +593,8 @@ class ForeignKeyFieldType internal constructor(
     JdbcCompatibleType.uuid,
     "OTHER",
     EsDocMappingTypes.keyword,
-    HazelcastCompatibleType.STRING
+    HazelcastCompatibleType.STRING,
+    defaultFormFieldValue = "''"
 ) {
 
 
@@ -589,7 +615,8 @@ class RequestDtoFieldType internal constructor(
     JdbcCompatibleType.jsonb,
     sqlType = null,
     EsDocMappingTypes.`object`,
-    HazelcastCompatibleType.COMPACT
+    HazelcastCompatibleType.COMPACT,
+    defaultFormFieldValue = "{}"
 ) {
 
 
@@ -610,7 +637,8 @@ class SimpleResponseDtoFieldType internal constructor(
     JdbcCompatibleType.jsonb,
     sqlType = "OTHER",
     EsDocMappingTypes.`object`,
-    HazelcastCompatibleType.COMPACT
+    HazelcastCompatibleType.COMPACT,
+    defaultFormFieldValue = "{}"
 ) {
 
 
@@ -631,7 +659,8 @@ class IdAndNameFieldType internal constructor(
     JdbcCompatibleType.jsonb,
     sqlType = null,
     EsDocMappingTypes.`object`,
-    HazelcastCompatibleType.COMPACT
+    HazelcastCompatibleType.COMPACT,
+    defaultFormFieldValue = "{}"
 ) {
 
 
@@ -658,7 +687,8 @@ class FqcnFieldType internal constructor(
     jdbcCompatibleType,
     sqlType,
     elasticMappingType,
-    hazelcastCompatibleType
+    hazelcastCompatibleType,
+    defaultFormFieldValue = "'"
 ) {
 
 
