@@ -263,7 +263,7 @@ class EntityFormComponentRenderer(
 
             append("""
                 |        ${fieldDef.classFieldDef.classFieldName}: '',
-                ||""".trimMargin()
+                |""".trimMargin()
             )
 
         }

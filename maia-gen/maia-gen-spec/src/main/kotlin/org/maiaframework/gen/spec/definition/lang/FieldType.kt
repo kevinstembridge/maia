@@ -616,7 +616,10 @@ class RequestDtoFieldType internal constructor(
     sqlType = null,
     EsDocMappingTypes.`object`,
     HazelcastCompatibleType.COMPACT,
-    defaultFormFieldValue = "{}"
+    defaultFormFieldValue = """
+        |{
+        |${requestDtoDef.dtoFieldDefs.joinToString(",\n") { "            ${it.classFieldDef.classFieldName}: ${it.classFieldDef.defaultFormFieldValue}" }}
+        |        }""".trimMargin()
 ) {
 
 
@@ -638,7 +641,10 @@ class SimpleResponseDtoFieldType internal constructor(
     sqlType = "OTHER",
     EsDocMappingTypes.`object`,
     HazelcastCompatibleType.COMPACT,
-    defaultFormFieldValue = "{}"
+    defaultFormFieldValue = """
+        |{
+        |${responseDtoDef.dtoDef.allFieldsSorted.joinToString(",\n") {"            ${it.classFieldName}: ${it.defaultFormFieldValue}" }}
+        |        }""".trimMargin()
 ) {
 
 

@@ -19,7 +19,6 @@ import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/Som
 import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnumSelectOptions';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
-import {SimpleResponseDto} from '@app/gen-components/org/maiaframework/showcase/SimpleResponseDto';
 
 
 
@@ -58,12 +57,12 @@ export class AllFieldTypesCreateDialogComponent implements OnInit {
             someBoolean: false,
             someInt: 0,
             someString: ''
-        } as SimpleResponseDto,
+        },
         someDtoNullable: {
             someBoolean: false,
             someInt: 0,
             someString: ''
-        } as SimpleResponseDto,
+        },
         someEnum: SomeEnum.OK,
         someEnumNullable: SomeEnum.OK,
         someInstant: '',
