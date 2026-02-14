@@ -1,5 +1,7 @@
 
 TODO * Maia Showcase
     TODO * Add UI to showcase
+        TODO * Try to create a npm package to contain common UI components. e.g. message-detail
+
     TODO * Remove all dependencies and add back in as needed, the goal is for application modules to not have to declare
         a dependency on something that Maia needs.
