@@ -12,7 +12,7 @@ import {SearchResultPage} from '@app/gen-components/common/model/SearchResultPag
 export class SimpleTableAgGridDatasource implements IDatasource {
 
 
-    rowCount: number = undefined;
+    rowCount?: number = undefined;
 
 
     constructor(
