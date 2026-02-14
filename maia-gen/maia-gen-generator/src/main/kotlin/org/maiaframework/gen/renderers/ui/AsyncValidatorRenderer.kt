@@ -134,7 +134,7 @@ class AsyncValidatorRenderer(
             |
             |
             |
-            |    validate(ctrl: FormControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
+            |    validate(ctrl: AbstractControl): Observable<ValidationErrors | null> {
             |
             |        if (ctrl.value === false || ctrl.dirty === false) {
             |            return of(null);

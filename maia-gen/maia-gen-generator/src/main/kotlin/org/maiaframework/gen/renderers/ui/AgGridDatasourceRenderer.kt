@@ -43,7 +43,7 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
             |export class ${dtoHtmlTableDef.agGridDatasourceClassName} implements IDatasource {
             |
             |
-            |    rowCount: number = undefined;
+            |    rowCount?: number = undefined;
             |
             |
             |    constructor(

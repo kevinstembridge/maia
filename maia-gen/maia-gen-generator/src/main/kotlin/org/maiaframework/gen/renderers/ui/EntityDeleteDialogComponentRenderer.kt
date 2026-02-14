@@ -32,7 +32,7 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
             |export class ${this.apiDef.angularDialogComponentName} {
             |
             |
-            |    message: string;
+            |    message?: string;
             |
             |
             |    problemDetail = signal<ProblemDetail | null>(null);

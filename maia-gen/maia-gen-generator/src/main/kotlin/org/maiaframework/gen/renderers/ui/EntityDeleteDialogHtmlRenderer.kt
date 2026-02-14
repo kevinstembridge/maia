@@ -20,7 +20,7 @@ class EntityDeleteDialogHtmlRenderer(private val deleteApiDef: EntityDeleteApiDe
             |<div mat-dialog-content>
             |    @if (problemDetail()) {
             |        <mat-error>
-            |            <p class="alert alert-warning">{{ problemDetail().title }}</p>
+            |            <p class="alert alert-warning">{{ problemDetail()!.title }}</p>
             |        </mat-error>
             |    }
             |    <h5>Do you want to delete this record?</h5>
