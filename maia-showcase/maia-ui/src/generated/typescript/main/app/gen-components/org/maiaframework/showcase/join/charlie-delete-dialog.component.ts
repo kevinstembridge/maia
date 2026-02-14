@@ -17,7 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 export class CharlieDeleteDialogComponent {
 
 
-    message: string;
+    message?: string;
 
 
     problemDetail = signal<ProblemDetail | null>(null);
