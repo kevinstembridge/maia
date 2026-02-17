@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Create</h1>
-<form novalidate (submit)="onSubmit($event)">
+<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
     <div mat-dialog-content>
         @if (problemDetail()) {
             <mat-error>
@@ -9,17 +9,23 @@
         <mat-form-field appearance="outline">
             <mat-label>Some String</mat-label>
             <input
-                [formField]="dialogForm.someString"
+                formControlName="someString"
+                name="someString"
                 type="text"
                 matInput
             />
-
-            @if (dialogForm.someString().touched() && dialogForm.someString().invalid()) {
-                @for (error of dialogForm.someString().errors(); track error) {
-                    <mat-error>{{ error.message }}</mat-error>
-                }
+            @if (formGroup.controls['someString'].hasError('required')) {
+                <mat-error>Some String is required.</mat-error>
             }
-
+            @if (formGroup.controls['someString'].hasError('minlength')) {
+                <mat-error>Some String must be at least 3 characters.</mat-error>
+            }
+            @if (formGroup.controls['someString'].hasError('maxlength')) {
+                <mat-error>Some String must not be more than 100 characters.</mat-error>
+            }
+            @if (formGroup.controls['someString'].hasError('message')) {
+                <mat-error>{{ formGroup.controls['someString']?.['errors']?.['message'] }}</mat-error>
+            }
         </mat-form-field>
     </div>
     <div mat-dialog-actions>
