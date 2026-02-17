@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, input, Input, OnInit} from '@angular/core';
 import { MessageDetails } from './message-details';
 import { KeyValuePipe } from '@angular/common';
 
@@ -10,7 +10,7 @@ import { KeyValuePipe } from '@angular/common';
 })
 export class MessagePanelComponent implements OnInit {
 
-  @Input() messageDetails: MessageDetails;
+  messageDetails = input.required<MessageDetails>();
 
   constructor() { }
 

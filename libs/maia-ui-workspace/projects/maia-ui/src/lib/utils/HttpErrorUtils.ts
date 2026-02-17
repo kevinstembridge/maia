@@ -26,21 +26,21 @@ export class HttpErrorUtils {
 
       if (error.statusText) {
         const statusStr = error.status ? error.statusText + ' ()' + error.status + ')' : error.statusText;
-        errorDetails.context.set('status', statusStr);
+        errorDetails.context!.set('status', statusStr);
       }
 
       if (error.url) {
-        errorDetails.context.set('url', error.url);
+        errorDetails.context!.set('url', error.url);
       }
 
       if (error.error) {
 
         if (error.error.timestamp) {
-          errorDetails.context.set('timestamp', error.error.timestamp);
+          errorDetails.context!.set('timestamp', error.error.timestamp);
         }
 
         if (error.error.message) {
-          errorDetails.context.set('message', error.error.message);
+          errorDetails.context!.set('message', error.error.message);
         }
 
       }

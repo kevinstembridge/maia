@@ -6,9 +6,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogCont
 import { of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ForeignKeyReferenceService } from '@app/gen-components/common/services/foreign-key-reference.service';
-import { MessageDetails } from '@app/components/message-panel/message-details';
+// import { MessageDetails } from '@app/components/message-panel/message-details';
+// import { MessageDetails } from '@maia/maia-ui';
+import { MessagePanelComponent } from '@maia/maia-ui';
 import { MatButtonModule } from '@angular/material/button';
-import { MessagePanelComponent } from '@app/components/message-panel/message-panel.component';
+// import { MessagePanelComponent } from '@app/components/message-panel/message-panel.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
@@ -19,7 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class AlphaAgGridCheckForeignKeyReferencesDialogComponent implements OnInit {
 
-    checking: boolean;
+    checking: boolean = false;
     messageDetails = new MessageDetails();
 
     constructor(

@@ -1,5 +1,5 @@
 import {DateTime} from 'luxon';
-import {isEffective, isNotEffective, wasEffectiveInThePast} from '@app/utils/date-time-functions';
+import {isEffective, isNotEffective, wasEffectiveInThePast} from './date-time-functions';
 import { describe, expect, it } from 'vitest';
 
 
@@ -39,7 +39,7 @@ describe('DateUtilFunctions', () => {
                 effectiveTo: oneHourFromNow(),
                 expectedResult: true
             },
-        ].forEach((fixture: {effectiveFrom: string, effectiveTo: string, description: string, expectedResult: boolean}) => {
+        ].forEach((fixture: {effectiveFrom: string | undefined, effectiveTo: string | undefined, description: string, expectedResult: boolean}) => {
 
 
             it(fixture.description, () => {
@@ -87,7 +87,7 @@ describe('DateUtilFunctions', () => {
                 effectiveTo: oneHourFromNow(),
                 expectedResult: false
             },
-        ].forEach((fixture: {effectiveFrom: string, effectiveTo: string, description: string, expectedResult: boolean}) => {
+        ].forEach((fixture: {effectiveFrom?: string, effectiveTo?: string, description: string, expectedResult: boolean}) => {
 
 
             it(fixture.description, () => {

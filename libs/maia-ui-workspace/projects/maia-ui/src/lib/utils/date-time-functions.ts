@@ -3,14 +3,14 @@ import {DateTime} from 'luxon';
 
 function effectiveFromIsInThePast(range: { effectiveFrom?: string; effectiveTo?: string }, now: number): boolean {
 
-    return DateTime.fromISO(range.effectiveFrom).toMillis() < now;
+    return !!range.effectiveFrom && DateTime.fromISO(range.effectiveFrom).toMillis() < now;
 
 }
 
 
 function effectiveToIsInThePast(range: { effectiveFrom?: string; effectiveTo?: string }, now: number): boolean {
 
-    return DateTime.fromISO(range.effectiveTo).toMillis() < now;
+    return !!range.effectiveTo && DateTime.fromISO(range.effectiveTo).toMillis() < now;
 
 }
 
@@ -24,7 +24,7 @@ function effectiveToIsNotSet(range: { effectiveFrom?: string; effectiveTo?: stri
 
 function effectiveToIsInTheFuture(range: { effectiveFrom?: string; effectiveTo?: string }, now: number): boolean {
 
-    return DateTime.fromISO(range.effectiveTo).toMillis() > now;
+    return !!range.effectiveTo && DateTime.fromISO(range.effectiveTo).toMillis() > now;
 
 }
 

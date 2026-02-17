@@ -34,7 +34,7 @@ sealed class FieldType(
     val elasticMappingType: EsDocMappingType?,
     val hazelcastCompatibleType: HazelcastCompatibleType?,
     parameters: List<FieldType> = emptyList(),
-    val defaultFormFieldValue: String
+    val defaultFormFieldValue: String?
 ) {
 
 

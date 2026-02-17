@@ -1,8 +1,8 @@
-import { ErrorDetails, HttpErrorUtils } from '@app/utils/HttpErrorUtils';
+import { ErrorDetails, HttpErrorUtils } from '../utils/HttpErrorUtils';
 
 export class MessageDetails {
 
-  errorDetails: ErrorDetails = null;
+  errorDetails?: ErrorDetails = undefined;
 
   setErrorDetailsFromHttpError(error: any) {
     this.errorDetails = HttpErrorUtils.errorDetailsFromHttpError(error);

@@ -1,17 +1,17 @@
-@if (messageDetails.errorDetails) {
+@if (messageDetails().errorDetails) {
 
   <div class="alert alert-danger" role="alert">
 
-    @if (messageDetails.errorDetails.summary) {
+    @if (messageDetails().errorDetails?.summary) {
       <div>
-        <h3>{{messageDetails.errorDetails.summary}}</h3>
+        <h3>{{messageDetails().errorDetails?.summary}}</h3>
       </div>
     }
 
-    @if (messageDetails.errorDetails.context) {
+    @if (messageDetails().errorDetails?.context) {
       <div>
         <ul>
-          @for (item of messageDetails.errorDetails.context | keyvalue; track item.key) {
+          @for (item of messageDetails().errorDetails?.context | keyvalue; track item.key) {
             <li>
               <b>{{item.key}}</b> {{item.value}}
             </li>
