@@ -12,7 +12,7 @@ import {MessageDetails, MessagePanelComponent} from '@maia/maia-ui';
 
 
 @Component({
-    imports: [MatDialogTitle, MatDialogContent, MatProgressSpinnerModule, MessagePanelComponent, MatDialogActions, MatButtonModule],
+    imports: [MatDialogTitle, MatDialogContent, MatProgressSpinnerModule, MessagePanelComponent, MatDialogActions, MatButtonModule, MessagePanelComponent],
     selector: 'app-alpha-ag-grid-check-foreign-key-references-dialog',
     templateUrl: './alpha-ag-grid-check-foreign-key-references-dialog.component.html'
 })
@@ -40,7 +40,7 @@ export class AlphaAgGridCheckForeignKeyReferencesDialogComponent implements OnIn
             tap(() => this.checking = false)
           ).subscribe(
             res => {
-              if (res.exists) {
+              if (res?.exists) {
                 this.messageDetails.setErrorMessage('Foreign key references to entity ' + res.entityKey + ' exist.');
               } else {
                 this.dialogRef.close(true);

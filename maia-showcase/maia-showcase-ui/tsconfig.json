@@ -19,6 +19,11 @@
             "./src/app/*",
             "./src/generated/typescript/main/app/*"
         ],
+        "@maia/maia-ui": [
+            "../../libs/maia-ui-workspace/dist/maia-ui"
+        ],
+        "@angular/core": ["./node_modules/@angular/core"],
+        "@angular/common": ["./node_modules/@angular/common"]
     }
   },
   "angularCompilerOptions": {

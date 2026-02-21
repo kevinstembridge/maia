@@ -6,10 +6,9 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogCont
 import { of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ForeignKeyReferenceService } from '@app/gen-components/common/services/foreign-key-reference.service';
-import { MessageDetails } from '@app/components/message-panel/message-details';
 import { MatButtonModule } from '@angular/material/button';
-import { MessagePanelComponent } from '@app/components/message-panel/message-panel.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MessageDetails, MessagePanelComponent} from '@maia/maia-ui';
 
 
 @Component({
@@ -19,7 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class AlphaCheckForeignKeyReferencesDialogComponent implements OnInit {
 
-    checking: boolean;
+    checking: boolean = false;
     messageDetails = new MessageDetails();
 
     constructor(
@@ -41,7 +40,7 @@ export class AlphaCheckForeignKeyReferencesDialogComponent implements OnInit {
             tap(() => this.checking = false)
           ).subscribe(
             res => {
-              if (res.exists) {
+              if (res?.exists) {
                 this.messageDetails.setErrorMessage('Foreign key references to entity ' + res.entityKey + ' exist.');
               } else {
                 this.dialogRef.close(true);
