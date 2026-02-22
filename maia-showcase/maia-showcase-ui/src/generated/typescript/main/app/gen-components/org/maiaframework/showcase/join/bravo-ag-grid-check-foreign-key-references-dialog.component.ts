@@ -2,13 +2,13 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
 
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ForeignKeyReferenceService } from '@app/gen-components/common/services/foreign-key-reference.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MessageDetails, MessagePanelComponent} from '@maia/maia-ui';
+import { MessageDetails, MessagePanelComponent } from '@maia/maia-ui';
 
 
 @Component({
