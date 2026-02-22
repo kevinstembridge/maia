@@ -8,7 +8,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { ForeignKeyReferenceService } from '@app/gen-components/common/services/foreign-key-reference.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MessageDetails, MessagePanelComponent} from '@maia/maia-ui';
+import { MessageDetails, MessagePanelComponent } from '@maia/maia-ui';
 
 
 @Component({
@@ -18,9 +18,13 @@ import {MessageDetails, MessagePanelComponent} from '@maia/maia-ui';
 })
 export class AlphaCheckForeignKeyReferencesDialogComponent implements OnInit {
 
+    
     checking: boolean = false;
+    
+    
     messageDetails = new MessageDetails();
 
+    
     constructor(
         public dialogRef: MatDialogRef<AlphaCheckForeignKeyReferencesDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private dto: any,

@@ -8,19 +8,23 @@ import { catchError, tap } from 'rxjs/operators';
 import { ForeignKeyReferenceService } from '@app/gen-components/common/services/foreign-key-reference.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MessageDetails, MessagePanelComponent} from '@maia/maia-ui';
+import { MessageDetails, MessagePanelComponent } from '@maia/maia-ui';
 
 
 @Component({
-    imports: [MatDialogTitle, MatDialogContent, MatProgressSpinnerModule, MessagePanelComponent, MatDialogActions, MatButtonModule, MessagePanelComponent],
+    imports: [MatDialogTitle, MatDialogContent, MatProgressSpinnerModule, MessagePanelComponent, MatDialogActions, MatButtonModule],
     selector: 'app-alpha-ag-grid-check-foreign-key-references-dialog',
     templateUrl: './alpha-ag-grid-check-foreign-key-references-dialog.component.html'
 })
 export class AlphaAgGridCheckForeignKeyReferencesDialogComponent implements OnInit {
 
+    
     checking: boolean = false;
+    
+    
     messageDetails = new MessageDetails();
 
+    
     constructor(
         public dialogRef: MatDialogRef<AlphaAgGridCheckForeignKeyReferencesDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private dto: any,
