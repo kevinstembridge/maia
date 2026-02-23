@@ -9,10 +9,10 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {ProblemDetail} from '@app/gen-components/common/model/ProblemDetail';
 import {SimpleSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringAsyncValidator';
 import {SimpleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleUpdateRequestDto';
 import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud.service';
+import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 
