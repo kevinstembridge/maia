@@ -3,6 +3,7 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.ui.AgGridDatasourceRenderer
 import org.maiaframework.gen.renderers.ui.AngularFormServiceRenderer
 import org.maiaframework.gen.renderers.ui.AsyncValidatorRenderer
+import org.maiaframework.gen.renderers.ui.AuthGuardRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CrudTableComponentRenderer
@@ -428,12 +429,20 @@ class AngularUiModuleGenerator(
 
     private fun renderCommonModel() {
 
-        FormValidationResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
-        TotalHitsRelationRenderer().renderToDir(this.typescriptOutputDir)
-        TotalHitsResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
-        ProblemDetailRenderer().renderToDir(this.typescriptOutputDir)
-        SearchResultPageResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
-        IndexSearchResultResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
+        // TODO instead of rendering these, move them into maia-ui
+
+//        FormValidationResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
+//        TotalHitsRelationRenderer().renderToDir(this.typescriptOutputDir)
+//        TotalHitsResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
+//        ProblemDetailRenderer().renderToDir(this.typescriptOutputDir)
+//        SearchResultPageResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
+//        IndexSearchResultResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
+
+        this.modelDef.authoritiesDef?.let { authoritiesDef ->
+
+            AuthGuardRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
+
+        }
 
     }
 
