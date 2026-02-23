@@ -14,9 +14,9 @@ import {
     UrlTree
 } from '@angular/router';
 import {Observable} from 'rxjs';
-import {AuthService} from '@maia/maia-ui';
-import {Authority} from '@app/gen-components/todo/Authority';
-import {CurrentUserStore} from '@app/state/current-user.store';
+import {AuthService} from '@app/gen-components/acme/auth/auth.service';
+import {CurrentUserStore} from '@app/gen-components/acme/auth/current-user.store';
+import {Authority} from '@app/gen-components/acme/auth/Authority';
 
 
 @Injectable({providedIn: 'root'})
@@ -35,14 +35,14 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanMatch {
 
     canMatch(route: Route, segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-        return this.checkForSignedInAndAuthorisedUser(route.data.authorities);
+        return this.checkForSignedInAndAuthorisedUser(route.data?.["authorities"] || []);
 
     }
 
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
-        return this.checkForSignedInAndAuthorisedUser(route.data.authorities);
+        return this.checkForSignedInAndAuthorisedUser(route.data?.["authorities"] || []);
 
     }
 
