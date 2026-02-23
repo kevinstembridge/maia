@@ -1,5 +1,7 @@
 package org.maiaframework.gen.spec.definition
 
+import org.maiaframework.gen.spec.definition.lang.TypescriptImport
+
 
 data class AuthoritiesDef(val enumDef: EnumDef) {
 
@@ -17,6 +19,12 @@ data class AuthoritiesDef(val enumDef: EnumDef) {
 
 
     val userSummaryDtoRenderedFilePath = "${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/UserSummaryDto.ts"
+
+
+    val userSummaryDtoTypescriptImport = TypescriptImport(name = "UserSummaryResponseDto", "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}")
+
+
+    val authApiServiceTypescriptImport = TypescriptImport(name = "AuthApiService", "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}")
 
 
 }
