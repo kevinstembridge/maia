@@ -3,6 +3,7 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.ui.AgGridDatasourceRenderer
 import org.maiaframework.gen.renderers.ui.AngularFormServiceRenderer
 import org.maiaframework.gen.renderers.ui.AsyncValidatorRenderer
+import org.maiaframework.gen.renderers.ui.AuthApiServiceRenderer
 import org.maiaframework.gen.renderers.ui.AuthGuardRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
@@ -441,6 +442,7 @@ class AngularUiModuleGenerator(
         this.modelDef.authoritiesDef?.let { authoritiesDef ->
 
             AuthGuardRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
+            AuthApiServiceRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
 
         }
 
