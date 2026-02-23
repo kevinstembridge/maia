@@ -19,6 +19,7 @@ class AuthServiceTypescriptRenderer(private val authoritiesDef: AuthoritiesDef) 
         addImport(authoritiesDef.enumDef.typescriptImport)
         addImport(authoritiesDef.userSummaryDtoTypescriptImport)
         addImport(authoritiesDef.authApiServiceTypescriptImport)
+        addImport(authoritiesDef.currentUserStoreTypescriptImport)
         addImport(from = "@maia/maia-ui", name = "ProblemDetail")
 
     }
@@ -37,8 +38,6 @@ class AuthServiceTypescriptRenderer(private val authoritiesDef: AuthoritiesDef) 
 
         append(
             $$"""
-            |import {CurrentUserStore} from '@app/state/current-user.store';
-            |
             |
             |@Injectable({providedIn: 'root'})
             |export class AuthService {

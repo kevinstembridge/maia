@@ -21,10 +21,16 @@ data class AuthoritiesDef(val enumDef: EnumDef) {
     val userSummaryDtoRenderedFilePath = "${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/UserSummaryDto.ts"
 
 
-    val userSummaryDtoTypescriptImport = TypescriptImport(name = "UserSummaryResponseDto", "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}")
+    val userSummaryDtoTypescriptImport = TypescriptImport(name = "UserSummaryDto", from = "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/UserSummaryDto")
 
 
-    val authApiServiceTypescriptImport = TypescriptImport(name = "AuthApiService", "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}")
+    val authApiServiceTypescriptImport = TypescriptImport(name = "AuthApiService", from = "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/auth-api.service")
+
+
+    val currentUserStoreRenderedFilePath = "${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/current-user.store.ts"
+
+
+    val currentUserStoreTypescriptImport = TypescriptImport(name = "CurrentUserStore", from = "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/current-user.store")
 
 
 }
