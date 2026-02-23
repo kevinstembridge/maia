@@ -36,4 +36,10 @@ data class AuthoritiesDef(val enumDef: EnumDef) {
     val currentUserStoreTypescriptImport = TypescriptImport(name = "CurrentUserStore", from = "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/current-user.store")
 
 
+    val signinRequestDtoRenderedFilePath = "${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/SigninRequestDto.ts"
+
+
+    val signinRequestDtoTypescriptImport = TypescriptImport(name = "SigninRequestDto", from = "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/SigninRequestDto")
+
+
 }

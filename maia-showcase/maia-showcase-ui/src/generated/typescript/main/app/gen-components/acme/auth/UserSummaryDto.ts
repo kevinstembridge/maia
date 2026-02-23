@@ -10,3 +10,4 @@ export interface UserSummaryDto {
     id: string;
     lastName: string;
 }
+

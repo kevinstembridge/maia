@@ -6,6 +6,17 @@ import org.maiaframework.gen.spec.definition.AuthoritiesDef
 class AuthApiServiceRenderer(private val authoritiesDef: AuthoritiesDef) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport(from = "@angular/common/http", name = "HttpClient")
+        addImport(from = "@angular/core", name = "Injectable")
+        addImport(from = "rxjs", name = "Observable")
+        addImport(authoritiesDef.signinRequestDtoTypescriptImport)
+        addImport(authoritiesDef.userSummaryDtoTypescriptImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return authoritiesDef.authApiServiceRenderedFilePath
@@ -15,13 +26,8 @@ class AuthApiServiceRenderer(private val authoritiesDef: AuthoritiesDef) : Abstr
 
     override fun renderSourceBody() {
 
-        val userSummaryDtoImportPath = "@${authoritiesDef.userSummaryDtoRenderedFilePath.removeSuffix(".ts")}"
-
-        append("""
-            |import {HttpClient} from '@angular/common/http';
-            |import {Observable} from 'rxjs';
-            |import {Injectable} from '@angular/core';
-            |import {UserSummaryDto} from '$userSummaryDtoImportPath';
+        append(
+            """
             |
             |
             |@Injectable({providedIn: 'root'})
@@ -53,7 +59,8 @@ class AuthApiServiceRenderer(private val authoritiesDef: AuthoritiesDef) : Abstr
             |    }
             |
             |
-            |}""".trimMargin())
+            |}""".trimMargin()
+        )
 
     }
 

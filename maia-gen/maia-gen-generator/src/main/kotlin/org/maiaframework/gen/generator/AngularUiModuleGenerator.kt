@@ -11,6 +11,7 @@ import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRen
 import org.maiaframework.gen.renderers.ui.CrudTableComponentRenderer
 import org.maiaframework.gen.renderers.ui.CrudTableHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CurrentUserStoreRenderer
+import org.maiaframework.gen.renderers.ui.SigninRequestDtoRenderer
 import org.maiaframework.gen.renderers.ui.UserSummaryDtoRenderer
 import org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableComponentRenderer
@@ -442,6 +443,7 @@ class AngularUiModuleGenerator(
             AuthGuardRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
             AuthServiceTypescriptRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
             CurrentUserStoreRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
+            SigninRequestDtoRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
             UserSummaryDtoRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
 
         }

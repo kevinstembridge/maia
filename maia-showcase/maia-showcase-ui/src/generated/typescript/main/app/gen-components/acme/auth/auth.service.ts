@@ -5,6 +5,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {Authority} from '@app/gen-components/acme/auth/Authority';
+import {SigninRequestDto} from '@app/gen-components/acme/auth/SigninRequestDto';
 import {UserSummaryDto} from '@app/gen-components/acme/auth/UserSummaryDto';
 import {AuthApiService} from '@app/gen-components/acme/auth/auth-api.service';
 import {CurrentUserStore} from '@app/gen-components/acme/auth/current-user.store';
