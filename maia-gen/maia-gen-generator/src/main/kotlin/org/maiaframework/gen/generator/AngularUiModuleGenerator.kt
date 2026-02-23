@@ -5,7 +5,7 @@ import org.maiaframework.gen.renderers.ui.AngularFormServiceRenderer
 import org.maiaframework.gen.renderers.ui.AsyncValidatorRenderer
 import org.maiaframework.gen.renderers.ui.AuthApiServiceRenderer
 import org.maiaframework.gen.renderers.ui.AuthGuardRenderer
-import org.maiaframework.gen.renderers.ui.AuthServiceRenderer
+import org.maiaframework.gen.renderers.ui.AuthServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CrudTableComponentRenderer
@@ -444,7 +444,7 @@ class AngularUiModuleGenerator(
 
             AuthApiServiceRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
             AuthGuardRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
-            AuthServiceRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
+            AuthServiceTypescriptRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
 
         }
 
