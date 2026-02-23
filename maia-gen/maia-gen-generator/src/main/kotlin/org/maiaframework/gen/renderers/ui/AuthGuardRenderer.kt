@@ -6,6 +6,27 @@ import org.maiaframework.gen.spec.definition.AuthoritiesDef
 class AuthGuardRenderer(private val authoritiesDef: AuthoritiesDef) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport(from = "@angular/core", name = "Injectable")
+        addImport(from = "@angular/core", name = "inject")
+        addImport(from = "@angular/router", name = "ActivatedRouteSnapshot")
+        addImport(from = "@angular/router", name = "CanActivate")
+        addImport(from = "@angular/router", name = "CanActivateChild")
+        addImport(from = "@angular/router", name = "CanMatch")
+        addImport(from = "@angular/router", name = "Route")
+        addImport(from = "@angular/router", name = "Router")
+        addImport(from = "@angular/router", name = "RouterStateSnapshot")
+        addImport(from = "@angular/router", name = "UrlSegment")
+        addImport(from = "@angular/router", name = "UrlTree")
+        addImport(from = "rxjs", name = "Observable")
+        addImport(authoritiesDef.authServiceTypescriptImport)
+        addImport(authoritiesDef.currentUserStoreTypescriptImport)
+        addImport(authoritiesDef.enumDef.typescriptImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return authoritiesDef.authGuardRenderedFilePath
@@ -15,23 +36,10 @@ class AuthGuardRenderer(private val authoritiesDef: AuthoritiesDef) : AbstractTy
 
     override fun renderSourceBody() {
 
-        append("""
-            |import {inject, Injectable} from '@angular/core';
-            |import {
-            |    ActivatedRouteSnapshot,
-            |    CanActivate,
-            |    CanActivateChild,
-            |    CanMatch,
-            |    Route,
-            |    Router,
-            |    RouterStateSnapshot,
-            |    UrlSegment,
-            |    UrlTree
-            |} from '@angular/router';
-            |import {Observable} from 'rxjs';
-            |import {AuthService} from '@maia/maia-ui';
-            |import {Authority} from '@app/gen-components/todo/Authority';
-            |import {CurrentUserStore} from '@app/state/current-user.store';
+        val authorityUqcn = authoritiesDef.enumDef.uqcn
+
+        append(
+            $$"""
             |
             |
             |@Injectable({providedIn: 'root'})
@@ -50,19 +58,19 @@ class AuthGuardRenderer(private val authoritiesDef: AuthoritiesDef) : AbstractTy
             |
             |    canMatch(route: Route, segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
             |
-            |        return this.checkForSignedInAndAuthorisedUser(route.data.authorities);
+            |        return this.checkForSignedInAndAuthorisedUser(route.data?.["authorities"] || []);
             |
             |    }
             |
             |
             |    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
             |
-            |        return this.checkForSignedInAndAuthorisedUser(route.data.authorities);
+            |        return this.checkForSignedInAndAuthorisedUser(route.data?.["authorities"] || []);
             |
             |    }
             |
             |
-            |    private checkForSignedInAndAuthorisedUser(authoritiesRequiredByRoute: Authority[]) {
+            |    private checkForSignedInAndAuthorisedUser(authoritiesRequiredByRoute: $${authorityUqcn}[]) {
             |
             |        if (this.currentUserStore.isSignedIn() === false) {
             |
@@ -102,7 +110,8 @@ class AuthGuardRenderer(private val authoritiesDef: AuthoritiesDef) : AbstractTy
             |    }
             |
             |
-            |}""".trimMargin())
+            |}""".trimMargin()
+        )
 
     }
 

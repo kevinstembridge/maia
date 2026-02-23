@@ -27,6 +27,9 @@ data class AuthoritiesDef(val enumDef: EnumDef) {
     val authApiServiceTypescriptImport = TypescriptImport(name = "AuthApiService", from = "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/auth-api.service")
 
 
+    val authServiceTypescriptImport = TypescriptImport(name = "AuthService", from = "@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/auth.service")
+
+
     val currentUserStoreRenderedFilePath = "${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/current-user.store.ts"
 
 
