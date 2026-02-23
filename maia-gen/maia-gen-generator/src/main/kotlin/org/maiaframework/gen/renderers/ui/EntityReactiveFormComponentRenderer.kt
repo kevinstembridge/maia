@@ -3,6 +3,7 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
+import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
@@ -71,7 +72,7 @@ class EntityReactiveFormComponentRenderer(
         addImport("@angular/material/autocomplete", "MatAutocompleteModule", isModule = true)
         addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
-        addImport("@app/gen-components/common/model/ProblemDetail", "ProblemDetail")
+        addImport(TypescriptImports.problemDetail)
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
             addImport(typeaheadDef.typescriptServiceImport)
