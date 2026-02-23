@@ -1,7 +1,6 @@
 import {patchState, signalStore, withComputed, withMethods, withState} from '@ngrx/signals';
 import {computed} from '@angular/core';
 import {UserSummaryDto} from '@app/gen-components/acme/auth/UserSummaryDto';
-import {Authority} from '@app/gen-components/acme/auth/Authority';
 
 
 type CurrentUserState = {
@@ -28,10 +27,6 @@ export const CurrentUserStore = signalStore(
         isSignedIn: computed<boolean>(() => {
             return !!currentUser();
         }),
-
-        isOpsUser: computed<boolean>(() => {
-            return !!currentUser() && currentUser().grantedAuthorities.includes(Authority.SYS__OPS);
-        })
 
     })),
 
