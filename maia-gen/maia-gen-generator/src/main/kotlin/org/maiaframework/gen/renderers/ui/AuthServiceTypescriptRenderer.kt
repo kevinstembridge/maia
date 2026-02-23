@@ -54,16 +54,16 @@ class AuthServiceTypescriptRenderer(private val authoritiesDef: AuthoritiesDef) 
             |
             |    public currentUserHasThisAuthority(authority: $$authorityUqcn): boolean {
             |
-            |        return !!this.currentUserStore.currentUser()
-            |            && this.currentUserStore.currentUser().grantedAuthorities.includes(authority);
+            |        const currentUser = this.currentUserStore.currentUser();
+            |        return !!currentUser && currentUser.grantedAuthorities.includes(authority);
             |
             |    }
             |
             |
             |    public currentUserHasAnyOfThese(authorities: $${authorityUqcn}[]): boolean {
             |
-            |        return !!this.currentUserStore.currentUser()
-            |            && this.currentUserStore.currentUser().grantedAuthorities.find(e => authorities.includes(e)) != null;
+            |        const currentUser = this.currentUserStore.currentUser();
+            |        return !!currentUser && currentUser.grantedAuthorities.find(e => authorities.includes(e)) != null;
             |
             |    }
             |
