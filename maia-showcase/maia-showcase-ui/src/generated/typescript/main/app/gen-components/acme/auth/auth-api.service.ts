@@ -1,0 +1,37 @@
+import {HttpClient} from '@angular/common/http';
+// import {SigninRequestDto} from '@app/gen-components/la/signin/SigninRequestDto';
+import {Observable} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {UserSummaryDto} from '@app/gen-components/acme/auth/UserSummaryDto';
+
+
+@Injectable({providedIn: 'root'})
+export class AuthApiService {
+
+
+    constructor(private http: HttpClient) {}
+
+
+    authenticate(signinRequestDto: SigninRequestDto): Observable<UserSummaryDto> {
+
+        return this.http.post<any>('/api/signin', signinRequestDto, {withCredentials: true});
+
+    }
+
+
+    refreshCurrentUser(): Observable<UserSummaryDto> {
+
+        return this.http.get<any>('/api/current_user', {withCredentials: true});
+
+    }
+
+
+    logout() {
+
+        console.log('logging out current user');
+        this.http.post<any>('/logout', {}, {withCredentials: true}).subscribe();
+
+    }
+
+
+}

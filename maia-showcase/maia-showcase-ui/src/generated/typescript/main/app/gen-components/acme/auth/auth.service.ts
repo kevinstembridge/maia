@@ -1,0 +1,103 @@
+import {inject, Injectable} from '@angular/core';
+import {Observable, throwError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {HttpErrorResponse} from '@angular/common/http';
+import {SigninRequestDto} from '@app/gen-components/la/signin/SigninRequestDto';
+import {UserSummaryDto} from '@app/auth/UserSummaryDto';
+import {Authority} from '@app/gen-components/la/auth/Authority';
+import {CurrentUserStore} from '@app/state/current-user.store';
+import {AuthApiService} from '@app/auth/auth-api.service';
+
+
+@Injectable({providedIn: 'root'})
+export class AuthService {
+
+
+    private readonly currentUserStore = inject(CurrentUserStore);
+
+
+    constructor(
+        private apiService: AuthApiService,
+        private router: Router
+    ) { }
+
+
+    public currentUserHasThisAuthority(authority: Authority): boolean {
+
+        return !!this.currentUserStore.currentUser()
+            && this.currentUserStore.currentUser().grantedAuthorities.includes(authority);
+
+    }
+
+
+    public currentUserHasAnyOfThese(authorities: Authority[]): boolean {
+
+        return !!this.currentUserStore.currentUser()
+            && this.currentUserStore.currentUser().grantedAuthorities.find(e => authorities.includes(e)) != null;
+
+    }
+
+
+    authenticate(signinRequestDto: SigninRequestDto): Observable<UserSummaryDto> {
+
+        return this.apiService.authenticate(signinRequestDto)
+            .pipe(
+                map(user => {
+                    this.currentUserStore.setCurrentUser(user);
+                    return user;
+                }),
+                catchError(this.handleSigninError)
+            );
+
+    }
+
+
+    refreshToken(): Observable<UserSummaryDto> {
+
+        return this.apiService.refreshCurrentUser()
+            .pipe(
+                map(user => {
+                    this.currentUserStore.setCurrentUser(user);
+                    return user;
+                })
+            );
+
+    }
+
+
+    logout() {
+
+        this.apiService.logout();
+        this.currentUserStore.setCurrentUser(null);
+        this.router.navigate(['/']);
+
+    }
+
+
+    private handleSigninError(error: HttpErrorResponse) {
+
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error('An error occurred:', error.error.message);
+        } else {
+
+            if (error.status === 423) {
+                return throwError(() => ({errorCode: 'ACCOUNT_LOCKED', errorMessage: 'Account locked'}));
+            }
+
+            if (error.status === 401) {
+                return throwError(() => ({errorCode: 'BAD_CREDENTIALS', errorMessage: 'Bad credentials'}));
+            }
+
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+        }
+
+        return throwError(() => 'Something bad happened; please try again later. TODO');
+
+    }
+
+
+}
