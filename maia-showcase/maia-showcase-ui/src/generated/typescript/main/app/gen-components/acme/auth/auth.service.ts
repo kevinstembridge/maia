@@ -4,13 +4,13 @@
 import {HttpErrorResponse} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthApiService, UserSummaryResponseDto} from '@app/gen-components/acme/auth';
 import {Authority} from '@app/gen-components/acme/auth/Authority';
+import {UserSummaryDto} from '@app/gen-components/acme/auth/UserSummaryDto';
+import {AuthApiService} from '@app/gen-components/acme/auth/auth-api.service';
+import {CurrentUserStore} from '@app/gen-components/acme/auth/current-user.store';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-
-import {CurrentUserStore} from '@app/state/current-user.store';
 
 
 @Injectable({providedIn: 'root'})
