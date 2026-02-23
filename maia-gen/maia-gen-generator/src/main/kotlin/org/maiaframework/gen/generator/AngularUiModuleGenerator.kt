@@ -41,13 +41,7 @@ import org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
 import org.maiaframework.gen.renderers.ui.ForeignKeyReferencesExistResponseDtoRenderer
 import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.FormScssRenderer
-import org.maiaframework.gen.renderers.ui.FormValidationResponseDtoRenderer
-import org.maiaframework.gen.renderers.ui.IndexSearchResultResponseDtoRenderer
-import org.maiaframework.gen.renderers.ui.ProblemDetailRenderer
 import org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.SearchResultPageResponseDtoRenderer
-import org.maiaframework.gen.renderers.ui.TotalHitsRelationRenderer
-import org.maiaframework.gen.renderers.ui.TotalHitsResponseDtoRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadAngularServiceRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadFieldValidatorRenderer
 import org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
