@@ -2,7 +2,6 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AuthApiServiceRenderer
 
 import {HttpClient} from '@angular/common/http';
-import {SigninRequestDto} from '@app/gen-components/la/signin/SigninRequestDto';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {UserSummaryDto} from '@app/gen-components/acme/auth/UserSummaryDto';
