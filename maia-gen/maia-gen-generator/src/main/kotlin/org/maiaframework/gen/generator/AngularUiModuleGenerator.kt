@@ -10,6 +10,7 @@ import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogCompone
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CrudTableComponentRenderer
 import org.maiaframework.gen.renderers.ui.CrudTableHtmlRenderer
+import org.maiaframework.gen.renderers.ui.CurrentUserStoreRenderer
 import org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableComponentRenderer
 import org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableHtmlRenderer
@@ -439,6 +440,7 @@ class AngularUiModuleGenerator(
             AuthApiServiceRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
             AuthGuardRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
             AuthServiceTypescriptRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
+            CurrentUserStoreRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
 
         }
 
