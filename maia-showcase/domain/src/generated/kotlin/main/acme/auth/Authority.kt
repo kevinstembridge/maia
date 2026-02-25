@@ -8,15 +8,15 @@ package acme.auth
 enum class Authority {
 
     /**
-     * Grants access to system functions that are only available to internal employees.
-     */
-    SYS___OPS,
-
-    /**
      * Grants access to administer the system. This is only for internal employees.
 These functions would not normally be for day-to-day operations.
      */
     SYS__ADMIN,
+
+    /**
+     * Grants access to system functions that are only available to internal employees.
+     */
+    SYS___OPS,
 
     SYS__DEVOPS,
 
@@ -31,8 +31,8 @@ These functions would not normally be for day-to-day operations.
 
     object Values {
 
-        const val SYS___OPS = "SYS___OPS"
         const val SYS__ADMIN = "SYS__ADMIN"
+        const val SYS___OPS = "SYS___OPS"
         const val SYS__DEVOPS = "SYS__DEVOPS"
         const val SYS__DEVOPS_READONLY = "SYS__DEVOPS_READONLY"
         const val SYS__SYSTEM_ANALYTICS = "SYS__SYSTEM_ANALYTICS"
