@@ -4,6 +4,9 @@
   "peerDependencies": {
     "@angular/common": "^21.1.0",
     "@angular/core": "^21.1.0",
+    "@angular/material": "^21.1.0",
+    "ag-grid-angular": "^35.0.0",
+    "ag-grid-community": "^35.0.0",
     "luxon": "^3.x"
   },
   "dependencies": {

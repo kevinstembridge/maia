@@ -1,4 +1,4 @@
-import { ErrorDetails, HttpErrorUtils } from '../utils/HttpErrorUtils';
+import { ErrorDetails, HttpErrorUtils } from '../../utils/HttpErrorUtils';
 
 export class MessageDetails {
 
