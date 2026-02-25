@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
 import {SimpleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleUpdateRequestDto';
 import {SimpleSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringRequestDto';
-import { FormValidationResponseDto } from '@app/gen-components/common/model/FormValidationResponseDto';
+import { FormValidationResponseDto } from '@maia/maia-ui';
 
 
 @Injectable({providedIn: 'root'})

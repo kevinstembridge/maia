@@ -4,7 +4,7 @@
 import { Component, Inject, signal } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import {CharlieAgGridCrudService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-ag-grid-crud.service';
-import { ProblemDetail } from '@app/gen-components/common/model/ProblemDetail';
+import { ProblemDetail } from '@maia/maia-ui';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 

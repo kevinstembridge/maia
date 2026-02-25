@@ -34,7 +34,7 @@ class DtoCrudServiceTypescriptRenderer(
                 appendLine(entityIndexDef.asyncValidator.asyncValidationDtoImportStatement)
             }
 
-            appendLine("import { FormValidationResponseDto } from '@app/gen-components/common/model/FormValidationResponseDto';")
+            appendLine("import { FormValidationResponseDto } from '@maia/maia-ui';")
 
         }
 

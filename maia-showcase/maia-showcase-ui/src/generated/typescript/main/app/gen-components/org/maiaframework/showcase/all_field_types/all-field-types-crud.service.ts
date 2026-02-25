@@ -11,7 +11,7 @@ import {AllFieldTypesSomeLongTypeRequestDto} from '@app/gen-components/org/maiaf
 import {AllFieldTypesSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringRequestDto';
 import {AllFieldTypesSomeStringNullableRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringNullableRequestDto';
 import {AllFieldTypesSomeStringTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringTypeRequestDto';
-import {FormValidationResponseDto} from '@maia/maia-ui';
+import { FormValidationResponseDto } from '@maia/maia-ui';
 
 
 @Injectable({providedIn: 'root'})
