@@ -110,7 +110,7 @@ class DtoHtmlAgGridTableComponentRenderer(
             |
             |
             |    public rowSelection = {
-            |         mode: 'multiRow',
+            |         mode: 'multiRow' as const,
             |    };
             |    
             |    
