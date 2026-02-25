@@ -45,7 +45,7 @@ export class CharlieTableComponent {
 
 
     public rowSelection = {
-         mode: 'multiRow',
+         mode: 'multiRow' as const,
     };
     
     
