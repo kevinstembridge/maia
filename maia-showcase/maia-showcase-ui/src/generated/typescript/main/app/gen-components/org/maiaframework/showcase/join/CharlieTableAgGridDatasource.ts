@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 import {CharlieTableDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieTableDto';
-import {SearchResultPage} from '@app/gen-components/common/model/SearchResultPage';
+import {SearchResultPage} from '@maia/maia-ui';
 
 
 @Injectable({providedIn: 'root'})
