@@ -359,6 +359,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("someString")
         columnFromDto("id")
         columnFromDto("createdTimestampUtc")
+        editActionColumn()
+        deleteActionColumn()
     }
 
 
