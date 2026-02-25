@@ -3,7 +3,7 @@
 
 import { DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { AuthService } from '@app/auth/auth.service';
+import {AuthService} from '@app/gen-components/acme/auth/auth.service';
 
 import {CharlieTableService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-table.service';
 import { CharlieTableDto } from './CharlieTableDto';
@@ -47,8 +47,8 @@ export class CharlieTableComponent {
     public rowSelection = {
          mode: 'multiRow' as const,
     };
-    
-    
+
+
     public agGridTheme = agGridTheme;
 
 
