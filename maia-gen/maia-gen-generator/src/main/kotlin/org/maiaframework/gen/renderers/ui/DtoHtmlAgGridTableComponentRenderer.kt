@@ -159,15 +159,19 @@ class DtoHtmlAgGridTableComponentRenderer(
             |        this.gridApi = params.api;
             |        params.api?.setGridOption('datasource', this.datasource);
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
         this.dtoHtmlTableDef.actionColumnFields.forEach { actionColumnDef ->
             appendLine("""
                 |
                 |
                 |    on${actionColumnDef.actionName.firstToUpper()}(dto: ${this.dtoHtmlTableDef.dtoUqcn}) {
+                |
                 |        this.${actionColumnDef.actionName}.emit(dto);
-                |    }""".trimMargin())
+                |
+                |    }
+                |""".trimMargin())
         }
 
         this.dtoHtmlTableDef.addButtonDef?.let { addButtonDef ->

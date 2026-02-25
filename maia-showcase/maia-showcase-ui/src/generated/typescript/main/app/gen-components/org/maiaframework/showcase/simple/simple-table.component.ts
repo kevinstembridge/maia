@@ -26,13 +26,13 @@ import {SimpleTableAgGridDatasource} from '@app/gen-components/org/maiaframework
 export class SimpleTableComponent {
 
 
-    @Output() addButtonClicked = new EventEmitter<void>();
-
-
     @Output() edit = new EventEmitter<SimpleTableDto>();
 
 
     @Output() delete = new EventEmitter<SimpleTableDto>();
+
+
+    @Output() addButtonClicked = new EventEmitter<void>();
 
 
     public columnDefs: ColDef[] = [
@@ -123,6 +123,22 @@ export class SimpleTableComponent {
     }
 
 
+    onEdit(dto: SimpleTableDto) {
+
+        this.edit.emit(dto);
+
+    }
+
+
+
+    onDelete(dto: SimpleTableDto) {
+
+        this.delete.emit(dto);
+
+    }
+
+
+
     get addButtonVisible(): boolean {
 
         return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
@@ -134,16 +150,6 @@ export class SimpleTableComponent {
 
         this.addButtonClicked.emit();
 
-    }
-
-
-    onEdit(dto: SimpleTableDto) {
-        this.edit.emit(dto);
-    }
-
-
-    onDelete(dto: SimpleTableDto) {
-        this.delete.emit(dto);
     }
 
 

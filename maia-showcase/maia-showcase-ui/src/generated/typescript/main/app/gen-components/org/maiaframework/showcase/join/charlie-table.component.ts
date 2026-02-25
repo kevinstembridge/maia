@@ -4,6 +4,7 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '@app/gen-components/acme/auth/auth.service';
+import { Authority } from '@app/gen-components/acme/auth/Authority';
 import {CharlieTableService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-table.service';
 import { CharlieTableDto } from './CharlieTableDto';
 import { MatIconModule } from '@angular/material/icon';
@@ -87,6 +88,7 @@ export class CharlieTableComponent {
         params.api?.setGridOption('datasource', this.datasource);
 
     }
+
 
     reapplyFilters() {
 
