@@ -44,7 +44,7 @@ class DtoHtmlAgGridTableComponentRenderer(
             """
             |import { DecimalPipe } from '@angular/common';
             |import { Component, EventEmitter, Output } from '@angular/core';
-            |import { AuthService } from '@app/auth/auth.service';
+            |${this.authoritiesDef?.let { "import { AuthService } from '${it.authServiceTypescriptImport.from}';" } ?: ""}
             |${this.authoritiesDef?.importStatement ?: ""}
             |${this.dtoHtmlTableDef.tableServiceImportStatement}
             |import { ${this.dtoHtmlTableDef.dtoUqcn} } from './${this.dtoHtmlTableDef.dtoUqcn}';
