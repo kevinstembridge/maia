@@ -3,8 +3,7 @@
 
 import { DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { AuthService } from '@app/auth/auth.service';
-
+import { AuthService } from '@app/gen-components/acme/auth/auth.service';
 import {SimpleTableService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-table.service';
 import { SimpleTableDto } from './SimpleTableDto';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,10 +46,10 @@ export class SimpleTableComponent {
 
 
     public rowSelection = {
-         mode: 'multiRow',
+         mode: 'multiRow' as const,
     };
-    
-    
+
+
     public agGridTheme = agGridTheme;
 
 
