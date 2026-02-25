@@ -18,15 +18,15 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val adminAuthority = authority("ROLE_ADMIN")
+    val adminAuthority = authority("SYS__ADMIN") {
+        description = """Grants access to administer the system. This is only for internal employees.
+            |These functions would not normally be for day-to-day operations. 
+            """.trimMargin()
+    }
 
 
     val authoritiesDef = authorities("acme.auth", "Authority") {
-        authority("SYS__ADMIN") {
-            description = """Grants access to administer the system. This is only for internal employees.
-                |These functions would not normally be for day-to-day operations. 
-                """.trimMargin()
-        }
+        authority(adminAuthority)
         authority("SYS__DEVOPS")
         authority("SYS__DEVOPS_READONLY")
         authority("SYS__SYSTEM_ANALYTICS")

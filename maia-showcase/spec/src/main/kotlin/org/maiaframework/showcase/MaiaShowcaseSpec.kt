@@ -22,6 +22,11 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     private val partySpec = MaiaShowcasePartySpec()
 
 
+    init {
+        adoptAuthoritiesDef(partySpec.authoritiesDef)
+    }
+
+
     val someEnumDef = enumDef("org.maiaframework.showcase.enums.SomeEnum") {
         withTypescript(withEnumSelectionOptions = true)
         value("OK") {
