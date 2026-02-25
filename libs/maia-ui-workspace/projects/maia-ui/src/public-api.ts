@@ -5,5 +5,6 @@
 export * from './lib/maia-ui';
 export * from './lib/message-panel/message-details';
 export * from './lib/message-panel/message-panel.component';
-export * from './lib/problem/ProblemDetail';
 export * from './lib/model/FormValidationResponseDto';
+export * from './lib/problem/ProblemDetail';
+export * from './lib/search/SearchResultPage';
