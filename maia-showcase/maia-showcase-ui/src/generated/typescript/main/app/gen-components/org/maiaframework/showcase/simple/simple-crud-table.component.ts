@@ -17,7 +17,7 @@ import {SimpleTableDto} from '@app/gen-components/org/maiaframework/showcase/sim
 })
 export class SimpleCrudTableComponent {
 
-    @ViewChild(SimpleTableComponent) tableComponent: SimpleTableComponent;
+    @ViewChild(SimpleTableComponent) tableComponent!: SimpleTableComponent;
 
 
     constructor(
