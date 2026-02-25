@@ -39,7 +39,7 @@ class CrudTableComponentRenderer(
         appendLine("})")
         appendLine("export class ${crudTableDef.crudTableComponentClassName} {")
         blankLine()
-        appendLine("    @ViewChild(${crudTableDef.dtoTableComponent.componentName}) tableComponent: ${crudTableDef.dtoTableComponent.componentName};")
+        appendLine("    @ViewChild(${crudTableDef.dtoTableComponent.componentName}) tableComponent!: ${crudTableDef.dtoTableComponent.componentName};")
         blankLine()
         blankLine()
         appendLine("    constructor(")
