@@ -4,7 +4,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {SearchResultPage} from '@app/gen-components/common/model/SearchResultPage';
+import {SearchResultPage} from '@maia/maia-ui';
 import {SimpleTableDto} from './SimpleTableDto';
 
 
