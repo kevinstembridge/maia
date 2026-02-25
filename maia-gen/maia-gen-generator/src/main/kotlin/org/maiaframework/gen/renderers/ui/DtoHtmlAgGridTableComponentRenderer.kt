@@ -112,8 +112,8 @@ class DtoHtmlAgGridTableComponentRenderer(
             |    public rowSelection = {
             |         mode: 'multiRow' as const,
             |    };
-            |    
-            |    
+            |
+            |
             |    public agGridTheme = agGridTheme;
             |
             |
