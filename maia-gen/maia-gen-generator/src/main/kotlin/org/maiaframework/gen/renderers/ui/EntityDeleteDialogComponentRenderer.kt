@@ -6,6 +6,27 @@ import org.maiaframework.gen.spec.definition.EntityDeleteApiDef
 class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/core", "Component")
+        addImport("@angular/core", "Inject")
+        addImport("@angular/core", "signal")
+
+        addImport("@angular/material/button", "MatButtonModule")
+        addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
+        addImport("@angular/material/dialog", "MatDialog")
+        addImport("@angular/material/dialog", "MatDialogActions")
+        addImport("@angular/material/dialog", "MatDialogContent")
+        addImport("@angular/material/dialog", "MatDialogRef")
+        addImport("@angular/material/dialog", "MatDialogTitle")
+        addImport("@angular/material/form-field", "MatFormFieldModule")
+        addImport("@maia/maia-ui", "ProblemDetail")
+
+        addImport(apiDef.entityDef.crudAngularComponentNames.serviceTypescriptImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return apiDef.dialogComponentRenderedFilePath
@@ -16,12 +37,6 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
     override fun renderSourceBody() {
 
         appendLine("""
-            |import { Component, Inject, signal } from '@angular/core';
-            |import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
-            |${this.apiDef.entityDef.crudAngularComponentNames.serviceImportStatement}
-            |import { ProblemDetail } from '@maia/maia-ui';
-            |import { MatButtonModule } from '@angular/material/button';
-            |import { MatFormFieldModule } from '@angular/material/form-field';
             |
             |
             |@Component({
