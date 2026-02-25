@@ -1078,6 +1078,17 @@ abstract class AbstractSpec protected constructor(
     }
 
 
+    fun adoptAuthoritiesDef(authoritiesDef: AuthoritiesDef) {
+
+        if (this.authoritiesDef != null) {
+            throw IllegalStateException("authoritiesDef has already been set.")
+        }
+
+        this.authoritiesDef = authoritiesDef
+
+    }
+
+
     fun authorities(
         packageName: String,
         className: String,
