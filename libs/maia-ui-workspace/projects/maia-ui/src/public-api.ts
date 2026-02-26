@@ -9,3 +9,6 @@ export * from './lib/components/message-panel/message-panel.component';
 export * from './lib/model/FormValidationResponseDto';
 export * from './lib/problem/ProblemDetail';
 export * from './lib/search/SearchResultPage';
+export * from './lib/elasticsearch/IndexSearchResult';
+export * from './lib/elasticsearch/TotalHits';
+export * from './lib/elasticsearch/TotalHitsRelation';
