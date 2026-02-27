@@ -14,6 +14,7 @@
 
     <nav class="hidden gap-1 md:flex" aria-label="Main navigation">
         <a mat-button routerLink="/">Home</a>
+        <a mat-button routerLink="/simple">Simple</a>
     </nav>
 </mat-toolbar>
 
@@ -23,6 +24,7 @@
         aria-label="Mobile navigation"
     >
         <a mat-button routerLink="/" (click)="toggleMenu()">Home</a>
+        <a mat-button routerLink="/simple" (click)="toggleMenu()">Simple</a>
     </nav>
 }
 
