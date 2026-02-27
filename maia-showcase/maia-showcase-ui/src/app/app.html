@@ -1,28 +1,31 @@
 <mat-toolbar color="primary" role="banner">
-  <button
-    mat-icon-button
-    class="menu-button"
-    aria-label="Toggle navigation menu"
-    (click)="toggleMenu()"
-  >
-    <mat-icon>{{ menuOpen() ? 'close' : 'menu' }}</mat-icon>
-  </button>
+    <button
+        mat-icon-button
+        class="md:hidden"
+        aria-label="Toggle navigation menu"
+        (click)="toggleMenu()"
+    >
+        <mat-icon>{{ menuOpen() ? 'close' : 'menu' }}</mat-icon>
+    </button>
 
-  <span class="toolbar-title">{{ title() }}</span>
+    <span class="ml-2 text-xl font-medium md:ml-0">{{ title() }}</span>
 
-  <span class="spacer" aria-hidden="true"></span>
+    <span class="flex-1" aria-hidden="true"></span>
 
-  <nav class="toolbar-nav" aria-label="Main navigation">
-    <a mat-button routerLink="/">Home</a>
-  </nav>
+    <nav class="hidden gap-1 md:flex" aria-label="Main navigation">
+        <a mat-button routerLink="/">Home</a>
+    </nav>
 </mat-toolbar>
 
 @if (menuOpen()) {
-  <nav class="mobile-nav" aria-label="Mobile navigation">
-    <a mat-button routerLink="/" (click)="toggleMenu()">Home</a>
-  </nav>
+    <nav
+        class="flex flex-col bg-(--mat-toolbar-container-background-color) text-white md:hidden"
+        aria-label="Mobile navigation"
+    >
+        <a mat-button routerLink="/" (click)="toggleMenu()">Home</a>
+    </nav>
 }
 
 <main>
-  <router-outlet />
+    <router-outlet />
 </main>
