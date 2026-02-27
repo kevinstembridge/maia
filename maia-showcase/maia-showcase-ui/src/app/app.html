@@ -1,32 +1,35 @@
 <mat-toolbar color="primary" role="banner">
+    <button matIconButton [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+            <mat-icon>dialpad</mat-icon>
+            <span>Redial</span>
+        </button>
+        <button mat-menu-item disabled>
+            <mat-icon>voicemail</mat-icon>
+            <span>Check voice mail</span>
+        </button>
+        <button mat-menu-item>
+            <mat-icon>notifications_off</mat-icon>
+            <span>Disable alerts</span>
+        </button>
+    </mat-menu>
+
     <button
         mat-icon-button
-        class="md:hidden"
         aria-label="Toggle navigation menu"
         (click)="toggleMenu()"
     >
-        <mat-icon>{{ menuOpen() ? 'close' : 'menu' }}</mat-icon>
+        <mat-icon>{{ 'menu' }}</mat-icon>
     </button>
 
     <span class="ml-2 text-xl font-medium md:ml-0">{{ title() }}</span>
 
     <span class="flex-1" aria-hidden="true"></span>
 
-    <nav class="hidden gap-1 md:flex" aria-label="Main navigation">
-        <a mat-button routerLink="/">Home</a>
-        <a mat-button routerLink="/simple">Simple</a>
-    </nav>
 </mat-toolbar>
-
-@if (menuOpen()) {
-    <nav
-        class="flex flex-col bg-(--mat-toolbar-container-background-color) text-white md:hidden"
-        aria-label="Mobile navigation"
-    >
-        <a mat-button routerLink="/" (click)="toggleMenu()">Home</a>
-        <a mat-button routerLink="/simple" (click)="toggleMenu()">Simple</a>
-    </nav>
-}
 
 <main>
     <router-outlet />
