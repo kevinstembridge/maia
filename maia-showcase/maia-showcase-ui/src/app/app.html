@@ -1,29 +1,13 @@
 <mat-toolbar color="primary" role="banner">
     <button matIconButton [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-        <mat-icon>more_vert</mat-icon>
+        <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item routerLink="/simple">
             <mat-icon>dialpad</mat-icon>
-            <span>Redial</span>
-        </button>
-        <button mat-menu-item disabled>
-            <mat-icon>voicemail</mat-icon>
-            <span>Check voice mail</span>
-        </button>
-        <button mat-menu-item>
-            <mat-icon>notifications_off</mat-icon>
-            <span>Disable alerts</span>
+            <span>Simple</span>
         </button>
     </mat-menu>
-
-    <button
-        mat-icon-button
-        aria-label="Toggle navigation menu"
-        (click)="toggleMenu()"
-    >
-        <mat-icon>{{ 'menu' }}</mat-icon>
-    </button>
 
     <span class="ml-2 text-xl font-medium md:ml-0">{{ title() }}</span>
 
