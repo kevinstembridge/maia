@@ -1,7 +1,9 @@
 
 TODO * Maia Showcase
-    TODO * Add UI to showcase
-        TODO * Try to create a npm package to contain common UI components. e.g. message-detail
-
+    TODO * Use Opus to create a showcase of Maia features.
+        TODO * Create a home page that has a banner menu
+        TODO * Create a navigation menu with menu items for each entity.
+        TODO * Use Tailwind CSS to style the page.
+    TODO * Prove that edit works.
     TODO * Remove all dependencies and add back in as needed, the goal is for application modules to not have to declare
         a dependency on something that Maia needs.
