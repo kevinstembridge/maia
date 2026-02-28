@@ -25,7 +25,11 @@ export class SimpleDeleteDialogComponent {
 
 
     private readonly dialogRef = inject(MatDialogRef<SimpleDeleteDialogComponent>);
+
+
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
+
+
     private readonly crudService = inject(SimpleCrudService);
 
 

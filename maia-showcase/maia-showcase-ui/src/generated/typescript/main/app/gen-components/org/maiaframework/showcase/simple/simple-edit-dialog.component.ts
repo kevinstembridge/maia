@@ -45,8 +45,14 @@ export class SimpleEditDialogComponent implements OnInit {
 
 
     readonly dialogRef = inject(MatDialogRef<SimpleEditDialogComponent>);
+
+
     private readonly formService = inject(SimpleCrudService);
+
+
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
+
+
     private readonly simpleSomeStringAsyncValidator = inject(SimpleSomeStringAsyncValidator);
 
 

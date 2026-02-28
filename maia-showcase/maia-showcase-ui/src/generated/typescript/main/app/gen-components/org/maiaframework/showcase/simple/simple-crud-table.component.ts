@@ -22,6 +22,8 @@ export class SimpleCrudTableComponent {
 
 
     private readonly crudService = inject(SimpleCrudService);
+
+
     private readonly dialog = inject(MatDialog);
 
 
