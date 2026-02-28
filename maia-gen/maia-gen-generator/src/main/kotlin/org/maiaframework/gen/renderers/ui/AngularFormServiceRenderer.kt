@@ -5,6 +5,18 @@ import org.maiaframework.gen.spec.definition.AngularFormDef
 class AngularFormServiceRenderer(private val angularFormDef: AngularFormDef) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/core", "Injectable")
+        addImport("@angular/common/http", "HttpClient")
+        addImport("@angular/common/http", "HttpHeaders")
+        addImport("rxjs", "Observable")
+        addImport("rxjs", "of")
+        addImport(angularFormDef.requestDtoDef.typescriptImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.angularFormDef.angularServiceRenderedFilePath
@@ -14,11 +26,6 @@ class AngularFormServiceRenderer(private val angularFormDef: AngularFormDef) : A
 
     override fun renderSourceBody() {
 
-        appendLine("import {Injectable} from '@angular/core';")
-        appendLine("import {HttpClient, HttpHeaders} from '@angular/common/http';")
-        appendLine("import {Observable, of} from 'rxjs';")
-        appendLine(this.angularFormDef.requestDtoDef.typescriptFileImportStatement)
-        blankLine()
         blankLine()
         appendLine("@Injectable({providedIn: 'root'})")
         appendLine("export class ${this.angularFormDef.formServiceClassName} {")

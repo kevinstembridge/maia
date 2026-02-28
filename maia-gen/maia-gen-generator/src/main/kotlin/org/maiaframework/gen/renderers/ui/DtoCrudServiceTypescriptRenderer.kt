@@ -7,6 +7,26 @@ class DtoCrudServiceTypescriptRenderer(
 ) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/core", "Injectable")
+        addImport("@angular/common/http", "HttpClient")
+        addImport("@angular/common/http", "HttpHeaders")
+        addImport("rxjs", "Observable")
+
+        this.entityCrudApiDef.createApiDef?.let { addImport(it.requestDtoDef.typescriptImport) }
+        this.entityCrudApiDef.updateApiDef?.let { addImport(it.requestDtoDef.typescriptImport) }
+
+        if (this.entityCrudApiDef.entityDef.databaseIndexDefs.isNotEmpty()) {
+            this.entityCrudApiDef.entityDef.uniqueIndexDefs.forEach { entityIndexDef ->
+                addImport(entityIndexDef.asyncValidator.asyncValidationDtoTypescriptImport)
+            }
+            addImport("@maia/maia-ui", "FormValidationResponseDto")
+        }
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.entityCrudApiDef.entityDef.crudAngularComponentNames.serviceRenderedFilePath
@@ -16,29 +36,6 @@ class DtoCrudServiceTypescriptRenderer(
 
     override fun renderSourceBody() {
 
-        appendLine("import { Injectable } from '@angular/core';")
-        appendLine("import { HttpClient, HttpHeaders } from '@angular/common/http';")
-        appendLine("import { Observable } from 'rxjs';")
-
-        this.entityCrudApiDef.createApiDef?.let { apiDef ->
-            appendLine(apiDef.requestDtoDef.typescriptFileImportStatement)
-        }
-
-        this.entityCrudApiDef.updateApiDef?.let { apiDef ->
-            appendLine(apiDef.requestDtoDef.typescriptFileImportStatement)
-        }
-
-        if (this.entityCrudApiDef.entityDef.databaseIndexDefs.isNotEmpty()) {
-
-            this.entityCrudApiDef.entityDef.uniqueIndexDefs.forEach { entityIndexDef ->
-                appendLine(entityIndexDef.asyncValidator.asyncValidationDtoImportStatement)
-            }
-
-            appendLine("import { FormValidationResponseDto } from '@maia/maia-ui';")
-
-        }
-
-        blankLine()
         blankLine()
         appendLine("@Injectable({providedIn: 'root'})")
         appendLine("export class ${this.entityCrudApiDef.entityDef.crudAngularComponentNames.serviceName} {")

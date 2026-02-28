@@ -35,6 +35,9 @@ class AsyncValidatorDef(packageName: PackageName, baseName: String) {
     val asyncValidatorTypescriptImport = TypescriptImport(asyncValidatorName, "@$genComponentsBaseDir/${asyncValidatorName}")
 
 
+    val asyncValidationDtoTypescriptImport = TypescriptImport(asyncValidationDtoName.value, "@$genComponentsBaseDir/$asyncValidationDtoName")
+
+
     val asyncValidationDtoImportStatement = "import {$asyncValidationDtoName} from '@$genComponentsBaseDir/${asyncValidationDtoName}';"
 
 

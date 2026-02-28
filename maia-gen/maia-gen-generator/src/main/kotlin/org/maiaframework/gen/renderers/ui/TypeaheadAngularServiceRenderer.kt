@@ -5,6 +5,19 @@ import org.maiaframework.gen.spec.definition.TypeaheadDef
 class TypeaheadAngularServiceRenderer(private val typeaheadDef: TypeaheadDef) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/common/http", "HttpClient")
+        addImport("@angular/common/http", "HttpParams")
+        addImport("@angular/core", "Injectable")
+        addImport("rxjs", "Observable")
+        addImport("rxjs", "of")
+        addImport("rxjs/operators", "catchError")
+        addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return typeaheadDef.typescriptServiceRenderedFilePath
@@ -15,11 +28,6 @@ class TypeaheadAngularServiceRenderer(private val typeaheadDef: TypeaheadDef) : 
     override fun renderSourceBody() {
 
         appendLine("""
-            |import {HttpClient, HttpParams} from '@angular/common/http';
-            |import {Injectable} from '@angular/core';
-            |import {Observable, of} from 'rxjs';
-            |import {catchError} from 'rxjs/operators';
-            |import {${this.typeaheadDef.esDocDef.uqcn} } from './${this.typeaheadDef.esDocDef.uqcn}';
             |
             |
             |@Injectable()

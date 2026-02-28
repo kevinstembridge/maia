@@ -16,6 +16,50 @@ class DtoHtmlAgGridTableComponentRenderer(
     private val requiresRouter = dtoHtmlTableDef.clickableTableRowDef != null
 
 
+    init {
+
+        if (requiresRouter) {
+            addImport("@angular/router", "Router")
+        }
+
+        dtoHtmlTableDef.dtoHtmlTableColumnDefs
+            .mapNotNull { it.cellRenderer }
+            .map { it.typescriptImport }
+            .toSet()
+            .forEach { addImport(it) }
+
+        addImport("@angular/common", "DecimalPipe")
+        addImport("@angular/core", "Component")
+        addImport("@angular/core", "EventEmitter")
+        addImport("@angular/core", "Output")
+
+        authoritiesDef?.let {
+            addImport(it.authServiceTypescriptImport)
+            addImport(it.enumDef.typescriptImport)
+        }
+
+        addImport(dtoHtmlTableDef.tableComponent.serviceTypescriptImport)
+        addImport(dtoHtmlTableDef.dtoDef.typescriptDtoImport)
+        addImport("@angular/material/icon", "MatIconModule")
+        addImport("@angular/material/button", "MatButtonModule")
+        addImport("@angular/forms", "FormsModule")
+        addImport("ag-grid-angular", "AgGridAngular")
+        addImport("@app/themes/ag-grid-theme", "agGridTheme")
+
+        if (dtoHtmlTableDef.clickableTableRowDef != null) {
+            addImport("ag-grid-community", "CellClickedEvent")
+        }
+        addImport("ag-grid-community", "ColDef")
+        addImport("ag-grid-community", "FilterModel")
+        addImport("ag-grid-community", "GridApi")
+        addImport("ag-grid-community", "GridReadyEvent")
+        addImport("ag-grid-community", "ICellRendererParams")
+        addImport("ag-grid-community", "RowModelType")
+        addImport(dtoHtmlTableDef.tableComponent.agGridDatasourceTypescriptImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.dtoHtmlTableDef.tableComponent.componentRenderedFilePath
@@ -25,36 +69,8 @@ class DtoHtmlAgGridTableComponentRenderer(
 
     override fun renderSourceBody() {
 
-        val cellClickedEventImportText = if (dtoHtmlTableDef.clickableTableRowDef == null) "" else "CellClickedEvent, "
-
-
-        if (requiresRouter) {
-            appendLine("import { Router } from '@angular/router';")
-        }
-
-        this.dtoHtmlTableDef.dtoHtmlTableColumnDefs
-            .mapNotNull { it.cellRenderer }
-            .map { it.importStatement }
-            .toSet()
-            .forEach {
-                appendLine(it)
-            }
-
         appendLine(
             """
-            |import { DecimalPipe } from '@angular/common';
-            |import { Component, EventEmitter, Output } from '@angular/core';
-            |${this.authoritiesDef?.let { "import { AuthService } from '${it.authServiceTypescriptImport.from}';" } ?: ""}
-            |${this.authoritiesDef?.importStatement ?: ""}
-            |${this.dtoHtmlTableDef.tableServiceImportStatement}
-            |import { ${this.dtoHtmlTableDef.dtoUqcn} } from './${this.dtoHtmlTableDef.dtoUqcn}';
-            |import { MatIconModule } from '@angular/material/icon';
-            |import { MatButtonModule } from '@angular/material/button';
-            |import { FormsModule } from '@angular/forms';
-            |import { AgGridAngular } from 'ag-grid-angular';
-            |import { agGridTheme } from '@app/themes/ag-grid-theme';
-            |import { ${cellClickedEventImportText}ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType } from 'ag-grid-community';
-            |${this.dtoHtmlTableDef.agGridDatasourceImportStatement}
             |
             |
             |@Component({

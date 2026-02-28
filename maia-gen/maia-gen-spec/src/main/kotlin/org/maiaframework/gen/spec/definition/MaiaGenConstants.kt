@@ -1,5 +1,7 @@
 package org.maiaframework.gen.spec.definition
 
+import org.maiaframework.gen.spec.definition.lang.TypescriptImport
+
 object MaiaGenConstants {
 
 
@@ -10,6 +12,12 @@ object MaiaGenConstants {
 
 
     const val FOREIGN_KEY_REFERENCE_SERVICE_IMPORT_STATEMENT = "import { $FOREIGN_KEY_REFERENCE_SERVICE_CLASS_NAME } from '@app/gen-components/common/services/foreign-key-reference.service';"
+
+
+    val FOREIGN_KEY_REFERENCE_SERVICE_TYPESCRIPT_IMPORT = TypescriptImport(
+        FOREIGN_KEY_REFERENCE_SERVICE_CLASS_NAME,
+        "@app/gen-components/common/services/foreign-key-reference.service"
+    )
 
 
     const val FOREIGN_KEY_REFERENCE_SERVICE_RENDERED_FILE_PATH = "/app/gen-components/common/services/foreign-key-reference.service.ts"

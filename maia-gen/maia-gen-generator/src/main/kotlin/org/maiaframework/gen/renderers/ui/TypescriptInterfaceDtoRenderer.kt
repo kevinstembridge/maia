@@ -5,7 +5,6 @@ import org.maiaframework.gen.spec.definition.BooleanTypescriptType
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EnumTypescriptType
 import org.maiaframework.gen.spec.definition.FieldTypeTypescriptCompatibleType
-import org.maiaframework.gen.spec.definition.GeneratedTypescriptDir
 import org.maiaframework.gen.spec.definition.NumberTypescriptType
 import org.maiaframework.gen.spec.definition.ObjectTypescriptType
 import org.maiaframework.gen.spec.definition.ReadonlyArrayTypescriptType
@@ -196,39 +195,6 @@ open class TypescriptInterfaceDtoRenderer(
                     else -> typescriptCompatibleType.value
                 }
             }
-        }
-
-    }
-
-
-    private fun addImportsFor(
-        fieldType: FieldType,
-        importStatements: MutableSet<String>
-    ) {
-
-        if (fieldType is EnumFieldType) {
-            val enumDef = fieldType.enumDef
-            importStatements.add("import { ${enumDef.uqcn} } from '@${GeneratedTypescriptDir.forPackage(enumDef.fqcn.packageName)}/${enumDef.uqcn}';")
-        }
-
-        if (fieldType is SimpleResponseDtoFieldType) {
-            importStatements.add(fieldType.responseDtoDef.dtoDef.typescriptDtoImportStatement)
-        }
-
-        if (fieldType is RequestDtoFieldType) {
-            importStatements.add(fieldType.requestDtoDef.typescriptFileImportStatement)
-        }
-
-        if (fieldType is EsDocFieldType) {
-            importStatements.add(fieldType.esDocDef.dtoDef.typescriptDtoImportStatement)
-        }
-
-        if (fieldType is ForeignKeyFieldType && dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-            importStatements.add(fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef.pkAndNameDtoImportStatement)
-        }
-
-        if (fieldType is IdAndNameFieldType) {
-            importStatements.add(fieldType.idAndNameDef.pkAndNameDtoImportStatement)
         }
 
     }

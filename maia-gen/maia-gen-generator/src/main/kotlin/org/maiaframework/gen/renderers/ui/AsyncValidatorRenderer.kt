@@ -10,6 +10,24 @@ class AsyncValidatorRenderer(
 ) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/forms", "AbstractControl")
+        addImport("@angular/forms", "AsyncValidator")
+        addImport("@angular/forms", "ValidationErrors")
+        addImport("@angular/forms", "FormControl")
+        addImport("@angular/forms", "FormGroup")
+        addImport("@angular/core", "Injectable")
+        addImport("rxjs", "Observable")
+        addImport("rxjs", "of")
+        addImport("rxjs/operators", "catchError")
+        addImport("rxjs/operators", "map")
+        addImport(entityCrudApiDef.entityDef.crudAngularComponentNames.serviceTypescriptImport)
+        addImport(databaseIndexDef.asyncValidator.asyncValidationDtoTypescriptImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.databaseIndexDef.asyncValidator.asyncValidatorRenderedFilePath
@@ -20,12 +38,6 @@ class AsyncValidatorRenderer(
     override fun renderSourceBody() {
 
         append("""
-            |import { AbstractControl, AsyncValidator, ValidationErrors, FormControl, FormGroup } from '@angular/forms';
-            |import { Injectable } from '@angular/core';
-            |import { Observable, of } from 'rxjs';
-            |import { catchError, map } from 'rxjs/operators';
-            |${this.entityCrudApiDef.entityDef.crudAngularComponentNames.serviceImportStatement}
-            |${this.databaseIndexDef.asyncValidator.asyncValidationDtoImportStatement}
             |
             |
             |@Injectable({

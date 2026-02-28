@@ -12,11 +12,13 @@ class AngularComponentNames(packageName: PackageName, val baseName: String) {
     val componentName = "${baseName}Component"
     val agGridDatasourceClassName = "${baseName}AgGridDatasource"
     val agGridDatasourceImportStatement = "import {$agGridDatasourceClassName} from '@$genComponentsBaseDir/${agGridDatasourceClassName}';"
+    val agGridDatasourceTypescriptImport = TypescriptImport(agGridDatasourceClassName, "@$genComponentsBaseDir/$agGridDatasourceClassName")
     val agGridDatasourceRenderedFilePath = "$genComponentsBaseDir/${agGridDatasourceClassName}.ts"
     val htmlFileName = "${baseNameKebab}.component.html"
     val componentScssFileName = "${baseNameKebab}.component.scss"
     val componentSelector = "app-$baseNameKebab"
     val componentImportStatement = "import {$componentName} from '@$genComponentsBaseDir/${baseNameKebab}.component';"
+    val componentTypescriptImport = TypescriptImport(componentName, "@$genComponentsBaseDir/${baseNameKebab}.component")
     val apiServiceName = "${baseName}ApiService"
     val apiServiceTypescriptImport = TypescriptImport(apiServiceName, "@$genComponentsBaseDir/${baseNameKebab}-api.service")
     val apiServiceRenderedFilePath = "$genComponentsBaseDir/${baseNameKebab}-api.service.ts"

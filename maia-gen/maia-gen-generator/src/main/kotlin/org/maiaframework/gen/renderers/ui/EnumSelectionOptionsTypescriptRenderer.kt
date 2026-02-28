@@ -5,6 +5,13 @@ import org.maiaframework.gen.spec.definition.EnumDef
 class EnumSelectionOptionsTypescriptRenderer(private val enumDef: EnumDef) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport(enumDef.typescriptImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.enumDef.selectOptionsRenderedTypescriptFilePath
@@ -15,8 +22,6 @@ class EnumSelectionOptionsTypescriptRenderer(private val enumDef: EnumDef) : Abs
     override fun renderSourceBody() {
 
         append("""
-            |
-            |${this.enumDef.importStatement}
             |
             |export const ${this.enumDef.selectOptionsUqcn} = [
             |""".trimMargin())

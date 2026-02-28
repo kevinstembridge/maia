@@ -5,6 +5,17 @@ import org.maiaframework.gen.spec.definition.SearchDtoDef
 class SearchDtoServiceTypescriptRenderer(private val searchDtoDef: SearchDtoDef) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/core", "Injectable")
+        addImport("@angular/common/http", "HttpClient")
+        addImport("@angular/common/http", "HttpHeaders")
+        addImport("rxjs", "Observable")
+        addImport(searchDtoDef.dtoDef.typescriptDtoImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.searchDtoDef.angularComponentNames.serviceRenderedFilePath
@@ -15,10 +26,6 @@ class SearchDtoServiceTypescriptRenderer(private val searchDtoDef: SearchDtoDef)
     override fun renderSourceBody() {
 
         appendLine("""
-            |import { Injectable } from '@angular/core';
-            |import { HttpClient, HttpHeaders } from '@angular/common/http';
-            |import { Observable } from 'rxjs';
-            |import { ${this.searchDtoDef.uqcn} } from './${this.searchDtoDef.uqcn}';
             |
             |
             |@Injectable({providedIn: 'root'})

@@ -11,6 +11,18 @@ class DtoHtmlTableServiceTypescriptRenderer(private val dtoHtmlTableDef: DtoHtml
     }
 
 
+    init {
+
+        addImport("@angular/core", "Injectable")
+        addImport("@angular/common/http", "HttpClient")
+        addImport("@angular/common/http", "HttpHeaders")
+        addImport("rxjs", "Observable")
+        addImport("@maia/maia-ui", searchResultType)
+        addImport(dtoHtmlTableDef.dtoDef.typescriptDtoImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.dtoHtmlTableDef.tableComponent.serviceRenderedFilePath
@@ -20,12 +32,6 @@ class DtoHtmlTableServiceTypescriptRenderer(private val dtoHtmlTableDef: DtoHtml
 
     override fun renderSourceBody() {
 
-        appendLine("import {Injectable} from '@angular/core';")
-        appendLine("import {HttpClient, HttpHeaders} from '@angular/common/http';")
-        appendLine("import {Observable} from 'rxjs';")
-        appendLine("import {$searchResultType} from '@maia/maia-ui';")
-        appendLine("import {${this.dtoHtmlTableDef.dtoUqcn}} from './${this.dtoHtmlTableDef.dtoUqcn}';")
-        blankLine()
         blankLine()
         appendLine("@Injectable({providedIn: 'root'})")
         appendLine("export class ${this.dtoHtmlTableDef.angularTableServiceName} {")

@@ -7,6 +7,14 @@ class TypeaheadFieldValidatorRenderer(
 ) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/forms", "AbstractControl")
+        addImport("@angular/forms", "ValidatorFn")
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.entityFieldDef.typeaheadRequiredValidatorFilePath
@@ -17,7 +25,6 @@ class TypeaheadFieldValidatorRenderer(
     override fun renderSourceBody() {
 
         append("""
-            |import { AbstractControl, ValidatorFn } from '@angular/forms';
             |
             |export function ${this.entityFieldDef.typeaheadRequiredValidatorFunctionName}(): ValidatorFn {
             |

@@ -7,6 +7,17 @@ class EntityDetailDtoServiceTypescriptRenderer(
 ) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/core", "Injectable")
+        addImport("@angular/common/http", "HttpClient")
+        addImport("@angular/common/http", "HttpHeaders")
+        addImport("rxjs", "Observable")
+        addImport(entityDetailDtoDef.dtoDef.typescriptDtoImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.entityDetailDtoDef.componentBaseName.serviceRenderedFilePath
@@ -17,10 +28,6 @@ class EntityDetailDtoServiceTypescriptRenderer(
     override fun renderSourceBody() {
 
         appendLine("""
-            |import {Injectable} from '@angular/core';
-            |import {HttpClient, HttpHeaders} from '@angular/common/http';
-            |import {Observable} from 'rxjs';
-            |${entityDetailDtoDef.dtoDef.typescriptDtoImportStatement}
             |
             |
             |@Injectable({providedIn: 'root'})

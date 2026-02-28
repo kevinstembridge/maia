@@ -22,6 +22,19 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
         DataSourceType.DATABASE -> "totalResultCount"
     }
 
+
+    init {
+
+        addImport("@angular/core", "Injectable")
+        addImport("@angular/common/http", "HttpClient")
+        addImport("ag-grid-community", "IDatasource")
+        addImport("ag-grid-community", "IGetRowsParams")
+        addImport(dtoHtmlTableDef.dtoDef.typescriptDtoImport)
+        addImport("@maia/maia-ui", searchResultUqcn)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.dtoHtmlTableDef.agGridDatasourceRenderedFilePath
@@ -32,11 +45,6 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
     override fun renderSourceBody() {
 
         appendLine("""
-            |import {Injectable} from '@angular/core';
-            |import {HttpClient} from '@angular/common/http';
-            |import {IDatasource, IGetRowsParams} from 'ag-grid-community';
-            |${dtoHtmlTableDef.dtoImportStatement}
-            |import {$searchResultUqcn} from '@maia/maia-ui';
             |
             |
             |@Injectable({providedIn: 'root'})

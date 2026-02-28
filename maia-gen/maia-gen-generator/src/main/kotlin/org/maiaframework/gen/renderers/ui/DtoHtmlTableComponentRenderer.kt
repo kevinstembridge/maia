@@ -14,6 +14,54 @@ class DtoHtmlTableComponentRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef
         DataSourceType.DATABASE -> "SearchResultPage"
     }
 
+
+    init {
+
+        addImport("@angular/common", "DecimalPipe")
+        addImport("@angular/common", "NgIf")
+        addImport("@angular/common", "AsyncPipe")
+        addImport("@angular/common", "DatePipe")
+
+        dtoHtmlTableDef.clickableTableRowDef?.let {
+            addImport("@angular/router", "Router")
+        }
+
+        addImport("@angular/core", "AfterViewInit")
+        addImport("@angular/core", "Component")
+        addImport("@angular/core", "EventEmitter")
+        addImport("@angular/core", "Output")
+        addImport("@angular/core", "QueryList")
+        addImport("@angular/core", "ViewChild")
+        addImport("@angular/core", "ViewChildren")
+        addImport("rxjs", "BehaviorSubject")
+        addImport("rxjs", "merge")
+        addImport("rxjs", "Observable")
+        addImport("rxjs", "Subject")
+        addImport("rxjs/operators", "debounceTime")
+        addImport("rxjs/operators", "delay")
+        addImport("rxjs/operators", "switchMap")
+        addImport("rxjs/operators", "tap")
+        addImport("@angular/material/paginator", "MatPaginator")
+        addImport("@angular/material/paginator", "MatPaginatorModule")
+        addImport("@angular/material/sort", "MatSort")
+        addImport("@angular/material/sort", "MatSortModule")
+        addImport("@app/gen-components/common/model/$searchResultUqcn", searchResultUqcn)
+        addImport("@app/gen-components/common/model/SearchModel", "SearchModel")
+        addImport("@app/gen-components/common/model/FilterModelItem", "FilterModelItem")
+        addImport("@app/gen-components/common/model/SortModelItem", "SortModelItem")
+        addImport("@app/auth/auth.service", "AuthService")
+        addImport("@app/auth/Authority", "Authority")
+        addImport(dtoHtmlTableDef.tableComponent.serviceTypescriptImport)
+        addImport(dtoHtmlTableDef.dtoDef.typescriptDtoImport)
+        addImport("@angular/material/icon", "MatIconModule")
+        addImport("@angular/material/input", "MatInputModule")
+        addImport("@angular/material/table", "MatTableModule")
+        addImport("@angular/material/button", "MatButtonModule")
+        addImport("@angular/forms", "FormsModule")
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.dtoHtmlTableDef.tableComponent.componentRenderedFilePath
@@ -23,31 +71,6 @@ class DtoHtmlTableComponentRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef
 
     override fun renderSourceBody() {
 
-        appendLine("import { DecimalPipe, NgIf, AsyncPipe, DatePipe } from '@angular/common';")
-
-        this.dtoHtmlTableDef.clickableTableRowDef?.let {
-            appendLine("import { Router } from '@angular/router';")
-        }
-
-        appendLine("import { AfterViewInit, Component, EventEmitter, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';")
-        appendLine("import { BehaviorSubject, merge, Observable, Subject } from 'rxjs';")
-        appendLine("import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';")
-        appendLine("import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';")
-        appendLine("import { MatSort, MatSortModule } from '@angular/material/sort';")
-        appendLine("import { $searchResultUqcn } from '@app/gen-components/common/model/$searchResultUqcn';")
-        appendLine("import { SearchModel } from '@app/gen-components/common/model/SearchModel';")
-        appendLine("import { FilterModelItem } from '@app/gen-components/common/model/FilterModelItem';")
-        appendLine("import { SortModelItem } from '@app/gen-components/common/model/SortModelItem';")
-        appendLine("import { AuthService } from '@app/auth/auth.service';")
-        appendLine("import { Authority } from '@app/auth/Authority';")
-        appendLine(this.dtoHtmlTableDef.tableServiceImportStatement)
-        appendLine("import { ${this.dtoHtmlTableDef.dtoUqcn} } from './${this.dtoHtmlTableDef.dtoUqcn}';")
-        appendLine("import { MatIconModule } from '@angular/material/icon';")
-        appendLine("import { MatInputModule } from '@angular/material/input';")
-        appendLine("import { MatTableModule } from '@angular/material/table';")
-        appendLine("import { MatButtonModule } from '@angular/material/button';")
-        appendLine("import { FormsModule } from '@angular/forms';")
-        blankLine()
         blankLine()
         appendLine("@Component({")
         appendLine("  imports: [FormsModule, NgIf, MatButtonModule, MatTableModule, MatSortModule, MatInputModule, MatIconModule, MatPaginatorModule, AsyncPipe, DatePipe],")

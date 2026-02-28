@@ -7,6 +7,21 @@ class EntityDetailDtoComponentRenderer(
 ) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/core", "Component")
+        addImport("@angular/core", "effect")
+        addImport("@angular/core", "input")
+        addImport("@angular/common", "AsyncPipe")
+        addImport("@angular/common", "DatePipe")
+        addImport("rxjs", "Observable")
+        addImport("@angular/material/progress-spinner", "MatProgressSpinner")
+        addImport(entityDetailDtoDef.componentBaseName.serviceTypescriptImport)
+        addImport(entityDetailDtoDef.dtoDef.typescriptDtoImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.entityDetailDtoDef.componentBaseName.componentRenderedFilePath
@@ -17,12 +32,6 @@ class EntityDetailDtoComponentRenderer(
     override fun renderSourceBody() {
 
         appendLine("""
-            |import {Component, effect, input} from '@angular/core';
-            |import {AsyncPipe, DatePipe} from '@angular/common';
-            |import {Observable} from 'rxjs';
-            |import {MatProgressSpinner} from '@angular/material/progress-spinner';
-            |${entityDetailDtoDef.componentBaseName.serviceImportStatement}
-            |${entityDetailDtoDef.dtoDef.typescriptDtoImportStatement}
             |
             |
             |@Component({

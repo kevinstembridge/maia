@@ -8,6 +8,28 @@ class CrudTableComponentRenderer(
 ): AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/core", "Component")
+        addImport("@angular/core", "ViewChild")
+        addImport("@angular/material/dialog", "MatDialog")
+        addImport("@angular/material/dialog", "MatDialogRef")
+        addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
+        addImport(crudTableDef.entityCrudApiDef.entityDef.crudAngularComponentNames.serviceTypescriptImport)
+        addImport(crudTableDef.dtoHtmlTableDef.tableComponent.componentTypescriptImport)
+        crudTableDef.entityCrudApiDef.createApiDef?.let { addImport(it.angularDialogComponentNames.componentTypescriptImport) }
+        crudTableDef.entityCrudApiDef.deleteApiDef?.let {
+            addImport(it.angularDialogComponentTypescriptImport)
+            if (entityIsReferencedByForeignKeys) {
+                addImport(crudTableDef.entityCrudApiDef.entityDef.checkForeignKeyReferencesDialog.componentTypescriptImport)
+            }
+        }
+        crudTableDef.entityCrudApiDef.updateApiDef?.let { addImport(it.angularDialogComponentNames.componentTypescriptImport) }
+        addImport(crudTableDef.dtoHtmlTableDef.dtoDef.typescriptDtoImport)
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return this.crudTableDef.componentRenderedFilePath
@@ -16,20 +38,6 @@ class CrudTableComponentRenderer(
 
 
     override fun renderSourceBody() {
-
-        appendLine("import { Component, ViewChild } from '@angular/core';")
-        appendLine("import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';")
-        appendLine(this.crudTableDef.crudServiceImportStatement)
-        appendLine(this.crudTableDef.tableComponentImportStatement)
-        this.crudTableDef.createDialogComponentImportStatement?.let { appendLine(it) }
-        this.crudTableDef.deleteDialogComponentImportStatement?.let {
-            appendLine(it)
-            if (this.entityIsReferencedByForeignKeys) {
-                appendLine(this.crudTableDef.entityCrudApiDef.entityDef.checkForeignKeyReferencesDialog.componentImportStatement)
-            }
-        }
-        this.crudTableDef.editDialogComponentImportStatement?.let { appendLine(it) }
-        appendLine(this.crudTableDef.searchableDtoImportStatement)
 
         blankLine()
         appendLine("@Component({")

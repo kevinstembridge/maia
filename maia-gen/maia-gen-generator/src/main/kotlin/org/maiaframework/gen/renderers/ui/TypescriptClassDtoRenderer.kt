@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.Uqcn
+import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 
 class TypescriptClassDtoRenderer(
     private val renderedFilePath: String,
@@ -27,7 +28,6 @@ class TypescriptClassDtoRenderer(
 
     override fun renderSourceBody() {
 
-        renderImportStatements()
         blankLine()
         appendLine("export class ${this.className} {")
         blankLine()
@@ -95,47 +95,36 @@ class TypescriptClassDtoRenderer(
 
     init {
 
-        val importStatements = mutableSetOf<String>()
-
-        blankLine()
-
+        // TODO also need to cater for non-list types and lists of primitive types.
         this.sortedFields.forEach { fieldDef ->
 
-            // TODO also need to cater for non-list types and lists of primitive types.
             val fieldType = fieldDef.fieldType
 
             if (fieldType is ListFieldType) {
-
                 val listElementType = fieldType.parameterFieldType
-                importStatements.add(
-                    "import { ${listElementType.fqcn.uqcn} } from '@${
-                        GeneratedTypescriptDir.forPackage(
-                            listElementType.fqcn.packageName
-                        )
-                    }/${listElementType.fqcn.uqcn}';"
-                )
-
+                addImport(TypescriptImport(
+                    listElementType.fqcn.uqcn.value,
+                    "@${GeneratedTypescriptDir.forPackage(listElementType.fqcn.packageName)}/${listElementType.fqcn.uqcn}"
+                ))
             }
 
             if (fieldType is EnumFieldType) {
-                importStatements.add("import { ${fieldType.enumDef.uqcn} } from '@${GeneratedTypescriptDir.forPackage(fieldType.enumDef.fqcn.packageName)}/${fieldType.enumDef.uqcn}';")
+                addImport(fieldType.enumDef.typescriptImport)
             }
 
             if (fieldType is SimpleResponseDtoFieldType) {
-                importStatements.add(fieldType.responseDtoDef.dtoDef.typescriptDtoImportStatement)
+                addImport(fieldType.responseDtoDef.dtoDef.typescriptDtoImport)
             }
 
             if (fieldType is RequestDtoFieldType) {
-                importStatements.add(fieldType.requestDtoDef.typescriptFileImportStatement)
+                addImport(fieldType.requestDtoDef.typescriptImport)
             }
 
             if (fieldType is EsDocFieldType) {
-                importStatements.add(fieldType.esDocDef.dtoDef.typescriptDtoImportStatement)
+                addImport(fieldType.esDocDef.dtoDef.typescriptDtoImport)
             }
 
         }
-
-        importStatements.forEach { appendLine(it) }
 
     }
 

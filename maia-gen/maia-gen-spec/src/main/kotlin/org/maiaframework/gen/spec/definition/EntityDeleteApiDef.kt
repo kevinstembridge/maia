@@ -19,6 +19,7 @@ class EntityDeleteApiDef(
     val dialogComponentRenderedFilePath = angularComponentNames.componentRenderedFilePath
     val dialogHtmlRenderedFilePath = angularComponentNames.htmlRenderedFilePath
     val angularDialogComponentImportStatement = angularComponentNames.componentImportStatement
+    val angularDialogComponentTypescriptImport = angularComponentNames.componentTypescriptImport
 
 
 }

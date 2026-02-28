@@ -7,6 +7,20 @@ import org.maiaframework.gen.spec.definition.MaiaGenConstants
 class ForeignKeyReferenceServiceRenderer(private val entityDefs: Set<EntityDef>) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/core", "Injectable")
+        addImport("@angular/common/http", "HttpClient")
+        addImport("@angular/common/http", "HttpHeaders")
+        addImport("rxjs", "Observable")
+        addImport(
+            "@app/gen-components/common/model/${MaiaGenConstants.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO_CLASS_NAME}",
+            MaiaGenConstants.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO_CLASS_NAME
+        )
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return MaiaGenConstants.FOREIGN_KEY_REFERENCE_SERVICE_RENDERED_FILE_PATH
@@ -16,11 +30,6 @@ class ForeignKeyReferenceServiceRenderer(private val entityDefs: Set<EntityDef>)
 
     override fun renderSourceBody() {
 
-        appendLine("import {Injectable} from '@angular/core';")
-        appendLine("import {HttpClient, HttpHeaders} from '@angular/common/http';")
-        appendLine("import {Observable} from 'rxjs';")
-        appendLine("import {${MaiaGenConstants.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO_CLASS_NAME}} from '@app/gen-components/common/model/${MaiaGenConstants.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO_CLASS_NAME}';")
-        blankLine()
         blankLine()
         appendLine("@Injectable({providedIn: 'root'})")
         appendLine("export class ${MaiaGenConstants.FOREIGN_KEY_REFERENCE_SERVICE_CLASS_NAME} {")

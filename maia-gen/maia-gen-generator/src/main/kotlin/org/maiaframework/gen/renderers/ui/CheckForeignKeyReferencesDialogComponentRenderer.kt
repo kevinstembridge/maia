@@ -7,6 +7,29 @@ import org.maiaframework.gen.spec.definition.MaiaGenConstants
 class CheckForeignKeyReferencesDialogComponentRenderer(private val entityDef: EntityDef) : AbstractTypescriptRenderer() {
 
 
+    init {
+
+        addImport("@angular/core", "Component")
+        addImport("@angular/core", "Inject")
+        addImport("@angular/core", "OnInit")
+        addImport("@angular/material/dialog", "MatDialog")
+        addImport("@angular/material/dialog", "MatDialogRef")
+        addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
+        addImport("@angular/material/dialog", "MatDialogTitle")
+        addImport("@angular/material/dialog", "MatDialogContent")
+        addImport("@angular/material/dialog", "MatDialogActions")
+        addImport("rxjs", "of")
+        addImport("rxjs/operators", "catchError")
+        addImport("rxjs/operators", "tap")
+        addImport(MaiaGenConstants.FOREIGN_KEY_REFERENCE_SERVICE_TYPESCRIPT_IMPORT)
+        addImport("@angular/material/button", "MatButtonModule")
+        addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule")
+        addImport("@maia/maia-ui", "MessageDetails")
+        addImport("@maia/maia-ui", "MessagePanelComponent")
+
+    }
+
+
     override fun renderedFilePath(): String {
 
         return entityDef.checkForeignKeyReferencesDialog.componentRenderedFilePath
@@ -17,16 +40,8 @@ class CheckForeignKeyReferencesDialogComponentRenderer(private val entityDef: En
     override fun renderSourceBody() {
 
         append("""
-            import { Component, Inject, OnInit } from '@angular/core';
-            import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
-            import { of } from 'rxjs';
-            import { catchError, tap } from 'rxjs/operators';
-            ${MaiaGenConstants.FOREIGN_KEY_REFERENCE_SERVICE_IMPORT_STATEMENT}
-            import { MatButtonModule } from '@angular/material/button';
-            import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-            import { MessageDetails, MessagePanelComponent } from '@maia/maia-ui';
-            
-            
+
+
             @Component({
                 imports: [MatDialogTitle, MatDialogContent, MatProgressSpinnerModule, MessagePanelComponent, MatDialogActions, MatButtonModule],
                 selector: '${this.entityDef.checkForeignKeyReferencesDialog.componentSelector}',
