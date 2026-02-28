@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, inject, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -77,10 +77,8 @@ export class CharlieTableComponent {
     private gridApi!: GridApi<CharlieTableDto>;
 
 
-    constructor(
-        private datasource: CharlieTableAgGridDatasource,
-        private authService: AuthService
-    ) {}
+    private readonly datasource = inject(CharlieTableAgGridDatasource);
+    private readonly authService = inject(AuthService);
 
 
     onGridReady(params: GridReadyEvent<CharlieTableDto>) {

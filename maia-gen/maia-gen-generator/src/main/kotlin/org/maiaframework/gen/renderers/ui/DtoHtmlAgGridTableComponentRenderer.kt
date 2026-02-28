@@ -30,8 +30,8 @@ class DtoHtmlAgGridTableComponentRenderer(
 
         addImport("@angular/common", "DecimalPipe")
         addImport("@angular/core", "Component")
-        addImport("@angular/core", "EventEmitter")
-        addImport("@angular/core", "Output")
+        addImport("@angular/core", "inject")
+        addImport("@angular/core", "output")
 
         authoritiesDef?.let {
             addImport(it.authServiceTypescriptImport)
@@ -90,13 +90,13 @@ class DtoHtmlAgGridTableComponentRenderer(
         this.dtoHtmlTableDef.actionColumnFields.forEach { actionColumnDef ->
             blankLine()
             blankLine()
-            appendLine("    @Output() ${actionColumnDef.actionName} = new EventEmitter<${this.dtoHtmlTableDef.dtoUqcn}>();")
+            appendLine("    readonly ${actionColumnDef.actionName} = output<${this.dtoHtmlTableDef.dtoUqcn}>();")
         }
 
         if (this.dtoHtmlTableDef.addButtonDef != null) {
             blankLine()
             blankLine()
-            appendLine("    @Output() addButtonClicked = new EventEmitter<void>();")
+            appendLine("    readonly addButtonClicked = output();")
         }
 
         blankLine()
@@ -157,17 +157,16 @@ class DtoHtmlAgGridTableComponentRenderer(
             |    private gridApi!: GridApi<${dtoHtmlTableDef.dtoUqcn}>;
             |
             |
-            |    constructor(
-            |        private datasource: ${dtoHtmlTableDef.agGridDatasourceClassName},""".trimMargin()
+            |    private readonly datasource = inject(${dtoHtmlTableDef.agGridDatasourceClassName});""".trimMargin()
         )
 
         if (requiresRouter) {
-            appendLine("        private router: Router,")
+            appendLine("")
+            appendLine("    private readonly router = inject(Router);")
         }
 
         append("""
-            |        private authService: AuthService
-            |    ) {}
+            |    private readonly authService = inject(AuthService);
             |
             |
             |    onGridReady(params: GridReadyEvent<${dtoHtmlTableDef.dtoUqcn}>) {

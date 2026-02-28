@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, inject, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -27,13 +27,13 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class SimpleTableComponent {
 
 
-    @Output() edit = new EventEmitter<SimpleTableDto>();
+    readonly edit = output<SimpleTableDto>();
 
 
-    @Output() delete = new EventEmitter<SimpleTableDto>();
+    readonly delete = output<SimpleTableDto>();
 
 
-    @Output() addButtonClicked = new EventEmitter<void>();
+    readonly addButtonClicked = output();
 
 
     public columnDefs: ColDef[] = [
@@ -110,10 +110,10 @@ export class SimpleTableComponent {
     private gridApi!: GridApi<SimpleTableDto>;
 
 
-    constructor(
-        private datasource: SimpleTableAgGridDatasource,
-        private authService: AuthService
-    ) {}
+    private readonly datasource = inject(SimpleTableAgGridDatasource);
+
+
+    private readonly authService = inject(AuthService);
 
 
     onGridReady(params: GridReadyEvent<SimpleTableDto>) {
