@@ -112,13 +112,23 @@ Specs extend `AbstractSpec` and use a Kotlin DSL to declare the model:
 class MySpec : AbstractSpec(AppKey("myapp")) {
     val statusEnum = enumDef("com.example.enums.Status") {
         withTypescript(withEnumSelectionOptions = true)
-        value("ACTIVE") { displayName = "Active" }
+        value("ACTIVE") { 
+            displayName = "Active" 
+        }
     }
 
     val myEntity = entity("com.example", "MyEntity") {
-        field("name", FieldTypes.string) { notNullable() }
-        field("status", statusEnum) {}
-        crud { apis { create(); update(); delete() } }
+        field("name", FieldTypes.string) { 
+            nullable() 
+        }
+        field("status", statusEnum)
+        crud { 
+            apis { 
+                create()
+                update()
+                delete()
+            } 
+        }
     }
 }
 ```
@@ -162,24 +172,10 @@ export class {{ClassName}} {
 }
 ```
 
-```css
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-
-  button {
-    margin-top: 10px;
-  }
-}
-```
-
 ```html
 <section class="container">
     @if (isServerRunning()) {
-      <span>Yes, the server is running</span>
+        <span>Yes, the server is running</span>
     } @else {
         <span>No, the server is not running</span>
     }

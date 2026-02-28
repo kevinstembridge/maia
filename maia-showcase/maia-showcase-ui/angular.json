@@ -75,7 +75,8 @@
                     "options": {
                         "prebundle": {
                             "exclude": ["@maia/maia-ui"]
-                        }
+                        },
+                        "proxyConfig": "proxy.conf.json"
                     }
                 },
                 "test": {
