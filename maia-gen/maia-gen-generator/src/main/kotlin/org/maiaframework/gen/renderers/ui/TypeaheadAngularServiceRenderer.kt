@@ -9,6 +9,7 @@ class TypeaheadAngularServiceRenderer(private val typeaheadDef: TypeaheadDef) : 
 
         addImport("@angular/common/http", "HttpClient")
         addImport("@angular/common/http", "HttpParams")
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "Injectable")
         addImport("rxjs", "Observable")
         addImport("rxjs", "of")
@@ -34,9 +35,7 @@ class TypeaheadAngularServiceRenderer(private val typeaheadDef: TypeaheadDef) : 
             |export class ${this.typeaheadDef.angularServiceClassName} {
             |
             |
-            |    constructor(
-            |        private http: HttpClient
-            |    ) { }
+            |    private readonly http = inject(HttpClient);
             |
             |
             |    search(term: string): Observable<${this.typeaheadDef.esDocDef.uqcn}[]> {

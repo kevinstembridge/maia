@@ -9,6 +9,7 @@ class EntityDetailDtoServiceTypescriptRenderer(
 
     init {
 
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "Injectable")
         addImport("@angular/common/http", "HttpClient")
         addImport("@angular/common/http", "HttpHeaders")
@@ -41,9 +42,7 @@ class EntityDetailDtoServiceTypescriptRenderer(
             |    };
             |
             |
-            |    constructor(
-            |        private http: HttpClient
-            |    ) {}
+            |    private readonly http = inject(HttpClient);
             |
             |
             |    public fetch(id: string): Observable<${entityDetailDtoDef.dtoDef.uqcn}> {

@@ -45,12 +45,8 @@ class AuthServiceTypescriptRenderer(private val authoritiesDef: AuthoritiesDef) 
             |
             |
             |    private readonly currentUserStore = inject(CurrentUserStore);
-            |
-            |
-            |    constructor(
-            |        private apiService: AuthApiService,
-            |        private router: Router
-            |    ) { }
+            |    private readonly apiService = inject(AuthApiService);
+            |    private readonly router = inject(Router);
             |
             |
             |    public currentUserHasThisAuthority(authority: $$authorityUqcn): boolean {

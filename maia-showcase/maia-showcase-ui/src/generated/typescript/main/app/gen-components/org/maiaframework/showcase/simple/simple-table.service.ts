@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.DtoHtmlTableServiceTypescriptRenderer
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {SimpleTableDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleTableDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
@@ -18,7 +18,7 @@ export class SimpleTableService {
     };
 
 
-    constructor(private http: HttpClient) {}
+    private readonly http = inject(HttpClient);
 
 
     public search(searchModel: any): Observable<SearchResultPage<SimpleTableDto>> {

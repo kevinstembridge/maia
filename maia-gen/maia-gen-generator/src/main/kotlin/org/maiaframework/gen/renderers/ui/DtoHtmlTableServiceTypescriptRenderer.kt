@@ -13,6 +13,7 @@ class DtoHtmlTableServiceTypescriptRenderer(private val dtoHtmlTableDef: DtoHtml
 
     init {
 
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "Injectable")
         addImport("@angular/common/http", "HttpClient")
         addImport("@angular/common/http", "HttpHeaders")
@@ -43,7 +44,7 @@ class DtoHtmlTableServiceTypescriptRenderer(private val dtoHtmlTableDef: DtoHtml
         appendLine("    };")
         blankLine()
         blankLine()
-        appendLine("    constructor(private http: HttpClient) {}")
+        appendLine("    private readonly http = inject(HttpClient);")
         blankLine()
         blankLine()
         appendLine("    public search(searchModel: any): Observable<$searchResultType<${this.dtoHtmlTableDef.dtoUqcn}>> {")

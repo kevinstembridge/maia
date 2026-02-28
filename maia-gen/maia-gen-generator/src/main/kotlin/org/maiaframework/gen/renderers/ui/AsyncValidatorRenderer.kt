@@ -17,6 +17,7 @@ class AsyncValidatorRenderer(
         addImport("@angular/forms", "ValidationErrors")
         addImport("@angular/forms", "FormControl")
         addImport("@angular/forms", "FormGroup")
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "Injectable")
         addImport("rxjs", "Observable")
         addImport("rxjs", "of")
@@ -46,9 +47,7 @@ class AsyncValidatorRenderer(
             |export class ${this.databaseIndexDef.asyncValidator.asyncValidatorName} implements AsyncValidator {
             |
             |
-            |    constructor(
-            |        private apiService: ${this.databaseIndexDef.apiServiceName}
-            |    ) { }
+            |    private readonly apiService = inject(${this.databaseIndexDef.apiServiceName});
         """.trimMargin())
 
         if (this.databaseIndexDef.isMultiField) {

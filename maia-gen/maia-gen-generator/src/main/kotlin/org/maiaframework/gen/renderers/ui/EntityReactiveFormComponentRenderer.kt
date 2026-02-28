@@ -29,10 +29,9 @@ class EntityReactiveFormComponentRenderer(
     init {
 
         addImport("@angular/core", "Component")
-        addImport("@angular/core", "EventEmitter")
-        addImport("@angular/core", "Inject")
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "OnInit")
-        addImport("@angular/core", "Output")
+        addImport("@angular/core", "output")
         addImport("@angular/core", "signal")
 
         addImport("@angular/forms", "FormControl")
@@ -140,7 +139,7 @@ class EntityReactiveFormComponentRenderer(
             append("""
                 |
                 |
-                |    @Output() onFormSubmission = new EventEmitter<${this.angularFormDef.requestDtoDef.uqcn}>();
+                |    readonly onFormSubmission = output<${this.angularFormDef.requestDtoDef.uqcn}>();
                 |""".trimMargin())
 
         }
@@ -150,7 +149,7 @@ class EntityReactiveFormComponentRenderer(
             append("""
                 |
                 |
-                |    @Output() onSuccessEvent = new EventEmitter<void>();
+                |    readonly onSuccessEvent = output();
                 |""".trimMargin())
 
         }
@@ -160,7 +159,7 @@ class EntityReactiveFormComponentRenderer(
             append("""
                 |
                 |
-                |    @Output() onErrorEvent = new EventEmitter<any>();
+                |    readonly onErrorEvent = output<any>();
                 |""".trimMargin())
 
         }
@@ -218,47 +217,46 @@ class EntityReactiveFormComponentRenderer(
 
     private fun `render constructor`() {
 
-        append("""
-            |
-            |
-            |    constructor(
-            |""".trimMargin())
+        blankLine()
+        blankLine()
 
         if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
-            appendLine("        public dialogRef: MatDialogRef<${this.angularFormDef.componentNames.componentName}>,")
+            appendLine("    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);")
         }
 
-        appendLine("        private formService: ${this.angularFormDef.formServiceClassName},")
+        appendLine("    private readonly formService = inject(${this.angularFormDef.formServiceClassName});")
 
         if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
-            appendLine("        @Inject(MAT_DIALOG_DATA) private dto: any,")
+            appendLine("    private readonly dto = inject<any>(MAT_DIALOG_DATA);")
         }
 
         this.angularFormDef.context?.let { context ->
-            appendLine("        @Inject(MAT_DIALOG_DATA) private context: ${context.uqcn},")
+            appendLine("    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);")
         }
 
         this.angularFormDef.onSuccessUrl?.let {
-            appendLine("        private router: Router,")
+            appendLine("    private readonly router = inject(Router);")
         }
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
 
             val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
-            appendLine("        private $serviceUqcn: ${typeaheadDef.angularServiceClassName},")
+            appendLine("    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});")
 
         }
 
         this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
-            appendLine("        private ${databaseIndexDef.validatorFieldName}: ${databaseIndexDef.validatorName},")
+            appendLine("    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});")
         }
 
         this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-            appendLine("        private ${asyncValidatorDef.validatorFieldName}: ${asyncValidatorDef.asyncValidatorName},")
+            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
         }
 
         append("""
-            |    ) {
+            |
+            |
+            |    constructor() {
             |
             |        this.formGroup = new FormGroup(
             |            {
@@ -284,7 +282,7 @@ class EntityReactiveFormComponentRenderer(
 
                 val initialValue = when (angularFormDef.createOrEdit) {
                     CreateOrEdit.create -> "''"
-                    CreateOrEdit.edit -> typeaheadDef.fieldDefs.map { "${it.fieldName}: dto.${it.fieldName}" }
+                    CreateOrEdit.edit -> typeaheadDef.fieldDefs.map { "${it.fieldName}: this.dto.${it.fieldName}" }
                         .joinToString(prefix = "{ ", separator = ", ", postfix = " }")
 
                     null -> "''"

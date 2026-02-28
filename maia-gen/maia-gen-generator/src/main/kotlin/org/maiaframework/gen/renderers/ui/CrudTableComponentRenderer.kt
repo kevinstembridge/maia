@@ -11,6 +11,7 @@ class CrudTableComponentRenderer(
     init {
 
         addImport("@angular/core", "Component")
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "ViewChild")
         addImport("@angular/material/dialog", "MatDialog")
         addImport("@angular/material/dialog", "MatDialogRef")
@@ -50,10 +51,8 @@ class CrudTableComponentRenderer(
         appendLine("    @ViewChild(${crudTableDef.dtoTableComponent.componentName}) tableComponent!: ${crudTableDef.dtoTableComponent.componentName};")
         blankLine()
         blankLine()
-        appendLine("    constructor(")
-        appendLine("        private crudService: ${crudTableDef.crudServiceClassName},")
-        appendLine("        public dialog: MatDialog")
-        appendLine("    ) {}")
+        appendLine("    private readonly crudService = inject(${crudTableDef.crudServiceClassName});")
+        appendLine("    private readonly dialog = inject(MatDialog);")
 
         crudTableDef.entityCrudApiDef.createApiDef?.let { apiDef ->
 

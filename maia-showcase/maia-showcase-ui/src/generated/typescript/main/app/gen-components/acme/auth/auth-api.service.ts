@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AuthApiServiceRenderer
 
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {SigninRequestDto} from '@app/gen-components/acme/auth/SigninRequestDto';
 import {UserSummaryDto} from '@app/gen-components/acme/auth/UserSummaryDto';
 import {Observable} from 'rxjs';
@@ -13,7 +13,7 @@ import {Observable} from 'rxjs';
 export class AuthApiService {
 
 
-    constructor(private http: HttpClient) {}
+    private readonly http = inject(HttpClient);
 
 
     authenticate(signinRequestDto: SigninRequestDto): Observable<UserSummaryDto> {

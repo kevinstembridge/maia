@@ -9,6 +9,7 @@ class AuthApiServiceRenderer(private val authoritiesDef: AuthoritiesDef) : Abstr
     init {
 
         addImport(from = "@angular/common/http", name = "HttpClient")
+        addImport(from = "@angular/core", name = "inject")
         addImport(from = "@angular/core", name = "Injectable")
         addImport(from = "rxjs", name = "Observable")
         addImport(authoritiesDef.signinRequestDtoTypescriptImport)
@@ -34,7 +35,7 @@ class AuthApiServiceRenderer(private val authoritiesDef: AuthoritiesDef) : Abstr
             |export class AuthApiService {
             |
             |
-            |    constructor(private http: HttpClient) {}
+            |    private readonly http = inject(HttpClient);
             |
             |
             |    authenticate(signinRequestDto: SigninRequestDto): Observable<UserSummaryDto> {

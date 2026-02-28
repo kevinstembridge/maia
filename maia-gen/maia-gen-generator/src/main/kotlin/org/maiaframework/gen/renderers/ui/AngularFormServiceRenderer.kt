@@ -7,6 +7,7 @@ class AngularFormServiceRenderer(private val angularFormDef: AngularFormDef) : A
 
     init {
 
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "Injectable")
         addImport("@angular/common/http", "HttpClient")
         addImport("@angular/common/http", "HttpHeaders")
@@ -37,9 +38,7 @@ class AngularFormServiceRenderer(private val angularFormDef: AngularFormDef) : A
         appendLine("    };")
         blankLine()
         blankLine()
-        appendLine("    constructor(")
-        appendLine("        private http: HttpClient,")
-        appendLine("    ) {}")
+        appendLine("    private readonly http = inject(HttpClient);")
         blankLine()
         blankLine()
         appendLine("    public sendRequest(requestDto: ${this.angularFormDef.requestDtoDef.uqcn}): Observable<void> {")

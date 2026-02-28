@@ -32,7 +32,9 @@ class EntityFormComponentRenderer(
     init {
 
         addImport("@angular/core", "Component")
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "OnInit")
+        addImport("@angular/core", "output")
         addImport("@angular/core", "signal")
 
         addImport("@angular/forms/signals", "form")
@@ -44,11 +46,13 @@ class EntityFormComponentRenderer(
         if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
             addImport("@angular/material/dialog", "MatDialog")
             addImport("@angular/material/dialog", "MatDialogRef")
-            // TODO probably only needed for Edit forms
-//            addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
             addImport("@angular/material/dialog", "MatDialogTitle", isModule = true)
             addImport("@angular/material/dialog", "MatDialogContent", isModule = true)
             addImport("@angular/material/dialog", "MatDialogActions", isModule = true)
+        }
+
+        if (angularFormDef.createOrEdit == CreateOrEdit.edit || angularFormDef.context != null) {
+            addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
         }
 
         this.angularFormDef.onSuccessUrl?.let {
@@ -144,7 +148,7 @@ class EntityFormComponentRenderer(
             append("""
                 |
                 |
-                |    @Output() onFormSubmission = new EventEmitter<${this.angularFormDef.requestDtoDef.uqcn}>();
+                |    readonly onFormSubmission = output<${this.angularFormDef.requestDtoDef.uqcn}>();
                 |""".trimMargin())
 
         }
@@ -154,7 +158,7 @@ class EntityFormComponentRenderer(
             append("""
                 |
                 |
-                |    @Output() onSuccessEvent = new EventEmitter<void>();
+                |    readonly onSuccessEvent = output();
                 |""".trimMargin())
 
         }
@@ -164,7 +168,7 @@ class EntityFormComponentRenderer(
             append("""
                 |
                 |
-                |    @Output() onErrorEvent = new EventEmitter<any>();
+                |    readonly onErrorEvent = output<any>();
                 |""".trimMargin())
 
         }
@@ -374,50 +378,43 @@ class EntityFormComponentRenderer(
 
     private fun `render constructor`() {
 
-        append("""
-            |
-            |
-            |    constructor(
-            |""".trimMargin())
+        blankLine()
+        blankLine()
 
         if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
-            appendLine("        public dialogRef: MatDialogRef<${this.angularFormDef.componentNames.componentName}>,")
+            appendLine("    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);")
         }
 
-        appendLine("        private formService: ${this.angularFormDef.formServiceClassName},")
+        appendLine("    private readonly formService = inject(${this.angularFormDef.formServiceClassName});")
 
         if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
-            appendLine("        @Inject(MAT_DIALOG_DATA) private dto: any,")
+            appendLine("    private readonly dto = inject<any>(MAT_DIALOG_DATA);")
         }
 
         this.angularFormDef.context?.let { context ->
-            appendLine("        @Inject(MAT_DIALOG_DATA) private context: ${context.uqcn},")
+            appendLine("    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);")
         }
 
         this.angularFormDef.onSuccessUrl?.let {
-            appendLine("        private router: Router,")
+            appendLine("    private readonly router = inject(Router);")
         }
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
 
             val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
-            appendLine("        private $serviceUqcn: ${typeaheadDef.angularServiceClassName},")
+            appendLine("    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});")
 
         }
 
         this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
-            appendLine("        private ${databaseIndexDef.validatorFieldName}: ${databaseIndexDef.validatorName},")
+            appendLine("    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});")
         }
 
 //        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-//            appendLine("        private ${asyncValidatorDef.validatorFieldName}: ${asyncValidatorDef.asyncValidatorName},")
+//            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
 //        }
 
         if (true) {
-            append("""
-                |    ) {}
-                |""".trimMargin())
-
             return
 
         }
@@ -449,7 +446,7 @@ class EntityFormComponentRenderer(
 
                 val initialValue = when (angularFormDef.createOrEdit) {
                     CreateOrEdit.create -> "''"
-                    CreateOrEdit.edit -> typeaheadDef.fieldDefs.map { "${it.fieldName}: dto.${it.fieldName}" }
+                    CreateOrEdit.edit -> typeaheadDef.fieldDefs.map { "${it.fieldName}: this.dto.${it.fieldName}" }
                         .joinToString(prefix = "{ ", separator = ", ", postfix = " }")
 
                     null -> "''"

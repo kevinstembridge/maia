@@ -1,6 +1,8 @@
 
 TODO * Maia Showcase
     TODO * Use Opus to create a showcase of Maia features.
+        TODO * Add a login page.
+        TODO *
         TODO * Create a navigation menu with menu items for each entity.
     TODO * Prove that edit works.
     TODO * Remove all dependencies and add back in as needed, the goal is for application modules to not have to declare

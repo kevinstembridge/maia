@@ -9,7 +9,7 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
     init {
 
         addImport("@angular/core", "Component")
-        addImport("@angular/core", "Inject")
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "signal")
 
         addImport("@angular/material/button", "MatButtonModule")
@@ -53,11 +53,9 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
             |    problemDetail = signal<ProblemDetail | null>(null);
             |
             |
-            |    constructor(
-            |        public dialogRef: MatDialogRef<${this.apiDef.angularDialogComponentName}>,
-            |        @Inject(MAT_DIALOG_DATA) private dto: any,
-            |        private crudService: ${apiDef.entityDef.crudAngularComponentNames.serviceName}
-            |    ) {}
+            |    private readonly dialogRef = inject(MatDialogRef<${this.apiDef.angularDialogComponentName}>);
+            |    private readonly dto = inject<any>(MAT_DIALOG_DATA);
+            |    private readonly crudService = inject(${apiDef.entityDef.crudAngularComponentNames.serviceName});
             |
             |
             |    onYes() {

@@ -9,6 +9,7 @@ class ForeignKeyReferenceServiceRenderer(private val entityDefs: Set<EntityDef>)
 
     init {
 
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "Injectable")
         addImport("@angular/common/http", "HttpClient")
         addImport("@angular/common/http", "HttpHeaders")
@@ -42,9 +43,7 @@ class ForeignKeyReferenceServiceRenderer(private val entityDefs: Set<EntityDef>)
         appendLine("    };")
         blankLine()
         blankLine()
-        appendLine("    constructor(")
-        appendLine("        private http: HttpClient")
-        appendLine("    ) {}")
+        appendLine("    private readonly http = inject(HttpClient);")
 
         this.entityDefs.forEach { entityDef ->
 

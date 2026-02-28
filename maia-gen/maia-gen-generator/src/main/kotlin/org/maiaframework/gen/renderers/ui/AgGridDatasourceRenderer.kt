@@ -25,6 +25,7 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
 
     init {
 
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "Injectable")
         addImport("@angular/common/http", "HttpClient")
         addImport("ag-grid-community", "IDatasource")
@@ -54,9 +55,7 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
             |    rowCount?: number = undefined;
             |
             |
-            |    constructor(
-            |        private http: HttpClient
-            |    ) { }
+            |    private readonly http = inject(HttpClient);
             |
             |
             |    getRows(params: IGetRowsParams): void {

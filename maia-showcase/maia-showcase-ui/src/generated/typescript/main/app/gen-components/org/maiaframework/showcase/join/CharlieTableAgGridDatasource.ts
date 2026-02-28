@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AgGridDatasourceRenderer
 
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {CharlieTableDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieTableDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
@@ -16,9 +16,7 @@ export class CharlieTableAgGridDatasource implements IDatasource {
     rowCount?: number = undefined;
 
 
-    constructor(
-        private http: HttpClient
-    ) { }
+    private readonly http = inject(HttpClient);
 
 
     getRows(params: IGetRowsParams): void {

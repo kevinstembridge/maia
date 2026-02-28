@@ -14,14 +14,13 @@ import {Observable} from 'rxjs';
 export class AuthGuard implements CanActivate, CanActivateChild, CanMatch {
 
 
-    readonly currentUserStore = inject(CurrentUserStore);
+    private readonly currentUserStore = inject(CurrentUserStore);
 
 
-    constructor(
-        private router: Router,
-        private authService: AuthService
-    ) {
-    }
+    private readonly router = inject(Router);
+
+
+    private readonly authService = inject(AuthService);
 
 
     canMatch(route: Route, segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {

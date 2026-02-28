@@ -28,8 +28,8 @@ class DtoHtmlTableComponentRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef
 
         addImport("@angular/core", "AfterViewInit")
         addImport("@angular/core", "Component")
-        addImport("@angular/core", "EventEmitter")
-        addImport("@angular/core", "Output")
+        addImport("@angular/core", "inject")
+        addImport("@angular/core", "output")
         addImport("@angular/core", "QueryList")
         addImport("@angular/core", "ViewChild")
         addImport("@angular/core", "ViewChildren")
@@ -85,11 +85,11 @@ class DtoHtmlTableComponentRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef
         appendLine("  @ViewChild(MatSort) sort: MatSort;")
 
         this.dtoHtmlTableDef.actionColumnFields.forEach { actionColumnDef ->
-            appendLine("  @Output() ${actionColumnDef.actionName} = new EventEmitter<${this.dtoHtmlTableDef.dtoUqcn}>();")
+            appendLine("  readonly ${actionColumnDef.actionName} = output<${this.dtoHtmlTableDef.dtoUqcn}>();")
         }
 
         if (this.dtoHtmlTableDef.addButtonDef != null) {
-            appendLine("  @Output() addButtonClicked = new EventEmitter<void>();")
+            appendLine("  readonly addButtonClicked = output();")
         }
 
         blankLine()
@@ -133,13 +133,14 @@ class DtoHtmlTableComponentRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef
         appendLine("  public totalResultCount: number = 0;")
         blankLine()
         blankLine()
-        appendLine("  constructor(")
-        appendLine("    private service: ${this.dtoHtmlTableDef.angularTableServiceName},")
+        appendLine("  private readonly service = inject(${this.dtoHtmlTableDef.angularTableServiceName});")
         this.dtoHtmlTableDef.clickableTableRowDef?.let {
-            appendLine("    private router: Router,")
+            appendLine("  private readonly router = inject(Router);")
         }
-        appendLine("    private authService: AuthService")
-        appendLine("  ) {")
+        appendLine("  private readonly authService = inject(AuthService);")
+        blankLine()
+        blankLine()
+        appendLine("  constructor() {")
         blankLine()
         appendLine("    this._search$.pipe(")
         appendLine("      tap(() => this.loading = true),")

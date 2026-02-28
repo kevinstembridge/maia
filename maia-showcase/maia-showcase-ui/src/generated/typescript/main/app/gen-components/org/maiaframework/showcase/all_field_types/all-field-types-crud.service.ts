@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {AllFieldTypesCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesCreateRequestDto';
 import {AllFieldTypesSomeIntTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeIntTypeRequestDto';
 import {AllFieldTypesSomeLongTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeLongTypeRequestDto';
@@ -24,9 +24,7 @@ export class AllFieldTypesCrudService {
     };
 
 
-    constructor(
-        private http: HttpClient
-    ) {}
+    private readonly http = inject(HttpClient);
 
 
     public create(requestDto: AllFieldTypesCreateRequestDto): Observable<void> {

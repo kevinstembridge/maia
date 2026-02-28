@@ -11,6 +11,7 @@ class EntityDetailDtoComponentRenderer(
 
         addImport("@angular/core", "Component")
         addImport("@angular/core", "effect")
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "input")
         addImport("@angular/common", "AsyncPipe")
         addImport("@angular/common", "DatePipe")
@@ -52,9 +53,10 @@ class EntityDetailDtoComponentRenderer(
             |    detailDto$: Observable<${this.entityDetailDtoDef.dtoDef.uqcn}>;
             |
             |
-            |    constructor(
-            |        private service: ${this.entityDetailDtoDef.componentBaseName.serviceName}
-            |    ) {
+            |    private readonly service = inject(${this.entityDetailDtoDef.componentBaseName.serviceName});
+            |
+            |
+            |    constructor() {
             |
             |        effect(() => {
             |            this.detailDto$ = this.service.fetch(this.entityId());

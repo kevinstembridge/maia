@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {LeftDetailDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftDetailDto';
 import {Observable} from 'rxjs';
 
@@ -19,7 +19,7 @@ export class LeftDetailService {
     };
 
 
-    constructor(private http: HttpClient) {}
+    private readonly http = inject(HttpClient);
 
 
     public findById(id: string): Observable<LeftDetailDto> {

@@ -10,7 +10,7 @@ class CheckForeignKeyReferencesDialogComponentRenderer(private val entityDef: En
     init {
 
         addImport("@angular/core", "Component")
-        addImport("@angular/core", "Inject")
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "OnInit")
         addImport("@angular/material/dialog", "MatDialog")
         addImport("@angular/material/dialog", "MatDialogRef")
@@ -51,17 +51,16 @@ class CheckForeignKeyReferencesDialogComponentRenderer(private val entityDef: En
             
                 
                 checking: boolean = false;
-                
-                
+
+
                 messageDetails = new MessageDetails();
-            
-                
-                constructor(
-                    public dialogRef: MatDialogRef<${this.entityDef.checkForeignKeyReferencesDialog.componentName}>,
-                    @Inject(MAT_DIALOG_DATA) private dto: any,
-                    private foreignKeyReferenceService: ${MaiaGenConstants.FOREIGN_KEY_REFERENCE_SERVICE_CLASS_NAME}
-                ) {}
-            
+
+
+                private readonly dialogRef = inject(MatDialogRef<${this.entityDef.checkForeignKeyReferencesDialog.componentName}>);
+                private readonly dto = inject<any>(MAT_DIALOG_DATA);
+                private readonly foreignKeyReferenceService = inject(${MaiaGenConstants.FOREIGN_KEY_REFERENCE_SERVICE_CLASS_NAME});
+
+
             
                 ngOnInit() {
             

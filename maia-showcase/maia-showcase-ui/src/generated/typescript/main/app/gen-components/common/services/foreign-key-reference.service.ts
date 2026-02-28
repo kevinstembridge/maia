@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {ForeignKeyReferencesExistResponseDto} from '@app/gen-components/common/model/ForeignKeyReferencesExistResponseDto';
 import {Observable} from 'rxjs';
 
@@ -18,9 +18,7 @@ export class ForeignKeyReferenceService {
     };
 
 
-    constructor(
-        private http: HttpClient
-    ) {}
+    private readonly http = inject(HttpClient);
 
 
     public checkPartyForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {

@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {Observable} from 'rxjs';
@@ -18,9 +18,7 @@ export class UserCrudService {
     };
 
 
-    constructor(
-        private http: HttpClient
-    ) {}
+    private readonly http = inject(HttpClient);
 
 
     public create(requestDto: UserCreateRequestDto): Observable<void> {
