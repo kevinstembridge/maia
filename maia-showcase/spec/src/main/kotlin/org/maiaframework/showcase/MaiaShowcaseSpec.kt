@@ -1,8 +1,8 @@
 package org.maiaframework.showcase
 
 import org.maiaframework.gen.spec.AbstractSpec
-import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.AppKey
+import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.JoinType
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
@@ -95,6 +95,40 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("someString", FieldTypes.string)
         field("someInt", FieldTypes.int) { nullable() }
         field("someBoolean", FieldTypes.boolean) { nullable() }
+    }
+
+
+    val loginRequestDtoDef = requestDto(
+        "org.maiaframework.showcase.login",
+        "Login",
+        requestMappingPath = "/api/login",
+        withGeneratedEndpoint = false
+    ) {
+        field("emailAddress", FieldTypes.string) {
+            withEmailConstraint()
+        }
+        field("password", FieldTypes.string) {
+            masked()
+        }
+    }
+
+
+    val loginFormDef = angularForm(loginRequestDtoDef) {
+        delegateFormSubmission()
+        field("emailAddress") {
+            withLabel("Email Address")
+            withoutSeparateFieldLabel()
+            withPlaceholder("Email Address...")
+            withHtmlAutocompleteAttribute("username")
+        }
+        field("password") {
+            withLabel("Password")
+            withoutSeparateFieldLabel()
+            withPlaceholder("Password...")
+            withHtmlAutocompleteAttribute("current-password")
+            withHtmlInputType(HtmlInputType.password)
+        }
+        submitButtonText("Log In")
     }
 
 

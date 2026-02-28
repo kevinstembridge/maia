@@ -25,7 +25,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val authoritiesDef = authorities("acme.auth", "Authority") {
+    val authoritiesDef = authorities("org.maiaframework.showcase.auth", "Authority") {
         authority(adminAuthority)
         authority("SYS__DEVOPS")
         authority("SYS__DEVOPS_READONLY")
