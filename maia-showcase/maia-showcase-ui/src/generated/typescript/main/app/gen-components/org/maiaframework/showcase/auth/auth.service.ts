@@ -5,7 +5,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
-import {SigninRequestDto} from '@app/gen-components/org/maiaframework/showcase/auth/SigninRequestDto';
+import {LoginRequestDto} from '@app/gen-components/org/maiaframework/showcase/auth/LoginRequestDto';
 import {UserSummaryDto} from '@app/gen-components/org/maiaframework/showcase/auth/UserSummaryDto';
 import {AuthApiService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-api.service';
 import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/auth/current-user.store';
@@ -43,15 +43,15 @@ export class AuthService {
     }
 
 
-    authenticate(signinRequestDto: SigninRequestDto): Observable<UserSummaryDto> {
+    authenticate(loginRequestDto: LoginRequestDto): Observable<UserSummaryDto> {
 
-        return this.apiService.authenticate(signinRequestDto)
+        return this.apiService.authenticate(loginRequestDto)
             .pipe(
                 map(user => {
                     this.currentUserStore.setCurrentUser(user);
                     return user;
                 }),
-                catchError(this.handleSigninError)
+                catchError(this.handleLoginError)
             );
 
     }
@@ -79,7 +79,7 @@ export class AuthService {
     }
 
 
-    private handleSigninError(error: HttpErrorResponse) {
+    private handleLoginError(error: HttpErrorResponse) {
 
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.

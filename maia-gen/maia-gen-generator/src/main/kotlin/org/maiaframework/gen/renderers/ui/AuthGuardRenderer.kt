@@ -73,14 +73,14 @@ class AuthGuardRenderer(private val authoritiesDef: AuthoritiesDef) : AbstractTy
             |
             |        if (this.currentUserStore.isSignedIn() === false) {
             |
-            |            let urlTree = this.router.createUrlTree(['/signin']);
+            |            let urlTree = this.router.createUrlTree(['/login']);
             |
             |            const navigation = this.router.currentNavigation();
             |
             |            if (navigation) {
             |
             |                urlTree = this.router.createUrlTree(
-            |                    ['/signin'],
+            |                    ['/login'],
             |                    {
             |                        queryParams: {return_url: navigation.extractedUrl.toString()},
             |                    }

@@ -8,7 +8,7 @@ class SigninRequestDtoRenderer(private val authoritiesDef: AuthoritiesDef) : Abs
 
     override fun renderedFilePath(): String {
 
-        return authoritiesDef.signinRequestDtoRenderedFilePath
+        return authoritiesDef.loginRequestDtoRenderedFilePath
 
     }
 
@@ -18,7 +18,7 @@ class SigninRequestDtoRenderer(private val authoritiesDef: AuthoritiesDef) : Abs
         append(
             """
             |
-            |export interface SigninRequestDto {
+            |export interface LoginRequestDto {
             |    emailAddress: string;
             |    password: string;
             |}

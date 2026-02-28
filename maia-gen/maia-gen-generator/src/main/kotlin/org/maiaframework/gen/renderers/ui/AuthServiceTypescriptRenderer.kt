@@ -17,7 +17,7 @@ class AuthServiceTypescriptRenderer(private val authoritiesDef: AuthoritiesDef) 
         addImport(from = "@angular/router", name = "Router")
         addImport(from = "@angular/common/http", name = "HttpErrorResponse")
         addImport(authoritiesDef.enumDef.typescriptImport)
-        addImport(authoritiesDef.signinRequestDtoTypescriptImport)
+        addImport(authoritiesDef.loginRequestDtoTypescriptImport)
         addImport(authoritiesDef.userSummaryDtoTypescriptImport)
         addImport(authoritiesDef.authApiServiceTypescriptImport)
         addImport(authoritiesDef.currentUserStoreTypescriptImport)
@@ -69,15 +69,15 @@ class AuthServiceTypescriptRenderer(private val authoritiesDef: AuthoritiesDef) 
             |    }
             |
             |
-            |    authenticate(signinRequestDto: SigninRequestDto): Observable<UserSummaryDto> {
+            |    authenticate(loginRequestDto: LoginRequestDto): Observable<UserSummaryDto> {
             |
-            |        return this.apiService.authenticate(signinRequestDto)
+            |        return this.apiService.authenticate(loginRequestDto)
             |            .pipe(
             |                map(user => {
             |                    this.currentUserStore.setCurrentUser(user);
             |                    return user;
             |                }),
-            |                catchError(this.handleSigninError)
+            |                catchError(this.handleLoginError)
             |            );
             |
             |    }
@@ -105,7 +105,7 @@ class AuthServiceTypescriptRenderer(private val authoritiesDef: AuthoritiesDef) 
             |    }
             |
             |
-            |    private handleSigninError(error: HttpErrorResponse) {
+            |    private handleLoginError(error: HttpErrorResponse) {
             |
             |        if (error.error instanceof ErrorEvent) {
             |            // A client-side or network error occurred. Handle it accordingly.

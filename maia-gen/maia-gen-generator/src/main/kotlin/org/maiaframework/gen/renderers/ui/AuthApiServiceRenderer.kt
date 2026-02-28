@@ -12,7 +12,7 @@ class AuthApiServiceRenderer(private val authoritiesDef: AuthoritiesDef) : Abstr
         addImport(from = "@angular/core", name = "inject")
         addImport(from = "@angular/core", name = "Injectable")
         addImport(from = "rxjs", name = "Observable")
-        addImport(authoritiesDef.signinRequestDtoTypescriptImport)
+        addImport(authoritiesDef.loginRequestDtoTypescriptImport)
         addImport(authoritiesDef.userSummaryDtoTypescriptImport)
 
     }
@@ -38,9 +38,9 @@ class AuthApiServiceRenderer(private val authoritiesDef: AuthoritiesDef) : Abstr
             |    private readonly http = inject(HttpClient);
             |
             |
-            |    authenticate(signinRequestDto: SigninRequestDto): Observable<UserSummaryDto> {
+            |    authenticate(loginRequestDto: LoginRequestDto): Observable<UserSummaryDto> {
             |
-            |        return this.http.post<any>('/api/signin', signinRequestDto, {withCredentials: true});
+            |        return this.http.post<any>('/api/login', loginRequestDto, {withCredentials: true});
             |
             |    }
             |

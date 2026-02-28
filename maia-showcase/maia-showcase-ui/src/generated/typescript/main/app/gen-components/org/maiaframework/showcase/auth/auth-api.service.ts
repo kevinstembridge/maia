@@ -3,7 +3,7 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {SigninRequestDto} from '@app/gen-components/org/maiaframework/showcase/auth/SigninRequestDto';
+import {LoginRequestDto} from '@app/gen-components/org/maiaframework/showcase/auth/LoginRequestDto';
 import {UserSummaryDto} from '@app/gen-components/org/maiaframework/showcase/auth/UserSummaryDto';
 import {Observable} from 'rxjs';
 
@@ -16,9 +16,9 @@ export class AuthApiService {
     private readonly http = inject(HttpClient);
 
 
-    authenticate(signinRequestDto: SigninRequestDto): Observable<UserSummaryDto> {
+    authenticate(loginRequestDto: LoginRequestDto): Observable<UserSummaryDto> {
 
-        return this.http.post<any>('/api/signin', signinRequestDto, {withCredentials: true});
+        return this.http.post<any>('/api/login', loginRequestDto, {withCredentials: true});
 
     }
 

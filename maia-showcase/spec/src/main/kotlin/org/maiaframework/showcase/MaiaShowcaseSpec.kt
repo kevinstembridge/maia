@@ -128,7 +128,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             withHtmlAutocompleteAttribute("current-password")
             withHtmlInputType(HtmlInputType.password)
         }
-        submitButtonText("Log In")
+        submitButtonText("Log in")
     }
 
 
