@@ -25,7 +25,11 @@ export class CharlieDeleteDialogComponent {
 
 
     private readonly dialogRef = inject(MatDialogRef<CharlieDeleteDialogComponent>);
+
+
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
+
+
     private readonly crudService = inject(CharlieCrudService);
 
 

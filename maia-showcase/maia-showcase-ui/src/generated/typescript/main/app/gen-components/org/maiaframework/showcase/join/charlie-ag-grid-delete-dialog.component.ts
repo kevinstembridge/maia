@@ -25,7 +25,11 @@ export class CharlieAgGridDeleteDialogComponent {
 
 
     private readonly dialogRef = inject(MatDialogRef<CharlieAgGridDeleteDialogComponent>);
+
+
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
+
+
     private readonly crudService = inject(CharlieAgGridCrudService);
 
 

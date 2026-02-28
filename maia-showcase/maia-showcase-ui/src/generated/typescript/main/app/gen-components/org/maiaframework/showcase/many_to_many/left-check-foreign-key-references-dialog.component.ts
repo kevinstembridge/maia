@@ -27,7 +27,11 @@ export class LeftCheckForeignKeyReferencesDialogComponent implements OnInit {
 
 
     private readonly dialogRef = inject(MatDialogRef<LeftCheckForeignKeyReferencesDialogComponent>);
+
+
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
+
+
     private readonly foreignKeyReferenceService = inject(ForeignKeyReferenceService);
 
 

@@ -27,7 +27,11 @@ export class AlphaCheckForeignKeyReferencesDialogComponent implements OnInit {
 
 
     private readonly dialogRef = inject(MatDialogRef<AlphaCheckForeignKeyReferencesDialogComponent>);
+
+
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
+
+
     private readonly foreignKeyReferenceService = inject(ForeignKeyReferenceService);
 
 

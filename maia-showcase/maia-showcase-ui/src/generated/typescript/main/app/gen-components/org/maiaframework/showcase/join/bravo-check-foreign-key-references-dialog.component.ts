@@ -27,7 +27,11 @@ export class BravoCheckForeignKeyReferencesDialogComponent implements OnInit {
 
 
     private readonly dialogRef = inject(MatDialogRef<BravoCheckForeignKeyReferencesDialogComponent>);
+
+
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
+
+
     private readonly foreignKeyReferenceService = inject(ForeignKeyReferenceService);
 
 
