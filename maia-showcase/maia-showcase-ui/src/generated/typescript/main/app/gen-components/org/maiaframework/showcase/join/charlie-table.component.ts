@@ -78,6 +78,8 @@ export class CharlieTableComponent {
 
 
     private readonly datasource = inject(CharlieTableAgGridDatasource);
+
+
     private readonly authService = inject(AuthService);
 
 
