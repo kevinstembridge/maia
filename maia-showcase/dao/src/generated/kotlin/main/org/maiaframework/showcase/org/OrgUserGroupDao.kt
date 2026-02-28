@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import acme.auth.Authority
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
@@ -13,6 +12,7 @@ import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
+import org.maiaframework.showcase.auth.Authority
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 

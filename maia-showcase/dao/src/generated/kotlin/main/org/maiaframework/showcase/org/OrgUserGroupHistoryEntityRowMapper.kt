@@ -3,10 +3,10 @@
 
 package org.maiaframework.showcase.org
 
-import acme.auth.Authority
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import org.maiaframework.showcase.auth.Authority
 
 
 class OrgUserGroupHistoryEntityRowMapper : MaiaRowMapper<OrgUserGroupHistoryEntity> {
