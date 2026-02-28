@@ -10,10 +10,7 @@ dependencies {
 
     implementation(project(":libs:maia-props-parent:maia-props-spring-boot-starter"))
     implementation(project(":libs:maia-problem-parent:maia-problem-starter"))
-
-//    implementation(project(":maia-showcase:dao"))
     implementation(project(":maia-showcase:web"))
-//    implementation(project(":maia-showcase:domain"))
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
