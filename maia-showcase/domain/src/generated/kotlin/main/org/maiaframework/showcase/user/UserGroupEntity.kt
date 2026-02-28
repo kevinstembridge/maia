@@ -3,8 +3,8 @@
 
 package org.maiaframework.showcase.user
 
-import acme.auth.Authority
 import org.maiaframework.domain.DomainId
+import org.maiaframework.showcase.auth.Authority
 import java.time.Instant
 
 

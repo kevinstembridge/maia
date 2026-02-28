@@ -3,9 +3,9 @@
 
 package org.maiaframework.showcase.org
 
-import acme.auth.Authority
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityFieldConverter
+import org.maiaframework.showcase.auth.Authority
 import org.springframework.stereotype.Component
 import java.time.Instant
 

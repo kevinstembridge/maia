@@ -3,12 +3,12 @@
 
 package org.maiaframework.showcase.org
 
-import acme.auth.Authority
 import org.maiaframework.common.BlankStringException
 import org.maiaframework.domain.DomainId
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.jdbc.sql.conditions.AndOr
 import org.maiaframework.jdbc.sql.conditions.SqlConditionOperator
+import org.maiaframework.showcase.auth.Authority
 import java.sql.Timestamp
 import java.sql.Types
 import java.time.Instant
