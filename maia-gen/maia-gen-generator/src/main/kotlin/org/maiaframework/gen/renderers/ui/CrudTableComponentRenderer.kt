@@ -52,6 +52,8 @@ class CrudTableComponentRenderer(
         blankLine()
         blankLine()
         appendLine("    private readonly crudService = inject(${crudTableDef.crudServiceClassName});")
+        blankLine()
+        blankLine()
         appendLine("    private readonly dialog = inject(MatDialog);")
 
         crudTableDef.entityCrudApiDef.createApiDef?.let { apiDef ->

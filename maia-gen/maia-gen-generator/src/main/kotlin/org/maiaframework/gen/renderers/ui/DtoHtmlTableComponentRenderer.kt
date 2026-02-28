@@ -135,8 +135,12 @@ class DtoHtmlTableComponentRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef
         blankLine()
         appendLine("  private readonly service = inject(${this.dtoHtmlTableDef.angularTableServiceName});")
         this.dtoHtmlTableDef.clickableTableRowDef?.let {
+            blankLine()
+            blankLine()
             appendLine("  private readonly router = inject(Router);")
         }
+        blankLine()
+        blankLine()
         appendLine("  private readonly authService = inject(AuthService);")
         blankLine()
         blankLine()

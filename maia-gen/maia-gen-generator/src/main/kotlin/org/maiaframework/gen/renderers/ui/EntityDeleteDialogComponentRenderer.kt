@@ -54,7 +54,11 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
             |
             |
             |    private readonly dialogRef = inject(MatDialogRef<${this.apiDef.angularDialogComponentName}>);
+            |
+            |
             |    private readonly dto = inject<any>(MAT_DIALOG_DATA);
+            |
+            |
             |    private readonly crudService = inject(${apiDef.entityDef.crudAngularComponentNames.serviceName});
             |
             |

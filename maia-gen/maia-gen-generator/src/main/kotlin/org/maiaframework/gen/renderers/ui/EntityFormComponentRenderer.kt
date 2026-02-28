@@ -378,35 +378,46 @@ class EntityFormComponentRenderer(
 
     private fun `render constructor`() {
 
-        blankLine()
-        blankLine()
-
         if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
+            blankLine()
+            blankLine()
             appendLine("    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);")
         }
 
+        blankLine()
+        blankLine()
         appendLine("    private readonly formService = inject(${this.angularFormDef.formServiceClassName});")
 
         if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
+            blankLine()
+            blankLine()
             appendLine("    private readonly dto = inject<any>(MAT_DIALOG_DATA);")
         }
 
         this.angularFormDef.context?.let { context ->
+            blankLine()
+            blankLine()
             appendLine("    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);")
         }
 
         this.angularFormDef.onSuccessUrl?.let {
+            blankLine()
+            blankLine()
             appendLine("    private readonly router = inject(Router);")
         }
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
 
             val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
+            blankLine()
+            blankLine()
             appendLine("    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});")
 
         }
 
         this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
+            blankLine()
+            blankLine()
             appendLine("    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});")
         }
 

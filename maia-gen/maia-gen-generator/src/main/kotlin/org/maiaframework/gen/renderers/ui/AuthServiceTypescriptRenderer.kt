@@ -45,7 +45,11 @@ class AuthServiceTypescriptRenderer(private val authoritiesDef: AuthoritiesDef) 
             |
             |
             |    private readonly currentUserStore = inject(CurrentUserStore);
+            |
+            |
             |    private readonly apiService = inject(AuthApiService);
+            |
+            |
             |    private readonly router = inject(Router);
             |
             |

@@ -47,7 +47,11 @@ class AuthGuardRenderer(private val authoritiesDef: AuthoritiesDef) : AbstractTy
             |
             |
             |    private readonly currentUserStore = inject(CurrentUserStore);
+            |
+            |
             |    private readonly router = inject(Router);
+            |
+            |
             |    private readonly authService = inject(AuthService);
             |
             |

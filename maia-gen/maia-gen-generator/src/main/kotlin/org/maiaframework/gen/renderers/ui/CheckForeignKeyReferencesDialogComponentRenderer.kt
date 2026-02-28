@@ -57,7 +57,11 @@ class CheckForeignKeyReferencesDialogComponentRenderer(private val entityDef: En
 
 
                 private readonly dialogRef = inject(MatDialogRef<${this.entityDef.checkForeignKeyReferencesDialog.componentName}>);
+
+
                 private readonly dto = inject<any>(MAT_DIALOG_DATA);
+
+
                 private readonly foreignKeyReferenceService = inject(${MaiaGenConstants.FOREIGN_KEY_REFERENCE_SERVICE_CLASS_NAME});
 
 

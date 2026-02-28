@@ -161,7 +161,8 @@ class DtoHtmlAgGridTableComponentRenderer(
         )
 
         if (requiresRouter) {
-            appendLine("")
+            blankLine()
+            blankLine()
             appendLine("    private readonly router = inject(Router);")
         }
 
