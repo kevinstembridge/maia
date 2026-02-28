@@ -340,11 +340,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "Simple",
         entityDef = simpleEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
-        withGeneratedDto = WithGeneratedDto.TRUE,
-        searchModelType = SearchModelType.AG_GRID
+        withGeneratedDto = WithGeneratedDto.TRUE
     ) {
         field("someString")
-        field("id", "id")
+        field("id")
         field("createdTimestampUtc")
     }
 
