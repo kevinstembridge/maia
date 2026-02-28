@@ -166,6 +166,8 @@ class DtoHtmlAgGridTableComponentRenderer(
         }
 
         append("""
+            |
+            |
             |    private readonly authService = inject(AuthService);
             |
             |
