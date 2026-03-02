@@ -28,7 +28,7 @@ export const CurrentUserStore = signalStore(
 
     withComputed(({ currentUser }) => ({
 
-        isSignedIn: computed<boolean>(() => {
+        isLoggedIn: computed<boolean>(() => {
             return !!currentUser();
         }),
 

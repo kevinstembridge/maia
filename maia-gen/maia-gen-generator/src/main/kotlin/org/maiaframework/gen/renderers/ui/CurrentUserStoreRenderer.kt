@@ -53,7 +53,7 @@ class CurrentUserStoreRenderer(private val authoritiesDef: AuthoritiesDef) : Abs
             |
             |    withComputed(({ currentUser }) => ({
             |
-            |        isSignedIn: computed<boolean>(() => {
+            |        isLoggedIn: computed<boolean>(() => {
             |            return !!currentUser();
             |        }),
             |
