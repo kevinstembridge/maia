@@ -109,6 +109,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         tableName(name = "party", viewName = "v_party")
         field("emailAddress", emailAddressStringType) {
             withEmailConstraint()
+            unique(withExistsEndpoint = true)
         }
         field("displayName", FieldTypes.string) {
             derived()
