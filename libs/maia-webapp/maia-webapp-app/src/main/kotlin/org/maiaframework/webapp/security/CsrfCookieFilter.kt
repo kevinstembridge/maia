@@ -1,4 +1,4 @@
-package org.maiaframework.webapp
+package org.maiaframework.webapp.security
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletException
