@@ -1035,10 +1035,6 @@ class JdbcDaoRenderer(
         }
 
         blankLine()
-        appendLine("        if (existingEntity == null) {")
-        appendLine("            return false")
-        appendLine("        }")
-        blankLine()
         appendLine("        val deletedCount = this.jdbcOps.update(")
         appendLine("            \"delete from ${entityDef.schemaAndTableName} where ${this.entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }}\",")
         appendLine("            SqlParams().apply {")
