@@ -450,11 +450,7 @@ class SubTwoDao(
 
     fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(id)
-
-        if (existingEntity == null) {
-            return false
-        }
+        val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from maia.super where id = :id",
@@ -488,24 +484,16 @@ class SubTwoDao(
 
     fun deleteBySomeUniqueString(someUniqueString: String): Boolean {
 
-        val existingEntity = findOneOrNullBySomeUniqueString(someUniqueString)
+        val existingEntity = findOneOrNullBySomeUniqueString(someUniqueString) ?: return false
 
-        if (existingEntity != null) {
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.super where some_unique_string = :someUniqueString",
+            SqlParams().apply {
+                addValue("someUniqueString", someUniqueString)
+            }
+        )
 
-            val deletedCount = this.jdbcOps.update(
-                "delete from maia.super where id = :id",
-                SqlParams().apply {
-                    addValue("id", existingEntity.id)
-                }
-            )
-
-            return deletedCount > 0
-
-        } else {
-
-            return false
-
-        }
+        return deletedCount > 0
 
     }
 

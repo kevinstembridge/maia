@@ -57,21 +57,21 @@ class AuthGuardRenderer(private val authoritiesDef: AuthoritiesDef) : AbstractTy
             |
             |    canMatch(route: Route, segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
             |
-            |        return this.checkForSignedInAndAuthorisedUser(route.data?.["authorities"] || []);
+            |        return this.checkForLoggedInAndAuthorisedUser(route.data?.["authorities"] || []);
             |
             |    }
             |
             |
             |    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
             |
-            |        return this.checkForSignedInAndAuthorisedUser(route.data?.["authorities"] || []);
+            |        return this.checkForLoggedInAndAuthorisedUser(route.data?.["authorities"] || []);
             |
             |    }
             |
             |
-            |    private checkForSignedInAndAuthorisedUser(authoritiesRequiredByRoute: $${authorityUqcn}[]) {
+            |    private checkForLoggedInAndAuthorisedUser(authoritiesRequiredByRoute: $${authorityUqcn}[]) {
             |
-            |        if (this.currentUserStore.isSignedIn() === false) {
+            |        if (this.currentUserStore.isLoggedIn() === false) {
             |
             |            let urlTree = this.router.createUrlTree(['/login']);
             |

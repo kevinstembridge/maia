@@ -24,6 +24,7 @@ import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler
 @EnableMethodSecurity
 class MaiaSecurityFilterChainConfiguration {
 
+
     @Bean
     fun securityFilterChain(
         http: HttpSecurity,

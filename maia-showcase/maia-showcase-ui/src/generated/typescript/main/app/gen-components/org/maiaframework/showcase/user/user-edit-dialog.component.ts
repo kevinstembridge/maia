@@ -9,6 +9,7 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {UserEmailAddressAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/user/UserEmailAddressAsyncValidator';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -50,6 +51,9 @@ export class UserEditDialogComponent implements OnInit {
 
 
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
+
+
+    private readonly userEmailAddressAsyncValidator = inject(UserEmailAddressAsyncValidator);
 
 
     constructor() {

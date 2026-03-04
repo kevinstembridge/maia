@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.user
 
 import jakarta.validation.Valid
+import org.maiaframework.webapp.domain.FormValidationResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
@@ -24,6 +25,24 @@ class UserCrudEndpoint(
     fun create(@RequestBody @Valid createDto: UserCreateRequestDto) {
 
         this.crudService.create(createDto)
+
+    }
+
+
+    @PostMapping("/api/user/exists_by_email_address", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun existsByEmailAddress(@RequestBody @Valid dto: UserEmailAddressRequestDto): FormValidationResponseDto {
+
+        val emailAddress = dto.emailAddress
+
+        val invalid = this.crudService.existsByEmailAddress(emailAddress)
+
+        val message = if (invalid) {
+            "This Email Address is already in use."
+        } else {
+            null
+        }
+
+        return FormValidationResponseDto(invalid = invalid, message = message)
 
     }
 

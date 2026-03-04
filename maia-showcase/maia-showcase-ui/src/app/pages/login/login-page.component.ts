@@ -3,13 +3,17 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {LoginRequestDto} from '@app/gen-components/org/maiaframework/showcase/auth/LoginRequestDto';
 import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/auth/current-user.store';
+import {LoginFormComponent} from '@app/gen-components/org/maiaframework/showcase/login/login-form.component';
 
 
 @Component({
     selector: 'app-login-form-wrapper',
+    imports: [
+        LoginFormComponent
+    ],
     templateUrl: './login-page.component.html'
 })
-export class LoginFormWrapperComponent implements OnInit {
+export class LoginPageComponent implements OnInit {
 
 
     accountLocked = signal(false);
@@ -63,4 +67,5 @@ export class LoginFormWrapperComponent implements OnInit {
     }
 
 
+    protected readonly onsubmit = onsubmit;
 }

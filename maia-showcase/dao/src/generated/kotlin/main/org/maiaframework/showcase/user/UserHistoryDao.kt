@@ -5,6 +5,7 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -202,6 +203,22 @@ class UserHistoryDao(
         return count > 0
        
     }
+
+    fun findByEmailAddress(emailAddress: EmailAddress): List<UserHistoryEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.v_party_history
+            where email_address = :emailAddress
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("emailAddress", emailAddress)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
 
     fun findAllBy(filter: UserHistoryEntityFilter): List<UserHistoryEntity> {
 

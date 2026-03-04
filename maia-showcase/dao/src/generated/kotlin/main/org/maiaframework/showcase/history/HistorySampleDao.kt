@@ -531,11 +531,7 @@ class HistorySampleDao(
 
     fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(id)
-
-        if (existingEntity == null) {
-            return false
-        }
+        val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from maia.history_sample where id = :id",
@@ -569,26 +565,21 @@ class HistorySampleDao(
 
     fun deleteBySomeString(someString: String): Boolean {
 
-        val existingEntity = findOneOrNullBySomeString(someString)
+        val existingEntity = findOneOrNullBySomeString(someString) ?: return false
 
-        if (existingEntity != null) {
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.history_sample where some_string = :someString",
+            SqlParams().apply {
+                addValue("someString", someString)
+            }
+        )
 
-            val deletedCount = this.jdbcOps.update(
-                "delete from maia.history_sample where id = :id",
-                SqlParams().apply {
-                    addValue("id", existingEntity.id)
-                }
-            )
+        if (deletedCount > 0) {
 
             this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))
-
-            return deletedCount > 0
-
-        } else {
-
-            return false
-
         }
+
+        return deletedCount > 0
 
     }
 

@@ -5,6 +5,7 @@ package org.maiaframework.showcase.person
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.springframework.stereotype.Repository
 
 
@@ -62,6 +63,13 @@ class PersonHistoryRepo(
     fun findAllBy(filter: PersonHistoryEntityFilter): List<PersonHistoryEntity> {
 
         return this.dao.findAllBy(filter)
+
+    }
+
+
+    fun findByEmailAddress(emailAddress: EmailAddress): List<PersonHistoryEntity> {
+
+        return dao.findByEmailAddress(emailAddress)
 
     }
 

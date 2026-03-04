@@ -417,11 +417,7 @@ class CompositePrimaryKeyDao(
 
     fun deleteByPrimaryKey(primaryKey: CompositePrimaryKeyEntityPk): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(primaryKey)
-
-        if (existingEntity == null) {
-            return false
-        }
+        val existingEntity = findByPrimaryKeyOrNull(primaryKey) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from maia.composite_primary_key where some_string = :someString and some_int = :someInt",

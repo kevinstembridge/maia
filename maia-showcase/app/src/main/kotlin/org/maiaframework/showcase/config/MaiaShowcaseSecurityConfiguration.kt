@@ -65,7 +65,7 @@ class MaiaShowcaseSecurityConfiguration {
         return UserDetailsServiceImpl(this.passwordEncoder)
     }
 
-    
+
     @Bean
     fun authorizeHttpRequests(): AuthorizeHttpRequestsDsl.() -> Unit = {
 

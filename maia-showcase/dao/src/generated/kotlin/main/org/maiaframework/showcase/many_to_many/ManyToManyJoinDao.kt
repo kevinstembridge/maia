@@ -336,11 +336,7 @@ class ManyToManyJoinDao(
 
     fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(id)
-
-        if (existingEntity == null) {
-            return false
-        }
+        val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from maia.many_to_many_join where id = :id",

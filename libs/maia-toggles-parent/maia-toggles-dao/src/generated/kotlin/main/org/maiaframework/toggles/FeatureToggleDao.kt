@@ -604,11 +604,7 @@ class FeatureToggleDao(
 
     fun deleteByPrimaryKey(featureName: FeatureName): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(featureName)
-
-        if (existingEntity == null) {
-            return false
-        }
+        val existingEntity = findByPrimaryKeyOrNull(featureName) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from toggles.feature_toggle where feature_name = :featureName",

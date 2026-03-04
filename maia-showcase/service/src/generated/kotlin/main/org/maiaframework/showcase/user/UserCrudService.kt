@@ -77,6 +77,13 @@ class UserCrudService(
     }
 
 
+    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
+
+        return this.entityRepo.existsByEmailAddress(emailAddress)
+
+    }
+
+
     fun update(editDto: UserUpdateRequestDto) {
 
         val id = editDto.id

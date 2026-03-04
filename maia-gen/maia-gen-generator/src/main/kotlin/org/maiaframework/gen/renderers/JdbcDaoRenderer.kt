@@ -1172,36 +1172,73 @@ class JdbcDaoRenderer(
         val fieldNamesAnded = fieldNamesAnded(classFieldDefs)
         val fieldNamesCsv = classFieldDefs.map { it.classFieldName }.joinToString()
 
-        blankLine()
-        blankLine()
-        appendLine("    fun deleteBy$fieldNamesAnded($functionParameters): Boolean {")
-        blankLine()
-        appendLine("        val existingEntity = findOneOrNullBy$fieldNamesAnded($fieldNamesCsv)")
-        blankLine()
-        appendLine("        if (existingEntity != null) {")
-        blankLine()
-        appendLine("            val deletedCount = this.jdbcOps.update(")
-        appendLine("                \"delete from ${entityDef.schemaAndTableName} where id = :id\",")
-        appendLine("                SqlParams().apply {")
-        appendLine("                    addValue(\"id\", existingEntity.id)")
-        appendLine("                }")
-        appendLine("            )")
+        val whereClause = indexDef.entityFieldDefs.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }
+
+        append("""
+            |
+            |
+            |    fun deleteBy$fieldNamesAnded($functionParameters): Boolean {
+            |
+            |        val existingEntity = findOneOrNullBy$fieldNamesAnded($fieldNamesCsv) ?: return false
+            |
+            |        val deletedCount = this.jdbcOps.update(
+            |            "delete from ${entityDef.schemaAndTableName} where $whereClause",
+            |            SqlParams().apply {
+            |""".trimMargin()
+        )
+
+        indexDef.entityFieldDefs.forEach { classFieldDef ->
+            renderSqlParamAddValueFor(classFieldDef, "                ", entityParameterName = null, 8, { line -> appendLine(line) })
+        }
+
+        append("""
+            |            }
+            |        )
+            |""".trimMargin()
+        )
 
         if (entityDef.withVersionHistory.value) {
 
             blankLine()
-            appendLine("            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))")
+            appendLine("        if (deletedCount > 0) {")
+            blankLine()
+
+            if (entityHierarchy.hasSubclasses()) {
+
+                appendLine("            when (existingEntity) {")
+
+                entityHierarchy.concreteEntityDefs.forEach { concreteEntityDef ->
+
+                    appendLine("                is ${concreteEntityDef.entityUqcn} -> insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)")
+
+                }
+
+                appendLine("            }")
+                blankLine()
+                appendLine("            return true")
+                blankLine()
+                appendLine("        } else {")
+                blankLine()
+                appendLine("            return false")
+                blankLine()
+                appendLine("        }")
+
+            } else {
+
+                appendLine("            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))")
+                appendLine("        }")
+                blankLine()
+                appendLine("        return deletedCount > 0")
+
+            }
+
+        } else {
+
+            blankLine()
+            appendLine("        return deletedCount > 0")
 
         }
 
-        blankLine()
-        appendLine("            return deletedCount > 0")
-        blankLine()
-        appendLine("        } else {")
-        blankLine()
-        appendLine("            return false")
-        blankLine()
-        appendLine("        }")
         blankLine()
         appendLine("    }")
 
@@ -1213,8 +1250,8 @@ class JdbcDaoRenderer(
         val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
         val whereClause = this.entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }
 
-
-        append("""
+        append(
+            """
             |
             |
             |    fun existsByPrimaryKey($fieldNamesAndTypesCsv): Boolean {
@@ -1222,20 +1259,23 @@ class JdbcDaoRenderer(
             |        val count = jdbcOps.queryForInt(
             |            "select count(*) from ${this.entityDef.schemaAndTableName} where $whereClause",
             |            SqlParams().apply {
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
         this.entityDef.primaryKeyFields.forEach { field ->
             renderSqlParamAddValueFor(field, "                ", entityParameterName = null, 12, { line -> appendLine(line) })
         }
 
-        append("""
+        append(
+            """
             |           }
             |        )
             |       
             |        return count > 0
             |       
             |    }
-            """.trimMargin())
+            """.trimMargin()
+        )
 
     }
 

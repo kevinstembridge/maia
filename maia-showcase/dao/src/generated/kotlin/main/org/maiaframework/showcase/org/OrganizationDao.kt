@@ -7,14 +7,17 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
+import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.PreparedStatement
 import java.time.Instant
 
 
@@ -237,6 +240,32 @@ class OrganizationDao(
        
     }
 
+    fun findOneOrNullByEmailAddress(emailAddress: EmailAddress): OrganizationEntity? {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.v_party
+            where email_address = :emailAddress
+            and type_discriminator = 'ORG'
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("emailAddress", emailAddress)
+            },
+            this.entityRowMapper
+        ).firstOrNull()
+
+    }
+
+
+    @Throws(EntityNotFoundException::class)
+    fun findOneByEmailAddress(emailAddress: EmailAddress): OrganizationEntity {
+
+        return findOneOrNullByEmailAddress(emailAddress)
+            ?: throw EntityNotFoundException("No record with column [email_address = $emailAddress] found in table maia.v_party.", OrganizationEntityMeta.TABLE_NAME)
+
+    }
+
+
     fun findAllBy(filter: OrganizationEntityFilter): List<OrganizationEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
@@ -329,6 +358,81 @@ class OrganizationDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            """
+            select count(*) from maia.v_party
+            where email_address = :emailAddress
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("emailAddress", emailAddress)
+            }
+        )
+
+        return count > 0
+
+    }
+
+
+    fun upsertByEmailAddress(upsertEntity: OrganizationEntity): OrganizationEntity {
+
+        val persistedEntity = jdbcOps.execute(
+            """
+            insert into maia.v_party (
+                type_discriminator,
+                created_timestamp_utc,
+                display_name,
+                email_address,
+                id,
+                last_modified_timestamp_utc,
+                lifecycle_state,
+                org_name,
+                version
+            ) values (
+                'ORG',
+                :createdTimestampUtc,
+                :displayName,
+                :emailAddress,
+                :id,
+                :lastModifiedTimestampUtc,
+                :lifecycleState,
+                :orgName,
+                :version
+            )
+            on conflict (email_address, type_discriminator)
+            do update set
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                lifecycle_state = :lifecycleState,
+                org_name = :orgName,
+                version = maia.v_party.version + 1
+            returning *;
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("displayName", upsertEntity.displayName)
+            addValue("emailAddress", upsertEntity.emailAddress)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("lifecycleState", upsertEntity.lifecycleState)
+            addValue("orgName", upsertEntity.orgName)
+            addValue("version", upsertEntity.version)
+            },
+            { ps: PreparedStatement ->
+                val rs = ps.executeQuery()
+                rs.next()
+                entityRowMapper.mapRow(ResultSetAdapter(rs))
+            }
+        )
+
+        val changeType = if (persistedEntity!!.id != upsertEntity.id) ChangeType.UPDATE else ChangeType.CREATE
+        insertHistory(persistedEntity, persistedEntity.version, changeType)
+
+        return persistedEntity!!
 
     }
 

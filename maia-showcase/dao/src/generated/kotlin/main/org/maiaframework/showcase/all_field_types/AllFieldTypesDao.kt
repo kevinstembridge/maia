@@ -1890,11 +1890,7 @@ class AllFieldTypesDao(
 
     fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(id)
-
-        if (existingEntity == null) {
-            return false
-        }
+        val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from maia.all_field_types where id = :id",
@@ -1928,120 +1924,80 @@ class AllFieldTypesDao(
 
     fun deleteBySomeIntType(someIntType: SomeIntType): Boolean {
 
-        val existingEntity = findOneOrNullBySomeIntType(someIntType)
+        val existingEntity = findOneOrNullBySomeIntType(someIntType) ?: return false
 
-        if (existingEntity != null) {
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.all_field_types where some_int_type = :someIntType",
+            SqlParams().apply {
+                addValue("someIntType", someIntType)
+            }
+        )
 
-            val deletedCount = this.jdbcOps.update(
-                "delete from maia.all_field_types where id = :id",
-                SqlParams().apply {
-                    addValue("id", existingEntity.id)
-                }
-            )
-
-            return deletedCount > 0
-
-        } else {
-
-            return false
-
-        }
+        return deletedCount > 0
 
     }
 
 
     fun deleteBySomeLongType(someLongType: SomeLongType): Boolean {
 
-        val existingEntity = findOneOrNullBySomeLongType(someLongType)
+        val existingEntity = findOneOrNullBySomeLongType(someLongType) ?: return false
 
-        if (existingEntity != null) {
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.all_field_types where some_long_type = :someLongType",
+            SqlParams().apply {
+                addValue("someLongType", someLongType)
+            }
+        )
 
-            val deletedCount = this.jdbcOps.update(
-                "delete from maia.all_field_types where id = :id",
-                SqlParams().apply {
-                    addValue("id", existingEntity.id)
-                }
-            )
-
-            return deletedCount > 0
-
-        } else {
-
-            return false
-
-        }
+        return deletedCount > 0
 
     }
 
 
     fun deleteBySomeString(someString: String): Boolean {
 
-        val existingEntity = findOneOrNullBySomeString(someString)
+        val existingEntity = findOneOrNullBySomeString(someString) ?: return false
 
-        if (existingEntity != null) {
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.all_field_types where some_string = :someString",
+            SqlParams().apply {
+                addValue("someString", someString)
+            }
+        )
 
-            val deletedCount = this.jdbcOps.update(
-                "delete from maia.all_field_types where id = :id",
-                SqlParams().apply {
-                    addValue("id", existingEntity.id)
-                }
-            )
-
-            return deletedCount > 0
-
-        } else {
-
-            return false
-
-        }
+        return deletedCount > 0
 
     }
 
 
     fun deleteBySomeStringNullable(someStringNullable: String): Boolean {
 
-        val existingEntity = findOneOrNullBySomeStringNullable(someStringNullable)
+        val existingEntity = findOneOrNullBySomeStringNullable(someStringNullable) ?: return false
 
-        if (existingEntity != null) {
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.all_field_types where some_string_nullable = :someStringNullable",
+            SqlParams().apply {
+                addValue("someStringNullable", someStringNullable)
+            }
+        )
 
-            val deletedCount = this.jdbcOps.update(
-                "delete from maia.all_field_types where id = :id",
-                SqlParams().apply {
-                    addValue("id", existingEntity.id)
-                }
-            )
-
-            return deletedCount > 0
-
-        } else {
-
-            return false
-
-        }
+        return deletedCount > 0
 
     }
 
 
     fun deleteBySomeStringType(someStringType: SomeStringType): Boolean {
 
-        val existingEntity = findOneOrNullBySomeStringType(someStringType)
+        val existingEntity = findOneOrNullBySomeStringType(someStringType) ?: return false
 
-        if (existingEntity != null) {
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.all_field_types where some_string_type = :someStringType",
+            SqlParams().apply {
+                addValue("someStringType", someStringType)
+            }
+        )
 
-            val deletedCount = this.jdbcOps.update(
-                "delete from maia.all_field_types where id = :id",
-                SqlParams().apply {
-                    addValue("id", existingEntity.id)
-                }
-            )
-
-            return deletedCount > 0
-
-        } else {
-
-            return false
-
-        }
+        return deletedCount > 0
 
     }
 

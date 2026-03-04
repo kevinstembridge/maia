@@ -55,6 +55,13 @@ object PersonEntityMeta {
     }
 
 
+    object IndexName {
+
+        const val person_email_address_uidx = "person_email_address_uidx"
+
+    }
+
+
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {

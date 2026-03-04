@@ -7,6 +7,7 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.domain.persist.FieldUpdate
@@ -14,9 +15,11 @@ import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
+import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.PreparedStatement
 import java.time.Instant
 
 
@@ -266,6 +269,32 @@ class UserDao(
        
     }
 
+    fun findOneOrNullByEmailAddress(emailAddress: EmailAddress): UserEntity? {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.v_party
+            where email_address = :emailAddress
+            and type_discriminator = 'USR'
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("emailAddress", emailAddress)
+            },
+            this.entityRowMapper
+        ).firstOrNull()
+
+    }
+
+
+    @Throws(EntityNotFoundException::class)
+    fun findOneByEmailAddress(emailAddress: EmailAddress): UserEntity {
+
+        return findOneOrNullByEmailAddress(emailAddress)
+            ?: throw EntityNotFoundException("No record with column [email_address = $emailAddress] found in table maia.v_party.", UserEntityMeta.TABLE_NAME)
+
+    }
+
+
     fun findAllBy(filter: UserEntityFilter): List<UserEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
@@ -362,6 +391,23 @@ class UserDao(
     }
 
 
+    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            """
+            select count(*) from maia.v_party
+            where email_address = :emailAddress
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("emailAddress", emailAddress)
+            }
+        )
+
+        return count > 0
+
+    }
+
+
     fun fetchForEdit(id: DomainId): UserFetchForEditDto {
 
         return this.jdbcOps.queryForList(
@@ -387,6 +433,75 @@ class UserDao(
             this.fetchForEditDtoRowMapper
         ).firstOrNull()
             ?: throw EntityNotFoundException(EntityClassAndPk(UserEntity::class.java, mapOf("id" to id)), UserEntityMeta.TABLE_NAME)
+
+    }
+
+
+    fun upsertByEmailAddress(upsertEntity: UserEntity): UserEntity {
+
+        val persistedEntity = jdbcOps.execute(
+            """
+            insert into maia.v_party (
+                type_discriminator,
+                created_timestamp_utc,
+                display_name,
+                email_address,
+                encrypted_password,
+                first_name,
+                id,
+                last_modified_timestamp_utc,
+                last_name,
+                lifecycle_state,
+                some_strings,
+                version
+            ) values (
+                'USR',
+                :createdTimestampUtc,
+                :displayName,
+                :emailAddress,
+                :encryptedPassword,
+                :firstName,
+                :id,
+                :lastModifiedTimestampUtc,
+                :lastName,
+                :lifecycleState,
+                :someStrings,
+                :version
+            )
+            on conflict (email_address, type_discriminator)
+            do update set
+                encrypted_password = :encryptedPassword,
+                first_name = :firstName,
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_name = :lastName,
+                lifecycle_state = :lifecycleState,
+                version = maia.v_party.version + 1
+            returning *;
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("displayName", upsertEntity.displayName)
+            addValue("emailAddress", upsertEntity.emailAddress)
+            addValue("encryptedPassword", upsertEntity.encryptedPassword)
+            addValue("firstName", upsertEntity.firstName)
+            addValue("id", upsertEntity.id)
+            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+            addValue("lastName", upsertEntity.lastName)
+            addValue("lifecycleState", upsertEntity.lifecycleState)
+            addListOfStrings("someStrings", upsertEntity.someStrings)
+            addValue("version", upsertEntity.version)
+            },
+            { ps: PreparedStatement ->
+                val rs = ps.executeQuery()
+                rs.next()
+                entityRowMapper.mapRow(ResultSetAdapter(rs))
+            }
+        )
+
+        val changeType = if (persistedEntity!!.id != upsertEntity.id) ChangeType.UPDATE else ChangeType.CREATE
+        insertHistory(persistedEntity, persistedEntity.version, changeType)
+
+        return persistedEntity!!
 
     }
 

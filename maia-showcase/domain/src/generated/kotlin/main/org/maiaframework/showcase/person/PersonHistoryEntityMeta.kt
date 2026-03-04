@@ -57,6 +57,13 @@ object PersonHistoryEntityMeta {
     }
 
 
+    object IndexName {
+
+        const val hist_person_email_address_idx = "hist_person_email_address_idx"
+
+    }
+
+
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {

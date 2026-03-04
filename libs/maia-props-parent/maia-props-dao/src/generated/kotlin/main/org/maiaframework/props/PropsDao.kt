@@ -466,11 +466,7 @@ class PropsDao(
 
     fun deleteByPrimaryKey(propertyName: String): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(propertyName)
-
-        if (existingEntity == null) {
-            return false
-        }
+        val existingEntity = findByPrimaryKeyOrNull(propertyName) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from props.props where property_name = :propertyName",

@@ -18,6 +18,7 @@ CREATE TABLE maia.party (
     version bigint NOT NULL,
     PRIMARY KEY(id)
 );
+CREATE UNIQUE INDEX party_email_address_uidx ON maia.party(email_address, type_discriminator);
 
 
 -- Type Discriminators: OrganizationHistory -> ORG, UserHistory -> USR, PersonHistory -> PER
@@ -37,6 +38,7 @@ CREATE TABLE maia.party_history (
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );
+CREATE INDEX hist_party_email_address_idx ON maia.party_history(email_address, type_discriminator);
 
 
 -- Type Discriminators: OrgUserGroup -> OUG, UserGroup -> UG

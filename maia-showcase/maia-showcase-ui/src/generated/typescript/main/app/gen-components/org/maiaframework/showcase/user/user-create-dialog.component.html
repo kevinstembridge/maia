@@ -61,7 +61,7 @@
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Email Address</mat-label>
             <input
                 formControlName="emailAddress"
                 name="emailAddress"
@@ -69,16 +69,19 @@
                 matInput
             />
             @if (formGroup.controls['emailAddress'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Email Address is required.</mat-error>
             }
             @if (formGroup.controls['emailAddress'].hasError('email')) {
-                <mat-error>null must be valid.</mat-error>
+                <mat-error>Email Address must be valid.</mat-error>
             }
             @if (formGroup.controls['emailAddress'].hasError('minlength')) {
-                <mat-error>null must be at least 5 characters.</mat-error>
+                <mat-error>Email Address must be at least 5 characters.</mat-error>
             }
             @if (formGroup.controls['emailAddress'].hasError('maxlength')) {
-                <mat-error>null must not be more than 500 characters.</mat-error>
+                <mat-error>Email Address must not be more than 500 characters.</mat-error>
+            }
+            @if (formGroup.controls['emailAddress'].hasError('message')) {
+                <mat-error>{{ formGroup.controls['emailAddress']?.['errors']?.['message'] }}</mat-error>
             }
         </mat-form-field>
     </div>

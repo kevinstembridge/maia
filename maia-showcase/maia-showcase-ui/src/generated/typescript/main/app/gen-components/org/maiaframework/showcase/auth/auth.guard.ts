@@ -25,21 +25,21 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanMatch {
 
     canMatch(route: Route, segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-        return this.checkForSignedInAndAuthorisedUser(route.data?.["authorities"] || []);
+        return this.checkForLoggedInAndAuthorisedUser(route.data?.["authorities"] || []);
 
     }
 
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
-        return this.checkForSignedInAndAuthorisedUser(route.data?.["authorities"] || []);
+        return this.checkForLoggedInAndAuthorisedUser(route.data?.["authorities"] || []);
 
     }
 
 
-    private checkForSignedInAndAuthorisedUser(authoritiesRequiredByRoute: Authority[]) {
+    private checkForLoggedInAndAuthorisedUser(authoritiesRequiredByRoute: Authority[]) {
 
-        if (this.currentUserStore.isSignedIn() === false) {
+        if (this.currentUserStore.isLoggedIn() === false) {
 
             let urlTree = this.router.createUrlTree(['/login']);
 

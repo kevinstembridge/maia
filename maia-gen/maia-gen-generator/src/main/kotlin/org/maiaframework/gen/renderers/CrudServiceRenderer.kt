@@ -322,6 +322,8 @@ class CrudServiceRenderer(
 
     private fun renderExistsByForUniqueIndex(databaseIndexDef: DatabaseIndexDef) {
 
+        databaseIndexDef.indexDef.classFieldDefs.forEach { fieldDef -> addImportFor(fieldDef.fieldType)}
+
         val functionName = databaseIndexDef.existsByFunctionName
         val fieldNameAndTypesCsv = databaseIndexDef.indexDef.classFieldDefs.joinToString(", ") { "${it.classFieldName}: ${it.fieldType.unqualifiedToString}" }
         val fieldNamesCsv = databaseIndexDef.indexDef.classFieldDefs.map { it.classFieldName }.joinToString(", ")

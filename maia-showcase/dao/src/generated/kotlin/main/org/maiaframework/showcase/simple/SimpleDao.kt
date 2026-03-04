@@ -390,11 +390,7 @@ class SimpleDao(
 
     fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(id)
-
-        if (existingEntity == null) {
-            return false
-        }
+        val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from maia.simple where id = :id",
@@ -428,24 +424,16 @@ class SimpleDao(
 
     fun deleteBySomeString(someString: String): Boolean {
 
-        val existingEntity = findOneOrNullBySomeString(someString)
+        val existingEntity = findOneOrNullBySomeString(someString) ?: return false
 
-        if (existingEntity != null) {
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.simple where some_string = :someString",
+            SqlParams().apply {
+                addValue("someString", someString)
+            }
+        )
 
-            val deletedCount = this.jdbcOps.update(
-                "delete from maia.simple where id = :id",
-                SqlParams().apply {
-                    addValue("id", existingEntity.id)
-                }
-            )
-
-            return deletedCount > 0
-
-        } else {
-
-            return false
-
-        }
+        return deletedCount > 0
 
     }
 

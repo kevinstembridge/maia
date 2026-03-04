@@ -404,11 +404,7 @@ class NonSurrogateIdPrimaryKeyDao(
 
     fun deleteByPrimaryKey(id: SomeStringValueClass): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(id)
-
-        if (existingEntity == null) {
-            return false
-        }
+        val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from maia.non_surrogate_id_primary_key where id = :id",

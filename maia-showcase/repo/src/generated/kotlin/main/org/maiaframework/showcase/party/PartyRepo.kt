@@ -5,6 +5,7 @@ package org.maiaframework.showcase.party
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.springframework.stereotype.Repository
 
 
@@ -66,6 +67,27 @@ class PartyRepo(
     }
 
 
+    fun findOneOrNullByEmailAddress(emailAddress: EmailAddress): PartyEntity? {
+
+        return dao.findOneOrNullByEmailAddress(emailAddress)
+
+    }
+
+
+    fun findOneByEmailAddress(emailAddress: EmailAddress): PartyEntity {
+
+        return dao.findOneByEmailAddress(emailAddress)
+
+    }
+
+
+    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
+
+        return dao.existsByEmailAddress(emailAddress)
+
+    }
+
+
     fun insert(entity: PartyEntity) {
 
         logger.debug("insert {}", entity)
@@ -100,6 +122,15 @@ class PartyRepo(
     }
 
 
+    fun upsertByEmailAddress(upsertEntity: PartyEntity): PartyEntity {
+
+        logger.debug("upsert {}", upsertEntity)
+
+        return dao.upsertByEmailAddress(upsertEntity)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)
@@ -111,6 +142,13 @@ class PartyRepo(
     
        this.dao.deleteAll()
        
+    }
+
+
+    fun deleteByEmailAddress(emailAddress: EmailAddress): Boolean {
+
+        return dao.deleteByEmailAddress(emailAddress)
+
     }
 
 
