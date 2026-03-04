@@ -1029,9 +1029,9 @@ class JdbcDaoRenderer(
         blankLine()
 
         if (entityDef.hasCompositePrimaryKey) {
-            appendLine("        val existingEntity = findByPrimaryKeyOrNull(primaryKey)")
+            appendLine("        val existingEntity = findByPrimaryKeyOrNull(primaryKey) ?: return false")
         } else {
-            appendLine("        val existingEntity = findByPrimaryKeyOrNull($fieldNamesCsv)")
+            appendLine("        val existingEntity = findByPrimaryKeyOrNull($fieldNamesCsv) ?: return false")
         }
 
         blankLine()
