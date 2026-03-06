@@ -1,5 +1,6 @@
 package org.maiaframework.showcase.config
 
+import jakarta.servlet.DispatcherType
 import org.maiaframework.showcase.security.UserDetailsServiceImpl
 import org.maiaframework.webapp.security.ReportingAccessDeniedHandler
 import org.springframework.context.annotation.Bean
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.AuthorizeHttpRequestsD
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.util.matcher.DispatcherTypeRequestMatcher
 import org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher
 
 
@@ -69,6 +71,7 @@ class MaiaShowcaseSecurityConfiguration {
     @Bean
     fun authorizeHttpRequests(): AuthorizeHttpRequestsDsl.() -> Unit = {
 
+        authorize(DispatcherTypeRequestMatcher(DispatcherType.FORWARD), permitAll)
         authorize(regexMatcher("/"), permitAll)
         authorize(regexMatcher("/index.html"), permitAll)
         authorize(regexMatcher("/assets/.*"), permitAll)
@@ -94,9 +97,9 @@ class MaiaShowcaseSecurityConfiguration {
         authorize(regexMatcher("/manage/.*"), hasRole("ADMIN"))
         authorize(regexMatcher(HttpMethod.POST, "/api/auth/refresh_token"), permitAll)
         authorize(regexMatcher(HttpMethod.POST, "/api/auth/revoke_token"), permitAll)
+        authorize(regexMatcher(HttpMethod.POST, "/api/login"), permitAll)
         authorize(regexMatcher(HttpMethod.GET, "/api/search.*"), permitAll)
         authorize(regexMatcher(HttpMethod.POST, "/api/search.*"), permitAll)
-        authorize(regexMatcher(HttpMethod.POST, "/api/login"), permitAll)
 
     }
 
