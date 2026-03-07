@@ -88,6 +88,13 @@ class UserRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): UserFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: UserEntity) {
 
         logger.debug("insert {}", entity)

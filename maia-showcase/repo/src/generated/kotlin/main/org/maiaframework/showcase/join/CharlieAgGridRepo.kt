@@ -73,6 +73,13 @@ class CharlieAgGridRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): CharlieAgGridFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: CharlieAgGridEntity) {
 
         logger.debug("insert {}", entity)

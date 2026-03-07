@@ -205,6 +205,13 @@ class AllFieldTypesRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): AllFieldTypesFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: AllFieldTypesEntity) {
 
         logger.debug("insert {}", entity)

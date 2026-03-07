@@ -73,6 +73,13 @@ class CharlieRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): CharlieFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: CharlieEntity) {
 
         logger.debug("insert {}", entity)

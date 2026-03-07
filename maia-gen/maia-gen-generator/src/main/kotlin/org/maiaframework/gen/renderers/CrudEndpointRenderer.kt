@@ -29,13 +29,6 @@ class CrudEndpointRenderer(
     }
 
 
-    private val primaryKeyNameAndType = if (entityDef.hasCompositePrimaryKey) {
-        "primaryKey: ${entityDef.entityPkClassDef.uqcn}"
-    } else {
-        fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
-    }
-
-
     init {
 
         val crudServiceFqcn = this.entityDef.crudDef.crudApiDefs.customCrudServiceFqcn?.fqcn

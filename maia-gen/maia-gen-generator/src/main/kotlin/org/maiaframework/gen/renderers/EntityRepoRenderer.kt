@@ -87,6 +87,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         `render function findAllByFilterAsSequence`()
         `render finders for indexes`()
         `render existsBy functions`()
+        `render function fetchForEdit`()
         `render function insert`()
         `render function bulkInsert`()
         `render function bulkInsertOfCsvRecords`()
@@ -421,6 +422,26 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         appendLine("        return dao.existsBy${fieldNamesAnded}($fieldNames)")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render function fetchForEdit`() {
+
+        val fetchForEditDtoDef = this.entityDef.fetchForEditDtoDef
+            ?: return
+
+        addImportFor(fetchForEditDtoDef.dtoDef.fqcn)
+
+        append("""
+            |
+            |
+            |    fun fetchForEdit($primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
+            |
+            |        return this.dao.fetchForEdit($primaryKeyFieldNamesCsv)
+            |
+            |    }
+            |""".trimMargin())
 
     }
 
