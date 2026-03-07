@@ -100,6 +100,7 @@ class MaiaShowcaseSecurityConfiguration {
         authorize(regexMatcher(HttpMethod.POST, "/api/login"), permitAll)
         authorize(regexMatcher(HttpMethod.GET, "/api/search.*"), permitAll)
         authorize(regexMatcher(HttpMethod.POST, "/api/search.*"), permitAll)
+        authorize(regexMatcher(HttpMethod.POST, "/api/.*/search"), permitAll)
 
     }
 

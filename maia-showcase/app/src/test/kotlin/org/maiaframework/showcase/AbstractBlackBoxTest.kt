@@ -1,5 +1,6 @@
 package org.maiaframework.showcase
 
+import jakarta.servlet.http.Cookie
 import org.junit.jupiter.api.BeforeEach
 import org.maiaframework.domain.LifecycleState
 import org.maiaframework.domain.contact.EmailAddress
@@ -17,10 +18,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.assertj.MockMvcTester
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.web.context.WebApplicationContext
-import java.util.function.Function
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import tools.jackson.databind.json.JsonMapper
@@ -32,6 +33,7 @@ import java.time.temporal.ChronoUnit
     properties = ["debug=false"],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )
+@ActiveProfiles("test")
 @EnableAutoConfiguration
 @Testcontainers
 abstract class AbstractBlackBoxTest {
@@ -65,9 +67,9 @@ abstract class AbstractBlackBoxTest {
     @BeforeEach
     fun configureMockMvcBeforeClass() {
 
-        this.mockMvc = MockMvcTester.from(webAppContext, Function { builder: DefaultMockMvcBuilder ->
+        this.mockMvc = MockMvcTester.from(webAppContext) { builder: DefaultMockMvcBuilder ->
             builder.apply<DefaultMockMvcBuilder>(springSecurity()).build()
-        })
+        }
 
         this.defaultUser = getOrInsertDefaultCreatedByUser()
 
@@ -103,6 +105,14 @@ abstract class AbstractBlackBoxTest {
         }
 
         return user
+
+    }
+
+
+    protected fun fetchCsrfCookie(): Cookie {
+
+        val result = mockMvc.get().uri("/csrf").exchange()
+        return result.response.cookies.first { it.name == "XSRF-TOKEN" }
 
     }
 

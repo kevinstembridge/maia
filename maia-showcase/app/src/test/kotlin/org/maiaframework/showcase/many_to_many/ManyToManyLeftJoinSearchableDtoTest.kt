@@ -8,6 +8,7 @@ import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockCookie
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.Instant
@@ -112,6 +113,8 @@ class ManyToManyLeftJoinSearchableDtoTest : AbstractBlackBoxTest() {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
                 .with(user("nigel").roles("ADMIN"))
+                .cookie(MockCookie("XSRF-TOKEN", "test-csrf-token"))
+                .header("X-XSRF-TOKEN", "test-csrf-token")
                 .exchange()
         )
 

@@ -14,6 +14,7 @@ import org.maiaframework.showcase.join.BravoAgGridEntityTestBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockCookie
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.Instant
@@ -1120,13 +1121,17 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             )
         )
 
+        val csrfCookie = fetchCsrfCookie()
+
         return assertThat(
             mockMvc.post().uri(path)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
+                .header("X-XSRF-TOKEN", csrfCookie.value)
                 .with(user("nigel").roles("ADMIN"))
+                .cookie(csrfCookie)
                 .exchange()
-        )
+        ).debug()
 
     }
 

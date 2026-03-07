@@ -11,6 +11,7 @@ import org.maiaframework.showcase.party.PersonEntityTestBuilder
 import org.maiaframework.showcase.party.UserEntityTestBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockCookie
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.temporal.ChronoUnit
@@ -148,6 +149,8 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
                 .content(requestBody)
                 .characterEncoding(Charsets.UTF_8)
                 .with(user("nigel").roles("ADMIN"))
+                .cookie(MockCookie("XSRF-TOKEN", "test-csrf-token"))
+                .header("X-XSRF-TOKEN", "test-csrf-token")
                 .exchange()
         )
 
