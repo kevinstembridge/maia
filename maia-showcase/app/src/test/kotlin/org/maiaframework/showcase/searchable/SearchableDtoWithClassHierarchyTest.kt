@@ -1,6 +1,5 @@
 package org.maiaframework.showcase.searchable
 
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
@@ -10,9 +9,6 @@ import org.maiaframework.showcase.party.PartyEntity
 import org.maiaframework.showcase.party.PersonEntityTestBuilder
 import org.maiaframework.showcase.party.UserEntityTestBuilder
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType
-import org.springframework.mock.web.MockCookie
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.temporal.ChronoUnit
 
