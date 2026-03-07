@@ -101,7 +101,7 @@ class SimpleRepo(
 
     fun fetchForEdit(id: DomainId): SimpleFetchForEditDto {
 
-        return dao.fetchForEdit(id)
+        return this.dao.fetchForEdit(id)
 
     }
 
