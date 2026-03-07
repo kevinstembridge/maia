@@ -1,6 +1,7 @@
 package org.maiaframework.showcase
 
 import jakarta.servlet.http.Cookie
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.maiaframework.domain.LifecycleState
 import org.maiaframework.domain.contact.EmailAddress
@@ -17,9 +18,12 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.dao.DuplicateKeyException
+import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.assertj.MockMvcTester
+import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.web.context.WebApplicationContext
 import org.testcontainers.junit.jupiter.Container
@@ -105,6 +109,26 @@ abstract class AbstractBlackBoxTest {
         }
 
         return user
+
+    }
+
+
+    protected fun assertThat_POST(
+        path: String,
+        requestBody: String,
+    ): MvcTestResultAssert {
+
+        val csrfCookie = fetchCsrfCookie()
+
+        return assertThat(
+            mockMvc.post().uri(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("X-XSRF-TOKEN", csrfCookie.value)
+                .with(user("nigel").roles("ADMIN"))
+                .cookie(csrfCookie)
+                .exchange()
+        ).debug()
 
     }
 

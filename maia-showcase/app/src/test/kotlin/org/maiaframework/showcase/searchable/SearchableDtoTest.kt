@@ -14,7 +14,6 @@ import org.maiaframework.showcase.join.BravoEntityTestBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.mock.web.MockCookie
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.Instant
@@ -41,26 +40,11 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
     private val alphaEntity1 = AlphaEntityTestBuilder(someInt = someInt1, someString = "someAlphaValue1").build()
     private val alphaEntity2 = AlphaEntityTestBuilder(someInt = someInt2, someString = "someAlphaValue2").build()
 
-    private val bravoEntity1 = BravoEntityTestBuilder(
-        createdTimestampUtc = timestamp1,
-        alphaId = alphaEntity1.id,
-        someString = "aSomeValue1"
-    ).build()
-    private val bravoEntity2 = BravoEntityTestBuilder(
-        createdTimestampUtc = timestamp2,
-        alphaId = alphaEntity1.id,
-        someString = "aSomeValue2"
-    ).build()
-    private val bravoEntity3 = BravoEntityTestBuilder(
-        createdTimestampUtc = timestamp2,
-        alphaId = alphaEntity2.id,
-        someString = "bSomeValue3"
-    ).build()
-    private val bravoEntity4 = BravoEntityTestBuilder(
-        createdTimestampUtc = timestamp3,
-        alphaId = alphaEntity2.id,
-        someString = "bSomeValue4"
-    ).build()
+    private val bravoEntity1 = BravoEntityTestBuilder(createdTimestampUtc = timestamp1, alphaId = alphaEntity1.id, someString = "aSomeValue1").build()
+    private val bravoEntity2 = BravoEntityTestBuilder(createdTimestampUtc = timestamp2, alphaId = alphaEntity1.id, someString = "aSomeValue2").build()
+    private val bravoEntity3 = BravoEntityTestBuilder(createdTimestampUtc = timestamp2, alphaId = alphaEntity2.id, someString = "bSomeValue3").build()
+    private val bravoEntity4 = BravoEntityTestBuilder(createdTimestampUtc = timestamp3, alphaId = alphaEntity2.id, someString = "bSomeValue4").build()
+
 
     @BeforeEach
     fun beforeEach() {
@@ -84,11 +68,8 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
 
         val requestBody = asJson(mapOf<String, String>())
 
-        assertThat(
-            mockMvc.post().uri("/api/bravo/search")
-                .content(requestBody)
-                .exchange()
-        ).hasStatus(HttpStatus.FORBIDDEN)
+        assertThat_POST("/api/bravo/search", requestBody)
+            .hasStatus(HttpStatus.FORBIDDEN)
 
     }
 
@@ -107,17 +88,16 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "aSomeValue1"
                 )
             )
-        ).bodyJson()
-            .isEqualTo(
-                expectedResult(
-                    totalCount = 1,
-                    rows = listOf(Pair(bravoEntity1, alphaEntity1)),
-                    firstResultIndex = 1,
-                    lastResultIndex = 1,
-                    offset = 0,
-                    limit = 3
-                )
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 1,
+                rows = listOf(Pair(bravoEntity1, alphaEntity1)),
+                firstResultIndex = 1,
+                lastResultIndex = 1,
+                offset = 0,
+                limit = 3
             )
+        )
 
 
     }
@@ -137,20 +117,19 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "someAlphaValue1"
                 )
             )
-        ).bodyJson()
-            .isEqualTo(
-                expectedResult(
-                    totalCount = 2,
-                    rows = listOf(
-                        Pair(bravoEntity1, alphaEntity1),
-                        Pair(bravoEntity2, alphaEntity1)
-                    ),
-                    firstResultIndex = 1,
-                    lastResultIndex = 2,
-                    offset = 0,
-                    limit = 3
-                )
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    Pair(bravoEntity1, alphaEntity1),
+                    Pair(bravoEntity2, alphaEntity1)
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
             )
+        )
 
 
     }
@@ -176,20 +155,19 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to someInt1
                 ),
             )
-        ).bodyJson()
-            .isEqualTo(
-                expectedResult(
-                    totalCount = 2,
-                    rows = listOf(
-                        Pair(bravoEntity1, alphaEntity1),
-                        Pair(bravoEntity2, alphaEntity1)
-                    ),
-                    firstResultIndex = 1,
-                    lastResultIndex = 2,
-                    offset = 0,
-                    limit = 3
-                )
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    Pair(bravoEntity1, alphaEntity1),
+                    Pair(bravoEntity2, alphaEntity1)
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
             )
+        )
 
     }
 
@@ -1140,15 +1118,8 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
             )
         )
 
-        return assertThat(
-            mockMvc.post().uri(path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody)
-                .with(user("nigel").roles("ADMIN"))
-                .cookie(MockCookie("XSRF-TOKEN", "test-csrf-token"))
-                .header("X-XSRF-TOKEN", "test-csrf-token")
-                .exchange()
-        ).debug()
+        return assertThat_POST(path, requestBody)
+            .hasStatusOk()
 
     }
 
@@ -1178,7 +1149,9 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
     }
 
 
-    private fun jsonFor(pair: Pair<BravoEntity, AlphaEntity>): Map<String, Any?> {
+    private fun jsonFor(
+        pair: Pair<BravoEntity, AlphaEntity>
+    ): Map<String, Any?> {
 
         val bravoEntity = pair.first
         val alphaEntity = pair.second

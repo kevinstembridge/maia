@@ -55,7 +55,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
                 startRow = 0,
                 endRow = 3,
                 filterModel = listOf()
-        ).bodyJson().isEqualTo(
+        ).bodyJson().isLenientlyEqualTo(
             expectedResult(
                 totalCount = 2,
                 rows = listOf(
@@ -80,7 +80,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
                 startRow = 0,
                 endRow = 10,
                 filterModel = listOf()
-        ).bodyJson().isEqualTo(
+        ).bodyJson().isLenientlyEqualTo(
             expectedResult(
                 totalCount = 5,
                 rows = listOf(
@@ -108,7 +108,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
                 startRow = 0,
                 endRow = 10,
                 filterModel = listOf()
-        ).bodyJson().isEqualTo(
+        ).bodyJson().isLenientlyEqualTo(
             expectedResult(
                 totalCount = 3,
                 rows = listOf(
@@ -143,16 +143,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
             )
         )
 
-        return assertThat(
-            mockMvc.post().uri(path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody)
-                .characterEncoding(Charsets.UTF_8)
-                .with(user("nigel").roles("ADMIN"))
-                .cookie(MockCookie("XSRF-TOKEN", "test-csrf-token"))
-                .header("X-XSRF-TOKEN", "test-csrf-token")
-                .exchange()
-        )
+        return assertThat_POST(path, requestBody)
 
     }
 

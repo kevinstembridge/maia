@@ -1,5 +1,6 @@
 package org.maiaframework.showcase.searchable
 
+import jakarta.servlet.http.Cookie
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -41,10 +42,26 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     private val alphaEntity1 = AlphaAgGridEntityTestBuilder(someInt = someInt1, someString = "someAlphaValue1").build()
     private val alphaEntity2 = AlphaAgGridEntityTestBuilder(someInt = someInt2, someString = "someAlphaValue2").build()
 
-    private val bravoEntity1 = BravoAgGridEntityTestBuilder(createdTimestampUtc = timestamp1, alphaId = alphaEntity1.id, someString = "aSomeValue1").build()
-    private val bravoEntity2 = BravoAgGridEntityTestBuilder(createdTimestampUtc = timestamp2, alphaId = alphaEntity1.id, someString = "aSomeValue2").build()
-    private val bravoEntity3 = BravoAgGridEntityTestBuilder(createdTimestampUtc = timestamp2, alphaId = alphaEntity2.id, someString = "bSomeValue3").build()
-    private val bravoEntity4 = BravoAgGridEntityTestBuilder(createdTimestampUtc = timestamp3, alphaId = alphaEntity2.id, someString = "bSomeValue4").build()
+    private val bravoEntity1 = BravoAgGridEntityTestBuilder(
+        createdTimestampUtc = timestamp1,
+        alphaId = alphaEntity1.id,
+        someString = "aSomeValue1"
+    ).build()
+    private val bravoEntity2 = BravoAgGridEntityTestBuilder(
+        createdTimestampUtc = timestamp2,
+        alphaId = alphaEntity1.id,
+        someString = "aSomeValue2"
+    ).build()
+    private val bravoEntity3 = BravoAgGridEntityTestBuilder(
+        createdTimestampUtc = timestamp2,
+        alphaId = alphaEntity2.id,
+        someString = "bSomeValue3"
+    ).build()
+    private val bravoEntity4 = BravoAgGridEntityTestBuilder(
+        createdTimestampUtc = timestamp3,
+        alphaId = alphaEntity2.id,
+        someString = "bSomeValue4"
+    ).build()
 
     @BeforeEach
     fun beforeEach() {
@@ -81,15 +98,15 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun `test filter text equals`() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoStringFromBravo" to mapOf(
-                        "filterType" to "text",
-                        "type" to "equals",
-                        "filter" to "aSomeValue1"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoStringFromBravo" to mapOf(
+                    "filterType" to "text",
+                    "type" to "equals",
+                    "filter" to "aSomeValue1"
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 1,
@@ -109,15 +126,15 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun `test filter text equals on parent field`() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoStringFromAlpha" to mapOf(
-                        "filterType" to "text",
-                        "type" to "equals",
-                        "filter" to "someAlphaValue1"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoStringFromAlpha" to mapOf(
+                    "filterType" to "text",
+                    "type" to "equals",
+                    "filter" to "someAlphaValue1"
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -140,20 +157,20 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun `test filter text equals on 2 parent fields`() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoStringFromAlpha" to mapOf(
-                        "filterType" to "text",
-                        "type" to "equals",
-                        "filter" to "someAlphaValue1"
-                    ),
-                    "dtoIntFromAlpha" to mapOf(
-                        "filterType" to "number",
-                        "type" to "equals",
-                        "filter" to someInt1
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoStringFromAlpha" to mapOf(
+                    "filterType" to "text",
+                    "type" to "equals",
+                    "filter" to "someAlphaValue1"
+                ),
+                "dtoIntFromAlpha" to mapOf(
+                    "filterType" to "number",
+                    "type" to "equals",
+                    "filter" to someInt1
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -175,14 +192,14 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun `test filter text equals with sort on parent field`() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 1,
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoIntFromAlpha",
-                        "sort" to "desc"
-                    )
+            startRow = 0,
+            endRow = 1,
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoIntFromAlpha",
+                    "sort" to "desc"
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 4,
@@ -222,15 +239,15 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_text_notEqual() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoStringFromBravo" to mapOf(
-                        "filterType" to "text",
-                        "type" to "notEqual",
-                        "filter" to "aSomeValue1"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoStringFromBravo" to mapOf(
+                    "filterType" to "text",
+                    "type" to "notEqual",
+                    "filter" to "aSomeValue1"
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 3,
@@ -253,15 +270,15 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_text_notEqual_2() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoStringFromAlpha" to mapOf(
-                        "filterType" to "text",
-                        "type" to "notEqual",
-                        "filter" to "someAlphaValue1"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoStringFromAlpha" to mapOf(
+                    "filterType" to "text",
+                    "type" to "notEqual",
+                    "filter" to "someAlphaValue1"
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -283,15 +300,15 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_text_contains() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoStringFromAlpha" to mapOf(
-                        "filterType" to "text",
-                        "type" to "contains",
-                        "filter" to "AlphaValue1"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoStringFromAlpha" to mapOf(
+                    "filterType" to "text",
+                    "type" to "contains",
+                    "filter" to "AlphaValue1"
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -313,15 +330,15 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_text_notContains() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoStringFromAlpha" to mapOf(
-                        "filterType" to "text",
-                        "type" to "notContains",
-                        "filter" to "Value1"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoStringFromAlpha" to mapOf(
+                    "filterType" to "text",
+                    "type" to "notContains",
+                    "filter" to "Value1"
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -343,15 +360,15 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_text_startsWith() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoStringFromBravo" to mapOf(
-                        "filterType" to "text",
-                        "type" to "startsWith",
-                        "filter" to "aSomeValue"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoStringFromBravo" to mapOf(
+                    "filterType" to "text",
+                    "type" to "startsWith",
+                    "filter" to "aSomeValue"
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -373,15 +390,15 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_text_endsWith() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoStringFromAlpha" to mapOf(
-                        "filterType" to "text",
-                        "type" to "endsWith",
-                        "filter" to "Value1"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoStringFromAlpha" to mapOf(
+                    "filterType" to "text",
+                    "type" to "endsWith",
+                    "filter" to "Value1"
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -405,21 +422,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
         val today = DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now())
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "createdTimestampUtc" to mapOf(
-                        "filterType" to "date",
-                        "type" to "equals",
-                        "dateFrom" to today
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "createdTimestampUtc" to mapOf(
+                    "filterType" to "date",
+                    "type" to "equals",
+                    "dateFrom" to today
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -444,41 +461,41 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
         val tomorrow = DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now().plusDays(1))
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "createdTimestampUtc" to mapOf(
-                        "operator" to "OR",
-                        "condition1" to mapOf(
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "createdTimestampUtc" to mapOf(
+                    "operator" to "OR",
+                    "condition1" to mapOf(
+                        "filterType" to "date",
+                        "type" to "equals",
+                        "dateFrom" to today
+                    ),
+                    "condition2" to mapOf(
+                        "filterType" to "date",
+                        "type" to "equals",
+                        "dateFrom" to tomorrow
+                    ),
+                    "conditions" to listOf(
+                        mapOf(
                             "filterType" to "date",
                             "type" to "equals",
                             "dateFrom" to today
                         ),
-                        "condition2" to mapOf(
+                        mapOf(
                             "filterType" to "date",
                             "type" to "equals",
                             "dateFrom" to tomorrow
                         ),
-                        "conditions" to listOf(
-                            mapOf(
-                                "filterType" to "date",
-                                "type" to "equals",
-                                "dateFrom" to today
-                            ),
-                            mapOf(
-                                "filterType" to "date",
-                                "type" to "equals",
-                                "dateFrom" to tomorrow
-                            ),
-                        )
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
                     )
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 3,
@@ -503,21 +520,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
         val today = DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now())
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "createdTimestampUtc" to mapOf(
-                        "filterType" to "date",
-                        "type" to "greaterThan",
-                        "dateFrom" to today
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "createdTimestampUtc" to mapOf(
+                    "filterType" to "date",
+                    "type" to "greaterThan",
+                    "dateFrom" to today
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 1,
@@ -539,21 +556,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
         val today = DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now())
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "createdTimestampUtc" to mapOf(
-                        "filterType" to "date",
-                        "type" to "lessThan",
-                        "dateFrom" to today,
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "createdTimestampUtc" to mapOf(
+                    "filterType" to "date",
+                    "type" to "lessThan",
+                    "dateFrom" to today,
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 1,
@@ -585,22 +602,22 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             limit = 3
         )
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "createdTimestampUtc" to mapOf(
-                        "filterType" to "date",
-                        "type" to "notEqual",
-                        "dateFrom" to today,
-                        "dateTo" to null
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "createdTimestampUtc" to mapOf(
+                    "filterType" to "date",
+                    "type" to "notEqual",
+                    "dateFrom" to today,
+                    "dateTo" to null
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(expectedResult)
 
     }
@@ -613,22 +630,22 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
         val tomorrow = DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now().plusDays(1))
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "createdTimestampUtc" to mapOf(
-                        "filterType" to "date",
-                        "type" to "inRange",
-                        "dateFrom" to today,
-                        "dateTo" to tomorrow
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "createdTimestampUtc" to mapOf(
+                    "filterType" to "date",
+                    "type" to "inRange",
+                    "dateFrom" to today,
+                    "dateTo" to tomorrow
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 3,
@@ -651,21 +668,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_number_equals() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoIntFromAlpha" to mapOf(
-                        "filterType" to "number",
-                        "type" to "equals",
-                        "filter" to 2
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoIntFromAlpha" to mapOf(
+                    "filterType" to "number",
+                    "type" to "equals",
+                    "filter" to 2
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -687,41 +704,41 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_number_equals_with_multiple_and_conditions() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoIntFromAlpha" to mapOf(
-                        "operator" to "AND",
-                        "condition1" to mapOf(
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoIntFromAlpha" to mapOf(
+                    "operator" to "AND",
+                    "condition1" to mapOf(
+                        "filterType" to "number",
+                        "type" to "equals",
+                        "filter" to 1.5
+                    ),
+                    "condition2" to mapOf(
+                        "filterType" to "number",
+                        "type" to "equals",
+                        "filter" to 2.5
+                    ),
+                    "conditions" to listOf(
+                        mapOf(
                             "filterType" to "number",
                             "type" to "equals",
                             "filter" to 1.5
                         ),
-                        "condition2" to mapOf(
+                        mapOf(
                             "filterType" to "number",
                             "type" to "equals",
                             "filter" to 2.5
-                        ),
-                        "conditions" to listOf(
-                            mapOf(
-                                "filterType" to "number",
-                                "type" to "equals",
-                                "filter" to 1.5
-                            ),
-                            mapOf(
-                                "filterType" to "number",
-                                "type" to "equals",
-                                "filter" to 2.5
-                            )
                         )
                     )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 0,
@@ -784,21 +801,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_number_greaterThan() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoIntFromAlpha" to mapOf(
-                        "filterType" to "number",
-                        "type" to "greaterThan",
-                        "filter" to 1
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoIntFromAlpha" to mapOf(
+                    "filterType" to "number",
+                    "type" to "greaterThan",
+                    "filter" to 1
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -820,21 +837,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_number_greaterThanOrEqual() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoIntFromAlpha" to mapOf(
-                        "filterType" to "number",
-                        "type" to "greaterThanOrEqual",
-                        "filter" to 1.5
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoIntFromAlpha" to mapOf(
+                    "filterType" to "number",
+                    "type" to "greaterThanOrEqual",
+                    "filter" to 1.5
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -856,21 +873,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_number_lessThan() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoIntFromAlpha" to mapOf(
-                        "filterType" to "number",
-                        "type" to "lessThan",
-                        "filter" to 2
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoIntFromAlpha" to mapOf(
+                    "filterType" to "number",
+                    "type" to "lessThan",
+                    "filter" to 2
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -892,21 +909,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_number_lessThanOrEqual() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoIntFromAlpha" to mapOf(
-                        "filterType" to "number",
-                        "type" to "lessThanOrEqual",
-                        "filter" to 2.5
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoIntFromAlpha" to mapOf(
+                    "filterType" to "number",
+                    "type" to "lessThanOrEqual",
+                    "filter" to 2.5
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 4,
@@ -929,21 +946,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_number_notEqual() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoIntFromAlpha" to mapOf(
-                        "filterType" to "number",
-                        "type" to "notEqual",
-                        "filter" to 1
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoIntFromAlpha" to mapOf(
+                    "filterType" to "number",
+                    "type" to "notEqual",
+                    "filter" to 1
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 2,
@@ -965,22 +982,22 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     fun testFilter_number_inRange() {
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoIntFromAlpha" to mapOf(
-                        "filterType" to "number",
-                        "type" to "inRange",
-                        "filter" to 1,
-                        "filterTo" to 3
-                    )
-                ),
-                sortModel = listOf(
-                    mapOf(
-                        "colId" to "dtoStringFromBravo",
-                        "sort" to "asc"
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoIntFromAlpha" to mapOf(
+                    "filterType" to "number",
+                    "type" to "inRange",
+                    "filter" to 1,
+                    "filterTo" to 3
                 )
+            ),
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "dtoStringFromBravo",
+                    "sort" to "asc"
+                )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 4,
@@ -1075,21 +1092,21 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
         val today = DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now())
 
         submitSearch(
-                startRow = 0,
-                endRow = 3,
-                filterModel = mapOf(
-                    "dtoIntFromAlpha" to mapOf(
-                        "filterType" to "number",
-                        "type" to "equals",
-                        "filter" to 2 // => AlphaAgGridEntity2
-                    ),
-                    "createdTimestampUtc" to mapOf(
-                        "filterType" to "date",
-                        "type" to "equals",
-                        "dateFrom" to today, // => BravoAgGridEntity2, BravoAgGridEntity3
-                        "dateTo" to null
-                    )
+            startRow = 0,
+            endRow = 3,
+            filterModel = mapOf(
+                "dtoIntFromAlpha" to mapOf(
+                    "filterType" to "number",
+                    "type" to "equals",
+                    "filter" to 2 // => AlphaAgGridEntity2
+                ),
+                "createdTimestampUtc" to mapOf(
+                    "filterType" to "date",
+                    "type" to "equals",
+                    "dateFrom" to today, // => BravoAgGridEntity2, BravoAgGridEntity3
+                    "dateTo" to null
                 )
+            )
         ).bodyJson().isEqualTo(
             expectedResult(
                 totalCount = 1,
@@ -1121,17 +1138,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             )
         )
 
-        val csrfCookie = fetchCsrfCookie()
-
-        return assertThat(
-            mockMvc.post().uri(path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody)
-                .header("X-XSRF-TOKEN", csrfCookie.value)
-                .with(user("nigel").roles("ADMIN"))
-                .cookie(csrfCookie)
-                .exchange()
-        ).debug()
+        return assertThat_POST(path, requestBody)
 
     }
 
@@ -1147,14 +1154,16 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
 
         val expectedResultData = rows.map { jsonFor(it) }
 
-        return asJson(mapOf(
-            "totalResultCount" to totalCount,
-            "results" to expectedResultData,
-            "firstResultIndex" to firstResultIndex,
-            "lastResultIndex" to lastResultIndex,
-            "limit" to limit,
-            "offset" to offset
-        ))
+        return asJson(
+            mapOf(
+                "totalResultCount" to totalCount,
+                "results" to expectedResultData,
+                "firstResultIndex" to firstResultIndex,
+                "lastResultIndex" to lastResultIndex,
+                "limit" to limit,
+                "offset" to offset
+            )
+        )
 
     }
 

@@ -108,15 +108,7 @@ class ManyToManyLeftJoinSearchableDtoTest : AbstractBlackBoxTest() {
             )
         )
 
-        return assertThat(
-            mockMvc.post().uri(path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody)
-                .with(user("nigel").roles("ADMIN"))
-                .cookie(MockCookie("XSRF-TOKEN", "test-csrf-token"))
-                .header("X-XSRF-TOKEN", "test-csrf-token")
-                .exchange()
-        )
+        return assertThat_POST(path, requestBody)
 
     }
 
@@ -150,6 +142,7 @@ class ManyToManyLeftJoinSearchableDtoTest : AbstractBlackBoxTest() {
 
         return mapOf(
             "id" to leftEntity.id.value,
+            "rightId" to null,
             "someStringFromLeft" to leftEntity.someString,
             "someIntFromLeft" to leftEntity.someInt,
             "createdTimestampUtc" to leftEntity.createdTimestampUtc.truncatedTo(ChronoUnit.MILLIS).toString()
