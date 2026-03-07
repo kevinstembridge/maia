@@ -10,9 +10,9 @@ class AngularRoutingFilter : OncePerRequestFilter() {
 
 
     override fun doFilterInternal(
-            request: HttpServletRequest,
-            response: HttpServletResponse,
-            filterChain: FilterChain
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
     ) {
 
         val mode = request.getHeader("Sec-Fetch-Mode")
