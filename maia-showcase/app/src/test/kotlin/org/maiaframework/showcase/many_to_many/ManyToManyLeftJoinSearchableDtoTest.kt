@@ -1,16 +1,15 @@
 package org.maiaframework.showcase.many_to_many
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
-import org.springframework.test.web.servlet.ResultActionsDsl
-import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
@@ -36,14 +35,11 @@ class ManyToManyLeftJoinSearchableDtoTest : AbstractBlackBoxTest() {
     private val leftEntity3 = LeftEntityTestBuilder(someInt = someInt3, someString = "bSomeLeftValue2", createdTimestampUtc = timestamp3).build()
 
 
-
-
     @BeforeEach
     fun beforeEach() {
 
         this.manyToManyJoinDao.deleteAll()
         this.leftDao.deleteAll()
-
         this.leftDao.bulkInsert(listOf(leftEntity1, leftEntity2, leftEntity3))
 
     }
@@ -55,8 +51,11 @@ class ManyToManyLeftJoinSearchableDtoTest : AbstractBlackBoxTest() {
 
         val requestBody = asJson(mapOf<String, String>())
 
-        this.mockMvc.perform(post("/api/person_summary/aggrid_datasource").content(requestBody))
-            .andExpect(status().isForbidden)
+        assertThat(
+            mockMvc.post().uri("/api/person_summary/aggrid_datasource")
+                .content(requestBody)
+                .exchange()
+        ).hasStatus(HttpStatus.FORBIDDEN)
 
     }
 
@@ -74,20 +73,18 @@ class ManyToManyLeftJoinSearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "aSomeLeftValue1"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 1,
-                        rows = listOf(leftEntity1),
-                        firstResultIndex = 1,
-                        lastResultIndex = 1,
-                        offset = 0,
-                        limit = 3
-                    )
+        ).debug()
+            .bodyJson()
+            .isEqualTo(
+                expectedResult(
+                    totalCount = 1,
+                    rows = listOf(leftEntity1),
+                    firstResultIndex = 1,
+                    lastResultIndex = 1,
+                    offset = 0,
+                    limit = 3
                 )
-            }
-        }
+            )
 
 
     }
@@ -99,7 +96,7 @@ class ManyToManyLeftJoinSearchableDtoTest : AbstractBlackBoxTest() {
         endRow: Int,
         sortModel: List<Map<String, String>> = emptyList(),
         filterModel: Map<String, Any?> = emptyMap()
-    ): ResultActionsDsl {
+    ): MvcTestResultAssert {
 
         val requestBody = asJson(
             mapOf(
@@ -110,13 +107,13 @@ class ManyToManyLeftJoinSearchableDtoTest : AbstractBlackBoxTest() {
             )
         )
 
-        return mockMvc.post(path) {
-            content = requestBody
-            contentType = MediaType.APPLICATION_JSON
-            with(user("nigel").roles("ADMIN"))
-        }.andDo {
-            print()
-        }
+        return assertThat(
+            mockMvc.post().uri(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .with(user("nigel").roles("ADMIN"))
+                .exchange()
+        )
 
     }
 
@@ -132,14 +129,16 @@ class ManyToManyLeftJoinSearchableDtoTest : AbstractBlackBoxTest() {
 
         val expectedResultData = rows.map { jsonFor(it) }
 
-        return asJson(mapOf(
-            "totalResultCount" to totalCount,
-            "results" to expectedResultData,
-            "firstResultIndex" to firstResultIndex,
-            "lastResultIndex" to lastResultIndex,
-            "limit" to limit,
-            "offset" to offset
-        ))
+        return asJson(
+            mapOf(
+                "totalResultCount" to totalCount,
+                "results" to expectedResultData,
+                "firstResultIndex" to firstResultIndex,
+                "lastResultIndex" to lastResultIndex,
+                "limit" to limit,
+                "offset" to offset
+            )
+        )
 
     }
 

@@ -17,10 +17,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
-import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.assertj.MockMvcTester
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
+import java.util.function.Function
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import tools.jackson.databind.json.JsonMapper
@@ -53,7 +53,7 @@ abstract class AbstractBlackBoxTest {
     private lateinit var userDao: UserDao
 
 
-    protected lateinit var mockMvc: MockMvc
+    protected lateinit var mockMvc: MockMvcTester
 
 
     protected lateinit var defaultUser: UserEntity
@@ -65,9 +65,9 @@ abstract class AbstractBlackBoxTest {
     @BeforeEach
     fun configureMockMvcBeforeClass() {
 
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext)
-            .apply<DefaultMockMvcBuilder>(springSecurity())
-            .build()
+        this.mockMvc = MockMvcTester.from(webAppContext, Function { builder: DefaultMockMvcBuilder ->
+            builder.apply<DefaultMockMvcBuilder>(springSecurity()).build()
+        })
 
         this.defaultUser = getOrInsertDefaultCreatedByUser()
 

@@ -7,12 +7,10 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
-import org.springframework.test.web.servlet.ResultActionsDsl
-import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.Instant
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -76,8 +74,11 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
 
         val requestBody = asJson(mapOf<String, String>())
 
-        this.mockMvc.perform(post("/api/person_summary/aggrid_datasource").content(requestBody))
-            .andExpect(status().isForbidden)
+        assertThat(
+            mockMvc.post().uri("/api/person_summary/aggrid_datasource")
+                .content(requestBody)
+                .exchange()
+        ).hasStatus(HttpStatus.FORBIDDEN)
 
     }
 
@@ -95,24 +96,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "aSomeRightValue1"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 3,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity2 to rightEntity1,
-                            leftEntity3 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 3,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity2 to rightEntity1,
+                    leftEntity3 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
 
     }
@@ -131,24 +128,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "aSomeLeftValue1"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity2 to rightEntity1,
-                            leftEntity2 to rightEntity2,
-                            leftEntity3 to rightEntity1
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity2 to rightEntity1,
+                    leftEntity2 to rightEntity2,
+                    leftEntity3 to rightEntity1
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -166,24 +159,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "bSomeLeftValue1"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity1 to rightEntity2,
-                            leftEntity3 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity1 to rightEntity2,
+                    leftEntity3 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -201,24 +190,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "SomeLeftValue"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 6,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity1 to rightEntity2,
-                            leftEntity2 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 6,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity1 to rightEntity2,
+                    leftEntity2 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -236,23 +221,19 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "Value1"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 2,
-                        rows = listOf(
-                            leftEntity3 to rightEntity1,
-                            leftEntity3 to rightEntity2,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 2,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    leftEntity3 to rightEntity1,
+                    leftEntity3 to rightEntity2,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -270,24 +251,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "bSomeLeft"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity2 to rightEntity1,
-                            leftEntity2 to rightEntity2,
-                            leftEntity3 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity2 to rightEntity1,
+                    leftEntity2 to rightEntity2,
+                    leftEntity3 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -305,24 +282,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to "Value1"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity1 to rightEntity2,
-                            leftEntity2 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity1 to rightEntity2,
+                    leftEntity2 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -348,23 +321,19 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 2,
-                        rows = listOf(
-                            leftEntity2 to rightEntity1,
-                            leftEntity2 to rightEntity2,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 2,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    leftEntity2 to rightEntity1,
+                    leftEntity2 to rightEntity2,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -417,7 +386,7 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
             limit = 3
         )
 
-        assertThat(actualResult).isEqualTo(expectedResult)
+        actualResult.bodyJson().isEqualTo(expectedResult)
 
     }
 
@@ -443,23 +412,19 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 2,
-                        rows = listOf(
-                            leftEntity3 to rightEntity1,
-                            leftEntity3 to rightEntity2,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 2,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    leftEntity3 to rightEntity1,
+                    leftEntity3 to rightEntity2,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
+            )
+        )
 
 
     }
@@ -486,23 +451,19 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 2,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity1 to rightEntity2,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 2,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity1 to rightEntity2,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -528,24 +489,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity1 to rightEntity2,
-                            leftEntity3 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity1 to rightEntity2,
+                    leftEntity3 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -573,24 +530,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity1 to rightEntity2,
-                            leftEntity2 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity1 to rightEntity2,
+                    leftEntity2 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -614,23 +567,19 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 2,
-                        rows = listOf(
-                            leftEntity2 to rightEntity1,
-                            leftEntity2 to rightEntity2,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 2,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    leftEntity2 to rightEntity1,
+                    leftEntity2 to rightEntity2,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -663,20 +612,16 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 0,
-                        rows = emptyList(),
-                        firstResultIndex = 1,
-                        lastResultIndex = 0,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 0,
+                rows = emptyList(),
+                firstResultIndex = 1,
+                lastResultIndex = 0,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -741,24 +686,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity2 to rightEntity1,
-                            leftEntity2 to rightEntity2,
-                            leftEntity3 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity2 to rightEntity1,
+                    leftEntity2 to rightEntity2,
+                    leftEntity3 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -782,24 +723,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity2 to rightEntity1,
-                            leftEntity2 to rightEntity2,
-                            leftEntity3 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity2 to rightEntity1,
+                    leftEntity2 to rightEntity2,
+                    leftEntity3 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -823,23 +760,19 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 2,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity1 to rightEntity2,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 2,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity1 to rightEntity2,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -863,24 +796,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity1 to rightEntity2,
-                            leftEntity2 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity1 to rightEntity2,
+                    leftEntity2 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -904,24 +833,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity2 to rightEntity1,
-                            leftEntity2 to rightEntity2,
-                            leftEntity3 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity2 to rightEntity1,
+                    leftEntity2 to rightEntity2,
+                    leftEntity3 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -946,24 +871,20 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "sort" to "asc"
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 4,
-                        rows = listOf(
-                            leftEntity1 to rightEntity1,
-                            leftEntity1 to rightEntity2,
-                            leftEntity2 to rightEntity1,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 4,
+                rows = listOf(
+                    leftEntity1 to rightEntity1,
+                    leftEntity1 to rightEntity2,
+                    leftEntity2 to rightEntity1,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -975,7 +896,7 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
         val today = LocalDate.now().toString()
         val tomorrow = LocalDate.now().plusDays(1).toString()
 
-        val actualResult = submitSearch(
+        submitSearch(
             startRow = 0,
             endRow = 3,
             filterModel = mapOf(
@@ -1033,23 +954,19 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
                     "dateFrom" to today,
                 )
             )
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 2,
-                        rows = listOf(
-                            leftEntity2 to rightEntity1,
-                            leftEntity2 to rightEntity2,
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 2,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    leftEntity2 to rightEntity1,
+                    leftEntity2 to rightEntity2,
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -1060,7 +977,7 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
         endRow: Int,
         sortModel: List<Map<String, String>> = emptyList(),
         filterModel: Map<String, Any?> = emptyMap()
-    ): ResultActionsDsl {
+    ): MvcTestResultAssert {
 
         val requestBody = asJson(
             mapOf(
@@ -1071,13 +988,13 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
             )
         )
 
-        return mockMvc.post(path) {
-            content = requestBody
-            contentType = MediaType.APPLICATION_JSON
-            with(user("nigel").roles("ADMIN"))
-        }.andDo {
-            print()
-        }
+        return assertThat(
+            mockMvc.post().uri(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .with(user("nigel").roles("ADMIN"))
+                .exchange()
+        )
 
     }
 

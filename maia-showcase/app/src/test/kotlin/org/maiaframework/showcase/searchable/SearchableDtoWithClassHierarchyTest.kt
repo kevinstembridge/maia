@@ -1,5 +1,6 @@
 package org.maiaframework.showcase.searchable
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
@@ -11,8 +12,7 @@ import org.maiaframework.showcase.party.UserEntityTestBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
-import org.springframework.test.web.servlet.ResultActionsDsl
-import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.temporal.ChronoUnit
 
 class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
@@ -50,27 +50,23 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
     fun `test Org search with no filter terms`() {
 
         submitSearch(
-            path = "/api/org/search",
-            startRow = 0,
-            endRow = 3,
-            filterModel = listOf()
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 2,
-                        rows = listOf(
-                            orgEntity1,
-                            orgEntity2
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 2,
-                        offset = 0,
-                        limit = 3
-                    )
-                )
-            }
-        }
+                path = "/api/org/search",
+                startRow = 0,
+                endRow = 3,
+                filterModel = listOf()
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 2,
+                rows = listOf(
+                    orgEntity1,
+                    orgEntity2
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 2,
+                offset = 0,
+                limit = 3
+            )
+        )
 
     }
 
@@ -79,30 +75,26 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
     fun `test Person search with no filter terms`() {
 
         submitSearch(
-            path = "/api/person/search",
-            startRow = 0,
-            endRow = 10,
-            filterModel = listOf()
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 5,
-                        rows = listOf(
-                            defaultUser,
-                            personEntity1,
-                            personEntity2,
-                            userEntity1,
-                            userEntity2
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 5,
-                        offset = 0,
-                        limit = 10
-                    )
-                )
-            }
-        }
+                path = "/api/person/search",
+                startRow = 0,
+                endRow = 10,
+                filterModel = listOf()
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 5,
+                rows = listOf(
+                    defaultUser,
+                    personEntity1,
+                    personEntity2,
+                    userEntity1,
+                    userEntity2
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 5,
+                offset = 0,
+                limit = 10
+            )
+        )
 
     }
 
@@ -111,28 +103,24 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
     fun `test User search with no filter terms`() {
 
         submitSearch(
-            path = "/api/user/search",
-            startRow = 0,
-            endRow = 10,
-            filterModel = listOf()
-        ).andExpect {
-            content {
-                json(
-                    expectedResult(
-                        totalCount = 3,
-                        rows = listOf(
-                            defaultUser,
-                            userEntity1,
-                            userEntity2
-                        ),
-                        firstResultIndex = 1,
-                        lastResultIndex = 3,
-                        offset = 0,
-                        limit = 10
-                    )
-                )
-            }
-        }
+                path = "/api/user/search",
+                startRow = 0,
+                endRow = 10,
+                filterModel = listOf()
+        ).bodyJson().isEqualTo(
+            expectedResult(
+                totalCount = 3,
+                rows = listOf(
+                    defaultUser,
+                    userEntity1,
+                    userEntity2
+                ),
+                firstResultIndex = 1,
+                lastResultIndex = 3,
+                offset = 0,
+                limit = 10
+            )
+        )
 
     }
 
@@ -143,7 +131,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
         endRow: Int,
         sortModel: List<Map<String, String>> = emptyList(),
         filterModel: List<Map<String, Any?>> = emptyList()
-    ): ResultActionsDsl {
+    ): MvcTestResultAssert {
 
         val requestBody = asJson(
             mapOf(
@@ -154,14 +142,14 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
             )
         )
 
-        return mockMvc.post(path) {
-            content = requestBody
-            contentType = MediaType.APPLICATION_JSON
-            characterEncoding = "UTF-8"
-            with(user("nigel").roles("ADMIN"))
-        }.andDo {
-            print()
-        }
+        return assertThat(
+            mockMvc.post().uri(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .characterEncoding(Charsets.UTF_8)
+                .with(user("nigel").roles("ADMIN"))
+                .exchange()
+        )
 
     }
 
