@@ -39,7 +39,7 @@ export class SimpleTableComponent {
     public columnDefs: ColDef[] = [
         { field: 'someString', cellDataType: 'text', filter: true },
         { field: 'id', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', cellDataType: 'text', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created Timestamp (UTC)', cellDataType: 'text', filter: true },
         {
             field: 'edit',
             headerName: '',

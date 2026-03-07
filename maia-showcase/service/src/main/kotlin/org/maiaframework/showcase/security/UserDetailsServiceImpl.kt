@@ -35,7 +35,7 @@ class UserDetailsServiceImpl(private val passwordEncoder: PasswordEncoder) : Use
                 accountNonExpired = true,
                 credentialsNonExpired = true,
                 accountNonLocked = true,
-                grantedAuthorities = setOf(SimpleGrantedAuthority("ADMIN")).toSortedSet(Comparator.comparing { it.authority ?: "" }),
+                grantedAuthorities = setOf(SimpleGrantedAuthority("SYS__ADMIN")).toSortedSet(Comparator.comparing { it.authority ?: "" }),
                 userId = DomainId.newId(),
                 firstName = "Admin",
                 lastName = "User"
