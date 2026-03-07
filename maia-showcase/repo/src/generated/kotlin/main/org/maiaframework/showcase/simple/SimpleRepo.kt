@@ -99,6 +99,13 @@ class SimpleRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): SimpleFetchForEditDto {
+
+        return dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: SimpleEntity) {
 
         logger.debug("insert {}", entity)
