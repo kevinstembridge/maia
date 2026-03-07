@@ -204,6 +204,13 @@ class AllFieldTypesCrudService(
     }
 
 
+    fun fetchForEdit(id: DomainId): AllFieldTypesFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
     fun update(editDto: AllFieldTypesUpdateRequestDto) {
 
         val id = editDto.id

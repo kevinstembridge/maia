@@ -61,6 +61,13 @@ class CharlieAgGridCrudService(
     }
 
 
+    fun fetchForEdit(id: DomainId): CharlieAgGridFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
     fun update(editDto: CharlieAgGridUpdateRequestDto) {
 
         val id = editDto.id

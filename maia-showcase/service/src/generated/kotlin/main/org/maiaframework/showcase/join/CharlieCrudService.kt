@@ -61,6 +61,13 @@ class CharlieCrudService(
     }
 
 
+    fun fetchForEdit(id: DomainId): CharlieFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
     fun update(editDto: CharlieUpdateRequestDto) {
 
         val id = editDto.id

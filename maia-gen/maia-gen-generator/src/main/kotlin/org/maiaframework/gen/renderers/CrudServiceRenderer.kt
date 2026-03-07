@@ -101,6 +101,7 @@ class CrudServiceRenderer(
         `render create by API`()
         `render function create`()
         `render existsBy for unique indexes`()
+        `render function fetchForEdit`()
         `render update function`()
         `render inline update functions`()
         `render setFields function`()
@@ -334,6 +335,26 @@ class CrudServiceRenderer(
             |    fun $functionName($fieldNameAndTypesCsv): Boolean {
             |
             |        return this.entityRepo.$functionName(${fieldNamesCsv})
+            |
+            |    }
+            |""".trimMargin())
+
+    }
+
+
+    private fun `render function fetchForEdit`() {
+
+        val fetchForEditDtoDef = this.entityDef.fetchForEditDtoDef
+            ?: return
+
+        addImportFor(fetchForEditDtoDef.dtoDef.fqcn)
+
+        append("""
+            |
+            |
+            |    fun fetchForEdit($primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
+            |
+            |        return this.entityRepo.fetchForEdit($primaryKeyFieldNamesCsv)
             |
             |    }
             |""".trimMargin())

@@ -84,6 +84,13 @@ class UserCrudService(
     }
 
 
+    fun fetchForEdit(id: DomainId): UserFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
     fun update(editDto: UserUpdateRequestDto) {
 
         val id = editDto.id
