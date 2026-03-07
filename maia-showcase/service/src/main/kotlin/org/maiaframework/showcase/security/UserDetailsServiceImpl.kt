@@ -13,7 +13,7 @@ class UserDetailsServiceImpl(private val passwordEncoder: PasswordEncoder) : Use
 
 
     private val usersByUsername = mapOf(
-        "user" to MaiaUserDetails(
+        "user@maiaframework.org" to MaiaUserDetails(
             "user@maiaframework.org",
             this.passwordEncoder.encode("password")!!,
             enabled = true,
@@ -25,7 +25,7 @@ class UserDetailsServiceImpl(private val passwordEncoder: PasswordEncoder) : Use
             firstName = "Norman",
             lastName = "User"
         ),
-        "admin" to MaiaUserDetails(
+        "admin@maiaframework.org" to MaiaUserDetails(
             "admin@maiaframework.org",
             this.passwordEncoder.encode("password")!!,
             enabled = true,

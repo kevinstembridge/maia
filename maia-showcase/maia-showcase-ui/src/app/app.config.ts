@@ -9,17 +9,17 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {appInitializer} from '@app/_init/app.initializer';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
-import {provideHttpClient} from '@angular/common/http';
+import {HttpClient, provideHttpClient, withXsrfConfiguration} from '@angular/common/http';
 
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideBrowserGlobalErrorListeners(),
-        provideHttpClient(),
+        provideHttpClient(withXsrfConfiguration({})),
         provideZonelessChangeDetection(),
         provideRouter(routes),
         provideAppInitializer(() => {
-            const initializerFn = (appInitializer)(inject(AuthService));
+            const initializerFn = appInitializer(inject(AuthService), inject(HttpClient));
             return initializerFn();
         }),
     ],

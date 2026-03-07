@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 @Configuration
 @ComponentScan(basePackages = [
     "org.maiaframework.json",
-    "org.maiaframework.webapp.security",
+    "org.maiaframework.webapp",
     "maia_props"
 ])
 class MaiaShowcaseAppConfiguration {

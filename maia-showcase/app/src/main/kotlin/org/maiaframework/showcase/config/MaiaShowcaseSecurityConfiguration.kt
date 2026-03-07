@@ -62,9 +62,9 @@ class MaiaShowcaseSecurityConfiguration {
 
 
     @Bean
-    fun userDetailsService(): UserDetailsService {
+    fun userDetailsService(passwordEncoder: PasswordEncoder): UserDetailsService {
 
-        return UserDetailsServiceImpl(this.passwordEncoder)
+        return UserDetailsServiceImpl(passwordEncoder)
     }
 
 
@@ -72,6 +72,7 @@ class MaiaShowcaseSecurityConfiguration {
     fun authorizeHttpRequests(): AuthorizeHttpRequestsDsl.() -> Unit = {
 
         authorize(DispatcherTypeRequestMatcher(DispatcherType.FORWARD), permitAll)
+        authorize(DispatcherTypeRequestMatcher(DispatcherType.ERROR), permitAll)
         authorize(regexMatcher("/"), permitAll)
         authorize(regexMatcher("/index.html"), permitAll)
         authorize(regexMatcher("/assets/.*"), permitAll)
@@ -101,6 +102,7 @@ class MaiaShowcaseSecurityConfiguration {
         authorize(regexMatcher(HttpMethod.GET, "/api/search.*"), permitAll)
         authorize(regexMatcher(HttpMethod.POST, "/api/search.*"), permitAll)
         authorize(regexMatcher(HttpMethod.POST, "/api/.*/search"), permitAll)
+        authorize(access = authenticated)
 
     }
 
