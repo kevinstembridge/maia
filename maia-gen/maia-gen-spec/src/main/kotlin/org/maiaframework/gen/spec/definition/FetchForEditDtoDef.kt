@@ -41,4 +41,7 @@ class FetchForEditDtoDef(
         entityFieldDefs.map { RowMapperFieldDef(it, it.nullability, it.classFieldName.value) }
 
 
+    val endpointUrl = "/api/${entityBaseName.toSnakeCase()}/fetch_for_edit"
+
+
 }

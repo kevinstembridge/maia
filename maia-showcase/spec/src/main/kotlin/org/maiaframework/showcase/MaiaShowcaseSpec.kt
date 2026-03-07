@@ -391,7 +391,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         columnFromDto("someString")
         columnFromDto("id")
-        columnFromDto("createdTimestampUtc") { header("Created At (UTC)") }
+        columnFromDto("createdTimestampUtc") { header("Created Timestamp (UTC)") }
         editActionColumn()
         deleteActionColumn()
     }

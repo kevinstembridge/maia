@@ -19,12 +19,31 @@ class CrudEndpointRenderer(
     private val entityDef: EntityDef = entityCrudApiDef.entityDef
 
 
+    private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
+
+
+    private val primaryKeyFieldNames = if (entityDef.hasCompositePrimaryKey) {
+        "primaryKey"
+    } else {
+        fieldNamesCsv(this.entityDef.primaryKeyClassFields)
+    }
+
+
+    private val primaryKeyNameAndType = if (entityDef.hasCompositePrimaryKey) {
+        "primaryKey: ${entityDef.entityPkClassDef.uqcn}"
+    } else {
+        fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
+    }
+
+
     init {
 
         val crudServiceFqcn = this.entityDef.crudDef.crudApiDefs.customCrudServiceFqcn?.fqcn
             ?: this.entityDef.crudServiceClassDef.fqcn
 
         addConstructorArg(aClassField("crudService", crudServiceFqcn).build())
+
+        this.entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType) }
 
     }
 
@@ -33,6 +52,7 @@ class CrudEndpointRenderer(
 
         `render function create`()
         `render existsBy for unique indexes`()
+        `render function fetchForEdit`()
         `render function update`()
         `render inline endpoints`()
         `render function delete`()
@@ -62,6 +82,37 @@ class CrudEndpointRenderer(
         appendLine("        this.crudService.create(createDto)")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render function fetchForEdit`() {
+
+        val fetchForEditDtoDef = this.entityDef.fetchForEditDtoDef
+            ?: return
+
+        addImportFor(fetchForEditDtoDef.dtoDef.fqcn)
+        addImportFor(Fqcns.SPRING_GET_MAPPING)
+        addImportFor(Fqcns.SPRING_PATH_VARIABLE)
+
+        val urlSuffix = if (entityDef.hasSurrogatePrimaryKey) {
+            "/{id}"
+        } else {
+            ""
+        }
+
+        append("""
+            |
+            |
+            |    @GetMapping("${fetchForEditDtoDef.endpointUrl}$urlSuffix", produces = [MediaType.APPLICATION_JSON_VALUE])
+            |    fun fetchForEdit(@PathVariable $primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
+            |
+            |        return this.crudService.fetchForEdit($primaryKeyFieldNames)
+            |
+            |    }
+            |""".trimMargin())
+
+
 
     }
 

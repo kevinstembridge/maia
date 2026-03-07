@@ -64,13 +64,6 @@ class SimpleCrudService(
     }
 
 
-    fun fetchForEdit(id: DomainId): SimpleFetchForEditDto {
-
-        return this.entityRepo.fetchForEdit(id)
-
-    }
-
-
     fun update(editDto: SimpleUpdateRequestDto) {
 
         val id = editDto.id

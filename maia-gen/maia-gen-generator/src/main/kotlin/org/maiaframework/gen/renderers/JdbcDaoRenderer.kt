@@ -1784,7 +1784,6 @@ class JdbcDaoRenderer(
                 val foreignKeyEntity = foreignKeyFieldDef.foreignEntityDef
                 val foreignTableIsReferencedMoreThanOnce = (foreignKeyTableCount[foreignKeyEntity.schemaAndTableName] ?: 0) > 1
 
-
                 val tableOrAlias = if (foreignTableIsReferencedMoreThanOnce) {
                     "${foreignKeyFieldDef.foreignKeyFieldName.toSnakeCase()}_${foreignKeyEntity.tableName}"
                 } else {
