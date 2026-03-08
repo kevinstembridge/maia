@@ -1,3 +1,4 @@
+import java.net.URLClassLoader
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -7,6 +8,7 @@ plugins {
 
 
 val maiagen by configurations.creating
+val flyway by configurations.creating
 
 
 dependencies {
@@ -33,6 +35,10 @@ dependencies {
 
     maiagen(project(":maia-gen:maia-gen-generator"))
     maiagen(project(":maia-showcase:spec"))
+
+    flyway("org.flywaydb:flyway-core:11.14.1")
+    flyway("org.flywaydb:flyway-database-postgresql:11.14.1")
+    flyway("org.postgresql:postgresql:42.7.9")
 
 }
 
@@ -68,6 +74,41 @@ tasks.register<JavaExec>("maiaGeneration") {
 
 }
 
+
+
+tasks.register("flywayRepair") {
+
+    description = "Runs Flyway repair against the local database"
+    group = "flyway"
+
+    val flywayFiles = configurations["flyway"].files
+    val migrationDirs = sourceSets.main.get().resources.srcDirs
+
+    doLast {
+        val urls = flywayFiles.map { it.toURI().toURL() } +
+                migrationDirs.filter { it.exists() }.map { it.toURI().toURL() }
+
+        val classLoader = URLClassLoader(urls.toTypedArray(), Thread.currentThread().contextClassLoader)
+
+        val flywayClass = classLoader.loadClass("org.flywaydb.core.Flyway")
+        val configureMethod = flywayClass.getMethod("configure", ClassLoader::class.java)
+        val fluentConfig = configureMethod.invoke(null, classLoader)
+
+        val fluentClass = fluentConfig.javaClass
+        fluentClass.getMethod("dataSource", String::class.java, String::class.java, String::class.java)
+            .invoke(fluentConfig, "jdbc:postgresql://localhost:5433/maia_db", "maia_owner", "maia_owner_password")
+        fluentClass.getMethod("defaultSchema", String::class.java)
+            .invoke(fluentConfig, "maia")
+        fluentClass.getMethod("locations", Array<String>::class.java)
+            .invoke(fluentConfig, arrayOf("classpath:db/migration"))
+
+        val flyway = fluentClass.getMethod("load").invoke(fluentConfig)
+        flyway.javaClass.getMethod("repair").invoke(flyway)
+
+        logger.lifecycle("Flyway repair completed successfully")
+    }
+
+}
 
 
 tasks.withType<KotlinCompile>() {
