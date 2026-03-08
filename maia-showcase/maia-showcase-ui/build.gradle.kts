@@ -50,7 +50,7 @@ tasks.register<NpxTask>("buildAngularApp") {
     inputs.files("package.json", "package-lock.json", "angular.json", "tsconfig.json", "tsconfig.app.json")
     inputs.dir("src")
     inputs.dir(fileTree("node_modules").exclude(".cache"))
-    outputs.dir("../la-app/src/main/resources/static/browser")
+    outputs.dir("../app/src/main/resources/static")
 }
 
 
