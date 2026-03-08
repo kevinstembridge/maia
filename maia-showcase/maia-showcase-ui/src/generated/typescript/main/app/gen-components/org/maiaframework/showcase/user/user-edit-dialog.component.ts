@@ -67,7 +67,6 @@ export class UserEditDialogComponent implements OnInit {
         this.formGroup = new FormGroup(
             {
                 encryptedPassword: new FormControl({value: '', disabled: true}),
-                someStrings: new FormControl({value: '', disabled: true}),
                 firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 emailAddress: new FormControl({value: '', disabled: true}),
@@ -87,7 +86,6 @@ export class UserEditDialogComponent implements OnInit {
             next: (dto: UserFetchForEditDto) => {
                 this.formGroup.patchValue({
                     encryptedPassword: dto.encryptedPassword,
-                    someStrings: dto.someStrings,
                     firstName: dto.firstName,
                     lastName: dto.lastName,
                     emailAddress: dto.emailAddress,

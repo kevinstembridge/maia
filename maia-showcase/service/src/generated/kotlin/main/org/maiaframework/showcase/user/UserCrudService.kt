@@ -44,7 +44,6 @@ class UserCrudService(
         val encryptedPassword: String = createDto.encryptedPassword
         val firstName: FirstName? = createDto.firstName
         val lastName: LastName = createDto.lastName
-        val someStrings: List<String> = createDto.someStrings
         val id = DomainId.newId()
         val createdTimestampUtc = Instant.now()
         val lastModifiedTimestampUtc = createdTimestampUtc
@@ -61,7 +60,6 @@ class UserCrudService(
             lastModifiedTimestampUtc,
             lastName,
             lifecycleState,
-            someStrings,
             version
         )
 

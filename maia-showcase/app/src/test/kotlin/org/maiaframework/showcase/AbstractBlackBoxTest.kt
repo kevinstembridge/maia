@@ -8,6 +8,7 @@ import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.showcase.testing.fixtures.Fixtures
 import org.maiaframework.showcase.user.UserDao
 import org.maiaframework.showcase.user.UserEntity
 import org.maiaframework.showcase.user.UserEntityMeta
@@ -59,6 +60,10 @@ abstract class AbstractBlackBoxTest {
     private lateinit var userDao: UserDao
 
 
+    @Autowired
+    protected lateinit var fixtures: Fixtures
+
+
     protected lateinit var mockMvc: MockMvcTester
 
 
@@ -98,7 +103,6 @@ abstract class AbstractBlackBoxTest {
             Instant.now(),
             LastName("Nigelson"),
             LifecycleState.ACTIVE,
-            emptyList(),
             version = 1L
         )
 

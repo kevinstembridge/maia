@@ -117,7 +117,6 @@ class PartyDao(
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
-                some_strings,
                 version
             ) values (
                 :typeDiscriminator,
@@ -129,7 +128,6 @@ class PartyDao(
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
-                :someStrings,
                 :version
             )
             """.trimIndent(),
@@ -144,7 +142,6 @@ class PartyDao(
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
-                addListOfStrings("someStrings", entity.someStrings)
                 addValue("version", entity.version)
             }
         )
@@ -348,7 +345,6 @@ class PartyDao(
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
-        val someStrings = entity.someStrings
 
         return UserHistoryEntity(
                 changeType,
@@ -361,7 +357,6 @@ class PartyDao(
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
-                someStrings,
                 version)
 
     }

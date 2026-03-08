@@ -22,7 +22,6 @@ class UserEntity(
     lastModifiedTimestampUtc: Instant,
     lastName: LastName,
     lifecycleState: LifecycleState,
-    val someStrings: List<String>,
     version: Long
 ) : PersonEntity(
     createdTimestampUtc,
@@ -49,7 +48,6 @@ class UserEntity(
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
-                "someStrings = '" + this.someStrings + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
 
@@ -70,8 +68,7 @@ class UserEntity(
             emailAddress: EmailAddress,
             encryptedPassword: String,
             firstName: FirstName?,
-            lastName: LastName,
-            someStrings: List<String>
+            lastName: LastName
         ): UserEntity {
 
             val createdTimestampUtc = Instant.now()
@@ -90,7 +87,6 @@ class UserEntity(
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
-                someStrings,
                 version
             )
 

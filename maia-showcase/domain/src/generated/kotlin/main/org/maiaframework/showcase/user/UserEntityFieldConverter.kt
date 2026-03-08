@@ -39,8 +39,6 @@ class UserEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as LastName).value
             "lifecycle_state" -> // lifecycleState
                 return (inputValue as LifecycleState).name
-            "some_strings" -> // someStrings
-                return inputValue
             "version" -> // version
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")

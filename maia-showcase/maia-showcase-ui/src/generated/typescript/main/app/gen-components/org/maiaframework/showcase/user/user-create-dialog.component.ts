@@ -58,7 +58,6 @@ export class UserCreateDialogComponent implements OnInit {
         this.formGroup = new FormGroup(
             {
                 encryptedPassword: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                someStrings: new FormControl('', { updateOn: 'change' }),
                 firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 emailAddress: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(500)], asyncValidators: [this.userEmailAddressAsyncValidator.validate.bind(this.userEmailAddressAsyncValidator)] }),
@@ -85,7 +84,6 @@ export class UserCreateDialogComponent implements OnInit {
             emailAddress: this.formGroup.getRawValue().emailAddress,
             encryptedPassword: this.formGroup.getRawValue().encryptedPassword,
             lastName: this.formGroup.getRawValue().lastName,
-            someStrings: this.formGroup.getRawValue().someStrings,
             firstName: this.formGroup.getRawValue().firstName,
         } as UserCreateRequestDto;
 

@@ -126,14 +126,6 @@ class UserHistoryEntityFilters {
         }
 
 
-    val someStrings: ListFieldFilter<String> 
-        get() {
-
-            return ListFieldFilter("some_strings")
-
-        }
-
-
     val version: FieldFilter<Long> 
         get() {
 
@@ -265,19 +257,6 @@ class UserHistoryEntityFilters {
     }
 
 
-    class ListFieldFilter<T>(private val databaseColumnName: String) { 
-
-
-        infix fun contains(value: T): UserHistoryEntityFilter {
-
-            return ListFieldContainsFilter(this.databaseColumnName, value)
-
-        }
-
-
-    }
-
-
     class NoopFilter : UserHistoryEntityFilter {
 
 
@@ -401,52 +380,6 @@ class UserHistoryEntityFilters {
         override fun populateSqlParams(sqlParams: SqlParams) {
 
             this.filters.forEach { it.populateSqlParams(sqlParams) }
-
-        }
-
-
-    }
-
-
-    private class JsonListFieldContainsFilter<VALUE>(
-        private val databaseColumnName: String,
-        private val value: VALUE
-    ): UserHistoryEntityFilter {
-
-
-        override fun whereClause(fieldConverter: UserHistoryEntityFieldConverter): String {
-
-            return "jsonb_path_exists($databaseColumnName, '$ ? (@ == \"$value\")')"
-
-        }
-
-
-        override fun populateSqlParams(sqlParams: SqlParams) {
-
-            // do nothing
-
-        }
-
-
-    }
-
-
-    private class ListFieldContainsFilter<VALUE>(
-        private val databaseColumnName: String,
-        private val value: VALUE
-    ): UserHistoryEntityFilter {
-
-
-        override fun whereClause(fieldConverter: UserHistoryEntityFieldConverter): String {
-
-            return "'$value' = ANY($databaseColumnName)"
-
-        }
-
-
-        override fun populateSqlParams(sqlParams: SqlParams) {
-
-            // do nothing
 
         }
 

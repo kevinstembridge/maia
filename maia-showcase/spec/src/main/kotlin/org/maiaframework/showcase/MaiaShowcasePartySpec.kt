@@ -192,7 +192,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
             masked()
             lengthConstraint(max = 100)
         }
-        field("someStrings", fieldListOf(FieldTypes.string))
         crud {
             apis(defaultAuthority = adminAuthority) {
                 create()

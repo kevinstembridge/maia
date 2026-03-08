@@ -30,8 +30,6 @@ object UserEntityMeta {
 
     const val lifecycleState = "lifecycle_state"
 
-    const val someStrings = "some_strings"
-
     const val version = "version"
 
     val ENTITY_KEY = EntityKey("User")
@@ -66,7 +64,6 @@ object UserEntityMeta {
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "lastName" -> "last_name"
             "lifecycleState" -> "lifecycle_state"
-            "someStrings" -> "some_strings"
             "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")

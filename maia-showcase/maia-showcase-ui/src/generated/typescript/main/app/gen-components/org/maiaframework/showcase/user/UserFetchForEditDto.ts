@@ -14,7 +14,6 @@ export interface UserFetchForEditDto {
     lastModifiedTimestampUtc: string;
     lastName: string;
     lifecycleState: LifecycleState;
-    someStrings: ReadonlyArray<string>;
     version: number;
 }
 

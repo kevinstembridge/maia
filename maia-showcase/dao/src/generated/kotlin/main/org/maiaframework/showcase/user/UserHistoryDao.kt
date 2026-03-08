@@ -41,7 +41,6 @@ class UserHistoryDao(
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
-                some_strings,
                 version
             ) values (
                 'USR',
@@ -54,7 +53,6 @@ class UserHistoryDao(
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
-                :someStrings,
                 :version
             )
             """.trimIndent(),
@@ -69,7 +67,6 @@ class UserHistoryDao(
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
-                addListOfStrings("someStrings", entity.someStrings)
                 addValue("version", entity.version)
             }
         )
@@ -92,7 +89,6 @@ class UserHistoryDao(
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
-                some_strings,
                 version
             ) values (
                 'USR',
@@ -105,7 +101,6 @@ class UserHistoryDao(
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
-                :someStrings,
                 :version
             )
             """.trimIndent(),
@@ -121,7 +116,6 @@ class UserHistoryDao(
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)
-                    addListOfStrings("someStrings", entity.someStrings)
                     addValue("version", entity.version)
                 }
             }

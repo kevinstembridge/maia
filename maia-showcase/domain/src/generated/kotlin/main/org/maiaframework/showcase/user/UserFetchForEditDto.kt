@@ -21,7 +21,6 @@ data class UserFetchForEditDto(
     val lastModifiedTimestampUtc: Instant,
     val lastName: LastName,
     val lifecycleState: LifecycleState,
-    val someStrings: List<String>,
     val version: Long
 ) {
 
@@ -38,7 +37,6 @@ data class UserFetchForEditDto(
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
-                "someStrings = '" + this.someStrings + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}";
 

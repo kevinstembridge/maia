@@ -72,7 +72,6 @@ class PartyEntityRowMapper : MaiaRowMapper<PartyEntity> {
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
-        val someStrings = rsa.readListOfStrings("some_strings")
         val version = rsa.readLong("version")
 
         return UserEntity(
@@ -85,7 +84,6 @@ class PartyEntityRowMapper : MaiaRowMapper<PartyEntity> {
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
-                someStrings,
                 version
         )
 

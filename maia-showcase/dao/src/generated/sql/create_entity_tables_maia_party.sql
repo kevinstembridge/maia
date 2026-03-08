@@ -14,7 +14,6 @@ CREATE TABLE maia.party (
     last_name text NULL,
     lifecycle_state text NOT NULL,
     org_name text NULL,
-    some_strings text[] NULL,
     version bigint NOT NULL,
     PRIMARY KEY(id)
 );
@@ -34,7 +33,6 @@ CREATE TABLE maia.party_history (
     last_name text NULL,
     lifecycle_state text NOT NULL,
     org_name text NULL,
-    some_strings text[] NULL,
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );

@@ -26,7 +26,6 @@ class UserFetchForEditDtoRowMapper : MaiaRowMapper<UserFetchForEditDto> {
             rsa.readInstant("lastModifiedTimestampUtc"),
             rsa.readString("lastName") { LastName(it) },
             rsa.readEnum("lifecycleState", LifecycleState::class.java),
-            rsa.readListOfStrings("someStrings"),
             rsa.readLong("version"),
         )
 

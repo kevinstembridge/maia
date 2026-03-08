@@ -7,5 +7,4 @@ export interface UserCreateRequestDto {
     encryptedPassword: string;
     firstName?: string;
     lastName: string;
-    someStrings: ReadonlyArray<string>;
 }

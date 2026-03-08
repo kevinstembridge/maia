@@ -32,6 +32,7 @@ dependencies {
     testImplementation(project(":libs:maia-jdbc"))
     testImplementation(project(":libs:maia-testing:maia-testing-domain"))
     testImplementation(project(":libs:maia-testing:maia-testing-postgresql"))
+    testImplementation(project(":libs:maia-web-testing"))
     testImplementation(project(":maia-showcase:dao"))
     testImplementation(project(":maia-showcase:domain"))
 

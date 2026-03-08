@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
@@ -33,10 +32,7 @@ class UserCreateRequestDto
     @param:NotBlank 
     @param:Length(max = 100) 
     @param:JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) 
-    private val lastName_raw: String?,
-    @param:NotNull 
-    @param:JsonProperty("someStrings", access = JsonProperty.Access.READ_WRITE) 
-    private val someStrings_raw: List<String>?
+    private val lastName_raw: String?
 ) {
 
 
@@ -56,11 +52,6 @@ class UserCreateRequestDto
 
 
     @get:JsonIgnore
-    val someStrings
-        get() = someStrings_raw!!
-
-
-    @get:JsonIgnore
     val firstName = firstName?.let { FirstName(it) }
 
 
@@ -70,7 +61,6 @@ class UserCreateRequestDto
                 "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
-                "someStrings = '" + this.someStrings + '\'' + ", " + 
                 "firstName = '" + this.firstName + '\'' +
                 "}"
 

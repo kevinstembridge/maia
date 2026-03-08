@@ -53,7 +53,6 @@ class PersonHistoryDao(
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
-                some_strings,
                 version
             ) values (
                 :typeDiscriminator,
@@ -66,7 +65,6 @@ class PersonHistoryDao(
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
-                :someStrings,
                 :version
             )
             """.trimIndent(),
@@ -82,7 +80,6 @@ class PersonHistoryDao(
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
-                addListOfStrings("someStrings", entity.someStrings)
                 addValue("version", entity.version)
             }
         )

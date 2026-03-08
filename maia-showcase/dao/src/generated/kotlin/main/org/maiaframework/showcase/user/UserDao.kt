@@ -54,7 +54,6 @@ class UserDao(
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
-                some_strings,
                 version
             ) values (
                 'USR',
@@ -66,7 +65,6 @@ class UserDao(
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
-                :someStrings,
                 :version
             )
             """.trimIndent(),
@@ -80,7 +78,6 @@ class UserDao(
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
-                addListOfStrings("someStrings", entity.someStrings)
                 addValue("version", entity.version)
             }
         )
@@ -104,7 +101,6 @@ class UserDao(
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
-                some_strings,
                 version
             ) values (
                 'USR',
@@ -116,7 +112,6 @@ class UserDao(
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
-                :someStrings,
                 :version
             )
             """.trimIndent(),
@@ -131,7 +126,6 @@ class UserDao(
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)
-                    addListOfStrings("someStrings", entity.someStrings)
                     addValue("version", entity.version)
                 }
             }
@@ -179,7 +173,6 @@ class UserDao(
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
-        val someStrings = entity.someStrings
 
         return UserHistoryEntity(
                 changeType,
@@ -192,7 +185,6 @@ class UserDao(
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
-                someStrings,
                 version)
 
     }
@@ -422,7 +414,6 @@ class UserDao(
                 v_party.last_modified_timestamp_utc as lastModifiedTimestampUtc,
                 v_party.last_name as lastName,
                 v_party.lifecycle_state as lifecycleState,
-                v_party.some_strings as someStrings,
                 v_party.version as version
             from maia.v_party
             where v_party.id = :id
@@ -452,7 +443,6 @@ class UserDao(
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
-                some_strings,
                 version
             ) values (
                 'USR',
@@ -465,7 +455,6 @@ class UserDao(
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
-                :someStrings,
                 :version
             )
             on conflict (email_address, type_discriminator)
@@ -488,7 +477,6 @@ class UserDao(
             addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
             addValue("lastName", upsertEntity.lastName)
             addValue("lifecycleState", upsertEntity.lifecycleState)
-            addListOfStrings("someStrings", upsertEntity.someStrings)
             addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->

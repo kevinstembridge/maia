@@ -24,7 +24,6 @@ class UserHistoryEntity(
     lastModifiedTimestampUtc: Instant,
     lastName: LastName,
     lifecycleState: LifecycleState,
-    val someStrings: List<String>,
     version: Long
 ) : PersonHistoryEntity(
     changeType,
@@ -53,7 +52,6 @@ class UserHistoryEntity(
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
-                "someStrings = '" + this.someStrings + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
 
