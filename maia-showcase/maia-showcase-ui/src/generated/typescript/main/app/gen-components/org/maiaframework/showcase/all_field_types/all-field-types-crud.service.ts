@@ -4,6 +4,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {AllFieldTypesCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesCreateRequestDto';
+import {AllFieldTypesFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesFetchForEditDto';
 import {AllFieldTypesSomeIntTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeIntTypeRequestDto';
 import {AllFieldTypesSomeLongTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeLongTypeRequestDto';
 import {AllFieldTypesSomeStringNullableRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringNullableRequestDto';
@@ -78,6 +79,13 @@ export class AllFieldTypesCrudService {
                 '/api/all_field_types/update',
                 dto,
                 this.httpOptions);
+
+    }
+
+
+    public fetchForEdit(id: string): Observable<AllFieldTypesFetchForEditDto> {
+
+        return this.http.get<AllFieldTypesFetchForEditDto>('/api/all_field_types/fetch_for_edit/' + id, this.httpOptions);
 
     }
 

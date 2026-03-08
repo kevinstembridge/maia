@@ -9,6 +9,8 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {AllFieldTypesFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesFetchForEditDto';
 import {AllFieldTypesSomeIntTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeIntTypeAsyncValidator';
 import {AllFieldTypesSomeLongTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeLongTypeAsyncValidator';
 import {AllFieldTypesSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringAsyncValidator';
@@ -33,6 +35,7 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatFormFieldModule,
         MatInputModule,
         MatOptionModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
     selector: 'app-all-field-types-edit-dialog',
@@ -45,6 +48,9 @@ export class AllFieldTypesEditDialogComponent implements OnInit {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
+    loading = signal(true);
+
+
     formGroup: FormGroup;
 
 
@@ -54,7 +60,7 @@ export class AllFieldTypesEditDialogComponent implements OnInit {
     private readonly formService = inject(AllFieldTypesCrudService);
 
 
-    private readonly dto = inject<any>(MAT_DIALOG_DATA);
+    private readonly entityId = inject<string>(MAT_DIALOG_DATA);
 
 
     private readonly allFieldTypesSomeIntTypeAsyncValidator = inject(AllFieldTypesSomeIntTypeAsyncValidator);
@@ -76,54 +82,54 @@ export class AllFieldTypesEditDialogComponent implements OnInit {
 
         this.formGroup = new FormGroup(
             {
-                someBoolean: new FormControl({value: this.dto.someBoolean, disabled: true}),
-                someBooleanNullable: new FormControl({value: this.dto.someBooleanNullable, disabled: true}),
-                someBooleanType: new FormControl({value: this.dto.someBooleanType, disabled: true}),
-                someBooleanTypeNullable: new FormControl({value: this.dto.someBooleanTypeNullable, disabled: true}),
-                someBooleanTypeProvided: new FormControl({value: this.dto.someBooleanTypeProvided, disabled: true}),
-                someBooleanTypeProvidedNullable: new FormControl({value: this.dto.someBooleanTypeProvidedNullable, disabled: true}),
-                someInstant: new FormControl({value: this.dto.someInstant, disabled: true}),
-                someInstantNullable: new FormControl({value: this.dto.someInstantNullable, disabled: true}),
-                someInstantModifiable: new FormControl(this.dto.someInstantModifiable, { updateOn: 'change' }),
-                someInstantModifiableNullable: new FormControl(this.dto.someInstantModifiableNullable, { updateOn: 'change' }),
-                someInt: new FormControl({value: this.dto.someInt, disabled: true}),
-                someIntModifiable: new FormControl(this.dto.someIntModifiable, { updateOn: 'change' }),
-                someIntNullable: new FormControl(this.dto.someIntNullable, { updateOn: 'change' }),
-                someIntType: new FormControl({value: this.dto.someIntType, disabled: true}),
-                someIntTypeNullable: new FormControl({value: this.dto.someIntTypeNullable, disabled: true}),
-                someIntTypeProvided: new FormControl({value: this.dto.someIntTypeProvided, disabled: true}),
-                someIntTypeProvidedNullable: new FormControl({value: this.dto.someIntTypeProvidedNullable, disabled: true}),
-                someLongType: new FormControl({value: this.dto.someLongType, disabled: true}),
-                someLongTypeNullable: new FormControl({value: this.dto.someLongTypeNullable, disabled: true}),
-                someLongTypeProvided: new FormControl({value: this.dto.someLongTypeProvided, disabled: true}),
-                someLongTypeProvidedNullable: new FormControl({value: this.dto.someLongTypeProvidedNullable, disabled: true}),
-                someLocalDateModifiable: new FormControl(this.dto.someLocalDateModifiable, { updateOn: 'change' }),
-                somePeriodModifiable: new FormControl(this.dto.somePeriodModifiable, { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                somePeriodNullable: new FormControl({value: this.dto.somePeriodNullable, disabled: true}),
-                someEnum: new FormControl({value: this.dto.someEnum, disabled: true}),
-                someEnumNullable: new FormControl({value: this.dto.someEnumNullable, disabled: true}),
-                someString: new FormControl({value: this.dto.someString, disabled: true}),
-                someStringModifiable: new FormControl(this.dto.someStringModifiable, { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                someStringNullable: new FormControl({value: this.dto.someStringNullable, disabled: true}),
-                someStringType: new FormControl({value: this.dto.someStringType, disabled: true}),
-                someStringTypeNullable: new FormControl({value: this.dto.someStringTypeNullable, disabled: true}),
-                someProvidedStringType: new FormControl({value: this.dto.someProvidedStringType, disabled: true}),
-                someProvidedStringTypeNullable: new FormControl({value: this.dto.someProvidedStringTypeNullable, disabled: true}),
-                someListOfEnums: new FormControl({value: this.dto.someListOfEnums, disabled: true}),
-                someListOfInstants: new FormControl({value: this.dto.someListOfInstants, disabled: true}),
-                someListOfLocalDates: new FormControl({value: this.dto.someListOfLocalDates, disabled: true}),
-                someListOfPeriods: new FormControl({value: this.dto.someListOfPeriods, disabled: true}),
-                someListOfStrings: new FormControl(this.dto.someListOfStrings, { updateOn: 'change' }),
-                someListOfStringTypes: new FormControl({value: this.dto.someListOfStringTypes, disabled: true}),
-                someMapOfStringToInteger: new FormControl({value: this.dto.someMapOfStringToInteger, disabled: true}),
-                someMapOfStringTypeToStringType: new FormControl({value: this.dto.someMapOfStringTypeToStringType, disabled: true}),
-                someDto: new FormControl({value: this.dto.someDto, disabled: true}),
-                someDtoNullable: new FormControl({value: this.dto.someDtoNullable, disabled: true}),
-                createdByUsername: new FormControl({value: this.dto.createdByUsername, disabled: true}),
-                lastModifiedByUsername: new FormControl({value: this.dto.lastModifiedByUsername, disabled: true}),
-                id: new FormControl({value: this.dto.id, disabled: true}),
-                createdById: new FormControl({value: this.dto.createdById, disabled: true}),
-                lastModifiedById: new FormControl({value: this.dto.lastModifiedById, disabled: true}),
+                someBoolean: new FormControl({value: '', disabled: true}),
+                someBooleanNullable: new FormControl({value: '', disabled: true}),
+                someBooleanType: new FormControl({value: '', disabled: true}),
+                someBooleanTypeNullable: new FormControl({value: '', disabled: true}),
+                someBooleanTypeProvided: new FormControl({value: '', disabled: true}),
+                someBooleanTypeProvidedNullable: new FormControl({value: '', disabled: true}),
+                someInstant: new FormControl({value: '', disabled: true}),
+                someInstantNullable: new FormControl({value: '', disabled: true}),
+                someInstantModifiable: new FormControl('', { updateOn: 'change' }),
+                someInstantModifiableNullable: new FormControl('', { updateOn: 'change' }),
+                someInt: new FormControl({value: '', disabled: true}),
+                someIntModifiable: new FormControl('', { updateOn: 'change' }),
+                someIntNullable: new FormControl('', { updateOn: 'change' }),
+                someIntType: new FormControl({value: '', disabled: true}),
+                someIntTypeNullable: new FormControl({value: '', disabled: true}),
+                someIntTypeProvided: new FormControl({value: '', disabled: true}),
+                someIntTypeProvidedNullable: new FormControl({value: '', disabled: true}),
+                someLongType: new FormControl({value: '', disabled: true}),
+                someLongTypeNullable: new FormControl({value: '', disabled: true}),
+                someLongTypeProvided: new FormControl({value: '', disabled: true}),
+                someLongTypeProvidedNullable: new FormControl({value: '', disabled: true}),
+                someLocalDateModifiable: new FormControl('', { updateOn: 'change' }),
+                somePeriodModifiable: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+                somePeriodNullable: new FormControl({value: '', disabled: true}),
+                someEnum: new FormControl({value: '', disabled: true}),
+                someEnumNullable: new FormControl({value: '', disabled: true}),
+                someString: new FormControl({value: '', disabled: true}),
+                someStringModifiable: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+                someStringNullable: new FormControl({value: '', disabled: true}),
+                someStringType: new FormControl({value: '', disabled: true}),
+                someStringTypeNullable: new FormControl({value: '', disabled: true}),
+                someProvidedStringType: new FormControl({value: '', disabled: true}),
+                someProvidedStringTypeNullable: new FormControl({value: '', disabled: true}),
+                someListOfEnums: new FormControl({value: '', disabled: true}),
+                someListOfInstants: new FormControl({value: '', disabled: true}),
+                someListOfLocalDates: new FormControl({value: '', disabled: true}),
+                someListOfPeriods: new FormControl({value: '', disabled: true}),
+                someListOfStrings: new FormControl('', { updateOn: 'change' }),
+                someListOfStringTypes: new FormControl({value: '', disabled: true}),
+                someMapOfStringToInteger: new FormControl({value: '', disabled: true}),
+                someMapOfStringTypeToStringType: new FormControl({value: '', disabled: true}),
+                someDto: new FormControl({value: '', disabled: true}),
+                someDtoNullable: new FormControl({value: '', disabled: true}),
+                createdByUsername: new FormControl({value: '', disabled: true}),
+                lastModifiedByUsername: new FormControl({value: '', disabled: true}),
+                id: new FormControl({value: '', disabled: true}),
+                createdById: new FormControl({value: '', disabled: true}),
+                lastModifiedById: new FormControl({value: '', disabled: true}),
             },
         );
 
@@ -131,6 +137,64 @@ export class AllFieldTypesEditDialogComponent implements OnInit {
 
 
     ngOnInit() {
+
+        this.formService.fetchForEdit(this.entityId).subscribe({
+            next: (dto: AllFieldTypesFetchForEditDto) => {
+                this.formGroup.patchValue({
+                    someBoolean: dto.someBoolean,
+                    someBooleanNullable: dto.someBooleanNullable,
+                    someBooleanType: dto.someBooleanType,
+                    someBooleanTypeNullable: dto.someBooleanTypeNullable,
+                    someBooleanTypeProvided: dto.someBooleanTypeProvided,
+                    someBooleanTypeProvidedNullable: dto.someBooleanTypeProvidedNullable,
+                    someInstant: dto.someInstant,
+                    someInstantNullable: dto.someInstantNullable,
+                    someInstantModifiable: dto.someInstantModifiable,
+                    someInstantModifiableNullable: dto.someInstantModifiableNullable,
+                    someInt: dto.someInt,
+                    someIntModifiable: dto.someIntModifiable,
+                    someIntNullable: dto.someIntNullable,
+                    someIntType: dto.someIntType,
+                    someIntTypeNullable: dto.someIntTypeNullable,
+                    someIntTypeProvided: dto.someIntTypeProvided,
+                    someIntTypeProvidedNullable: dto.someIntTypeProvidedNullable,
+                    someLongType: dto.someLongType,
+                    someLongTypeNullable: dto.someLongTypeNullable,
+                    someLongTypeProvided: dto.someLongTypeProvided,
+                    someLongTypeProvidedNullable: dto.someLongTypeProvidedNullable,
+                    someLocalDateModifiable: dto.someLocalDateModifiable,
+                    somePeriodModifiable: dto.somePeriodModifiable,
+                    somePeriodNullable: dto.somePeriodNullable,
+                    someEnum: dto.someEnum,
+                    someEnumNullable: dto.someEnumNullable,
+                    someString: dto.someString,
+                    someStringModifiable: dto.someStringModifiable,
+                    someStringNullable: dto.someStringNullable,
+                    someStringType: dto.someStringType,
+                    someStringTypeNullable: dto.someStringTypeNullable,
+                    someProvidedStringType: dto.someProvidedStringType,
+                    someProvidedStringTypeNullable: dto.someProvidedStringTypeNullable,
+                    someListOfEnums: dto.someListOfEnums,
+                    someListOfInstants: dto.someListOfInstants,
+                    someListOfLocalDates: dto.someListOfLocalDates,
+                    someListOfPeriods: dto.someListOfPeriods,
+                    someListOfStrings: dto.someListOfStrings,
+                    someListOfStringTypes: dto.someListOfStringTypes,
+                    someMapOfStringToInteger: dto.someMapOfStringToInteger,
+                    someMapOfStringTypeToStringType: dto.someMapOfStringTypeToStringType,
+                    someDto: dto.someDto,
+                    someDtoNullable: dto.someDtoNullable,
+                    createdByUsername: dto.createdByUsername,
+                    lastModifiedByUsername: dto.lastModifiedByUsername,
+                    id: dto.id,
+                });
+                this.loading.set(false);
+            },
+            error: (err) => {
+                this.problemDetail.set(err.error);
+                this.loading.set(false);
+            }
+        });
 
     }
 
