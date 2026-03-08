@@ -4,8 +4,8 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
-import {SimpleSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringRequestDto';
 import {SimpleFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleFetchForEditDto';
+import {SimpleSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringRequestDto';
 import {SimpleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleUpdateRequestDto';
 import {FormValidationResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';

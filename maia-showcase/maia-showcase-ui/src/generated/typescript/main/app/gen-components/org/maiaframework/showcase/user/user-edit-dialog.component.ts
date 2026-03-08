@@ -9,7 +9,9 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {UserEmailAddressAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/user/UserEmailAddressAsyncValidator';
+import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -29,6 +31,7 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatFormFieldModule,
         MatInputModule,
         MatOptionModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
     selector: 'app-user-edit-dialog',
@@ -41,6 +44,9 @@ export class UserEditDialogComponent implements OnInit {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
+    loading = signal(true);
+
+
     formGroup: FormGroup;
 
 
@@ -50,7 +56,7 @@ export class UserEditDialogComponent implements OnInit {
     private readonly formService = inject(UserCrudService);
 
 
-    private readonly dto = inject<any>(MAT_DIALOG_DATA);
+    private readonly entityId = inject<string>(MAT_DIALOG_DATA);
 
 
     private readonly userEmailAddressAsyncValidator = inject(UserEmailAddressAsyncValidator);
@@ -60,15 +66,15 @@ export class UserEditDialogComponent implements OnInit {
 
         this.formGroup = new FormGroup(
             {
-                encryptedPassword: new FormControl({value: this.dto.encryptedPassword, disabled: true}),
-                someStrings: new FormControl({value: this.dto.someStrings, disabled: true}),
-                firstName: new FormControl(this.dto.firstName, { updateOn: 'change', validators: [Validators.maxLength(100)] }),
-                lastName: new FormControl(this.dto.lastName, { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                emailAddress: new FormControl({value: this.dto.emailAddress, disabled: true}),
-                displayName: new FormControl({value: this.dto.displayName, disabled: true}),
-                lifecycleState: new FormControl({value: this.dto.lifecycleState, disabled: true}),
-                id: new FormControl({value: this.dto.id, disabled: true}),
-                version: new FormControl({value: this.dto.version, disabled: true}),
+                encryptedPassword: new FormControl({value: '', disabled: true}),
+                someStrings: new FormControl({value: '', disabled: true}),
+                firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
+                lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+                emailAddress: new FormControl({value: '', disabled: true}),
+                displayName: new FormControl({value: '', disabled: true}),
+                lifecycleState: new FormControl({value: '', disabled: true}),
+                id: new FormControl({value: '', disabled: true}),
+                version: new FormControl({value: '', disabled: true}),
             },
         );
 
@@ -76,6 +82,27 @@ export class UserEditDialogComponent implements OnInit {
 
 
     ngOnInit() {
+
+        this.formService.fetchForEdit(this.entityId).subscribe({
+            next: (dto: UserFetchForEditDto) => {
+                this.formGroup.patchValue({
+                    encryptedPassword: dto.encryptedPassword,
+                    someStrings: dto.someStrings,
+                    firstName: dto.firstName,
+                    lastName: dto.lastName,
+                    emailAddress: dto.emailAddress,
+                    displayName: dto.displayName,
+                    lifecycleState: dto.lifecycleState,
+                    id: dto.id,
+                    version: dto.version,
+                });
+                this.loading.set(false);
+            },
+            error: (err) => {
+                this.problemDetail.set(err.error);
+                this.loading.set(false);
+            }
+        });
 
     }
 

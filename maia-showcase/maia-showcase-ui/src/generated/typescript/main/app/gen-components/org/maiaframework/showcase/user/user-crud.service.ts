@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
 import {UserEmailAddressRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserEmailAddressRequestDto';
+import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {FormValidationResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
@@ -46,6 +47,13 @@ export class UserCrudService {
                 '/api/user/update',
                 dto,
                 this.httpOptions);
+
+    }
+
+
+    public fetchForEdit(id: string): Observable<UserFetchForEditDto> {
+
+        return this.http.get<UserFetchForEditDto>('/api/user/fetch_for_edit/' + id, this.httpOptions);
 
     }
 
