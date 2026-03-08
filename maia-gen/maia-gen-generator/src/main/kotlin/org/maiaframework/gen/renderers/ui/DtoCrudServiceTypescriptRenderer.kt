@@ -38,44 +38,50 @@ class DtoCrudServiceTypescriptRenderer(
 
     override fun renderSourceBody() {
 
-        blankLine()
-        appendLine("@Injectable({providedIn: 'root'})")
-        appendLine("export class ${this.entityCrudApiDef.entityDef.crudAngularComponentNames.serviceName} {")
-        blankLine()
-        appendLine("    private httpOptions = {")
-        appendLine("        headers: new HttpHeaders({")
-        appendLine("            'Content-Type': 'application/json'")
-        appendLine("        })")
-        appendLine("    };")
-        blankLine()
-        blankLine()
-        appendLine("    private readonly http = inject(HttpClient);")
-        blankLine()
-        blankLine()
+        append("""
+            |
+            |@Injectable({providedIn: 'root'})
+            |export class ${this.entityCrudApiDef.entityDef.crudAngularComponentNames.serviceName} {
+            |
+            |    private httpOptions = {
+            |        headers: new HttpHeaders({
+            |            'Content-Type': 'application/json'
+            |        })
+            |    };
+            |
+            |
+            |    private readonly http = inject(HttpClient);
+            |
+            |
+            |""".trimMargin())
 
         this.entityCrudApiDef.createApiDef?.let { apiDef ->
 
             val createRequestDtoDef = apiDef.requestDtoDef
 
-            appendLine("    public create(requestDto: ${createRequestDtoDef.uqcn}): Observable<void> {")
-            blankLine()
-            appendLine("        return this.http.post<void>(")
-            appendLine("                '${apiDef.endpointUrl}',")
-            appendLine("                requestDto,")
-            appendLine("                this.httpOptions);")
-            blankLine()
-            appendLine("    }")
+            append("""
+                |    public create(requestDto: ${createRequestDtoDef.uqcn}): Observable<void> {
+                |
+                |        return this.http.post<void>(
+                |                '${apiDef.endpointUrl}',
+                |                requestDto,
+                |                this.httpOptions);
+                |
+                |    }
+                |""".trimMargin())
         }
 
         this.entityCrudApiDef.entityDef.uniqueIndexDefs.filter { it.withExistsEndpoint }.forEach { entityIndexDef ->
 
-            blankLine()
-            blankLine()
-            appendLine("    public ${entityIndexDef.existsByFunctionName}(requestBody: ${entityIndexDef.asyncValidator.asyncValidationDtoName}): Observable<FormValidationResponseDto> {")
-            blankLine()
-            appendLine("        return this.http.post<FormValidationResponseDto>('${entityIndexDef.existsByUrl}', requestBody, this.httpOptions);")
-            blankLine()
-            appendLine("    }")
+            append("""
+                |
+                |
+                |    public ${entityIndexDef.existsByFunctionName}(requestBody: ${entityIndexDef.asyncValidator.asyncValidationDtoName}): Observable<FormValidationResponseDto> {
+                |
+                |        return this.http.post<FormValidationResponseDto>('${entityIndexDef.existsByUrl}', requestBody, this.httpOptions);
+                |
+                |    }
+                |""".trimMargin())
 
         }
 
@@ -83,45 +89,53 @@ class DtoCrudServiceTypescriptRenderer(
 
             val requestDtoDef = apiDef.requestDtoDef
 
-            blankLine()
-            blankLine()
-            appendLine("    public edit(dto: ${requestDtoDef.uqcn}): Observable<void> {")
-            blankLine()
-            appendLine("        return this.http.put<void>(")
-            appendLine("                '${apiDef.endpointUrl}',")
-            appendLine("                dto,")
-            appendLine("                this.httpOptions);")
-            blankLine()
-            appendLine("    }")
+            append("""
+                |
+                |
+                |    public edit(dto: ${requestDtoDef.uqcn}): Observable<void> {
+                |
+                |        return this.http.put<void>(
+                |                '${apiDef.endpointUrl}',
+                |                dto,
+                |                this.httpOptions);
+                |
+                |    }
+                |""".trimMargin())
 
         }
 
         this.entityCrudApiDef.entityDef.fetchForEditDtoDef?.let { fetchForEditDtoDef ->
 
-            blankLine()
-            blankLine()
-            appendLine("    public fetchForEdit(id: string): Observable<${fetchForEditDtoDef.uqcn}> {")
-            blankLine()
-            appendLine("        return this.http.get<${fetchForEditDtoDef.uqcn}>('${fetchForEditDtoDef.endpointUrl}/' + id, this.httpOptions);")
-            blankLine()
-            appendLine("    }")
+            append("""
+                |
+                |
+                |    public fetchForEdit(id: string): Observable<${fetchForEditDtoDef.uqcn}> {
+                |
+                |        return this.http.get<${fetchForEditDtoDef.uqcn}>('${fetchForEditDtoDef.endpointUrl}/' + id, this.httpOptions);
+                |
+                |    }
+                |""".trimMargin())
 
         }
 
         this.entityCrudApiDef.deleteApiDef?.let { apiDef ->
 
-            blankLine()
-            blankLine()
-            appendLine("    public delete(id: string): Observable<any> {")
-            blankLine()
-            appendLine("        return this.http.delete('${apiDef.endpointUrl}' + id, this.httpOptions);")
-            blankLine()
-            appendLine("    }")
+            append("""
+                |
+                |
+                |    public delete(id: string): Observable<any> {
+                |
+                |        return this.http.delete('${apiDef.endpointUrl}' + id, this.httpOptions);
+                |
+                |    }
+                |""".trimMargin())
         }
 
-        blankLine()
-        blankLine()
-        appendLine("}")
+        append("""
+            |
+            |
+            |}
+            |""".trimMargin())
 
     }
 
