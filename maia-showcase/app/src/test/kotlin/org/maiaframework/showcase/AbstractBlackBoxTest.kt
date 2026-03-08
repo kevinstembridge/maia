@@ -3,6 +3,7 @@ package org.maiaframework.showcase
 import jakarta.servlet.http.Cookie
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.TestInstance
 import org.maiaframework.domain.LifecycleState
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
@@ -40,6 +41,7 @@ import java.time.temporal.ChronoUnit
 )
 @ActiveProfiles("test")
 @EnableAutoConfiguration
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Testcontainers
 abstract class AbstractBlackBoxTest {
 

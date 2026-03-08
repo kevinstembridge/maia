@@ -27,7 +27,6 @@ data class UserEntityTestBuilder(
     val lastModifiedTimestampUtc: Instant = createdTimestampUtc,
     val lastName: LastName = anyLastName(),
     val lifecycleState: LifecycleState = LifecycleState.ACTIVE,
-    val someStrings: List<String> = emptyList(),
     val version: Long = 1L
 ) {
 
@@ -46,7 +45,6 @@ data class UserEntityTestBuilder(
             lastModifiedTimestampUtc,
             lastName,
             lifecycleState,
-            someStrings,
             version
         )
 
