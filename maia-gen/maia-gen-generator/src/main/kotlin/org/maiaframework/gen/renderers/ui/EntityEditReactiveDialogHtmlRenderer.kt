@@ -18,6 +18,9 @@ class EntityEditReactiveDialogHtmlRenderer(
     override val formFields: List<AngularFormFieldDef> = apiDef.htmlFormFields
 
 
+    override val withFetchForEditLoading: Boolean = apiDef.entityDef.fetchForEditDtoDef != null
+
+
     override fun renderedFilePath(): String {
 
         return this.apiDef.angularDialogComponentNames.htmlRenderedFilePath

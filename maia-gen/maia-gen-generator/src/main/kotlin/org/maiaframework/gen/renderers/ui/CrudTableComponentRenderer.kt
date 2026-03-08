@@ -84,7 +84,7 @@ class CrudTableComponentRenderer(
             blankLine()
             appendLine("        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {")
             appendLine("            width: '400px',")
-            appendLine("            data: dto")
+            appendLine("            data: dto.id")
             appendLine("        });")
             blankLine()
             appendLine("        dialogRef.afterClosed().subscribe(result => {")

@@ -17,6 +17,9 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
     protected abstract val formFields: List<AngularFormFieldDef>
 
 
+    protected open val withFetchForEditLoading: Boolean = false
+
+
     override fun renderSource(): String {
 
         val matDialogContentText = when (inlineFormOrDialog) {
@@ -26,6 +29,17 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
 
         if (inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
             appendLine("<h1 mat-dialog-title>${this.dialogTitle}</h1>")
+        }
+
+        if (this.withFetchForEditLoading) {
+            append("""
+                |
+                |@if (loading()) {
+                |    <div mat-dialog-content style="display: flex; justify-content: center; padding: 24px;">
+                |        <mat-spinner diameter="40"></mat-spinner>
+                |    </div>
+                |} @else {
+                |""".trimMargin())
         }
 
         appendLine("""
@@ -65,6 +79,10 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
 
         appendLine("    </div>")
         appendLine("</form>")
+
+        if (this.withFetchForEditLoading) {
+            appendLine("}")
+        }
 
         return sourceCode.toString()
 

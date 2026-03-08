@@ -5,6 +5,8 @@ package org.maiaframework.toggles
 
 import jakarta.validation.Valid
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -14,6 +16,14 @@ import org.springframework.web.bind.annotation.RestController
 class FeatureToggleCrudEndpoint(
     val crudService: FeatureToggleCrudService
 ) {
+
+
+    @GetMapping("/api/feature_toggle/fetch_for_edit", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun fetchForEdit(@PathVariable featureName: FeatureName): FeatureToggleFetchForEditDto {
+
+        return this.crudService.fetchForEdit(featureName)
+
+    }
 
 
     @PutMapping("/api/maia_toggles/feature_toggle/update", produces = [MediaType.APPLICATION_JSON_VALUE])

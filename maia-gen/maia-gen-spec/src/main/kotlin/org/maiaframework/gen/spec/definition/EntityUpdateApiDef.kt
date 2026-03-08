@@ -170,7 +170,8 @@ class EntityUpdateApiDef(
         multiFieldDatabaseIndexDefs = entityDef.multiFieldUniqueIndexDefs,
         onSubmitServiceFunctionName = "edit",
         entityDef.crudAngularComponentNames.serviceTypescriptImport,
-        angularFormSystem
+        angularFormSystem,
+        fetchForEditDtoDef = entityDef.fetchForEditDtoDef
     )
 
 

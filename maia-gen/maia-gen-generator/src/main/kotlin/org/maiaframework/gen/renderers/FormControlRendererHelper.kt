@@ -19,7 +19,7 @@ object FormControlRendererHelper {
         val classFieldDef = angularFormFieldDef.classFieldDef
 
         if (createOrEdit == CreateOrEdit.edit && classFieldDef.isEditableByUser.value == false) {
-            return "new FormControl({value: this.dto.${classFieldDef.classFieldName}, disabled: true})"
+            return "new FormControl({value: '', disabled: true})"
         }
 
         val validators = determineValidatorsFor(classFieldDef)
@@ -41,11 +41,7 @@ object FormControlRendererHelper {
 
         val controlOptions = optionFields.entries.map { entry -> "${entry.key}: ${entry.value}" }.joinToString(prefix = "{ ", separator = ", ", postfix = " }")
 
-        val initialValue = if (createOrEdit == CreateOrEdit.edit) {
-            "this.dto.${classFieldDef.classFieldName}"
-        } else {
-            "''"
-        }
+        val initialValue = "''"
 
         return "new FormControl($initialValue, $controlOptions)"
 

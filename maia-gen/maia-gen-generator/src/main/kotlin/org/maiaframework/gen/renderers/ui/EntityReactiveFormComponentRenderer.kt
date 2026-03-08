@@ -7,6 +7,7 @@ import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
+import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
 import org.maiaframework.lang.text.StringFunctions
 
@@ -87,6 +88,11 @@ class EntityReactiveFormComponentRenderer(
 
         this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
             addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
+        }
+
+        this.angularFormDef.fetchForEditDtoDef?.let {
+            addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
+            addImport(it.typescriptImport)
         }
 
         if (this.angularFormDef.hasAnyMatSelectFields) {
@@ -183,6 +189,14 @@ class EntityReactiveFormComponentRenderer(
             |    problemDetail = signal<ProblemDetail | null>(null);
             |""".trimMargin())
 
+        this.angularFormDef.fetchForEditDtoDef?.let {
+            append("""
+                |
+                |
+                |    loading = signal(true);
+                |""".trimMargin())
+        }
+
         this.angularFormDef.enumsForMatSelectFields
             .filter { it.withEnumSelectionOptions }
             .distinctBy { it.selectOptionsUqcn }
@@ -230,7 +244,7 @@ class EntityReactiveFormComponentRenderer(
         if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
             blankLine()
             blankLine()
-            appendLine("    private readonly dto = inject<any>(MAT_DIALOG_DATA);")
+            appendLine("    private readonly entityId = inject<string>(MAT_DIALOG_DATA);")
         }
 
         this.angularFormDef.context?.let { context ->
@@ -293,13 +307,7 @@ class EntityReactiveFormComponentRenderer(
 
                 val validators = if (classFieldDef.nullable) "" else "${angularFormFieldDef.typeaheadRequiredValidatorFunctionName}()"
 
-                val initialValue = when (angularFormDef.createOrEdit) {
-                    CreateOrEdit.create -> "''"
-                    CreateOrEdit.edit -> typeaheadDef.fieldDefs.map { "${it.fieldName}: this.dto.${it.fieldName}" }
-                        .joinToString(prefix = "{ ", separator = ", ", postfix = " }")
-
-                    null -> "''"
-                }
+                val initialValue = "''"
 
                 appendLine("                ${typeaheadDef.typeaheadName.firstToLower()}: new FormControl($initialValue, { updateOn: 'change', validators: [$validators] }),")
             }
@@ -397,6 +405,39 @@ class EntityReactiveFormComponentRenderer(
 
             }
 
+            appendLine("        });")
+
+        }
+
+        this.angularFormDef.fetchForEditDtoDef?.let { fetchForEditDtoDef ->
+
+            blankLine()
+            appendLine("        this.formService.fetchForEdit(this.entityId).subscribe({")
+            appendLine("            next: (dto: ${fetchForEditDtoDef.uqcn}) => {")
+            appendLine("                this.formGroup.patchValue({")
+
+            this.formGroupFields.forEach { angularFormFieldDef ->
+                val classFieldDef = angularFormFieldDef.classFieldDef
+                val typeaheadDef = classFieldDef.typeaheadDef
+
+                if (typeaheadDef != null) {
+                    val formControlName = typeaheadDef.typeaheadName.firstToLower()
+                    appendLine("                    ${formControlName}: dto.${formControlName},")
+                } else if (classFieldDef.fieldType is ForeignKeyFieldType) {
+                    // Skip non-typeahead FK fields — DTO uses a PkAndName object shape
+                } else {
+                    val fieldName = classFieldDef.classFieldName
+                    appendLine("                    ${fieldName}: dto.${fieldName},")
+                }
+            }
+
+            appendLine("                });")
+            appendLine("                this.loading.set(false);")
+            appendLine("            },")
+            appendLine("            error: (err) => {")
+            appendLine("                this.problemDetail.set(err.error);")
+            appendLine("                this.loading.set(false);")
+            appendLine("            }")
             appendLine("        });")
 
         }

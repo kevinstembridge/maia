@@ -20,6 +20,16 @@ class FormHtmlRenderer(private val angularFormDef: AngularFormDef) : AbstractSou
             appendLine("<h1 mat-dialog-title>${this.angularFormDef.dialogTitle}</h1>")
         }
 
+        if (this.angularFormDef.fetchForEditDtoDef != null) {
+            append("""
+                |@if (loading()) {
+                |    <div mat-dialog-content style="display: flex; justify-content: center; padding: 24px;">
+                |        <mat-spinner diameter="40"></mat-spinner>
+                |    </div>
+                |} @else {
+                |""".trimMargin())
+        }
+
         appendLine("<form [formGroup]=\"formGroup\" (ngSubmit)=\"onSubmit()\">")
 
         if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
@@ -89,6 +99,10 @@ class FormHtmlRenderer(private val angularFormDef: AngularFormDef) : AbstractSou
         }
 
         appendLine("</form>")
+
+        if (this.angularFormDef.fetchForEditDtoDef != null) {
+            appendLine("}")
+        }
 
         return sourceCode.toString()
 

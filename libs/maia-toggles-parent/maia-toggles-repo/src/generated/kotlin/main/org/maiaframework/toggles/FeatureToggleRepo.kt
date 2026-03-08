@@ -84,6 +84,13 @@ class FeatureToggleRepo(
     }
 
 
+    fun fetchForEdit(featureName: FeatureName): FeatureToggleFetchForEditDto {
+
+        return this.dao.fetchForEdit(featureName)
+
+    }
+
+
     fun insert(entity: FeatureToggleEntity) {
 
         logger.debug("insert {}", entity)

@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition
 import org.maiaframework.gen.spec.definition.builders.DtoDefBuilder
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
+import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 
 class FetchForEditDtoDef(
     packageName: PackageName,
@@ -42,6 +43,12 @@ class FetchForEditDtoDef(
 
 
     val endpointUrl = "/api/${entityBaseName.toSnakeCase()}/fetch_for_edit"
+
+
+    private val typescriptFilePathWithoutSuffix = "app/gen-components/${packageName.asTypescriptDirs()}/${uqcn}"
+
+
+    val typescriptImport = TypescriptImport(uqcn.value, "@$typescriptFilePathWithoutSuffix")
 
 
 }

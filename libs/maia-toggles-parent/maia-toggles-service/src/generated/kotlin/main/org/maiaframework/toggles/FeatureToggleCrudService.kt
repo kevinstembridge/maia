@@ -30,6 +30,13 @@ class FeatureToggleCrudService(
     }
 
 
+    fun fetchForEdit(featureName: FeatureName): FeatureToggleFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(featureName)
+
+    }
+
+
     fun update(editDto: FeatureToggleUpdateRequestDto) {
 
         val featureName = editDto.featureName

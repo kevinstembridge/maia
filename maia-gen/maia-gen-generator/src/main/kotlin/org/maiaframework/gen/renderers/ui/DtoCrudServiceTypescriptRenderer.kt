@@ -17,6 +17,7 @@ class DtoCrudServiceTypescriptRenderer(
 
         this.entityCrudApiDef.createApiDef?.let { addImport(it.requestDtoDef.typescriptImport) }
         this.entityCrudApiDef.updateApiDef?.let { addImport(it.requestDtoDef.typescriptImport) }
+        this.entityCrudApiDef.entityDef.fetchForEditDtoDef?.let { addImport(it.typescriptImport) }
 
         if (this.entityCrudApiDef.entityDef.databaseIndexDefs.isNotEmpty()) {
             this.entityCrudApiDef.entityDef.uniqueIndexDefs.forEach { entityIndexDef ->
@@ -90,6 +91,18 @@ class DtoCrudServiceTypescriptRenderer(
             appendLine("                '${apiDef.endpointUrl}',")
             appendLine("                dto,")
             appendLine("                this.httpOptions);")
+            blankLine()
+            appendLine("    }")
+
+        }
+
+        this.entityCrudApiDef.entityDef.fetchForEditDtoDef?.let { fetchForEditDtoDef ->
+
+            blankLine()
+            blankLine()
+            appendLine("    public fetchForEdit(id: string): Observable<${fetchForEditDtoDef.uqcn}> {")
+            blankLine()
+            appendLine("        return this.http.get<${fetchForEditDtoDef.uqcn}>('${fetchForEditDtoDef.endpointUrl}/' + id, this.httpOptions);")
             blankLine()
             appendLine("    }")
 

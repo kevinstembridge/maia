@@ -31,7 +31,8 @@ class AngularFormDef(
     val multiFieldDatabaseIndexDefs: List<DatabaseIndexDef>,
     val onSubmitServiceFunctionName: String,
     formServiceTypescriptImport: TypescriptImport? = null,
-    val angularFormSystem: AngularFormSystem
+    val angularFormSystem: AngularFormSystem,
+    val fetchForEditDtoDef: FetchForEditDtoDef? = null
 ) {
 
 
