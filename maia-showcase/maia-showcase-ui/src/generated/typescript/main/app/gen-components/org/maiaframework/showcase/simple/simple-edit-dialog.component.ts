@@ -9,6 +9,8 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {SimpleFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleFetchForEditDto';
 import {SimpleSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringAsyncValidator';
 import {SimpleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleUpdateRequestDto';
 import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud.service';
@@ -29,6 +31,7 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatFormFieldModule,
         MatInputModule,
         MatOptionModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
     selector: 'app-simple-edit-dialog',
@@ -41,6 +44,9 @@ export class SimpleEditDialogComponent implements OnInit {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
+    loading = signal(true);
+
+
     formGroup: FormGroup;
 
 
@@ -50,7 +56,7 @@ export class SimpleEditDialogComponent implements OnInit {
     private readonly formService = inject(SimpleCrudService);
 
 
-    private readonly dto = inject<any>(MAT_DIALOG_DATA);
+    private readonly entityId = inject<string>(MAT_DIALOG_DATA);
 
 
     private readonly simpleSomeStringAsyncValidator = inject(SimpleSomeStringAsyncValidator);
@@ -60,8 +66,8 @@ export class SimpleEditDialogComponent implements OnInit {
 
         this.formGroup = new FormGroup(
             {
-                someString: new FormControl(this.dto.someString, { updateOn: 'change', validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)], asyncValidators: [this.simpleSomeStringAsyncValidator.validate.bind(this.simpleSomeStringAsyncValidator)] }),
-                id: new FormControl({value: this.dto.id, disabled: true}),
+                someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)], asyncValidators: [this.simpleSomeStringAsyncValidator.validate.bind(this.simpleSomeStringAsyncValidator)] }),
+                id: new FormControl({value: '', disabled: true}),
             },
         );
 
@@ -69,6 +75,20 @@ export class SimpleEditDialogComponent implements OnInit {
 
 
     ngOnInit() {
+
+        this.formService.fetchForEdit(this.entityId).subscribe({
+            next: (dto: SimpleFetchForEditDto) => {
+                this.formGroup.patchValue({
+                    someString: dto.someString,
+                    id: dto.id,
+                });
+                this.loading.set(false);
+            },
+            error: (err) => {
+                this.problemDetail.set(err.error);
+                this.loading.set(false);
+            }
+        });
 
     }
 

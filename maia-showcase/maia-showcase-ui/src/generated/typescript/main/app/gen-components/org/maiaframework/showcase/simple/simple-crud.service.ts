@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
 import {SimpleSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringRequestDto';
+import {SimpleFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleFetchForEditDto';
 import {SimpleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleUpdateRequestDto';
 import {FormValidationResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
@@ -46,6 +47,13 @@ export class SimpleCrudService {
                 '/api/simple/update',
                 dto,
                 this.httpOptions);
+
+    }
+
+
+    public fetchForEdit(id: string): Observable<SimpleFetchForEditDto> {
+
+        return this.http.get<SimpleFetchForEditDto>('/api/simple/fetch_for_edit/' + id, this.httpOptions);
 
     }
 

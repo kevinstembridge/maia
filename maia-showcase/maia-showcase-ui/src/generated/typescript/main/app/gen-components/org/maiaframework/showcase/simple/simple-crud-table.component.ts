@@ -46,7 +46,7 @@ export class SimpleCrudTableComponent {
 
         const dialogRef = this.dialog.open(SimpleEditDialogComponent, {
             width: '400px',
-            data: dto
+            data: dto.id
         });
 
         dialogRef.afterClosed().subscribe(result => {
