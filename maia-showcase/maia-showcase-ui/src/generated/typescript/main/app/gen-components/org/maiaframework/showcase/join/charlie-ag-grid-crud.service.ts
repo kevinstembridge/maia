@@ -4,6 +4,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {CharlieAgGridCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieAgGridCreateRequestDto';
+import {CharlieAgGridFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieAgGridFetchForEditDto';
 import {CharlieAgGridUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieAgGridUpdateRequestDto';
 import {Observable} from 'rxjs';
 
@@ -37,6 +38,13 @@ export class CharlieAgGridCrudService {
                 '/api/charlie_ag_grid/update',
                 dto,
                 this.httpOptions);
+
+    }
+
+
+    public fetchForEdit(id: string): Observable<CharlieAgGridFetchForEditDto> {
+
+        return this.http.get<CharlieAgGridFetchForEditDto>('/api/charlie_ag_grid/fetch_for_edit/' + id, this.httpOptions);
 
     }
 

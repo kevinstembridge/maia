@@ -4,6 +4,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {CharlieCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieCreateRequestDto';
+import {CharlieFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieFetchForEditDto';
 import {CharlieUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieUpdateRequestDto';
 import {Observable} from 'rxjs';
 
@@ -37,6 +38,13 @@ export class CharlieCrudService {
                 '/api/charlie/update',
                 dto,
                 this.httpOptions);
+
+    }
+
+
+    public fetchForEdit(id: string): Observable<CharlieFetchForEditDto> {
+
+        return this.http.get<CharlieFetchForEditDto>('/api/charlie/fetch_for_edit/' + id, this.httpOptions);
 
     }
 

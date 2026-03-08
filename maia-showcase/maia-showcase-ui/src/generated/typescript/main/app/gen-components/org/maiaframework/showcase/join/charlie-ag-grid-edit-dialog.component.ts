@@ -9,6 +9,8 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {CharlieAgGridFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieAgGridFetchForEditDto';
 import {CharlieAgGridUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieAgGridUpdateRequestDto';
 import {CharlieAgGridCrudService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-ag-grid-crud.service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -28,6 +30,7 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatFormFieldModule,
         MatInputModule,
         MatOptionModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
     selector: 'app-charlie-ag-grid-edit-dialog',
@@ -40,6 +43,9 @@ export class CharlieAgGridEditDialogComponent implements OnInit {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
+    loading = signal(true);
+
+
     formGroup: FormGroup;
 
 
@@ -49,17 +55,17 @@ export class CharlieAgGridEditDialogComponent implements OnInit {
     private readonly formService = inject(CharlieAgGridCrudService);
 
 
-    private readonly dto = inject<any>(MAT_DIALOG_DATA);
+    private readonly entityId = inject<string>(MAT_DIALOG_DATA);
 
 
     constructor() {
 
         this.formGroup = new FormGroup(
             {
-                someInt: new FormControl({value: this.dto.someInt, disabled: true}),
-                someString: new FormControl({value: this.dto.someString, disabled: true}),
-                id: new FormControl({value: this.dto.id, disabled: true}),
-                bravoId: new FormControl(this.dto.bravoId, { updateOn: 'change' }),
+                someInt: new FormControl({value: '', disabled: true}),
+                someString: new FormControl({value: '', disabled: true}),
+                id: new FormControl({value: '', disabled: true}),
+                bravoId: new FormControl('', { updateOn: 'change' }),
             },
         );
 
@@ -67,6 +73,21 @@ export class CharlieAgGridEditDialogComponent implements OnInit {
 
 
     ngOnInit() {
+
+        this.formService.fetchForEdit(this.entityId).subscribe({
+            next: (dto: CharlieAgGridFetchForEditDto) => {
+                this.formGroup.patchValue({
+                    someInt: dto.someInt,
+                    someString: dto.someString,
+                    id: dto.id,
+                });
+                this.loading.set(false);
+            },
+            error: (err) => {
+                this.problemDetail.set(err.error);
+                this.loading.set(false);
+            }
+        });
 
     }
 
