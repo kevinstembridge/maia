@@ -49,7 +49,12 @@ class CreateTableSqlRenderer(
         blankLine()
 
         if (entityHierarchy.hasSubclasses()) {
-            appendLine("-- Type Discriminators: ${entityHierarchy.entityDefs.filter { it.typeDiscriminatorOrNull != null }.map { "${it.entityBaseName} -> ${it.typeDiscriminatorOrNull}" }.joinToString(", ")}")
+            appendLine("-- Type Discriminators:")
+
+            entityHierarchy.entityDefs.filter { it.typeDiscriminatorOrNull != null }.forEach {
+                appendLine("--    ${it.entityBaseName} -> ${it.typeDiscriminatorOrNull}")
+            }
+
         }
 
         appendLine("CREATE TABLE ${schemaAndTableNameFor(baseEntityDef)} (")
