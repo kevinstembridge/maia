@@ -135,7 +135,9 @@ CREATE TABLE maia.history_sample_history (
 CREATE INDEX hist_history_sample_some_string_idx ON maia.history_sample_history(some_string);
 
 
--- Type Discriminators: SubOne -> SUB1, SubTwo -> SUB2
+-- Type Discriminators:
+--    SubOne -> SUB1
+--    SubTwo -> SUB2
 CREATE TABLE maia.super (
     type_discriminator text not null,
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
@@ -151,7 +153,9 @@ CREATE TABLE maia.super (
 CREATE UNIQUE INDEX sub_two_some_unique_string_uidx ON maia.super(some_unique_string, type_discriminator);
 
 
--- Type Discriminators: HistorySubOne -> SUB1, HistorySubTwo -> SUB2
+-- Type Discriminators:
+--    HistorySubOne -> SUB1
+--    HistorySubTwo -> SUB2
 CREATE TABLE maia.history_super (
     type_discriminator text not null,
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
@@ -166,7 +170,9 @@ CREATE TABLE maia.history_super (
 );
 
 
--- Type Discriminators: HistorySubOneHistory -> SUB1, HistorySubTwoHistory -> SUB2
+-- Type Discriminators:
+--    HistorySubOneHistory -> SUB1
+--    HistorySubTwoHistory -> SUB2
 CREATE TABLE maia.history_super_history (
     type_discriminator text not null,
     change_type text NOT NULL,
@@ -203,15 +209,6 @@ CREATE TABLE maia.with_optional_index_field (
 );
 CREATE INDEX with_optional_index_field_some_optional_string1_idx ON maia.with_optional_index_field(some_optional_string1);
 CREATE INDEX with_optional_index_field_some_optional_string2_some_string_idx ON maia.with_optional_index_field(some_optional_string2, some_string);
-
-
-CREATE TABLE maia.very_simple (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    id uuid NOT NULL,
-    some_string text NOT NULL,
-    PRIMARY KEY(id)
-);
-CREATE UNIQUE INDEX very_simple_some_string_uidx ON maia.very_simple(some_string);
 
 
 CREATE TABLE maia.foreign_key_parent (

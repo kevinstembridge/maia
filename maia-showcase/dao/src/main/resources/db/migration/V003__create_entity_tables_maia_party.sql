@@ -2,7 +2,10 @@
 -- Renderer class: class org.maiaframework.gen.renderers.CreateTableSqlRenderer
 
 
--- Type Discriminators: Organization -> ORG, User -> USR, Person -> PER
+-- Type Discriminators:
+--    Organization -> ORG
+--    User -> USR
+--    Person -> PER
 CREATE TABLE maia.party (
     type_discriminator text not null,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
@@ -20,7 +23,10 @@ CREATE TABLE maia.party (
 CREATE UNIQUE INDEX party_email_address_uidx ON maia.party(email_address, type_discriminator);
 
 
--- Type Discriminators: OrganizationHistory -> ORG, UserHistory -> USR, PersonHistory -> PER
+-- Type Discriminators:
+--    OrganizationHistory -> ORG
+--    UserHistory -> USR
+--    PersonHistory -> PER
 CREATE TABLE maia.party_history (
     type_discriminator text not null,
     change_type text NOT NULL,
@@ -39,7 +45,9 @@ CREATE TABLE maia.party_history (
 CREATE INDEX hist_party_email_address_idx ON maia.party_history(email_address, type_discriminator);
 
 
--- Type Discriminators: OrgUserGroup -> OUG, UserGroup -> UG
+-- Type Discriminators:
+--    OrgUserGroup -> OUG
+--    UserGroup -> UG
 CREATE TABLE maia.user_group (
     type_discriminator text not null,
     authorities text[] NOT NULL,
@@ -54,7 +62,9 @@ CREATE TABLE maia.user_group (
 );
 
 
--- Type Discriminators: OrgUserGroupHistory -> OUG, UserGroupHistory -> UG
+-- Type Discriminators:
+--    OrgUserGroupHistory -> OUG
+--    UserGroupHistory -> UG
 CREATE TABLE maia.user_group_history (
     type_discriminator text not null,
     authorities text[] NOT NULL,
