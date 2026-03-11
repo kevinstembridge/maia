@@ -7,6 +7,8 @@ import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
@@ -80,6 +82,9 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
+    val emailAddressPurposeEnumDef = enumDef("org.maiaframework.domain.contact.EmailAddressPurpose") { provided() }
+
+
     val someDataClass = dataClass(
         "org.maiaframework.showcase.dataclasses",
         "SomeDataClass"
@@ -107,13 +112,22 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     ) {
         isAbstract = true
         tableName(name = "party", viewName = "v_party")
-        field("emailAddress", emailAddressStringType) {
-            fieldDisplayName("Email Address")
-            withEmailConstraint()
-            unique(withExistsEndpoint = true)
-        }
         field("displayName", FieldTypes.string) {
             derived()
+        }
+        field(ClassFieldName.createdById.value, FieldTypes.domainId) {
+            fieldDisplayName("Created By")
+            tableColumnName(TableColumnName.createdById.value)
+            nullable()
+            modifiableBySystem()
+            notCreatableByUser()
+        }
+        field(ClassFieldName.lastModifiedById.value, FieldTypes.domainId) {
+            fieldDisplayName("Last Modified By")
+            tableColumnName(TableColumnName.lastModifiedById.value)
+            nullable()
+            modifiableBySystem()
+            notCreatableByUser()
         }
         field_lastModifiedTimestampUtc()
         field_lifecycleState()
@@ -187,6 +201,10 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     ) {
         superclass(personEntityDef)
         typeDiscriminator("USR")
+        field("authorities", fieldListOf(authoritiesDef.enumDef)) {
+            fieldDisplayName("Authorities")
+            editableByUser()
+        }
         field("encryptedPassword", FieldTypes.string) {
             modifiableBySystem()
             masked()
@@ -306,10 +324,48 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     ) {
         withPreAuthorize("hasAuthority('ROLE_ADMIN')")
         field("id", caseSensitive = true)
-        field("emailAddress", caseSensitive = true)
         field("firstName", caseSensitive = true)
         field("lastName", caseSensitive = true)
         field("createdTimestampUtc", caseSensitive = true)
+    }
+
+
+    val emailAddressEntityDef = entity("org.maiaframework.showcase.contact", "EmailAddress") {
+        moduleName("ops")
+        field("emailAddress", emailAddressStringType) {
+            unique()
+            withEmailConstraint()
+        }
+        field_createdById(partyEntityDef)
+        field_lastModifiedById(partyEntityDef)
+        field_lastModifiedTimestampUtc()
+    }
+
+
+    val partyEmailAddressEntityDef = entity(
+        "org.maiaframework.showcase.party.contact",
+        "PartyEmailAddress",
+        recordVersionHistory = true
+    ) {
+        moduleName("ops")
+        withEffectiveTimestamps(hasSingleEffectiveRecord = false)
+        foreignKey("party", partyEntityDef)
+        foreignKey("emailAddress", emailAddressEntityDef)
+        field("isPrimaryContact", FieldTypes.boolean) {
+            editableByUser()
+        }
+        field("purposes", fieldListOf(emailAddressPurposeEnumDef)) {
+            editableByUser()
+        }
+        field_createdById(partyEntityDef)
+        field_lastModifiedById(partyEntityDef)
+        field_lastModifiedTimestampUtc()
+        index {
+            withFieldAscending("emailAddressId")
+        }
+        index {
+            withFieldAscending("partyId")
+        }
     }
 
 

@@ -48,6 +48,20 @@ data class OrganizationEntityUpdater(
         }
 
 
+        fun createdById(createdById: DomainId?) {
+
+            this.fields.add(FieldUpdate("createdById", "created_by_id", createdById))
+
+        }
+
+
+        fun lastModifiedById(lastModifiedById: DomainId?) {
+
+            this.fields.add(FieldUpdate("lastModifiedById", "last_modified_by_id", lastModifiedById))
+
+        }
+
+
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
             this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))

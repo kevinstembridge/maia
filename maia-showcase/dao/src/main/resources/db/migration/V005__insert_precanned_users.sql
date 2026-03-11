@@ -85,7 +85,7 @@ insert into maia.party (
 );
 
 
-insert into la.email_address (
+insert into maia.email_address (
     created_timestamp_utc,
     created_by_id,
     id,
@@ -102,7 +102,7 @@ insert into la.email_address (
 );
 
 
-INSERT INTO la.email_address_verification(
+INSERT INTO maia.email_address_verification(
     created_by_id,
     created_timestamp_utc,
     effective_to,
@@ -183,7 +183,7 @@ insert into maia.party (
 );
 
 
-insert into la.email_address (
+insert into maia.email_address (
     created_timestamp_utc,
     created_by_id,
     id,
@@ -200,7 +200,7 @@ insert into la.email_address (
 );
 
 
-INSERT INTO la.email_address_verification(
+INSERT INTO maia.email_address_verification(
     created_by_id,
     created_timestamp_utc,
     effective_to,

@@ -8,6 +8,7 @@ import org.maiaframework.domain.LifecycleState
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.domain.persist.FieldUpdate
+import org.maiaframework.showcase.auth.Authority
 import java.time.Instant
 
 
@@ -43,6 +44,13 @@ data class UserEntityUpdater(
         }
 
 
+        fun authorities(authorities: List<Authority>) {
+
+            this.fields.add(FieldUpdate("authorities", "authorities", authorities))
+
+        }
+
+
         fun encryptedPassword(encryptedPassword: String) {
 
             this.fields.add(FieldUpdate("encryptedPassword", "encrypted_password", encryptedPassword))
@@ -60,6 +68,20 @@ data class UserEntityUpdater(
         fun lastName(lastName: LastName) {
 
             this.fields.add(FieldUpdate("lastName", "last_name", lastName))
+
+        }
+
+
+        fun createdById(createdById: DomainId?) {
+
+            this.fields.add(FieldUpdate("createdById", "created_by_id", createdById))
+
+        }
+
+
+        fun lastModifiedById(lastModifiedById: DomainId?) {
+
+            this.fields.add(FieldUpdate("lastModifiedById", "last_modified_by_id", lastModifiedById))
 
         }
 

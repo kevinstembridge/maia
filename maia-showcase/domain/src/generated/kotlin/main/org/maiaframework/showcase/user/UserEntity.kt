@@ -5,30 +5,33 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
+import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.person.PersonEntity
 import java.time.Instant
 
 
 class UserEntity(
+    val authorities: List<Authority>,
+    createdById: DomainId?,
     createdTimestampUtc: Instant,
     displayName: String,
-    emailAddress: EmailAddress,
     val encryptedPassword: String,
     firstName: FirstName?,
     id: DomainId,
+    lastModifiedById: DomainId?,
     lastModifiedTimestampUtc: Instant,
     lastName: LastName,
     lifecycleState: LifecycleState,
     version: Long
 ) : PersonEntity(
+    createdById,
     createdTimestampUtc,
     displayName,
-    emailAddress,
     firstName,
     id,
+    lastModifiedById,
     lastModifiedTimestampUtc,
     lastName,
     lifecycleState,
@@ -39,12 +42,14 @@ class UserEntity(
     override fun toString(): String {
 
         return "UserEntity{" +
+                "authorities = '" + this.authorities + '\'' + ", " + 
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
@@ -64,8 +69,9 @@ class UserEntity(
 
         @JvmStatic
         fun newInstance(
+            authorities: List<Authority>,
+            createdById: DomainId?,
             displayName: String,
-            emailAddress: EmailAddress,
             encryptedPassword: String,
             firstName: FirstName?,
             lastName: LastName
@@ -74,16 +80,19 @@ class UserEntity(
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedById = createdById
             val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
 
             return UserEntity(
+                authorities,
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 encryptedPassword,
                 firstName,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,

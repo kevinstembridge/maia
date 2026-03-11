@@ -4,11 +4,11 @@
 package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import org.maiaframework.showcase.auth.Authority
 
 
 class UserFetchForEditDtoRowMapper : MaiaRowMapper<UserFetchForEditDto> {
@@ -17,12 +17,14 @@ class UserFetchForEditDtoRowMapper : MaiaRowMapper<UserFetchForEditDto> {
     override fun mapRow(rsa: ResultSetAdapter): UserFetchForEditDto {
 
         return UserFetchForEditDto(
+            rsa.readListOfStrings("authorities") { Authority.valueOf(it) },
+            rsa.readDomainIdOrNull("createdById"),
             rsa.readInstant("createdTimestampUtc"),
             rsa.readString("displayName"),
-            rsa.readString("emailAddress") { EmailAddress(it) },
             rsa.readString("encryptedPassword"),
             rsa.readStringOrNull("firstName") { FirstName(it) },
             rsa.readDomainId("id"),
+            rsa.readDomainIdOrNull("lastModifiedById"),
             rsa.readInstant("lastModifiedTimestampUtc"),
             rsa.readString("lastName") { LastName(it) },
             rsa.readEnum("lifecycleState", LifecycleState::class.java),

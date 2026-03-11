@@ -5,15 +5,15 @@ package org.maiaframework.showcase.party
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import java.time.Instant
 
 
 abstract class PartyEntity(
+    val createdById: DomainId?,
     val createdTimestampUtc: Instant,
     val displayName: String,
-    val emailAddress: EmailAddress,
     val id: DomainId,
+    val lastModifiedById: DomainId?,
     val lastModifiedTimestampUtc: Instant,
     val lifecycleState: LifecycleState,
     val version: Long
@@ -23,10 +23,11 @@ abstract class PartyEntity(
     override fun toString(): String {
 
         return "PartyEntity{" +
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

@@ -7,7 +7,6 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.domain.persist.FieldUpdate
@@ -15,11 +14,10 @@ import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
-import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
+import org.maiaframework.showcase.auth.Authority
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
-import java.sql.PreparedStatement
 import java.time.Instant
 
 
@@ -46,22 +44,26 @@ class UserDao(
             """
             insert into maia.v_party (
                 type_discriminator,
+                authorities,
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 encrypted_password,
                 first_name,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
                 version
             ) values (
                 'USR',
+                :authorities,
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :encryptedPassword,
                 :firstName,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -69,12 +71,14 @@ class UserDao(
             )
             """.trimIndent(),
             SqlParams().apply {
+                addListOfStrings("authorities", entity.authorities.map { it.name })
+                addValue("createdById", entity.createdById)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
-                addValue("emailAddress", entity.emailAddress)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
+                addValue("lastModifiedById", entity.lastModifiedById)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -93,22 +97,26 @@ class UserDao(
             """
             insert into maia.v_party (
                 type_discriminator,
+                authorities,
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 encrypted_password,
                 first_name,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
                 version
             ) values (
                 'USR',
+                :authorities,
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :encryptedPassword,
                 :firstName,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -117,12 +125,14 @@ class UserDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
+                    addListOfStrings("authorities", entity.authorities.map { it.name })
+                    addValue("createdById", entity.createdById)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
-                    addValue("emailAddress", entity.emailAddress)
                     addValue("encryptedPassword", entity.encryptedPassword)
                     addValue("firstName", entity.firstName)
                     addValue("id", entity.id)
+                    addValue("lastModifiedById", entity.lastModifiedById)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)
@@ -165,23 +175,27 @@ class UserDao(
     ): UserHistoryEntity {
 
         val id = entity.id
+        val authorities = entity.authorities
+        val createdById = entity.createdById
         val createdTimestampUtc = entity.createdTimestampUtc
         val displayName = entity.displayName
-        val emailAddress = entity.emailAddress
         val encryptedPassword = entity.encryptedPassword
         val firstName = entity.firstName
+        val lastModifiedById = entity.lastModifiedById
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
 
         return UserHistoryEntity(
+                authorities,
                 changeType,
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 encryptedPassword,
                 firstName,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
@@ -260,32 +274,6 @@ class UserDao(
         return count > 0
        
     }
-
-    fun findOneOrNullByEmailAddress(emailAddress: EmailAddress): UserEntity? {
-
-        return jdbcOps.queryForList(
-            """
-            select * from maia.v_party
-            where email_address = :emailAddress
-            and type_discriminator = 'USR'
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("emailAddress", emailAddress)
-            },
-            this.entityRowMapper
-        ).firstOrNull()
-
-    }
-
-
-    @Throws(EntityNotFoundException::class)
-    fun findOneByEmailAddress(emailAddress: EmailAddress): UserEntity {
-
-        return findOneOrNullByEmailAddress(emailAddress)
-            ?: throw EntityNotFoundException("No record with column [email_address = $emailAddress] found in table maia.v_party.", UserEntityMeta.TABLE_NAME)
-
-    }
-
 
     fun findAllBy(filter: UserEntityFilter): List<UserEntity> {
 
@@ -383,34 +371,19 @@ class UserDao(
     }
 
 
-    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
-
-        val count = jdbcOps.queryForInt(
-            """
-            select count(*) from maia.v_party
-            where email_address = :emailAddress
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("emailAddress", emailAddress)
-            }
-        )
-
-        return count > 0
-
-    }
-
-
     fun fetchForEdit(id: DomainId): UserFetchForEditDto {
 
         return this.jdbcOps.queryForList(
             """
             select
+                v_party.authorities as authorities,
+                v_party.created_by_id as createdById,
                 v_party.created_timestamp_utc as createdTimestampUtc,
                 v_party.display_name as displayName,
-                v_party.email_address as emailAddress,
                 v_party.encrypted_password as encryptedPassword,
                 v_party.first_name as firstName,
                 v_party.id as id,
+                v_party.last_modified_by_id as lastModifiedById,
                 v_party.last_modified_timestamp_utc as lastModifiedTimestampUtc,
                 v_party.last_name as lastName,
                 v_party.lifecycle_state as lifecycleState,
@@ -424,72 +397,6 @@ class UserDao(
             this.fetchForEditDtoRowMapper
         ).firstOrNull()
             ?: throw EntityNotFoundException(EntityClassAndPk(UserEntity::class.java, mapOf("id" to id)), UserEntityMeta.TABLE_NAME)
-
-    }
-
-
-    fun upsertByEmailAddress(upsertEntity: UserEntity): UserEntity {
-
-        val persistedEntity = jdbcOps.execute(
-            """
-            insert into maia.v_party (
-                type_discriminator,
-                created_timestamp_utc,
-                display_name,
-                email_address,
-                encrypted_password,
-                first_name,
-                id,
-                last_modified_timestamp_utc,
-                last_name,
-                lifecycle_state,
-                version
-            ) values (
-                'USR',
-                :createdTimestampUtc,
-                :displayName,
-                :emailAddress,
-                :encryptedPassword,
-                :firstName,
-                :id,
-                :lastModifiedTimestampUtc,
-                :lastName,
-                :lifecycleState,
-                :version
-            )
-            on conflict (email_address, type_discriminator)
-            do update set
-                encrypted_password = :encryptedPassword,
-                first_name = :firstName,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
-                last_name = :lastName,
-                lifecycle_state = :lifecycleState,
-                version = maia.v_party.version + 1
-            returning *;
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("displayName", upsertEntity.displayName)
-            addValue("emailAddress", upsertEntity.emailAddress)
-            addValue("encryptedPassword", upsertEntity.encryptedPassword)
-            addValue("firstName", upsertEntity.firstName)
-            addValue("id", upsertEntity.id)
-            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-            addValue("lastName", upsertEntity.lastName)
-            addValue("lifecycleState", upsertEntity.lifecycleState)
-            addValue("version", upsertEntity.version)
-            },
-            { ps: PreparedStatement ->
-                val rs = ps.executeQuery()
-                rs.next()
-                entityRowMapper.mapRow(ResultSetAdapter(rs))
-            }
-        )
-
-        val changeType = if (persistedEntity!!.id != upsertEntity.id) ChangeType.UPDATE else ChangeType.CREATE
-        insertHistory(persistedEntity, persistedEntity.version, changeType)
-
-        return persistedEntity!!
 
     }
 
@@ -547,8 +454,11 @@ class UserDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "authorities" -> sqlParams.addListOfStrings("authorities", field.value as List<Authority>) { it.name }
+            "createdById" -> sqlParams.addValue("createdById", field.value as DomainId?)
             "encryptedPassword" -> sqlParams.addValue("encryptedPassword", field.value as String)
             "firstName" -> sqlParams.addValue("firstName", field.value as FirstName?)
+            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "lastName" -> sqlParams.addValue("lastName", field.value as LastName)
             "lifecycleState" -> sqlParams.addValue("lifecycleState", field.value as LifecycleState)

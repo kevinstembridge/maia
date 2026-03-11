@@ -6,27 +6,28 @@ package org.maiaframework.showcase.org
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.showcase.party.PartyHistoryEntity
 import java.time.Instant
 
 
 class OrganizationHistoryEntity(
     changeType: ChangeType,
+    createdById: DomainId?,
     createdTimestampUtc: Instant,
     displayName: String,
-    emailAddress: EmailAddress,
     id: DomainId,
+    lastModifiedById: DomainId?,
     lastModifiedTimestampUtc: Instant,
     lifecycleState: LifecycleState,
     val orgName: String,
     version: Long
 ) : PartyHistoryEntity(
     changeType,
+    createdById,
     createdTimestampUtc,
     displayName,
-    emailAddress,
     id,
+    lastModifiedById,
     lastModifiedTimestampUtc,
     lifecycleState,
     version
@@ -37,10 +38,11 @@ class OrganizationHistoryEntity(
 
         return "OrganizationHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "orgName = '" + this.orgName + '\'' + ", " + 

@@ -2,15 +2,18 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/LifecycleState';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 
 
 export interface UserFetchForEditDto {
+    authorities: ReadonlyArray<Authority>;
+    createdById?: string;
     createdTimestampUtc: string;
     displayName: string;
-    emailAddress: string;
     encryptedPassword: string;
     firstName?: string;
     id: string;
+    lastModifiedById?: string;
     lastModifiedTimestampUtc: string;
     lastName: string;
     lifecycleState: LifecycleState;

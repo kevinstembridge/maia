@@ -6,16 +6,16 @@ package org.maiaframework.showcase.party
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import java.time.Instant
 
 
 abstract class PartyHistoryEntity(
     val changeType: ChangeType,
+    val createdById: DomainId?,
     val createdTimestampUtc: Instant,
     val displayName: String,
-    val emailAddress: EmailAddress,
     val id: DomainId,
+    val lastModifiedById: DomainId?,
     val lastModifiedTimestampUtc: Instant,
     val lifecycleState: LifecycleState,
     val version: Long
@@ -29,10 +29,11 @@ abstract class PartyHistoryEntity(
 
         return "PartyHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

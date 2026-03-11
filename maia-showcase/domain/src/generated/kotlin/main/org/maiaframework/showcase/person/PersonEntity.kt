@@ -5,7 +5,6 @@ package org.maiaframework.showcase.person
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.showcase.party.PartyEntity
@@ -13,20 +12,22 @@ import java.time.Instant
 
 
 open class PersonEntity(
+    createdById: DomainId?,
     createdTimestampUtc: Instant,
     displayName: String,
-    emailAddress: EmailAddress,
     val firstName: FirstName?,
     id: DomainId,
+    lastModifiedById: DomainId?,
     lastModifiedTimestampUtc: Instant,
     val lastName: LastName,
     lifecycleState: LifecycleState,
     version: Long
 ) : PartyEntity(
+    createdById,
     createdTimestampUtc,
     displayName,
-    emailAddress,
     id,
+    lastModifiedById,
     lastModifiedTimestampUtc,
     lifecycleState,
     version
@@ -36,11 +37,12 @@ open class PersonEntity(
     override fun toString(): String {
 
         return "PersonEntity{" +
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
@@ -60,8 +62,8 @@ open class PersonEntity(
 
         @JvmStatic
         fun newInstance(
+            createdById: DomainId?,
             displayName: String,
-            emailAddress: EmailAddress,
             firstName: FirstName?,
             lastName: LastName
         ): PersonEntity {
@@ -69,15 +71,17 @@ open class PersonEntity(
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedById = createdById
             val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
 
             return PersonEntity(
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 firstName,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,

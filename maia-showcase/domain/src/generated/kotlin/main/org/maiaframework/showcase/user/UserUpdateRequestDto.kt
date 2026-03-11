@@ -13,11 +13,15 @@ import org.hibernate.validator.constraints.Length
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
+import org.maiaframework.showcase.auth.Authority
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class UserUpdateRequestDto
 @JsonCreator constructor(
+    @param:NotNull 
+    @param:JsonProperty("authorities", access = JsonProperty.Access.READ_WRITE) 
+    private val authorities_raw: List<Authority>?,
     @param:Length(max = 100) 
     firstName: String?,
     @NotNull 
@@ -31,6 +35,11 @@ class UserUpdateRequestDto
     @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
     private val version_raw: Long?
 ) {
+
+
+    @get:JsonIgnore
+    val authorities
+        get() = authorities_raw!!
 
 
     @get:JsonIgnore
@@ -55,6 +64,7 @@ class UserUpdateRequestDto
     override fun toString(): String {
 
         return "UserUpdateRequestDto{" +
+                "authorities = '" + this.authorities + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "version = '" + this.version + '\'' + ", " + 

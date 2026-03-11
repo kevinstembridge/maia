@@ -6,32 +6,35 @@ package org.maiaframework.showcase.user
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
+import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.person.PersonHistoryEntity
 import java.time.Instant
 
 
 class UserHistoryEntity(
+    val authorities: List<Authority>,
     changeType: ChangeType,
+    createdById: DomainId?,
     createdTimestampUtc: Instant,
     displayName: String,
-    emailAddress: EmailAddress,
     val encryptedPassword: String,
     firstName: FirstName?,
     id: DomainId,
+    lastModifiedById: DomainId?,
     lastModifiedTimestampUtc: Instant,
     lastName: LastName,
     lifecycleState: LifecycleState,
     version: Long
 ) : PersonHistoryEntity(
     changeType,
+    createdById,
     createdTimestampUtc,
     displayName,
-    emailAddress,
     firstName,
     id,
+    lastModifiedById,
     lastModifiedTimestampUtc,
     lastName,
     lifecycleState,
@@ -42,13 +45,15 @@ class UserHistoryEntity(
     override fun toString(): String {
 
         return "UserHistoryEntity{" +
+                "authorities = '" + this.authorities + '\'' + ", " + 
                 "changeType = '" + this.changeType + '\'' + ", " + 
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 

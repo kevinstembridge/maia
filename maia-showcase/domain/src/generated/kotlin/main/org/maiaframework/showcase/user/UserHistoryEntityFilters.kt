@@ -7,12 +7,12 @@ import org.maiaframework.common.BlankStringException
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.jdbc.sql.conditions.AndOr
 import org.maiaframework.jdbc.sql.conditions.SqlConditionOperator
+import org.maiaframework.showcase.auth.Authority
 import java.sql.Timestamp
 import java.sql.Types
 import java.time.Instant
@@ -46,10 +46,26 @@ class UserHistoryEntityFilters {
     }
 
 
+    val authorities: ListFieldFilter<Authority> 
+        get() {
+
+            return ListFieldFilter("authorities")
+
+        }
+
+
     val changeType: FieldFilter<ChangeType> 
         get() {
 
             return FieldFilter("change_type", Types.VARCHAR, this.sqlParamCounter) { value -> value?.name }
+
+        }
+
+
+    val createdById: FieldFilter<DomainId?> 
+        get() {
+
+            return FieldFilter("created_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 
@@ -66,14 +82,6 @@ class UserHistoryEntityFilters {
         get() {
 
             return FieldFilter("display_name", Types.VARCHAR, this.sqlParamCounter) { value -> value }
-
-        }
-
-
-    val emailAddress: FieldFilter<EmailAddress> 
-        get() {
-
-            return FieldFilter("email_address", Types.VARCHAR, this.sqlParamCounter) { value -> value?.value }
 
         }
 
@@ -98,6 +106,14 @@ class UserHistoryEntityFilters {
         get() {
 
             return FieldFilter("id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+
+        }
+
+
+    val lastModifiedById: FieldFilter<DomainId?> 
+        get() {
+
+            return FieldFilter("last_modified_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 
@@ -257,6 +273,19 @@ class UserHistoryEntityFilters {
     }
 
 
+    class ListFieldFilter<T>(private val databaseColumnName: String) { 
+
+
+        infix fun contains(value: T): UserHistoryEntityFilter {
+
+            return ListFieldContainsFilter(this.databaseColumnName, value)
+
+        }
+
+
+    }
+
+
     class NoopFilter : UserHistoryEntityFilter {
 
 
@@ -380,6 +409,52 @@ class UserHistoryEntityFilters {
         override fun populateSqlParams(sqlParams: SqlParams) {
 
             this.filters.forEach { it.populateSqlParams(sqlParams) }
+
+        }
+
+
+    }
+
+
+    private class JsonListFieldContainsFilter<VALUE>(
+        private val databaseColumnName: String,
+        private val value: VALUE
+    ): UserHistoryEntityFilter {
+
+
+        override fun whereClause(fieldConverter: UserHistoryEntityFieldConverter): String {
+
+            return "jsonb_path_exists($databaseColumnName, '$ ? (@ == \"$value\")')"
+
+        }
+
+
+        override fun populateSqlParams(sqlParams: SqlParams) {
+
+            // do nothing
+
+        }
+
+
+    }
+
+
+    private class ListFieldContainsFilter<VALUE>(
+        private val databaseColumnName: String,
+        private val value: VALUE
+    ): UserHistoryEntityFilter {
+
+
+        override fun whereClause(fieldConverter: UserHistoryEntityFieldConverter): String {
+
+            return "'$value' = ANY($databaseColumnName)"
+
+        }
+
+
+        override fun populateSqlParams(sqlParams: SqlParams) {
+
+            // do nothing
 
         }
 

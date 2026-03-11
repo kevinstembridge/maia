@@ -16,8 +16,6 @@ class PersonSummaryDtoFieldConverter : SearchFieldConverter {
         when(tableColumnPath) {
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
-            "email_address" -> // emailAddress
-                return inputValue
             "first_name" -> // firstName
                 return inputValue
             "id" -> // id

@@ -28,7 +28,7 @@ class LoginPageTest : AbstractPlaywrightTest() {
         Thread.sleep(300)
 
         loginPage.submitForm(
-            user.userEntity.emailAddress,
+            user.emailAddressEntity.emailAddress,
             user.rawPassword
         )
 

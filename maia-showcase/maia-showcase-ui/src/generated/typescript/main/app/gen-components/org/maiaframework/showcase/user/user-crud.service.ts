@@ -4,10 +4,8 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
-import {UserEmailAddressRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserEmailAddressRequestDto';
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
-import {FormValidationResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -30,13 +28,6 @@ export class UserCrudService {
                 '/api/user/create',
                 requestDto,
                 this.httpOptions);
-
-    }
-
-
-    public existsByEmailAddress(requestBody: UserEmailAddressRequestDto): Observable<FormValidationResponseDto> {
-
-        return this.http.post<FormValidationResponseDto>('/api/user/exists_by_email_address', requestBody, this.httpOptions);
 
     }
 

@@ -5,11 +5,11 @@ package org.maiaframework.showcase.party
 
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.org.OrganizationHistoryEntity
 import org.maiaframework.showcase.person.PersonHistoryEntity
 import org.maiaframework.showcase.user.UserHistoryEntity
@@ -40,10 +40,11 @@ class PartyHistoryEntityRowMapper : MaiaRowMapper<PartyHistoryEntity> {
     private fun organizationHistoryEntityFrom(rsa: ResultSetAdapter): OrganizationHistoryEntity {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
+        val createdById = rsa.readDomainIdOrNull("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")
-        val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val id = rsa.readDomainId("id")
+        val lastModifiedById = rsa.readDomainIdOrNull("last_modified_by_id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val orgName = rsa.readString("org_name")
@@ -51,10 +52,11 @@ class PartyHistoryEntityRowMapper : MaiaRowMapper<PartyHistoryEntity> {
 
         return OrganizationHistoryEntity(
                 changeType,
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lifecycleState,
                 orgName,
@@ -66,26 +68,30 @@ class PartyHistoryEntityRowMapper : MaiaRowMapper<PartyHistoryEntity> {
 
     private fun userHistoryEntityFrom(rsa: ResultSetAdapter): UserHistoryEntity {
 
+        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
+        val createdById = rsa.readDomainIdOrNull("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")
-        val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val encryptedPassword = rsa.readString("encrypted_password")
         val firstName = rsa.readStringOrNull("first_name") { FirstName(it) }
         val id = rsa.readDomainId("id")
+        val lastModifiedById = rsa.readDomainIdOrNull("last_modified_by_id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val version = rsa.readLong("version")
 
         return UserHistoryEntity(
+                authorities,
                 changeType,
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 encryptedPassword,
                 firstName,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
@@ -98,11 +104,12 @@ class PartyHistoryEntityRowMapper : MaiaRowMapper<PartyHistoryEntity> {
     private fun personHistoryEntityFrom(rsa: ResultSetAdapter): PersonHistoryEntity {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
+        val createdById = rsa.readDomainIdOrNull("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")
-        val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val firstName = rsa.readStringOrNull("first_name") { FirstName(it) }
         val id = rsa.readDomainId("id")
+        val lastModifiedById = rsa.readDomainIdOrNull("last_modified_by_id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
@@ -110,11 +117,12 @@ class PartyHistoryEntityRowMapper : MaiaRowMapper<PartyHistoryEntity> {
 
         return PersonHistoryEntity(
                 changeType,
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 firstName,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,

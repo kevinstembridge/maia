@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.person
 
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.MaiaRowMapper
@@ -17,7 +16,6 @@ class PersonSummaryDtoRowMapper : MaiaRowMapper<PersonSummaryDto> {
 
         return PersonSummaryDto(
             rsa.readInstant("createdTimestampUtc"),
-            rsa.readString("emailAddress") { EmailAddress(it) },
             rsa.readStringOrNull("firstName") { FirstName(it) },
             rsa.readDomainId("id"),
             rsa.readString("lastName") { LastName(it) },

@@ -4,7 +4,6 @@
 package org.maiaframework.showcase.org
 
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 
@@ -14,20 +13,22 @@ class OrganizationEntityRowMapper : MaiaRowMapper<OrganizationEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): OrganizationEntity {
 
+        val createdById = rsa.readDomainIdOrNull("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")
-        val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val id = rsa.readDomainId("id")
+        val lastModifiedById = rsa.readDomainIdOrNull("last_modified_by_id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val orgName = rsa.readString("org_name")
         val version = rsa.readLong("version")
 
         return OrganizationEntity(
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lifecycleState,
                 orgName,

@@ -8,11 +8,13 @@
 --    Person -> PER
 CREATE TABLE maia.party (
     type_discriminator text not null,
+    authorities text[] NULL,
+    created_by_id uuid NULL,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    email_address text NOT NULL,
     encrypted_password text NULL,
     first_name text NULL,
     id uuid NOT NULL,
+    last_modified_by_id uuid NULL,
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     last_name text NULL,
     lifecycle_state text NOT NULL,
@@ -20,7 +22,6 @@ CREATE TABLE maia.party (
     version bigint NOT NULL,
     PRIMARY KEY(id)
 );
-CREATE UNIQUE INDEX party_email_address_uidx ON maia.party(email_address, type_discriminator);
 
 
 -- Type Discriminators:
@@ -29,12 +30,14 @@ CREATE UNIQUE INDEX party_email_address_uidx ON maia.party(email_address, type_d
 --    PersonHistory -> PER
 CREATE TABLE maia.party_history (
     type_discriminator text not null,
+    authorities text[] NULL,
     change_type text NOT NULL,
+    created_by_id uuid NULL,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    email_address text NOT NULL,
     encrypted_password text NULL,
     first_name text NULL,
     id uuid NOT NULL,
+    last_modified_by_id uuid NULL,
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     last_name text NULL,
     lifecycle_state text NOT NULL,
@@ -42,7 +45,6 @@ CREATE TABLE maia.party_history (
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );
-CREATE INDEX hist_party_email_address_idx ON maia.party_history(email_address, type_discriminator);
 
 
 -- Type Discriminators:
@@ -103,3 +105,54 @@ CREATE TABLE maia.org_user_group_membership_history (
 );
 CREATE INDEX hist_org_user_group_membership_org_user_group_id_user_id_idx ON maia.org_user_group_membership_history(org_user_group_id, user_id);
 CREATE INDEX hist_org_user_group_membership_user_id_idx ON maia.org_user_group_membership_history(user_id);
+
+
+CREATE TABLE maia.email_address (
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    email_address text NOT NULL,
+    id uuid NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    PRIMARY KEY(id)
+);
+CREATE UNIQUE INDEX email_address_email_address_uidx ON maia.email_address(email_address);
+
+
+CREATE TABLE maia.party_email_address (
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    effective_from timestamp(3) with time zone NULL,
+    effective_to timestamp(3) with time zone NULL,
+    email_address_id uuid NOT NULL REFERENCES maia.email_address(id),
+    id uuid NOT NULL,
+    is_primary_contact boolean NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    party_id uuid NOT NULL REFERENCES maia.party(id),
+    purposes text[] NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id)
+);
+CREATE INDEX party_email_address_email_address_id_idx ON maia.party_email_address(email_address_id);
+CREATE INDEX party_email_address_party_id_idx ON maia.party_email_address(party_id);
+
+
+CREATE TABLE maia.party_email_address_history (
+    change_type text NOT NULL,
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    effective_from timestamp(3) with time zone NULL,
+    effective_to timestamp(3) with time zone NULL,
+    email_address_id uuid NOT NULL REFERENCES maia.email_address(id),
+    id uuid NOT NULL,
+    is_primary_contact boolean NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    party_id uuid NOT NULL REFERENCES maia.party(id),
+    purposes text[] NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
+);
+CREATE INDEX hist_party_email_address_email_address_id_idx ON maia.party_email_address_history(email_address_id);
+CREATE INDEX hist_party_email_address_party_id_idx ON maia.party_email_address_history(party_id);

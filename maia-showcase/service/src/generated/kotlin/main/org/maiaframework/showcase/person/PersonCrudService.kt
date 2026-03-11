@@ -4,7 +4,6 @@
 package org.maiaframework.showcase.person
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.problem.MaiaProblems
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -24,13 +23,6 @@ class PersonCrudService(
 
         this.entityRepo.insert(entity)
         return entity
-
-    }
-
-
-    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
-
-        return this.entityRepo.existsByEmailAddress(emailAddress)
 
     }
 

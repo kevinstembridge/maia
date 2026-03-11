@@ -10,7 +10,6 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialo
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
-import {UserEmailAddressAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/user/UserEmailAddressAsyncValidator';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
@@ -50,17 +49,14 @@ export class UserCreateDialogComponent implements OnInit {
     private readonly formService = inject(UserCrudService);
 
 
-    private readonly userEmailAddressAsyncValidator = inject(UserEmailAddressAsyncValidator);
-
-
     constructor() {
 
         this.formGroup = new FormGroup(
             {
+                authorities: new FormControl('', { updateOn: 'change' }),
                 encryptedPassword: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                emailAddress: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(500)], asyncValidators: [this.userEmailAddressAsyncValidator.validate.bind(this.userEmailAddressAsyncValidator)] }),
             },
         );
 
@@ -81,7 +77,7 @@ export class UserCreateDialogComponent implements OnInit {
         }
 
         const requestDto = {
-            emailAddress: this.formGroup.getRawValue().emailAddress,
+            authorities: this.formGroup.getRawValue().authorities,
             encryptedPassword: this.formGroup.getRawValue().encryptedPassword,
             lastName: this.formGroup.getRawValue().lastName,
             firstName: this.formGroup.getRawValue().firstName,

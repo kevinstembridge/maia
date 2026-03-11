@@ -84,7 +84,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected fun `log in user`(userFixture: UserFixture) {
 
         `log in user`(
-            userFixture.userEntity.emailAddress,
+            userFixture.emailAddressEntity.emailAddress,
             userFixture.rawPassword
         )
 

@@ -13,6 +13,18 @@
             </mat-error>
         }
         <mat-form-field appearance="outline">
+            <mat-label>Authorities</mat-label>
+            <input
+                formControlName="authorities"
+                name="authorities"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['authorities'].hasError('required')) {
+                <mat-error>Authorities is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
                 formControlName="firstName"

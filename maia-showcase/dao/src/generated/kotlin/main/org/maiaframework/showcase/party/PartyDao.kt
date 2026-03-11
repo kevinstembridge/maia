@@ -7,13 +7,11 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
-import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.showcase.org.OrganizationEntity
 import org.maiaframework.showcase.org.OrganizationEntityMeta
@@ -29,7 +27,6 @@ import org.maiaframework.showcase.user.UserHistoryDao
 import org.maiaframework.showcase.user.UserHistoryEntity
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
-import java.sql.PreparedStatement
 import java.time.Instant
 
 
@@ -67,18 +64,20 @@ class PartyDao(
             """
             insert into maia.v_party (
                 type_discriminator,
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 lifecycle_state,
                 org_name,
                 version
             ) values (
                 :typeDiscriminator,
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :orgName,
@@ -87,10 +86,11 @@ class PartyDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", OrganizationEntityMeta.TYPE_DISCRIMINATOR)
+                addValue("createdById", entity.createdById)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
-                addValue("emailAddress", entity.emailAddress)
                 addValue("id", entity.id)
+                addValue("lastModifiedById", entity.lastModifiedById)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("orgName", entity.orgName)
@@ -109,22 +109,26 @@ class PartyDao(
             """
             insert into maia.v_party (
                 type_discriminator,
+                authorities,
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 encrypted_password,
                 first_name,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
                 version
             ) values (
                 :typeDiscriminator,
+                :authorities,
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :encryptedPassword,
                 :firstName,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -133,12 +137,14 @@ class PartyDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", UserEntityMeta.TYPE_DISCRIMINATOR)
+                addListOfStrings("authorities", entity.authorities.map { it.name })
+                addValue("createdById", entity.createdById)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
-                addValue("emailAddress", entity.emailAddress)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
+                addValue("lastModifiedById", entity.lastModifiedById)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -157,20 +163,22 @@ class PartyDao(
             """
             insert into maia.v_party (
                 type_discriminator,
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 first_name,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
                 version
             ) values (
                 :typeDiscriminator,
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :firstName,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -179,11 +187,12 @@ class PartyDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", PersonEntityMeta.TYPE_DISCRIMINATOR)
+                addValue("createdById", entity.createdById)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
-                addValue("emailAddress", entity.emailAddress)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
+                addValue("lastModifiedById", entity.lastModifiedById)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -201,16 +210,18 @@ class PartyDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.v_party (
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 lifecycle_state,
                 version
             ) values (
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :version
@@ -218,10 +229,11 @@ class PartyDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
+                    addValue("createdById", entity.createdById)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
-                    addValue("emailAddress", entity.emailAddress)
                     addValue("id", entity.id)
+                    addValue("lastModifiedById", entity.lastModifiedById)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("version", entity.version)
@@ -309,19 +321,21 @@ class PartyDao(
     ): OrganizationHistoryEntity {
 
         val id = entity.id
+        val createdById = entity.createdById
         val createdTimestampUtc = entity.createdTimestampUtc
         val displayName = entity.displayName
-        val emailAddress = entity.emailAddress
+        val lastModifiedById = entity.lastModifiedById
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lifecycleState = entity.lifecycleState
         val orgName = entity.orgName
 
         return OrganizationHistoryEntity(
                 changeType,
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lifecycleState,
                 orgName,
@@ -337,23 +351,27 @@ class PartyDao(
     ): UserHistoryEntity {
 
         val id = entity.id
+        val authorities = entity.authorities
+        val createdById = entity.createdById
         val createdTimestampUtc = entity.createdTimestampUtc
         val displayName = entity.displayName
-        val emailAddress = entity.emailAddress
         val encryptedPassword = entity.encryptedPassword
         val firstName = entity.firstName
+        val lastModifiedById = entity.lastModifiedById
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
 
         return UserHistoryEntity(
+                authorities,
                 changeType,
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 encryptedPassword,
                 firstName,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
@@ -369,21 +387,23 @@ class PartyDao(
     ): PersonHistoryEntity {
 
         val id = entity.id
+        val createdById = entity.createdById
         val createdTimestampUtc = entity.createdTimestampUtc
         val displayName = entity.displayName
-        val emailAddress = entity.emailAddress
         val firstName = entity.firstName
+        val lastModifiedById = entity.lastModifiedById
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
 
         return PersonHistoryEntity(
                 changeType,
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 firstName,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
@@ -462,31 +482,6 @@ class PartyDao(
         return count > 0
        
     }
-
-    fun findOneOrNullByEmailAddress(emailAddress: EmailAddress): PartyEntity? {
-
-        return jdbcOps.queryForList(
-            """
-            select * from maia.v_party
-            where email_address = :emailAddress
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("emailAddress", emailAddress)
-            },
-            this.entityRowMapper
-        ).firstOrNull()
-
-    }
-
-
-    @Throws(EntityNotFoundException::class)
-    fun findOneByEmailAddress(emailAddress: EmailAddress): PartyEntity {
-
-        return findOneOrNullByEmailAddress(emailAddress)
-            ?: throw EntityNotFoundException("No record with column [email_address = $emailAddress] found in table maia.v_party.", PartyEntityMeta.TABLE_NAME)
-
-    }
-
 
     fun findAllBy(filter: PartyEntityFilter): List<PartyEntity> {
 
@@ -584,80 +579,6 @@ class PartyDao(
     }
 
 
-    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
-
-        val count = jdbcOps.queryForInt(
-            """
-            select count(*) from maia.v_party
-            where email_address = :emailAddress
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("emailAddress", emailAddress)
-            }
-        )
-
-        return count > 0
-
-    }
-
-
-    fun upsertByEmailAddress(upsertEntity: PartyEntity): PartyEntity {
-
-        val persistedEntity = jdbcOps.execute(
-            """
-            insert into maia.v_party (
-                created_timestamp_utc,
-                display_name,
-                email_address,
-                id,
-                last_modified_timestamp_utc,
-                lifecycle_state,
-                version
-            ) values (
-                :createdTimestampUtc,
-                :displayName,
-                :emailAddress,
-                :id,
-                :lastModifiedTimestampUtc,
-                :lifecycleState,
-                :version
-            )
-            on conflict (email_address, type_discriminator)
-            do update set
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
-                lifecycle_state = :lifecycleState,
-                version = maia.v_party.version + 1
-            returning *;
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("displayName", upsertEntity.displayName)
-            addValue("emailAddress", upsertEntity.emailAddress)
-            addValue("id", upsertEntity.id)
-            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-            addValue("lifecycleState", upsertEntity.lifecycleState)
-            addValue("version", upsertEntity.version)
-            },
-            { ps: PreparedStatement ->
-                val rs = ps.executeQuery()
-                rs.next()
-                entityRowMapper.mapRow(ResultSetAdapter(rs))
-            }
-        )
-
-        val changeType = if (persistedEntity!!.id != upsertEntity.id) ChangeType.UPDATE else ChangeType.CREATE
-
-        when (persistedEntity) {
-            is OrganizationEntity -> insertHistory(persistedEntity, persistedEntity.version, changeType)
-            is UserEntity -> insertHistory(persistedEntity, persistedEntity.version, changeType)
-            is PersonEntity -> insertHistory(persistedEntity, persistedEntity.version, changeType)
-        }
-
-        return persistedEntity!!
-
-    }
-
-
     fun setFields(updaters: List<PartyEntityUpdater>) {
 
         updaters.forEach { setFields(it) }
@@ -716,6 +637,8 @@ class PartyDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "createdById" -> sqlParams.addValue("createdById", field.value as DomainId?)
+            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "lifecycleState" -> sqlParams.addValue("lifecycleState", field.value as LifecycleState)
         }
@@ -768,36 +691,6 @@ class PartyDao(
 
     fun deleteAll() {
         this.jdbcOps.update("delete from maia.v_party")
-    }
-
-
-    fun deleteByEmailAddress(emailAddress: EmailAddress): Boolean {
-
-        val existingEntity = findOneOrNullByEmailAddress(emailAddress) ?: return false
-
-        val deletedCount = this.jdbcOps.update(
-            "delete from maia.v_party where email_address = :emailAddress",
-            SqlParams().apply {
-                addValue("emailAddress", emailAddress)
-            }
-        )
-
-        if (deletedCount > 0) {
-
-            when (existingEntity) {
-                is OrganizationEntity -> insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
-                is UserEntity -> insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
-                is PersonEntity -> insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
-            }
-
-            return true
-
-        } else {
-
-            return false
-
-        }
-
     }
 
 

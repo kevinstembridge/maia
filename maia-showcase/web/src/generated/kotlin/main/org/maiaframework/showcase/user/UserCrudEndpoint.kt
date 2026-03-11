@@ -5,7 +5,6 @@ package org.maiaframework.showcase.user
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
-import org.maiaframework.webapp.domain.FormValidationResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
@@ -32,24 +31,6 @@ class UserCrudEndpoint(
     }
 
 
-    @PostMapping("/api/user/exists_by_email_address", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun existsByEmailAddress(@RequestBody @Valid dto: UserEmailAddressRequestDto): FormValidationResponseDto {
-
-        val emailAddress = dto.emailAddress
-
-        val invalid = this.crudService.existsByEmailAddress(emailAddress)
-
-        val message = if (invalid) {
-            "This Email Address is already in use."
-        } else {
-            null
-        }
-
-        return FormValidationResponseDto(invalid = invalid, message = message)
-
-    }
-
-
     @GetMapping("/api/user/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): UserFetchForEditDto {
 
@@ -62,6 +43,14 @@ class UserCrudEndpoint(
     fun update(@RequestBody @Valid editDto: UserUpdateRequestDto) {
 
         this.crudService.update(editDto)
+
+    }
+
+
+    @PutMapping("/api/user/inline/authorities", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateAuthorities(@RequestBody @Valid editDto: UserUpdate_authoritiesRequestDto) {
+
+        this.crudService.updateAuthorities(editDto)
 
     }
 

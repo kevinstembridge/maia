@@ -10,7 +10,6 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialo
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {UserEmailAddressAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/user/UserEmailAddressAsyncValidator';
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
@@ -59,18 +58,17 @@ export class UserEditDialogComponent implements OnInit {
     private readonly entityId = inject<string>(MAT_DIALOG_DATA);
 
 
-    private readonly userEmailAddressAsyncValidator = inject(UserEmailAddressAsyncValidator);
-
-
     constructor() {
 
         this.formGroup = new FormGroup(
             {
+                authorities: new FormControl('', { updateOn: 'change' }),
                 encryptedPassword: new FormControl({value: '', disabled: true}),
                 firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                emailAddress: new FormControl({value: '', disabled: true}),
                 displayName: new FormControl({value: '', disabled: true}),
+                createdById: new FormControl({value: '', disabled: true}),
+                lastModifiedById: new FormControl({value: '', disabled: true}),
                 lifecycleState: new FormControl({value: '', disabled: true}),
                 id: new FormControl({value: '', disabled: true}),
                 version: new FormControl({value: '', disabled: true}),
@@ -85,11 +83,13 @@ export class UserEditDialogComponent implements OnInit {
         this.formService.fetchForEdit(this.entityId).subscribe({
             next: (dto: UserFetchForEditDto) => {
                 this.formGroup.patchValue({
+                    authorities: dto.authorities,
                     encryptedPassword: dto.encryptedPassword,
                     firstName: dto.firstName,
                     lastName: dto.lastName,
-                    emailAddress: dto.emailAddress,
                     displayName: dto.displayName,
+                    createdById: dto.createdById,
+                    lastModifiedById: dto.lastModifiedById,
                     lifecycleState: dto.lifecycleState,
                     id: dto.id,
                     version: dto.version,
@@ -114,6 +114,7 @@ export class UserEditDialogComponent implements OnInit {
         }
 
         const requestDto = {
+            authorities: this.formGroup.getRawValue().authorities,
             id: this.formGroup.getRawValue().id,
             lastName: this.formGroup.getRawValue().lastName,
             version: this.formGroup.getRawValue().version,

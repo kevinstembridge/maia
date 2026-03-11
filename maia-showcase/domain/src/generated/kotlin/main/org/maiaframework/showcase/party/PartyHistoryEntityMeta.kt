@@ -17,13 +17,15 @@ object PartyHistoryEntityMeta {
 
     const val changeType = "change_type"
 
+    const val createdById = "created_by_id"
+
     const val createdTimestampUtc = "created_timestamp_utc"
 
     const val displayName = "display_name"
 
-    const val emailAddress = "email_address"
-
     const val id = "id"
+
+    const val lastModifiedById = "last_modified_by_id"
 
     const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
@@ -54,21 +56,15 @@ object PartyHistoryEntityMeta {
     }
 
 
-    object IndexName {
-
-        const val hist_party_email_address_idx = "hist_party_email_address_idx"
-
-    }
-
-
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
             "changeType" -> "change_type"
+            "createdById" -> "created_by_id"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "displayName" -> "display_name"
-            "emailAddress" -> "email_address"
             "id" -> "id"
+            "lastModifiedById" -> "last_modified_by_id"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "lifecycleState" -> "lifecycle_state"
             "version" -> "version"

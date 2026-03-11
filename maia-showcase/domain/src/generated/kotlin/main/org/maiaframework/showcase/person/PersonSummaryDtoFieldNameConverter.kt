@@ -15,7 +15,6 @@ class PersonSummaryDtoFieldNameConverter : SearchFieldNameConverter {
 
         return when(fieldName) {
             "createdTimestampUtc" -> "created_timestamp_utc"
-            "emailAddress" -> "email_address"
             "firstName" -> "first_name"
             "id" -> "id"
             "lastName" -> "last_name"

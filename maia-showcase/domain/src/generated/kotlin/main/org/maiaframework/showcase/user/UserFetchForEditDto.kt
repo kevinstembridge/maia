@@ -5,19 +5,21 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
+import org.maiaframework.showcase.auth.Authority
 import java.time.Instant
 
 
 data class UserFetchForEditDto(
+    val authorities: List<Authority>,
+    val createdById: DomainId?,
     val createdTimestampUtc: Instant,
     val displayName: String,
-    val emailAddress: EmailAddress,
     val encryptedPassword: String,
     val firstName: FirstName?,
     val id: DomainId,
+    val lastModifiedById: DomainId?,
     val lastModifiedTimestampUtc: Instant,
     val lastName: LastName,
     val lifecycleState: LifecycleState,
@@ -28,12 +30,14 @@ data class UserFetchForEditDto(
     override fun toString(): String {
 
         return "UserFetchForEditDto{" +
+                "authorities = '" + this.authorities + '\'' + ", " + 
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 

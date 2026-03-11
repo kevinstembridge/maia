@@ -5,7 +5,6 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.contact.EmailAddress
 import org.springframework.stereotype.Repository
 
 
@@ -67,27 +66,6 @@ class UserRepo(
     }
 
 
-    fun findOneOrNullByEmailAddress(emailAddress: EmailAddress): UserEntity? {
-
-        return dao.findOneOrNullByEmailAddress(emailAddress)
-
-    }
-
-
-    fun findOneByEmailAddress(emailAddress: EmailAddress): UserEntity {
-
-        return dao.findOneByEmailAddress(emailAddress)
-
-    }
-
-
-    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
-
-        return dao.existsByEmailAddress(emailAddress)
-
-    }
-
-
     fun fetchForEdit(id: DomainId): UserFetchForEditDto {
 
         return this.dao.fetchForEdit(id)
@@ -125,15 +103,6 @@ class UserRepo(
         logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
-
-    }
-
-
-    fun upsertByEmailAddress(upsertEntity: UserEntity): UserEntity {
-
-        logger.debug("upsert {}", upsertEntity)
-
-        return dao.upsertByEmailAddress(upsertEntity)
 
     }
 

@@ -7,22 +7,20 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
+import org.maiaframework.showcase.auth.Authority
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class UserCreateRequestDto
 @JsonCreator constructor(
-    @param:Email 
-    @param:NotBlank 
-    @param:Length(min = 5, max = 500) 
-    @param:JsonProperty("emailAddress", access = JsonProperty.Access.READ_WRITE) 
-    private val emailAddress_raw: String?,
+    @param:NotNull 
+    @param:JsonProperty("authorities", access = JsonProperty.Access.READ_WRITE) 
+    private val authorities_raw: List<Authority>?,
     @param:NotBlank 
     @param:Length(max = 100) 
     @param:JsonProperty("encryptedPassword", access = JsonProperty.Access.READ_WRITE) 
@@ -37,8 +35,8 @@ class UserCreateRequestDto
 
 
     @get:JsonIgnore
-    val emailAddress
-        get() = EmailAddress(emailAddress_raw!!)
+    val authorities
+        get() = authorities_raw!!
 
 
     @get:JsonIgnore
@@ -58,7 +56,7 @@ class UserCreateRequestDto
     override fun toString(): String {
 
         return "UserCreateRequestDto{" +
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
+                "authorities = '" + this.authorities + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "firstName = '" + this.firstName + '\'' +

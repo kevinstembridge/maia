@@ -5,11 +5,12 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
+import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.time.Instant
@@ -28,35 +29,44 @@ class UserCrudService(
 
     fun create(createDto: UserCreateRequestDto): UserEntity {
 
-        logger.info("BEGIN: create User. dto=$createDto")
+        val currentUser = CurrentUserHolder.currentUser
 
-        val entity: UserEntity = buildEntity(createDto)
+        logger.info("BEGIN: create User. createdBy=${currentUser.username}, dto=$createDto")
+
+        val entity: UserEntity = buildEntity(createDto, currentUser)
 
         return create(entity)
 
     }
 
 
-    private fun buildEntity(createDto: UserCreateRequestDto): UserEntity {
+    private fun buildEntity(
+        createDto: UserCreateRequestDto,
+        currentUser: MaiaUserDetails
+    ): UserEntity {
 
+        val authorities: List<Authority> = createDto.authorities
         val displayName: String = "DERIVED"
-        val emailAddress: EmailAddress = createDto.emailAddress
         val encryptedPassword: String = createDto.encryptedPassword
         val firstName: FirstName? = createDto.firstName
         val lastName: LastName = createDto.lastName
+        val createdById = currentUser.userId
         val id = DomainId.newId()
         val createdTimestampUtc = Instant.now()
+        val lastModifiedById = currentUser.userId
         val lastModifiedTimestampUtc = createdTimestampUtc
         val lifecycleState = LifecycleState.ACTIVE
         val version = 1L
 
         return UserEntity(
+            authorities,
+            createdById,
             createdTimestampUtc,
             displayName,
-            emailAddress,
             encryptedPassword,
             firstName,
             id,
+            lastModifiedById,
             lastModifiedTimestampUtc,
             lastName,
             lifecycleState,
@@ -75,13 +85,6 @@ class UserCrudService(
     }
 
 
-    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
-
-        return this.entityRepo.existsByEmailAddress(emailAddress)
-
-    }
-
-
     fun fetchForEdit(id: DomainId): UserFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -94,8 +97,29 @@ class UserCrudService(
         val id = editDto.id
         val version = editDto.version
         val updater = UserEntityUpdater.forPrimaryKey(id, version) {
+            authorities(editDto.authorities)
             lastName(editDto.lastName)
             firstName(editDto.firstName)
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun updateAuthorities(editDto: UserUpdate_authoritiesRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateAuthorities. currentUsername=${currentUsername}, dto=$editDto")
+
+        val version = editDto.version
+
+        val updater = UserEntityUpdater.forPrimaryKey(editDto.id, version) {
+            authorities(editDto.authorities)
+            lastModifiedById(CurrentUserHolder.userId)
             lastModifiedTimestampUtc(Instant.now())
         }
 
@@ -114,6 +138,7 @@ class UserCrudService(
 
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id, version) {
             firstName(editDto.firstName)
+            lastModifiedById(CurrentUserHolder.userId)
             lastModifiedTimestampUtc(Instant.now())
         }
 
@@ -132,6 +157,7 @@ class UserCrudService(
 
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id, version) {
             lastName(editDto.lastName)
+            lastModifiedById(CurrentUserHolder.userId)
             lastModifiedTimestampUtc(Instant.now())
         }
 

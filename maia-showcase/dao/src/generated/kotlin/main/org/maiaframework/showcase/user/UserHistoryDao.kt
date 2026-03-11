@@ -5,7 +5,6 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -32,24 +31,28 @@ class UserHistoryDao(
             """
             insert into maia.v_party_history (
                 type_discriminator,
+                authorities,
                 change_type,
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 encrypted_password,
                 first_name,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
                 version
             ) values (
                 'USR',
+                :authorities,
                 :changeType,
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :encryptedPassword,
                 :firstName,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -57,13 +60,15 @@ class UserHistoryDao(
             )
             """.trimIndent(),
             SqlParams().apply {
+                addListOfStrings("authorities", entity.authorities.map { it.name })
                 addValue("changeType", entity.changeType)
+                addValue("createdById", entity.createdById)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
-                addValue("emailAddress", entity.emailAddress)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
+                addValue("lastModifiedById", entity.lastModifiedById)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -80,24 +85,28 @@ class UserHistoryDao(
             """
             insert into maia.v_party_history (
                 type_discriminator,
+                authorities,
                 change_type,
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 encrypted_password,
                 first_name,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 last_name,
                 lifecycle_state,
                 version
             ) values (
                 'USR',
+                :authorities,
                 :changeType,
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :encryptedPassword,
                 :firstName,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -106,13 +115,15 @@ class UserHistoryDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
+                    addListOfStrings("authorities", entity.authorities.map { it.name })
                     addValue("changeType", entity.changeType)
+                    addValue("createdById", entity.createdById)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
-                    addValue("emailAddress", entity.emailAddress)
                     addValue("encryptedPassword", entity.encryptedPassword)
                     addValue("firstName", entity.firstName)
                     addValue("id", entity.id)
+                    addValue("lastModifiedById", entity.lastModifiedById)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)
@@ -197,22 +208,6 @@ class UserHistoryDao(
         return count > 0
        
     }
-
-    fun findByEmailAddress(emailAddress: EmailAddress): List<UserHistoryEntity> {
-
-        return jdbcOps.queryForList(
-            """
-            select * from maia.v_party_history
-            where email_address = :emailAddress
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("emailAddress", emailAddress)
-            },
-            this.entityRowMapper
-        )
-
-    }
-
 
     fun findAllBy(filter: UserHistoryEntityFilter): List<UserHistoryEntity> {
 

@@ -13,11 +13,10 @@ object PersonSummaryDtoMeta {
 
         return when(dtoFieldName) {
             "createdTimestampUtc" -> "maia.v_party.created_timestamp_utc"
-            "emailAddress" -> "maia.v_party.email_address"
             "firstName" -> "maia.v_party.first_name"
             "id" -> "maia.v_party.id"
             "lastName" -> "maia.v_party.last_name"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, emailAddress, firstName, id, lastName]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, firstName, id, lastName]")
         }
 
     }
@@ -27,11 +26,10 @@ object PersonSummaryDtoMeta {
 
         return when(dtoFieldName) {
             "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
-            "emailAddress" -> JdbcCompatibleType.text
             "firstName" -> JdbcCompatibleType.text
             "id" -> JdbcCompatibleType.uuid
             "lastName" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, emailAddress, firstName, id, lastName]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, firstName, id, lastName]")
         }
 
     }

@@ -6,7 +6,6 @@ package org.maiaframework.showcase.person
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.showcase.party.PartyHistoryEntity
@@ -15,21 +14,23 @@ import java.time.Instant
 
 open class PersonHistoryEntity(
     changeType: ChangeType,
+    createdById: DomainId?,
     createdTimestampUtc: Instant,
     displayName: String,
-    emailAddress: EmailAddress,
     val firstName: FirstName?,
     id: DomainId,
+    lastModifiedById: DomainId?,
     lastModifiedTimestampUtc: Instant,
     val lastName: LastName,
     lifecycleState: LifecycleState,
     version: Long
 ) : PartyHistoryEntity(
     changeType,
+    createdById,
     createdTimestampUtc,
     displayName,
-    emailAddress,
     id,
+    lastModifiedById,
     lastModifiedTimestampUtc,
     lifecycleState,
     version
@@ -40,11 +41,12 @@ open class PersonHistoryEntity(
 
         return "PersonHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 

@@ -4,7 +4,6 @@
 package org.maiaframework.showcase.person
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import java.time.Instant
@@ -12,7 +11,6 @@ import java.time.Instant
 
 data class PersonSummaryDto(
     val createdTimestampUtc: Instant,
-    val emailAddress: EmailAddress,
     val firstName: FirstName?,
     val id: DomainId,
     val lastName: LastName

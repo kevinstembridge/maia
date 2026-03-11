@@ -2,13 +2,18 @@ package org.maiaframework.showcase.testing.fixtures
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.auth.EncryptedPassword
+import org.maiaframework.domain.contact.EmailAddress
+import org.maiaframework.domain.contact.EmailAddressPurpose
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SchemaAndTableName
+import org.maiaframework.showcase.contact.EmailAddressEntity
+import org.maiaframework.showcase.party.PartyEmailAddressEntityTestBuilder
 import org.maiaframework.showcase.party.UserEntityTestBuilder
 import org.maiaframework.showcase.testing.MaiaShowcaseAnys
 import org.maiaframework.showcase.user.UserDao
 import org.maiaframework.showcase.user.UserEntityMeta
 import org.maiaframework.testing.domain.Anys
+import org.maiaframework.testing.domain.Anys.anyDomainName
 import org.maiaframework.testing.domain.Anys.anyPassword
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
@@ -35,6 +40,9 @@ class Fixtures(
     private val userFixtures = mutableListOf<UserFixture>()
 
 
+    private val partyEmailAddressFixtures = mutableListOf<PartyEmailAddressFixture>()
+
+
     fun aUser(
         vararg userFixtureConfigurers: (UserEntityTestBuilder) -> UserEntityTestBuilder,
     ): UserFixture {
@@ -46,10 +54,27 @@ class Fixtures(
         val updatedUserEntityTestBuilder = userFixtureConfigurers.fold(initialUserEntityTestBuilder) { carry, fn -> fn.invoke(carry) }
 
         val userEntity = updatedUserEntityTestBuilder.build()
+        val emailAddressEntity = EmailAddressEntity.newInstance(
+            createdById = Anys.defaultCreatedById,
+            EmailAddress("${userEntity.firstName}.${userEntity.lastName}_${uniqueEmailAddressCounter.getAndIncrement()}@${anyDomainName()}")
+        )
 
-        val userFixture = UserFixture(userEntity, rawPassword)
+        val partyEmailAddressEntity = PartyEmailAddressEntityTestBuilder()
+            .copy(
+                emailAddressId = emailAddressEntity.id,
+                partyId = userEntity.id,
+                purposes = listOf(EmailAddressPurpose.USER_LOGIN)
+            )
+            .build()
+
+        val userFixture = UserFixture(userEntity, emailAddressEntity, rawPassword)
 
         this.userFixtures.add(userFixture)
+
+        val partyEmailAddressFixture = PartyEmailAddressFixture(partyEmailAddressEntity)
+
+        this.userFixtures.add(userFixture)
+        this.partyEmailAddressFixtures.add(partyEmailAddressFixture)
 
         return userFixture
 

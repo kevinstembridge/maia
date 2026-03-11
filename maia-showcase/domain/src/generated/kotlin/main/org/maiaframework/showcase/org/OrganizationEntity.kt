@@ -5,25 +5,26 @@ package org.maiaframework.showcase.org
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.showcase.party.PartyEntity
 import java.time.Instant
 
 
 class OrganizationEntity(
+    createdById: DomainId?,
     createdTimestampUtc: Instant,
     displayName: String,
-    emailAddress: EmailAddress,
     id: DomainId,
+    lastModifiedById: DomainId?,
     lastModifiedTimestampUtc: Instant,
     lifecycleState: LifecycleState,
     val orgName: String,
     version: Long
 ) : PartyEntity(
+    createdById,
     createdTimestampUtc,
     displayName,
-    emailAddress,
     id,
+    lastModifiedById,
     lastModifiedTimestampUtc,
     lifecycleState,
     version
@@ -33,10 +34,11 @@ class OrganizationEntity(
     override fun toString(): String {
 
         return "OrganizationEntity{" +
+                "createdById = '" + this.createdById + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "orgName = '" + this.orgName + '\'' + ", " + 
@@ -56,22 +58,24 @@ class OrganizationEntity(
 
         @JvmStatic
         fun newInstance(
+            createdById: DomainId?,
             displayName: String,
-            emailAddress: EmailAddress,
             orgName: String
         ): OrganizationEntity {
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedById = createdById
             val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
 
             return OrganizationEntity(
+                createdById,
                 createdTimestampUtc,
                 displayName,
-                emailAddress,
                 id,
+                lastModifiedById,
                 lastModifiedTimestampUtc,
                 lifecycleState,
                 orgName,

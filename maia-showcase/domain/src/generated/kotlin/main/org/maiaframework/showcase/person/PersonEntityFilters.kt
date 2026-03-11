@@ -6,7 +6,6 @@ package org.maiaframework.showcase.person
 import org.maiaframework.common.BlankStringException
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.SqlParams
@@ -45,6 +44,14 @@ class PersonEntityFilters {
     }
 
 
+    val createdById: FieldFilter<DomainId?> 
+        get() {
+
+            return FieldFilter("created_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+
+        }
+
+
     val createdTimestampUtc: FieldFilter<Instant> 
         get() {
 
@@ -61,14 +68,6 @@ class PersonEntityFilters {
         }
 
 
-    val emailAddress: FieldFilter<EmailAddress> 
-        get() {
-
-            return FieldFilter("email_address", Types.VARCHAR, this.sqlParamCounter) { value -> value?.value }
-
-        }
-
-
     val firstName: FieldFilter<FirstName?> 
         get() {
 
@@ -81,6 +80,14 @@ class PersonEntityFilters {
         get() {
 
             return FieldFilter("id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+
+        }
+
+
+    val lastModifiedById: FieldFilter<DomainId?> 
+        get() {
+
+            return FieldFilter("last_modified_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 

@@ -1,7 +1,6 @@
 package org.maiaframework.showcase.testing
 
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.showcase.user.UserEntity
@@ -12,12 +11,14 @@ object MaiaShowcaseAnys {
 
 
     val defaultUser = UserEntity(
+        emptyList(),
+        createdById = null,
         Instant.now(),
         "Some display Name",
-        EmailAddress("nigel.nigelson@maiaframework.org"),
         "password",
         FirstName("Nigel"),
         Anys.defaultCreatedById,
+        lastModifiedById = null,
         Instant.now(),
         LastName("Nigelson"),
         LifecycleState.ACTIVE,

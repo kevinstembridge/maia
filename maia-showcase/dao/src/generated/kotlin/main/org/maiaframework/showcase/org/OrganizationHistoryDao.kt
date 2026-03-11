@@ -5,7 +5,6 @@ package org.maiaframework.showcase.org
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SqlParams
@@ -33,9 +32,10 @@ class OrganizationHistoryDao(
             insert into maia.v_party_history (
                 type_discriminator,
                 change_type,
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 lifecycle_state,
                 org_name,
@@ -43,9 +43,10 @@ class OrganizationHistoryDao(
             ) values (
                 'ORG',
                 :changeType,
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :orgName,
@@ -54,10 +55,11 @@ class OrganizationHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
+                addValue("createdById", entity.createdById)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
-                addValue("emailAddress", entity.emailAddress)
                 addValue("id", entity.id)
+                addValue("lastModifiedById", entity.lastModifiedById)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("orgName", entity.orgName)
@@ -75,9 +77,10 @@ class OrganizationHistoryDao(
             insert into maia.v_party_history (
                 type_discriminator,
                 change_type,
+                created_by_id,
                 created_timestamp_utc,
-                email_address,
                 id,
+                last_modified_by_id,
                 last_modified_timestamp_utc,
                 lifecycle_state,
                 org_name,
@@ -85,9 +88,10 @@ class OrganizationHistoryDao(
             ) values (
                 'ORG',
                 :changeType,
+                :createdById,
                 :createdTimestampUtc,
-                :emailAddress,
                 :id,
+                :lastModifiedById,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :orgName,
@@ -97,10 +101,11 @@ class OrganizationHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
+                    addValue("createdById", entity.createdById)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
-                    addValue("emailAddress", entity.emailAddress)
                     addValue("id", entity.id)
+                    addValue("lastModifiedById", entity.lastModifiedById)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("orgName", entity.orgName)
@@ -185,22 +190,6 @@ class OrganizationHistoryDao(
         return count > 0
        
     }
-
-    fun findByEmailAddress(emailAddress: EmailAddress): List<OrganizationHistoryEntity> {
-
-        return jdbcOps.queryForList(
-            """
-            select * from maia.v_party_history
-            where email_address = :emailAddress
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("emailAddress", emailAddress)
-            },
-            this.entityRowMapper
-        )
-
-    }
-
 
     fun findAllBy(filter: OrganizationHistoryEntityFilter): List<OrganizationHistoryEntity> {
 

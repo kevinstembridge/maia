@@ -4,7 +4,6 @@
 
 export interface PersonSummaryDto {
     createdTimestampUtc: string;
-    emailAddress: string;
     firstName?: string;
     id: string;
     lastName: string;

@@ -7,6 +7,18 @@
             </mat-error>
         }
         <mat-form-field appearance="outline">
+            <mat-label>Authorities</mat-label>
+            <input
+                formControlName="authorities"
+                name="authorities"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['authorities'].hasError('required')) {
+                <mat-error>Authorities is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>null</mat-label>
             <input
                 formControlName="encryptedPassword"
@@ -46,30 +58,6 @@
             }
             @if (formGroup.controls['lastName'].hasError('maxlength')) {
                 <mat-error>null must not be more than 100 characters.</mat-error>
-            }
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Email Address</mat-label>
-            <input
-                formControlName="emailAddress"
-                name="emailAddress"
-                type="text"
-                matInput
-            />
-            @if (formGroup.controls['emailAddress'].hasError('required')) {
-                <mat-error>Email Address is required.</mat-error>
-            }
-            @if (formGroup.controls['emailAddress'].hasError('email')) {
-                <mat-error>Email Address must be valid.</mat-error>
-            }
-            @if (formGroup.controls['emailAddress'].hasError('minlength')) {
-                <mat-error>Email Address must be at least 5 characters.</mat-error>
-            }
-            @if (formGroup.controls['emailAddress'].hasError('maxlength')) {
-                <mat-error>Email Address must not be more than 500 characters.</mat-error>
-            }
-            @if (formGroup.controls['emailAddress'].hasError('message')) {
-                <mat-error>{{ formGroup.controls['emailAddress']?.['errors']?.['message'] }}</mat-error>
             }
         </mat-form-field>
     </div>

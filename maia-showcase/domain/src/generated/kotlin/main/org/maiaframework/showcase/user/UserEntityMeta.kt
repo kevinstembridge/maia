@@ -12,17 +12,21 @@ import org.maiaframework.jdbc.TableName
 
 object UserEntityMeta {
 
+    const val authorities = "authorities"
+
+    const val createdById = "created_by_id"
+
     const val createdTimestampUtc = "created_timestamp_utc"
 
     const val displayName = "display_name"
-
-    const val emailAddress = "email_address"
 
     const val encryptedPassword = "encrypted_password"
 
     const val firstName = "first_name"
 
     const val id = "id"
+
+    const val lastModifiedById = "last_modified_by_id"
 
     const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
@@ -45,22 +49,17 @@ object UserEntityMeta {
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
 
-    object IndexName {
-
-        const val user_email_address_uidx = "user_email_address_uidx"
-
-    }
-
-
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
+            "authorities" -> "authorities"
+            "createdById" -> "created_by_id"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "displayName" -> "display_name"
-            "emailAddress" -> "email_address"
             "encryptedPassword" -> "encrypted_password"
             "firstName" -> "first_name"
             "id" -> "id"
+            "lastModifiedById" -> "last_modified_by_id"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "lastName" -> "last_name"
             "lifecycleState" -> "lifecycle_state"
