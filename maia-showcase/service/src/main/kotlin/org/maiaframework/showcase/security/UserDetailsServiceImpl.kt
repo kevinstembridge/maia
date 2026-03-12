@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.security
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.showcase.user.UserRepo
 import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 
 
-class UserDetailsServiceImpl(private val passwordEncoder: PasswordEncoder) : UserDetailsService {
+class UserDetailsServiceImpl(private val userRepo: UserRepo, private val passwordEncoder: PasswordEncoder) : UserDetailsService {
 
 
     private val usersByUsername: Map<String, () -> MaiaUserDetails> = mapOf(

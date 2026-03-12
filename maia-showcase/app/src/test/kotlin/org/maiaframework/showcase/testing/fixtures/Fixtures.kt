@@ -10,12 +10,12 @@ import org.maiaframework.jdbc.SchemaAndTableName
 import org.maiaframework.showcase.contact.EmailAddressEntity
 import org.maiaframework.showcase.contact.EmailAddressEntityMeta
 import org.maiaframework.showcase.party.PartyEmailAddressEntityTestBuilder
+import org.maiaframework.showcase.party.PartyEntityMeta
 import org.maiaframework.showcase.party.UserEntityTestBuilder
 import org.maiaframework.showcase.party.contact.PartyEmailAddressEntityMeta
 import org.maiaframework.showcase.party.contact.PartyEmailAddressHistoryEntityMeta
 import org.maiaframework.showcase.testing.MaiaShowcaseAnys
 import org.maiaframework.showcase.user.UserDao
-import org.maiaframework.showcase.user.UserEntityMeta
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyDomainName
 import org.maiaframework.testing.domain.Anys.anyPassword
@@ -77,7 +77,6 @@ class Fixtures(
 
         val partyEmailAddressFixture = PartyEmailAddressFixture(partyEmailAddressEntity)
 
-        this.userFixtures.add(userFixture)
         this.partyEmailAddressFixtures.add(partyEmailAddressFixture)
 
         return userFixture
@@ -119,7 +118,7 @@ class Fixtures(
 
     private fun deleteParties() {
 
-        this.jdbcOps.update("delete from ${UserEntityMeta.SCHEMA_AND_TABLE_NAME} where id != '${Anys.defaultCreatedById}'")
+        this.jdbcOps.update("delete from ${PartyEntityMeta.SCHEMA_AND_TABLE_NAME} where id != '${Anys.defaultCreatedById}'")
 
     }
 
