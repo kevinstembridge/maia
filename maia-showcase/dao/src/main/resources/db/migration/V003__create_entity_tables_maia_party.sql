@@ -156,3 +156,18 @@ CREATE TABLE maia.party_email_address_history (
 );
 CREATE INDEX hist_party_email_address_email_address_id_idx ON maia.party_email_address_history(email_address_id);
 CREATE INDEX hist_party_email_address_party_id_idx ON maia.party_email_address_history(party_id);
+
+
+CREATE TABLE maia.email_address_verification (
+    created_by_id uuid NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    effective_from timestamp(3) with time zone NULL,
+    effective_to timestamp(3) with time zone NULL,
+    email_address_id uuid NOT NULL,
+    id uuid NOT NULL,
+    ip_address text NULL,
+    last_modified_by_id uuid NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id)
+);

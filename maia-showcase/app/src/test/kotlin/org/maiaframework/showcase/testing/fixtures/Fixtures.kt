@@ -1,5 +1,6 @@
 package org.maiaframework.showcase.testing.fixtures
 
+import la.contact.EmailAddressVerificationEntityMeta
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.auth.EncryptedPassword
 import org.maiaframework.domain.contact.EmailAddress
@@ -7,8 +8,11 @@ import org.maiaframework.domain.contact.EmailAddressPurpose
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.SchemaAndTableName
 import org.maiaframework.showcase.contact.EmailAddressEntity
+import org.maiaframework.showcase.contact.EmailAddressEntityMeta
 import org.maiaframework.showcase.party.PartyEmailAddressEntityTestBuilder
 import org.maiaframework.showcase.party.UserEntityTestBuilder
+import org.maiaframework.showcase.party.contact.PartyEmailAddressEntityMeta
+import org.maiaframework.showcase.party.contact.PartyEmailAddressHistoryEntityMeta
 import org.maiaframework.showcase.testing.MaiaShowcaseAnys
 import org.maiaframework.showcase.user.UserDao
 import org.maiaframework.showcase.user.UserEntityMeta
@@ -85,6 +89,11 @@ class Fixtures(
 
         logger.info("Resetting database state")
 
+        truncateTable(PartyEmailAddressHistoryEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(PartyEmailAddressEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(EmailAddressEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(EmailAddressVerificationEntityMeta.SCHEMA_AND_TABLE_NAME)
+//        truncateTable(WebsiteUrlEntityMeta.SCHEMA_AND_TABLE_NAME)
         deleteParties()
 
         try {

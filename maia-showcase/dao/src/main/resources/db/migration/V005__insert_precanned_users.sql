@@ -13,7 +13,7 @@ insert into maia.party (
     lifecycle_state,
     version
 ) values (
-    'U',
+    'USR',
     '{}', -- authorities
     null, -- created_by_id
     current_timestamp,
@@ -41,7 +41,7 @@ insert into maia.party (
     lifecycle_state,
     version
 ) values (
-    'U',
+    'USR',
     '{}', --authorities
     null, -- created_by_id
     current_timestamp,
@@ -70,7 +70,7 @@ insert into maia.party (
     lifecycle_state,
     encrypted_password
 ) values (
-    'U',
+    'USR',
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
     gen_random_uuid(),
@@ -116,7 +116,7 @@ INSERT INTO maia.email_address_verification(
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
     null,
-    (select id from la.email_address where email_address = 'admin.preloaded@maiaframework.org'),
+    (select id from maia.email_address where email_address = 'admin@maiaframework.org'),
     gen_random_uuid(),
     null,
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
@@ -143,7 +143,7 @@ INSERT INTO maia.party_email_address(
     current_timestamp,
     current_timestamp,
     null,
-    (select id from la.email_address where email_address = 'admin@maiaframework.org'),
+    (select id from maia.email_address where email_address = 'admin@maiaframework.org'),
     gen_random_uuid(),
     true,
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
@@ -168,7 +168,7 @@ insert into maia.party (
     lifecycle_state,
     encrypted_password
 ) values (
-    'U',
+    'USR',
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
     gen_random_uuid(),
@@ -214,7 +214,7 @@ INSERT INTO maia.email_address_verification(
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
     null,
-    (select id from la.email_address where email_address = 'sysops@maiaframework.org'),
+    (select id from maia.email_address where email_address = 'sysops@maiaframework.org'),
     gen_random_uuid(),
     null,
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
@@ -241,7 +241,7 @@ INSERT INTO maia.party_email_address(
     current_timestamp,
     current_timestamp,
     null,
-    (select id from la.email_address where email_address = 'sysops@maiaframework.org'),
+    (select id from maia.email_address where email_address = 'sysops@maiaframework.org'),
     gen_random_uuid(),
     true,
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',

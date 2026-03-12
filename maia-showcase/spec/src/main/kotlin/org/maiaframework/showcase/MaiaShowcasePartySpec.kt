@@ -58,6 +58,11 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
+    val ipAddressStringType = stringType("org.maiaframework.domain.net", "IpAddress") {
+        provided()
+    }
+
+
     val someIntTypeDef = intType("org.maiaframework.showcase.types", "SomeIntType")
 
 
@@ -366,6 +371,24 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         index {
             withFieldAscending("partyId")
         }
+    }
+
+
+    val emailAddressVerificationEntityDef = entity(
+        "la.contact",
+        "EmailAddressVerification",
+        versioned = true
+    ) {
+        moduleName("ops")
+        field("emailAddressId", FieldTypes.domainId)
+        field("ipAddress", ipAddressStringType) {
+            nullable()
+            lengthConstraint(min = 11, max = 20)
+        }
+        field_createdById(partyEntityDef, nullable = true)
+        field_lastModifiedById(partyEntityDef, nullable = true)
+        field_lastModifiedTimestampUtc()
+        withEffectiveTimestamps()
     }
 
 
