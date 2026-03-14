@@ -62,13 +62,6 @@ class MaiaShowcaseSecurityConfiguration {
 
 
     @Bean
-    fun userDetailsService(passwordEncoder: PasswordEncoder): UserDetailsService {
-
-        return UserDetailsServiceImpl(passwordEncoder)
-    }
-
-
-    @Bean
     fun authorizeHttpRequests(): AuthorizeHttpRequestsDsl.() -> Unit = {
 
         authorize(DispatcherTypeRequestMatcher(DispatcherType.FORWARD), permitAll)
