@@ -66,6 +66,20 @@ class UserGroupMembershipRepo(
     }
 
 
+    fun findByUserGroupId(userGroupId: DomainId): List<UserGroupMembershipEntity> {
+
+        return dao.findByUserGroupId(userGroupId)
+
+    }
+
+
+    fun findByUserId(userId: DomainId): List<UserGroupMembershipEntity> {
+
+        return dao.findByUserId(userId)
+
+    }
+
+
     fun existsByUserGroupId(userGroupId: DomainId): Boolean {
 
         return dao.existsByUserGroupId(userGroupId)

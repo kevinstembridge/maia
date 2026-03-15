@@ -491,6 +491,14 @@ abstract class AbstractSpec protected constructor(
             }
         }
 
+        builder.index {
+            withFieldAscending("${leftEntity.fieldName}Id")
+        }
+
+        builder.index {
+            withFieldAscending("${rightEntity.fieldName}Id")
+        }
+
         init?.invoke(builder)
         val entityDef = builder.build()
         entityDefs.add(entityDef)

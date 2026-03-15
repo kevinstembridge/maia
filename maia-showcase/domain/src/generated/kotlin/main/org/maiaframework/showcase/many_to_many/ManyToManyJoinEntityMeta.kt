@@ -33,6 +33,15 @@ object ManyToManyJoinEntityMeta {
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
 
+    object IndexName {
+
+        const val many_to_many_join_left_id_idx = "many_to_many_join_left_id_idx"
+
+        const val many_to_many_join_right_id_idx = "many_to_many_join_right_id_idx"
+
+    }
+
+
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {

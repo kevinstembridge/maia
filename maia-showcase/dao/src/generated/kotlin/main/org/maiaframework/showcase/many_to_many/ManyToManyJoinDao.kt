@@ -161,6 +161,38 @@ class ManyToManyJoinDao(
        
     }
 
+    fun findByLeftId(leftId: DomainId): List<ManyToManyJoinEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.many_to_many_join
+            where left_id = :leftId
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("leftId", leftId)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findByRightId(rightId: DomainId): List<ManyToManyJoinEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.many_to_many_join
+            where right_id = :rightId
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("rightId", rightId)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
     fun findAllBy(filter: ManyToManyJoinEntityFilter): List<ManyToManyJoinEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)

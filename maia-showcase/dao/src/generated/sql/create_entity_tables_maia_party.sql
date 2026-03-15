@@ -90,6 +90,8 @@ CREATE TABLE maia.user_group_membership (
     version bigint NOT NULL,
     PRIMARY KEY(id)
 );
+CREATE INDEX user_group_membership_user_group_id_idx ON maia.user_group_membership(user_group_id);
+CREATE INDEX user_group_membership_user_id_idx ON maia.user_group_membership(user_id);
 
 
 CREATE TABLE maia.user_group_membership_history (
@@ -101,6 +103,8 @@ CREATE TABLE maia.user_group_membership_history (
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );
+CREATE INDEX hist_user_group_membership_user_group_id_idx ON maia.user_group_membership_history(user_group_id);
+CREATE INDEX hist_user_group_membership_user_id_idx ON maia.user_group_membership_history(user_id);
 
 
 CREATE TABLE maia.email_address (

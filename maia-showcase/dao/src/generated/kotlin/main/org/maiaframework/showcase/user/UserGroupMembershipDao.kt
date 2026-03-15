@@ -211,6 +211,38 @@ class UserGroupMembershipDao(
        
     }
 
+    fun findByUserGroupId(userGroupId: DomainId): List<UserGroupMembershipEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.user_group_membership
+            where user_group_id = :userGroupId
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("userGroupId", userGroupId)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findByUserId(userId: DomainId): List<UserGroupMembershipEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.user_group_membership
+            where user_id = :userId
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("userId", userId)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
     fun findAllBy(filter: UserGroupMembershipEntityFilter): List<UserGroupMembershipEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
@@ -307,22 +339,6 @@ class UserGroupMembershipDao(
     }
 
 
-    fun findByUserGroupId(userGroupId: DomainId): List<UserGroupMembershipEntity> {
-
-        return jdbcOps.queryForList(
-            """
-            select * from maia.user_group_membership
-            where user_group_id = :userGroupId
-            """.trimIndent(),
-            SqlParams().apply {
-                addValue("userGroupId", userGroupId)
-            },
-            this.entityRowMapper
-        )
-
-    }
-
-
     fun existsByUserGroupId(userGroupId: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
@@ -336,22 +352,6 @@ class UserGroupMembershipDao(
         )
 
         return count > 0
-
-    }
-
-
-    fun findByUserId(userId: DomainId): List<UserGroupMembershipEntity> {
-
-        return jdbcOps.queryForList(
-            """
-            select * from maia.user_group_membership
-            where user_id = :userId
-            """.trimIndent(),
-            SqlParams().apply {
-                addValue("userId", userId)
-            },
-            this.entityRowMapper
-        )
 
     }
 

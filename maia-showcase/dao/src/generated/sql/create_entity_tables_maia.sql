@@ -314,6 +314,8 @@ CREATE TABLE maia.many_to_many_join (
     right_id uuid NOT NULL REFERENCES maia.right(id),
     PRIMARY KEY(id)
 );
+CREATE INDEX many_to_many_join_left_id_idx ON maia.many_to_many_join(left_id);
+CREATE INDEX many_to_many_join_right_id_idx ON maia.many_to_many_join(right_id);
 
 
 CREATE TABLE maia.unmodifiable (

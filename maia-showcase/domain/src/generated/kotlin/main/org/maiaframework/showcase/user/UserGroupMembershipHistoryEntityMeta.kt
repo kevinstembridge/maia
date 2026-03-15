@@ -35,6 +35,15 @@ object UserGroupMembershipHistoryEntityMeta {
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
 
+    object IndexName {
+
+        const val hist_user_group_membership_user_group_id_idx = "hist_user_group_membership_user_group_id_idx"
+
+        const val hist_user_group_membership_user_id_idx = "hist_user_group_membership_user_id_idx"
+
+    }
+
+
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {

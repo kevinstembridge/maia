@@ -167,6 +167,38 @@ class UserGroupMembershipHistoryDao(
        
     }
 
+    fun findByUserGroupId(userGroupId: DomainId): List<UserGroupMembershipHistoryEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.user_group_membership_history
+            where user_group_id = :userGroupId
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("userGroupId", userGroupId)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findByUserId(userId: DomainId): List<UserGroupMembershipHistoryEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.user_group_membership_history
+            where user_id = :userId
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("userId", userId)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
     fun findAllBy(filter: UserGroupMembershipHistoryEntityFilter): List<UserGroupMembershipHistoryEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)

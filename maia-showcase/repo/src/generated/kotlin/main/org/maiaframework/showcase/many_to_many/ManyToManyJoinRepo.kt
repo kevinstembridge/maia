@@ -66,6 +66,20 @@ class ManyToManyJoinRepo(
     }
 
 
+    fun findByLeftId(leftId: DomainId): List<ManyToManyJoinEntity> {
+
+        return dao.findByLeftId(leftId)
+
+    }
+
+
+    fun findByRightId(rightId: DomainId): List<ManyToManyJoinEntity> {
+
+        return dao.findByRightId(rightId)
+
+    }
+
+
     fun existsByLeftId(leftId: DomainId): Boolean {
 
         return dao.existsByLeftId(leftId)
