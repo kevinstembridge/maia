@@ -380,13 +380,13 @@ class PropsDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-            addValue("comment", upsertEntity.comment)
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-            addValue("propertyName", upsertEntity.propertyName)
-            addValue("propertyValue", upsertEntity.propertyValue)
-            addValue("version", upsertEntity.version)
+                addValue("comment", upsertEntity.comment)
+                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
+                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("propertyName", upsertEntity.propertyName)
+                addValue("propertyValue", upsertEntity.propertyValue)
+                addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
