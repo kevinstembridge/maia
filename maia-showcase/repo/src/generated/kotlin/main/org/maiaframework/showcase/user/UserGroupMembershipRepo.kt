@@ -9,22 +9,22 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class UserRepo(
-    private val dao: UserDao
+class UserGroupMembershipRepo(
+    private val dao: UserGroupMembershipDao
 ) {
 
 
-    private val logger = getLogger<UserRepo>()
+    private val logger = getLogger<UserGroupMembershipRepo>()
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId): UserEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): UserGroupMembershipEntity? {
 
         return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findByPrimaryKey(id: DomainId): UserEntity {
+    fun findByPrimaryKey(id: DomainId): UserGroupMembershipEntity {
 
         return dao.findByPrimaryKey(id)
 
@@ -38,7 +38,7 @@ class UserRepo(
     }
 
 
-    fun findAllAsSequence(): Sequence<UserEntity> {
+    fun findAllAsSequence(): Sequence<UserGroupMembershipEntity> {
     
         return this.dao.findAllAsSequence()
         
@@ -52,28 +52,35 @@ class UserRepo(
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: UserEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: UserGroupMembershipEntityFilter): Sequence<DomainId> {
 
         return dao.findPrimaryKeysAsSequence(filter)
 
     }
 
 
-    fun findAllBy(filter: UserEntityFilter): List<UserEntity> {
+    fun findAllBy(filter: UserGroupMembershipEntityFilter): List<UserGroupMembershipEntity> {
 
         return this.dao.findAllBy(filter)
 
     }
 
 
-    fun fetchForEdit(id: DomainId): UserFetchForEditDto {
+    fun existsByUserGroupId(userGroupId: DomainId): Boolean {
 
-        return this.dao.fetchForEdit(id)
+        return dao.existsByUserGroupId(userGroupId)
 
     }
 
 
-    fun insert(entity: UserEntity) {
+    fun existsByUserId(userId: DomainId): Boolean {
+
+        return dao.existsByUserId(userId)
+
+    }
+
+
+    fun insert(entity: UserGroupMembershipEntity) {
 
         logger.debug("insert {}", entity)
 
@@ -82,14 +89,14 @@ class UserRepo(
     }
 
 
-    fun bulkInsert(entities: List<UserEntity>) {
+    fun bulkInsert(entities: List<UserGroupMembershipEntity>) {
 
         this.dao.bulkInsert(entities)
 
     }
 
 
-    fun setFields(updaters: List<UserEntityUpdater>) {
+    fun setFields(updaters: List<UserGroupMembershipEntityUpdater>) {
 
         logger.debug("setFields {}", updaters)
 
@@ -98,22 +105,11 @@ class UserRepo(
     }
 
 
-    fun setFields(updater: UserEntityUpdater): Int {
+    fun setFields(updater: UserGroupMembershipEntityUpdater): Int {
 
         logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
-
-    }
-
-
-    fun idAndNameFor(id: DomainId): UserPkAndNameDto {
-
-        val entity = findByPrimaryKey(id)
-        return UserPkAndNameDto(
-            entity.id,
-            entity.displayName
-        )
 
     }
 

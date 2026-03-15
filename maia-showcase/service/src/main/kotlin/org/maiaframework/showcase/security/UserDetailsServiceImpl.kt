@@ -1,10 +1,13 @@
 package org.maiaframework.showcase.security
 
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.contact.EmailAddress
+import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.contact.EmailAddressRepo
 import org.maiaframework.showcase.party.EmailAddressVerificationRepoHelper
 import org.maiaframework.showcase.party.PartyEmailAddressRepoHelper
 import org.maiaframework.showcase.user.UserEntity
+import org.maiaframework.showcase.user.UserGroupMembershipRepo
 import org.maiaframework.showcase.user.UserRepo
 import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.springframework.security.core.GrantedAuthority
@@ -21,7 +24,8 @@ class UserDetailsServiceImpl(
     private val userRepo: UserRepo,
     private val partyEmailAddressRepoHelper: PartyEmailAddressRepoHelper,
     private val emailAddressVerificationRepoHelper: EmailAddressVerificationRepoHelper,
-    private val emailAddressRepo: EmailAddressRepo
+    private val emailAddressRepo: EmailAddressRepo,
+    private val userGroupMembershipRepo: UserGroupMembershipRepo
 ) : UserDetailsService {
 
 
@@ -62,6 +66,23 @@ class UserDetailsServiceImpl(
             .authorities
             .map { SimpleGrantedAuthority(it.name) }
             .toSortedSet(java.util.Comparator.comparing { it.authority ?: "" })
+
+    }
+
+
+    private fun getAuthoritiesByUserGroup(userEntity: UserEntity): Map<DomainId, Set<Authority>> {
+
+        val orgUserGroupIds = this.userGroupMembershipRepo.findByUserId(userEntity.id).map { it.orgUserGroupId }
+
+        if (orgUserGroupIds.isEmpty()) {
+            return emptyMap()
+        }
+
+        val orgUserGroupFilter = OrgUserGroupEntityFilters().id  `in` orgUserGroupIds
+
+        val orgUserGroups: List<OrgUserGroupEntity> = this.orgUserGroupDao.findAllBy(orgUserGroupFilter)
+
+        return orgUserGroups.associate { it.orgId to it.authorities.toSet() }
 
     }
 

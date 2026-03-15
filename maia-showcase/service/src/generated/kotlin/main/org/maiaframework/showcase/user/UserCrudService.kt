@@ -20,7 +20,9 @@ import java.time.Instant
 class UserCrudService(
     private val entityRepo: UserRepo,
     private val maiaProblems: MaiaProblems,
-    private val userCrudNotifier: UserCrudNotifier
+    private val userCrudNotifier: UserCrudNotifier,
+    private val userGroupMembershipHistoryRepo: UserGroupMembershipHistoryRepo,
+    private val userGroupMembershipRepo: UserGroupMembershipRepo
 ) {
 
 

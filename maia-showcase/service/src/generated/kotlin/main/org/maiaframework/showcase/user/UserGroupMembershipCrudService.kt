@@ -10,18 +10,16 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class UserGroupCrudService(
-    private val entityRepo: UserGroupRepo,
-    private val maiaProblems: MaiaProblems,
-    private val userGroupMembershipHistoryRepo: UserGroupMembershipHistoryRepo,
-    private val userGroupMembershipRepo: UserGroupMembershipRepo
+class UserGroupMembershipCrudService(
+    private val entityRepo: UserGroupMembershipRepo,
+    private val maiaProblems: MaiaProblems
 ) {
 
 
-    private val logger = LoggerFactory.getLogger(UserGroupCrudService::class.java)
+    private val logger = LoggerFactory.getLogger(UserGroupMembershipCrudService::class.java)
 
 
-    fun create(entity: UserGroupEntity): UserGroupEntity {
+    fun create(entity: UserGroupMembershipEntity): UserGroupMembershipEntity {
 
         this.entityRepo.insert(entity)
         return entity
@@ -29,7 +27,7 @@ class UserGroupCrudService(
     }
 
 
-    fun setFields(updater: UserGroupEntityUpdater): Int {
+    fun setFields(updater: UserGroupMembershipEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
         return count

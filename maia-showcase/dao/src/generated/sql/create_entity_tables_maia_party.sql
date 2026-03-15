@@ -82,29 +82,25 @@ CREATE TABLE maia.user_group_history (
 );
 
 
-CREATE TABLE maia.org_user_group_membership (
+CREATE TABLE maia.user_group_membership (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    org_user_group_id uuid NOT NULL,
-    user_id uuid NOT NULL,
+    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
+    user_id uuid NOT NULL REFERENCES maia.party(id),
     version bigint NOT NULL,
     PRIMARY KEY(id)
 );
-CREATE UNIQUE INDEX org_user_group_membership_org_user_group_id_user_id_uidx ON maia.org_user_group_membership(org_user_group_id, user_id);
-CREATE INDEX org_user_group_membership_user_id_idx ON maia.org_user_group_membership(user_id);
 
 
-CREATE TABLE maia.org_user_group_membership_history (
+CREATE TABLE maia.user_group_membership_history (
     change_type text NOT NULL,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    org_user_group_id uuid NOT NULL,
-    user_id uuid NOT NULL,
+    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
+    user_id uuid NOT NULL REFERENCES maia.party(id),
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );
-CREATE INDEX hist_org_user_group_membership_org_user_group_id_user_id_idx ON maia.org_user_group_membership_history(org_user_group_id, user_id);
-CREATE INDEX hist_org_user_group_membership_user_id_idx ON maia.org_user_group_membership_history(user_id);
 
 
 CREATE TABLE maia.email_address (
