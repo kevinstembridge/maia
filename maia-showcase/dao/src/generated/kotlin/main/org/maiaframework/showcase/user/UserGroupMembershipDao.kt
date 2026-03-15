@@ -219,7 +219,7 @@ class UserGroupMembershipDao(
             where user_group_id = :userGroupId
             """.trimIndent(),
             SqlParams().apply {
-            addValue("userGroupId", userGroupId)
+                addValue("userGroupId", userGroupId)
             },
             this.entityRowMapper
         )
@@ -235,7 +235,7 @@ class UserGroupMembershipDao(
             where user_id = :userId
             """.trimIndent(),
             SqlParams().apply {
-            addValue("userId", userId)
+                addValue("userId", userId)
             },
             this.entityRowMapper
         )

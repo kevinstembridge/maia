@@ -169,7 +169,7 @@ class ManyToManyJoinDao(
             where left_id = :leftId
             """.trimIndent(),
             SqlParams().apply {
-            addValue("leftId", leftId)
+                addValue("leftId", leftId)
             },
             this.entityRowMapper
         )
@@ -185,7 +185,7 @@ class ManyToManyJoinDao(
             where right_id = :rightId
             """.trimIndent(),
             SqlParams().apply {
-            addValue("rightId", rightId)
+                addValue("rightId", rightId)
             },
             this.entityRowMapper
         )

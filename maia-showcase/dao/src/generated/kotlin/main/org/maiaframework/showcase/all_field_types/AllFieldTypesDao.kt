@@ -582,8 +582,8 @@ class AllFieldTypesDao(
             and some_string_modifiable = :someStringModifiable
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someBoolean", someBoolean)
-            addValue("someStringModifiable", someStringModifiable)
+                addValue("someBoolean", someBoolean)
+                addValue("someStringModifiable", someStringModifiable)
             },
             this.entityRowMapper
         )

@@ -1405,7 +1405,7 @@ class JdbcDaoRenderer(
         appendLine("            SqlParams().apply {")
 
         entityFieldDefs.forEach { entityFieldDef ->
-            renderSqlParamAddValueFor(entityFieldDef, "            ", entityParameterName = null, 8, { line -> appendLine(line) })
+            renderSqlParamAddValueFor(entityFieldDef, "                ", entityParameterName = null, indentSize = 8, { line -> appendLine(line) })
         }
 
         appendLine("            },")

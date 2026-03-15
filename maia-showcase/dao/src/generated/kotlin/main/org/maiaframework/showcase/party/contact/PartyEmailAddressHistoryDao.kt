@@ -217,7 +217,7 @@ class PartyEmailAddressHistoryDao(
             where email_address_id = :emailAddressId
             """.trimIndent(),
             SqlParams().apply {
-            addValue("emailAddressId", emailAddressId)
+                addValue("emailAddressId", emailAddressId)
             },
             this.entityRowMapper
         )
@@ -233,7 +233,7 @@ class PartyEmailAddressHistoryDao(
             where party_id = :partyId
             """.trimIndent(),
             SqlParams().apply {
-            addValue("partyId", partyId)
+                addValue("partyId", partyId)
             },
             this.entityRowMapper
         )

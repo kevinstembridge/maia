@@ -169,7 +169,7 @@ class EffectiveTimestampDao(
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someString", someString)
+                addValue("someString", someString)
             },
             this.entityRowMapper
         )

@@ -168,7 +168,7 @@ class WithOptionalIndexFieldDao(
             where some_optional_string1 = :someOptionalString1
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someOptionalString1", someOptionalString1)
+                addValue("someOptionalString1", someOptionalString1)
             },
             this.entityRowMapper
         )
@@ -188,8 +188,8 @@ class WithOptionalIndexFieldDao(
             and some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someOptionalString2", someOptionalString2)
-            addValue("someString", someString)
+                addValue("someOptionalString2", someOptionalString2)
+                addValue("someString", someString)
             },
             this.entityRowMapper
         )
