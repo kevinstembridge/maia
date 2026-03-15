@@ -278,19 +278,16 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
     val userGroupMembershipEntityDef = entity(
         "org.maiaframework.showcase.user",
-        "OrgUserGroupMembership",
+        "UserGroupMembership",
         recordVersionHistory = true
     ) {
         moduleName("ops")
-        field("orgUserGroupId", FieldTypes.domainId)
+        field("userGroupId", FieldTypes.domainId)
         field("userId", FieldTypes.domainId)
         index {
-            withFieldAscending("orgUserGroupId")
             withFieldAscending("userId")
+            withFieldAscending("userGroupId")
             unique()
-        }
-        index {
-            withFieldAscending("userId")
         }
     }
 

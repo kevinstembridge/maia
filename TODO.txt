@@ -1,5 +1,12 @@
 
 TODO * Maia Showcase
+    TODO * The Simple menu item should be visible to an unauthorized user.
+        => User must be logged in and have the ReadOnly user authority.
+        TODO * Modify the UserGroupEntityDef in MaiaShowcasePartySpec to be a ManyToMany entity def.
+        TODO * Modify the UserGroupEntityDef to record history.
+        TODO * Include UserGroup authorities in UserDetailsServiceImpl
+        TODO * Create a group that has ReadOnly role.
+    TODO * The Edit action column should not be visible to an unauthorized user.
     TODO * Create a Playwright test for the SimpleEntity Create feature.
     TODO * Create a Playwright test for the SimpleEntity Edit feature.
     TODO * Test fetchForEdit with a versioned entity.
