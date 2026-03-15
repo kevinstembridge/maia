@@ -3,11 +3,13 @@ package org.maiaframework.showcase.searchable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
-import org.maiaframework.showcase.party.OrgEntityTestBuilder
+import org.maiaframework.showcase.hierarchy.ChildOneEntityTestBuilder
+import org.maiaframework.showcase.hierarchy.GrandparentDao
+import org.maiaframework.showcase.hierarchy.GrandparentEntity
+import org.maiaframework.showcase.hierarchy.GrandparentEntityMeta
+import org.maiaframework.showcase.hierarchy.ParentOneEntityTestBuilder
+import org.maiaframework.showcase.hierarchy.ParentTwoEntityTestBuilder
 import org.maiaframework.showcase.party.PartyDao
-import org.maiaframework.showcase.party.PartyEntity
-import org.maiaframework.showcase.party.PersonEntityTestBuilder
-import org.maiaframework.showcase.party.UserEntityTestBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.temporal.ChronoUnit
@@ -19,35 +21,44 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
     private lateinit var partyDao: PartyDao
 
 
-    private val orgEntity1 = OrgEntityTestBuilder(name = "Some Mega Corp").build()
-    private val orgEntity2 = OrgEntityTestBuilder(name = "The Corner Shop").build()
+    @Autowired
+    private lateinit var grandparentDao: GrandparentDao
 
-    private val personEntity1 = PersonEntityTestBuilder().build()
-    private val personEntity2 = PersonEntityTestBuilder().build()
+    private val parentOneEntity1 = ParentOneEntityTestBuilder(someString = "Some Mega Corp").build()
+    private val parentOneEntity2 = ParentOneEntityTestBuilder(someString = "The Corner Shop").build()
 
-    private val userEntity1 = UserEntityTestBuilder().build()
-    private val userEntity2 = UserEntityTestBuilder().build()
+    private val parentTwoEntity1 = ParentTwoEntityTestBuilder().build()
+    private val parentTwoEntity2 = ParentTwoEntityTestBuilder().build()
+
+    private val childOneEntity1 = ChildOneEntityTestBuilder().build()
+    private val childOneEntity2 = ChildOneEntityTestBuilder().build()
 
 
     @BeforeEach
     fun beforeEach() {
 
-        deleteParties()
-        this.partyDao.insert(orgEntity1)
-        this.partyDao.insert(orgEntity2)
-        this.partyDao.insert(personEntity1)
-        this.partyDao.insert(personEntity2)
-        this.partyDao.insert(userEntity1)
-        this.partyDao.insert(userEntity2)
+        resetDatabase()
+        this.grandparentDao.insert(parentOneEntity1)
+        this.grandparentDao.insert(parentOneEntity2)
+        this.grandparentDao.insert(parentTwoEntity1)
+        this.grandparentDao.insert(parentTwoEntity2)
+        this.grandparentDao.insert(childOneEntity1)
+        this.grandparentDao.insert(childOneEntity2)
+
+    }
+
+    private fun resetDatabase() {
+
+        this.jdbcOps.update("delete from ${GrandparentEntityMeta.SCHEMA_AND_TABLE_NAME}")
 
     }
 
 
     @Test
-    fun `test Org search with no filter terms`() {
+    fun `test ParentTwo search with no filter terms`() {
 
         submitSearch(
-                path = "/api/org/search",
+                path = "/api/parent_two/search",
                 startRow = 0,
                 endRow = 3,
                 filterModel = listOf()
@@ -55,8 +66,8 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
             expectedResult(
                 totalCount = 2,
                 rows = listOf(
-                    orgEntity1,
-                    orgEntity2
+                    parentTwoEntity1,
+                    parentTwoEntity2
                 ),
                 firstResultIndex = 1,
                 lastResultIndex = 2,
@@ -69,25 +80,24 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `test Person search with no filter terms`() {
+    fun `test ParentOne search with no filter terms`() {
 
         submitSearch(
-                path = "/api/person/search",
+                path = "/api/parent_one/search",
                 startRow = 0,
                 endRow = 10,
                 filterModel = listOf()
         ).bodyJson().isLenientlyEqualTo(
             expectedResult(
-                totalCount = 5,
+                totalCount = 4,
                 rows = listOf(
-                    defaultUser,
-                    personEntity1,
-                    personEntity2,
-                    userEntity1,
-                    userEntity2
+                    parentOneEntity1,
+                    parentOneEntity2,
+                    childOneEntity1,
+                    childOneEntity2
                 ),
                 firstResultIndex = 1,
-                lastResultIndex = 5,
+                lastResultIndex = 4,
                 offset = 0,
                 limit = 10
             )
@@ -97,23 +107,22 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `test User search with no filter terms`() {
+    fun `test Child search with no filter terms`() {
 
         submitSearch(
-                path = "/api/user/search",
+                path = "/api/child_one/search",
                 startRow = 0,
                 endRow = 10,
                 filterModel = listOf()
         ).bodyJson().isLenientlyEqualTo(
             expectedResult(
-                totalCount = 3,
+                totalCount = 2,
                 rows = listOf(
-                    defaultUser,
-                    userEntity1,
-                    userEntity2
+                    childOneEntity1,
+                    childOneEntity2
                 ),
                 firstResultIndex = 1,
-                lastResultIndex = 3,
+                lastResultIndex = 2,
                 offset = 0,
                 limit = 10
             )
@@ -123,7 +132,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
 
 
     private fun submitSearch(
-        path: String = "/api/org/search",
+        path: String,
         startRow: Int,
         endRow: Int,
         sortModel: List<Map<String, String>> = emptyList(),
@@ -146,7 +155,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
 
     private fun expectedResult(
         totalCount: Int,
-        rows: List<PartyEntity>,
+        rows: List<GrandparentEntity>,
         firstResultIndex: Int,
         lastResultIndex: Int,
         offset: Int,
@@ -167,11 +176,11 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
     }
 
 
-    private fun jsonFor(partyEntity: PartyEntity): Map<String, Any?> {
+    private fun jsonFor(entity: GrandparentEntity): Map<String, Any?> {
 
         return mapOf(
-            "id" to partyEntity.id.value,
-            "createdTimestampUtc" to partyEntity.createdTimestampUtc.truncatedTo(ChronoUnit.MILLIS).toString()
+            "id" to entity.id.value,
+            "createdTimestampUtc" to entity.createdTimestampUtc.truncatedTo(ChronoUnit.MILLIS).toString()
         )
 
     }

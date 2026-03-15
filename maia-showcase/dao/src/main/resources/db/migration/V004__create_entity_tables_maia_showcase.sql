@@ -136,9 +136,10 @@ CREATE INDEX hist_history_sample_some_string_idx ON maia.history_sample_history(
 
 
 -- Type Discriminators:
---    SubOne -> SUB1
---    SubTwo -> SUB2
-CREATE TABLE maia.super (
+--    ChildOne -> CHILD1
+--    ParentOne -> SUB1
+--    ParentTwo -> SUB2
+CREATE TABLE maia.grandparent (
     type_discriminator text not null,
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
@@ -150,7 +151,7 @@ CREATE TABLE maia.super (
     some_unique_string text NULL,
     PRIMARY KEY(id)
 );
-CREATE UNIQUE INDEX sub_two_some_unique_string_uidx ON maia.super(some_unique_string, type_discriminator);
+CREATE UNIQUE INDEX parent_two_some_unique_string_uidx ON maia.grandparent(some_unique_string, type_discriminator);
 
 
 -- Type Discriminators:

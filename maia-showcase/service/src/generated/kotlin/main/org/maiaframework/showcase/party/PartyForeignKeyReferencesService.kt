@@ -5,6 +5,10 @@ package org.maiaframework.showcase.party
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.showcase.all_field_types.AllFieldTypesRepo
+import org.maiaframework.showcase.hierarchy.ChildOneRepo
+import org.maiaframework.showcase.hierarchy.GrandparentRepo
+import org.maiaframework.showcase.hierarchy.ParentOneRepo
+import org.maiaframework.showcase.hierarchy.ParentTwoRepo
 import org.maiaframework.showcase.history.HistorySampleHistoryRepo
 import org.maiaframework.showcase.history.HistorySampleRepo
 import org.maiaframework.showcase.history.HistorySubOneHistoryRepo
@@ -13,9 +17,6 @@ import org.maiaframework.showcase.history.HistorySubTwoHistoryRepo
 import org.maiaframework.showcase.history.HistorySubTwoRepo
 import org.maiaframework.showcase.history.HistorySuperHistoryRepo
 import org.maiaframework.showcase.history.HistorySuperRepo
-import org.maiaframework.showcase.suuper.SubOneRepo
-import org.maiaframework.showcase.suuper.SubTwoRepo
-import org.maiaframework.showcase.suuper.SuperRepo
 import org.maiaframework.webapp.domain.ForeignKeyReferencesExistResponseDto
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Component
 @Component
 class PartyForeignKeyReferencesService(
     private val allFieldTypesRepo: AllFieldTypesRepo,
+    private val childOneRepo: ChildOneRepo,
+    private val grandparentRepo: GrandparentRepo,
     private val historySampleHistoryRepo: HistorySampleHistoryRepo,
     private val historySampleRepo: HistorySampleRepo,
     private val historySubOneHistoryRepo: HistorySubOneHistoryRepo,
@@ -32,9 +35,8 @@ class PartyForeignKeyReferencesService(
     private val historySubTwoRepo: HistorySubTwoRepo,
     private val historySuperHistoryRepo: HistorySuperHistoryRepo,
     private val historySuperRepo: HistorySuperRepo,
-    private val subOneRepo: SubOneRepo,
-    private val subTwoRepo: SubTwoRepo,
-    private val superRepo: SuperRepo
+    private val parentOneRepo: ParentOneRepo,
+    private val parentTwoRepo: ParentTwoRepo
 ) {
 
 
@@ -55,16 +57,20 @@ class PartyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySampleHistory")
         }
 
-        if (this.subOneRepo.existsByCreatedById(id)) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "SubOne")
+        if (this.childOneRepo.existsByCreatedById(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "ChildOne")
         }
 
-        if (this.subTwoRepo.existsByCreatedById(id)) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "SubTwo")
+        if (this.parentOneRepo.existsByCreatedById(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "ParentOne")
         }
 
-        if (this.superRepo.existsByCreatedById(id)) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "Super")
+        if (this.parentTwoRepo.existsByCreatedById(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "ParentTwo")
+        }
+
+        if (this.grandparentRepo.existsByCreatedById(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "Grandparent")
         }
 
         if (this.historySubOneRepo.existsByCreatedById(id)) {

@@ -32,7 +32,7 @@ class LoginPageTest : AbstractPlaywrightTest() {
             user.rawPassword
         )
 
-        landingPage.assertOnPage()
+        homePage.assertOnPage()
 
     }
 

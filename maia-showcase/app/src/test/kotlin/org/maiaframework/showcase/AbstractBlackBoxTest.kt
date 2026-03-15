@@ -55,7 +55,7 @@ abstract class AbstractBlackBoxTest {
 
 
     @Autowired
-    private lateinit var jdbcOps: JdbcOps
+    protected lateinit var jdbcOps: JdbcOps
 
 
     @Autowired

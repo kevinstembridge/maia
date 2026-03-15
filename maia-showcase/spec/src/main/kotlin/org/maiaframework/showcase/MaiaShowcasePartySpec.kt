@@ -375,7 +375,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
 
     val emailAddressVerificationEntityDef = entity(
-        "la.contact",
+        "org.maiaframework.showcase.party.contact",
         "EmailAddressVerification",
         versioned = true
     ) {

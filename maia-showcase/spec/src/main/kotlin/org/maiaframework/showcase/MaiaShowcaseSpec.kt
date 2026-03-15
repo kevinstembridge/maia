@@ -16,6 +16,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.Fqcn
 
 
+@Suppress("unused")
 class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
@@ -423,9 +424,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val superEntityDef = entity(
-        "org.maiaframework.showcase.suuper",
-        "Super",
+    val grandparentEntityDef = entity(
+        "org.maiaframework.showcase.hierarchy",
+        "Grandparent",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
@@ -436,13 +437,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val subOneEntityDef = entity(
-        "org.maiaframework.showcase.suuper",
-        "SubOne",
+    val parentOneEntityDef = entity(
+        "org.maiaframework.showcase.hierarchy",
+        "ParentOne",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
-        superclass(superEntityDef)
+        superclass(grandparentEntityDef)
         typeDiscriminator("SUB1")
         field("someString", FieldTypes.string) {
             editableByUser()
@@ -456,13 +457,56 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val subTwoEntityDef = entity(
-        "org.maiaframework.showcase.suuper",
-        "SubTwo",
+    val parentOneSearchableDtoDef = searchableEntityDef(
+        "org.maiaframework.showcase.hierarchy",
+        "ParentOne",
+        entityDef = parentOneEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE
+    ) {
+        field("someString")
+        field("someUniqueString")
+        field("id", "id")
+        field("createdTimestampUtc")
+    }
+
+
+    val childOneEntityDef = entity(
+        "org.maiaframework.showcase.hierarchy",
+        "ChildOne",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
-        superclass(superEntityDef)
+        superclass(parentOneEntityDef)
+        typeDiscriminator("CHILD1")
+        field("someInt", FieldTypes.int) {
+            editableByUser()
+        }
+    }
+
+
+    val childOneSearchableDtoDef = searchableEntityDef(
+        "org.maiaframework.showcase.hierarchy",
+        "ChildOne",
+        entityDef = childOneEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE
+    ) {
+        field("someInt")
+        field("someString")
+        field("someUniqueString")
+        field("id", "id")
+        field("createdTimestampUtc")
+    }
+
+
+    val parentTwoEntityDef = entity(
+        "org.maiaframework.showcase.hierarchy",
+        "ParentTwo",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE
+    ) {
+        superclass(grandparentEntityDef)
         typeDiscriminator("SUB2")
         field("someInt", FieldTypes.int) {
             editableByUser()
@@ -472,6 +516,20 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
             lengthConstraint(max = 100)
         }
+    }
+
+
+    val parentTwoSearchableDtoDef = searchableEntityDef(
+        "org.maiaframework.showcase.hierarchy",
+        "ParentTwo",
+        entityDef = parentTwoEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE
+    ) {
+        field("someInt")
+        field("someUniqueString")
+        field("id", "id")
+        field("createdTimestampUtc")
     }
 
 

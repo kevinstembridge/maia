@@ -17,9 +17,9 @@ class JdbcOps(private val jdbcOps: NamedParameterJdbcOperations) {
 
     @Timed
     fun <ITEM> insert(
-            sql: String,
-            item: ITEM,
-            paramSourceMapper: SqlParameterSourceMapper<ITEM>
+        sql: String,
+        item: ITEM,
+        paramSourceMapper: SqlParameterSourceMapper<ITEM>
     ) {
 
         val parameterSource = SqlParams()
@@ -32,8 +32,8 @@ class JdbcOps(private val jdbcOps: NamedParameterJdbcOperations) {
 
     @Timed
     fun insert(
-            sql: String,
-            sqlParams: SqlParams
+        sql: String,
+        sqlParams: SqlParams
     ) {
 
         jdbcOpsUpdate(sql, sqlParams)

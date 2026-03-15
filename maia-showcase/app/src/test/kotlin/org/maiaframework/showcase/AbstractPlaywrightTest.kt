@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.showcase.testing.pages.LoginPage
 import org.maiaframework.showcase.testing.fixtures.UserFixture
-import org.maiaframework.showcase.testing.pages.LandingPage
+import org.maiaframework.showcase.testing.pages.HomePage
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,7 +42,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var loginPage: LoginPage
 
 
-    protected lateinit var landingPage: LandingPage
+    protected lateinit var homePage: HomePage
 
 
     protected val retryTemplate = RetryTemplate(RetryPolicy.builder()
@@ -68,7 +68,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         page = browserContext.newPage()
         page.onConsoleMessage { msg: ConsoleMessage -> println(msg.text()) }
         urlHelper = UrlHelper(env)
-        landingPage = LandingPage(page, urlHelper)
+        homePage = HomePage(page, urlHelper)
         loginPage = LoginPage(page, urlHelper)
 
     }
@@ -108,7 +108,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         }
 
         // We have to wait for the login to succeed before we try and do anything else
-        landingPage.assertOnPage()
+        homePage.assertOnPage()
 
     }
 

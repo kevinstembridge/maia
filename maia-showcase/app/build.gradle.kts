@@ -11,8 +11,9 @@ dependencies {
     implementation(project(":libs:maia-props-parent:maia-props-spring-boot-starter"))
     implementation(project(":libs:maia-problem-parent:maia-problem-starter"))
     implementation(project(":libs:maia-webapp:maia-webapp-app"))
-    implementation(project(":maia-showcase:web"))
+    implementation(project(":maia-showcase:repo"))
     implementation(project(":maia-showcase:service"))
+    implementation(project(":maia-showcase:web"))
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
@@ -24,7 +25,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("tools.jackson.module:jackson-module-kotlin")
 
-    runtimeOnly(project(":maia-showcase:repo"))
 
     runtimeOnly("org.postgresql:postgresql")
 
