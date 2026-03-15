@@ -20,6 +20,10 @@ import org.maiaframework.showcase.party.contact.PartyEmailAddressEntityMeta
 import org.maiaframework.showcase.party.contact.PartyEmailAddressHistoryEntityMeta
 import org.maiaframework.showcase.testing.MaiaShowcaseAnys
 import org.maiaframework.showcase.user.UserDao
+import org.maiaframework.showcase.user.UserGroupEntityMeta
+import org.maiaframework.showcase.user.UserGroupHistoryEntityMeta
+import org.maiaframework.showcase.user.UserGroupMembershipEntityMeta
+import org.maiaframework.showcase.user.UserGroupMembershipHistoryEntityMeta
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyDomainName
 import org.maiaframework.testing.domain.Anys.anyPassword
@@ -121,6 +125,10 @@ class Fixtures(
         truncateTable(PartyEmailAddressEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(EmailAddressEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(EmailAddressVerificationEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(UserGroupMembershipHistoryEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(UserGroupMembershipEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(UserGroupHistoryEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(UserGroupEntityMeta.SCHEMA_AND_TABLE_NAME)
 //        truncateTable(WebsiteUrlEntityMeta.SCHEMA_AND_TABLE_NAME)
         deleteParties()
 

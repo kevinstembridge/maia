@@ -209,7 +209,7 @@ class JobExecutionDao(
             where job_name = :jobName
             """.trimIndent(),
             SqlParams().apply {
-            addValue("jobName", jobName)
+                addValue("jobName", jobName)
             },
             this.entityRowMapper
         )
