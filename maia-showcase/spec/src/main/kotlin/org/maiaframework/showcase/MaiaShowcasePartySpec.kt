@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
+import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
@@ -202,7 +203,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
     val userEntityDef = entity(
         "org.maiaframework.showcase.user",
-        "User"
+        "User",
+        nameFieldForPkAndNameDto = "displayName",
     ) {
         superclass(personEntityDef)
         typeDiscriminator("USR")
@@ -243,7 +245,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userGroupEntityDef = entity(
         "org.maiaframework.showcase.user",
         "UserGroup",
-        recordVersionHistory = true
+        recordVersionHistory = true,
+        nameFieldForPkAndNameDto = "name",
     ) {
         moduleName("ops")
         typeDiscriminator("UG")
@@ -276,42 +279,37 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val userGroupMembershipEntityDef = entity(
+    val userGroupMembershipEntityDef = manyToManyEntity(
         "org.maiaframework.showcase.user",
         "UserGroupMembership",
-        recordVersionHistory = true
+        recordVersionHistory = true,
+        leftEntity = ReferencedEntity("userGroup", "User Group", userGroupEntityDef, IsEditableByUser.TRUE),
+        rightEntity = ReferencedEntity("user", "User", userEntityDef, IsEditableByUser.TRUE)
     ) {
         moduleName("ops")
-        field("userGroupId", FieldTypes.domainId)
-        field("userId", FieldTypes.domainId)
-        index {
-            withFieldAscending("userId")
-            withFieldAscending("userGroupId")
-            unique()
-        }
     }
 
 
-    val orgUserGroupMembershipSearchableDtoDef = searchableEntityDef(
-        "org.maiaframework.showcase.org",
-        "OrgUserGroupMembership",
+    val userGroupMembershipSearchableDtoDef = searchableEntityDef(
+        "org.maiaframework.showcase.user",
+        "UserGroupMembership",
         userGroupMembershipEntityDef,
         withGeneratedDto = WithGeneratedDto.TRUE
     ) {
         moduleName("ops")
         field("id")
         field("userId")
-        field("orgUserGroupId")
+        field("userGroupId")
         lookup(userEntityDef, "userId")
             .lookupField("firstName").and()
             .lookupField("lastName").and()
             .and()
-            .lookup(orgUserGroupEntityDef, "orgUserGroupId")
-            .lookupField("orgId").and()
+            .lookup(userGroupEntityDef, "userGroupId")
+            .lookupField("id").and()
             .lookupField("authorities").and()
             .and()
-            .lookup(orgEntityDef, "orgId")
-            .lookupField("orgName").and()
+            .lookup(userEntityDef, "userId")
+            .lookupField("displayName").and()
             .and()
             .build()
     }
