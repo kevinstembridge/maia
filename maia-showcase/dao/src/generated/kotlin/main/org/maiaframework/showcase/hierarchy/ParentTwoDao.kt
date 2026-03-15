@@ -384,13 +384,13 @@ class ParentTwoDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", upsertEntity.createdById)
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("id", upsertEntity.id)
-            addValue("lastModifiedById", upsertEntity.lastModifiedById)
-            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-            addValue("someInt", upsertEntity.someInt)
-            addValue("someUniqueString", upsertEntity.someUniqueString)
+                addValue("createdById", upsertEntity.createdById)
+                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("id", upsertEntity.id)
+                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("someInt", upsertEntity.someInt)
+                addValue("someUniqueString", upsertEntity.someUniqueString)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

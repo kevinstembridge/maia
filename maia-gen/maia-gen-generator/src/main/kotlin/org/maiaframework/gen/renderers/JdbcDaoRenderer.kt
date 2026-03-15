@@ -1644,7 +1644,12 @@ class JdbcDaoRenderer(
         appendLine("            \"\"\".trimIndent(),")
         appendLine("            SqlParams().apply {")
 
-        val indentSize = 12
+        val indentSize = 16
+
+        if (entityDef.typeDiscriminatorOrNull != null && entityHierarchy.hasSubclasses()) {
+            addImportFor(entityDef.metaClassDef.fqcn)
+            appendLine("                addValue(\"typeDiscriminator\", \"${entityDef.typeDiscriminator}\")")
+        }
 
         renderSqlParamsAddValueLinesFor("upsertEntity", entityDef, indentSize)
 

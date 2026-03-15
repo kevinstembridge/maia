@@ -368,12 +368,12 @@ class EmailAddressDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", upsertEntity.createdById)
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("emailAddress", upsertEntity.emailAddress)
-            addValue("id", upsertEntity.id)
-            addValue("lastModifiedById", upsertEntity.lastModifiedById)
-            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("createdById", upsertEntity.createdById)
+                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("emailAddress", upsertEntity.emailAddress)
+                addValue("id", upsertEntity.id)
+                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

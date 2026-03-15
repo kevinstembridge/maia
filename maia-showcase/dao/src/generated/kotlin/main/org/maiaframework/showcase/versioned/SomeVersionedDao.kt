@@ -325,11 +325,11 @@ class SomeVersionedDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("id", upsertEntity.id)
-            addValue("someInt", upsertEntity.someInt)
-            addValue("someString", upsertEntity.someString)
-            addValue("version", upsertEntity.version)
+                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("id", upsertEntity.id)
+                addValue("someInt", upsertEntity.someInt)
+                addValue("someString", upsertEntity.someString)
+                addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

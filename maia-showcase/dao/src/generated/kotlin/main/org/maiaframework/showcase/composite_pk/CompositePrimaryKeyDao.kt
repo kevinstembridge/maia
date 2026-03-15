@@ -334,11 +334,11 @@ class CompositePrimaryKeyDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("someInt", upsertEntity.someInt)
-            addValue("someModifiableString", upsertEntity.someModifiableString)
-            addValue("someString", upsertEntity.someString)
-            addValue("version", upsertEntity.version)
+                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("someInt", upsertEntity.someInt)
+                addValue("someModifiableString", upsertEntity.someModifiableString)
+                addValue("someString", upsertEntity.someString)
+                addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

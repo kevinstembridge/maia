@@ -443,14 +443,14 @@ class HistorySampleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", upsertEntity.createdById)
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("id", upsertEntity.id)
-            addValue("lastModifiedById", upsertEntity.lastModifiedById)
-            addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-            addValue("someInt", upsertEntity.someInt)
-            addValue("someString", upsertEntity.someString)
-            addValue("version", upsertEntity.version)
+                addValue("createdById", upsertEntity.createdById)
+                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("id", upsertEntity.id)
+                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("someInt", upsertEntity.someInt)
+                addValue("someString", upsertEntity.someString)
+                addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

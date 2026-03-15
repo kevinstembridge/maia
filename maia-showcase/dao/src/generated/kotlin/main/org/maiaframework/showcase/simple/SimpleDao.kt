@@ -331,9 +331,9 @@ class SimpleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("id", upsertEntity.id)
-            addValue("someString", upsertEntity.someString)
+                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("id", upsertEntity.id)
+                addValue("someString", upsertEntity.someString)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()

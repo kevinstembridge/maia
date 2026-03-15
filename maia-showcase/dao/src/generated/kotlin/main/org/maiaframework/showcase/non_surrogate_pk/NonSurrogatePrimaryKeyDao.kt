@@ -323,10 +323,10 @@ class NonSurrogatePrimaryKeyDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-            addValue("someModifiableString", upsertEntity.someModifiableString)
-            addValue("someString", upsertEntity.someString.value)
-            addValue("version", upsertEntity.version)
+                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("someModifiableString", upsertEntity.someModifiableString)
+                addValue("someString", upsertEntity.someString.value)
+                addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
