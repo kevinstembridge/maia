@@ -5,6 +5,10 @@
 export enum Authority {
 
 
+    // Grants read access.
+    READ = 'READ',
+
+
     // Grants access to administer the system. This is only for internal employees.
     // These functions would not normally be for day-to-day operations.
     SYS__ADMIN = 'SYS__ADMIN',
