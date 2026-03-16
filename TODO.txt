@@ -1,8 +1,11 @@
 
 TODO * Maia Showcase
-    TODO * The Edit action column should not be visible to an unauthorized user.
     TODO * Create a Playwright test for the SimpleEntity Create feature.
+        TODO * Authorization
+            TODO * Mark the CRUD APIs with appropriate security annotations.
+                => READ vs ADMIN
     TODO * Create a Playwright test for the SimpleEntity Edit feature.
+        TODO * The Edit action column should not be visible to an unauthorized user.
     TODO * Test fetchForEdit with a versioned entity.
     TODO * Use Opus to create a showcase of Maia features.
         TODO * Create a navigation menu with menu items for each entity.
