@@ -12,8 +12,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.maiaframework.domain.contact.EmailAddress
+import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.testing.pages.LoginPage
 import org.maiaframework.showcase.testing.fixtures.UserFixture
+import org.maiaframework.showcase.testing.pages.AllFieldTypesBlotterPage
 import org.maiaframework.showcase.testing.pages.HomePage
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -26,6 +28,7 @@ import java.nio.file.Paths
 
 
 abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
+
 
     private lateinit var playwright: Playwright
 
@@ -43,6 +46,9 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
 
 
     protected lateinit var homePage: HomePage
+
+
+    protected lateinit var allFieldTypesBlotterPage: AllFieldTypesBlotterPage
 
 
     protected val retryTemplate = RetryTemplate(RetryPolicy.builder()
@@ -70,7 +76,16 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         urlHelper = UrlHelper(env)
         homePage = HomePage(page, urlHelper)
         loginPage = LoginPage(page, urlHelper)
+        allFieldTypesBlotterPage = AllFieldTypesBlotterPage(page, urlHelper)
 
+    }
+
+
+    protected fun initSysOpsUserFixture() {
+        sysopsUser = fixtures.aUser(
+            loginMailVerified = true,
+            { userEntityTestBuilder -> userEntityTestBuilder.copy(authorities = listOf(Authority.SYS__OPS)) }
+        )
     }
 
 

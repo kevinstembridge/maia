@@ -20,9 +20,6 @@ export enum Authority {
     SYS__DEVOPS_READONLY = 'SYS__DEVOPS_READONLY',
 
 
-    SYS__SYSTEM_ANALYTICS = 'SYS__SYSTEM_ANALYTICS',
-
-
     SYS__SYSTEM_USER_GROUPS_EDIT = 'SYS__SYSTEM_USER_GROUPS_EDIT',
 
 
@@ -31,6 +28,10 @@ export enum Authority {
 
     // Grants access to system functions that are only available to internal employees.
     SYS___OPS = 'SYS___OPS',
+
+
+    // Grants write access.
+    WRITE = 'WRITE',
 
 
 }

@@ -1,9 +1,9 @@
-package org.maiaframework.showcase
+package org.maiaframework.showcase.login
 
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.maiaframework.showcase.AbstractPlaywrightTest
 import org.maiaframework.showcase.testing.fixtures.UserFixture
-
 
 class LoginPageTest : AbstractPlaywrightTest() {
 

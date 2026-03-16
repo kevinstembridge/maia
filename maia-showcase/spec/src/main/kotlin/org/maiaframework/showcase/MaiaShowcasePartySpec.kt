@@ -33,15 +33,20 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
+    val writeAuthority = authority("WRITE") {
+        description = "Grants write access."
+    }
+
+
     val authoritiesDef = authorities("org.maiaframework.showcase.auth", "Authority") {
         authority(adminAuthority)
         authority("SYS__DEVOPS")
         authority("SYS__DEVOPS_READONLY")
-        authority("SYS__SYSTEM_ANALYTICS")
         authority(opsAuthority)
         authority("SYS__SYSTEM_USER_GROUPS_EDIT")
         authority("SYS__SYSTEM_USER_GROUPS_VIEW")
         authority(readAuthority)
+        authority(writeAuthority)
     }
 
 

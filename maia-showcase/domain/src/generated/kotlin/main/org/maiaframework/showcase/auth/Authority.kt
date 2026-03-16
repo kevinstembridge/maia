@@ -23,11 +23,14 @@ These functions would not normally be for day-to-day operations.
      */
     READ,
 
+    /**
+     * Grants write access.
+     */
+    WRITE,
+
     SYS__DEVOPS,
 
     SYS__DEVOPS_READONLY,
-
-    SYS__SYSTEM_ANALYTICS,
 
     SYS__SYSTEM_USER_GROUPS_EDIT,
 
@@ -39,9 +42,9 @@ These functions would not normally be for day-to-day operations.
         const val SYS__ADMIN = "SYS__ADMIN"
         const val SYS___OPS = "SYS___OPS"
         const val READ = "READ"
+        const val WRITE = "WRITE"
         const val SYS__DEVOPS = "SYS__DEVOPS"
         const val SYS__DEVOPS_READONLY = "SYS__DEVOPS_READONLY"
-        const val SYS__SYSTEM_ANALYTICS = "SYS__SYSTEM_ANALYTICS"
         const val SYS__SYSTEM_USER_GROUPS_EDIT = "SYS__SYSTEM_USER_GROUPS_EDIT"
         const val SYS__SYSTEM_USER_GROUPS_VIEW = "SYS__SYSTEM_USER_GROUPS_VIEW"
 
