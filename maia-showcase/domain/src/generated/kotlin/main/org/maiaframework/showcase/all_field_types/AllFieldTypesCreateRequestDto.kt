@@ -11,7 +11,6 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 import org.maiaframework.common.validation.EnumConstraint
-import org.maiaframework.showcase.SimpleResponseDto
 import org.maiaframework.showcase.enums.SomeEnum
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
@@ -41,10 +40,6 @@ class AllFieldTypesCreateRequestDto
     @param:JsonProperty("someBooleanTypeProvided", access = JsonProperty.Access.READ_WRITE) 
     private val someBooleanTypeProvided_raw: Boolean?,
     someBooleanTypeProvidedNullable: Boolean?,
-    @param:NotNull 
-    @param:JsonProperty("someDto", access = JsonProperty.Access.READ_WRITE) 
-    private val someDto_raw: SimpleResponseDto?,
-    val someDtoNullable: SimpleResponseDto?,
     @NotBlank 
     @Length(max = 100) 
     @EnumConstraint(enumClass = org.maiaframework.showcase.enums.SomeEnum::class) 
@@ -77,24 +72,6 @@ class AllFieldTypesCreateRequestDto
     private val someIntTypeProvided_raw: Int?,
     someIntTypeProvidedNullable: Int?,
     @param:NotNull 
-    @param:JsonProperty("someListOfEnums", access = JsonProperty.Access.READ_WRITE) 
-    private val someListOfEnums_raw: List<SomeEnum>?,
-    @param:NotNull 
-    @param:JsonProperty("someListOfInstants", access = JsonProperty.Access.READ_WRITE) 
-    private val someListOfInstants_raw: List<Instant>?,
-    @param:NotNull 
-    @param:JsonProperty("someListOfLocalDates", access = JsonProperty.Access.READ_WRITE) 
-    private val someListOfLocalDates_raw: List<LocalDate>?,
-    @param:NotNull 
-    @param:JsonProperty("someListOfPeriods", access = JsonProperty.Access.READ_WRITE) 
-    private val someListOfPeriods_raw: List<Period>?,
-    @param:NotNull 
-    @param:JsonProperty("someListOfStringTypes", access = JsonProperty.Access.READ_WRITE) 
-    private val someListOfStringTypes_raw: List<SomeStringType>?,
-    @param:NotNull 
-    @param:JsonProperty("someListOfStrings", access = JsonProperty.Access.READ_WRITE) 
-    private val someListOfStrings_raw: List<String>?,
-    @param:NotNull 
     @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someLocalDateModifiable_raw: LocalDate?,
     @param:NotNull 
@@ -105,12 +82,6 @@ class AllFieldTypesCreateRequestDto
     @param:JsonProperty("someLongTypeProvided", access = JsonProperty.Access.READ_WRITE) 
     private val someLongTypeProvided_raw: Long?,
     someLongTypeProvidedNullable: Long?,
-    @param:NotNull 
-    @param:JsonProperty("someMapOfStringToInteger", access = JsonProperty.Access.READ_WRITE) 
-    private val someMapOfStringToInteger_raw: Map<String, Int>?,
-    @param:NotNull 
-    @param:JsonProperty("someMapOfStringTypeToStringType", access = JsonProperty.Access.READ_WRITE) 
-    private val someMapOfStringTypeToStringType_raw: Map<SomeStringType, SomeStringType>?,
     @param:NotBlank 
     @param:Length(max = 100) 
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
@@ -158,11 +129,6 @@ class AllFieldTypesCreateRequestDto
 
 
     @get:JsonIgnore
-    val someDto
-        get() = someDto_raw!!
-
-
-    @get:JsonIgnore
     val someEnum
         get() = SomeEnum.valueOf(someEnum_raw!!)
 
@@ -198,36 +164,6 @@ class AllFieldTypesCreateRequestDto
 
 
     @get:JsonIgnore
-    val someListOfEnums
-        get() = someListOfEnums_raw!!
-
-
-    @get:JsonIgnore
-    val someListOfInstants
-        get() = someListOfInstants_raw!!
-
-
-    @get:JsonIgnore
-    val someListOfLocalDates
-        get() = someListOfLocalDates_raw!!
-
-
-    @get:JsonIgnore
-    val someListOfPeriods
-        get() = someListOfPeriods_raw!!
-
-
-    @get:JsonIgnore
-    val someListOfStringTypes
-        get() = someListOfStringTypes_raw!!
-
-
-    @get:JsonIgnore
-    val someListOfStrings
-        get() = someListOfStrings_raw!!
-
-
-    @get:JsonIgnore
     val someLocalDateModifiable
         get() = someLocalDateModifiable_raw!!
 
@@ -240,16 +176,6 @@ class AllFieldTypesCreateRequestDto
     @get:JsonIgnore
     val someLongTypeProvided
         get() = SomeProvidedLongType(someLongTypeProvided_raw!!)
-
-
-    @get:JsonIgnore
-    val someMapOfStringToInteger
-        get() = someMapOfStringToInteger_raw!!
-
-
-    @get:JsonIgnore
-    val someMapOfStringTypeToStringType
-        get() = someMapOfStringTypeToStringType_raw!!
 
 
     @get:JsonIgnore
@@ -319,7 +245,6 @@ class AllFieldTypesCreateRequestDto
                 "someBoolean = '" + this.someBoolean + '\'' + ", " + 
                 "someBooleanType = '" + this.someBooleanType + '\'' + ", " + 
                 "someBooleanTypeProvided = '" + this.someBooleanTypeProvided + '\'' + ", " + 
-                "someDto = '" + this.someDto + '\'' + ", " + 
                 "someEnum = '" + this.someEnum + '\'' + ", " + 
                 "someInstant = '" + this.someInstant + '\'' + ", " + 
                 "someInstantModifiable = '" + this.someInstantModifiable + '\'' + ", " + 
@@ -327,17 +252,9 @@ class AllFieldTypesCreateRequestDto
                 "someIntModifiable = '" + this.someIntModifiable + '\'' + ", " + 
                 "someIntType = '" + this.someIntType + '\'' + ", " + 
                 "someIntTypeProvided = '" + this.someIntTypeProvided + '\'' + ", " + 
-                "someListOfEnums = '" + this.someListOfEnums + '\'' + ", " + 
-                "someListOfInstants = '" + this.someListOfInstants + '\'' + ", " + 
-                "someListOfLocalDates = '" + this.someListOfLocalDates + '\'' + ", " + 
-                "someListOfPeriods = '" + this.someListOfPeriods + '\'' + ", " + 
-                "someListOfStringTypes = '" + this.someListOfStringTypes + '\'' + ", " + 
-                "someListOfStrings = '" + this.someListOfStrings + '\'' + ", " + 
                 "someLocalDateModifiable = '" + this.someLocalDateModifiable + '\'' + ", " + 
                 "someLongType = '" + this.someLongType + '\'' + ", " + 
                 "someLongTypeProvided = '" + this.someLongTypeProvided + '\'' + ", " + 
-                "someMapOfStringToInteger = '" + this.someMapOfStringToInteger + '\'' + ", " + 
-                "someMapOfStringTypeToStringType = '" + this.someMapOfStringTypeToStringType + '\'' + ", " + 
                 "somePeriodModifiable = '" + this.somePeriodModifiable + '\'' + ", " + 
                 "someProvidedStringType = '" + this.someProvidedStringType + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
@@ -346,7 +263,6 @@ class AllFieldTypesCreateRequestDto
                 "someBooleanNullable = '" + this.someBooleanNullable + '\'' + ", " + 
                 "someBooleanTypeNullable = '" + this.someBooleanTypeNullable + '\'' + ", " + 
                 "someBooleanTypeProvidedNullable = '" + this.someBooleanTypeProvidedNullable + '\'' + ", " + 
-                "someDtoNullable = '" + this.someDtoNullable + '\'' + ", " + 
                 "someEnumNullable = '" + this.someEnumNullable + '\'' + ", " + 
                 "someInstantModifiableNullable = '" + this.someInstantModifiableNullable + '\'' + ", " + 
                 "someInstantNullable = '" + this.someInstantNullable + '\'' + ", " + 

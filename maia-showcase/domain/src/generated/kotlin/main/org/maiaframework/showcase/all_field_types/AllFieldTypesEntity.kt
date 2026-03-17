@@ -4,7 +4,6 @@
 package org.maiaframework.showcase.all_field_types
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.showcase.SimpleResponseDto
 import org.maiaframework.showcase.enums.SomeEnum
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
@@ -33,8 +32,6 @@ class AllFieldTypesEntity(
     val someBooleanTypeNullable: SomeBooleanType?,
     val someBooleanTypeProvided: SomeProvidedBooleanType,
     val someBooleanTypeProvidedNullable: SomeProvidedBooleanType?,
-    val someDto: SimpleResponseDto,
-    val someDtoNullable: SimpleResponseDto?,
     val someEnum: SomeEnum,
     val someEnumNullable: SomeEnum?,
     val someInstant: Instant,
@@ -48,19 +45,11 @@ class AllFieldTypesEntity(
     val someIntTypeNullable: SomeIntType?,
     val someIntTypeProvided: SomeProvidedIntType,
     val someIntTypeProvidedNullable: SomeProvidedIntType?,
-    val someListOfEnums: List<SomeEnum>,
-    val someListOfInstants: List<Instant>,
-    val someListOfLocalDates: List<LocalDate>,
-    val someListOfPeriods: List<Period>,
-    val someListOfStringTypes: List<SomeStringType>,
-    val someListOfStrings: List<String>,
     val someLocalDateModifiable: LocalDate,
     val someLongType: SomeLongType,
     val someLongTypeNullable: SomeLongType?,
     val someLongTypeProvided: SomeProvidedLongType,
     val someLongTypeProvidedNullable: SomeProvidedLongType?,
-    val someMapOfStringToInteger: Map<String, Int>,
-    val someMapOfStringTypeToStringType: Map<SomeStringType, SomeStringType>,
     val somePeriodModifiable: Period,
     val somePeriodNullable: Period?,
     val someProvidedStringType: SomeProvidedStringType,
@@ -89,8 +78,6 @@ class AllFieldTypesEntity(
                 "someBooleanTypeNullable = '" + this.someBooleanTypeNullable + '\'' + ", " + 
                 "someBooleanTypeProvided = '" + this.someBooleanTypeProvided + '\'' + ", " + 
                 "someBooleanTypeProvidedNullable = '" + this.someBooleanTypeProvidedNullable + '\'' + ", " + 
-                "someDto = '" + this.someDto + '\'' + ", " + 
-                "someDtoNullable = '" + this.someDtoNullable + '\'' + ", " + 
                 "someEnum = '" + this.someEnum + '\'' + ", " + 
                 "someEnumNullable = '" + this.someEnumNullable + '\'' + ", " + 
                 "someInstant = '" + this.someInstant + '\'' + ", " + 
@@ -104,19 +91,11 @@ class AllFieldTypesEntity(
                 "someIntTypeNullable = '" + this.someIntTypeNullable + '\'' + ", " + 
                 "someIntTypeProvided = '" + this.someIntTypeProvided + '\'' + ", " + 
                 "someIntTypeProvidedNullable = '" + this.someIntTypeProvidedNullable + '\'' + ", " + 
-                "someListOfEnums = '" + this.someListOfEnums + '\'' + ", " + 
-                "someListOfInstants = '" + this.someListOfInstants + '\'' + ", " + 
-                "someListOfLocalDates = '" + this.someListOfLocalDates + '\'' + ", " + 
-                "someListOfPeriods = '" + this.someListOfPeriods + '\'' + ", " + 
-                "someListOfStringTypes = '" + this.someListOfStringTypes + '\'' + ", " + 
-                "someListOfStrings = '" + this.someListOfStrings + '\'' + ", " + 
                 "someLocalDateModifiable = '" + this.someLocalDateModifiable + '\'' + ", " + 
                 "someLongType = '" + this.someLongType + '\'' + ", " + 
                 "someLongTypeNullable = '" + this.someLongTypeNullable + '\'' + ", " + 
                 "someLongTypeProvided = '" + this.someLongTypeProvided + '\'' + ", " + 
                 "someLongTypeProvidedNullable = '" + this.someLongTypeProvidedNullable + '\'' + ", " + 
-                "someMapOfStringToInteger = '" + this.someMapOfStringToInteger + '\'' + ", " + 
-                "someMapOfStringTypeToStringType = '" + this.someMapOfStringTypeToStringType + '\'' + ", " + 
                 "somePeriodModifiable = '" + this.somePeriodModifiable + '\'' + ", " + 
                 "somePeriodNullable = '" + this.somePeriodNullable + '\'' + ", " + 
                 "someProvidedStringType = '" + this.someProvidedStringType + '\'' + ", " + 
@@ -150,8 +129,6 @@ class AllFieldTypesEntity(
             someBooleanTypeNullable: SomeBooleanType?,
             someBooleanTypeProvided: SomeProvidedBooleanType,
             someBooleanTypeProvidedNullable: SomeProvidedBooleanType?,
-            someDto: SimpleResponseDto,
-            someDtoNullable: SimpleResponseDto?,
             someEnum: SomeEnum,
             someEnumNullable: SomeEnum?,
             someInstant: Instant,
@@ -165,19 +142,11 @@ class AllFieldTypesEntity(
             someIntTypeNullable: SomeIntType?,
             someIntTypeProvided: SomeProvidedIntType,
             someIntTypeProvidedNullable: SomeProvidedIntType?,
-            someListOfEnums: List<SomeEnum>,
-            someListOfInstants: List<Instant>,
-            someListOfLocalDates: List<LocalDate>,
-            someListOfPeriods: List<Period>,
-            someListOfStringTypes: List<SomeStringType>,
-            someListOfStrings: List<String>,
             someLocalDateModifiable: LocalDate,
             someLongType: SomeLongType,
             someLongTypeNullable: SomeLongType?,
             someLongTypeProvided: SomeProvidedLongType,
             someLongTypeProvidedNullable: SomeProvidedLongType?,
-            someMapOfStringToInteger: Map<String, Int>,
-            someMapOfStringTypeToStringType: Map<SomeStringType, SomeStringType>,
             somePeriodModifiable: Period,
             somePeriodNullable: Period?,
             someProvidedStringType: SomeProvidedStringType,
@@ -208,8 +177,6 @@ class AllFieldTypesEntity(
                 someBooleanTypeNullable,
                 someBooleanTypeProvided,
                 someBooleanTypeProvidedNullable,
-                someDto,
-                someDtoNullable,
                 someEnum,
                 someEnumNullable,
                 someInstant,
@@ -223,19 +190,11 @@ class AllFieldTypesEntity(
                 someIntTypeNullable,
                 someIntTypeProvided,
                 someIntTypeProvidedNullable,
-                someListOfEnums,
-                someListOfInstants,
-                someListOfLocalDates,
-                someListOfPeriods,
-                someListOfStringTypes,
-                someListOfStrings,
                 someLocalDateModifiable,
                 someLongType,
                 someLongTypeNullable,
                 someLongTypeProvided,
                 someLongTypeProvidedNullable,
-                someMapOfStringToInteger,
-                someMapOfStringTypeToStringType,
                 somePeriodModifiable,
                 somePeriodNullable,
                 someProvidedStringType,

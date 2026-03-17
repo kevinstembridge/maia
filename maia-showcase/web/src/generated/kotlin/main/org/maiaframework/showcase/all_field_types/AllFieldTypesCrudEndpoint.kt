@@ -195,14 +195,6 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/inline/some_list_of_strings", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateSomeListOfStrings(@RequestBody @Valid editDto: AllFieldTypesUpdate_someListOfStringsRequestDto) {
-
-        this.crudService.updateSomeListOfStrings(editDto)
-
-    }
-
-
     @DeleteMapping("/api/all_field_types/{id}")
     fun deleteById(@PathVariable("id") id: DomainId) {
 

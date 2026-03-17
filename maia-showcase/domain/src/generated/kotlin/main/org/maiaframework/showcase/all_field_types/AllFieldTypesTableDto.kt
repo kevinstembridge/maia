@@ -5,7 +5,6 @@ package org.maiaframework.showcase.all_field_types
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.showcase.enums.SomeEnum
-import org.maiaframework.showcase.party.PartyPkAndNameDto
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
 import org.maiaframework.showcase.types.SomeLongType
@@ -19,12 +18,10 @@ import java.time.LocalDate
 import java.time.Period
 
 
-data class AllFieldTypesFetchForEditDto(
-    val createdBy: PartyPkAndNameDto,
+data class AllFieldTypesTableDto(
+    val createdById: DomainId,
     val createdByUsername: String,
-    val createdTimestampUtc: Instant,
-    val id: DomainId,
-    val lastModifiedBy: PartyPkAndNameDto,
+    val lastModifiedById: DomainId,
     val lastModifiedByUsername: String,
     val lastModifiedTimestampUtc: Instant,
     val someBoolean: Boolean,

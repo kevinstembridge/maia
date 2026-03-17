@@ -6,7 +6,6 @@ package org.maiaframework.showcase.all_field_types
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.showcase.enums.SomeEnum
-import org.maiaframework.showcase.party.PartyPkAndNameDto
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
 import org.maiaframework.showcase.types.SomeLongType
@@ -17,23 +16,15 @@ import org.maiaframework.showcase.types.SomeProvidedStringType
 import org.maiaframework.showcase.types.SomeStringType
 
 
-class AllFieldTypesFetchForEditDtoRowMapper : MaiaRowMapper<AllFieldTypesFetchForEditDto> {
+class AllFieldTypesDtoRowMapper : MaiaRowMapper<AllFieldTypesDto> {
 
 
-    override fun mapRow(rsa: ResultSetAdapter): AllFieldTypesFetchForEditDto {
+    override fun mapRow(rsa: ResultSetAdapter): AllFieldTypesDto {
 
-        return AllFieldTypesFetchForEditDto(
-            PartyPkAndNameDto(
-                rsa.readDomainId("createdById"),
-                rsa.readString("createdByName") ?: "(blank)",
-            ),
+        return AllFieldTypesDto(
+            rsa.readDomainId("createdById"),
             rsa.readString("createdByUsername"),
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readDomainId("id"),
-            PartyPkAndNameDto(
-                rsa.readDomainId("lastModifiedById"),
-                rsa.readString("lastModifiedByName") ?: "(blank)",
-            ),
+            rsa.readDomainId("lastModifiedById"),
             rsa.readString("lastModifiedByUsername"),
             rsa.readInstant("lastModifiedTimestampUtc"),
             rsa.readBoolean("someBoolean"),

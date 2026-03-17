@@ -38,10 +38,6 @@ object AllFieldTypesEntityMeta {
 
     const val someBooleanTypeProvidedNullable = "some_boolean_type_provided_nullable"
 
-    const val someDto = "some_dto"
-
-    const val someDtoNullable = "some_dto_nullable"
-
     const val someEnum = "some_enum"
 
     const val someEnumNullable = "some_enum_nullable"
@@ -68,18 +64,6 @@ object AllFieldTypesEntityMeta {
 
     const val someIntTypeProvidedNullable = "some_int_type_provided_nullable"
 
-    const val someListOfEnums = "some_list_of_enums"
-
-    const val someListOfInstants = "some_list_of_instants"
-
-    const val someListOfLocalDates = "some_list_of_local_dates"
-
-    const val someListOfPeriods = "some_list_of_periods"
-
-    const val someListOfStringTypes = "some_list_of_string_types"
-
-    const val someListOfStrings = "some_list_of_strings"
-
     const val someLocalDateModifiable = "some_local_date_modifiable"
 
     const val someLongType = "some_long_type"
@@ -89,10 +73,6 @@ object AllFieldTypesEntityMeta {
     const val someLongTypeProvided = "some_long_type_provided"
 
     const val someLongTypeProvidedNullable = "some_long_type_provided_nullable"
-
-    const val someMapOfStringToInteger = "some_map_of_string_to_integer"
-
-    const val someMapOfStringTypeToStringType = "some_map_of_string_type_to_string_type"
 
     const val somePeriodModifiable = "some_period_modifiable"
 
@@ -156,8 +136,6 @@ object AllFieldTypesEntityMeta {
             "someBooleanTypeNullable" -> "some_boolean_type_nullable"
             "someBooleanTypeProvided" -> "some_boolean_type_provided"
             "someBooleanTypeProvidedNullable" -> "some_boolean_type_provided_nullable"
-            "someDto" -> "some_dto"
-            "someDtoNullable" -> "some_dto_nullable"
             "someEnum" -> "some_enum"
             "someEnumNullable" -> "some_enum_nullable"
             "someInstant" -> "some_instant"
@@ -171,19 +149,11 @@ object AllFieldTypesEntityMeta {
             "someIntTypeNullable" -> "some_int_type_nullable"
             "someIntTypeProvided" -> "some_int_type_provided"
             "someIntTypeProvidedNullable" -> "some_int_type_provided_nullable"
-            "someListOfEnums" -> "some_list_of_enums"
-            "someListOfInstants" -> "some_list_of_instants"
-            "someListOfLocalDates" -> "some_list_of_local_dates"
-            "someListOfPeriods" -> "some_list_of_periods"
-            "someListOfStringTypes" -> "some_list_of_string_types"
-            "someListOfStrings" -> "some_list_of_strings"
             "someLocalDateModifiable" -> "some_local_date_modifiable"
             "someLongType" -> "some_long_type"
             "someLongTypeNullable" -> "some_long_type_nullable"
             "someLongTypeProvided" -> "some_long_type_provided"
             "someLongTypeProvidedNullable" -> "some_long_type_provided_nullable"
-            "someMapOfStringToInteger" -> "some_map_of_string_to_integer"
-            "someMapOfStringTypeToStringType" -> "some_map_of_string_type_to_string_type"
             "somePeriodModifiable" -> "some_period_modifiable"
             "somePeriodNullable" -> "some_period_nullable"
             "someProvidedStringType" -> "some_provided_string_type"

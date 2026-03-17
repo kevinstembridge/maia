@@ -5,12 +5,10 @@ import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/Som
 import {PartyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/party/PartyPkAndNameDto';
 
 
-export interface AllFieldTypesFetchForEditDto {
-    createdBy: PartyPkAndNameDto;
+export interface AllFieldTypesDto {
+    createdById: PartyPkAndNameDto;
     createdByUsername: string;
-    createdTimestampUtc: string;
-    id: string;
-    lastModifiedBy: PartyPkAndNameDto;
+    lastModifiedById: PartyPkAndNameDto;
     lastModifiedByUsername: string;
     lastModifiedTimestampUtc: string;
     someBoolean: boolean;

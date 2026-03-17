@@ -8,7 +8,6 @@ export interface AllFieldTypesUpdateRequestDto {
     someInstantModifiableNullable?: string;
     someIntModifiable: number;
     someIntNullable?: number;
-    someListOfStrings: ReadonlyArray<string>;
     someLocalDateModifiable: string;
     somePeriodModifiable: string;
     someStringModifiable: string;

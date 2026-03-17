@@ -11,13 +11,11 @@ import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
-import org.maiaframework.json.JsonFacade
 import org.maiaframework.showcase.types.SomeIntType
 import org.maiaframework.showcase.types.SomeLongType
 import org.maiaframework.showcase.types.SomeStringType
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
-import tools.jackson.databind.json.JsonMapper
 import java.sql.PreparedStatement
 import java.time.Instant
 import java.time.LocalDate
@@ -27,19 +25,17 @@ import java.time.Period
 @Repository
 class AllFieldTypesDao(
     private val fieldConverter: AllFieldTypesEntityFieldConverter,
-    private val jdbcOps: JdbcOps,
-    private val jsonFacade: JsonFacade,
-    private val jsonMapper: JsonMapper
+    private val jdbcOps: JdbcOps
 ) {
 
 
-    private val entityRowMapper = AllFieldTypesEntityRowMapper(jsonMapper)
+    private val entityRowMapper = AllFieldTypesEntityRowMapper()
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
-    private val fetchForEditDtoRowMapper = AllFieldTypesFetchForEditDtoRowMapper(jsonMapper)
+    private val fetchForEditDtoRowMapper = AllFieldTypesFetchForEditDtoRowMapper()
 
 
     fun insert(entity: AllFieldTypesEntity) {
@@ -60,8 +56,6 @@ class AllFieldTypesDao(
                 some_boolean_type_nullable,
                 some_boolean_type_provided,
                 some_boolean_type_provided_nullable,
-                some_dto,
-                some_dto_nullable,
                 some_enum,
                 some_enum_nullable,
                 some_instant,
@@ -75,19 +69,11 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
-                some_list_of_enums,
-                some_list_of_instants,
-                some_list_of_local_dates,
-                some_list_of_periods,
-                some_list_of_string_types,
-                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
                 some_long_type_provided,
                 some_long_type_provided_nullable,
-                some_map_of_string_to_integer,
-                some_map_of_string_type_to_string_type,
                 some_period_modifiable,
                 some_period_nullable,
                 some_provided_string_type,
@@ -111,8 +97,6 @@ class AllFieldTypesDao(
                 :someBooleanTypeNullable,
                 :someBooleanTypeProvided,
                 :someBooleanTypeProvidedNullable,
-                :someDto,
-                :someDtoNullable,
                 :someEnum,
                 :someEnumNullable,
                 :someInstant,
@@ -126,19 +110,11 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
-                :someListOfEnums,
-                :someListOfInstants,
-                :someListOfLocalDates,
-                :someListOfPeriods,
-                :someListOfStringTypes,
-                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
                 :someLongTypeProvided,
                 :someLongTypeProvidedNullable,
-                :someMapOfStringToInteger,
-                :someMapOfStringTypeToStringType,
                 :somePeriodModifiable,
                 :somePeriodNullable,
                 :someProvidedStringType,
@@ -164,8 +140,6 @@ class AllFieldTypesDao(
                 addValue("someBooleanTypeNullable", entity.someBooleanTypeNullable)
                 addValue("someBooleanTypeProvided", entity.someBooleanTypeProvided)
                 addValue("someBooleanTypeProvidedNullable", entity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", jsonMapper.writeValueAsString(entity.someDto))
-                addJsonValue("someDtoNullable", entity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
                 addValue("someEnum", entity.someEnum)
                 addValue("someEnumNullable", entity.someEnumNullable)
                 addValue("someInstant", entity.someInstant)
@@ -179,19 +153,11 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", entity.someIntTypeNullable)
                 addValue("someIntTypeProvided", entity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", entity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", entity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", entity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", entity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", entity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", entity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", entity.someListOfStrings)
                 addValue("someLocalDateModifiable", entity.someLocalDateModifiable)
                 addValue("someLongType", entity.someLongType)
                 addValue("someLongTypeNullable", entity.someLongTypeNullable)
                 addValue("someLongTypeProvided", entity.someLongTypeProvided)
                 addValue("someLongTypeProvidedNullable", entity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(entity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(entity.someMapOfStringTypeToStringType))
                 addValue("somePeriodModifiable", entity.somePeriodModifiable)
                 addValue("somePeriodNullable", entity.somePeriodNullable)
                 addValue("someProvidedStringType", entity.someProvidedStringType)
@@ -225,8 +191,6 @@ class AllFieldTypesDao(
                 some_boolean_type_nullable,
                 some_boolean_type_provided,
                 some_boolean_type_provided_nullable,
-                some_dto,
-                some_dto_nullable,
                 some_enum,
                 some_enum_nullable,
                 some_instant,
@@ -240,19 +204,11 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
-                some_list_of_enums,
-                some_list_of_instants,
-                some_list_of_local_dates,
-                some_list_of_periods,
-                some_list_of_string_types,
-                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
                 some_long_type_provided,
                 some_long_type_provided_nullable,
-                some_map_of_string_to_integer,
-                some_map_of_string_type_to_string_type,
                 some_period_modifiable,
                 some_period_nullable,
                 some_provided_string_type,
@@ -276,8 +232,6 @@ class AllFieldTypesDao(
                 :someBooleanTypeNullable,
                 :someBooleanTypeProvided,
                 :someBooleanTypeProvidedNullable,
-                :someDto,
-                :someDtoNullable,
                 :someEnum,
                 :someEnumNullable,
                 :someInstant,
@@ -291,19 +245,11 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
-                :someListOfEnums,
-                :someListOfInstants,
-                :someListOfLocalDates,
-                :someListOfPeriods,
-                :someListOfStringTypes,
-                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
                 :someLongTypeProvided,
                 :someLongTypeProvidedNullable,
-                :someMapOfStringToInteger,
-                :someMapOfStringTypeToStringType,
                 :somePeriodModifiable,
                 :somePeriodNullable,
                 :someProvidedStringType,
@@ -330,8 +276,6 @@ class AllFieldTypesDao(
                     addValue("someBooleanTypeNullable", entity.someBooleanTypeNullable)
                     addValue("someBooleanTypeProvided", entity.someBooleanTypeProvided)
                     addValue("someBooleanTypeProvidedNullable", entity.someBooleanTypeProvidedNullable)
-                    addJsonValue("someDto", jsonMapper.writeValueAsString(entity.someDto))
-                    addJsonValue("someDtoNullable", entity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
                     addValue("someEnum", entity.someEnum)
                     addValue("someEnumNullable", entity.someEnumNullable)
                     addValue("someInstant", entity.someInstant)
@@ -345,19 +289,11 @@ class AllFieldTypesDao(
                     addValue("someIntTypeNullable", entity.someIntTypeNullable)
                     addValue("someIntTypeProvided", entity.someIntTypeProvided)
                     addValue("someIntTypeProvidedNullable", entity.someIntTypeProvidedNullable)
-                    addListOfStrings("someListOfEnums", entity.someListOfEnums.map { it.name })
-                    addListOfInstants("someListOfInstants", entity.someListOfInstants)
-                    addListOfLocalDates("someListOfLocalDates", entity.someListOfLocalDates)
-                    addListOfStrings("someListOfPeriods", entity.someListOfPeriods.map { it.toString() })
-                    addListOfStrings("someListOfStringTypes", entity.someListOfStringTypes.map { it.value })
-                    addListOfStrings("someListOfStrings", entity.someListOfStrings)
                     addValue("someLocalDateModifiable", entity.someLocalDateModifiable)
                     addValue("someLongType", entity.someLongType)
                     addValue("someLongTypeNullable", entity.someLongTypeNullable)
                     addValue("someLongTypeProvided", entity.someLongTypeProvided)
                     addValue("someLongTypeProvidedNullable", entity.someLongTypeProvidedNullable)
-                    addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(entity.someMapOfStringToInteger))
-                    addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(entity.someMapOfStringTypeToStringType))
                     addValue("somePeriodModifiable", entity.somePeriodModifiable)
                     addValue("somePeriodNullable", entity.somePeriodNullable)
                     addValue("someProvidedStringType", entity.someProvidedStringType)
@@ -853,8 +789,6 @@ class AllFieldTypesDao(
                 all_field_types.some_boolean_type_nullable as someBooleanTypeNullable,
                 all_field_types.some_boolean_type_provided as someBooleanTypeProvided,
                 all_field_types.some_boolean_type_provided_nullable as someBooleanTypeProvidedNullable,
-                all_field_types.some_dto as someDto,
-                all_field_types.some_dto_nullable as someDtoNullable,
                 all_field_types.some_enum as someEnum,
                 all_field_types.some_enum_nullable as someEnumNullable,
                 all_field_types.some_instant as someInstant,
@@ -868,19 +802,11 @@ class AllFieldTypesDao(
                 all_field_types.some_int_type_nullable as someIntTypeNullable,
                 all_field_types.some_int_type_provided as someIntTypeProvided,
                 all_field_types.some_int_type_provided_nullable as someIntTypeProvidedNullable,
-                all_field_types.some_list_of_enums as someListOfEnums,
-                all_field_types.some_list_of_instants as someListOfInstants,
-                all_field_types.some_list_of_local_dates as someListOfLocalDates,
-                all_field_types.some_list_of_periods as someListOfPeriods,
-                all_field_types.some_list_of_string_types as someListOfStringTypes,
-                all_field_types.some_list_of_strings as someListOfStrings,
                 all_field_types.some_local_date_modifiable as someLocalDateModifiable,
                 all_field_types.some_long_type as someLongType,
                 all_field_types.some_long_type_nullable as someLongTypeNullable,
                 all_field_types.some_long_type_provided as someLongTypeProvided,
                 all_field_types.some_long_type_provided_nullable as someLongTypeProvidedNullable,
-                all_field_types.some_map_of_string_to_integer as someMapOfStringToInteger,
-                all_field_types.some_map_of_string_type_to_string_type as someMapOfStringTypeToStringType,
                 all_field_types.some_period_modifiable as somePeriodModifiable,
                 all_field_types.some_period_nullable as somePeriodNullable,
                 all_field_types.some_provided_string_type as someProvidedStringType,
@@ -925,8 +851,6 @@ class AllFieldTypesDao(
                 some_boolean_type_nullable,
                 some_boolean_type_provided,
                 some_boolean_type_provided_nullable,
-                some_dto,
-                some_dto_nullable,
                 some_enum,
                 some_enum_nullable,
                 some_instant,
@@ -940,19 +864,11 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
-                some_list_of_enums,
-                some_list_of_instants,
-                some_list_of_local_dates,
-                some_list_of_periods,
-                some_list_of_string_types,
-                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
                 some_long_type_provided,
                 some_long_type_provided_nullable,
-                some_map_of_string_to_integer,
-                some_map_of_string_type_to_string_type,
                 some_period_modifiable,
                 some_period_nullable,
                 some_provided_string_type,
@@ -976,8 +892,6 @@ class AllFieldTypesDao(
                 :someBooleanTypeNullable,
                 :someBooleanTypeProvided,
                 :someBooleanTypeProvidedNullable,
-                :someDto,
-                :someDtoNullable,
                 :someEnum,
                 :someEnumNullable,
                 :someInstant,
@@ -991,19 +905,11 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
-                :someListOfEnums,
-                :someListOfInstants,
-                :someListOfLocalDates,
-                :someListOfPeriods,
-                :someListOfStringTypes,
-                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
                 :someLongTypeProvided,
                 :someLongTypeProvidedNullable,
-                :someMapOfStringToInteger,
-                :someMapOfStringTypeToStringType,
                 :somePeriodModifiable,
                 :somePeriodNullable,
                 :someProvidedStringType,
@@ -1023,7 +929,6 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
-                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -1043,8 +948,6 @@ class AllFieldTypesDao(
                 addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
                 addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
                 addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
                 addValue("someEnum", upsertEntity.someEnum)
                 addValue("someEnumNullable", upsertEntity.someEnumNullable)
                 addValue("someInstant", upsertEntity.someInstant)
@@ -1058,19 +961,11 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
                 addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
                 addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
                 addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
                 addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
                 addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
@@ -1111,8 +1006,6 @@ class AllFieldTypesDao(
                 some_boolean_type_nullable,
                 some_boolean_type_provided,
                 some_boolean_type_provided_nullable,
-                some_dto,
-                some_dto_nullable,
                 some_enum,
                 some_enum_nullable,
                 some_instant,
@@ -1126,19 +1019,11 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
-                some_list_of_enums,
-                some_list_of_instants,
-                some_list_of_local_dates,
-                some_list_of_periods,
-                some_list_of_string_types,
-                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
                 some_long_type_provided,
                 some_long_type_provided_nullable,
-                some_map_of_string_to_integer,
-                some_map_of_string_type_to_string_type,
                 some_period_modifiable,
                 some_period_nullable,
                 some_provided_string_type,
@@ -1162,8 +1047,6 @@ class AllFieldTypesDao(
                 :someBooleanTypeNullable,
                 :someBooleanTypeProvided,
                 :someBooleanTypeProvidedNullable,
-                :someDto,
-                :someDtoNullable,
                 :someEnum,
                 :someEnumNullable,
                 :someInstant,
@@ -1177,19 +1060,11 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
-                :someListOfEnums,
-                :someListOfInstants,
-                :someListOfLocalDates,
-                :someListOfPeriods,
-                :someListOfStringTypes,
-                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
                 :someLongTypeProvided,
                 :someLongTypeProvidedNullable,
-                :someMapOfStringToInteger,
-                :someMapOfStringTypeToStringType,
                 :somePeriodModifiable,
                 :somePeriodNullable,
                 :someProvidedStringType,
@@ -1209,7 +1084,6 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
-                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -1229,8 +1103,6 @@ class AllFieldTypesDao(
                 addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
                 addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
                 addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
                 addValue("someEnum", upsertEntity.someEnum)
                 addValue("someEnumNullable", upsertEntity.someEnumNullable)
                 addValue("someInstant", upsertEntity.someInstant)
@@ -1244,19 +1116,11 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
                 addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
                 addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
                 addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
                 addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
                 addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
@@ -1297,8 +1161,6 @@ class AllFieldTypesDao(
                 some_boolean_type_nullable,
                 some_boolean_type_provided,
                 some_boolean_type_provided_nullable,
-                some_dto,
-                some_dto_nullable,
                 some_enum,
                 some_enum_nullable,
                 some_instant,
@@ -1312,19 +1174,11 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
-                some_list_of_enums,
-                some_list_of_instants,
-                some_list_of_local_dates,
-                some_list_of_periods,
-                some_list_of_string_types,
-                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
                 some_long_type_provided,
                 some_long_type_provided_nullable,
-                some_map_of_string_to_integer,
-                some_map_of_string_type_to_string_type,
                 some_period_modifiable,
                 some_period_nullable,
                 some_provided_string_type,
@@ -1348,8 +1202,6 @@ class AllFieldTypesDao(
                 :someBooleanTypeNullable,
                 :someBooleanTypeProvided,
                 :someBooleanTypeProvidedNullable,
-                :someDto,
-                :someDtoNullable,
                 :someEnum,
                 :someEnumNullable,
                 :someInstant,
@@ -1363,19 +1215,11 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
-                :someListOfEnums,
-                :someListOfInstants,
-                :someListOfLocalDates,
-                :someListOfPeriods,
-                :someListOfStringTypes,
-                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
                 :someLongTypeProvided,
                 :someLongTypeProvidedNullable,
-                :someMapOfStringToInteger,
-                :someMapOfStringTypeToStringType,
                 :somePeriodModifiable,
                 :somePeriodNullable,
                 :someProvidedStringType,
@@ -1395,7 +1239,6 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
-                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -1415,8 +1258,6 @@ class AllFieldTypesDao(
                 addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
                 addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
                 addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
                 addValue("someEnum", upsertEntity.someEnum)
                 addValue("someEnumNullable", upsertEntity.someEnumNullable)
                 addValue("someInstant", upsertEntity.someInstant)
@@ -1430,19 +1271,11 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
                 addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
                 addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
                 addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
                 addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
                 addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
@@ -1483,8 +1316,6 @@ class AllFieldTypesDao(
                 some_boolean_type_nullable,
                 some_boolean_type_provided,
                 some_boolean_type_provided_nullable,
-                some_dto,
-                some_dto_nullable,
                 some_enum,
                 some_enum_nullable,
                 some_instant,
@@ -1498,19 +1329,11 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
-                some_list_of_enums,
-                some_list_of_instants,
-                some_list_of_local_dates,
-                some_list_of_periods,
-                some_list_of_string_types,
-                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
                 some_long_type_provided,
                 some_long_type_provided_nullable,
-                some_map_of_string_to_integer,
-                some_map_of_string_type_to_string_type,
                 some_period_modifiable,
                 some_period_nullable,
                 some_provided_string_type,
@@ -1534,8 +1357,6 @@ class AllFieldTypesDao(
                 :someBooleanTypeNullable,
                 :someBooleanTypeProvided,
                 :someBooleanTypeProvidedNullable,
-                :someDto,
-                :someDtoNullable,
                 :someEnum,
                 :someEnumNullable,
                 :someInstant,
@@ -1549,19 +1370,11 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
-                :someListOfEnums,
-                :someListOfInstants,
-                :someListOfLocalDates,
-                :someListOfPeriods,
-                :someListOfStringTypes,
-                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
                 :someLongTypeProvided,
                 :someLongTypeProvidedNullable,
-                :someMapOfStringToInteger,
-                :someMapOfStringTypeToStringType,
                 :somePeriodModifiable,
                 :somePeriodNullable,
                 :someProvidedStringType,
@@ -1581,7 +1394,6 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
-                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -1601,8 +1413,6 @@ class AllFieldTypesDao(
                 addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
                 addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
                 addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
                 addValue("someEnum", upsertEntity.someEnum)
                 addValue("someEnumNullable", upsertEntity.someEnumNullable)
                 addValue("someInstant", upsertEntity.someInstant)
@@ -1616,19 +1426,11 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
                 addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
                 addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
                 addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
                 addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
                 addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
@@ -1669,8 +1471,6 @@ class AllFieldTypesDao(
                 some_boolean_type_nullable,
                 some_boolean_type_provided,
                 some_boolean_type_provided_nullable,
-                some_dto,
-                some_dto_nullable,
                 some_enum,
                 some_enum_nullable,
                 some_instant,
@@ -1684,19 +1484,11 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
-                some_list_of_enums,
-                some_list_of_instants,
-                some_list_of_local_dates,
-                some_list_of_periods,
-                some_list_of_string_types,
-                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
                 some_long_type_provided,
                 some_long_type_provided_nullable,
-                some_map_of_string_to_integer,
-                some_map_of_string_type_to_string_type,
                 some_period_modifiable,
                 some_period_nullable,
                 some_provided_string_type,
@@ -1720,8 +1512,6 @@ class AllFieldTypesDao(
                 :someBooleanTypeNullable,
                 :someBooleanTypeProvided,
                 :someBooleanTypeProvidedNullable,
-                :someDto,
-                :someDtoNullable,
                 :someEnum,
                 :someEnumNullable,
                 :someInstant,
@@ -1735,19 +1525,11 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
-                :someListOfEnums,
-                :someListOfInstants,
-                :someListOfLocalDates,
-                :someListOfPeriods,
-                :someListOfStringTypes,
-                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
                 :someLongTypeProvided,
                 :someLongTypeProvidedNullable,
-                :someMapOfStringToInteger,
-                :someMapOfStringTypeToStringType,
                 :somePeriodModifiable,
                 :somePeriodNullable,
                 :someProvidedStringType,
@@ -1767,7 +1549,6 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
-                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -1787,8 +1568,6 @@ class AllFieldTypesDao(
                 addValue("someBooleanTypeNullable", upsertEntity.someBooleanTypeNullable)
                 addValue("someBooleanTypeProvided", upsertEntity.someBooleanTypeProvided)
                 addValue("someBooleanTypeProvidedNullable", upsertEntity.someBooleanTypeProvidedNullable)
-                addJsonValue("someDto", jsonMapper.writeValueAsString(upsertEntity.someDto))
-                addJsonValue("someDtoNullable", upsertEntity.someDtoNullable?.let { jsonMapper.writeValueAsString(it) })
                 addValue("someEnum", upsertEntity.someEnum)
                 addValue("someEnumNullable", upsertEntity.someEnumNullable)
                 addValue("someInstant", upsertEntity.someInstant)
@@ -1802,19 +1581,11 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
-                addListOfStrings("someListOfEnums", upsertEntity.someListOfEnums.map { it.name })
-                addListOfInstants("someListOfInstants", upsertEntity.someListOfInstants)
-                addListOfLocalDates("someListOfLocalDates", upsertEntity.someListOfLocalDates)
-                addListOfStrings("someListOfPeriods", upsertEntity.someListOfPeriods.map { it.toString() })
-                addListOfStrings("someListOfStringTypes", upsertEntity.someListOfStringTypes.map { it.value })
-                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
                 addValue("someLongTypeProvided", upsertEntity.someLongTypeProvided)
                 addValue("someLongTypeProvidedNullable", upsertEntity.someLongTypeProvidedNullable)
-                addJsonValue("someMapOfStringToInteger", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringToInteger))
-                addJsonValue("someMapOfStringTypeToStringType", jsonMapper.writeValueAsString(upsertEntity.someMapOfStringTypeToStringType))
                 addValue("somePeriodModifiable", upsertEntity.somePeriodModifiable)
                 addValue("somePeriodNullable", upsertEntity.somePeriodNullable)
                 addValue("someProvidedStringType", upsertEntity.someProvidedStringType)
@@ -1879,7 +1650,6 @@ class AllFieldTypesDao(
             "someInstantModifiableNullable" -> sqlParams.addValue("someInstantModifiableNullable", field.value as Instant?)
             "someIntModifiable" -> sqlParams.addValue("someIntModifiable", field.value as Int)
             "someIntNullable" -> sqlParams.addValue("someIntNullable", field.value as Int?)
-            "someListOfStrings" -> sqlParams.addListOfStrings("someListOfStrings", field.value as List<String>)
             "someLocalDateModifiable" -> sqlParams.addValue("someLocalDateModifiable", field.value as LocalDate)
             "somePeriodModifiable" -> sqlParams.addValue("somePeriodModifiable", field.value as Period)
             "someStringModifiable" -> sqlParams.addValue("someStringModifiable", field.value as String)

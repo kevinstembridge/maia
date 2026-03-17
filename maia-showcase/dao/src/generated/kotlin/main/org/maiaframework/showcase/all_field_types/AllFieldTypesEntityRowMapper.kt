@@ -5,7 +5,6 @@ package org.maiaframework.showcase.all_field_types
 
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
-import org.maiaframework.showcase.SimpleResponseDto
 import org.maiaframework.showcase.enums.SomeEnum
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
@@ -15,16 +14,9 @@ import org.maiaframework.showcase.types.SomeProvidedIntType
 import org.maiaframework.showcase.types.SomeProvidedLongType
 import org.maiaframework.showcase.types.SomeProvidedStringType
 import org.maiaframework.showcase.types.SomeStringType
-import tools.jackson.core.type.TypeReference
-import tools.jackson.databind.json.JsonMapper
-import java.time.Instant
-import java.time.LocalDate
-import java.time.Period
 
 
-class AllFieldTypesEntityRowMapper(
-    private val jsonMapper: JsonMapper
-) : MaiaRowMapper<AllFieldTypesEntity> {
+class AllFieldTypesEntityRowMapper : MaiaRowMapper<AllFieldTypesEntity> {
 
 
     override fun mapRow(rsa: ResultSetAdapter): AllFieldTypesEntity {
@@ -42,8 +34,6 @@ class AllFieldTypesEntityRowMapper(
         val someBooleanTypeNullable = rsa.readBooleanOrNull("some_boolean_type_nullable") { SomeBooleanType(it) }
         val someBooleanTypeProvided = rsa.readBoolean("some_boolean_type_provided") { SomeProvidedBooleanType(it) }
         val someBooleanTypeProvidedNullable = rsa.readBooleanOrNull("some_boolean_type_provided_nullable") { SomeProvidedBooleanType(it) }
-        val someDto = rsa.readString("some_dto") { jsonMapper.readValue(it, object : TypeReference<SimpleResponseDto>() {}) }
-        val someDtoNullable = rsa.readStringOrNull("some_dto_nullable") { jsonMapper.readValue(it, object : TypeReference<SimpleResponseDto?>() {}) }
         val someEnum = rsa.readEnum("some_enum", SomeEnum::class.java)
         val someEnumNullable = rsa.readEnumOrNull("some_enum_nullable", SomeEnum::class.java)
         val someInstant = rsa.readInstant("some_instant")
@@ -57,19 +47,11 @@ class AllFieldTypesEntityRowMapper(
         val someIntTypeNullable = rsa.readIntOrNull("some_int_type_nullable") { SomeIntType(it) }
         val someIntTypeProvided = rsa.readInt("some_int_type_provided") { SomeProvidedIntType(it) }
         val someIntTypeProvidedNullable = rsa.readIntOrNull("some_int_type_provided_nullable") { SomeProvidedIntType(it) }
-        val someListOfEnums = rsa.readListOfStrings("some_list_of_enums") { SomeEnum.valueOf(it) }
-        val someListOfInstants = rsa.readListOfInstants("some_list_of_instants")
-        val someListOfLocalDates = rsa.readListOfLocalDates("some_list_of_local_dates")
-        val someListOfPeriods = rsa.readListOfStrings("some_list_of_periods") { Period.parse(it) }
-        val someListOfStringTypes = rsa.readListOfStrings("some_list_of_string_types") { SomeStringType(it) }
-        val someListOfStrings = rsa.readListOfStrings("some_list_of_strings")
         val someLocalDateModifiable = rsa.readLocalDate("some_local_date_modifiable")
         val someLongType = rsa.readLong("some_long_type") { SomeLongType(it) }
         val someLongTypeNullable = rsa.readLongOrNull("some_long_type_nullable") { SomeLongType(it) }
         val someLongTypeProvided = rsa.readLong("some_long_type_provided") { SomeProvidedLongType(it) }
         val someLongTypeProvidedNullable = rsa.readLongOrNull("some_long_type_provided_nullable") { SomeProvidedLongType(it) }
-        val someMapOfStringToInteger = rsa.readString("some_map_of_string_to_integer") { jsonMapper.readValue(it, object : TypeReference<Map<String, Int>>() {}) }
-        val someMapOfStringTypeToStringType = rsa.readString("some_map_of_string_type_to_string_type") { jsonMapper.readValue(it, object : TypeReference<Map<SomeStringType, SomeStringType>>() {}) }
         val somePeriodModifiable = rsa.readPeriod("some_period_modifiable")
         val somePeriodNullable = rsa.readPeriodOrNull("some_period_nullable")
         val someProvidedStringType = rsa.readString("some_provided_string_type") { SomeProvidedStringType(it) }
@@ -94,8 +76,6 @@ class AllFieldTypesEntityRowMapper(
                 someBooleanTypeNullable,
                 someBooleanTypeProvided,
                 someBooleanTypeProvidedNullable,
-                someDto,
-                someDtoNullable,
                 someEnum,
                 someEnumNullable,
                 someInstant,
@@ -109,19 +89,11 @@ class AllFieldTypesEntityRowMapper(
                 someIntTypeNullable,
                 someIntTypeProvided,
                 someIntTypeProvidedNullable,
-                someListOfEnums,
-                someListOfInstants,
-                someListOfLocalDates,
-                someListOfPeriods,
-                someListOfStringTypes,
-                someListOfStrings,
                 someLocalDateModifiable,
                 someLongType,
                 someLongTypeNullable,
                 someLongTypeProvided,
                 someLongTypeProvidedNullable,
-                someMapOfStringToInteger,
-                someMapOfStringTypeToStringType,
                 somePeriodModifiable,
                 somePeriodNullable,
                 someProvidedStringType,

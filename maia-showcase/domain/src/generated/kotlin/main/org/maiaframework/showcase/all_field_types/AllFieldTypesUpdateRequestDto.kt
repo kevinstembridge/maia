@@ -31,9 +31,6 @@ class AllFieldTypesUpdateRequestDto
     private val someIntModifiable_raw: Int?,
     val someIntNullable: Int?,
     @param:NotNull 
-    @param:JsonProperty("someListOfStrings", access = JsonProperty.Access.READ_WRITE) 
-    private val someListOfStrings_raw: List<String>?,
-    @param:NotNull 
     @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someLocalDateModifiable_raw: LocalDate?,
     @param:NotBlank 
@@ -63,11 +60,6 @@ class AllFieldTypesUpdateRequestDto
 
 
     @get:JsonIgnore
-    val someListOfStrings
-        get() = someListOfStrings_raw!!
-
-
-    @get:JsonIgnore
     val someLocalDateModifiable
         get() = someLocalDateModifiable_raw!!
 
@@ -88,7 +80,6 @@ class AllFieldTypesUpdateRequestDto
                 "id = '" + this.id + '\'' + ", " + 
                 "someInstantModifiable = '" + this.someInstantModifiable + '\'' + ", " + 
                 "someIntModifiable = '" + this.someIntModifiable + '\'' + ", " + 
-                "someListOfStrings = '" + this.someListOfStrings + '\'' + ", " + 
                 "someLocalDateModifiable = '" + this.someLocalDateModifiable + '\'' + ", " + 
                 "somePeriodModifiable = '" + this.somePeriodModifiable + '\'' + ", " + 
                 "someStringModifiable = '" + this.someStringModifiable + '\'' + ", " + 

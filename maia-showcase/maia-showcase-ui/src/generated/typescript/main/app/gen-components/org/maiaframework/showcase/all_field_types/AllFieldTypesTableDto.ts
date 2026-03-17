@@ -5,46 +5,44 @@ import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/Som
 import {PartyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/party/PartyPkAndNameDto';
 
 
-export interface AllFieldTypesFetchForEditDto {
-    createdBy: PartyPkAndNameDto;
+export interface AllFieldTypesTableDto {
+    createdById: PartyPkAndNameDto;
     createdByUsername: string;
-    createdTimestampUtc: string;
-    id: string;
-    lastModifiedBy: PartyPkAndNameDto;
+    lastModifiedById: PartyPkAndNameDto;
     lastModifiedByUsername: string;
     lastModifiedTimestampUtc: string;
     someBoolean: boolean;
-    someBooleanNullable?: boolean;
+    someBooleanNullable: boolean;
     someBooleanType: boolean;
-    someBooleanTypeNullable?: boolean;
+    someBooleanTypeNullable: boolean;
     someBooleanTypeProvided: boolean;
-    someBooleanTypeProvidedNullable?: boolean;
+    someBooleanTypeProvidedNullable: boolean;
     someEnum: SomeEnum;
-    someEnumNullable?: SomeEnum;
+    someEnumNullable: SomeEnum;
     someInstant: string;
     someInstantModifiable: string;
-    someInstantModifiableNullable?: string;
-    someInstantNullable?: string;
+    someInstantModifiableNullable: string;
+    someInstantNullable: string;
     someInt: number;
     someIntModifiable: number;
-    someIntNullable?: number;
+    someIntNullable: number;
     someIntType: number;
-    someIntTypeNullable?: number;
+    someIntTypeNullable: number;
     someIntTypeProvided: number;
-    someIntTypeProvidedNullable?: number;
+    someIntTypeProvidedNullable: number;
     someLocalDateModifiable: string;
     someLongType: number;
-    someLongTypeNullable?: number;
+    someLongTypeNullable: number;
     someLongTypeProvided: number;
-    someLongTypeProvidedNullable?: number;
+    someLongTypeProvidedNullable: number;
     somePeriodModifiable: string;
-    somePeriodNullable?: string;
+    somePeriodNullable: string;
     someProvidedStringType: string;
-    someProvidedStringTypeNullable?: string;
+    someProvidedStringTypeNullable: string;
     someString: string;
     someStringModifiable: string;
-    someStringNullable?: string;
+    someStringNullable: string;
     someStringType: string;
-    someStringTypeNullable?: string;
+    someStringTypeNullable: string;
 }
 

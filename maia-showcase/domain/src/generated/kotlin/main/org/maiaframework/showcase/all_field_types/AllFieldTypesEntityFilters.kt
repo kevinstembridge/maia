@@ -8,7 +8,6 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.jdbc.sql.conditions.AndOr
 import org.maiaframework.jdbc.sql.conditions.SqlConditionOperator
-import org.maiaframework.showcase.SimpleResponseDto
 import org.maiaframework.showcase.enums.SomeEnum
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
@@ -157,22 +156,6 @@ class AllFieldTypesEntityFilters {
         }
 
 
-    val someDto: FieldFilter<SimpleResponseDto> 
-        get() {
-
-            return FieldFilter("some_dto", Types.OTHER, this.sqlParamCounter) { value -> value }
-
-        }
-
-
-    val someDtoNullable: FieldFilter<SimpleResponseDto?> 
-        get() {
-
-            return FieldFilter("some_dto_nullable", Types.OTHER, this.sqlParamCounter) { value -> value }
-
-        }
-
-
     val someEnum: FieldFilter<SomeEnum> 
         get() {
 
@@ -273,54 +256,6 @@ class AllFieldTypesEntityFilters {
         get() {
 
             return FieldFilter("some_int_type_provided_nullable", Types.INTEGER, this.sqlParamCounter) { value -> value?.value }
-
-        }
-
-
-    val someListOfEnums: ListFieldFilter<SomeEnum> 
-        get() {
-
-            return ListFieldFilter("some_list_of_enums")
-
-        }
-
-
-    val someListOfInstants: ListFieldFilter<Instant> 
-        get() {
-
-            return ListFieldFilter("some_list_of_instants")
-
-        }
-
-
-    val someListOfLocalDates: ListFieldFilter<LocalDate> 
-        get() {
-
-            return ListFieldFilter("some_list_of_local_dates")
-
-        }
-
-
-    val someListOfPeriods: ListFieldFilter<Period> 
-        get() {
-
-            return ListFieldFilter("some_list_of_periods")
-
-        }
-
-
-    val someListOfStringTypes: ListFieldFilter<SomeStringType> 
-        get() {
-
-            return ListFieldFilter("some_list_of_string_types")
-
-        }
-
-
-    val someListOfStrings: ListFieldFilter<String> 
-        get() {
-
-            return ListFieldFilter("some_list_of_strings")
 
         }
 
@@ -560,19 +495,6 @@ class AllFieldTypesEntityFilters {
     }
 
 
-    class ListFieldFilter<T>(private val databaseColumnName: String) { 
-
-
-        infix fun contains(value: T): AllFieldTypesEntityFilter {
-
-            return ListFieldContainsFilter(this.databaseColumnName, value)
-
-        }
-
-
-    }
-
-
     class NoopFilter : AllFieldTypesEntityFilter {
 
 
@@ -696,52 +618,6 @@ class AllFieldTypesEntityFilters {
         override fun populateSqlParams(sqlParams: SqlParams) {
 
             this.filters.forEach { it.populateSqlParams(sqlParams) }
-
-        }
-
-
-    }
-
-
-    private class JsonListFieldContainsFilter<VALUE>(
-        private val databaseColumnName: String,
-        private val value: VALUE
-    ): AllFieldTypesEntityFilter {
-
-
-        override fun whereClause(fieldConverter: AllFieldTypesEntityFieldConverter): String {
-
-            return "jsonb_path_exists($databaseColumnName, '$ ? (@ == \"$value\")')"
-
-        }
-
-
-        override fun populateSqlParams(sqlParams: SqlParams) {
-
-            // do nothing
-
-        }
-
-
-    }
-
-
-    private class ListFieldContainsFilter<VALUE>(
-        private val databaseColumnName: String,
-        private val value: VALUE
-    ): AllFieldTypesEntityFilter {
-
-
-        override fun whereClause(fieldConverter: AllFieldTypesEntityFieldConverter): String {
-
-            return "'$value' = ANY($databaseColumnName)"
-
-        }
-
-
-        override fun populateSqlParams(sqlParams: SqlParams) {
-
-            // do nothing
 
         }
 

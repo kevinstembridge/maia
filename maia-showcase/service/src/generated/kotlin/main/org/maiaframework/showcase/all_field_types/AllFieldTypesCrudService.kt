@@ -5,7 +5,6 @@ package org.maiaframework.showcase.all_field_types
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
-import org.maiaframework.showcase.SimpleResponseDto
 import org.maiaframework.showcase.enums.SomeEnum
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
@@ -59,8 +58,6 @@ class AllFieldTypesCrudService(
         val someBooleanTypeNullable: SomeBooleanType? = createDto.someBooleanTypeNullable
         val someBooleanTypeProvided: SomeProvidedBooleanType = createDto.someBooleanTypeProvided
         val someBooleanTypeProvidedNullable: SomeProvidedBooleanType? = createDto.someBooleanTypeProvidedNullable
-        val someDto: SimpleResponseDto = createDto.someDto
-        val someDtoNullable: SimpleResponseDto? = createDto.someDtoNullable
         val someEnum: SomeEnum = createDto.someEnum
         val someEnumNullable: SomeEnum? = createDto.someEnumNullable
         val someInstant: Instant = createDto.someInstant
@@ -74,19 +71,11 @@ class AllFieldTypesCrudService(
         val someIntTypeNullable: SomeIntType? = createDto.someIntTypeNullable
         val someIntTypeProvided: SomeProvidedIntType = createDto.someIntTypeProvided
         val someIntTypeProvidedNullable: SomeProvidedIntType? = createDto.someIntTypeProvidedNullable
-        val someListOfEnums: List<SomeEnum> = createDto.someListOfEnums
-        val someListOfInstants: List<Instant> = createDto.someListOfInstants
-        val someListOfLocalDates: List<LocalDate> = createDto.someListOfLocalDates
-        val someListOfPeriods: List<Period> = createDto.someListOfPeriods
-        val someListOfStringTypes: List<SomeStringType> = createDto.someListOfStringTypes
-        val someListOfStrings: List<String> = createDto.someListOfStrings
         val someLocalDateModifiable: LocalDate = createDto.someLocalDateModifiable
         val someLongType: SomeLongType = createDto.someLongType
         val someLongTypeNullable: SomeLongType? = createDto.someLongTypeNullable
         val someLongTypeProvided: SomeProvidedLongType = createDto.someLongTypeProvided
         val someLongTypeProvidedNullable: SomeProvidedLongType? = createDto.someLongTypeProvidedNullable
-        val someMapOfStringToInteger: Map<String, Int> = createDto.someMapOfStringToInteger
-        val someMapOfStringTypeToStringType: Map<SomeStringType, SomeStringType> = createDto.someMapOfStringTypeToStringType
         val somePeriodModifiable: Period = createDto.somePeriodModifiable
         val somePeriodNullable: Period? = createDto.somePeriodNullable
         val someProvidedStringType: SomeProvidedStringType = createDto.someProvidedStringType
@@ -118,8 +107,6 @@ class AllFieldTypesCrudService(
             someBooleanTypeNullable,
             someBooleanTypeProvided,
             someBooleanTypeProvidedNullable,
-            someDto,
-            someDtoNullable,
             someEnum,
             someEnumNullable,
             someInstant,
@@ -133,19 +120,11 @@ class AllFieldTypesCrudService(
             someIntTypeNullable,
             someIntTypeProvided,
             someIntTypeProvidedNullable,
-            someListOfEnums,
-            someListOfInstants,
-            someListOfLocalDates,
-            someListOfPeriods,
-            someListOfStringTypes,
-            someListOfStrings,
             someLocalDateModifiable,
             someLongType,
             someLongTypeNullable,
             someLongTypeProvided,
             someLongTypeProvidedNullable,
-            someMapOfStringToInteger,
-            someMapOfStringTypeToStringType,
             somePeriodModifiable,
             somePeriodNullable,
             someProvidedStringType,
@@ -217,7 +196,6 @@ class AllFieldTypesCrudService(
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(id) {
             someInstantModifiable(editDto.someInstantModifiable)
             someIntModifiable(editDto.someIntModifiable)
-            someListOfStrings(editDto.someListOfStrings)
             someLocalDateModifiable(editDto.someLocalDateModifiable)
             somePeriodModifiable(editDto.somePeriodModifiable)
             someStringModifiable(editDto.someStringModifiable)
@@ -348,24 +326,6 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             someStringModifiable(editDto.someStringModifiable)
-            lastModifiedById(CurrentUserHolder.userId)
-            lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
-        }
-
-        setFields(updater)
-
-    }
-
-
-    fun updateSomeListOfStrings(editDto: AllFieldTypesUpdate_someListOfStringsRequestDto) {
-
-        val currentUsername = CurrentUserHolder.currentUsername
-
-        logger.info("BEGIN: updateSomeListOfStrings. currentUsername=${currentUsername}, dto=$editDto")
-
-        val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
-            someListOfStrings(editDto.someListOfStrings)
             lastModifiedById(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
