@@ -57,7 +57,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         .build())
 
 
-    private lateinit var sysopsUser: UserFixture
+    private lateinit var adminUser: UserFixture
 
 
     @Autowired
@@ -81,17 +81,17 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     }
 
 
-    protected fun initSysOpsUserFixture() {
-        sysopsUser = fixtures.aUser(
+    protected fun initAdminUserFixture() {
+        adminUser = fixtures.aUser(
             loginMailVerified = true,
-            { userEntityTestBuilder -> userEntityTestBuilder.copy(authorities = listOf(Authority.SYS__OPS)) }
+            { userEntityTestBuilder -> userEntityTestBuilder.copy(authorities = listOf(Authority.WRITE)) }
         )
     }
 
 
-    protected fun `log in as sysops user`() {
+    protected fun `log in as admin user`() {
 
-        `log in user`(sysopsUser)
+        `log in user`(adminUser)
 
     }
 

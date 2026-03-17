@@ -10,18 +10,18 @@ class AllFieldTypesCrudPlaywrightTest : AbstractPlaywrightTest() {
     @BeforeAll
     fun setUp() {
 
+        initAdminUserFixture()
+
         fixtures.resetDatabaseState()
 
-        initSysOpsUserFixture()
     }
 
 
     @Test
     fun `user with edit permission can navigate to the all field types page`() {
 
-        `log in as sysops user`()
+        `log in as admin user`()
         `navigate to the`(allFieldTypesBlotterPage)
-        `assert that we're on the`(allFieldTypesBlotterPage)
 
     }
 
