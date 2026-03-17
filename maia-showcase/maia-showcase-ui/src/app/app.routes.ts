@@ -22,4 +22,11 @@ export const routes: Routes = [
                 (m) => m.LoginPageComponent,
             ),
     },
+    {
+        path: 'all_field_types',
+        loadComponent: () =>
+            import('@app/pages/all-field-types-blotter/all-field-types-blotter-page').then(
+                (m) => m.AllFieldTypesBlotterPage,
+            ),
+    },
 ];

@@ -1,10 +1,10 @@
 
 TODO * Maia Showcase
-    TODO * Create a Playwright test for the SimpleEntity Create feature.
+    TODO * Create a Playwright test for the AllFieldTypesEntity Create feature.
         TODO * Authorization
             TODO * Mark the CRUD APIs with appropriate security annotations.
                 => READ vs ADMIN
-    TODO * Create a Playwright test for the SimpleEntity Edit feature.
+    TODO * Create a Playwright test for the AllFieldTypesEntity Edit feature.
         TODO * The Edit action column should not be visible to an unauthorized user.
     TODO * Test fetchForEdit with a versioned entity.
     TODO * Use Opus to create a showcase of Maia features.
