@@ -11,7 +11,7 @@ class AllFieldTypesBlotterPage(
     page,
     urlHelper,
     "/all_field_types",
-    "all_field_types_page"
+    "all_field_types_blotter"
 ) {
 
 
