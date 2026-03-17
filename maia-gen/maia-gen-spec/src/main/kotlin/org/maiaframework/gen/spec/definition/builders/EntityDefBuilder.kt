@@ -602,7 +602,7 @@ class EntityDefBuilder(
     }
 
 
-    fun field_createdByName(nullable: Boolean = false, maxLength: Long = 100) {
+    fun field_createdByUsername(nullable: Boolean = false, maxLength: Long = 100) {
 
         field(ClassFieldName.createdByUsername.value, FieldTypes.string) {
             fieldDisplayName("Created By")
@@ -627,7 +627,7 @@ class EntityDefBuilder(
     }
 
 
-    fun field_lastModifiedByName(nullable: Boolean = false, maxLength: Long = 100) {
+    fun field_lastModifiedByUsername(nullable: Boolean = false, maxLength: Long = 100) {
 
         field(ClassFieldName.lastModifiedByUsername.value, FieldTypes.string) {
             fieldDisplayName("Last Modified By")

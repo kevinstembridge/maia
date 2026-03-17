@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
 import org.maiaframework.gen.spec.definition.lang.*
 
+@MaiaDslMarker
 class DtoDefBuilder(
     private val packageName: PackageName,
     val dtoBaseName: DtoBaseName,

@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.AgGridCellRendererDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableActionColumnDef
 
 
+@MaiaDslMarker
 class DtoHtmlTableActionColumnDefBuilder(
     private val actionName: ActionName,
     private val cellRenderer: AgGridCellRendererDef

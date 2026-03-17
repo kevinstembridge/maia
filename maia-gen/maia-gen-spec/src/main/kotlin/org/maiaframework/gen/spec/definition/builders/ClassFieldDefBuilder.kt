@@ -14,6 +14,7 @@ import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.validation.AbstractValidationConstraintDef
 import kotlin.reflect.KClass
 
+@MaiaDslMarker
 class ClassFieldDefBuilder(
     private val classFieldName: ClassFieldName,
     private val fieldType: FieldType

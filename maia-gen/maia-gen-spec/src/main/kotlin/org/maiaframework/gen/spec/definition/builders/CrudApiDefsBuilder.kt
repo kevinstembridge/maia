@@ -9,6 +9,7 @@ import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.lang.Fqcn
 
 
+@MaiaDslMarker
 class CrudApiDefsBuilder(
     private val defaultAuthority: Authority?
 ) {

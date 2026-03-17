@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.flags.WithCrudListener
 
 
+@MaiaDslMarker
 class CrudDefBuilder {
 
 

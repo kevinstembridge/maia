@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition.builders
 import org.maiaframework.gen.spec.definition.lang.*
 
 
+@MaiaDslMarker
 class ClassDefBuilder private constructor(private val nonPrimitiveType: NonPrimitiveType) {
 
 

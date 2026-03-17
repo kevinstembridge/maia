@@ -9,6 +9,7 @@ import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import java.util.SortedSet
 
 
+@MaiaDslMarker
 class DtoHtmlTableColumnDefBuilder(
     private val fieldPathInSourceData: String,
     private val dtoFieldName: String,

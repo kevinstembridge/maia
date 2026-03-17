@@ -17,6 +17,7 @@ import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import java.util.LinkedList
 import java.util.Optional
 
+@MaiaDslMarker
 class DataClassDefBuilder(
     private val packageName: PackageName,
     private val dataClassName: DataClassName,

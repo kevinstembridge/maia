@@ -329,9 +329,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("someDto", simpleResponseDtoDef)
         field("someDtoNullable", simpleResponseDtoDef) { nullable() }
         field_createdById(partySpec.partyEntityDef)
-        field_createdByName()
+        field_createdByUsername()
         field_lastModifiedById(partySpec.partyEntityDef)
-        field_lastModifiedByName()
+        field_lastModifiedByUsername()
         field_lastModifiedTimestampUtc()
         index {
             withFieldAscending("someStringModifiable")
@@ -345,6 +345,126 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             }
         }
     }
+
+
+    val allFieldTypesSearchableDtoDef = searchableEntityDef(
+        "org.maiaframework.showcase.all_field_types",
+        "AllFieldTypes",
+        allFieldTypesEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE
+    ) {
+        field("someBoolean")
+        field("someBooleanNullable")
+        field("someBooleanType")
+        field("someBooleanTypeNullable")
+        field("someBooleanTypeProvided")
+        field("someBooleanTypeProvidedNullable")
+        field("someInstant")
+        field("someInstantNullable")
+        field("someInstantModifiable")
+        field("someInstantModifiableNullable")
+        field("someInt")
+        field("someIntModifiable")
+        field("someIntNullable")
+        field("someIntType")
+        field("someIntTypeNullable")
+        field("someIntTypeProvided")
+        field("someIntTypeProvidedNullable")
+        field("someLongType")
+        field("someLongTypeNullable")
+        field("someLongTypeProvided")
+        field("someLongTypeProvidedNullable")
+        field("someLocalDateModifiable")
+        field("somePeriodModifiable")
+        field("somePeriodNullable")
+        field("someEnum")
+        field("someEnumNullable")
+        field("someString")
+        field("someStringModifiable")
+        field("someStringNullable")
+        field("someStringType")
+        field("someStringTypeNullable")
+        field("someProvidedStringType")
+        field("someProvidedStringTypeNullable")
+        field("someListOfEnums")
+        field("someListOfInstants")
+        field("someListOfLocalDates")
+        field("someListOfPeriods")
+        field("someListOfStrings")
+        field("someListOfStringTypes")
+        field("someMapOfStringToInteger")
+        field("someMapOfStringTypeToStringType")
+        field("someDto")
+        field("someDtoNullable")
+        field("createdById")
+        field("createdByUsername")
+        field("lastModifiedById")
+        field("lastModifiedByUsername")
+        field("lastModifiedTimestampUtc")
+    }
+
+
+    val allFieldTypesDtoHtmlTableDef = dtoHtmlTable(
+        allFieldTypesSearchableDtoDef,
+        withAddButton = true,
+
+    ) {
+
+        columnFromDto("someBoolean")
+        columnFromDto("someBooleanNullable")
+        columnFromDto("someBooleanType")
+        columnFromDto("someBooleanTypeNullable")
+        columnFromDto("someBooleanTypeProvided")
+        columnFromDto("someBooleanTypeProvidedNullable")
+        columnFromDto("someInstant")
+        columnFromDto("someInstantNullable")
+        columnFromDto("someInstantModifiable")
+        columnFromDto("someInstantModifiableNullable")
+        columnFromDto("someInt")
+        columnFromDto("someIntModifiable")
+        columnFromDto("someIntNullable")
+        columnFromDto("someIntType")
+        columnFromDto("someIntTypeNullable")
+        columnFromDto("someIntTypeProvided")
+        columnFromDto("someIntTypeProvidedNullable")
+        columnFromDto("someLongType")
+        columnFromDto("someLongTypeNullable")
+        columnFromDto("someLongTypeProvided")
+        columnFromDto("someLongTypeProvidedNullable")
+        columnFromDto("someLocalDateModifiable")
+        columnFromDto("somePeriodModifiable")
+        columnFromDto("somePeriodNullable")
+        columnFromDto("someEnum")
+        columnFromDto("someEnumNullable")
+        columnFromDto("someString")
+        columnFromDto("someStringModifiable")
+        columnFromDto("someStringNullable")
+        columnFromDto("someStringType")
+        columnFromDto("someStringTypeNullable")
+        columnFromDto("someProvidedStringType")
+        columnFromDto("someProvidedStringTypeNullable")
+        columnFromDto("someListOfEnums")
+        columnFromDto("someListOfInstants")
+        columnFromDto("someListOfLocalDates")
+        columnFromDto("someListOfPeriods")
+        columnFromDto("someListOfStrings")
+        columnFromDto("someListOfStringTypes")
+        columnFromDto("someMapOfStringToInteger")
+        columnFromDto("someMapOfStringTypeToStringType")
+        columnFromDto("someDto")
+        columnFromDto("someDtoNullable")
+        columnFromDto("createdById")
+        columnFromDto("createdByUsername")
+        columnFromDto("lastModifiedById")
+        columnFromDto("lastModifiedByUsername")
+        columnFromDto("lastModifiedTimestampUtc")
+        editActionColumn()
+        deleteActionColumn()
+    }
+
+
+    val allFieldTypesCrudDef = crudTableDef(allFieldTypesDtoHtmlTableDef, allFieldTypesEntityDef.entityCrudApiDef!!)
 
 
     val simpleEntityDef = entity(

@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.Nullability
 
 
+@MaiaDslMarker
 class DtoFieldDefBuilder(
     private val classFieldName: ClassFieldName,
     private val fieldType: FieldType,

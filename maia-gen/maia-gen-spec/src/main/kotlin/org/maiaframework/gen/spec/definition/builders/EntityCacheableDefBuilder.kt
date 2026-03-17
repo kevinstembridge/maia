@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.CacheName
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.CacheableDef
 
+@MaiaDslMarker
 class EntityCacheableDefBuilder(private val entityBaseName: EntityBaseName) {
 
 

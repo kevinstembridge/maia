@@ -10,6 +10,7 @@ import org.maiaframework.gen.spec.definition.FormPlaceholderText
 import org.maiaframework.gen.spec.definition.HtmlFormEntityFieldDef
 import org.maiaframework.gen.spec.definition.HtmlInputType
 
+@MaiaDslMarker
 class EntityCreateHtmlFormDefBuilder(private val entityDef: EntityDef) {
 
 
@@ -59,6 +60,7 @@ class EntityCreateHtmlFormDefBuilder(private val entityDef: EntityDef) {
     }
 
 
+    @MaiaDslMarker
     class FieldBuilder(fieldName: String, private val enclosingBuilder: EntityCreateHtmlFormDefBuilder) {
 
         val fieldName: String = throwIfBlank(fieldName, "fieldName")

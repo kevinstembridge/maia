@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.validation.LengthConstraintDef
 import java.util.SortedSet
 
 
+@MaiaDslMarker
 class OtherFieldDefBuilder {
 
 

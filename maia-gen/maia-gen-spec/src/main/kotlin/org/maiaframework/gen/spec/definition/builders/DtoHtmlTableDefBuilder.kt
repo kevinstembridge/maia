@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.PackageName
 
+@MaiaDslMarker
 class DtoHtmlTableDefBuilder(
     private val packageName: PackageName,
     private val dtoBaseName: DtoBaseName,
@@ -135,6 +136,7 @@ class DtoHtmlTableDefBuilder(
     }
 
 
+    @MaiaDslMarker
     class ClickableRowBuilder {
 
 

@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.lang.Fqcn
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.Uqcn
 
+@MaiaDslMarker
 class IntTypeDefBuilder {
 
 

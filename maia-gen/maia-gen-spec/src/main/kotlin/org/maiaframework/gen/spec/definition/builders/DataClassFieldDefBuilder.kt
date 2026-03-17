@@ -13,6 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 
 
+@MaiaDslMarker
 class DataClassFieldDefBuilder(
     private val classFieldName: ClassFieldName,
     private val fieldType: FieldType,
