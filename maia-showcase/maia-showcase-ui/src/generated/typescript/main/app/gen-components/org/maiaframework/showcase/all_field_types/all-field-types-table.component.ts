@@ -70,6 +70,7 @@ export class AllFieldTypesTableComponent {
         { field: 'someStringTypeNullable', cellDataType: 'text', filter: true },
         { field: 'someProvidedStringType', cellDataType: 'text', filter: true },
         { field: 'someProvidedStringTypeNullable', cellDataType: 'text', filter: true },
+        { field: 'id', cellDataType: 'text', filter: true },
         { field: 'createdById', cellDataType: 'text', filter: true },
         { field: 'createdByUsername', cellDataType: 'text', filter: true },
         { field: 'lastModifiedById', cellDataType: 'text', filter: true },
@@ -177,7 +178,7 @@ export class AllFieldTypesTableComponent {
 
     get addButtonVisible(): boolean {
 
-        return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
+        return this.authService.currentUserHasThisAuthority(Authority.WRITE);
 
     }
 

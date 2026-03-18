@@ -9,6 +9,12 @@
                 <span>Simple</span>
             </button>
         }
+        @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/all_field_types">
+                <mat-icon>dialpad</mat-icon>
+                <span>All Field Types</span>
+            </button>
+        }
     </mat-menu>
 
     <span class="ml-2 text-xl font-medium md:ml-0">{{ title() }}</span>

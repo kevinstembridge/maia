@@ -9,6 +9,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'all_field_types',
+        loadComponent: () =>
+            import('@app/pages/all-field-types-blotter/all-field-types-blotter-page').then(
+                (m) => m.AllFieldTypesBlotterPage,
+            ),
+    },
+    {
         path: 'simple',
         loadComponent: () =>
             import('@app/pages/simple/simple-page.component').then(

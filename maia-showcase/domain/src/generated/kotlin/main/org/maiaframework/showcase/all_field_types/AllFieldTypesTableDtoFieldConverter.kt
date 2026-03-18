@@ -18,6 +18,8 @@ class AllFieldTypesTableDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "created_by_name" -> // createdByUsername
                 return inputValue
+            "id" -> // id
+                return inputValue
             "last_modified_by_id" -> // lastModifiedById
                 return inputValue
             "last_modified_by_name" -> // lastModifiedByUsername

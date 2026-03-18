@@ -16,6 +16,7 @@ class AllFieldTypesDtoFieldNameConverter : SearchFieldNameConverter {
         return when(fieldName) {
             "createdById" -> "created_by_id"
             "createdByUsername" -> "created_by_name"
+            "id" -> "id"
             "lastModifiedById" -> "last_modified_by_id"
             "lastModifiedByUsername" -> "last_modified_by_name"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"

@@ -24,6 +24,7 @@ class AllFieldTypesDtoRowMapper : MaiaRowMapper<AllFieldTypesDto> {
         return AllFieldTypesDto(
             rsa.readDomainId("createdById"),
             rsa.readString("createdByUsername"),
+            rsa.readDomainId("id"),
             rsa.readDomainId("lastModifiedById"),
             rsa.readString("lastModifiedByUsername"),
             rsa.readInstant("lastModifiedTimestampUtc"),

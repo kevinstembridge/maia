@@ -43,6 +43,7 @@ class AllFieldTypesDtoDao(
             select
                 maia.all_field_types.created_by_id as createdById,
                 maia.all_field_types.created_by_name as createdByUsername,
+                maia.all_field_types.id as id,
                 maia.all_field_types.last_modified_by_id as lastModifiedById,
                 maia.all_field_types.last_modified_by_name as lastModifiedByUsername,
                 maia.all_field_types.last_modified_timestamp_utc as lastModifiedTimestampUtc,

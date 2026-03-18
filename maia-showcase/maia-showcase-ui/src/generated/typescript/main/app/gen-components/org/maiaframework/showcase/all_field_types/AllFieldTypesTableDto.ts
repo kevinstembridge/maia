@@ -8,6 +8,7 @@ import {PartyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/
 export interface AllFieldTypesTableDto {
     createdById: PartyPkAndNameDto;
     createdByUsername: string;
+    id: string;
     lastModifiedById: PartyPkAndNameDto;
     lastModifiedByUsername: string;
     lastModifiedTimestampUtc: string;

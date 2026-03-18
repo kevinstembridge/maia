@@ -339,7 +339,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             withFieldAscending("someBoolean")
         }
         crud {
-            apis(defaultAuthority = partySpec.adminAuthority) {
+            apis(defaultAuthority = partySpec.writeAuthority) {
                 create()
                 update()
                 delete()
@@ -399,6 +399,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        field("someMapOfStringTypeToStringType")
 //        field("someDto")
 //        field("someDtoNullable")
+        field("id")
         field("createdById")
         field("createdByUsername")
         field("lastModifiedById")
@@ -457,6 +458,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        columnFromDto("someMapOfStringTypeToStringType")
 //        columnFromDto("someDto")
 //        columnFromDto("someDtoNullable")
+        columnFromDto("id")
         columnFromDto("createdById")
         columnFromDto("createdByUsername")
         columnFromDto("lastModifiedById")

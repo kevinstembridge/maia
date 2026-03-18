@@ -21,6 +21,7 @@ import java.time.Period
 data class AllFieldTypesDto(
     val createdById: DomainId,
     val createdByUsername: String,
+    val id: DomainId,
     val lastModifiedById: DomainId,
     val lastModifiedByUsername: String,
     val lastModifiedTimestampUtc: Instant,
