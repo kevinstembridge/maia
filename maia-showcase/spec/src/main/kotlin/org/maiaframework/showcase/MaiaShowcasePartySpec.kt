@@ -189,10 +189,12 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
             nullable()
             editableByUser()
             lengthConstraint(max = 100)
+            fieldDisplayName("First Name")
         }
         field("lastName", lastNameStringTypeDef) {
             editableByUser()
             lengthConstraint(max = 100)
+            fieldDisplayName("Last Name")
         }
     }
 
@@ -225,6 +227,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         }
         field("encryptedPassword", FieldTypes.string) {
             modifiableBySystem()
+            notCreatableByUser()
             masked()
             lengthConstraint(max = 100)
         }

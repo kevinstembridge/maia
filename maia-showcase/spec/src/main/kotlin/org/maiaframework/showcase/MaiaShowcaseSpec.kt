@@ -214,34 +214,52 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowFindAll = AllowFindAll.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
-        field("someBoolean", FieldTypes.boolean)
+        field("someBoolean", FieldTypes.boolean) {
+            fieldDisplayName("Some Boolean")
+        }
         field("someBooleanNullable", FieldTypes.boolean) {
+            fieldDisplayName("Some Boolean Nullable")
             nullable()
         }
-        field("someBooleanType", someBooleanTypeDef)
+        field("someBooleanType", someBooleanTypeDef) {
+            fieldDisplayName("Some Boolean Type")
+        }
         field("someBooleanTypeNullable", someBooleanTypeDef) {
+            fieldDisplayName("Some Boolean Type Nullable")
             nullable()
         }
-        field("someBooleanTypeProvided", someProvidedBooleanTypeDef)
+        field("someBooleanTypeProvided", someProvidedBooleanTypeDef) {
+            fieldDisplayName("Some Boolean Type Provided")
+        }
         field("someBooleanTypeProvidedNullable", someProvidedBooleanTypeDef) {
+            fieldDisplayName("Some Boolean Type Provided Nullable")
             nullable()
         }
-        field("someInstant", FieldTypes.instant)
+        field("someInstant", FieldTypes.instant) {
+            fieldDisplayName("Some Instant")
+        }
         field("someInstantNullable", FieldTypes.instant) {
+            fieldDisplayName("Some Instant Nullable")
             nullable()
         }
         field("someInstantModifiable", FieldTypes.instant) {
+            fieldDisplayName("Some Instant Modifiable")
             editableByUser()
         }
         field("someInstantModifiableNullable", FieldTypes.instant) {
+            fieldDisplayName("Some Instant Modifiable Nullable")
             editableByUser()
             nullable()
         }
-        field("someInt", FieldTypes.int)
+        field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
+        }
         field("someIntModifiable", FieldTypes.int) {
+            fieldDisplayName("Some Int Modifiable")
             editableByUser()
         }
         field("someIntNullable", FieldTypes.int) {
+            fieldDisplayName("Some Int Nullable")
             editableByUser()
             nullable()
         }
@@ -250,10 +268,14 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             unique(withExistsEndpoint = true)
         }
         field("someIntTypeNullable", someIntTypeDef) {
+            fieldDisplayName("Some Int Type Nullable")
             nullable()
         }
-        field("someIntTypeProvided", someProvidedIntTypeDef)
+        field("someIntTypeProvided", someProvidedIntTypeDef) {
+            fieldDisplayName("Some Int Type Provided")
+        }
         field("someIntTypeProvidedNullable", someProvidedIntTypeDef) {
+            fieldDisplayName("Some Int Type Provided Nullable")
             nullable()
         }
         field("someLongType", someLongTypeDef) {
@@ -261,27 +283,36 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             unique(withExistsEndpoint = true)
         }
         field("someLongTypeNullable", someLongTypeDef) {
+            fieldDisplayName("Some Long Type Nullable")
             nullable()
         }
-        field("someLongTypeProvided", someProvidedLongTypeDef)
+        field("someLongTypeProvided", someProvidedLongTypeDef) {
+            fieldDisplayName("Some Long Type Provided")
+        }
         field("someLongTypeProvidedNullable", someProvidedLongTypeDef) {
+            fieldDisplayName("Some Long Type Provided Nullable")
             nullable()
         }
         field("someLocalDateModifiable", FieldTypes.localDate) {
+            fieldDisplayName("Some LocalDate Modifiable")
             editableByUser()
         }
         field("somePeriodModifiable", FieldTypes.period) {
+            fieldDisplayName("Some Period Modifiable")
             editableByUser()
             lengthConstraint(max = 100)
         }
         field("somePeriodNullable", FieldTypes.period) {
+            fieldDisplayName("Some Period Nullable")
             nullable()
             lengthConstraint(max = 100)
         }
         field("someEnum", someEnumDef) {
+            fieldDisplayName("Some Enum")
             lengthConstraint(max = 100)
         }
         field("someEnumNullable", someEnumDef) {
+            fieldDisplayName("Some Enum Nullable")
             nullable()
             lengthConstraint(max = 100)
         }
@@ -291,6 +322,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             lengthConstraint(max = 100)
         }
         field("someStringModifiable", FieldTypes.string) {
+            fieldDisplayName("Some String Modifiable")
             editableByUser()
             lengthConstraint(max = 100)
         }
@@ -306,13 +338,16 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             lengthConstraint(max = 100)
         }
         field("someStringTypeNullable", someStringTypeDef) {
+            fieldDisplayName("Some String Type Nullable")
             nullable()
             lengthConstraint(max = 100)
         }
         field("someProvidedStringType", someProvidedStringTypeDef) {
+            fieldDisplayName("Some Provided String Type")
             lengthConstraint(max = 100)
         }
         field("someProvidedStringTypeNullable", someProvidedStringTypeDef) {
+            fieldDisplayName("Some Provided String Type Nullable")
             nullable()
             lengthConstraint(max = 100)
         }
@@ -843,10 +878,14 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
         foreignKey("bravo", bravoEntityDef) {
+            fieldDisplayName("Bravo")
             editableByUser()
         }
-        field("someInt", FieldTypes.int)
+        field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
+        }
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
             lengthConstraint(max = 100)
         }
         crud {
@@ -930,10 +969,14 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
         foreignKey("bravo", bravoAgGridEntityDef) {
+            fieldDisplayName("Bravo")
             editableByUser()
         }
-        field("someInt", FieldTypes.int)
+        field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
+        }
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
             lengthConstraint(max = 100)
         }
         crud {

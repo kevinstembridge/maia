@@ -131,6 +131,11 @@ object MatFormFieldRenderer {
         r.appendLine("$indent<mat-form-field appearance=\"outline\">")
 
         if (htmlFormField.renderFieldLabel) {
+
+            if (fieldLabel == null) {
+                throw IllegalStateException("Field label is null for DTO field ${htmlFormField.fieldKey}")
+            }
+
             r.appendLine("$indent    <mat-label>${fieldLabel}</mat-label>")
         }
 
@@ -161,6 +166,10 @@ object MatFormFieldRenderer {
         r.appendLine("$indent    />")
 
         if (classFieldDef.hasAnyValidationConstraints() || classFieldDef.isUnique) {
+
+            if (fieldLabel == null) {
+                throw IllegalStateException("Field label is null for DTO field ${htmlFormField.fieldKey}")
+            }
 
             if (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
                 || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java)

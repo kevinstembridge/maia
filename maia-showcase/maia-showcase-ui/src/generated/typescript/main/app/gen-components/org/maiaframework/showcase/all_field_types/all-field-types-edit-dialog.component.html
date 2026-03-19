@@ -13,7 +13,7 @@
             </mat-error>
         }
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some Instant Modifiable</mat-label>
             <input
                 formControlName="someInstantModifiable"
                 name="someInstantModifiable"
@@ -21,11 +21,11 @@
                 matInput
             />
             @if (formGroup.controls['someInstantModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some Instant Modifiable is required.</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some Instant Modifiable Nullable</mat-label>
             <input
                 formControlName="someInstantModifiableNullable"
                 name="someInstantModifiableNullable"
@@ -34,7 +34,7 @@
             />
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some Int Modifiable</mat-label>
             <input
                 formControlName="someIntModifiable"
                 name="someIntModifiable"
@@ -42,11 +42,11 @@
                 matInput
             />
             @if (formGroup.controls['someIntModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some Int Modifiable is required.</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some Int Nullable</mat-label>
             <input
                 formControlName="someIntNullable"
                 name="someIntNullable"
@@ -55,7 +55,7 @@
             />
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some LocalDate Modifiable</mat-label>
             <input
                 formControlName="someLocalDateModifiable"
                 name="someLocalDateModifiable"
@@ -63,11 +63,11 @@
                 matInput
             />
             @if (formGroup.controls['someLocalDateModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some LocalDate Modifiable is required.</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some Period Modifiable</mat-label>
             <input
                 formControlName="somePeriodModifiable"
                 name="somePeriodModifiable"
@@ -75,14 +75,14 @@
                 matInput
             />
             @if (formGroup.controls['somePeriodModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some Period Modifiable is required.</mat-error>
             }
             @if (formGroup.controls['somePeriodModifiable'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
+                <mat-error>Some Period Modifiable must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>null</mat-label>
+            <mat-label>Some String Modifiable</mat-label>
             <input
                 formControlName="someStringModifiable"
                 name="someStringModifiable"
@@ -90,10 +90,10 @@
                 matInput
             />
             @if (formGroup.controls['someStringModifiable'].hasError('required')) {
-                <mat-error>null is required.</mat-error>
+                <mat-error>Some String Modifiable is required.</mat-error>
             }
             @if (formGroup.controls['someStringModifiable'].hasError('maxlength')) {
-                <mat-error>null must not be more than 100 characters.</mat-error>
+                <mat-error>Some String Modifiable must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
     </div>

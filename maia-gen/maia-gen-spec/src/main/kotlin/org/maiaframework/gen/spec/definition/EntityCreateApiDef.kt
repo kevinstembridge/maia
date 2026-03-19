@@ -43,14 +43,17 @@ class EntityCreateApiDef(
                 null
             }
 
+            val fieldLabel = classFieldDef.displayName?.let { FieldLabel(it.value) }
+                ?: throw RuntimeException("No field label or display name provided for field named [${classFieldDef.classFieldName}] on entity ${entityDef.entityBaseName} ")
+
             AngularFormFieldDef(
                 dtoBaseName,
                 classFieldDef,
-                classFieldDef.displayName?.let { FieldLabel(it.value) },
-                true,
+                fieldLabel,
+                renderFieldLabel = true,
                 classFieldDef.formPlaceholderText,
                 HtmlInputType.text,
-                false,
+                autoFocus = false,
                 autocomplete = null,
                 typeaheadRequiredValidatorFunctionName,
                 typeaheadRequiredValidatorTypescriptImport,
