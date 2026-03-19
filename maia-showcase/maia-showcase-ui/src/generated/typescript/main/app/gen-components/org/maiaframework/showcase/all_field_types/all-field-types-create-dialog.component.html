@@ -6,69 +6,36 @@
                 <p class="alert alert-warning">{{ problemDetail()!.title }}</p>
             </mat-error>
         }
-        <mat-form-field appearance="outline">
-            <mat-label>Some Boolean</mat-label>
-            <input
-                formControlName="someBoolean"
-                name="someBoolean"
-                type="text"
-                matInput
-            />
-            @if (formGroup.controls['someBoolean'].hasError('required')) {
-                <mat-error>Some Boolean is required.</mat-error>
-            }
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Some Boolean Nullable</mat-label>
-            <input
-                formControlName="someBooleanNullable"
-                name="someBooleanNullable"
-                type="text"
-                matInput
-            />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Some Boolean Type</mat-label>
-            <input
-                formControlName="someBooleanType"
-                name="someBooleanType"
-                type="text"
-                matInput
-            />
-            @if (formGroup.controls['someBooleanType'].hasError('required')) {
-                <mat-error>Some Boolean Type is required.</mat-error>
-            }
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Some Boolean Type Nullable</mat-label>
-            <input
-                formControlName="someBooleanTypeNullable"
-                name="someBooleanTypeNullable"
-                type="text"
-                matInput
-            />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Some Boolean Type Provided</mat-label>
-            <input
-                formControlName="someBooleanTypeProvided"
-                name="someBooleanTypeProvided"
-                type="text"
-                matInput
-            />
-            @if (formGroup.controls['someBooleanTypeProvided'].hasError('required')) {
-                <mat-error>Some Boolean Type Provided is required.</mat-error>
-            }
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Some Boolean Type Provided Nullable</mat-label>
-            <input
-                formControlName="someBooleanTypeProvidedNullable"
-                name="someBooleanTypeProvidedNullable"
-                type="text"
-                matInput
-            />
-        </mat-form-field>
+        <mat-checkbox
+            formControlName="someBoolean"
+            name="someBoolean">
+            Some Boolean
+        </mat-checkbox>
+        <mat-checkbox
+            formControlName="someBooleanNullable"
+            name="someBooleanNullable">
+            Some Boolean Nullable
+        </mat-checkbox>
+        <mat-checkbox
+            formControlName="someBooleanType"
+            name="someBooleanType">
+            Some Boolean Type
+        </mat-checkbox>
+        <mat-checkbox
+            formControlName="someBooleanTypeNullable"
+            name="someBooleanTypeNullable">
+            Some Boolean Type Nullable
+        </mat-checkbox>
+        <mat-checkbox
+            formControlName="someBooleanTypeProvided"
+            name="someBooleanTypeProvided">
+            Some Boolean Type Provided
+        </mat-checkbox>
+        <mat-checkbox
+            formControlName="someBooleanTypeProvidedNullable"
+            name="someBooleanTypeProvidedNullable">
+            Some Boolean Type Provided Nullable
+        </mat-checkbox>
         <mat-form-field appearance="outline">
             <mat-label>Some Instant</mat-label>
             <input

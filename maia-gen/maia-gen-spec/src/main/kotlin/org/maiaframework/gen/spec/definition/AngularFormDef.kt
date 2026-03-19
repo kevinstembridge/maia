@@ -6,6 +6,9 @@ import org.maiaframework.gen.spec.definition.flags.DelegateFormSubmission
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
+import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.lang.text.StringFunctions
@@ -96,6 +99,13 @@ class AngularFormDef(
 
 
     val hasAnyInstantFields = htmlFormFields.any { it.fieldType is InstantFieldType }
+
+
+    val hasAnyBooleanFields = htmlFormFields.any {
+        it.fieldType is BooleanFieldType
+            || it.fieldType is BooleanTypeFieldType
+            || it.fieldType is BooleanValueClassFieldType
+    }
 
 
     val hasAnyValidationConstraints = this.formModelFields.any { it.hasAnyValidationConstraint() }

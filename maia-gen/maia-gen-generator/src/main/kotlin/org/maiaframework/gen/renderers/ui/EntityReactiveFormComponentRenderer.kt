@@ -112,6 +112,10 @@ class EntityReactiveFormComponentRenderer(
             addImport("@angular/material/datepicker", "MatDatepickerModule", isModule = true)
         }
 
+        if (this.angularFormDef.hasAnyBooleanFields) {
+            addImport("@angular/material/checkbox", "MatCheckboxModule", isModule = true)
+        }
+
         if (this.angularFormDef.formModelFields.any { it.hasValidationConstraint(UrlConstraintDef::class.java) }) {
             addImport("@app/validators/CustomValidators", "CustomValidators")
         }

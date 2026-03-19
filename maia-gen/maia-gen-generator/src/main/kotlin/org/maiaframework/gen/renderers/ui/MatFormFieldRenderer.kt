@@ -2,6 +2,9 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceRenderer
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
+import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
@@ -56,6 +59,13 @@ object MatFormFieldRenderer {
         } else if (htmlFormField.fieldType is InstantFieldType) {
 
             renderReactiveFormDatepickerField(htmlFormField, r, indent)
+
+        } else if (htmlFormField.fieldType is BooleanFieldType
+            || htmlFormField.fieldType is BooleanTypeFieldType
+            || htmlFormField.fieldType is BooleanValueClassFieldType
+        ) {
+
+            renderReactiveFormCheckboxField(htmlFormField, r, indent)
 
         } else {
 
@@ -395,6 +405,25 @@ object MatFormFieldRenderer {
         }
 
         r.appendLine("$indent</mat-form-field>")
+
+    }
+
+
+    private fun renderReactiveFormCheckboxField(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+
+        val classFieldDef = htmlFormField.classFieldDef
+        val classFieldName = classFieldDef.classFieldName
+        val fieldLabel = htmlFormField.fieldLabel
+
+        r.appendLine("$indent<mat-checkbox")
+        r.appendLine("$indent    formControlName=\"$classFieldName\"")
+        r.appendLine("$indent    name=\"$classFieldName\">")
+        r.appendLine("$indent    ${fieldLabel}")
+        r.appendLine("$indent</mat-checkbox>")
 
     }
 
