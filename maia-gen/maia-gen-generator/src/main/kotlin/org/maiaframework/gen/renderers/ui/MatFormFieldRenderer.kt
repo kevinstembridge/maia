@@ -253,7 +253,7 @@ object MatFormFieldRenderer {
         val fieldLabel = htmlFormField.fieldLabel
 
         r.appendLine("$indent<mat-form-field appearance=\"outline\">")
-        r.appendLine("$indent    <mat-label>${fieldLabel}</mat-label>")
+        r.appendLine("$indent    <mat-label>${fieldLabel} Date</mat-label>")
         r.appendLine("$indent    <input")
         r.appendLine("$indent        matInput")
         r.appendLine("$indent        [matDatepicker]=\"${classFieldName}Picker\"")
@@ -273,6 +273,7 @@ object MatFormFieldRenderer {
 
         r.appendLine("$indent</mat-form-field>")
         r.appendLine("$indent<mat-form-field appearance=\"outline\">")
+        r.appendLine("$indent    <mat-label>${fieldLabel} Time</mat-label>")
         r.appendLine("$indent    <input")
         r.appendLine("$indent        matInput")
         r.appendLine("$indent        [matTimepicker]=\"${classFieldName}Timepicker\"")
