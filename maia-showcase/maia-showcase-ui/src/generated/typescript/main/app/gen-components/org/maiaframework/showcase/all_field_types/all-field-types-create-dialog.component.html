@@ -72,11 +72,13 @@
         <mat-form-field appearance="outline">
             <mat-label>Some Instant</mat-label>
             <input
+                matInput
+                [matDatepicker]="someInstantPicker"
                 formControlName="someInstant"
                 name="someInstant"
-                type="text"
-                matInput
             />
+            <mat-datepicker-toggle matIconSuffix [for]="someInstantPicker"></mat-datepicker-toggle>
+            <mat-datepicker #someInstantPicker></mat-datepicker>
             @if (formGroup.controls['someInstant'].hasError('required')) {
                 <mat-error>Some Instant is required.</mat-error>
             }
@@ -84,20 +86,24 @@
         <mat-form-field appearance="outline">
             <mat-label>Some Instant Nullable</mat-label>
             <input
+                matInput
+                [matDatepicker]="someInstantNullablePicker"
                 formControlName="someInstantNullable"
                 name="someInstantNullable"
-                type="text"
-                matInput
             />
+            <mat-datepicker-toggle matIconSuffix [for]="someInstantNullablePicker"></mat-datepicker-toggle>
+            <mat-datepicker #someInstantNullablePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some Instant Modifiable</mat-label>
             <input
+                matInput
+                [matDatepicker]="someInstantModifiablePicker"
                 formControlName="someInstantModifiable"
                 name="someInstantModifiable"
-                type="text"
-                matInput
             />
+            <mat-datepicker-toggle matIconSuffix [for]="someInstantModifiablePicker"></mat-datepicker-toggle>
+            <mat-datepicker #someInstantModifiablePicker></mat-datepicker>
             @if (formGroup.controls['someInstantModifiable'].hasError('required')) {
                 <mat-error>Some Instant Modifiable is required.</mat-error>
             }
@@ -105,11 +111,13 @@
         <mat-form-field appearance="outline">
             <mat-label>Some Instant Modifiable Nullable</mat-label>
             <input
+                matInput
+                [matDatepicker]="someInstantModifiableNullablePicker"
                 formControlName="someInstantModifiableNullable"
                 name="someInstantModifiableNullable"
-                type="text"
-                matInput
             />
+            <mat-datepicker-toggle matIconSuffix [for]="someInstantModifiableNullablePicker"></mat-datepicker-toggle>
+            <mat-datepicker #someInstantModifiableNullablePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some Int</mat-label>

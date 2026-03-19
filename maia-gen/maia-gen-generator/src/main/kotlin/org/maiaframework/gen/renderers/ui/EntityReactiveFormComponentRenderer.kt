@@ -108,6 +108,11 @@ class EntityReactiveFormComponentRenderer(
 
         }
 
+        if (this.angularFormDef.hasAnyInstantFields) {
+            addImport("@angular/material/datepicker", "MatDatepickerModule", isModule = true)
+            addImport("@angular/material/core", "MatNativeDateModule", isModule = true)
+        }
+
         if (this.angularFormDef.formModelFields.any { it.hasValidationConstraint(UrlConstraintDef::class.java) }) {
             addImport("@app/validators/CustomValidators", "CustomValidators")
         }

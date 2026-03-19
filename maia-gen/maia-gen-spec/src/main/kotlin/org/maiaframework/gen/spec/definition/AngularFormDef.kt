@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.flags.DelegateFormSubmission
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
+import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.lang.text.StringFunctions
 import java.util.Locale
@@ -92,6 +93,9 @@ class AngularFormDef(
 
 
     val hasAnyMatSelectFields = htmlFormFields.any { it.isEnum }
+
+
+    val hasAnyInstantFields = htmlFormFields.any { it.fieldType is InstantFieldType }
 
 
     val hasAnyValidationConstraints = this.formModelFields.any { it.hasAnyValidationConstraint() }

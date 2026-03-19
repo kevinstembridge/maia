@@ -3,6 +3,7 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.renderers.AbstractSourceRenderer
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
+import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotNullConstraintDef
@@ -51,6 +52,10 @@ object MatFormFieldRenderer {
         } else if (htmlFormField.isEnum) {
 
             renderReactiveFormSelectFieldForEnum(htmlFormField, r, indent)
+
+        } else if (htmlFormField.fieldType is InstantFieldType) {
+
+            renderReactiveFormDatepickerField(htmlFormField, r, indent)
 
         } else {
 
@@ -224,6 +229,40 @@ object MatFormFieldRenderer {
         }
 
         r.appendLine("$indent</mat-form-field>")
+    }
+
+
+    private fun renderReactiveFormDatepickerField(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+
+        val classFieldDef = htmlFormField.classFieldDef
+        val classFieldName = classFieldDef.classFieldName
+        val fieldLabel = htmlFormField.fieldLabel
+
+        r.appendLine("$indent<mat-form-field appearance=\"outline\">")
+        r.appendLine("$indent    <mat-label>${fieldLabel}</mat-label>")
+        r.appendLine("$indent    <input")
+        r.appendLine("$indent        matInput")
+        r.appendLine("$indent        [matDatepicker]=\"${classFieldName}Picker\"")
+        r.appendLine("$indent        formControlName=\"$classFieldName\"")
+        r.appendLine("$indent        name=\"$classFieldName\"")
+        r.appendLine("$indent    />")
+        r.appendLine("$indent    <mat-datepicker-toggle matIconSuffix [for]=\"${classFieldName}Picker\"></mat-datepicker-toggle>")
+        r.appendLine("$indent    <mat-datepicker #${classFieldName}Picker></mat-datepicker>")
+
+        if (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
+            || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java)
+        ) {
+            r.appendLine("$indent    @if (formGroup.controls['$classFieldName'].hasError('required')) {")
+            r.appendLine("$indent        <mat-error>${fieldLabel} is required.</mat-error>")
+            r.appendLine("$indent    }")
+        }
+
+        r.appendLine("$indent</mat-form-field>")
+
     }
 
 
