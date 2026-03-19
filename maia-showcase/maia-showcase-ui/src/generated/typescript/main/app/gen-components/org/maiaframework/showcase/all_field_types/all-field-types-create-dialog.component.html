@@ -60,6 +60,22 @@
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
+            <mat-label>Time</mat-label>
+            <input
+                matInput
+                [matTimepicker]="someInstantTimepicker"
+                formControlName="someInstant"
+            />
+            <mat-timepicker #someInstantTimepicker/>
+            <mat-timepicker-toggle [for]="someInstantTimepicker" matSuffix/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Meeting date</mat-label>
+            <input matInput [matDatepicker]="datepicker" formControlName="someInstant">
+            <mat-datepicker #datepicker/>
+            <mat-datepicker-toggle [for]="datepicker" matSuffix/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Some Instant Nullable</mat-label>
             <input
                 matInput

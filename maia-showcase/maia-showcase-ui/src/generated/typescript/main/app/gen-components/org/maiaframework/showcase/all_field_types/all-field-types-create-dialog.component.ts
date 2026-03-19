@@ -25,6 +25,8 @@ import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showc
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
+import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
+import {JsonPipe} from '@angular/common';
 
 
 
@@ -45,6 +47,10 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatSelect,
         MatTooltip,
         ReactiveFormsModule,
+        MatTimepickerInput,
+        MatTimepicker,
+        MatTimepickerToggle,
+        JsonPipe,
     ],
     selector: 'app-all-field-types-create-dialog',
     styleUrls: ['./all-field-types-create-dialog.component.scss'],
