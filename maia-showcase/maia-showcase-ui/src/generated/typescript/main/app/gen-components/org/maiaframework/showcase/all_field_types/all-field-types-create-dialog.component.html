@@ -8,32 +8,41 @@
         }
         <mat-checkbox
             formControlName="someBoolean"
-            name="someBoolean">
+            name="someBoolean"
+        >
             Some Boolean
         </mat-checkbox>
         <mat-checkbox
             formControlName="someBooleanNullable"
-            name="someBooleanNullable">
+            name="someBooleanNullable"
+            [indeterminate]="true"
+        >
             Some Boolean Nullable
         </mat-checkbox>
         <mat-checkbox
             formControlName="someBooleanType"
-            name="someBooleanType">
+            name="someBooleanType"
+        >
             Some Boolean Type
         </mat-checkbox>
         <mat-checkbox
             formControlName="someBooleanTypeNullable"
-            name="someBooleanTypeNullable">
+            name="someBooleanTypeNullable"
+            [indeterminate]="true"
+        >
             Some Boolean Type Nullable
         </mat-checkbox>
         <mat-checkbox
             formControlName="someBooleanTypeProvided"
-            name="someBooleanTypeProvided">
+            name="someBooleanTypeProvided"
+        >
             Some Boolean Type Provided
         </mat-checkbox>
         <mat-checkbox
             formControlName="someBooleanTypeProvidedNullable"
-            name="someBooleanTypeProvidedNullable">
+            name="someBooleanTypeProvidedNullable"
+            [indeterminate]="true"
+        >
             Some Boolean Type Provided Nullable
         </mat-checkbox>
         <mat-form-field appearance="outline">

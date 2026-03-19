@@ -421,7 +421,11 @@ object MatFormFieldRenderer {
 
         r.appendLine("$indent<mat-checkbox")
         r.appendLine("$indent    formControlName=\"$classFieldName\"")
-        r.appendLine("$indent    name=\"$classFieldName\">")
+        r.appendLine("$indent    name=\"$classFieldName\"")
+        if (classFieldDef.nullable) {
+            r.appendLine("$indent    [indeterminate]=\"true\"")
+        }
+        r.appendLine("$indent>")
         r.appendLine("$indent    ${fieldLabel}")
         r.appendLine("$indent</mat-checkbox>")
 
