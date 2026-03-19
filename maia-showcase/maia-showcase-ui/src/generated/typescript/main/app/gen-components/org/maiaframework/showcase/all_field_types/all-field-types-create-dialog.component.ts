@@ -5,7 +5,7 @@ import {Component, OnInit, inject, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
-import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
+import {MatOptionModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -38,7 +38,6 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatDialogTitle,
         MatFormFieldModule,
         MatInputModule,
-        MatNativeDateModule,
         MatOption,
         MatOptionModule,
         MatSelect,
