@@ -272,6 +272,16 @@ object MatFormFieldRenderer {
         }
 
         r.appendLine("$indent</mat-form-field>")
+        r.appendLine("$indent<mat-form-field appearance=\"outline\">")
+        r.appendLine("$indent    <input")
+        r.appendLine("$indent        matInput")
+        r.appendLine("$indent        [matTimepicker]=\"${classFieldName}Timepicker\"")
+        r.appendLine("$indent        formControlName=\"$classFieldName\"")
+        r.appendLine("$indent        name=\"${classFieldName}Time\"")
+        r.appendLine("$indent    />")
+        r.appendLine("$indent    <mat-timepicker #${classFieldName}Timepicker></mat-timepicker>")
+        r.appendLine("$indent    <mat-timepicker-toggle matSuffix [for]=\"${classFieldName}Timepicker\"></mat-timepicker-toggle>")
+        r.appendLine("$indent</mat-form-field>")
 
     }
 

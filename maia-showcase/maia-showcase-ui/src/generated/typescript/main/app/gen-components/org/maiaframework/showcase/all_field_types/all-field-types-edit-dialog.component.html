@@ -26,6 +26,17 @@
                 <mat-error>Some Instant Modifiable is required.</mat-error>
             }
         </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <input
+                matInput
+                [matTimepicker]="someInstantModifiableTimepicker"
+                formControlName="someInstantModifiable"
+                name="someInstantModifiableTime"
+            />
+            <mat-timepicker #someInstantModifiableTimepicker></mat-timepicker>
+            <mat-timepicker-toggle matSuffix [for]="someInstantModifiableTimepicker"></mat-timepicker-toggle>
+        </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some Instant Modifiable Nullable</mat-label>
             <input
@@ -36,6 +47,17 @@
             />
             <mat-datepicker-toggle matIconSuffix [for]="someInstantModifiableNullablePicker"></mat-datepicker-toggle>
             <mat-datepicker #someInstantModifiableNullablePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <input
+                matInput
+                [matTimepicker]="someInstantModifiableNullableTimepicker"
+                formControlName="someInstantModifiableNullable"
+                name="someInstantModifiableNullableTime"
+            />
+            <mat-timepicker #someInstantModifiableNullableTimepicker></mat-timepicker>
+            <mat-timepicker-toggle matSuffix [for]="someInstantModifiableNullableTimepicker"></mat-timepicker-toggle>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some Int Modifiable</mat-label>

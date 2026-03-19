@@ -110,6 +110,7 @@ class EntityReactiveFormComponentRenderer(
 
         if (this.angularFormDef.hasAnyInstantFields) {
             addImport("@angular/material/datepicker", "MatDatepickerModule", isModule = true)
+            addImport("@angular/material/timepicker", "MatTimepickerModule", isModule = true)
         }
 
         if (this.angularFormDef.hasAnyBooleanFields) {

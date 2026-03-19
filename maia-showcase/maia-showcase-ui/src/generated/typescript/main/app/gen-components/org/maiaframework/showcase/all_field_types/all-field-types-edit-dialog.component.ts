@@ -11,6 +11,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialo
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTimepickerModule} from '@angular/material/timepicker';
 import {AllFieldTypesFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesFetchForEditDto';
 import {AllFieldTypesSomeIntTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeIntTypeAsyncValidator';
 import {AllFieldTypesSomeLongTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeLongTypeAsyncValidator';
@@ -38,6 +39,7 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatInputModule,
         MatOptionModule,
         MatProgressSpinnerModule,
+        MatTimepickerModule,
         ReactiveFormsModule,
     ],
     selector: 'app-all-field-types-edit-dialog',

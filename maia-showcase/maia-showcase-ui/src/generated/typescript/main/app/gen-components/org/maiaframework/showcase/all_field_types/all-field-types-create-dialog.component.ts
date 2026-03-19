@@ -12,6 +12,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialo
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
+import {MatTimepickerModule} from '@angular/material/timepicker';
 import {MatTooltip} from '@angular/material/tooltip';
 import {AllFieldTypesCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesCreateRequestDto';
 import {AllFieldTypesSomeIntTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeIntTypeAsyncValidator';
@@ -25,8 +26,6 @@ import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showc
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
-import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
-import {JsonPipe} from '@angular/common';
 
 
 
@@ -45,12 +44,9 @@ import {JsonPipe} from '@angular/common';
         MatOption,
         MatOptionModule,
         MatSelect,
+        MatTimepickerModule,
         MatTooltip,
         ReactiveFormsModule,
-        MatTimepickerInput,
-        MatTimepicker,
-        MatTimepickerToggle,
-        JsonPipe,
     ],
     selector: 'app-all-field-types-create-dialog',
     styleUrls: ['./all-field-types-create-dialog.component.scss'],
