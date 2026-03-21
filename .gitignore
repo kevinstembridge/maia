@@ -3,3 +3,4 @@
 tmp
 **/.gradle
 **/.kotlin
+/progress.txt
