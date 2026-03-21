@@ -22,4 +22,9 @@ spring:
     user: maia_owner
     password: maia_owner_password
     default-schema: maia
-
+  mvc:
+    problemdetails:
+      enabled: true
+  web:
+    resources:
+      static-locations: classpath:/static/browser
