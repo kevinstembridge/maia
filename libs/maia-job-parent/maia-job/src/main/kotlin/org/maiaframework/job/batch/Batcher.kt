@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory
 
 
 class Batcher<ITEM>(
-        private val batchSize: Int,
-        private val displayName: String,
-        private val jm: JobMetrics,
-        private val itemWriter: (List<ITEM>, JobMetrics) -> Unit
+    private val batchSize: Int,
+    private val displayName: String,
+    private val jm: JobMetrics,
+    private val itemWriter: (List<ITEM>, JobMetrics) -> Unit
 ) {
 
     private val logger = LoggerFactory.getLogger(Batcher::class.java)

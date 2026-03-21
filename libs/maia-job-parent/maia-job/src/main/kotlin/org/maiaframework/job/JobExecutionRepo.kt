@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 import java.time.Instant
 
 @Repository
-class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
+internal class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
 
 
     fun newJobExecution(
