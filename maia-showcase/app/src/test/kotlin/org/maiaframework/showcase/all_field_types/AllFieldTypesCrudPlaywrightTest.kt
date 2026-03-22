@@ -27,15 +27,6 @@ class AllFieldTypesCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Test
-    fun `user with edit permission can navigate to the all field types page`() {
-
-        `log in as admin user`()
-        `navigate to the`(allFieldTypesBlotterPage)
-
-    }
-
-
-    @Test
     fun `user can create an all field types record`() {
 
         `log in as admin user`()
