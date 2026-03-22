@@ -38,15 +38,11 @@ class FormHtmlRenderer(private val angularFormDef: AngularFormDef) : AbstractSou
                 |    <div mat-dialog-content>
                 |
                 |        @if (problemDetail()) {
-                |            <mat-error>
-                |                <p class="alert alert-warning">{{ problemDetail().title }}</p>
-                |            </mat-error>
+                |            <p class="alert alert-warning" role="alert">{{ problemDetail().title }}</p>
                 |        }
                 |
                 |        @if (formGroup.errors?.message && (formGroup.touched || formGroup.dirty)) {
-                |            <mat-error>
-                |                {{ formGroup.errors.message }}
-                |            </mat-error>
+                |            {{ formGroup.errors.message }}
                 |        }
                 |
                 |""".trimMargin())

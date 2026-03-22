@@ -8,9 +8,7 @@
 <form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
     <div mat-dialog-content>
         @if (problemDetail()) {
-            <mat-error>
-                <p class="alert alert-warning">{{ problemDetail()!.title }}</p>
-            </mat-error>
+            <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
         }
         <mat-form-field appearance="outline">
             <mat-label>Some String</mat-label>

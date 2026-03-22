@@ -32,17 +32,13 @@ abstract class AbstractCrudFormHtmlRenderer(
             |<form novalidate (submit)="onSubmit($event)">
             |    <div$$matDialogContentText>
             |        @if (problemDetail()) {
-            |            <mat-error>
-            |                <p class="alert alert-warning">{{ problemDetail()!.title }}</p>
-            |            </mat-error>
+            |            <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
             |        }""".trimMargin())
 
         if (this.entityDef.multiFieldUniqueIndexDefs.isNotEmpty()) {
             appendLine("""
                 |        @if (formGroup.errors?.message && (formGroup.touched || formGroup.dirty)) {
-                |            <mat-error>
-                |                {{ formGroup.errors.message }}
-                |            </mat-error>
+                |            {{ formGroup.errors.message }}
                 |        }""".trimMargin())
         }
 
