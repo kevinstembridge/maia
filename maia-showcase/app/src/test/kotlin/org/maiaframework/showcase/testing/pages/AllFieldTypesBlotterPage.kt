@@ -92,4 +92,41 @@ class AllFieldTypesBlotterPage(
     }
 
 
+    fun clickEditButtonForFirstRow() {
+        page.locator(".ag-row").first().locator("[col-id='edit']").click()
+        page.locator("mat-dialog-container").waitFor()
+    }
+
+
+    fun fillEditForm(
+        someIntModifiable: String = "200",
+        someLocalDateModifiable: String = "2026-06-01",
+        someInstantModifiableDate: String = "06/01/2026",
+        someInstantModifiableTime: String = "12:00",
+        somePeriodModifiable: String = "P2Y",
+        someStringModifiable: String = "testmodifiable_edited",
+    ) {
+        page.locator("input[name='someIntModifiable']").fill(someIntModifiable)
+        page.locator("input[name='someLocalDateModifiable']").fill(someLocalDateModifiable)
+        page.locator("input[name='someInstantModifiable']").fill(someInstantModifiableDate)
+        page.locator("input[name='someInstantModifiableTime']").fill(someInstantModifiableTime)
+        page.locator("input[name='somePeriodModifiable']").fill(somePeriodModifiable)
+        page.locator("input[name='someStringModifiable']").fill(someStringModifiable)
+    }
+
+
+    fun assertEditDialogClosed() {
+
+        page.locator("mat-dialog-container").waitFor(
+            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
+        )
+
+    }
+
+
+    fun assertTableContainsValue(value: String) {
+        page.locator(".ag-cell:has-text(\"$value\")").first().waitFor()
+    }
+
+
 }

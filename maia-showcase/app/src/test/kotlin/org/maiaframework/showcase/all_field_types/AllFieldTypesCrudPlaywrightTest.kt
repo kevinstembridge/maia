@@ -36,6 +36,12 @@ class AllFieldTypesCrudPlaywrightTest : AbstractPlaywrightTest() {
         allFieldTypesBlotterPage.clickSubmitButton()
         allFieldTypesBlotterPage.assertCreateDialogClosed()
 
+        allFieldTypesBlotterPage.clickEditButtonForFirstRow()
+        allFieldTypesBlotterPage.fillEditForm()
+        allFieldTypesBlotterPage.clickSubmitButton()
+        allFieldTypesBlotterPage.assertEditDialogClosed()
+        allFieldTypesBlotterPage.assertTableContainsValue("testmodifiable_edited")
+
     }
 
 
