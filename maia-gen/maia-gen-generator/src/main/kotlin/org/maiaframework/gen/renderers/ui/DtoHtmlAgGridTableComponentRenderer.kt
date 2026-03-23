@@ -259,11 +259,13 @@ class DtoHtmlAgGridTableComponentRenderer(
 
         attributes["field"] = "'${fieldDef.dtoFieldName}'"
 
-        fieldDef.columnHeader?.let {
+        val columnHeader = fieldDef.columnHeader
+            ?: throw IllegalStateException(
+                "Field '${fieldDef.dtoFieldName}' in table '${dtoHtmlTableDef.dtoBaseName}' has no columnHeader (fieldDisplayName). " +
+                "Add a fieldDisplayName to the entity/EsDoc field, or override the header at the columnFromDto() call site."
+            )
 
-            attributes["headerName"] = "'${it.replace("'", "\\'")}'"
-
-        }
+        attributes["headerName"] = "'${columnHeader.replace("'", "\\'")}'"
 
         attributes["cellDataType"] = "'${fieldDef.agGridCellDateType.name}'"
 
