@@ -851,6 +851,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         field("someInt", FieldTypes.int)
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
             lengthConstraint(max = 100)
         }
     }
@@ -866,6 +867,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         foreignKey("alpha", alphaEntityDef)
         field("someInt", FieldTypes.int)
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
             lengthConstraint(max = 100)
         }
     }

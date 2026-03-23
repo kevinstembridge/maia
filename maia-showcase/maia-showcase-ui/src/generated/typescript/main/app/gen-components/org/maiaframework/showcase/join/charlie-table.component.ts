@@ -27,10 +27,10 @@ export class CharlieTableComponent {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'tableStringFromCharlie', cellDataType: 'text', filter: true },
-        { field: 'tableStringFromBravo', cellDataType: 'text', filter: true },
-        { field: 'tableStringFromAlpha', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', cellDataType: 'text', filter: true },
+        { field: 'tableStringFromCharlie', headerName: 'Some String', cellDataType: 'text', filter: true },
+        { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
+        { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
     ];
 
     public defaultColDef: ColDef = {

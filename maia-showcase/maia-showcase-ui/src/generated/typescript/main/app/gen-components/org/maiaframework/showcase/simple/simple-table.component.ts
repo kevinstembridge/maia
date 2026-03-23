@@ -37,9 +37,9 @@ export class SimpleTableComponent {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'someString', cellDataType: 'text', filter: true },
-        { field: 'id', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', cellDataType: 'text', filter: true },
+        { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
         {
             field: 'edit',
             headerName: '',
