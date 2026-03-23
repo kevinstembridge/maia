@@ -93,7 +93,18 @@ class AllFieldTypesBlotterPage(
 
 
     fun clickEditButtonForFirstRow() {
-        page.locator(".ag-row").first().locator("[col-id='edit']").click()
+        // Wait for a cell with actual content: AG Grid keeps row DOM nodes after reapplyFilters()
+        // but sets rowNode.data = undefined immediately. Waiting for text "42" (someInt value from
+        // fillCreateForm) confirms the datasource response has arrived and data is truly loaded.
+        page.waitForFunction(
+            "() => { const c = document.querySelector('.ag-cell[col-id=\"someInt\"]'); " +
+            "return c && c.innerText && c.innerText.trim().length > 0; }"
+        )
+        // Scroll the grid body to the right so the virtually-rendered edit column becomes visible
+        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
+        // Click the edit cell — row data is guaranteed to be loaded (rowNode.data is defined)
+        page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first().waitFor()
+        page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first().click()
         page.locator("mat-dialog-container").waitFor()
     }
 
@@ -125,6 +136,8 @@ class AllFieldTypesBlotterPage(
 
 
     fun assertTableContainsValue(value: String) {
+        // someStringModifiable is at ~2750px; scroll to 1800 so it falls in the 1244px viewport
+        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 1800")
         page.locator(".ag-cell:has-text(\"$value\")").first().waitFor()
     }
 

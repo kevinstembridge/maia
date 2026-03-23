@@ -80,6 +80,8 @@ class DtoHtmlTableDefBuilder(
             sortable
         )
 
+        classFieldDef.displayName?.let { builder.header(it.value)}
+
         this.columnBuilders.add(builder)
         init?.invoke(builder)
 
