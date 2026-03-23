@@ -4,6 +4,8 @@ import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.AsyncValidatorDef
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
+import org.maiaframework.gen.spec.definition.lang.FieldType
+import org.maiaframework.gen.spec.definition.lang.FieldTypes.isBooleanBased
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
@@ -13,13 +15,20 @@ object FormControlRendererHelper {
 
     fun renderFormControlFor(
         angularFormFieldDef: AngularFormFieldDef,
-        createOrEdit: CreateOrEdit?
-    ): String {
+        createOrEdit: CreateOrEdit?,
+        indentSize: Int = 8,
+        appendLine: (String) -> Unit,
+        addImportFor: (FieldType) -> Unit
+    ) {
+
+        val indent = "".padStart(indentSize, ' ')
 
         val classFieldDef = angularFormFieldDef.classFieldDef
 
         if (createOrEdit == CreateOrEdit.edit && classFieldDef.isEditableByUser.value == false) {
-            return "new FormControl({value: '', disabled: true})"
+            addImportFor(classFieldDef.fieldType)
+            appendLine("${indent}${classFieldDef.classFieldName}: new FormControl({value: ${classFieldDef.defaultFormFieldValue}, disabled: true}),")
+            return
         }
 
         val validators = determineValidatorsFor(classFieldDef)
@@ -39,9 +48,54 @@ object FormControlRendererHelper {
             optionFields["updateOn"] = "'change'"
         }
 
+        if (classFieldDef.fieldType.isBooleanBased() && classFieldDef.nullable == false) {
+            optionFields["nonNullable"] = "true"
+        }
+
         val controlOptions = optionFields.entries.map { entry -> "${entry.key}: ${entry.value}" }.joinToString(prefix = "{ ", separator = ", ", postfix = " }")
 
-        val initialValue = "''"
+        val initialValue = classFieldDef.defaultFormFieldValue
+
+        appendLine("${indent}${classFieldDef.classFieldName}: new FormControl($initialValue, $controlOptions),")
+
+    }
+
+
+    fun renderFormControlFor_old(
+        angularFormFieldDef: AngularFormFieldDef,
+        createOrEdit: CreateOrEdit?
+    ): String {
+
+        val classFieldDef = angularFormFieldDef.classFieldDef
+
+        if (createOrEdit == CreateOrEdit.edit && classFieldDef.isEditableByUser.value == false) {
+            return "new FormControl({value: ${classFieldDef.defaultFormFieldValue}, disabled: true})"
+        }
+
+        val validators = determineValidatorsFor(classFieldDef)
+        val asyncValidators = determineAsyncValidatorsFor(angularFormFieldDef.asyncValidatorDef)
+
+        val optionFields = mutableMapOf<String, String>()
+        optionFields["updateOn"] = "'change'"
+
+        if (validators.isNotEmpty()) {
+            optionFields["validators"] = "[${validators.joinToString(", ")}]"
+        }
+
+        if (asyncValidators.isNotEmpty()) {
+            optionFields["asyncValidators"] = "[${asyncValidators.joinToString(", ")}]"
+            // TODO This should probably be 'blur' but that results in a new value not being submitted
+            //  to the back end if you edit the field and hit enter without first tabbing out of the field (blurring)
+            optionFields["updateOn"] = "'change'"
+        }
+
+        if (classFieldDef.fieldType.isBooleanBased() && classFieldDef.nullable == false) {
+            optionFields["nonNullable"] = "true"
+        }
+
+        val controlOptions = optionFields.entries.map { entry -> "${entry.key}: ${entry.value}" }.joinToString(prefix = "{ ", separator = ", ", postfix = " }")
+
+        val initialValue = classFieldDef.defaultFormFieldValue
 
         return "new FormControl($initialValue, $controlOptions)"
 

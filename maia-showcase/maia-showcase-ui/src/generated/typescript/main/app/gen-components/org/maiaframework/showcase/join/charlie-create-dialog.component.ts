@@ -53,7 +53,7 @@ export class CharlieCreateDialogComponent implements OnInit {
 
         this.formGroup = new FormGroup(
             {
-                someInt: new FormControl('', { updateOn: 'change' }),
+                someInt: new FormControl(0, { updateOn: 'change' }),
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 bravoId: new FormControl('', { updateOn: 'change' }),
             },

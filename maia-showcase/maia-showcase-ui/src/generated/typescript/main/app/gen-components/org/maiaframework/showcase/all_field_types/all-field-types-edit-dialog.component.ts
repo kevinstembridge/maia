@@ -20,6 +20,7 @@ import {AllFieldTypesSomeStringNullableAsyncValidator} from '@app/gen-components
 import {AllFieldTypesSomeStringTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringTypeAsyncValidator';
 import {AllFieldTypesUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesUpdateRequestDto';
 import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
+import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
@@ -86,32 +87,32 @@ export class AllFieldTypesEditDialogComponent implements OnInit {
 
         this.formGroup = new FormGroup(
             {
-                someBoolean: new FormControl({value: '', disabled: true}),
-                someBooleanNullable: new FormControl({value: '', disabled: true}),
-                someBooleanType: new FormControl({value: '', disabled: true}),
-                someBooleanTypeNullable: new FormControl({value: '', disabled: true}),
-                someBooleanTypeProvided: new FormControl({value: '', disabled: true}),
-                someBooleanTypeProvidedNullable: new FormControl({value: '', disabled: true}),
+                someBoolean: new FormControl({value: false, disabled: true}),
+                someBooleanNullable: new FormControl({value: false, disabled: true}),
+                someBooleanType: new FormControl({value: false, disabled: true}),
+                someBooleanTypeNullable: new FormControl({value: false, disabled: true}),
+                someBooleanTypeProvided: new FormControl({value: false, disabled: true}),
+                someBooleanTypeProvidedNullable: new FormControl({value: false, disabled: true}),
                 someInstant: new FormControl({value: '', disabled: true}),
                 someInstantNullable: new FormControl({value: '', disabled: true}),
                 someInstantModifiable: new FormControl('', { updateOn: 'change' }),
                 someInstantModifiableNullable: new FormControl('', { updateOn: 'change' }),
-                someInt: new FormControl({value: '', disabled: true}),
-                someIntModifiable: new FormControl('', { updateOn: 'change' }),
-                someIntNullable: new FormControl('', { updateOn: 'change' }),
-                someIntType: new FormControl({value: '', disabled: true}),
-                someIntTypeNullable: new FormControl({value: '', disabled: true}),
-                someIntTypeProvided: new FormControl({value: '', disabled: true}),
-                someIntTypeProvidedNullable: new FormControl({value: '', disabled: true}),
-                someLongType: new FormControl({value: '', disabled: true}),
-                someLongTypeNullable: new FormControl({value: '', disabled: true}),
-                someLongTypeProvided: new FormControl({value: '', disabled: true}),
-                someLongTypeProvidedNullable: new FormControl({value: '', disabled: true}),
+                someInt: new FormControl({value: 0, disabled: true}),
+                someIntModifiable: new FormControl(0, { updateOn: 'change' }),
+                someIntNullable: new FormControl(0, { updateOn: 'change' }),
+                someIntType: new FormControl({value: 0, disabled: true}),
+                someIntTypeNullable: new FormControl({value: 0, disabled: true}),
+                someIntTypeProvided: new FormControl({value: 0, disabled: true}),
+                someIntTypeProvidedNullable: new FormControl({value: 0, disabled: true}),
+                someLongType: new FormControl({value: 0, disabled: true}),
+                someLongTypeNullable: new FormControl({value: 0, disabled: true}),
+                someLongTypeProvided: new FormControl({value: 0, disabled: true}),
+                someLongTypeProvidedNullable: new FormControl({value: 0, disabled: true}),
                 someLocalDateModifiable: new FormControl('', { updateOn: 'change' }),
                 somePeriodModifiable: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 somePeriodNullable: new FormControl({value: '', disabled: true}),
-                someEnum: new FormControl({value: '', disabled: true}),
-                someEnumNullable: new FormControl({value: '', disabled: true}),
+                someEnum: new FormControl({value: SomeEnum.OK, disabled: true}),
+                someEnumNullable: new FormControl({value: SomeEnum.OK, disabled: true}),
                 someString: new FormControl({value: '', disabled: true}),
                 someStringModifiable: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 someStringNullable: new FormControl({value: '', disabled: true}),

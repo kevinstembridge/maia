@@ -233,6 +233,43 @@ object FieldTypes {
     }
 
 
+    fun FieldType.isBooleanBased(): Boolean {
+
+        return when (this) {
+            is BooleanFieldType -> true
+            is BooleanTypeFieldType -> true
+            is BooleanValueClassFieldType -> true
+            is DataClassFieldType -> false
+            is DomainIdFieldType -> false
+            is DoubleFieldType -> false
+            is EnumFieldType -> false
+            is EsDocFieldType -> false
+            is ForeignKeyFieldType -> false
+            is FqcnFieldType -> false
+            is IdAndNameFieldType -> false
+            is InstantFieldType -> false
+            is IntFieldType -> false
+            is IntTypeFieldType -> false
+            is IntValueClassFieldType -> false
+            is ListFieldType -> false
+            is LocalDateFieldType -> false
+            is LongFieldType -> false
+            is LongTypeFieldType -> false
+            is MapFieldType -> false
+            is ObjectIdFieldType -> false
+            is PeriodFieldType -> false
+            is RequestDtoFieldType -> false
+            is SetFieldType -> false
+            is SimpleResponseDtoFieldType -> false
+            is StringFieldType -> false
+            is StringTypeFieldType -> false
+            is StringValueClassFieldType -> false
+            is UrlFieldType -> false
+        }
+
+    }
+
+
     fun FieldType.isValueFieldWrapper(): Boolean {
 
         return when (this) {

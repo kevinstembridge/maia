@@ -62,7 +62,7 @@ export class CharlieEditDialogComponent implements OnInit {
 
         this.formGroup = new FormGroup(
             {
-                someInt: new FormControl({value: '', disabled: true}),
+                someInt: new FormControl({value: 0, disabled: true}),
                 someString: new FormControl({value: '', disabled: true}),
                 id: new FormControl({value: '', disabled: true}),
                 bravoId: new FormControl('', { updateOn: 'change' }),

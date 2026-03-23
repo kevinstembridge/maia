@@ -10,6 +10,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialo
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/LifecycleState';
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
@@ -62,16 +63,16 @@ export class UserEditDialogComponent implements OnInit {
 
         this.formGroup = new FormGroup(
             {
-                authorities: new FormControl('', { updateOn: 'change' }),
+                authorities: new FormControl([], { updateOn: 'change' }),
                 encryptedPassword: new FormControl({value: '', disabled: true}),
                 firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 displayName: new FormControl({value: '', disabled: true}),
                 createdById: new FormControl({value: '', disabled: true}),
                 lastModifiedById: new FormControl({value: '', disabled: true}),
-                lifecycleState: new FormControl({value: '', disabled: true}),
+                lifecycleState: new FormControl({value: LifecycleState.ACTIVE, disabled: true}),
                 id: new FormControl({value: '', disabled: true}),
-                version: new FormControl({value: '', disabled: true}),
+                version: new FormControl({value: 0, disabled: true}),
             },
         );
 

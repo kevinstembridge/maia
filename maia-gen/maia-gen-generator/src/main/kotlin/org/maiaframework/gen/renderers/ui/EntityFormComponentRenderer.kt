@@ -446,10 +446,13 @@ class EntityFormComponentRenderer(
 
                 val newFormControl = FormControlRendererHelper.renderFormControlFor(
                     angularFormFieldDef,
-                    angularFormDef.createOrEdit
+                    angularFormDef.createOrEdit,
+                    indentSize = 16,
+                    { line -> appendLine(line) },
+                    { fieldType -> addImportsFor(fieldType) }
                 )
 
-                appendLine("                ${classFieldDef.classFieldName}: $newFormControl,")
+//                appendLine("                ${classFieldDef.classFieldName}: $newFormControl,")
 
             } else {
 

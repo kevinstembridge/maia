@@ -53,7 +53,7 @@ export class UserCreateDialogComponent implements OnInit {
 
         this.formGroup = new FormGroup(
             {
-                authorities: new FormControl('', { updateOn: 'change' }),
+                authorities: new FormControl([], { updateOn: 'change' }),
                 firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
             },
