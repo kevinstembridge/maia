@@ -19,6 +19,7 @@ import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.DisplayName
 import org.maiaframework.gen.spec.definition.DtoBaseName
+import org.maiaframework.gen.spec.definition.DtoFieldInfo
 import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableSourceDef
 import org.maiaframework.gen.spec.definition.EntityBaseName
@@ -924,7 +925,10 @@ abstract class AbstractSpec protected constructor(
             searchableDtoDef.packageName,
             searchableDtoDef.dtoBaseName,
             dtoHtmlTableSourceDef = DtoHtmlTableSourceDef.of(searchableDtoDef),
-            fieldSupplier = { fieldName -> searchableDtoDef.findFieldByPath(fieldName).classFieldDef },
+            fieldSupplier = { fieldName ->
+                val f = searchableDtoDef.findFieldByPath(fieldName)
+                DtoFieldInfo(f.classFieldDef, f.entityFieldDef.classFieldDef.displayName)
+            },
             addButtonDef = addButtonDef,
             disableRendering = disableRendering,
             dataSourceType = DataSourceType.DATABASE,
@@ -959,7 +963,10 @@ abstract class AbstractSpec protected constructor(
         val builder = DtoHtmlTableDefBuilder(
             esDocDef.packageName,
             esDocDef.esDocBaseName,
-            fieldSupplier = { fieldPath -> esDocDef.findFieldByPath(fieldPath) },
+            fieldSupplier = { fieldPath ->
+                val f = esDocDef.findFieldByPath(fieldPath)
+                DtoFieldInfo(f, f.displayName)
+            },
             addButtonDef = null,
             disableRendering = disableRendering,
             dataSourceType = DataSourceType.ELASTIC_SEARCH,

@@ -5,14 +5,13 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
-import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.PackageName
 
 @MaiaDslMarker
 class DtoHtmlTableDefBuilder(
     private val packageName: PackageName,
     private val dtoBaseName: DtoBaseName,
-    private val fieldSupplier: (String) -> ClassFieldDef,
+    private val fieldSupplier: (String) -> DtoFieldInfo,
     private val addButtonDef: AddButtonDef? = null,
     private val disableRendering: Boolean,
     private val dataSourceType: DataSourceType,
@@ -71,16 +70,16 @@ class DtoHtmlTableDefBuilder(
 
         val dtoFieldNameToUse = dtoFieldName ?: fieldPathInSourceData
 
-        val classFieldDef = this.fieldSupplier.invoke(fieldPathInSourceData)
+        val fieldInfo = this.fieldSupplier.invoke(fieldPathInSourceData)
 
         val builder = DtoHtmlTableColumnDefBuilder(
             fieldPathInSourceData,
             dtoFieldNameToUse,
-            classFieldDef,
+            fieldInfo.classFieldDef,
             sortable
         )
 
-        classFieldDef.displayName?.let { builder.header(it.value)}
+        fieldInfo.displayName?.let { builder.header(it.value) }
 
         this.columnBuilders.add(builder)
         init?.invoke(builder)
