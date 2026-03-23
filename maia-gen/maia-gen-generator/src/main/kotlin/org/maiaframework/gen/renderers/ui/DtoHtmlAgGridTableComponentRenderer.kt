@@ -257,7 +257,7 @@ class DtoHtmlAgGridTableComponentRenderer(
 
         val attributes = mutableMapOf<String, Any>()
 
-        attributes["colId"] = "'${fieldDef.dtoFieldName}'"
+        attributes["field"] = "'${fieldDef.dtoFieldName}'"
 
         fieldDef.columnHeader?.let {
 
@@ -282,7 +282,7 @@ class DtoHtmlAgGridTableComponentRenderer(
 
         appendLine("""
             |        {
-            |            colId: '${fieldDef.actionName}',
+            |            field: '${fieldDef.actionName}',
             |            headerName: '${fieldDef.columnHeader}',
             |            width: 100,
             |            maxWidth: 100,
