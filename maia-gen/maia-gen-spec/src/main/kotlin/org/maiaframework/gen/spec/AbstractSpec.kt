@@ -925,7 +925,7 @@ abstract class AbstractSpec protected constructor(
             searchableDtoDef.packageName,
             searchableDtoDef.dtoBaseName,
             dtoHtmlTableSourceDef = DtoHtmlTableSourceDef.of(searchableDtoDef),
-            fieldSupplier = { fieldName ->
+            fieldInfoSupplier = { fieldName ->
                 val f = searchableDtoDef.findFieldByPath(fieldName)
                 DtoFieldInfo(f.classFieldDef, f.entityFieldDef.classFieldDef.displayName)
             },
@@ -963,7 +963,7 @@ abstract class AbstractSpec protected constructor(
         val builder = DtoHtmlTableDefBuilder(
             esDocDef.packageName,
             esDocDef.esDocBaseName,
-            fieldSupplier = { fieldPath ->
+            fieldInfoSupplier = { fieldPath ->
                 val f = esDocDef.findFieldByPath(fieldPath)
                 DtoFieldInfo(f, f.displayName)
             },
