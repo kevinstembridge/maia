@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Component
 
 @Component
-internal class MaiaJobRegistry: ApplicationContextAware, InitializingBean {
+class MaiaJobRegistry: ApplicationContextAware, InitializingBean {
 
 
     private lateinit var applicationContext: ApplicationContext
