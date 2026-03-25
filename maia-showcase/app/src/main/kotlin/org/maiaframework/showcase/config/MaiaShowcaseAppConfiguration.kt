@@ -4,10 +4,12 @@ import com.hazelcast.config.Config
 import com.hazelcast.config.YamlConfigBuilder
 import maia_props.hazelcast.Maia_propsHazelcastConfig
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.json.StringTrimmingDeserializer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
+import tools.jackson.databind.module.SimpleModule
 
 
 @Configuration
@@ -17,6 +19,14 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
     "maia_props"
 ])
 class MaiaShowcaseAppConfiguration {
+
+
+    @Bean
+    fun stringTrimmingModule(): SimpleModule {
+
+        return SimpleModule().addDeserializer(String::class.java, StringTrimmingDeserializer())
+
+    }
 
 
     @Bean

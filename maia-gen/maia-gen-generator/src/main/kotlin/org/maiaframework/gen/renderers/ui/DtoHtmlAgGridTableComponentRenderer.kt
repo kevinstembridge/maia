@@ -30,6 +30,7 @@ class DtoHtmlAgGridTableComponentRenderer(
 
         addImport("@angular/common", "DecimalPipe")
         addImport("@angular/core", "Component")
+        addImport("@angular/core", "EnvironmentInjector")
         addImport("@angular/core", "inject")
         addImport("@angular/core", "output")
 
@@ -157,7 +158,10 @@ class DtoHtmlAgGridTableComponentRenderer(
             |    private gridApi!: GridApi<${dtoHtmlTableDef.dtoUqcn}>;
             |
             |
-            |    private readonly datasource = inject(${dtoHtmlTableDef.agGridDatasourceClassName});""".trimMargin()
+            |    private readonly datasource = inject(${dtoHtmlTableDef.agGridDatasourceClassName});
+            |
+            |
+            |    private readonly injector = inject(EnvironmentInjector);""".trimMargin()
         )
 
         if (requiresRouter) {
@@ -236,7 +240,9 @@ class DtoHtmlAgGridTableComponentRenderer(
             |
             |    reapplyFilters() {
             |
-            |        this.gridApi.onFilterChanged();
+            |        this.injector.runInContext(() => {
+            |            this.gridApi.onFilterChanged();
+            |        });
             |
             |    }
             |

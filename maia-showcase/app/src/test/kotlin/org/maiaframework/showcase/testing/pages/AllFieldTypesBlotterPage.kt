@@ -46,11 +46,8 @@ class AllFieldTypesBlotterPage(
 
         // Click boolean checkboxes so FormControl values are proper booleans (not empty strings)
         page.locator("mat-checkbox[formcontrolname='someBoolean']").click()
-        page.locator("mat-checkbox[formcontrolname='someBooleanNullable']").click()
         page.locator("mat-checkbox[formcontrolname='someBooleanType']").click()
-        page.locator("mat-checkbox[formcontrolname='someBooleanTypeNullable']").click()
         page.locator("mat-checkbox[formcontrolname='someBooleanTypeProvided']").click()
-        page.locator("mat-checkbox[formcontrolname='someBooleanTypeProvidedNullable']").click()
 
         page.locator("input[name='someInt']").fill(someInt)
         page.locator("input[name='someIntModifiable']").fill(someIntModifiable)
@@ -136,9 +133,20 @@ class AllFieldTypesBlotterPage(
 
 
     fun assertTableContainsValue(value: String) {
-        // someStringModifiable is at ~2750px; scroll to 1800 so it falls in the 1244px viewport
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 1800")
-        page.locator(".ag-cell:has-text(\"$value\")").first().waitFor()
+        // someStringModifiable is at ~2750px; scroll to 1800 so it falls in the 1244px viewport.
+        // The scroll and cell check are combined in a single waitForFunction so that the scroll is
+        // re-applied on every poll. This handles the race where AG Grid's infinite row model reset
+        // (triggered by reapplyFilters()) may reset the horizontal scroll back to 0 between the
+        // original evaluate() call and the cell becoming visible.
+        page.waitForFunction(
+            "() => {" +
+            "  const vp = document.querySelector('.ag-center-cols-viewport');" +
+            "  if (!vp) return false;" +
+            "  vp.scrollLeft = 1800;" +
+            "  return Array.from(document.querySelectorAll('.ag-cell'))" +
+            "    .some(c => c.innerText && c.innerText.includes('$value'));" +
+            "}"
+        )
     }
 
 

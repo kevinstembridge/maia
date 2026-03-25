@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 
@@ -11,8 +9,8 @@ interface IconCellRendererParams extends ICellRendererParams {
 
 
 @Component({
-    imports: [MatIconModule, MatIconButton],
-    template: `<button mat-icon-button><mat-icon>{{iconName}}</mat-icon></button>`,
+    imports: [],
+    template: `<span class="material-icons" style="cursor:pointer;font-size:20px">{{iconName}}</span>`,
 })
 export class IconAgGridCellRendererComponent implements ICellRendererAngularComp {
 
