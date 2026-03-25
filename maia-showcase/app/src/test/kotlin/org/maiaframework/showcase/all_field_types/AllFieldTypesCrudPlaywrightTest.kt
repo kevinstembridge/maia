@@ -27,7 +27,7 @@ class AllFieldTypesCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Test
-    fun `user can create an all field types record`() {
+    fun `crud journey`() {
 
         `log in as admin user`()
         `navigate to the`(allFieldTypesBlotterPage)

@@ -1,7 +1,5 @@
 
 TODO * Maia Showcase
-    TODO * Manually test the edit feature.
-        TODO * Modify the AllFieldTypesCrudPlaywrightTest to not set nullable fields.
     TODO * Ag Grid table columns should get a header name that defaults to the fieldDisplayName of the underlying entity field if it has one.
     TODO * Create a Playwright test for the AllFieldTypesEntity Create feature.
         TODO * Authorization
