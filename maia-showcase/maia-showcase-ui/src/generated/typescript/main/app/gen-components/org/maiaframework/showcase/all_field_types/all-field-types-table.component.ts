@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EnvironmentInjector, inject, output} from '@angular/core';
+import {Component, EnvironmentInjector, inject, output, runInInjectionContext} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -195,7 +195,7 @@ export class AllFieldTypesTableComponent {
 
     reapplyFilters() {
 
-        this.injector.runInContext(() => {
+        runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();
         });
 

@@ -32,6 +32,7 @@ class DtoHtmlAgGridTableComponentRenderer(
         addImport("@angular/core", "Component")
         addImport("@angular/core", "EnvironmentInjector")
         addImport("@angular/core", "inject")
+        addImport("@angular/core", "runInInjectionContext")
         addImport("@angular/core", "output")
 
         authoritiesDef?.let {
@@ -240,7 +241,7 @@ class DtoHtmlAgGridTableComponentRenderer(
             |
             |    reapplyFilters() {
             |
-            |        this.injector.runInContext(() => {
+            |        runInInjectionContext(this.injector, () => {
             |            this.gridApi.onFilterChanged();
             |        });
             |
