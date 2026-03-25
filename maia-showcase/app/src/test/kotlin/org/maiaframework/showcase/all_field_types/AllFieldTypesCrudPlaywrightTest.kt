@@ -42,6 +42,18 @@ class AllFieldTypesCrudPlaywrightTest : AbstractPlaywrightTest() {
         allFieldTypesBlotterPage.assertEditDialogClosed()
         allFieldTypesBlotterPage.assertTableContainsValue("testmodifiable_edited")
 
+        // Cancel path
+        allFieldTypesBlotterPage.clickDeleteButtonForFirstRow()
+        allFieldTypesBlotterPage.clickCancelButton()
+        allFieldTypesBlotterPage.assertDeleteDialogClosed()
+        allFieldTypesBlotterPage.assertTableContainsValue("testmodifiable_edited")
+
+        // Confirm delete path
+        allFieldTypesBlotterPage.clickDeleteButtonForFirstRow()
+        allFieldTypesBlotterPage.clickYesButton()
+        allFieldTypesBlotterPage.assertDeleteDialogClosed()
+        allFieldTypesBlotterPage.assertTableDoesNotContainValue("testmodifiable_edited")
+
     }
 
 

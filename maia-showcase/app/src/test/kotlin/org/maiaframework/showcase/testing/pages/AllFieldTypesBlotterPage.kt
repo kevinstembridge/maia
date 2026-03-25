@@ -150,4 +150,46 @@ class AllFieldTypesBlotterPage(
     }
 
 
+    fun clickDeleteButtonForFirstRow() {
+        page.waitForFunction(
+            "() => { const c = document.querySelector('.ag-cell[col-id=\"someInt\"]'); " +
+            "return c && c.innerText && c.innerText.trim().length > 0; }"
+        )
+        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
+        page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='delete']").first().waitFor()
+        page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='delete']").first().click()
+        page.locator("mat-dialog-container").waitFor()
+    }
+
+
+    fun clickYesButton() {
+        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Yes")).click()
+    }
+
+
+    fun clickCancelButton() {
+        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Cancel")).click()
+    }
+
+
+    fun assertDeleteDialogClosed() {
+        page.locator("mat-dialog-container").waitFor(
+            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
+        )
+    }
+
+
+    fun assertTableDoesNotContainValue(value: String) {
+        page.waitForFunction(
+            "(value) => {" +
+            "  if (document.querySelector('.ag-overlay-no-rows-center')) return true;" +
+            "  if (document.querySelector('.ag-row-loading')) return false;" +
+            "  return !Array.from(document.querySelectorAll('.ag-cell'))" +
+            "    .some(c => c.innerText && c.innerText.includes(value));" +
+            "}",
+            value
+        )
+    }
+
+
 }
