@@ -31,28 +31,30 @@ class AllFieldTypesCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         `log in as admin user`()
         `navigate to the`(allFieldTypesBlotterPage)
-        allFieldTypesBlotterPage.clickAddButton()
-        allFieldTypesBlotterPage.fillCreateForm()
-        allFieldTypesBlotterPage.clickSubmitButton()
-        allFieldTypesBlotterPage.assertCreateDialogClosed()
+        allFieldTypesBlotterPage.apply {
+            clickAddButton()
+            fillCreateForm()
+            clickSubmitButton()
+            assertCreateDialogClosed()
 
-        allFieldTypesBlotterPage.clickEditButtonForFirstRow()
-        allFieldTypesBlotterPage.fillEditForm()
-        allFieldTypesBlotterPage.clickSubmitButton()
-        allFieldTypesBlotterPage.assertEditDialogClosed()
-        allFieldTypesBlotterPage.assertTableContainsValue("testmodifiable_edited")
+            clickEditButtonForFirstRow()
+            fillEditForm()
+            clickSubmitButton()
+            assertEditDialogClosed()
+            assertTableContainsValue("testmodifiable_edited")
 
-        // Cancel path
-        allFieldTypesBlotterPage.clickDeleteButtonForFirstRow()
-        allFieldTypesBlotterPage.clickCancelButton()
-        allFieldTypesBlotterPage.assertDeleteDialogClosed()
-        allFieldTypesBlotterPage.assertTableContainsValue("testmodifiable_edited")
+            // Cancel path
+            clickDeleteButtonForFirstRow()
+            clickCancelButton()
+            assertDeleteDialogClosed()
+            assertTableContainsValue("testmodifiable_edited")
 
-        // Confirm delete path
-        allFieldTypesBlotterPage.clickDeleteButtonForFirstRow()
-        allFieldTypesBlotterPage.clickYesButton()
-        allFieldTypesBlotterPage.assertDeleteDialogClosed()
-        allFieldTypesBlotterPage.assertTableDoesNotContainValue("testmodifiable_edited")
+            // Confirm delete path
+            clickDeleteButtonForFirstRow()
+            clickYesButton()
+            assertDeleteDialogClosed()
+            assertTableDoesNotContainValue("testmodifiable_edited")
+        }
 
     }
 
