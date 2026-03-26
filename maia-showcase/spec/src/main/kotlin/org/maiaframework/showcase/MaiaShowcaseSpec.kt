@@ -1171,18 +1171,62 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         cacheable {  }
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
             primaryKey()
             lengthConstraint(max = 100)
         }
         field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
             primaryKey()
         }
         field("someModifiableString", FieldTypes.string) {
+            fieldDisplayName("Some Modifiable String")
             lengthConstraint(max = 100)
-            modifiableBySystem()
+            editableByUser()
         }
-
+        crud {
+            apis(defaultAuthority = partySpec.writeAuthority) {
+                create()
+                update()
+                delete()
+            }
+        }
     }
+
+
+    val compositePrimaryKeySearchableDtoDef = searchableEntityDef(
+        "org.maiaframework.showcase.composite_pk",
+        "CompositePrimaryKey",
+        entityDef = compositePrimaryKeyEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE
+    ) {
+        field("someString")
+        field("someInt")
+        field("someModifiableString")
+        field("version")
+        field("createdTimestampUtc")
+    }
+
+
+    val compositePrimaryKeyDtoHtmlTableDef = dtoHtmlTable(
+        compositePrimaryKeySearchableDtoDef,
+        withAddButton = true,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
+    ) {
+        columnFromDto("someString")
+        columnFromDto("someInt")
+        columnFromDto("someModifiableString")
+        columnFromDto("version")
+        columnFromDto("createdTimestampUtc")
+        editActionColumn()
+        deleteActionColumn()
+    }
+
+
+    val compositePrimaryKeyCrudDef = crudTableDef(compositePrimaryKeyDtoHtmlTableDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
 
 
     val nonSurrogatePrimaryKeyEntityDef = entity(
