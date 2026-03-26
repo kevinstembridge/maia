@@ -36,6 +36,12 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
 
     override fun renderSourceBody() {
 
+        val deleteIdExpression = if (apiDef.entityDef.hasCompositePrimaryKey) {
+            apiDef.entityDef.primaryKeyClassFields.joinToString(" + '/' + ") { "this.dto.${it.classFieldName.value}" }
+        } else {
+            "this.dto.id"
+        }
+
         appendLine("""
             |
             |
@@ -63,7 +69,7 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
             |
             |
             |    onYes() {
-            |        this.crudService.delete(this.dto.id).subscribe({
+            |        this.crudService.delete($deleteIdExpression).subscribe({
             |            next: (_) => {
             |                this.dialogRef.close(true);
             |            },

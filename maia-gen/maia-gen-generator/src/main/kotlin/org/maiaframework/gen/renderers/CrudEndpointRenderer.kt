@@ -22,6 +22,13 @@ class CrudEndpointRenderer(
     private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
 
 
+    private val primaryKeyPathVariableParamsCsv = if (entityDef.hasCompositePrimaryKey) {
+        entityDef.primaryKeyClassFields.joinToString(", ") { "@PathVariable ${it.classFieldName}: ${it.unqualifiedToString}" }
+    } else {
+        "@PathVariable ${ fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields) }"
+    }
+
+
     private val primaryKeyFieldNames = if (entityDef.hasCompositePrimaryKey) {
         "primaryKey"
     } else {
@@ -90,6 +97,8 @@ class CrudEndpointRenderer(
 
         val urlSuffix = if (entityDef.hasSurrogatePrimaryKey) {
             "/{id}"
+        } else if (entityDef.hasCompositePrimaryKey) {
+            entityDef.primaryKeyClassFields.joinToString("") { "/{${it.classFieldName.value}}" }
         } else {
             ""
         }
@@ -102,7 +111,7 @@ class CrudEndpointRenderer(
                 |
                 |
                 |    @GetMapping("${fetchForEditDtoDef.endpointUrl}$urlSuffix", produces = [MediaType.APPLICATION_JSON_VALUE])
-                |    fun fetchForEdit(@PathVariable $primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
+                |    fun fetchForEdit($primaryKeyPathVariableParamsCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
                 |
                 |        val primaryKey = ${entityDef.entityPkClassDef.uqcn}($pkConstructorArgs)
                 |        return this.crudService.fetchForEdit(primaryKey)
@@ -116,7 +125,7 @@ class CrudEndpointRenderer(
                 |
                 |
                 |    @GetMapping("${fetchForEditDtoDef.endpointUrl}$urlSuffix", produces = [MediaType.APPLICATION_JSON_VALUE])
-                |    fun fetchForEdit(@PathVariable $primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
+                |    fun fetchForEdit($primaryKeyPathVariableParamsCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
                 |
                 |        return this.crudService.fetchForEdit($primaryKeyFieldNames)
                 |
@@ -171,10 +180,11 @@ class CrudEndpointRenderer(
 
             val urlPathVars = entityDef.primaryKeyClassFields.joinToString("") { "/{${it.classFieldName.value}}" }
             val pkConstructorArgs = entityDef.primaryKeyClassFields.joinToString(", ") { it.classFieldName.value }
+            val deleteBaseUrl = apiDef.endpointUrl.trimEnd('/')
 
-            appendLine("    @DeleteMapping(\"${apiDef.endpointUrl}$urlPathVars\")")
+            appendLine("    @DeleteMapping(\"$deleteBaseUrl$urlPathVars\")")
             appendPreAuthorize(apiDef.crudApiDef)
-            appendLine("    fun deleteByPrimaryKey(@PathVariable $primaryKeyFieldNamesAndTypesCsv) {")
+            appendLine("    fun deleteByPrimaryKey($primaryKeyPathVariableParamsCsv) {")
             blankLine()
             appendLine("        val primaryKey = ${entityDef.entityPkClassDef.uqcn}($pkConstructorArgs)")
             appendLine("        this.crudService.delete(primaryKey)")

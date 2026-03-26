@@ -2,6 +2,7 @@ package org.maiaframework.showcase.config
 
 import com.hazelcast.config.Config
 import com.hazelcast.config.YamlConfigBuilder
+import maia.hazelcast.MaiaHazelcastConfig
 import maia_props.hazelcast.Maia_propsHazelcastConfig
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.json.StringTrimmingDeserializer
@@ -16,7 +17,9 @@ import tools.jackson.databind.module.SimpleModule
 @ComponentScan(basePackages = [
     "org.maiaframework.json",
     "org.maiaframework.webapp",
-    "maia_props"
+    "maia_props",
+    "maia.hazelcast",
+    "maia_party.hazelcast"
 ])
 class MaiaShowcaseAppConfiguration {
 
@@ -39,6 +42,7 @@ class MaiaShowcaseAppConfiguration {
 
     @Bean
     fun createNewConfig(
+        maiaHazelcastConfig: MaiaHazelcastConfig,
         propsHazelcastConfig: Maia_propsHazelcastConfig
     ): Config {
 
@@ -49,6 +53,14 @@ class MaiaShowcaseAppConfiguration {
         config.apply {
 //            addMapConfig(loginEmailAddressByUserIdCacheConfig)
 //            addMapConfig(userDetailsByLoginEmailAddressCacheConfig)
+        }
+
+        maiaHazelcastConfig.serializers.forEach {
+            compactSerializationConfig.addSerializer(it)
+        }
+
+        maiaHazelcastConfig.mapConfigs.forEach {
+            config.addMapConfig(it)
         }
 
         propsHazelcastConfig.serializers.forEach {

@@ -31,8 +31,8 @@ class CompositePrimaryKeyCrudEndpoint(
     }
 
 
-    @GetMapping("/api/composite_primary_key/fetch_for_edit", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun fetchForEdit(@PathVariable someString: String, someInt: Int): CompositePrimaryKeyFetchForEditDto {
+    @GetMapping("/api/composite_primary_key/fetch_for_edit/{someString}/{someInt}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun fetchForEdit(@PathVariable someString: String, @PathVariable someInt: Int): CompositePrimaryKeyFetchForEditDto {
 
         val primaryKey = CompositePrimaryKeyEntityPk(someString, someInt)
         return this.crudService.fetchForEdit(primaryKey)
@@ -56,8 +56,8 @@ class CompositePrimaryKeyCrudEndpoint(
     }
 
 
-    @DeleteMapping("/api/composite_primary_key//{someString}/{someInt}")
-    fun deleteByPrimaryKey(@PathVariable someString: String, someInt: Int) {
+    @DeleteMapping("/api/composite_primary_key/{someString}/{someInt}")
+    fun deleteByPrimaryKey(@PathVariable someString: String, @PathVariable someInt: Int) {
 
         val primaryKey = CompositePrimaryKeyEntityPk(someString, someInt)
         this.crudService.delete(primaryKey)
