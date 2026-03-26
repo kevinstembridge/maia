@@ -30,10 +30,10 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'all_field_types',
+        path: 'some_versioned',
         loadComponent: () =>
-            import('@app/pages/all-field-types-blotter/all-field-types-blotter-page').then(
-                (m) => m.AllFieldTypesBlotterPage,
+            import('@app/pages/some-versioned/some-versioned-blotter-page').then(
+                (m) => m.SomeVersionedBlotterPage,
             ),
     },
 ];
