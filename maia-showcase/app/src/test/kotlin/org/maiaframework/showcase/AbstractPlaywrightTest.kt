@@ -16,6 +16,7 @@ import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.testing.pages.LoginPage
 import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.maiaframework.showcase.testing.pages.AllFieldTypesBlotterPage
+import org.maiaframework.showcase.testing.pages.SomeVersionedBlotterPage
 import org.maiaframework.showcase.testing.pages.HomePage
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -51,6 +52,9 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var allFieldTypesBlotterPage: AllFieldTypesBlotterPage
 
 
+    protected lateinit var someVersionedBlotterPage: SomeVersionedBlotterPage
+
+
     protected val retryTemplate = RetryTemplate(RetryPolicy.builder()
         .includes(AssertionError::class.java, Exception::class.java)
         .backOff(ExponentialBackOff().apply { maxAttempts = 4L })
@@ -77,6 +81,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         homePage = HomePage(page, urlHelper)
         loginPage = LoginPage(page, urlHelper)
         allFieldTypesBlotterPage = AllFieldTypesBlotterPage(page, urlHelper)
+        someVersionedBlotterPage = SomeVersionedBlotterPage(page, urlHelper)
 
     }
 
