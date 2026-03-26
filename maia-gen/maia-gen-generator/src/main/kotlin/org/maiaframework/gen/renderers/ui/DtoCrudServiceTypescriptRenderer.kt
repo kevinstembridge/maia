@@ -19,8 +19,9 @@ class DtoCrudServiceTypescriptRenderer(
         this.entityCrudApiDef.updateApiDef?.let { addImport(it.requestDtoDef.typescriptImport) }
         this.entityCrudApiDef.entityDef.fetchForEditDtoDef?.let { addImport(it.typescriptImport) }
 
-        if (this.entityCrudApiDef.entityDef.databaseIndexDefs.isNotEmpty()) {
-            this.entityCrudApiDef.entityDef.uniqueIndexDefs.forEach { entityIndexDef ->
+        val indexDefsWithExistsEndpoint = this.entityCrudApiDef.entityDef.uniqueIndexDefs.filter { it.withExistsEndpoint }
+        if (indexDefsWithExistsEndpoint.isNotEmpty()) {
+            indexDefsWithExistsEndpoint.forEach { entityIndexDef ->
                 addImport(entityIndexDef.asyncValidator.asyncValidationDtoTypescriptImport)
             }
             addImport("@maia/maia-ui", "FormValidationResponseDto")

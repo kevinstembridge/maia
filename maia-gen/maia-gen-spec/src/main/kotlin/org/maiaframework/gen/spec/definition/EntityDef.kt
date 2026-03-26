@@ -814,6 +814,7 @@ class EntityDef(
 
         return this.databaseIndexDefs
             .filter { it.isUnique }
+            .filter { it.withExistsEndpoint }
             .filterNot { it.isMultiField }
             .find { field ->
                 field.indexDef.classFieldDefs.first().classFieldName == classFieldName

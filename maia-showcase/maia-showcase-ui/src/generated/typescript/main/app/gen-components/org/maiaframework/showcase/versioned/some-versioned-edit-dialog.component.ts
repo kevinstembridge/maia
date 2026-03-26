@@ -11,7 +11,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {SomeVersionedFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedFetchForEditDto';
-import {SomeVersionedSomeIntAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedSomeIntAsyncValidator';
 import {SomeVersionedUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedUpdateRequestDto';
 import {SomeVersionedCrudService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud.service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -59,15 +58,12 @@ export class SomeVersionedEditDialogComponent implements OnInit {
     private readonly entityId = inject<string>(MAT_DIALOG_DATA);
 
 
-    private readonly someVersionedSomeIntAsyncValidator = inject(SomeVersionedSomeIntAsyncValidator);
-
-
     constructor() {
 
         this.formGroup = new FormGroup(
             {
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                someInt: new FormControl(0, { updateOn: 'change', asyncValidators: [this.someVersionedSomeIntAsyncValidator.validate.bind(this.someVersionedSomeIntAsyncValidator)] }),
+                someInt: new FormControl(0, { updateOn: 'change' }),
                 id: new FormControl({value: '', disabled: true}),
                 version: new FormControl({value: 0, disabled: true}),
             },

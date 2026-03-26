@@ -10,7 +10,6 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialo
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {SomeVersionedCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedCreateRequestDto';
-import {SomeVersionedSomeIntAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedSomeIntAsyncValidator';
 import {SomeVersionedCrudService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud.service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
@@ -50,15 +49,12 @@ export class SomeVersionedCreateDialogComponent implements OnInit {
     private readonly formService = inject(SomeVersionedCrudService);
 
 
-    private readonly someVersionedSomeIntAsyncValidator = inject(SomeVersionedSomeIntAsyncValidator);
-
-
     constructor() {
 
         this.formGroup = new FormGroup(
             {
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                someInt: new FormControl(0, { updateOn: 'change', asyncValidators: [this.someVersionedSomeIntAsyncValidator.validate.bind(this.someVersionedSomeIntAsyncValidator)] }),
+                someInt: new FormControl(0, { updateOn: 'change' }),
             },
         );
 

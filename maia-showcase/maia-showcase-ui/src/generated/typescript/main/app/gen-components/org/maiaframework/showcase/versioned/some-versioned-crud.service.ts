@@ -5,9 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {SomeVersionedCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedCreateRequestDto';
 import {SomeVersionedFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedFetchForEditDto';
-import {SomeVersionedSomeIntRequestDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedSomeIntRequestDto';
 import {SomeVersionedUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedUpdateRequestDto';
-import {FormValidationResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 

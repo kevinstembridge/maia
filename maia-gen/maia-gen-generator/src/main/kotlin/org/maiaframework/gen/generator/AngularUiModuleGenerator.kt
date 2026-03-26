@@ -576,7 +576,7 @@ class AngularUiModuleGenerator(
 
         this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
 
-            entityCrudApiDef.entityDef.uniqueIndexDefs.filter { it.isNotIdAndVersionIndex }.forEach { databaseIndexDef ->
+            entityCrudApiDef.entityDef.uniqueIndexDefs.filter { it.isNotIdAndVersionIndex }.filter { it.withExistsEndpoint }.forEach { databaseIndexDef ->
                 AsyncValidatorRenderer(databaseIndexDef, entityCrudApiDef).renderToDir(this.typescriptOutputDir)
             }
 
@@ -589,7 +589,7 @@ class AngularUiModuleGenerator(
 
         this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
 
-            entityCrudApiDef.entityDef.databaseIndexDefs.forEach { entityIndexDef ->
+            entityCrudApiDef.entityDef.databaseIndexDefs.filter { it.withExistsEndpoint }.forEach { entityIndexDef ->
 
                 renderTypescriptInterface(
                     renderedFilePath = entityIndexDef.asyncValidator.asyncValidationDtoRenderedFilePath,
