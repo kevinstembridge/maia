@@ -100,8 +100,10 @@ class AllFieldTypesBlotterPage(
         // Scroll the grid body to the right so the virtually-rendered edit column becomes visible
         page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
         // Click the edit cell — row data is guaranteed to be loaded (rowNode.data is defined)
-        page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first().waitFor()
-        page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first().click()
+        val editCell = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first()
+        editCell.waitFor()
+        editCell.scrollIntoViewIfNeeded()
+        editCell.click()
         page.locator("mat-dialog-container").waitFor()
     }
 
@@ -151,13 +153,17 @@ class AllFieldTypesBlotterPage(
 
 
     fun clickDeleteButtonForFirstRow() {
+        // Scroll back to 0 first so the someInt column (far left) is in the virtual DOM
+        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
         page.waitForFunction(
             "() => { const c = document.querySelector('.ag-cell[col-id=\"someInt\"]'); " +
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
         page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
-        page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='delete']").first().waitFor()
-        page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='delete']").first().click()
+        val deleteCell = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='delete']").first()
+        deleteCell.waitFor()
+        deleteCell.scrollIntoViewIfNeeded()
+        deleteCell.click()
         page.locator("mat-dialog-container").waitFor()
     }
 
