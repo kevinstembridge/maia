@@ -87,6 +87,13 @@ class SomeVersionedRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): SomeVersionedFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: SomeVersionedEntity) {
 
         logger.debug("insert {}", entity)
@@ -126,6 +133,33 @@ class SomeVersionedRepo(
         logger.debug("upsert {}", upsertEntity)
 
         return dao.upsertBySomeInt(upsertEntity)
+
+    }
+
+
+    fun deleteByPrimaryKey(id: DomainId) {
+
+        this.dao.deleteByPrimaryKey(id)
+
+    }
+
+
+    fun deleteBySomeInt(someInt: Int): Boolean {
+
+        return dao.deleteBySomeInt(someInt)
+
+    }
+
+
+    fun removeByPrimaryKey(id: DomainId): SomeVersionedEntity? {
+
+        val found = findByPrimaryKeyOrNull(id)
+       
+        if (found != null) {
+            deleteByPrimaryKey(id)
+        }
+       
+        return found
 
     }
 

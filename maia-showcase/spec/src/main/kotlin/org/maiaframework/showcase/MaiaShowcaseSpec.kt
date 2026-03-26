@@ -742,10 +742,12 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         deletable = Deletable.TRUE
     ) {
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
             editableByUser()
             lengthConstraint(max = 100)
         }
         field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
             editableByUser()
         }
         index {

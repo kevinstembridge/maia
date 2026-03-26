@@ -29,6 +29,9 @@ class SomeVersionedDao(
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
+    private val fetchForEditDtoRowMapper = SomeVersionedFetchForEditDtoRowMapper()
+
+
     fun insert(entity: SomeVersionedEntity) {
 
         jdbcOps.update(
@@ -300,6 +303,29 @@ class SomeVersionedDao(
     }
 
 
+    fun fetchForEdit(id: DomainId): SomeVersionedFetchForEditDto {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                some_versioned.created_timestamp_utc as createdTimestampUtc,
+                some_versioned.id as id,
+                some_versioned.some_int as someInt,
+                some_versioned.some_string as someString,
+                some_versioned.version as version
+            from maia.some_versioned
+            where some_versioned.id = :id
+            """,
+            SqlParams().apply {
+                addValue("id", id)
+            },
+            this.fetchForEditDtoRowMapper
+        ).firstOrNull()
+            ?: throw EntityNotFoundException(EntityClassAndPk(SomeVersionedEntity::class.java, mapOf("id" to id)), SomeVersionedEntityMeta.TABLE_NAME)
+
+    }
+
+
     fun upsertBySomeInt(upsertEntity: SomeVersionedEntity): SomeVersionedEntity {
 
         val persistedEntity = jdbcOps.execute(
@@ -386,6 +412,51 @@ class SomeVersionedDao(
             "someInt" -> sqlParams.addValue("someInt", field.value as Int)
             "someString" -> sqlParams.addValue("someString", field.value as String)
         }
+
+    }
+
+
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
+
+        val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
+
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.some_versioned where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+        return deletedCount > 0
+
+    }
+
+
+    fun removeByPrimaryKey(id: DomainId): SomeVersionedEntity? {
+
+        val found = findByPrimaryKeyOrNull(id)
+
+        if (found != null) {
+            deleteByPrimaryKey(id)
+        }
+
+        return found
+
+    }
+
+
+    fun deleteBySomeInt(someInt: Int): Boolean {
+
+        val existingEntity = findOneOrNullBySomeInt(someInt) ?: return false
+
+        val deletedCount = this.jdbcOps.update(
+            "delete from maia.some_versioned where some_int = :someInt",
+            SqlParams().apply {
+                addValue("someInt", someInt)
+            }
+        )
+
+        return deletedCount > 0
 
     }
 

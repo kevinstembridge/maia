@@ -5,24 +5,113 @@ package org.maiaframework.showcase.versioned
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class SomeVersionedCrudService(
     private val entityRepo: SomeVersionedRepo,
-    private val maiaProblems: MaiaProblems
+    private val maiaProblems: MaiaProblems,
+    private val someVersionedCrudNotifier: SomeVersionedCrudNotifier
 ) {
 
 
     private val logger = LoggerFactory.getLogger(SomeVersionedCrudService::class.java)
 
 
+    fun create(createDto: SomeVersionedCreateRequestDto): SomeVersionedEntity {
+
+        logger.info("BEGIN: create SomeVersioned. dto=$createDto")
+
+        val entity: SomeVersionedEntity = buildEntity(createDto)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(createDto: SomeVersionedCreateRequestDto): SomeVersionedEntity {
+
+        val someInt: Int = createDto.someInt
+        val someString: String = createDto.someString
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+        val version = 1L
+
+        return SomeVersionedEntity(
+            createdTimestampUtc,
+            id,
+            someInt,
+            someString,
+            version
+        )
+
+    }
+
+
     fun create(entity: SomeVersionedEntity): SomeVersionedEntity {
 
         this.entityRepo.insert(entity)
+        this.someVersionedCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    fun fetchForEdit(id: DomainId): SomeVersionedFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
+    fun update(editDto: SomeVersionedUpdateRequestDto) {
+
+        val id = editDto.id
+        val version = editDto.version
+        val updater = SomeVersionedEntityUpdater.forPrimaryKey(id, version) {
+            someInt(editDto.someInt)
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun updateSomeString(editDto: SomeVersionedUpdate_someStringRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeString. currentUsername=${currentUsername}, dto=$editDto")
+
+        val version = editDto.version
+
+        val updater = SomeVersionedEntityUpdater.forPrimaryKey(editDto.id, version) {
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun updateSomeInt(editDto: SomeVersionedUpdate_someIntRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeInt. currentUsername=${currentUsername}, dto=$editDto")
+
+        val version = editDto.version
+
+        val updater = SomeVersionedEntityUpdater.forPrimaryKey(editDto.id, version) {
+            someInt(editDto.someInt)
+        }
+
+        setFields(updater)
 
     }
 
@@ -30,8 +119,20 @@ class SomeVersionedCrudService(
     fun setFields(updater: SomeVersionedEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
+        this.someVersionedCrudNotifier.onEntityUpdated(updater.id)
         return count
         
+    }
+
+
+    fun delete(id: DomainId) {
+
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
+                ?: return
+
+        this.entityRepo.deleteByPrimaryKey(id)
+        this.someVersionedCrudNotifier.onEntityDeleted(entityToDelete)
+
     }
 
 
