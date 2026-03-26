@@ -19,9 +19,6 @@ class CrudEndpointRenderer(
     private val entityDef: EntityDef = entityCrudApiDef.entityDef
 
 
-    private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
-
-
     private val primaryKeyPathVariableParamsCsv = if (entityDef.hasCompositePrimaryKey) {
         entityDef.primaryKeyClassFields.joinToString(", ") { "@PathVariable ${it.classFieldName}: ${it.unqualifiedToString}" }
     } else {
