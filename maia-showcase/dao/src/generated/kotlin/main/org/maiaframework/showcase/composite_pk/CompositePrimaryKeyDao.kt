@@ -30,6 +30,9 @@ class CompositePrimaryKeyDao(
     private val primaryKeyRowMapper = CompositePrimaryKeyEntityPkRowMapper()
 
 
+    private val fetchForEditDtoRowMapper = CompositePrimaryKeyFetchForEditDtoRowMapper()
+
+
     fun insert(entity: CompositePrimaryKeyEntity) {
 
         jdbcOps.update(
@@ -306,6 +309,30 @@ class CompositePrimaryKeyDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun fetchForEdit(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyFetchForEditDto {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                composite_primary_key.created_timestamp_utc as createdTimestampUtc,
+                composite_primary_key.some_int as someInt,
+                composite_primary_key.some_modifiable_string as someModifiableString,
+                composite_primary_key.some_string as someString,
+                composite_primary_key.version as version
+            from maia.composite_primary_key
+            where composite_primary_key.some_string = :someString and composite_primary_key.some_int = :someInt
+            """,
+            SqlParams().apply {
+                addValue("someString", primaryKey.someString)
+                addValue("someInt", primaryKey.someInt)
+            },
+            this.fetchForEditDtoRowMapper
+        ).firstOrNull()
+            ?: throw EntityNotFoundException(EntityClassAndPk(CompositePrimaryKeyEntity::class.java, mapOf("someString" to primaryKey.someString, "someInt" to primaryKey.someInt)), CompositePrimaryKeyEntityMeta.TABLE_NAME)
 
     }
 

@@ -1835,7 +1835,7 @@ class JdbcDaoRenderer(
 
         blankLine()
         blankLine()
-        appendLine("    fun fetchForEdit($primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {")
+        appendLine("    fun fetchForEdit($primaryKeyNameAndType): ${entityDef.fetchForEditDtoFqcn.uqcn} {")
         blankLine()
         appendLine("        return this.jdbcOps.queryForList(")
         appendLine("            \"\"\"")
@@ -1853,14 +1853,27 @@ class JdbcDaoRenderer(
         appendLine("            \"\"\",")
         appendLine("            SqlParams().apply {")
 
-        entityDef.primaryKeyFields.forEach { entityFieldDef ->
-            renderSqlParamAddValueFor(entityFieldDef, "                ", entityParameterName = null, 12, { line -> appendLine(line) })
+        if (entityDef.hasCompositePrimaryKey) {
+            entityDef.primaryKeyFields.forEach { entityFieldDef ->
+                renderSqlParamAddValueFor(entityFieldDef, "                ", entityParameterName = "primaryKey", 12, { line -> appendLine(line) })
+            }
+        } else {
+            entityDef.primaryKeyFields.forEach { entityFieldDef ->
+                renderSqlParamAddValueFor(entityFieldDef, "                ", entityParameterName = null, 12, { line -> appendLine(line) })
+            }
         }
 
         appendLine("            },")
         appendLine("            this.fetchForEditDtoRowMapper")
         appendLine("        ).firstOrNull()")
-        appendLine("            ?: throw EntityNotFoundException(EntityClassAndPk(${entityDef.entityUqcn}::class.java, $mapOfPrimaryKeyFields), ${entityDef.metaClassDef.uqcn}.TABLE_NAME)")
+
+        if (entityDef.hasCompositePrimaryKey) {
+            val mapOfPkFieldsFromPk = "mapOf(${entityDef.primaryKeyClassFields.joinToString(", ") { "\"${it.classFieldName}\" to primaryKey.${it.classFieldName}" }})"
+            appendLine("            ?: throw EntityNotFoundException(EntityClassAndPk(${entityDef.entityUqcn}::class.java, $mapOfPkFieldsFromPk), ${entityDef.metaClassDef.uqcn}.TABLE_NAME)")
+        } else {
+            appendLine("            ?: throw EntityNotFoundException(EntityClassAndPk(${entityDef.entityUqcn}::class.java, $mapOfPrimaryKeyFields), ${entityDef.metaClassDef.uqcn}.TABLE_NAME)")
+        }
+
         blankLine()
         appendLine("    }")
 

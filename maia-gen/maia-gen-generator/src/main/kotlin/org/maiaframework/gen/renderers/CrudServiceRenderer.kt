@@ -62,8 +62,11 @@ class CrudServiceRenderer(
     }
 
 
-    private val primaryKeyEditDtoFieldNamesCsv = entityDef.primaryKeyClassFields.joinToString(", ") {
-        "editDto.${it.classFieldName.value}"
+    private val primaryKeyEditDtoFieldNamesCsv = if (entityDef.hasCompositePrimaryKey) {
+        val args = entityDef.primaryKeyClassFields.joinToString(", ") { "editDto.${it.classFieldName.value}" }
+        "${entityDef.entityPkClassDef.uqcn}($args)"
+    } else {
+        entityDef.primaryKeyClassFields.joinToString(", ") { "editDto.${it.classFieldName.value}" }
     }
 
 
@@ -379,6 +382,11 @@ class CrudServiceRenderer(
                 appendLine("        val ${field.classFieldName.value} = editDto.${field.classFieldName.value}")
             }
 
+            if (this.entityDef.hasCompositePrimaryKey) {
+                val pkConstructorArgs = entityDef.primaryKeyClassFields.joinToString(", ") { it.classFieldName.value }
+                appendLine("        val primaryKey = ${entityDef.entityPkClassDef.uqcn}($pkConstructorArgs)")
+            }
+
             if (this.entityDef.versioned.value) {
 
                 appendLine("        val version = editDto.version")
@@ -486,9 +494,11 @@ class CrudServiceRenderer(
             return
         }
 
-        val primaryKeyFieldNamesCsv = this.entityDef.primaryKeyClassFields.map {
-            "updater.${it.classFieldName.value}"
-        }.joinToString(", ")
+        val primaryKeyFieldNamesCsv = if (this.entityDef.hasCompositePrimaryKey) {
+            this.entityDef.primaryKeyClassFields.joinToString(", ") { "updater.primaryKey.${it.classFieldName.value}" }
+        } else {
+            this.entityDef.primaryKeyClassFields.joinToString(", ") { "updater.${it.classFieldName.value}" }
+        }
 
 
         appendLine("""

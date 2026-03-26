@@ -94,16 +94,36 @@ class CrudEndpointRenderer(
             ""
         }
 
-        append("""
-            |
-            |
-            |    @GetMapping("${fetchForEditDtoDef.endpointUrl}$urlSuffix", produces = [MediaType.APPLICATION_JSON_VALUE])
-            |    fun fetchForEdit(@PathVariable $primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
-            |
-            |        return this.crudService.fetchForEdit($primaryKeyFieldNames)
-            |
-            |    }
-            |""".trimMargin())
+        if (entityDef.hasCompositePrimaryKey) {
+
+            val pkConstructorArgs = entityDef.primaryKeyClassFields.joinToString(", ") { it.classFieldName.value }
+
+            append("""
+                |
+                |
+                |    @GetMapping("${fetchForEditDtoDef.endpointUrl}$urlSuffix", produces = [MediaType.APPLICATION_JSON_VALUE])
+                |    fun fetchForEdit(@PathVariable $primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
+                |
+                |        val primaryKey = ${entityDef.entityPkClassDef.uqcn}($pkConstructorArgs)
+                |        return this.crudService.fetchForEdit(primaryKey)
+                |
+                |    }
+                |""".trimMargin())
+
+        } else {
+
+            append("""
+                |
+                |
+                |    @GetMapping("${fetchForEditDtoDef.endpointUrl}$urlSuffix", produces = [MediaType.APPLICATION_JSON_VALUE])
+                |    fun fetchForEdit(@PathVariable $primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
+                |
+                |        return this.crudService.fetchForEdit($primaryKeyFieldNames)
+                |
+                |    }
+                |""".trimMargin())
+
+        }
 
 
 
@@ -143,17 +163,37 @@ class CrudEndpointRenderer(
 
         addImportFor(Fqcns.SPRING_DELETE_MAPPING)
         addImportFor(Fqcns.SPRING_PATH_VARIABLE)
-        addImportFor<DomainId>()
 
         blankLine()
         blankLine()
-        appendLine("    @DeleteMapping(\"${apiDef.endpointUrl}{id}\")")
-        appendPreAuthorize(apiDef.crudApiDef)
-        appendLine("    fun deleteById(@PathVariable(\"id\") id: DomainId) {")
-        blankLine()
-        appendLine("        this.crudService.delete(id)")
-        blankLine()
-        appendLine("    }")
+
+        if (entityDef.hasCompositePrimaryKey) {
+
+            val urlPathVars = entityDef.primaryKeyClassFields.joinToString("") { "/{${it.classFieldName.value}}" }
+            val pkConstructorArgs = entityDef.primaryKeyClassFields.joinToString(", ") { it.classFieldName.value }
+
+            appendLine("    @DeleteMapping(\"${apiDef.endpointUrl}$urlPathVars\")")
+            appendPreAuthorize(apiDef.crudApiDef)
+            appendLine("    fun deleteByPrimaryKey(@PathVariable $primaryKeyFieldNamesAndTypesCsv) {")
+            blankLine()
+            appendLine("        val primaryKey = ${entityDef.entityPkClassDef.uqcn}($pkConstructorArgs)")
+            appendLine("        this.crudService.delete(primaryKey)")
+            blankLine()
+            appendLine("    }")
+
+        } else {
+
+            addImportFor<DomainId>()
+
+            appendLine("    @DeleteMapping(\"${apiDef.endpointUrl}{id}\")")
+            appendPreAuthorize(apiDef.crudApiDef)
+            appendLine("    fun deleteById(@PathVariable(\"id\") id: DomainId) {")
+            blankLine()
+            appendLine("        this.crudService.delete(id)")
+            blankLine()
+            appendLine("    }")
+
+        }
 
     }
 

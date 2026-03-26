@@ -77,6 +77,13 @@ class CompositePrimaryKeyRepo(
     }
 
 
+    fun fetchForEdit(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyFetchForEditDto {
+
+        return this.dao.fetchForEdit(primaryKey)
+
+    }
+
+
     fun insert(entity: CompositePrimaryKeyEntity) {
 
         logger.debug("insert {}", entity)

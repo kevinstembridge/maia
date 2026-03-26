@@ -4,12 +4,15 @@
 package org.maiaframework.showcase.composite_pk
 
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class CompositePrimaryKeyCrudService(
+    private val compositePrimaryKeyCrudNotifier: CompositePrimaryKeyCrudNotifier,
     private val entityRepo: CompositePrimaryKeyRepo,
     private val maiaProblems: MaiaProblems
 ) {
@@ -18,10 +21,80 @@ class CompositePrimaryKeyCrudService(
     private val logger = LoggerFactory.getLogger(CompositePrimaryKeyCrudService::class.java)
 
 
+    fun create(createDto: CompositePrimaryKeyCreateRequestDto): CompositePrimaryKeyEntity {
+
+        logger.info("BEGIN: create CompositePrimaryKey. dto=$createDto")
+
+        val entity: CompositePrimaryKeyEntity = buildEntity(createDto)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(createDto: CompositePrimaryKeyCreateRequestDto): CompositePrimaryKeyEntity {
+
+        val someInt: Int = createDto.someInt
+        val someModifiableString: String = createDto.someModifiableString
+        val someString: String = createDto.someString
+        val createdTimestampUtc = Instant.now()
+        val version = 1L
+
+        return CompositePrimaryKeyEntity(
+            createdTimestampUtc,
+            someInt,
+            someModifiableString,
+            someString,
+            version
+        )
+
+    }
+
+
     fun create(entity: CompositePrimaryKeyEntity): CompositePrimaryKeyEntity {
 
         this.entityRepo.insert(entity)
+        this.compositePrimaryKeyCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    fun fetchForEdit(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(primaryKey)
+
+    }
+
+
+    fun update(editDto: CompositePrimaryKeyUpdateRequestDto) {
+
+        val someString = editDto.someString
+        val someInt = editDto.someInt
+        val primaryKey = CompositePrimaryKeyEntityPk(someString, someInt)
+        val version = editDto.version
+        val updater = CompositePrimaryKeyEntityUpdater.forPrimaryKey(primaryKey, version) {
+            someModifiableString(editDto.someModifiableString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun updateSomeModifiableString(editDto: CompositePrimaryKeyUpdate_someModifiableStringRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeModifiableString. currentUsername=${currentUsername}, dto=$editDto")
+
+        val version = editDto.version
+
+        val updater = CompositePrimaryKeyEntityUpdater.forPrimaryKey(CompositePrimaryKeyEntityPk(editDto.someString, editDto.someInt), version) {
+            someModifiableString(editDto.someModifiableString)
+        }
+
+        setFields(updater)
 
     }
 
@@ -29,6 +102,7 @@ class CompositePrimaryKeyCrudService(
     fun setFields(updater: CompositePrimaryKeyEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
+        this.compositePrimaryKeyCrudNotifier.onEntityUpdated(updater.primaryKey.someString, updater.primaryKey.someInt)
         return count
         
     }
@@ -36,7 +110,11 @@ class CompositePrimaryKeyCrudService(
 
     fun delete(primaryKey: CompositePrimaryKeyEntityPk) {
 
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(primaryKey)
+                ?: return
+
         this.entityRepo.deleteByPrimaryKey(primaryKey)
+        this.compositePrimaryKeyCrudNotifier.onEntityDeleted(entityToDelete)
 
     }
 
