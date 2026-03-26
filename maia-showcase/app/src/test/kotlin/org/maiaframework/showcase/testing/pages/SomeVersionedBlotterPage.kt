@@ -142,7 +142,7 @@ class SomeVersionedBlotterPage(
             "  const c = document.querySelector('.ag-cell[col-id=\"version\"]');" +
             "  return c && c.innerText && c.innerText.trim() === String(v);" +
             "}",
-            expectedVersion
+            expectedVersion.toInt()
         )
     }
 
