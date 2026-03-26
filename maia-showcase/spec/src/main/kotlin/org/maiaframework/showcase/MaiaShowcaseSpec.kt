@@ -738,7 +738,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val someVersionedEntityDef = entity(
         "org.maiaframework.showcase.versioned",
         "SomeVersioned",
-        versioned = true
+        versioned = true,
+        deletable = Deletable.TRUE
     ) {
         field("someString", FieldTypes.string) {
             editableByUser()
@@ -751,7 +752,49 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             unique()
             withFieldAscending("someInt")
         }
+        crud {
+            apis(defaultAuthority = partySpec.writeAuthority) {
+                create()
+                update()
+                delete()
+            }
+        }
     }
+
+
+    val someVersionedSearchableDtoDef = searchableEntityDef(
+        "org.maiaframework.showcase.versioned",
+        "SomeVersioned",
+        entityDef = someVersionedEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE
+    ) {
+        field("someString")
+        field("someInt")
+        field("version")
+        field("id")
+        field("createdTimestampUtc")
+    }
+
+
+    val someVersionedDtoHtmlTableDef = dtoHtmlTable(
+        someVersionedSearchableDtoDef,
+        withAddButton = true,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
+    ) {
+        columnFromDto("someString")
+        columnFromDto("someInt")
+        columnFromDto("version")
+        columnFromDto("id")
+        columnFromDto("createdTimestampUtc")
+        editActionColumn()
+        deleteActionColumn()
+    }
+
+
+    val someVersionedCrudDef = crudTableDef(someVersionedDtoHtmlTableDef, someVersionedEntityDef.entityCrudApiDef!!)
 
 
     val withOptionalIndexFieldEntityDef = entity(
