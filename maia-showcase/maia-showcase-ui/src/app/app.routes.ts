@@ -36,4 +36,11 @@ export const routes: Routes = [
                 (m) => m.SomeVersionedBlotterPage,
             ),
     },
+    {
+        path: 'composite_pk',
+        loadComponent: () =>
+            import('@app/pages/composite-pk/composite-pk-blotter-page').then(
+                (m) => m.CompositePkBlotterPage,
+            ),
+    },
 ];

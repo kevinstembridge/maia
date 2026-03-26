@@ -78,13 +78,21 @@ class CrudTableComponentRenderer(
 
         crudTableDef.entityCrudApiDef.updateApiDef?.let { apiDef ->
 
+            val entityDef = crudTableDef.entityCrudApiDef.entityDef
+            val entityIdExpression = if (entityDef.hasCompositePrimaryKey) {
+                val parts = entityDef.primaryKeyFields.joinToString("/") { "\${dto.${it.classFieldName.value}}" }
+                "`$parts`"
+            } else {
+                "dto.id"
+            }
+
             blankLine()
             blankLine()
             appendLine("    onEdit(dto: ${crudTableDef.dtoHtmlTableDef.dtoUqcn}) {")
             blankLine()
             appendLine("        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {")
             appendLine("            width: '400px',")
-            appendLine("            data: dto.id")
+            appendLine("            data: $entityIdExpression")
             appendLine("        });")
             blankLine()
             appendLine("        dialogRef.afterClosed().subscribe(result => {")

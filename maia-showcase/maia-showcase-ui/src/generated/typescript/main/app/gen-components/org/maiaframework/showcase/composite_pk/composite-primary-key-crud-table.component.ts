@@ -46,7 +46,7 @@ export class CompositePrimaryKeyCrudTableComponent {
 
         const dialogRef = this.dialog.open(CompositePrimaryKeyEditDialogComponent, {
             width: '400px',
-            data: dto.id
+            data: `${dto.someString}/${dto.someInt}`
         });
 
         dialogRef.afterClosed().subscribe(result => {

@@ -15,6 +15,18 @@
                 <span>All Field Types</span>
             </button>
         }
+        @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/some_versioned">
+                <mat-icon>dialpad</mat-icon>
+                <span>Some Versioned</span>
+            </button>
+        }
+        @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/composite_pk">
+                <mat-icon>dialpad</mat-icon>
+                <span>Composite PK</span>
+            </button>
+        }
     </mat-menu>
 
     <span class="ml-2 text-xl font-medium md:ml-0">{{ title() }}</span>
