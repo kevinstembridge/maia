@@ -10,7 +10,11 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialo
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {MatTooltip} from '@angular/material/tooltip';
 import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/LifecycleState';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
+import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/auth/AuthoritySelectOptions';
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
@@ -30,8 +34,11 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatDialogTitle,
         MatFormFieldModule,
         MatInputModule,
+        MatOption,
         MatOptionModule,
         MatProgressSpinnerModule,
+        MatSelect,
+        MatTooltip,
         ReactiveFormsModule,
     ],
     selector: 'app-user-edit-dialog',
@@ -45,6 +52,9 @@ export class UserEditDialogComponent implements OnInit {
 
 
     loading = signal(true);
+
+
+    protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
 
 
     formGroup: FormGroup;

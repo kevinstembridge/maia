@@ -421,7 +421,15 @@ class AngularUiModuleGenerator(
 
     private fun renderAuthorityEnum() {
 
-        this.modelDef.authoritiesDef?.let { EnumTypescriptRenderer(it.enumDef).renderToDir(this.typescriptOutputDir) }
+        this.modelDef.authoritiesDef?.enumDef?.let {
+
+            EnumTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
+
+            if (it.withEnumSelectionOptions) {
+                EnumSelectionOptionsTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
+            }
+
+        }
 
     }
 

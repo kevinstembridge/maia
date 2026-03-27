@@ -9,6 +9,10 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {MatTooltip} from '@angular/material/tooltip';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
+import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/auth/AuthoritySelectOptions';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -27,7 +31,10 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatDialogTitle,
         MatFormFieldModule,
         MatInputModule,
+        MatOption,
         MatOptionModule,
+        MatSelect,
+        MatTooltip,
         ReactiveFormsModule,
     ],
     selector: 'app-user-create-dialog',
@@ -38,6 +45,9 @@ export class UserCreateDialogComponent implements OnInit {
 
 
     problemDetail = signal<ProblemDetail | null>(null);
+
+
+    protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
 
 
     formGroup: FormGroup;

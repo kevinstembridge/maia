@@ -60,8 +60,59 @@ class UsersBlotterPage(
     }
 
 
+    fun clickEditButtonForRow(displayName: String) {
+        page.waitForFunction(
+            "() => { const c = document.querySelector('.ag-cell[col-id=\"displayName\"]'); " +
+            "return c && c.innerText && c.innerText.trim().length > 0; }"
+        )
+        val rowIndex = page.evaluate(
+            """() => {
+                const rows = document.querySelectorAll('.ag-row:not(.ag-row-loading)');
+                for (const row of rows) {
+                    const cell = row.querySelector('.ag-cell[col-id="displayName"]');
+                    if (cell && cell.innerText.includes('$displayName')) {
+                        return row.getAttribute('row-index');
+                    }
+                }
+                return null;
+            }"""
+        ) as String?
+        requireNotNull(rowIndex) { "Could not find row for displayName: $displayName" }
+        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
+        val editCell = page.locator(".ag-row[row-index='$rowIndex'] .ag-cell[col-id='edit']")
+        editCell.waitFor()
+        editCell.scrollIntoViewIfNeeded()
+        editCell.click()
+        page.locator("mat-dialog-container").waitFor()
+    }
+
+
+    fun fillCreateForm(firstName: String, lastName: String, vararg authorities: String) {
+        authorities.forEach { selectAuthority(it) }
+        page.locator("input[name='firstName']").fill(firstName)
+        page.locator("input[name='lastName']").fill(lastName)
+        page.locator("input[name='lastName']").press("Tab")
+        Thread.sleep(1000)
+    }
+
+
+    fun assertDialogShowsError() {
+        page.locator("mat-dialog-container .alert").waitFor()
+    }
+
+
+    fun selectAuthority(authority: String) {
+        page.locator("mat-dialog-container mat-select[formcontrolname='authorities']").click()
+        page.locator("mat-option").filter(
+            Locator.FilterOptions().setHasText(authority)
+        ).click()
+        page.keyboard().press("Escape")
+    }
+
+
     fun fillEditForm(
-        firstName: String = "EditedFirst"
+        firstName: String = "EditedFirst",
+        additionalAuthorities: List<String> = emptyList(),
     ) {
         // Wait for the loading spinner to disappear and the form to be ready
         page.locator("mat-spinner").waitFor(
@@ -75,6 +126,7 @@ class UsersBlotterPage(
         page.locator("input[name='lastName']").fill(existingLastName)
         // Press Tab to blur lastName and trigger change event, ensuring Angular processes the value
         page.locator("input[name='lastName']").press("Tab")
+        additionalAuthorities.forEach { selectAuthority(it) }
         // Wait for async validators (debounced ~300ms)
         Thread.sleep(1000)
     }

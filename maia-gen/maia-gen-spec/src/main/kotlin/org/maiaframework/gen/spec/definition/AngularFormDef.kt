@@ -96,7 +96,7 @@ class AngularFormDef(
     val allTypeaheadDefs = this.requestDtoDef.classFieldDefs.mapNotNull { it.typeaheadDef }
 
 
-    val hasAnyMatSelectFields = htmlFormFields.any { it.isEnum }
+    val hasAnyMatSelectFields = htmlFormFields.any { it.isEnum || it.isEnumList }
 
 
     val hasAnyInstantFields = htmlFormFields.any { it.fieldType is InstantFieldType }
@@ -112,7 +112,9 @@ class AngularFormDef(
     val hasAnyValidationConstraints = this.formModelFields.any { it.hasAnyValidationConstraint() }
 
 
-    val enumsForMatSelectFields = htmlFormFields.filter { it.isEnum }.map { it.enumDef!! }
+    val enumsForMatSelectFields = htmlFormFields
+        .filter { it.isEnum || it.isEnumList }
+        .map { it.enumDef ?: it.enumListDef!! }
 
 
     val uniqueIndexDefs = multiFieldDatabaseIndexDefs.filter { it.isUnique }.filter { it.isNotIdAndVersionIndex }

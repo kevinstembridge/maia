@@ -5,36 +5,37 @@ package org.maiaframework.showcase.auth
 
 
 
-enum class Authority {
+enum class Authority(
+    val displayName: String
+) {
 
     /**
-     * Grants access to administer the system. This is only for internal employees.
-These functions would not normally be for day-to-day operations.
+     * Grants access to administer the system. This is only for internal employees. These functions would not normally be for day-to-day operations.
      */
-    SYS__ADMIN,
+    SYS__ADMIN("SYS__ADMIN"),
 
     /**
      * Grants access to system functions that are only available to internal employees.
      */
-    SYS__OPS,
+    SYS__OPS("SYS__OPS"),
 
     /**
      * Grants read access.
      */
-    READ,
+    READ("READ"),
 
     /**
      * Grants write access.
      */
-    WRITE,
+    WRITE("WRITE"),
 
-    SYS__DEVOPS,
+    SYS__DEVOPS("SYS__DEVOPS"),
 
-    SYS__DEVOPS_READONLY,
+    SYS__DEVOPS_READONLY("SYS__DEVOPS_READONLY"),
 
-    SYS__SYSTEM_USER_GROUPS_EDIT,
+    SYS__SYSTEM_USER_GROUPS_EDIT("SYS__SYSTEM_USER_GROUPS_EDIT"),
 
-    SYS__SYSTEM_USER_GROUPS_VIEW;
+    SYS__SYSTEM_USER_GROUPS_VIEW("SYS__SYSTEM_USER_GROUPS_VIEW");
 
 
     object Values {

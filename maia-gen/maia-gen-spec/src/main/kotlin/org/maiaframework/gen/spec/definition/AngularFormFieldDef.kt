@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition
 import org.maiaframework.gen.spec.definition.flags.TextCase
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
+import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.gen.spec.definition.validation.AbstractValidationConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotEmptyConstraintDef
@@ -27,6 +28,9 @@ class AngularFormFieldDef(
     val isEnum = classFieldDef.isEnum
 
 
+    val isEnumList = classFieldDef.isEnumList
+
+
     val isTypeahead = classFieldDef.typeaheadDef != null
 
 
@@ -38,6 +42,12 @@ class AngularFormFieldDef(
 
     val enumDef: EnumDef? = when (this.classFieldDef.fieldType) {
         is EnumFieldType -> this.classFieldDef.fieldType.enumDef
+        else -> null
+    }
+
+
+    val enumListDef: EnumDef? = when {
+        classFieldDef.isEnumList -> ((classFieldDef.fieldType as ListFieldType).parameterFieldType as EnumFieldType).enumDef
         else -> null
     }
 

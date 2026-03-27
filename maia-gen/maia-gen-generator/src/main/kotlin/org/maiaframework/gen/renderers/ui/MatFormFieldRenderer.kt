@@ -52,6 +52,10 @@ object MatFormFieldRenderer {
 
             renderReactiveFormFieldWithTypeahead(htmlFormField, r, indent)
 
+        } else if (htmlFormField.isEnumList) {
+
+            renderReactiveFormMultiSelectFieldForEnumList(htmlFormField, r, indent)
+
         } else if (htmlFormField.isEnum) {
 
             renderReactiveFormSelectFieldForEnum(htmlFormField, r, indent)
@@ -323,6 +327,34 @@ object MatFormFieldRenderer {
             r.appendLine("$indent        <mat-error>{{ formGroup.controls['$classFieldName'].errors.message }}</mat-error>")
             r.appendLine("$indent    }")
         }
+
+        r.appendLine("$indent</mat-form-field>")
+
+    }
+
+
+    private fun renderReactiveFormMultiSelectFieldForEnumList(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+
+        val label = htmlFormField.fieldLabel
+        val classFieldDef = htmlFormField.classFieldDef
+        val classFieldName = classFieldDef.classFieldName
+        val enumDef = htmlFormField.enumListDef!!
+
+        r.append("""
+            |$indent<mat-form-field appearance="outline">
+            |$indent    <mat-label>$label</mat-label>
+            |$indent    <mat-select formControlName="$classFieldName" multiple>
+            |$indent        @for ($classFieldName of ${enumDef.selectOptionsUqcn}; track $classFieldName.name) {
+            |$indent            <div [matTooltip]="$classFieldName.description" matTooltipShowDelay="1000">
+            |$indent                <mat-option [value]="$classFieldName.name">{{$classFieldName.displayName}}</mat-option>
+            |$indent            </div>
+            |$indent        }
+            |$indent    </mat-select>
+            |""".trimMargin())
 
         r.appendLine("$indent</mat-form-field>")
 

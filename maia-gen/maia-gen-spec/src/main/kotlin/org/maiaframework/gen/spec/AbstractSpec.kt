@@ -1123,7 +1123,10 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    class AuthoritiesBuilder(private val packageName: PackageName, private val className: String) {
+    class AuthoritiesBuilder(
+        private val packageName: PackageName,
+        private val className: String
+    ) {
 
 
         private val authorityDefs = mutableListOf<AuthorityDef>()
@@ -1143,7 +1146,7 @@ abstract class AbstractSpec protected constructor(
                 EnumValueDef(
                     name = it.name,
                     description = it.description,
-                    displayName = null,
+                    displayName = DisplayName(it.name),
                     isDefaultFormValue = false
                 )
             }
