@@ -16,7 +16,7 @@ These functions would not normally be for day-to-day operations.
     /**
      * Grants access to system functions that are only available to internal employees.
      */
-    SYS___OPS,
+    SYS__OPS,
 
     /**
      * Grants read access.
@@ -40,7 +40,7 @@ These functions would not normally be for day-to-day operations.
     object Values {
 
         const val SYS__ADMIN = "SYS__ADMIN"
-        const val SYS___OPS = "SYS___OPS"
+        const val SYS__OPS = "SYS__OPS"
         const val READ = "READ"
         const val WRITE = "WRITE"
         const val SYS__DEVOPS = "SYS__DEVOPS"

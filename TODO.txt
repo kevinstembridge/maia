@@ -2,11 +2,6 @@
 
 TODO * Test the Claude sandbox feature to run ralph-afk.sh
 TODO * Maia Showcase
-    TODO * Ag Grid table columns should get a header name that defaults to the fieldDisplayName of the underlying entity field if it has one.
-    TODO * Create a Playwright test for the AllFieldTypesEntity Create feature.
-        TODO * Authorization
-            TODO * Mark the CRUD APIs with appropriate security annotations.
-                => READ vs ADMIN
     TODO * Create a Playwright test for the AllFieldTypesEntity Edit feature.
         TODO * The Edit action column should not be visible to an unauthorized user.
     TODO * Test fetchForEdit with a versioned entity.

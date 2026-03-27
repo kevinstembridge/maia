@@ -10,16 +10,15 @@ import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.showcase.auth.Authority
 
 
-class UserDtoRowMapper : MaiaRowMapper<UserDto> {
+class UserTableDtoRowMapper : MaiaRowMapper<UserTableDto> {
 
 
-    override fun mapRow(rsa: ResultSetAdapter): UserDto {
+    override fun mapRow(rsa: ResultSetAdapter): UserTableDto {
 
-        return UserDto(
+        return UserTableDto(
             rsa.readListOfStrings("authorities") { Authority.valueOf(it) },
             rsa.readInstant("createdTimestampUtc"),
             rsa.readString("displayName"),
-            rsa.readString("encryptedPassword"),
             rsa.readStringOrNull("firstName") { FirstName(it) },
             rsa.readDomainId("id"),
             rsa.readString("lastName") { LastName(it) },

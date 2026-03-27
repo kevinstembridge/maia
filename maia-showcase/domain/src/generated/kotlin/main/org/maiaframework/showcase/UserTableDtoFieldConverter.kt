@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class UserDtoFieldConverter : SearchFieldConverter {
+class UserTableDtoFieldConverter : SearchFieldConverter {
 
 
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
@@ -19,8 +19,6 @@ class UserDtoFieldConverter : SearchFieldConverter {
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "display_name" -> // displayName
-                return inputValue
-            "encrypted_password" -> // encryptedPassword
                 return inputValue
             "first_name" -> // firstName
                 return inputValue

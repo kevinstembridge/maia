@@ -17,7 +17,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaultSchemaName = SchemaName("maia")) {
 
 
-    val opsAuthority = authority("SYS___OPS") {
+    val opsAuthority = authority("SYS__OPS") {
         description = "Grants access to system functions that are only available to internal employees."
     }
 
@@ -248,6 +248,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedDto = WithGeneratedDto.TRUE
     ) {
+        field("authorities", "authorities")
         field("encryptedPassword", "encryptedPassword")
         field("firstName", "firstName")
         field("lastName", "lastName")
@@ -267,6 +268,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         columnFromDto("displayName") { header("Display Name") }
         columnFromDto("firstName") { header("First Name") }
         columnFromDto("lastName") { header("Last Name") }
+        columnFromDto("authorities") { header("Authorities") }
         columnFromDto("createdTimestampUtc") { header("Created") }
         columnFromDto("id") { header("ID") }
         editActionColumn()

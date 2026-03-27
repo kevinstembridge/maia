@@ -12,23 +12,23 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class UserDtoDao(
+class UserTableDtoDao(
     private val jdbcOps: JdbcOps
 ) {
 
 
-    private val dtoRowMapper = UserDtoRowMapper()
+    private val dtoRowMapper = UserTableDtoRowMapper()
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            UserDtoMeta::fieldNameToColumnName,
-            UserDtoMeta::fieldNameToJdbcType
+            UserTableDtoMeta::fieldNameToColumnName,
+            UserTableDtoMeta::fieldNameToJdbcType
     )        
 
     private val typeDiscriminatorExpression = "type_discriminator = 'USR'"
 
 
-    fun search(searchModel: AgGridSearchModel): SearchResultPage<UserDto> {
+    fun search(searchModel: AgGridSearchModel): SearchResultPage<UserTableDto> {
 
         val sqlParams = SqlParams()
         val whereClause = this.searchModelConverter.buildWhereClauseFor(searchModel.filterModel, sqlParams, typeDiscriminatorExpression)
@@ -46,7 +46,6 @@ class UserDtoDao(
                 maia.v_party.authorities as authorities,
                 maia.v_party.created_timestamp_utc as createdTimestampUtc,
                 maia.v_party.display_name as displayName,
-                maia.v_party.encrypted_password as encryptedPassword,
                 maia.v_party.first_name as firstName,
                 maia.v_party.id as id,
                 maia.v_party.last_name as lastName,

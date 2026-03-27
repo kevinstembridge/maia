@@ -37,6 +37,7 @@ export class UserTableComponent {
         { field: 'displayName', headerName: 'Display Name', cellDataType: 'text', filter: true },
         { field: 'firstName', headerName: 'First Name', cellDataType: 'text', filter: true },
         { field: 'lastName', headerName: 'Last Name', cellDataType: 'text', filter: true },
+        { field: 'authorities', headerName: 'Authorities', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
         { field: 'createdTimestampUtc', headerName: 'Created', cellDataType: 'text', filter: true },
         { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         {

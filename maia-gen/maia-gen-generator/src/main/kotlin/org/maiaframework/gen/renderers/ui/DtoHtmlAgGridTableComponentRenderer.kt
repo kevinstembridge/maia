@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.DtoHtmlTableActionColumnDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableColumnDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
 import org.maiaframework.gen.spec.definition.SearchModelType
+import org.maiaframework.gen.spec.definition.lang.ListFieldType
 
 
 class DtoHtmlAgGridTableComponentRenderer(
@@ -278,6 +279,10 @@ class DtoHtmlAgGridTableComponentRenderer(
 
         if (fieldDef.isFilterable) {
             attributes["filter"] = true
+        }
+
+        if (fieldDef.fieldType is ListFieldType) {
+            attributes["valueFormatter"] = "(params) => params.value?.join(', ') ?? ''"
         }
 
         val keyValues = attributes.map { "${it.key}: ${it.value}" }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class UserDtoFieldNameConverter : SearchFieldNameConverter {
+class UserTableDtoFieldNameConverter : SearchFieldNameConverter {
 
 
     override fun convertFieldName(fieldName: String): String {
@@ -17,7 +17,6 @@ class UserDtoFieldNameConverter : SearchFieldNameConverter {
             "authorities" -> "authorities"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "displayName" -> "display_name"
-            "encryptedPassword" -> "encrypted_password"
             "firstName" -> "first_name"
             "id" -> "id"
             "lastName" -> "last_name"

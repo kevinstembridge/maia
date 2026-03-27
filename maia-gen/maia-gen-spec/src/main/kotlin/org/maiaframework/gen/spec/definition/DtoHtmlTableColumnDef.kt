@@ -81,7 +81,7 @@ class DtoHtmlTableColumnDef(
             is IntFieldType -> "number"
             is IntTypeFieldType -> "number"
             is IntValueClassFieldType -> "number"
-            is ListFieldType -> TODO("YAGNI?")
+            is ListFieldType -> "text"
             is LocalDateFieldType -> "date"
             is LongFieldType -> "number"
             is LongTypeFieldType -> "number"
@@ -118,7 +118,7 @@ class DtoHtmlTableColumnDef(
             is IntFieldType -> "equals"
             is IntTypeFieldType -> "equals"
             is IntValueClassFieldType -> "equals"
-            is ListFieldType -> TODO("YAGNI?")
+            is ListFieldType -> "equals"
             is LocalDateFieldType -> "equals"
             is LongFieldType -> "equals"
             is LongTypeFieldType -> "equals"
@@ -155,7 +155,7 @@ class DtoHtmlTableColumnDef(
             is IntFieldType -> AgGridCellDataType.number
             is IntTypeFieldType -> AgGridCellDataType.number
             is IntValueClassFieldType -> AgGridCellDataType.number
-            is ListFieldType -> TODO("YAGNI?")
+            is ListFieldType -> AgGridCellDataType.text
             is LocalDateFieldType -> AgGridCellDataType.dateString
             is LongFieldType -> AgGridCellDataType.number
             is LongTypeFieldType -> AgGridCellDataType.number

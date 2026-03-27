@@ -10,11 +10,10 @@ import org.maiaframework.showcase.auth.Authority
 import java.time.Instant
 
 
-data class UserDto(
+data class UserTableDto(
     val authorities: List<Authority>,
     val createdTimestampUtc: Instant,
     val displayName: String,
-    val encryptedPassword: String,
     val firstName: FirstName?,
     val id: DomainId,
     val lastName: LastName
