@@ -13,7 +13,7 @@ import java.util.UUID
 class CrudSecurityTest : AbstractBlackBoxTest() {
 
     private val emptyJson = "{}"
-    private val randomId = UUID.randomUUID().toString()
+    private val stubId = UUID.randomUUID().toString()
 
     // ─── Simple entity (requires SYS__ADMIN) ──────────────────────────────────
 
@@ -66,7 +66,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     @Test
     fun `simple delete - unauthenticated - is forbidden`() {
         assertThat(
-            mockMvc.delete().uri("/api/simple/$randomId")
+            mockMvc.delete().uri("/api/simple/$stubId")
                 .with(csrf())
                 .exchange()
         ).hasStatus(HttpStatus.FORBIDDEN)
@@ -75,7 +75,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     @Test
     fun `simple delete - wrong authority - is forbidden`() {
         assertThat(
-            mockMvc.delete().uri("/api/simple/$randomId")
+            mockMvc.delete().uri("/api/simple/$stubId")
                 .with(csrf())
                 .with(user("x").authorities(SimpleGrantedAuthority("READ")))
                 .exchange()
@@ -133,7 +133,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     @Test
     fun `all field types delete - unauthenticated - is forbidden`() {
         assertThat(
-            mockMvc.delete().uri("/api/all_field_types/$randomId")
+            mockMvc.delete().uri("/api/all_field_types/$stubId")
                 .with(csrf())
                 .exchange()
         ).hasStatus(HttpStatus.FORBIDDEN)
@@ -142,7 +142,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     @Test
     fun `all field types delete - wrong authority - is forbidden`() {
         assertThat(
-            mockMvc.delete().uri("/api/all_field_types/$randomId")
+            mockMvc.delete().uri("/api/all_field_types/$stubId")
                 .with(csrf())
                 .with(user("x").authorities(SimpleGrantedAuthority("READ")))
                 .exchange()
