@@ -31,14 +31,17 @@ class AllFieldTypesCreateRequestDto
     @param:NotNull 
     @param:JsonProperty("someBoolean", access = JsonProperty.Access.READ_WRITE) 
     private val someBoolean_raw: Boolean?,
+    @param:JsonProperty("someBooleanNullable", access = JsonProperty.Access.READ_WRITE) 
     val someBooleanNullable: Boolean?,
     @param:NotNull 
     @param:JsonProperty("someBooleanType", access = JsonProperty.Access.READ_WRITE) 
     private val someBooleanType_raw: Boolean?,
+    @param:JsonProperty("someBooleanTypeNullable", access = JsonProperty.Access.READ_WRITE) 
     someBooleanTypeNullable: Boolean?,
     @param:NotNull 
     @param:JsonProperty("someBooleanTypeProvided", access = JsonProperty.Access.READ_WRITE) 
     private val someBooleanTypeProvided_raw: Boolean?,
+    @param:JsonProperty("someBooleanTypeProvidedNullable", access = JsonProperty.Access.READ_WRITE) 
     someBooleanTypeProvidedNullable: Boolean?,
     @NotBlank 
     @Length(max = 100) 
@@ -47,6 +50,7 @@ class AllFieldTypesCreateRequestDto
     private val someEnum_raw: String?,
     @Length(max = 100) 
     @EnumConstraint(enumClass = org.maiaframework.showcase.enums.SomeEnum::class) 
+    @param:JsonProperty("someEnumNullable", access = JsonProperty.Access.READ_WRITE) 
     someEnumNullable: String?,
     @param:NotNull 
     @param:JsonProperty("someInstant", access = JsonProperty.Access.READ_WRITE) 
@@ -54,7 +58,9 @@ class AllFieldTypesCreateRequestDto
     @param:NotNull 
     @param:JsonProperty("someInstantModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someInstantModifiable_raw: Instant?,
+    @param:JsonProperty("someInstantModifiableNullable", access = JsonProperty.Access.READ_WRITE) 
     val someInstantModifiableNullable: Instant?,
+    @param:JsonProperty("someInstantNullable", access = JsonProperty.Access.READ_WRITE) 
     val someInstantNullable: Instant?,
     @param:NotNull 
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
@@ -62,14 +68,17 @@ class AllFieldTypesCreateRequestDto
     @param:NotNull 
     @param:JsonProperty("someIntModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someIntModifiable_raw: Int?,
+    @param:JsonProperty("someIntNullable", access = JsonProperty.Access.READ_WRITE) 
     val someIntNullable: Int?,
     @param:NotNull 
     @param:JsonProperty("someIntType", access = JsonProperty.Access.READ_WRITE) 
     private val someIntType_raw: Int?,
+    @param:JsonProperty("someIntTypeNullable", access = JsonProperty.Access.READ_WRITE) 
     someIntTypeNullable: Int?,
     @param:NotNull 
     @param:JsonProperty("someIntTypeProvided", access = JsonProperty.Access.READ_WRITE) 
     private val someIntTypeProvided_raw: Int?,
+    @param:JsonProperty("someIntTypeProvidedNullable", access = JsonProperty.Access.READ_WRITE) 
     someIntTypeProvidedNullable: Int?,
     @param:NotNull 
     @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 
@@ -77,22 +86,26 @@ class AllFieldTypesCreateRequestDto
     @param:NotNull 
     @param:JsonProperty("someLongType", access = JsonProperty.Access.READ_WRITE) 
     private val someLongType_raw: Long?,
+    @param:JsonProperty("someLongTypeNullable", access = JsonProperty.Access.READ_WRITE) 
     someLongTypeNullable: Long?,
     @param:NotNull 
     @param:JsonProperty("someLongTypeProvided", access = JsonProperty.Access.READ_WRITE) 
     private val someLongTypeProvided_raw: Long?,
+    @param:JsonProperty("someLongTypeProvidedNullable", access = JsonProperty.Access.READ_WRITE) 
     someLongTypeProvidedNullable: Long?,
     @param:NotBlank 
     @param:Length(max = 100) 
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val somePeriodModifiable_raw: Period?,
     @param:Length(max = 100) 
+    @param:JsonProperty("somePeriodNullable", access = JsonProperty.Access.READ_WRITE) 
     val somePeriodNullable: Period?,
     @param:NotBlank 
     @param:Length(max = 100) 
     @param:JsonProperty("someProvidedStringType", access = JsonProperty.Access.READ_WRITE) 
     private val someProvidedStringType_raw: String?,
     @param:Length(max = 100) 
+    @param:JsonProperty("someProvidedStringTypeNullable", access = JsonProperty.Access.READ_WRITE) 
     someProvidedStringTypeNullable: String?,
     @param:NotBlank 
     @param:Length(max = 100) 
@@ -103,12 +116,14 @@ class AllFieldTypesCreateRequestDto
     @param:JsonProperty("someStringModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someStringModifiable_raw: String?,
     @param:Length(max = 100) 
+    @param:JsonProperty("someStringNullable", access = JsonProperty.Access.READ_WRITE) 
     val someStringNullable: String?,
     @param:NotBlank 
     @param:Length(max = 100) 
     @param:JsonProperty("someStringType", access = JsonProperty.Access.READ_WRITE) 
     private val someStringType_raw: String?,
     @param:Length(max = 100) 
+    @param:JsonProperty("someStringTypeNullable", access = JsonProperty.Access.READ_WRITE) 
     someStringTypeNullable: String?
 ) {
 

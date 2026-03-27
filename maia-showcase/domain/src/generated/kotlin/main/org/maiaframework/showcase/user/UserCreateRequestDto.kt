@@ -26,6 +26,7 @@ class UserCreateRequestDto
     @param:JsonProperty("encryptedPassword", access = JsonProperty.Access.READ_WRITE) 
     private val encryptedPassword_raw: String?,
     @param:Length(max = 100) 
+    @param:JsonProperty("firstName", access = JsonProperty.Access.READ_WRITE) 
     firstName: String?,
     @param:NotBlank 
     @param:Length(max = 100) 
