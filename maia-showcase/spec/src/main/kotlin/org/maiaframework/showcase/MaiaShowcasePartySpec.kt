@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
+import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
@@ -259,11 +260,15 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userDtoHtmlTableDef = dtoHtmlTable(
         userSearchableDtoDef,
         withAddButton = true,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
     ) {
-        columnFromDto("displayName")
-        columnFromDto("firstName")
-        columnFromDto("lastName")
-        columnFromDto("createdTimestampUtc")
+        columnFromDto("displayName") { header("Display Name") }
+        columnFromDto("firstName") { header("First Name") }
+        columnFromDto("lastName") { header("Last Name") }
+        columnFromDto("createdTimestampUtc") { header("Created") }
+        columnFromDto("id") { header("ID") }
         editActionColumn()
     }
 

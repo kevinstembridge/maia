@@ -43,4 +43,11 @@ export const routes: Routes = [
                 (m) => m.CompositePkBlotterPage,
             ),
     },
+    {
+        path: 'users',
+        loadComponent: () =>
+            import('@app/pages/users-blotter/users-blotter-page').then(
+                (m) => m.UsersBlotterPage,
+            ),
+    },
 ];
