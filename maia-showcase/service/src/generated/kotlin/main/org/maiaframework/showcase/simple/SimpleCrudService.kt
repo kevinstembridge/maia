@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -22,6 +23,7 @@ class SimpleCrudService(
     private val logger = LoggerFactory.getLogger(SimpleCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(createDto: SimpleCreateRequestDto): SimpleEntity {
 
         logger.info("BEGIN: create Simple. dto=$createDto")
@@ -71,6 +73,7 @@ class SimpleCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(editDto: SimpleUpdateRequestDto) {
 
         val id = editDto.id
@@ -83,6 +86,7 @@ class SimpleCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateSomeString(editDto: SimpleUpdate_someStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -107,6 +111,7 @@ class SimpleCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun delete(id: DomainId) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

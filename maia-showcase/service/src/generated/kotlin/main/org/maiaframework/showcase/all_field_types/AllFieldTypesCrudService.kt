@@ -17,6 +17,7 @@ import org.maiaframework.showcase.types.SomeStringType
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.time.LocalDate
@@ -34,6 +35,7 @@ class AllFieldTypesCrudService(
     private val logger = LoggerFactory.getLogger(AllFieldTypesCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: AllFieldTypesCreateRequestDto): AllFieldTypesEntity {
 
         val currentUser = CurrentUserHolder.currentUser
@@ -190,6 +192,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: AllFieldTypesUpdateRequestDto) {
 
         val id = editDto.id
@@ -210,6 +213,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInstantModifiable(editDto: AllFieldTypesUpdate_someInstantModifiableRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -228,6 +232,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInstantModifiableNullable(editDto: AllFieldTypesUpdate_someInstantModifiableNullableRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -246,6 +251,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeIntModifiable(editDto: AllFieldTypesUpdate_someIntModifiableRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -264,6 +270,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeIntNullable(editDto: AllFieldTypesUpdate_someIntNullableRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -282,6 +289,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeLocalDateModifiable(editDto: AllFieldTypesUpdate_someLocalDateModifiableRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -300,6 +308,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomePeriodModifiable(editDto: AllFieldTypesUpdate_somePeriodModifiableRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -318,6 +327,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeStringModifiable(editDto: AllFieldTypesUpdate_someStringModifiableRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -345,6 +355,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

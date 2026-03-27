@@ -12,6 +12,7 @@ import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -29,6 +30,7 @@ class UserCrudService(
     private val logger = LoggerFactory.getLogger(UserCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(createDto: UserCreateRequestDto): UserEntity {
 
         val currentUser = CurrentUserHolder.currentUser
@@ -94,6 +96,7 @@ class UserCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(editDto: UserUpdateRequestDto) {
 
         val id = editDto.id
@@ -111,6 +114,7 @@ class UserCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateAuthorities(editDto: UserUpdate_authoritiesRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -130,6 +134,7 @@ class UserCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateFirstName(editDto: UserUpdate_firstNameRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -149,6 +154,7 @@ class UserCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateLastName(editDto: UserUpdate_lastNameRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername

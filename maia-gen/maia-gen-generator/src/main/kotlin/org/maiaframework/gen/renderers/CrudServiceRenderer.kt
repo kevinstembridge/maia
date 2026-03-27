@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.definition.Authority
 import org.maiaframework.gen.spec.definition.DatabaseIndexDef
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
@@ -119,6 +120,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
+        appendPreAuthorize(createApiDef.crudApiDef.authority)
         appendLine("    fun create(createDto: ${createApiDef.requestDtoDef.uqcn}): ${this.entityDef.entityUqcn} {")
 
         if (this.entityDef.hasCreatedByIdField || this.entityDef.hasCreatedByField) {
@@ -375,6 +377,7 @@ class CrudServiceRenderer(
 
             blankLine()
             blankLine()
+            appendPreAuthorize(apiDef.crudApiDef.authority)
             appendLine("    fun update(editDto: ${dtoDef.uqcn}) {")
             blankLine()
 
@@ -442,6 +445,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
+        appendPreAuthorize(this.entityDef.entityCrudApiDef?.updateApiDef?.crudApiDef?.authority)
         appendLine("    fun update${fieldName.firstToUpper()}(editDto: $dtoUqcn) {")
         blankLine()
         appendLine("        val currentUsername = CurrentUserHolder.currentUsername")
@@ -530,6 +534,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
+        appendPreAuthorize(this.entityDef.entityCrudApiDef?.deleteApiDef?.crudApiDef?.authority)
         appendLine("    fun delete($primaryKeyFieldNamesAndTypesCsv) {")
 
         val referencingEntities = this.modelDef.entitiesThatReference(this.entityDef)
@@ -567,6 +572,14 @@ class CrudServiceRenderer(
         blankLine()
         appendLine("    }")
 
+    }
+
+
+    private fun appendPreAuthorize(authority: Authority?) {
+        authority?.let {
+            addImportFor(Fqcns.SPRING_SECURITY_PRE_AUTHORIZE)
+            appendLine("    @PreAuthorize(\"hasAuthority('$it')\")")
+        }
     }
 
 

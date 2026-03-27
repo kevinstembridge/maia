@@ -6,6 +6,7 @@ package org.maiaframework.showcase.composite_pk
 import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -21,6 +22,7 @@ class CompositePrimaryKeyCrudService(
     private val logger = LoggerFactory.getLogger(CompositePrimaryKeyCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: CompositePrimaryKeyCreateRequestDto): CompositePrimaryKeyEntity {
 
         logger.info("BEGIN: create CompositePrimaryKey. dto=$createDto")
@@ -67,6 +69,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: CompositePrimaryKeyUpdateRequestDto) {
 
         val someString = editDto.someString
@@ -82,6 +85,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeModifiableString(editDto: CompositePrimaryKeyUpdate_someModifiableStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -108,6 +112,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(primaryKey: CompositePrimaryKeyEntityPk) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(primaryKey)

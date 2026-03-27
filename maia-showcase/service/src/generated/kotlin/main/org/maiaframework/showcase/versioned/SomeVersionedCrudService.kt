@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -22,6 +23,7 @@ class SomeVersionedCrudService(
     private val logger = LoggerFactory.getLogger(SomeVersionedCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: SomeVersionedCreateRequestDto): SomeVersionedEntity {
 
         logger.info("BEGIN: create SomeVersioned. dto=$createDto")
@@ -68,6 +70,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: SomeVersionedUpdateRequestDto) {
 
         val id = editDto.id
@@ -82,6 +85,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: SomeVersionedUpdate_someStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -99,6 +103,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: SomeVersionedUpdate_someIntRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -125,6 +130,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
