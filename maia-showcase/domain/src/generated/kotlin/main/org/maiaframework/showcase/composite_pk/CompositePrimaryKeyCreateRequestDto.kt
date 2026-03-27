@@ -15,15 +15,15 @@ import org.hibernate.validator.constraints.Length
 @JsonIgnoreProperties(ignoreUnknown = true)
 class CompositePrimaryKeyCreateRequestDto
 @JsonCreator constructor(
-    @param:NotNull 
+    @field:NotNull 
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
     private val someInt_raw: Int?,
-    @param:NotBlank 
-    @param:Length(max = 100) 
+    @field:NotBlank 
+    @field:Length(max = 100) 
     @param:JsonProperty("someModifiableString", access = JsonProperty.Access.READ_WRITE) 
     private val someModifiableString_raw: String?,
-    @param:NotBlank 
-    @param:Length(max = 100) 
+    @field:NotBlank 
+    @field:Length(max = 100) 
     @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
     private val someString_raw: String?
 ) {

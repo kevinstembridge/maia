@@ -14,11 +14,11 @@ import jakarta.validation.constraints.NotBlank
 @JsonIgnoreProperties(ignoreUnknown = true)
 class LoginRequestDto
 @JsonCreator constructor(
-    @param:Email 
-    @param:NotBlank 
+    @field:Email 
+    @field:NotBlank 
     @param:JsonProperty("emailAddress", access = JsonProperty.Access.READ_WRITE) 
     private val emailAddress_raw: String?,
-    @param:NotBlank 
+    @field:NotBlank 
     @param:JsonProperty("password", access = JsonProperty.Access.READ_WRITE) 
     private val password_raw: String?
 ) {

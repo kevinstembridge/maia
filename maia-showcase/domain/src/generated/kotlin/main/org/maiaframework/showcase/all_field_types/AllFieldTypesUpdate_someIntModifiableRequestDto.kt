@@ -17,7 +17,7 @@ class AllFieldTypesUpdate_someIntModifiableRequestDto
     @NotNull 
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @param:NotNull 
+    @field:NotNull 
     @param:JsonProperty("someIntModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someIntModifiable_raw: Int?
 ) {

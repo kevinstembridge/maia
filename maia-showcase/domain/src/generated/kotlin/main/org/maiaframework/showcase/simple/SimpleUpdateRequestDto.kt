@@ -19,8 +19,8 @@ class SimpleUpdateRequestDto
     @NotNull 
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @param:NotBlank 
-    @param:Length(min = 3, max = 100) 
+    @field:NotBlank 
+    @field:Length(min = 3, max = 100) 
     @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
     private val someString_raw: String?
 ) {

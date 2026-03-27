@@ -19,11 +19,11 @@ class SomeVersionedUpdate_someStringRequestDto
     @NotNull 
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @param:NotBlank 
-    @param:Length(max = 100) 
+    @field:NotBlank 
+    @field:Length(max = 100) 
     @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
     private val someString_raw: String?,
-    @param:NotNull 
+    @field:NotNull 
     @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
     private val version_raw: Long?
 ) {

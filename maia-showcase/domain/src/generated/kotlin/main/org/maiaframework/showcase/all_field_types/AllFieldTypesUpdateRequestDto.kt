@@ -22,25 +22,25 @@ class AllFieldTypesUpdateRequestDto
     @NotNull 
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @param:NotNull 
+    @field:NotNull 
     @param:JsonProperty("someInstantModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someInstantModifiable_raw: Instant?,
     @param:JsonProperty("someInstantModifiableNullable", access = JsonProperty.Access.READ_WRITE) 
     val someInstantModifiableNullable: Instant?,
-    @param:NotNull 
+    @field:NotNull 
     @param:JsonProperty("someIntModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someIntModifiable_raw: Int?,
     @param:JsonProperty("someIntNullable", access = JsonProperty.Access.READ_WRITE) 
     val someIntNullable: Int?,
-    @param:NotNull 
+    @field:NotNull 
     @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someLocalDateModifiable_raw: LocalDate?,
-    @param:NotBlank 
-    @param:Length(max = 100) 
+    @field:NotBlank 
+    @field:Length(max = 100) 
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val somePeriodModifiable_raw: Period?,
-    @param:NotBlank 
-    @param:Length(max = 100) 
+    @field:NotBlank 
+    @field:Length(max = 100) 
     @param:JsonProperty("someStringModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someStringModifiable_raw: String?
 ) {

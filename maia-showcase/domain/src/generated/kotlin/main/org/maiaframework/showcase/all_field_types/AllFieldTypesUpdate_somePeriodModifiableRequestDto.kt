@@ -20,8 +20,8 @@ class AllFieldTypesUpdate_somePeriodModifiableRequestDto
     @NotNull 
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @param:NotBlank 
-    @param:Length(max = 100) 
+    @field:NotBlank 
+    @field:Length(max = 100) 
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val somePeriodModifiable_raw: Period?
 ) {

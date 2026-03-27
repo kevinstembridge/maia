@@ -14,7 +14,7 @@ import org.maiaframework.showcase.types.SomeIntType
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesSomeIntTypeRequestDto
 @JsonCreator constructor(
-    @param:NotNull 
+    @field:NotNull 
     @param:JsonProperty("someIntType", access = JsonProperty.Access.READ_WRITE) 
     private val someIntType_raw: Int?
 ) {

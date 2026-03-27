@@ -19,18 +19,37 @@ class UsersBlotterPage(
 
 
     fun clickAddButton() {
-        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Add")).click()
+
+        `click the button named`("Add")
         page.locator("mat-dialog-container").waitFor()
+
     }
 
 
     fun clickSubmitButton() {
-        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Submit")).click()
+
+        `click the button named`("Submit")
+
     }
 
 
     fun clickCancelButton() {
-        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Cancel")).click()
+
+        `click the button named`("Cancel")
+
+    }
+
+    private fun `click the button named`(buttonName: String) {
+
+        `get the button named`(buttonName).click()
+
+    }
+
+    private fun `get the button named`(buttonName: String): Locator {
+
+        return page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName(buttonName))
+            ?: throw RuntimeException("Could not find button named '$buttonName'")
+
     }
 
 
@@ -40,31 +59,38 @@ class UsersBlotterPage(
 
 
     fun assertEditDialogClosed() {
+
         page.locator("mat-dialog-container").waitFor(
             Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
         )
+
     }
 
 
     fun clickEditButtonForFirstRow() {
+
         page.waitForFunction(
             "() => { const c = document.querySelector('.ag-cell[col-id=\"displayName\"]'); " +
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
+
         page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
         val editCell = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first()
         editCell.waitFor()
         editCell.scrollIntoViewIfNeeded()
         editCell.click()
         page.locator("mat-dialog-container").waitFor()
+
     }
 
 
     fun clickEditButtonForRow(displayName: String) {
+
         page.waitForFunction(
             "() => { const c = document.querySelector('.ag-cell[col-id=\"displayName\"]'); " +
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
+
         val rowIndex = page.evaluate(
             """() => {
                 const rows = document.querySelectorAll('.ag-row:not(.ag-row-loading)');
@@ -77,6 +103,7 @@ class UsersBlotterPage(
                 return null;
             }"""
         ) as String?
+
         requireNotNull(rowIndex) { "Could not find row for displayName: $displayName" }
         page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
         val editCell = page.locator(".ag-row[row-index='$rowIndex'] .ag-cell[col-id='edit']")
@@ -84,29 +111,39 @@ class UsersBlotterPage(
         editCell.scrollIntoViewIfNeeded()
         editCell.click()
         page.locator("mat-dialog-container").waitFor()
+
     }
 
 
-    fun fillCreateForm(firstName: String, lastName: String, vararg authorities: String) {
+    fun fillCreateForm(
+        firstName: String,
+        lastName: String,
+        vararg authorities: String
+    ) {
+
         authorities.forEach { selectAuthority(it) }
         page.locator("input[name='firstName']").fill(firstName)
         page.locator("input[name='lastName']").fill(lastName)
         page.locator("input[name='lastName']").press("Tab")
+        page.mouse().move(0.0, 0.0)
         Thread.sleep(1000)
+
     }
 
 
     fun assertDialogShowsError() {
+
         page.locator("mat-dialog-container .alert").waitFor()
+
     }
 
 
     fun selectAuthority(authority: String) {
+
         page.locator("mat-dialog-container mat-select[formcontrolname='authorities']").click()
-        page.locator("mat-option").filter(
-            Locator.FilterOptions().setHasText(authority)
-        ).click()
+        page.locator("mat-option").filter(Locator.FilterOptions().setHasText(authority)).click()
         page.keyboard().press("Escape")
+
     }
 
 
@@ -128,6 +165,7 @@ class UsersBlotterPage(
         page.locator("input[name='lastName']").press("Tab")
         additionalAuthorities.forEach { selectAuthority(it) }
         // Wait for async validators (debounced ~300ms)
+        page.mouse().move(0.0, 0.0)
         Thread.sleep(1000)
     }
 

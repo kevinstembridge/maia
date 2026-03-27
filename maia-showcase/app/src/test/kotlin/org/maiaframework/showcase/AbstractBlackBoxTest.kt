@@ -5,7 +5,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
 import org.maiaframework.domain.LifecycleState
-import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.JdbcOps
@@ -126,7 +125,7 @@ abstract class AbstractBlackBoxTest {
         requestBody: String,
     ): MvcTestResultAssert {
 
-        val csrfCookie = fetchCsrfCookie()
+        val csrfCookie = `fetch CSRF cookie`()
 
         return assertThat(
             mockMvc.post().uri(path)
@@ -141,7 +140,7 @@ abstract class AbstractBlackBoxTest {
     }
 
 
-    protected fun fetchCsrfCookie(): Cookie {
+    protected fun `fetch CSRF cookie`(): Cookie {
 
         val result = mockMvc.get().uri("/csrf").exchange()
         return result.response.cookies.first { it.name == "XSRF-TOKEN" }

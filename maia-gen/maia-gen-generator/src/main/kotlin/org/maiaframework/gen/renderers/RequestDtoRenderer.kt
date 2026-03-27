@@ -78,7 +78,7 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
             ) {
                 null
             } else {
-                AnnotationUsageSite.param
+                AnnotationUsageSite.field
             }
 
             constructorArg.annotationDefs.forEach { appendLine("    ${it.toStringInKotlin(usageSite)} ") }

@@ -14,7 +14,7 @@ import org.maiaframework.showcase.types.SomeStringType
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesSomeStringTypeRequestDto
 @JsonCreator constructor(
-    @param:NotBlank 
+    @field:NotBlank 
     @param:JsonProperty("someStringType", access = JsonProperty.Access.READ_WRITE) 
     private val someStringType_raw: String?
 ) {
