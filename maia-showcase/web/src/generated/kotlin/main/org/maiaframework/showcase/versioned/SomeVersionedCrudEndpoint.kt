@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -25,6 +26,7 @@ class SomeVersionedCrudEndpoint(
 
     @PostMapping("/api/some_versioned/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: SomeVersionedCreateRequestDto) {
 
         this.crudService.create(createDto)
@@ -41,6 +43,7 @@ class SomeVersionedCrudEndpoint(
 
 
     @PutMapping("/api/some_versioned/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: SomeVersionedUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -49,6 +52,7 @@ class SomeVersionedCrudEndpoint(
 
 
     @PutMapping("/api/some_versioned/inline/some_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(@RequestBody @Valid editDto: SomeVersionedUpdate_someStringRequestDto) {
 
         this.crudService.updateSomeString(editDto)
@@ -57,6 +61,7 @@ class SomeVersionedCrudEndpoint(
 
 
     @PutMapping("/api/some_versioned/inline/some_int", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(@RequestBody @Valid editDto: SomeVersionedUpdate_someIntRequestDto) {
 
         this.crudService.updateSomeInt(editDto)
@@ -65,6 +70,7 @@ class SomeVersionedCrudEndpoint(
 
 
     @DeleteMapping("/api/some_versioned/{id}")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

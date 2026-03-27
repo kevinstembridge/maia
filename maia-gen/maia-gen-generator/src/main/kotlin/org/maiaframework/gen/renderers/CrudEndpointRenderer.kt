@@ -64,8 +64,8 @@ class CrudEndpointRenderer(
         blankLine()
         blankLine()
         appendLine("    @PostMapping(\"${createApiDef.endpointUrl}\")")
-        appendPreAuthorize(createApiDef.crudApiDef)
         appendLine("    @ResponseStatus(HttpStatus.CREATED)")
+        appendPreAuthorize(createApiDef.crudApiDef)
         appendLine("    fun create(@RequestBody @Valid createDto: $createDtoUqcn) {")
         blankLine()
         appendLine("        this.crudService.create(createDto)")
@@ -195,13 +195,13 @@ class CrudEndpointRenderer(
     private fun `render inline endpoints`() {
 
         this.entityCrudApiDef.updateApiDef?.let { apiDef ->
-            apiDef.inlineEditDtoDefs.forEach { renderInlineEndpoint(it) }
+            apiDef.inlineEditDtoDefs.forEach { `render inline endpoint`(it, apiDef.crudApiDef) }
         }
 
     }
 
 
-    private fun renderInlineEndpoint(dtoDef: InlineEditDtoDef) {
+    private fun `render inline endpoint`(dtoDef: InlineEditDtoDef, crudApiDef: CrudApiDef) {
 
         addImportFor(Fqcns.JAKARTA_VALIDATION_VALID)
         addImportFor(Fqcns.SPRING_MEDIA_TYPE)
@@ -214,6 +214,7 @@ class CrudEndpointRenderer(
         blankLine()
         blankLine()
         appendLine("    @PutMapping(\"/api/${this.entityDef.entityBaseName.toSnakeCase()}/inline/${fieldName.toSnakeCase()}\", produces = [MediaType.APPLICATION_JSON_VALUE])")
+        appendPreAuthorize(crudApiDef)
         appendLine("    fun update${fieldName.firstToUpper()}(@RequestBody @Valid editDto: $dtoUqcn) {")
         blankLine()
         appendLine("        this.crudService.update${fieldName.firstToUpper()}(editDto)")
@@ -285,11 +286,10 @@ class CrudEndpointRenderer(
 
     private fun appendPreAuthorize(crudApiDef: CrudApiDef) {
 
-        // TODO find out if we can do this in Spring Boot 3
-//        crudApiDef.authority?.let { authority ->
-//            addImportFor(Fqcns.SPRING_SECURITY_PRE_AUTHORIZE)
-//            appendLine("    @PreAuthorize(\"hasAuthority('$authority')\")")
-//        }
+        crudApiDef.authority?.let { authority ->
+            addImportFor(Fqcns.SPRING_SECURITY_PRE_AUTHORIZE)
+            appendLine("    @PreAuthorize(\"hasAuthority('$authority')\")")
+        }
 
     }
 

@@ -8,6 +8,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.webapp.domain.FormValidationResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -26,6 +27,7 @@ class AllFieldTypesCrudEndpoint(
 
     @PostMapping("/api/all_field_types/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: AllFieldTypesCreateRequestDto) {
 
         this.crudService.create(createDto)
@@ -132,6 +134,7 @@ class AllFieldTypesCrudEndpoint(
 
 
     @PutMapping("/api/all_field_types/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: AllFieldTypesUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -140,6 +143,7 @@ class AllFieldTypesCrudEndpoint(
 
 
     @PutMapping("/api/all_field_types/inline/some_instant_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInstantModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someInstantModifiableRequestDto) {
 
         this.crudService.updateSomeInstantModifiable(editDto)
@@ -148,6 +152,7 @@ class AllFieldTypesCrudEndpoint(
 
 
     @PutMapping("/api/all_field_types/inline/some_instant_modifiable_nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInstantModifiableNullable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someInstantModifiableNullableRequestDto) {
 
         this.crudService.updateSomeInstantModifiableNullable(editDto)
@@ -156,6 +161,7 @@ class AllFieldTypesCrudEndpoint(
 
 
     @PutMapping("/api/all_field_types/inline/some_int_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeIntModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someIntModifiableRequestDto) {
 
         this.crudService.updateSomeIntModifiable(editDto)
@@ -164,6 +170,7 @@ class AllFieldTypesCrudEndpoint(
 
 
     @PutMapping("/api/all_field_types/inline/some_int_nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeIntNullable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someIntNullableRequestDto) {
 
         this.crudService.updateSomeIntNullable(editDto)
@@ -172,6 +179,7 @@ class AllFieldTypesCrudEndpoint(
 
 
     @PutMapping("/api/all_field_types/inline/some_local_date_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeLocalDateModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someLocalDateModifiableRequestDto) {
 
         this.crudService.updateSomeLocalDateModifiable(editDto)
@@ -180,6 +188,7 @@ class AllFieldTypesCrudEndpoint(
 
 
     @PutMapping("/api/all_field_types/inline/some_period_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomePeriodModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_somePeriodModifiableRequestDto) {
 
         this.crudService.updateSomePeriodModifiable(editDto)
@@ -188,6 +197,7 @@ class AllFieldTypesCrudEndpoint(
 
 
     @PutMapping("/api/all_field_types/inline/some_string_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeStringModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someStringModifiableRequestDto) {
 
         this.crudService.updateSomeStringModifiable(editDto)
@@ -196,6 +206,7 @@ class AllFieldTypesCrudEndpoint(
 
 
     @DeleteMapping("/api/all_field_types/{id}")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

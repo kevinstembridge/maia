@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -24,6 +25,7 @@ class UserCrudEndpoint(
 
     @PostMapping("/api/user/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(@RequestBody @Valid createDto: UserCreateRequestDto) {
 
         this.crudService.create(createDto)
@@ -40,6 +42,7 @@ class UserCrudEndpoint(
 
 
     @PutMapping("/api/user/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(@RequestBody @Valid editDto: UserUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -48,6 +51,7 @@ class UserCrudEndpoint(
 
 
     @PutMapping("/api/user/inline/authorities", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateAuthorities(@RequestBody @Valid editDto: UserUpdate_authoritiesRequestDto) {
 
         this.crudService.updateAuthorities(editDto)
@@ -56,6 +60,7 @@ class UserCrudEndpoint(
 
 
     @PutMapping("/api/user/inline/first_name", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateFirstName(@RequestBody @Valid editDto: UserUpdate_firstNameRequestDto) {
 
         this.crudService.updateFirstName(editDto)
@@ -64,6 +69,7 @@ class UserCrudEndpoint(
 
 
     @PutMapping("/api/user/inline/last_name", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateLastName(@RequestBody @Valid editDto: UserUpdate_lastNameRequestDto) {
 
         this.crudService.updateLastName(editDto)

@@ -6,6 +6,7 @@ package org.maiaframework.showcase.composite_pk
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -22,6 +23,7 @@ class CompositePrimaryKeyCrudEndpoint(
 
     @PostMapping("/api/composite_primary_key/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: CompositePrimaryKeyCreateRequestDto) {
 
         this.crudService.create(createDto)
@@ -38,6 +40,7 @@ class CompositePrimaryKeyCrudEndpoint(
 
 
     @PutMapping("/api/composite_primary_key/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: CompositePrimaryKeyUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -46,6 +49,7 @@ class CompositePrimaryKeyCrudEndpoint(
 
 
     @PutMapping("/api/composite_primary_key/inline/some_modifiable_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeModifiableString(@RequestBody @Valid editDto: CompositePrimaryKeyUpdate_someModifiableStringRequestDto) {
 
         this.crudService.updateSomeModifiableString(editDto)
@@ -54,6 +58,7 @@ class CompositePrimaryKeyCrudEndpoint(
 
 
     @DeleteMapping("/api/composite_primary_key")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun deleteByPrimaryKey(@RequestBody pk: CompositePrimaryKeyEntityPk) {
 
         this.crudService.delete(pk)

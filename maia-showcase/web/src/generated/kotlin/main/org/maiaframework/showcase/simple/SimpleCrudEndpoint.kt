@@ -8,6 +8,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.webapp.domain.FormValidationResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -26,6 +27,7 @@ class SimpleCrudEndpoint(
 
     @PostMapping("/api/simple/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(@RequestBody @Valid createDto: SimpleCreateRequestDto) {
 
         this.crudService.create(createDto)
@@ -60,6 +62,7 @@ class SimpleCrudEndpoint(
 
 
     @PutMapping("/api/simple/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(@RequestBody @Valid editDto: SimpleUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -68,6 +71,7 @@ class SimpleCrudEndpoint(
 
 
     @PutMapping("/api/simple/inline/some_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateSomeString(@RequestBody @Valid editDto: SimpleUpdate_someStringRequestDto) {
 
         this.crudService.updateSomeString(editDto)
@@ -76,6 +80,7 @@ class SimpleCrudEndpoint(
 
 
     @DeleteMapping("/api/simple/{id}")
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)
