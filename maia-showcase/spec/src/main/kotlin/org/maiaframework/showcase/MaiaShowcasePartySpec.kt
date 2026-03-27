@@ -256,6 +256,21 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
+    val userDtoHtmlTableDef = dtoHtmlTable(
+        userSearchableDtoDef,
+        withAddButton = true,
+    ) {
+        columnFromDto("displayName")
+        columnFromDto("firstName")
+        columnFromDto("lastName")
+        columnFromDto("createdTimestampUtc")
+        editActionColumn()
+    }
+
+
+    val userCrudDef = crudTableDef(userDtoHtmlTableDef, userEntityDef.entityCrudApiDef!!)
+
+
     val userGroupEntityDef = entity(
         "org.maiaframework.showcase.user",
         "UserGroup",
