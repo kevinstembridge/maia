@@ -36,25 +36,31 @@ class UsersCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Test
-    fun `users blotter journey`() {
+    fun `users crud journey`() {
 
         `log in user`(sysAdminUser)
         `navigate to the`(usersBlotterPage)
 
-        // Table loads and displays data
-        usersBlotterPage.assertTableContainsValue(sysAdminUser.displayName)
+        usersBlotterPage.apply {
 
-        // Add dialog opens and can be cancelled
-        usersBlotterPage.clickAddButton()
-        usersBlotterPage.clickCancelButton()
-        usersBlotterPage.assertCreateDialogClosed()
 
-        // Edit flow: open dialog, change firstName, submit
-        usersBlotterPage.clickEditButtonForFirstRow()
-        usersBlotterPage.fillEditForm(firstName = "EditedFirst")
-        usersBlotterPage.clickSubmitButton()
-        usersBlotterPage.assertEditDialogClosed()
-        usersBlotterPage.assertTableContainsValue("EditedFirst")
+            // Table loads and displays data
+            assertTableContainsValue(sysAdminUser.displayName)
+            assertTableContainsValue(Authority.SYS__ADMIN.name)
+
+            // Add dialog opens and can be cancelled
+            clickAddButton()
+            clickCancelButton()
+            assertCreateDialogClosed()
+
+            // Edit flow: open dialog, change firstName, submit
+            clickEditButtonForFirstRow()
+            fillEditForm(firstName = "EditedFirst")
+            clickSubmitButton()
+            assertEditDialogClosed()
+            assertTableContainsValue("EditedFirst")
+
+        }
 
     }
 
