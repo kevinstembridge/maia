@@ -34,7 +34,7 @@ export class CompositePrimaryKeyDeleteDialogComponent {
 
 
     onYes() {
-        this.crudService.delete(this.dto.someString + '/' + this.dto.someInt).subscribe({
+        this.crudService.delete({someString: this.dto.someString, someInt: this.dto.someInt}).subscribe({
             next: (_) => {
                 this.dialogRef.close(true);
             },

@@ -55,7 +55,7 @@ export class CompositePrimaryKeyEditDialogComponent implements OnInit {
     private readonly formService = inject(CompositePrimaryKeyCrudService);
 
 
-    private readonly entityId = inject<string>(MAT_DIALOG_DATA);
+    private readonly entityId = inject<{someString: string, someInt: number}>(MAT_DIALOG_DATA);
 
 
     constructor() {

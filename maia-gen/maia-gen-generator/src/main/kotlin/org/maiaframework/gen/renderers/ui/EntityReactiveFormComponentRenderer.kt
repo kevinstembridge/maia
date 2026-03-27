@@ -253,7 +253,7 @@ class EntityReactiveFormComponentRenderer(
         if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
             blankLine()
             blankLine()
-            appendLine("    private readonly entityId = inject<string>(MAT_DIALOG_DATA);")
+            appendLine("    private readonly entityId = inject<${angularFormDef.entityIdInjectType}>(MAT_DIALOG_DATA);")
         }
 
         this.angularFormDef.context?.let { context ->

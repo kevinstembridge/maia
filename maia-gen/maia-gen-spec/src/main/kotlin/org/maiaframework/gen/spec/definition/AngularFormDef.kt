@@ -36,7 +36,8 @@ class AngularFormDef(
     val onSubmitServiceFunctionName: String,
     formServiceTypescriptImport: TypescriptImport? = null,
     val angularFormSystem: AngularFormSystem,
-    val fetchForEditDtoDef: FetchForEditDtoDef? = null
+    val fetchForEditDtoDef: FetchForEditDtoDef? = null,
+    val entityIdInjectType: String = "string"
 ) {
 
 

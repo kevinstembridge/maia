@@ -19,18 +19,10 @@ class CrudEndpointRenderer(
     private val entityDef: EntityDef = entityCrudApiDef.entityDef
 
 
-    private val primaryKeyPathVariableParamsCsv = if (entityDef.hasCompositePrimaryKey) {
-        entityDef.primaryKeyClassFields.joinToString(", ") { "@PathVariable ${it.classFieldName}: ${it.unqualifiedToString}" }
-    } else {
-        "@PathVariable ${ fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields) }"
-    }
+    private val primaryKeyPathVariableParamsCsv = "@PathVariable ${ fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields) }"
 
 
-    private val primaryKeyFieldNames = if (entityDef.hasCompositePrimaryKey) {
-        "primaryKey"
-    } else {
-        fieldNamesCsv(this.entityDef.primaryKeyClassFields)
-    }
+    private val primaryKeyFieldNames = fieldNamesCsv(this.entityDef.primaryKeyClassFields)
 
 
     init {
@@ -89,34 +81,29 @@ class CrudEndpointRenderer(
             ?: return
 
         addImportFor(fetchForEditDtoDef.dtoDef.fqcn)
-        addImportFor(Fqcns.SPRING_GET_MAPPING)
-        addImportFor(Fqcns.SPRING_PATH_VARIABLE)
-
-        val urlSuffix = if (entityDef.hasSurrogatePrimaryKey) {
-            "/{id}"
-        } else if (entityDef.hasCompositePrimaryKey) {
-            entityDef.primaryKeyClassFields.joinToString("") { "/{${it.classFieldName.value}}" }
-        } else {
-            ""
-        }
 
         if (entityDef.hasCompositePrimaryKey) {
 
-            val pkConstructorArgs = entityDef.primaryKeyClassFields.joinToString(", ") { it.classFieldName.value }
+            addImportFor(Fqcns.SPRING_POST_MAPPING)
+            addImportFor(Fqcns.SPRING_REQUEST_BODY)
 
             append("""
                 |
                 |
-                |    @GetMapping("${fetchForEditDtoDef.endpointUrl}$urlSuffix", produces = [MediaType.APPLICATION_JSON_VALUE])
-                |    fun fetchForEdit($primaryKeyPathVariableParamsCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
+                |    @PostMapping("${fetchForEditDtoDef.endpointUrl}", produces = [MediaType.APPLICATION_JSON_VALUE])
+                |    fun fetchForEdit(@RequestBody pk: ${entityDef.entityPkClassDef.uqcn}): ${entityDef.fetchForEditDtoFqcn.uqcn} {
                 |
-                |        val primaryKey = ${entityDef.entityPkClassDef.uqcn}($pkConstructorArgs)
-                |        return this.crudService.fetchForEdit(primaryKey)
+                |        return this.crudService.fetchForEdit(pk)
                 |
                 |    }
                 |""".trimMargin())
 
         } else {
+
+            addImportFor(Fqcns.SPRING_GET_MAPPING)
+            addImportFor(Fqcns.SPRING_PATH_VARIABLE)
+
+            val urlSuffix = if (entityDef.hasSurrogatePrimaryKey) "/{id}" else ""
 
             append("""
                 |
@@ -168,27 +155,27 @@ class CrudEndpointRenderer(
         val apiDef = this.entityCrudApiDef.deleteApiDef ?: return
 
         addImportFor(Fqcns.SPRING_DELETE_MAPPING)
-        addImportFor(Fqcns.SPRING_PATH_VARIABLE)
 
         blankLine()
         blankLine()
 
         if (entityDef.hasCompositePrimaryKey) {
 
-            val urlPathVars = entityDef.primaryKeyClassFields.joinToString("") { "/{${it.classFieldName.value}}" }
-            val pkConstructorArgs = entityDef.primaryKeyClassFields.joinToString(", ") { it.classFieldName.value }
+            addImportFor(Fqcns.SPRING_REQUEST_BODY)
+
             val deleteBaseUrl = apiDef.endpointUrl.trimEnd('/')
 
-            appendLine("    @DeleteMapping(\"$deleteBaseUrl$urlPathVars\")")
+            appendLine("    @DeleteMapping(\"$deleteBaseUrl\")")
             appendPreAuthorize(apiDef.crudApiDef)
-            appendLine("    fun deleteByPrimaryKey($primaryKeyPathVariableParamsCsv) {")
+            appendLine("    fun deleteByPrimaryKey(@RequestBody pk: ${entityDef.entityPkClassDef.uqcn}) {")
             blankLine()
-            appendLine("        val primaryKey = ${entityDef.entityPkClassDef.uqcn}($pkConstructorArgs)")
-            appendLine("        this.crudService.delete(primaryKey)")
+            appendLine("        this.crudService.delete(pk)")
             blankLine()
             appendLine("    }")
 
         } else {
+
+            addImportFor(Fqcns.SPRING_PATH_VARIABLE)
 
             addImportFor<DomainId>()
 

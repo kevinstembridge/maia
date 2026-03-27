@@ -37,7 +37,8 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
     override fun renderSourceBody() {
 
         val deleteIdExpression = if (apiDef.entityDef.hasCompositePrimaryKey) {
-            apiDef.entityDef.primaryKeyClassFields.joinToString(" + '/' + ") { "this.dto.${it.classFieldName.value}" }
+            val pkFields = apiDef.entityDef.primaryKeyClassFields.joinToString(", ") { "${it.classFieldName.value}: this.dto.${it.classFieldName.value}" }
+            "{$pkFields}"
         } else {
             "this.dto.id"
         }

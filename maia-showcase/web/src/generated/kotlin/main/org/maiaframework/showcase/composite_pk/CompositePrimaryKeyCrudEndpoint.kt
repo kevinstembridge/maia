@@ -7,8 +7,6 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -31,11 +29,10 @@ class CompositePrimaryKeyCrudEndpoint(
     }
 
 
-    @GetMapping("/api/composite_primary_key/fetch_for_edit/{someString}/{someInt}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun fetchForEdit(@PathVariable someString: String, @PathVariable someInt: Int): CompositePrimaryKeyFetchForEditDto {
+    @PostMapping("/api/composite_primary_key/fetch_for_edit", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun fetchForEdit(@RequestBody pk: CompositePrimaryKeyEntityPk): CompositePrimaryKeyFetchForEditDto {
 
-        val primaryKey = CompositePrimaryKeyEntityPk(someString, someInt)
-        return this.crudService.fetchForEdit(primaryKey)
+        return this.crudService.fetchForEdit(pk)
 
     }
 
@@ -56,11 +53,10 @@ class CompositePrimaryKeyCrudEndpoint(
     }
 
 
-    @DeleteMapping("/api/composite_primary_key/{someString}/{someInt}")
-    fun deleteByPrimaryKey(@PathVariable someString: String, @PathVariable someInt: Int) {
+    @DeleteMapping("/api/composite_primary_key")
+    fun deleteByPrimaryKey(@RequestBody pk: CompositePrimaryKeyEntityPk) {
 
-        val primaryKey = CompositePrimaryKeyEntityPk(someString, someInt)
-        this.crudService.delete(primaryKey)
+        this.crudService.delete(pk)
 
     }
 

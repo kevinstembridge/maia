@@ -1,6 +1,8 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.EntityCrudApiDef
+import org.maiaframework.gen.spec.definition.lang.IntFieldType
+import org.maiaframework.gen.spec.definition.lang.LongFieldType
 
 class DtoCrudServiceTypescriptRenderer(
     private val entityCrudApiDef: EntityCrudApiDef
@@ -107,29 +109,80 @@ class DtoCrudServiceTypescriptRenderer(
 
         this.entityCrudApiDef.entityDef.fetchForEditDtoDef?.let { fetchForEditDtoDef ->
 
-            append("""
-                |
-                |
-                |    public fetchForEdit(id: string): Observable<${fetchForEditDtoDef.uqcn}> {
-                |
-                |        return this.http.get<${fetchForEditDtoDef.uqcn}>('${fetchForEditDtoDef.endpointUrl}/' + id, this.httpOptions);
-                |
-                |    }
-                |""".trimMargin())
+            val entityDef = this.entityCrudApiDef.entityDef
+            if (entityDef.hasCompositePrimaryKey) {
+
+                val pkType = entityDef.primaryKeyClassFields.joinToString(", ") { field ->
+                    val tsType = if (field.fieldType is IntFieldType || field.fieldType is LongFieldType) "number" else "string"
+                    "${field.classFieldName.value}: $tsType"
+                }
+
+                append("""
+                    |
+                    |
+                    |    public fetchForEdit(pk: {$pkType}): Observable<${fetchForEditDtoDef.uqcn}> {
+                    |
+                    |        return this.http.post<${fetchForEditDtoDef.uqcn}>(
+                    |                '${fetchForEditDtoDef.endpointUrl}',
+                    |                pk,
+                    |                this.httpOptions);
+                    |
+                    |    }
+                    |""".trimMargin())
+
+            } else {
+
+                append("""
+                    |
+                    |
+                    |    public fetchForEdit(id: string): Observable<${fetchForEditDtoDef.uqcn}> {
+                    |
+                    |        return this.http.get<${fetchForEditDtoDef.uqcn}>('${fetchForEditDtoDef.endpointUrl}/' + id, this.httpOptions);
+                    |
+                    |    }
+                    |""".trimMargin())
+
+            }
 
         }
 
         this.entityCrudApiDef.deleteApiDef?.let { apiDef ->
 
-            append("""
-                |
-                |
-                |    public delete(id: string): Observable<any> {
-                |
-                |        return this.http.delete('${apiDef.endpointUrl}' + id, this.httpOptions);
-                |
-                |    }
-                |""".trimMargin())
+            val entityDef = this.entityCrudApiDef.entityDef
+            if (entityDef.hasCompositePrimaryKey) {
+
+                val pkType = entityDef.primaryKeyClassFields.joinToString(", ") { field ->
+                    val tsType = if (field.fieldType is IntFieldType || field.fieldType is LongFieldType) "number" else "string"
+                    "${field.classFieldName.value}: $tsType"
+                }
+                val deleteBaseUrl = apiDef.endpointUrl.trimEnd('/')
+
+                append("""
+                    |
+                    |
+                    |    public delete(pk: {$pkType}): Observable<any> {
+                    |
+                    |        return this.http.delete('$deleteBaseUrl', {
+                    |            headers: new HttpHeaders({'Content-Type': 'application/json'}),
+                    |            body: pk
+                    |        });
+                    |
+                    |    }
+                    |""".trimMargin())
+
+            } else {
+
+                append("""
+                    |
+                    |
+                    |    public delete(id: string): Observable<any> {
+                    |
+                    |        return this.http.delete('${apiDef.endpointUrl}' + id, this.httpOptions);
+                    |
+                    |    }
+                    |""".trimMargin())
+
+            }
         }
 
         append("""

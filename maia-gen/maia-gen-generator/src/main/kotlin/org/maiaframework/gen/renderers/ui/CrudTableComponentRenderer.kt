@@ -80,8 +80,8 @@ class CrudTableComponentRenderer(
 
             val entityDef = crudTableDef.entityCrudApiDef.entityDef
             val entityIdExpression = if (entityDef.hasCompositePrimaryKey) {
-                val parts = entityDef.primaryKeyFields.joinToString("/") { "\${dto.${it.classFieldName.value}}" }
-                "`$parts`"
+                val parts = entityDef.primaryKeyFields.joinToString(", ") { "${it.classFieldName.value}: dto.${it.classFieldName.value}" }
+                "{$parts}"
             } else {
                 "dto.id"
             }

@@ -152,6 +152,20 @@ class EntityUpdateApiDef(
     override val angularFormComponentNames = AngularComponentNames(this.entityDef.packageName, "${entityDef.entityBaseName}EditForm")
 
 
+    private val entityIdInjectType = if (entityDef.hasCompositePrimaryKey) {
+        val parts = entityDef.primaryKeyClassFields.joinToString(", ") { field ->
+            val tsType = when (field.unqualifiedToString) {
+                "Int", "Long" -> "number"
+                else -> "string"
+            }
+            "${field.classFieldName.value}: $tsType"
+        }
+        "{$parts}"
+    } else {
+        "string"
+    }
+
+
     val angularDialogDef = AngularFormDef(
         angularComponentBaseName,
         requestDtoDef,
@@ -171,7 +185,8 @@ class EntityUpdateApiDef(
         onSubmitServiceFunctionName = "edit",
         entityDef.crudAngularComponentNames.serviceTypescriptImport,
         angularFormSystem,
-        fetchForEditDtoDef = entityDef.fetchForEditDtoDef
+        fetchForEditDtoDef = entityDef.fetchForEditDtoDef,
+        entityIdInjectType = entityIdInjectType
     )
 
 
