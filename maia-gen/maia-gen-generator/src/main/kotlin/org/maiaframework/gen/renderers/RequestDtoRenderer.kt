@@ -112,7 +112,7 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
 
     private fun doesFieldRequireJsonPropertyAnnotation(classField: ClassFieldDef): Boolean {
 
-        return true
+        return classField.nullable == false
 
     }
 

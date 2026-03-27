@@ -23,7 +23,6 @@ class UserUpdateRequestDto
     @param:JsonProperty("authorities", access = JsonProperty.Access.READ_WRITE) 
     private val authorities_raw: List<Authority>?,
     @field:Length(max = 100) 
-    @param:JsonProperty("firstName", access = JsonProperty.Access.READ_WRITE) 
     firstName: String?,
     @NotNull 
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 

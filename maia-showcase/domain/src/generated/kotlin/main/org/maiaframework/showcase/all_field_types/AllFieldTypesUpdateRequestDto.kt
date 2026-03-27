@@ -25,12 +25,10 @@ class AllFieldTypesUpdateRequestDto
     @field:NotNull 
     @param:JsonProperty("someInstantModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someInstantModifiable_raw: Instant?,
-    @param:JsonProperty("someInstantModifiableNullable", access = JsonProperty.Access.READ_WRITE) 
     val someInstantModifiableNullable: Instant?,
     @field:NotNull 
     @param:JsonProperty("someIntModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someIntModifiable_raw: Int?,
-    @param:JsonProperty("someIntNullable", access = JsonProperty.Access.READ_WRITE) 
     val someIntNullable: Int?,
     @field:NotNull 
     @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 

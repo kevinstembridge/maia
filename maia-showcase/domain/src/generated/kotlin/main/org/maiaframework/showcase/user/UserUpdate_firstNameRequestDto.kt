@@ -17,7 +17,6 @@ import org.maiaframework.domain.party.FirstName
 class UserUpdate_firstNameRequestDto
 @JsonCreator constructor(
     @field:Length(max = 100) 
-    @param:JsonProperty("firstName", access = JsonProperty.Access.READ_WRITE) 
     firstName: String?,
     @NotNull 
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
