@@ -260,6 +260,14 @@ class AllFieldTypesEntityFilters {
         }
 
 
+    val someListOfStrings: ListFieldFilter<String> 
+        get() {
+
+            return ListFieldFilter("some_list_of_strings")
+
+        }
+
+
     val someLocalDateModifiable: FieldFilter<LocalDate> 
         get() {
 
@@ -495,6 +503,19 @@ class AllFieldTypesEntityFilters {
     }
 
 
+    class ListFieldFilter<T>(private val databaseColumnName: String) { 
+
+
+        infix fun contains(value: T): AllFieldTypesEntityFilter {
+
+            return ListFieldContainsFilter(this.databaseColumnName, value)
+
+        }
+
+
+    }
+
+
     class NoopFilter : AllFieldTypesEntityFilter {
 
 
@@ -618,6 +639,52 @@ class AllFieldTypesEntityFilters {
         override fun populateSqlParams(sqlParams: SqlParams) {
 
             this.filters.forEach { it.populateSqlParams(sqlParams) }
+
+        }
+
+
+    }
+
+
+    private class JsonListFieldContainsFilter<VALUE>(
+        private val databaseColumnName: String,
+        private val value: VALUE
+    ): AllFieldTypesEntityFilter {
+
+
+        override fun whereClause(fieldConverter: AllFieldTypesEntityFieldConverter): String {
+
+            return "jsonb_path_exists($databaseColumnName, '$ ? (@ == \"$value\")')"
+
+        }
+
+
+        override fun populateSqlParams(sqlParams: SqlParams) {
+
+            // do nothing
+
+        }
+
+
+    }
+
+
+    private class ListFieldContainsFilter<VALUE>(
+        private val databaseColumnName: String,
+        private val value: VALUE
+    ): AllFieldTypesEntityFilter {
+
+
+        override fun whereClause(fieldConverter: AllFieldTypesEntityFieldConverter): String {
+
+            return "'$value' = ANY($databaseColumnName)"
+
+        }
+
+
+        override fun populateSqlParams(sqlParams: SqlParams) {
+
+            // do nothing
 
         }
 

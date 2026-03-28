@@ -427,6 +427,18 @@
                 <mat-error>Some Provided String Type Nullable must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some List Of Strings</mat-label>
+            <input
+                formControlName="someListOfStrings"
+                name="someListOfStrings"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someListOfStrings'].hasError('required')) {
+                <mat-error>Some List Of Strings is required.</mat-error>
+            }
+        </mat-form-field>
     </div>
     <div mat-dialog-actions>
         <button mat-flat-button type="submit" color="primary">Submit</button>

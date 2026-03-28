@@ -70,6 +70,7 @@ export class AllFieldTypesTableComponent {
         { field: 'someStringTypeNullable', headerName: 'Some String Type Nullable', cellDataType: 'text', filter: true },
         { field: 'someProvidedStringType', headerName: 'Some Provided String Type', cellDataType: 'text', filter: true },
         { field: 'someProvidedStringTypeNullable', headerName: 'Some Provided String Type Nullable', cellDataType: 'text', filter: true },
+        { field: 'someListOfStrings', headerName: 'Some List Of Strings', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
         { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         { field: 'createdById', headerName: 'Created By', cellDataType: 'text', filter: true },
         { field: 'createdByUsername', headerName: 'Created By', cellDataType: 'text', filter: true },

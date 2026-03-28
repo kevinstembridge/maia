@@ -5,6 +5,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
+import org.maiaframework.showcase.all_field_types.AllFieldTypesDao
+import org.maiaframework.showcase.all_field_types.AllFieldTypesEntity
+import org.maiaframework.showcase.all_field_types.AllFieldTypesEntityTestBuilder
+import org.maiaframework.showcase.types.SomeIntType
+import org.maiaframework.showcase.types.SomeLongType
+import org.maiaframework.showcase.types.SomeStringType
 import org.maiaframework.showcase.join.AlphaAgGridDao
 import org.maiaframework.showcase.join.AlphaAgGridEntity
 import org.maiaframework.showcase.join.AlphaAgGridEntityTestBuilder
@@ -21,6 +27,10 @@ import java.time.temporal.ChronoUnit
 
 
 class AgGridDataSourceTest : AbstractBlackBoxTest() {
+
+
+    @Autowired
+    private lateinit var allFieldTypesDao: AllFieldTypesDao
 
 
     @Autowired
@@ -83,6 +93,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     @BeforeEach
     fun beforeEach() {
 
+        this.allFieldTypesDao.deleteAll()
         this.bravoDao.deleteAll()
         this.alphaDao.deleteAll()
 
@@ -1138,6 +1149,148 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     }
 
 
+    @Test
+    fun `test filter text contains on someListOfStrings`() {
+
+        val entity1 = AllFieldTypesEntityTestBuilder(
+            someListOfStrings = listOf("apple", "banana"),
+            someString = "listEntity1",
+            someIntType = SomeIntType(101),
+            someLongType = SomeLongType(10001L),
+            someStringType = SomeStringType("listStrType1"),
+        ).build()
+
+        val entity2 = AllFieldTypesEntityTestBuilder(
+            someListOfStrings = listOf("cherry", "date"),
+            someString = "listEntity2",
+            someIntType = SomeIntType(102),
+            someLongType = SomeLongType(10002L),
+            someStringType = SomeStringType("listStrType2"),
+        ).build()
+
+        val entity3 = AllFieldTypesEntityTestBuilder(
+            someListOfStrings = listOf("apple", "cherry"),
+            someString = "listEntity3",
+            someIntType = SomeIntType(103),
+            someLongType = SomeLongType(10003L),
+            someStringType = SomeStringType("listStrType3"),
+        ).build()
+
+        this.allFieldTypesDao.insert(entity1)
+        this.allFieldTypesDao.insert(entity2)
+        this.allFieldTypesDao.insert(entity3)
+
+        submitAllFieldTypesSearch(
+            startRow = 0,
+            endRow = 10,
+            filterModel = mapOf(
+                "someListOfStrings" to mapOf(
+                    "filterType" to "text",
+                    "type" to "contains",
+                    "filter" to "apple"
+                )
+            )
+        ).bodyJson().isEqualTo(expectedAllFieldTypesResult(1, listOf(entity1, entity2), 1, 2, 0, 10))
+
+        submitAllFieldTypesSearch(
+            startRow = 0,
+            endRow = 10,
+            filterModel = mapOf(
+                "someListOfStrings" to mapOf(
+                    "filterType" to "text",
+                    "type" to "contains",
+                    "filter" to "banana"
+                )
+            )
+        ).bodyJson().isEqualTo(expectedAllFieldTypesResult(1, listOf(entity1, entity2), 1, 2, 0, 10))
+
+        submitAllFieldTypesSearch(
+            startRow = 0,
+            endRow = 10,
+            filterModel = mapOf(
+                "someListOfStrings" to mapOf(
+                    "filterType" to "text",
+                    "type" to "contains",
+                    "filter" to "notExists"
+                )
+            )
+        ).bodyJson().isEqualTo(expectedAllFieldTypesResult(
+            1,
+            listOf(entity1, entity2, entity3),
+            1,
+            10,
+            8,
+            4
+        ))
+
+    }
+
+
+    @Test
+    fun `test filter text notContains on someListOfStrings`() {
+
+        val entity1 = AllFieldTypesEntityTestBuilder(
+            someListOfStrings = listOf("apple", "banana"),
+            someString = "notContainsEntity1",
+            someIntType = SomeIntType(201),
+            someLongType = SomeLongType(20001L),
+            someStringType = SomeStringType("notContainsStrType1"),
+        ).build()
+
+        val entity2 = AllFieldTypesEntityTestBuilder(
+            someListOfStrings = listOf("cherry", "date"),
+            someString = "notContainsEntity2",
+            someIntType = SomeIntType(202),
+            someLongType = SomeLongType(20002L),
+            someStringType = SomeStringType("notContainsStrType2"),
+        ).build()
+
+        this.allFieldTypesDao.insert(entity1)
+        this.allFieldTypesDao.insert(entity2)
+
+        submitAllFieldTypesSearch(
+            startRow = 0,
+            endRow = 10,
+            filterModel = mapOf(
+                "someListOfStrings" to mapOf(
+                    "filterType" to "text",
+                    "type" to "notContains",
+                    "filter" to "apple"
+                )
+            )
+        ).bodyJson().isEqualTo(expectedAllFieldTypesResult(
+            1,
+            listOf(entity2),
+            3,
+            4,
+            5,
+            6
+        ))
+
+    }
+
+
+    private fun submitAllFieldTypesSearch(
+        startRow: Int,
+        endRow: Int,
+        sortModel: List<Map<String, String>> = emptyList(),
+        filterModel: Map<String, Any?> = emptyMap()
+    ): MvcTestResultAssert {
+
+        val requestBody = asJson(
+            mapOf(
+                "startRow" to startRow,
+                "endRow" to endRow,
+                "sortModel" to sortModel,
+                "filterModel" to filterModel
+            )
+        )
+
+        return assertThat_POST("/api/all_field_types_table/search", requestBody)
+
+    }
+
+
     private fun submitSearch(
         path: String = "/api/bravo_ag_grid/search",
         startRow: Int,
@@ -1185,6 +1338,31 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     }
 
 
+    private fun expectedAllFieldTypesResult(
+        totalCount: Int,
+        rows: List<AllFieldTypesEntity>,
+        firstResultIndex: Int,
+        lastResultIndex: Int,
+        offset: Int,
+        limit: Int
+    ): String {
+
+        val expectedResultData = rows.map { jsonFor(it) }
+
+        return asJson(
+            mapOf(
+                "totalResultCount" to totalCount,
+                "results" to expectedResultData,
+                "firstResultIndex" to firstResultIndex,
+                "lastResultIndex" to lastResultIndex,
+                "limit" to limit,
+                "offset" to offset
+            )
+        )
+
+    }
+
+
     private fun jsonFor(pair: Pair<BravoAgGridEntity, AlphaAgGridEntity>): Map<String, Any?> {
 
         val bravoEntity = pair.first
@@ -1197,6 +1375,18 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             "dtoIntFromAlpha" to alphaEntity.someInt,
             "dtoIntFromBravo" to bravoEntity.someInt,
             "createdTimestampUtc" to bravoEntity.createdTimestampUtc.truncatedTo(ChronoUnit.MILLIS).toString()
+        )
+
+    }
+
+
+    private fun jsonFor(entity: AllFieldTypesEntity): Map<String, Any?> {
+
+        return mapOf(
+            "id" to entity.id.value,
+            "someString" to entity.someString,
+            "somInt" to entity.someInt,
+            "createdTimestampUtc" to entity.createdTimestampUtc.truncatedTo(ChronoUnit.MILLIS).toString()
         )
 
     }

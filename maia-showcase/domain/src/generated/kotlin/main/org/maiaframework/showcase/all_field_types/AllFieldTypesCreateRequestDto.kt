@@ -72,6 +72,9 @@ class AllFieldTypesCreateRequestDto
     private val someIntTypeProvided_raw: Int?,
     someIntTypeProvidedNullable: Int?,
     @field:NotNull 
+    @param:JsonProperty("someListOfStrings", access = JsonProperty.Access.READ_WRITE) 
+    private val someListOfStrings_raw: List<String>?,
+    @field:NotNull 
     @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someLocalDateModifiable_raw: LocalDate?,
     @field:NotNull 
@@ -164,6 +167,11 @@ class AllFieldTypesCreateRequestDto
 
 
     @get:JsonIgnore
+    val someListOfStrings
+        get() = someListOfStrings_raw!!
+
+
+    @get:JsonIgnore
     val someLocalDateModifiable
         get() = someLocalDateModifiable_raw!!
 
@@ -252,6 +260,7 @@ class AllFieldTypesCreateRequestDto
                 "someIntModifiable = '" + this.someIntModifiable + '\'' + ", " + 
                 "someIntType = '" + this.someIntType + '\'' + ", " + 
                 "someIntTypeProvided = '" + this.someIntTypeProvided + '\'' + ", " + 
+                "someListOfStrings = '" + this.someListOfStrings + '\'' + ", " + 
                 "someLocalDateModifiable = '" + this.someLocalDateModifiable + '\'' + ", " + 
                 "someLongType = '" + this.someLongType + '\'' + ", " + 
                 "someLongTypeProvided = '" + this.someLongTypeProvided + '\'' + ", " + 

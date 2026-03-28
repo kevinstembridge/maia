@@ -356,9 +356,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        field("someListOfInstants", fieldListOf(FieldTypes.instant))
 //        field("someListOfLocalDates", fieldListOf(FieldTypes.localDate))
 //        field("someListOfPeriods", fieldListOf(FieldTypes.period))
-//        field("someListOfStrings", fieldListOf(FieldTypes.string)) {
-//            editableByUser()
-//        }
+        field("someListOfStrings", fieldListOf(FieldTypes.string)) {
+            fieldDisplayName("Some List Of Strings")
+            editableByUser()
+        }
 //        field("someListOfStringTypes", fieldListOf(someStringTypeDef))
 //        field("someMapOfStringToInteger", mapOfString().to(Fqcn.INT))
 //        field("someMapOfStringTypeToStringType", fieldMapOf(someStringTypeDef).to(someStringTypeDef))
@@ -428,7 +429,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        field("someListOfInstants")
 //        field("someListOfLocalDates")
 //        field("someListOfPeriods")
-//        field("someListOfStrings")
+        field("someListOfStrings")
 //        field("someListOfStringTypes")
 //        field("someMapOfStringToInteger")
 //        field("someMapOfStringTypeToStringType")
@@ -487,7 +488,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        columnFromDto("someListOfInstants")
 //        columnFromDto("someListOfLocalDates")
 //        columnFromDto("someListOfPeriods")
-//        columnFromDto("someListOfStrings")
+        columnFromDto("someListOfStrings")
 //        columnFromDto("someListOfStringTypes")
 //        columnFromDto("someMapOfStringToInteger")
 //        columnFromDto("someMapOfStringTypeToStringType")

@@ -121,7 +121,7 @@ data class AllFieldTypesEntityTestBuilder(
 //            this.someListOfLocalDates,
 //            this.someListOfPeriods,
 //            this.someListOfStringTypes,
-//            this.someListOfStrings,
+            this.someListOfStrings,
             this.someLocalDateModifiable,
             this.someLongType,
             this.someLongTypeNullable,

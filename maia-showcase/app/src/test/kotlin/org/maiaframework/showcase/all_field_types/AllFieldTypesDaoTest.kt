@@ -633,7 +633,7 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
 //        assertThat(actual.someListOfInstants).isEqualTo(expected.someListOfInstants.map { it.truncatedTo(ChronoUnit.MILLIS) })
 //        assertThat(actual.someListOfLocalDates).isEqualTo(expected.someListOfLocalDates)
 //        assertThat(actual.someListOfPeriods).isEqualTo(expected.someListOfPeriods)
-//        assertThat(actual.someListOfStrings).isEqualTo(expected.someListOfStrings)
+        assertThat(actual.someListOfStrings).isEqualTo(expected.someListOfStrings)
 //        assertThat(actual.someListOfStringTypes).isEqualTo(expected.someListOfStringTypes)
         assertThat(actual.someLocalDateModifiable).isEqualTo(expected.someLocalDateModifiable)
         assertThat(actual.someLongType).isEqualTo(expected.someLongType)

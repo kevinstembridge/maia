@@ -64,6 +64,8 @@ class AllFieldTypesTableDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "some_int_type_provided_nullable" -> // someIntTypeProvidedNullable
                 return inputValue
+            "some_list_of_strings" -> // someListOfStrings
+                return inputValue
             "some_local_date_modifiable" -> // someLocalDateModifiable
                 return inputValue
             "some_long_type" -> // someLongType

@@ -122,6 +122,7 @@ export class AllFieldTypesCreateDialogComponent implements OnInit {
                 someStringTypeNullable: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 someProvidedStringType: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 someProvidedStringTypeNullable: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
+                someListOfStrings: new FormControl([], { updateOn: 'change' }),
             },
         );
 
@@ -152,6 +153,7 @@ export class AllFieldTypesCreateDialogComponent implements OnInit {
             someIntModifiable: this.formGroup.getRawValue().someIntModifiable,
             someIntType: this.formGroup.getRawValue().someIntType,
             someIntTypeProvided: this.formGroup.getRawValue().someIntTypeProvided,
+            someListOfStrings: this.formGroup.getRawValue().someListOfStrings,
             someLocalDateModifiable: this.formGroup.getRawValue().someLocalDateModifiable,
             someLongType: this.formGroup.getRawValue().someLongType,
             someLongTypeProvided: this.formGroup.getRawValue().someLongTypeProvided,

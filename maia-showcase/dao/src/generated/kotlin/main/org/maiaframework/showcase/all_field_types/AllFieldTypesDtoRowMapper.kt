@@ -47,6 +47,7 @@ class AllFieldTypesDtoRowMapper : MaiaRowMapper<AllFieldTypesDto> {
             rsa.readIntOrNull("someIntTypeNullable") { SomeIntType(it) },
             rsa.readInt("someIntTypeProvided") { SomeProvidedIntType(it) },
             rsa.readIntOrNull("someIntTypeProvidedNullable") { SomeProvidedIntType(it) },
+            rsa.readListOfStrings("someListOfStrings"),
             rsa.readLocalDate("someLocalDateModifiable"),
             rsa.readLong("someLongType") { SomeLongType(it) },
             rsa.readLongOrNull("someLongTypeNullable") { SomeLongType(it) },

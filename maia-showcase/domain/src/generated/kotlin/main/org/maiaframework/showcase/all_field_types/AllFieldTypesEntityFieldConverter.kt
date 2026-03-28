@@ -80,6 +80,8 @@ class AllFieldTypesEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as SomeProvidedIntType).value
             "some_int_type_provided_nullable" -> // someIntTypeProvidedNullable
                 return (inputValue as SomeProvidedIntType).value
+            "some_list_of_strings" -> // someListOfStrings
+                return inputValue
             "some_local_date_modifiable" -> // someLocalDateModifiable
                 return inputValue
             "some_long_type" -> // someLongType

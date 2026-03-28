@@ -73,6 +73,7 @@ class AllFieldTypesCrudService(
         val someIntTypeNullable: SomeIntType? = createDto.someIntTypeNullable
         val someIntTypeProvided: SomeProvidedIntType = createDto.someIntTypeProvided
         val someIntTypeProvidedNullable: SomeProvidedIntType? = createDto.someIntTypeProvidedNullable
+        val someListOfStrings: List<String> = createDto.someListOfStrings
         val someLocalDateModifiable: LocalDate = createDto.someLocalDateModifiable
         val someLongType: SomeLongType = createDto.someLongType
         val someLongTypeNullable: SomeLongType? = createDto.someLongTypeNullable
@@ -122,6 +123,7 @@ class AllFieldTypesCrudService(
             someIntTypeNullable,
             someIntTypeProvided,
             someIntTypeProvidedNullable,
+            someListOfStrings,
             someLocalDateModifiable,
             someLongType,
             someLongTypeNullable,
@@ -199,6 +201,7 @@ class AllFieldTypesCrudService(
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(id) {
             someInstantModifiable(editDto.someInstantModifiable)
             someIntModifiable(editDto.someIntModifiable)
+            someListOfStrings(editDto.someListOfStrings)
             someLocalDateModifiable(editDto.someLocalDateModifiable)
             somePeriodModifiable(editDto.somePeriodModifiable)
             someStringModifiable(editDto.someStringModifiable)
@@ -336,6 +339,25 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             someStringModifiable(editDto.someStringModifiable)
+            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateSomeListOfStrings(editDto: AllFieldTypesUpdate_someListOfStringsRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeListOfStrings. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
+            someListOfStrings(editDto.someListOfStrings)
             lastModifiedById(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())

@@ -146,6 +146,21 @@ class AgGridSearchModelConverter(
             "text" -> {
 
                 val filterTerm = fieldFilterModel.getString("filter")
+
+                if (jdbcCompatibleType == JdbcCompatibleType.array) {
+                    return when (filterType) {
+                        "contains" -> {
+                            sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
+                            ":$sqlParamName = ANY($dbColumnName)"
+                        }
+                        "notContains" -> {
+                            sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
+                            "NOT (:$sqlParamName = ANY($dbColumnName))"
+                        }
+                        else -> throw IllegalArgumentException("Unknown filter type [$filterType] for array column")
+                    }
+                }
+
                 val dbColumnNameSuffix = dbColumnNameSuffixFor(jdbcCompatibleType)
                 val likeOrIlike = "ilike" // TODO if (filterModelItem.caseSensitive) "like" else "ilike"
 

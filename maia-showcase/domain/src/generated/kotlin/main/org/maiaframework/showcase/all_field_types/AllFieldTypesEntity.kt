@@ -91,9 +91,9 @@ class AllFieldTypesEntity(
                 "someIntType = '" + this.someIntType + '\'' + ", " + 
                 "someIntTypeNullable = '" + this.someIntTypeNullable + '\'' + ", " + 
                 "someIntTypeProvided = '" + this.someIntTypeProvided + '\'' + ", " + 
-                "someIntTypeProvidedNullable = '" + this.someIntTypeProvidedNullable + '\'' + ", " +
-                "someListOfStrings = '" + this.someListOfStrings + '\'' + ", " +
-                "someLocalDateModifiable = '" + this.someLocalDateModifiable + '\'' + ", " +
+                "someIntTypeProvidedNullable = '" + this.someIntTypeProvidedNullable + '\'' + ", " + 
+                "someListOfStrings = '" + this.someListOfStrings + '\'' + ", " + 
+                "someLocalDateModifiable = '" + this.someLocalDateModifiable + '\'' + ", " + 
                 "someLongType = '" + this.someLongType + '\'' + ", " + 
                 "someLongTypeNullable = '" + this.someLongTypeNullable + '\'' + ", " + 
                 "someLongTypeProvided = '" + this.someLongTypeProvided + '\'' + ", " + 

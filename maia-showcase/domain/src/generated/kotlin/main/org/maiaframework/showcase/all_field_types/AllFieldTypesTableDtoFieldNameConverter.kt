@@ -39,6 +39,7 @@ class AllFieldTypesTableDtoFieldNameConverter : SearchFieldNameConverter {
             "someIntTypeNullable" -> "some_int_type_nullable"
             "someIntTypeProvided" -> "some_int_type_provided"
             "someIntTypeProvidedNullable" -> "some_int_type_provided_nullable"
+            "someListOfStrings" -> "some_list_of_strings"
             "someLocalDateModifiable" -> "some_local_date_modifiable"
             "someLongType" -> "some_long_type"
             "someLongTypeNullable" -> "some_long_type_nullable"

@@ -205,6 +205,15 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
+    @PutMapping("/api/all_field_types/inline/some_list_of_strings", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateSomeListOfStrings(@RequestBody @Valid editDto: AllFieldTypesUpdate_someListOfStringsRequestDto) {
+
+        this.crudService.updateSomeListOfStrings(editDto)
+
+    }
+
+
     @DeleteMapping("/api/all_field_types/{id}")
     @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {

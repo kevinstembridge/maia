@@ -32,6 +32,7 @@ export interface AllFieldTypesFetchForEditDto {
     someIntTypeNullable?: number;
     someIntTypeProvided: number;
     someIntTypeProvidedNullable?: number;
+    someListOfStrings: ReadonlyArray<string>;
     someLocalDateModifiable: string;
     someLongType: number;
     someLongTypeNullable?: number;

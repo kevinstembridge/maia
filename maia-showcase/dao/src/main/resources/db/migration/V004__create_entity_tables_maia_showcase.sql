@@ -63,6 +63,7 @@ CREATE TABLE maia.all_field_types (
     some_int_type_nullable integer NULL,
     some_int_type_provided integer NOT NULL,
     some_int_type_provided_nullable integer NULL,
+    some_list_of_strings text[] NOT NULL,
     some_local_date_modifiable date NOT NULL,
     some_long_type bigint NOT NULL,
     some_long_type_nullable bigint NULL,
@@ -304,6 +305,8 @@ CREATE TABLE maia.many_to_many_join (
     right_id uuid NOT NULL REFERENCES maia.right(id),
     PRIMARY KEY(id)
 );
+CREATE INDEX many_to_many_join_left_id_idx ON maia.many_to_many_join(left_id);
+CREATE INDEX many_to_many_join_right_id_idx ON maia.many_to_many_join(right_id);
 
 
 CREATE TABLE maia.unmodifiable (

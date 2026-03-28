@@ -31,6 +31,7 @@ export interface AllFieldTypesDto {
     someIntTypeNullable?: number;
     someIntTypeProvided: number;
     someIntTypeProvidedNullable?: number;
+    someListOfStrings: ReadonlyArray<string>;
     someLocalDateModifiable: string;
     someLongType: number;
     someLongTypeNullable?: number;

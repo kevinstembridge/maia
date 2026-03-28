@@ -85,6 +85,13 @@ data class AllFieldTypesEntityUpdater(
         }
 
 
+        fun someListOfStrings(someListOfStrings: List<String>) {
+
+            this.fields.add(FieldUpdate("someListOfStrings", "some_list_of_strings", someListOfStrings))
+
+        }
+
+
         fun lastModifiedByUsername(lastModifiedByUsername: String) {
 
             this.fields.add(FieldUpdate("lastModifiedByUsername", "last_modified_by_name", lastModifiedByUsername))

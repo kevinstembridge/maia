@@ -808,6 +808,7 @@ class AllFieldTypesDao(
                 all_field_types.some_int_type_nullable as someIntTypeNullable,
                 all_field_types.some_int_type_provided as someIntTypeProvided,
                 all_field_types.some_int_type_provided_nullable as someIntTypeProvidedNullable,
+                all_field_types.some_list_of_strings as someListOfStrings,
                 all_field_types.some_local_date_modifiable as someLocalDateModifiable,
                 all_field_types.some_long_type as someLongType,
                 all_field_types.some_long_type_nullable as someLongTypeNullable,
@@ -870,6 +871,7 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
+                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
@@ -911,6 +913,7 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
+                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
@@ -935,6 +938,7 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
+                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -967,6 +971,7 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
@@ -1025,6 +1030,7 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
+                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
@@ -1066,6 +1072,7 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
+                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
@@ -1090,6 +1097,7 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
+                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -1122,6 +1130,7 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
@@ -1180,6 +1189,7 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
+                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
@@ -1221,6 +1231,7 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
+                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
@@ -1245,6 +1256,7 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
+                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -1277,6 +1289,7 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
@@ -1335,6 +1348,7 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
+                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
@@ -1376,6 +1390,7 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
+                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
@@ -1400,6 +1415,7 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
+                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -1432,6 +1448,7 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
@@ -1490,6 +1507,7 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
+                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
@@ -1531,6 +1549,7 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
+                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
@@ -1555,6 +1574,7 @@ class AllFieldTypesDao(
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
                 some_int_nullable = :someIntNullable,
+                some_list_of_strings = :someListOfStrings,
                 some_local_date_modifiable = :someLocalDateModifiable,
                 some_period_modifiable = :somePeriodModifiable,
                 some_string_modifiable = :someStringModifiable
@@ -1587,6 +1607,7 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", upsertEntity.someIntTypeNullable)
                 addValue("someIntTypeProvided", upsertEntity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", upsertEntity.someIntTypeProvidedNullable)
+                addListOfStrings("someListOfStrings", upsertEntity.someListOfStrings)
                 addValue("someLocalDateModifiable", upsertEntity.someLocalDateModifiable)
                 addValue("someLongType", upsertEntity.someLongType)
                 addValue("someLongTypeNullable", upsertEntity.someLongTypeNullable)
@@ -1656,6 +1677,7 @@ class AllFieldTypesDao(
             "someInstantModifiableNullable" -> sqlParams.addValue("someInstantModifiableNullable", field.value as Instant?)
             "someIntModifiable" -> sqlParams.addValue("someIntModifiable", field.value as Int)
             "someIntNullable" -> sqlParams.addValue("someIntNullable", field.value as Int?)
+            "someListOfStrings" -> sqlParams.addListOfStrings("someListOfStrings", field.value as List<String>)
             "someLocalDateModifiable" -> sqlParams.addValue("someLocalDateModifiable", field.value as LocalDate)
             "somePeriodModifiable" -> sqlParams.addValue("somePeriodModifiable", field.value as Period)
             "someStringModifiable" -> sqlParams.addValue("someStringModifiable", field.value as String)
