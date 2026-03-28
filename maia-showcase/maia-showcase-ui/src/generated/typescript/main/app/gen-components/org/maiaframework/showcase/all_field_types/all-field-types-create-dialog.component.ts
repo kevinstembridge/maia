@@ -111,7 +111,7 @@ export class AllFieldTypesCreateDialogComponent implements OnInit {
                 someLongTypeProvided: new FormControl(0, { updateOn: 'change' }),
                 someLongTypeProvidedNullable: new FormControl(0, { updateOn: 'change' }),
                 someLocalDateModifiable: new FormControl('', { updateOn: 'change' }),
-                somePeriodModifiable: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+                somePeriodModifiable: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 somePeriodNullable: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 someEnum: new FormControl(SomeEnum.OK, { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 someEnumNullable: new FormControl(SomeEnum.OK, { updateOn: 'change', validators: [Validators.maxLength(100)] }),

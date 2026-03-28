@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import org.hibernate.validator.constraints.Length
 import org.maiaframework.domain.DomainId
 import java.time.Period
 
@@ -20,8 +18,7 @@ class AllFieldTypesUpdate_somePeriodModifiableRequestDto
     @NotNull 
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @field:NotBlank 
-    @field:Length(max = 100) 
+    @field:NotNull 
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val somePeriodModifiable_raw: Period?
 ) {

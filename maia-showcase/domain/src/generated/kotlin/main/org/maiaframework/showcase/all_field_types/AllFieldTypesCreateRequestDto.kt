@@ -85,11 +85,9 @@ class AllFieldTypesCreateRequestDto
     @param:JsonProperty("someLongTypeProvided", access = JsonProperty.Access.READ_WRITE) 
     private val someLongTypeProvided_raw: Long?,
     someLongTypeProvidedNullable: Long?,
-    @field:NotBlank 
-    @field:Length(max = 100) 
+    @field:NotNull 
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val somePeriodModifiable_raw: Period?,
-    @field:Length(max = 100) 
     val somePeriodNullable: Period?,
     @field:NotBlank 
     @field:Length(max = 100) 

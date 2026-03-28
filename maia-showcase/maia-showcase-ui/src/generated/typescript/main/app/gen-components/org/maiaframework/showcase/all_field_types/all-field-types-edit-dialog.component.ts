@@ -109,7 +109,7 @@ export class AllFieldTypesEditDialogComponent implements OnInit {
                 someLongTypeProvided: new FormControl({value: 0, disabled: true}),
                 someLongTypeProvidedNullable: new FormControl({value: 0, disabled: true}),
                 someLocalDateModifiable: new FormControl('', { updateOn: 'change' }),
-                somePeriodModifiable: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+                somePeriodModifiable: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 somePeriodNullable: new FormControl({value: '', disabled: true}),
                 someEnum: new FormControl({value: SomeEnum.OK, disabled: true}),
                 someEnumNullable: new FormControl({value: SomeEnum.OK, disabled: true}),

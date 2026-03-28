@@ -122,6 +122,16 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
         submitSearch(
             startRow = 0,
             endRow = 3,
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "someIntFromLeft",
+                    "sort" to "asc"
+                ),
+                mapOf(
+                    "colId" to "someIntFromRight",
+                    "sort" to "asc"
+                )
+            ),
             filterModel = mapOf(
                 "someStringFromLeft" to mapOf(
                     "filterType" to "text",
@@ -153,6 +163,16 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
         submitSearch(
             startRow = 0,
             endRow = 3,
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "someIntFromLeft",
+                    "sort" to "asc"
+                ),
+                mapOf(
+                    "colId" to "someIntFromRight",
+                    "sort" to "asc"
+                )
+            ),
             filterModel = mapOf(
                 "someStringFromLeft" to mapOf(
                     "filterType" to "text",
@@ -184,6 +204,16 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
         submitSearch(
             startRow = 0,
             endRow = 3,
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "someIntFromLeft",
+                    "sort" to "asc"
+                ),
+                mapOf(
+                    "colId" to "someIntFromRight",
+                    "sort" to "asc"
+                )
+            ),
             filterModel = mapOf(
                 "someStringFromLeft" to mapOf(
                     "filterType" to "text",
@@ -215,6 +245,12 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
         submitSearch(
             startRow = 0,
             endRow = 3,
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "someIntFromRight",
+                    "sort" to "asc"
+                )
+            ),
             filterModel = mapOf(
                 "someStringFromLeft" to mapOf(
                     "filterType" to "text",
@@ -245,6 +281,16 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
         submitSearch(
             startRow = 0,
             endRow = 3,
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "someIntFromLeft",
+                    "sort" to "asc"
+                ),
+                mapOf(
+                    "colId" to "someIntFromRight",
+                    "sort" to "asc"
+                )
+            ),
             filterModel = mapOf(
                 "someStringFromLeft" to mapOf(
                     "filterType" to "text",
@@ -276,6 +322,16 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
         submitSearch(
             startRow = 0,
             endRow = 3,
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "someIntFromLeft",
+                    "sort" to "asc"
+                ),
+                mapOf(
+                    "colId" to "someIntFromRight",
+                    "sort" to "asc"
+                )
+            ),
             filterModel = mapOf(
                 "someStringFromLeft" to mapOf(
                     "filterType" to "text",
@@ -943,6 +999,16 @@ class ManyToManySearchableDtoTest : AbstractBlackBoxTest() {
         submitSearch(
             startRow = 0,
             endRow = 3,
+            sortModel = listOf(
+                mapOf(
+                    "colId" to "someIntFromLeft",
+                    "sort" to "asc"
+                ),
+                mapOf(
+                    "colId" to "someIntFromRight",
+                    "sort" to "asc"
+                )
+            ),
             filterModel = mapOf(
                 "someIntFromLeft" to mapOf(
                     "filterType" to "number",

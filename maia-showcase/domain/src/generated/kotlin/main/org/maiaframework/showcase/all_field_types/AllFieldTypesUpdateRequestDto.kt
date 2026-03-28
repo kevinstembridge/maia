@@ -36,8 +36,7 @@ class AllFieldTypesUpdateRequestDto
     @field:NotNull 
     @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someLocalDateModifiable_raw: LocalDate?,
-    @field:NotBlank 
-    @field:Length(max = 100) 
+    @field:NotNull 
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val somePeriodModifiable_raw: Period?,
     @field:NotBlank 

@@ -13,6 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
+import org.maiaframework.gen.spec.definition.lang.FieldTypes.isStringBased
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isValueFieldWrapper
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
@@ -43,7 +44,12 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
     init {
 
         this.requestDtoDef.classFieldDefs.forEach { classField ->
-            addConstructorArg(ConstructorArg(classField, classField.validationAnnotations))
+            val annotations = if (!classField.fieldType.isStringBased()) {
+                classField.validationAnnotations.filter { it.fqcn != Fqcns.VALIDATOR_CONSTRAINT_LENGTH }
+            } else {
+                classField.validationAnnotations
+            }
+            addConstructorArg(ConstructorArg(classField, annotations))
             addImportFor(classField.fieldType)
         }
 

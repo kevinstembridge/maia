@@ -224,7 +224,7 @@ object FieldTypes {
             is LongTypeFieldType -> false
             is MapFieldType -> false
             is ObjectIdFieldType -> true
-            is PeriodFieldType -> true
+            is PeriodFieldType -> false
             is RequestDtoFieldType -> false
             is SetFieldType -> false
             is SimpleResponseDtoFieldType -> false
