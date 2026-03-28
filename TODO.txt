@@ -1,14 +1,11 @@
 
-
+TODO * Enhance the AgGridDataSourceTest to test search functions on list fields.
+    => Use the AllFieldTypesEntity.
 TODO * Install the superpowers-extended-cc plugin.
 TODO * Test the Claude sandbox feature to run ralph-afk.sh
 TODO * Maia Showcase
     TODO * Create a Playwright test for the AllFieldTypesEntity Edit feature.
         TODO * The Edit action column should not be visible to an unauthorized user.
     TODO * Test fetchForEdit with a versioned entity.
-    TODO * Use Opus to create a showcase of Maia features.
-        TODO * Create a navigation menu with menu items for each entity.
-    TODO * Prove that edit works.
-        TODO * Write a test.
-    TODO * Remove all dependencies and add back in as needed, the goal is for application modules to not have to declare
-        a dependency on something that Maia needs.
+    TODO * Remove all dependencies and add back in as needed, the goal is for application
+            modules to not have to declare a dependency on something that Maia needs.
