@@ -29,7 +29,6 @@ sealed class FieldType(
     val fqcn: Fqcn,
     val bsonCompatibleType: BsonCompatibleType?,
     val typescriptCompatibleType: TypescriptCompatibleType?,
-    val jdbcCompatibleType: JdbcCompatibleType?,
     val sqlType: String?,
     val elasticMappingType: EsDocMappingType?,
     val hazelcastCompatibleType: HazelcastCompatibleType?,
@@ -46,6 +45,9 @@ sealed class FieldType(
     } else {
         fqcn.unqualifiedToString + parameters.map { it.unqualifiedToString }.joinToString(prefix = "<", separator = ", ", postfix = ">")
     }
+
+
+    abstract val jdbcCompatibleType: JdbcCompatibleType
 
 
     override fun toString(): String {
@@ -82,12 +84,15 @@ class BooleanFieldType internal constructor() : FieldType(
     Fqcn.BOOLEAN,
     BsonCompatibleType.BOOLEAN,
     TypescriptCompatibleTypes.boolean,
-    JdbcCompatibleType.boolean,
     "BIT",
     EsDocMappingTypes.boolean,
     HazelcastCompatibleType.BOOLEAN,
     defaultFormFieldValue = "false"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.boolean
+
 
     override fun unwrap(): FieldType {
         return this
@@ -102,13 +107,14 @@ class BooleanTypeFieldType internal constructor(
     booleanTypeDef.fqcn,
     BsonCompatibleType.BOOLEAN,
     TypescriptCompatibleTypes.boolean,
-    JdbcCompatibleType.boolean,
     "BIT",
     EsDocMappingTypes.boolean,
     HazelcastCompatibleType.BOOLEAN,
     defaultFormFieldValue = "false"
 ) {
 
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.boolean
 
     override fun unwrap(): FieldType {
         return FieldTypes.boolean
@@ -122,12 +128,14 @@ class IntFieldType internal constructor() : FieldType(
     Fqcn.INT,
     BsonCompatibleType.INT,
     TypescriptCompatibleTypes.number,
-    JdbcCompatibleType.integer,
     "INTEGER",
     EsDocMappingTypes.long,
     HazelcastCompatibleType.INT32,
     defaultFormFieldValue = "0"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.integer
 
 
     override fun unwrap(): FieldType {
@@ -144,12 +152,14 @@ class IntTypeFieldType internal constructor(
     intTypeDef.fqcn,
     BsonCompatibleType.INT,
     TypescriptCompatibleTypes.number,
-    JdbcCompatibleType.integer,
     "INTEGER",
     EsDocMappingTypes.long,
     HazelcastCompatibleType.INT32,
     defaultFormFieldValue = "0"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.integer
 
 
     override fun unwrap(): FieldType {
@@ -164,12 +174,14 @@ class DoubleFieldType internal constructor() : FieldType(
     Fqcn.DOUBLE,
     BsonCompatibleType.DOUBLE,
     TypescriptCompatibleTypes.number,
-    JdbcCompatibleType.decimal,
     "NUMERIC",
     EsDocMappingTypes.double,
     HazelcastCompatibleType.FLOAT64,
     defaultFormFieldValue = "0.0"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.decimal
 
 
     override fun unwrap(): FieldType {
@@ -184,12 +196,15 @@ class LongFieldType internal constructor() : FieldType(
     Fqcn.LONG,
     BsonCompatibleType.LONG,
     TypescriptCompatibleTypes.number,
-    JdbcCompatibleType.bigint,
     "BIGINT",
     EsDocMappingTypes.long,
     HazelcastCompatibleType.INT64,
     defaultFormFieldValue = "0"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.bigint
+
 
     override fun unwrap(): FieldType {
         return this
@@ -205,12 +220,14 @@ class LongTypeFieldType internal constructor(
     longTypeDef.fqcn,
     BsonCompatibleType.LONG,
     TypescriptCompatibleTypes.number,
-    JdbcCompatibleType.bigint,
     "BIGINT",
     EsDocMappingTypes.long,
     HazelcastCompatibleType.INT64,
     defaultFormFieldValue = "0"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.bigint
 
 
     override fun unwrap(): FieldType {
@@ -225,12 +242,14 @@ class UrlFieldType internal constructor() : FieldType(
     Fqcn.URL,
     BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.text,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = "https://example.com"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.text
 
 
     override fun unwrap(): FieldType {
@@ -245,12 +264,14 @@ class StringFieldType internal constructor() : FieldType(
     Fqcn.STRING,
     BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.text,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = "''"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.text
 
 
     override fun unwrap(): FieldType {
@@ -267,12 +288,14 @@ class StringTypeFieldType(
     stringTypeDef.fqcn,
     BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.text,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = "''"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.text
 
 
     override fun unwrap(): FieldType {
@@ -287,12 +310,14 @@ class DomainIdFieldType internal constructor() : FieldType(
     Fqcns.MAIA_DOMAIN_ID,
     BsonCompatibleType.DOMAIN_ID,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.uuid,
     "OTHER",
     EsDocMappingTypes.keyword,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = "''"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.uuid
 
 
     override fun unwrap(): FieldType {
@@ -307,12 +332,14 @@ class ObjectIdFieldType internal constructor() : FieldType(
     Fqcn.valueOf("org.bson.types.ObjectId"),
     BsonCompatibleType.OBJECT_ID,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.text,
     null,
     EsDocMappingTypes.keyword,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = "''"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.text
 
 
     override fun unwrap(): FieldType {
@@ -328,12 +355,14 @@ class EnumFieldType(
     enumDef.fqcn,
     BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.enum,
-    JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.keyword,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = enumDef.defaultFormFieldValue
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.text
 
 
     override fun unwrap(): FieldType {
@@ -350,12 +379,14 @@ class EsDocFieldType(
     esDocDef.fqcn,
     BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.jsonb,
     null,
     EsDocMappingTypes.text,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = "{}"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.jsonb
 
 
     override fun unwrap(): FieldType {
@@ -372,12 +403,14 @@ class DataClassFieldType(
     dataClassDef.fqcn,
     BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.object_,
-    JdbcCompatibleType.jsonb,
     null,
     EsDocMappingTypes.`object`,
     HazelcastCompatibleType.COMPACT,
     defaultFormFieldValue = "{}"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.jsonb
 
 
     override fun unwrap(): FieldType {
@@ -392,12 +425,14 @@ class InstantFieldType internal constructor() : FieldType(
     Fqcn.INSTANT,
     BsonCompatibleType.INSTANT,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.timestamp_with_time_zone,
     "TIMESTAMP",
     EsDocMappingTypes.text,
     HazelcastCompatibleType.OFFSET_DATE_TIME,
     defaultFormFieldValue = "''"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.timestamp_with_time_zone
 
 
     override fun unwrap(): FieldType {
@@ -412,12 +447,14 @@ class LocalDateFieldType internal constructor() : FieldType(
     Fqcn.LOCAL_DATE,
     BsonCompatibleType.LOCAL_DATE,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.date,
     "DATE",
     EsDocMappingTypes.date,
     HazelcastCompatibleType.LOCAL_DATE,
     defaultFormFieldValue = "''"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.date
 
 
     override fun unwrap(): FieldType {
@@ -432,12 +469,14 @@ class PeriodFieldType internal constructor() : FieldType(
     Fqcn.PERIOD,
     BsonCompatibleType.PERIOD,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.text,
     "VARCHAR",
     EsDocMappingTypes.text,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = "''"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.text
 
 
     override fun unwrap(): FieldType {
@@ -454,13 +493,16 @@ class ListFieldType internal constructor(
     Fqcn.LIST,
     parameterFieldType.bsonCompatibleType,
     typescriptCompatibleType = ReadonlyArrayTypescriptType(parameterFieldType),
-    jdbcCompatibleType = parameterFieldType.jdbcCompatibleType,
     sqlType = null,
     elasticMappingType = null,
     hazelcastCompatibleType = null,
     parameters = listOf(parameterFieldType),
     defaultFormFieldValue = "[]"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType
+        get() = jdbcCompatibleTypeForListOrSet(parameterFieldType)
 
 
     override fun unwrap(): FieldType {
@@ -471,19 +513,59 @@ class ListFieldType internal constructor(
 }
 
 
+private fun jdbcCompatibleTypeForListOrSet(parameterFieldType: FieldType): JdbcCompatibleType {
+
+    return when (parameterFieldType) {
+        is BooleanFieldType -> JdbcCompatibleType.boolean_array
+        is BooleanTypeFieldType -> JdbcCompatibleType.boolean_array
+        is BooleanValueClassFieldType -> JdbcCompatibleType.boolean_array
+        is DataClassFieldType -> JdbcCompatibleType.jsonb
+        is DomainIdFieldType -> JdbcCompatibleType.uuid_array
+        is DoubleFieldType -> JdbcCompatibleType.decimal_array
+        is EnumFieldType -> JdbcCompatibleType.text_array
+        is EsDocFieldType -> TODO("YAGNI?")
+        is ForeignKeyFieldType -> TODO("YAGNI?")
+        is FqcnFieldType -> TODO("YAGNI?")
+        is IdAndNameFieldType -> TODO("YAGNI?")
+        is InstantFieldType -> TODO("YAGNI?")
+        is IntFieldType -> JdbcCompatibleType.integer_array
+        is IntTypeFieldType -> JdbcCompatibleType.integer_array
+        is IntValueClassFieldType -> JdbcCompatibleType.integer_array
+        is ListFieldType -> TODO("YAGNI?")
+        is LocalDateFieldType -> TODO("YAGNI?")
+        is LongFieldType -> JdbcCompatibleType.integer_array
+        is LongTypeFieldType -> JdbcCompatibleType.integer_array
+        is MapFieldType -> TODO("YAGNI?")
+        is ObjectIdFieldType -> TODO("YAGNI?")
+        is PeriodFieldType -> JdbcCompatibleType.text_array
+        is RequestDtoFieldType -> TODO("YAGNI?")
+        is SetFieldType -> TODO("YAGNI?")
+        is SimpleResponseDtoFieldType -> TODO("YAGNI?")
+        is StringFieldType -> JdbcCompatibleType.text_array
+        is StringTypeFieldType -> JdbcCompatibleType.text_array
+        is StringValueClassFieldType -> JdbcCompatibleType.text_array
+        is UrlFieldType -> JdbcCompatibleType.text_array
+    }
+
+}
+
+
 class SetFieldType internal constructor(
     val parameterFieldType: FieldType
 ) : FieldType(
     Fqcn.SET,
     parameterFieldType.bsonCompatibleType,
     typescriptCompatibleType = null,
-    jdbcCompatibleType = JdbcCompatibleType.jsonb,
     sqlType = null,
     elasticMappingType = null,
     hazelcastCompatibleType = null,
     parameters = listOf(parameterFieldType),
     defaultFormFieldValue = "[]"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType
+        get() = jdbcCompatibleTypeForListOrSet(parameterFieldType)
 
 
     override fun unwrap(): FieldType {
@@ -501,13 +583,15 @@ class MapFieldType internal constructor(
     Fqcn.MAP,
     BsonCompatibleType.DOCUMENT,
     typescriptCompatibleType = TypescriptCompatibleTypes.record(keyFieldType, valueFieldType),
-    jdbcCompatibleType = JdbcCompatibleType.jsonb,
     sqlType = null,
     elasticMappingType = null,
     hazelcastCompatibleType = null,
     parameters = listOf(keyFieldType, valueFieldType),
     defaultFormFieldValue = "{}"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.jsonb
 
 
     override fun unwrap(): FieldType {
@@ -524,12 +608,14 @@ class BooleanValueClassFieldType internal constructor(
     valueClassDef.fqcn,
     valueClassDef.underlyingFieldType.bsonCompatibleType,
     valueClassDef.underlyingFieldType.typescriptCompatibleType,
-    valueClassDef.underlyingFieldType.jdbcCompatibleType,
     valueClassDef.underlyingFieldType.sqlType,
     valueClassDef.underlyingFieldType.elasticMappingType,
     valueClassDef.underlyingFieldType.hazelcastCompatibleType,
     defaultFormFieldValue = "false"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.boolean
 
 
     override fun unwrap(): FieldType {
@@ -546,12 +632,14 @@ class IntValueClassFieldType internal constructor(
     valueClassDef.fqcn,
     valueClassDef.underlyingFieldType.bsonCompatibleType,
     valueClassDef.underlyingFieldType.typescriptCompatibleType,
-    valueClassDef.underlyingFieldType.jdbcCompatibleType,
     valueClassDef.underlyingFieldType.sqlType,
     valueClassDef.underlyingFieldType.elasticMappingType,
     valueClassDef.underlyingFieldType.hazelcastCompatibleType,
     defaultFormFieldValue = "0"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = valueClassDef.underlyingFieldType.jdbcCompatibleType
 
 
     override fun unwrap(): FieldType {
@@ -568,12 +656,14 @@ class StringValueClassFieldType internal constructor(
     valueClassDef.fqcn,
     valueClassDef.underlyingFieldType.bsonCompatibleType,
     valueClassDef.underlyingFieldType.typescriptCompatibleType,
-    valueClassDef.underlyingFieldType.jdbcCompatibleType,
     valueClassDef.underlyingFieldType.sqlType,
     valueClassDef.underlyingFieldType.elasticMappingType,
     valueClassDef.underlyingFieldType.hazelcastCompatibleType,
     defaultFormFieldValue = "''"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = valueClassDef.underlyingFieldType.jdbcCompatibleType
 
 
     override fun unwrap(): FieldType {
@@ -590,12 +680,14 @@ class ForeignKeyFieldType internal constructor(
     Fqcns.MAIA_DOMAIN_ID,
     BsonCompatibleType.DOMAIN_ID,
     TypescriptCompatibleTypes.string,
-    JdbcCompatibleType.uuid,
     "OTHER",
     EsDocMappingTypes.keyword,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = "''"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.uuid
 
 
     override fun unwrap(): FieldType {
@@ -612,7 +704,6 @@ class RequestDtoFieldType internal constructor(
     requestDtoDef.fqcn,
     BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.any,
-    JdbcCompatibleType.jsonb,
     sqlType = null,
     EsDocMappingTypes.`object`,
     HazelcastCompatibleType.COMPACT,
@@ -621,6 +712,9 @@ class RequestDtoFieldType internal constructor(
         |${requestDtoDef.dtoFieldDefs.joinToString(",\n") { "            ${it.classFieldDef.classFieldName}: ${it.classFieldDef.defaultFormFieldValue}" }}
         |        }""".trimMargin()
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.jsonb
 
 
     override fun unwrap(): FieldType {
@@ -637,7 +731,6 @@ class SimpleResponseDtoFieldType internal constructor(
     responseDtoDef.fqcn,
     BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.dto(responseDtoDef.dtoDef.fieldType),
-    JdbcCompatibleType.jsonb,
     sqlType = "OTHER",
     EsDocMappingTypes.`object`,
     HazelcastCompatibleType.COMPACT,
@@ -647,6 +740,7 @@ class SimpleResponseDtoFieldType internal constructor(
         |        }""".trimMargin()
 ) {
 
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.jsonb
 
     override fun unwrap(): FieldType {
         return this
@@ -662,12 +756,14 @@ class IdAndNameFieldType internal constructor(
     idAndNameDef.dtoDef.fqcn,
     BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.object_,
-    JdbcCompatibleType.jsonb,
     sqlType = null,
     EsDocMappingTypes.`object`,
     HazelcastCompatibleType.COMPACT,
     defaultFormFieldValue = "{}"
 ) {
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.jsonb
 
 
     override fun unwrap(): FieldType {
@@ -682,7 +778,7 @@ class FqcnFieldType internal constructor(
     fqcn: Fqcn,
     bsonCompatibleType: BsonCompatibleType?,
     typescriptCompatibleType: TypescriptCompatibleType?,
-    jdbcCompatibleType: JdbcCompatibleType?,
+    private val providedJdbcCompatibleType: JdbcCompatibleType?,
     sqlType: String?,
     elasticMappingType: EsDocMappingType?,
     hazelcastCompatibleType: HazelcastCompatibleType?
@@ -690,12 +786,15 @@ class FqcnFieldType internal constructor(
     fqcn,
     bsonCompatibleType,
     typescriptCompatibleType,
-    jdbcCompatibleType,
     sqlType,
     elasticMappingType,
     hazelcastCompatibleType,
     defaultFormFieldValue = "'"
 ) {
+
+    override val jdbcCompatibleType: JdbcCompatibleType
+        get() = providedJdbcCompatibleType
+            ?: throw IllegalStateException("FQCN field types must have a JDBC compatible type")
 
 
     override fun unwrap(): FieldType {

@@ -97,15 +97,19 @@ object FieldTypes {
         sqlType: String? = null,
         elasticMappingType: EsDocMappingType? = null,
         hazelcastCompatibleType: HazelcastCompatibleType? = null
-    ) = FqcnFieldType(
-        fqcn,
-        bsonCompatibleType,
-        typescriptCompatibleType,
-        jdbcCompatibleType,
-        sqlType,
-        elasticMappingType,
-        hazelcastCompatibleType
-    )
+    ): FqcnFieldType {
+
+        return FqcnFieldType(
+            fqcn,
+            bsonCompatibleType,
+            typescriptCompatibleType,
+            jdbcCompatibleType,
+            sqlType,
+            elasticMappingType,
+            hazelcastCompatibleType
+        )
+
+    }
 
 
     fun requestDto(requestDtoDef: RequestDtoDef) = RequestDtoFieldType(requestDtoDef)
@@ -310,9 +314,9 @@ object FieldTypes {
     class MapFieldTypeBuilder(private val keyParameterizedType: FieldType) {
 
 
-        fun to(valueFqcn: Fqcn): MapFieldType {
+        fun to(valueFqcn: Fqcn, jdbcCompatibleType: JdbcCompatibleType): MapFieldType {
 
-            return mapFieldType(this.keyParameterizedType, byFqcn(valueFqcn))
+            return mapFieldType(this.keyParameterizedType, byFqcn(valueFqcn, jdbcCompatibleType = jdbcCompatibleType))
 
         }
 

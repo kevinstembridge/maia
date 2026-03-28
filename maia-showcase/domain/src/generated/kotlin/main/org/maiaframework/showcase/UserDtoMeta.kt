@@ -28,7 +28,7 @@ object UserDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "authorities" -> JdbcCompatibleType.text
+            "authorities" -> JdbcCompatibleType.text_array
             "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
             "displayName" -> JdbcCompatibleType.text
             "encryptedPassword" -> JdbcCompatibleType.text

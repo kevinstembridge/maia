@@ -836,7 +836,8 @@ class EntityDef(
     val hasAnyMapFields = allEntityFieldsSorted.any { it.classFieldDef.isMap }
 
 
-    val hasAnyJsonFields = allEntityFieldsSorted.any { it.classFieldDef.fieldType.jdbcCompatibleType == JdbcCompatibleType.jsonb }
+    val hasAnyJsonFields: Boolean
+        get() = allEntityFieldsSorted.any { it.classFieldDef.fieldType.jdbcCompatibleType == JdbcCompatibleType.jsonb }
 
 
     fun findFieldByPath(fieldPath: FieldPath): EntityAndField {

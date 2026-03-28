@@ -86,7 +86,7 @@ object AllFieldTypesDtoMeta {
             "someIntTypeNullable" -> JdbcCompatibleType.integer
             "someIntTypeProvided" -> JdbcCompatibleType.integer
             "someIntTypeProvidedNullable" -> JdbcCompatibleType.integer
-            "someListOfStrings" -> JdbcCompatibleType.text
+            "someListOfStrings" -> JdbcCompatibleType.text_array
             "someLocalDateModifiable" -> JdbcCompatibleType.date
             "someLongType" -> JdbcCompatibleType.bigint
             "someLongTypeNullable" -> JdbcCompatibleType.bigint

@@ -98,6 +98,7 @@ import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.Uqcn
+import org.maiaframework.jdbc.JdbcCompatibleType
 import org.maiaframework.lang.text.StringFunctions
 
 
@@ -630,7 +631,7 @@ abstract class AbstractSpec protected constructor(
 
     protected fun mapOfStringToAny(): MapFieldType {
 
-        return FieldTypes.MapFieldTypeBuilder(FieldTypes.string).to(Fqcn.ANY)
+        return FieldTypes.MapFieldTypeBuilder(FieldTypes.string).to(Fqcn.ANY, JdbcCompatibleType.jsonb)
 
     }
 

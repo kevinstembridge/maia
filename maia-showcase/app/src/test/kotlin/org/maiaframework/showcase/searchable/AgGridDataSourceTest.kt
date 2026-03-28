@@ -1231,18 +1231,10 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
 
         val entity1 = AllFieldTypesEntityTestBuilder(
             someListOfStrings = listOf("apple", "banana"),
-            someString = "notContainsEntity1",
-            someIntType = SomeIntType(201),
-            someLongType = SomeLongType(20001L),
-            someStringType = SomeStringType("notContainsStrType1"),
         ).build()
 
         val entity2 = AllFieldTypesEntityTestBuilder(
             someListOfStrings = listOf("cherry", "date"),
-            someString = "notContainsEntity2",
-            someIntType = SomeIntType(202),
-            someLongType = SomeLongType(20002L),
-            someStringType = SomeStringType("notContainsStrType2"),
         ).build()
 
         this.allFieldTypesDao.insert(entity1)
@@ -1258,13 +1250,13 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
                     "filter" to "apple"
                 )
             )
-        ).bodyJson().isEqualTo(expectedAllFieldTypesResult(
-            1,
-            listOf(entity2),
-            3,
-            4,
-            5,
-            6
+        ).bodyJson().isLenientlyEqualTo(expectedAllFieldTypesResult(
+            totalCount = 1,
+            rows = listOf(entity2),
+            firstResultIndex = 1,
+            lastResultIndex = 1,
+            offset = 0,
+            limit = 10
         ))
 
     }

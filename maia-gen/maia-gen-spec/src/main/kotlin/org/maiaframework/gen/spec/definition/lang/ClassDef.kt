@@ -2,7 +2,6 @@ package org.maiaframework.gen.spec.definition.lang
 
 import org.maiaframework.gen.persist.BsonCompatibleType
 import org.maiaframework.gen.spec.definition.Fqcns
-import org.maiaframework.gen.spec.definition.TypescriptCompatibleType
 import org.maiaframework.gen.spec.definition.TypescriptCompatibleTypes
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
 import org.maiaframework.jdbc.JdbcCompatibleType
@@ -63,7 +62,7 @@ class ClassDef(
         this.fqcn,
         bsonCompatibleType = BsonCompatibleType.DOCUMENT,
         typescriptCompatibleType = TypescriptCompatibleTypes.any,
-        jdbcCompatibleType = JdbcCompatibleType.jsonb,
+        providedJdbcCompatibleType = JdbcCompatibleType.jsonb,
         sqlType = "jsonb",
         elasticMappingType = null,
         hazelcastCompatibleType = null

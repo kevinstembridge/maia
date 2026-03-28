@@ -147,7 +147,7 @@ class AgGridSearchModelConverter(
 
                 val filterTerm = fieldFilterModel.getString("filter")
 
-                if (jdbcCompatibleType == JdbcCompatibleType.array) {
+                if (jdbcCompatibleType == JdbcCompatibleType.text_array) {
                     return when (filterType) {
                         "contains" -> {
                             sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
@@ -374,18 +374,24 @@ class AgGridSearchModelConverter(
     private fun dbColumnNameSuffixFor(jdbcCompatibleType: JdbcCompatibleType): String {
 
         return when (jdbcCompatibleType) {
-            JdbcCompatibleType.array -> ""
             JdbcCompatibleType.bigint -> ""
+            JdbcCompatibleType.text_array -> ""
             JdbcCompatibleType.boolean -> ""
+            JdbcCompatibleType.boolean_array -> ""
             JdbcCompatibleType.date -> ""
             JdbcCompatibleType.decimal -> ""
+            JdbcCompatibleType.decimal_array -> ""
             JdbcCompatibleType.integer -> ""
+            JdbcCompatibleType.integer_array -> ""
             JdbcCompatibleType.jsonb -> ""
             JdbcCompatibleType.smallint -> ""
+            JdbcCompatibleType.smallint_array -> ""
             JdbcCompatibleType.text -> ""
             JdbcCompatibleType.timestamp -> ""
+            JdbcCompatibleType.timestamp_array -> ""
             JdbcCompatibleType.timestamp_with_time_zone -> ""
             JdbcCompatibleType.uuid -> "::text"
+            JdbcCompatibleType.uuid_array -> ""
             JdbcCompatibleType.varchar -> ""
         }
 

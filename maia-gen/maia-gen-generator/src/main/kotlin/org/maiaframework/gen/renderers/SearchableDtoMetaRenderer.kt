@@ -53,15 +53,18 @@ class SearchableDtoMetaRenderer(
             |        return when(dtoFieldName) {""".trimMargin())
 
         searchableDtoDef.allFields.forEach { field ->
-            appendLine("            \"${field.classFieldName}\" -> JdbcCompatibleType.${field.entityFieldDef.fieldType.jdbcCompatibleType!!.name}")
+
+            val jdbcTypeName = field.entityFieldDef.fieldType.jdbcCompatibleType!!.name
+            appendLine("            \"${field.classFieldName}\" -> JdbcCompatibleType.$jdbcTypeName")
+
         }
 
-        appendLine("""
-            |            else -> throw IllegalArgumentException("Unknown field name [${'$'}dtoFieldName]. Expected one of ${searchableDtoDef.allFields.map { it.classFieldName }}")
+        appendLine(
+            $$"""
+            |            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of $${searchableDtoDef.allFields.map { it.classFieldName }}")
             |        }
             |
-            |    }
-        """.trimMargin())
+            |    }""".trimMargin())
 
     }
 
