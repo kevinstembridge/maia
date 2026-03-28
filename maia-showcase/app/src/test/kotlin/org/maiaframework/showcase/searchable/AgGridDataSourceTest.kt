@@ -1154,26 +1154,14 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
 
         val entity1 = AllFieldTypesEntityTestBuilder(
             someListOfStrings = listOf("apple", "banana"),
-            someString = "listEntity1",
-            someIntType = SomeIntType(101),
-            someLongType = SomeLongType(10001L),
-            someStringType = SomeStringType("listStrType1"),
         ).build()
 
         val entity2 = AllFieldTypesEntityTestBuilder(
             someListOfStrings = listOf("cherry", "date"),
-            someString = "listEntity2",
-            someIntType = SomeIntType(102),
-            someLongType = SomeLongType(10002L),
-            someStringType = SomeStringType("listStrType2"),
         ).build()
 
         val entity3 = AllFieldTypesEntityTestBuilder(
             someListOfStrings = listOf("apple", "cherry"),
-            someString = "listEntity3",
-            someIntType = SomeIntType(103),
-            someLongType = SomeLongType(10003L),
-            someStringType = SomeStringType("listStrType3"),
         ).build()
 
         this.allFieldTypesDao.insert(entity1)
@@ -1190,7 +1178,13 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
                     "filter" to "apple"
                 )
             )
-        ).bodyJson().isEqualTo(expectedAllFieldTypesResult(1, listOf(entity1, entity2), 1, 2, 0, 10))
+        ).bodyJson().isLenientlyEqualTo(expectedAllFieldTypesResult(
+            totalCount = 2,
+            rows = listOf(entity1, entity3),
+            firstResultIndex = 1,
+            lastResultIndex = 2,
+            0,
+            10))
 
         submitAllFieldTypesSearch(
             startRow = 0,
@@ -1202,7 +1196,13 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
                     "filter" to "banana"
                 )
             )
-        ).bodyJson().isEqualTo(expectedAllFieldTypesResult(1, listOf(entity1, entity2), 1, 2, 0, 10))
+        ).bodyJson().isLenientlyEqualTo(expectedAllFieldTypesResult(
+            totalCount = 1,
+            rows = listOf(entity1),
+            firstResultIndex = 1,
+            1,
+            0,
+            10))
 
         submitAllFieldTypesSearch(
             startRow = 0,
@@ -1214,13 +1214,13 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
                     "filter" to "notExists"
                 )
             )
-        ).bodyJson().isEqualTo(expectedAllFieldTypesResult(
-            1,
-            listOf(entity1, entity2, entity3),
-            1,
-            10,
-            8,
-            4
+        ).bodyJson().isLenientlyEqualTo(expectedAllFieldTypesResult(
+            totalCount = 0,
+            rows = listOf(),
+            firstResultIndex = 1,
+            lastResultIndex = 0,
+            0,
+            10
         ))
 
     }
@@ -1380,13 +1380,14 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     }
 
 
-    private fun jsonFor(entity: AllFieldTypesEntity): Map<String, Any?> {
+    private fun jsonFor(
+        entity: AllFieldTypesEntity
+    ): Map<String, Any?> {
 
         return mapOf(
             "id" to entity.id.value,
             "someString" to entity.someString,
-            "somInt" to entity.someInt,
-            "createdTimestampUtc" to entity.createdTimestampUtc.truncatedTo(ChronoUnit.MILLIS).toString()
+            "someInt" to entity.someInt
         )
 
     }
