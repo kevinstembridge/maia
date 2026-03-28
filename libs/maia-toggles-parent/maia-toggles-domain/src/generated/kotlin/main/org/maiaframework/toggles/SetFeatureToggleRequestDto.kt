@@ -14,6 +14,7 @@ import jakarta.validation.constraints.NotNull
 @JsonIgnoreProperties(ignoreUnknown = true)
 class SetFeatureToggleRequestDto
 @JsonCreator constructor(
+    @param:JsonProperty("comment", access = JsonProperty.Access.READ_WRITE) 
     val comment: String?,
     @field:NotNull 
     @param:JsonProperty("enabled", access = JsonProperty.Access.READ_WRITE) 

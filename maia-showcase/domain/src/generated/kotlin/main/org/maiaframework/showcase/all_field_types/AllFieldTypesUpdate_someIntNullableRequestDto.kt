@@ -17,6 +17,7 @@ class AllFieldTypesUpdate_someIntNullableRequestDto
     @NotNull 
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
+    @param:JsonProperty("someIntNullable", access = JsonProperty.Access.READ_WRITE) 
     val someIntNullable: Int?
 ) {
 

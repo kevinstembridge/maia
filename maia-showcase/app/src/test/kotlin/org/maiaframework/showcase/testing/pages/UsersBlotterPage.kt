@@ -28,7 +28,7 @@ class UsersBlotterPage(
 
     fun clickSubmitButton() {
 
-        `click the button named`("Submit")
+        `get the button named`("Submit").click(Locator.ClickOptions().setForce(true))
 
     }
 
@@ -142,7 +142,11 @@ class UsersBlotterPage(
 
         page.locator("mat-dialog-container mat-select[formcontrolname='authorities']").click()
         page.locator("mat-option").filter(Locator.FilterOptions().setHasText(authority)).click()
-        page.keyboard().press("Escape")
+        page.mouse().move(0.0, 0.0)
+        page.evaluate("document.querySelector('.cdk-overlay-transparent-backdrop')?.click()")
+        page.locator("mat-option").first().waitFor(
+            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
+        )
 
     }
 
