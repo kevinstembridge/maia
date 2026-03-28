@@ -44,6 +44,7 @@ data class AllFieldTypesTableDto(
     val someIntTypeNullable: SomeIntType?,
     val someIntTypeProvided: SomeProvidedIntType,
     val someIntTypeProvidedNullable: SomeProvidedIntType?,
+    val someListOfStrings: List<String>,
     val someLocalDateModifiable: LocalDate,
     val someLongType: SomeLongType,
     val someLongTypeNullable: SomeLongType?,

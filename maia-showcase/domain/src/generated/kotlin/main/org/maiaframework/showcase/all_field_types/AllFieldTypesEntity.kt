@@ -45,6 +45,7 @@ class AllFieldTypesEntity(
     val someIntTypeNullable: SomeIntType?,
     val someIntTypeProvided: SomeProvidedIntType,
     val someIntTypeProvidedNullable: SomeProvidedIntType?,
+    val someListOfStrings: List<String>,
     val someLocalDateModifiable: LocalDate,
     val someLongType: SomeLongType,
     val someLongTypeNullable: SomeLongType?,
@@ -90,8 +91,9 @@ class AllFieldTypesEntity(
                 "someIntType = '" + this.someIntType + '\'' + ", " + 
                 "someIntTypeNullable = '" + this.someIntTypeNullable + '\'' + ", " + 
                 "someIntTypeProvided = '" + this.someIntTypeProvided + '\'' + ", " + 
-                "someIntTypeProvidedNullable = '" + this.someIntTypeProvidedNullable + '\'' + ", " + 
-                "someLocalDateModifiable = '" + this.someLocalDateModifiable + '\'' + ", " + 
+                "someIntTypeProvidedNullable = '" + this.someIntTypeProvidedNullable + '\'' + ", " +
+                "someListOfStrings = '" + this.someListOfStrings + '\'' + ", " +
+                "someLocalDateModifiable = '" + this.someLocalDateModifiable + '\'' + ", " +
                 "someLongType = '" + this.someLongType + '\'' + ", " + 
                 "someLongTypeNullable = '" + this.someLongTypeNullable + '\'' + ", " + 
                 "someLongTypeProvided = '" + this.someLongTypeProvided + '\'' + ", " + 
@@ -142,6 +144,7 @@ class AllFieldTypesEntity(
             someIntTypeNullable: SomeIntType?,
             someIntTypeProvided: SomeProvidedIntType,
             someIntTypeProvidedNullable: SomeProvidedIntType?,
+            someListOfStrings: List<String>,
             someLocalDateModifiable: LocalDate,
             someLongType: SomeLongType,
             someLongTypeNullable: SomeLongType?,
@@ -190,6 +193,7 @@ class AllFieldTypesEntity(
                 someIntTypeNullable,
                 someIntTypeProvided,
                 someIntTypeProvidedNullable,
+                someListOfStrings,
                 someLocalDateModifiable,
                 someLongType,
                 someLongTypeNullable,
