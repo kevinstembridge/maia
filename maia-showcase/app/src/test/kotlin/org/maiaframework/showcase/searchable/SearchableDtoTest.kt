@@ -1,6 +1,5 @@
 package org.maiaframework.showcase.searchable
 
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -13,8 +12,6 @@ import org.maiaframework.showcase.join.BravoEntity
 import org.maiaframework.showcase.join.BravoEntityTestBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.Instant
 import java.time.LocalDate

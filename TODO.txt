@@ -1,5 +1,6 @@
 
 
+TODO * Install the superpowers-extended-cc plugin.
 TODO * Test the Claude sandbox feature to run ralph-afk.sh
 TODO * Maia Showcase
     TODO * Create a Playwright test for the AllFieldTypesEntity Edit feature.

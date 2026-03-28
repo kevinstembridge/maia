@@ -1,6 +1,5 @@
 package org.maiaframework.showcase.searchable
 
-import jakarta.servlet.http.Cookie
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -14,14 +13,12 @@ import org.maiaframework.showcase.join.BravoAgGridEntity
 import org.maiaframework.showcase.join.BravoAgGridEntityTestBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.mock.web.MockCookie
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+
 
 class AgGridDataSourceTest : AbstractBlackBoxTest() {
 
@@ -29,39 +26,59 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
     @Autowired
     private lateinit var alphaDao: AlphaAgGridDao
 
+
     @Autowired
     private lateinit var bravoDao: BravoAgGridDao
 
+
     private val timestamp1 = Instant.now().truncatedTo(ChronoUnit.MILLIS).minusSeconds(24 * 60 * 60)
+
+
     private val timestamp2 = Instant.now().truncatedTo(ChronoUnit.MILLIS)
+
+
     private val timestamp3 = Instant.now().truncatedTo(ChronoUnit.MILLIS).plusSeconds(24 * 60 * 60)
 
+
     private val someInt1 = 1
+
+
     private val someInt2 = 2
 
+
     private val alphaEntity1 = AlphaAgGridEntityTestBuilder(someInt = someInt1, someString = "someAlphaValue1").build()
+
+
     private val alphaEntity2 = AlphaAgGridEntityTestBuilder(someInt = someInt2, someString = "someAlphaValue2").build()
+
 
     private val bravoEntity1 = BravoAgGridEntityTestBuilder(
         createdTimestampUtc = timestamp1,
         alphaId = alphaEntity1.id,
         someString = "aSomeValue1"
     ).build()
+
+
     private val bravoEntity2 = BravoAgGridEntityTestBuilder(
         createdTimestampUtc = timestamp2,
         alphaId = alphaEntity1.id,
         someString = "aSomeValue2"
     ).build()
+
+
     private val bravoEntity3 = BravoAgGridEntityTestBuilder(
         createdTimestampUtc = timestamp2,
         alphaId = alphaEntity2.id,
         someString = "bSomeValue3"
     ).build()
+
+
     private val bravoEntity4 = BravoAgGridEntityTestBuilder(
         createdTimestampUtc = timestamp3,
         alphaId = alphaEntity2.id,
         someString = "bSomeValue4"
     ).build()
+
 
     @BeforeEach
     fun beforeEach() {
