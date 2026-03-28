@@ -69,6 +69,7 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
+                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
@@ -110,6 +111,7 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
+                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
@@ -153,6 +155,7 @@ class AllFieldTypesDao(
                 addValue("someIntTypeNullable", entity.someIntTypeNullable)
                 addValue("someIntTypeProvided", entity.someIntTypeProvided)
                 addValue("someIntTypeProvidedNullable", entity.someIntTypeProvidedNullable)
+                addListOfStrings("someListOfStrings", entity.someListOfStrings)
                 addValue("someLocalDateModifiable", entity.someLocalDateModifiable)
                 addValue("someLongType", entity.someLongType)
                 addValue("someLongTypeNullable", entity.someLongTypeNullable)
@@ -204,6 +207,7 @@ class AllFieldTypesDao(
                 some_int_type_nullable,
                 some_int_type_provided,
                 some_int_type_provided_nullable,
+                some_list_of_strings,
                 some_local_date_modifiable,
                 some_long_type,
                 some_long_type_nullable,
@@ -245,6 +249,7 @@ class AllFieldTypesDao(
                 :someIntTypeNullable,
                 :someIntTypeProvided,
                 :someIntTypeProvidedNullable,
+                :someListOfStrings,
                 :someLocalDateModifiable,
                 :someLongType,
                 :someLongTypeNullable,
@@ -289,6 +294,7 @@ class AllFieldTypesDao(
                     addValue("someIntTypeNullable", entity.someIntTypeNullable)
                     addValue("someIntTypeProvided", entity.someIntTypeProvided)
                     addValue("someIntTypeProvidedNullable", entity.someIntTypeProvidedNullable)
+                    addListOfStrings("someListOfStrings", entity.someListOfStrings)
                     addValue("someLocalDateModifiable", entity.someLocalDateModifiable)
                     addValue("someLongType", entity.someLongType)
                     addValue("someLongTypeNullable", entity.someLongTypeNullable)

@@ -47,6 +47,7 @@ class AllFieldTypesEntityRowMapper : MaiaRowMapper<AllFieldTypesEntity> {
         val someIntTypeNullable = rsa.readIntOrNull("some_int_type_nullable") { SomeIntType(it) }
         val someIntTypeProvided = rsa.readInt("some_int_type_provided") { SomeProvidedIntType(it) }
         val someIntTypeProvidedNullable = rsa.readIntOrNull("some_int_type_provided_nullable") { SomeProvidedIntType(it) }
+        val someListOfStrings = rsa.readListOfStrings("some_list_of_strings")
         val someLocalDateModifiable = rsa.readLocalDate("some_local_date_modifiable")
         val someLongType = rsa.readLong("some_long_type") { SomeLongType(it) }
         val someLongTypeNullable = rsa.readLongOrNull("some_long_type_nullable") { SomeLongType(it) }
@@ -89,6 +90,7 @@ class AllFieldTypesEntityRowMapper : MaiaRowMapper<AllFieldTypesEntity> {
                 someIntTypeNullable,
                 someIntTypeProvided,
                 someIntTypeProvidedNullable,
+                someListOfStrings,
                 someLocalDateModifiable,
                 someLongType,
                 someLongTypeNullable,

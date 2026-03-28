@@ -63,6 +63,7 @@ CREATE TABLE maia.all_field_types (
     some_int_type_nullable integer NULL,
     some_int_type_provided integer NOT NULL,
     some_int_type_provided_nullable integer NULL,
+    some_list_of_strings text[] NOT NULL,
     some_local_date_modifiable date NOT NULL,
     some_long_type bigint NOT NULL,
     some_long_type_nullable bigint NULL,

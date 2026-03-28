@@ -66,6 +66,7 @@ class AllFieldTypesTableDtoDao(
                 maia.all_field_types.some_int_type_nullable as someIntTypeNullable,
                 maia.all_field_types.some_int_type_provided as someIntTypeProvided,
                 maia.all_field_types.some_int_type_provided_nullable as someIntTypeProvidedNullable,
+                maia.all_field_types.some_list_of_strings as someListOfStrings,
                 maia.all_field_types.some_local_date_modifiable as someLocalDateModifiable,
                 maia.all_field_types.some_long_type as someLongType,
                 maia.all_field_types.some_long_type_nullable as someLongTypeNullable,
