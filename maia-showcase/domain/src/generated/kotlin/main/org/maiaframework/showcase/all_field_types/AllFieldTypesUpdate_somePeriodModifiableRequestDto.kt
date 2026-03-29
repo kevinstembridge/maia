@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import org.maiaframework.common.validation.PeriodConstraint
 import org.maiaframework.domain.DomainId
 import java.time.Period
 
@@ -18,9 +20,10 @@ class AllFieldTypesUpdate_somePeriodModifiableRequestDto
     @NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @field:NotNull
+    @field:NotBlank
+    @field:PeriodConstraint
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
-    private val somePeriodModifiable_raw: Period?
+    private val somePeriodModifiable_raw: String?
 ) {
 
 
@@ -31,7 +34,7 @@ class AllFieldTypesUpdate_somePeriodModifiableRequestDto
 
     @get:JsonIgnore
     val somePeriodModifiable
-        get() = somePeriodModifiable_raw!!
+        get() = somePeriodModifiable_raw!!.let { Period.parse(it) }
 
 
     override fun toString(): String {

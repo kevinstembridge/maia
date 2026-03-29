@@ -101,8 +101,8 @@ class AllFieldTypesCreateRequestDto
     @field:PeriodConstraint
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val somePeriodModifiable_raw: String?,
-    @param:JsonProperty("somePeriodNullable", access = JsonProperty.Access.READ_WRITE)
     @field:PeriodConstraint
+    @param:JsonProperty("somePeriodNullable", access = JsonProperty.Access.READ_WRITE) 
     private val somePeriodNullable_raw: String?,
     @field:NotBlank
     @field:Length(max = 100)
@@ -208,11 +208,6 @@ class AllFieldTypesCreateRequestDto
 
 
     @get:JsonIgnore
-    val somePeriodNullable
-        get () = somePeriodNullable_raw?.let { Period.parse(it) }
-
-
-    @get:JsonIgnore
     val someProvidedStringType
         get() = SomeProvidedStringType(someProvidedStringType_raw!!)
 
@@ -258,6 +253,11 @@ class AllFieldTypesCreateRequestDto
 
     @get:JsonIgnore
     val someLongTypeProvidedNullable = someLongTypeProvidedNullable?.let { SomeProvidedLongType(it) }
+
+
+    @get:JsonIgnore
+    val somePeriodNullable
+        get() = somePeriodNullable_raw?.let { Period.parse(it) }
 
 
     @get:JsonIgnore

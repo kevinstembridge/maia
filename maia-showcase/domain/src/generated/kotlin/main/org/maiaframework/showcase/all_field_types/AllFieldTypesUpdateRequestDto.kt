@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
+import org.maiaframework.common.validation.PeriodConstraint
 import org.maiaframework.domain.DomainId
 import java.time.Instant
 import java.time.LocalDate
@@ -38,9 +39,10 @@ class AllFieldTypesUpdateRequestDto
     @field:NotNull
     @param:JsonProperty("someLocalDateModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someLocalDateModifiable_raw: LocalDate?,
-    @field:NotNull
+    @field:NotBlank
+    @field:PeriodConstraint
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
-    private val somePeriodModifiable_raw: Period?,
+    private val somePeriodModifiable_raw: String?,
     @field:NotBlank
     @field:Length(max = 100)
     @param:JsonProperty("someStringModifiable", access = JsonProperty.Access.READ_WRITE) 
@@ -75,7 +77,7 @@ class AllFieldTypesUpdateRequestDto
 
     @get:JsonIgnore
     val somePeriodModifiable
-        get() = somePeriodModifiable_raw!!
+        get() = somePeriodModifiable_raw!!.let { Period.parse(it) }
 
 
     @get:JsonIgnore
