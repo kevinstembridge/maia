@@ -21,6 +21,7 @@ dependencies {
         api("commons-io:commons-io:2.18.0")
         api("io.jsonwebtoken:jjwt:0.7.0")
         api("io.mockk:mockk:1.14.7")
+        api("jakarta.validation:jakarta.validation-api:3.1.1")
         api("net.sf.supercsv:super-csv-java8:2.4.0") // TODO Do we still need this? We changed to opencsv due to its flexibility
         api("org.apache.commons:commons-csv:1.10.0") // TODO Do we still need this? We changed to opencsv due to its flexibility
         api("org.springdoc:springdoc-openapi-ui:1.8.0")

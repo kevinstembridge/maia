@@ -10,6 +10,7 @@ dependencies {
 
     api(project(":libs:maia-props-parent:maia-props-api"))
 
+    api("jakarta.validation:jakarta.validation-api")
     api("org.springframework:spring-web")
 
 }
