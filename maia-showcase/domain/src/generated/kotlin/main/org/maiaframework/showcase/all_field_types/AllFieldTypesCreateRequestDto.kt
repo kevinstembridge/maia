@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 import org.maiaframework.common.validation.EnumConstraint
+import org.maiaframework.common.validation.PeriodConstraint
 import org.maiaframework.showcase.enums.SomeEnum
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
@@ -96,11 +97,13 @@ class AllFieldTypesCreateRequestDto
     private val someLongTypeProvided_raw: Long?,
     @param:JsonProperty("someLongTypeProvidedNullable", access = JsonProperty.Access.READ_WRITE) 
     someLongTypeProvidedNullable: Long?,
-    @field:NotNull
+    @field:NotBlank
+    @field:PeriodConstraint
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
-    private val somePeriodModifiable_raw: Period?,
-    @param:JsonProperty("somePeriodNullable", access = JsonProperty.Access.READ_WRITE) 
-    val somePeriodNullable: Period?,
+    private val somePeriodModifiable_raw: String?,
+    @param:JsonProperty("somePeriodNullable", access = JsonProperty.Access.READ_WRITE)
+    @field:PeriodConstraint
+    private val somePeriodNullable_raw: String?,
     @field:NotBlank
     @field:Length(max = 100)
     @param:JsonProperty("someProvidedStringType", access = JsonProperty.Access.READ_WRITE) 
@@ -201,7 +204,12 @@ class AllFieldTypesCreateRequestDto
 
     @get:JsonIgnore
     val somePeriodModifiable
-        get() = somePeriodModifiable_raw!!
+        get() = somePeriodModifiable_raw!!.let { Period.parse(it) }
+
+
+    @get:JsonIgnore
+    val somePeriodNullable
+        get () = somePeriodNullable_raw?.let { Period.parse(it) }
 
 
     @get:JsonIgnore
