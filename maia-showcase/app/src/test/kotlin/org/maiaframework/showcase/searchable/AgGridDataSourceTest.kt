@@ -8,9 +8,6 @@ import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.maiaframework.showcase.all_field_types.AllFieldTypesDao
 import org.maiaframework.showcase.all_field_types.AllFieldTypesEntity
 import org.maiaframework.showcase.all_field_types.AllFieldTypesEntityTestBuilder
-import org.maiaframework.showcase.types.SomeIntType
-import org.maiaframework.showcase.types.SomeLongType
-import org.maiaframework.showcase.types.SomeStringType
 import org.maiaframework.showcase.join.AlphaAgGridDao
 import org.maiaframework.showcase.join.AlphaAgGridEntity
 import org.maiaframework.showcase.join.AlphaAgGridEntityTestBuilder
