@@ -13,7 +13,6 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
-import org.maiaframework.gen.spec.definition.lang.Fqcn
 
 
 @Suppress("unused")
@@ -130,64 +129,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             withHtmlInputType(HtmlInputType.password)
         }
         submitButtonText("Log in")
-    }
-
-
-    val nullableEntityFieldsEntityDef = entity(
-        "org.maiaframework.showcase.nullable",
-        "NullableFields"
-    ) {
-        field("someString", FieldTypes.string) {
-            nullable()
-            unique()
-            lengthConstraint(max = 100)
-        }
-        field("someBoolean", FieldTypes.boolean) {
-            nullable()
-        }
-        field("someInt", FieldTypes.int) {
-            nullable()
-        }
-        field("someInstant", FieldTypes.instant) {
-            nullable()
-        }
-        field("somePeriod", FieldTypes.period) {
-            nullable()
-            lengthConstraint(max = 100)
-        }
-        field("someLocalDate", FieldTypes.localDate) {
-            nullable()
-        }
-        field("someEnum", someEnumDef) {
-            nullable()
-            lengthConstraint(max = 100)
-        }
-        field("someStringType", someStringTypeDef) {
-            nullable()
-            lengthConstraint(max = 100)
-        }
-        field("someProvidedStringType", someProvidedStringTypeDef) {
-            nullable()
-            lengthConstraint(max = 100)
-        }
-        field("someIntType", someIntTypeDef) {
-            nullable()
-        }
-        field("someProvidedIntType", someProvidedIntTypeDef) {
-            nullable()
-        }
-        field("someLongType", someLongTypeDef) {
-            nullable()
-        }
-        field("someProvidedLongType", someProvidedLongTypeDef) {
-            nullable()
-        }
-        field("someBooleanType", someBooleanTypeDef) {
-            nullable()
-        }
-        field("someProvidedBooleanType", someProvidedBooleanTypeDef) {
-            nullable()
-        }
     }
 
 

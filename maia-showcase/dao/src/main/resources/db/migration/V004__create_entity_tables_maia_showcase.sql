@@ -2,29 +2,6 @@
 -- Renderer class: class org.maiaframework.gen.renderers.CreateTableSqlRenderer
 
 
-CREATE TABLE maia.nullable_fields (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    id uuid NOT NULL,
-    some_boolean boolean NULL,
-    some_boolean_type boolean NULL,
-    some_enum text NULL,
-    some_instant timestamp(3) with time zone NULL,
-    some_int integer NULL,
-    some_int_type integer NULL,
-    some_local_date date NULL,
-    some_long_type bigint NULL,
-    some_period text NULL,
-    some_provided_boolean_type boolean NULL,
-    some_provided_int_type integer NULL,
-    some_provided_long_type bigint NULL,
-    some_provided_string_type text NULL,
-    some_string text NULL,
-    some_string_type text NULL,
-    PRIMARY KEY(id)
-);
-CREATE UNIQUE INDEX nullable_fields_some_string_uidx ON maia.nullable_fields(some_string);
-
-
 CREATE TABLE maia.effective_timestamp (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     effective_from timestamp(3) with time zone NULL,

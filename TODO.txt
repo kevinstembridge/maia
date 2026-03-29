@@ -1,7 +1,5 @@
 
 
-TODO * Request DTOs with Period fields should use a String constructor parameter with a specific Validator.
-    => Create a PeriodValidator.
 TODO * Test edit on an entity that has a foreign key.
 TODO * The AllFieldTypesEntity.somePeriodModifiable field in the front end should have Validators.required.
 TODO * Install the superpowers-extended-cc plugin.
