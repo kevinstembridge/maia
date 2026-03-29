@@ -125,7 +125,7 @@ class RequestDtoRenderer(
 
     private fun doesFieldRequireJsonPropertyAnnotation(classField: ClassFieldDef): Boolean {
 
-        return classField.nullable == false
+        return true
 
     }
 
