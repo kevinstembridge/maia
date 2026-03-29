@@ -210,5 +210,6 @@ object Fqcns {
     val VALIDATOR_CONSTRAINT_NOT_BLANK = Fqcn.valueOf("jakarta.validation.constraints.NotBlank")
     val VALIDATOR_CONSTRAINT_NOT_EMPTY = Fqcn.valueOf("jakarta.validation.constraints.NotEmpty")
     val VALIDATOR_CONSTRAINT_NOT_NULL = Fqcn.valueOf("jakarta.validation.constraints.NotNull")
+    val VALIDATOR_CONSTRAINT_PERIOD = Fqcn.valueOf("org.maiaframework.common.validation.PeriodConstraint")
 
 }
