@@ -24,8 +24,8 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.security.web.FilterChainProxy
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.security.web.csrf.CsrfFilter
-import org.springframework.security.web.csrf.CsrfTokenRepository
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.util.ReflectionTestUtils
 import org.springframework.test.web.servlet.assertj.MockMvcTester
@@ -70,6 +70,10 @@ abstract class AbstractBlackBoxTest {
     protected lateinit var fixtures: Fixtures
 
 
+    @Autowired
+    private lateinit var filterChainProxy: FilterChainProxy
+
+
     protected lateinit var mockMvc: MockMvcTester
 
 
@@ -77,6 +81,18 @@ abstract class AbstractBlackBoxTest {
 
 
     protected fun asJson(any: Any): String = this.jsonMapper.writeValueAsString(any)
+
+
+    @AfterEach
+    fun restoreCsrfTokenRepository() {
+
+        filterChainProxy.filterChains
+            .flatMap { it.filters }
+            .filterIsInstance<CsrfFilter>()
+            .firstOrNull()
+            ?.let { ReflectionTestUtils.setField(it, "tokenRepository", CookieCsrfTokenRepository.withHttpOnlyFalse()) }
+
+    }
 
 
     @BeforeEach

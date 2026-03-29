@@ -438,7 +438,7 @@ object Anys {
         val today = LocalDate.now()
         val pastDate = LocalDate.now().minus(pastPeriod)
         val pastPeriodInDays = ChronoUnit.DAYS.between(pastDate, today).toInt()
-        return random.nextInt(pastPeriodInDays).toLong()
+        return (random.nextInt(pastPeriodInDays) + 1).toLong()
 
     }
 

@@ -140,6 +140,8 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         rawPassword: String
     ) {
 
+//        `fetch CSRF cookie`()
+
         loginPage.apply {
 
             navigateToMe()
