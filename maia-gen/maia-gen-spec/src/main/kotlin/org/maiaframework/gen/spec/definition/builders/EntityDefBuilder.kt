@@ -307,11 +307,13 @@ class EntityDefBuilder(
     fun withEffectiveTimestamps(hasSingleEffectiveRecord: Boolean = true) {
 
         field("effectiveFrom", FieldTypes.instant) {
+            fieldDisplayName("Effective From")
             nullable()
             modifiableBySystem()
         }
 
         field("effectiveTo", FieldTypes.instant) {
+            fieldDisplayName("Effective To")
             nullable()
             modifiableBySystem()
         }
@@ -331,12 +333,14 @@ class EntityDefBuilder(
     ) {
 
         field("effectiveFrom", FieldTypes.localDate) {
+            fieldDisplayName("Effective From")
             effectiveFromDescription?.let { description(it) }
             nullable()
             editableByUser()
         }
 
         field("effectiveTo", FieldTypes.localDate) {
+            fieldDisplayName("Effective To")
             effectiveToDescription?.let { description(it) }
             nullable()
             editableByUser()
