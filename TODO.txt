@@ -1,8 +1,6 @@
 
 
-TODO * Enhance the AgGridDataSourceTest to test search functions on list fields.
-    => Use the AllFieldTypesEntity.
-TODO * Test the Claude sandbox feature to run ralph-afk.sh
+TODO * Test the Claude sandbox feature
 TODO * Request DTOs with Period fields should use a String constructor parameter with a specific Validator.
     => Create a PeriodValidator.
 TODO * The AllFieldTypesEntity.somePeriodModifiable field in the front end should have Validators.required.
