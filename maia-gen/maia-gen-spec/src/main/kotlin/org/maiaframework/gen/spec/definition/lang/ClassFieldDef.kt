@@ -17,6 +17,7 @@ import org.maiaframework.gen.spec.definition.validation.MaxConstraintDef
 import org.maiaframework.gen.spec.definition.validation.MinConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotNullConstraintDef
+import org.maiaframework.gen.spec.definition.validation.PeriodConstraintDef
 import java.util.SortedSet
 
 data class ClassFieldDef(
@@ -141,7 +142,12 @@ data class ClassFieldDef(
             enrichedConstraints.add(EnumConstraintDef(fieldType.fqcn))
         }
 
-        if (this.nullable == false) {
+        if (this.fieldType is PeriodFieldType) {
+            enrichedConstraints.add(PeriodConstraintDef.INSTANCE)
+            if (this.nullable == false) {
+                enrichedConstraints.add(NotBlankConstraintDef.INSTANCE)
+            }
+        } else if (this.nullable == false) {
 
             if (this.fieldType is DomainIdFieldType) {
                 enrichedConstraints.add(NotNullConstraintDef.INSTANCE)
