@@ -13,6 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
+import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isStringBased
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isValueFieldWrapper
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
@@ -100,7 +101,8 @@ class RequestDtoRenderer(
                 appendLine("    @param:JsonProperty(\"$fieldName\", access = JsonProperty.Access.READ_WRITE) ")
             }
 
-            val visibility = if (fieldIsNullable) "" else "private "
+            val isPeriod = classField.fieldType is PeriodFieldType
+            val visibility = if (fieldIsNullable && !isPeriod) "" else "private "
 
             val variableType = if (isEnum || isValueFieldWrapper) {
                 if (fieldIsNullable) {
@@ -112,8 +114,8 @@ class RequestDtoRenderer(
                 "val "
             }
 
-            val constructorArgName = if (fieldIsNullable == false || isUrl) "${fieldName}_raw" else fieldName
-            val unwrappedFieldType = classField.unWrapIfComplexType()
+            val constructorArgName = if (fieldIsNullable == false || isUrl || isPeriod) "${fieldName}_raw" else fieldName
+            val unwrappedFieldType = if (isPeriod) classField.copy(fieldType = FieldTypes.string) else classField.unWrapIfComplexType()
             addImportFor(unwrappedFieldType.fieldType)
 
             appendLine("    $visibility$variableType$constructorArgName: ${unwrappedFieldType.convertToNullable().unqualifiedToString}$commaOrNot")
@@ -166,7 +168,7 @@ class RequestDtoRenderer(
                 is LongTypeFieldType -> renderGetterForValueWrapper(field)
                 is MapFieldType -> renderGetterIfNonNullableField(field)
                 is ObjectIdFieldType -> renderGetterIfNonNullableField(field)
-                is PeriodFieldType -> renderGetterIfNonNullableField(field)
+                is PeriodFieldType -> renderGetterForPeriod(field)
                 is RequestDtoFieldType -> renderGetterIfNonNullableField(field)
                 is SetFieldType -> renderGetterIfNonNullableField(field)
                 is SimpleResponseDtoFieldType -> renderGetterIfNonNullableField(field)
@@ -230,6 +232,24 @@ class RequestDtoRenderer(
         } else {
             appendLine("    val ${fieldDef.classFieldName}")
             appendLine("        get() = ${fieldDef.unqualifiedToString}.valueOf(${fieldDef.classFieldName}_raw!!)")
+        }
+
+    }
+
+
+    private fun renderGetterForPeriod(fieldDef: ClassFieldDef) {
+
+        addImportFor(Fqcns.JACKSON_JSON_IGNORE)
+
+        blankLine()
+        blankLine()
+        appendLine("    @get:JsonIgnore")
+        appendLine("    val ${fieldDef.classFieldName}")
+
+        if (fieldDef.nullable) {
+            appendLine("        get() = ${fieldDef.classFieldName}_raw?.let { Period.parse(it) }")
+        } else {
+            appendLine("        get() = ${fieldDef.classFieldName}_raw!!.let { Period.parse(it) }")
         }
 
     }
