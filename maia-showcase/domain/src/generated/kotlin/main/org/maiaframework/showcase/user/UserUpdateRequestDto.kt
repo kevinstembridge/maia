@@ -19,20 +19,19 @@ import org.maiaframework.showcase.auth.Authority
 @JsonIgnoreProperties(ignoreUnknown = true)
 class UserUpdateRequestDto
 @JsonCreator constructor(
-    @field:NotNull 
+    @field:NotNull
     @param:JsonProperty("authorities", access = JsonProperty.Access.READ_WRITE) 
     private val authorities_raw: List<Authority>?,
-    @field:Length(max = 100) 
-    @param:JsonProperty("firstName", access = JsonProperty.Access.READ_WRITE) 
+    @field:Length(max = 100)
     firstName: String?,
-    @NotNull 
+    @NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @field:NotBlank 
-    @field:Length(max = 100) 
+    @field:NotBlank
+    @field:Length(max = 100)
     @param:JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) 
     private val lastName_raw: String?,
-    @field:NotNull 
+    @field:NotNull
     @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
     private val version_raw: Long?
 ) {

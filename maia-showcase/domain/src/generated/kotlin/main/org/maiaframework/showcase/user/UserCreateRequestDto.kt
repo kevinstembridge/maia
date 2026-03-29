@@ -18,18 +18,17 @@ import org.maiaframework.showcase.auth.Authority
 @JsonIgnoreProperties(ignoreUnknown = true)
 class UserCreateRequestDto
 @JsonCreator constructor(
-    @field:NotNull 
+    @field:NotNull
     @param:JsonProperty("authorities", access = JsonProperty.Access.READ_WRITE) 
     private val authorities_raw: List<Authority>?,
-    @field:NotBlank 
-    @field:Length(max = 100) 
+    @field:NotBlank
+    @field:Length(max = 100)
     @param:JsonProperty("encryptedPassword", access = JsonProperty.Access.READ_WRITE) 
     private val encryptedPassword_raw: String?,
-    @field:Length(max = 100) 
-    @param:JsonProperty("firstName", access = JsonProperty.Access.READ_WRITE) 
+    @field:Length(max = 100)
     firstName: String?,
-    @field:NotBlank 
-    @field:Length(max = 100) 
+    @field:NotBlank
+    @field:Length(max = 100)
     @param:JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) 
     private val lastName_raw: String?
 ) {

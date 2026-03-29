@@ -14,10 +14,10 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesUpdate_someListOfStringsRequestDto
 @JsonCreator constructor(
-    @NotNull 
+    @NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @field:NotNull 
+    @field:NotNull
     @param:JsonProperty("someListOfStrings", access = JsonProperty.Access.READ_WRITE) 
     private val someListOfStrings_raw: List<String>?
 ) {

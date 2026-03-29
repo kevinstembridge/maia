@@ -8,4 +8,4 @@ import org.maiaframework.gen.spec.definition.lang.Fqcn
 class EnumConstraintDef(enumFqcn: Fqcn) : AbstractValidationConstraintDef(AnnotationDef(
         Fqcns.VALIDATOR_CONSTRAINT_ENUM,
         null,
-        mapOf("enumClass" to "$enumFqcn::class")))
+        mapOf("enumClass" to "${enumFqcn.uqcn}::class")))

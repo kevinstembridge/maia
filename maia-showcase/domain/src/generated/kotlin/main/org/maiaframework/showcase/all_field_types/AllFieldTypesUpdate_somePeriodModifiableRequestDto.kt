@@ -15,10 +15,10 @@ import java.time.Period
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesUpdate_somePeriodModifiableRequestDto
 @JsonCreator constructor(
-    @NotNull 
+    @NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @field:NotNull 
+    @field:NotNull
     @param:JsonProperty("somePeriodModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val somePeriodModifiable_raw: Period?
 ) {

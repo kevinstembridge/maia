@@ -14,13 +14,13 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class SomeVersionedUpdate_someIntRequestDto
 @JsonCreator constructor(
-    @NotNull 
+    @NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @field:NotNull 
+    @field:NotNull
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
     private val someInt_raw: Int?,
-    @field:NotNull 
+    @field:NotNull
     @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
     private val version_raw: Long?
 ) {

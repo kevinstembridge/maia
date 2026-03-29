@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotBlank
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesSomeStringRequestDto
 @JsonCreator constructor(
-    @field:NotBlank 
+    @field:NotBlank
     @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
     private val someString_raw: String?
 ) {

@@ -89,8 +89,9 @@ class EntityCreateApiDef(
             )
         }.map { RequestDtoFieldDef(
             it,
-            databaseIndexDef = this.entityDef.findUniqueDatabaseIndexDefFor(it.classFieldName))
-        }.toList()
+            databaseIndexDef = this.entityDef.findUniqueDatabaseIndexDefFor(it.classFieldName
+            )
+        )}.toList()
 
 
     val preAuthorizeExpression = this.crudApiDef.authority?.let { PreAuthorizeExpression("hasAuthority('$it')") }

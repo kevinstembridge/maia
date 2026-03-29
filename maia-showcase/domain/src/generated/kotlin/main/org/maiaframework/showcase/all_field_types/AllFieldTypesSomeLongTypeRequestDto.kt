@@ -14,7 +14,7 @@ import org.maiaframework.showcase.types.SomeLongType
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesSomeLongTypeRequestDto
 @JsonCreator constructor(
-    @field:NotNull 
+    @field:NotNull
     @param:JsonProperty("someLongType", access = JsonProperty.Access.READ_WRITE) 
     private val someLongType_raw: Long?
 ) {

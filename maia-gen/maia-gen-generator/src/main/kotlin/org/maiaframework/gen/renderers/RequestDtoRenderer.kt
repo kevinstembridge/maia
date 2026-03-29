@@ -38,19 +38,26 @@ import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 
 
-class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKotlinRenderer(requestDtoDef.classDef) {
+class RequestDtoRenderer(
+    private val requestDtoDef: RequestDtoDef
+) : AbstractKotlinRenderer(
+    requestDtoDef.classDef
+) {
 
 
     init {
 
         this.requestDtoDef.classFieldDefs.forEach { classField ->
-            val annotations = if (!classField.fieldType.isStringBased()) {
-                classField.validationAnnotations.filter { it.fqcn != Fqcns.VALIDATOR_CONSTRAINT_LENGTH }
-            } else {
+
+            val annotations = if (classField.fieldType.isStringBased()) {
                 classField.validationAnnotations
+            } else {
+                classField.validationAnnotations.filter { it.fqcn != Fqcns.VALIDATOR_CONSTRAINT_LENGTH }
             }
+
             addConstructorArg(ConstructorArg(classField, annotations))
             addImportFor(classField.fieldType)
+
         }
 
     }
@@ -87,7 +94,7 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
                 AnnotationUsageSite.field
             }
 
-            constructorArg.annotationDefs.forEach { appendLine("    ${it.toStringInKotlin(usageSite)} ") }
+            constructorArg.annotationDefs.forEach { appendLine("    ${it.toStringInKotlin(usageSite)}") }
 
             if (fieldRequiresJsonPropertyAnnotation) {
                 appendLine("    @param:JsonProperty(\"$fieldName\", access = JsonProperty.Access.READ_WRITE) ")
@@ -118,7 +125,7 @@ class RequestDtoRenderer(private val requestDtoDef: RequestDtoDef) : AbstractKot
 
     private fun doesFieldRequireJsonPropertyAnnotation(classField: ClassFieldDef): Boolean {
 
-        return true
+        return classField.nullable == false
 
     }
 
