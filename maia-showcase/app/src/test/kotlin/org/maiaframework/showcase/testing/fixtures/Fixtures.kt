@@ -48,9 +48,9 @@ class Fixtures(
     private val emailAddressDao: EmailAddressDao,
     private val partyEmailAddressDao: PartyEmailAddressDao,
     private val emailAddressVerificationDao: EmailAddressVerificationDao,
+    private val alphaDao: AlphaDao,
     private val passwordEncoder: PasswordEncoder,
-    private val jdbcOps: JdbcOps,
-    private val alphaDao: AlphaDao
+    private val jdbcOps: JdbcOps
 ) {
 
 
@@ -151,6 +151,7 @@ class Fixtures(
         truncateTable(UserGroupMembershipEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(UserGroupHistoryEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(UserGroupEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(AlphaEntityMeta.SCHEMA_AND_TABLE_NAME)
 //        truncateTable(WebsiteUrlEntityMeta.SCHEMA_AND_TABLE_NAME)
         deleteParties()
 
@@ -179,8 +180,6 @@ class Fixtures(
             logger.info("Inserting ${this.emailAddressVerificationFixtures.size} emailAddressVerification fixtures")
             this.emailAddressVerificationFixtures.forEach { emailAddressVerificationDao.insert(it.emailAddressVerificationEntity) }
         }
-
-        this.jdbcOps.update("truncate ${AlphaEntityMeta.SCHEMA_AND_TABLE_NAME} cascade")
 
         if (this.alphaFixtures.isNotEmpty()) {
             logger.info("Inserting ${this.alphaFixtures.size} alpha fixtures")
