@@ -73,6 +73,13 @@ class BravoRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): BravoFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: BravoEntity) {
 
         logger.debug("insert {}", entity)
@@ -85,6 +92,24 @@ class BravoRepo(
     fun bulkInsert(entities: List<BravoEntity>) {
 
         this.dao.bulkInsert(entities)
+
+    }
+
+
+    fun setFields(updaters: List<BravoEntityUpdater>) {
+
+        logger.debug("setFields {}", updaters)
+
+        updaters.forEach { setFields(it) }
+
+    }
+
+
+    fun setFields(updater: BravoEntityUpdater): Int {
+
+        logger.debug("setFields {}", updater)
+
+        return this.dao.setFields(updater)
 
     }
 

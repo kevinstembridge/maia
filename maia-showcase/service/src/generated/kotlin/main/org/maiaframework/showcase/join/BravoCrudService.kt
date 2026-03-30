@@ -5,12 +5,15 @@ package org.maiaframework.showcase.join
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class BravoCrudService(
+    private val bravoCrudNotifier: BravoCrudNotifier,
     private val charlieRepo: CharlieRepo,
     private val entityRepo: BravoRepo,
     private val maiaProblems: MaiaProblems
@@ -20,11 +23,101 @@ class BravoCrudService(
     private val logger = LoggerFactory.getLogger(BravoCrudService::class.java)
 
 
+    fun create(createDto: BravoCreateRequestDto): BravoEntity {
+
+        logger.info("BEGIN: create Bravo. dto=$createDto")
+
+        val entity: BravoEntity = buildEntity(createDto)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(createDto: BravoCreateRequestDto): BravoEntity {
+
+        val alphaId: DomainId = createDto.alphaId
+        val someInt: Int = createDto.someInt
+        val someString: String = createDto.someString
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+
+        return BravoEntity(
+            alphaId,
+            createdTimestampUtc,
+            id,
+            someInt,
+            someString
+        )
+
+    }
+
+
     fun create(entity: BravoEntity): BravoEntity {
 
         this.entityRepo.insert(entity)
+        this.bravoCrudNotifier.onEntityCreated(entity)
         return entity
 
+    }
+
+
+    fun fetchForEdit(id: DomainId): BravoFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
+    fun update(editDto: BravoUpdateRequestDto) {
+
+        val id = editDto.id
+        val updater = BravoEntityUpdater.forPrimaryKey(id) {
+            someInt(editDto.someInt)
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun updateSomeInt(editDto: BravoUpdate_someIntRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeInt. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = BravoEntityUpdater.forPrimaryKey(editDto.id) {
+            someInt(editDto.someInt)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun updateSomeString(editDto: BravoUpdate_someStringRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeString. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = BravoEntityUpdater.forPrimaryKey(editDto.id) {
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun setFields(updater: BravoEntityUpdater): Int {
+        
+        val count = this.entityRepo.setFields(updater)
+        this.bravoCrudNotifier.onEntityUpdated(updater.id)
+        return count
+        
     }
 
 
@@ -34,7 +127,11 @@ class BravoCrudService(
             throw this.maiaProblems.foreignKeyRecordsExist("Charlie")
         }
 
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
+                ?: return
+
         this.entityRepo.deleteByPrimaryKey(id)
+        this.bravoCrudNotifier.onEntityDeleted(entityToDelete)
 
     }
 
