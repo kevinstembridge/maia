@@ -29,14 +29,17 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
         fixtures.resetDatabaseState()
 
         // Create the Elasticsearch index and index the alpha fixture so the typeahead returns results
-        alphaTypeaheadEsIndexControl.createIndex()
+        val indexName = alphaTypeaheadEsIndex.indexName().asString
+        if (!elasticsearchClient.indices().exists { r -> r.index(indexName) }.value()) {
+            alphaTypeaheadEsIndexControl.createIndex()
+        }
         elasticsearchClient.index { r ->
-            r.index(alphaTypeaheadEsIndex.indexName().asString)
+            r.index(indexName)
                 .id(alphaFixture.id.value)
                 .document(AlphaTypeaheadV1EsDoc(id = alphaFixture.id, someString = alphaFixture.someString))
         }
         elasticsearchClient.indices().refresh { r ->
-            r.index(alphaTypeaheadEsIndex.indexName().asString)
+            r.index(indexName)
         }
 
     }

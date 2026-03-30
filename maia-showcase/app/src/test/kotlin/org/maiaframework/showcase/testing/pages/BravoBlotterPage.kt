@@ -136,6 +136,7 @@ class BravoBlotterPage(
 
     private fun selectAlpha(searchTerm: String) {
         page.locator("input[formcontrolname='alpha']").fill(searchTerm)
+        Thread.sleep(500)
         page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm)).waitFor()
         page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm)).click()
     }
