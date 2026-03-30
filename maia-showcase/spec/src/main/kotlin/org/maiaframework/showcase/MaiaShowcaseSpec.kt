@@ -874,11 +874,18 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
-        foreignKey("alpha", alphaEntityDef)
-        field("someInt", FieldTypes.int)
+        foreignKey("alpha", alphaEntityDef) {
+            fieldDisplayName("Alpha")
+            typeaheadField(alphaTypeaheadDef)
+        }
+        field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
+            editableByUser()
+        }
         field("someString", FieldTypes.string) {
             fieldDisplayName("Some String")
             lengthConstraint(max = 100)
+            editableByUser()
         }
         crud {
             apis {
