@@ -16,6 +16,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'bravo',
+        loadComponent: () =>
+            import('@app/pages/bravo-blotter/bravo-blotter-page').then(
+                (m) => m.BravoBlotterPage,
+            ),
+    },
+    {
         path: 'simple',
         loadComponent: () =>
             import('@app/pages/simple/simple-page.component').then(
