@@ -880,6 +880,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             fieldDisplayName("Some String")
             lengthConstraint(max = 100)
         }
+        crud {
+            apis {
+                create()
+                update()
+                delete()
+            }
+        }
     }
 
 
