@@ -14,6 +14,7 @@ import org.maiaframework.showcase.user.UserDao
 import org.maiaframework.showcase.user.UserEntity
 import org.maiaframework.showcase.user.UserEntityMeta
 import org.maiaframework.testing.domain.Anys
+import org.maiaframework.showcase.testing.SingletonElasticsearchContainer
 import org.maiaframework.testing.postgresql.SingletonPostgresqlContainer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -181,6 +182,10 @@ abstract class AbstractBlackBoxTest {
         @Container
         @ServiceConnection
         val postgresql = SingletonPostgresqlContainer.instance
+
+        @Container
+        @ServiceConnection
+        val elasticsearch = SingletonElasticsearchContainer.instance
 
     }
 

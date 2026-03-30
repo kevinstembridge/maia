@@ -27,6 +27,7 @@ dependencies {
         api("org.springdoc:springdoc-openapi-ui:1.8.0")
         api("org.testcontainers:junit-jupiter:1.21.4")
         api("org.testcontainers:postgresql:1.21.4")
+        api("org.testcontainers:elasticsearch:1.21.4")
         api("org.testng:testng:7.11.0")
         api("tools.jackson.module:jackson-kotlin-module:3.0.3")
 
