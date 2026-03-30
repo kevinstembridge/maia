@@ -9,6 +9,10 @@ import org.maiaframework.jdbc.SchemaAndTableName
 import org.maiaframework.showcase.contact.EmailAddressDao
 import org.maiaframework.showcase.contact.EmailAddressEntity
 import org.maiaframework.showcase.contact.EmailAddressEntityMeta
+import org.maiaframework.showcase.join.AlphaDao
+import org.maiaframework.showcase.join.AlphaEntity
+import org.maiaframework.showcase.join.AlphaEntityMeta
+import org.maiaframework.showcase.join.AlphaEntityTestBuilder
 import org.maiaframework.showcase.party.PartyEmailAddressEntityTestBuilder
 import org.maiaframework.showcase.party.PartyEntityMeta
 import org.maiaframework.showcase.party.UserEntityTestBuilder
@@ -26,7 +30,9 @@ import org.maiaframework.showcase.user.UserGroupMembershipEntityMeta
 import org.maiaframework.showcase.user.UserGroupMembershipHistoryEntityMeta
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyDomainName
+import org.maiaframework.testing.domain.Anys.anyInt
 import org.maiaframework.testing.domain.Anys.anyPassword
+import org.maiaframework.testing.domain.Anys.anyString
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
 import org.springframework.dao.DuplicateKeyException
@@ -43,7 +49,8 @@ class Fixtures(
     private val partyEmailAddressDao: PartyEmailAddressDao,
     private val emailAddressVerificationDao: EmailAddressVerificationDao,
     private val passwordEncoder: PasswordEncoder,
-    private val jdbcOps: JdbcOps
+    private val jdbcOps: JdbcOps,
+    private val alphaDao: AlphaDao
 ) {
 
 
@@ -63,6 +70,9 @@ class Fixtures(
 
 
     private val emailAddressVerificationFixtures = mutableListOf<EmailAddressVerificationFixture>()
+
+
+    private val alphaFixtures = mutableListOf<AlphaEntity>()
 
 
     fun aUser(
@@ -117,6 +127,18 @@ class Fixtures(
     }
 
 
+    fun anAlpha(
+        someString: String = anyString(),
+        someInt: Int = anyInt(),
+    ): AlphaEntity {
+
+        val entity = AlphaEntityTestBuilder(someString = someString, someInt = someInt).build()
+        this.alphaFixtures.add(entity)
+        return entity
+
+    }
+
+
     fun resetDatabaseState() {
 
         logger.info("Resetting database state")
@@ -156,6 +178,13 @@ class Fixtures(
         if (this.emailAddressVerificationFixtures.isNotEmpty()) {
             logger.info("Inserting ${this.emailAddressVerificationFixtures.size} emailAddressVerification fixtures")
             this.emailAddressVerificationFixtures.forEach { emailAddressVerificationDao.insert(it.emailAddressVerificationEntity) }
+        }
+
+        this.jdbcOps.update("truncate ${AlphaEntityMeta.SCHEMA_AND_TABLE_NAME} cascade")
+
+        if (this.alphaFixtures.isNotEmpty()) {
+            logger.info("Inserting ${this.alphaFixtures.size} alpha fixtures")
+            this.alphaFixtures.forEach { alphaDao.insert(it) }
         }
 
     }
