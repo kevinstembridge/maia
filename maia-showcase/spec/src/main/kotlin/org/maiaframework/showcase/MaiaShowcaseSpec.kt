@@ -2,6 +2,7 @@ package org.maiaframework.showcase
 
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.AppKey
+import org.maiaframework.gen.spec.definition.EsDocMappingTypes
 import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.JoinType
 import org.maiaframework.gen.spec.definition.SearchModelType
@@ -844,6 +845,28 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val alphaTypeaheadDef = typeahead(
+        "org.maiaframework.showcase.join",
+        "Alpha",
+        alphaEntityDef,
+        idFieldName = "alphaId",
+        sortFieldName = "someString",
+        searchTermFieldName = "someString",
+        indexVersion = 1
+    ) {
+        fieldFromEntity(
+            dtoFieldName = "id",
+            entityFieldName = "id",
+            esDocMappingType = EsDocMappingTypes.keyword
+        )
+        fieldFromEntity(
+            dtoFieldName = "someString",
+            entityFieldName = "someString",
+            esDocMappingType = EsDocMappingTypes.text
+        )
+    }
+
+
     val bravoEntityDef = entity(
         "org.maiaframework.showcase.join",
         "Bravo",
@@ -902,6 +925,16 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("id", "id")
         field("createdTimestampUtc")
     }
+
+
+    val bravoDtoHtmlTableDef = dtoHtmlTable(bravoSearchableDtoDef) {
+        columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
+        columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
+        columnFromDto(dtoFieldName = "createdTimestampUtc", fieldPathInSourceData = "createdTimestampUtc")
+    }
+
+
+    val bravoCrudDef = crudTableDef(bravoDtoHtmlTableDef, bravoEntityDef.entityCrudApiDef!!)
 
 
     val charlieSearchableDtoDef = searchableEntityDef(
