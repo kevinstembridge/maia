@@ -23,9 +23,12 @@ class AlphaTypeaheadEsIndexControl_v0001(
     esIndexNameProvider
 ) {
 
+
     override val indexName = AlphaTypeaheadEsIndexMeta_v0001.indexName
 
+
     override val indexDescription = AlphaTypeaheadEsIndexMeta_v0001.indexDescription
+
 
     override val typeMapping: TypeMapping = AlphaTypeaheadEsIndexMeta_v0001.typeMapping
 

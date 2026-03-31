@@ -18,6 +18,7 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-elasticsearch")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.springframework.boot:spring-boot-starter-hazelcast")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
@@ -36,6 +37,7 @@ dependencies {
     testImplementation(project(":libs:maia-web-testing"))
     testImplementation(project(":maia-showcase:dao"))
     testImplementation(project(":maia-showcase:domain"))
+    testImplementation(project(":maia-showcase:elasticsearch"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
     testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")
@@ -44,10 +46,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    testImplementation("org.testcontainers:elasticsearch")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation("org.testcontainers:testcontainers-postgresql")
-    testImplementation(project(":maia-showcase:elasticsearch"))
-    testImplementation("org.testcontainers:elasticsearch")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 

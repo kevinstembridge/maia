@@ -18,6 +18,8 @@ spring:
     url: "jdbc:postgresql://localhost:5433/maia_db"
     password: maia_app_password
     username: maia_app
+  elasticsearch:
+    uris: [ 'https://localhost:9200' ]
   flyway:
     user: maia_owner
     password: maia_owner_password

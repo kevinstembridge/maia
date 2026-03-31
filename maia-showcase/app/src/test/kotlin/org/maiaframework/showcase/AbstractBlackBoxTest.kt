@@ -181,11 +181,11 @@ abstract class AbstractBlackBoxTest {
 
         @Container
         @ServiceConnection
-        val postgresql = SingletonPostgresqlContainer.instance
+        val elasticsearch = SingletonElasticsearchContainer.instance
 
         @Container
         @ServiceConnection
-        val elasticsearch = SingletonElasticsearchContainer.instance
+        val postgresql = SingletonPostgresqlContainer.instance
 
     }
 

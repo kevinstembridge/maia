@@ -14,11 +14,11 @@ dependencies {
     implementation(kotlin("reflect"))
 
     api(project(":maia-showcase:domain"))
+    api(project(":maia-showcase:elasticsearch"))
 
     implementation(project(":libs:maia-problem-parent:maia-problem"))
     implementation(project(":maia-showcase:repo"))
     implementation(project(":libs:maia-elasticsearch"))
-    api(project(":maia-showcase:elasticsearch"))
 
     api("org.maiaframework:maia-common")
 //    api("org.maiaframework:maia-csv")
