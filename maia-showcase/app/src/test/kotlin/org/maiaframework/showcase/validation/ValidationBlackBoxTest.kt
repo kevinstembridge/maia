@@ -16,7 +16,7 @@ class ValidationBlackBoxTest : AbstractBlackBoxTest() {
             .isLenientlyEqualTo("""
                 {
                     "detail": "Invalid request content.",
-                    "errors": {
+                    "fieldErrors": {
                         "someBoolean_raw": ["must not be null"],
                         "someBooleanType_raw": ["must not be null"],
                         "someBooleanTypeProvided_raw": ["must not be null"],

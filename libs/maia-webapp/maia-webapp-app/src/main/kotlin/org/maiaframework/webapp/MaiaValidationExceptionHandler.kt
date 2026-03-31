@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import kotlin.collections.sorted
 
 
 @ControllerAdvice
@@ -24,11 +25,18 @@ class MaiaValidationExceptionHandler : ResponseEntityExceptionHandler() {
             .groupBy { it.field }
             .mapValues { (_, errors) -> errors.mapNotNull { it.defaultMessage }.sorted() }
 
+        val globalErrors: List<String> = ex.bindingResult.globalErrors
+            .mapNotNull { globalError -> globalError.defaultMessage }
+            .sorted()
+
         val body = ex.body.apply {
-            setProperty("errors", fieldErrors)
+            setProperty("fieldErrors", fieldErrors)
+            setProperty("globalErrors", globalErrors)
         }
 
-        return ResponseEntity.status(status).headers(headers).body(body)
+        return ResponseEntity.status(status)
+            .headers(headers)
+            .body(body)
 
     }
 
