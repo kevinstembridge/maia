@@ -44,8 +44,9 @@ class BravoTableDtoDao(
         val sqlForPage = """
             select
                 maia.bravo.created_timestamp_utc as createdTimestampUtc,
-                maia.alpha.some_string as dtoStringFromAlpha,
-                maia.bravo.some_string as dtoStringFromBravo
+                maia.bravo.id as id,
+                maia.alpha.some_string as tableStringFromAlpha,
+                maia.bravo.some_string as tableStringFromBravo
             from maia.bravo
             inner join maia.alpha
                     on maia.bravo.alpha_id = maia.alpha.id

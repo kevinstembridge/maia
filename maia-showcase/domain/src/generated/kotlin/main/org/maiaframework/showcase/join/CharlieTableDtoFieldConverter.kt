@@ -16,11 +16,11 @@ class CharlieTableDtoFieldConverter : SearchFieldConverter {
         when(tableColumnPath) {
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
-            "some_string" -> // dtoStringFromAlpha
+            "some_string" -> // tableStringFromAlpha
                 return inputValue
-            "some_string" -> // dtoStringFromBravo
+            "some_string" -> // tableStringFromBravo
                 return inputValue
-            "some_string" -> // dtoStringFromCharlie
+            "some_string" -> // tableStringFromCharlie
                 return inputValue
             else -> throw IllegalArgumentException("Unknown tableColumnPath [$tableColumnPath]")
         }

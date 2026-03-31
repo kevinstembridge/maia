@@ -76,6 +76,7 @@ class EntityReactiveFormComponentRenderer(
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
             addImport(typeaheadDef.typescriptServiceImport)
+            addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
         }
 
         this.angularFormDef.formModelFields.forEach { angularFieldDef ->
@@ -120,6 +121,36 @@ class EntityReactiveFormComponentRenderer(
         if (this.angularFormDef.formModelFields.any { it.hasValidationConstraint(UrlConstraintDef::class.java) }) {
             addImport("@app/validators/CustomValidators", "CustomValidators")
         }
+
+    }
+
+
+    override fun renderComponentDecorator() {
+
+        append("""
+            |
+            |
+            |@Component({
+            |""".trimMargin()
+        )
+
+        renderComponentImportArray()
+
+        if (this.angularFormDef.allTypeaheadDefs.isNotEmpty()) {
+            appendLine("    providers: [")
+            this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
+                appendLine("        ${typeaheadDef.angularServiceClassName},")
+            }
+            appendLine("    ],")
+        }
+
+        append("""
+            |    selector: '${this.angularComponentNames.componentSelector}',
+            |    styleUrls: ['./${this.angularComponentNames.componentScssFileName}'],
+            |    templateUrl: './${this.angularComponentNames.htmlFileName}'
+            |})
+            |""".trimMargin()
+        )
 
     }
 
@@ -181,10 +212,12 @@ class EntityReactiveFormComponentRenderer(
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
 
+            val esDocUqcn = typeaheadDef.esDocDef.dtoDef.uqcn.value
+
             append("""
                 |
                 |
-                |    filtered${typeaheadDef.typeaheadName} = [];
+                |    filtered${typeaheadDef.typeaheadName}: ${esDocUqcn}[] = [];
                 |
                 |
                 |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
@@ -643,7 +676,7 @@ class EntityReactiveFormComponentRenderer(
                 } else {
 
                     val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
-                    appendLine("            ${typeaheadDef.idFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.idFieldName},")
+                    appendLine("            ${typeaheadDef.idFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
 
                 }
 

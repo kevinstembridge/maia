@@ -78,6 +78,11 @@ class TypeaheadDef(
         .build()
 
 
+    val esDocIdFieldName: String = fieldDefs.firstOrNull {
+        it.entityFieldDef?.classFieldName == ClassFieldName.id
+    }?.classFieldDef?.classFieldName?.value ?: "id"
+
+
     private val esDocFields = this.fieldDefs.map { EsDocFieldDef(it.classFieldDef, it.esDocMappingType, it.entityFieldDef) }
 
 

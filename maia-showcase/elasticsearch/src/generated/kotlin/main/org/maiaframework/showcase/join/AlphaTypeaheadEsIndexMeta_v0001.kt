@@ -12,19 +12,15 @@ import org.maiaframework.elasticsearch.index.EsIndexVersion
 
 object AlphaTypeaheadEsIndexMeta_v0001 {
 
-
     val indexBaseName = EsIndexBaseName("alpha_typeahead")
-
 
     val indexName = EsIndexName(indexBaseName, EsIndexVersion(1))
 
-
     const val indexDescription = "A typeahead index for the someString field of Alpha records."
-
 
     val typeMapping = TypeMapping.of { m ->
             m.properties("id", Property.of { p -> p.keyword { it } })
-            m.properties("someString", Property.of { p -> p.text { it } })
+            m.properties("someString", Property.of { p -> p.searchAsYouType { it } })
     }
 
 

@@ -3,7 +3,7 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 
 abstract class AbstractAngularComponentRenderer(
-    private val angularComponentNames: AngularComponentNames
+    protected val angularComponentNames: AngularComponentNames
 ) : AbstractTypescriptRenderer() {
 
 
@@ -25,7 +25,7 @@ abstract class AbstractAngularComponentRenderer(
     }
 
 
-    protected fun renderComponentDecorator() {
+    protected open fun renderComponentDecorator() {
 
         append("""
             |

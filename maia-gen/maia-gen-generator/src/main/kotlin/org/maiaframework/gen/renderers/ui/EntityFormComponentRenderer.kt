@@ -81,6 +81,7 @@ class EntityFormComponentRenderer(
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
             addImport(typeaheadDef.typescriptServiceImport)
+            addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
         }
 
         this.angularFormDef.formModelFields.forEach { angularFieldDef ->
@@ -175,10 +176,12 @@ class EntityFormComponentRenderer(
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
 
+            val esDocUqcn = typeaheadDef.esDocDef.dtoDef.uqcn.value
+
             append("""
                 |
                 |
-                |    filtered${typeaheadDef.typeaheadName} = [];
+                |    filtered${typeaheadDef.typeaheadName}: ${esDocUqcn}[] = [];
                 |
                 |
                 |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
@@ -753,7 +756,7 @@ class EntityFormComponentRenderer(
                 } else {
 
                     val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
-                    appendLine("            ${typeaheadDef.idFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.idFieldName},")
+                    appendLine("            ${typeaheadDef.idFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
 
                 }
 

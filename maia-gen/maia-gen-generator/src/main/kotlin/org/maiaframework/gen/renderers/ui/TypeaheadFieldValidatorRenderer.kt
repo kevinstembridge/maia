@@ -28,15 +28,15 @@ class TypeaheadFieldValidatorRenderer(
             |
             |export function ${this.entityFieldDef.typeaheadRequiredValidatorFunctionName}(): ValidatorFn {
             |
-            |  return (control: AbstractControl): {[key: string]: any} | null => {
+            |    return (control: AbstractControl): {[key: string]: any} | null => {
             |
-            |    if (control.value && control.value.${entityFieldDef.typeaheadDef!!.idFieldName}) {
-            |      return null;
-            |    } else {
-            |      return { required: true };
-            |    }
+            |        if (control.value && control.value.${entityFieldDef.typeaheadDef!!.esDocIdFieldName}) {
+            |            return null;
+            |        } else {
+            |            return { required: true };
+            |        }
             |
-            |  };
+            |    };
             |
             |}
             |""".trimMargin())

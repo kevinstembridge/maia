@@ -13,10 +13,10 @@ object CharlieTableDtoMeta {
 
         return when(dtoFieldName) {
             "createdTimestampUtc" -> "maia.charlie.created_timestamp_utc"
-            "dtoStringFromAlpha" -> "maia.alpha.some_string"
-            "dtoStringFromBravo" -> "maia.bravo.some_string"
-            "dtoStringFromCharlie" -> "maia.charlie.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie]")
+            "tableStringFromAlpha" -> "maia.alpha.some_string"
+            "tableStringFromBravo" -> "maia.bravo.some_string"
+            "tableStringFromCharlie" -> "maia.charlie.some_string"
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
         }
 
     }
@@ -26,10 +26,10 @@ object CharlieTableDtoMeta {
 
         return when(dtoFieldName) {
             "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
-            "dtoStringFromAlpha" -> JdbcCompatibleType.text
-            "dtoStringFromBravo" -> JdbcCompatibleType.text
-            "dtoStringFromCharlie" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie]")
+            "tableStringFromAlpha" -> JdbcCompatibleType.text
+            "tableStringFromBravo" -> JdbcCompatibleType.text
+            "tableStringFromCharlie" -> JdbcCompatibleType.text
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
         }
 
     }

@@ -92,6 +92,7 @@ class DtoHtmlTableDef(
         val fields = dtoHtmlTableColumnFields.map { dtoHtmlTableColumnDef ->
 
             searchableDtoDef.findSearchableDtoFieldByName(dtoHtmlTableColumnDef.fieldPathInSourceData)
+                .copyWithFieldName(dtoHtmlTableColumnDef.dtoFieldName)
 
         }
 

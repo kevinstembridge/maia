@@ -4,6 +4,7 @@
 
 export interface BravoTableDto {
     createdTimestampUtc: string;
+    id: string;
     tableStringFromAlpha: string;
     tableStringFromBravo: string;
 }

@@ -3,11 +3,13 @@
 
 package org.maiaframework.showcase.join
 
+import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
 data class BravoTableDto(
     val createdTimestampUtc: Instant,
+    val id: DomainId,
     val tableStringFromAlpha: String,
     val tableStringFromBravo: String
 ) {

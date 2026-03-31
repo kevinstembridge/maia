@@ -12,6 +12,7 @@ import {BravoTableAgGridDatasource} from '@app/gen-components/org/maiaframework/
 import {BravoTableDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoTableDto';
 import {BravoTableService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-table.service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
+import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 
@@ -26,10 +27,44 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class BravoTableComponent {
 
 
+    readonly edit = output<BravoTableDto>();
+
+
+    readonly delete = output<BravoTableDto>();
+
+
+    readonly addButtonClicked = output();
+
+
     public columnDefs: ColDef[] = [
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
+        {
+            field: 'edit',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'edit' },
+            onCellClicked: event => {
+                this.edit.emit(event.data);
+            }
+        },
+        {
+            field: 'delete',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'delete' },
+            onCellClicked: event => {
+                this.delete.emit(event.data);
+            }
+        },
     ];
 
     public defaultColDef: ColDef = {
@@ -89,6 +124,36 @@ export class BravoTableComponent {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
+
+    }
+
+
+    onEdit(dto: BravoTableDto) {
+
+        this.edit.emit(dto);
+
+    }
+
+
+
+    onDelete(dto: BravoTableDto) {
+
+        this.delete.emit(dto);
+
+    }
+
+
+
+    get addButtonVisible(): boolean {
+
+        return true;
+
+    }
+
+
+    onAddButtonClicked() {
+
+        this.addButtonClicked.emit();
 
     }
 

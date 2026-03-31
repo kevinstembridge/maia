@@ -33,7 +33,7 @@ class LongEsDocMappingType internal constructor() : EsDocMappingType("long_")
 class ObjectEsDocMappingType internal constructor() : EsDocMappingType("object")
 
 
-class SearchAsYouTypeEsDocMappingType internal constructor() : EsDocMappingType("search_as_you_type")
+class SearchAsYouTypeEsDocMappingType internal constructor() : EsDocMappingType("searchAsYouType")
 
 
 class TextEsDocMappingType internal constructor() : EsDocMappingType("text")

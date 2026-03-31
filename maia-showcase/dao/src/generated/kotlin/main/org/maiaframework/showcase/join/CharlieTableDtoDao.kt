@@ -46,9 +46,9 @@ class CharlieTableDtoDao(
         val sqlForPage = """
             select
                 maia.charlie.created_timestamp_utc as createdTimestampUtc,
-                maia.alpha.some_string as dtoStringFromAlpha,
-                maia.bravo.some_string as dtoStringFromBravo,
-                maia.charlie.some_string as dtoStringFromCharlie
+                maia.alpha.some_string as tableStringFromAlpha,
+                maia.bravo.some_string as tableStringFromBravo,
+                maia.charlie.some_string as tableStringFromCharlie
             from maia.charlie
             inner join maia.bravo
                     on maia.charlie.bravo_id = maia.bravo.id

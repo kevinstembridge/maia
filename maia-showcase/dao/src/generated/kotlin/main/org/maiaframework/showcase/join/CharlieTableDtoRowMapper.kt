@@ -14,9 +14,9 @@ class CharlieTableDtoRowMapper : MaiaRowMapper<CharlieTableDto> {
 
         return CharlieTableDto(
             rsa.readInstant("createdTimestampUtc"),
-            rsa.readString("dtoStringFromAlpha"),
-            rsa.readString("dtoStringFromBravo"),
-            rsa.readString("dtoStringFromCharlie"),
+            rsa.readString("tableStringFromAlpha"),
+            rsa.readString("tableStringFromBravo"),
+            rsa.readString("tableStringFromCharlie"),
         )
 
     }

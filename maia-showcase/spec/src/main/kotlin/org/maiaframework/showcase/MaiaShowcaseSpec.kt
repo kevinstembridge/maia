@@ -862,7 +862,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         fieldFromEntity(
             dtoFieldName = "someString",
             entityFieldName = "someString",
-            esDocMappingType = EsDocMappingTypes.text
+            esDocMappingType = EsDocMappingTypes.searchAsYouType
         )
     }
 
@@ -941,10 +941,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoDtoHtmlTableDef = dtoHtmlTable(bravoSearchableDtoDef) {
+    val bravoDtoHtmlTableDef = dtoHtmlTable(bravoSearchableDtoDef, withAddButton = true) {
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
         columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
         columnFromDto(dtoFieldName = "createdTimestampUtc", fieldPathInSourceData = "createdTimestampUtc")
+        columnFromDto("id")
+        editActionColumn()
+        deleteActionColumn()
     }
 
 

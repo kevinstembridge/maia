@@ -15,9 +15,9 @@ class CharlieTableDtoFieldNameConverter : SearchFieldNameConverter {
 
         return when(fieldName) {
             "createdTimestampUtc" -> "created_timestamp_utc"
-            "dtoStringFromAlpha" -> "some_string"
-            "dtoStringFromBravo" -> "some_string"
-            "dtoStringFromCharlie" -> "some_string"
+            "tableStringFromAlpha" -> "some_string"
+            "tableStringFromBravo" -> "some_string"
+            "tableStringFromCharlie" -> "some_string"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")
         }
 

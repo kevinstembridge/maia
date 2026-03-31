@@ -9,6 +9,7 @@ import {MatOptionModule} from '@angular/material/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/join/AlphaTypeaheadV1EsDoc';
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
 import {bravo_alphaIdRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaIdRequiredValidator';
 import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
@@ -32,6 +33,9 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatOptionModule,
         ReactiveFormsModule,
     ],
+    providers: [
+        AlphaTypeaheadApiService,
+    ],
     selector: 'app-bravo-create-dialog',
     styleUrls: ['./bravo-create-dialog.component.scss'],
     templateUrl: './bravo-create-dialog.component.html'
@@ -39,7 +43,7 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
 export class BravoCreateDialogComponent implements OnInit {
 
 
-    filteredAlpha = [];
+    filteredAlpha: AlphaTypeaheadV1EsDoc[] = [];
 
 
     filteredAlphaIsLoading = signal(false);
@@ -112,7 +116,7 @@ export class BravoCreateDialogComponent implements OnInit {
         }
 
         const requestDto = {
-            alphaId: this.formGroup.getRawValue().alpha.alphaId,
+            alphaId: this.formGroup.getRawValue().alpha.id,
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
         } as BravoCreateRequestDto;

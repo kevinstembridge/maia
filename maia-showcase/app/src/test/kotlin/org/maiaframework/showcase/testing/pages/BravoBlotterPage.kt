@@ -60,7 +60,7 @@ class BravoBlotterPage(
     fun clickEditButtonForFirstRow() {
 
         page.waitForFunction(
-            "() => { const c = document.querySelector('.ag-cell[col-id=\"dtoStringFromBravo\"]'); " +
+            "() => { const c = document.querySelector('.ag-cell[col-id=\"tableStringFromBravo\"]'); " +
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
 
@@ -112,7 +112,7 @@ class BravoBlotterPage(
         page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
 
         page.waitForFunction(
-            "() => { const c = document.querySelector('.ag-cell[col-id=\"dtoStringFromBravo\"]'); " +
+            "() => { const c = document.querySelector('.ag-cell[col-id=\"tableStringFromBravo\"]'); " +
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
 

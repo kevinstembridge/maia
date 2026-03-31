@@ -13,9 +13,10 @@ object BravoTableDtoMeta {
 
         return when(dtoFieldName) {
             "createdTimestampUtc" -> "maia.bravo.created_timestamp_utc"
-            "dtoStringFromAlpha" -> "maia.alpha.some_string"
-            "dtoStringFromBravo" -> "maia.bravo.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoStringFromAlpha, dtoStringFromBravo]")
+            "id" -> "maia.bravo.id"
+            "tableStringFromAlpha" -> "maia.alpha.some_string"
+            "tableStringFromBravo" -> "maia.bravo.some_string"
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, tableStringFromAlpha, tableStringFromBravo]")
         }
 
     }
@@ -25,9 +26,10 @@ object BravoTableDtoMeta {
 
         return when(dtoFieldName) {
             "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
-            "dtoStringFromAlpha" -> JdbcCompatibleType.text
-            "dtoStringFromBravo" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoStringFromAlpha, dtoStringFromBravo]")
+            "id" -> JdbcCompatibleType.uuid
+            "tableStringFromAlpha" -> JdbcCompatibleType.text
+            "tableStringFromBravo" -> JdbcCompatibleType.text
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, tableStringFromAlpha, tableStringFromBravo]")
         }
 
     }

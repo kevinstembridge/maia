@@ -8,7 +8,7 @@ export function bravo_alphaIdRequiredValidator(): ValidatorFn {
 
   return (control: AbstractControl): {[key: string]: any} | null => {
 
-    if (control.value && control.value.alphaId) {
+    if (control.value && control.value.id) {
       return null;
     } else {
       return { required: true };

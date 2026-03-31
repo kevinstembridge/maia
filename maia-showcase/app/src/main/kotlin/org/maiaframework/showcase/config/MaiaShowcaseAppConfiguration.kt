@@ -1,5 +1,6 @@
 package org.maiaframework.showcase.config
 
+import co.elastic.clients.json.jackson.Jackson3JsonpMapper
 import com.hazelcast.config.Config
 import com.hazelcast.config.YamlConfigBuilder
 import maia.hazelcast.MaiaHazelcastConfig
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
+import tools.jackson.databind.json.JsonMapper
 import tools.jackson.databind.module.SimpleModule
 
 
@@ -23,6 +25,14 @@ import tools.jackson.databind.module.SimpleModule
     "maia_party.hazelcast"
 ])
 class MaiaShowcaseAppConfiguration {
+
+
+    @Bean
+    fun jackson3JsonpMapper(jsonMapper: JsonMapper): Jackson3JsonpMapper {
+
+        return Jackson3JsonpMapper(jsonMapper)
+
+    }
 
 
     @Bean

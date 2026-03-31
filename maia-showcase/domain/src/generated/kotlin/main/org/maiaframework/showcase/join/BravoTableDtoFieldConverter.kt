@@ -16,9 +16,9 @@ class BravoTableDtoFieldConverter : SearchFieldConverter {
         when(tableColumnPath) {
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
-            "some_string" -> // dtoStringFromAlpha
+            "id" -> // id
                 return inputValue
-            "some_string" -> // dtoStringFromBravo
+            "some_string" -> // tableStringFromAlpha
                 return inputValue
             else -> throw IllegalArgumentException("Unknown tableColumnPath [$tableColumnPath]")
         }

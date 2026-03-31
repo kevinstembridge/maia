@@ -14,8 +14,9 @@ class BravoTableDtoRowMapper : MaiaRowMapper<BravoTableDto> {
 
         return BravoTableDto(
             rsa.readInstant("createdTimestampUtc"),
-            rsa.readString("dtoStringFromAlpha"),
-            rsa.readString("dtoStringFromBravo"),
+            rsa.readDomainId("id"),
+            rsa.readString("tableStringFromAlpha"),
+            rsa.readString("tableStringFromBravo"),
         )
 
     }

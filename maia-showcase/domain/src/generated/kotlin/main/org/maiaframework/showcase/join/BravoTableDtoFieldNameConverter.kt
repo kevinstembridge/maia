@@ -15,8 +15,9 @@ class BravoTableDtoFieldNameConverter : SearchFieldNameConverter {
 
         return when(fieldName) {
             "createdTimestampUtc" -> "created_timestamp_utc"
-            "dtoStringFromAlpha" -> "some_string"
-            "dtoStringFromBravo" -> "some_string"
+            "id" -> "id"
+            "tableStringFromAlpha" -> "some_string"
+            "tableStringFromBravo" -> "some_string"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")
         }
 
