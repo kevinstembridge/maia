@@ -20,6 +20,8 @@ class BravoTableDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "some_string" -> // tableStringFromAlpha
                 return inputValue
+            "some_string" -> // tableStringFromBravo
+                return inputValue
             else -> throw IllegalArgumentException("Unknown tableColumnPath [$tableColumnPath]")
         }
 

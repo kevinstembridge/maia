@@ -24,13 +24,13 @@ class EsIndexControlRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRen
         append("""
             |
             |
-            |    override val indexName = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexName")
+            |    override val indexName = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexName
             |
             |
-            |    override val indexDescription = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexDescription")
+            |    override val indexDescription = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexDescription
             |
             |
-            |    override val typeMapping: TypeMapping = ${this.esDocDef.esDocMetaClassDef.uqcn}.typeMapping")
+            |    override val typeMapping: TypeMapping = ${this.esDocDef.esDocMetaClassDef.uqcn}.typeMapping
             |""".trimMargin())
 
     }

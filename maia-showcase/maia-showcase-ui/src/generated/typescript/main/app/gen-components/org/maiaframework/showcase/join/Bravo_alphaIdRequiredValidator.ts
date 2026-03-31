@@ -6,15 +6,15 @@ import {AbstractControl, ValidatorFn} from '@angular/forms';
 
 export function bravo_alphaIdRequiredValidator(): ValidatorFn {
 
-  return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): {[key: string]: any} | null => {
 
-    if (control.value && control.value.id) {
-      return null;
-    } else {
-      return { required: true };
-    }
+        if (control.value && control.value.id) {
+            return null;
+        } else {
+            return { required: true };
+        }
 
-  };
+    };
 
 }
 
