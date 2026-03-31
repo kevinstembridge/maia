@@ -21,12 +21,17 @@ class EsIndexControlRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRen
         addImportFor(Fqcns.ES_INDEX_BASE_NAME)
         addImportFor(Fqcns.ES_TYPE_MAPPING)
 
-        blankLine()
-        appendLine("    override val indexName = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexName")
-        blankLine()
-        appendLine("    override val indexDescription = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexDescription")
-        blankLine()
-        appendLine("    override val typeMapping: TypeMapping = ${this.esDocDef.esDocMetaClassDef.uqcn}.typeMapping")
+        append("""
+            |
+            |
+            |    override val indexName = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexName")
+            |
+            |
+            |    override val indexDescription = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexDescription")
+            |
+            |
+            |    override val typeMapping: TypeMapping = ${this.esDocDef.esDocMetaClassDef.uqcn}.typeMapping")
+            |""".trimMargin())
 
     }
 
