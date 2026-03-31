@@ -3,6 +3,8 @@
 TODO * Test edit on an entity that has a foreign key.
     TODO * Manual test
 TODO * Create a test that tests all the validation constraints on the AllFieldTypesEntity.
+    TODO * Test enum constraint
+    TODO * Test maxSize, length, etc
     => ValidationBlackBoxTest.
 TODO * Install the superpowers-extended-cc plugin.
 TODO * Maia Showcase
