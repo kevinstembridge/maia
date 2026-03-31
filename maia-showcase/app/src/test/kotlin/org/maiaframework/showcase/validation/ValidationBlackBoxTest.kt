@@ -1,47 +1,45 @@
 package org.maiaframework.showcase.validation
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
-import org.springframework.http.MediaType
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
+import org.springframework.http.HttpStatus
 
 class ValidationBlackBoxTest : AbstractBlackBoxTest() {
 
 
     @Test
-    @Disabled
     fun `test all validators`() {
 
-        // TODO Create a DTO that has invalid values for all validators
-
-        val requestBody = """
-            {
-                "someBoolean": null
-            
-            }
-        """.trimIndent()
-
-
-
-        val csrfCookie = `fetch CSRF cookie`()
-
-        assertThat(
-            mockMvc.post().uri("/api/all_field_types/create")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody)
-                .header("X-XSRF-TOKEN", csrfCookie.value)
-                .with(user("nigel").roles("ADMIN"))
-                .cookie(csrfCookie)
-                .exchange()
-        ).debug()
-            .bodyJson().isEqualTo(
-                "{}"
-            )
+        assertThat_POST("/api/all_field_types/create", "{}")
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson()
+            .isLenientlyEqualTo("""
+                {
+                    "detail": "Invalid request content.",
+                    "errors": {
+                        "someBoolean_raw": ["must not be null"],
+                        "someBooleanType_raw": ["must not be null"],
+                        "someBooleanTypeProvided_raw": ["must not be null"],
+                        "someInstant_raw": ["must not be null"],
+                        "someInstantModifiable_raw": ["must not be null"],
+                        "someInt_raw": ["must not be null"],
+                        "someIntModifiable_raw": ["must not be null"],
+                        "someIntType_raw": ["must not be null"],
+                        "someIntTypeProvided_raw": ["must not be null"],
+                        "someListOfStrings_raw": ["must not be null"],
+                        "someLocalDateModifiable_raw": ["must not be null"],
+                        "someLongType_raw": ["must not be null"],
+                        "someLongTypeProvided_raw": ["must not be null"],
+                        "somePeriodModifiable_raw": ["must not be blank"],
+                        "someProvidedStringType_raw": ["must not be blank"],
+                        "someString_raw": ["must not be blank"],
+                        "someStringModifiable_raw": ["must not be blank"],
+                        "someStringType_raw": ["must not be blank"]
+                    }
+                }
+            """.trimIndent())
 
     }
-
 
 
 }
