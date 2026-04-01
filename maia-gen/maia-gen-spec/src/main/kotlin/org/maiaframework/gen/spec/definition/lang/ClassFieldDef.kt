@@ -316,6 +316,7 @@ data class ClassFieldDef(
             is MapFieldType -> "read${fieldType.uqcn}$nullableSuffix"
             is ObjectIdFieldType -> TODO("YAGNI?")
             is PeriodFieldType -> "readPeriod$nullableSuffix"
+            is PkAndNameListFieldType -> TODO("YAGNI?")
             is RequestDtoFieldType -> TODO("YAGNI?")
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> "readJson$nullableSuffix"

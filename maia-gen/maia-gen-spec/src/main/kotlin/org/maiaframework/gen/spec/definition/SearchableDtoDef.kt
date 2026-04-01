@@ -36,7 +36,8 @@ class SearchableDtoDef(
     val generateFindById: GenerateFindById,
     val searchModelType: SearchModelType,
     val withProvidedFieldConverter: WithProvidedFieldConverter,
-    val manyToManyJoinEntityDefs: List<JoinEntityDef>
+    val manyToManyJoinEntityDefs: List<JoinEntityDef>,
+    val manyToManyAggregationDef: ManyToManyAggregationDef? = null
 ) {
 
 

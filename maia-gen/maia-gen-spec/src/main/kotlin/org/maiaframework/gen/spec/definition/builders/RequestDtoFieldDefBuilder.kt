@@ -38,6 +38,7 @@ import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -310,6 +311,7 @@ class RequestDtoFieldDefBuilder private constructor(
             is MapFieldType -> `throw Other field not supported`(fieldType)
             is ObjectIdFieldType -> `throw Other field not supported`(fieldType)
             is PeriodFieldType -> `throw Other field not supported`(fieldType)
+            is PkAndNameListFieldType -> `throw Other field not supported`(fieldType)
             is RequestDtoFieldType -> `throw Other field not supported`(fieldType)
             is SetFieldType -> `throw Other field not supported`(fieldType)
             is SimpleResponseDtoFieldType -> `throw Other field not supported`(fieldType)

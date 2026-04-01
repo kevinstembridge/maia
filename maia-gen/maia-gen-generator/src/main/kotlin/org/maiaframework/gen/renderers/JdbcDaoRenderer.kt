@@ -39,6 +39,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -2096,6 +2097,7 @@ class JdbcDaoRenderer(
             is MapFieldType -> "this.jsonMapper.writeValueAsString(field.value as Map<*, *>${q})"
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> "field.value as Period"
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()
@@ -2150,6 +2152,7 @@ class JdbcDaoRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()

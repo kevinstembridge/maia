@@ -29,6 +29,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -145,6 +146,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> `render read for Map`(field, fieldType.keyFieldType, fieldType.valueFieldType)
             is ObjectIdFieldType -> `render read for ObjectId`(field)
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> `render read for Set`(field, fieldType)
             is SimpleResponseDtoFieldType -> TODO()
@@ -239,6 +241,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO("YAGNI?")
             is ObjectIdFieldType -> `render read for Set of ObjectIds`(keyFieldName, setElementFieldType)
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -280,6 +283,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -396,6 +400,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO("YAGNI?")
             is ObjectIdFieldType -> `render read for Set of ObjectIds`(keyFieldName, keyFieldType)
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -430,6 +435,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> {
 
@@ -461,6 +467,7 @@ class HazelcastSerializerRenderer(
                     is MapFieldType -> TODO()
                     is ObjectIdFieldType -> TODO()
                     is PeriodFieldType -> TODO()
+                    is PkAndNameListFieldType -> TODO()
                     is RequestDtoFieldType -> TODO()
                     is SetFieldType -> TODO()
                     is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -675,6 +682,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> `render write for Map`(field, fieldType)
             is ObjectIdFieldType -> appendLine("            writeString(\"${field.classFieldName}\", dto.${field.classFieldName}.toHexString())")
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> `render write for Set`(field, fieldType)
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -804,6 +812,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()
@@ -879,6 +888,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()
@@ -919,6 +929,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO("YAGNI?")
             is ObjectIdFieldType -> `render write for Set of ObjectIds`(keyFieldName, classFieldName)
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -963,6 +974,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> `render temp holder for Map values of type Set`(valueFieldName, mapEntryValueType)
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -1002,6 +1014,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> `render write to Map key temp holder for SetFieldType`(valueFieldName, mapEntryValueType)
             is SimpleResponseDtoFieldType -> TODO()
@@ -1044,6 +1057,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()
@@ -1096,6 +1110,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO("YAGNI?")
             is ObjectIdFieldType -> TODO("YAGNI?")
             is PeriodFieldType -> TODO("YAGNI?")
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO("YAGNI?")
             is SetFieldType -> {
 
@@ -1148,6 +1163,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> {
                 when (mapEntryValueFieldType.parameterFieldType) {
@@ -1176,6 +1192,7 @@ class HazelcastSerializerRenderer(
                     is MapFieldType -> TODO()
                     is ObjectIdFieldType -> TODO()
                     is PeriodFieldType -> TODO()
+                    is PkAndNameListFieldType -> TODO()
                     is RequestDtoFieldType -> TODO()
                     is SetFieldType -> TODO()
                     is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -1258,6 +1275,7 @@ class HazelcastSerializerRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> TODO()
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")

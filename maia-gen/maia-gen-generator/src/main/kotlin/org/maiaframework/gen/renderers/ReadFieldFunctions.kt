@@ -26,6 +26,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -115,6 +116,7 @@ private fun getReadFieldMapper(classFieldDef: ClassFieldDef): String {
         is MapFieldType -> TODO()
         is ObjectIdFieldType -> TODO()
         is PeriodFieldType -> TODO()
+        is PkAndNameListFieldType -> TODO()
         is RequestDtoFieldType -> TODO()
         is SetFieldType -> TODO()
         is SimpleResponseDtoFieldType -> TODO("YAGNI?")

@@ -27,6 +27,7 @@ import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -88,6 +89,7 @@ class DtoHtmlTableColumnDef(
             is MapFieldType -> TODO("YAGNI?")
             is ObjectIdFieldType -> "id"
             is PeriodFieldType -> "text"
+            is PkAndNameListFieldType -> TODO("YAGNI?")
             is RequestDtoFieldType -> TODO("YAGNI?")
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -125,6 +127,7 @@ class DtoHtmlTableColumnDef(
             is MapFieldType -> TODO("YAGNI?")
             is ObjectIdFieldType -> "equals"
             is PeriodFieldType -> "equals"
+            is PkAndNameListFieldType -> TODO("YAGNI?")
             is RequestDtoFieldType -> TODO("YAGNI?")
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -162,6 +165,7 @@ class DtoHtmlTableColumnDef(
             is MapFieldType -> TODO("YAGNI?")
             is ObjectIdFieldType -> AgGridCellDataType.text
             is PeriodFieldType -> AgGridCellDataType.text
+            is PkAndNameListFieldType -> TODO("YAGNI?")
             is RequestDtoFieldType -> TODO("YAGNI?")
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")

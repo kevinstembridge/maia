@@ -24,6 +24,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -68,6 +69,7 @@ fun renderWriteConversionForImplicitField(
         is MapFieldType -> `render write for plain field`(renderer, indent, fieldName)
         is ObjectIdFieldType -> TODO("YAGNI?")
         is PeriodFieldType -> renderer.appendLine("${indent}return $fieldName.toString()")
+        is PkAndNameListFieldType -> TODO("YAGNI?")
         is RequestDtoFieldType -> TODO("YAGNI?")
         is SetFieldType -> TODO("YAGNI?")
         is SimpleResponseDtoFieldType -> renderer.appendLine("${indent}return inputValue")
@@ -125,6 +127,7 @@ private fun `render for List field type`(
         is MapFieldType -> renderer.appendLine("${indent}return inputValue")
         is ObjectIdFieldType -> renderer.appendLine("${indent}return inputValue")
         is PeriodFieldType -> `render for List of Periods`(renderer, indent, fullCastPrefix, listElementType)
+        is PkAndNameListFieldType -> TODO("YAGNI?")
         is RequestDtoFieldType -> TODO("YAGNI?")
         is SetFieldType -> renderer.appendLine("${indent}return inputValue")
         is SimpleResponseDtoFieldType -> TODO("YAGNI?")

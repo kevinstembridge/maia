@@ -117,6 +117,31 @@ class DtoHtmlTableDefBuilder(
     }
 
 
+    fun manyToManyColumn(joinEntityDef: EntityDef, columnHeader: String) {
+
+        val rightEntityDef = getRightEntityDefFrom(joinEntityDef)
+
+        this.columnBuilders.add(object : DefBuilder<DtoHtmlTableManyToManyColumnDef> {
+            override fun build() = DtoHtmlTableManyToManyColumnDef(joinEntityDef, rightEntityDef, columnHeader)
+        })
+
+    }
+
+
+    private fun getRightEntityDefFrom(joinEntityDef: EntityDef): EntityDef {
+
+        val rootEntityDef = dtoHtmlTableSourceDef.searchableDtoDef?.dtoRootEntityDef
+            ?: throw IllegalArgumentException("manyToManyColumn requires a searchableDtoDef: dto = $dtoBaseName")
+
+        val rightEntityFieldDef = joinEntityDef.allEntityFieldsSorted.firstOrNull {
+            it.foreignKeyFieldDef != null && it.foreignKeyFieldDef.foreignEntityDef != rootEntityDef
+        } ?: throw IllegalArgumentException("No right entity FK found on join entity ${joinEntityDef.entityBaseName}")
+
+        return rightEntityFieldDef.foreignKeyFieldDef!!.foreignEntityDef
+
+    }
+
+
     fun moduleName(moduleName: String) {
 
         this.moduleName = ModuleName.of(moduleName)

@@ -431,15 +431,14 @@ abstract class AbstractKotlinRenderer protected constructor(
                 addImportFor(fieldType.keyFieldType)
                 addImportFor(fieldType.valueFieldType)
             }
-
             is ObjectIdFieldType -> addImportFor(fieldType.fqcn)
             is PeriodFieldType -> addImportFor(fieldType.fqcn)
+            is PkAndNameListFieldType -> addImportFor(fieldType.fqcn)
             is RequestDtoFieldType -> addImportFor(fieldType.fqcn)
             is SetFieldType -> {
                 addImportFor(fieldType.fqcn)
                 addImportFor(fieldType.parameterFieldType)
             }
-
             is SimpleResponseDtoFieldType -> addImportFor(fieldType.fqcn)
             is StringFieldType -> addImportFor(fieldType.fqcn)
             is StringTypeFieldType -> addImportFor(fieldType.fqcn)

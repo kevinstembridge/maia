@@ -35,6 +35,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -127,6 +128,7 @@ open class TypescriptInterfaceDtoRenderer(
                 is MapFieldType -> renderForMapFieldType(fieldDef, fieldType, nullableClause)
                 is ObjectIdFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is PeriodFieldType -> renderForPlainField(fieldDef, nullableClause)
+                is PkAndNameListFieldType -> appendLine("    ${fieldDef.classFieldName}${nullableClause}: ReadonlyArray<${fieldType.entityPkAndNameDef.dtoUqcn}>;")
                 is RequestDtoFieldType -> appendLine("    ${fieldDef.classFieldName}${nullableClause}: ${fieldType.requestDtoDef.uqcn};")
                 is SetFieldType -> appendLine("    ${fieldDef.classFieldName}${nullableClause}: ReadonlyArray<${setElementType(fieldType)}>;")
                 is SimpleResponseDtoFieldType -> appendLine("    ${fieldDef.classFieldName}${nullableClause}: ${fieldType.responseDtoDef.dtoDef.uqcn};")

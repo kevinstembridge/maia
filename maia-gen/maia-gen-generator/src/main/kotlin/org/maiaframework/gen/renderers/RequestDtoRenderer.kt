@@ -30,6 +30,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -169,6 +170,7 @@ class RequestDtoRenderer(
                 is MapFieldType -> renderGetterIfNonNullableField(field)
                 is ObjectIdFieldType -> renderGetterIfNonNullableField(field)
                 is PeriodFieldType -> renderGetterForPeriod(field)
+                is PkAndNameListFieldType -> TODO()
                 is RequestDtoFieldType -> renderGetterIfNonNullableField(field)
                 is SetFieldType -> renderGetterIfNonNullableField(field)
                 is SimpleResponseDtoFieldType -> renderGetterIfNonNullableField(field)

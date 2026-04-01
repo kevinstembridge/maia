@@ -28,6 +28,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -332,6 +333,7 @@ class CrudNotifierRenderer(
             is MapFieldType -> TODO("YAGNI?")
             is ObjectIdFieldType -> TODO("YAGNI?")
             is PeriodFieldType -> TODO("YAGNI?")
+            is PkAndNameListFieldType -> TODO("YAGNI?")
             is RequestDtoFieldType -> TODO("YAGNI?")
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")

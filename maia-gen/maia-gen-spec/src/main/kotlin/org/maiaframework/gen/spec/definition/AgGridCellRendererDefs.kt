@@ -17,4 +17,10 @@ object AgGridCellRendererDefs {
     )
 
 
+    val manyToManyChips = AgGridCellRendererDef(
+        TypescriptImport("ChipsAgGridCellRendererComponent", "@maia/maia-ui"),
+        "ChipsAgGridCellRendererComponent"
+    )
+
+
 }

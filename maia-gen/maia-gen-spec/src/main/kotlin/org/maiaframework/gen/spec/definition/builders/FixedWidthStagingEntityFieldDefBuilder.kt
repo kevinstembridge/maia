@@ -41,6 +41,7 @@ import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -124,6 +125,7 @@ class FixedWidthStagingEntityFieldDefBuilder(
             is MapFieldType -> doNothing()
             is ObjectIdFieldType -> doNothing()
             is PeriodFieldType -> addMaxLengthConstraint()
+            is PkAndNameListFieldType -> doNothing()
             is RequestDtoFieldType -> doNothing()
             is SetFieldType -> doNothing()
             is SimpleResponseDtoFieldType -> doNothing()

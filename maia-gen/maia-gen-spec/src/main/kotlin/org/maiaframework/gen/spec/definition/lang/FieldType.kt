@@ -538,6 +538,7 @@ private fun jdbcCompatibleTypeForListOrSet(parameterFieldType: FieldType): JdbcC
         is MapFieldType -> TODO("YAGNI?")
         is ObjectIdFieldType -> TODO("YAGNI?")
         is PeriodFieldType -> JdbcCompatibleType.text_array
+        is PkAndNameListFieldType -> throw IllegalStateException("PkAndNameListFieldType cannot be used as a list element type")
         is RequestDtoFieldType -> TODO("YAGNI?")
         is SetFieldType -> TODO("YAGNI?")
         is SimpleResponseDtoFieldType -> TODO("YAGNI?")
@@ -801,5 +802,26 @@ class FqcnFieldType internal constructor(
         return this
     }
 
+
+}
+
+
+class PkAndNameListFieldType(
+    val entityPkAndNameDef: EntityPkAndNameDef
+) : FieldType(
+    fqcn = Fqcn.LIST,
+    bsonCompatibleType = null,
+    typescriptCompatibleType = null,
+    sqlType = null,
+    elasticMappingType = null,
+    hazelcastCompatibleType = null,
+    parameters = listOf(FieldTypes.byFqcn(entityPkAndNameDef.pkAndNameDtoFqcn)),
+    defaultFormFieldValue = "[]"
+) {
+
+    override val jdbcCompatibleType: JdbcCompatibleType
+        get() = throw IllegalStateException("PkAndNameListFieldType has no JDBC type")
+
+    override fun unwrap(): FieldType = this
 
 }

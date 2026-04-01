@@ -6,6 +6,8 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.lang.*
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 
 
 class DtoHtmlTableDef(
@@ -59,7 +61,23 @@ class DtoHtmlTableDef(
     val tableComponentScssFileName = "${ngMatTableComponentKebabCase}.component.scss"
 
 
-    private val dtoClassFields = dtoHtmlTableColumnFields.map { it.classFieldDef }
+    val manyToManyColumnDef: DtoHtmlTableManyToManyColumnDef? =
+        dtoHtmlTableColumnDefs.filterIsInstance<DtoHtmlTableManyToManyColumnDef>().firstOrNull()
+
+
+    private val dtoClassFields: List<ClassFieldDef> = run {
+        val base = dtoHtmlTableColumnFields.map { it.classFieldDef }
+        if (manyToManyColumnDef != null) {
+            val pkAndNameDef = manyToManyColumnDef.rightEntityDef.entityPkAndNameDef
+            val rightEntitiesFieldDef = ClassFieldDef.aClassField(
+                "rightEntities",
+                PkAndNameListFieldType(pkAndNameDef)
+            ).build()
+            base + rightEntitiesFieldDef
+        } else {
+            base
+        }
+    }
 
 
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
@@ -111,7 +129,14 @@ class DtoHtmlTableDef(
             GenerateFindById.FALSE,
             searchModelType,
             searchableDtoDef.withProvidedFieldConverter,
-            manyToManyJoinEntityDefs = searchableDtoDef.manyToManyJoinEntityDefs
+            manyToManyJoinEntityDefs = emptyList(),  // table query does NOT join right inline
+            manyToManyAggregationDef = manyToManyColumnDef?.let {
+                ManyToManyAggregationDef(
+                    joinEntityDef = it.joinEntityDef,
+                    rightEntityDef = it.rightEntityDef,
+                    leftEntityDef = searchableDtoDef.dtoRootEntityDef
+                )
+            }
         )
 
     }

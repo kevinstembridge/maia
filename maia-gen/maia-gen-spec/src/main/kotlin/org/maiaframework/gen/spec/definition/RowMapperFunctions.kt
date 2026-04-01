@@ -24,6 +24,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -98,6 +99,7 @@ object RowMapperFunctions {
             is MapFieldType -> renderForListSetOrMap(entityFieldDef, indentStr, resultSetColumnName, fqcnImporter)
             is ObjectIdFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is PeriodFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> renderForListSetOrMap(entityFieldDef, indentStr, resultSetColumnName, fqcnImporter)
             is SimpleResponseDtoFieldType -> renderForDto(entityFieldDef, indentStr, fqcnImporter)
@@ -174,6 +176,7 @@ object RowMapperFunctions {
             is MapFieldType -> "${indentStr}rsa.readString(\"$resultSetColumnName\") { jsonMapper.readValue(it, object : TypeReference<${entityFieldDef.classFieldDef.unqualifiedToString}>() {}) }"
             is ObjectIdFieldType -> TODO()
             is PeriodFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { Period.parse(it) }"
+            is PkAndNameListFieldType -> TODO()
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> TODO()

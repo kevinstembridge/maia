@@ -35,6 +35,7 @@ import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameListFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -186,6 +187,7 @@ class EntityFieldDef(
             is MapFieldType -> "sqlParam${uqcn}For"
             is ObjectIdFieldType -> "sqlParam${uqcn}For"
             is PeriodFieldType -> TODO("YAGNI?")
+            is PkAndNameListFieldType -> TODO("YAGNI?")
             is RequestDtoFieldType -> TODO("YAGNI?")
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")

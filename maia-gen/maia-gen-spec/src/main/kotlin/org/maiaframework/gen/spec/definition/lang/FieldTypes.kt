@@ -153,6 +153,7 @@ object FieldTypes {
         is MapFieldType -> false
         is ObjectIdFieldType -> true
         is PeriodFieldType -> true
+        is PkAndNameListFieldType -> false
         is RequestDtoFieldType -> false
         is SetFieldType -> false
         is SimpleResponseDtoFieldType -> false
@@ -162,7 +163,7 @@ object FieldTypes {
         is UrlFieldType -> true
     }
 
-    
+
     fun FieldType.isNumeric(): Boolean {
         
         return when (this) {
@@ -188,6 +189,7 @@ object FieldTypes {
             is MapFieldType -> false
             is ObjectIdFieldType -> false
             is PeriodFieldType -> false
+            is PkAndNameListFieldType -> false
             is RequestDtoFieldType -> false
             is SetFieldType -> false
             is SimpleResponseDtoFieldType -> false
@@ -196,7 +198,7 @@ object FieldTypes {
             is StringValueClassFieldType -> false
             is UrlFieldType -> false
         }
-        
+
     }
 
 
@@ -225,6 +227,7 @@ object FieldTypes {
             is MapFieldType -> false
             is ObjectIdFieldType -> true
             is PeriodFieldType -> false
+            is PkAndNameListFieldType -> false
             is RequestDtoFieldType -> false
             is SetFieldType -> false
             is SimpleResponseDtoFieldType -> false
@@ -262,6 +265,7 @@ object FieldTypes {
             is MapFieldType -> false
             is ObjectIdFieldType -> false
             is PeriodFieldType -> false
+            is PkAndNameListFieldType -> false
             is RequestDtoFieldType -> false
             is SetFieldType -> false
             is SimpleResponseDtoFieldType -> false
@@ -299,6 +303,7 @@ object FieldTypes {
             is MapFieldType -> false
             is ObjectIdFieldType -> false
             is PeriodFieldType -> false
+            is PkAndNameListFieldType -> false
             is RequestDtoFieldType -> false
             is SetFieldType -> false
             is SimpleResponseDtoFieldType -> false
