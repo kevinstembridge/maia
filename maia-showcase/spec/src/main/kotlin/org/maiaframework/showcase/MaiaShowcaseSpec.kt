@@ -1098,9 +1098,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val manyToManyJoinEntityDef = manyToManyEntity(
+    val leftToRightManyToManyJoinEntityDef = manyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
-        "ManyToManyJoin",
+        "LeftToRightManyToManyJoin",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
         leftEntity = ReferencedEntity("left", "Left", leftEntityDef, IsEditableByUser.TRUE),
