@@ -1136,12 +1136,12 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE
     ) {
-        manyToManyJoin(manyToManyJoinEntityDef, joinType = JoinType.LEFT_OUTER)
+        manyToManyJoin(leftToRightManyToManyJoinEntityDef, joinType = JoinType.LEFT_OUTER)
         field("id", "id")
         field("createdTimestampUtc", "createdTimestampUtc")
         field("someIntFromLeft", "someInt")
         field("someStringFromLeft", "someString")
-        field("rightId", manyToManyJoinEntityDef.fieldPathOf("rightId")) { nullable() }
+        field("rightId", leftToRightManyToManyJoinEntityDef.fieldPathOf("rightId")) { nullable() }
     }
 
 
