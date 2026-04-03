@@ -1128,6 +1128,16 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val leftDtoHtmlTableDef = dtoHtmlTable(leftSearchableDtoDef) {
+        columnFromDto("someIntFromLeft", "someInt") {
+            header("Some Int From Left")
+        }
+        columnFromDto("someIntFromRight", "someIntsFromRight") {
+            header("Some Ints From Right")
+        }
+    }
+
+
     val leftNotMappedToRightSearchableDtoDef = searchableEntityDef(
         "org.maiaframework.showcase.many_to_many",
         "LeftNotMappedToRight",
