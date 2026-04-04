@@ -274,7 +274,7 @@ CREATE TABLE maia.right (
 );
 
 
-CREATE TABLE maia.many_to_many_join (
+CREATE TABLE maia.left_to_right_many_to_many_join (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
@@ -282,8 +282,8 @@ CREATE TABLE maia.many_to_many_join (
     right_id uuid NOT NULL REFERENCES maia.right(id),
     PRIMARY KEY(id)
 );
-CREATE INDEX many_to_many_join_left_id_idx ON maia.many_to_many_join(left_id);
-CREATE INDEX many_to_many_join_right_id_idx ON maia.many_to_many_join(right_id);
+CREATE INDEX left_to_right_many_to_many_join_left_id_idx ON maia.left_to_right_many_to_many_join(left_id);
+CREATE INDEX left_to_right_many_to_many_join_right_id_idx ON maia.left_to_right_many_to_many_join(right_id);
 
 
 CREATE TABLE maia.unmodifiable (
