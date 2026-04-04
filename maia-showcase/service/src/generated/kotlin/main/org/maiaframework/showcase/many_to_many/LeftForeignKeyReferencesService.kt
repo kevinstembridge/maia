@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class LeftForeignKeyReferencesService(
-    private val manyToManyJoinRepo: ManyToManyJoinRepo
+    private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo
 ) {
 
 
@@ -20,8 +20,8 @@ class LeftForeignKeyReferencesService(
 
     fun checkForeignKeyReferences(id: DomainId): ForeignKeyReferencesExistResponseDto {
 
-        if (this.manyToManyJoinRepo.existsByLeftId(id)) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "ManyToManyJoin")
+        if (this.leftToRightManyToManyJoinRepo.existsByLeftId(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightManyToManyJoin")
         }
 
         return ForeignKeyReferencesExistResponseDto(id, false, null)

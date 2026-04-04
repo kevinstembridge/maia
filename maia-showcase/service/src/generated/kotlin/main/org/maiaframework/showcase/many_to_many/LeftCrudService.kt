@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component
 @Component
 class LeftCrudService(
     private val entityRepo: LeftRepo,
-    private val maiaProblems: MaiaProblems,
-    private val manyToManyJoinRepo: ManyToManyJoinRepo
+    private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
+    private val maiaProblems: MaiaProblems
 ) {
 
 
@@ -30,8 +30,8 @@ class LeftCrudService(
 
     fun delete(id: DomainId) {
 
-        if (this.manyToManyJoinRepo.existsByLeftId(id)) {
-            throw this.maiaProblems.foreignKeyRecordsExist("ManyToManyJoin")
+        if (this.leftToRightManyToManyJoinRepo.existsByLeftId(id)) {
+            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightManyToManyJoin")
         }
 
         this.entityRepo.deleteByPrimaryKey(id)
