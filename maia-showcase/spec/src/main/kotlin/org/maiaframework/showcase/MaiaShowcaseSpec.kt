@@ -1112,15 +1112,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val leftSearchableDtoDef = searchableEntityDef(
         "org.maiaframework.showcase.many_to_many",
-        "LeftDetail",
+        "LeftSearchable",
         entityDef = leftEntityDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE
     ) {
         manyToManyJoin(leftToRightManyToManyJoinEntityDef)
-        field("id", "id")
-        field("createdTimestampUtc", "createdTimestampUtc")
+        field("id")
+        field("createdTimestampUtc")
         field("someIntFromLeft", "someInt")
         field("someIntFromRight", leftToRightManyToManyJoinEntityDef.fieldPathOf("rightId.someInt"))
         field("someStringFromLeft", "someString")
