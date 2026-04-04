@@ -36,8 +36,8 @@ class LeftNotMappedToRightDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.left
-            left outer join maia.many_to_many_join
-                    on maia.left.id = maia.many_to_many_join.left_id
+            left outer join maia.left_to_right_many_to_many_join
+                    on maia.left.id = maia.left_to_right_many_to_many_join.left_id
             $whereClause
             """.trimIndent()
 
@@ -45,12 +45,12 @@ class LeftNotMappedToRightDtoDao(
             select
                 maia.left.created_timestamp_utc as createdTimestampUtc,
                 maia.left.id as id,
-                maia.many_to_many_join.right_id as rightId,
+                maia.left_to_right_many_to_many_join.right_id as rightId,
                 maia.left.some_int as someIntFromLeft,
                 maia.left.some_string as someStringFromLeft
             from maia.left
-            left outer join maia.many_to_many_join
-                    on maia.left.id = maia.many_to_many_join.left_id
+            left outer join maia.left_to_right_many_to_many_join
+                    on maia.left.id = maia.left_to_right_many_to_many_join.left_id
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -79,8 +79,8 @@ class LeftNotMappedToRightDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.left
-            left outer join maia.many_to_many_join
-                    on maia.left.id = maia.many_to_many_join.left_id
+            left outer join maia.left_to_right_many_to_many_join
+                    on maia.left.id = maia.left_to_right_many_to_many_join.left_id
             $whereClause
             """.trimIndent()
 
