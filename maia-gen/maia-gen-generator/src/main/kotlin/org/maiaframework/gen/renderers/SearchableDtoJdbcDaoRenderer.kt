@@ -305,11 +305,9 @@ class SearchableDtoJdbcDaoRenderer(
             .map { joinEntityDef ->
                 """${joinEntityDef.joinType.sql} join ${joinEntityDef.entityDef.schemaAndTableName}
                     on ${entityDef.schemaAndTableName}.id = ${joinEntityDef.entityDef.schemaAndTableName}.${
-                    joinEntityDef.entityDef.foreignKeyFieldForBaseName(
-                        entityDef.superEntityBaseName
-                    ).tableColumnName
+                    joinEntityDef.entityDef.foreignKeyFieldForBaseName(entityDef.superEntityBaseName).tableColumnName
                 }
-                    """.trimIndent()
+                """.trimIndent()
             }
 
         val foreignKeyJoinClauses = foreignKeyFieldsSortedByDepth
