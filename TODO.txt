@@ -5,7 +5,9 @@ TODO * Many-to-many relationship.
     TODO * Implement by hand
         DONE * Generate flyway scripts.
         DONE * Populate tables with some dummy data.
-        TODO * Handcode the response DTO. => has nested entities.
+        DONE * Handcode the response DTO. => has nested PkAndNameDtos for the other entity.
+        TODO * Handcode the service.
+            => It should stitch together the nested entities by fetching them from the repo layer.
         TODO * Write a black box test for it
         TODO * Handcode the SQL to produce the search response.
         TODO * Handcode the DAO.

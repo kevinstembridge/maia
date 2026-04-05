@@ -396,7 +396,7 @@ class ManyToManyJoinDao(
 
 
     fun deleteAll() {
-        this.jdbcOps.update("delete from maia.many_to_many_join")
+        this.jdbcOps.update("delete from maia.left_to_right_many_to_many_join")
     }
 
 
