@@ -12,30 +12,13 @@ import tools.jackson.databind.node.JsonNodeFactory
 
 @Service
 class LeftSearchableDtoSearchService(
-    private val dtoRepo: LeftSearchableDtoRepo,
-    private val rightRepo: RightRepo,
-    private val manyToManyJoinRepo: LeftToRightManyToManyJoinRepo
+    private val dtoRepo: LeftSearchableDtoRepo
 ) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<LeftSearchableDto> {
 
-        val searchResultPage = this.dtoRepo.getRows(searchModel)
-
-        val updatedResults = searchResultPage.results.map { resultDto ->
-
-            val joinEntities = this.manyToManyJoinRepo.findByLeftId(resultDto.id)
-
-            val joinPkAndNameDtos = joinEntities.map { joinEntity ->
-                val rightEntity = this.rightRepo.findByPrimaryKey(joinEntity.rightId)
-                RightPkAndNameDto(rightEntity.id, rightEntity.someString)
-            }
-
-            resultDto.copy(rightEntities = joinPkAndNameDtos)
-
-        }
-
-        return searchResultPage.copy(results = updatedResults)
+        return this.dtoRepo.getRows(searchModel)
 
     }
 

@@ -15,9 +15,10 @@ class LeftSearchableDtoRowMapper : MaiaRowMapper<LeftSearchableDto> {
         return LeftSearchableDto(
             rsa.readInstant("createdTimestampUtc"),
             rsa.readDomainId("id"),
-            emptyList(),
             rsa.readInt("someIntFromLeft"),
-            rsa.readString("someStringFromLeft")
+            rsa.readInt("someIntFromRight"),
+            rsa.readString("someStringFromLeft"),
+            rsa.readString("someStringFromRight"),
         )
 
     }
