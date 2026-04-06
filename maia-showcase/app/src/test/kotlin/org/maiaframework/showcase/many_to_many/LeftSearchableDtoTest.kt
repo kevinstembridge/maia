@@ -45,11 +45,13 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
 
     private val rightEntity1 = RightEntityTestBuilder(someInt = someInt1, someString = "aSomeRightValue1").build()
     private val rightEntity2 = RightEntityTestBuilder(someInt = someInt2, someString = "aSomeRightValue2").build()
+    private val rightEntity3 = RightEntityTestBuilder(someInt = someInt3, someString = "aSomeRightValue3").build()
 
     private val left1ToRight1 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity1.id, rightId = rightEntity1.id).build()
     private val left1ToRight2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity1.id, rightId = rightEntity2.id).build()
     private val left2ToRight1 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity2.id, rightId = rightEntity1.id).build()
     private val left2ToRight2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity2.id, rightId = rightEntity2.id).build()
+    private val left2ToRight3 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity2.id, rightId = rightEntity3.id).build()
     private val left3ToRight1 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity3.id, rightId = rightEntity1.id).build()
     private val left3ToRight2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity3.id, rightId = rightEntity2.id).build()
 
@@ -63,8 +65,17 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
         this.rightDao.deleteAll()
 
         this.leftDao.bulkInsert(listOf(leftEntity1, leftEntity2, leftEntity3))
-        this.rightDao.bulkInsert(listOf(rightEntity1, rightEntity2))
-        this.manyToManyJoinDao.bulkInsert(listOf(left1ToRight1, left1ToRight2, left2ToRight1, left2ToRight2, left3ToRight1, left3ToRight2))
+        this.rightDao.bulkInsert(listOf(rightEntity1, rightEntity2, rightEntity3))
+
+        this.manyToManyJoinDao.bulkInsert(listOf(
+            left1ToRight1,
+            left1ToRight2,
+            left2ToRight1,
+            left2ToRight2,
+            left2ToRight3,
+            left3ToRight1,
+            left3ToRight2
+        ))
 
     }
 
@@ -802,34 +813,53 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
     fun testFilter_number_lessThan() {
 
         submitSearch(
-            startRow = 0,
-            endRow = 3,
-            filterModel = mapOf(
-                "someIntFromLeft" to mapOf(
-                    "filterType" to "number",
-                    "type" to "lessThan",
-                    "filter" to 2
-                )
-            ),
-            sortModel = listOf(
-                mapOf(
-                    "colId" to "someStringFromLeft",
-                    "sort" to "asc"
-                )
-            )
-        ).bodyJson().isEqualTo(
-            expectedResult(
-                totalCount = 2,
-                rows = listOf(
-                    leftEntity1 to rightEntity1,
-                    leftEntity1 to rightEntity2,
-                ),
-                firstResultIndex = 1,
-                lastResultIndex = 2,
-                offset = 0,
-                limit = 3
-            )
+            requestBody = """
+            {
+                "startRow": 0,
+                "endRow": 3,
+                "filterModel": {
+                    "someIntFromLeft": {
+                        "filterType": "number",
+                        "type": "lessThan",
+                        "filter": 2
+                    }
+                },
+                "sortModel": [
+                    {
+                        "colId": "someStringFromLeft",
+                        "sort": "asc"
+                    }
+                ]
+            }
+            """.trimIndent()
         )
+            .bodyJson()
+            .isEqualTo("""
+                {
+                    "results": [
+                        {
+                            "createdTimestampUtc": "${leftEntity1.createdTimestampUtc}",
+                            "id": "${leftEntity1.id}",
+                            "rightEntities": [
+                                {
+                                    "id": "${rightEntity1.id}",
+                                    "name": "${rightEntity1.someString}"
+                                },
+                                {
+                                    "id": "${rightEntity2.id}",
+                                    "name": "${rightEntity2.someString}"
+                                }
+                            ],
+                            "someIntFromLeft": ${leftEntity1.someInt},
+                            "someStringFromLeft": "${leftEntity1.someString}"
+                        }
+                    ],
+                    "totalResultCount": 1,
+                    "offset": 0,
+                    "limit": 3,
+                    "firstResultIndex": 1,
+                    "lastResultIndex": 1
+                }""".trimIndent())
 
     }
 
@@ -1059,11 +1089,31 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
             mockMvc.post().uri(path)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
+                .characterEncoding("UTF-8")
                 .with(user("nigel").roles("ADMIN"))
                 .cookie(MockCookie("XSRF-TOKEN", "test-csrf-token"))
                 .header("X-XSRF-TOKEN", "test-csrf-token")
                 .exchange()
-        )
+        ).debug()
+
+    }
+
+
+    private fun submitSearch(
+        path: String = "/api/left_searchable/search",
+        requestBody: String,
+    ): MvcTestResultAssert {
+
+        return assertThat(
+            mockMvc.post().uri(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .characterEncoding("UTF-8")
+                .with(user("nigel").roles("ADMIN"))
+                .cookie(MockCookie("XSRF-TOKEN", "test-csrf-token"))
+                .header("X-XSRF-TOKEN", "test-csrf-token")
+                .exchange()
+        ).debug()
 
     }
 
