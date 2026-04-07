@@ -178,27 +178,4 @@ class SearchableDtoDefBuilder(
     }
 
 
-    fun lookup(
-        foreignKeyEntityDef: EntityDef,
-        localField: String,
-        foreignField: String = "id"
-    ): SearchableDtoLookupDefBuilder {
-
-        val localFieldClassFieldName = ClassFieldName(localField)
-        val foreignFieldDef = foreignKeyEntityDef.findFieldByName(foreignField)
-
-        return add(
-            SearchableDtoLookupDefBuilder(
-                foreignKeyEntityDef,
-                localFieldClassFieldName,
-                foreignFieldDef,
-                this,
-                this.defaultFieldTypeFieldReaderProvider,
-                this.defaultFieldTypeFieldWriterProvider
-            )
-        )
-
-    }
-
-
 }
