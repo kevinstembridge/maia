@@ -335,18 +335,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field("id")
         field("userId")
         field("userGroupId")
-        lookup(userEntityDef, "userId")
-            .lookupField("firstName").and()
-            .lookupField("lastName").and()
-            .and()
-            .lookup(userGroupEntityDef, "userGroupId")
-            .lookupField("id").and()
-            .lookupField("authorities").and()
-            .and()
-            .lookup(userEntityDef, "userId")
-            .lookupField("displayName").and()
-            .and()
-            .build()
     }
 
 
