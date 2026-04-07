@@ -1,6 +1,7 @@
 package org.maiaframework.showcase
 
 import org.maiaframework.gen.spec.AbstractSpec
+import org.maiaframework.gen.spec.ReferencedEntity
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.EsDocMappingTypes
 import org.maiaframework.gen.spec.definition.HtmlInputType
@@ -1103,8 +1104,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "LeftToRightManyToManyJoin",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        leftEntity = ReferencedEntity("left", "Left", leftEntityDef, IsEditableByUser.TRUE),
-        rightEntity = ReferencedEntity("right", "Right", rightEntityDef, IsEditableByUser.TRUE)
+        leftEntity = ReferencedEntity(fieldName = "left", displayName = "Left", leftEntityDef, IsEditableByUser.TRUE),
+        rightEntity = ReferencedEntity(
+            fieldName = "right",
+            displayName = "Right",
+            rightEntityDef,
+            IsEditableByUser.TRUE
+        )
     ) {
         field_lastModifiedTimestampUtc()
     }
@@ -1118,13 +1124,11 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE
     ) {
-        manyToManyJoin(leftToRightManyToManyJoinEntityDef)
         field("id")
         field("createdTimestampUtc")
         field("someIntFromLeft", "someInt")
-        field("someIntFromRight", leftToRightManyToManyJoinEntityDef.fieldPathOf("rightId.someInt"))
         field("someStringFromLeft", "someString")
-        field("someStringFromRight", leftToRightManyToManyJoinEntityDef.fieldPathOf("rightId.someString"))
+        manyToManyField("rightEntities", leftToRightManyToManyJoinEntityDef)
     }
 
 
@@ -1151,7 +1155,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("createdTimestampUtc", "createdTimestampUtc")
         field("someIntFromLeft", "someInt")
         field("someStringFromLeft", "someString")
-        field("rightId", leftToRightManyToManyJoinEntityDef.fieldPathOf("rightId")) { nullable() }
     }
 
 

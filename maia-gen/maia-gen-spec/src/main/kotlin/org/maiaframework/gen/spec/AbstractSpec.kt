@@ -38,6 +38,7 @@ import org.maiaframework.gen.spec.definition.ElasticIndexBaseName
 import org.maiaframework.gen.spec.definition.EnumDefs
 import org.maiaframework.gen.spec.definition.IntTypeDef
 import org.maiaframework.gen.spec.definition.LongTypeDef
+import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.ModelDefProvider
 import org.maiaframework.gen.spec.definition.ModuleName
@@ -78,7 +79,6 @@ import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.AllowFindAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
-import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.flags.Versioned
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
@@ -459,7 +459,7 @@ abstract class AbstractSpec protected constructor(
         rightEntity: ReferencedEntity,
         idAndNameFieldName: String? = null,
         init: (EntityDefBuilder.() -> Unit)? = null
-    ): EntityDef {
+    ): ManyToManyEntityDef {
 
         val builder = EntityDefBuilder(
             PackageName(packageName),
@@ -505,7 +505,7 @@ abstract class AbstractSpec protected constructor(
         val entityDef = builder.build()
         entityDefs.add(entityDef)
 
-        return entityDef
+        return ManyToManyEntityDef(entityDef, leftEntity, rightEntity)
 
     }
 
@@ -1208,14 +1208,6 @@ abstract class AbstractSpec protected constructor(
 
 
     }
-
-
-    data class ReferencedEntity(
-        val fieldName: String,
-        val displayName: String,
-        val entityDef: EntityDef,
-        val editableByUser: IsEditableByUser = IsEditableByUser.FALSE
-    )
 
 
 }

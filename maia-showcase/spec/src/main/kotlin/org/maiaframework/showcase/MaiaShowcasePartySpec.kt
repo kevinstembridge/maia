@@ -2,6 +2,7 @@ package org.maiaframework.showcase
 
 import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.gen.spec.AbstractSpec
+import org.maiaframework.gen.spec.ReferencedEntity
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
@@ -328,7 +329,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userGroupMembershipSearchableDtoDef = searchableEntityDef(
         "org.maiaframework.showcase.user",
         "UserGroupMembership",
-        userGroupMembershipEntityDef,
+        userGroupMembershipEntityDef.entityDef,
         withGeneratedDto = WithGeneratedDto.TRUE
     ) {
         moduleName("ops")

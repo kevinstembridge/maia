@@ -7,11 +7,11 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.JoinEntityDef
 import org.maiaframework.gen.spec.definition.JoinType
+import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SearchableDtoFieldDef
-import org.maiaframework.gen.spec.definition.SearchableDtoLookupDef
 import org.maiaframework.gen.spec.definition.flags.CaseSensitive
 import org.maiaframework.gen.spec.definition.flags.GenerateFindById
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
@@ -39,8 +39,7 @@ class SearchableDtoDefBuilder(
 ) {
 
     private val manyToManyJoinEntityDefs = mutableListOf<JoinEntityDef>()
-    private val fieldDefBuilders = mutableListOf<SearchableDtoFieldDefBuilder>()
-    private val lookupDefBuilders = mutableListOf<SearchableDtoLookupDefBuilder>()
+    private val fieldDefs = mutableListOf<SearchableDtoFieldDef>()
     private var moduleName: ModuleName? = null
     private var withPreAuthorize: WithPreAuthorize? = null
     private var withProvidedFieldConverter = WithProvidedFieldConverter.FALSE
@@ -49,17 +48,13 @@ class SearchableDtoDefBuilder(
 
     fun build(): SearchableDtoDef {
 
-        val fieldDefs = buildFieldDefs()
-        val lookupDefs = buildLookupDefs()
-
         return SearchableDtoDef(
             this.rootEntityDef,
             this.dtoBaseName,
             this.moduleName,
             this.packageName,
             this.rootEntityDef.tableName,
-            fieldDefs,
-            lookupDefs,
+            this.fieldDefs,
             this.withPreAuthorize,
             this.generatedEndpoint,
             this.withGeneratedFindAllFunction,
@@ -73,39 +68,39 @@ class SearchableDtoDefBuilder(
     }
 
 
-    private fun buildFieldDefs(): List<SearchableDtoFieldDef> {
+    fun manyToManyJoin(joinEntityDef: ManyToManyEntityDef, joinType: JoinType = JoinType.INNER) {
 
-        return this.fieldDefBuilders.map { it.build() }
-
-    }
-
-
-    private fun buildLookupDefs(): List<SearchableDtoLookupDef> {
-
-        return this.lookupDefBuilders.map { it.build() }
+        this.manyToManyJoinEntityDefs.add(JoinEntityDef(joinEntityDef.entityDef, joinType))
 
     }
 
 
-    private fun add(builder: SearchableDtoFieldDefBuilder): SearchableDtoFieldDefBuilder {
+    fun manyToManyField(fieldName: String, manyToManyEntityDef: ManyToManyEntityDef) {
 
-        this.fieldDefBuilders.add(builder)
-        return builder
+        TODO("Not yet implemented")
+
+        this.manyToManyJoinEntityDefs.add(JoinEntityDef(manyToManyEntityDef.entityDef, JoinType.INNER))
+
+        val otherEntityDef = `find the Entity on the other side of`(manyToManyEntityDef)
+
+        // TODO add a field to the searchableDtoDef that is a list of PkAndNameTypes from other entity
+
+
 
     }
 
 
-    private fun add(builder: SearchableDtoLookupDefBuilder): SearchableDtoLookupDefBuilder {
+    private fun `find the Entity on the other side of`(manyToManyEntityDef: ManyToManyEntityDef): EntityDef {
 
-        this.lookupDefBuilders.add(builder)
-        return builder
+        return when (this.rootEntityDef) {
 
-    }
+            manyToManyEntityDef.leftEntity.entityDef -> manyToManyEntityDef.rightEntity.entityDef
 
+            manyToManyEntityDef.rightEntity.entityDef -> manyToManyEntityDef.leftEntity.entityDef
 
-    fun manyToManyJoin(joinEntityDef: EntityDef, joinType: JoinType = JoinType.INNER) {
+            else -> throw IllegalArgumentException("The provided manyToManyEntityDef (${manyToManyEntityDef.entityDef.entityBaseName}) does not reference this root entity (${this.rootEntityDef.entityBaseName}).")
 
-        this.manyToManyJoinEntityDefs.add(JoinEntityDef(joinEntityDef, joinType))
+        }
 
     }
 
@@ -134,7 +129,6 @@ class SearchableDtoDefBuilder(
         val fieldPathToUse = entityFieldPath ?: dtoFieldName
         val fieldPath = FieldPath.of(fieldPathToUse)
         val leafEntityAndField = this.rootEntityDef.findFieldByPathOrNull(fieldPath)
-            ?: findManyToManyFieldOrNull(fieldPath)
             ?: throw IllegalArgumentException("Cannot find field by path '$fieldPathToUse' on searchableDto $dtoBaseName with fields ${this.rootEntityDef.allEntityFieldsSorted.map { it.classFieldName }}")
 
         val builder = SearchableDtoFieldDefBuilder(
@@ -147,7 +141,7 @@ class SearchableDtoDefBuilder(
         )
 
         init?.invoke(builder)
-        fieldDefBuilders.add(builder)
+        fieldDefs.add(builder.build())
 
     }
 

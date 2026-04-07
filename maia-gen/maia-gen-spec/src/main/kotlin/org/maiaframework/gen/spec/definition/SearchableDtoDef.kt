@@ -8,12 +8,10 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.flags.WithProvidedFieldConverter
-import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.ClassType
 import org.maiaframework.gen.spec.definition.lang.ClassVisibility
-import org.maiaframework.gen.spec.definition.lang.DocumentMapperFieldDef
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
@@ -28,7 +26,6 @@ class SearchableDtoDef(
     val packageName: PackageName,
     val tableName: TableName,
     fieldDefsNotInherited: List<SearchableDtoFieldDef>,
-    val lookupDefs: List<SearchableDtoLookupDef>,
     val withPreAuthorize: WithPreAuthorize?,
     val withGeneratedEndpoint: WithGeneratedEndpoint,
     val withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
@@ -144,9 +141,6 @@ class SearchableDtoDef(
         .build()
 
 
-    val hasLookupFields = lookupDefs.isNotEmpty()
-
-
     val angularComponentNames = AngularComponentNames(this.packageName, dtoBaseName.value)
 
 
@@ -209,57 +203,6 @@ class SearchableDtoDef(
 
         return this.allFields.find { it.classFieldName.value == fieldName }
             ?: throw RuntimeException("No field named $fieldName found on SearchableDtoDef $dtoBaseName with fields ${allFields.map { it.classFieldName }}.")
-
-    }
-
-
-    // TODO If we still need to support Mongo, we need to reintroduce this
-    fun findFieldByPath_old(fieldName: String): EntityFieldDef {
-
-        return this.dtoRootEntityDef.findFieldByNameOrNull(fieldName)
-            ?: findLookupFieldByName(fieldName)
-
-    }
-
-
-    fun findDocumentFieldByPath(fieldName: String): DocumentMapperFieldDef {
-
-        val entityFieldDef = dtoRootEntityDef.findFieldByNameOrNull(fieldName)
-
-        if (entityFieldDef != null) {
-            return DocumentMapperFieldDef(
-                entityFieldDef.classFieldDef,
-                entityFieldDef.tableColumnName,
-                entityFieldDef.fieldReaderParameterizedType,
-                entityFieldDef.fieldWriterParameterizedType
-            )
-        }
-
-        val lookupFieldEntityFieldDef = findLookupFieldByName(fieldName)
-
-        return DocumentMapperFieldDef(
-            lookupFieldEntityFieldDef.classFieldDef.withFieldName(fieldName),
-            TableColumnName(fieldName),
-            lookupFieldEntityFieldDef.fieldReaderParameterizedType,
-            lookupFieldEntityFieldDef.fieldWriterParameterizedType
-        )
-
-    }
-
-
-    private fun findLookupFieldByName(fieldName: String): EntityFieldDef {
-
-        this.lookupDefs.forEach { lookupDef ->
-            lookupDef.lookupFieldDefs.forEach { field ->
-
-                if (field.dtoFieldName.value == fieldName) {
-                    return field.foreignFieldDef
-                }
-
-            }
-        }
-
-        throw IllegalArgumentException("No field named $fieldName found on SearchableDto ${this.dtoBaseName}")
 
     }
 
