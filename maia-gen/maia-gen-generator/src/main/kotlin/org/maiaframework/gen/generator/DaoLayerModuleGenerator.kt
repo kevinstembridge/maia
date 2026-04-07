@@ -42,8 +42,6 @@ class DaoLayerModuleGenerator(
         `process SearchableDtoDefs`()
         `render DAOs`()
         `render SearchableDtoSearchConverters`()
-        `render DtoDocumentMappers`()
-        `render TableDtoDocumentMappers`()
 
     }
 
@@ -171,52 +169,6 @@ class DaoLayerModuleGenerator(
         if (searchableDtoDef.dtoRootEntityDef.databaseType == DatabaseType.MONGO) {
             SearchableDtoSearchConverterRenderer(searchableDtoDef).renderToDir(this.kotlinOutputDir)
         }
-
-    }
-
-
-    private fun `render DtoDocumentMappers`() {
-
-        this.modelDef.allSearchableDtoDefs
-            .filter { it.withGeneratedDto == WithGeneratedDto.TRUE }
-            .forEach { this.renderDocumentMapper(it) }
-
-    }
-
-
-    private fun renderDocumentMapper(searchableDtoDef: SearchableDtoDef) {
-
-        if (searchableDtoDef.dtoRootEntityDef.databaseType == DatabaseType.MONGO) {
-            DtoDocumentMapperRenderer(searchableDtoDef).renderToDir(this.kotlinOutputDir)
-        }
-
-    }
-
-
-    private fun `render TableDtoDocumentMappers`() {
-
-        this.modelDef.dtoHtmlTableDefs
-                .filter { it.dtoHtmlTableSourceDef.databaseType == DatabaseType.MONGO }
-                .forEach { renderTableDtoDocumentMapper(it) }
-
-    }
-
-
-    private fun renderTableDtoDocumentMapper(dtoHtmlTableDef: DtoHtmlTableDef) {
-
-        val searchableDtoDef = dtoHtmlTableDef.dtoHtmlTableSourceDef.searchableDtoDef!!
-
-        val fieldDefs = dtoHtmlTableDef.dtoHtmlTableColumnFields.map {
-            searchableDtoDef.findDocumentFieldByPath(it.dtoFieldName)
-        }
-
-        val documentMapperDef = DocumentMapperDef(
-                dtoHtmlTableDef.searchDtoDef.fqcn,
-                searchableDtoDef.tableName,
-                fieldDefs
-        )
-
-        TableDtoDocumentMapperRenderer(documentMapperDef).renderToDir(this.kotlinOutputDir)
 
     }
 
