@@ -1,11 +1,9 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.DatabaseType
+import org.maiaframework.domain.types.TypeDiscriminator
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.Fqcns
-import org.maiaframework.domain.types.CollectionName
-import org.maiaframework.domain.types.TypeDiscriminator
 
 class EntityMetaRenderer(private val entityHierarchy: EntityHierarchy) : AbstractKotlinRenderer(entityHierarchy.entityDef.metaClassDef) {
 
@@ -50,25 +48,16 @@ class EntityMetaRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         }
 
+        addImportFor(Fqcns.MAIA_JDBC_SCHEMA_AND_TABLE_NAME)
+        addImportFor(Fqcns.MAIA_JDBC_TABLE_NAME)
+        addImportFor(Fqcns.MAIA_SCHEMA_NAME)
 
         blankLine()
-
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                addImportFor(Fqcns.MAIA_JDBC_SCHEMA_AND_TABLE_NAME)
-                addImportFor(Fqcns.MAIA_JDBC_TABLE_NAME)
-                addImportFor(Fqcns.MAIA_SCHEMA_NAME)
-                appendLine("    val SCHEMA_NAME = SchemaName(\"${this.entityDef.schemaName.value}\")")
-                blankLine()
-                appendLine("    val TABLE_NAME = TableName(\"${this.entityDef.tableName}\")")
-                blankLine()
-                appendLine("    val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)")
-            }
-            DatabaseType.MONGO -> {
-                addImportFor(CollectionName::class.java)
-                appendLine("    val COLLECTION_NAME = CollectionName(\"${this.entityDef.tableName}\")")
-            }
-        }
+        appendLine("    val SCHEMA_NAME = SchemaName(\"${this.entityDef.schemaName.value}\")")
+        blankLine()
+        appendLine("    val TABLE_NAME = TableName(\"${this.entityDef.tableName}\")")
+        blankLine()
+        appendLine("    val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)")
 
         if (entityDef.isStagingEntity) {
             blankLine()
