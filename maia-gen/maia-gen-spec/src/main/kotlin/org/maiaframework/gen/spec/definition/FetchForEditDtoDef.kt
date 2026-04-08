@@ -8,8 +8,7 @@ import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 class FetchForEditDtoDef(
     packageName: PackageName,
     entityBaseName: EntityBaseName,
-    entityFieldDefs: List<EntityFieldDef>,
-    val databaseType: DatabaseType
+    entityFieldDefs: List<EntityFieldDef>
 ) {
 
 
