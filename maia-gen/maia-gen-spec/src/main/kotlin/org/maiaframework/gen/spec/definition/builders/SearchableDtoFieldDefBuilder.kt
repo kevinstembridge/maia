@@ -24,13 +24,24 @@ class SearchableDtoFieldDefBuilder(
     private val defaultFieldTypeFieldWriterProvider: (FieldType) -> ParameterizedType?
 ) {
 
+
     private val classFieldDef = entityAndField.entityFieldDef.classFieldDef
 
     private var nullability = entityAndField.entityFieldDef.classFieldDef.nullability
+
+
     private var sortIndexAndDirection: SortIndexAndDirection? = null
+
+
     private var isMasked = false
+
+
     private var isFilterable = true
+
+
     private val fieldReaderParameterizedType: ParameterizedType? = null
+
+
     private val fieldWriterParameterizedType: ParameterizedType? = null
 
 
