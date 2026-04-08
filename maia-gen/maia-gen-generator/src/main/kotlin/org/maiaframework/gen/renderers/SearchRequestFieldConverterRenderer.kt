@@ -30,7 +30,7 @@ class SearchRequestFieldConverterRenderer(
             appendLine("                return inputValue") // TODO need to figure out how to do conversion
         }
 
-        appendLine("            else -> throw IllegalArgumentException(\"Unknown tableColumnPath [\$tableColumnPath]\")")
+        appendLine($$"            else -> throw IllegalArgumentException(\"Unknown tableColumnPath [$tableColumnPath]\")")
         appendLine("        }")
         blankLine()
         appendLine("    }")
