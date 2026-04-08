@@ -4,5 +4,4 @@
 
 export interface LeftSearchableTableDto {
     someInt: number;
-    someIntsFromRight: number;
 }
