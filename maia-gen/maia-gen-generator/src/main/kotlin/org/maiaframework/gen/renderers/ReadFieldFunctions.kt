@@ -14,7 +14,7 @@ import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -93,7 +93,7 @@ private fun getReadFieldMapper(classFieldDef: ClassFieldDef): String {
         is EsDocFieldType -> TODO()
         is ForeignKeyFieldType -> TODO()
         is FqcnFieldType -> TODO()
-        is IdAndNameFieldType -> TODO()
+        is PkAndNameFieldType -> TODO()
         is InstantFieldType -> TODO()
         is IntFieldType -> TODO()
         is IntTypeFieldType -> TODO()

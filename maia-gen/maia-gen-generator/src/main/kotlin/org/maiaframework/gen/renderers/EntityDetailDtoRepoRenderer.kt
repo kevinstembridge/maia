@@ -3,7 +3,7 @@ package org.maiaframework.gen.renderers
 import org.maiaframework.gen.spec.definition.EntityDetailDtoDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isValueFieldWrapper
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
 class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDtoDef) : AbstractKotlinRenderer(entityDetailDtoDef.repoClassDef) {
 
@@ -13,13 +13,13 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
         addConstructorArg(aClassField("entityRepo", entityDetailDtoDef.entityRepoClassDef.fqcn).privat().build())
 
         entityDetailDtoDef.dtoDef.allFields
-            .filter { it.fieldType is IdAndNameFieldType }
+            .filter { it.fieldType is PkAndNameFieldType }
             .groupBy { it.fieldType.fqcn }
             .mapValues { entry -> entry.value.first() }
             .forEach {
 
                 val classFieldDef = it.value
-                val idAndNameDef = (classFieldDef.fieldType as IdAndNameFieldType).idAndNameDef
+                val idAndNameDef = (classFieldDef.fieldType as PkAndNameFieldType).pkAndNameDef
                 val entityRepoClassDef = idAndNameDef.entityRepoClassDef
 
                 addConstructorArg(
@@ -78,9 +78,9 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
                     appendLine("            $classFieldName = \"MASKED\",")
                 }
 
-            } else if (fieldType is IdAndNameFieldType) {
+            } else if (fieldType is PkAndNameFieldType) {
 
-                appendLine("            $classFieldName = ${fieldType.idAndNameDef.dtoUqcn.firstToLower()}For(entity.$classFieldName),")
+                appendLine("            $classFieldName = ${fieldType.pkAndNameDef.dtoUqcn.firstToLower()}For(entity.$classFieldName),")
 
             } else if (classFieldDef.valueMappings != null) {
 
@@ -140,13 +140,13 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
     private fun `render functions for IdAndName fields`() {
 
         entityDetailDtoDef.dtoDef.allFields
-            .filter { it.fieldType is IdAndNameFieldType }
+            .filter { it.fieldType is PkAndNameFieldType }
             .groupBy { it.fieldType.fqcn }
             .mapValues { entry -> entry.value.first() }
             .forEach {
 
                 val classFieldDef = it.value
-                val idAndNameDef = (classFieldDef.fieldType as IdAndNameFieldType).idAndNameDef
+                val idAndNameDef = (classFieldDef.fieldType as PkAndNameFieldType).pkAndNameDef
                 val entityRepoClassDef = idAndNameDef.entityRepoClassDef
 
                 addImportFor(idAndNameDef.pkAndNameDtoFqcn)

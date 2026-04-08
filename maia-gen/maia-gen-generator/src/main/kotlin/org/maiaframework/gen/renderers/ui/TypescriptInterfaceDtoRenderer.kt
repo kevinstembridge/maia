@@ -23,7 +23,7 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -115,7 +115,7 @@ open class TypescriptInterfaceDtoRenderer(
                 is EsDocFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.esDocDef.uqcn};")
                 is ForeignKeyFieldType -> renderForForeignKeyField(fieldDef, nullableClause, fieldType)
                 is FqcnFieldType -> renderForPlainField(fieldDef, nullableClause)
-                is IdAndNameFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.idAndNameDef.dtoUqcn};")
+                is PkAndNameFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.pkAndNameDef.dtoUqcn};")
                 is InstantFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is IntFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is IntTypeFieldType -> renderForPlainField(fieldDef, nullableClause)
@@ -168,8 +168,8 @@ open class TypescriptInterfaceDtoRenderer(
             is EnumFieldType -> parameterFieldType.uqcn.value
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> TODO()
-            is FqcnFieldType -> TODO()
-            is IdAndNameFieldType -> TODO()
+            is FqcnFieldType -> parameterFieldType.uqcn.value
+            is PkAndNameFieldType -> TODO()
             is InstantFieldType -> "string"
             is IntFieldType -> "number"
             is IntTypeFieldType -> "number"

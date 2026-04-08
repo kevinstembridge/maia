@@ -14,7 +14,7 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -141,7 +141,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
             is EsDocFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> "value?.value"
             is FqcnFieldType -> TODO("YAGNI?")
-            is IdAndNameFieldType -> TODO("YAGNI?")
+            is PkAndNameFieldType -> TODO("YAGNI?")
             is InstantFieldType -> {
                 addImportFor(Fqcns.JAVA_SQL_TIMESTAMP)
                 "value?.let { Timestamp.from(it) }"

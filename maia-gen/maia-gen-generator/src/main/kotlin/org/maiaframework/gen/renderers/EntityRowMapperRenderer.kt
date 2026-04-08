@@ -17,7 +17,7 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -171,7 +171,7 @@ class EntityRowMapperRenderer(
             is EsDocFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is ForeignKeyFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is FqcnFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
-            is IdAndNameFieldType -> TODO("YAGNI?")
+            is PkAndNameFieldType -> TODO("YAGNI?")
             is InstantFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is IntFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is IntTypeFieldType -> renderForValueWrapper(fieldType, indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
@@ -260,7 +260,7 @@ class EntityRowMapperRenderer(
             is EsDocFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> TODO("YAGNI?")
             is FqcnFieldType -> TODO("YAGNI?")
-            is IdAndNameFieldType -> TODO("YAGNI?")
+            is PkAndNameFieldType -> TODO("YAGNI?")
             is InstantFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readListOfInstants(\"${resultSetColumnName}\")")
             is IntFieldType -> TODO("YAGNI?")
             is IntTypeFieldType -> TODO("YAGNI?")

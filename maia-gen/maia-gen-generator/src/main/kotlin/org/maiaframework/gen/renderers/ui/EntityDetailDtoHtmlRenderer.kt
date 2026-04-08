@@ -2,7 +2,7 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.EntityDetailDtoDef
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
 class EntityDetailDtoHtmlRenderer(private val entityDetailDtoDef: EntityDetailDtoDef) : AbstractSourceFileRenderer() {
 
@@ -29,7 +29,7 @@ class EntityDetailDtoHtmlRenderer(private val entityDetailDtoDef: EntityDetailDt
 
             val fieldType = classFieldDef.fieldType
 
-            if (fieldType is IdAndNameFieldType) {
+            if (fieldType is PkAndNameFieldType) {
 
                 append("""
                     |    <div class="row">

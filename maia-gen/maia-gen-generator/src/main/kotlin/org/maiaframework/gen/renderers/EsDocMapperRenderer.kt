@@ -14,7 +14,7 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -90,7 +90,7 @@ class EsDocMapperRenderer(private val esDocDef: EsDocDef): AbstractKotlinRendere
                 is EsDocFieldType -> renderForEsDoc(fieldType, classFieldDef, questionMark)
                 is ForeignKeyFieldType -> TODO("$esDocUqcn $classFieldDef")
                 is FqcnFieldType -> TODO("$esDocUqcn $classFieldDef")
-                is IdAndNameFieldType -> TODO("YAGNI?")
+                is PkAndNameFieldType -> TODO("YAGNI?")
                 is InstantFieldType -> TODO("YAGNI?")
                 is IntFieldType -> renderForPlainField(classFieldDef, questionMark)
                 is IntTypeFieldType -> TODO("YAGNI?")

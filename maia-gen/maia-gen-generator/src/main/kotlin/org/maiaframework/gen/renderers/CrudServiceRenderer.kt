@@ -20,7 +20,7 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -295,7 +295,7 @@ class CrudServiceRenderer(
             is EsDocFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> TODO("YAGNI?")
             is FqcnFieldType -> TODO("YAGNI?")
-            is IdAndNameFieldType -> TODO("YAGNI?")
+            is PkAndNameFieldType -> TODO("YAGNI?")
             is InstantFieldType -> TODO("YAGNI?")
             is IntFieldType -> TODO("YAGNI?")
             is IntTypeFieldType -> TODO("YAGNI?")
