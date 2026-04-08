@@ -26,7 +26,7 @@ class SearchRequestFieldConverterRenderer(
         appendLine("        when(tableColumnPath) {")
 
         this.fieldDefs.forEach { fieldDef ->
-            appendLine("            \"${fieldDef.collectionFieldDef.tableColumnName}\" -> // ${fieldDef.classFieldDef.classFieldName}")
+            appendLine("            \"${fieldDef.dbColumnFieldDef.tableColumnName}\" -> // ${fieldDef.classFieldDef.classFieldName}")
             appendLine("                return inputValue") // TODO need to figure out how to do conversion
         }
 
