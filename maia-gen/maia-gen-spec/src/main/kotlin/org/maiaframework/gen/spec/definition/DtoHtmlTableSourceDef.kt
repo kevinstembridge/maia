@@ -19,9 +19,6 @@ class DtoHtmlTableSourceDef private constructor(
         ?: WithGeneratedEndpoint.FALSE
 
 
-    val databaseType = searchableDtoDef?.dtoRootEntityDef?.databaseType
-
-
     companion object {
 
 
