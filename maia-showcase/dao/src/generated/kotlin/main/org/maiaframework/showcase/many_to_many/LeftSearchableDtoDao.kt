@@ -36,10 +36,6 @@ class LeftSearchableDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.left
-            inner join maia.left_to_right_many_to_many_join
-                    on maia.left.id = maia.left_to_right_many_to_many_join.left_id
-            inner join maia.right
-                    on maia.left_to_right_many_to_many_join.right_id = maia.right.id
             $whereClause
             """.trimIndent()
 
@@ -48,14 +44,8 @@ class LeftSearchableDtoDao(
                 maia.left.created_timestamp_utc as createdTimestampUtc,
                 maia.left.id as id,
                 maia.left.some_int as someIntFromLeft,
-                maia.right.some_int as someIntFromRight,
-                maia.left.some_string as someStringFromLeft,
-                maia.right.some_string as someStringFromRight
+                maia.left.some_string as someStringFromLeft
             from maia.left
-            inner join maia.left_to_right_many_to_many_join
-                    on maia.left.id = maia.left_to_right_many_to_many_join.left_id
-            inner join maia.right
-                    on maia.left_to_right_many_to_many_join.right_id = maia.right.id
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -86,8 +76,6 @@ class LeftSearchableDtoDao(
             from maia.left
             inner join maia.left_to_right_many_to_many_join
                     on maia.left.id = maia.left_to_right_many_to_many_join.left_id
-            inner join maia.right
-                    on maia.left_to_right_many_to_many_join.right_id = maia.right.id
             $whereClause
             """.trimIndent()
 
