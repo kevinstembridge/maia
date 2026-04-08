@@ -1,7 +1,6 @@
 package org.maiaframework.gen.spec.definition.jdbc
 
 
-import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.types.StringType
 
 class TableColumnName(value: String) : StringType<TableColumnName>(value) {
@@ -43,12 +42,6 @@ class TableColumnName(value: String) : StringType<TableColumnName>(value) {
 
 
         val createdTimestampUtc = TableColumnName("created_timestamp_utc")
-
-
-        fun id(databaseType: DatabaseType) = when (databaseType) {
-            DatabaseType.MONGO -> TableColumnName("_id")
-            DatabaseType.JDBC -> TableColumnName("id")
-        }
 
 
         val id = TableColumnName("id")
