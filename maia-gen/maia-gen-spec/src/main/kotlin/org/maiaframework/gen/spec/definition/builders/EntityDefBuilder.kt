@@ -5,7 +5,6 @@ import org.maiaframework.domain.types.TypeDiscriminator
 import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.ConfigurableSchemaPropertyName
-import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityDef
@@ -37,6 +36,7 @@ import org.maiaframework.gen.spec.definition.flags.WithCrudListener
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedDao
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedEntityDao
 import org.maiaframework.gen.spec.definition.flags.WithVersionHistory
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
@@ -44,7 +44,6 @@ import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
-import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.jdbc.TableName
 
 @MaiaDslMarker
@@ -62,8 +61,7 @@ class EntityDefBuilder(
     private val nameFieldForInAndNameDto: String?,
     private val withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
     private val withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-    defaultSchemaName: SchemaName,
-    private val databaseType: DatabaseType
+    defaultSchemaName: SchemaName
 ) {
 
 
@@ -150,7 +148,6 @@ class EntityDefBuilder(
             this.entityBaseName,
             this.tableName,
             this.schemaName,
-            this.databaseType,
             this.configurableSchemaPropertyName,
             this.isCappedCollection,
             this.cappedSizeInBytes,
