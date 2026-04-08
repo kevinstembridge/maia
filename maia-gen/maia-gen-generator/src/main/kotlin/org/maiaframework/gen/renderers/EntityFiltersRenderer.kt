@@ -1,7 +1,6 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.common.BlankStringException
-import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
@@ -40,57 +39,19 @@ import java.util.concurrent.atomic.AtomicInteger
 class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRenderer(entityDef.entityFiltersClassDef) {
 
 
-    private val sqlConditionOrBson: String = when (entityDef.databaseType) {
-        DatabaseType.JDBC -> "SqlCondition"
-        DatabaseType.MONGO -> "Bson"
-    }
-
-
-    private val sqlConditionsOrFilters: String = when (entityDef.databaseType) {
-        DatabaseType.JDBC -> "SqlConditions"
-        DatabaseType.MONGO -> "Filters"
-    }
-
-
-    private val databaseFieldName: String = when (entityDef.databaseType) {
-        DatabaseType.JDBC -> "databaseColumnName"
-        DatabaseType.MONGO -> "collectionFieldName"
-    }
+    private val databaseFieldName: String = "databaseColumnName"
 
 
     override fun renderPreClassFields() {
 
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                addImportFor(Fqcns.MAIA_JDBC_AND_OR)
-                addImportFor(Fqcns.MAIA_JDBC_SQL_CONDITION_OPERATOR)
-                addImportFor(Fqcns.MAIA_SQL_PARAMS)
-                addImportFor(AtomicInteger::class.java)
-            }
+        addImportFor(Fqcns.MAIA_JDBC_AND_OR)
+        addImportFor(Fqcns.MAIA_JDBC_SQL_CONDITION_OPERATOR)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
+        addImportFor(AtomicInteger::class.java)
 
-            DatabaseType.MONGO -> {
-                addImportFor(Fqcns.BSON)
-                addImportFor(Fqcns.BSON_DOCUMENT)
-                addImportFor(Fqcns.MONGO_FILTERS)
-            }
-        }
-
-        if (entityDef.databaseType == DatabaseType.MONGO) {
-            blankLine()
-            appendLine("    val emptyFilter = object: ${this.entityDef.entityFilterClassDef.uqcn} {")
-            appendLine("        override fun asBson(fieldConverter: ${this.entityDef.entityFieldConverterClassDef.uqcn}): Bson {")
-            appendLine("            return Document()")
-            appendLine("        }")
-            appendLine("    }")
-        }
-
-        if (entityDef.databaseType == DatabaseType.JDBC) {
-
-            blankLine()
-            blankLine()
-            appendLine("    private val sqlParamCounter = AtomicInteger(1)")
-
-        }
+        blankLine()
+        blankLine()
+        appendLine("    private val sqlParamCounter = AtomicInteger(1)")
 
     }
 
@@ -103,43 +64,24 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         blankLine()
         appendLine("    fun and(vararg filters: $filterUqcn): $filterUqcn {")
         blankLine()
-
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> appendLine("        return IterableFunctionFilter(filters.toList(), AndOr.and)")
-            DatabaseType.MONGO -> appendLine("        return IterableFunctionFilter(filters.toList()) { $sqlConditionsOrFilters.and(it) }")
-        }
-
+        appendLine("        return IterableFunctionFilter(filters.toList(), AndOr.and)")
         blankLine()
         appendLine("    }")
         blankLine()
         blankLine()
         appendLine("    fun or(vararg filters: $filterUqcn): $filterUqcn {")
         blankLine()
-
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> appendLine("        return IterableFunctionFilter(filters.toList(), AndOr.or)")
-            DatabaseType.MONGO -> appendLine("        return IterableFunctionFilter(filters.toList()) { $sqlConditionsOrFilters.or(it) }")
-        }
-
+        appendLine("        return IterableFunctionFilter(filters.toList(), AndOr.or)")
         blankLine()
         appendLine("    }")
         blankLine()
         blankLine()
         appendLine("    fun nor(vararg filters: $filterUqcn): $filterUqcn {")
         blankLine()
-
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> appendLine("        return IterableFunctionFilter(filters.toList(), AndOr.nor)")
-            DatabaseType.MONGO -> appendLine("        return IterableFunctionFilter(filters.toList()) { $sqlConditionsOrFilters.nor(it) }")
-        }
-
+        appendLine("        return IterableFunctionFilter(filters.toList(), AndOr.nor)")
         blankLine()
         appendLine("    }")
-
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> renderFieldFunctionsForJdbc()
-            DatabaseType.MONGO -> renderFieldFunctionsForMongo()
-        }
+        renderFieldFunctionsForJdbc()
 
     }
 
@@ -226,40 +168,10 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
     }
 
 
-    private fun renderFieldFunctionsForMongo() {
-
-
-        this.entityDef.allEntityFieldsSorted.filterNot { it.classFieldDef.isMap }.forEach { fieldDef ->
-
-            val classFieldDef = fieldDef.classFieldDef
-            val fieldType = classFieldDef.fieldType
-
-            addImportFor(fieldType)
-
-            val uqcn = when (fieldType) {
-                is ListFieldType -> fieldType.parameterFieldType.unqualifiedToString
-                is SetFieldType -> fieldType.parameterFieldType.unqualifiedToString
-                else -> classFieldDef.unqualifiedToString
-            }
-
-            blankLine()
-            blankLine()
-            appendLine("    fun ${classFieldDef.classFieldName}(): FieldFilter<$uqcn> {")
-            blankLine()
-            appendLine("        return FieldFilter(\"${fieldDef.tableColumnName}\")")
-            blankLine()
-            appendLine("    }")
-
-        }
-
-    }
-
-
     override fun renderInnerClasses() {
 
         renderFieldFilterStaticClass()
         renderListFieldFilterStaticClass()
-        renderSimpleSupplierFilterStaticClass()
         renderNoOpFilterStaticClass()
         renderSimpleFunctionFilterStaticClass()
         renderMultiValueFunctionFilterStaticClass()
@@ -277,96 +189,45 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
         blankLine()
         blankLine()
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                appendLine("    class FieldFilter<T>(")
-                appendLine("        private val $databaseFieldName: String,")
-                appendLine("        private val sqlType: Int,")
-                appendLine("        private val sqlParamCounter: AtomicInteger,")
-                appendLine("        private val valueMappingFunc: (T?) -> Any?,")
-                appendLine("    ) {")
-            }
-            DatabaseType.MONGO -> appendLine("    class FieldFilter<T>(private val $databaseFieldName: String) {")
-        }
+        appendLine("    class FieldFilter<T>(")
+        appendLine("        private val $databaseFieldName: String,")
+        appendLine("        private val sqlType: Int,")
+        appendLine("        private val sqlParamCounter: AtomicInteger,")
+        appendLine("        private val valueMappingFunc: (T?) -> Any?,")
+        appendLine("    ) {")
         renderOperatorFilterMethod("eq", "EQUAL")
-        renderOperatorFilterMethod("gt", "GREATER_THAN", nullable = false)
-        renderOperatorFilterMethod("gte", "GREATER_THAN_OR_EQUAL", nullable = false)
-        renderOperatorFilterMethod("lt", "LESS_THAN", nullable = false)
-        renderOperatorFilterMethod("lte", "LESS_THAN_OR_EQUAL", nullable = false)
+        renderOperatorFilterMethod("gt", "GREATER_THAN")
+        renderOperatorFilterMethod("gte", "GREATER_THAN_OR_EQUAL")
+        renderOperatorFilterMethod("lt", "LESS_THAN")
+        renderOperatorFilterMethod("lte", "LESS_THAN_OR_EQUAL")
         renderOperatorFilterMethod("ne", "NOT_EQUAL")
 
-        if (entityDef.databaseType == DatabaseType.MONGO) {
-
-            blankLine()
-            blankLine()
-            appendLine("        fun `in`(value: Iterable<T>): ${this.entityDef.entityFilterClassDef.uqcn} {")
-            blankLine()
-            appendLine("            val bsonFunction: (List<*>) -> Bson = { convertedValues -> Filters.`in`(this.collectionFieldName, convertedValues) }")
-            appendLine("            return MultiValueFunctionFilter(this.collectionFieldName, value, bsonFunction)")
-            blankLine()
-            appendLine("        }")
-            blankLine()
-            blankLine()
-            appendLine("        fun exists(): ${this.entityDef.entityFilterClassDef.uqcn} {")
-            blankLine()
-            appendLine("            return SimpleSupplierFilter({ Filters.exists(this.$databaseFieldName) })")
-            blankLine()
-            appendLine("        }")
-            blankLine()
-            blankLine()
-            appendLine("        fun notExists(): ${this.entityDef.entityFilterClassDef.uqcn} {")
-            blankLine()
-            appendLine("            return SimpleSupplierFilter({ Filters.not(Filters.exists(this.$databaseFieldName)) })")
-            blankLine()
-            appendLine("        }")
-        }
-
-        if (entityDef.databaseType == DatabaseType.JDBC) {
-
-            blankLine()
-            blankLine()
-            appendLine("        infix fun `in`(value: Iterable<T>): ${this.entityDef.entityFilterClassDef.uqcn} {")
-            blankLine()
-            appendLine("            return MultiValueFunctionFilter(this.$databaseFieldName, this.sqlType, this.sqlParamCounter, value, this.valueMappingFunc)")
-            blankLine()
-            appendLine("        }")
-            blankLine()
-            blankLine()
-            appendLine("        fun isNotNull(): ${this.entityDef.entityFilterClassDef.uqcn} {")
-            blankLine()
-            appendLine("            return IsNotNullFilter(this.databaseColumnName)")
-            blankLine()
-            appendLine("        }")
-            blankLine()
-            blankLine()
-            appendLine("        fun isNull(): ${this.entityDef.entityFilterClassDef.uqcn} {")
-            blankLine()
-            appendLine("            return IsNullFilter(this.databaseColumnName)")
-            blankLine()
-            appendLine("        }")
-        }
-
+        blankLine()
+        blankLine()
+        appendLine("        infix fun `in`(value: Iterable<T>): ${this.entityDef.entityFilterClassDef.uqcn} {")
+        blankLine()
+        appendLine("            return MultiValueFunctionFilter(this.$databaseFieldName, this.sqlType, this.sqlParamCounter, value, this.valueMappingFunc)")
+        blankLine()
+        appendLine("        }")
+        blankLine()
+        blankLine()
+        appendLine("        fun isNotNull(): ${this.entityDef.entityFilterClassDef.uqcn} {")
+        blankLine()
+        appendLine("            return IsNotNullFilter(this.databaseColumnName)")
+        blankLine()
+        appendLine("        }")
+        blankLine()
+        blankLine()
+        appendLine("        fun isNull(): ${this.entityDef.entityFilterClassDef.uqcn} {")
+        blankLine()
+        appendLine("            return IsNullFilter(this.databaseColumnName)")
+        blankLine()
+        appendLine("        }")
         blankLine()
         blankLine()
         appendLine("        infix fun contains(value: T): ${this.entityDef.entityFilterClassDef.uqcn} {")
         blankLine()
-
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                appendLine("            TODO(\"Not implemented yet\")")
-            }
-            DatabaseType.MONGO -> {
-                appendLine("            return SimpleFunctionFilter(")
-                appendLine("                this.$databaseFieldName,")
-                appendLine("                value,")
-                appendLine("                { convertedValue ->")
-                appendLine("                    val filter = Document(\"\\\$eq\", convertedValue)")
-                appendLine("                    Filters.elemMatch($databaseFieldName, filter)")
-                appendLine("                }")
-                appendLine("            )")
-            }
-        }
-
+        appendLine("            TODO(\"Not implemented yet\")")
         blankLine()
         appendLine("        }")
         blankLine()
@@ -378,29 +239,21 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     private fun renderOperatorFilterMethod(
         operator: String,
-        sqlConditionOperator: String,
-        nullable: Boolean = true
+        sqlConditionOperator: String
     ) {
-
-        val nullableSuffix = if (nullable) "" else "!!"
 
         blankLine()
         blankLine()
         appendLine("        infix fun $operator(value: T): ${this.entityDef.entityFilterClassDef.uqcn} {")
         blankLine()
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                appendLine("            return SimpleFunctionFilter(")
-                appendLine("                this.$databaseFieldName,")
-                appendLine("                value,")
-                appendLine("                this.sqlType,")
-                appendLine("                this.sqlParamCounter,")
-                appendLine("                SqlConditionOperator.${sqlConditionOperator},")
-                appendLine("                this.valueMappingFunc")
-                appendLine("            )")
-            }
-            DatabaseType.MONGO -> appendLine("            return SimpleFunctionFilter(this.$databaseFieldName, value) { convertedValue -> Filters.$operator(this.$databaseFieldName, convertedValue$nullableSuffix) }")
-        }
+        appendLine("            return SimpleFunctionFilter(")
+        appendLine("                this.$databaseFieldName,")
+        appendLine("                value,")
+        appendLine("                this.sqlType,")
+        appendLine("                this.sqlParamCounter,")
+        appendLine("                SqlConditionOperator.${sqlConditionOperator},")
+        appendLine("                this.valueMappingFunc")
+        appendLine("            )")
         blankLine()
         appendLine("        }")
 
@@ -408,10 +261,6 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
 
     private fun renderListFieldFilterStaticClass() {
-
-        if (entityDef.databaseType == DatabaseType.MONGO) {
-            return
-        }
 
         if (entityDef.allEntityFieldsSorted.none { it.classFieldDef.isList }) {
             return
@@ -434,27 +283,6 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
     }
 
 
-    private fun renderSimpleSupplierFilterStaticClass() {
-
-        if (entityDef.databaseType != DatabaseType.MONGO) return
-
-        blankLine()
-        blankLine()
-        appendLine("    private class SimpleSupplierFilter(private val supplier: () -> ${sqlConditionOrBson}): ${this.entityDef.entityFilterClassDef.uqcn} {")
-        blankLine()
-        blankLine()
-        appendLine("        override fun as${sqlConditionOrBson}(fieldConverter: ${this.entityDef.entityFieldConverterClassDef.uqcn}): $sqlConditionOrBson {")
-        blankLine()
-        appendLine("            return this.supplier.invoke()")
-        blankLine()
-        appendLine("        }")
-        blankLine()
-        blankLine()
-        appendLine("    }")
-
-    }
-
-
     private fun renderSimpleFunctionFilterStaticClass() {
 
         blankLine()
@@ -462,20 +290,14 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         appendLine("    private class SimpleFunctionFilter<VALUE>(")
         appendLine("        private val fieldName: String,")
         appendLine("        private val value: VALUE,")
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                appendLine("        private val sqlType: Int,")
-                appendLine("        sqlParamCounter: AtomicInteger,")
-                appendLine("        private val sqlConditionOperator: SqlConditionOperator,")
-                appendLine("        private val valueMappingFunc: (VALUE?) -> Any?")
-            }
-
-            DatabaseType.MONGO -> appendLine("        private val bsonFunction: (Any?) -> Bson")
-        }
+        appendLine("        private val sqlType: Int,")
+        appendLine("        sqlParamCounter: AtomicInteger,")
+        appendLine("        private val sqlConditionOperator: SqlConditionOperator,")
+        appendLine("        private val valueMappingFunc: (VALUE?) -> Any?")
         appendLine("    ) : ${this.entityDef.entityFilterClassDef.uqcn} {")
         blankLine()
         blankLine()
-        appendLine("        private val sqlParamName = \"\${fieldName}_\${sqlParamCounter.getAndIncrement()}\"")
+        appendLine($$"        private val sqlParamName = \"${fieldName}_${sqlParamCounter.getAndIncrement()}\"")
         blankLine()
         blankLine()
         appendLine("        init {")
@@ -485,46 +307,34 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         appendLine("        }")
         blankLine()
         blankLine()
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                appendLine("        override fun whereClause(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): String {")
-                blankLine()
-                appendLine("            return \"\$fieldName \${operatorFor(sqlConditionOperator)} :\${this.sqlParamName}\"")
-                blankLine()
-                appendLine("        }")
-                blankLine()
-                blankLine()
-                appendLine("        private fun operatorFor(sqlConditionOperator: SqlConditionOperator): String {")
-                blankLine()
-                appendLine("            return when (sqlConditionOperator) {")
-                appendLine("                SqlConditionOperator.EQUAL -> \"=\"")
-                appendLine("                SqlConditionOperator.NOT_EQUAL -> \"!=\"")
-                appendLine("                SqlConditionOperator.GREATER_THAN -> \">\"")
-                appendLine("                SqlConditionOperator.GREATER_THAN_OR_EQUAL -> \">=\"")
-                appendLine("                SqlConditionOperator.LESS_THAN -> \"<\"")
-                appendLine("                SqlConditionOperator.LESS_THAN_OR_EQUAL -> \"<=\"")
-                appendLine("                SqlConditionOperator.LIKE -> \"like\"")
-                appendLine("            }")
-                blankLine()
-                appendLine("        }")
-                blankLine()
-                blankLine()
-                appendLine("        override fun populateSqlParams(sqlParams: SqlParams) {")
-                blankLine()
-                appendLine("            val transformedValue = this.valueMappingFunc.invoke(this.value)")
-                appendLine("            sqlParams.addValue(this.sqlParamName, transformedValue, this.sqlType)")
-                blankLine()
-                appendLine("        }")
-            }
-            DatabaseType.MONGO -> {
-                appendLine("        override fun asBson(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): Bson {")
-                blankLine()
-                appendLine("            val convertedValue = fieldConverter.convert(this.fieldName, this.value)")
-                appendLine("            return this.bsonFunction.invoke(convertedValue)")
-                blankLine()
-                appendLine("        }")
-            }
-        }
+        appendLine("        override fun whereClause(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): String {")
+        blankLine()
+        appendLine($$"            return \"$fieldName ${operatorFor(sqlConditionOperator)} :${this.sqlParamName}\"")
+        blankLine()
+        appendLine("        }")
+        blankLine()
+        blankLine()
+        appendLine("        private fun operatorFor(sqlConditionOperator: SqlConditionOperator): String {")
+        blankLine()
+        appendLine("            return when (sqlConditionOperator) {")
+        appendLine("                SqlConditionOperator.EQUAL -> \"=\"")
+        appendLine("                SqlConditionOperator.NOT_EQUAL -> \"!=\"")
+        appendLine("                SqlConditionOperator.GREATER_THAN -> \">\"")
+        appendLine("                SqlConditionOperator.GREATER_THAN_OR_EQUAL -> \">=\"")
+        appendLine("                SqlConditionOperator.LESS_THAN -> \"<\"")
+        appendLine("                SqlConditionOperator.LESS_THAN_OR_EQUAL -> \"<=\"")
+        appendLine("                SqlConditionOperator.LIKE -> \"like\"")
+        appendLine("            }")
+        blankLine()
+        appendLine("        }")
+        blankLine()
+        blankLine()
+        appendLine("        override fun populateSqlParams(sqlParams: SqlParams) {")
+        blankLine()
+        appendLine("            val transformedValue = this.valueMappingFunc.invoke(this.value)")
+        appendLine("            sqlParams.addValue(this.sqlParamName, transformedValue, this.sqlType)")
+        blankLine()
+        appendLine("        }")
         blankLine()
         blankLine()
         appendLine("    }")
@@ -538,24 +348,14 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         blankLine()
         appendLine("    private class MultiValueFunctionFilter<VALUE>(")
         appendLine("        private val fieldName: String,")
-
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                appendLine("        private val sqlType: Int,")
-                appendLine("        sqlParamCounter: AtomicInteger,")
-                appendLine("        private val values: Iterable<VALUE>,")
-                appendLine("        private val valueMappingFunc: (VALUE?) -> Any?")
-            }
-            DatabaseType.MONGO -> {
-                appendLine("        private val values: Iterable<VALUE>,")
-                appendLine("        private val bsonFunction: (List<*>) -> Bson")
-            }
-        }
-
+        appendLine("        private val sqlType: Int,")
+        appendLine("        sqlParamCounter: AtomicInteger,")
+        appendLine("        private val values: Iterable<VALUE>,")
+        appendLine("        private val valueMappingFunc: (VALUE?) -> Any?")
         appendLine("    ) : ${this.entityDef.entityFilterClassDef.uqcn} {")
         blankLine()
         blankLine()
-        appendLine("        private val sqlParamName = \"\${fieldName}_\${sqlParamCounter.getAndIncrement()}\"")
+        appendLine($$"        private val sqlParamName = \"${fieldName}_${sqlParamCounter.getAndIncrement()}\"")
         blankLine()
         blankLine()
         appendLine("        init {")
@@ -566,31 +366,19 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         appendLine("        }")
         blankLine()
         blankLine()
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                appendLine("        override fun whereClause(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): String {")
-                blankLine()
-                appendLine("            return \"\$fieldName in (:\$sqlParamName)\"")
-                blankLine()
-                appendLine("        }")
-                blankLine()
-                blankLine()
-                appendLine("        override fun populateSqlParams(sqlParams: SqlParams) {")
-                blankLine()
-                appendLine("            val mappedValues = this.values.map(valueMappingFunc)")
-                appendLine("            sqlParams.addValue(this.sqlParamName, mappedValues, this.sqlType)")
-                blankLine()
-                appendLine("        }")
-            }
-            DatabaseType.MONGO -> {
-                appendLine("        override fun asBson(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): Bson {")
-                blankLine()
-                appendLine("            val convertedValues = this.values.map { fieldConverter.convert(this.fieldName, it) }")
-                appendLine("            return this.bsonFunction.invoke(convertedValues)")
-                blankLine()
-                appendLine("        }")
-            }
-        }
+        appendLine("        override fun whereClause(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): String {")
+        blankLine()
+        appendLine($$"            return \"$fieldName in (:$sqlParamName)\"")
+        blankLine()
+        appendLine("        }")
+        blankLine()
+        blankLine()
+        appendLine("        override fun populateSqlParams(sqlParams: SqlParams) {")
+        blankLine()
+        appendLine("            val mappedValues = this.values.map(valueMappingFunc)")
+        appendLine("            sqlParams.addValue(this.sqlParamName, mappedValues, this.sqlType)")
+        blankLine()
+        appendLine("        }")
         blankLine()
         blankLine()
         appendLine("    }")
@@ -606,39 +394,22 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         blankLine()
         appendLine("    private class IterableFunctionFilter(")
         appendLine("        private val filters: List<$filterUqcn>,")
-
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> appendLine("        private val andOr: AndOr")
-            DatabaseType.MONGO -> appendLine("        private val bsonFunction: (List<${sqlConditionOrBson}>) -> $sqlConditionOrBson")
-        }
-
+        appendLine("        private val andOr: AndOr")
         appendLine("    ) : $filterUqcn {")
         blankLine()
         blankLine()
-        when (entityDef.databaseType) {
-            DatabaseType.JDBC -> {
-                appendLine("        override fun whereClause(fieldConverter: ${this.entityDef.entityFieldConverterClassDef.uqcn}): String {")
-                blankLine()
-                appendLine("            return this.filters.map { it.whereClause(fieldConverter) }.joinToString(\" \${andOr.name} \")")
-                blankLine()
-                appendLine("        }")
-                blankLine()
-                blankLine()
-                appendLine("        override fun populateSqlParams(sqlParams: SqlParams) {")
-                blankLine()
-                appendLine("            this.filters.forEach { it.populateSqlParams(sqlParams) }")
-                blankLine()
-                appendLine("        }")
-            }
-            DatabaseType.MONGO -> {
-                appendLine("        override fun asBson(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): Bson {")
-                blankLine()
-                appendLine("            val bsons = this.filters.map { filter -> filter.asBson(fieldConverter) }")
-                appendLine("            return this.bsonFunction.invoke(bsons)")
-                blankLine()
-                appendLine("        }")
-            }
-        }
+        appendLine("        override fun whereClause(fieldConverter: ${this.entityDef.entityFieldConverterClassDef.uqcn}): String {")
+        blankLine()
+        appendLine($$"            return this.filters.map { it.whereClause(fieldConverter) }.joinToString(\" ${andOr.name} \")")
+        blankLine()
+        appendLine("        }")
+        blankLine()
+        blankLine()
+        appendLine("        override fun populateSqlParams(sqlParams: SqlParams) {")
+        blankLine()
+        appendLine("            this.filters.forEach { it.populateSqlParams(sqlParams) }")
+        blankLine()
+        appendLine("        }")
         blankLine()
         blankLine()
         appendLine("    }")
@@ -648,7 +419,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     private fun renderJsonListFieldStaticClass() {
 
-        if (entityDef.databaseType == DatabaseType.MONGO || entityDef.allEntityFieldsSorted.none { it.classFieldDef.isList }) {
+        if (entityDef.allEntityFieldsSorted.none { it.classFieldDef.isList }) {
             return
         }
 
@@ -662,7 +433,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         blankLine()
         appendLine("        override fun whereClause(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): String {")
         blankLine()
-        appendLine("            return \"jsonb_path_exists(\$databaseColumnName, '\$ ? (@ == \\\"\$value\\\")')\"")
+        appendLine($$"            return \"jsonb_path_exists($databaseColumnName, '$ ? (@ == \\\"$value\\\")')\"")
         blankLine()
         appendLine("        }")
         blankLine()
@@ -681,7 +452,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     private fun renderListFieldStaticClass() {
 
-        if (entityDef.databaseType == DatabaseType.MONGO || entityDef.allEntityFieldsSorted.none { it.classFieldDef.isList }) {
+        if (entityDef.allEntityFieldsSorted.none { it.classFieldDef.isList }) {
             return
         }
 
@@ -695,7 +466,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         blankLine()
         appendLine("        override fun whereClause(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): String {")
         blankLine()
-        appendLine("            return \"'\$value' = ANY(\$databaseColumnName)\"")
+        appendLine($$"            return \"'$value' = ANY($databaseColumnName)\"")
         blankLine()
         appendLine("        }")
         blankLine()
@@ -714,21 +485,18 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     private fun renderNullFiltersStaticClasses() {
 
-        if (entityDef.databaseType != DatabaseType.JDBC) {
-            return
-        }
-
-        append("""
+        append(
+            $$"""
             |
             |
             |    private class IsNullFilter(
             |        private val databaseColumnName: String
-            |    ) : ${entityDef.entityFilterClassDef.uqcn} {
+            |    ) : $${entityDef.entityFilterClassDef.uqcn} {
             |
             |
-            |        override fun whereClause(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): String {
+            |        override fun whereClause(fieldConverter: $${entityDef.entityFieldConverterClassDef.uqcn}): String {
             |
-            |            return "${"$"}databaseColumnName is null"
+            |            return "$databaseColumnName is null"
             |
             |        }
             |
@@ -745,12 +513,12 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
             |
             |    private class IsNotNullFilter(
             |        private val databaseColumnName: String
-            |    ) : ${entityDef.entityFilterClassDef.uqcn} {
+            |    ) : $${entityDef.entityFilterClassDef.uqcn} {
             |
             |
-            |        override fun whereClause(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): String {
+            |        override fun whereClause(fieldConverter: $${entityDef.entityFieldConverterClassDef.uqcn}): String {
             |
-            |            return "${"$"}databaseColumnName is not null"
+            |            return "$databaseColumnName is not null"
             |
             |        }
             |
