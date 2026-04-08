@@ -103,7 +103,6 @@ class DtoHtmlTableDef(
             packageName,
             searchableDtoDef.tableName,
             fields,
-            searchableDtoDef.lookupDefs,
             searchableDtoDef.withPreAuthorize,
             withGeneratedEndpoint,
             withGeneratedFindAllFunction,
