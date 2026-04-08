@@ -26,7 +26,7 @@ class SearchRequestFieldNameConverterRenderer(
         appendLine("        return when(fieldName) {")
 
         this.fieldDefs.forEach { fieldDef ->
-            appendLine("            \"${fieldDef.classFieldDef.classFieldName}\" -> \"${fieldDef.collectionFieldDef.tableColumnName}\"")
+            appendLine("            \"${fieldDef.classFieldDef.classFieldName}\" -> \"${fieldDef.dbColumnFieldDef.tableColumnName}\"")
         }
 
         appendLine("            else -> throw IllegalArgumentException(\"Unknown dtoFieldName [\$fieldName]\")")
