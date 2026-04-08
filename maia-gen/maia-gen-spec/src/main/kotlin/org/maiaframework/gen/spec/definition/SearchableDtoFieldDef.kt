@@ -8,21 +8,30 @@ data class SearchableDtoFieldDef(
     private val sortIndexAndDirection: SortIndexAndDirection?
 ): Comparable<SearchableDtoFieldDef> {
 
-    val tableName = entityAndField.tableName
 
-    val schemaAndTableName = entityAndField.schemaAndTableName
+    val tableName = entityAndField?.tableName
 
-    val databaseColumn = entityAndField.databaseColumnName
+
+    val schemaAndTableName = entityAndField?.schemaAndTableName
+
+
+    val databaseColumn = entityAndField?.databaseColumnName
+
 
     val fieldPathLength = fieldPath.length
 
-    val entityFieldDef = entityAndField.entityFieldDef
+
+    val entityFieldDef = entityAndField?.entityFieldDef
+
 
     val classFieldDef = this.responseDtoFieldDef.classFieldDef
 
+
     val classFieldName = classFieldDef.classFieldName
 
+
     val fieldSortModel: FieldSortModel? = sortIndexAndDirection?.let { FieldSortModel(classFieldName, it) }
+
 
     val isForeignKeyRef = this.fieldPathLength > 1
 
