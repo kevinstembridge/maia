@@ -16,8 +16,6 @@ class LeftSearchableTableDtoFieldConverter : SearchFieldConverter {
         when(tableColumnPath) {
             "some_int" -> // someInt
                 return inputValue
-            "some_int" -> // someIntsFromRight
-                return inputValue
             else -> throw IllegalArgumentException("Unknown tableColumnPath [$tableColumnPath]")
         }
 

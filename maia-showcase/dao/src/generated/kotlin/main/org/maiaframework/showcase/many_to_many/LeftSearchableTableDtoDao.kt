@@ -38,20 +38,15 @@ class LeftSearchableTableDtoDao(
             from maia.left
             inner join maia.left_to_right_many_to_many_join
                     on maia.left.id = maia.left_to_right_many_to_many_join.left_id
-            inner join maia.right
-                    on maia.left_to_right_many_to_many_join.right_id = maia.right.id
             $whereClause
             """.trimIndent()
 
         val sqlForPage = """
             select
-                maia.left.some_int as someInt,
-                maia.right.some_int as someIntsFromRight
+                maia.left.some_int as someInt
             from maia.left
             inner join maia.left_to_right_many_to_many_join
                     on maia.left.id = maia.left_to_right_many_to_many_join.left_id
-            inner join maia.right
-                    on maia.left_to_right_many_to_many_join.right_id = maia.right.id
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -82,8 +77,6 @@ class LeftSearchableTableDtoDao(
             from maia.left
             inner join maia.left_to_right_many_to_many_join
                     on maia.left.id = maia.left_to_right_many_to_many_join.left_id
-            inner join maia.right
-                    on maia.left_to_right_many_to_many_join.right_id = maia.right.id
             $whereClause
             """.trimIndent()
 

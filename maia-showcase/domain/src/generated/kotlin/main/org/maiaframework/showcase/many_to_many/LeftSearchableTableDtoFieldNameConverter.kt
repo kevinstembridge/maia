@@ -15,7 +15,6 @@ class LeftSearchableTableDtoFieldNameConverter : SearchFieldNameConverter {
 
         return when(fieldName) {
             "someInt" -> "some_int"
-            "someIntsFromRight" -> "some_int"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")
         }
 

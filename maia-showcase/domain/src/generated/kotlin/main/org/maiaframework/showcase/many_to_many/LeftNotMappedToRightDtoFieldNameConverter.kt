@@ -16,7 +16,6 @@ class LeftNotMappedToRightDtoFieldNameConverter : SearchFieldNameConverter {
         return when(fieldName) {
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "rightId" -> "right_id"
             "someIntFromLeft" -> "some_int"
             "someStringFromLeft" -> "some_string"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")

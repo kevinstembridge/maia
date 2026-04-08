@@ -6,8 +6,7 @@ package org.maiaframework.showcase.many_to_many
 
 
 data class LeftSearchableTableDto(
-    val someInt: Int,
-    val someIntsFromRight: Int
+    val someInt: Int
 ) {
 
 

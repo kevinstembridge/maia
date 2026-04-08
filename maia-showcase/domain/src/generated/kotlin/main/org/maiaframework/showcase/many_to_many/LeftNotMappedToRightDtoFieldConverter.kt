@@ -18,8 +18,6 @@ class LeftNotMappedToRightDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "id" -> // id
                 return inputValue
-            "right_id" -> // rightId
-                return inputValue
             "some_int" -> // someIntFromLeft
                 return inputValue
             "some_string" -> // someStringFromLeft

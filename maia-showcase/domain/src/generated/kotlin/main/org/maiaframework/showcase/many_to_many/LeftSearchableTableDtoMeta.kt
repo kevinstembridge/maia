@@ -13,8 +13,7 @@ object LeftSearchableTableDtoMeta {
 
         return when(dtoFieldName) {
             "someInt" -> "maia.left.some_int"
-            "someIntsFromRight" -> "maia.right.some_int"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [someInt, someIntsFromRight]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [someInt]")
         }
 
     }
@@ -24,8 +23,7 @@ object LeftSearchableTableDtoMeta {
 
         return when(dtoFieldName) {
             "someInt" -> JdbcCompatibleType.integer
-            "someIntsFromRight" -> JdbcCompatibleType.integer
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [someInt, someIntsFromRight]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [someInt]")
         }
 
     }

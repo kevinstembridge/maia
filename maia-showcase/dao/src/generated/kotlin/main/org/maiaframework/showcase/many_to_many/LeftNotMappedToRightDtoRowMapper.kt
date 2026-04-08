@@ -15,7 +15,6 @@ class LeftNotMappedToRightDtoRowMapper : MaiaRowMapper<LeftNotMappedToRightDto> 
         return LeftNotMappedToRightDto(
             rsa.readInstant("createdTimestampUtc"),
             rsa.readDomainId("id"),
-            rsa.readDomainIdOrNull("rightId"),
             rsa.readInt("someIntFromLeft"),
             rsa.readString("someStringFromLeft"),
         )

@@ -18,13 +18,11 @@ class LeftSearchableDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "id" -> // id
                 return inputValue
+            "BOGUS" -> // rightEntities
+                return inputValue
             "some_int" -> // someIntFromLeft
                 return inputValue
-            "some_int" -> // someIntFromRight
-                return inputValue
             "some_string" -> // someStringFromLeft
-                return inputValue
-            "some_string" -> // someStringFromRight
                 return inputValue
             else -> throw IllegalArgumentException("Unknown tableColumnPath [$tableColumnPath]")
         }

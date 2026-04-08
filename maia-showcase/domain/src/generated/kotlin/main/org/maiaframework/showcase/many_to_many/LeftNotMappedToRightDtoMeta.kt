@@ -14,10 +14,9 @@ object LeftNotMappedToRightDtoMeta {
         return when(dtoFieldName) {
             "createdTimestampUtc" -> "maia.left.created_timestamp_utc"
             "id" -> "maia.left.id"
-            "rightId" -> "maia.left_to_right_many_to_many_join.right_id"
             "someIntFromLeft" -> "maia.left.some_int"
             "someStringFromLeft" -> "maia.left.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, rightId, someIntFromLeft, someStringFromLeft]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someIntFromLeft, someStringFromLeft]")
         }
 
     }
@@ -28,10 +27,9 @@ object LeftNotMappedToRightDtoMeta {
         return when(dtoFieldName) {
             "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
             "id" -> JdbcCompatibleType.uuid
-            "rightId" -> JdbcCompatibleType.uuid
             "someIntFromLeft" -> JdbcCompatibleType.integer
             "someStringFromLeft" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, rightId, someIntFromLeft, someStringFromLeft]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someIntFromLeft, someStringFromLeft]")
         }
 
     }

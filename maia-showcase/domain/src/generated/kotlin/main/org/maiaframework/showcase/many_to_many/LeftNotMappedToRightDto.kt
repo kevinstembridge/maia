@@ -10,7 +10,6 @@ import java.time.Instant
 data class LeftNotMappedToRightDto(
     val createdTimestampUtc: Instant,
     val id: DomainId,
-    val rightId: DomainId?,
     val someIntFromLeft: Int,
     val someStringFromLeft: String
 ) {

@@ -1136,9 +1136,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("someIntFromLeft", "someInt") {
             header("Some Int From Left")
         }
-        columnFromDto("someIntFromRight", "someIntsFromRight") {
-            header("Some Ints From Right")
-        }
+        // TODO add a column for the many-to-many join
+//        columnFromDto("someIntFromRight", "someIntsFromRight") {
+//            header("Some Ints From Right")
+//        }
     }
 
 
