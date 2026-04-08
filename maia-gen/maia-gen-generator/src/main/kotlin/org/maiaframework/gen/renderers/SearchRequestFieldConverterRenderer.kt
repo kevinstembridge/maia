@@ -5,19 +5,19 @@ import org.maiaframework.gen.spec.definition.lang.ClassDef
 
 
 class SearchRequestFieldConverterRenderer(
-        classDef: ClassDef,
-        private val fieldDefs: List<ResponseDtoFieldDef>
+    classDef: ClassDef,
+    private val fieldDefs: List<ResponseDtoFieldDef>
 ) : AbstractKotlinRenderer(classDef) {
 
 
     override fun renderFunctions() {
 
-        renderMethod_toTableColumnName()
+        `render function convertValue`()
 
     }
 
 
-    private fun renderMethod_toTableColumnName() {
+    private fun `render function convertValue`() {
 
         blankLine()
         blankLine()
