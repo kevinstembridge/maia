@@ -118,7 +118,7 @@ object FieldTypes {
     fun responseDto(responseDtoDef: SimpleResponseDtoDef) = SimpleResponseDtoFieldType(responseDtoDef)
 
 
-    fun idAndName(idAndNameDef: EntityPkAndNameDef) = PkAndNameFieldType(idAndNameDef)
+    fun pkAndName(pkAndNameDef: EntityPkAndNameDef) = PkAndNameFieldType(pkAndNameDef)
 
 
     fun list(fieldType: FieldType) = ListFieldType(fieldType)
