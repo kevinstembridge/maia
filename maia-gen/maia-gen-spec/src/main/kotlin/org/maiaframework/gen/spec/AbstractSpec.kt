@@ -15,7 +15,6 @@ import org.maiaframework.gen.spec.definition.CrudTableDef
 import org.maiaframework.gen.spec.definition.DataClassDef
 import org.maiaframework.gen.spec.definition.DataClassName
 import org.maiaframework.gen.spec.definition.DataSourceType
-import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.DisplayName
 import org.maiaframework.gen.spec.definition.DtoBaseName
@@ -105,7 +104,6 @@ import org.maiaframework.lang.text.StringFunctions
 abstract class AbstractSpec protected constructor(
     private val appKey: AppKey,
     defaultSchemaName: SchemaName? = null,
-    private val defaultDatabaseType: DatabaseType = DatabaseType.JDBC,
     basePackageName: PackageName? = null
 ) : ModelDefProvider {
 
@@ -454,7 +452,6 @@ abstract class AbstractSpec protected constructor(
         allowFindAll: AllowFindAll = AllowFindAll.FALSE,
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         withHandCodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-        databaseType: DatabaseType? = null,
         leftEntity: ReferencedEntity,
         rightEntity: ReferencedEntity,
         idAndNameFieldName: String? = null,
@@ -475,8 +472,7 @@ abstract class AbstractSpec protected constructor(
             idAndNameFieldName,
             withHandcodedDao,
             withHandCodedEntityDao,
-            defaultSchemaName,
-            databaseType ?: defaultDatabaseType
+            defaultSchemaName
         )
 
         builder.foreignKey(leftEntity.fieldName, leftEntity.entityDef) {
@@ -549,7 +545,6 @@ abstract class AbstractSpec protected constructor(
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
         nameFieldForPkAndNameDto: String? = null,
-        databaseType: DatabaseType? = null,
         init: EntityDefBuilder.() -> Unit
     ): EntityDef {
 
@@ -567,8 +562,7 @@ abstract class AbstractSpec protected constructor(
             nameFieldForPkAndNameDto,
             withHandcodedDao,
             withHandcodedEntityDao,
-            this.defaultSchemaName,
-            databaseType ?: this.defaultDatabaseType
+            this.defaultSchemaName
         )
 
         builder.init()
