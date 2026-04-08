@@ -49,13 +49,13 @@ class ResponseDtoFieldDef(
     )
 
 
-    val collectionFieldDef = DbColumnFieldDef(tableColumnName, fieldReaderParameterizedType, fieldWriterParameterizedType)
+    val dbColumnFieldDef = DbColumnFieldDef(tableColumnName, fieldReaderParameterizedType, fieldWriterParameterizedType)
 
 
-    val fieldReaderClassField: ClassFieldDef? = this.collectionFieldDef.fieldReaderClassField(classFieldName)
+    val fieldReaderClassField: ClassFieldDef? = this.dbColumnFieldDef.fieldReaderClassField(classFieldName)
 
 
-    val fieldWriterClassField: ClassFieldDef? = this.collectionFieldDef.fieldWriterClassField(classFieldName)
+    val fieldWriterClassField: ClassFieldDef? = this.dbColumnFieldDef.fieldWriterClassField(classFieldName)
 
 
     override fun compareTo(other: ResponseDtoFieldDef): Int {
@@ -69,13 +69,13 @@ class ResponseDtoFieldDef(
 
         return ResponseDtoFieldDef(
             ClassFieldName(fieldName),
-            collectionFieldDef.tableColumnName,
+            dbColumnFieldDef.tableColumnName,
             classFieldDef.fieldType,
             classFieldDef.nullability,
             classFieldDef.isMasked,
             caseSensitive,
-            collectionFieldDef.fieldReaderParameterizedType,
-            collectionFieldDef.fieldWriterParameterizedType
+            dbColumnFieldDef.fieldReaderParameterizedType,
+            dbColumnFieldDef.fieldWriterParameterizedType
         )
 
     }
