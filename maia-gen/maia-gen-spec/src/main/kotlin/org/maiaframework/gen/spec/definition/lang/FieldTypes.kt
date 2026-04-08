@@ -118,7 +118,7 @@ object FieldTypes {
     fun responseDto(responseDtoDef: SimpleResponseDtoDef) = SimpleResponseDtoFieldType(responseDtoDef)
 
 
-    fun idAndName(idAndNameDef: EntityPkAndNameDef) = IdAndNameFieldType(idAndNameDef)
+    fun idAndName(idAndNameDef: EntityPkAndNameDef) = PkAndNameFieldType(idAndNameDef)
 
 
     fun list(fieldType: FieldType) = ListFieldType(fieldType)
@@ -141,7 +141,7 @@ object FieldTypes {
         is EsDocFieldType -> false
         is ForeignKeyFieldType -> false
         is FqcnFieldType -> false
-        is IdAndNameFieldType -> false
+        is PkAndNameFieldType -> false
         is InstantFieldType -> false
         is IntFieldType -> false
         is IntTypeFieldType -> false
@@ -176,7 +176,7 @@ object FieldTypes {
             is EsDocFieldType -> false
             is ForeignKeyFieldType -> false
             is FqcnFieldType -> false
-            is IdAndNameFieldType -> false
+            is PkAndNameFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> true
             is IntTypeFieldType -> true
@@ -213,7 +213,7 @@ object FieldTypes {
             is EsDocFieldType -> false
             is ForeignKeyFieldType -> false
             is FqcnFieldType -> false
-            is IdAndNameFieldType -> false
+            is PkAndNameFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> false
             is IntTypeFieldType -> false
@@ -250,7 +250,7 @@ object FieldTypes {
             is EsDocFieldType -> false
             is ForeignKeyFieldType -> false
             is FqcnFieldType -> false
-            is IdAndNameFieldType -> false
+            is PkAndNameFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> false
             is IntTypeFieldType -> false
@@ -287,7 +287,7 @@ object FieldTypes {
             is EsDocFieldType -> false
             is ForeignKeyFieldType -> false
             is FqcnFieldType -> false
-            is IdAndNameFieldType -> false
+            is PkAndNameFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> false
             is IntTypeFieldType -> true

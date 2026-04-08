@@ -526,7 +526,7 @@ private fun jdbcCompatibleTypeForListOrSet(parameterFieldType: FieldType): JdbcC
         is EsDocFieldType -> TODO("YAGNI?")
         is ForeignKeyFieldType -> TODO("YAGNI?")
         is FqcnFieldType -> TODO("YAGNI?")
-        is IdAndNameFieldType -> TODO("YAGNI?")
+        is PkAndNameFieldType -> TODO("YAGNI?")
         is InstantFieldType -> TODO("YAGNI?")
         is IntFieldType -> JdbcCompatibleType.integer_array
         is IntTypeFieldType -> JdbcCompatibleType.integer_array
@@ -750,10 +750,10 @@ class SimpleResponseDtoFieldType internal constructor(
 }
 
 
-class IdAndNameFieldType internal constructor(
-    val idAndNameDef: EntityPkAndNameDef
+class PkAndNameFieldType internal constructor(
+    val pkAndNameDef: EntityPkAndNameDef
 ) : FieldType(
-    idAndNameDef.dtoDef.fqcn,
+    pkAndNameDef.dtoDef.fqcn,
     BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.object_,
     sqlType = null,

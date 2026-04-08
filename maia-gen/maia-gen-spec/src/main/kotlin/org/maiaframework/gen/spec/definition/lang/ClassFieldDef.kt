@@ -304,7 +304,7 @@ data class ClassFieldDef(
             is EsDocFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> "readDomainId$nullableSuffix"
             is FqcnFieldType -> TODO("YAGNI?")
-            is IdAndNameFieldType -> TODO("YAGNI?")
+            is PkAndNameFieldType -> TODO("YAGNI?")
             is InstantFieldType -> "readInstant$nullableSuffix"
             is IntFieldType -> "readInt$nullableSuffix"
             is IntTypeFieldType -> "readInt$nullableSuffix"
