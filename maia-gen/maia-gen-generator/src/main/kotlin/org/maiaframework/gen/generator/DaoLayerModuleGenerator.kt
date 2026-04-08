@@ -1,8 +1,12 @@
 package org.maiaframework.gen.generator
 
-import org.maiaframework.gen.renderers.*
-import org.maiaframework.gen.spec.definition.*
-import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
+import org.maiaframework.gen.renderers.CreateTableSqlRenderer
+import org.maiaframework.gen.renderers.EntityRowMapperRenderer
+import org.maiaframework.gen.renderers.JdbcDaoRenderer
+import org.maiaframework.gen.renderers.RowMapperRenderer
+import org.maiaframework.gen.renderers.SearchableDtoJdbcDaoRenderer
+import org.maiaframework.gen.spec.definition.EntityHierarchy
+import org.maiaframework.gen.spec.definition.RowMapperDef
 
 
 fun main(args: Array<String>) {
@@ -35,13 +39,11 @@ class DaoLayerModuleGenerator(
     override fun onGenerateSource() {
 
         `render create-table scripts`()
-        `render DaoIndexCreators`()
         `render EntityRowMappers`()
         `render EntityPkRowMappers`()
         `render ForEditDtoRowMappers`()
         `process SearchableDtoDefs`()
         `render DAOs`()
-        `render SearchableDtoSearchConverters`()
 
     }
 
@@ -50,7 +52,7 @@ class DaoLayerModuleGenerator(
 
         val sqlScriptsDir = this.maiaGenerationContext.sqlCreateScriptsDir
 
-        val jdbcRootEntityHierarchies = this.modelDef.rootEntityHierarchies.filter { it.entityDef.databaseType == DatabaseType.JDBC }
+        val jdbcRootEntityHierarchies = this.modelDef.rootEntityHierarchies
         val renderedFileName = "${this.maiaGenerationContext.createTablesSqlScriptPrefix}_${this.modelDef.appKey}.sql"
 
         if (jdbcRootEntityHierarchies.isNotEmpty()) {
@@ -64,12 +66,8 @@ class DaoLayerModuleGenerator(
 
         this.modelDef.allSearchableDtoDefs.forEach {
 
-            if (it.dtoRootEntityDef.databaseType == DatabaseType.JDBC) {
-
-                SearchableDtoJdbcDaoRenderer(it, this.modelDef).renderToDir(this.kotlinOutputDir)
-                RowMapperRenderer(it.rowMapperDef).renderToDir(this.kotlinOutputDir)
-
-            }
+            SearchableDtoJdbcDaoRenderer(it, this.modelDef).renderToDir(this.kotlinOutputDir)
+            RowMapperRenderer(it.rowMapperDef).renderToDir(this.kotlinOutputDir)
 
         }
 
@@ -80,24 +78,9 @@ class DaoLayerModuleGenerator(
 
         this.modelDef.entityHierarchies.forEach { entityHierarchy ->
 
-            when (entityHierarchy.entityDef.databaseType) {
-                DatabaseType.JDBC -> JdbcDaoRenderer(entityHierarchy).renderToDir(this.kotlinOutputDir)
-                DatabaseType.MONGO -> MongoDaoRenderer(entityHierarchy).renderToDir(this.kotlinOutputDir)
-            }
+            JdbcDaoRenderer(entityHierarchy).renderToDir(this.kotlinOutputDir)
 
         }
-
-    }
-
-
-    private fun `render DaoIndexCreators`() {
-
-        this.modelDef.entityHierarchies.map { it.entityDef }
-            .filter { it.databaseType == DatabaseType.MONGO }
-            .filter { it.databaseIndexDefs.isNotEmpty() }
-            .forEach { entity ->
-                MongoDaoIndexCreatorRenderer(entity).renderToDir(this.kotlinOutputDir)
-            }
 
     }
 
@@ -111,9 +94,7 @@ class DaoLayerModuleGenerator(
 
     private fun renderEntityRowMapper(entityHierarchy: EntityHierarchy) {
 
-        if (entityHierarchy.entityDef.databaseType == DatabaseType.JDBC) {
-            EntityRowMapperRenderer(entityHierarchy).renderToDir(this.kotlinOutputDir)
-        }
+        EntityRowMapperRenderer(entityHierarchy).renderToDir(this.kotlinOutputDir)
 
     }
 
@@ -127,11 +108,8 @@ class DaoLayerModuleGenerator(
 
     private fun renderEntityPkRowMapper(entityHierarchy: EntityHierarchy) {
 
-        if (entityHierarchy.entityDef.databaseType == DatabaseType.JDBC) {
-
-            entityHierarchy.entityDef.primaryKeyRowMapperDef?.let { rowMapperDef ->
-                RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
-            }
+        entityHierarchy.entityDef.primaryKeyRowMapperDef?.let { rowMapperDef ->
+            RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
         }
 
     }
@@ -139,7 +117,7 @@ class DaoLayerModuleGenerator(
 
     private fun `render ForEditDtoRowMappers`() {
 
-        this.modelDef.fetchForEditDtoDefs.filter { it.databaseType == DatabaseType.JDBC }.forEach { dtoDef ->
+        this.modelDef.fetchForEditDtoDefs.forEach { dtoDef ->
 
             val rowMapperDef = RowMapperDef(
                 dtoDef.uqcn,
@@ -150,24 +128,6 @@ class DaoLayerModuleGenerator(
 
             RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
 
-        }
-
-    }
-
-
-    private fun `render SearchableDtoSearchConverters`() {
-
-        this.modelDef.allSearchableDtoDefs
-            .filter { it.withGeneratedDto == WithGeneratedDto.TRUE }
-            .forEach { renderSearchableDtoSearchConverter(it) }
-
-    }
-
-
-    private fun renderSearchableDtoSearchConverter(searchableDtoDef: SearchableDtoDef) {
-
-        if (searchableDtoDef.dtoRootEntityDef.databaseType == DatabaseType.MONGO) {
-            SearchableDtoSearchConverterRenderer(searchableDtoDef).renderToDir(this.kotlinOutputDir)
         }
 
     }
