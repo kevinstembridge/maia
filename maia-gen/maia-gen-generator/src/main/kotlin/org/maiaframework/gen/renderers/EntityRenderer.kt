@@ -1,9 +1,7 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
-import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.ConstructorArg
 
@@ -141,15 +139,7 @@ class EntityRenderer(
         if (this.entityDef.hasSurrogatePrimaryKey) {
 
             appendLine("        fun newId(): DomainId {")
-
-            when (entityDef.databaseType) {
-                DatabaseType.JDBC -> appendLine("            return DomainId.newId()")
-                DatabaseType.MONGO -> {
-                    addImportFor(Fqcns.OBJECT_ID)
-                    appendLine("            return DomainId(ObjectId.get().toHexString())")
-                }
-            }
-
+            appendLine("            return DomainId.newId()")
             appendLine("        }")
 
         }
