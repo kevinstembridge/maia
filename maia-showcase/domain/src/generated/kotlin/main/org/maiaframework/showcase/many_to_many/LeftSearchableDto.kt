@@ -10,10 +10,9 @@ import java.time.Instant
 data class LeftSearchableDto(
     val createdTimestampUtc: Instant,
     val id: DomainId,
+    val rightEntities: List<RightPkAndNameDto>,
     val someIntFromLeft: Int,
-    val someIntFromRight: Int,
-    val someStringFromLeft: String,
-    val someStringFromRight: String
+    val someStringFromLeft: String
 ) {
 
 
