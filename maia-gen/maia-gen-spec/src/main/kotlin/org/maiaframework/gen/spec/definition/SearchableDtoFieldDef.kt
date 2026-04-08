@@ -9,19 +9,19 @@ data class SearchableDtoFieldDef(
 ): Comparable<SearchableDtoFieldDef> {
 
 
-    val tableName = entityAndField?.tableName
+    val tableName = entityAndField.tableName
 
 
-    val schemaAndTableName = entityAndField?.schemaAndTableName
+    val schemaAndTableName = entityAndField.schemaAndTableName
 
 
-    val databaseColumn = entityAndField?.databaseColumnName
+    val databaseColumn = entityAndField.databaseColumnName
 
 
     val fieldPathLength = fieldPath.length
 
 
-    val entityFieldDef = entityAndField?.entityFieldDef
+    val entityFieldDef = entityAndField.entityFieldDef
 
 
     val classFieldDef = this.responseDtoFieldDef.classFieldDef
