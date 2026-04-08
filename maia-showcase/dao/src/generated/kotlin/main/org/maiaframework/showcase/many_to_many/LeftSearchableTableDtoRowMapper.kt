@@ -14,7 +14,6 @@ class LeftSearchableTableDtoRowMapper : MaiaRowMapper<LeftSearchableTableDto> {
 
         return LeftSearchableTableDto(
             rsa.readInt("someInt"),
-            rsa.readInt("someIntsFromRight"),
         )
 
     }
