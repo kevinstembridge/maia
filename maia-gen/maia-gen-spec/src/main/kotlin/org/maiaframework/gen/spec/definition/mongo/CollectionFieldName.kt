@@ -1,7 +1,6 @@
 package org.maiaframework.gen.spec.definition.mongo
 
 
-import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.types.StringType
 
 class CollectionFieldName(value: String) : StringType<CollectionFieldName>(value) {
@@ -46,12 +45,6 @@ class CollectionFieldName(value: String) : StringType<CollectionFieldName>(value
 
 
         val entityId = CollectionFieldName("entityId")
-
-
-        fun id(databaseType: DatabaseType) = when (databaseType) {
-            DatabaseType.MONGO -> CollectionFieldName("_id")
-            DatabaseType.JDBC -> CollectionFieldName("id")
-        }
 
 
         val lastModifiedById = CollectionFieldName("lm_by_id")
