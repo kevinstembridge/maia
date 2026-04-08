@@ -169,7 +169,7 @@ open class TypescriptInterfaceDtoRenderer(
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> parameterFieldType.uqcn.value
-            is PkAndNameFieldType -> TODO()
+            is PkAndNameFieldType -> parameterFieldType.uqcn.value
             is InstantFieldType -> "string"
             is IntFieldType -> "number"
             is IntTypeFieldType -> "number"
