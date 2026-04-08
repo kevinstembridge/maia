@@ -6,7 +6,6 @@ import org.maiaframework.gen.spec.definition.ConfigurableSchemaPropertyName
 import org.maiaframework.gen.spec.definition.CrudDef
 import org.maiaframework.gen.spec.definition.DataRowHeaderName
 import org.maiaframework.gen.spec.definition.DataRowStagingEntityFieldDef
-import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
@@ -47,8 +46,6 @@ class FixedWidthFileStagingEntityDefBuilder(
     private val defaultFieldTypeFieldWriterProvider: (FieldType) -> ParameterizedType?,
 ) {
 
-    private val databaseType = DatabaseType.JDBC
-
     private val entityFieldDefBuilders = mutableListOf<FixedWidthStagingEntityFieldDefBuilder>()
     private var tableName: TableName? = null
     private var configurableSchemaPropertyName: ConfigurableSchemaPropertyName? = null
@@ -73,7 +70,6 @@ class FixedWidthFileStagingEntityDefBuilder(
             this.entityBaseName,
             this.tableName,
             this.schemaName,
-            this.databaseType,
             this.configurableSchemaPropertyName,
             description = null,
             isCappedCollection = IsCappedCollection.FALSE,
