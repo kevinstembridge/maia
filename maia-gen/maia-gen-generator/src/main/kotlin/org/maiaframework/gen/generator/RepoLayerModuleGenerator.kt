@@ -1,7 +1,9 @@
 package org.maiaframework.gen.generator
 
-import org.maiaframework.gen.renderers.*
-import org.maiaframework.gen.spec.definition.DatabaseType
+import org.maiaframework.gen.renderers.EntityDetailDtoRepoRenderer
+import org.maiaframework.gen.renderers.EntityRepoRenderer
+import org.maiaframework.gen.renderers.ResponseDtoRepoRenderer
+import org.maiaframework.gen.renderers.SearchableTableDtoJdbcRepoRenderer
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 
 
@@ -71,10 +73,7 @@ class RepoLayerModuleGenerator(
 
     private fun processSearchableDtoDef(searchableDtoDef: SearchableDtoDef) {
 
-        when (searchableDtoDef.dtoRootEntityDef.databaseType) {
-            DatabaseType.JDBC -> SearchableTableDtoJdbcRepoRenderer(searchableDtoDef).renderToDir(kotlinOutputDir)
-            DatabaseType.MONGO -> SearchableDtoMongoRepoRenderer(searchableDtoDef).renderToDir(kotlinOutputDir)
-        }
+        SearchableTableDtoJdbcRepoRenderer(searchableDtoDef).renderToDir(kotlinOutputDir)
 
     }
 
