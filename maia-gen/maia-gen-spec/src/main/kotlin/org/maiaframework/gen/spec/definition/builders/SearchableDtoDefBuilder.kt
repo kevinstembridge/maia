@@ -9,6 +9,7 @@ import org.maiaframework.gen.spec.definition.JoinEntityDef
 import org.maiaframework.gen.spec.definition.JoinType
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.ModuleName
+import org.maiaframework.gen.spec.definition.ResponseDtoFieldDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SearchableDtoFieldDef
@@ -19,8 +20,11 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.flags.WithProvidedFieldConverter
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.FieldType
+import org.maiaframework.gen.spec.definition.lang.FieldTypes
+import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 
@@ -77,15 +81,30 @@ class SearchableDtoDefBuilder(
 
     fun manyToManyField(fieldName: String, manyToManyEntityDef: ManyToManyEntityDef) {
 
-        TODO("Not yet implemented")
-
         this.manyToManyJoinEntityDefs.add(JoinEntityDef(manyToManyEntityDef.entityDef, JoinType.INNER))
 
         val otherEntityDef = `find the Entity on the other side of`(manyToManyEntityDef)
 
-        // TODO add a field to the searchableDtoDef that is a list of PkAndNameTypes from other entity
+        val responseDtoFieldDef = ResponseDtoFieldDef(
+            ClassFieldName(fieldName),
+            tableColumnName = TableColumnName("BOGUS"), // TODO this.entityAndField.databaseColumnName,
+            fieldType = FieldTypes.list(otherEntityDef.entityPkAndNameDef.dtoDef.fieldType),
+            nullability = Nullability.NOT_NULLABLE,
+            isMasked = false,
+            caseSensitive = CaseSensitive.FALSE,
+            fieldReaderParameterizedType = null,
+            fieldWriterParameterizedType = null
+        )
 
+        val fieldDef = SearchableDtoFieldDef(
+            isFilterable = true, // TODO
+            responseDtoFieldDef,
+            entityAndField = EntityAndField(otherEntityDef, otherEntityDef.findFieldByName("id"), null), // TODO
+            fieldPath = FieldPath.of(fieldName), // TODO,
+            sortIndexAndDirection = null // TODO
+        )
 
+        fieldDefs.add(fieldDef)
 
     }
 
