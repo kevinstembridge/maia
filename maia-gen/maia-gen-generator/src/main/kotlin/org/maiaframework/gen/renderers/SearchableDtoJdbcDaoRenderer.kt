@@ -301,32 +301,20 @@ class SearchableDtoJdbcDaoRenderer(
         foreignKeyTableCount: Map<String, Int>
     ): List<String> {
 
-        val manyToManyJoinClauses = searchableDtoDef.manyToManyJoinEntityDefs
-            .map { joinEntityDef ->
-                """${joinEntityDef.joinType.sql} join ${joinEntityDef.entityDef.schemaAndTableName}
-                    on ${entityDef.schemaAndTableName}.id = ${joinEntityDef.entityDef.schemaAndTableName}.${
-                    joinEntityDef.entityDef.foreignKeyFieldForBaseName(entityDef.superEntityBaseName).tableColumnName
-                }
-                """.trimIndent()
-            }
-
-        val foreignKeyJoinClauses = foreignKeyFieldsSortedByDepth
+        return foreignKeyFieldsSortedByDepth
             .filter { it.entityAndField.referencedEntityField != null }
             .distinctBy { it.entityAndField.referencedEntityFieldNotNull.classFieldName }
             .map { searchableDtoFieldDef ->
 
                 val referencedEntityField = searchableDtoFieldDef.entityAndField.referencedEntityField!!
                 val tableIsReferencedCount = foreignKeyTableCount[searchableDtoFieldDef.schemaAndTableName] ?: 0
-                val referencedTableAlias = if (tableIsReferencedCount > 1) referencedEntityField.classFieldName else searchableDtoFieldDef.schemaAndTableName
+                val referencedTableAlias =
+                    if (tableIsReferencedCount > 1) referencedEntityField.classFieldName else searchableDtoFieldDef.schemaAndTableName
 
                 """inner join ${searchableDtoFieldDef.schemaAndTableName}${if (tableIsReferencedCount > 1) " ${referencedEntityField.classFieldName}" else ""}
                     on ${referencedEntityField.schemaAndTableName}.${referencedEntityField.databaseColumnName} = ${referencedTableAlias}.id""".trimIndent()
 
             }
-
-        val joinClauses = manyToManyJoinClauses.plus(foreignKeyJoinClauses)
-
-        return joinClauses
 
     }
 
@@ -334,6 +322,7 @@ class SearchableDtoJdbcDaoRenderer(
     private fun selectColumns(foreignKeyTableCount: Map<String, Int>): List<String> {
 
         return searchableDtoDef.allFields
+            // TODO filter out many-to-many fields
             .map { searchableDtoFieldDef ->
 
                 val numberOfTimesTheForeignTableIsReferenced = foreignKeyTableCount[searchableDtoFieldDef.schemaAndTableName] ?: 0
@@ -346,6 +335,7 @@ class SearchableDtoJdbcDaoRenderer(
                 }
 
                 "${tableOrAlias}.${searchableDtoFieldDef.databaseColumn} as ${searchableDtoFieldDef.classFieldName}"
+
             }.plus(selectTypeDiscriminatorColumn())
             .filterNotNull()
 
