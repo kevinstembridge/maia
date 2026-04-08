@@ -12,7 +12,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.Fqcn
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -86,7 +86,7 @@ object RowMapperFunctions {
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is FqcnFieldType -> TODO()
-            is IdAndNameFieldType -> TODO()
+            is PkAndNameFieldType -> TODO()
             is InstantFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is IntFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is IntTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
@@ -162,7 +162,7 @@ object RowMapperFunctions {
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> TODO()
-            is IdAndNameFieldType -> TODO()
+            is PkAndNameFieldType -> TODO()
             is InstantFieldType -> "${indentStr}rsa.readListOfInstants(\"${resultSetColumnName}\")"
             is IntFieldType -> TODO()
             is IntTypeFieldType -> TODO()

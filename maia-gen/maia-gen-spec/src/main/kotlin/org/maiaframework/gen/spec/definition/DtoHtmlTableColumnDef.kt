@@ -14,7 +14,7 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.IdAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -76,7 +76,7 @@ class DtoHtmlTableColumnDef(
             is EsDocFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> "id"
             is FqcnFieldType -> TODO("YAGNI?")
-            is IdAndNameFieldType -> "id"
+            is PkAndNameFieldType -> "id"
             is InstantFieldType -> "date"
             is IntFieldType -> "number"
             is IntTypeFieldType -> "number"
@@ -113,7 +113,7 @@ class DtoHtmlTableColumnDef(
             is EsDocFieldType -> TODO("YAGNI?")
             is FqcnFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> "equals"
-            is IdAndNameFieldType -> "equals"
+            is PkAndNameFieldType -> "equals"
             is InstantFieldType -> "equals"
             is IntFieldType -> "equals"
             is IntTypeFieldType -> "equals"
@@ -150,7 +150,7 @@ class DtoHtmlTableColumnDef(
             is EsDocFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> AgGridCellDataType.text
             is FqcnFieldType -> TODO("YAGNI?")
-            is IdAndNameFieldType -> AgGridCellDataType.date
+            is PkAndNameFieldType -> AgGridCellDataType.date
             is InstantFieldType -> AgGridCellDataType.text
             is IntFieldType -> AgGridCellDataType.number
             is IntTypeFieldType -> AgGridCellDataType.number
