@@ -47,7 +47,6 @@ class EntityDef(
     val entityBaseName: EntityBaseName,
     tableNameOrNull: TableName?,
     val schemaName: SchemaName,
-    val databaseType: DatabaseType,
     val configurableSchemaPropertyName: ConfigurableSchemaPropertyName?,
     val isCappedCollection: IsCappedCollection,
     val cappedSizeInBytes: Long?,
@@ -141,7 +140,6 @@ class EntityDef(
 
     val entityUpdaterClassDef = aClassDef(this.entityFqcn.withSuffix("Updater"))
         .ofType(ClassType.DATA_CLASS)
-        .withSuperclass(initEntityUpdaterSuperclassDef())
         .build()
 
 
@@ -276,8 +274,7 @@ class EntityDef(
         FetchForEditDtoDef(
             packageName,
             entityBaseName,
-            allEntityFieldsSorted,
-            databaseType
+            allEntityFieldsSorted
         )
     } else {
         null
@@ -429,7 +426,6 @@ class EntityDef(
             configurableSchemaPropertyName = null,
             crudDef = CrudDef.EMPTY,
             daoHasSpringAnnotation = this.daoHasSpringAnnotation,
-            databaseType = this.databaseType,
             deletable = Deletable.FALSE,
             description = null,
             entityBaseName = historyEntityBaseName,
@@ -623,13 +619,9 @@ class EntityDef(
             ?: throw IllegalStateException("nameFieldForIdAndNameDto references a non-existent field $nameFieldForIdAndNameDto on entity $entityBaseName")
         }
 
-        val abstractDaoSuperclassDef =
-            initDaoSuperclassDef(packageName.uqcn(this.entityUqcn), this.historyEntityDef?.entityClassDef?.fqcn)
-
         if (withHandCodedDao.value) {
             this.daoClassDefToRender = aClassDef(daoFqcn.withPrefix("Abstract"))
                 .withAbstract(true)
-                .withSuperclass(abstractDaoSuperclassDef)
                 .build()
 
         } else {
@@ -640,16 +632,13 @@ class EntityDef(
                 classDefBuilder.withClassAnnotation(AnnotationDefs.SPRING_REPOSITORY)
             }
 
-            this.daoClassDefToRender = classDefBuilder
-                .withSuperclass(abstractDaoSuperclassDef)
-                .build()
+            this.daoClassDefToRender = classDefBuilder.build()
 
         }
 
         if (withHandCodedEntityDao.value) {
             this.entityDaoClassDefToRender = aClassDef(entityDaoFqcn.withPrefix("Abstract"))
                 .withAbstract(true)
-                .withSuperclass(abstractDaoSuperclassDef)
                 .build()
 
         } else {
@@ -660,9 +649,7 @@ class EntityDef(
                 classDefBuilder.withClassAnnotation(AnnotationDefs.SPRING_REPOSITORY)
             }
 
-            this.entityDaoClassDefToRender = classDefBuilder
-                .withSuperclass(abstractDaoSuperclassDef)
-                .build()
+            this.entityDaoClassDefToRender = classDefBuilder.build()
 
         }
 
@@ -682,48 +669,6 @@ class EntityDef(
         }
 
         this.crudNotifierClassDef = crudNotifierClassDefBuilder.build()
-
-    }
-
-
-    private fun initDaoSuperclassDef(entityFqcn: Fqcn, historyEntityFqcn: Fqcn?): ClassDef? {
-
-        return when (this.databaseType) {
-
-            DatabaseType.JDBC -> null
-
-            DatabaseType.MONGO -> {
-
-                val abstractDaoParameterizedType = when (this.withVersionHistory.value) {
-                    true -> ParameterizedType(
-                        Fqcns.ABSTRACT_ENTITY_WITH_HISTORY_MONGO_DAO,
-                        ParameterizedType(entityFqcn),
-                        ParameterizedType(historyEntityFqcn!!)
-                    )
-
-                    false -> ParameterizedType(Fqcns.ABSTRACT_ENTITY_MONGO_DAO, ParameterizedType(entityFqcn))
-                }
-
-                aClassDef(abstractDaoParameterizedType).build()
-
-            }
-
-        }
-
-    }
-
-
-    private fun initEntityUpdaterSuperclassDef(): ClassDef? {
-
-        return when (databaseType) {
-            DatabaseType.MONGO -> {
-                aClassDef(ParameterizedType(Fqcns.ABSTRACT_ENTITY_UPDATER)).build()
-            }
-
-            else -> {
-                null
-            }
-        }
 
     }
 
