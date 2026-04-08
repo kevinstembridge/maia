@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.DatabaseType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassDef
@@ -19,9 +18,7 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
         val constructorFields = mutableListOf<ClassFieldDef>()
 
-        val fieldsClassFieldDef = aClassField("fields", fieldUpdatesType) {
-            constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
-        }.build()
+        val fieldsClassFieldDef = aClassField("fields", fieldUpdatesType).build()
 
         constructorFields.add(fieldsClassFieldDef)
 
@@ -32,9 +29,7 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         } else {
 
             val primaryKeyClassFieldDefs = this.entityDef.primaryKeyFields.map { fieldDef ->
-                aClassField(fieldDef.classFieldName, fieldDef.fieldType) {
-                    constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
-                }.build()
+                aClassField(fieldDef.classFieldName, fieldDef.fieldType).build()
             }
 
             constructorFields.addAll(primaryKeyClassFieldDefs)
@@ -43,9 +38,7 @@ class EntityUpdaterRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
         if (entityDef.versioned.value) {
 
-            val versionClassFieldDef = aClassField("version", FieldTypes.long) {
-                constructorOnly(entityDef.databaseType == DatabaseType.MONGO)
-            }.build()
+            val versionClassFieldDef = aClassField("version", FieldTypes.long).build()
 
             constructorFields.add(versionClassFieldDef)
 
