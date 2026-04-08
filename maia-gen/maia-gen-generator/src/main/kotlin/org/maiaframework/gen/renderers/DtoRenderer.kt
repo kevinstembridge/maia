@@ -18,12 +18,12 @@ class DtoRenderer(classDef: ClassDef) : AbstractKotlinRenderer(classDef) {
 
     override fun renderFunctions() {
 
-        renderFunction_toString()
+        `render function toString`()
 
     }
 
 
-    private fun renderFunction_toString() {
+    private fun `render function toString`() {
 
         if (this.classDef.allFieldsSorted.none { it.isMasked }) {
             return
@@ -47,7 +47,7 @@ class DtoRenderer(classDef: ClassDef) : AbstractKotlinRenderer(classDef) {
                 "\"$classFieldName = '\" + this.$classFieldName + '\\'' +"
             }
 
-        }.joinToString(" \", \" + \n                ")
+        }.joinToString(separator = " \", \" + \n                ")
 
         append(lines)
 
