@@ -36,8 +36,6 @@ class LeftNotMappedToRightDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.left
-            left outer join maia.left_to_right_many_to_many_join
-                    on maia.left.id = maia.left_to_right_many_to_many_join.left_id
             $whereClause
             """.trimIndent()
 
@@ -48,8 +46,6 @@ class LeftNotMappedToRightDtoDao(
                 maia.left.some_int as someIntFromLeft,
                 maia.left.some_string as someStringFromLeft
             from maia.left
-            left outer join maia.left_to_right_many_to_many_join
-                    on maia.left.id = maia.left_to_right_many_to_many_join.left_id
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -78,8 +74,6 @@ class LeftNotMappedToRightDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.left
-            left outer join maia.left_to_right_many_to_many_join
-                    on maia.left.id = maia.left_to_right_many_to_many_join.left_id
             $whereClause
             """.trimIndent()
 
