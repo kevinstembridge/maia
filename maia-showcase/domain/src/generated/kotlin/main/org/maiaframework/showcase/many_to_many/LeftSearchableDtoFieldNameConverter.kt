@@ -16,7 +16,6 @@ class LeftSearchableDtoFieldNameConverter : SearchFieldNameConverter {
         return when(fieldName) {
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "rightEntities" -> "BOGUS"
             "someIntFromLeft" -> "some_int"
             "someStringFromLeft" -> "some_string"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")
