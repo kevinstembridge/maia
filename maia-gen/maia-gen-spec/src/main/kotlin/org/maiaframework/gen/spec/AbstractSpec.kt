@@ -922,7 +922,7 @@ abstract class AbstractSpec protected constructor(
             dtoHtmlTableSourceDef = DtoHtmlTableSourceDef.of(searchableDtoDef),
             fieldInfoSupplier = { fieldName ->
                 val f = searchableDtoDef.findFieldByPath(fieldName)
-                DtoFieldInfo(f.classFieldDef, f.entityFieldDef.classFieldDef.displayName)
+                DtoFieldInfo(f.classFieldDef, f.displayName)
             },
             addButtonDef = addButtonDef,
             disableRendering = disableRendering,
