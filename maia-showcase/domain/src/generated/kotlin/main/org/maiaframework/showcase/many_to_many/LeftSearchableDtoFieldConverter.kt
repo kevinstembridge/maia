@@ -18,8 +18,6 @@ class LeftSearchableDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "id" -> // id
                 return inputValue
-            "BOGUS" -> // rightEntities
-                return inputValue
             "some_int" -> // someIntFromLeft
                 return inputValue
             "some_string" -> // someStringFromLeft
