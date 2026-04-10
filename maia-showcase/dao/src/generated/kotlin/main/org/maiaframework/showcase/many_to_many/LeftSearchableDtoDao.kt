@@ -74,8 +74,6 @@ class LeftSearchableDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.left
-            inner join maia.left_to_right_many_to_many_join
-                    on maia.left.id = maia.left_to_right_many_to_many_join.left_id
             $whereClause
             """.trimIndent()
 
