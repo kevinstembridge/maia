@@ -14,7 +14,6 @@ object LeftSearchableDtoMeta {
         return when(dtoFieldName) {
             "createdTimestampUtc" -> "maia.left.created_timestamp_utc"
             "id" -> "maia.left.id"
-            "rightEntities" -> "ignore"
             "someIntFromLeft" -> "maia.left.some_int"
             "someStringFromLeft" -> "maia.left.some_string"
             else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, rightEntities, someIntFromLeft, someStringFromLeft]")
@@ -28,7 +27,6 @@ object LeftSearchableDtoMeta {
         return when(dtoFieldName) {
             "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
             "id" -> JdbcCompatibleType.uuid
-            "rightEntities" -> JdbcCompatibleType.uuid
             "someIntFromLeft" -> JdbcCompatibleType.integer
             "someStringFromLeft" -> JdbcCompatibleType.text
             else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, rightEntities, someIntFromLeft, someStringFromLeft]")
