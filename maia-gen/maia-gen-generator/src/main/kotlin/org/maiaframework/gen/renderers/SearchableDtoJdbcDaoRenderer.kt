@@ -40,7 +40,7 @@ class SearchableDtoJdbcDaoRenderer(
     private val typeDiscriminators = modelDef.entityHierarchyFor(searchableDtoDef.dtoRootEntityDef).typeDiscriminators()
 
 
-    private val foreignKeyFieldsSortedByDepth = searchableDtoDef.allFields
+    private val foreignKeyFieldsSortedByDepth = searchableDtoDef.nonManyToManyFields
         .filter { it.isForeignKeyRef }
         .sortedBy { it.fieldPathLength }
 
@@ -321,8 +321,7 @@ class SearchableDtoJdbcDaoRenderer(
 
     private fun selectColumns(foreignKeyTableCount: Map<String, Int>): List<String> {
 
-        return searchableDtoDef.allFields
-            // TODO filter out many-to-many fields
+        return searchableDtoDef.nonManyToManyFields
             .map { searchableDtoFieldDef ->
 
                 val numberOfTimesTheForeignTableIsReferenced = foreignKeyTableCount[searchableDtoFieldDef.schemaAndTableName] ?: 0
@@ -675,14 +674,14 @@ class SearchableDtoJdbcDaoRenderer(
         blankLine()
         appendLine("            when (fieldPath) {")
 
-        this.searchableDtoDef.allFields.filter { it.isFilterable }.forEach { fieldDef ->
+        this.searchableDtoDef.nonManyToManyFields.filter { it.isFilterable }.forEach { fieldDef ->
             val entityFieldDef = fieldDef.entityFieldDef
             val addFunctionName = sqlParamAddFunctionName(entityFieldDef.fieldType)
             val filterModelHelperFunctionName = entityFieldDef.filterModelHelperFunctionName()
             appendLine("                \"${fieldDef.classFieldName}\" -> sqlParams.$addFunctionName(fieldPath, FilterModelHelper.${filterModelHelperFunctionName}(filterModelItem))")
         }
 
-        val dtoFieldNames = searchableDtoDef.allFields.filter { it.isFilterable }.map { it.classFieldName }
+        val dtoFieldNames = searchableDtoDef.nonManyToManyFields.filter { it.isFilterable }.map { it.classFieldName }
 
         appendLine("                else -> throw RuntimeException(\"Unknown fieldPath [\$fieldPath]. Expecting one of ${dtoFieldNames}.\")")
         appendLine("            }")

@@ -1,12 +1,16 @@
 package org.maiaframework.gen.spec.definition
 
-data class SearchableDtoFieldDef(
+
+class SearchableDtoFieldDef(
     val isFilterable: Boolean,
     val responseDtoFieldDef: ResponseDtoFieldDef,
     val entityAndField: EntityAndField,
-    private val fieldPath: FieldPath,
-    private val sortIndexAndDirection: SortIndexAndDirection?
-): Comparable<SearchableDtoFieldDef> {
+    val fieldPath: FieldPath,
+    sortIndexAndDirection: SortIndexAndDirection?
+): AbstractSearchableDtoFieldDef(
+    responseDtoFieldDef.classFieldDef,
+    sortIndexAndDirection
+) {
 
 
     val tableName = entityAndField.tableName
@@ -24,25 +28,22 @@ data class SearchableDtoFieldDef(
     val entityFieldDef = entityAndField.entityFieldDef
 
 
-    val classFieldDef = this.responseDtoFieldDef.classFieldDef
-
-
-    val classFieldName = classFieldDef.classFieldName
-
-
-    val fieldSortModel: FieldSortModel? = sortIndexAndDirection?.let { FieldSortModel(classFieldName, it) }
-
-
     val isForeignKeyRef = this.fieldPathLength > 1
 
 
-    override fun compareTo(other: SearchableDtoFieldDef): Int {
-        return this.responseDtoFieldDef.compareTo(other.responseDtoFieldDef)
-    }
+    override val displayName = this.entityFieldDef.classFieldDef.displayName
 
 
-    fun copyWithFieldName(dtoFieldName: String): SearchableDtoFieldDef {
-        return copy(responseDtoFieldDef = responseDtoFieldDef.copyWithFieldName(dtoFieldName))
+    override fun copyWithFieldName(dtoFieldName: String): SearchableDtoFieldDef {
+
+        return SearchableDtoFieldDef(
+            this.isFilterable,
+            this.responseDtoFieldDef.copyWithFieldName(dtoFieldName),
+            this.entityAndField,
+            this.fieldPath,
+            this.sortIndexAndDirection
+        )
+
     }
 
 

@@ -40,7 +40,7 @@ class ResponseDtoFieldDef(
     }
 
 
-    val classFieldDef: ClassFieldDef = ClassFieldDef(
+    val classFieldDef = ClassFieldDef(
         classFieldName,
         fieldType = fieldType,
         nullability = nullability,

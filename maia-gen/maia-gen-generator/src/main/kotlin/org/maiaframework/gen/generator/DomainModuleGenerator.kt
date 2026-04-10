@@ -457,7 +457,7 @@ class DomainModuleGenerator(
 
         SearchRequestFieldNameConverterRenderer(
             searchableDtoDef.fieldNameConverterClassDef,
-            searchableDtoDef.allFields.map { it.responseDtoFieldDef }
+            searchableDtoDef.nonManyToManyFields.map { it.responseDtoFieldDef }
         ).renderToDir(this.kotlinOutputDir)
 
     }
@@ -485,7 +485,7 @@ class DomainModuleGenerator(
 
         SearchRequestFieldConverterRenderer(
             searchableDtoDef.fieldConverterClassDef,
-            searchableDtoDef.allFields.map { it.responseDtoFieldDef }
+            searchableDtoDef.nonManyToManyFields.map { it.responseDtoFieldDef }
         ).renderToDir(this.kotlinOutputDir)
 
     }

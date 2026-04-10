@@ -1,5 +1,6 @@
 package org.maiaframework.gen.spec.definition.builders
 
+import org.maiaframework.gen.spec.definition.AbstractSearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.DtoBaseName
 import org.maiaframework.gen.spec.definition.EntityAndField
 import org.maiaframework.gen.spec.definition.EntityBaseName
@@ -8,11 +9,11 @@ import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.JoinEntityDef
 import org.maiaframework.gen.spec.definition.JoinType
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
+import org.maiaframework.gen.spec.definition.ManyToManySearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.ResponseDtoFieldDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
-import org.maiaframework.gen.spec.definition.SearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.flags.CaseSensitive
 import org.maiaframework.gen.spec.definition.flags.GenerateFindById
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
@@ -43,7 +44,7 @@ class SearchableDtoDefBuilder(
 ) {
 
     private val manyToManyJoinEntityDefs = mutableListOf<JoinEntityDef>()
-    private val fieldDefs = mutableListOf<SearchableDtoFieldDef>()
+    private val fieldDefs = mutableListOf<AbstractSearchableDtoFieldDef>()
     private var moduleName: ModuleName? = null
     private var withPreAuthorize: WithPreAuthorize? = null
     private var withProvidedFieldConverter = WithProvidedFieldConverter.FALSE
@@ -85,6 +86,11 @@ class SearchableDtoDefBuilder(
 
         val otherEntityDef = `find the Entity on the other side of`(manyToManyEntityDef)
 
+        val classFieldDef = ClassFieldDefBuilder(
+            ClassFieldName(fieldName),
+            FieldTypes.list(FieldTypes.pkAndName(otherEntityDef.entityPkAndNameDef)),
+        ).build()
+
         val responseDtoFieldDef = ResponseDtoFieldDef(
             ClassFieldName(fieldName),
             tableColumnName = TableColumnName("BOGUS"), // TODO this.entityAndField.databaseColumnName,
@@ -96,11 +102,8 @@ class SearchableDtoDefBuilder(
             fieldWriterParameterizedType = null
         )
 
-        val fieldDef = SearchableDtoFieldDef(
-            isFilterable = true, // TODO
-            responseDtoFieldDef,
-            entityAndField = EntityAndField(otherEntityDef, otherEntityDef.findFieldByName("id"), null), // TODO
-            fieldPath = FieldPath.of(fieldName), // TODO,
+        val fieldDef = ManyToManySearchableDtoFieldDef(
+            classFieldDef,
             sortIndexAndDirection = null // TODO
         )
 

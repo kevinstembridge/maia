@@ -13,7 +13,7 @@ class ClassDef(
     val isAbstract: Boolean,
     val classType: ClassType,
     val classVisibility: ClassVisibility,
-    val fieldDefsNotInherited: List<ClassFieldDef>,
+    private val fieldDefsNotInherited: List<ClassFieldDef>,
     val classAnnotations: List<AnnotationDef>,
     val constructorAnnotations: List<AnnotationDef>,
     val interfacesImplemented: List<ParameterizedType>,

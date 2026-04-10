@@ -27,7 +27,7 @@ class SearchableDtoMetaRenderer(
             |
             |        return when(dtoFieldName) {""".trimMargin())
 
-        searchableDtoDef.allFields.forEach { field ->
+        searchableDtoDef.nonManyToManyFields.forEach { field ->
             appendLine("            \"${field.classFieldName}\" -> \"${field.schemaAndTableName}.${field.databaseColumn}\"")
         }
 
@@ -52,7 +52,7 @@ class SearchableDtoMetaRenderer(
             |
             |        return when(dtoFieldName) {""".trimMargin())
 
-        searchableDtoDef.allFields.forEach { field ->
+        searchableDtoDef.nonManyToManyFields.forEach { field ->
 
             val jdbcTypeName = field.entityFieldDef.fieldType.jdbcCompatibleType!!.name
             appendLine("            \"${field.classFieldName}\" -> JdbcCompatibleType.$jdbcTypeName")
