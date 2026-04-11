@@ -46,6 +46,7 @@ class LeftSearchableDtoRowMapper(
             join maia.left_to_right_many_to_many_join j
                 on ent.id = j.right_id
             where j.left_id = :leftEntityId
+            order by ent.some_string
             """.trimIndent(),
             SqlParams().apply {
                 this.addValue("leftEntityId", leftEntityId)
