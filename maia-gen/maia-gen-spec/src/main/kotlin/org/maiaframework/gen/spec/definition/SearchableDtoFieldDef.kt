@@ -1,14 +1,28 @@
 package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
+import org.maiaframework.gen.spec.definition.lang.Nullability
 
-sealed class SearchableDtoFieldDefExp(
+
+sealed class SearchableDtoFieldDef(
     val classFieldDef: ClassFieldDef,
     val sortIndexAndDirection: SortIndexAndDirection? = null
 ) {
 
 
+    abstract fun copyWithFieldName(dtoFieldName: String): SearchableDtoFieldDef
+
+
+    val classFieldName = classFieldDef.classFieldName
+
+
     val fieldSortModel: FieldSortModel? = sortIndexAndDirection?.let { FieldSortModel(classFieldDef.classFieldName, it) }
+
+
+    abstract val displayName: FieldDisplayName?
+
+
+    abstract val nullability: Nullability
 
 
 }
@@ -20,7 +34,7 @@ class SimpleSearchableDtoFieldDef(
     val entityAndField: EntityAndField,
     val fieldPath: FieldPath,
     sortIndexAndDirection: SortIndexAndDirection?
-): SearchableDtoFieldDefExp(
+): SearchableDtoFieldDef(
     responseDtoFieldDef.classFieldDef,
     sortIndexAndDirection
 ) {
@@ -44,13 +58,13 @@ class SimpleSearchableDtoFieldDef(
     val isForeignKeyRef = this.fieldPathLength > 1
 
 
-    val nullability = this.responseDtoFieldDef.nullability
+    override val nullability = this.responseDtoFieldDef.nullability
 
 
-    val displayName = this.entityFieldDef.classFieldDef.displayName
+    override val displayName = this.entityFieldDef.classFieldDef.displayName
 
 
-    fun copyWithFieldName(dtoFieldName: String): SimpleSearchableDtoFieldDef {
+    override fun copyWithFieldName(dtoFieldName: String): SimpleSearchableDtoFieldDef {
 
         return SimpleSearchableDtoFieldDef(
             this.isFilterable,
@@ -66,10 +80,27 @@ class SimpleSearchableDtoFieldDef(
 }
 
 
-class ManyToManySearchableDtoFieldDefExp(
+class ManyToManySearchableDtoFieldDef(
     classFieldDef: ClassFieldDef,
-    sortIndexAndDirection: SortIndexAndDirection? = null
-) : SearchableDtoFieldDefExp(
+    sortIndexAndDirection: SortIndexAndDirection? = null,
+    override val nullability: Nullability,
+    override val displayName: FieldDisplayName? = null
+) : SearchableDtoFieldDef(
     classFieldDef,
     sortIndexAndDirection
-)
+) {
+
+
+    override fun copyWithFieldName(dtoFieldName: String): ManyToManySearchableDtoFieldDef {
+
+        return ManyToManySearchableDtoFieldDef(
+            this.classFieldDef.withFieldName(dtoFieldName),
+            this.sortIndexAndDirection,
+            this.nullability,
+            this.displayName
+        )
+
+    }
+
+
+}

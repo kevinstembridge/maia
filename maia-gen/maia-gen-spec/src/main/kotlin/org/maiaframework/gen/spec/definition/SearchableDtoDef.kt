@@ -25,7 +25,7 @@ class SearchableDtoDef(
     val moduleName: ModuleName?,
     val packageName: PackageName,
     val tableName: TableName,
-    fieldDefsNotInherited: List<AbstractSearchableDtoFieldDef>,
+    fieldDefsNotInherited: List<SearchableDtoFieldDef>,
     val withPreAuthorize: WithPreAuthorize?,
     val withGeneratedEndpoint: WithGeneratedEndpoint,
     val withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
@@ -40,14 +40,21 @@ class SearchableDtoDef(
     val allFields = fieldDefsNotInherited.sortedBy { it.classFieldDef.classFieldName }
 
 
-    val nonManyToManyFields = allFields.filterIsInstance<SearchableDtoFieldDef>()
+    val nonManyToManyFields = allFields.filterIsInstance<SimpleSearchableDtoFieldDef>()
 
 
-    val allRowMapperFieldDefs = nonManyToManyFields
-            .map { RowMapperFieldDef(it.entityAndField.entityFieldDef, it.responseDtoFieldDef.nullability, it.classFieldName.value) }
+    private val allRowMapperFieldDefs = allFields
+            .map {
+                val entityFieldDef = when(it) {
+                    is SimpleSearchableDtoFieldDef -> it.entityFieldDef
+                    else -> null
+                }
+                RowMapperFieldDef(entityFieldDef, it.nullability, it.classFieldName.value)
+            }
 
 
     val schemaAndTableName = dtoRootEntityDef.schemaAndTableName
+
 
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
 
@@ -86,7 +93,7 @@ class SearchableDtoDef(
     val hasAnyMapFields: Boolean = rootDtoFields.any { it.classFieldDef.isMap }
 
 
-    private fun defaultSortModel(fields: List<AbstractSearchableDtoFieldDef>): List<FieldSortModel> {
+    private fun defaultSortModel(fields: List<SearchableDtoFieldDef>): List<FieldSortModel> {
 
         val defaultSortFields = fields.mapNotNull { it.fieldSortModel }
 
@@ -101,7 +108,7 @@ class SearchableDtoDef(
     }
 
 
-    val caseInsensitiveFields: List<SearchableDtoFieldDef> = this.nonManyToManyFields.filterNot { it.responseDtoFieldDef.caseSensitive.value }
+    val caseInsensitiveFields: List<SimpleSearchableDtoFieldDef> = this.nonManyToManyFields.filterNot { it.responseDtoFieldDef.caseSensitive.value }
 
 
     val dtoRepoClassDef = searchDtoDef.dtoRepoClassDef
@@ -202,7 +209,7 @@ class SearchableDtoDef(
     }
 
 
-    fun findFieldByPath(fieldName: String): AbstractSearchableDtoFieldDef {
+    fun findFieldByPath(fieldName: String): SearchableDtoFieldDef {
 
         return this.allFields.find { it.classFieldName.value == fieldName }
             ?: throw RuntimeException("No field named $fieldName found on SearchableDtoDef $dtoBaseName with fields ${allFields.map { it.classFieldName }}.")
@@ -238,7 +245,7 @@ class SearchableDtoDef(
     }
 
 
-    fun findSearchableDtoFieldByName(dtoFieldName: String): AbstractSearchableDtoFieldDef {
+    fun findSearchableDtoFieldByName(dtoFieldName: String): SearchableDtoFieldDef {
 
         return this.allFields.firstOrNull { it.classFieldName.value == dtoFieldName }
             ?: throw IllegalArgumentException("No field named $dtoFieldName found on SearchableDtoDef with base name $dtoBaseName.")
