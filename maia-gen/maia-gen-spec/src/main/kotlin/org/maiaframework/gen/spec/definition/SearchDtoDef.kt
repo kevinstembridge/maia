@@ -32,15 +32,20 @@ class SearchDtoDef(
     val withGeneratedEndpoint: WithGeneratedEndpoint
 ) {
 
+
     val dtoDef = DtoDefBuilder(packageName, dtoBaseName, dtoSuffix, dtoClassFields)
         .withCharacteristic(DtoCharacteristic.RESPONSE_DTO)
         .build()
 
+
     val fqcn = dtoDef.fqcn
+
 
     val uqcn = fqcn.uqcn
 
+
     val angularComponentNames = AngularComponentNames(packageName, dtoBaseName.value)
+
 
     private val searchServiceClassName = "${uqcn}SearchService"
 
