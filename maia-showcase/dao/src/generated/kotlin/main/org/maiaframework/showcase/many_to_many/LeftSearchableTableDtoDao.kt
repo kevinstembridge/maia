@@ -21,9 +21,9 @@ class LeftSearchableTableDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            LeftSearchableTableDtoMeta::fieldNameToColumnName,
-            LeftSearchableTableDtoMeta::fieldNameToJdbcType
-    )        
+        LeftSearchableTableDtoMeta::fieldNameToColumnName,
+        LeftSearchableTableDtoMeta::fieldNameToJdbcType
+    )
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<LeftSearchableTableDto> {
