@@ -21,9 +21,9 @@ class ParentTwoDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            ParentTwoDtoMeta::fieldNameToColumnName,
-            ParentTwoDtoMeta::fieldNameToJdbcType
-    )        
+        ParentTwoDtoMeta::fieldNameToColumnName,
+        ParentTwoDtoMeta::fieldNameToJdbcType
+    )
 
     private val typeDiscriminatorExpression = "type_discriminator = 'SUB2'"
 

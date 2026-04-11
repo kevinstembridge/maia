@@ -21,9 +21,9 @@ class CharlieTableDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            CharlieTableDtoMeta::fieldNameToColumnName,
-            CharlieTableDtoMeta::fieldNameToJdbcType
-    )        
+        CharlieTableDtoMeta::fieldNameToColumnName,
+        CharlieTableDtoMeta::fieldNameToJdbcType
+    )
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<CharlieTableDto> {

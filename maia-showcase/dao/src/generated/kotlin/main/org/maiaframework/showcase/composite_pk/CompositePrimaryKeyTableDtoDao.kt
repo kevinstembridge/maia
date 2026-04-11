@@ -21,9 +21,9 @@ class CompositePrimaryKeyTableDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            CompositePrimaryKeyTableDtoMeta::fieldNameToColumnName,
-            CompositePrimaryKeyTableDtoMeta::fieldNameToJdbcType
-    )        
+        CompositePrimaryKeyTableDtoMeta::fieldNameToColumnName,
+        CompositePrimaryKeyTableDtoMeta::fieldNameToJdbcType
+    )
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<CompositePrimaryKeyTableDto> {

@@ -21,9 +21,9 @@ class BravoAgGridDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            BravoAgGridDtoMeta::fieldNameToColumnName,
-            BravoAgGridDtoMeta::fieldNameToJdbcType
-    )        
+        BravoAgGridDtoMeta::fieldNameToColumnName,
+        BravoAgGridDtoMeta::fieldNameToJdbcType
+    )
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<BravoAgGridDto> {

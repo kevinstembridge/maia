@@ -21,9 +21,9 @@ class ChildOneDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            ChildOneDtoMeta::fieldNameToColumnName,
-            ChildOneDtoMeta::fieldNameToJdbcType
-    )        
+        ChildOneDtoMeta::fieldNameToColumnName,
+        ChildOneDtoMeta::fieldNameToJdbcType
+    )
 
     private val typeDiscriminatorExpression = "type_discriminator = 'CHILD1'"
 
