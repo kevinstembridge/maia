@@ -1,13 +1,17 @@
 
+TODO * Consider renaming DtoHtmlTable... to BlotterRow...
 
 TODO * Many-to-many relationship.
     => Define a many-to-many relationship and generate the full CRUD stack for it.
+        The rowMapper of the Left entity should make a direct query to the Right entity's table
+        to fetch the RightPkAndNameDtos. This won't be fast enough to service a search request
+        from a blotter. For that, we'll have to store blotter rows in ES.
+
     TODO * Implement by hand
         DONE * Generate flyway scripts.
         DONE * Populate tables with some dummy data.
         DONE * Handcode the response DTO. => has nested PkAndNameDtos for the other entity.
-        DONE * Handcode the service.
-            => It should stitch together the nested entities by fetching them from the repo layer.
+
         TODO * Write a black box test for it
         TODO * Handcode the SQL to produce the search response.
         TODO * Handcode the DAO.
