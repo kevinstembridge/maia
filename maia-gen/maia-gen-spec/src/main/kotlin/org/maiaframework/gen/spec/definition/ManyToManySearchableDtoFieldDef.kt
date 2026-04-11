@@ -11,6 +11,7 @@ class ManyToManySearchableDtoFieldDef(
     sortIndexAndDirection
 ) {
 
+
     override fun copyWithFieldName(dtoFieldName: String): AbstractSearchableDtoFieldDef {
 
         return ManyToManySearchableDtoFieldDef(
