@@ -17,13 +17,13 @@ class LeftSearchableDtoDao(
 ) {
 
 
-    private val dtoRowMapper = LeftSearchableDtoRowMapper()
+    private val dtoRowMapper = LeftSearchableDtoRowMapper(this.jdbcOps)
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            LeftSearchableDtoMeta::fieldNameToColumnName,
-            LeftSearchableDtoMeta::fieldNameToJdbcType
-    )        
+        LeftSearchableDtoMeta::fieldNameToColumnName,
+        LeftSearchableDtoMeta::fieldNameToJdbcType
+    )
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<LeftSearchableDto> {
