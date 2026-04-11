@@ -21,9 +21,9 @@ class LeftNotMappedToRightDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            LeftNotMappedToRightDtoMeta::fieldNameToColumnName,
-            LeftNotMappedToRightDtoMeta::fieldNameToJdbcType
-    )        
+        LeftNotMappedToRightDtoMeta::fieldNameToColumnName,
+        LeftNotMappedToRightDtoMeta::fieldNameToJdbcType
+    )
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<LeftNotMappedToRightDto> {
