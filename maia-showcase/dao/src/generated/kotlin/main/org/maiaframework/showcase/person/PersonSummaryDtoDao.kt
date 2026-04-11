@@ -21,9 +21,9 @@ class PersonSummaryDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            PersonSummaryDtoMeta::fieldNameToColumnName,
-            PersonSummaryDtoMeta::fieldNameToJdbcType
-    )        
+        PersonSummaryDtoMeta::fieldNameToColumnName,
+        PersonSummaryDtoMeta::fieldNameToJdbcType
+    )
 
     private val typeDiscriminatorExpression = "type_discriminator in ('PER', 'USR')"
 

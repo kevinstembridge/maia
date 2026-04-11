@@ -21,9 +21,9 @@ class SomeVersionedDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            SomeVersionedDtoMeta::fieldNameToColumnName,
-            SomeVersionedDtoMeta::fieldNameToJdbcType
-    )        
+        SomeVersionedDtoMeta::fieldNameToColumnName,
+        SomeVersionedDtoMeta::fieldNameToJdbcType
+    )
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<SomeVersionedDto> {

@@ -21,9 +21,9 @@ class UserGroupMembershipDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            UserGroupMembershipDtoMeta::fieldNameToColumnName,
-            UserGroupMembershipDtoMeta::fieldNameToJdbcType
-    )        
+        UserGroupMembershipDtoMeta::fieldNameToColumnName,
+        UserGroupMembershipDtoMeta::fieldNameToJdbcType
+    )
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<UserGroupMembershipDto> {
