@@ -21,9 +21,9 @@ class OrgDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            OrgDtoMeta::fieldNameToColumnName,
-            OrgDtoMeta::fieldNameToJdbcType
-    )        
+        OrgDtoMeta::fieldNameToColumnName,
+        OrgDtoMeta::fieldNameToJdbcType
+    )
 
     private val typeDiscriminatorExpression = "type_discriminator = 'ORG'"
 

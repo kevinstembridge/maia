@@ -21,9 +21,9 @@ class UserTableDtoDao(
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-            UserTableDtoMeta::fieldNameToColumnName,
-            UserTableDtoMeta::fieldNameToJdbcType
-    )        
+        UserTableDtoMeta::fieldNameToColumnName,
+        UserTableDtoMeta::fieldNameToJdbcType
+    )
 
     private val typeDiscriminatorExpression = "type_discriminator = 'USR'"
 
