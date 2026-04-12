@@ -22,7 +22,7 @@ class LeftSearchableDtoRowMapper(
 
         val entityId = rsa.readDomainId("id")
 
-        val rightEntitiesPkAndNameDtoList = fetchrightEntitiesPkAndNameDtos(entityId)
+        val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(entityId)
 
         return LeftSearchableDto(
             rsa.readInstant("createdTimestampUtc"),
