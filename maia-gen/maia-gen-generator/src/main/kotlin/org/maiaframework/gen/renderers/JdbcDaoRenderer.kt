@@ -1795,11 +1795,11 @@ class JdbcDaoRenderer(
                     foreignKeyEntity.schemaAndTableName
                 }
 
-                val idAndNameDef = foreignKeyIdAndNameDef(foreignKeyEntity, entityFieldDef)
+                val pkAndNameDef = foreignKeyPkAndNameDef(foreignKeyEntity, entityFieldDef)
 
                 listOf(
                     "$tableOrAlias.id as ${foreignKeyFieldDef.foreignKeyFieldName}Id",
-                    "$tableOrAlias.${idAndNameDef.nameEntityFieldDef.tableColumnName} as ${foreignKeyFieldDef.foreignKeyFieldName}Name"
+                    "$tableOrAlias.${pkAndNameDef.nameEntityFieldDef.tableColumnName} as ${foreignKeyFieldDef.foreignKeyFieldName}Name"
                 )
 
             }
@@ -1880,7 +1880,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun foreignKeyIdAndNameDef(
+    private fun foreignKeyPkAndNameDef(
         foreignKeyEntity: EntityDef,
         entityFieldDef: EntityFieldDef
     ): EntityPkAndNameDef {
@@ -1888,7 +1888,7 @@ class JdbcDaoRenderer(
         try {
             return foreignKeyEntity.entityPkAndNameDef
         } catch (e: IllegalArgumentException) {
-            throw IllegalStateException("Foreign key field $entityFieldDef references an Entity that does not have an idAndNameDef", e)
+            throw IllegalStateException("Foreign key field $entityFieldDef references an Entity that does not have an pkAndNameDef", e)
         }
 
     }

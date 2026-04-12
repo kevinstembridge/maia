@@ -112,17 +112,17 @@ class RowMapperRenderer(
     private fun `render for ForeignKey field`(rowMapperFieldDef: ForeignKeyRowMapperFieldDef) {
 
         val foreignKeyFieldDef = rowMapperFieldDef.foreignKeyFieldDef
-        val idAndNameDef = foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef
-        val idEntityFieldDef = idAndNameDef.pkEntityFieldDef
+        val pkAndNameDef = foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef
+        val pkEntityFieldDef = pkAndNameDef.pkEntityFieldDef
 
         val idResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Id"
         val nameResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Name"
 
-        addImportFor(idAndNameDef.dtoDef.fqcn)
+        addImportFor(pkAndNameDef.dtoDef.fqcn)
 
-        appendLine("            ${idAndNameDef.dtoUqcn}(")
-        appendLine(renderRowMapperField(idEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 16, orElseText = "", ::addImportFor) + ",")
-        appendLine(renderRowMapperField(idAndNameDef.nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 16, orElseText = "(blank)", ::addImportFor) + ",")
+        appendLine("            ${pkAndNameDef.dtoUqcn}(")
+        appendLine(renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 16, orElseText = "", ::addImportFor) + ",")
+        appendLine(renderRowMapperField(pkAndNameDef.nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 16, orElseText = "(blank)", ::addImportFor) + ",")
         appendLine("            ),")
 
     }

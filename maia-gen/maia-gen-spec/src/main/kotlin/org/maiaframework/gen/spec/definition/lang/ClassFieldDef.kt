@@ -190,7 +190,7 @@ data class ClassFieldDef(
     }
 
 
-    val asIdAndNameDtoClassFieldDef: ClassFieldDef
+    val asPkAndNameDtoClassFieldDef: ClassFieldDef
         get() {
 
             if (fieldType is ForeignKeyFieldType) {
@@ -201,7 +201,7 @@ data class ClassFieldDef(
                 ).build()
 
             } else {
-                throw RuntimeException("Unable to produce an IdAndNameDto from this field because it is not a foreign key reference.")
+                throw RuntimeException("Unable to produce a PkAndNameDto from this field because it is not a foreign key reference.")
             }
 
         }

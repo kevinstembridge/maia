@@ -454,7 +454,7 @@ abstract class AbstractSpec protected constructor(
         withHandCodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
         leftEntity: ReferencedEntity,
         rightEntity: ReferencedEntity,
-        idAndNameFieldName: String? = null,
+        pkAndNameFieldName: String? = null,
         init: (EntityDefBuilder.() -> Unit)? = null
     ): ManyToManyEntityDef {
 
@@ -469,7 +469,7 @@ abstract class AbstractSpec protected constructor(
             deletable,
             allowDeleteAll,
             allowFindAll,
-            idAndNameFieldName,
+            pkAndNameFieldName,
             withHandcodedDao,
             withHandCodedEntityDao,
             defaultSchemaName
@@ -500,6 +500,8 @@ abstract class AbstractSpec protected constructor(
         init?.invoke(builder)
         val entityDef = builder.build()
         entityDefs.add(entityDef)
+
+        // TODO add
 
         return ManyToManyEntityDef(entityDef, leftEntity, rightEntity)
 

@@ -15,7 +15,7 @@ class FetchForEditDtoDef(
     private val fetchForEditDtoClassFields = entityFieldDefs.map { it.classFieldDef }.map { classFieldDef ->
 
         if (classFieldDef.fieldType is ForeignKeyFieldType) {
-            classFieldDef.asIdAndNameDtoClassFieldDef
+            classFieldDef.asPkAndNameDtoClassFieldDef
         } else {
             classFieldDef
         }

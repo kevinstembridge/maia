@@ -101,17 +101,17 @@ class EntityRowMapperRenderer(
 
 //                } else {
 //
-//                    val idAndNameDef = foreignKeyFieldDef.entityDef.entityIdAndNameDef
-//                    val idEntityFieldDef = idAndNameDef.idEntityFieldDef
+//                    val pkAndNameDef = foreignKeyFieldDef.entityDef.entityPkAndNameDef
+//                    val idEntityFieldDef = pkAndNameDef.idEntityFieldDef
 //
 //                    val idResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Id"
 //                    val nameResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Name"
 //
-//                    addImportFor(idAndNameDef.dtoDef.fqcn)
+//                    addImportFor(pkAndNameDef.dtoDef.fqcn)
 //
-//                    appendLine("            ${idAndNameDef.dtoUqcn}(")
+//                    appendLine("            ${pkAndNameDef.dtoUqcn}(")
 //                    renderRowMapperField(idEntityFieldDef, idResultSetFieldName, indent = 12)
-//                    renderRowMapperField(idAndNameDef.nameEntityFieldDef, nameResultSetFieldName, indent = 12)
+//                    renderRowMapperField(pkAndNameDef.nameEntityFieldDef, nameResultSetFieldName, indent = 12)
 //                    appendLine("            ),")
 //
 //                }

@@ -49,7 +49,7 @@ class DomainModuleGenerator(
         `render FetchForEditDtos`()
         `render form models`()
         `render HazelcastEntityConfig`()
-        `render IdAndNameDtos`()
+        `render PkAndNameDtos`()
         `render IntTypes`()
         `render LongTypes`()
         `render RequestDtos`()
@@ -101,11 +101,11 @@ class DomainModuleGenerator(
     }
 
 
-    private fun `render IdAndNameDtos`() {
+    private fun `render PkAndNameDtos`() {
 
         this.modelDef.entityHierarchies
             .map { it.entityDef }
-            .filter { it.hasIdAndNameDtoDef }
+            .filter { it.hasPkAndNameDtoDef }
             .map { it.entityPkAndNameDef.dtoDef }
             .forEach { renderDto(it) }
 

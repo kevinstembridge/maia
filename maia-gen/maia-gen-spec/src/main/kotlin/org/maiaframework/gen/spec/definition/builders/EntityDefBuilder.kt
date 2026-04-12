@@ -58,7 +58,7 @@ class EntityDefBuilder(
     private val deletable: Deletable = Deletable.FALSE,
     private val allowDeleteAll: AllowDeleteAll,
     private val allowFindAll: AllowFindAll,
-    private val nameFieldForInAndNameDto: String?,
+    private val nameFieldForPkAndNameDto: String?,
     private val withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
     private val withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
     defaultSchemaName: SchemaName
@@ -171,7 +171,7 @@ class EntityDefBuilder(
             recordVersionHistory,
             this.versioned,
             isHistoryEntity = false,
-            nameFieldForInAndNameDto,
+            nameFieldForPkAndNameDto,
             stagingEntityFieldDefs = emptyList(),
             HasEffectiveTimestamps(this.hasEffectiveTimestamps),
             HasEffectiveLocalDates(this.hasEffectiveLocalDates),

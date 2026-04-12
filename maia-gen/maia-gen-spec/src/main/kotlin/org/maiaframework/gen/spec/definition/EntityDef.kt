@@ -78,7 +78,7 @@ class EntityDef(
      * generator needs to know the name of the entity field that will be used as the
      * display name in those dropdowns.
      */
-    private val nameFieldForIdAndNameDto: String? = null,
+    private val nameFieldForPkAndNameDto: String? = null,
     val stagingEntityFieldDefs: List<DataRowStagingEntityFieldDef> = emptyList(),
     val hasEffectiveTimestamps: HasEffectiveTimestamps,
     val hasEffectiveLocalDates: HasEffectiveLocalDates,
@@ -242,22 +242,22 @@ class EntityDef(
     val isConcrete: Boolean = this.isAbstract == false
 
 
-    val hasIdAndNameDtoDef = this.nameFieldForIdAndNameDto != null
+    val hasPkAndNameDtoDef = this.nameFieldForPkAndNameDto != null
 
 
     val entityPkAndNameDef: EntityPkAndNameDef
         get() {
 
-            requireNotNull(this.nameFieldForIdAndNameDto) { "nameFieldForIdAndNameDto for entity $entityBaseName must not be null if idAndNameDef is required." }
+            requireNotNull(this.nameFieldForPkAndNameDto) { "nameFieldForPkAndNameDto for entity $entityBaseName must not be null if pkAndNameDef is required." }
 
             if (primaryKeyFields.size > 1) {
-                throw ModelDefinitionException("YAGNI: idAndName DTOs are not yet supported for Entities with composite primary keys")
+                throw ModelDefinitionException("YAGNI: pkAndName DTOs are not yet supported for Entities with composite primary keys")
             }
 
             val primaryKeyEntityFieldDef = primaryKeyFields.firstOrNull()
                 ?: throw RuntimeException("Entity $entityBaseName has no primary key field")
 
-            val nameEntityFieldDef = findFieldByName(this.nameFieldForIdAndNameDto)
+            val nameEntityFieldDef = findFieldByName(this.nameFieldForPkAndNameDto)
 
             return EntityPkAndNameDef(
                 packageName,
@@ -615,8 +615,8 @@ class EntityDef(
 
     init {
 
-        nameFieldForIdAndNameDto?.let { findFieldByNameOrNull(it)
-            ?: throw IllegalStateException("nameFieldForIdAndNameDto references a non-existent field $nameFieldForIdAndNameDto on entity $entityBaseName")
+        nameFieldForPkAndNameDto?.let { findFieldByNameOrNull(it)
+            ?: throw IllegalStateException("nameFieldForPkAndNameDto references a non-existent field $nameFieldForPkAndNameDto on entity $entityBaseName")
         }
 
         if (withHandCodedDao.value) {

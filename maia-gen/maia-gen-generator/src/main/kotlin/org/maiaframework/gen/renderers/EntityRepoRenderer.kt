@@ -98,7 +98,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         `render function deleteAll`()
         `render deleteBy for indexes`()
         `render function removeByPrimaryKey`()
-        `render function idAndNameFor`()
+        `render function pkAndNameFor`()
 
     }
 
@@ -828,25 +828,25 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
     }
 
 
-    private fun `render function idAndNameFor`() {
+    private fun `render function pkAndNameFor`() {
 
-        if (this.entityDef.hasIdAndNameDtoDef == false) {
+        if (this.entityDef.hasPkAndNameDtoDef == false) {
             return
         }
 
-        val entityIdAndNameDef = entityDef.entityPkAndNameDef
-        addImportFor(entityIdAndNameDef.pkAndNameDtoFqcn)
+        val entityPkAndNameDef = entityDef.entityPkAndNameDef
+        addImportFor(entityPkAndNameDef.pkAndNameDtoFqcn)
 
         append(
             """
             |
             |
-            |    fun idAndNameFor($primaryKeyFieldNamesAndTypesCsv): ${entityIdAndNameDef.dtoUqcn} {
+            |    fun pkAndNameFor($primaryKeyFieldNamesAndTypesCsv): ${entityPkAndNameDef.dtoUqcn} {
             |
             |        val entity = findByPrimaryKey($primaryKeyFieldNamesCsv)
-            |        return ${entityIdAndNameDef.dtoUqcn}(
-            |            entity.${entityIdAndNameDef.pkEntityFieldDef.classFieldName},
-            |            entity.${entityIdAndNameDef.nameEntityFieldDef.classFieldName}
+            |        return ${entityPkAndNameDef.dtoUqcn}(
+            |            entity.${entityPkAndNameDef.pkEntityFieldDef.classFieldName},
+            |            entity.${entityPkAndNameDef.nameEntityFieldDef.classFieldName}
             |        )
             |
             |    }

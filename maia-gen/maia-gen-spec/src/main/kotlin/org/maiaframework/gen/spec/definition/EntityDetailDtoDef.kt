@@ -42,7 +42,7 @@ class EntityDetailDtoDef(
 
         if (fieldType is ForeignKeyFieldType) {
 
-            if (fieldType.foreignKeyFieldDef.foreignEntityDef.hasIdAndNameDtoDef) {
+            if (fieldType.foreignKeyFieldDef.foreignEntityDef.hasPkAndNameDtoDef) {
 
                 val newFieldType = FieldTypes.pkAndName(fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef)
                 val builder = aClassField(classFieldDef.classFieldName, newFieldType)

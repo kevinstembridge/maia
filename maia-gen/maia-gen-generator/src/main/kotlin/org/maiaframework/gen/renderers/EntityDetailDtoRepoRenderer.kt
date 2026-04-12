@@ -19,8 +19,8 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
             .forEach {
 
                 val classFieldDef = it.value
-                val idAndNameDef = (classFieldDef.fieldType as PkAndNameFieldType).pkAndNameDef
-                val entityRepoClassDef = idAndNameDef.entityRepoClassDef
+                val pkAndNameDef = (classFieldDef.fieldType as PkAndNameFieldType).pkAndNameDef
+                val entityRepoClassDef = pkAndNameDef.entityRepoClassDef
 
                 addConstructorArg(
                     aClassField(
@@ -38,7 +38,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
 
         `render function fetch`()
         `render functions for value mapping fields`()
-        `render functions for IdAndName fields`()
+        `render functions for PkAndName fields`()
 
     }
 
@@ -137,7 +137,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
     }
 
 
-    private fun `render functions for IdAndName fields`() {
+    private fun `render functions for PkAndName fields`() {
 
         entityDetailDtoDef.dtoDef.allFields
             .filter { it.fieldType is PkAndNameFieldType }
@@ -146,16 +146,16 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
             .forEach {
 
                 val classFieldDef = it.value
-                val idAndNameDef = (classFieldDef.fieldType as PkAndNameFieldType).pkAndNameDef
-                val entityRepoClassDef = idAndNameDef.entityRepoClassDef
+                val pkAndNameDef = (classFieldDef.fieldType as PkAndNameFieldType).pkAndNameDef
+                val entityRepoClassDef = pkAndNameDef.entityRepoClassDef
 
-                addImportFor(idAndNameDef.pkAndNameDtoFqcn)
+                addImportFor(pkAndNameDef.pkAndNameDtoFqcn)
 
                 append("""
                     |
-                    |    private fun ${idAndNameDef.dtoUqcn.firstToLower()}For(id: DomainId): ${idAndNameDef.dtoUqcn} {
+                    |    private fun ${pkAndNameDef.dtoUqcn.firstToLower()}For(id: DomainId): ${pkAndNameDef.dtoUqcn} {
                     |
-                    |        return this.${entityRepoClassDef.uqcn.firstToLower()}.idAndNameFor(id)
+                    |        return this.${entityRepoClassDef.uqcn.firstToLower()}.pkAndNameFor(id)
                     |
                     |    }
                     |""".trimMargin()
