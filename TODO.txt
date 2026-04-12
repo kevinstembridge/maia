@@ -1,7 +1,4 @@
 
-TODO * Generate RightPkAndNameDtoRowMapper
-    => Only for entities that are included in a ManyToManyEntityDef.
-
 TODO * Full clean build
 
 TODO * Consider renaming DtoHtmlTable... to BlotterRow...
