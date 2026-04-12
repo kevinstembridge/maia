@@ -47,7 +47,7 @@ class LeftSearchableDtoRowMapper(
             order by ent.some_string
             """.trimIndent(),
             SqlParams().apply {
-                this.addValue("entityId", entityId)
+                addValue("entityId", entityId)
             },
             this.rightEntitiesPkAndNameDtoRowMapper
         )
