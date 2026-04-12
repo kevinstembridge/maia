@@ -109,7 +109,7 @@ class AlphaAgGridRepo(
     }
 
 
-    fun idAndNameFor(id: DomainId): AlphaAgGridPkAndNameDto {
+    fun pkAndNameFor(id: DomainId): AlphaAgGridPkAndNameDto {
 
         val entity = findByPrimaryKey(id)
         return AlphaAgGridPkAndNameDto(

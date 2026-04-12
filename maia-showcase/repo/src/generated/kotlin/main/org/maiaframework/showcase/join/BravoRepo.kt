@@ -141,7 +141,7 @@ class BravoRepo(
     }
 
 
-    fun idAndNameFor(id: DomainId): BravoPkAndNameDto {
+    fun pkAndNameFor(id: DomainId): BravoPkAndNameDto {
 
         val entity = findByPrimaryKey(id)
         return BravoPkAndNameDto(

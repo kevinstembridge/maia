@@ -100,7 +100,7 @@ class UserGroupRepo(
     }
 
 
-    fun idAndNameFor(id: DomainId): UserGroupPkAndNameDto {
+    fun pkAndNameFor(id: DomainId): UserGroupPkAndNameDto {
 
         val entity = findByPrimaryKey(id)
         return UserGroupPkAndNameDto(

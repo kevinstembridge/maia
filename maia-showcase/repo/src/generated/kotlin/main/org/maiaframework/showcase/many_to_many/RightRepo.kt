@@ -109,7 +109,7 @@ class RightRepo(
     }
 
 
-    fun idAndNameFor(id: DomainId): RightPkAndNameDto {
+    fun pkAndNameFor(id: DomainId): RightPkAndNameDto {
 
         val entity = findByPrimaryKey(id)
         return RightPkAndNameDto(

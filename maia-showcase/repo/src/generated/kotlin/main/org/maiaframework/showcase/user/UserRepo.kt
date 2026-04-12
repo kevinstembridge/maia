@@ -107,7 +107,7 @@ class UserRepo(
     }
 
 
-    fun idAndNameFor(id: DomainId): UserPkAndNameDto {
+    fun pkAndNameFor(id: DomainId): UserPkAndNameDto {
 
         val entity = findByPrimaryKey(id)
         return UserPkAndNameDto(

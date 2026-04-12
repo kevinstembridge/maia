@@ -116,7 +116,7 @@ class BravoAgGridRepo(
     }
 
 
-    fun idAndNameFor(id: DomainId): BravoAgGridPkAndNameDto {
+    fun pkAndNameFor(id: DomainId): BravoAgGridPkAndNameDto {
 
         val entity = findByPrimaryKey(id)
         return BravoAgGridPkAndNameDto(

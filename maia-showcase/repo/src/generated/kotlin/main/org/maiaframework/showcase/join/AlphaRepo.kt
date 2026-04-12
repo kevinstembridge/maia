@@ -109,7 +109,7 @@ class AlphaRepo(
     }
 
 
-    fun idAndNameFor(id: DomainId): AlphaPkAndNameDto {
+    fun pkAndNameFor(id: DomainId): AlphaPkAndNameDto {
 
         val entity = findByPrimaryKey(id)
         return AlphaPkAndNameDto(

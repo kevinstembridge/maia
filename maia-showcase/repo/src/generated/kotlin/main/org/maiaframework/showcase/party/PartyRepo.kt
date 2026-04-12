@@ -127,7 +127,7 @@ class PartyRepo(
     }
 
 
-    fun idAndNameFor(id: DomainId): PartyPkAndNameDto {
+    fun pkAndNameFor(id: DomainId): PartyPkAndNameDto {
 
         val entity = findByPrimaryKey(id)
         return PartyPkAndNameDto(

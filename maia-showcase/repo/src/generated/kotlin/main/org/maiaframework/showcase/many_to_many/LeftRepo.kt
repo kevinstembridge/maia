@@ -109,5 +109,16 @@ class LeftRepo(
     }
 
 
+    fun pkAndNameFor(id: DomainId): LeftPkAndNameDto {
+
+        val entity = findByPrimaryKey(id)
+        return LeftPkAndNameDto(
+            entity.id,
+            entity.someString
+        )
+
+    }
+
+
 }
 
