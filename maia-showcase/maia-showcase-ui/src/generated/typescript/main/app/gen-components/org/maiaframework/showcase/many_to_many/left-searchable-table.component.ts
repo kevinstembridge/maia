@@ -12,7 +12,7 @@ import {LeftSearchableTableAgGridDatasource} from '@app/gen-components/org/maiaf
 import {LeftSearchableTableDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableTableDto';
 import {LeftSearchableTableService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-searchable-table.service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
-import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
+import {ChipsAgGridCellRendererComponent, IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 
@@ -39,7 +39,7 @@ export class LeftSearchableTableComponent {
     public columnDefs: ColDef[] = [
         { field: 'someString', headerName: 'Some String From Left', cellDataType: 'text', filter: true },
         { field: 'someInt', headerName: 'Some Int From Left', cellDataType: 'number', filter: true },
-        { field: 'rightEntities', headerName: 'Right Entities', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
+        { field: 'rightEntities', headerName: 'Right Entities', filter: true, cellRenderer: ChipsAgGridCellRendererComponent },
         { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         {
             field: 'edit',

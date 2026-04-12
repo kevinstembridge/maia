@@ -1,6 +1,4 @@
 
-TODO * Full clean build
-
 TODO * Consider renaming DtoHtmlTable... to BlotterRow...
 
 TODO * Many-to-many relationship.
@@ -8,17 +6,7 @@ TODO * Many-to-many relationship.
         The rowMapper of the Left entity should make a direct query to the Right entity's table
         to fetch the RightPkAndNameDtos. This won't be fast enough to service a search request
         from a blotter. For that, we'll have to store blotter rows in ES.
-
-    TODO * Implement by hand
-        DONE * Generate flyway scripts.
-        DONE * Populate tables with some dummy data.
-        DONE * Handcode the response DTO. => has nested PkAndNameDtos for the other entity.
-
-        TODO * Write a black box test for it
-        TODO * Handcode the SQL to produce the search response.
-        TODO * Handcode the DAO.
-        TODO * Handcode the rest of the stack.
-        TODO * Manual test.
+    TODO * The Create and Edit forms should be able to select multiple Right entities.
 
 
 TODO * Install the superpowers-extended-cc plugin.
