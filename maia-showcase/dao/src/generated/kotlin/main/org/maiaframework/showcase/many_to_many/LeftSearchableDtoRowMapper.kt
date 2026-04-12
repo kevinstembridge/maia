@@ -27,7 +27,7 @@ class LeftSearchableDtoRowMapper(
         return LeftSearchableDto(
             rsa.readInstant("createdTimestampUtc"),
             rsa.readDomainId("id"),
-            rightPkAndNameDtoList,
+            rightEntitiesPkAndNameDtoList,
             rsa.readInt("someIntFromLeft"),
             rsa.readString("someStringFromLeft"),
         )
