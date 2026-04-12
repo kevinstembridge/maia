@@ -40,11 +40,11 @@ class LeftSearchableDtoRowMapper(
         return this.jdbcOps.queryForList(
             """
             select
-            from maia.right ent
-            join maia.left_to_right_many_to_many_join j
-                on ent.id = j.right_id
-            where j.left_id = :leftEntityId
-            order by ent.some_string
+            from maia.right other
+            join maia.left_to_right_many_to_many_join mtm
+                on other.id = mtm.right_id
+            where mtm.left_id = :entityId
+            order by other.some_string
             """.trimIndent(),
             SqlParams().apply {
                 addValue("entityId", entityId)
