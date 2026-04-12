@@ -14,7 +14,11 @@ class LeftSearchableTableDtoFieldConverter : SearchFieldConverter {
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
 
         when(tableColumnPath) {
+            "id" -> // id
+                return inputValue
             "some_int" -> // someInt
+                return inputValue
+            "some_string" -> // someString
                 return inputValue
             else -> throw IllegalArgumentException("Unknown tableColumnPath [$tableColumnPath]")
         }

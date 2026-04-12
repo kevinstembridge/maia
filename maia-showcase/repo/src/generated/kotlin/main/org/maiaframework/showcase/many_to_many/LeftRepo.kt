@@ -66,6 +66,13 @@ class LeftRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): LeftFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: LeftEntity) {
 
         logger.debug("insert {}", entity)
@@ -78,6 +85,24 @@ class LeftRepo(
     fun bulkInsert(entities: List<LeftEntity>) {
 
         this.dao.bulkInsert(entities)
+
+    }
+
+
+    fun setFields(updaters: List<LeftEntityUpdater>) {
+
+        logger.debug("setFields {}", updaters)
+
+        updaters.forEach { setFields(it) }
+
+    }
+
+
+    fun setFields(updater: LeftEntityUpdater): Int {
+
+        logger.debug("setFields {}", updater)
+
+        return this.dao.setFields(updater)
 
     }
 

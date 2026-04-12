@@ -12,8 +12,10 @@ object LeftSearchableTableDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
+            "id" -> "maia.left.id"
             "someInt" -> "maia.left.some_int"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [rightEntities, someInt]")
+            "someString" -> "maia.left.some_string"
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [id, rightEntities, someInt, someString]")
         }
 
     }
@@ -22,8 +24,10 @@ object LeftSearchableTableDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
+            "id" -> JdbcCompatibleType.uuid
             "someInt" -> JdbcCompatibleType.integer
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [rightEntities, someInt]")
+            "someString" -> JdbcCompatibleType.text
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [id, rightEntities, someInt, someString]")
         }
 
     }

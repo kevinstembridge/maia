@@ -12,6 +12,7 @@ import {LeftSearchableTableAgGridDatasource} from '@app/gen-components/org/maiaf
 import {LeftSearchableTableDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableTableDto';
 import {LeftSearchableTableService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-searchable-table.service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
+import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 
@@ -26,9 +27,44 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class LeftSearchableTableComponent {
 
 
+    readonly edit = output<LeftSearchableTableDto>();
+
+
+    readonly delete = output<LeftSearchableTableDto>();
+
+
+    readonly addButtonClicked = output();
+
+
     public columnDefs: ColDef[] = [
+        { field: 'someString', headerName: 'Some String From Left', cellDataType: 'text', filter: true },
         { field: 'someInt', headerName: 'Some Int From Left', cellDataType: 'number', filter: true },
         { field: 'rightEntities', headerName: 'Right Entities', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
+        {
+            field: 'edit',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'edit' },
+            onCellClicked: event => {
+                this.edit.emit(event.data);
+            }
+        },
+        {
+            field: 'delete',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'delete' },
+            onCellClicked: event => {
+                this.delete.emit(event.data);
+            }
+        },
     ];
 
     public defaultColDef: ColDef = {
@@ -88,6 +124,36 @@ export class LeftSearchableTableComponent {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
+
+    }
+
+
+    onEdit(dto: LeftSearchableTableDto) {
+
+        this.edit.emit(dto);
+
+    }
+
+
+
+    onDelete(dto: LeftSearchableTableDto) {
+
+        this.delete.emit(dto);
+
+    }
+
+
+
+    get addButtonVisible(): boolean {
+
+        return true;
+
+    }
+
+
+    onAddButtonClicked() {
+
+        this.addButtonClicked.emit();
 
     }
 

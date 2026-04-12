@@ -1,3 +1,8 @@
+@if (addButtonVisible) {
+    <div class="flex">
+        <button (click)="onAddButtonClicked()" mat-flat-button color="primary" class="ms-auto">Add</button>
+    </div>
+}
 
 <div class="h-screen">
     <ag-grid-angular

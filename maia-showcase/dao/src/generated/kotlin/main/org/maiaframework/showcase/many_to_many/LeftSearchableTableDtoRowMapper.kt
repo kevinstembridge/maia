@@ -25,8 +25,10 @@ class LeftSearchableTableDtoRowMapper(
         val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(entityId)
 
         return LeftSearchableTableDto(
+            rsa.readDomainId("id"),
             rightEntitiesPkAndNameDtoList,
             rsa.readInt("someInt"),
+            rsa.readString("someString"),
         )
 
     }

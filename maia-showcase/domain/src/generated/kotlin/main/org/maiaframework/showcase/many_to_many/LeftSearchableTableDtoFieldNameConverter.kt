@@ -14,7 +14,9 @@ class LeftSearchableTableDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
+            "id" -> "id"
             "someInt" -> "some_int"
+            "someString" -> "some_string"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")
         }
 

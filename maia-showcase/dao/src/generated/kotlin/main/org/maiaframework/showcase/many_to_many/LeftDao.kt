@@ -5,6 +5,7 @@ package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
+import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
@@ -24,6 +25,9 @@ class LeftDao(
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
+
+
+    private val fetchForEditDtoRowMapper = LeftFetchForEditDtoRowMapper()
 
 
     fun insert(entity: LeftEntity) {
@@ -245,6 +249,70 @@ class LeftDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun fetchForEdit(id: DomainId): LeftFetchForEditDto {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                left.created_timestamp_utc as createdTimestampUtc,
+                left.id as id,
+                left.some_int as someInt,
+                left.some_string as someString
+            from maia.left
+            where left.id = :id
+            """,
+            SqlParams().apply {
+                addValue("id", id)
+            },
+            this.fetchForEditDtoRowMapper
+        ).firstOrNull()
+            ?: throw EntityNotFoundException(EntityClassAndPk(LeftEntity::class.java, mapOf("id" to id)), LeftEntityMeta.TABLE_NAME)
+
+    }
+
+
+    fun setFields(updaters: List<LeftEntityUpdater>) {
+
+        updaters.forEach { setFields(it) }
+
+    }
+
+
+    fun setFields(updater: LeftEntityUpdater): Int {
+
+        val sql = StringBuilder()
+        val sqlParams = SqlParams()
+
+        sql.append("update maia.left set ")
+
+        val fieldClauses = updater.fields
+            .map { field ->
+
+                addField(field, sqlParams)
+                "${field.dbColumnName} = :${field.classFieldName}"
+
+            }.joinToString(", ")
+
+        sql.append(fieldClauses)
+        sql.append(" where id = :id")
+
+        sqlParams.addValue("id", updater.id)
+
+        return this.jdbcOps.update(sql.toString(), sqlParams)
+
+    }
+
+
+    private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
+
+        when (field.classFieldName) {
+            "someInt" -> sqlParams.addValue("someInt", field.value as Int)
+            "someString" -> sqlParams.addValue("someString", field.value as String)
+        }
 
     }
 

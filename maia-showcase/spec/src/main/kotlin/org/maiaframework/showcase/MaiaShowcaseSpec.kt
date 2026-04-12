@@ -1079,9 +1079,21 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowDeleteAll = AllowDeleteAll.TRUE,
         nameFieldForPkAndNameDto = "someString",
     ) {
-        field("someInt", FieldTypes.int)
+        field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
+            editableByUser()
+        }
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
             lengthConstraint(max = 100)
+            editableByUser()
+        }
+        crud {
+            apis {
+                create()
+                update()
+                delete()
+            }
         }
     }
 
@@ -1133,14 +1145,17 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftSearchableDtoHtmlTableDef = dtoHtmlTable(leftSearchableDtoDef) {
-        columnFromDto("someIntFromLeft", "someInt") {
-            header("Some Int From Left")
-        }
-        columnFromDto("rightEntities") {
-            header("Right Entities")
-        }
+    val leftSearchableDtoHtmlTableDef = dtoHtmlTable(leftSearchableDtoDef, withAddButton = true) {
+        columnFromDto("someStringFromLeft", "someString") { header("Some String From Left") }
+        columnFromDto("someIntFromLeft", "someInt") { header("Some Int From Left") }
+        columnFromDto("rightEntities") { header("Right Entities") }
+        columnFromDto("id")
+        editActionColumn()
+        deleteActionColumn()
     }
+
+
+    val leftCrudDef = crudTableDef(leftSearchableDtoHtmlTableDef, leftEntityDef.entityCrudApiDef!!)
 
 
     val leftNotMappedToRightSearchableDtoDef = searchableEntityDef(

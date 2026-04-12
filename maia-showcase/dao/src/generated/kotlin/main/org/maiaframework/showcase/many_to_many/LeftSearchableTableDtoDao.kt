@@ -41,7 +41,9 @@ class LeftSearchableTableDtoDao(
 
         val sqlForPage = """
             select
-                maia.left.some_int as someInt
+                maia.left.id as id,
+                maia.left.some_int as someInt,
+                maia.left.some_string as someString
             from maia.left
             $whereClause
             $orderByClause

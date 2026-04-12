@@ -57,4 +57,11 @@ export const routes: Routes = [
                 (m) => m.UsersBlotterPage,
             ),
     },
+    {
+        path: 'left_searchable',
+        loadComponent: () =>
+            import('@app/pages/left-searchable-blotter/left-searchable-blotter-page').then(
+                (m) => m.LeftSearchableBlotterPage,
+            ),
+    },
 ];

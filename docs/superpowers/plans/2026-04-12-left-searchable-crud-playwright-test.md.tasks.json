@@ -1,0 +1,40 @@
+{
+  "planPath": "docs/superpowers/plans/2026-04-12-left-searchable-crud-playwright-test.md",
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Task 1: Spec changes — add CRUD to leftEntityDef + upgrade table def",
+      "status": "pending",
+      "description": "**Goal:** Update the spec so `leftEntityDef` has CRUD APIs and `leftSearchableDtoHtmlTableDef` is a full CRUD table.\n\n**Files:**\n- Modify: `maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec.kt`\n\n**Acceptance Criteria:**\n- [ ] `leftEntityDef` has `fieldDisplayName`, `editableByUser()`, and `crud { apis { create() update() delete() } }`\n- [ ] `leftSearchableDtoHtmlTableDef` has `withAddButton = true`, `someStringFromLeft` column, `editActionColumn()`, `deleteActionColumn()`\n- [ ] `leftCrudDef` declared immediately after the table def\n- [ ] `./gradlew :maia-showcase:spec:build` passes\n\n**Verify:** `./gradlew :maia-showcase:spec:build` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:spec:build\", \"acceptanceCriteria\": [\"leftEntityDef has crud block\", \"leftSearchableDtoHtmlTableDef upgraded\", \"leftCrudDef added\", \"spec build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 2: Regenerate Kotlin + TypeScript code",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** Regenerate all affected code layers so new CRUD APIs, DAOs, endpoints, and Angular components exist.\n\n**Files:**\n- Generate: `maia-showcase/domain/src/generated/…`\n- Generate: `maia-showcase/dao/src/generated/…`\n- Generate: `maia-showcase/repo/src/generated/…`\n- Generate: `maia-showcase/service/src/generated/…`\n- Generate: `maia-showcase/web/src/generated/…`\n- Generate: `maia-showcase/maia-showcase-ui/src/generated/…`\n\n**Acceptance Criteria:**\n- [ ] `LeftCreateRequestDto.kt` exists in domain generated\n- [ ] `LeftCrudEndpoint.kt` exists in web generated\n- [ ] `left-searchable-crud-table.component.ts` exists in UI generated\n- [ ] `./gradlew :maia-showcase:web:build -x test` passes\n\n**Verify:** `./gradlew :maia-showcase:web:build -x test` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-showcase/domain/src/generated\", \"maia-showcase/dao/src/generated\", \"maia-showcase/repo/src/generated\", \"maia-showcase/service/src/generated\", \"maia-showcase/web/src/generated\", \"maia-showcase/maia-showcase-ui/src/generated\"], \"verifyCommand\": \"./gradlew :maia-showcase:web:build -x test\", \"acceptanceCriteria\": [\"LeftCreateRequestDto.kt generated\", \"LeftCrudEndpoint.kt generated\", \"left-searchable-crud-table.component.ts generated\", \"web build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 3: Angular blotter page + route",
+      "status": "pending",
+      "blockedBy": [2],
+      "description": "**Goal:** Create the `LeftSearchableBlotterPage` Angular component and wire it to route `/left_searchable`.\n\n**Files:**\n- Create: `maia-showcase/maia-showcase-ui/src/app/pages/left-searchable-blotter/left-searchable-blotter-page.ts`\n- Create: `maia-showcase/maia-showcase-ui/src/app/pages/left-searchable-blotter/left-searchable-blotter-page.html`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/app.routes.ts`\n\n**Acceptance Criteria:**\n- [ ] Page component imports `LeftSearchableCrudTableComponent`\n- [ ] HTML uses `dataPageId=\"left_searchable_blotter\"`\n- [ ] Route `/left_searchable` added to `app.routes.ts`\n\n**Verify:** `cd maia-showcase/maia-showcase-ui && npx ng build --configuration production` → `Application bundle generation complete`\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/pages/left-searchable-blotter/left-searchable-blotter-page.ts\", \"maia-showcase/maia-showcase-ui/src/app/pages/left-searchable-blotter/left-searchable-blotter-page.html\", \"maia-showcase/maia-showcase-ui/src/app/app.routes.ts\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && npx ng build --configuration production\", \"acceptanceCriteria\": [\"page component created\", \"route /left_searchable added\", \"Angular build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 4: Kotlin page object + AbstractPlaywrightTest",
+      "status": "pending",
+      "blockedBy": [2],
+      "description": "**Goal:** Create `LeftSearchableBlotterPage` page object and register it in `AbstractPlaywrightTest`.\n\n**Files:**\n- Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/LeftSearchableBlotterPage.kt`\n- Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/AbstractPlaywrightTest.kt`\n\n**Acceptance Criteria:**\n- [ ] `LeftSearchableBlotterPage` bound to `/left_searchable` + `left_searchable_blotter`\n- [ ] All CRUD methods implemented\n- [ ] `leftSearchableBlotterPage` field in `AbstractPlaywrightTest` declared and initialized\n\n**Verify:** `./gradlew :maia-showcase:app:compileTestKotlin` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/LeftSearchableBlotterPage.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/AbstractPlaywrightTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:compileTestKotlin\", \"acceptanceCriteria\": [\"LeftSearchableBlotterPage created with all methods\", \"leftSearchableBlotterPage registered in AbstractPlaywrightTest\", \"compileTestKotlin passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 5,
+      "subject": "Task 5: Playwright test + Fixtures cleanup",
+      "status": "pending",
+      "blockedBy": [3, 4],
+      "description": "**Goal:** Write `LeftSearchableCrudPlaywrightTest` and add left/join table truncation to `Fixtures.resetDatabaseState()`.\n\n**Files:**\n- Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/LeftSearchableCrudPlaywrightTest.kt`\n- Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/fixtures/Fixtures.kt`\n\n**Acceptance Criteria:**\n- [ ] `Fixtures.resetDatabaseState()` truncates `maia.left_to_right_many_to_many_join` and `maia.left`\n- [ ] Test covers full crud journey: create → edit → cancel-delete → confirm-delete\n- [ ] `./gradlew :maia-showcase:app:compileTestKotlin` passes\n\n**Verify:** `./gradlew :maia-showcase:app:compileTestKotlin` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/LeftSearchableCrudPlaywrightTest.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/fixtures/Fixtures.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:compileTestKotlin\", \"acceptanceCriteria\": [\"Fixtures truncates left and join tables\", \"test class compiles with full crud journey\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-04-12T00:00:00Z"
+}

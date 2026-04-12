@@ -5,13 +5,16 @@ package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class LeftCrudService(
     private val entityRepo: LeftRepo,
+    private val leftCrudNotifier: LeftCrudNotifier,
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
     private val maiaProblems: MaiaProblems
 ) {
@@ -20,11 +23,99 @@ class LeftCrudService(
     private val logger = LoggerFactory.getLogger(LeftCrudService::class.java)
 
 
+    fun create(createDto: LeftCreateRequestDto): LeftEntity {
+
+        logger.info("BEGIN: create Left. dto=$createDto")
+
+        val entity: LeftEntity = buildEntity(createDto)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(createDto: LeftCreateRequestDto): LeftEntity {
+
+        val someInt: Int = createDto.someInt
+        val someString: String = createDto.someString
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+
+        return LeftEntity(
+            createdTimestampUtc,
+            id,
+            someInt,
+            someString
+        )
+
+    }
+
+
     fun create(entity: LeftEntity): LeftEntity {
 
         this.entityRepo.insert(entity)
+        this.leftCrudNotifier.onEntityCreated(entity)
         return entity
 
+    }
+
+
+    fun fetchForEdit(id: DomainId): LeftFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
+    fun update(editDto: LeftUpdateRequestDto) {
+
+        val id = editDto.id
+        val updater = LeftEntityUpdater.forPrimaryKey(id) {
+            someInt(editDto.someInt)
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun updateSomeInt(editDto: LeftUpdate_someIntRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeInt. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = LeftEntityUpdater.forPrimaryKey(editDto.id) {
+            someInt(editDto.someInt)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun updateSomeString(editDto: LeftUpdate_someStringRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeString. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = LeftEntityUpdater.forPrimaryKey(editDto.id) {
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun setFields(updater: LeftEntityUpdater): Int {
+        
+        val count = this.entityRepo.setFields(updater)
+        this.leftCrudNotifier.onEntityUpdated(updater.id)
+        return count
+        
     }
 
 
@@ -34,7 +125,11 @@ class LeftCrudService(
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightManyToManyJoin")
         }
 
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
+                ?: return
+
         this.entityRepo.deleteByPrimaryKey(id)
+        this.leftCrudNotifier.onEntityDeleted(entityToDelete)
 
     }
 

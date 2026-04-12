@@ -1,0 +1,46 @@
+<h1 mat-dialog-title>Edit</h1>
+
+@if (loading()) {
+    <div mat-dialog-content style="display: flex; justify-content: center; padding: 24px;">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+} @else {
+<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+    <div mat-dialog-content>
+        @if (problemDetail()) {
+            <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
+        }
+        <mat-form-field appearance="outline">
+            <mat-label>Some Int</mat-label>
+            <input
+                formControlName="someInt"
+                name="someInt"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someInt'].hasError('required')) {
+                <mat-error>Some Int is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some String</mat-label>
+            <input
+                formControlName="someString"
+                name="someString"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someString'].hasError('required')) {
+                <mat-error>Some String is required.</mat-error>
+            }
+            @if (formGroup.controls['someString'].hasError('maxlength')) {
+                <mat-error>Some String must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-flat-button type="submit" color="primary">Submit</button>
+        <button mat-flat-button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+</form>
+}
