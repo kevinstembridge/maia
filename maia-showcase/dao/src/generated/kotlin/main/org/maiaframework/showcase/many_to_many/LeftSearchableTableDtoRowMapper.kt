@@ -3,17 +3,52 @@
 
 package org.maiaframework.showcase.many_to_many
 
+import org.maiaframework.domain.DomainId
+import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import org.maiaframework.jdbc.SqlParams
 
 
-class LeftSearchableTableDtoRowMapper : MaiaRowMapper<LeftSearchableTableDto> {
+class LeftSearchableTableDtoRowMapper(
+    private val jdbcOps: JdbcOps
+) : MaiaRowMapper<LeftSearchableTableDto> {
+
+
+    private val rightEntitiesPkAndNameDtoRowMapper = RightPkAndNameDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): LeftSearchableTableDto {
 
+        val entityId = rsa.readDomainId("id")
+
+        val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(entityId)
+
         return LeftSearchableTableDto(
+            rightEntitiesPkAndNameDtoList,
             rsa.readInt("someInt"),
+        )
+
+    }
+
+
+    private fun fetchRightEntitiesPkAndNameDtos(entityId: DomainId): List<RightPkAndNameDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                other.id,
+                other.some_string
+            from maia.right other
+            join maia.left_to_right_many_to_many_join mtm
+                on other.id = mtm.right_id
+            where mtm.left_id = :entityId
+            order by other.some_string
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+            this.rightEntitiesPkAndNameDtoRowMapper
         )
 
     }

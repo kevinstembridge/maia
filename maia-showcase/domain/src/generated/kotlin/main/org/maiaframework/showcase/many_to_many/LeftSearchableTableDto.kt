@@ -6,6 +6,7 @@ package org.maiaframework.showcase.many_to_many
 
 
 data class LeftSearchableTableDto(
+    val rightEntities: List<RightPkAndNameDto>,
     val someInt: Int
 ) {
 

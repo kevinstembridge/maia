@@ -1133,14 +1133,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftDtoHtmlTableDef = dtoHtmlTable(leftSearchableDtoDef) {
+    val leftSearchableDtoHtmlTableDef = dtoHtmlTable(leftSearchableDtoDef) {
         columnFromDto("someIntFromLeft", "someInt") {
             header("Some Int From Left")
         }
-        // TODO add a column for the many-to-many join
-//        columnFromDto("someIntFromRight", "someIntsFromRight") {
-//            header("Some Ints From Right")
-//        }
+        columnFromDto("rightEntities") {
+            header("Right Entities")
+        }
     }
 
 

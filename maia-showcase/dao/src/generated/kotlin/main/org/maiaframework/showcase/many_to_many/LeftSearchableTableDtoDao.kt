@@ -17,7 +17,7 @@ class LeftSearchableTableDtoDao(
 ) {
 
 
-    private val dtoRowMapper = LeftSearchableTableDtoRowMapper()
+    private val dtoRowMapper = LeftSearchableTableDtoRowMapper(this.jdbcOps)
 
 
     private val searchModelConverter = AgGridSearchModelConverter(

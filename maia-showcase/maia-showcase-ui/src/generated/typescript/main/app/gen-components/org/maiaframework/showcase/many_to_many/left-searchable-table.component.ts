@@ -28,6 +28,7 @@ export class LeftSearchableTableComponent {
 
     public columnDefs: ColDef[] = [
         { field: 'someInt', headerName: 'Some Int From Left', cellDataType: 'number', filter: true },
+        { field: 'rightEntities', headerName: 'Right Entities', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
     ];
 
     public defaultColDef: ColDef = {
