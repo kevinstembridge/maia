@@ -15,7 +15,7 @@ class LeftSearchableDtoRowMapper(
 ) : MaiaRowMapper<LeftSearchableDto> {
 
 
-    private val rightPkAndNameDtoRowMapper = RightPkAndNameDtoRowMapper()
+    private val rightEntitiesPkAndNameDtoRowMapper = RightPkAndNameDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): LeftSearchableDto {
@@ -51,7 +51,7 @@ class LeftSearchableDtoRowMapper(
             SqlParams().apply {
                 this.addValue("leftEntityId", leftEntityId)
             },
-            this.rightPkAndNameDtoRowMapper
+            this.rightEntitiesPkAndNameDtoRowMapper
         )
 
     }
