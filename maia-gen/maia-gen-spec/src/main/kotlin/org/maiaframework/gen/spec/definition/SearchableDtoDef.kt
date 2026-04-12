@@ -40,7 +40,6 @@ class SearchableDtoDef(
     val allFields = fieldDefsNotInherited.sortedBy { it.classFieldDef.classFieldName }
 
 
-    // TODO we shouldn't need this any more. Using sealed class instead
     val nonManyToManyFields = allFields.filterIsInstance<SimpleSearchableDtoFieldDef>()
 
 
