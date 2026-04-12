@@ -43,6 +43,7 @@ import org.maiaframework.gen.spec.definition.ModelDefProvider
 import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.ResponseDtoDef
+import org.maiaframework.gen.spec.definition.RowMapperDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SimpleResponseDtoDef
@@ -108,34 +109,35 @@ abstract class AbstractSpec protected constructor(
 ) : ModelDefProvider {
 
 
-    private var authoritiesDef: AuthoritiesDef? = null
-    private val entityDefs = mutableListOf<EntityDef>()
-    private val dataClassDefs = mutableListOf<DataClassDef>()
-    private val requestDtoDefs = mutableListOf<RequestDtoDef>()
-    private val formModelDefs = mutableListOf<FormModelDef>()
-    private val responseDtoDefs = mutableListOf<ResponseDtoDef>()
-    private val simpleResponseDtoDefs = mutableListOf<SimpleResponseDtoDef>()
-    private val hazelcastDtoDefs = mutableListOf<HazelcastDtoDef>()
-    private val searchableDtoDefs = mutableListOf<SearchableDtoDef>()
-    private val dtoHtmlTableDefs = mutableListOf<DtoHtmlTableDef>()
-    private val crudTableDefs = mutableListOf<CrudTableDef>()
-    private val entityCreateHtmlFormDefs = mutableListOf<EntityHtmlFormDef>()
-    private val requestDtoHtmlFormDefs = mutableListOf<HtmlFormDef>()
     private val angularFormDefs = mutableListOf<AngularFormDef>()
-    private val enumDefs = mutableListOf<EnumDef>().also { it.add(EnumDefs.LIFECYCLE_STATE_ENUM_DEF) }
-    private val stringTypeDefs = mutableListOf<StringTypeDef>()
-    private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
-    private val stringValueClassDefs = mutableListOf<StringValueClassDef>()
-    private val intTypeDefs = mutableListOf<IntTypeDef>()
-    private val longTypeDefs = mutableListOf<LongTypeDef>()
+    private var authoritiesDef: AuthoritiesDef? = null
+    private val basePackageName = basePackageName ?: PackageName(appKey.value.lowercase())
     private val booleanTypeDefs = mutableListOf<BooleanTypeDef>()
-    private val typeaheadDefs = mutableListOf<TypeaheadDef>()
+    private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
+    private val crudTableDefs = mutableListOf<CrudTableDef>()
+    private val dataClassDefs = mutableListOf<DataClassDef>()
+    private val defaultSchemaName = defaultSchemaName ?: SchemaName(appKey.value)
+    private val dtoHtmlTableDefs = mutableListOf<DtoHtmlTableDef>()
+    private val entityCreateHtmlFormDefs = mutableListOf<EntityHtmlFormDef>()
+    private val entityDefs = mutableListOf<EntityDef>()
+    private val enumDefs = mutableListOf<EnumDef>().also { it.add(EnumDefs.LIFECYCLE_STATE_ENUM_DEF) }
     private val esDocDefs = mutableListOf<EsDocDef>()
-    private val rootEntityHierarchies = mutableListOf<EntityHierarchy>()
     private val fieldReadersByFieldType = mutableMapOf<FieldType, ParameterizedType>()
     private val fieldWritersByFieldType = mutableMapOf<FieldType, ParameterizedType>()
-    private val basePackageName = basePackageName ?: PackageName(appKey.value.lowercase())
-    private val defaultSchemaName = defaultSchemaName ?: SchemaName(appKey.value)
+    private val formModelDefs = mutableListOf<FormModelDef>()
+    private val hazelcastDtoDefs = mutableListOf<HazelcastDtoDef>()
+    private val intTypeDefs = mutableListOf<IntTypeDef>()
+    private val longTypeDefs = mutableListOf<LongTypeDef>()
+    private val requestDtoDefs = mutableListOf<RequestDtoDef>()
+    private val requestDtoHtmlFormDefs = mutableListOf<HtmlFormDef>()
+    private val responseDtoDefs = mutableListOf<ResponseDtoDef>()
+    private val rootEntityHierarchies = mutableListOf<EntityHierarchy>()
+    private val rowMapperDefs = mutableListOf<RowMapperDef>()
+    private val searchableDtoDefs = mutableListOf<SearchableDtoDef>()
+    private val simpleResponseDtoDefs = mutableListOf<SimpleResponseDtoDef>()
+    private val stringTypeDefs = mutableListOf<StringTypeDef>()
+    private val stringValueClassDefs = mutableListOf<StringValueClassDef>()
+    private val typeaheadDefs = mutableListOf<TypeaheadDef>()
 
 
     private val lookupFieldReaderByFieldType = { fieldType: FieldType -> this.fieldReadersByFieldType[fieldType] }
@@ -170,7 +172,8 @@ abstract class AbstractSpec protected constructor(
                 this.typeaheadDefs,
                 this.crudTableDefs,
                 this.esDocDefs,
-                buildHazelcastConfigClassDef()
+                buildHazelcastConfigClassDef(),
+                this.rowMapperDefs
             )
 
         }
@@ -501,7 +504,8 @@ abstract class AbstractSpec protected constructor(
         val entityDef = builder.build()
         entityDefs.add(entityDef)
 
-        // TODO add
+        this.rowMapperDefs.add(leftEntity.entityDef.entityPkAndNameDef.rowMapperDef)
+        this.rowMapperDefs.add(rightEntity.entityDef.entityPkAndNameDef.rowMapperDef)
 
         return ManyToManyEntityDef(entityDef, leftEntity, rightEntity)
 

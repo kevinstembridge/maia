@@ -56,6 +56,14 @@ class FetchForEditDtoDef(
     }
 
 
+    val rowMapperDef = RowMapperDef(
+        dtoDef.uqcn,
+        rowMapperFieldDefs,
+        dtoDef.rowMapperClassDef,
+        isForEditDto = true
+    )
+
+
     val endpointUrl = "/api/${entityBaseName.toSnakeCase()}/fetch_for_edit"
 
 

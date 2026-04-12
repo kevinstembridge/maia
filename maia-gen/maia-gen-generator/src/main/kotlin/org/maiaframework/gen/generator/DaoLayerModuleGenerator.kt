@@ -42,6 +42,7 @@ class DaoLayerModuleGenerator(
         `render EntityRowMappers`()
         `render EntityPkRowMappers`()
         `render ForEditDtoRowMappers`()
+        `render RowMapperDefs`()
         `process SearchableDtoDefs`()
         `render DAOs`()
 
@@ -117,17 +118,17 @@ class DaoLayerModuleGenerator(
 
     private fun `render ForEditDtoRowMappers`() {
 
-        this.modelDef.fetchForEditDtoDefs.forEach { dtoDef ->
-
-            val rowMapperDef = RowMapperDef(
-                dtoDef.uqcn,
-                dtoDef.rowMapperFieldDefs,
-                dtoDef.rowMapperClassDef,
-                isForEditDto = true
-            )
-
+        this.modelDef.fetchForEditDtoDefs.map { it.rowMapperDef }.forEach { rowMapperDef ->
             RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
+        }
 
+    }
+
+
+    private fun `render RowMapperDefs`() {
+
+        this.modelDef.rowMapperDefs.forEach { rowMapperDef ->
+            RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
         }
 
     }

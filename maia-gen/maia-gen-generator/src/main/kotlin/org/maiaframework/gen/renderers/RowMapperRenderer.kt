@@ -37,7 +37,7 @@ class RowMapperRenderer(
             append("""
                 |
                 |
-                |    private val ${manyToManyRowMapperFieldDef.classFieldName}PkAndNameDtoRowMapper = ${entityPkAndNameDef.rowMapperFqcn.uqcn}()
+                |    private val ${manyToManyRowMapperFieldDef.classFieldName}PkAndNameDtoRowMapper = ${entityPkAndNameDef.rowMapperDef.classDef.uqcn}()
                 |""".trimMargin())
 
         }
@@ -60,7 +60,7 @@ class RowMapperRenderer(
         append("""
             |
             |
-            |    override fun mapRow(rsa: ResultSetAdapter): ${rowMapperDef.uqcn} {
+            |    override fun mapRow(rsa: ResultSetAdapter): ${rowMapperDef.rowUqcn} {
             |
             |""".trimMargin()
         )
@@ -79,7 +79,7 @@ class RowMapperRenderer(
 
         }
 
-        appendLine("        return ${rowMapperDef.uqcn}(")
+        appendLine("        return ${rowMapperDef.rowUqcn}(")
 
         rowMapperDef.fieldDefs.forEach { rowMapperFieldDef ->
 

@@ -26,7 +26,8 @@ class ModelDef(
     val typeaheadDefs: List<TypeaheadDef>,
     val crudTableDefs: List<CrudTableDef>,
     val esDocsDefs: List<EsDocDef>,
-    val hazelcastEntityConfigClassDef: ClassDef
+    val hazelcastEntityConfigClassDef: ClassDef,
+    val rowMapperDefs: List<RowMapperDef>
 ) {
 
 

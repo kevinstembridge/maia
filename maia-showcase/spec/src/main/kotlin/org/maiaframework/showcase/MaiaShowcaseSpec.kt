@@ -1076,7 +1076,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.many_to_many",
         "Left",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        nameFieldForPkAndNameDto = "someString",
     ) {
         field("someInt", FieldTypes.int)
         field("someString", FieldTypes.string) {

@@ -29,7 +29,15 @@ class EntityPkAndNameDef(
     val pkAndNameDtoFqcn = dtoDef.fqcn
 
 
-    val rowMapperFqcn = dtoDef.fqcn.withSuffix("RowMapper")
+    val rowMapperDef = RowMapperDef(
+        dtoDef.uqcn,
+        listOf(
+            EntityFieldRowMapperFieldDef(pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
+            EntityFieldRowMapperFieldDef(nameEntityFieldDef, nameEntityFieldDef.tableColumnName.value)
+        ),
+        dtoDef.rowMapperClassDef,
+        isForEditDto = true
+    )
 
 
     val dtoUqcn = dtoDef.uqcn
