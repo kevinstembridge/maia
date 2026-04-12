@@ -40,6 +40,8 @@ class LeftSearchableDtoRowMapper(
         return this.jdbcOps.queryForList(
             """
             select
+                other.id,
+                other.some_string
             from maia.right other
             join maia.left_to_right_many_to_many_join mtm
                 on other.id = mtm.right_id
