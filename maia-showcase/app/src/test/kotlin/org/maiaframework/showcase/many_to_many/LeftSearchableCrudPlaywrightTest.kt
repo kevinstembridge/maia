@@ -31,6 +31,7 @@ class LeftSearchableCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         `log in as admin user`()
         `navigate to the`(leftSearchableBlotterPage)
+
         leftSearchableBlotterPage.apply {
             clickAddButton()
             fillCreateForm()
