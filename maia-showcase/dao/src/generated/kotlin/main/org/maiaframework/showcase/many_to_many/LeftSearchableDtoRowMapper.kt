@@ -20,9 +20,9 @@ class LeftSearchableDtoRowMapper(
 
     override fun mapRow(rsa: ResultSetAdapter): LeftSearchableDto {
 
-        val leftEntityId = rsa.readDomainId("id")
+        val entityId = rsa.readDomainId("id")
 
-        val rightPkAndNameDtoList = fetchRightPkAndNameDtos(leftEntityId)
+        val rightEntitiesPkAndNameDtoList = fetchrightEntitiesPkAndNameDtos(entityId)
 
         return LeftSearchableDto(
             rsa.readInstant("createdTimestampUtc"),
