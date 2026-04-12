@@ -35,7 +35,7 @@ class LeftSearchableDtoRowMapper(
     }
 
 
-    private fun fetchRightPkAndNameDtos(leftEntityId: DomainId): List<RightPkAndNameDto> {
+    private fun fetchRightEntitiesPkAndNameDtos(entityId: DomainId): List<RightPkAndNameDto> {
 
         return this.jdbcOps.queryForList(
             """
