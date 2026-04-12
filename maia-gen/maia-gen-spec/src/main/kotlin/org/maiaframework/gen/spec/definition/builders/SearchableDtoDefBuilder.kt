@@ -1,6 +1,5 @@
 package org.maiaframework.gen.spec.definition.builders
 
-import org.maiaframework.gen.spec.definition.AbstractSearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.DtoBaseName
 import org.maiaframework.gen.spec.definition.EntityAndField
 import org.maiaframework.gen.spec.definition.EntityBaseName
@@ -14,6 +13,7 @@ import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.ResponseDtoFieldDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
+import org.maiaframework.gen.spec.definition.SearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.flags.CaseSensitive
 import org.maiaframework.gen.spec.definition.flags.GenerateFindById
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
@@ -44,7 +44,7 @@ class SearchableDtoDefBuilder(
 ) {
 
     private val manyToManyJoinEntityDefs = mutableListOf<JoinEntityDef>()
-    private val fieldDefs = mutableListOf<AbstractSearchableDtoFieldDef>()
+    private val fieldDefs = mutableListOf<SearchableDtoFieldDef>()
     private var moduleName: ModuleName? = null
     private var withPreAuthorize: WithPreAuthorize? = null
     private var withProvidedFieldConverter = WithProvidedFieldConverter.FALSE
@@ -104,7 +104,9 @@ class SearchableDtoDefBuilder(
 
         val fieldDef = ManyToManySearchableDtoFieldDef(
             classFieldDef,
-            sortIndexAndDirection = null // TODO
+            manyToManyEntityDef,
+            sortIndexAndDirection = null, // TODO
+            nullability = Nullability.NOT_NULLABLE,
         )
 
         fieldDefs.add(fieldDef)

@@ -927,7 +927,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val bravoSearchableDtoDef = searchableEntityDef(
         "org.maiaframework.showcase.join",
-        "Bravo",
+        "Bravo", // TODO rename to BravoSearchable
         entityDef = bravoEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedDto = WithGeneratedDto.TRUE,

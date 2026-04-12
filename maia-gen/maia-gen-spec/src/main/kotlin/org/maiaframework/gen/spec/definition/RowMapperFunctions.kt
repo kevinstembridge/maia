@@ -36,7 +36,7 @@ object RowMapperFunctions {
 
 
     fun renderRowMapperField(
-        rowMapperFieldDef: RowMapperFieldDef,
+        rowMapperFieldDef: EntityFieldRowMapperFieldDef,
         indentSize: Int = 12,
         orElseText: String = "",
         fqcnImporter: (Fqcn) -> Unit,
@@ -44,7 +44,7 @@ object RowMapperFunctions {
 
         return renderRowMapperField(
             rowMapperFieldDef.entityFieldDef,
-            rowMapperFieldDef.resultSetFieldName,
+            rowMapperFieldDef.resultSetFieldName ?: rowMapperFieldDef.entityFieldDef.classFieldName.value,
             rowMapperFieldDef.nullability.nullable,
             indentSize,
             orElseText,

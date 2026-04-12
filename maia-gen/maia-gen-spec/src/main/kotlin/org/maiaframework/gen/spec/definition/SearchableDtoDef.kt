@@ -40,16 +40,16 @@ class SearchableDtoDef(
     val allFields = fieldDefsNotInherited.sortedBy { it.classFieldDef.classFieldName }
 
 
+    // TODO we shouldn't need this any more. Using sealed class instead
     val nonManyToManyFields = allFields.filterIsInstance<SimpleSearchableDtoFieldDef>()
 
 
     private val allRowMapperFieldDefs = allFields
             .map {
-                val entityFieldDef = when(it) {
-                    is SimpleSearchableDtoFieldDef -> it.entityFieldDef
-                    else -> null
+                when(it) {
+                    is SimpleSearchableDtoFieldDef -> EntityFieldRowMapperFieldDef(it.entityFieldDef, it.responseDtoFieldDef.classFieldName.value)
+                    is ManyToManySearchableDtoFieldDef -> ManyToManyRowMapperFieldDef(it, this.dtoRootEntityDef)
                 }
-                RowMapperFieldDef(entityFieldDef, it.nullability, it.classFieldName.value)
             }
 
 
@@ -91,6 +91,9 @@ class SearchableDtoDef(
 
 
     val hasAnyMapFields: Boolean = rootDtoFields.any { it.classFieldDef.isMap }
+
+
+    val hasAnyManyToManyFields: Boolean = allFields.any { it is ManyToManySearchableDtoFieldDef }
 
 
     private fun defaultSortModel(fields: List<SearchableDtoFieldDef>): List<FieldSortModel> {

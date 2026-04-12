@@ -5,7 +5,7 @@ import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
-import org.maiaframework.gen.spec.definition.SearchableDtoFieldDef
+import org.maiaframework.gen.spec.definition.SimpleSearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.ConstructorArg
@@ -88,27 +88,33 @@ class SearchableDtoJdbcDaoRenderer(
 
     override fun renderPreClassFields() {
 
-        renderJsonMapperClassField()
-        renderSearchModelConverterClassField()
-        renderTypeDiscriminatorExpressionClassField()
+        `render jsonMapper and dtoRowMapper class field`()
+        `render searchModelConverter class field`()
+        `render typeDiscriminatorExpression class field`()
 
     }
 
 
-    private fun renderJsonMapperClassField() {
+    private fun `render jsonMapper and dtoRowMapper class field`() {
 
         addImportFor(searchableDtoDef.dtoRowMapperClassDef.fqcn)
 
-        val jsonMapperParameter = if (searchableDtoDef.hasAnyMapFields) "jsonMapper" else ""
+        val jsonMapperParameter = if (searchableDtoDef.hasAnyMapFields) "this.jsonMapper" else ""
 
-        blankLine()
-        blankLine()
-        appendLine("    private val dtoRowMapper = ${searchableDtoDef.dtoRowMapperClassDef.uqcn}($jsonMapperParameter)")
+        val jdbcOpsParameter = if (searchableDtoDef.hasAnyManyToManyFields) "this.jdbcOps" else ""
+
+        val commaSeparator = if (jdbcOpsParameter.isNotEmpty() && jsonMapperParameter.isNotEmpty()) ", " else ""
+
+        append("""
+            |
+            |
+            |    private val dtoRowMapper = ${searchableDtoDef.dtoRowMapperClassDef.uqcn}($jsonMapperParameter$commaSeparator$jdbcOpsParameter)
+            |""".trimMargin())
 
     }
 
 
-    private fun renderSearchModelConverterClassField() {
+    private fun `render searchModelConverter class field`() {
 
         addImportFor(this.searchModelConverterFqcn)
 
@@ -120,10 +126,10 @@ class SearchableDtoJdbcDaoRenderer(
                     |
                     |
                     |    private val searchModelConverter = ${searchModelConverterFqcn.uqcn}(
-                    |            ${searchableDtoDef.metaClassDef.uqcn}::fieldNameToColumnName,
-                    |            ${searchableDtoDef.metaClassDef.uqcn}::fieldNameToJdbcType
-                    |    )        
-                """.trimMargin())
+                    |        ${searchableDtoDef.metaClassDef.uqcn}::fieldNameToColumnName,
+                    |        ${searchableDtoDef.metaClassDef.uqcn}::fieldNameToJdbcType
+                    |    )
+                    """.trimMargin())
 
 
 
@@ -137,7 +143,7 @@ class SearchableDtoJdbcDaoRenderer(
                     |    private val searchModelConverter = ${searchModelConverterFqcn.uqcn}(
                     |            ${searchableDtoDef.metaClassDef.uqcn}::fieldNameToColumnName
                     |    )        
-                """.trimMargin())
+                    """.trimMargin())
 
             }
 
@@ -146,7 +152,7 @@ class SearchableDtoJdbcDaoRenderer(
     }
 
 
-    private fun renderTypeDiscriminatorExpressionClassField() {
+    private fun `render typeDiscriminatorExpression class field`() {
 
         when {
 
@@ -274,30 +280,38 @@ class SearchableDtoJdbcDaoRenderer(
         addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         val typeDiscriminatorText = if (typeDiscriminators.isEmpty()) "" else ", typeDiscriminatorExpression"
+        val tripleQuote = "\"\"\""
 
-        blankLine()
-        blankLine()
-        appendLine("    fun count(searchModel: ${searchModelFqcn.uqcn}): Long {")
-        blankLine()
-        appendLine("        val sqlParams = SqlParams()")
-        appendLine("        val whereClause = this.searchModelConverter.buildWhereClauseFor(searchModel.filterModel, sqlParams$typeDiscriminatorText)")
-        blankLine()
-        appendLine("        val sqlForTotalCount = \"\"\"")
-        appendLine("            select count(*)")
-        appendLine("            from $rootEntitySchemaAndTable")
+        append("""
+            |
+            |
+            |    fun count(searchModel: ${searchModelFqcn.uqcn}): Long {
+            |
+            |        val sqlParams = SqlParams()
+            |        val whereClause = this.searchModelConverter.buildWhereClauseFor(searchModel.filterModel, sqlParams$typeDiscriminatorText)
+            |
+            |        val sqlForTotalCount = $tripleQuote
+            |            select count(*)
+            |            from $rootEntitySchemaAndTable
+            |
+            """.trimMargin())
+        
         joinClauses.forEach { appendLine("            $it") }
-        appendLine("            \$whereClause")
-        appendLine("            \"\"\".trimIndent()")
-        blankLine()
-        appendLine("        return this.jdbcOps.queryForLong(sqlForTotalCount, sqlParams)")
-        blankLine()
-        appendLine("    }")
+
+        append($$"""
+            |            $whereClause
+            |            $${tripleQuote}.trimIndent()
+            |
+            |        return this.jdbcOps.queryForLong(sqlForTotalCount, sqlParams)
+            |
+            |    }
+            |""".trimMargin())
 
     }
 
 
     private fun joinClauses(
-        foreignKeyFieldsSortedByDepth: List<SearchableDtoFieldDef>,
+        foreignKeyFieldsSortedByDepth: List<SimpleSearchableDtoFieldDef>,
         foreignKeyTableCount: Map<String, Int>
     ): List<String> {
 
@@ -341,7 +355,7 @@ class SearchableDtoJdbcDaoRenderer(
     }
 
 
-    private fun referencedFieldOrTable(): (SearchableDtoFieldDef) -> String {
+    private fun referencedFieldOrTable(): (SimpleSearchableDtoFieldDef) -> String {
         return {
             it.entityAndField.referencedEntityField?.classFieldName?.value ?: it.entityAndField.schemaAndTableName
         }

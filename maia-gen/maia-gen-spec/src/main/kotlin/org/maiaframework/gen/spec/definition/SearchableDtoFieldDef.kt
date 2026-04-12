@@ -82,6 +82,7 @@ class SimpleSearchableDtoFieldDef(
 
 class ManyToManySearchableDtoFieldDef(
     classFieldDef: ClassFieldDef,
+    val manyToManyEntityDef: ManyToManyEntityDef,
     sortIndexAndDirection: SortIndexAndDirection? = null,
     override val nullability: Nullability,
     override val displayName: FieldDisplayName? = null
@@ -95,6 +96,7 @@ class ManyToManySearchableDtoFieldDef(
 
         return ManyToManySearchableDtoFieldDef(
             this.classFieldDef.withFieldName(dtoFieldName),
+            this.manyToManyEntityDef,
             this.sortIndexAndDirection,
             this.nullability,
             this.displayName

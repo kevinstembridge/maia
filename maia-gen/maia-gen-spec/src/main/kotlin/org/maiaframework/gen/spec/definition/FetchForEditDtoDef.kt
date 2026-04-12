@@ -37,8 +37,23 @@ class FetchForEditDtoDef(
     val rowMapperClassDef = dtoDef.rowMapperClassDef
 
 
-    val rowMapperFieldDefs: List<RowMapperFieldDef> =
-        entityFieldDefs.map { RowMapperFieldDef(it, it.nullability, it.classFieldName.value) }
+    val rowMapperFieldDefs: List<RowMapperFieldDef> = entityFieldDefs.map { entityFieldDef ->
+
+        if (entityFieldDef.foreignKeyFieldDef != null) {
+
+            ForeignKeyRowMapperFieldDef(
+                entityFieldDef.foreignKeyFieldDef,
+                entityFieldDef.classFieldName,
+                entityFieldDef.nullability
+            )
+
+        } else {
+
+            EntityFieldRowMapperFieldDef(entityFieldDef)
+
+        }
+
+    }
 
 
     val endpointUrl = "/api/${entityBaseName.toSnakeCase()}/fetch_for_edit"

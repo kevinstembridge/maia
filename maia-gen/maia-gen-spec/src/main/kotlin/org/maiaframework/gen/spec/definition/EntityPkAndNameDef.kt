@@ -29,6 +29,9 @@ class EntityPkAndNameDef(
     val pkAndNameDtoFqcn = dtoDef.fqcn
 
 
+    val rowMapperFqcn = dtoDef.fqcn.withSuffix("RowMapper")
+
+
     val dtoUqcn = dtoDef.uqcn
 
 

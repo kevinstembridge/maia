@@ -5,7 +5,7 @@ import org.maiaframework.domain.persist.SortDirection
 import org.maiaframework.gen.spec.definition.EntityAndField
 import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.ResponseDtoFieldDef
-import org.maiaframework.gen.spec.definition.SearchableDtoFieldDef
+import org.maiaframework.gen.spec.definition.SimpleSearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.SortIndexAndDirection
 import org.maiaframework.gen.spec.definition.flags.CaseSensitive
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
@@ -53,7 +53,7 @@ class SearchableDtoFieldDefBuilder(
         get() = this.fieldWriterParameterizedType ?: this.defaultFieldTypeFieldWriterProvider.invoke(this.classFieldDef.fieldType)
 
 
-    fun build(): SearchableDtoFieldDef {
+    fun build(): SimpleSearchableDtoFieldDef {
 
         val classFieldDef = this.entityAndField.entityFieldDef.classFieldDef
 
@@ -71,7 +71,7 @@ class SearchableDtoFieldDefBuilder(
                 fieldWriterClassName
         )
 
-        return SearchableDtoFieldDef(
+        return SimpleSearchableDtoFieldDef(
             this.isFilterable,
             responseDtoFieldDef,
             this.entityAndField,

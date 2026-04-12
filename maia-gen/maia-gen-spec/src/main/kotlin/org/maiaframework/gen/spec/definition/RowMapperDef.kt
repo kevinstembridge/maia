@@ -8,4 +8,13 @@ class RowMapperDef(
     val fieldDefs: List<RowMapperFieldDef>,
     val classDef: ClassDef,
     val isForEditDto: Boolean
-)
+) {
+
+
+    val entityFieldDefs: List<EntityFieldRowMapperFieldDef> = fieldDefs.filterIsInstance<EntityFieldRowMapperFieldDef>()
+
+
+    val manyToManyFieldDefs: List<ManyToManyRowMapperFieldDef> = fieldDefs.filterIsInstance<ManyToManyRowMapperFieldDef>()
+
+
+}
