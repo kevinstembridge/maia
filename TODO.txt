@@ -1,4 +1,6 @@
 
+TODO * Generate RightPkAndNameDtoRowMapper
+
 TODO * Consider renaming DtoHtmlTable... to BlotterRow...
 
 TODO * Many-to-many relationship.

@@ -154,6 +154,10 @@ class RowMapperRenderer(
                 |            select
                 |""".trimMargin())
 
+            appendLine("                other.id,")
+            appendLine("                other.${manyToManyRowMapperFieldDef.otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}")
+
+
             val otherSideEntity = manyToManyRowMapperFieldDef.otherSideEntity
             val otherSideIdTableColumnName = manyToManyRowMapperFieldDef.otherSideIdTableColumnName
             val thisSideIdTableColumnName = manyToManyRowMapperFieldDef.thisSideIdTableColumnName
