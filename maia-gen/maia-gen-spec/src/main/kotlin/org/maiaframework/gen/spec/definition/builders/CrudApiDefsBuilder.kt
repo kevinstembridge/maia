@@ -30,7 +30,7 @@ class CrudApiDefsBuilder(
     fun create(
         authority: String? = null,
         contextDto: RequestDtoDef? = null,
-        withEntityForm: Boolean = false,
+        withEntityForm: Boolean = false
     ) {
 
         val authorityToUse = authority?.let { Authority(it) } ?: this.defaultAuthority
