@@ -15,11 +15,14 @@ class LeftSearchableCrudPlaywrightTest : AbstractPlaywrightTest() {
     @Autowired
     private lateinit var rightDao: RightDao
 
+
     @Autowired
     private lateinit var esIndexOps: EsIndexOps
 
+
     @Autowired
     private lateinit var rightTypeaheadEsIndex: RightTypeaheadEsIndex
+
 
     private val rightAlpha = RightEntityTestBuilder(someString = "right-alpha").build()
     private val rightBeta = RightEntityTestBuilder(someString = "right-beta").build()
