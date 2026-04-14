@@ -22,6 +22,7 @@ class LeftSearchableCrudPlaywrightTest : AbstractPlaywrightTest() {
     private lateinit var rightTypeaheadEsIndex: RightTypeaheadEsIndex
 
     private val rightAlpha = RightEntityTestBuilder(someString = "right-alpha").build()
+    private val rightBeta = RightEntityTestBuilder(someString = "right-beta").build()
 
 
     @BeforeAll
@@ -30,12 +31,14 @@ class LeftSearchableCrudPlaywrightTest : AbstractPlaywrightTest() {
         initAdminUserFixture()
         fixtures.resetDatabaseState()
         rightDao.deleteAll()
-        rightDao.insert(rightAlpha)
-        esIndexOps.upsert(EsDocHolder(
-            id = rightAlpha.id.toString(),
-            doc = RightTypeaheadV1EsDoc(id = rightAlpha.id, someString = rightAlpha.someString),
-            indexName = rightTypeaheadEsIndex.indexName()
-        ))
+        rightDao.bulkInsert(listOf(rightAlpha, rightBeta))
+        listOf(rightAlpha, rightBeta).forEach { entity ->
+            esIndexOps.upsert(EsDocHolder(
+                id = entity.id.toString(),
+                doc = RightTypeaheadV1EsDoc(id = entity.id, someString = entity.someString),
+                indexName = rightTypeaheadEsIndex.indexName()
+            ))
+        }
 
     }
 
@@ -55,20 +58,23 @@ class LeftSearchableCrudPlaywrightTest : AbstractPlaywrightTest() {
         `navigate to the`(leftSearchableBlotterPage)
 
         leftSearchableBlotterPage.apply {
-            // Create with a right entity chip selected
+            // Create with two right entity chips selected
             clickAddButton()
             fillCreateForm()
             searchAndSelectRightEntity("right-alpha")
+            searchAndSelectRightEntity("right-beta")
             clickSubmitButton()
             assertCreateDialogClosed()
             assertTableContainsValue("testleft")
 
-            // Edit: verify the right entity chip is pre-populated, remove it, then save.
-            // Removing the chip clears the join record so the subsequent delete works
+            // Edit: verify both chips are pre-populated, remove both, then save.
+            // Removing both chips clears all join records so the subsequent delete works
             // without triggering the "check foreign key references" dialog.
             clickEditButtonForFirstRow()
             assertChipVisible("right-alpha")
+            assertChipVisible("right-beta")
             removeChip("right-alpha")
+            removeChip("right-beta")
             fillEditForm()
             clickSubmitButton()
             assertEditDialogClosed()
