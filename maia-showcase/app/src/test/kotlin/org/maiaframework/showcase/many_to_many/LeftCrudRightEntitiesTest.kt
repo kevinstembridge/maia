@@ -51,7 +51,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
                 "someString": "test",
                 "rightEntityIds": ["${rightEntity1.id}", "${rightEntity2.id}"]
             }""".trimIndent()
-        ).hasStatus(200)
+        ).hasStatus(201)
 
         val leftEntities = leftDao.findAllAsSequence().toList()
         assertThat(leftEntities).hasSize(1)
