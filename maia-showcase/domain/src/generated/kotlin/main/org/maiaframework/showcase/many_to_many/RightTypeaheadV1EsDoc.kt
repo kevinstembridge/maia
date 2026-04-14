@@ -4,14 +4,10 @@
 package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.domain.DomainId
-import java.time.Instant
 
 
-data class LeftFetchForEditDto(
-    val createdTimestampUtc: Instant,
+data class RightTypeaheadV1EsDoc(
     val id: DomainId,
-    val rightEntities: List<RightPkAndNameDto>,
-    val someInt: Int,
     val someString: String
 ) {
 

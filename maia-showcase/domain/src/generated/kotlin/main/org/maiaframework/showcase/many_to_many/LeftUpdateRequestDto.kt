@@ -19,6 +19,8 @@ class LeftUpdateRequestDto
     @NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
+    @param:JsonProperty("rightEntityIds", access = JsonProperty.Access.READ_WRITE) 
+    private val rightEntityIds_raw: List<DomainId>?,
     @field:NotNull
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
     private val someInt_raw: Int?,
@@ -44,12 +46,18 @@ class LeftUpdateRequestDto
         get() = someString_raw!!
 
 
+    @get:JsonIgnore
+    val rightEntityIds: List<DomainId>
+        get() = rightEntityIds_raw ?: emptyList()
+
+
     override fun toString(): String {
 
         return "LeftUpdateRequestDto{" +
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
-                "someString = '" + this.someString + '\'' +
+                "someString = '" + this.someString + '\'' + ", " + 
+                "rightEntityIds = '" + this.rightEntityIds + '\'' +
                 "}"
 
     }

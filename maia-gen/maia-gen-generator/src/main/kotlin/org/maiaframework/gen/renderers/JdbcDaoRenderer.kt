@@ -188,10 +188,16 @@ class JdbcDaoRenderer(
 
         if (entityDef.isConcrete && entityDef.entityCrudApiDef?.updateApiDef != null) {
 
+            val hasManyToManyFields = entityDef.fetchForEditDtoDef?.rowMapperDef?.manyToManyFieldDefs?.isNotEmpty() == true
+            val fetchForEditRowMapperArgs = buildList {
+                if (hasManyToManyFields) add("this.jdbcOps")
+                if (jsonMapperParameter.isNotEmpty()) add(jsonMapperParameter)
+            }.joinToString(", ")
+
             append("""
                 |
                 |
-                |    private val fetchForEditDtoRowMapper = ${entityDef.fetchForEditDtoRowMapperClassDef.uqcn}($jsonMapperParameter)
+                |    private val fetchForEditDtoRowMapper = ${entityDef.fetchForEditDtoRowMapperClassDef.uqcn}($fetchForEditRowMapperArgs)
                 |""".trimMargin())
 
         }
@@ -1782,7 +1788,7 @@ class JdbcDaoRenderer(
 
             if (foreignKeyFieldDef == null) {
 
-                listOf("${entityDef.tableName}.${entityFieldDef.tableColumnName} as ${entityFieldDef.classFieldName}")
+                listOf("main.${entityFieldDef.tableColumnName} as ${entityFieldDef.classFieldName}")
 
             } else {
 
@@ -1818,13 +1824,13 @@ class JdbcDaoRenderer(
                 val alias = "${foreignKeyFieldDef.foreignKeyFieldName.toSnakeCase()}_${foreignEntityDef.tableName}"
 
                 """join ${foreignEntityDef.schemaAndTableName} $alias
-                on $alias.id = ${entityDef.tableName}.${entityFieldDef.tableColumnName}
+                on $alias.id = main.${entityFieldDef.tableColumnName}
                 """.trimIndent()
 
             } else {
 
                 """join ${foreignEntityDef.schemaAndTableName}
-                on ${foreignEntityDef.schemaAndTableName}.id = ${entityDef.tableName}.${entityFieldDef.tableColumnName}
+                on ${foreignEntityDef.schemaAndTableName}.id = main.${entityFieldDef.tableColumnName}
                 """.trimIndent()
 
             }
@@ -1842,11 +1848,11 @@ class JdbcDaoRenderer(
         appendLine("            select")
         renderStrings(selectColumns, indent = 16)
         newLine()
-        appendLine("            from ${entityDef.schemaAndTableName}")
+        appendLine("            from ${entityDef.schemaAndTableName} main")
         joinClauses.forEach { appendLine("            $it") }
 
         val primaryKeyClauses = entityDef.primaryKeyFields.joinToString(" and ") { entityFieldDef ->
-            "${entityDef.tableName}.${entityFieldDef.tableColumnName} = :${entityFieldDef.classFieldName}"
+            "main.${entityFieldDef.tableColumnName} = :${entityFieldDef.classFieldName}"
         }
 
         appendLine("            where $primaryKeyClauses")

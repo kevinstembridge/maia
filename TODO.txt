@@ -6,9 +6,12 @@ TODO * Many-to-many relationship.
         The rowMapper of the Left entity should make a direct query to the Right entity's table
         to fetch the RightPkAndNameDtos. This won't be fast enough to service a search request
         from a blotter. For that, we'll have to store blotter rows in ES.
+    TODO * Refactor so that CrudApiDefs don't need to have a mutable list of MTM associations.
     TODO * The Create and Edit forms should be able to select multiple Right entities.
+        TODO * Create a CrudPlaywrightTest for this.
 
-
+TODO * The Request DTOs with getters should use lazy loading instead.
+TODO * The 'create' endpoints should return 201
 TODO * Install the superpowers-extended-cc plugin.
 TODO * Test edit on an entity that has a foreign key.
     TODO * Manual test

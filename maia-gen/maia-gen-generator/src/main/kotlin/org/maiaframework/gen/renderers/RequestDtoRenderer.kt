@@ -102,7 +102,8 @@ class RequestDtoRenderer(
             }
 
             val isPeriod = classField.fieldType is PeriodFieldType
-            val visibility = if (fieldIsNullable && !isPeriod) "" else "private "
+            val isNullableList = fieldIsNullable && classField.fieldType is ListFieldType
+            val visibility = if ((fieldIsNullable && !isPeriod) && !isNullableList) "" else "private "
 
             val variableType = if (isEnum || isValueFieldWrapper) {
                 if (fieldIsNullable) {
@@ -114,7 +115,7 @@ class RequestDtoRenderer(
                 "val "
             }
 
-            val constructorArgName = if (fieldIsNullable == false || isUrl || isPeriod) "${fieldName}_raw" else fieldName
+            val constructorArgName = if (fieldIsNullable == false || isUrl || isPeriod || isNullableList) "${fieldName}_raw" else fieldName
             val unwrappedFieldType = if (isPeriod) classField.copy(fieldType = FieldTypes.string) else classField.unWrapIfComplexType()
             addImportFor(unwrappedFieldType.fieldType)
 
@@ -162,7 +163,7 @@ class RequestDtoRenderer(
                 is IntFieldType -> renderGetterIfNonNullableField(field)
                 is IntTypeFieldType -> renderGetterForValueWrapper(field)
                 is IntValueClassFieldType -> renderGetterForValueWrapper(field)
-                is ListFieldType -> renderGetterIfNonNullableField(field)
+                is ListFieldType -> if (field.nullable) renderGetterForNullableList(field) else renderGetterIfNonNullableField(field)
                 is LocalDateFieldType -> renderGetterIfNonNullableField(field)
                 is LongFieldType -> renderGetterIfNonNullableField(field)
                 is LongTypeFieldType -> renderGetterForValueWrapper(field)
@@ -280,6 +281,19 @@ class RequestDtoRenderer(
         appendLine("\n                \"}\"")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun renderGetterForNullableList(fieldDef: ClassFieldDef) {
+
+        addImportFor(Fqcns.JACKSON_JSON_IGNORE)
+
+        blankLine()
+        blankLine()
+        appendLine("    @get:JsonIgnore")
+        appendLine("    val ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString}")
+        appendLine("        get() = ${fieldDef.classFieldName}_raw ?: emptyList()")
 
     }
 

@@ -5,7 +5,9 @@ import org.maiaframework.gen.spec.definition.flags.DelegateFormSubmission
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
+import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import java.util.TreeSet
 
 class EntityUpdateApiDef(
@@ -94,22 +96,33 @@ class EntityUpdateApiDef(
         }
 
 
-    private val dtoFields: List<RequestDtoFieldDef> = this.entityDef.allEntityFields
+    private val dtoFields: List<RequestDtoFieldDef> by lazy { this.entityDef.allEntityFields
         .filter { it.classFieldDef.isEditableByUser.value || it.isPrimaryKey.value || it.isVersionField }
         .map { it.classFieldDef }
         .map { RequestDtoFieldDef(it, this.entityDef.findUniqueDatabaseIndexDefFor(it.classFieldName)) }
+        .plus(
+            crudApiDef.manyToManyAssociations.map { manyToManyEntityDef ->
+                val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
+                val classFieldDef = ClassFieldDef.aClassField(
+                    "${otherSide.fieldName}EntityIds",
+                    FieldTypes.list(FieldTypes.domainId)
+                ).nullable().build()
+                RequestDtoFieldDef(classFieldDef, null)
+            }
+        )
+    }
 
 
     val preAuthorizeExpression = this.crudApiDef.authority?.let { PreAuthorizeExpression("hasAuthority('$it')") }
 
 
-    override val requestDtoDef = RequestDtoDef(
+    override val requestDtoDef by lazy { RequestDtoDef(
         dtoBaseName,
         packageName = entityDef.packageName,
         dtoFieldDefs = this.dtoFields,
         preAuthorizeExpression = preAuthorizeExpression,
         moduleName = moduleName
-    )
+    ) }
 
 
     val inlineEditDtoDefs: List<InlineEditDtoDef>
@@ -166,7 +179,7 @@ class EntityUpdateApiDef(
     }
 
 
-    val angularDialogDef = AngularFormDef(
+    val angularDialogDef by lazy { AngularFormDef(
         angularComponentBaseName,
         requestDtoDef,
         TreeSet(),
@@ -187,10 +200,10 @@ class EntityUpdateApiDef(
         angularFormSystem,
         fetchForEditDtoDef = entityDef.fetchForEditDtoDef,
         entityIdInjectType = entityIdInjectType
-    )
+    ) }
 
 
-    val angularInlineFormDef = if (crudApiDef.withEntityForm) {
+    val angularInlineFormDef by lazy { if (crudApiDef.withEntityForm) {
         AngularFormDef(
             angularComponentBaseName,
             requestDtoDef,
@@ -213,7 +226,7 @@ class EntityUpdateApiDef(
         )
     } else {
         null
-    }
+    } }
 
 
 }

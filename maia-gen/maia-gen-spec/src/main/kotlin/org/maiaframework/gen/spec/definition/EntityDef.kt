@@ -35,6 +35,7 @@ import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.Fqcn
+import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.gen.spec.definition.lang.Uqcn
@@ -270,14 +271,33 @@ class EntityDef(
         }
 
 
-    val fetchForEditDtoDef = if (crudDef.crudApiDefs.updateApiDef != null) {
-        FetchForEditDtoDef(
-            packageName,
-            entityBaseName,
-            allEntityFieldsSorted
-        )
-    } else {
-        null
+    private val fetchForEditManyToManyFieldDefs: List<ManyToManySearchableDtoFieldDef> by lazy {
+
+        (crudDef.crudApiDefs.updateApiDef?.manyToManyAssociations ?: emptyList()).map { manyToManyEntityDef ->
+            val otherSide = manyToManyEntityDef.otherSideFrom(this)
+            val fieldName = "${otherSide.fieldName}Entities"
+            val classFieldDef = aClassField(
+                fieldName,
+                FieldTypes.list(FieldTypes.pkAndName(otherSide.entityDef.entityPkAndNameDef))
+            ).build()
+            ManyToManySearchableDtoFieldDef(classFieldDef, manyToManyEntityDef, null, Nullability.NOT_NULLABLE)
+        }
+
+    }
+
+
+    val fetchForEditDtoDef: FetchForEditDtoDef? by lazy {
+        if (crudDef.crudApiDefs.updateApiDef != null) {
+            FetchForEditDtoDef(
+                packageName,
+                entityBaseName,
+                allEntityFieldsSorted,
+                fetchForEditManyToManyFieldDefs,
+                this
+            )
+        } else {
+            null
+        }
     }
 
 

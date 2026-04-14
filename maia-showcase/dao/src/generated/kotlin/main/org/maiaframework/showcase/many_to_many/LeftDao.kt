@@ -27,7 +27,7 @@ class LeftDao(
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
-    private val fetchForEditDtoRowMapper = LeftFetchForEditDtoRowMapper()
+    private val fetchForEditDtoRowMapper = LeftFetchForEditDtoRowMapper(this.jdbcOps)
 
 
     fun insert(entity: LeftEntity) {
@@ -258,12 +258,12 @@ class LeftDao(
         return this.jdbcOps.queryForList(
             """
             select
-                left.created_timestamp_utc as createdTimestampUtc,
-                left.id as id,
-                left.some_int as someInt,
-                left.some_string as someString
-            from maia.left
-            where left.id = :id
+                main.created_timestamp_utc as createdTimestampUtc,
+                main.id as id,
+                main.some_int as someInt,
+                main.some_string as someString
+            from maia.left main
+            where main.id = :id
             """,
             SqlParams().apply {
                 addValue("id", id)

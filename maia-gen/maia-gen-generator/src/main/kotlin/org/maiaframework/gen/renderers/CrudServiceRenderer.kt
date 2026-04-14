@@ -148,7 +148,40 @@ class CrudServiceRenderer(
         blankLine()
         appendLine("        val entity: ${this.entityDef.entityUqcn} = buildEntity(createDto${currentUserOrBlank})")
         blankLine()
-        appendLine("        return create(entity)")
+
+        if (createApiDef.crudApiDef.manyToManyAssociations.isEmpty()) {
+
+            appendLine("        return create(entity)")
+
+        } else {
+
+            appendLine("        create(entity)")
+
+            createApiDef.crudApiDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
+                val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
+                val thisSideEntityIdFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
+                val otherSideFieldName = otherSide.fieldName
+                val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
+                val otherSideEntityIdFieldName = "${otherSideFieldName}Id"
+                val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
+                val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
+
+                blankLine()
+                appendLine("        createDto.${otherSideDtoFieldName}.forEach { $otherSideEntityIdFieldName ->")
+                appendLine("            this.${joinRepoFieldName}.insert(")
+                appendLine("                ${joinEntityClass}.newInstance(")
+                appendLine("                    $thisSideEntityIdFieldName = entity.id,")
+                appendLine("                    $otherSideEntityIdFieldName = $otherSideEntityIdFieldName")
+                appendLine("                )")
+                appendLine("            )")
+                appendLine("        }")
+            }
+
+            blankLine()
+            appendLine("        return entity")
+
+        }
+
         blankLine()
         appendLine("    }")
 
@@ -399,9 +432,15 @@ class CrudServiceRenderer(
                 appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forPrimaryKey($primaryKeyFieldNamesCsv) {")
             }
 
+            val manyToManyFieldNames = apiDef.crudApiDef.manyToManyAssociations.map { m2m ->
+                val otherSide = m2m.otherSideFrom(this.entityDef)
+                "${otherSide.fieldName}EntityIds"
+            }.toSet()
+
             dtoDef.classFieldDefs
                 .filterNot { entityDef.isPrimaryKey(it.classFieldName) }
                 .filterNot { it.isVersionField }
+                .filterNot { it.classFieldName.value in manyToManyFieldNames }
                 .forEach { field -> appendLine("            ${field.classFieldName}(editDto.${field.classFieldName})") }
 
             if (this.entityDef.hasLastModifiedByIdField) {
@@ -418,6 +457,29 @@ class CrudServiceRenderer(
             blankLine()
             appendLine("        setFields(updater)")
 
+        }
+
+        apiDef.crudApiDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
+            val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
+            val thisSideFieldName = manyToManyEntityDef.idTableColumnName(this.entityDef).removeSuffix("_id")
+            val otherSideFieldName = otherSide.fieldName
+            val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
+            val thisSideEntityIdFieldName = "${thisSideFieldName}Id"
+            val otherSideEntityIdFieldName = "${otherSideFieldName}Id"
+            val thisSideFieldNameCapitalized = thisSideFieldName.replaceFirstChar { it.uppercaseChar() }
+            val otherSideFieldNameCapitalized = otherSideFieldName.replaceFirstChar { it.uppercaseChar() }
+            val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
+            val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
+
+            blankLine()
+            appendLine("        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}Id(id).forEach { join ->")
+            appendLine("            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
+            appendLine("        }")
+            blankLine()
+            appendLine("        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { ${otherSideEntityIdFieldName} ->")
+            appendLine("            ${joinEntityClass}.newInstance(${thisSideEntityIdFieldName} = id, ${otherSideEntityIdFieldName} = ${otherSideEntityIdFieldName})")
+            appendLine("        }")
+            appendLine("        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
         }
 
         blankLine()

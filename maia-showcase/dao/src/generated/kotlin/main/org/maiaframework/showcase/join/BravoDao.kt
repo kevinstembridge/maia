@@ -283,14 +283,14 @@ class BravoDao(
             select
                 maia.alpha.id as alphaId,
                 maia.alpha.some_string as alphaName,
-                bravo.created_timestamp_utc as createdTimestampUtc,
-                bravo.id as id,
-                bravo.some_int as someInt,
-                bravo.some_string as someString
-            from maia.bravo
+                main.created_timestamp_utc as createdTimestampUtc,
+                main.id as id,
+                main.some_int as someInt,
+                main.some_string as someString
+            from maia.bravo main
             join maia.alpha
-                on maia.alpha.id = bravo.alpha_id
-            where bravo.id = :id
+                on maia.alpha.id = main.alpha_id
+            where main.id = :id
             """,
             SqlParams().apply {
                 addValue("id", id)

@@ -507,7 +507,13 @@ abstract class AbstractSpec protected constructor(
         this.rowMapperDefs.add(leftEntity.entityDef.entityPkAndNameDef.rowMapperDef)
         this.rowMapperDefs.add(rightEntity.entityDef.entityPkAndNameDef.rowMapperDef)
 
-        return ManyToManyEntityDef(entityDef, leftEntity, rightEntity)
+        val manyToManyEntityDef = ManyToManyEntityDef(entityDef, leftEntity, rightEntity)
+
+        val leftEntityCrudApiDef = leftEntity.entityDef.entityCrudApiDef
+        leftEntityCrudApiDef?.createApiDef?.crudApiDef?._manyToManyAssociations?.add(manyToManyEntityDef)
+        leftEntityCrudApiDef?.updateApiDef?.crudApiDef?._manyToManyAssociations?.add(manyToManyEntityDef)
+
+        return manyToManyEntityDef
 
     }
 

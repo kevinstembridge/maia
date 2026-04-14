@@ -1112,6 +1112,28 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val rightTypeaheadDef = typeahead(
+        "org.maiaframework.showcase.many_to_many",
+        "Right",
+        rightEntityDef,
+        idFieldName = "rightId",
+        sortFieldName = "someString",
+        searchTermFieldName = "someString",
+        indexVersion = 1
+    ) {
+        fieldFromEntity(
+            dtoFieldName = "id",
+            entityFieldName = "id",
+            esDocMappingType = EsDocMappingTypes.keyword
+        )
+        fieldFromEntity(
+            dtoFieldName = "someString",
+            entityFieldName = "someString",
+            esDocMappingType = EsDocMappingTypes.searchAsYouType
+        )
+    }
+
+
     val leftToRightManyToManyJoinEntityDef = manyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
         "LeftToRightManyToManyJoin",

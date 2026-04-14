@@ -283,14 +283,14 @@ class CharlieDao(
             select
                 maia.bravo.id as bravoId,
                 maia.bravo.some_string as bravoName,
-                charlie.created_timestamp_utc as createdTimestampUtc,
-                charlie.id as id,
-                charlie.some_int as someInt,
-                charlie.some_string as someString
-            from maia.charlie
+                main.created_timestamp_utc as createdTimestampUtc,
+                main.id as id,
+                main.some_int as someInt,
+                main.some_string as someString
+            from maia.charlie main
             join maia.bravo
-                on maia.bravo.id = charlie.bravo_id
-            where charlie.id = :id
+                on maia.bravo.id = main.bravo_id
+            where main.id = :id
             """,
             SqlParams().apply {
                 addValue("id", id)

@@ -4,6 +4,7 @@
 
 export interface LeftUpdateRequestDto {
     id: string;
+    rightEntityIds?: ReadonlyArray<string>;
     someInt: number;
     someString: string;
 }

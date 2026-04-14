@@ -3,20 +3,55 @@
 
 package org.maiaframework.showcase.many_to_many
 
+import org.maiaframework.domain.DomainId
+import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import org.maiaframework.jdbc.SqlParams
 
 
-class LeftFetchForEditDtoRowMapper : MaiaRowMapper<LeftFetchForEditDto> {
+class LeftFetchForEditDtoRowMapper(
+    private val jdbcOps: JdbcOps
+) : MaiaRowMapper<LeftFetchForEditDto> {
+
+
+    private val rightEntitiesPkAndNameDtoRowMapper = RightPkAndNameDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): LeftFetchForEditDto {
 
+        val entityId = rsa.readDomainId("id")
+
+        val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(entityId)
+
         return LeftFetchForEditDto(
             rsa.readInstant("createdTimestampUtc"),
             rsa.readDomainId("id"),
+            rightEntitiesPkAndNameDtoList,
             rsa.readInt("someInt"),
             rsa.readString("someString"),
+        )
+
+    }
+
+
+    private fun fetchRightEntitiesPkAndNameDtos(entityId: DomainId): List<RightPkAndNameDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                other.id,
+                other.some_string
+            from maia.right other
+            join maia.left_to_right_many_to_many_join mtm
+                on other.id = mtm.right_id
+            where mtm.left_id = :entityId
+            order by other.some_string
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+            this.rightEntitiesPkAndNameDtoRowMapper
         )
 
     }

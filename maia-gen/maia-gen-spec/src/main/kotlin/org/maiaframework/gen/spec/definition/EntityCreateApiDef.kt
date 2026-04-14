@@ -63,7 +63,7 @@ class EntityCreateApiDef(
         }
 
 
-    private val dtoFields = this.entityDef.allEntityFields
+    private val dtoFields by lazy { this.entityDef.allEntityFields
         .asSequence()
         .filterNot { it.isDerived.value }
         .filterNot { it.isHardcoded.value }
@@ -92,18 +92,29 @@ class EntityCreateApiDef(
             databaseIndexDef = this.entityDef.findUniqueDatabaseIndexDefFor(it.classFieldName
             )
         )}.toList()
+        .plus(
+            crudApiDef.manyToManyAssociations.map { manyToManyEntityDef ->
+                val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
+                val classFieldDef = ClassFieldDef.aClassField(
+                    "${otherSide.fieldName}EntityIds",
+                    FieldTypes.list(FieldTypes.domainId)
+                ).nullable().build()
+                RequestDtoFieldDef(classFieldDef, null)
+            }
+        )
+    }
 
 
     val preAuthorizeExpression = this.crudApiDef.authority?.let { PreAuthorizeExpression("hasAuthority('$it')") }
 
 
-    override val requestDtoDef = RequestDtoDef(
+    override val requestDtoDef by lazy { RequestDtoDef(
         dtoBaseName,
         packageName = entityDef.packageName,
         dtoFieldDefs = this.dtoFields,
         preAuthorizeExpression = preAuthorizeExpression,
         moduleName = moduleName
-    )
+    ) }
 
 
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
@@ -136,7 +147,7 @@ class EntityCreateApiDef(
     val angularDialogComponentImportStatement = angularDialogComponentNames.componentImportStatement
 
 
-    val angularDialogDef = AngularFormDef(
+    val angularDialogDef by lazy { AngularFormDef(
         angularComponentBaseName,
         requestDtoDef,
         featureNames = TreeSet(),
@@ -155,10 +166,10 @@ class EntityCreateApiDef(
         onSubmitServiceFunctionName = "create",
         entityDef.crudAngularComponentNames.serviceTypescriptImport,
         angularFormSystem
-    )
+    ) }
 
 
-    val angularInlineFormDef = if (this.crudApiDef.withEntityForm) {
+    val angularInlineFormDef by lazy { if (this.crudApiDef.withEntityForm) {
         AngularFormDef(
             angularComponentBaseName,
             requestDtoDef,
@@ -181,7 +192,7 @@ class EntityCreateApiDef(
         )
     } else {
         null
-    }
+    } }
 
 
 }

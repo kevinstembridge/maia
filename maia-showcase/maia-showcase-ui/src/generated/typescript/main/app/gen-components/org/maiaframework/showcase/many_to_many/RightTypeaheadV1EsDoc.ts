@@ -2,8 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 
-export interface LeftCreateRequestDto {
-    rightEntityIds?: ReadonlyArray<string>;
-    someInt: number;
+export interface RightTypeaheadV1EsDoc {
+    id: string;
     someString: string;
 }

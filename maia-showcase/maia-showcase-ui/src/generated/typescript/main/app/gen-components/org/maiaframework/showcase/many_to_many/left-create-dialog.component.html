@@ -31,6 +31,32 @@
                 <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Right Entities</mat-label>
+            <mat-chip-grid #chipGrid>
+                @for (entity of selectedRightEntities; track entity.id) {
+                    <mat-chip-row (removed)="removeRightEntity(entity)">
+                        {{ entity.someString }}
+                        <button matChipRemove type="button"><mat-icon>cancel</mat-icon></button>
+                    </mat-chip-row>
+                }
+            </mat-chip-grid>
+            <input
+                #rightEntityInput
+                placeholder="Search Right Entities..."
+                [formControl]="rightEntitySearchControl"
+                [matChipInputFor]="chipGrid"
+                [matAutocomplete]="rightEntityAuto"
+            />
+            <mat-autocomplete #rightEntityAuto="matAutocomplete" (optionSelected)="addRightEntity($event)">
+                @if (filteredRightEntitiesIsLoading()) {
+                    <mat-option disabled>Loading...</mat-option>
+                }
+                @for (option of filteredRightEntities; track option.id) {
+                    <mat-option [value]="option">{{ option.someString }}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
     </div>
     <div mat-dialog-actions>
         <button mat-flat-button type="submit" color="primary">Submit</button>

@@ -29,7 +29,18 @@ class LeftCrudService(
 
         val entity: LeftEntity = buildEntity(createDto)
 
-        return create(entity)
+        create(entity)
+
+        createDto.rightEntityIds.forEach { rightId ->
+            this.leftToRightManyToManyJoinRepo.insert(
+                LeftToRightManyToManyJoinEntity.newInstance(
+                    leftId = entity.id,
+                    rightId = rightId
+                )
+            )
+        }
+
+        return entity
 
     }
 
@@ -76,6 +87,15 @@ class LeftCrudService(
         }
 
         setFields(updater)
+
+        this.leftToRightManyToManyJoinRepo.findByLeftId(id).forEach { join ->
+            this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(join.id)
+        }
+
+        val newRightJoins = editDto.rightEntityIds.map { rightId ->
+            LeftToRightManyToManyJoinEntity.newInstance(leftId = id, rightId = rightId)
+        }
+        this.leftToRightManyToManyJoinRepo.bulkInsert(newRightJoins)
 
     }
 

@@ -283,14 +283,14 @@ class CharlieAgGridDao(
             select
                 maia.bravo_ag_grid.id as bravoId,
                 maia.bravo_ag_grid.some_string as bravoName,
-                charlie_ag_grid.created_timestamp_utc as createdTimestampUtc,
-                charlie_ag_grid.id as id,
-                charlie_ag_grid.some_int as someInt,
-                charlie_ag_grid.some_string as someString
-            from maia.charlie_ag_grid
+                main.created_timestamp_utc as createdTimestampUtc,
+                main.id as id,
+                main.some_int as someInt,
+                main.some_string as someString
+            from maia.charlie_ag_grid main
             join maia.bravo_ag_grid
-                on maia.bravo_ag_grid.id = charlie_ag_grid.bravo_id
-            where charlie_ag_grid.id = :id
+                on maia.bravo_ag_grid.id = main.bravo_id
+            where main.id = :id
             """,
             SqlParams().apply {
                 addValue("id", id)

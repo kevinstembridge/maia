@@ -8,7 +8,9 @@ import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 class FetchForEditDtoDef(
     packageName: PackageName,
     entityBaseName: EntityBaseName,
-    entityFieldDefs: List<EntityFieldDef>
+    entityFieldDefs: List<EntityFieldDef>,
+    manyToManyFieldDefs: List<ManyToManySearchableDtoFieldDef> = emptyList(),
+    rootEntityDef: EntityDef? = null
 ) {
 
 
@@ -20,7 +22,7 @@ class FetchForEditDtoDef(
             classFieldDef
         }
 
-    }
+    }.plus(manyToManyFieldDefs.map { it.classFieldDef })
 
 
     val dtoDef = DtoDefBuilder(
@@ -53,7 +55,10 @@ class FetchForEditDtoDef(
 
         }
 
-    }
+    }.plus(
+        if (rootEntityDef != null) manyToManyFieldDefs.map { ManyToManyRowMapperFieldDef(it, rootEntityDef) }
+        else emptyList()
+    ).sortedBy { it.classFieldName.value }
 
 
     val rowMapperDef = RowMapperDef(

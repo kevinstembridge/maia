@@ -376,20 +376,20 @@ class UserDao(
         return this.jdbcOps.queryForList(
             """
             select
-                v_party.authorities as authorities,
-                v_party.created_by_id as createdById,
-                v_party.created_timestamp_utc as createdTimestampUtc,
-                v_party.display_name as displayName,
-                v_party.encrypted_password as encryptedPassword,
-                v_party.first_name as firstName,
-                v_party.id as id,
-                v_party.last_modified_by_id as lastModifiedById,
-                v_party.last_modified_timestamp_utc as lastModifiedTimestampUtc,
-                v_party.last_name as lastName,
-                v_party.lifecycle_state as lifecycleState,
-                v_party.version as version
-            from maia.v_party
-            where v_party.id = :id
+                main.authorities as authorities,
+                main.created_by_id as createdById,
+                main.created_timestamp_utc as createdTimestampUtc,
+                main.display_name as displayName,
+                main.encrypted_password as encryptedPassword,
+                main.first_name as firstName,
+                main.id as id,
+                main.last_modified_by_id as lastModifiedById,
+                main.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                main.last_name as lastName,
+                main.lifecycle_state as lifecycleState,
+                main.version as version
+            from maia.v_party main
+            where main.id = :id
             """,
             SqlParams().apply {
                 addValue("id", id)

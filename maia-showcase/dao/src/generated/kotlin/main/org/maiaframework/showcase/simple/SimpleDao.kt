@@ -296,11 +296,11 @@ class SimpleDao(
         return this.jdbcOps.queryForList(
             """
             select
-                simple.created_timestamp_utc as createdTimestampUtc,
-                simple.id as id,
-                simple.some_string as someString
-            from maia.simple
-            where simple.id = :id
+                main.created_timestamp_utc as createdTimestampUtc,
+                main.id as id,
+                main.some_string as someString
+            from maia.simple main
+            where main.id = :id
             """,
             SqlParams().apply {
                 addValue("id", id)
