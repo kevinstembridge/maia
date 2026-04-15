@@ -7,14 +7,14 @@ import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/mate
 import {MatButtonModule} from '@angular/material/button';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatOptionModule} from '@angular/material/core';
-import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {LeftCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftCreateRequestDto';
+import {RightTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many_to_many/RightTypeaheadV1EsDoc';
 import {LeftCrudService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-crud.service';
 import {RightTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/right-typeahead-api.service';
-import {RightTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many_to_many/RightTypeaheadV1EsDoc';
 import {ProblemDetail} from '@maia/maia-ui';
 import {of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, switchMap, tap} from 'rxjs/operators';
