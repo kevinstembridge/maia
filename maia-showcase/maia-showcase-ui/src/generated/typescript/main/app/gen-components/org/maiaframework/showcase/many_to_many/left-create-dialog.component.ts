@@ -36,7 +36,9 @@ import {catchError, debounceTime, distinctUntilChanged, filter, switchMap, tap} 
         MatOptionModule,
         ReactiveFormsModule,
     ],
-    providers: [RightTypeaheadApiService],
+    providers: [
+        RightTypeaheadApiService,
+    ],
     selector: 'app-left-create-dialog',
     styleUrls: ['./left-create-dialog.component.scss'],
     templateUrl: './left-create-dialog.component.html'
