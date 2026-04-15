@@ -39,7 +39,9 @@ import {catchError, debounceTime, distinctUntilChanged, filter, switchMap, tap} 
         MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
-    providers: [RightTypeaheadApiService],
+    providers: [
+        RightTypeaheadApiService,
+    ],
     selector: 'app-left-edit-dialog',
     styleUrls: ['./left-edit-dialog.component.scss'],
     templateUrl: './left-edit-dialog.component.html'
