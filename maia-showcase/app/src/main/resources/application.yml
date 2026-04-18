@@ -19,10 +19,9 @@ spring:
     password: maia_app_password
     username: maia_app
   elasticsearch:
-    restclient:
-      ssl:
-        bundle: "elasticsearch-client"
-    uris: [ 'https://localhost:9200' ]
+    uris: [ 'http://localhost:9200' ]
+    username: elastic
+    password: maia_elastic_password
   flyway:
     user: maia_owner
     password: maia_owner_password
