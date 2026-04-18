@@ -33,6 +33,12 @@
     },
     {
       "path": "./projects/maia-ui/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/maia-elasticsearch/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/maia-elasticsearch/tsconfig.spec.json"
     }
   ]
 }

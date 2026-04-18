@@ -1,0 +1,16 @@
+<div class="mt-5">
+    <h3>{{ index.indexName }}</h3>
+    <h5>{{ index.health?.status }}</h5>
+    <h5>{{ index.summary?.description }}</h5>
+    <h5>Is Active Version = {{ index.summary?.isActiveVersion }}</h5>
+    @if (!index.indexExists) {
+        <div>
+            <button mat-flat-button (click)="onCreateIndex()" color="primary">Create...</button>
+        </div>
+    }
+    @if (index.indexExists && !index.summary?.isActiveVersion) {
+        <div>
+            <button mat-flat-button (click)="onSetIndexVersionActive()" color="primary">Set as Active Version...</button>
+        </div>
+    }
+</div>

@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Activate Index Version?</h1>
+<div mat-dialog-content>
+    <h5>Do you want to set this index version active...</h5>
+    <h5>&nbsp;&nbsp;&nbsp;&nbsp;{{ dto.indexName }}</h5>
+</div>
+<div mat-dialog-actions>
+    <button mat-flat-button (click)="onSubmit()" color="primary">Yes</button>
+    <button mat-flat-button (click)="onCancel()">Cancel</button>
+</div>

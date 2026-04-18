@@ -1,0 +1,15 @@
+<div>
+    <mat-slide-toggle
+        [checked]="store.hideSystemIndices()"
+        (change)="store.onHideSystemIndicesChanged($event)">
+        Hide system indices
+    </mat-slide-toggle>
+</div>
+
+@for (index of store.visibleIndexStateDtos(); track index.indexName) {
+    <maia-elastic-index
+        [index]="index"
+        (createIndex)="onCreateIndex($event)"
+        (setIndexVersionActive)="onSetIndexVersionActive($event)">
+    </maia-elastic-index>
+}
