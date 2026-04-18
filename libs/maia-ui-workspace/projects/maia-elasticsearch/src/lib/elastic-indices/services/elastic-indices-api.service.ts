@@ -18,10 +18,10 @@ export class ElasticIndicesApiService {
         );
     }
 
-    createIndex(indexName: string) {
-        this.http.post(`${this.baseUrl}/elastic_index/create/${indexName}`, null).pipe(
+    createIndex(indexName: string): Observable<unknown> {
+        return this.http.post(`${this.baseUrl}/elastic_index/create/${indexName}`, null).pipe(
             catchError(this.handleError('createIndex'))
-        ).subscribe();
+        );
     }
 
     onSetIndexVersionActive(indexName: string) {

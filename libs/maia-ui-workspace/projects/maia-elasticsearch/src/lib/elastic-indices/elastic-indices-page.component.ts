@@ -8,6 +8,7 @@ import {ElasticIndexComponent} from './components/elastic-index/elastic-index.co
 import {CreateIndexDialogComponent} from './dialogs/create-index-dialog/create-index-dialog.component';
 import {SetIndexVersionActiveDialogComponent} from './dialogs/set-index-version-active-dialog/set-index-version-active-dialog.component';
 
+
 @Component({
     imports: [ElasticIndexComponent, MatSlideToggle],
     providers: [ElasticIndicesApiService, ElasticIndicesPageStore],
@@ -16,16 +17,20 @@ import {SetIndexVersionActiveDialogComponent} from './dialogs/set-index-version-
 })
 export class ElasticIndicesPageComponent implements OnInit {
 
+
     readonly store = inject(ElasticIndicesPageStore);
+
 
     constructor(
         private elasticIndicesService: ElasticIndicesApiService,
         private dialog: MatDialog
     ) {}
 
+
     ngOnInit() {
         this.store.fetchAllIndices();
     }
+
 
     onCreateIndex(dto: EsIndexStateDto) {
         const dialogRef = this.dialog.open(CreateIndexDialogComponent, {
@@ -34,10 +39,13 @@ export class ElasticIndicesPageComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.elasticIndicesService.createIndex(dto.indexName);
+                this.elasticIndicesService.createIndex(dto.indexName).subscribe(() => {
+                    this.store.fetchAllIndices();
+                });
             }
         });
     }
+
 
     onSetIndexVersionActive(dto: EsIndexStateDto) {
         const dialogRef = this.dialog.open(SetIndexVersionActiveDialogComponent, {
@@ -49,5 +57,6 @@ export class ElasticIndicesPageComponent implements OnInit {
             }
         });
     }
+
 
 }

@@ -20,13 +20,19 @@ class AngularRoutingFilter(
         val mode = request.getHeader("Sec-Fetch-Mode")
         val uri = request.requestURI
 
-        when {
-            mode == "navigate" && excludedPathPrefixes.none { uri.startsWith(it) } -> {
-                val rd = request.getRequestDispatcher("/")
-                rd.forward(request, response)
-            }
-            else -> filterChain.doFilter(request, response)
+        if (mode == "navigate" && uri.notExcluded()) {
+            val requestDispatcher = request.getRequestDispatcher("/")
+            requestDispatcher.forward(request, response)
+        } else {
+            filterChain.doFilter(request, response)
         }
+
+    }
+
+
+    private fun String.notExcluded(): Boolean {
+
+        return excludedPathPrefixes.none { this.startsWith(it) }
 
     }
 

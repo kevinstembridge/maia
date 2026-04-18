@@ -1,1 +1,2 @@
 org.maiaframework.elasticsearch.MaiaElasticsearchAutoConfiguration
+org.maiaframework.elasticsearch.MaiaElasticsearchWebAutoConfiguration
