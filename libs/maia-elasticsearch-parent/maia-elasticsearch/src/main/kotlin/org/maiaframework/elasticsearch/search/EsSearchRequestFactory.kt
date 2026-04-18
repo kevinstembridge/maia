@@ -8,9 +8,7 @@ import co.elastic.clients.elasticsearch.core.SearchRequest
 import org.maiaframework.elasticsearch.index.EsIndexName
 import org.maiaframework.json.JsonNodeExtensions.getStringOrNull
 import org.maiaframework.domain.search.AgGridSearchModel
-import org.springframework.stereotype.Component
 
-@Component
 class EsSearchRequestFactory {
 
 

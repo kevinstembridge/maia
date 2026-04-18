@@ -4,9 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient
 import org.maiaframework.elasticsearch.index.EsIndexName
 import org.maiaframework.elasticsearch.results.IndexSearchResults
 import org.maiaframework.domain.search.AgGridSearchModel
-import org.springframework.stereotype.Component
 
-@Component
 class EsSearchExecutor(
     private val esSearchRequestFactory: EsSearchRequestFactory,
     private val esClient: ElasticsearchClient

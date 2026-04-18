@@ -2,9 +2,7 @@ package org.maiaframework.elasticsearch.index
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient
 import co.elastic.clients.elasticsearch._types.ElasticsearchException
-import org.springframework.stereotype.Component
 
-@Component
 class ElasticIndexHelper(private val client: ElasticsearchClient) {
 
 

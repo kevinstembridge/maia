@@ -2,7 +2,6 @@ package org.maiaframework.elasticsearch.index
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.props.Props
-import org.springframework.stereotype.Component
 
 /**
  * This class provides the names of the Elasticsearch indices in the application but its
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component
  * application and some tests. When we can afford the hardware to run multiple Elasticsearch
  * environments we should stop doing this. (Or if we get around to running ES in Docker)
  */
-@Component
 class EsIndexNameOverrider(private val props: Props, private val esIndexNameFactory: EsIndexNameFactory) {
 
     private val logger = getLogger<EsIndexNameOverrider>()

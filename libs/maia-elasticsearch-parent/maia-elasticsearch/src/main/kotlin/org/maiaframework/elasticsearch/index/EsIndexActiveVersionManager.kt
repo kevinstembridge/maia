@@ -2,10 +2,8 @@ package org.maiaframework.elasticsearch.index
 
 import org.maiaframework.props.Props
 import org.maiaframework.props.PropsManager
-import org.springframework.stereotype.Component
 import java.security.Principal
 
-@Component
 class EsIndexActiveVersionManager(private val props: Props, private val propsManager: PropsManager) {
 
 

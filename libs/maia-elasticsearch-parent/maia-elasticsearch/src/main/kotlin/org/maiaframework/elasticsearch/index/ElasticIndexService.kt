@@ -3,10 +3,8 @@ package org.maiaframework.elasticsearch.index
 import co.elastic.clients.elasticsearch.ElasticsearchClient
 import co.elastic.clients.elasticsearch._types.Level
 import org.maiaframework.common.logging.getLogger
-import org.springframework.stereotype.Component
 import java.security.Principal
 
-@Component
 class ElasticIndexService(
     private val client: ElasticsearchClient,
     private val controlRegistry: EsIndexControlRegistry,
