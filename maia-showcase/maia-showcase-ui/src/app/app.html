@@ -33,6 +33,12 @@
                 <span>Users</span>
             </button>
         }
+        @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/left_searchable">
+                <mat-icon>dialpad</mat-icon>
+                <span>Left Many to Many</span>
+            </button>
+        }
     </mat-menu>
 
     <span class="ml-2 text-xl font-medium md:ml-0">{{ title() }}</span>
