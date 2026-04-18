@@ -1,5 +1,5 @@
 
-TODO * Consider renaming DtoHtmlTable... to BlotterRow...
+TODO * Rename ...-spring-boot-starter to ...-starter.
 
 TODO * Many-to-many relationship.
     => Define a many-to-many relationship and generate the full CRUD stack for it.
@@ -10,8 +10,8 @@ TODO * Many-to-many relationship.
     TODO * The Create and Edit forms should be able to select multiple Right entities.
         TODO * Create a CrudPlaywrightTest for this.
 
-TODO * The Request DTOs with getters should use lazy loading instead.
-TODO * The 'create' endpoints should return 201
+TODO * Consider renaming DtoHtmlTable... to BlotterRow...
+TODO * The Request DTOs with getters should use lazy loading instead. => someField: String by lazy {...}
 TODO * Install the superpowers-extended-cc plugin.
 TODO * Test edit on an entity that has a foreign key.
     TODO * Manual test

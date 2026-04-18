@@ -7,7 +7,6 @@ import maia.hazelcast.MaiaHazelcastConfig
 import maia_props.hazelcast.Maia_propsHazelcastConfig
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.json.StringTrimmingDeserializer
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -87,8 +86,12 @@ class MaiaShowcaseAppConfiguration {
     }
 
 
-    @Bean("angularRoutingExcludedPaths")
-    fun angularRoutingExcludedPaths(): Set<String> = setOf("/swagger-ui", "/v3/api-docs", "/webjars")
+    @Bean
+    fun angularRoutingExcludedPaths(): Set<String> {
+
+        return setOf("/swagger-ui", "/v3/api-docs", "/webjars")
+
+    }
 
 
 }
