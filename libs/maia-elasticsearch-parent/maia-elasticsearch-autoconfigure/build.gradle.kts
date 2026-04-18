@@ -6,7 +6,6 @@ plugins {
 dependencies {
     api(project(":libs:maia-elasticsearch-parent:maia-elasticsearch"))
 
-    implementation("org.springframework.boot:spring-boot-autoconfigure")
     implementation("org.springframework.boot:spring-boot-starter")
 
     annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor:3.5.6")

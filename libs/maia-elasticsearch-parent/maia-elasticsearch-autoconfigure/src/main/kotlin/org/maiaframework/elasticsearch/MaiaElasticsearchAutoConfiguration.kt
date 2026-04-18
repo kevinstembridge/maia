@@ -17,7 +17,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 
 @AutoConfiguration
-@ConditionalOnClass(ElasticsearchClient::class)
+@ConditionalOnClass(ElasticIndexService::class)
 class MaiaElasticsearchAutoConfiguration {
 
     @Bean
@@ -59,7 +59,7 @@ class MaiaElasticsearchAutoConfiguration {
     @ConditionalOnMissingBean
     fun esSearchExecutor(
         esSearchRequestFactory: EsSearchRequestFactory,
-        esClient: ElasticsearchClient
-    ): EsSearchExecutor = EsSearchExecutor(esSearchRequestFactory, esClient)
+        client: ElasticsearchClient
+    ): EsSearchExecutor = EsSearchExecutor(esSearchRequestFactory, client)
 
 }
