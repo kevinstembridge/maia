@@ -22,27 +22,51 @@ import org.springframework.context.annotation.Bean
 @ConditionalOnClass(ElasticIndexService::class)
 class MaiaElasticsearchAutoConfiguration {
 
-    @Bean
-    @ConditionalOnMissingBean
-    fun esIndexNameFactory(): EsIndexNameFactory = EsIndexNameFactory()
 
     @Bean
     @ConditionalOnMissingBean
-    fun esIndexActiveVersionManager(props: Props, propsManager: PropsManager): EsIndexActiveVersionManager =
-        EsIndexActiveVersionManager(props, propsManager)
+    fun esIndexNameFactory(): EsIndexNameFactory {
+
+        return EsIndexNameFactory()
+
+    }
+
 
     @Bean
     @ConditionalOnMissingBean
-    fun esIndexNameOverrider(props: Props, esIndexNameFactory: EsIndexNameFactory): EsIndexNameOverrider =
-        EsIndexNameOverrider(props, esIndexNameFactory)
+    fun esIndexActiveVersionManager(props: Props, propsManager: PropsManager): EsIndexActiveVersionManager {
+
+        return EsIndexActiveVersionManager(props, propsManager)
+
+    }
+
 
     @Bean
     @ConditionalOnMissingBean
-    fun esIndexControlRegistry(): EsIndexControlRegistry = EsIndexControlRegistry()
+    fun esIndexNameOverrider(props: Props, esIndexNameFactory: EsIndexNameFactory): EsIndexNameOverrider {
+
+        return EsIndexNameOverrider(props, esIndexNameFactory)
+
+    }
+
 
     @Bean
     @ConditionalOnMissingBean
-    fun elasticIndexHelper(client: ElasticsearchClient): ElasticIndexHelper = ElasticIndexHelper(client)
+    fun esIndexControlRegistry(): EsIndexControlRegistry {
+
+        return EsIndexControlRegistry()
+
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun elasticIndexHelper(client: ElasticsearchClient): ElasticIndexHelper {
+
+        return ElasticIndexHelper(client)
+
+    }
+
 
     @Bean
     @ConditionalOnMissingBean
@@ -51,34 +75,62 @@ class MaiaElasticsearchAutoConfiguration {
         controlRegistry: EsIndexControlRegistry,
         esIndexNameFactory: EsIndexNameFactory,
         esIndexActiveVersionManager: EsIndexActiveVersionManager
-    ): ElasticIndexService = ElasticIndexService(client, controlRegistry, esIndexNameFactory, esIndexActiveVersionManager)
+    ): ElasticIndexService {
+
+        return ElasticIndexService(client, controlRegistry, esIndexNameFactory, esIndexActiveVersionManager)
+
+    }
+
 
     @Bean
     @ConditionalOnMissingBean
-    fun esSearchRequestFactory(): EsSearchRequestFactory = EsSearchRequestFactory()
+    fun esSearchRequestFactory(): EsSearchRequestFactory {
+
+        return EsSearchRequestFactory()
+
+    }
+
 
     @Bean
     @ConditionalOnMissingBean
     fun esSearchExecutor(
         esSearchRequestFactory: EsSearchRequestFactory,
         client: ElasticsearchClient
-    ): EsSearchExecutor = EsSearchExecutor(esSearchRequestFactory, client)
+    ): EsSearchExecutor {
+
+        return EsSearchExecutor(esSearchRequestFactory, client)
+
+    }
+
 
     @Bean
     @ConditionalOnMissingBean
-    fun esPaginationHelper(client: ElasticsearchClient): EsPaginationHelper =
-        EsPaginationHelper(client)
+    fun esPaginationHelper(client: ElasticsearchClient): EsPaginationHelper {
+
+        return EsPaginationHelper(client)
+
+    }
+
 
     @Bean
     @ConditionalOnMissingBean
-    fun esIndexOps(client: ElasticsearchClient, esPaginationHelper: EsPaginationHelper): EsIndexOps =
-        EsIndexOps(client, esPaginationHelper)
+    fun esIndexOps(client: ElasticsearchClient, esPaginationHelper: EsPaginationHelper): EsIndexOps {
+
+        return EsIndexOps(client, esPaginationHelper)
+
+    }
+
 
     @Bean
     @ConditionalOnMissingBean
     fun esIndexNameLookup(
         esIndexActiveVersionManager: EsIndexActiveVersionManager,
         esIndexNameOverrider: EsIndexNameOverrider
-    ): EsIndexNameLookup = EsIndexNameLookup(esIndexActiveVersionManager, esIndexNameOverrider)
+    ): EsIndexNameLookup {
+
+        return EsIndexNameLookup(esIndexActiveVersionManager, esIndexNameOverrider)
+
+    }
+
 
 }
