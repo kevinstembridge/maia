@@ -18,7 +18,6 @@ import tools.jackson.databind.module.SimpleModule
 @Configuration
 @ComponentScan(basePackages = [
     "org.maiaframework.json",
-    "org.maiaframework.elasticsearch",
     "org.maiaframework.webapp",
     "maia_props",
     "maia.hazelcast",

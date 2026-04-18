@@ -9,6 +9,7 @@ dependencies {
     implementation(platform(project(":maia-platform")))
 
     implementation(project(":libs:maia-props-parent:maia-props-spring-boot-starter"))
+    implementation(project(":libs:maia-elasticsearch-parent:maia-elasticsearch-spring-boot-starter"))
     implementation(project(":libs:maia-problem-parent:maia-problem-starter"))
     implementation(project(":libs:maia-webapp:maia-webapp-app"))
     implementation(project(":maia-showcase:repo"))
