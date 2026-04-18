@@ -1,8 +1,5 @@
 package org.maiaframework.elasticsearch.index
 
-import org.springframework.stereotype.Component
-
-@Component
 class EsIndexNameLookup(
     private val esIndexActiveVersionManager: EsIndexActiveVersionManager,
     private val esIndexNameOverrider: EsIndexNameOverrider

@@ -4,7 +4,9 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient
 import org.maiaframework.elasticsearch.index.EsIndexActiveVersionManager
 import org.maiaframework.elasticsearch.index.EsIndexControlRegistry
 import org.maiaframework.elasticsearch.index.EsIndexNameFactory
+import org.maiaframework.elasticsearch.index.EsIndexNameLookup
 import org.maiaframework.elasticsearch.index.EsIndexNameOverrider
+import org.maiaframework.elasticsearch.index.EsIndexOps
 import org.maiaframework.elasticsearch.index.ElasticIndexHelper
 import org.maiaframework.elasticsearch.index.ElasticIndexService
 import org.maiaframework.elasticsearch.search.EsSearchExecutor
@@ -61,5 +63,22 @@ class MaiaElasticsearchAutoConfiguration {
         esSearchRequestFactory: EsSearchRequestFactory,
         client: ElasticsearchClient
     ): EsSearchExecutor = EsSearchExecutor(esSearchRequestFactory, client)
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun esPaginationHelper(client: ElasticsearchClient): EsPaginationHelper =
+        EsPaginationHelper(client)
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun esIndexOps(client: ElasticsearchClient, esPaginationHelper: EsPaginationHelper): EsIndexOps =
+        EsIndexOps(client, esPaginationHelper)
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun esIndexNameLookup(
+        esIndexActiveVersionManager: EsIndexActiveVersionManager,
+        esIndexNameOverrider: EsIndexNameOverrider
+    ): EsIndexNameLookup = EsIndexNameLookup(esIndexActiveVersionManager, esIndexNameOverrider)
 
 }

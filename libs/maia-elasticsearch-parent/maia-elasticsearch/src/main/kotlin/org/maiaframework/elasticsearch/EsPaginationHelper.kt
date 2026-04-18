@@ -5,10 +5,8 @@ import co.elastic.clients.elasticsearch._types.FieldValue
 import co.elastic.clients.elasticsearch.core.SearchRequest
 import co.elastic.clients.elasticsearch.core.SearchResponse
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata
-import org.springframework.stereotype.Component
 
 
-@Component
 class EsPaginationHelper(private val client: ElasticsearchClient) {
 
 

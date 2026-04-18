@@ -11,10 +11,8 @@ import org.maiaframework.common.logging.getLogger
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.EsPaginationHelper
 import org.maiaframework.metrics.JobMetrics
-import org.springframework.stereotype.Component
 
 
-@Component
 class EsIndexOps(private val client: ElasticsearchClient, private val paginationHelper: EsPaginationHelper) {
 
 
