@@ -19,6 +19,9 @@ spring:
     password: maia_app_password
     username: maia_app
   elasticsearch:
+    restclient:
+      ssl:
+        bundle: "elasticsearch-client"
     uris: [ 'https://localhost:9200' ]
   flyway:
     user: maia_owner
@@ -27,6 +30,12 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+  ssl:
+    bundle:
+      pem:
+        elasticsearch-client:
+          truststore:
+            certificate: "classpath:certs/local-elasticsearch-ca.crt"
   web:
     resources:
       static-locations: classpath:/static/browser
