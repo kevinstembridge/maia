@@ -24,7 +24,7 @@ dependencies {
         api("jakarta.validation:jakarta.validation-api:3.1.1")
         api("net.sf.supercsv:super-csv-java8:2.4.0") // TODO Do we still need this? We changed to opencsv due to its flexibility
         api("org.apache.commons:commons-csv:1.10.0") // TODO Do we still need this? We changed to opencsv due to its flexibility
-        api("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
+        api("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
         api("org.testcontainers:elasticsearch:1.21.4")
         api("org.testcontainers:junit-jupiter:1.21.4")
         api("org.testcontainers:postgresql:1.21.4")
