@@ -41,6 +41,11 @@ export class App {
     );
 
 
+    protected readonly hasSysOpsAuthority = computed(() =>
+        this.currentUserAuthStore.hasSysOpsAuthority()
+    );
+
+
     protected toggleMenu(): void {
 
         this.menuOpen.update((open) => !open);

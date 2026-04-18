@@ -64,4 +64,11 @@ export const routes: Routes = [
                 (m) => m.LeftSearchableBlotterPage,
             ),
     },
+    {
+        path: 'elastic_indices',
+        loadComponent: () =>
+            import('@app/pages/elastic-indices/elastic-indices-page.component').then(
+                (m) => m.ElasticIndicesPageComponent,
+            ),
+    },
 ];

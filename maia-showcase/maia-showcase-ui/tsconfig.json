@@ -22,6 +22,9 @@
         "@maia/maia-ui": [
             "../../libs/maia-ui-workspace/dist/maia-ui"
         ],
+        "@maia/maia-elasticsearch": [
+            "../../libs/maia-ui-workspace/dist/maia-elasticsearch"
+        ],
         "@angular/core": ["./node_modules/@angular/core"],
         "@angular/common": ["./node_modules/@angular/common"]
     }

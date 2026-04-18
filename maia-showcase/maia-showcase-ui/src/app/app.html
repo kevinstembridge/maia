@@ -39,6 +39,12 @@
                 <span>Left Many to Many</span>
             </button>
         }
+        @if (hasSysOpsAuthority()) {
+            <button mat-menu-item routerLink="/elastic_indices">
+                <mat-icon>storage</mat-icon>
+                <span>Elastic Indices</span>
+            </button>
+        }
     </mat-menu>
 
     <span class="ml-2 text-xl font-medium md:ml-0">{{ title() }}</span>
