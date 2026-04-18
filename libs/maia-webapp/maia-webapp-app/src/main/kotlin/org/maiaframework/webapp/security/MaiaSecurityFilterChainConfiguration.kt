@@ -1,6 +1,8 @@
 package org.maiaframework.webapp.security
 
 import org.maiaframework.webapp.AngularRoutingFilter
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -19,6 +21,11 @@ import org.springframework.security.web.csrf.CsrfFilter
 @EnableWebSecurity
 @EnableMethodSecurity
 class MaiaSecurityFilterChainConfiguration {
+
+
+    @Autowired(required = false)
+    @Qualifier("angularRoutingExcludedPaths")
+    private var angularRoutingExcludedPaths: Set<String>? = null
 
 
     @Bean
@@ -41,7 +48,7 @@ class MaiaSecurityFilterChainConfiguration {
 
             // The order of Spring's security filters can be found here:
             // https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-security-filters
-            addFilterBefore<SecurityContextHolderFilter>(AngularRoutingFilter())
+            addFilterBefore<SecurityContextHolderFilter>(AngularRoutingFilter(angularRoutingExcludedPaths ?: emptySet()))
 
             exceptionHandling { this.accessDeniedHandler = accessDeniedHandler }
 
