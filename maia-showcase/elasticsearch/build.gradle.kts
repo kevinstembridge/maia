@@ -13,7 +13,7 @@ dependencies {
 
     implementation(kotlin("reflect"))
 
-    api(project(":libs:maia-elasticsearch"))
+    api(project(":libs:maia-elasticsearch-parent:maia-elasticsearch"))
 
     maiagen(project(":maia-gen:maia-gen-generator"))
     maiagen(project(":maia-showcase:spec"))

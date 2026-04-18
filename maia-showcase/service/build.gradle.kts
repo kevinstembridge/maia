@@ -18,7 +18,7 @@ dependencies {
 
     implementation(project(":libs:maia-problem-parent:maia-problem"))
     implementation(project(":maia-showcase:repo"))
-    implementation(project(":libs:maia-elasticsearch"))
+    implementation(project(":libs:maia-elasticsearch-parent:maia-elasticsearch"))
 
     api("org.maiaframework:maia-common")
 //    api("org.maiaframework:maia-csv")
