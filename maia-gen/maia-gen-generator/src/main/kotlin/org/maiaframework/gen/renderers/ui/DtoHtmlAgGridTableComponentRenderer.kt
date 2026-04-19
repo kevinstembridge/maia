@@ -1,11 +1,13 @@
 package org.maiaframework.gen.renderers.ui
 
+import org.maiaframework.gen.spec.definition.AgGridCellRendererDefs
 import org.maiaframework.gen.spec.definition.AuthoritiesDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableActionColumnDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableColumnDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
 
 class DtoHtmlAgGridTableComponentRenderer(
@@ -28,6 +30,12 @@ class DtoHtmlAgGridTableComponentRenderer(
             .map { it.typescriptImport }
             .toSet()
             .forEach { addImport(it) }
+
+        if (dtoHtmlTableDef.dtoHtmlTableColumnDefs.any { col ->
+            col is DtoHtmlTableColumnDef && col.fieldType is ListFieldType && (col.fieldType as ListFieldType).parameterFieldType is PkAndNameFieldType
+        }) {
+            addImport(AgGridCellRendererDefs.chips.typescriptImport)
+        }
 
         addImport("@angular/common", "DecimalPipe")
         addImport("@angular/core", "Component")
@@ -282,7 +290,12 @@ class DtoHtmlAgGridTableComponentRenderer(
         }
 
         if (fieldDef.fieldType is ListFieldType) {
-            attributes["valueFormatter"] = "(params) => params.value?.join(', ') ?? ''"
+            val listFieldType = fieldDef.fieldType as ListFieldType
+            if (listFieldType.parameterFieldType is PkAndNameFieldType) {
+                attributes["cellRenderer"] = AgGridCellRendererDefs.chips.componentClassName
+            } else {
+                attributes["valueFormatter"] = "(params) => params.value?.join(', ') ?? ''"
+            }
         }
 
         val keyValues = attributes.map { "${it.key}: ${it.value}" }

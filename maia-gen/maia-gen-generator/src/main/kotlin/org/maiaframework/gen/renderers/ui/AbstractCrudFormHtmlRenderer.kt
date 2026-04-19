@@ -17,6 +17,10 @@ abstract class AbstractCrudFormHtmlRenderer(
     protected abstract val formFields: List<AngularFormFieldDef>
 
 
+    // TODO MTM:
+    protected open fun renderManyToManyChipFields() {}
+
+
     override fun renderSource(): String {
 
         val matDialogContentText = when (inlineFormOrDialog) {
@@ -45,6 +49,9 @@ abstract class AbstractCrudFormHtmlRenderer(
         formFields.forEach { formFieldDef ->
             MatFormFieldRenderer.renderSignalFormField(formFieldDef, this)
         }
+
+        // TODO MTM:
+        renderManyToManyChipFields()
 
         val matDialogActionsText = when (inlineFormOrDialog) {
             InlineFormOrDialog.DIALOG -> " mat-dialog-actions"

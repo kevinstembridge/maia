@@ -1,5 +1,5 @@
 
-TODO * Rename ...-spring-boot-starter to ...-starter.
+TODO * Refactor Jobs Dashboard to use field injection and signal outputs instead of EventEmitters.
 
 TODO * Many-to-many relationship.
     => Define a many-to-many relationship and generate the full CRUD stack for it.

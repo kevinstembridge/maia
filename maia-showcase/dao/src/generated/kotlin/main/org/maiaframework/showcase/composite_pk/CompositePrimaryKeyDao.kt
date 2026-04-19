@@ -318,13 +318,13 @@ class CompositePrimaryKeyDao(
         return this.jdbcOps.queryForList(
             """
             select
-                main.created_timestamp_utc as createdTimestampUtc,
-                main.some_int as someInt,
-                main.some_modifiable_string as someModifiableString,
-                main.some_string as someString,
-                main.version as version
-            from maia.composite_primary_key main
-            where main.some_string = :someString and main.some_int = :someInt
+                maia.composite_primary_key.created_timestamp_utc as createdTimestampUtc,
+                maia.composite_primary_key.some_int as someInt,
+                maia.composite_primary_key.some_modifiable_string as someModifiableString,
+                maia.composite_primary_key.some_string as someString,
+                maia.composite_primary_key.version as version
+            from maia.composite_primary_key
+            where maia.composite_primary_key.some_string = :someString and maia.composite_primary_key.some_int = :someInt
             """,
             SqlParams().apply {
                 addValue("someString", primaryKey.someString)

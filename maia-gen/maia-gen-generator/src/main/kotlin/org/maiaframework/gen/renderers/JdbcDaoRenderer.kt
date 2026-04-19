@@ -1788,7 +1788,7 @@ class JdbcDaoRenderer(
 
             if (foreignKeyFieldDef == null) {
 
-                listOf("main.${entityFieldDef.tableColumnName} as ${entityFieldDef.classFieldName}")
+                listOf("${entityDef.schemaAndTableName}.${entityFieldDef.tableColumnName} as ${entityFieldDef.classFieldName}")
 
             } else {
 
@@ -1824,13 +1824,13 @@ class JdbcDaoRenderer(
                 val alias = "${foreignKeyFieldDef.foreignKeyFieldName.toSnakeCase()}_${foreignEntityDef.tableName}"
 
                 """join ${foreignEntityDef.schemaAndTableName} $alias
-                on $alias.id = main.${entityFieldDef.tableColumnName}
+                on $alias.id = ${entityDef.schemaAndTableName}.${entityFieldDef.tableColumnName}
                 """.trimIndent()
 
             } else {
 
                 """join ${foreignEntityDef.schemaAndTableName}
-                on ${foreignEntityDef.schemaAndTableName}.id = main.${entityFieldDef.tableColumnName}
+                on ${foreignEntityDef.schemaAndTableName}.id = ${entityDef.schemaAndTableName}.${entityFieldDef.tableColumnName}
                 """.trimIndent()
 
             }
@@ -1848,11 +1848,11 @@ class JdbcDaoRenderer(
         appendLine("            select")
         renderStrings(selectColumns, indent = 16)
         newLine()
-        appendLine("            from ${entityDef.schemaAndTableName} main")
+        appendLine("            from ${entityDef.schemaAndTableName}")
         joinClauses.forEach { appendLine("            $it") }
 
         val primaryKeyClauses = entityDef.primaryKeyFields.joinToString(" and ") { entityFieldDef ->
-            "main.${entityFieldDef.tableColumnName} = :${entityFieldDef.classFieldName}"
+            "${entityDef.schemaAndTableName}.${entityFieldDef.tableColumnName} = :${entityFieldDef.classFieldName}"
         }
 
         appendLine("            where $primaryKeyClauses")

@@ -5,7 +5,8 @@ import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
 class EntityCreateDialogReactiveFormHtmlRenderer(
-    private val createApiDef: EntityCreateApiDef
+    private val createApiDef: EntityCreateApiDef,
+    private val chipFields: List<ManyToManyChipFieldDef> = emptyList()
 ) : AbstractCrudReactiveFormHtmlRenderer(
     createApiDef.entityDef,
     InlineFormOrDialog.DIALOG
@@ -21,6 +22,41 @@ class EntityCreateDialogReactiveFormHtmlRenderer(
     override fun renderedFilePath(): String {
 
         return this.createApiDef.angularDialogComponentHtmlFilePath
+
+    }
+
+
+    override fun renderManyToManyChipFields() {
+
+        chipFields.forEach { chip ->
+            appendLine("""
+                |        <mat-form-field appearance="outline">
+                |            <mat-label>${chip.labelText}</mat-label>
+                |            <mat-chip-grid #chipGrid>
+                |                @for (entity of ${chip.selectedFieldName}; track entity.${chip.esDocIdFieldName}) {
+                |                    <mat-chip-row (removed)="${chip.removeMethodName}(entity)">
+                |                        {{ entity.${chip.searchTermFieldName} }}
+                |                        <button matChipRemove type="button"><mat-icon>cancel</mat-icon></button>
+                |                    </mat-chip-row>
+                |                }
+                |            </mat-chip-grid>
+                |            <input
+                |                #${chip.inputRefName}
+                |                placeholder="${chip.searchPlaceholder}"
+                |                [formControl]="${chip.searchControlFieldName}"
+                |                [matChipInputFor]="chipGrid"
+                |                [matAutocomplete]="${chip.autocompleteRefName}"
+                |            />
+                |            <mat-autocomplete #${chip.autocompleteRefName}="matAutocomplete" (optionSelected)="${chip.addMethodName}(${'$'}event)">
+                |                @if (${chip.filteredIsLoadingFieldName}()) {
+                |                    <mat-option disabled>Loading...</mat-option>
+                |                }
+                |                @for (option of ${chip.filteredFieldName}; track option.${chip.esDocIdFieldName}) {
+                |                    <mat-option [value]="option">{{ option.${chip.searchTermFieldName} }}</mat-option>
+                |                }
+                |            </mat-autocomplete>
+                |        </mat-form-field>""".trimMargin())
+        }
 
     }
 

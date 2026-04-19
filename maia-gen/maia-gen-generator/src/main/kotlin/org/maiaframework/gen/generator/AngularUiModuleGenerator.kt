@@ -44,6 +44,7 @@ import org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
 import org.maiaframework.gen.renderers.ui.ForeignKeyReferencesExistResponseDtoRenderer
 import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.FormScssRenderer
+import org.maiaframework.gen.renderers.ui.ManyToManyChipFieldDef
 import org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadAngularServiceRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadFieldValidatorRenderer
@@ -53,7 +54,9 @@ import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
+import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
+import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ClassDef
@@ -87,6 +90,27 @@ class AngularUiModuleGenerator(
 ): AbstractModuleGenerator(
     maiaGenerationContext
 ) {
+
+    private val typeaheadByEntityDef by lazy {
+        this.modelDef.typeaheadDefs
+            .mapNotNull { td -> td.esDocDef.entityDef?.let { it to td } }
+            .toMap()
+    }
+
+
+    // TODO MTM: This should live in the model somewhere, not in the generator
+    private fun manyToManyChipFieldsFor(
+        entityDef: EntityDef,
+        associations: List<ManyToManyEntityDef>
+    ): List<ManyToManyChipFieldDef> {
+
+        return associations.mapNotNull { m2m ->
+            val otherSide = m2m.otherSideFrom(entityDef)
+            val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
+            ManyToManyChipFieldDef(entityDef, m2m, typeaheadDef)
+        }
+
+    }
 
 
     override fun onGenerateSource() {
@@ -183,11 +207,15 @@ class AngularUiModuleGenerator(
 
     }
 
-
-    private fun renderEntityForm(def: AngularFormDef, angularComponentNames: AngularComponentNames) {
+    // TODO MTM: Why are chipFields being passed in here?
+    private fun renderEntityForm(
+        def: AngularFormDef,
+        angularComponentNames: AngularComponentNames,
+        chipFields: List<ManyToManyChipFieldDef> = emptyList()
+    ) {
 
         when (def.angularFormSystem) {
-            AngularFormSystem.REACTIVE -> EntityReactiveFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.REACTIVE -> EntityReactiveFormComponentRenderer(def, angularComponentNames, chipFields).renderToDir(this.typescriptOutputDir)
             AngularFormSystem.SIGNAL -> EntityFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
         }
 
@@ -364,9 +392,11 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityCreateDialogHtml(apiDef: EntityCreateApiDef) {
 
+        // TODO MTM:
+        val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.crudApiDef.manyToManyAssociations)
         when (apiDef.angularDialogDef.angularFormSystem) {
-            AngularFormSystem.REACTIVE -> EntityCreateDialogReactiveFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
-            AngularFormSystem.SIGNAL -> EntityCreateDialogHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.REACTIVE -> EntityCreateDialogReactiveFormHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.SIGNAL -> EntityCreateDialogHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
         }
 
     }
@@ -466,7 +496,9 @@ class AngularUiModuleGenerator(
             .filter { it.entityDef.isConcrete }
             .forEach {
 
-                renderEntityForm(it.angularDialogDef, it.angularDialogComponentNames)
+                // TODO MTM:
+                val chipFields = manyToManyChipFieldsFor(it.entityDef, it.crudApiDef.manyToManyAssociations)
+                renderEntityForm(it.angularDialogDef, it.angularDialogComponentNames, chipFields)
                 EntityCreateDialogScssRenderer(it).renderToDir(this.typescriptOutputDir)
 
             }
@@ -506,9 +538,11 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityEditDialogHtml(apiDef: EntityUpdateApiDef) {
 
+        // TODO MTM:
+        val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.crudApiDef.manyToManyAssociations)
         when (apiDef.angularDialogDef.angularFormSystem) {
-            AngularFormSystem.REACTIVE -> EntityEditReactiveDialogHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
-            AngularFormSystem.SIGNAL -> EntityEditDialogHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.REACTIVE -> EntityEditReactiveDialogHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.SIGNAL -> EntityEditDialogHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
         }
 
     }
@@ -519,7 +553,9 @@ class AngularUiModuleGenerator(
         this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
             entityCrudApiDef.updateApiDef?.let { apiDef ->
                 if (entityCrudApiDef.entityDef.isModifiable) {
-                    renderEntityForm(apiDef.angularDialogDef, apiDef.angularDialogComponentNames)
+                    // TODO MTM:
+                    val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.crudApiDef.manyToManyAssociations)
+                    renderEntityForm(apiDef.angularDialogDef, apiDef.angularDialogComponentNames, chipFields)
                 }
             }
         }

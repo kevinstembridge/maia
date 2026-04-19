@@ -20,6 +20,9 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
     protected open val withFetchForEditLoading: Boolean = false
 
 
+    protected open fun renderManyToManyChipFields() {}
+
+
     override fun renderSource(): String {
 
         val matDialogContentText = when (inlineFormOrDialog) {
@@ -59,6 +62,8 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
         formFields.forEach { formFieldDef ->
             MatFormFieldRenderer.renderFormField(formFieldDef, this)
         }
+
+        renderManyToManyChipFields()
 
         val matDialogActionsText = when (inlineFormOrDialog) {
             InlineFormOrDialog.DIALOG -> " mat-dialog-actions"

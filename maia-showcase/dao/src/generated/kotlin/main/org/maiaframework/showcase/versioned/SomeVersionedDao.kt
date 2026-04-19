@@ -308,13 +308,13 @@ class SomeVersionedDao(
         return this.jdbcOps.queryForList(
             """
             select
-                main.created_timestamp_utc as createdTimestampUtc,
-                main.id as id,
-                main.some_int as someInt,
-                main.some_string as someString,
-                main.version as version
-            from maia.some_versioned main
-            where main.id = :id
+                maia.some_versioned.created_timestamp_utc as createdTimestampUtc,
+                maia.some_versioned.id as id,
+                maia.some_versioned.some_int as someInt,
+                maia.some_versioned.some_string as someString,
+                maia.some_versioned.version as version
+            from maia.some_versioned
+            where maia.some_versioned.id = :id
             """,
             SqlParams().apply {
                 addValue("id", id)

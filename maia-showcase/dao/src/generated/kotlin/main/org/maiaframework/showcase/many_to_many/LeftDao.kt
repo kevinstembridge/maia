@@ -258,12 +258,12 @@ class LeftDao(
         return this.jdbcOps.queryForList(
             """
             select
-                main.created_timestamp_utc as createdTimestampUtc,
-                main.id as id,
-                main.some_int as someInt,
-                main.some_string as someString
-            from maia.left main
-            where main.id = :id
+                maia.left.created_timestamp_utc as createdTimestampUtc,
+                maia.left.id as id,
+                maia.left.some_int as someInt,
+                maia.left.some_string as someString
+            from maia.left
+            where maia.left.id = :id
             """,
             SqlParams().apply {
                 addValue("id", id)

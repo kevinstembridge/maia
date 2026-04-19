@@ -10,21 +10,27 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 
 class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
 
+
     @Autowired
     private lateinit var leftDao: LeftDao
+
 
     @Autowired
     private lateinit var rightDao: RightDao
 
+
     @Autowired
     private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
+
 
     private val leftEntity = LeftEntityTestBuilder().build()
     private val rightEntity1 = RightEntityTestBuilder(someString = "alpha").build()
     private val rightEntity2 = RightEntityTestBuilder(someString = "beta").build()
 
+
     @BeforeEach
     fun setUp() {
+
         manyToManyJoinDao.deleteAll()
         leftDao.deleteAll()
         rightDao.deleteAll()
@@ -34,10 +40,13 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
             LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity.id, rightId = rightEntity1.id).build(),
             LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity.id, rightId = rightEntity2.id).build()
         ))
+
     }
+
 
     @Test
     fun `fetchForEdit returns rightEntities sorted by someString`() {
+
         assertThat(
             mockMvc.get().uri("/api/left/fetch_for_edit/${leftEntity.id}")
                 .with(user("nigel").roles("ADMIN"))
@@ -56,10 +65,13 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
                 "someString": "${leftEntity.someString}"
             }
          """.trimIndent())
+
     }
+
 
     @Test
     fun `fetchForEdit returns empty rightEntities when none associated`() {
+
         manyToManyJoinDao.deleteAll()
 
         assertThat(
@@ -77,6 +89,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
                 "someString": "${leftEntity.someString}"
             }
          """.trimIndent())
+
     }
 
 }
