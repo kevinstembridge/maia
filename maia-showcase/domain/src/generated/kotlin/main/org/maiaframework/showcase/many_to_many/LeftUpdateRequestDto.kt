@@ -44,8 +44,7 @@ class LeftUpdateRequestDto
 
 
     @get:JsonIgnore
-    val rightEntityIds: List<DomainId>
-        get() = rightEntityIds_raw ?: emptyList()
+    val rightEntityIds: List<DomainId> by lazy { rightEntityIds_raw ?: emptyList() }
 
 
     override fun toString(): String {

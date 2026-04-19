@@ -289,11 +289,12 @@ class RequestDtoRenderer(
 
         addImportFor(Fqcns.JACKSON_JSON_IGNORE)
 
-        blankLine()
-        blankLine()
-        appendLine("    @get:JsonIgnore")
-        appendLine("    val ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString}")
-        appendLine("        get() = ${fieldDef.classFieldName}_raw ?: emptyList()")
+        append("""
+            |
+            |
+            |    @get:JsonIgnore
+            |    val ${fieldDef.classFieldName}: ${fieldDef.fieldType.unqualifiedToString} by lazy { ${fieldDef.classFieldName}_raw ?: emptyList() }
+            |""".trimMargin())
 
     }
 
