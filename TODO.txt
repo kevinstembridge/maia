@@ -1,5 +1,5 @@
 
-TODO * The Jobs Dashboard should display 'Refresh' jobs for all generated typeahead indexes.
+TODO * Mahana clean build
 
 TODO * Many-to-many relationship.
     => Define a many-to-many relationship and generate the full CRUD stack for it.
