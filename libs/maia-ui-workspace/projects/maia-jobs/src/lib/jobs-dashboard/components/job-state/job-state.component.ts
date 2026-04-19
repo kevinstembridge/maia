@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, Input, OnInit, output} from '@angular/core';
+import {Component, DestroyRef, inject, input, OnInit, output} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
 import {JobState} from '../../models/JobState';
@@ -15,7 +15,7 @@ import {JobsApiService} from '../../services/jobs-api.service';
 export class JobStateComponent implements OnInit {
 
 
-    @Input({required: true}) jobState!: JobState;
+    jobState = input.required<JobState>();
 
 
     runJob = output<JobState>();
@@ -37,7 +37,7 @@ export class JobStateComponent implements OnInit {
 
 
     ngOnInit() {
-        this.jobsService.getRecentlyFailedJobExecutions(this.jobState.jobName)
+        this.jobsService.getRecentlyFailedJobExecutions(this.jobState().jobName)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(data => this.recentlyFailedJobs = data);
     }
