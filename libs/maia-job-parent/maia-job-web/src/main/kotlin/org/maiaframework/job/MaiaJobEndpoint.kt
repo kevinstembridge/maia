@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+
 @RestController
-@RequestMapping("\${maia.jobs.api.base-path}")
 class MaiaJobEndpoint(private val jobService: MaiaJobService) {
 
 
-    @GetMapping("/jobs/current_state", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/ops/jobs/current_state", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__OPS')")
     fun getCurrentJobsState(): List<JobStateResponseDto> {
 
@@ -24,7 +24,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
     }
 
 
-    @GetMapping("/job/recently_failed/{jobName}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/ops/job/recently_failed/{jobName}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__OPS')")
     fun getRecentlyFailedExecutions(
         @PathVariable jobName: String
@@ -35,7 +35,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
     }
 
 
-    @GetMapping("/job/execution_detail/{jobExecutionId}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/ops/job/execution_detail/{jobExecutionId}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__OPS')")
     fun getExecutionDetail(
         @PathVariable jobExecutionId: String
@@ -46,7 +46,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
     }
 
 
-    @GetMapping("/job/execution_stacktrace/{jobExecutionId}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/ops/job/execution_stacktrace/{jobExecutionId}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__OPS')")
     fun getStacktrace(
         @PathVariable jobExecutionId: String
@@ -61,7 +61,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
     }
 
 
-    @PostMapping("/job/run/{jobName}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/ops/job/run/{jobName}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__OPS')")
     fun runJob(
         @PathVariable jobName: String

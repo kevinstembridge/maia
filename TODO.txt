@@ -1,4 +1,5 @@
 
+TODO * The base URL of the Jobs and Elastic endpoints should be configurable.
 
 TODO * Many-to-many relationship.
     => Define a many-to-many relationship and generate the full CRUD stack for it.
