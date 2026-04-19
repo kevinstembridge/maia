@@ -1,5 +1,5 @@
 
-TODO * The base URL of the Jobs and Elastic endpoints should be configurable.
+TODO * The Jobs Dashboard should display 'Refresh' jobs for all generated typeahead indexes.
 
 TODO * Many-to-many relationship.
     => Define a many-to-many relationship and generate the full CRUD stack for it.
@@ -9,8 +9,6 @@ TODO * Many-to-many relationship.
     TODO * Refactor so that CrudApiDefs don't need to have a mutable list of MTM associations.
 
 TODO * Consider renaming DtoHtmlTable... to BlotterRow...
-TODO * The Request DTOs with getters should use lazy loading instead. => someField: String by lazy {...}
-TODO * Install the superpowers-extended-cc plugin.
 TODO * Test edit on an entity that has a foreign key.
     TODO * Manual test
 TODO * Create a test that tests all the validation constraints on the AllFieldTypesEntity.

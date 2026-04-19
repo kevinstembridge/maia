@@ -9,6 +9,7 @@ import org.springframework.util.MultiValueMap
 import java.time.Instant
 import java.util.concurrent.Executors
 
+
 class MaiaJobService(
     private val maiaJobRegistry: MaiaJobRegistry,
     private val jobExecutionRepo: JobExecutionRepo
@@ -17,7 +18,9 @@ class MaiaJobService(
 
     private val logger = LoggerFactory.getLogger(MaiaJobService::class.java)
 
+
     private val executor = Executors.newCachedThreadPool(NamedThreadFactory("maia-job"))
+
 
     private val runningJobs: MultiValueMap<JobName, RunningJob> = LinkedMultiValueMap()
 
