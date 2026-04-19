@@ -74,7 +74,7 @@
                     "defaultConfiguration": "development",
                     "options": {
                         "prebundle": {
-                            "exclude": ["@maia/maia-ui", "@maia/maia-elasticsearch"]
+                            "exclude": ["@maia/maia-ui", "@maia/maia-elasticsearch", "@maia/maia-jobs"]
                         },
                         "proxyConfig": "proxy.conf.json"
                     }

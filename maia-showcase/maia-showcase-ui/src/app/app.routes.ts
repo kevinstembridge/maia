@@ -71,4 +71,11 @@ export const routes: Routes = [
                 (m) => m.ElasticIndicesPageComponent,
             ),
     },
+    {
+        path: 'jobs_dashboard',
+        loadComponent: () =>
+            import('@app/pages/jobs-dashboard/jobs-dashboard-page.component').then(
+                (m) => m.JobsDashboardPageComponent,
+            ),
+    },
 ];

@@ -40,6 +40,10 @@
             </button>
         }
         @if (hasSysOpsAuthority()) {
+            <button mat-menu-item routerLink="/jobs_dashboard">
+                <mat-icon>storage</mat-icon>
+                <span>Jobs Dashboard</span>
+            </button>
             <button mat-menu-item routerLink="/elastic_indices">
                 <mat-icon>storage</mat-icon>
                 <span>Elastic Indices</span>
