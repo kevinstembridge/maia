@@ -1,18 +1,21 @@
 import {Component} from '@angular/core';
-import {MatChipsModule} from '@angular/material/chips';
 import {ICellRendererAngularComp} from 'ag-grid-angular';
 import {ICellRendererParams} from 'ag-grid-community';
 
 
 @Component({
-    imports: [MatChipsModule],
+    imports: [],
     template: `
-        <mat-chip-set>
+        <div class="chips-container">
             @for (item of items; track item.name) {
-                <mat-chip>{{item.name}}</mat-chip>
+                <span class="chip-item">{{item.name}}</span>
             }
-        </mat-chip-set>
+        </div>
     `,
+    styles: [`
+        .chips-container { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; height: 100%; }
+        .chip-item { background: #e0e0e0; border-radius: 16px; padding: 2px 8px; font-size: 12px; white-space: nowrap; }
+    `],
 })
 export class ChipsAgGridCellRendererComponent implements ICellRendererAngularComp {
 
