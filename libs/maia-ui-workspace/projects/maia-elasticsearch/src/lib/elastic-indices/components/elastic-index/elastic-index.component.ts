@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input, output} from '@angular/core';
 import {EsIndexStateDto} from '../../models/EsIndexStateDto';
 import {MatButtonModule} from '@angular/material/button';
 
@@ -11,8 +11,8 @@ export class ElasticIndexComponent {
 
     @Input() index!: EsIndexStateDto;
 
-    @Output() createIndex = new EventEmitter<EsIndexStateDto>();
-    @Output() setIndexVersionActive = new EventEmitter<EsIndexStateDto>();
+    createIndex = output<EsIndexStateDto>();
+    setIndexVersionActive = output<EsIndexStateDto>();
 
     onCreateIndex() {
         this.createIndex.emit(this.index);
