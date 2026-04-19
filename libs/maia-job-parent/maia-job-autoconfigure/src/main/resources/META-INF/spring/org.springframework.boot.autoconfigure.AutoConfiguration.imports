@@ -1,0 +1,2 @@
+org.maiaframework.job.MaiaJobAutoConfiguration
+org.maiaframework.job.MaiaJobWebAutoConfiguration

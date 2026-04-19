@@ -21,6 +21,7 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
     }
 
     val jobExecutionEntityDef = entity("org.maiaframework.job", "JobExecution") {
+        daoHasSpringAnnotation = false
         tableName(name = "job_execution")
         field("jobName", jobNameStringType) {
             lengthConstraint(max = 100)

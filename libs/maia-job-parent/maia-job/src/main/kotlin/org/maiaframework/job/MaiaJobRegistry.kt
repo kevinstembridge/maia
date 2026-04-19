@@ -3,9 +3,6 @@ package org.maiaframework.job
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
-import org.springframework.stereotype.Component
-
-@Component
 class MaiaJobRegistry: ApplicationContextAware, InitializingBean {
 
 

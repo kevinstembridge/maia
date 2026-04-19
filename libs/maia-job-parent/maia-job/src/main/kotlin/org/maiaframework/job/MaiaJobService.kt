@@ -4,13 +4,11 @@ import org.maiaframework.common.util.NamedThreadFactory
 import org.maiaframework.metrics.JobMetrics
 import org.maiaframework.domain.DomainId
 import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import java.time.Instant
 import java.util.concurrent.Executors
 
-@Component
 class MaiaJobService(
     private val maiaJobRegistry: MaiaJobRegistry,
     private val jobExecutionRepo: JobExecutionRepo

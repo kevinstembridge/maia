@@ -12,12 +12,10 @@ import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
 import org.springframework.data.domain.Pageable
-import org.springframework.stereotype.Repository
 import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
 
 
-@Repository
 class JobExecutionDao(
     private val fieldConverter: JobExecutionEntityFieldConverter,
     private val jdbcOps: JdbcOps,

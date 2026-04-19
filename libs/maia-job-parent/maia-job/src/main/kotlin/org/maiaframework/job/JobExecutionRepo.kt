@@ -5,10 +5,8 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.metrics.JobMetrics
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
-import org.springframework.stereotype.Repository
 import java.time.Instant
 
-@Repository
 class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
 
 
