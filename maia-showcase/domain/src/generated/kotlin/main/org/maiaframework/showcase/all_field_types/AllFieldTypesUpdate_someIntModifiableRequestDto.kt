@@ -24,13 +24,11 @@ class AllFieldTypesUpdate_someIntModifiableRequestDto
 
 
     @get:JsonIgnore
-    val id
-        get() = id_raw!!
+    val id: DomainId by lazy { id_raw!! }
 
 
     @get:JsonIgnore
-    val someIntModifiable
-        get() = someIntModifiable_raw!!
+    val someIntModifiable: Int by lazy { someIntModifiable_raw!! }
 
 
     override fun toString(): String {

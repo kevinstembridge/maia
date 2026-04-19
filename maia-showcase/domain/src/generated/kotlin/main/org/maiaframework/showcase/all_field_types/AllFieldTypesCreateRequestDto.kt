@@ -133,8 +133,7 @@ class AllFieldTypesCreateRequestDto
 
 
     @get:JsonIgnore
-    val someBoolean
-        get() = someBoolean_raw!!
+    val someBoolean: Boolean by lazy { someBoolean_raw!! }
 
 
     @get:JsonIgnore
@@ -153,23 +152,19 @@ class AllFieldTypesCreateRequestDto
 
 
     @get:JsonIgnore
-    val someInstant
-        get() = someInstant_raw!!
+    val someInstant: Instant by lazy { someInstant_raw!! }
 
 
     @get:JsonIgnore
-    val someInstantModifiable
-        get() = someInstantModifiable_raw!!
+    val someInstantModifiable: Instant by lazy { someInstantModifiable_raw!! }
 
 
     @get:JsonIgnore
-    val someInt
-        get() = someInt_raw!!
+    val someInt: Int by lazy { someInt_raw!! }
 
 
     @get:JsonIgnore
-    val someIntModifiable
-        get() = someIntModifiable_raw!!
+    val someIntModifiable: Int by lazy { someIntModifiable_raw!! }
 
 
     @get:JsonIgnore
@@ -183,13 +178,11 @@ class AllFieldTypesCreateRequestDto
 
 
     @get:JsonIgnore
-    val someListOfStrings
-        get() = someListOfStrings_raw!!
+    val someListOfStrings: List<String> by lazy { someListOfStrings_raw!! }
 
 
     @get:JsonIgnore
-    val someLocalDateModifiable
-        get() = someLocalDateModifiable_raw!!
+    val someLocalDateModifiable: LocalDate by lazy { someLocalDateModifiable_raw!! }
 
 
     @get:JsonIgnore
@@ -213,13 +206,11 @@ class AllFieldTypesCreateRequestDto
 
 
     @get:JsonIgnore
-    val someString
-        get() = someString_raw!!
+    val someString: String by lazy { someString_raw!! }
 
 
     @get:JsonIgnore
-    val someStringModifiable
-        get() = someStringModifiable_raw!!
+    val someStringModifiable: String by lazy { someStringModifiable_raw!! }
 
 
     @get:JsonIgnore

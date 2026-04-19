@@ -30,8 +30,7 @@ class FeatureToggleUpdate_activationStrategiesRequestDto
 
 
     @get:JsonIgnore
-    val activationStrategies
-        get() = activationStrategies_raw!!
+    val activationStrategies: List<ActivationStrategyDescriptor> by lazy { activationStrategies_raw!! }
 
 
     @get:JsonIgnore
@@ -40,8 +39,7 @@ class FeatureToggleUpdate_activationStrategiesRequestDto
 
 
     @get:JsonIgnore
-    val version
-        get() = version_raw!!
+    val version: Long by lazy { version_raw!! }
 
 
     override fun toString(): String {

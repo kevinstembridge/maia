@@ -31,8 +31,7 @@ class UserUpdate_lastNameRequestDto
 
 
     @get:JsonIgnore
-    val id
-        get() = id_raw!!
+    val id: DomainId by lazy { id_raw!! }
 
 
     @get:JsonIgnore
@@ -41,8 +40,7 @@ class UserUpdate_lastNameRequestDto
 
 
     @get:JsonIgnore
-    val version
-        get() = version_raw!!
+    val version: Long by lazy { version_raw!! }
 
 
     override fun toString(): String {

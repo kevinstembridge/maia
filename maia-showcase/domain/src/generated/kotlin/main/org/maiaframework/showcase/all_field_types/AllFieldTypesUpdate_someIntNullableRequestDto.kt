@@ -23,8 +23,7 @@ class AllFieldTypesUpdate_someIntNullableRequestDto
 
 
     @get:JsonIgnore
-    val id
-        get() = id_raw!!
+    val id: DomainId by lazy { id_raw!! }
 
 
     override fun toString(): String {

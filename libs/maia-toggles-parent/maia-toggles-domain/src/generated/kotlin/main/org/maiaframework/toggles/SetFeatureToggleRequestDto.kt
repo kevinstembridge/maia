@@ -29,8 +29,7 @@ class SetFeatureToggleRequestDto
 
 
     @get:JsonIgnore
-    val enabled
-        get() = enabled_raw!!
+    val enabled: Boolean by lazy { enabled_raw!! }
 
 
     @get:JsonIgnore
@@ -39,8 +38,7 @@ class SetFeatureToggleRequestDto
 
 
     @get:JsonIgnore
-    val version
-        get() = version_raw!!
+    val version: Long by lazy { version_raw!! }
 
 
     override fun toString(): String {

@@ -24,13 +24,11 @@ class LeftUpdate_someIntRequestDto
 
 
     @get:JsonIgnore
-    val id
-        get() = id_raw!!
+    val id: DomainId by lazy { id_raw!! }
 
 
     @get:JsonIgnore
-    val someInt
-        get() = someInt_raw!!
+    val someInt: Int by lazy { someInt_raw!! }
 
 
     override fun toString(): String {

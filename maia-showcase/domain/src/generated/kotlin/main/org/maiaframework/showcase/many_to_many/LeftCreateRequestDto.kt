@@ -29,13 +29,11 @@ class LeftCreateRequestDto
 
 
     @get:JsonIgnore
-    val someInt
-        get() = someInt_raw!!
+    val someInt: Int by lazy { someInt_raw!! }
 
 
     @get:JsonIgnore
-    val someString
-        get() = someString_raw!!
+    val someString: String by lazy { someString_raw!! }
 
 
     @get:JsonIgnore

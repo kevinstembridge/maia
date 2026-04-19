@@ -24,13 +24,11 @@ class AllFieldTypesUpdate_someListOfStringsRequestDto
 
 
     @get:JsonIgnore
-    val id
-        get() = id_raw!!
+    val id: DomainId by lazy { id_raw!! }
 
 
     @get:JsonIgnore
-    val someListOfStrings
-        get() = someListOfStrings_raw!!
+    val someListOfStrings: List<String> by lazy { someListOfStrings_raw!! }
 
 
     override fun toString(): String {

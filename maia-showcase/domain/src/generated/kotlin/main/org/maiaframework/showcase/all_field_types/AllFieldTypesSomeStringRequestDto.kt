@@ -20,8 +20,7 @@ class AllFieldTypesSomeStringRequestDto
 
 
     @get:JsonIgnore
-    val someString
-        get() = someString_raw!!
+    val someString: String by lazy { someString_raw!! }
 
 
     override fun toString(): String {

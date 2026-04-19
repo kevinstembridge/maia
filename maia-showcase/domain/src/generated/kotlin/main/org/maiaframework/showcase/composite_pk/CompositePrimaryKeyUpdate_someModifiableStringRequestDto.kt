@@ -33,23 +33,19 @@ class CompositePrimaryKeyUpdate_someModifiableStringRequestDto
 
 
     @get:JsonIgnore
-    val someInt
-        get() = someInt_raw!!
+    val someInt: Int by lazy { someInt_raw!! }
 
 
     @get:JsonIgnore
-    val someModifiableString
-        get() = someModifiableString_raw!!
+    val someModifiableString: String by lazy { someModifiableString_raw!! }
 
 
     @get:JsonIgnore
-    val someString
-        get() = someString_raw!!
+    val someString: String by lazy { someString_raw!! }
 
 
     @get:JsonIgnore
-    val version
-        get() = version_raw!!
+    val version: Long by lazy { version_raw!! }
 
 
     override fun toString(): String {

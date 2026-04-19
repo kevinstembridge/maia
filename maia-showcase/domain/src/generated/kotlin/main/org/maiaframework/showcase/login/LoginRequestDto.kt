@@ -25,13 +25,11 @@ class LoginRequestDto
 
 
     @get:JsonIgnore
-    val emailAddress
-        get() = emailAddress_raw!!
+    val emailAddress: String by lazy { emailAddress_raw!! }
 
 
     @get:JsonIgnore
-    val password
-        get() = password_raw!!
+    val password: String by lazy { password_raw!! }
 
 
     override fun toString(): String {

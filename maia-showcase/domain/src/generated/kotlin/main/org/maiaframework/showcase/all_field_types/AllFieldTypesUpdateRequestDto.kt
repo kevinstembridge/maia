@@ -51,28 +51,23 @@ class AllFieldTypesUpdateRequestDto
 
 
     @get:JsonIgnore
-    val id
-        get() = id_raw!!
+    val id: DomainId by lazy { id_raw!! }
 
 
     @get:JsonIgnore
-    val someInstantModifiable
-        get() = someInstantModifiable_raw!!
+    val someInstantModifiable: Instant by lazy { someInstantModifiable_raw!! }
 
 
     @get:JsonIgnore
-    val someIntModifiable
-        get() = someIntModifiable_raw!!
+    val someIntModifiable: Int by lazy { someIntModifiable_raw!! }
 
 
     @get:JsonIgnore
-    val someListOfStrings
-        get() = someListOfStrings_raw!!
+    val someListOfStrings: List<String> by lazy { someListOfStrings_raw!! }
 
 
     @get:JsonIgnore
-    val someLocalDateModifiable
-        get() = someLocalDateModifiable_raw!!
+    val someLocalDateModifiable: LocalDate by lazy { someLocalDateModifiable_raw!! }
 
 
     @get:JsonIgnore
@@ -81,8 +76,7 @@ class AllFieldTypesUpdateRequestDto
 
 
     @get:JsonIgnore
-    val someStringModifiable
-        get() = someStringModifiable_raw!!
+    val someStringModifiable: String by lazy { someStringModifiable_raw!! }
 
 
     override fun toString(): String {

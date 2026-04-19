@@ -36,13 +36,11 @@ class UserCreateRequestDto
 
 
     @get:JsonIgnore
-    val authorities
-        get() = authorities_raw!!
+    val authorities: List<Authority> by lazy { authorities_raw!! }
 
 
     @get:JsonIgnore
-    val encryptedPassword
-        get() = encryptedPassword_raw!!
+    val encryptedPassword: String by lazy { encryptedPassword_raw!! }
 
 
     @get:JsonIgnore

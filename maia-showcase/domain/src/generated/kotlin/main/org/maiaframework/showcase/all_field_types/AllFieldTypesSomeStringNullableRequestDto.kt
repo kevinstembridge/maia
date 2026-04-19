@@ -20,8 +20,7 @@ class AllFieldTypesSomeStringNullableRequestDto
 
 
     @get:JsonIgnore
-    val someStringNullable
-        get() = someStringNullable_raw!!
+    val someStringNullable: String by lazy { someStringNullable_raw!! }
 
 
     override fun toString(): String {

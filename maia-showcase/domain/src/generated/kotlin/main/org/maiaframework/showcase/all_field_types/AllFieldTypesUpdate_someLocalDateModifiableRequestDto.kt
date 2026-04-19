@@ -25,13 +25,11 @@ class AllFieldTypesUpdate_someLocalDateModifiableRequestDto
 
 
     @get:JsonIgnore
-    val id
-        get() = id_raw!!
+    val id: DomainId by lazy { id_raw!! }
 
 
     @get:JsonIgnore
-    val someLocalDateModifiable
-        get() = someLocalDateModifiable_raw!!
+    val someLocalDateModifiable: LocalDate by lazy { someLocalDateModifiable_raw!! }
 
 
     override fun toString(): String {

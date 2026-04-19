@@ -309,8 +309,7 @@ class RequestDtoRenderer(
         blankLine()
         blankLine()
         appendLine("    @get:JsonIgnore")
-        appendLine("    val ${fieldDef.classFieldName}")
-        appendLine("        get() = ${fieldDef.classFieldName}_raw!!")
+        appendLine("    val ${fieldDef.classFieldName}: ${fieldDef.unqualifiedToString} by lazy { ${fieldDef.classFieldName}_raw!! }")
 
     }
 

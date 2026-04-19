@@ -30,18 +30,15 @@ class SomeVersionedUpdate_someStringRequestDto
 
 
     @get:JsonIgnore
-    val id
-        get() = id_raw!!
+    val id: DomainId by lazy { id_raw!! }
 
 
     @get:JsonIgnore
-    val someString
-        get() = someString_raw!!
+    val someString: String by lazy { someString_raw!! }
 
 
     @get:JsonIgnore
-    val version
-        get() = version_raw!!
+    val version: Long by lazy { version_raw!! }
 
 
     override fun toString(): String {
