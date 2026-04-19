@@ -5,6 +5,9 @@ logging:
     org.springframework.boot.flyway: DEBUG
 
 maia:
+  jobs:
+    api:
+      base-path: /api
   problems:
     type_prefix: "showcase_"
 

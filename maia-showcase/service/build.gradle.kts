@@ -15,6 +15,7 @@ dependencies {
 
     api(project(":maia-showcase:domain"))
     api(project(":maia-showcase:elasticsearch"))
+    api(project(":libs:maia-job-parent:maia-job"))
 
     implementation(project(":libs:maia-problem-parent:maia-problem"))
     implementation(project(":maia-showcase:repo"))
