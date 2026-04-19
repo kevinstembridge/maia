@@ -14,7 +14,8 @@ import org.maiaframework.lang.text.StringFunctions
 
 class EntityReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
-    angularComponentNames: AngularComponentNames
+    angularComponentNames: AngularComponentNames,
+    private val chipFields: List<ManyToManyChipFieldDef> = emptyList()
 ) : AbstractAngularComponentRenderer(angularComponentNames) {
 
 
@@ -79,6 +80,18 @@ class EntityReactiveFormComponentRenderer(
             addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
         }
 
+        if (chipFields.isNotEmpty()) {
+            addImport("@angular/core", "ElementRef")
+            addImport("@angular/core", "ViewChild")
+            addImport("@angular/material/autocomplete", "MatAutocompleteSelectedEvent")
+            addImport("@angular/material/chips", "MatChipsModule", isModule = true)
+            addImport("@angular/material/icon", "MatIconModule", isModule = true)
+            chipFields.forEach { chip ->
+                addImport(chip.serviceImport)
+                addImport(chip.esDocImport)
+            }
+        }
+
         this.angularFormDef.formModelFields.forEach { angularFieldDef ->
             angularFieldDef.typeaheadRequiredValidatorTypescriptImport?.let { addImport(it) }
         }
@@ -136,10 +149,12 @@ class EntityReactiveFormComponentRenderer(
 
         renderComponentImportArray()
 
-        if (this.angularFormDef.allTypeaheadDefs.isNotEmpty()) {
+        val providerServices = this.angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } +
+            this.chipFields.map { it.serviceClassName }
+        if (providerServices.isNotEmpty()) {
             appendLine("    providers: [")
-            this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
-                appendLine("        ${typeaheadDef.angularServiceClassName},")
+            providerServices.distinct().forEach { serviceName ->
+                appendLine("        $serviceName,")
             }
             appendLine("    ],")
         }
@@ -166,6 +181,8 @@ class EntityReactiveFormComponentRenderer(
         `render function ngOnInit`()
 
         `render TypeaheadResultFormatters`()
+
+        `render chip entity methods`()
 
         `render function onSubmit`()
 
@@ -223,6 +240,26 @@ class EntityReactiveFormComponentRenderer(
                 |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
                 |""".trimMargin())
 
+        }
+
+        chipFields.forEach { chip ->
+            append("""
+                |
+                |
+                |    ${chip.selectedFieldName}: ${chip.esDocClassName}[] = [];
+                |
+                |
+                |    ${chip.filteredFieldName}: ${chip.esDocClassName}[] = [];
+                |
+                |
+                |    ${chip.filteredIsLoadingFieldName} = signal(false);
+                |
+                |
+                |    ${chip.searchControlFieldName} = new FormControl('');
+                |
+                |
+                |    @ViewChild('${chip.inputRefName}') ${chip.inputRefName}!: ElementRef<HTMLInputElement>;
+                |""".trimMargin())
         }
 
         append("""
@@ -308,6 +345,12 @@ class EntityReactiveFormComponentRenderer(
             blankLine()
             appendLine("    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});")
 
+        }
+
+        chipFields.forEach { chip ->
+            blankLine()
+            blankLine()
+            appendLine("    private readonly ${chip.serviceFieldName} = inject(${chip.serviceClassName});")
         }
 
         this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
@@ -424,6 +467,33 @@ class EntityReactiveFormComponentRenderer(
 
         }
 
+        chipFields.forEach { chip ->
+
+            append("""
+                |
+                |        this.${chip.searchControlFieldName}.valueChanges.pipe(
+                |            debounceTime(300),
+                |            distinctUntilChanged(),
+                |            filter(value => typeof value === 'string'),
+                |            tap(() => {
+                |                this.${chip.filteredFieldName} = [];
+                |                this.${chip.filteredIsLoadingFieldName}.set(true);
+                |            }),
+                |            switchMap(value => this.${chip.serviceFieldName}.search(value ?? '').pipe(
+                |                catchError(err => {
+                |                    this.${chip.filteredIsLoadingFieldName}.set(false);
+                |                    console.error(err);
+                |                    return of([]);
+                |                })
+                |            )),
+                |            tap(() => this.${chip.filteredIsLoadingFieldName}.set(false))
+                |        ).subscribe(res => {
+                |            this.${chip.filteredFieldName} = res;
+                |        });
+                |""".trimMargin())
+
+        }
+
         if (this.angularFormDef.formModelFields.any { it.linksToAField }) {
 
             blankLine()
@@ -477,6 +547,14 @@ class EntityReactiveFormComponentRenderer(
             }
 
             appendLine("                });")
+
+            chipFields.forEach { chip ->
+                appendLine("                this.${chip.selectedFieldName} = dto.${chip.fetchForEditDtoFieldName}.map(r => ({")
+                appendLine("                    ${chip.esDocIdFieldName}: r.${chip.esDocIdFieldName},")
+                appendLine("                    ${chip.searchTermFieldName}: r.name,")
+                appendLine("                }));")
+            }
+
             appendLine("                this.loading.set(false);")
             appendLine("            },")
             appendLine("            error: (err) => {")
@@ -502,6 +580,37 @@ class EntityReactiveFormComponentRenderer(
             blankLine()
             blankLine()
             appendLine("    ${typeaheadDef.typeaheadName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
+
+        }
+
+    }
+
+
+    private fun `render chip entity methods`() {
+
+        chipFields.forEach { chip ->
+
+            blankLine()
+            blankLine()
+            append("""
+                |    ${chip.addMethodName}(event: MatAutocompleteSelectedEvent): void {
+                |
+                |        const entity: ${chip.esDocClassName} = event.option.value;
+                |        if (!this.${chip.selectedFieldName}.some(e => e.${chip.esDocIdFieldName} === entity.${chip.esDocIdFieldName})) {
+                |            this.${chip.selectedFieldName}.push(entity);
+                |        }
+                |        this.${chip.inputRefName}.nativeElement.value = '';
+                |        this.${chip.searchControlFieldName}.setValue('', { emitEvent: false });
+                |
+                |    }
+                |
+                |
+                |    ${chip.removeMethodName}(entity: ${chip.esDocClassName}): void {
+                |
+                |        this.${chip.selectedFieldName} = this.${chip.selectedFieldName}.filter(e => e.${chip.esDocIdFieldName} !== entity.${chip.esDocIdFieldName});
+                |
+                |    }
+                |""".trimMargin())
 
         }
 
@@ -655,32 +764,38 @@ class EntityReactiveFormComponentRenderer(
             appendLine("            context: this.context,")
         }
 
-        this.allRequestDtoFields
-            .forEach { requestDtoFieldDef ->
+        val chipFieldsByDtoName = chipFields.associateBy { it.requestDtoFieldName }
 
-                val dtoFieldName = requestDtoFieldDef.classFieldDef.classFieldName
-                val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef
+        this.allRequestDtoFields.forEach { requestDtoFieldDef ->
 
-                if (typeaheadDef == null) {
+            val dtoFieldName = requestDtoFieldDef.classFieldDef.classFieldName
+            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef
+            val chipField = chipFieldsByDtoName[dtoFieldName.value]
 
-                    if (dtoFieldName == ClassFieldName.context) {
+            if (chipField != null) {
 
-                        if (this.angularFormDef.context == null) {
-                            appendLine("            context: this.context,")
-                        }
+                appendLine("            ${dtoFieldName}: this.${chipField.selectedFieldName}.map(e => e.${chipField.esDocIdFieldName}),")
 
-                    } else {
-                        appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().$dtoFieldName,")
+            } else if (typeaheadDef == null) {
+
+                if (dtoFieldName == ClassFieldName.context) {
+
+                    if (this.angularFormDef.context == null) {
+                        appendLine("            context: this.context,")
                     }
 
                 } else {
-
-                    val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
-                    appendLine("            ${typeaheadDef.idFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
-
+                    appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().$dtoFieldName,")
                 }
 
+            } else {
+
+                val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
+                appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
+
             }
+
+        }
 
         appendLine("        } as ${this.angularFormDef.requestDtoDef.uqcn};")
 
