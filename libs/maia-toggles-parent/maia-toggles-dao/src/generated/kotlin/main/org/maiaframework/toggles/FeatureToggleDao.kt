@@ -424,22 +424,22 @@ class FeatureToggleDao(
         return this.jdbcOps.queryForList(
             """
             select
-                feature_toggle.activation_strategies as activationStrategies,
-                feature_toggle.attributes as attributes,
-                feature_toggle.comment as comment,
-                feature_toggle.contact_person as contactPerson,
-                feature_toggle.created_timestamp_utc as createdTimestampUtc,
-                feature_toggle.description as description,
-                feature_toggle.enabled as enabled,
-                feature_toggle.feature_name as featureName,
-                feature_toggle.info_link as infoLink,
-                feature_toggle.last_modified_by_name as lastModifiedByUsername,
-                feature_toggle.last_modified_timestamp_utc as lastModifiedTimestampUtc,
-                feature_toggle.review_date as reviewDate,
-                feature_toggle.ticket_key as ticketKey,
-                feature_toggle.version as version
+                toggles.feature_toggle.activation_strategies as activationStrategies,
+                toggles.feature_toggle.attributes as attributes,
+                toggles.feature_toggle.comment as comment,
+                toggles.feature_toggle.contact_person as contactPerson,
+                toggles.feature_toggle.created_timestamp_utc as createdTimestampUtc,
+                toggles.feature_toggle.description as description,
+                toggles.feature_toggle.enabled as enabled,
+                toggles.feature_toggle.feature_name as featureName,
+                toggles.feature_toggle.info_link as infoLink,
+                toggles.feature_toggle.last_modified_by_name as lastModifiedByUsername,
+                toggles.feature_toggle.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                toggles.feature_toggle.review_date as reviewDate,
+                toggles.feature_toggle.ticket_key as ticketKey,
+                toggles.feature_toggle.version as version
             from toggles.feature_toggle
-            where feature_toggle.feature_name = :featureName
+            where toggles.feature_toggle.feature_name = :featureName
             """,
             SqlParams().apply {
                 addValue("featureName", featureName.value)
