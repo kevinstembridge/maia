@@ -14,8 +14,8 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-security")
     api("org.springframework.boot:spring-boot-starter-web")
 
-    implementation(project(":libs:maia-props-parent:maia-props-spring-boot-starter"))
-    implementation(project(":libs:maia-toggles-parent:maia-toggles-spring-boot-starter"))
+    implementation(project(":libs:maia-props-parent:maia-props-starter"))
+    implementation(project(":libs:maia-toggles-parent:maia-toggles-starter"))
 
     runtimeOnly("com.zaxxer:HikariCP")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
