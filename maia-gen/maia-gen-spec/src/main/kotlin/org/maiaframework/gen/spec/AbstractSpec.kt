@@ -997,7 +997,7 @@ abstract class AbstractSpec protected constructor(
         packageName: String,
         typeaheadName: String,
         entityDef: EntityDef? = null,
-        idFieldName: String,
+        idFieldName: String = "id",
         sortFieldName: String,
         searchTermFieldName: String,
         indexVersion: Int = 1,
