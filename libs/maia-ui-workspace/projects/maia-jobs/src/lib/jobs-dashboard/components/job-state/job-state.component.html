@@ -1,0 +1,31 @@
+<div>
+    <h2>{{ jobState.jobName }}</h2>
+    <div>
+        <button mat-flat-button (click)="onRun(jobState)" color="primary">Run...</button>
+    </div>
+    <h4>Running Executions</h4>
+    <ul>
+        @if (jobState.runningJobs == undefined || jobState.runningJobs.length == 0) {
+            <span>No executions are running</span>
+        }
+        @for (execution of jobState.runningJobs; track execution.id) {
+            <li><span>{{ execution.id }}</span>
+                <button mat-flat-button (click)="onDisplayJobMetrics(execution)">Metrics</button>
+            </li>
+        }
+    </ul>
+    <h4>Recently-failed Executions</h4>
+    <ul>
+        @if (recentlyFailedJobs == undefined || recentlyFailedJobs.length == 0) {
+            <span>None</span>
+        }
+        @for (execution of recentlyFailedJobs; track execution.jobExecutionId) {
+            <li>
+                <span>{{ execution.errorMessage }}</span>
+                <button mat-flat-button type="button" (click)="onDisplayStackTrace(execution.jobExecutionId)">
+                    stacktrace
+                </button>
+            </li>
+        }
+    </ul>
+</div>

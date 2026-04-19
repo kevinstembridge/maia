@@ -1,0 +1,22 @@
+@if (jobs$ | async; as jobStates) {
+
+    @for (jobState of jobStates; track jobState.jobName) {
+
+        <maia-job-state
+            [jobState]="jobState"
+            (runJob)="onRunJob($event)"
+            (displayStackTrace)="onDisplayStackTrace($event)"
+            (displayJobMetrics)="onDisplayJobMetricsDialog($event)">
+        </maia-job-state>
+
+    } @empty {
+
+        <p>No jobs</p>
+
+    }
+
+} @else {
+
+    <mat-spinner></mat-spinner>
+
+}

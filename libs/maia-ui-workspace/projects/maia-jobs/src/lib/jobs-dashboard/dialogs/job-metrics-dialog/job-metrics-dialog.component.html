@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Job Metrics</h1>
+<div mat-dialog-content>
+    <p>{{ metrics | json }}</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-flat-button (click)="onClose()">Close</button>
+    <button mat-flat-button [cdkCopyToClipboard]="metrics | json"><mat-icon>content_copy</mat-icon></button>
+</div>

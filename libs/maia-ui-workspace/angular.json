@@ -57,6 +57,32 @@
           }
         }
       }
+    },
+    "maia-jobs": {
+      "projectType": "library",
+      "root": "projects/maia-jobs",
+      "sourceRoot": "projects/maia-jobs/src",
+      "prefix": "maia",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/maia-jobs/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/maia-jobs/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/maia-jobs/tsconfig.spec.json"
+          }
+        }
+      }
     }
   }
 }

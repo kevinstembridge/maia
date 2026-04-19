@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Run Job?</h1>
+<div mat-dialog-content>
+    <h3>Do you want to run job...</h3>
+    <h4>&nbsp;&nbsp;&nbsp;&nbsp;{{ jobState.jobName }}</h4>
+</div>
+<div mat-dialog-actions>
+    <button color="primary" mat-flat-button (click)="onSubmit()">Yes, run the job</button>
+    <button mat-flat-button (click)="onCancel()">Cancel</button>
+</div>
