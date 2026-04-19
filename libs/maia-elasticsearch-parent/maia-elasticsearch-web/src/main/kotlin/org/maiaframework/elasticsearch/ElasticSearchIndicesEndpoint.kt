@@ -5,18 +5,20 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
 
 @RestController
+@RequestMapping($$"${maia.elastic.web.base-url:/api/ops}")
 class ElasticSearchIndicesEndpoint(
     private val elasticIndexService: ElasticIndexService,
     private val esIndexNameFactory: EsIndexNameFactory
 ) {
 
 
-    @GetMapping("/api/ops/elastic_indices_state")
+    @GetMapping("/elastic_indices_state")
     @PreAuthorize("hasAuthority('SYS__OPS')")
     fun getElasticIndicesDefinitions(): List<EsIndexStateDto> {
 
@@ -25,7 +27,7 @@ class ElasticSearchIndicesEndpoint(
     }
 
 
-    @PostMapping("/api/ops/elastic_index/create/{indexName}")
+    @PostMapping("/elastic_index/create/{indexName}")
     @PreAuthorize("hasAuthority('SYS__OPS')")
     fun createIndex(@PathVariable("indexName") indexNameRaw: String, principal: Principal) {
 
@@ -35,7 +37,7 @@ class ElasticSearchIndicesEndpoint(
     }
 
 
-    @PostMapping("/api/ops/elastic_index/set_active/{indexName}")
+    @PostMapping("/elastic_index/set_active/{indexName}")
     @PreAuthorize("hasAuthority('SYS__OPS')")
     fun setIndexActiveVersion(@PathVariable indexName: String, principal: Principal) {
 
