@@ -850,7 +850,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.join",
         "Alpha",
         alphaEntityDef,
-        idFieldName = "alphaId",
         sortFieldName = "someString",
         searchTermFieldName = "someString",
         indexVersion = 1
@@ -1116,7 +1115,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.many_to_many",
         "Right",
         rightEntityDef,
-        idFieldName = "rightId",
         sortFieldName = "someString",
         searchTermFieldName = "someString",
         indexVersion = 1
