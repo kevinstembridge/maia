@@ -11,8 +11,8 @@ class LeftToRightManyToManyJoinEntity(
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val lastModifiedTimestampUtc: Instant,
-    val leftId: DomainId,
-    val rightId: DomainId
+    val left: DomainId,
+    val right: DomainId
 ) {
 
 
@@ -22,8 +22,8 @@ class LeftToRightManyToManyJoinEntity(
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
-                "leftId = '" + this.leftId + '\'' + ", " + 
-                "rightId = '" + this.rightId + '\'' +
+                "left = '" + this.left + '\'' + ", " + 
+                "right = '" + this.right + '\'' +
                 "}"
 
     }
@@ -39,8 +39,8 @@ class LeftToRightManyToManyJoinEntity(
 
         @JvmStatic
         fun newInstance(
-            leftId: DomainId,
-            rightId: DomainId
+            left: DomainId,
+            right: DomainId
         ): LeftToRightManyToManyJoinEntity {
 
             val createdTimestampUtc = Instant.now()
@@ -51,8 +51,8 @@ class LeftToRightManyToManyJoinEntity(
                 createdTimestampUtc,
                 id,
                 lastModifiedTimestampUtc,
-                leftId,
-                rightId
+                left,
+                right
             )
 
         }

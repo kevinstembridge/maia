@@ -31,11 +31,11 @@ class LeftCrudService(
 
         create(entity)
 
-        createDto.rightEntityIds.forEach { rightId ->
+        createDto.rightEntityIds.forEach { right ->
             this.leftToRightManyToManyJoinRepo.insert(
                 LeftToRightManyToManyJoinEntity.newInstance(
-                    leftId = entity.id,
-                    rightId = rightId
+                    left = entity.id,
+                    right = right
                 )
             )
         }
@@ -88,12 +88,12 @@ class LeftCrudService(
 
         setFields(updater)
 
-        this.leftToRightManyToManyJoinRepo.findByLeftId(id).forEach { join ->
+        this.leftToRightManyToManyJoinRepo.findByLeft(id).forEach { join ->
             this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(join.id)
         }
 
-        val newRightJoins = editDto.rightEntityIds.map { rightId ->
-            LeftToRightManyToManyJoinEntity.newInstance(leftId = id, rightId = rightId)
+        val newRightJoins = editDto.rightEntityIds.map { right ->
+            LeftToRightManyToManyJoinEntity.newInstance(left = id, right = right)
         }
         this.leftToRightManyToManyJoinRepo.bulkInsert(newRightJoins)
 
@@ -141,7 +141,7 @@ class LeftCrudService(
 
     fun delete(id: DomainId) {
 
-        if (this.leftToRightManyToManyJoinRepo.existsByLeftId(id)) {
+        if (this.leftToRightManyToManyJoinRepo.existsByLeft(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightManyToManyJoin")
         }
 

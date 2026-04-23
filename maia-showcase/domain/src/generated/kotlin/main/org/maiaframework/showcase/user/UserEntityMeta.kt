@@ -14,7 +14,7 @@ object UserEntityMeta {
 
     const val authorities = "authorities"
 
-    const val createdById = "created_by_id"
+    const val createdBy = "created_by_id"
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
@@ -26,7 +26,7 @@ object UserEntityMeta {
 
     const val id = "id"
 
-    const val lastModifiedById = "last_modified_by_id"
+    const val lastModifiedBy = "last_modified_by_id"
 
     const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
@@ -53,13 +53,13 @@ object UserEntityMeta {
 
         return when(classFieldName) {
             "authorities" -> "authorities"
-            "createdById" -> "created_by_id"
+            "createdBy" -> "created_by_id"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "displayName" -> "display_name"
             "encryptedPassword" -> "encrypted_password"
             "firstName" -> "first_name"
             "id" -> "id"
-            "lastModifiedById" -> "last_modified_by_id"
+            "lastModifiedBy" -> "last_modified_by_id"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "lastName" -> "last_name"
             "lifecycleState" -> "lifecycle_state"

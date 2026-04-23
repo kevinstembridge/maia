@@ -48,10 +48,10 @@ class CharlieCrudEndpoint(
     }
 
 
-    @PutMapping("/api/charlie/inline/bravo_id", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateBravoId(@RequestBody @Valid editDto: CharlieUpdate_bravoIdRequestDto) {
+    @PutMapping("/api/charlie/inline/bravo", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateBravo(@RequestBody @Valid editDto: CharlieUpdate_bravoRequestDto) {
 
-        this.crudService.updateBravoId(editDto)
+        this.crudService.updateBravo(editDto)
 
     }
 

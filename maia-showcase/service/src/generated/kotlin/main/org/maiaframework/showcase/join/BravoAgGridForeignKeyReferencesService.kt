@@ -20,7 +20,7 @@ class BravoAgGridForeignKeyReferencesService(
 
     fun checkForeignKeyReferences(id: DomainId): ForeignKeyReferencesExistResponseDto {
 
-        if (this.charlieAgGridRepo.existsByBravoId(id)) {
+        if (this.charlieAgGridRepo.existsByBravo(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "CharlieAgGrid")
         }
 

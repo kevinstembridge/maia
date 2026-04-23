@@ -12,22 +12,22 @@ import java.time.Instant
 
 
 open class PersonEntity(
-    createdById: DomainId?,
+    createdBy: DomainId?,
     createdTimestampUtc: Instant,
     displayName: String,
     val firstName: FirstName?,
     id: DomainId,
-    lastModifiedById: DomainId?,
+    lastModifiedBy: DomainId?,
     lastModifiedTimestampUtc: Instant,
     val lastName: LastName,
     lifecycleState: LifecycleState,
     version: Long
 ) : PartyEntity(
-    createdById,
+    createdBy,
     createdTimestampUtc,
     displayName,
     id,
-    lastModifiedById,
+    lastModifiedBy,
     lastModifiedTimestampUtc,
     lifecycleState,
     version
@@ -37,12 +37,12 @@ open class PersonEntity(
     override fun toString(): String {
 
         return "PersonEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
@@ -62,7 +62,7 @@ open class PersonEntity(
 
         @JvmStatic
         fun newInstance(
-            createdById: DomainId?,
+            createdBy: DomainId?,
             displayName: String,
             firstName: FirstName?,
             lastName: LastName
@@ -71,17 +71,17 @@ open class PersonEntity(
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
-            val lastModifiedById = createdById
+            val lastModifiedBy = createdBy
             val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
 
             return PersonEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 firstName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,

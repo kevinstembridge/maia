@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition.lang
 
 import org.maiaframework.gen.persist.BsonCompatibleType
+import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.TypescriptCompatibleTypes
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
@@ -122,22 +123,17 @@ class ClassDef(
     }
 
 
-    fun findFieldByPath(fieldPath: String): ClassFieldDef {
+    fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef {
 
-        // TODO if fieldPath has components, find the
-
-        val pathElements = fieldPath.split(".")
-
-        val firstFieldName = pathElements.first()
-
+        val firstFieldName = fieldPath.head()
 
         val classFieldDef = (this.allFieldsSorted.find { it.classFieldName.value == firstFieldName }
             ?: throw IllegalStateException("No field found with name '$firstFieldName' on classDef $fqcn"))
 
-        return if (pathElements.size > 1) {
-            classFieldDef.findEmbeddedField(pathElements.drop(1))
-        } else {
+        return if (fieldPath.isJustOneField()) {
             classFieldDef
+        } else {
+            classFieldDef.findEmbeddedField(fieldPath.tail())
         }
 
     }

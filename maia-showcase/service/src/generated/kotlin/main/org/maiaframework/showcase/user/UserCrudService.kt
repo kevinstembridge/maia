@@ -54,23 +54,23 @@ class UserCrudService(
         val encryptedPassword: String = createDto.encryptedPassword
         val firstName: FirstName? = createDto.firstName
         val lastName: LastName = createDto.lastName
-        val createdById = currentUser.userId
+        val createdBy = currentUser.userId
         val id = DomainId.newId()
         val createdTimestampUtc = Instant.now()
-        val lastModifiedById = currentUser.userId
+        val lastModifiedBy = currentUser.userId
         val lastModifiedTimestampUtc = createdTimestampUtc
         val lifecycleState = LifecycleState.ACTIVE
         val version = 1L
 
         return UserEntity(
             authorities,
-            createdById,
+            createdBy,
             createdTimestampUtc,
             displayName,
             encryptedPassword,
             firstName,
             id,
-            lastModifiedById,
+            lastModifiedBy,
             lastModifiedTimestampUtc,
             lastName,
             lifecycleState,
@@ -105,7 +105,7 @@ class UserCrudService(
             authorities(editDto.authorities)
             lastName(editDto.lastName)
             firstName(editDto.firstName)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedTimestampUtc(Instant.now())
         }
 
@@ -125,7 +125,7 @@ class UserCrudService(
 
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id, version) {
             authorities(editDto.authorities)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedTimestampUtc(Instant.now())
         }
 
@@ -145,7 +145,7 @@ class UserCrudService(
 
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id, version) {
             firstName(editDto.firstName)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedTimestampUtc(Instant.now())
         }
 
@@ -165,7 +165,7 @@ class UserCrudService(
 
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id, version) {
             lastName(editDto.lastName)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedTimestampUtc(Instant.now())
         }
 

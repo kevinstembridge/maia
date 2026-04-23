@@ -41,7 +41,7 @@ class BravoDao(
                 some_int,
                 some_string
             ) values (
-                :alphaId,
+                :alpha,
                 :createdTimestampUtc,
                 :id,
                 :someInt,
@@ -49,7 +49,7 @@ class BravoDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("alphaId", entity.alphaId)
+                addValue("alpha", entity.alpha)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
@@ -71,7 +71,7 @@ class BravoDao(
                 some_int,
                 some_string
             ) values (
-                :alphaId,
+                :alpha,
                 :createdTimestampUtc,
                 :id,
                 :someInt,
@@ -80,7 +80,7 @@ class BravoDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("alphaId", entity.alphaId)
+                    addValue("alpha", entity.alpha)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
@@ -259,15 +259,15 @@ class BravoDao(
     }
 
 
-    fun existsByAlphaId(alphaId: DomainId): Boolean {
+    fun existsByAlpha(alpha: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.bravo
-            where alpha_id = :alphaId
+            where alpha_id = :alpha
             """.trimIndent(),
             SqlParams().apply {
-            addValue("alphaId", alphaId)
+            addValue("alpha", alpha)
             }
         )
 

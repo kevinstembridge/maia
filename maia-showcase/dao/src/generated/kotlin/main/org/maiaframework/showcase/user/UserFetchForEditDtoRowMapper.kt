@@ -18,13 +18,13 @@ class UserFetchForEditDtoRowMapper : MaiaRowMapper<UserFetchForEditDto> {
 
         return UserFetchForEditDto(
             rsa.readListOfStrings("authorities") { Authority.valueOf(it) },
-            rsa.readDomainIdOrNull("createdById"),
+            rsa.readDomainIdOrNull("createdBy"),
             rsa.readInstant("createdTimestampUtc"),
             rsa.readString("displayName"),
             rsa.readString("encryptedPassword"),
             rsa.readStringOrNull("firstName") { FirstName(it) },
             rsa.readDomainId("id"),
-            rsa.readDomainIdOrNull("lastModifiedById"),
+            rsa.readDomainIdOrNull("lastModifiedBy"),
             rsa.readInstant("lastModifiedTimestampUtc"),
             rsa.readString("lastName") { LastName(it) },
             rsa.readEnum("lifecycleState", LifecycleState::class.java),

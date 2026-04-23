@@ -93,6 +93,7 @@ class SearchableDtoDefBuilder(
 
         val responseDtoFieldDef = ResponseDtoFieldDef(
             ClassFieldName(fieldName),
+            fieldDisplayName = null,
             tableColumnName = TableColumnName("BOGUS"), // TODO this.entityAndField.databaseColumnName,
             fieldType = FieldTypes.list(FieldTypes.pkAndName(otherEntityDef.entityPkAndNameDef)),
             nullability = Nullability.NOT_NULLABLE,
@@ -153,6 +154,7 @@ class SearchableDtoDefBuilder(
         val fieldPathToUse = entityFieldPath ?: dtoFieldName
         val fieldPath = FieldPath.of(fieldPathToUse)
         val leafEntityAndField = this.rootEntityDef.findFieldByPathOrNull(fieldPath)
+            ?: findManyToManyFieldOrNull(fieldPath)
             ?: throw IllegalArgumentException("Cannot find field by path '$fieldPathToUse' on searchableDto $dtoBaseName with fields ${this.rootEntityDef.allEntityFieldsSorted.map { it.classFieldName }}")
 
         val builder = SearchableDtoFieldDefBuilder(

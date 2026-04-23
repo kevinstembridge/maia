@@ -8,10 +8,10 @@ import java.time.Instant
 
 
 class HistorySampleEntity(
-    val createdById: DomainId,
+    val createdBy: DomainId,
     val createdTimestampUtc: Instant,
     val id: DomainId,
-    val lastModifiedById: DomainId,
+    val lastModifiedBy: DomainId,
     val lastModifiedTimestampUtc: Instant,
     val someInt: Int,
     val someString: String,
@@ -22,10 +22,10 @@ class HistorySampleEntity(
     override fun toString(): String {
 
         return "HistorySampleEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
@@ -45,7 +45,7 @@ class HistorySampleEntity(
 
         @JvmStatic
         fun newInstance(
-            createdById: DomainId,
+            createdBy: DomainId,
             someInt: Int,
             someString: String
         ): HistorySampleEntity {
@@ -53,14 +53,14 @@ class HistorySampleEntity(
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
-            val lastModifiedById = createdById
+            val lastModifiedBy = createdBy
             val version = 1L
 
             return HistorySampleEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 someInt,
                 someString,

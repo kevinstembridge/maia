@@ -3,7 +3,7 @@
 
 
 export interface CharlieAgGridCreateRequestDto {
-    bravoId: string;
+    bravo: string;
     someInt: number;
     someString: string;
 }

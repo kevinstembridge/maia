@@ -14,10 +14,10 @@ class AllFieldTypesTableDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdById" -> "created_by_id"
+            "createdBy" -> "id"
             "createdByUsername" -> "created_by_name"
             "id" -> "id"
-            "lastModifiedById" -> "last_modified_by_id"
+            "lastModifiedBy" -> "id"
             "lastModifiedByUsername" -> "last_modified_by_name"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "someBoolean" -> "some_boolean"

@@ -17,7 +17,7 @@ class OrgUserGroupHistoryEntity(
     description: String,
     id: DomainId,
     name: String,
-    val orgId: DomainId,
+    val org: DomainId,
     systemManaged: Boolean,
     version: Long
 ) : UserGroupHistoryEntity(
@@ -41,7 +41,7 @@ class OrgUserGroupHistoryEntity(
                 "description = '" + this.description + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "name = '" + this.name + '\'' + ", " + 
-                "orgId = '" + this.orgId + '\'' + ", " + 
+                "org = '" + this.org + '\'' + ", " + 
                 "systemManaged = '" + this.systemManaged + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"

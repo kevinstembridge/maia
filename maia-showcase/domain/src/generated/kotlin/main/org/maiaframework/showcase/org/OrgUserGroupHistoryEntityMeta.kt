@@ -24,7 +24,7 @@ object OrgUserGroupHistoryEntityMeta {
 
     const val name = "name"
 
-    const val orgId = "org_id"
+    const val org = "org_id"
 
     const val systemManaged = "system_managed"
 
@@ -52,7 +52,7 @@ object OrgUserGroupHistoryEntityMeta {
             "description" -> "description"
             "id" -> "id"
             "name" -> "name"
-            "orgId" -> "org_id"
+            "org" -> "org_id"
             "systemManaged" -> "system_managed"
             "version" -> "version"
             else ->

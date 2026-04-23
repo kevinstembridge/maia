@@ -8,18 +8,18 @@ import java.time.Instant
 
 
 class ParentTwoEntity(
-    createdById: DomainId,
+    createdBy: DomainId,
     createdTimestampUtc: Instant,
     id: DomainId,
-    lastModifiedById: DomainId,
+    lastModifiedBy: DomainId,
     lastModifiedTimestampUtc: Instant,
     val someInt: Int,
     val someUniqueString: String
 ) : GrandparentEntity(
-    createdById,
+    createdBy,
     createdTimestampUtc,
     id,
-    lastModifiedById,
+    lastModifiedBy,
     lastModifiedTimestampUtc
 ) {
 
@@ -27,10 +27,10 @@ class ParentTwoEntity(
     override fun toString(): String {
 
         return "ParentTwoEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someUniqueString = '" + this.someUniqueString + '\'' +
@@ -49,7 +49,7 @@ class ParentTwoEntity(
 
         @JvmStatic
         fun newInstance(
-            createdById: DomainId,
+            createdBy: DomainId,
             someInt: Int,
             someUniqueString: String
         ): ParentTwoEntity {
@@ -57,13 +57,13 @@ class ParentTwoEntity(
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
-            val lastModifiedById = createdById
+            val lastModifiedBy = createdBy
 
             return ParentTwoEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 someInt,
                 someUniqueString

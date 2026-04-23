@@ -42,16 +42,16 @@ class LeftToRightManyToManyJoinDao(
                 :createdTimestampUtc,
                 :id,
                 :lastModifiedTimestampUtc,
-                :leftId,
-                :rightId
+                :left,
+                :right
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
-                addValue("leftId", entity.leftId)
-                addValue("rightId", entity.rightId)
+                addValue("left", entity.left)
+                addValue("right", entity.right)
             }
         )
 
@@ -72,8 +72,8 @@ class LeftToRightManyToManyJoinDao(
                 :createdTimestampUtc,
                 :id,
                 :lastModifiedTimestampUtc,
-                :leftId,
-                :rightId
+                :left,
+                :right
             )
             """.trimIndent(),
             entities.map { entity ->
@@ -81,8 +81,8 @@ class LeftToRightManyToManyJoinDao(
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
-                    addValue("leftId", entity.leftId)
-                    addValue("rightId", entity.rightId)
+                    addValue("left", entity.left)
+                    addValue("right", entity.right)
                 }
             }
         )
@@ -161,15 +161,15 @@ class LeftToRightManyToManyJoinDao(
        
     }
 
-    fun findByLeftId(leftId: DomainId): List<LeftToRightManyToManyJoinEntity> {
+    fun findByLeft(left: DomainId): List<LeftToRightManyToManyJoinEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.left_to_right_many_to_many_join
-            where left_id = :leftId
+            where left_id = :left
             """.trimIndent(),
             SqlParams().apply {
-                addValue("leftId", leftId)
+                addValue("left", left)
             },
             this.entityRowMapper
         )
@@ -177,15 +177,15 @@ class LeftToRightManyToManyJoinDao(
     }
 
 
-    fun findByRightId(rightId: DomainId): List<LeftToRightManyToManyJoinEntity> {
+    fun findByRight(right: DomainId): List<LeftToRightManyToManyJoinEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.left_to_right_many_to_many_join
-            where right_id = :rightId
+            where right_id = :right
             """.trimIndent(),
             SqlParams().apply {
-                addValue("rightId", rightId)
+                addValue("right", right)
             },
             this.entityRowMapper
         )
@@ -289,15 +289,15 @@ class LeftToRightManyToManyJoinDao(
     }
 
 
-    fun existsByLeftId(leftId: DomainId): Boolean {
+    fun existsByLeft(left: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.left_to_right_many_to_many_join
-            where left_id = :leftId
+            where left_id = :left
             """.trimIndent(),
             SqlParams().apply {
-            addValue("leftId", leftId)
+            addValue("left", left)
             }
         )
 
@@ -306,15 +306,15 @@ class LeftToRightManyToManyJoinDao(
     }
 
 
-    fun existsByRightId(rightId: DomainId): Boolean {
+    fun existsByRight(right: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.left_to_right_many_to_many_join
-            where right_id = :rightId
+            where right_id = :right
             """.trimIndent(),
             SqlParams().apply {
-            addValue("rightId", rightId)
+            addValue("right", right)
             }
         )
 
@@ -359,8 +359,8 @@ class LeftToRightManyToManyJoinDao(
 
         when (field.classFieldName) {
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
-            "leftId" -> sqlParams.addValue("leftId", field.value as DomainId)
-            "rightId" -> sqlParams.addValue("rightId", field.value as DomainId)
+            "left" -> sqlParams.addValue("left", field.value as DomainId)
+            "right" -> sqlParams.addValue("right", field.value as DomainId)
         }
 
     }

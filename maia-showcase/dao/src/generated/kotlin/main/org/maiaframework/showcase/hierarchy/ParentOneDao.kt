@@ -56,10 +56,10 @@ class ParentOneDao(
                 some_unique_string
             ) values (
                 :typeDiscriminator,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
@@ -68,10 +68,10 @@ class ParentOneDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", ChildOneEntityMeta.TYPE_DISCRIMINATOR)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -97,10 +97,10 @@ class ParentOneDao(
                 some_unique_string
             ) values (
                 :typeDiscriminator,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someString,
                 :someUniqueString
@@ -108,10 +108,10 @@ class ParentOneDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", ParentOneEntityMeta.TYPE_DISCRIMINATOR)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("someString", entity.someString)
                 addValue("someUniqueString", entity.someUniqueString)
@@ -136,10 +136,10 @@ class ParentOneDao(
                 some_unique_string
             ) values (
                 :typeDiscriminator,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someString,
                 :someUniqueString
@@ -148,10 +148,10 @@ class ParentOneDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("typeDiscriminator", ParentOneEntityMeta.TYPE_DISCRIMINATOR)
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("someString", entity.someString)
                     addValue("someUniqueString", entity.someUniqueString)
@@ -372,15 +372,15 @@ class ParentOneDao(
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.grandparent
-            where created_by_id = :createdById
+            where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", createdById)
+            addValue("createdBy", createdBy)
             }
         )
 
@@ -389,15 +389,15 @@ class ParentOneDao(
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.grandparent
-            where last_modified_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 
@@ -421,17 +421,17 @@ class ParentOneDao(
                 some_unique_string
             ) values (
                 :typeDiscriminator,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someString,
                 :someUniqueString
             )
             on conflict (some_unique_string, type_discriminator)
             do update set
-                last_modified_by_id = :lastModifiedById,
+                last_modified_by_id = :lastModifiedBy,
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_string = :someString,
                 some_unique_string = :someUniqueString
@@ -439,10 +439,10 @@ class ParentOneDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", "SUB1")
-                addValue("createdById", upsertEntity.createdById)
+                addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
                 addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
                 addValue("someString", upsertEntity.someString)
                 addValue("someUniqueString", upsertEntity.someUniqueString)
@@ -494,7 +494,7 @@ class ParentOneDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId)
+            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "someString" -> sqlParams.addValue("someString", field.value as String)
             "someUniqueString" -> sqlParams.addValue("someUniqueString", field.value as String)

@@ -15,8 +15,8 @@ class UserGroupMembershipDtoFieldNameConverter : SearchFieldNameConverter {
 
         return when(fieldName) {
             "id" -> "id"
-            "userGroupId" -> "user_group_id"
-            "userId" -> "user_id"
+            "userGroupId" -> "id"
+            "userId" -> "id"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")
         }
 

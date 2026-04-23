@@ -72,9 +72,9 @@ export class AllFieldTypesTableComponent {
         { field: 'someProvidedStringTypeNullable', headerName: 'Some Provided String Type Nullable', cellDataType: 'text', filter: true },
         { field: 'someListOfStrings', headerName: 'Some List Of Strings', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
         { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
-        { field: 'createdById', headerName: 'Created By', cellDataType: 'text', filter: true },
+        { field: 'createdBy', headerName: 'ID', cellDataType: 'text', filter: true },
         { field: 'createdByUsername', headerName: 'Created By', cellDataType: 'text', filter: true },
-        { field: 'lastModifiedById', headerName: 'Last Modified By', cellDataType: 'text', filter: true },
+        { field: 'lastModifiedBy', headerName: 'ID', cellDataType: 'text', filter: true },
         { field: 'lastModifiedByUsername', headerName: 'Last Modified By', cellDataType: 'text', filter: true },
         { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text', filter: true },
         {

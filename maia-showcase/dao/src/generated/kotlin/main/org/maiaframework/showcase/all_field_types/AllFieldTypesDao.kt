@@ -85,11 +85,11 @@ class AllFieldTypesDao(
                 some_string_type,
                 some_string_type_nullable
             ) values (
-                :createdById,
+                :createdBy,
                 :createdByUsername,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :someBoolean,
@@ -129,11 +129,11 @@ class AllFieldTypesDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdByUsername", entity.createdByUsername)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("someBoolean", entity.someBoolean)
@@ -223,11 +223,11 @@ class AllFieldTypesDao(
                 some_string_type,
                 some_string_type_nullable
             ) values (
-                :createdById,
+                :createdBy,
                 :createdByUsername,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :someBoolean,
@@ -268,11 +268,11 @@ class AllFieldTypesDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdByUsername", entity.createdByUsername)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("someBoolean", entity.someBoolean)
@@ -741,15 +741,15 @@ class AllFieldTypesDao(
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.all_field_types
-            where created_by_id = :createdById
+            where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", createdById)
+            addValue("createdBy", createdBy)
             }
         )
 
@@ -758,15 +758,15 @@ class AllFieldTypesDao(
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.all_field_types
-            where last_modified_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 
@@ -887,11 +887,11 @@ class AllFieldTypesDao(
                 some_string_type,
                 some_string_type_nullable
             ) values (
-                :createdById,
+                :createdBy,
                 :createdByUsername,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :someBoolean,
@@ -931,7 +931,7 @@ class AllFieldTypesDao(
             )
             on conflict (some_int_type)
             do update set
-                last_modified_by_id = :lastModifiedById,
+                last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
@@ -945,11 +945,11 @@ class AllFieldTypesDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
+                addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
                 addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
                 addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
                 addValue("someBoolean", upsertEntity.someBoolean)
@@ -1046,11 +1046,11 @@ class AllFieldTypesDao(
                 some_string_type,
                 some_string_type_nullable
             ) values (
-                :createdById,
+                :createdBy,
                 :createdByUsername,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :someBoolean,
@@ -1090,7 +1090,7 @@ class AllFieldTypesDao(
             )
             on conflict (some_long_type)
             do update set
-                last_modified_by_id = :lastModifiedById,
+                last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
@@ -1104,11 +1104,11 @@ class AllFieldTypesDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
+                addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
                 addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
                 addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
                 addValue("someBoolean", upsertEntity.someBoolean)
@@ -1205,11 +1205,11 @@ class AllFieldTypesDao(
                 some_string_type,
                 some_string_type_nullable
             ) values (
-                :createdById,
+                :createdBy,
                 :createdByUsername,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :someBoolean,
@@ -1249,7 +1249,7 @@ class AllFieldTypesDao(
             )
             on conflict (some_string)
             do update set
-                last_modified_by_id = :lastModifiedById,
+                last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
@@ -1263,11 +1263,11 @@ class AllFieldTypesDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
+                addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
                 addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
                 addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
                 addValue("someBoolean", upsertEntity.someBoolean)
@@ -1364,11 +1364,11 @@ class AllFieldTypesDao(
                 some_string_type,
                 some_string_type_nullable
             ) values (
-                :createdById,
+                :createdBy,
                 :createdByUsername,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :someBoolean,
@@ -1408,7 +1408,7 @@ class AllFieldTypesDao(
             )
             on conflict (some_string_nullable)
             do update set
-                last_modified_by_id = :lastModifiedById,
+                last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
@@ -1422,11 +1422,11 @@ class AllFieldTypesDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
+                addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
                 addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
                 addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
                 addValue("someBoolean", upsertEntity.someBoolean)
@@ -1523,11 +1523,11 @@ class AllFieldTypesDao(
                 some_string_type,
                 some_string_type_nullable
             ) values (
-                :createdById,
+                :createdBy,
                 :createdByUsername,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestampUtc,
                 :someBoolean,
@@ -1567,7 +1567,7 @@ class AllFieldTypesDao(
             )
             on conflict (some_string_type)
             do update set
-                last_modified_by_id = :lastModifiedById,
+                last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_instant_modifiable = :someInstantModifiable,
@@ -1581,11 +1581,11 @@ class AllFieldTypesDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
+                addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
                 addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
                 addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
                 addValue("someBoolean", upsertEntity.someBoolean)
@@ -1670,7 +1670,7 @@ class AllFieldTypesDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId)
+            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
             "lastModifiedByUsername" -> sqlParams.addValue("lastModifiedByUsername", field.value as String)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "someInstantModifiable" -> sqlParams.addValue("someInstantModifiable", field.value as Instant)

@@ -47,12 +47,12 @@ class UserHistoryDao(
                 'USR',
                 :authorities,
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :encryptedPassword,
                 :firstName,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -62,13 +62,13 @@ class UserHistoryDao(
             SqlParams().apply {
                 addListOfStrings("authorities", entity.authorities.map { it.name })
                 addValue("changeType", entity.changeType)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -101,12 +101,12 @@ class UserHistoryDao(
                 'USR',
                 :authorities,
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :encryptedPassword,
                 :firstName,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -117,13 +117,13 @@ class UserHistoryDao(
                 SqlParams().apply {
                     addListOfStrings("authorities", entity.authorities.map { it.name })
                     addValue("changeType", entity.changeType)
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
                     addValue("encryptedPassword", entity.encryptedPassword)
                     addValue("firstName", entity.firstName)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)

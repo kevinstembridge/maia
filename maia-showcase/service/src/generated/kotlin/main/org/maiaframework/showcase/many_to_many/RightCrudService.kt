@@ -30,7 +30,7 @@ class RightCrudService(
 
     fun delete(id: DomainId) {
 
-        if (this.leftToRightManyToManyJoinRepo.existsByRightId(id)) {
+        if (this.leftToRightManyToManyJoinRepo.existsByRight(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightManyToManyJoin")
         }
 

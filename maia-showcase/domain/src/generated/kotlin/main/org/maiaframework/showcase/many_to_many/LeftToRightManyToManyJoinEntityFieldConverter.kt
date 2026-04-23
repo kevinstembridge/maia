@@ -23,9 +23,9 @@ class LeftToRightManyToManyJoinEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
-            "left_id" -> // leftId
+            "left_id" -> // left
                 return (inputValue as DomainId).value
-            "right_id" -> // rightId
+            "right_id" -> // right
                 return (inputValue as DomainId).value
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

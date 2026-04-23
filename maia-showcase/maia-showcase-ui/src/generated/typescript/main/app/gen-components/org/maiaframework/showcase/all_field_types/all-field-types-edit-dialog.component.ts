@@ -124,8 +124,8 @@ export class AllFieldTypesEditDialogComponent implements OnInit {
                 createdByUsername: new FormControl({value: '', disabled: true}),
                 lastModifiedByUsername: new FormControl({value: '', disabled: true}),
                 id: new FormControl({value: '', disabled: true}),
-                createdById: new FormControl({value: '', disabled: true}),
-                lastModifiedById: new FormControl({value: '', disabled: true}),
+                createdBy: new FormControl({value: '', disabled: true}),
+                lastModifiedBy: new FormControl({value: '', disabled: true}),
             },
         );
 

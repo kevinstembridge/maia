@@ -12,19 +12,19 @@ class HistorySubOneEntityRowMapper : MaiaRowMapper<HistorySubOneEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): HistorySubOneEntity {
 
-        val createdById = rsa.readDomainId("created_by_id")
+        val createdBy = rsa.readDomainId("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val someString = rsa.readString("some_string")
         val version = rsa.readLong("version")
 
         return HistorySubOneEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 someString,
                 version

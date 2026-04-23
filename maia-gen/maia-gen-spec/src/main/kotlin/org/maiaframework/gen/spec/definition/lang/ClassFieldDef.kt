@@ -2,6 +2,7 @@ package org.maiaframework.gen.spec.definition.lang
 
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.FieldDisplayName
+import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.ForeignKeyFieldDef
 import org.maiaframework.gen.spec.definition.FormPlaceholderText
 import org.maiaframework.gen.spec.definition.TypeaheadDef
@@ -271,10 +272,10 @@ data class ClassFieldDef(
     }
 
 
-    fun findEmbeddedField(fieldPath: List<String>): ClassFieldDef {
+    fun findEmbeddedField(fieldPath: FieldPath): ClassFieldDef {
 
         if (this.fieldType is EsDocFieldType) {
-            return this.fieldType.esDocDef.findFieldByPath(fieldPath.joinToString("."))
+            return this.fieldType.esDocDef.findFieldByPath(fieldPath)
         } else {
             throw IllegalStateException("This class field '$classFieldName' does not represent an embedded field.")
         }

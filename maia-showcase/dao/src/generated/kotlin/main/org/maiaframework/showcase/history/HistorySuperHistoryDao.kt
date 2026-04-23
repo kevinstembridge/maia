@@ -52,10 +52,10 @@ class HistorySuperHistoryDao(
             ) values (
                 :typeDiscriminator,
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someString,
                 :version
@@ -64,10 +64,10 @@ class HistorySuperHistoryDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", HistorySubOneHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("changeType", entity.changeType)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
@@ -94,10 +94,10 @@ class HistorySuperHistoryDao(
             ) values (
                 :typeDiscriminator,
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someInt,
                 :version
@@ -106,10 +106,10 @@ class HistorySuperHistoryDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", HistorySubTwoHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("changeType", entity.changeType)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("someInt", entity.someInt)
                 addValue("version", entity.version)
@@ -133,10 +133,10 @@ class HistorySuperHistoryDao(
                 version
             ) values (
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :version
             )
@@ -144,10 +144,10 @@ class HistorySuperHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("version", entity.version)
                 }
@@ -327,15 +327,15 @@ class HistorySuperHistoryDao(
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.history_super_history
-            where created_by_id = :createdById
+            where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", createdById)
+            addValue("createdBy", createdBy)
             }
         )
 
@@ -344,15 +344,15 @@ class HistorySuperHistoryDao(
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.history_super_history
-            where last_modified_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 

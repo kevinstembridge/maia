@@ -43,10 +43,10 @@ class OrganizationHistoryDao(
             ) values (
                 'ORG',
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :orgName,
@@ -55,11 +55,11 @@ class OrganizationHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("orgName", entity.orgName)
@@ -88,10 +88,10 @@ class OrganizationHistoryDao(
             ) values (
                 'ORG',
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :orgName,
@@ -101,11 +101,11 @@ class OrganizationHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("orgName", entity.orgName)

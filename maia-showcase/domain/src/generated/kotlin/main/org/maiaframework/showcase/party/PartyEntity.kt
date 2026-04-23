@@ -9,11 +9,11 @@ import java.time.Instant
 
 
 abstract class PartyEntity(
-    val createdById: DomainId?,
+    val createdBy: DomainId?,
     val createdTimestampUtc: Instant,
     val displayName: String,
     val id: DomainId,
-    val lastModifiedById: DomainId?,
+    val lastModifiedBy: DomainId?,
     val lastModifiedTimestampUtc: Instant,
     val lifecycleState: LifecycleState,
     val version: Long
@@ -23,11 +23,11 @@ abstract class PartyEntity(
     override fun toString(): String {
 
         return "PartyEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

@@ -47,10 +47,10 @@ class HistorySampleDao(
                 some_string,
                 version
             ) values (
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
@@ -58,10 +58,10 @@ class HistorySampleDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -88,10 +88,10 @@ class HistorySampleDao(
                 some_string,
                 version
             ) values (
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
@@ -100,10 +100,10 @@ class HistorySampleDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
@@ -146,19 +146,19 @@ class HistorySampleDao(
     ): HistorySampleHistoryEntity {
 
         val id = entity.id
-        val createdById = entity.createdById
+        val createdBy = entity.createdBy
         val createdTimestampUtc = entity.createdTimestampUtc
-        val lastModifiedById = entity.lastModifiedById
+        val lastModifiedBy = entity.lastModifiedBy
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val someInt = entity.someInt
         val someString = entity.someString
 
         return HistorySampleHistoryEntity(
                 changeType,
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 someInt,
                 someString,
@@ -376,15 +376,15 @@ class HistorySampleDao(
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.history_sample
-            where created_by_id = :createdById
+            where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", createdById)
+            addValue("createdBy", createdBy)
             }
         )
 
@@ -393,15 +393,15 @@ class HistorySampleDao(
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.history_sample
-            where last_modified_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 
@@ -424,10 +424,10 @@ class HistorySampleDao(
                 some_string,
                 version
             ) values (
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
@@ -435,7 +435,7 @@ class HistorySampleDao(
             )
             on conflict (some_string)
             do update set
-                last_modified_by_id = :lastModifiedById,
+                last_modified_by_id = :lastModifiedBy,
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_int = :someInt,
                 some_string = :someString,
@@ -443,10 +443,10 @@ class HistorySampleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
+                addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
                 addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
                 addValue("someInt", upsertEntity.someInt)
                 addValue("someString", upsertEntity.someString)
@@ -520,7 +520,7 @@ class HistorySampleDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId)
+            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "someInt" -> sqlParams.addValue("someInt", field.value as Int)
             "someString" -> sqlParams.addValue("someString", field.value as String)

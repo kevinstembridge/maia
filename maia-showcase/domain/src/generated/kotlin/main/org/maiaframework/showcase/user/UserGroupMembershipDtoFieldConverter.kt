@@ -16,9 +16,9 @@ class UserGroupMembershipDtoFieldConverter : SearchFieldConverter {
         when(tableColumnPath) {
             "id" -> // id
                 return inputValue
-            "user_group_id" -> // userGroupId
+            "id" -> // userGroupId
                 return inputValue
-            "user_id" -> // userId
+            "id" -> // userId
                 return inputValue
             else -> throw IllegalArgumentException("Unknown tableColumnPath [$tableColumnPath]")
         }

@@ -9,14 +9,14 @@ import java.time.Instant
 
 
 class EmailAddressVerificationEntity(
-    val createdById: DomainId?,
+    val createdBy: DomainId?,
     val createdTimestampUtc: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val emailAddressId: DomainId,
     val id: DomainId,
     val ipAddress: IpAddress?,
-    val lastModifiedById: DomainId?,
+    val lastModifiedBy: DomainId?,
     val lastModifiedTimestampUtc: Instant,
     val version: Long
 ) {
@@ -25,14 +25,14 @@ class EmailAddressVerificationEntity(
     override fun toString(): String {
 
         return "EmailAddressVerificationEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "emailAddressId = '" + this.emailAddressId + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "ipAddress = '" + this.ipAddress + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
@@ -50,7 +50,7 @@ class EmailAddressVerificationEntity(
 
         @JvmStatic
         fun newInstance(
-            createdById: DomainId?,
+            createdBy: DomainId?,
             effectiveFrom: Instant?,
             effectiveTo: Instant?,
             emailAddressId: DomainId,
@@ -60,18 +60,18 @@ class EmailAddressVerificationEntity(
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
-            val lastModifiedById = createdById
+            val lastModifiedBy = createdBy
             val version = 1L
 
             return EmailAddressVerificationEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 effectiveFrom,
                 effectiveTo,
                 emailAddressId,
                 id,
                 ipAddress,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 version
             )

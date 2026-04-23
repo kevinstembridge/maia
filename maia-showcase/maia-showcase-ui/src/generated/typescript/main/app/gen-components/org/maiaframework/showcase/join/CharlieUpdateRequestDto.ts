@@ -3,6 +3,6 @@
 
 
 export interface CharlieUpdateRequestDto {
-    bravoId: string;
+    bravo: string;
     id: string;
 }

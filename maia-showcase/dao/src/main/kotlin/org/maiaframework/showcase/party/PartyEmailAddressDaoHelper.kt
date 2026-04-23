@@ -46,7 +46,7 @@ class PartyEmailAddressDaoHelper(
         val filters = PartyEmailAddressEntityFilters()
 
         val filter = filters.and(
-            filters.emailAddressId eq emailAddressEntity.id,
+            filters.emailAddress eq emailAddressEntity.id,
             filters.purposes contains EmailAddressPurpose.USER_LOGIN,
             filters.effectiveFrom lte Instant.now(),
             filters.or(
@@ -65,7 +65,7 @@ class PartyEmailAddressDaoHelper(
         return findEffectiveLoginEmailAddressesByParty(partyId)
             .firstOrNull()
             ?.let {
-                this.emailAddressDao.findByPrimaryKeyOrNull(it.emailAddressId)
+                this.emailAddressDao.findByPrimaryKeyOrNull(it.emailAddress)
             }
 
     }
@@ -76,7 +76,7 @@ class PartyEmailAddressDaoHelper(
         val filters = PartyEmailAddressEntityFilters()
 
         val filter = filters.and(
-            filters.partyId eq partyId,
+            filters.party eq partyId,
             filters.purposes contains EmailAddressPurpose.USER_LOGIN,
             filters.effectiveFrom lte Instant.now(),
             filters.or(
@@ -95,7 +95,7 @@ class PartyEmailAddressDaoHelper(
         val filters = PartyEmailAddressEntityFilters()
 
         val filter = filters.and(
-            filters.partyId eq partyId,
+            filters.party eq partyId,
             filters.isPrimaryContact eq true,
             filters.effectiveFrom lte Instant.now(),
             filters.or(
@@ -107,7 +107,7 @@ class PartyEmailAddressDaoHelper(
         val partyEmailAddressEntity = this.partyEmailAddressDao.findAllBy(filter).firstOrNull()
 
         return partyEmailAddressEntity?.let {
-            this.emailAddressDao.findByPrimaryKeyOrNull(it.emailAddressId)?.emailAddress
+            this.emailAddressDao.findByPrimaryKeyOrNull(it.emailAddress)?.emailAddress
         }
 
     }

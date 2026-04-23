@@ -12,13 +12,13 @@ object MaiaShowcaseAnys {
 
     val defaultUser = UserEntity(
         emptyList(),
-        createdById = null,
+        createdBy = null,
         Instant.now(),
         "Some display Name",
         "password",
         FirstName("Nigel"),
         Anys.defaultCreatedById,
-        lastModifiedById = null,
+        lastModifiedBy = null,
         Instant.now(),
         LastName("Nigelson"),
         LifecycleState.ACTIVE,

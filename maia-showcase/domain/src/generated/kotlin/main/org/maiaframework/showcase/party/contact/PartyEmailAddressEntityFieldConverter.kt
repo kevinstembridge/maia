@@ -18,7 +18,7 @@ class PartyEmailAddressEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "created_by_id" -> // createdById
+            "created_by_id" -> // createdBy
                 return (inputValue as DomainId).value
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
@@ -26,17 +26,17 @@ class PartyEmailAddressEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "effective_to" -> // effectiveTo
                 return inputValue
-            "email_address_id" -> // emailAddressId
+            "email_address_id" -> // emailAddress
                 return (inputValue as DomainId).value
             "id" -> // id
                 return (inputValue as DomainId).value
             "is_primary_contact" -> // isPrimaryContact
                 return inputValue
-            "last_modified_by_id" -> // lastModifiedById
+            "last_modified_by_id" -> // lastModifiedBy
                 return (inputValue as DomainId).value
             "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue
-            "party_id" -> // partyId
+            "party_id" -> // party
                 return (inputValue as DomainId).value
             "purposes" -> // purposes
                 {

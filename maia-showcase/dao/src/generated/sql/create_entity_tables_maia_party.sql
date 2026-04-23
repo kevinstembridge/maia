@@ -85,8 +85,8 @@ CREATE TABLE maia.user_group_history (
 CREATE TABLE maia.user_group_membership (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     user_id uuid NOT NULL REFERENCES maia.party(id),
+    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     version bigint NOT NULL,
     PRIMARY KEY(id)
 );
@@ -98,8 +98,8 @@ CREATE TABLE maia.user_group_membership_history (
     change_type text NOT NULL,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     user_id uuid NOT NULL REFERENCES maia.party(id),
+    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );

@@ -11,7 +11,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/join/AlphaTypeaheadV1EsDoc';
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
-import {bravo_alphaIdRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaIdRequiredValidator';
+import {bravo_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaRequiredValidator';
 import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud.service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -70,7 +70,7 @@ export class BravoCreateDialogComponent implements OnInit {
             {
                 someInt: new FormControl(0, { updateOn: 'change' }),
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                alpha: new FormControl('', { updateOn: 'change', validators: [bravo_alphaIdRequiredValidator()] }),
+                alpha: new FormControl('', { updateOn: 'change', validators: [bravo_alphaRequiredValidator()] }),
             },
         );
 
@@ -116,7 +116,7 @@ export class BravoCreateDialogComponent implements OnInit {
         }
 
         const requestDto = {
-            alphaId: this.formGroup.getRawValue().alpha.id,
+            alpha: this.formGroup.getRawValue().alpha.id,
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
         } as BravoCreateRequestDto;

@@ -14,15 +14,15 @@ class UserGroupMembershipEntityRowMapper : MaiaRowMapper<UserGroupMembershipEnti
 
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val userGroupId = rsa.readDomainId("user_group_id")
-        val userId = rsa.readDomainId("user_id")
+        val user = rsa.readDomainId("user_id")
+        val userGroup = rsa.readDomainId("user_group_id")
         val version = rsa.readLong("version")
 
         return UserGroupMembershipEntity(
                 createdTimestampUtc,
                 id,
-                userGroupId,
-                userId,
+                user,
+                userGroup,
                 version
         )
 

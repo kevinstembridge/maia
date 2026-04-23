@@ -18,9 +18,9 @@ object LeftToRightManyToManyJoinEntityMeta {
 
     const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
-    const val leftId = "left_id"
+    const val left = "left_id"
 
-    const val rightId = "right_id"
+    const val right = "right_id"
 
     val ENTITY_KEY = EntityKey("LeftToRightManyToManyJoin")
 
@@ -48,8 +48,8 @@ object LeftToRightManyToManyJoinEntityMeta {
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
-            "leftId" -> "left_id"
-            "rightId" -> "right_id"
+            "left" -> "left_id"
+            "right" -> "right_id"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

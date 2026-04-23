@@ -66,58 +66,58 @@ class PartyEmailAddressRepo(
     }
 
 
-    fun findByEmailAddressId(emailAddressId: DomainId): List<PartyEmailAddressEntity> {
+    fun findByEmailAddress(emailAddress: DomainId): List<PartyEmailAddressEntity> {
 
-        return dao.findByEmailAddressId(emailAddressId)
-
-    }
-
-
-    fun findByPartyId(partyId: DomainId): List<PartyEmailAddressEntity> {
-
-        return dao.findByPartyId(partyId)
+        return dao.findByEmailAddress(emailAddress)
 
     }
 
 
-    fun findEffectiveByEmailAddressId(emailAddressId: DomainId): List<PartyEmailAddressEntity> {
+    fun findByParty(party: DomainId): List<PartyEmailAddressEntity> {
 
-        return dao.findEffectiveByEmailAddressId(emailAddressId)
-
-    }
-
-
-    fun findEffectiveByPartyId(partyId: DomainId): List<PartyEmailAddressEntity> {
-
-        return dao.findEffectiveByPartyId(partyId)
+        return dao.findByParty(party)
 
     }
 
 
-    fun existsByPartyId(partyId: DomainId): Boolean {
+    fun findEffectiveByEmailAddress(emailAddress: DomainId): List<PartyEmailAddressEntity> {
 
-        return dao.existsByPartyId(partyId)
-
-    }
-
-
-    fun existsByEmailAddressId(emailAddressId: DomainId): Boolean {
-
-        return dao.existsByEmailAddressId(emailAddressId)
+        return dao.findEffectiveByEmailAddress(emailAddress)
 
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun findEffectiveByParty(party: DomainId): List<PartyEmailAddressEntity> {
 
-        return dao.existsByCreatedById(createdById)
+        return dao.findEffectiveByParty(party)
 
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByParty(party: DomainId): Boolean {
 
-        return dao.existsByLastModifiedById(lastModifiedById)
+        return dao.existsByParty(party)
+
+    }
+
+
+    fun existsByEmailAddress(emailAddress: DomainId): Boolean {
+
+        return dao.existsByEmailAddress(emailAddress)
+
+    }
+
+
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
+
+        return dao.existsByCreatedBy(createdBy)
+
+    }
+
+
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
+
+        return dao.existsByLastModifiedBy(lastModifiedBy)
 
     }
 

@@ -58,12 +58,12 @@ class UserDao(
             ) values (
                 'USR',
                 :authorities,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :encryptedPassword,
                 :firstName,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -72,13 +72,13 @@ class UserDao(
             """.trimIndent(),
             SqlParams().apply {
                 addListOfStrings("authorities", entity.authorities.map { it.name })
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -111,12 +111,12 @@ class UserDao(
             ) values (
                 'USR',
                 :authorities,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :encryptedPassword,
                 :firstName,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -126,13 +126,13 @@ class UserDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addListOfStrings("authorities", entity.authorities.map { it.name })
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
                     addValue("encryptedPassword", entity.encryptedPassword)
                     addValue("firstName", entity.firstName)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)
@@ -176,12 +176,12 @@ class UserDao(
 
         val id = entity.id
         val authorities = entity.authorities
-        val createdById = entity.createdById
+        val createdBy = entity.createdBy
         val createdTimestampUtc = entity.createdTimestampUtc
         val displayName = entity.displayName
         val encryptedPassword = entity.encryptedPassword
         val firstName = entity.firstName
-        val lastModifiedById = entity.lastModifiedById
+        val lastModifiedBy = entity.lastModifiedBy
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
@@ -189,13 +189,13 @@ class UserDao(
         return UserHistoryEntity(
                 authorities,
                 changeType,
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 encryptedPassword,
                 firstName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
@@ -377,13 +377,13 @@ class UserDao(
             """
             select
                 maia.v_party.authorities as authorities,
-                maia.v_party.created_by_id as createdById,
+                maia.v_party.created_by_id as createdBy,
                 maia.v_party.created_timestamp_utc as createdTimestampUtc,
                 maia.v_party.display_name as displayName,
                 maia.v_party.encrypted_password as encryptedPassword,
                 maia.v_party.first_name as firstName,
                 maia.v_party.id as id,
-                maia.v_party.last_modified_by_id as lastModifiedById,
+                maia.v_party.last_modified_by_id as lastModifiedBy,
                 maia.v_party.last_modified_timestamp_utc as lastModifiedTimestampUtc,
                 maia.v_party.last_name as lastName,
                 maia.v_party.lifecycle_state as lifecycleState,
@@ -455,10 +455,10 @@ class UserDao(
 
         when (field.classFieldName) {
             "authorities" -> sqlParams.addListOfStrings("authorities", field.value as List<Authority>) { it.name }
-            "createdById" -> sqlParams.addValue("createdById", field.value as DomainId?)
+            "createdBy" -> sqlParams.addValue("createdBy", field.value as DomainId?)
             "encryptedPassword" -> sqlParams.addValue("encryptedPassword", field.value as String)
             "firstName" -> sqlParams.addValue("firstName", field.value as FirstName?)
-            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId?)
+            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "lastName" -> sqlParams.addValue("lastName", field.value as LastName)
             "lifecycleState" -> sqlParams.addValue("lifecycleState", field.value as LifecycleState)

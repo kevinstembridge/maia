@@ -13,8 +13,8 @@ object UserGroupMembershipDtoMeta {
 
         return when(dtoFieldName) {
             "id" -> "maia.user_group_membership.id"
-            "userGroupId" -> "maia.user_group_membership.user_group_id"
-            "userId" -> "maia.user_group_membership.user_id"
+            "userGroupId" -> "maia.user_group.id"
+            "userId" -> "maia.v_party.id"
             else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [id, userGroupId, userId]")
         }
 

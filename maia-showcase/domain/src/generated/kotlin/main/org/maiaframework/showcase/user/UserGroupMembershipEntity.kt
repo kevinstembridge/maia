@@ -10,8 +10,8 @@ import java.time.Instant
 class UserGroupMembershipEntity(
     val createdTimestampUtc: Instant,
     val id: DomainId,
-    val userGroupId: DomainId,
-    val userId: DomainId,
+    val user: DomainId,
+    val userGroup: DomainId,
     val version: Long
 ) {
 
@@ -21,8 +21,8 @@ class UserGroupMembershipEntity(
         return "UserGroupMembershipEntity{" +
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "userGroupId = '" + this.userGroupId + '\'' + ", " + 
-                "userId = '" + this.userId + '\'' + ", " + 
+                "user = '" + this.user + '\'' + ", " + 
+                "userGroup = '" + this.userGroup + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
 
@@ -39,8 +39,8 @@ class UserGroupMembershipEntity(
 
         @JvmStatic
         fun newInstance(
-            userGroupId: DomainId,
-            userId: DomainId
+            user: DomainId,
+            userGroup: DomainId
         ): UserGroupMembershipEntity {
 
             val createdTimestampUtc = Instant.now()
@@ -50,8 +50,8 @@ class UserGroupMembershipEntity(
             return UserGroupMembershipEntity(
                 createdTimestampUtc,
                 id,
-                userGroupId,
-                userId,
+                user,
+                userGroup,
                 version
             )
 

@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.domain.persist.SortDirection
 import org.maiaframework.gen.spec.definition.EntityAndField
+import org.maiaframework.gen.spec.definition.FieldDisplayName
 import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.ResponseDtoFieldDef
 import org.maiaframework.gen.spec.definition.SimpleSearchableDtoFieldDef
@@ -27,6 +28,10 @@ class SearchableDtoFieldDefBuilder(
 
     private val classFieldDef = entityAndField.entityFieldDef.classFieldDef
 
+
+    private var fieldDisplayName: FieldDisplayName? = null
+
+
     private var nullability = entityAndField.entityFieldDef.classFieldDef.nullability
 
 
@@ -46,29 +51,33 @@ class SearchableDtoFieldDefBuilder(
 
 
     private val fieldReaderClassName: ParameterizedType?
-        get() = this.fieldReaderParameterizedType ?: this.defaultFieldTypeFieldReaderProvider.invoke(this.classFieldDef.fieldType)
+        get() = this.fieldReaderParameterizedType
+            ?: this.defaultFieldTypeFieldReaderProvider.invoke(this.classFieldDef.fieldType)
 
 
     private val fieldWriterClassName: ParameterizedType?
-        get() = this.fieldWriterParameterizedType ?: this.defaultFieldTypeFieldWriterProvider.invoke(this.classFieldDef.fieldType)
+        get() = this.fieldWriterParameterizedType
+            ?: this.defaultFieldTypeFieldWriterProvider.invoke(this.classFieldDef.fieldType)
 
 
     fun build(): SimpleSearchableDtoFieldDef {
 
         val classFieldDef = this.entityAndField.entityFieldDef.classFieldDef
+        val displayName = this.fieldDisplayName ?: classFieldDef.displayName
 
         val fieldReaderClassName = fieldReaderClassName
         val fieldWriterClassName = fieldWriterClassName
 
         val responseDtoFieldDef = ResponseDtoFieldDef(
-                this.classFieldName,
-                this.entityAndField.databaseColumnName,
-                classFieldDef.fieldType,
-                this.nullability,
-                this.isMasked,
-                this.caseSensitive,
-                fieldReaderClassName,
-                fieldWriterClassName
+            this.classFieldName,
+            displayName,
+            this.entityAndField.databaseColumnName,
+            classFieldDef.fieldType,
+            this.nullability,
+            this.isMasked,
+            this.caseSensitive,
+            fieldReaderClassName,
+            fieldWriterClassName
         )
 
         return SimpleSearchableDtoFieldDef(
@@ -79,6 +88,11 @@ class SearchableDtoFieldDefBuilder(
             this.sortIndexAndDirection
         )
 
+    }
+
+
+    fun displayName(displayName: String) {
+        this.fieldDisplayName = FieldDisplayName(displayName)
     }
 
 

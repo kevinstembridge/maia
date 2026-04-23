@@ -123,7 +123,7 @@ class CrudServiceRenderer(
         appendPreAuthorize(createApiDef.crudApiDef.authority)
         appendLine("    fun create(createDto: ${createApiDef.requestDtoDef.uqcn}): ${this.entityDef.entityUqcn} {")
 
-        if (this.entityDef.hasCreatedByIdField || this.entityDef.hasCreatedByField) {
+        if (this.entityDef.hasCreatedByIdField || this.entityDef.hasCreatedByUsernameField) {
 
             addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
 
@@ -162,16 +162,15 @@ class CrudServiceRenderer(
                 val thisSideEntityIdFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
                 val otherSideFieldName = otherSide.fieldName
                 val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
-                val otherSideEntityIdFieldName = "${otherSideFieldName}Id"
                 val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
                 val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
 
                 blankLine()
-                appendLine("        createDto.${otherSideDtoFieldName}.forEach { $otherSideEntityIdFieldName ->")
+                appendLine("        createDto.${otherSideDtoFieldName}.forEach { $otherSideFieldName ->")
                 appendLine("            this.${joinRepoFieldName}.insert(")
                 appendLine("                ${joinEntityClass}.newInstance(")
                 appendLine("                    $thisSideEntityIdFieldName = entity.id,")
-                appendLine("                    $otherSideEntityIdFieldName = $otherSideEntityIdFieldName")
+                appendLine("                    $otherSideFieldName = $otherSideFieldName")
                 appendLine("                )")
                 appendLine("            )")
                 appendLine("        }")
@@ -262,7 +261,7 @@ class CrudServiceRenderer(
 
             addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
 
-            appendLine("        val createdById = currentUser.userId")
+            appendLine("        val createdBy = currentUser.userId")
 
         }
 
@@ -282,7 +281,7 @@ class CrudServiceRenderer(
         appendLine("        val createdTimestampUtc = Instant.now()")
 
         if (this.entityDef.hasLastModifiedByIdField) {
-            appendLine("        val lastModifiedById = currentUser.userId")
+            appendLine("        val lastModifiedBy = currentUser.userId")
         }
 
         if (this.entityDef.hasLastModifiedByUsernameField) {
@@ -445,7 +444,7 @@ class CrudServiceRenderer(
 
             if (this.entityDef.hasLastModifiedByIdField) {
                 addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
-                appendLine("            lastModifiedById(CurrentUserHolder.userId)")
+                appendLine("            lastModifiedBy(CurrentUserHolder.userId)")
             }
 
             if (this.entityDef.hasLastModifiedTimestampUtcField) {
@@ -464,20 +463,18 @@ class CrudServiceRenderer(
             val thisSideFieldName = manyToManyEntityDef.idTableColumnName(this.entityDef).removeSuffix("_id")
             val otherSideFieldName = otherSide.fieldName
             val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
-            val thisSideEntityIdFieldName = "${thisSideFieldName}Id"
-            val otherSideEntityIdFieldName = "${otherSideFieldName}Id"
             val thisSideFieldNameCapitalized = thisSideFieldName.replaceFirstChar { it.uppercaseChar() }
             val otherSideFieldNameCapitalized = otherSideFieldName.replaceFirstChar { it.uppercaseChar() }
             val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
             val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
 
             blankLine()
-            appendLine("        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}Id(id).forEach { join ->")
+            appendLine("        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
             appendLine("            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
             appendLine("        }")
             blankLine()
-            appendLine("        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { ${otherSideEntityIdFieldName} ->")
-            appendLine("            ${joinEntityClass}.newInstance(${thisSideEntityIdFieldName} = id, ${otherSideEntityIdFieldName} = ${otherSideEntityIdFieldName})")
+            appendLine("        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->")
+            appendLine("            ${joinEntityClass}.newInstance($thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)")
             appendLine("        }")
             appendLine("        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
         }
@@ -532,7 +529,7 @@ class CrudServiceRenderer(
 
         if (entityDef.hasLastModifiedByIdField) {
             addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
-            appendLine("            lastModifiedById(CurrentUserHolder.userId)")
+            appendLine("            lastModifiedBy(CurrentUserHolder.userId)")
         }
 
         if (entityDef.hasLastModifiedByUsernameField) {

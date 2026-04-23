@@ -17,8 +17,8 @@ import org.maiaframework.domain.DomainId
 class CharlieCreateRequestDto
 @JsonCreator constructor(
     @NotNull
-    @param:JsonProperty("bravoId", access = JsonProperty.Access.READ_WRITE) 
-    private val bravoId_raw: DomainId?,
+    @param:JsonProperty("bravo", access = JsonProperty.Access.READ_WRITE) 
+    private val bravo_raw: DomainId?,
     @field:NotNull
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
     private val someInt_raw: Int?,
@@ -30,7 +30,7 @@ class CharlieCreateRequestDto
 
 
     @get:JsonIgnore
-    val bravoId: DomainId by lazy { bravoId_raw!! }
+    val bravo: DomainId by lazy { bravo_raw!! }
 
 
     @get:JsonIgnore
@@ -44,7 +44,7 @@ class CharlieCreateRequestDto
     override fun toString(): String {
 
         return "CharlieCreateRequestDto{" +
-                "bravoId = '" + this.bravoId + '\'' + ", " + 
+                "bravo = '" + this.bravo + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' +
                 "}"

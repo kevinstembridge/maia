@@ -68,7 +68,7 @@ class UserGroupDao(
                 :description,
                 :id,
                 :name,
-                :orgId,
+                :org,
                 :systemManaged,
                 :version
             )
@@ -80,7 +80,7 @@ class UserGroupDao(
                 addValue("description", entity.description)
                 addValue("id", entity.id)
                 addValue("name", entity.name)
-                addValue("orgId", entity.orgId)
+                addValue("org", entity.org)
                 addValue("systemManaged", entity.systemManaged)
                 addValue("version", entity.version)
             }
@@ -235,7 +235,7 @@ class UserGroupDao(
         val createdTimestampUtc = entity.createdTimestampUtc
         val description = entity.description
         val name = entity.name
-        val orgId = entity.orgId
+        val org = entity.org
         val systemManaged = entity.systemManaged
 
         return OrgUserGroupHistoryEntity(
@@ -245,7 +245,7 @@ class UserGroupDao(
                 description,
                 id,
                 name,
-                orgId,
+                org,
                 systemManaged,
                 version)
 

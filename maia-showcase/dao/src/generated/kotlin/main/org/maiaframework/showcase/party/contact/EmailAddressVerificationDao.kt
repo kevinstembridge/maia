@@ -44,27 +44,27 @@ class EmailAddressVerificationDao(
                 last_modified_timestamp_utc,
                 version
             ) values (
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :effectiveFrom,
                 :effectiveTo,
                 :emailAddressId,
                 :id,
                 :ipAddress,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :version
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
                 addValue("emailAddressId", entity.emailAddressId)
                 addValue("id", entity.id)
                 addValue("ipAddress", entity.ipAddress)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("version", entity.version)
             }
@@ -89,28 +89,28 @@ class EmailAddressVerificationDao(
                 last_modified_timestamp_utc,
                 version
             ) values (
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :effectiveFrom,
                 :effectiveTo,
                 :emailAddressId,
                 :id,
                 :ipAddress,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :version
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
                     addValue("emailAddressId", entity.emailAddressId)
                     addValue("id", entity.id)
                     addValue("ipAddress", entity.ipAddress)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("version", entity.version)
                 }
@@ -287,15 +287,15 @@ class EmailAddressVerificationDao(
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.email_address_verification
-            where created_by_id = :createdById
+            where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", createdById)
+            addValue("createdBy", createdBy)
             }
         )
 
@@ -304,15 +304,15 @@ class EmailAddressVerificationDao(
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.email_address_verification
-            where last_modified_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 
@@ -363,7 +363,7 @@ class EmailAddressVerificationDao(
         when (field.classFieldName) {
             "effectiveFrom" -> sqlParams.addValue("effectiveFrom", field.value as Instant?)
             "effectiveTo" -> sqlParams.addValue("effectiveTo", field.value as Instant?)
-            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId?)
+            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
         }
 

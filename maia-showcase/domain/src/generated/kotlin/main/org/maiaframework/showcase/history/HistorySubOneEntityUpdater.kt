@@ -54,9 +54,9 @@ data class HistorySubOneEntityUpdater(
         }
 
 
-        fun lastModifiedById(lastModifiedById: DomainId) {
+        fun lastModifiedBy(lastModifiedBy: DomainId) {
 
-            this.fields.add(FieldUpdate("lastModifiedById", "last_modified_by_id", lastModifiedById))
+            this.fields.add(FieldUpdate("lastModifiedBy", "last_modified_by_id", lastModifiedBy))
 
         }
 

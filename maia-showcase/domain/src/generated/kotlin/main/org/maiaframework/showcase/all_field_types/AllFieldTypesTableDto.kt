@@ -19,10 +19,10 @@ import java.time.Period
 
 
 data class AllFieldTypesTableDto(
-    val createdById: DomainId,
+    val createdBy: DomainId,
     val createdByUsername: String,
     val id: DomainId,
-    val lastModifiedById: DomainId,
+    val lastModifiedBy: DomainId,
     val lastModifiedByUsername: String,
     val lastModifiedTimestampUtc: Instant,
     val someBoolean: Boolean,

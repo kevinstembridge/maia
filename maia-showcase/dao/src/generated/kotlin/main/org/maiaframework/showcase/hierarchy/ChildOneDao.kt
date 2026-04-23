@@ -46,10 +46,10 @@ class ChildOneDao(
                 some_unique_string
             ) values (
                 'CHILD1',
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
@@ -57,10 +57,10 @@ class ChildOneDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -87,10 +87,10 @@ class ChildOneDao(
                 some_unique_string
             ) values (
                 'CHILD1',
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
@@ -99,10 +99,10 @@ class ChildOneDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
@@ -324,15 +324,15 @@ class ChildOneDao(
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.grandparent
-            where created_by_id = :createdById
+            where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", createdById)
+            addValue("createdBy", createdBy)
             }
         )
 
@@ -341,15 +341,15 @@ class ChildOneDao(
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.grandparent
-            where last_modified_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 
@@ -374,10 +374,10 @@ class ChildOneDao(
                 some_unique_string
             ) values (
                 'CHILD1',
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
@@ -385,7 +385,7 @@ class ChildOneDao(
             )
             on conflict (some_unique_string, type_discriminator)
             do update set
-                last_modified_by_id = :lastModifiedById,
+                last_modified_by_id = :lastModifiedBy,
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc,
                 some_int = :someInt,
                 some_string = :someString,
@@ -393,10 +393,10 @@ class ChildOneDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
+                addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
                 addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
                 addValue("someInt", upsertEntity.someInt)
                 addValue("someString", upsertEntity.someString)
@@ -449,7 +449,7 @@ class ChildOneDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId)
+            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "someInt" -> sqlParams.addValue("someInt", field.value as Int)
             "someString" -> sqlParams.addValue("someString", field.value as String)

@@ -20,7 +20,7 @@ class RightForeignKeyReferencesService(
 
     fun checkForeignKeyReferences(id: DomainId): ForeignKeyReferencesExistResponseDto {
 
-        if (this.leftToRightManyToManyJoinRepo.existsByRightId(id)) {
+        if (this.leftToRightManyToManyJoinRepo.existsByRight(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightManyToManyJoin")
         }
 

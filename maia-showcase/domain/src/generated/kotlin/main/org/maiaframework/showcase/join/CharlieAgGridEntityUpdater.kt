@@ -33,9 +33,9 @@ data class CharlieAgGridEntityUpdater(
         }
 
 
-        fun bravoId(bravoId: DomainId) {
+        fun bravo(bravo: DomainId) {
 
-            this.fields.add(FieldUpdate("bravoId", "bravo_id", bravoId))
+            this.fields.add(FieldUpdate("bravo", "bravo_id", bravo))
 
         }
 

@@ -36,7 +36,7 @@ class UserGroupEntityRowMapper : MaiaRowMapper<UserGroupEntity> {
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")
         val name = rsa.readString("name")
-        val orgId = rsa.readDomainId("org_id")
+        val org = rsa.readDomainId("org_id")
         val systemManaged = rsa.readBoolean("system_managed")
         val version = rsa.readLong("version")
 
@@ -46,7 +46,7 @@ class UserGroupEntityRowMapper : MaiaRowMapper<UserGroupEntity> {
                 description,
                 id,
                 name,
-                orgId,
+                org,
                 systemManaged,
                 version
         )

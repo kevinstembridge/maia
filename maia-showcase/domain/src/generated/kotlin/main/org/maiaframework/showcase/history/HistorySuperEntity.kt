@@ -8,10 +8,10 @@ import java.time.Instant
 
 
 abstract class HistorySuperEntity(
-    val createdById: DomainId,
+    val createdBy: DomainId,
     val createdTimestampUtc: Instant,
     val id: DomainId,
-    val lastModifiedById: DomainId,
+    val lastModifiedBy: DomainId,
     val lastModifiedTimestampUtc: Instant,
     val version: Long
 ) {
@@ -20,10 +20,10 @@ abstract class HistorySuperEntity(
     override fun toString(): String {
 
         return "HistorySuperEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"

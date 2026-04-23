@@ -62,7 +62,7 @@ class UserHistoryEntityFilters {
         }
 
 
-    val createdById: FieldFilter<DomainId?> 
+    val createdBy: FieldFilter<DomainId?> 
         get() {
 
             return FieldFilter("created_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
@@ -110,7 +110,7 @@ class UserHistoryEntityFilters {
         }
 
 
-    val lastModifiedById: FieldFilter<DomainId?> 
+    val lastModifiedBy: FieldFilter<DomainId?> 
         get() {
 
             return FieldFilter("last_modified_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }

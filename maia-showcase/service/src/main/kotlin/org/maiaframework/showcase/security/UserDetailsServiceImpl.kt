@@ -40,7 +40,7 @@ class UserDetailsServiceImpl(
         val loginPartyEmailAddressEntity = this.partyEmailAddressRepoHelper.findLoginEmailAddressByUsername(username)
             ?: throw UsernameNotFoundException.fromUsername(username)
 
-        val userEntity = this.userRepo.findByPrimaryKey(loginPartyEmailAddressEntity.partyId)
+        val userEntity = this.userRepo.findByPrimaryKey(loginPartyEmailAddressEntity.party)
         val loginEmailVerified = this.emailAddressVerificationRepoHelper.isEmailAddressVerified(emailAddressEntity.id)
         val userGrantedAuthorities = getGrantedAuthoritiesFor(userEntity)
         val userGroupGrantedAuthorities = getAuthoritiesForUserGroups(userEntity)
@@ -78,7 +78,7 @@ class UserDetailsServiceImpl(
 
     private fun getAuthoritiesForUserGroups(userEntity: UserEntity): Set<GrantedAuthority> {
 
-        val userGroupIds = this.userGroupMembershipRepo.findByUserId(userEntity.id).map { it.userGroupId }
+        val userGroupIds = this.userGroupMembershipRepo.findByUser(userEntity.id).map { it.userGroup }
 
         if (userGroupIds.isEmpty()) {
             return emptySet()

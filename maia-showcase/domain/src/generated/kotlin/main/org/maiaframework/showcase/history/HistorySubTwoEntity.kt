@@ -8,18 +8,18 @@ import java.time.Instant
 
 
 class HistorySubTwoEntity(
-    createdById: DomainId,
+    createdBy: DomainId,
     createdTimestampUtc: Instant,
     id: DomainId,
-    lastModifiedById: DomainId,
+    lastModifiedBy: DomainId,
     lastModifiedTimestampUtc: Instant,
     val someInt: Int,
     version: Long
 ) : HistorySuperEntity(
-    createdById,
+    createdBy,
     createdTimestampUtc,
     id,
-    lastModifiedById,
+    lastModifiedBy,
     lastModifiedTimestampUtc,
     version
 ) {
@@ -28,10 +28,10 @@ class HistorySubTwoEntity(
     override fun toString(): String {
 
         return "HistorySubTwoEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
@@ -50,21 +50,21 @@ class HistorySubTwoEntity(
 
         @JvmStatic
         fun newInstance(
-            createdById: DomainId,
+            createdBy: DomainId,
             someInt: Int
         ): HistorySubTwoEntity {
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
-            val lastModifiedById = createdById
+            val lastModifiedBy = createdBy
             val version = 1L
 
             return HistorySubTwoEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 someInt,
                 version

@@ -91,7 +91,7 @@ class OrgUserGroupHistoryEntityFilters {
         }
 
 
-    val orgId: FieldFilter<DomainId> 
+    val org: FieldFilter<DomainId> 
         get() {
 
             return FieldFilter("org_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }

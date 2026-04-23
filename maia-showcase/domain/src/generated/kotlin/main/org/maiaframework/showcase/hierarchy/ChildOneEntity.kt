@@ -8,19 +8,19 @@ import java.time.Instant
 
 
 class ChildOneEntity(
-    createdById: DomainId,
+    createdBy: DomainId,
     createdTimestampUtc: Instant,
     id: DomainId,
-    lastModifiedById: DomainId,
+    lastModifiedBy: DomainId,
     lastModifiedTimestampUtc: Instant,
     val someInt: Int,
     someString: String,
     someUniqueString: String
 ) : ParentOneEntity(
-    createdById,
+    createdBy,
     createdTimestampUtc,
     id,
-    lastModifiedById,
+    lastModifiedBy,
     lastModifiedTimestampUtc,
     someString,
     someUniqueString
@@ -30,10 +30,10 @@ class ChildOneEntity(
     override fun toString(): String {
 
         return "ChildOneEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
@@ -53,7 +53,7 @@ class ChildOneEntity(
 
         @JvmStatic
         fun newInstance(
-            createdById: DomainId,
+            createdBy: DomainId,
             someInt: Int,
             someString: String,
             someUniqueString: String
@@ -62,13 +62,13 @@ class ChildOneEntity(
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
-            val lastModifiedById = createdById
+            val lastModifiedBy = createdBy
 
             return ChildOneEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 someInt,
                 someString,

@@ -41,7 +41,7 @@ class CharlieEntityFilters {
     }
 
 
-    val bravoId: FieldFilter<DomainId> 
+    val bravo: FieldFilter<DomainId> 
         get() {
 
             return FieldFilter("bravo_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }

@@ -2,6 +2,7 @@ package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.*
 import org.maiaframework.gen.spec.definition.DataSourceType
+import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
 
 
 fun main(args: Array<String>) {
@@ -138,7 +139,7 @@ class ServiceLayerModuleGenerator(
             when (it.dataSourceType) {
                 DataSourceType.ELASTIC_SEARCH -> ElasticSearchDtoSearchServiceRenderer(
                     it.searchDtoDef,
-                    it.dtoHtmlTableSourceDef.esDocDef!!
+                    (it.dtoHtmlTableSourceDef as DtoHtmlTableEsDocSourceDef).esDocDef
                 ).renderToDir(this.kotlinOutputDir)
 
                 DataSourceType.DATABASE -> SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)

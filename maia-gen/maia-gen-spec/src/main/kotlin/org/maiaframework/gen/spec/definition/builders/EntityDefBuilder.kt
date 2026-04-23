@@ -594,7 +594,7 @@ class EntityDefBuilder(
 
     fun field_createdById(entityDef: EntityDef, nullable: Boolean = false) {
 
-        foreignKey(ClassFieldName.createdBy.value, entityDef, fieldDisplayName = "Created By") {
+        foreignKey(ClassFieldName.createdById.value, entityDef, fieldDisplayName = "Created By") {
             tableColumnName(TableColumnName.createdById.value)
             notCreatableByUser()
             if (nullable) nullable()
@@ -618,7 +618,7 @@ class EntityDefBuilder(
 
     fun field_lastModifiedById(entityDef: EntityDef, nullable: Boolean = false) {
 
-        foreignKey(ClassFieldName.lastModifiedBy, entityDef, fieldDisplayName = "Last Modified By") {
+        foreignKey(ClassFieldName.lastModifiedById.value, entityDef, fieldDisplayName = "Last Modified By") {
             tableColumnName(TableColumnName.lastModifiedById.value)
             notCreatableByUser()
             modifiableBySystem()

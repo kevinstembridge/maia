@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class BravoAgGridEntity(
-    val alphaId: DomainId,
+    val alpha: DomainId,
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val someInt: Int,
@@ -19,7 +19,7 @@ class BravoAgGridEntity(
     override fun toString(): String {
 
         return "BravoAgGridEntity{" +
-                "alphaId = '" + this.alphaId + '\'' + ", " + 
+                "alpha = '" + this.alpha + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
@@ -39,7 +39,7 @@ class BravoAgGridEntity(
 
         @JvmStatic
         fun newInstance(
-            alphaId: DomainId,
+            alpha: DomainId,
             someInt: Int,
             someString: String
         ): BravoAgGridEntity {
@@ -48,7 +48,7 @@ class BravoAgGridEntity(
             val id = newId()
 
             return BravoAgGridEntity(
-                alphaId,
+                alpha,
                 createdTimestampUtc,
                 id,
                 someInt,

@@ -43,20 +43,20 @@ class EmailAddressDao(
                 last_modified_by_id,
                 last_modified_timestamp_utc
             ) values (
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :emailAddress,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("emailAddress", entity.emailAddress)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
             }
         )
@@ -76,21 +76,21 @@ class EmailAddressDao(
                 last_modified_by_id,
                 last_modified_timestamp_utc
             ) values (
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :emailAddress,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("emailAddress", entity.emailAddress)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 }
             }
@@ -308,15 +308,15 @@ class EmailAddressDao(
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.email_address
-            where created_by_id = :createdById
+            where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", createdById)
+            addValue("createdBy", createdBy)
             }
         )
 
@@ -325,15 +325,15 @@ class EmailAddressDao(
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.email_address
-            where last_modified_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 
@@ -354,25 +354,25 @@ class EmailAddressDao(
                 last_modified_by_id,
                 last_modified_timestamp_utc
             ) values (
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :emailAddress,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc
             )
             on conflict (email_address)
             do update set
-                last_modified_by_id = :lastModifiedById,
+                last_modified_by_id = :lastModifiedBy,
                 last_modified_timestamp_utc = :lastModifiedTimestampUtc
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", upsertEntity.createdById)
+                addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
                 addValue("emailAddress", upsertEntity.emailAddress)
                 addValue("id", upsertEntity.id)
-                addValue("lastModifiedById", upsertEntity.lastModifiedById)
+                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
             },
             { ps: PreparedStatement ->
@@ -422,7 +422,7 @@ class EmailAddressDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId)
+            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
         }
 

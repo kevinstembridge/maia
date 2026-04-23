@@ -65,7 +65,7 @@ class LeftToRightManyToManyJoinEntityFilters {
         }
 
 
-    val leftId: FieldFilter<DomainId> 
+    val left: FieldFilter<DomainId> 
         get() {
 
             return FieldFilter("left_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
@@ -73,7 +73,7 @@ class LeftToRightManyToManyJoinEntityFilters {
         }
 
 
-    val rightId: FieldFilter<DomainId> 
+    val right: FieldFilter<DomainId> 
         get() {
 
             return FieldFilter("right_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }

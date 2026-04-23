@@ -15,7 +15,7 @@ class DtoHtmlTableDef(
     val dtoHtmlTableColumnDefs: List<AbstractDtoHtmlTableColumnDef>,
     val addButtonDef: AddButtonDef?,
     val disableRendering: Boolean,
-    val dataSourceType: DataSourceType,
+    val dataSourceType: DataSourceType, // TODO is this redundant now that we have a DtoHtmlTableSourceDef?
     val withGeneratedDto: WithGeneratedDto,
     val withPreAuthorize: WithPreAuthorize? = null,
     val dtoHtmlTableSourceDef: DtoHtmlTableSourceDef,
@@ -87,32 +87,38 @@ class DtoHtmlTableDef(
     )
 
 
-    val searchableDtoDef = dtoHtmlTableSourceDef.searchableDtoDef?.let { searchableDtoDef ->
+    val searchableDtoDef = when (dtoHtmlTableSourceDef) {
+        is DtoHtmlTableEsDocSourceDef -> null
+        is DtoHtmlTableSearchableDtoSourceDef ->
+            dtoHtmlTableSourceDef.searchableDtoDef.let { searchableDtoDef ->
 
-        val fields = dtoHtmlTableColumnFields.map { dtoHtmlTableColumnDef ->
+                val fields = dtoHtmlTableColumnFields.map { dtoHtmlTableColumnDef ->
 
-            searchableDtoDef.findSearchableDtoFieldByName(dtoHtmlTableColumnDef.fieldPathInSourceData)
-                .copyWithFieldName(dtoHtmlTableColumnDef.dtoFieldName)
+                    val pathInSourceData = dtoHtmlTableColumnDef.fieldPathInSourceData
+                    val fieldName = pathInSourceData.head()
+                    searchableDtoDef.findSearchableDtoFieldByName(fieldName)
+                        .copyWithFieldName(dtoHtmlTableColumnDef.dtoFieldName)
 
-        }
+                }
 
-        SearchableDtoDef(
-            searchableDtoDef.dtoRootEntityDef,
-            dtoBaseName.withSuffix("Table"),
-            moduleName,
-            packageName,
-            searchableDtoDef.tableName,
-            fields,
-            searchableDtoDef.withPreAuthorize,
-            withGeneratedEndpoint,
-            withGeneratedFindAllFunction,
-            withGeneratedDto,
-            GenerateFindById.FALSE,
-            searchModelType,
-            searchableDtoDef.withProvidedFieldConverter,
-            manyToManyJoinEntityDefs = searchableDtoDef.manyToManyJoinEntityDefs
-        )
+                SearchableDtoDef(
+                    searchableDtoDef.dtoRootEntityDef,
+                    dtoBaseName.withSuffix("Table"),
+                    moduleName,
+                    packageName,
+                    searchableDtoDef.tableName,
+                    fields,
+                    searchableDtoDef.withPreAuthorize,
+                    withGeneratedEndpoint,
+                    withGeneratedFindAllFunction,
+                    withGeneratedDto,
+                    GenerateFindById.FALSE,
+                    searchModelType,
+                    searchableDtoDef.withProvidedFieldConverter,
+                    manyToManyJoinEntityDefs = searchableDtoDef.manyToManyJoinEntityDefs
+                )
 
+            }
     }
 
 

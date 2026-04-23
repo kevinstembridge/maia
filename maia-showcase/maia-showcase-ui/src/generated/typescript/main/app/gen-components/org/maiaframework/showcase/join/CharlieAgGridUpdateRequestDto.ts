@@ -3,6 +3,6 @@
 
 
 export interface CharlieAgGridUpdateRequestDto {
-    bravoId: string;
+    bravo: string;
     id: string;
 }

@@ -66,9 +66,9 @@ class CharlieAgGridRepo(
     }
 
 
-    fun existsByBravoId(bravoId: DomainId): Boolean {
+    fun existsByBravo(bravo: DomainId): Boolean {
 
-        return dao.existsByBravoId(bravoId)
+        return dao.existsByBravo(bravo)
 
     }
 

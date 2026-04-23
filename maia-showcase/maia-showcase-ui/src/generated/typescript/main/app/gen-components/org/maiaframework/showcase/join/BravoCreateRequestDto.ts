@@ -3,7 +3,7 @@
 
 
 export interface BravoCreateRequestDto {
-    alphaId: string;
+    alpha: string;
     someInt: number;
     someString: string;
 }

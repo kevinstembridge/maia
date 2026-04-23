@@ -59,12 +59,12 @@ class PersonHistoryDao(
                 :typeDiscriminator,
                 :authorities,
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :encryptedPassword,
                 :firstName,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -75,13 +75,13 @@ class PersonHistoryDao(
                 addValue("typeDiscriminator", UserHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addListOfStrings("authorities", entity.authorities.map { it.name })
                 addValue("changeType", entity.changeType)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -111,11 +111,11 @@ class PersonHistoryDao(
             ) values (
                 :typeDiscriminator,
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :firstName,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -125,12 +125,12 @@ class PersonHistoryDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", PersonHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("changeType", entity.changeType)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -160,11 +160,11 @@ class PersonHistoryDao(
             ) values (
                 :typeDiscriminator,
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :firstName,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -175,12 +175,12 @@ class PersonHistoryDao(
                 SqlParams().apply {
                     addValue("typeDiscriminator", PersonHistoryEntityMeta.TYPE_DISCRIMINATOR)
                     addValue("changeType", entity.changeType)
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
                     addValue("firstName", entity.firstName)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)

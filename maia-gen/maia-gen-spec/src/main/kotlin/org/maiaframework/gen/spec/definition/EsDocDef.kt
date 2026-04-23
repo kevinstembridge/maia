@@ -95,8 +95,8 @@ class EsDocDef(
         .build()
 
 
-    fun findFieldByPath(fieldName: String): ClassFieldDef {
-        return this.dtoDef.findFieldByPath(fieldName)
+    fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef {
+        return this.dtoDef.findFieldByPath(fieldPath)
     }
 
 

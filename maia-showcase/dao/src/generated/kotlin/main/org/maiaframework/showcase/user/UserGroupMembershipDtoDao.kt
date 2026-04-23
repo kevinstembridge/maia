@@ -36,15 +36,23 @@ class UserGroupMembershipDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.user_group_membership
+            inner join maia.user_group
+                    on maia.user_group_membership.user_group_id = maia.user_group.id
+            inner join maia.v_party
+                    on maia.user_group_membership.user_id = maia.v_party.id
             $whereClause
             """.trimIndent()
 
         val sqlForPage = """
             select
                 maia.user_group_membership.id as id,
-                maia.user_group_membership.user_group_id as userGroupId,
-                maia.user_group_membership.user_id as userId
+                maia.user_group.id as userGroupId,
+                maia.v_party.id as userId
             from maia.user_group_membership
+            inner join maia.user_group
+                    on maia.user_group_membership.user_group_id = maia.user_group.id
+            inner join maia.v_party
+                    on maia.user_group_membership.user_id = maia.v_party.id
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -73,6 +81,10 @@ class UserGroupMembershipDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.user_group_membership
+            inner join maia.user_group
+                    on maia.user_group_membership.user_group_id = maia.user_group.id
+            inner join maia.v_party
+                    on maia.user_group_membership.user_id = maia.v_party.id
             $whereClause
             """.trimIndent()
 

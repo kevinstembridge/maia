@@ -60,7 +60,7 @@ class UserGroupHistoryDao(
                 :description,
                 :id,
                 :name,
-                :orgId,
+                :org,
                 :systemManaged,
                 :version
             )
@@ -73,7 +73,7 @@ class UserGroupHistoryDao(
                 addValue("description", entity.description)
                 addValue("id", entity.id)
                 addValue("name", entity.name)
-                addValue("orgId", entity.orgId)
+                addValue("org", entity.org)
                 addValue("systemManaged", entity.systemManaged)
                 addValue("version", entity.version)
             }

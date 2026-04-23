@@ -30,7 +30,7 @@ class AlphaCrudService(
 
     fun delete(id: DomainId) {
 
-        if (this.bravoRepo.existsByAlphaId(id)) {
+        if (this.bravoRepo.existsByAlpha(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("Bravo")
         }
 

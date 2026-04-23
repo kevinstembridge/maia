@@ -50,7 +50,7 @@ class ForeignKeyFieldDefBuilder(
     private var isEditableByUser: IsEditableByUser = IsEditableByUser.FALSE
 
 
-    private var tableColumnName: TableColumnName? = null
+    private var tableColumnName: TableColumnName? = TableColumnName(foreignKeyFieldName.withSuffix("_id").toSnakeCase())
 
 
     private var isCreatableByUser: IsCreatableByUser = IsCreatableByUser.TRUE
@@ -73,7 +73,7 @@ class ForeignKeyFieldDefBuilder(
         )
 
         val classFieldDef = ClassFieldDef(
-            foreignKeyFieldName.withSuffix("Id"),
+            foreignKeyFieldName,
             description = Description("Foreign key to the ${foreignKeyEntityDef.entityBaseName} entity. (table = ${foreignKeyEntityDef.tableName})"),
             fieldType = FieldTypes.foreignKey(foreignKeyFieldDef),
             isModifiableBySystem = this.modifiableBySystem,

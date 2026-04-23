@@ -35,13 +35,13 @@ class PersonEntityRowMapper : MaiaRowMapper<PersonEntity> {
     private fun userEntityFrom(rsa: ResultSetAdapter): UserEntity {
 
         val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
-        val createdById = rsa.readDomainIdOrNull("created_by_id")
+        val createdBy = rsa.readDomainIdOrNull("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")
         val encryptedPassword = rsa.readString("encrypted_password")
         val firstName = rsa.readStringOrNull("first_name") { FirstName(it) }
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainIdOrNull("last_modified_by_id")
+        val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
@@ -49,13 +49,13 @@ class PersonEntityRowMapper : MaiaRowMapper<PersonEntity> {
 
         return UserEntity(
                 authorities,
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 encryptedPassword,
                 firstName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
@@ -67,24 +67,24 @@ class PersonEntityRowMapper : MaiaRowMapper<PersonEntity> {
 
     private fun personEntityFrom(rsa: ResultSetAdapter): PersonEntity {
 
-        val createdById = rsa.readDomainIdOrNull("created_by_id")
+        val createdBy = rsa.readDomainIdOrNull("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")
         val firstName = rsa.readStringOrNull("first_name") { FirstName(it) }
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainIdOrNull("last_modified_by_id")
+        val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val version = rsa.readLong("version")
 
         return PersonEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 firstName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,

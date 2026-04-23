@@ -48,10 +48,10 @@ class OrganizationDao(
                 version
             ) values (
                 'ORG',
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :orgName,
@@ -59,11 +59,11 @@ class OrganizationDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("orgName", entity.orgName)
@@ -92,10 +92,10 @@ class OrganizationDao(
                 version
             ) values (
                 'ORG',
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :orgName,
@@ -104,11 +104,11 @@ class OrganizationDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("orgName", entity.orgName)
@@ -151,21 +151,21 @@ class OrganizationDao(
     ): OrganizationHistoryEntity {
 
         val id = entity.id
-        val createdById = entity.createdById
+        val createdBy = entity.createdBy
         val createdTimestampUtc = entity.createdTimestampUtc
         val displayName = entity.displayName
-        val lastModifiedById = entity.lastModifiedById
+        val lastModifiedBy = entity.lastModifiedBy
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lifecycleState = entity.lifecycleState
         val orgName = entity.orgName
 
         return OrganizationHistoryEntity(
                 changeType,
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lifecycleState,
                 orgName,
@@ -394,8 +394,8 @@ class OrganizationDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "createdById" -> sqlParams.addValue("createdById", field.value as DomainId?)
-            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId?)
+            "createdBy" -> sqlParams.addValue("createdBy", field.value as DomainId?)
+            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "lifecycleState" -> sqlParams.addValue("lifecycleState", field.value as LifecycleState)
             "orgName" -> sqlParams.addValue("orgName", field.value as String)

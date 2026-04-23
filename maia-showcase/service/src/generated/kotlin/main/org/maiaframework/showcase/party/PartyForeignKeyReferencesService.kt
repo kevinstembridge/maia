@@ -45,55 +45,55 @@ class PartyForeignKeyReferencesService(
 
     fun checkForeignKeyReferences(id: DomainId): ForeignKeyReferencesExistResponseDto {
 
-        if (this.allFieldTypesRepo.existsByCreatedById(id)) {
+        if (this.allFieldTypesRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "AllFieldTypes")
         }
 
-        if (this.historySampleRepo.existsByCreatedById(id)) {
+        if (this.historySampleRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySample")
         }
 
-        if (this.historySampleHistoryRepo.existsByCreatedById(id)) {
+        if (this.historySampleHistoryRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySampleHistory")
         }
 
-        if (this.childOneRepo.existsByCreatedById(id)) {
+        if (this.childOneRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "ChildOne")
         }
 
-        if (this.parentOneRepo.existsByCreatedById(id)) {
+        if (this.parentOneRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "ParentOne")
         }
 
-        if (this.parentTwoRepo.existsByCreatedById(id)) {
+        if (this.parentTwoRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "ParentTwo")
         }
 
-        if (this.grandparentRepo.existsByCreatedById(id)) {
+        if (this.grandparentRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "Grandparent")
         }
 
-        if (this.historySubOneRepo.existsByCreatedById(id)) {
+        if (this.historySubOneRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySubOne")
         }
 
-        if (this.historySubTwoRepo.existsByCreatedById(id)) {
+        if (this.historySubTwoRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySubTwo")
         }
 
-        if (this.historySuperRepo.existsByCreatedById(id)) {
+        if (this.historySuperRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySuper")
         }
 
-        if (this.historySubOneHistoryRepo.existsByCreatedById(id)) {
+        if (this.historySubOneHistoryRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySubOneHistory")
         }
 
-        if (this.historySubTwoHistoryRepo.existsByCreatedById(id)) {
+        if (this.historySubTwoHistoryRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySubTwoHistory")
         }
 
-        if (this.historySuperHistoryRepo.existsByCreatedById(id)) {
+        if (this.historySuperHistoryRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySuperHistory")
         }
 

@@ -7,13 +7,13 @@ import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Aut
 
 export interface UserFetchForEditDto {
     authorities: ReadonlyArray<Authority>;
-    createdById?: string;
+    createdBy?: string;
     createdTimestampUtc: string;
     displayName: string;
     encryptedPassword: string;
     firstName?: string;
     id: string;
-    lastModifiedById?: string;
+    lastModifiedBy?: string;
     lastModifiedTimestampUtc: string;
     lastName: string;
     lifecycleState: LifecycleState;

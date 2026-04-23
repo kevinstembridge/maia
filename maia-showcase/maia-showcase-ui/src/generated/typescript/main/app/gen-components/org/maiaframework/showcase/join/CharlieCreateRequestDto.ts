@@ -3,7 +3,7 @@
 
 
 export interface CharlieCreateRequestDto {
-    bravoId: string;
+    bravo: string;
     someInt: number;
     someString: string;
 }

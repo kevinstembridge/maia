@@ -16,9 +16,9 @@ object UserGroupMembershipEntityMeta {
 
     const val id = "id"
 
-    const val userGroupId = "user_group_id"
+    const val user = "user_id"
 
-    const val userId = "user_id"
+    const val userGroup = "user_group_id"
 
     const val version = "version"
 
@@ -47,8 +47,8 @@ object UserGroupMembershipEntityMeta {
         return when(classFieldName) {
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "userGroupId" -> "user_group_id"
-            "userId" -> "user_id"
+            "user" -> "user_id"
+            "userGroup" -> "user_group_id"
             "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")

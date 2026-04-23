@@ -144,14 +144,14 @@ class CrudNotifierRenderer(
         blankLine()
         appendLine("    fun create(createDto: ${createApiDef.requestDtoDef.uqcn}): ${this.entityDef.entityUqcn} {")
 
-        if (this.entityDef.hasCreatedByIdField || this.entityDef.hasCreatedByField) {
+        if (this.entityDef.hasCreatedByIdField || this.entityDef.hasCreatedByUsernameField) {
 
             addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
 
             blankLine()
             appendLine("        val currentUser = CurrentUserHolder.currentUser")
             blankLine()
-            appendLine("        logger.info(\"BEGIN: create ${this.entityDef.entityBaseName}. createdBy=\${currentUser.username}, dto=\$createDto\")")
+            appendLine($$"        logger.info(\"BEGIN: create $${this.entityDef.entityBaseName}. createdBy=${currentUser.username}, dto=$createDto\")")
 
         } else {
 

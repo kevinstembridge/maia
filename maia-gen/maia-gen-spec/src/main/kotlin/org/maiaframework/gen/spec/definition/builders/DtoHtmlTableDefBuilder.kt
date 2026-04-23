@@ -11,7 +11,6 @@ import org.maiaframework.gen.spec.definition.lang.PackageName
 class DtoHtmlTableDefBuilder(
     private val packageName: PackageName,
     private val dtoBaseName: DtoBaseName,
-    private val fieldInfoSupplier: (String) -> DtoFieldInfo,
     private val addButtonDef: AddButtonDef? = null,
     private val disableRendering: Boolean,
     private val dataSourceType: DataSourceType,
@@ -68,18 +67,20 @@ class DtoHtmlTableDefBuilder(
         init: (DtoHtmlTableColumnDefBuilder.() -> Unit)? = null
     ) {
 
+        val fieldPath = FieldPath.of(fieldPathInSourceData)
+
         val dtoFieldNameToUse = dtoFieldName ?: fieldPathInSourceData
 
-        val fieldInfo = this.fieldInfoSupplier.invoke(fieldPathInSourceData)
+        val classFieldDef = this.dtoHtmlTableSourceDef.findFieldByPath(fieldPath)
 
         val builder = DtoHtmlTableColumnDefBuilder(
-            fieldPathInSourceData,
+            fieldPath,
             dtoFieldNameToUse,
-            fieldInfo.classFieldDef,
+            classFieldDef,
             sortable
         )
 
-        fieldInfo.displayName?.let { builder.header(it.value) }
+        classFieldDef.displayName?.let { builder.header(it.value) }
 
         this.columnBuilders.add(builder)
         init?.invoke(builder)

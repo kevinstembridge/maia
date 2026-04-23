@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.gen.spec.definition.AgGridCellRendererDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableColumnDef
+import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.Pipes
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
@@ -11,7 +12,7 @@ import java.util.SortedSet
 
 @MaiaDslMarker
 class DtoHtmlTableColumnDefBuilder(
-    private val fieldPathInSourceData: String,
+    private val fieldPathInSourceData: FieldPath,
     private val dtoFieldName: String,
     private val classFieldDef: ClassFieldDef,
     private val isSortable: Boolean,

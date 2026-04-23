@@ -17,7 +17,7 @@ class CharlieEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "bravo_id" -> // bravoId
+            "bravo_id" -> // bravo
                 return (inputValue as DomainId).value
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue

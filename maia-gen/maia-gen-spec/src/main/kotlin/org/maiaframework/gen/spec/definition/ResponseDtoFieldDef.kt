@@ -15,6 +15,7 @@ import java.util.SortedSet
 
 class ResponseDtoFieldDef(
     val classFieldName: ClassFieldName,
+    private val fieldDisplayName: FieldDisplayName?,
     tableColumnName: TableColumnName,
     fieldType: FieldType,
     val nullability: Nullability,
@@ -26,6 +27,7 @@ class ResponseDtoFieldDef(
 
 
     private val enhancedAnnotationDefs = enhanceAnnotationDefs()
+
 
     private fun enhanceAnnotationDefs(): SortedSet<AnnotationDef> {
 
@@ -41,7 +43,8 @@ class ResponseDtoFieldDef(
 
 
     val classFieldDef = ClassFieldDef(
-        classFieldName,
+        classFieldName = classFieldName,
+        displayName = fieldDisplayName,
         fieldType = fieldType,
         nullability = nullability,
         isMasked = isMasked,
@@ -69,6 +72,7 @@ class ResponseDtoFieldDef(
 
         return ResponseDtoFieldDef(
             ClassFieldName(fieldName),
+            this.fieldDisplayName,
             dbColumnFieldDef.tableColumnName,
             classFieldDef.fieldType,
             classFieldDef.nullability,

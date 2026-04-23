@@ -38,7 +38,7 @@ import java.util.SortedSet
 
 
 class DtoHtmlTableColumnDef(
-    val fieldPathInSourceData: String,
+    val fieldPathInSourceData: FieldPath,
     val dtoFieldName: String,
     columnHeader: String?,
     val isSortable: Boolean,

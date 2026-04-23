@@ -34,7 +34,7 @@ class OrgUserGroupEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "name" -> // name
                 return inputValue
-            "org_id" -> // orgId
+            "org_id" -> // org
                 return (inputValue as DomainId).value
             "system_managed" -> // systemManaged
                 return inputValue

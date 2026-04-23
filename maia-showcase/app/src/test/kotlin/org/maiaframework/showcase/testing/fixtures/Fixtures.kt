@@ -90,7 +90,7 @@ class Fixtures(
 
         val userEntity = updatedUserEntityTestBuilder.build()
         val emailAddressEntity = EmailAddressEntity.newInstance(
-            createdById = Anys.defaultCreatedById,
+            createdBy = Anys.defaultCreatedById,
             EmailAddress("${userEntity.firstName}.${userEntity.lastName}_${uniqueEmailAddressCounter.getAndIncrement()}@${anyDomainName()}")
         )
 
@@ -114,7 +114,7 @@ class Fixtures(
 
         if (loginMailVerified) {
             val emailAddressVerificationEntity = EmailAddressVerificationEntity.newInstance(
-                createdById = Anys.defaultCreatedById,
+                createdBy = Anys.defaultCreatedById,
                 effectiveFrom = Instant.now(),
                 effectiveTo = null,
                 emailAddressId = emailAddressEntity.id,

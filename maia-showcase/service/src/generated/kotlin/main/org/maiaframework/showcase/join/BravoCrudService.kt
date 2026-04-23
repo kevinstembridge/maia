@@ -36,14 +36,14 @@ class BravoCrudService(
 
     private fun buildEntity(createDto: BravoCreateRequestDto): BravoEntity {
 
-        val alphaId: DomainId = createDto.alphaId
+        val alpha: DomainId = createDto.alpha
         val someInt: Int = createDto.someInt
         val someString: String = createDto.someString
         val id = DomainId.newId()
         val createdTimestampUtc = Instant.now()
 
         return BravoEntity(
-            alphaId,
+            alpha,
             createdTimestampUtc,
             id,
             someInt,
@@ -123,7 +123,7 @@ class BravoCrudService(
 
     fun delete(id: DomainId) {
 
-        if (this.charlieRepo.existsByBravoId(id)) {
+        if (this.charlieRepo.existsByBravo(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("Charlie")
         }
 

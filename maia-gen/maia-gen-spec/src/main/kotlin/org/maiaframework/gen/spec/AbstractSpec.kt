@@ -20,7 +20,8 @@ import org.maiaframework.gen.spec.definition.DisplayName
 import org.maiaframework.gen.spec.definition.DtoBaseName
 import org.maiaframework.gen.spec.definition.DtoFieldInfo
 import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
-import org.maiaframework.gen.spec.definition.DtoHtmlTableSourceDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableSearchableDtoSourceDef
 import org.maiaframework.gen.spec.definition.ElasticIndexBaseName
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityCrudApiDef
@@ -493,11 +494,11 @@ abstract class AbstractSpec protected constructor(
         }
 
         builder.index {
-            withFieldAscending("${leftEntity.fieldName}Id")
+            withFieldAscending(leftEntity.fieldName)
         }
 
         builder.index {
-            withFieldAscending("${rightEntity.fieldName}Id")
+            withFieldAscending(rightEntity.fieldName)
         }
 
         init?.invoke(builder)
@@ -931,11 +932,7 @@ abstract class AbstractSpec protected constructor(
         val builder = DtoHtmlTableDefBuilder(
             searchableDtoDef.packageName,
             searchableDtoDef.dtoBaseName,
-            dtoHtmlTableSourceDef = DtoHtmlTableSourceDef.of(searchableDtoDef),
-            fieldInfoSupplier = { fieldName ->
-                val f = searchableDtoDef.findFieldByPath(fieldName)
-                DtoFieldInfo(f.classFieldDef, f.displayName)
-            },
+            dtoHtmlTableSourceDef = DtoHtmlTableSearchableDtoSourceDef(searchableDtoDef),
             addButtonDef = addButtonDef,
             disableRendering = disableRendering,
             dataSourceType = DataSourceType.DATABASE,
@@ -970,10 +967,6 @@ abstract class AbstractSpec protected constructor(
         val builder = DtoHtmlTableDefBuilder(
             esDocDef.packageName,
             esDocDef.esDocBaseName,
-            fieldInfoSupplier = { fieldPath ->
-                val f = esDocDef.findFieldByPath(fieldPath)
-                DtoFieldInfo(f, f.displayName)
-            },
             addButtonDef = null,
             disableRendering = disableRendering,
             dataSourceType = DataSourceType.ELASTIC_SEARCH,
@@ -982,7 +975,7 @@ abstract class AbstractSpec protected constructor(
             withPreAuthorize = withPreAuthorize,
             withGeneratedEndpoint = withGeneratedEndpoint,
             withGeneratedFindAllFunction = withGeneratedFindAllFunction,
-            dtoHtmlTableSourceDef = DtoHtmlTableSourceDef.of(esDocDef)
+            dtoHtmlTableSourceDef = DtoHtmlTableEsDocSourceDef(esDocDef)
         )
 
         builder.init()

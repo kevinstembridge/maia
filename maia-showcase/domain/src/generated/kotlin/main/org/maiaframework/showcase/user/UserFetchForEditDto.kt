@@ -13,13 +13,13 @@ import java.time.Instant
 
 data class UserFetchForEditDto(
     val authorities: List<Authority>,
-    val createdById: DomainId?,
+    val createdBy: DomainId?,
     val createdTimestampUtc: Instant,
     val displayName: String,
     val encryptedPassword: String,
     val firstName: FirstName?,
     val id: DomainId,
-    val lastModifiedById: DomainId?,
+    val lastModifiedBy: DomainId?,
     val lastModifiedTimestampUtc: Instant,
     val lastName: LastName,
     val lifecycleState: LifecycleState,
@@ -31,13 +31,13 @@ data class UserFetchForEditDto(
 
         return "UserFetchForEditDto{" +
                 "authorities = '" + this.authorities + '\'' + ", " + 
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 

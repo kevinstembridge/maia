@@ -118,13 +118,13 @@ abstract class AbstractBlackBoxTest {
 
         val user = UserEntity(
             emptyList(),
-            createdById = null,
+            createdBy = null,
             Instant.now().truncatedTo(ChronoUnit.MILLIS),
             "Some display Name",
             "password",
             FirstName("Nigel"),
             Anys.defaultCreatedById,
-            lastModifiedById = null,
+            lastModifiedBy = null,
             Instant.now(),
             LastName("Nigelson"),
             LifecycleState.ACTIVE,

@@ -74,10 +74,10 @@ class PartyDao(
                 version
             ) values (
                 :typeDiscriminator,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :orgName,
@@ -86,11 +86,11 @@ class PartyDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", OrganizationEntityMeta.TYPE_DISCRIMINATOR)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("orgName", entity.orgName)
@@ -123,12 +123,12 @@ class PartyDao(
             ) values (
                 :typeDiscriminator,
                 :authorities,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :encryptedPassword,
                 :firstName,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -138,13 +138,13 @@ class PartyDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", UserEntityMeta.TYPE_DISCRIMINATOR)
                 addListOfStrings("authorities", entity.authorities.map { it.name })
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -174,11 +174,11 @@ class PartyDao(
                 version
             ) values (
                 :typeDiscriminator,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :firstName,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lastName,
                 :lifecycleState,
@@ -187,12 +187,12 @@ class PartyDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", PersonEntityMeta.TYPE_DISCRIMINATOR)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
@@ -218,10 +218,10 @@ class PartyDao(
                 lifecycle_state,
                 version
             ) values (
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :id,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
                 :lifecycleState,
                 :version
@@ -229,11 +229,11 @@ class PartyDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
                     addValue("id", entity.id)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("version", entity.version)
@@ -321,21 +321,21 @@ class PartyDao(
     ): OrganizationHistoryEntity {
 
         val id = entity.id
-        val createdById = entity.createdById
+        val createdBy = entity.createdBy
         val createdTimestampUtc = entity.createdTimestampUtc
         val displayName = entity.displayName
-        val lastModifiedById = entity.lastModifiedById
+        val lastModifiedBy = entity.lastModifiedBy
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lifecycleState = entity.lifecycleState
         val orgName = entity.orgName
 
         return OrganizationHistoryEntity(
                 changeType,
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lifecycleState,
                 orgName,
@@ -352,12 +352,12 @@ class PartyDao(
 
         val id = entity.id
         val authorities = entity.authorities
-        val createdById = entity.createdById
+        val createdBy = entity.createdBy
         val createdTimestampUtc = entity.createdTimestampUtc
         val displayName = entity.displayName
         val encryptedPassword = entity.encryptedPassword
         val firstName = entity.firstName
-        val lastModifiedById = entity.lastModifiedById
+        val lastModifiedBy = entity.lastModifiedBy
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
@@ -365,13 +365,13 @@ class PartyDao(
         return UserHistoryEntity(
                 authorities,
                 changeType,
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 encryptedPassword,
                 firstName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
@@ -387,23 +387,23 @@ class PartyDao(
     ): PersonHistoryEntity {
 
         val id = entity.id
-        val createdById = entity.createdById
+        val createdBy = entity.createdBy
         val createdTimestampUtc = entity.createdTimestampUtc
         val displayName = entity.displayName
         val firstName = entity.firstName
-        val lastModifiedById = entity.lastModifiedById
+        val lastModifiedBy = entity.lastModifiedBy
         val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
 
         return PersonHistoryEntity(
                 changeType,
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 firstName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lastName,
                 lifecycleState,
@@ -637,8 +637,8 @@ class PartyDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "createdById" -> sqlParams.addValue("createdById", field.value as DomainId?)
-            "lastModifiedById" -> sqlParams.addValue("lastModifiedById", field.value as DomainId?)
+            "createdBy" -> sqlParams.addValue("createdBy", field.value as DomainId?)
+            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "lifecycleState" -> sqlParams.addValue("lifecycleState", field.value as LifecycleState)
         }

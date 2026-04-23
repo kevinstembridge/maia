@@ -9,10 +9,12 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.flags.WithProvidedFieldConverter
 import org.maiaframework.gen.spec.definition.lang.ClassDef
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.ClassType
 import org.maiaframework.gen.spec.definition.lang.ClassVisibility
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
+import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.jdbc.TableName
@@ -24,7 +26,7 @@ class SearchableDtoDef(
     val dtoBaseName: DtoBaseName,
     val moduleName: ModuleName?,
     val packageName: PackageName,
-    val tableName: TableName,
+    val tableName: TableName, // TODO is this always going to be the same as the dtoRootEntityDef.tableName?
     fieldDefsNotInherited: List<SearchableDtoFieldDef>,
     val withPreAuthorize: WithPreAuthorize?,
     val withGeneratedEndpoint: WithGeneratedEndpoint,
@@ -125,12 +127,6 @@ class SearchableDtoDef(
         .build()
 
 
-    val dtoSearchConverterClassDef = aClassDef(packageName.uqcn("${dtoBaseName}TableDtoSearchConverter"))
-        .withSuperclass(initMongoSearchRequestFactoryClassDef())
-        .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
-        .build()
-
-
     val fieldNameConverterClassDef = aClassDef(fqcn.withSuffix("FieldNameConverter"))
         .withInterface(ParameterizedType(Fqcns.SEARCH_FIELD_NAME_CONVERTER))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
@@ -211,38 +207,41 @@ class SearchableDtoDef(
     }
 
 
-    fun findFieldByPath(fieldName: String): SearchableDtoFieldDef {
+    fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef {
 
-        return this.allFields.find { it.classFieldName.value == fieldName }
-            ?: throw RuntimeException("No field named $fieldName found on SearchableDtoDef $dtoBaseName with fields ${allFields.map { it.classFieldName }}.")
+        return getFieldByPath(fieldPath, dtoRootEntityDef)
 
     }
 
 
-    private fun initMongoSearchRequestFactoryClassDef(): ClassDef {
+    private fun getFieldByPath(
+        fieldPath: FieldPath,
+        entityDef: EntityDef
+    ): ClassFieldDef {
 
-        val objectMapperFieldDef = aClassField("jsonMapper", FieldTypes.byFqcn(Fqcns.JACKSON_JSON_MAPPER)).build()
-        val searchFieldNameConverterFieldDef = aClassField("fieldNameConverter", FieldTypes.byFqcn(Fqcns.SEARCH_FIELD_NAME_CONVERTER)).build()
-        val searchFieldConverterFieldDef = aClassField("fieldConverter", FieldTypes.byFqcn(Fqcns.SEARCH_FIELD_CONVERTER)).build()
+        val fieldName = fieldPath.head()
+        val entityFieldDef = entityDef.findFieldByName(fieldName)
 
-        val fieldDefsNotIndexFieldDef = listOf(
-            objectMapperFieldDef,
-            searchFieldNameConverterFieldDef,
-            searchFieldConverterFieldDef
-        )
+        return if (fieldPath.isJustOneField()) {
+            val fieldName = fieldPath.head()
+            val searchableDtoFieldDef = findSearchableDtoFieldByName(fieldName)
+            searchableDtoFieldDef.classFieldDef
+        } else {
 
-        return ClassDef(
-            ParameterizedType(Fqcns.MONGO_SEARCH_REQUEST_FACTORY),
-            Fqcns.MONGO_SEARCH_REQUEST_FACTORY,
-            true,
-            ClassType.CLASS,
-            ClassVisibility.PUBLIC,
-            fieldDefsNotIndexFieldDef,
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            null
-        )
+            val fieldType = entityFieldDef.fieldType
+
+            val foreignKeyEntityDef = if (fieldType is ForeignKeyFieldType) {
+                fieldType.foreignKeyFieldDef.foreignEntityDef
+            } else {
+                throw RuntimeException("Entity field $fieldName on Entity ${entityDef.entityBaseName} does not reference a foreign key entity. fieldPath=$fieldPath")
+            }
+
+            getFieldByPath(
+                fieldPath.tail(),
+                foreignKeyEntityDef
+            )
+
+        }
 
     }
 

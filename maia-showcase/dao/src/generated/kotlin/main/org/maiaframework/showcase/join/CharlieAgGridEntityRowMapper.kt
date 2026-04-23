@@ -12,14 +12,14 @@ class CharlieAgGridEntityRowMapper : MaiaRowMapper<CharlieAgGridEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): CharlieAgGridEntity {
 
-        val bravoId = rsa.readDomainId("bravo_id")
+        val bravo = rsa.readDomainId("bravo_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
 
         return CharlieAgGridEntity(
-                bravoId,
+                bravo,
                 createdTimestampUtc,
                 id,
                 someInt,

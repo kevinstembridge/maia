@@ -18,7 +18,7 @@ class EmailAddressEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "created_by_id" -> // createdById
+            "created_by_id" -> // createdBy
                 return (inputValue as DomainId).value
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
@@ -26,7 +26,7 @@ class EmailAddressEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as EmailAddress).value
             "id" -> // id
                 return (inputValue as DomainId).value
-            "last_modified_by_id" -> // lastModifiedById
+            "last_modified_by_id" -> // lastModifiedBy
                 return (inputValue as DomainId).value
             "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
                 return inputValue

@@ -66,30 +66,30 @@ class LeftToRightManyToManyJoinRepo(
     }
 
 
-    fun findByLeftId(leftId: DomainId): List<LeftToRightManyToManyJoinEntity> {
+    fun findByLeft(left: DomainId): List<LeftToRightManyToManyJoinEntity> {
 
-        return dao.findByLeftId(leftId)
-
-    }
-
-
-    fun findByRightId(rightId: DomainId): List<LeftToRightManyToManyJoinEntity> {
-
-        return dao.findByRightId(rightId)
+        return dao.findByLeft(left)
 
     }
 
 
-    fun existsByLeftId(leftId: DomainId): Boolean {
+    fun findByRight(right: DomainId): List<LeftToRightManyToManyJoinEntity> {
 
-        return dao.existsByLeftId(leftId)
+        return dao.findByRight(right)
 
     }
 
 
-    fun existsByRightId(rightId: DomainId): Boolean {
+    fun existsByLeft(left: DomainId): Boolean {
 
-        return dao.existsByRightId(rightId)
+        return dao.existsByLeft(left)
+
+    }
+
+
+    fun existsByRight(right: DomainId): Boolean {
+
+        return dao.existsByRight(right)
 
     }
 

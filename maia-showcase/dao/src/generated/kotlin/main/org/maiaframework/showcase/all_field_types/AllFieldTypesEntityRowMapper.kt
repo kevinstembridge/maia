@@ -21,11 +21,11 @@ class AllFieldTypesEntityRowMapper : MaiaRowMapper<AllFieldTypesEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): AllFieldTypesEntity {
 
-        val createdById = rsa.readDomainId("created_by_id")
+        val createdBy = rsa.readDomainId("created_by_id")
         val createdByUsername = rsa.readString("created_by_name")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
         val lastModifiedByUsername = rsa.readString("last_modified_by_name")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val someBoolean = rsa.readBoolean("some_boolean")
@@ -64,11 +64,11 @@ class AllFieldTypesEntityRowMapper : MaiaRowMapper<AllFieldTypesEntity> {
         val someStringTypeNullable = rsa.readStringOrNull("some_string_type_nullable") { SomeStringType(it) }
 
         return AllFieldTypesEntity(
-                createdById,
+                createdBy,
                 createdByUsername,
                 createdTimestampUtc,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedByUsername,
                 lastModifiedTimestampUtc,
                 someBoolean,

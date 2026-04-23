@@ -10,10 +10,10 @@ import java.time.Instant
 
 abstract class HistorySuperHistoryEntity(
     val changeType: ChangeType,
-    val createdById: DomainId,
+    val createdBy: DomainId,
     val createdTimestampUtc: Instant,
     val id: DomainId,
-    val lastModifiedById: DomainId,
+    val lastModifiedBy: DomainId,
     val lastModifiedTimestampUtc: Instant,
     val version: Long
 ) {
@@ -26,10 +26,10 @@ abstract class HistorySuperHistoryEntity(
 
         return "HistorySuperHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"

@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class CharlieEntity(
-    val bravoId: DomainId,
+    val bravo: DomainId,
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val someInt: Int,
@@ -19,7 +19,7 @@ class CharlieEntity(
     override fun toString(): String {
 
         return "CharlieEntity{" +
-                "bravoId = '" + this.bravoId + '\'' + ", " + 
+                "bravo = '" + this.bravo + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
@@ -39,7 +39,7 @@ class CharlieEntity(
 
         @JvmStatic
         fun newInstance(
-            bravoId: DomainId,
+            bravo: DomainId,
             someInt: Int,
             someString: String
         ): CharlieEntity {
@@ -48,7 +48,7 @@ class CharlieEntity(
             val id = newId()
 
             return CharlieEntity(
-                bravoId,
+                bravo,
                 createdTimestampUtc,
                 id,
                 someInt,

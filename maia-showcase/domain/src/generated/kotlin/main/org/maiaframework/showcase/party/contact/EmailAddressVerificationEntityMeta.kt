@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object EmailAddressVerificationEntityMeta {
 
-    const val createdById = "created_by_id"
+    const val createdBy = "created_by_id"
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
@@ -26,7 +26,7 @@ object EmailAddressVerificationEntityMeta {
 
     const val ipAddress = "ip_address"
 
-    const val lastModifiedById = "last_modified_by_id"
+    const val lastModifiedBy = "last_modified_by_id"
 
     const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
@@ -46,14 +46,14 @@ object EmailAddressVerificationEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdById" -> "created_by_id"
+            "createdBy" -> "created_by_id"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "effectiveFrom" -> "effective_from"
             "effectiveTo" -> "effective_to"
             "emailAddressId" -> "email_address_id"
             "id" -> "id"
             "ipAddress" -> "ip_address"
-            "lastModifiedById" -> "last_modified_by_id"
+            "lastModifiedBy" -> "last_modified_by_id"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "version" -> "version"
             else ->

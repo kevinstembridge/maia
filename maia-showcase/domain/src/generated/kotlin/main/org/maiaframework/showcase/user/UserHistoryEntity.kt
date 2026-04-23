@@ -16,25 +16,25 @@ import java.time.Instant
 class UserHistoryEntity(
     val authorities: List<Authority>,
     changeType: ChangeType,
-    createdById: DomainId?,
+    createdBy: DomainId?,
     createdTimestampUtc: Instant,
     displayName: String,
     val encryptedPassword: String,
     firstName: FirstName?,
     id: DomainId,
-    lastModifiedById: DomainId?,
+    lastModifiedBy: DomainId?,
     lastModifiedTimestampUtc: Instant,
     lastName: LastName,
     lifecycleState: LifecycleState,
     version: Long
 ) : PersonHistoryEntity(
     changeType,
-    createdById,
+    createdBy,
     createdTimestampUtc,
     displayName,
     firstName,
     id,
-    lastModifiedById,
+    lastModifiedBy,
     lastModifiedTimestampUtc,
     lastName,
     lifecycleState,
@@ -47,13 +47,13 @@ class UserHistoryEntity(
         return "UserHistoryEntity{" +
                 "authorities = '" + this.authorities + '\'' + ", " + 
                 "changeType = '" + this.changeType + '\'' + ", " + 
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 

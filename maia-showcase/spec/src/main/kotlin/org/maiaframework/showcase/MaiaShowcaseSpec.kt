@@ -379,9 +379,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        field("someDto")
 //        field("someDtoNullable")
         field("id")
-        field("createdById")
+        field("createdBy", "createdBy.id")
         field("createdByUsername")
-        field("lastModifiedById")
+        field("lastModifiedBy", "lastModifiedBy.id")
         field("lastModifiedByUsername")
         field("lastModifiedTimestampUtc")
     }
@@ -390,7 +390,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val allFieldTypesDtoHtmlTableDef = dtoHtmlTable(
         allFieldTypesSearchableDtoDef,
         withAddButton = true,
-
     ) {
 
         columnFromDto("someBoolean")
@@ -438,9 +437,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        columnFromDto("someDto")
 //        columnFromDto("someDtoNullable")
         columnFromDto("id")
-        columnFromDto("createdById")
+        columnFromDto("createdBy")
         columnFromDto("createdByUsername")
-        columnFromDto("lastModifiedById")
+        columnFromDto("lastModifiedBy")
         columnFromDto("lastModifiedByUsername")
         columnFromDto("lastModifiedTimestampUtc")
         editActionColumn()
@@ -932,8 +931,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedDto = WithGeneratedDto.TRUE,
         searchModelType = SearchModelType.MAIA
     ) {
-        field("dtoStringFromAlpha", "alphaId.someString")
-        field("dtoIntFromAlpha", "alphaId.someInt")
+        field("dtoStringFromAlpha", "alpha.someString")
+        field("dtoIntFromAlpha", "alpha.someInt")
         field("dtoStringFromBravo", "someString")
         field("dtoIntFromBravo", "someInt")
         field("id", "id")
@@ -964,10 +963,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         field("dtoStringFromCharlie", "someString")
         field("dtoIntFromCharlie", "someInt")
-        field("dtoStringFromBravo", "bravoId.someString")
-        field("dtoIntFromBravo", "bravoId.someInt")
-        field("dtoStringFromAlpha", "bravoId.alphaId.someString")
-        field("dtoIntFromAlpha", "bravoId.alphaId.someInt")
+        field("dtoStringFromBravo", "bravo.someString")
+        field("dtoIntFromBravo", "bravo.someInt")
+        field("dtoStringFromAlpha", "bravo.alpha.someString")
+        field("dtoIntFromAlpha", "bravo.alpha.someInt")
         field("createdTimestampUtc", "createdTimestampUtc")
     }
 
@@ -1036,8 +1035,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedDto = WithGeneratedDto.TRUE,
         searchModelType = SearchModelType.AG_GRID
     ) {
-        field("dtoStringFromAlpha", "alphaId.someString")
-        field("dtoIntFromAlpha", "alphaId.someInt")
+        field("dtoStringFromAlpha", "alpha.someString")
+        field("dtoIntFromAlpha", "alpha.someInt")
         field("dtoStringFromBravo", "someString")
         field("dtoIntFromBravo", "someInt")
         field("id", "id")
@@ -1055,10 +1054,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         field("dtoStringFromCharlie", "someString")
         field("dtoIntFromCharlie", "someInt")
-        field("dtoStringFromBravo", "bravoId.someString")
-        field("dtoIntFromBravo", "bravoId.someInt")
-        field("dtoStringFromAlpha", "bravoId.alphaId.someString")
-        field("dtoIntFromAlpha", "bravoId.alphaId.someInt")
+        field("dtoStringFromBravo", "bravo.someString")
+        field("dtoIntFromBravo", "bravo.someInt")
+        field("dtoStringFromAlpha", "bravo.alpha.someString")
+        field("dtoIntFromAlpha", "bravo.alpha.someInt")
         field("createdTimestampUtc", "createdTimestampUtc")
     }
 
@@ -1176,6 +1175,22 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val leftCrudDef = crudTableDef(leftSearchableDtoHtmlTableDef, leftEntityDef.entityCrudApiDef!!)
+
+
+    val leftToRightManyToManySearchableDtoDef = searchableEntityDef(
+        "org.maiaframework.showcase",
+        "LeftToRightManyToMany",
+        leftToRightManyToManyJoinEntityDef.entityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        field("id")
+        field("leftId", "left.id")
+        field("rightId", "right.id")
+        field("leftSomeString", "left.someString")
+        field("leftSomeInt", "left.someInt")
+        field("rightSomeString", "right.someString")
+        field("rightSomeInt", "right.someInt")
+    }
 
 
     val leftNotMappedToRightSearchableDtoDef = searchableEntityDef(

@@ -4,7 +4,7 @@
 import {AbstractControl, ValidatorFn} from '@angular/forms';
 
 
-export function bravo_alphaIdRequiredValidator(): ValidatorFn {
+export function bravo_alphaRequiredValidator(): ValidatorFn {
 
     return (control: AbstractControl): {[key: string]: any} | null => {
 

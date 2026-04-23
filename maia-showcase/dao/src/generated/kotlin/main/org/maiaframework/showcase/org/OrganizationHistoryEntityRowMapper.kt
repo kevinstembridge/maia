@@ -15,11 +15,11 @@ class OrganizationHistoryEntityRowMapper : MaiaRowMapper<OrganizationHistoryEnti
     override fun mapRow(rsa: ResultSetAdapter): OrganizationHistoryEntity {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdById = rsa.readDomainIdOrNull("created_by_id")
+        val createdBy = rsa.readDomainIdOrNull("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainIdOrNull("last_modified_by_id")
+        val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val orgName = rsa.readString("org_name")
@@ -27,11 +27,11 @@ class OrganizationHistoryEntityRowMapper : MaiaRowMapper<OrganizationHistoryEnti
 
         return OrganizationHistoryEntity(
                 changeType,
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lifecycleState,
                 orgName,

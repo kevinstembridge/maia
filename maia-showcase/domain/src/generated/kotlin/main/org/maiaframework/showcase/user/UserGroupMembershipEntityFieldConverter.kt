@@ -21,9 +21,9 @@ class UserGroupMembershipEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
-            "user_group_id" -> // userGroupId
+            "user_id" -> // user
                 return (inputValue as DomainId).value
-            "user_id" -> // userId
+            "user_group_id" -> // userGroup
                 return (inputValue as DomainId).value
             "version" -> // version
                 return inputValue

@@ -334,8 +334,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     ) {
         moduleName("ops")
         field("id")
-        field("userId")
-        field("userGroupId")
+        field("userId", "user.id")
+        field("userGroupId", "userGroup.id")
     }
 
 
@@ -385,10 +385,10 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field_lastModifiedById(partyEntityDef)
         field_lastModifiedTimestampUtc()
         index {
-            withFieldAscending("emailAddressId")
+            withFieldAscending("emailAddress")
         }
         index {
-            withFieldAscending("partyId")
+            withFieldAscending("party")
         }
     }
 

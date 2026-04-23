@@ -57,16 +57,16 @@ data class PersonEntityUpdater(
         }
 
 
-        fun createdById(createdById: DomainId?) {
+        fun createdBy(createdBy: DomainId?) {
 
-            this.fields.add(FieldUpdate("createdById", "created_by_id", createdById))
+            this.fields.add(FieldUpdate("createdBy", "created_by_id", createdBy))
 
         }
 
 
-        fun lastModifiedById(lastModifiedById: DomainId?) {
+        fun lastModifiedBy(lastModifiedBy: DomainId?) {
 
-            this.fields.add(FieldUpdate("lastModifiedById", "last_modified_by_id", lastModifiedById))
+            this.fields.add(FieldUpdate("lastModifiedBy", "last_modified_by_id", lastModifiedBy))
 
         }
 

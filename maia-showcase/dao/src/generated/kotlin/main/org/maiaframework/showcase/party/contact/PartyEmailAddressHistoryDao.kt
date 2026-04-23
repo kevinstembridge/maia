@@ -45,32 +45,32 @@ class PartyEmailAddressHistoryDao(
                 version
             ) values (
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :effectiveFrom,
                 :effectiveTo,
-                :emailAddressId,
+                :emailAddress,
                 :id,
                 :isPrimaryContact,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
-                :partyId,
+                :party,
                 :purposes,
                 :version
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
-                addValue("createdById", entity.createdById)
+                addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
-                addValue("emailAddressId", entity.emailAddressId)
+                addValue("emailAddress", entity.emailAddress)
                 addValue("id", entity.id)
                 addValue("isPrimaryContact", entity.isPrimaryContact)
-                addValue("lastModifiedById", entity.lastModifiedById)
+                addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
-                addValue("partyId", entity.partyId)
+                addValue("party", entity.party)
                 addListOfStrings("purposes", entity.purposes.map { it.name })
                 addValue("version", entity.version)
             }
@@ -99,16 +99,16 @@ class PartyEmailAddressHistoryDao(
                 version
             ) values (
                 :changeType,
-                :createdById,
+                :createdBy,
                 :createdTimestampUtc,
                 :effectiveFrom,
                 :effectiveTo,
-                :emailAddressId,
+                :emailAddress,
                 :id,
                 :isPrimaryContact,
-                :lastModifiedById,
+                :lastModifiedBy,
                 :lastModifiedTimestampUtc,
-                :partyId,
+                :party,
                 :purposes,
                 :version
             )
@@ -116,16 +116,16 @@ class PartyEmailAddressHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
-                    addValue("createdById", entity.createdById)
+                    addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
-                    addValue("emailAddressId", entity.emailAddressId)
+                    addValue("emailAddress", entity.emailAddress)
                     addValue("id", entity.id)
                     addValue("isPrimaryContact", entity.isPrimaryContact)
-                    addValue("lastModifiedById", entity.lastModifiedById)
+                    addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
-                    addValue("partyId", entity.partyId)
+                    addValue("party", entity.party)
                     addListOfStrings("purposes", entity.purposes.map { it.name })
                     addValue("version", entity.version)
                 }
@@ -209,15 +209,15 @@ class PartyEmailAddressHistoryDao(
        
     }
 
-    fun findByEmailAddressId(emailAddressId: DomainId): List<PartyEmailAddressHistoryEntity> {
+    fun findByEmailAddress(emailAddress: DomainId): List<PartyEmailAddressHistoryEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.party_email_address_history
-            where email_address_id = :emailAddressId
+            where email_address_id = :emailAddress
             """.trimIndent(),
             SqlParams().apply {
-                addValue("emailAddressId", emailAddressId)
+                addValue("emailAddress", emailAddress)
             },
             this.entityRowMapper
         )
@@ -225,15 +225,15 @@ class PartyEmailAddressHistoryDao(
     }
 
 
-    fun findByPartyId(partyId: DomainId): List<PartyEmailAddressHistoryEntity> {
+    fun findByParty(party: DomainId): List<PartyEmailAddressHistoryEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.party_email_address_history
-            where party_id = :partyId
+            where party_id = :party
             """.trimIndent(),
             SqlParams().apply {
-                addValue("partyId", partyId)
+                addValue("party", party)
             },
             this.entityRowMapper
         )
@@ -241,17 +241,17 @@ class PartyEmailAddressHistoryDao(
     }
 
 
-    fun findEffectiveByEmailAddressId(emailAddressId: DomainId): List<PartyEmailAddressHistoryEntity> {
+    fun findEffectiveByEmailAddress(emailAddress: DomainId): List<PartyEmailAddressHistoryEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.party_email_address_history
-            where email_address_id = :emailAddressId
+            where email_address_id = :emailAddress
             and effective_from <= current_timestamp
             and (effective_to > current_timestamp or effective_to is null)
             """.trimIndent(),
             SqlParams().apply {
-                addValue("emailAddressId", emailAddressId)
+                addValue("emailAddress", emailAddress)
             },
             this.entityRowMapper
         )
@@ -259,17 +259,17 @@ class PartyEmailAddressHistoryDao(
     }
 
 
-    fun findEffectiveByPartyId(partyId: DomainId): List<PartyEmailAddressHistoryEntity> {
+    fun findEffectiveByParty(party: DomainId): List<PartyEmailAddressHistoryEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.party_email_address_history
-            where party_id = :partyId
+            where party_id = :party
             and effective_from <= current_timestamp
             and (effective_to > current_timestamp or effective_to is null)
             """.trimIndent(),
             SqlParams().apply {
-                addValue("partyId", partyId)
+                addValue("party", party)
             },
             this.entityRowMapper
         )
@@ -373,15 +373,15 @@ class PartyEmailAddressHistoryDao(
     }
 
 
-    fun existsByPartyId(partyId: DomainId): Boolean {
+    fun existsByParty(party: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.party_email_address_history
-            where party_id = :partyId
+            where party_id = :party
             """.trimIndent(),
             SqlParams().apply {
-            addValue("partyId", partyId)
+            addValue("party", party)
             }
         )
 
@@ -390,15 +390,15 @@ class PartyEmailAddressHistoryDao(
     }
 
 
-    fun existsByEmailAddressId(emailAddressId: DomainId): Boolean {
+    fun existsByEmailAddress(emailAddress: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.party_email_address_history
-            where email_address_id = :emailAddressId
+            where email_address_id = :emailAddress
             """.trimIndent(),
             SqlParams().apply {
-            addValue("emailAddressId", emailAddressId)
+            addValue("emailAddress", emailAddress)
             }
         )
 
@@ -407,15 +407,15 @@ class PartyEmailAddressHistoryDao(
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.party_email_address_history
-            where created_by_id = :createdById
+            where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdById", createdById)
+            addValue("createdBy", createdBy)
             }
         )
 
@@ -424,15 +424,15 @@ class PartyEmailAddressHistoryDao(
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.party_email_address_history
-            where last_modified_by_id = :lastModifiedById
+            where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedById", lastModifiedById)
+            addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 

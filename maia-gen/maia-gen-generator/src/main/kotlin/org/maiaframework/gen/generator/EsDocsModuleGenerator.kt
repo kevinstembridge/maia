@@ -2,6 +2,7 @@ package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.EsDocMapperRenderer
 import org.maiaframework.gen.renderers.EsDocTableDtoMapperRenderer
+import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
 import org.maiaframework.gen.spec.definition.EsDocDef
 
 
@@ -55,7 +56,7 @@ class EsDocsModuleGenerator(
     private fun renderEsDocMappersForTableDtos() {
 
         this.modelDef.dtoHtmlTableDefs
-            .filter { it.dtoHtmlTableSourceDef.esDocDef != null }
+            .filter { it.dtoHtmlTableSourceDef is DtoHtmlTableEsDocSourceDef }
             .forEach { EsDocTableDtoMapperRenderer(it).renderToDir(this.kotlinOutputDir) }
 
     }

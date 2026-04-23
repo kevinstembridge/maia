@@ -12,7 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {BravoFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoFetchForEditDto';
 import {BravoUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoUpdateRequestDto';
-import {bravo_alphaIdRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaIdRequiredValidator';
+import {bravo_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaRequiredValidator';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud.service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
@@ -66,7 +66,7 @@ export class BravoEditDialogComponent implements OnInit {
                 someInt: new FormControl(0, { updateOn: 'change' }),
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 id: new FormControl({value: '', disabled: true}),
-                alpha: new FormControl('', { updateOn: 'change', validators: [bravo_alphaIdRequiredValidator()] }),
+                alpha: new FormControl('', { updateOn: 'change', validators: [bravo_alphaRequiredValidator()] }),
             },
         );
 

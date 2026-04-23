@@ -14,13 +14,13 @@ class AllFieldTypesDtoFieldConverter : SearchFieldConverter {
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
 
         when(tableColumnPath) {
-            "created_by_id" -> // createdById
+            "id" -> // createdBy
                 return inputValue
             "created_by_name" -> // createdByUsername
                 return inputValue
             "id" -> // id
                 return inputValue
-            "last_modified_by_id" -> // lastModifiedById
+            "id" -> // lastModifiedBy
                 return inputValue
             "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue

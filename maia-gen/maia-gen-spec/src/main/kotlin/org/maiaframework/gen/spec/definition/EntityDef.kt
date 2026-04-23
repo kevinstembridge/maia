@@ -790,10 +790,7 @@ class EntityDef(
 
     fun findFieldByNameOrNull(fieldName: String): EntityFieldDef? {
 
-        return allEntityFieldsSorted
-            .asSequence()
-            .filter { it.classFieldDef.classFieldName.value == fieldName }
-            .firstOrNull()
+        return allEntityFieldsSorted.firstOrNull { it.classFieldDef.classFieldName.value == fieldName }
 
     }
 
@@ -905,10 +902,6 @@ class EntityDef(
 
     val hasCreatedByUsernameField: Boolean
         get() = hasFieldNamed(ClassFieldName.createdByUsername)
-
-
-    val hasCreatedByField: Boolean
-        get() = hasFieldNamed(ClassFieldName.createdBy)
 
 
     val hasLastModifiedByIdField: Boolean

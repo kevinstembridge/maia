@@ -14,7 +14,7 @@ object PartyEmailAddressHistoryEntityMeta {
 
     const val changeType = "change_type"
 
-    const val createdById = "created_by_id"
+    const val createdBy = "created_by_id"
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
@@ -22,17 +22,17 @@ object PartyEmailAddressHistoryEntityMeta {
 
     const val effectiveTo = "effective_to"
 
-    const val emailAddressId = "email_address_id"
+    const val emailAddress = "email_address_id"
 
     const val id = "id"
 
     const val isPrimaryContact = "is_primary_contact"
 
-    const val lastModifiedById = "last_modified_by_id"
+    const val lastModifiedBy = "last_modified_by_id"
 
     const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
 
-    const val partyId = "party_id"
+    const val party = "party_id"
 
     const val purposes = "purposes"
 
@@ -62,16 +62,16 @@ object PartyEmailAddressHistoryEntityMeta {
 
         return when(classFieldName) {
             "changeType" -> "change_type"
-            "createdById" -> "created_by_id"
+            "createdBy" -> "created_by_id"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "effectiveFrom" -> "effective_from"
             "effectiveTo" -> "effective_to"
-            "emailAddressId" -> "email_address_id"
+            "emailAddress" -> "email_address_id"
             "id" -> "id"
             "isPrimaryContact" -> "is_primary_contact"
-            "lastModifiedById" -> "last_modified_by_id"
+            "lastModifiedBy" -> "last_modified_by_id"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
-            "partyId" -> "party_id"
+            "party" -> "party_id"
             "purposes" -> "purposes"
             "version" -> "version"
             else ->

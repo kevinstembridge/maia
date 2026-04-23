@@ -39,16 +39,16 @@ data class UserGroupMembershipEntityUpdater(
         }
 
 
-        fun userGroupId(userGroupId: DomainId) {
+        fun userGroup(userGroup: DomainId) {
 
-            this.fields.add(FieldUpdate("userGroupId", "user_group_id", userGroupId))
+            this.fields.add(FieldUpdate("userGroup", "user_group_id", userGroup))
 
         }
 
 
-        fun userId(userId: DomainId) {
+        fun user(user: DomainId) {
 
-            this.fields.add(FieldUpdate("userId", "user_id", userId))
+            this.fields.add(FieldUpdate("user", "user_id", user))
 
         }
 

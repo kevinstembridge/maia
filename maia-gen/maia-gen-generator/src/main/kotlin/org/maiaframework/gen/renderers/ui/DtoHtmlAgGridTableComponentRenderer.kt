@@ -277,7 +277,7 @@ class DtoHtmlAgGridTableComponentRenderer(
 
         val columnHeader = fieldDef.columnHeader
             ?: throw IllegalStateException(
-                "Field '${fieldDef.dtoFieldName}' in table '${dtoHtmlTableDef.dtoBaseName}' has no columnHeader (fieldDisplayName). " +
+                "Field '${fieldDef.dtoFieldName}' in table DTO '${dtoHtmlTableDef.dtoBaseName}' has no columnHeader (fieldDisplayName). " +
                 "Add a fieldDisplayName to the entity/EsDoc field, or override the header at the columnFromDto() call site."
             )
 

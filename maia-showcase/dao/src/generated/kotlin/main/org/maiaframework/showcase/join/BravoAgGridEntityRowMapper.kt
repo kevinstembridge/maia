@@ -12,14 +12,14 @@ class BravoAgGridEntityRowMapper : MaiaRowMapper<BravoAgGridEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): BravoAgGridEntity {
 
-        val alphaId = rsa.readDomainId("alpha_id")
+        val alpha = rsa.readDomainId("alpha_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
 
         return BravoAgGridEntity(
-                alphaId,
+                alpha,
                 createdTimestampUtc,
                 id,
                 someInt,

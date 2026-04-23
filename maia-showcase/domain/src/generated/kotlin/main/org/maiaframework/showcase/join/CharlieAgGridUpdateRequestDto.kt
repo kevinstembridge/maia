@@ -15,8 +15,8 @@ import org.maiaframework.domain.DomainId
 class CharlieAgGridUpdateRequestDto
 @JsonCreator constructor(
     @NotNull
-    @param:JsonProperty("bravoId", access = JsonProperty.Access.READ_WRITE) 
-    private val bravoId_raw: DomainId?,
+    @param:JsonProperty("bravo", access = JsonProperty.Access.READ_WRITE) 
+    private val bravo_raw: DomainId?,
     @NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?
@@ -24,7 +24,7 @@ class CharlieAgGridUpdateRequestDto
 
 
     @get:JsonIgnore
-    val bravoId: DomainId by lazy { bravoId_raw!! }
+    val bravo: DomainId by lazy { bravo_raw!! }
 
 
     @get:JsonIgnore
@@ -34,7 +34,7 @@ class CharlieAgGridUpdateRequestDto
     override fun toString(): String {
 
         return "CharlieAgGridUpdateRequestDto{" +
-                "bravoId = '" + this.bravoId + '\'' + ", " + 
+                "bravo = '" + this.bravo + '\'' + ", " + 
                 "id = '" + this.id + '\'' +
                 "}"
 

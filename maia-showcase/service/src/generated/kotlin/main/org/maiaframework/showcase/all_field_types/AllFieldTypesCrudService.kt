@@ -88,20 +88,20 @@ class AllFieldTypesCrudService(
         val someStringNullable: String? = createDto.someStringNullable
         val someStringType: SomeStringType = createDto.someStringType
         val someStringTypeNullable: SomeStringType? = createDto.someStringTypeNullable
-        val createdById = currentUser.userId
+        val createdBy = currentUser.userId
         val createdByUsername = currentUser.username
         val id = DomainId.newId()
         val createdTimestampUtc = Instant.now()
-        val lastModifiedById = currentUser.userId
+        val lastModifiedBy = currentUser.userId
         val lastModifiedByUsername = currentUser.username
         val lastModifiedTimestampUtc = createdTimestampUtc
 
         return AllFieldTypesEntity(
-            createdById,
+            createdBy,
             createdByUsername,
             createdTimestampUtc,
             id,
-            lastModifiedById,
+            lastModifiedBy,
             lastModifiedByUsername,
             lastModifiedTimestampUtc,
             someBoolean,
@@ -207,7 +207,7 @@ class AllFieldTypesCrudService(
             someStringModifiable(editDto.someStringModifiable)
             someInstantModifiableNullable(editDto.someInstantModifiableNullable)
             someIntNullable(editDto.someIntNullable)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedTimestampUtc(Instant.now())
         }
 
@@ -225,7 +225,7 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             someInstantModifiable(editDto.someInstantModifiable)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
         }
@@ -244,7 +244,7 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             someInstantModifiableNullable(editDto.someInstantModifiableNullable)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
         }
@@ -263,7 +263,7 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             someIntModifiable(editDto.someIntModifiable)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
         }
@@ -282,7 +282,7 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             someIntNullable(editDto.someIntNullable)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
         }
@@ -301,7 +301,7 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             someLocalDateModifiable(editDto.someLocalDateModifiable)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
         }
@@ -320,7 +320,7 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             somePeriodModifiable(editDto.somePeriodModifiable)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
         }
@@ -339,7 +339,7 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             someStringModifiable(editDto.someStringModifiable)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
         }
@@ -358,7 +358,7 @@ class AllFieldTypesCrudService(
 
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
             someListOfStrings(editDto.someListOfStrings)
-            lastModifiedById(CurrentUserHolder.userId)
+            lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestampUtc(Instant.now())
         }

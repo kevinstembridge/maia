@@ -36,15 +36,19 @@ class AllFieldTypesTableDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.all_field_types
+            inner join maia.v_party createdBy
+                    on maia.all_field_types.created_by_id = createdBy.id
+            inner join maia.v_party lastModifiedBy
+                    on maia.all_field_types.last_modified_by_id = lastModifiedBy.id
             $whereClause
             """.trimIndent()
 
         val sqlForPage = """
             select
-                maia.all_field_types.created_by_id as createdById,
+                createdBy.id as createdBy,
                 maia.all_field_types.created_by_name as createdByUsername,
                 maia.all_field_types.id as id,
-                maia.all_field_types.last_modified_by_id as lastModifiedById,
+                lastModifiedBy.id as lastModifiedBy,
                 maia.all_field_types.last_modified_by_name as lastModifiedByUsername,
                 maia.all_field_types.last_modified_timestamp_utc as lastModifiedTimestampUtc,
                 maia.all_field_types.some_boolean as someBoolean,
@@ -82,6 +86,10 @@ class AllFieldTypesTableDtoDao(
                 maia.all_field_types.some_string_type as someStringType,
                 maia.all_field_types.some_string_type_nullable as someStringTypeNullable
             from maia.all_field_types
+            inner join maia.v_party createdBy
+                    on maia.all_field_types.created_by_id = createdBy.id
+            inner join maia.v_party lastModifiedBy
+                    on maia.all_field_types.last_modified_by_id = lastModifiedBy.id
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -110,6 +118,10 @@ class AllFieldTypesTableDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.all_field_types
+            inner join maia.v_party createdBy
+                    on maia.all_field_types.created_by_id = createdBy.id
+            inner join maia.v_party lastModifiedBy
+                    on maia.all_field_types.last_modified_by_id = lastModifiedBy.id
             $whereClause
             """.trimIndent()
 

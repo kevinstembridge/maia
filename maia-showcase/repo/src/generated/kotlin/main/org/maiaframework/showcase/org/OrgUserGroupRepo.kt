@@ -66,9 +66,9 @@ class OrgUserGroupRepo(
     }
 
 
-    fun existsByOrgId(orgId: DomainId): Boolean {
+    fun existsByOrg(org: DomainId): Boolean {
 
-        return dao.existsByOrgId(orgId)
+        return dao.existsByOrg(org)
 
     }
 

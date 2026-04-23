@@ -65,7 +65,7 @@ export class CharlieAgGridEditDialogComponent implements OnInit {
                 someInt: new FormControl({value: 0, disabled: true}),
                 someString: new FormControl({value: '', disabled: true}),
                 id: new FormControl({value: '', disabled: true}),
-                bravoId: new FormControl('', { updateOn: 'change' }),
+                bravo: new FormControl('', { updateOn: 'change' }),
             },
         );
 
@@ -101,7 +101,7 @@ export class CharlieAgGridEditDialogComponent implements OnInit {
         }
 
         const requestDto = {
-            bravoId: this.formGroup.getRawValue().bravoId,
+            bravo: this.formGroup.getRawValue().bravo,
             id: this.formGroup.getRawValue().id,
         } as CharlieAgGridUpdateRequestDto;
 

@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object BravoEntityMeta {
 
-    const val alphaId = "alpha_id"
+    const val alpha = "alpha_id"
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
@@ -36,7 +36,7 @@ object BravoEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "alphaId" -> "alpha_id"
+            "alpha" -> "alpha_id"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             "someInt" -> "some_int"

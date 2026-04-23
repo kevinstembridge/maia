@@ -10,21 +10,21 @@ import java.time.Instant
 
 
 class OrganizationEntity(
-    createdById: DomainId?,
+    createdBy: DomainId?,
     createdTimestampUtc: Instant,
     displayName: String,
     id: DomainId,
-    lastModifiedById: DomainId?,
+    lastModifiedBy: DomainId?,
     lastModifiedTimestampUtc: Instant,
     lifecycleState: LifecycleState,
     val orgName: String,
     version: Long
 ) : PartyEntity(
-    createdById,
+    createdBy,
     createdTimestampUtc,
     displayName,
     id,
-    lastModifiedById,
+    lastModifiedBy,
     lastModifiedTimestampUtc,
     lifecycleState,
     version
@@ -34,11 +34,11 @@ class OrganizationEntity(
     override fun toString(): String {
 
         return "OrganizationEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "orgName = '" + this.orgName + '\'' + ", " + 
@@ -58,7 +58,7 @@ class OrganizationEntity(
 
         @JvmStatic
         fun newInstance(
-            createdById: DomainId?,
+            createdBy: DomainId?,
             displayName: String,
             orgName: String
         ): OrganizationEntity {
@@ -66,16 +66,16 @@ class OrganizationEntity(
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
-            val lastModifiedById = createdById
+            val lastModifiedBy = createdBy
             val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
 
             return OrganizationEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 displayName,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 lifecycleState,
                 orgName,

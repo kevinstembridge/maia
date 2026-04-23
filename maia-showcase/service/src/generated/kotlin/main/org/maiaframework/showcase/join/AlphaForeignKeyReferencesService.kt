@@ -20,7 +20,7 @@ class AlphaForeignKeyReferencesService(
 
     fun checkForeignKeyReferences(id: DomainId): ForeignKeyReferencesExistResponseDto {
 
-        if (this.bravoRepo.existsByAlphaId(id)) {
+        if (this.bravoRepo.existsByAlpha(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "Bravo")
         }
 

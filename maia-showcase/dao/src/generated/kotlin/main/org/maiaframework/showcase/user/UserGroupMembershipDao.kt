@@ -37,22 +37,22 @@ class UserGroupMembershipDao(
             insert into maia.user_group_membership (
                 created_timestamp_utc,
                 id,
-                user_group_id,
                 user_id,
+                user_group_id,
                 version
             ) values (
                 :createdTimestampUtc,
                 :id,
-                :userGroupId,
-                :userId,
+                :user,
+                :userGroup,
                 :version
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
-                addValue("userGroupId", entity.userGroupId)
-                addValue("userId", entity.userId)
+                addValue("user", entity.user)
+                addValue("userGroup", entity.userGroup)
                 addValue("version", entity.version)
             }
         )
@@ -69,14 +69,14 @@ class UserGroupMembershipDao(
             insert into maia.user_group_membership (
                 created_timestamp_utc,
                 id,
-                user_group_id,
                 user_id,
+                user_group_id,
                 version
             ) values (
                 :createdTimestampUtc,
                 :id,
-                :userGroupId,
-                :userId,
+                :user,
+                :userGroup,
                 :version
             )
             """.trimIndent(),
@@ -84,8 +84,8 @@ class UserGroupMembershipDao(
                 SqlParams().apply {
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
-                    addValue("userGroupId", entity.userGroupId)
-                    addValue("userId", entity.userId)
+                    addValue("user", entity.user)
+                    addValue("userGroup", entity.userGroup)
                     addValue("version", entity.version)
                 }
             }
@@ -126,15 +126,15 @@ class UserGroupMembershipDao(
 
         val id = entity.id
         val createdTimestampUtc = entity.createdTimestampUtc
-        val userGroupId = entity.userGroupId
-        val userId = entity.userId
+        val user = entity.user
+        val userGroup = entity.userGroup
 
         return UserGroupMembershipHistoryEntity(
                 changeType,
                 createdTimestampUtc,
                 id,
-                userGroupId,
-                userId,
+                user,
+                userGroup,
                 version)
 
     }
@@ -211,15 +211,15 @@ class UserGroupMembershipDao(
        
     }
 
-    fun findByUserGroupId(userGroupId: DomainId): List<UserGroupMembershipEntity> {
+    fun findByUserGroup(userGroup: DomainId): List<UserGroupMembershipEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.user_group_membership
-            where user_group_id = :userGroupId
+            where user_group_id = :userGroup
             """.trimIndent(),
             SqlParams().apply {
-                addValue("userGroupId", userGroupId)
+                addValue("userGroup", userGroup)
             },
             this.entityRowMapper
         )
@@ -227,15 +227,15 @@ class UserGroupMembershipDao(
     }
 
 
-    fun findByUserId(userId: DomainId): List<UserGroupMembershipEntity> {
+    fun findByUser(user: DomainId): List<UserGroupMembershipEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.user_group_membership
-            where user_id = :userId
+            where user_id = :user
             """.trimIndent(),
             SqlParams().apply {
-                addValue("userId", userId)
+                addValue("user", user)
             },
             this.entityRowMapper
         )
@@ -339,15 +339,15 @@ class UserGroupMembershipDao(
     }
 
 
-    fun existsByUserGroupId(userGroupId: DomainId): Boolean {
+    fun existsByUserGroup(userGroup: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.user_group_membership
-            where user_group_id = :userGroupId
+            where user_group_id = :userGroup
             """.trimIndent(),
             SqlParams().apply {
-            addValue("userGroupId", userGroupId)
+            addValue("userGroup", userGroup)
             }
         )
 
@@ -356,15 +356,15 @@ class UserGroupMembershipDao(
     }
 
 
-    fun existsByUserId(userId: DomainId): Boolean {
+    fun existsByUser(user: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.user_group_membership
-            where user_id = :userId
+            where user_id = :user
             """.trimIndent(),
             SqlParams().apply {
-            addValue("userId", userId)
+            addValue("user", user)
             }
         )
 
@@ -426,8 +426,8 @@ class UserGroupMembershipDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "userGroupId" -> sqlParams.addValue("userGroupId", field.value as DomainId)
-            "userId" -> sqlParams.addValue("userId", field.value as DomainId)
+            "user" -> sqlParams.addValue("user", field.value as DomainId)
+            "userGroup" -> sqlParams.addValue("userGroup", field.value as DomainId)
         }
 
     }

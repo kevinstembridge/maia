@@ -39,8 +39,8 @@ data class ManyToManyEntityDef(
 
     fun idFieldName(entityDef: EntityDef): String {
 
-        if (entityDef == this.leftEntity.entityDef) return this.leftEntity.fieldName + "Id"
-        if (entityDef == this.rightEntity.entityDef) return this.rightEntity.fieldName + "Id"
+        if (entityDef == this.leftEntity.entityDef) return this.leftEntity.fieldName
+        if (entityDef == this.rightEntity.entityDef) return this.rightEntity.fieldName
 
         throw IllegalArgumentException("The provided entityDef (${entityDef.entityBaseName}) does not reference this ManyToManyEntityDef (${this.entityDef.entityBaseName}).")
 

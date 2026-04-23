@@ -9,16 +9,16 @@ import java.time.Instant
 
 
 class PartyEmailAddressEntity(
-    val createdById: DomainId,
+    val createdBy: DomainId,
     val createdTimestampUtc: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
-    val emailAddressId: DomainId,
+    val emailAddress: DomainId,
     val id: DomainId,
     val isPrimaryContact: Boolean,
-    val lastModifiedById: DomainId,
+    val lastModifiedBy: DomainId,
     val lastModifiedTimestampUtc: Instant,
-    val partyId: DomainId,
+    val party: DomainId,
     val purposes: List<EmailAddressPurpose>,
     val version: Long
 ) {
@@ -27,16 +27,16 @@ class PartyEmailAddressEntity(
     override fun toString(): String {
 
         return "PartyEmailAddressEntity{" +
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
-                "emailAddressId = '" + this.emailAddressId + '\'' + ", " + 
+                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "isPrimaryContact = '" + this.isPrimaryContact + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
-                "partyId = '" + this.partyId + '\'' + ", " + 
+                "party = '" + this.party + '\'' + ", " + 
                 "purposes = '" + this.purposes + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
@@ -54,32 +54,32 @@ class PartyEmailAddressEntity(
 
         @JvmStatic
         fun newInstance(
-            createdById: DomainId,
+            createdBy: DomainId,
             effectiveFrom: Instant?,
             effectiveTo: Instant?,
-            emailAddressId: DomainId,
+            emailAddress: DomainId,
             isPrimaryContact: Boolean,
-            partyId: DomainId,
+            party: DomainId,
             purposes: List<EmailAddressPurpose>
         ): PartyEmailAddressEntity {
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
             val lastModifiedTimestampUtc = createdTimestampUtc
-            val lastModifiedById = createdById
+            val lastModifiedBy = createdBy
             val version = 1L
 
             return PartyEmailAddressEntity(
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 effectiveFrom,
                 effectiveTo,
-                emailAddressId,
+                emailAddress,
                 id,
                 isPrimaryContact,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
-                partyId,
+                party,
                 purposes,
                 version
             )

@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class BravoEntity(
-    val alphaId: DomainId,
+    val alpha: DomainId,
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val someInt: Int,
@@ -19,7 +19,7 @@ class BravoEntity(
     override fun toString(): String {
 
         return "BravoEntity{" +
-                "alphaId = '" + this.alphaId + '\'' + ", " + 
+                "alpha = '" + this.alpha + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
@@ -39,7 +39,7 @@ class BravoEntity(
 
         @JvmStatic
         fun newInstance(
-            alphaId: DomainId,
+            alpha: DomainId,
             someInt: Int,
             someString: String
         ): BravoEntity {
@@ -48,7 +48,7 @@ class BravoEntity(
             val id = newId()
 
             return BravoEntity(
-                alphaId,
+                alpha,
                 createdTimestampUtc,
                 id,
                 someInt,

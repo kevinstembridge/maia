@@ -35,14 +35,14 @@ class CharlieAgGridCrudService(
 
     private fun buildEntity(createDto: CharlieAgGridCreateRequestDto): CharlieAgGridEntity {
 
-        val bravoId: DomainId = createDto.bravoId
+        val bravo: DomainId = createDto.bravo
         val someInt: Int = createDto.someInt
         val someString: String = createDto.someString
         val id = DomainId.newId()
         val createdTimestampUtc = Instant.now()
 
         return CharlieAgGridEntity(
-            bravoId,
+            bravo,
             createdTimestampUtc,
             id,
             someInt,
@@ -72,7 +72,7 @@ class CharlieAgGridCrudService(
 
         val id = editDto.id
         val updater = CharlieAgGridEntityUpdater.forPrimaryKey(id) {
-            bravoId(editDto.bravoId)
+            bravo(editDto.bravo)
         }
 
         setFields(updater)
@@ -80,14 +80,14 @@ class CharlieAgGridCrudService(
     }
 
 
-    fun updateBravoId(editDto: CharlieAgGridUpdate_bravoIdRequestDto) {
+    fun updateBravo(editDto: CharlieAgGridUpdate_bravoRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
 
-        logger.info("BEGIN: updateBravoId. currentUsername=${currentUsername}, dto=$editDto")
+        logger.info("BEGIN: updateBravo. currentUsername=${currentUsername}, dto=$editDto")
 
         val updater = CharlieAgGridEntityUpdater.forPrimaryKey(editDto.id) {
-            bravoId(editDto.bravoId)
+            bravo(editDto.bravo)
         }
 
         setFields(updater)

@@ -41,7 +41,7 @@ class CharlieAgGridDao(
                 some_int,
                 some_string
             ) values (
-                :bravoId,
+                :bravo,
                 :createdTimestampUtc,
                 :id,
                 :someInt,
@@ -49,7 +49,7 @@ class CharlieAgGridDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("bravoId", entity.bravoId)
+                addValue("bravo", entity.bravo)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
@@ -71,7 +71,7 @@ class CharlieAgGridDao(
                 some_int,
                 some_string
             ) values (
-                :bravoId,
+                :bravo,
                 :createdTimestampUtc,
                 :id,
                 :someInt,
@@ -80,7 +80,7 @@ class CharlieAgGridDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("bravoId", entity.bravoId)
+                    addValue("bravo", entity.bravo)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
@@ -259,15 +259,15 @@ class CharlieAgGridDao(
     }
 
 
-    fun existsByBravoId(bravoId: DomainId): Boolean {
+    fun existsByBravo(bravo: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.charlie_ag_grid
-            where bravo_id = :bravoId
+            where bravo_id = :bravo
             """.trimIndent(),
             SqlParams().apply {
-            addValue("bravoId", bravoId)
+            addValue("bravo", bravo)
             }
         )
 
@@ -337,7 +337,7 @@ class CharlieAgGridDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "bravoId" -> sqlParams.addValue("bravoId", field.value as DomainId)
+            "bravo" -> sqlParams.addValue("bravo", field.value as DomainId)
         }
 
     }

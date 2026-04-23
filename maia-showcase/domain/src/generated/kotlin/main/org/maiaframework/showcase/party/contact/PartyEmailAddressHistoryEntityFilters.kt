@@ -51,7 +51,7 @@ class PartyEmailAddressHistoryEntityFilters {
         }
 
 
-    val createdById: FieldFilter<DomainId> 
+    val createdBy: FieldFilter<DomainId> 
         get() {
 
             return FieldFilter("created_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
@@ -83,7 +83,7 @@ class PartyEmailAddressHistoryEntityFilters {
         }
 
 
-    val emailAddressId: FieldFilter<DomainId> 
+    val emailAddress: FieldFilter<DomainId> 
         get() {
 
             return FieldFilter("email_address_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
@@ -107,7 +107,7 @@ class PartyEmailAddressHistoryEntityFilters {
         }
 
 
-    val lastModifiedById: FieldFilter<DomainId> 
+    val lastModifiedBy: FieldFilter<DomainId> 
         get() {
 
             return FieldFilter("last_modified_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
@@ -123,7 +123,7 @@ class PartyEmailAddressHistoryEntityFilters {
         }
 
 
-    val partyId: FieldFilter<DomainId> 
+    val party: FieldFilter<DomainId> 
         get() {
 
             return FieldFilter("party_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }

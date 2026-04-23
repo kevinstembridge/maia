@@ -66,18 +66,18 @@ class UserGroupMembershipHistoryEntityFilters {
         }
 
 
-    val userGroupId: FieldFilter<DomainId> 
+    val user: FieldFilter<DomainId> 
         get() {
 
-            return FieldFilter("user_group_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+            return FieldFilter("user_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 
 
-    val userId: FieldFilter<DomainId> 
+    val userGroup: FieldFilter<DomainId> 
         get() {
 
-            return FieldFilter("user_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+            return FieldFilter("user_group_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 

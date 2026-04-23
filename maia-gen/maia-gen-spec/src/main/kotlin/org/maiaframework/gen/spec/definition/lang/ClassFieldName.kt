@@ -20,9 +20,7 @@ class ClassFieldName(value: String) : StringType<ClassFieldName>(value) {
 
         val context = ClassFieldName("context")
 
-        val createdBy = ClassFieldName("createdBy")
-
-        val createdById = ClassFieldName("createdById")
+        val createdById = ClassFieldName("createdBy")
 
         val createdByUsername = ClassFieldName("createdByUsername")
 
@@ -30,11 +28,9 @@ class ClassFieldName(value: String) : StringType<ClassFieldName>(value) {
 
         val id = ClassFieldName("id")
 
-        val lastModifiedBy = "lastModifiedBy"
-
         val lastModifiedByUsername = ClassFieldName("lastModifiedByUsername")
 
-        val lastModifiedById = ClassFieldName("lastModifiedById")
+        val lastModifiedById = ClassFieldName("lastModifiedBy")
 
         val lastModifiedTimestampUtc = ClassFieldName("lastModifiedTimestampUtc")
 

@@ -66,16 +66,16 @@ class EmailAddressVerificationRepo(
     }
 
 
-    fun existsByCreatedById(createdById: DomainId): Boolean {
+    fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
-        return dao.existsByCreatedById(createdById)
+        return dao.existsByCreatedBy(createdBy)
 
     }
 
 
-    fun existsByLastModifiedById(lastModifiedById: DomainId): Boolean {
+    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
 
-        return dao.existsByLastModifiedById(lastModifiedById)
+        return dao.existsByLastModifiedBy(lastModifiedBy)
 
     }
 

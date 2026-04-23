@@ -15,7 +15,7 @@ class OrgUserGroupEntity(
     description: String,
     id: DomainId,
     name: String,
-    val orgId: DomainId,
+    val org: DomainId,
     systemManaged: Boolean,
     version: Long
 ) : UserGroupEntity(
@@ -37,7 +37,7 @@ class OrgUserGroupEntity(
                 "description = '" + this.description + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "name = '" + this.name + '\'' + ", " + 
-                "orgId = '" + this.orgId + '\'' + ", " + 
+                "org = '" + this.org + '\'' + ", " + 
                 "systemManaged = '" + this.systemManaged + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
@@ -58,7 +58,7 @@ class OrgUserGroupEntity(
             authorities: List<Authority>,
             description: String,
             name: String,
-            orgId: DomainId,
+            org: DomainId,
             systemManaged: Boolean
         ): OrgUserGroupEntity {
 
@@ -72,7 +72,7 @@ class OrgUserGroupEntity(
                 description,
                 id,
                 name,
-                orgId,
+                org,
                 systemManaged,
                 version
             )

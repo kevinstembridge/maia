@@ -56,9 +56,9 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         val leftEntities = leftDao.findAllAsSequence().toList()
         assertThat(leftEntities).hasSize(1)
 
-        val joins = manyToManyJoinDao.findByLeftId(leftEntities.first().id)
+        val joins = manyToManyJoinDao.findByLeft(leftEntities.first().id)
         assertThat(joins).hasSize(2)
-        assertThat(joins.map { it.rightId }).containsExactlyInAnyOrder(rightEntity1.id, rightEntity2.id)
+        assertThat(joins.map { it.right }).containsExactlyInAnyOrder(rightEntity1.id, rightEntity2.id)
 
     }
 
@@ -74,7 +74,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         val leftEntities = leftDao.findAllAsSequence().toList()
         assertThat(leftEntities).hasSize(1)
 
-        val joins = manyToManyJoinDao.findByLeftId(leftEntities.first().id)
+        val joins = manyToManyJoinDao.findByLeft(leftEntities.first().id)
         assertThat(joins).isEmpty()
 
     }
@@ -103,9 +103,9 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
                 .exchange()
         ).hasStatus(HttpStatus.OK)
 
-        val joins = manyToManyJoinDao.findByLeftId(leftId)
+        val joins = manyToManyJoinDao.findByLeft(leftId)
         assertThat(joins).hasSize(2)
-        assertThat(joins.map { it.rightId }).containsExactlyInAnyOrder(rightEntity2.id, rightEntity3.id)
+        assertThat(joins.map { it.right }).containsExactlyInAnyOrder(rightEntity2.id, rightEntity3.id)
 
     }
 
@@ -132,7 +132,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
                 .exchange()
         ).hasStatus(HttpStatus.OK)
 
-        val joins = manyToManyJoinDao.findByLeftId(leftId)
+        val joins = manyToManyJoinDao.findByLeft(leftId)
         assertThat(joins).isEmpty()
 
     }

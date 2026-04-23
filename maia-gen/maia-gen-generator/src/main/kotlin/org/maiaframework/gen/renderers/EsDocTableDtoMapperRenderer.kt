@@ -1,6 +1,8 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
+
 
 class EsDocTableDtoMapperRenderer(
     private val dtoHtmlTableDef: DtoHtmlTableDef
@@ -12,7 +14,7 @@ class EsDocTableDtoMapperRenderer(
     private val tableDtoUqcn = dtoHtmlTableDef.searchDtoDef.uqcn
 
 
-    private val esDocDef = dtoHtmlTableDef.dtoHtmlTableSourceDef.esDocDef!!
+    private val esDocDef = (dtoHtmlTableDef.dtoHtmlTableSourceDef as DtoHtmlTableEsDocSourceDef).esDocDef
 
 
     override fun renderFunctions() {

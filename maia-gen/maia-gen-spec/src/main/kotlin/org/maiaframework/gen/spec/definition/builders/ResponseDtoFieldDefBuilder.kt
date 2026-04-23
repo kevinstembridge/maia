@@ -2,6 +2,7 @@ package org.maiaframework.gen.spec.definition.builders
 
 
 import org.maiaframework.gen.spec.definition.EnumDef
+import org.maiaframework.gen.spec.definition.FieldDisplayName
 import org.maiaframework.gen.spec.definition.ResponseDtoFieldDef
 import org.maiaframework.gen.spec.definition.SimpleTypeDef
 import org.maiaframework.gen.spec.definition.StringTypeDef
@@ -28,6 +29,7 @@ class ResponseDtoFieldDefBuilder private constructor(
 ) {
 
 
+    private var fieldDisplayName: FieldDisplayName? = null
     private var optional = false
     private var nullability = Nullability.NOT_NULLABLE
     private var isMasked = false
@@ -117,9 +119,7 @@ class ResponseDtoFieldDefBuilder private constructor(
         caseSensitive,
         defaultFieldTypeFieldReaderProvider,
         defaultFieldTypeFieldWriterProvider
-    ) {
-
-    }
+    )
 
 
     fun optional(): ResponseDtoFieldDefBuilder {
@@ -145,6 +145,7 @@ class ResponseDtoFieldDefBuilder private constructor(
 
         return ResponseDtoFieldDef(
             this.classFieldName,
+            this.fieldDisplayName,
             TableColumnName(this.fieldPath!!),
             this.fieldType,
             this.nullability,
@@ -153,6 +154,14 @@ class ResponseDtoFieldDefBuilder private constructor(
             fieldReaderClassName,
             fieldWriterClassName
         )
+
+    }
+
+
+    fun displayName(displayName: String): ResponseDtoFieldDefBuilder {
+
+        this.fieldDisplayName = FieldDisplayName(displayName)
+        return this
 
     }
 

@@ -66,9 +66,9 @@ class BravoRepo(
     }
 
 
-    fun existsByAlphaId(alphaId: DomainId): Boolean {
+    fun existsByAlpha(alpha: DomainId): Boolean {
 
-        return dao.existsByAlphaId(alphaId)
+        return dao.existsByAlpha(alpha)
 
     }
 

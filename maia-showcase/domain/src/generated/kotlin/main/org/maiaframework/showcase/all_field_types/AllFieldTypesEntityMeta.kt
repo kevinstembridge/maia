@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object AllFieldTypesEntityMeta {
 
-    const val createdById = "created_by_id"
+    const val createdBy = "created_by_id"
 
     const val createdByUsername = "created_by_name"
 
@@ -20,7 +20,7 @@ object AllFieldTypesEntityMeta {
 
     const val id = "id"
 
-    const val lastModifiedById = "last_modified_by_id"
+    const val lastModifiedBy = "last_modified_by_id"
 
     const val lastModifiedByUsername = "last_modified_by_name"
 
@@ -125,11 +125,11 @@ object AllFieldTypesEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdById" -> "created_by_id"
+            "createdBy" -> "created_by_id"
             "createdByUsername" -> "created_by_name"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "lastModifiedById" -> "last_modified_by_id"
+            "lastModifiedBy" -> "last_modified_by_id"
             "lastModifiedByUsername" -> "last_modified_by_name"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "someBoolean" -> "some_boolean"

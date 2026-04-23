@@ -11,16 +11,16 @@ import java.time.Instant
 
 class PartyEmailAddressHistoryEntity(
     val changeType: ChangeType,
-    val createdById: DomainId,
+    val createdBy: DomainId,
     val createdTimestampUtc: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
-    val emailAddressId: DomainId,
+    val emailAddress: DomainId,
     val id: DomainId,
     val isPrimaryContact: Boolean,
-    val lastModifiedById: DomainId,
+    val lastModifiedBy: DomainId,
     val lastModifiedTimestampUtc: Instant,
-    val partyId: DomainId,
+    val party: DomainId,
     val purposes: List<EmailAddressPurpose>,
     val version: Long
 ) {
@@ -33,16 +33,16 @@ class PartyEmailAddressHistoryEntity(
 
         return "PartyEmailAddressHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
-                "createdById = '" + this.createdById + '\'' + ", " + 
+                "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
-                "emailAddressId = '" + this.emailAddressId + '\'' + ", " + 
+                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "isPrimaryContact = '" + this.isPrimaryContact + '\'' + ", " + 
-                "lastModifiedById = '" + this.lastModifiedById + '\'' + ", " + 
+                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
-                "partyId = '" + this.partyId + '\'' + ", " + 
+                "party = '" + this.party + '\'' + ", " + 
                 "purposes = '" + this.purposes + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"

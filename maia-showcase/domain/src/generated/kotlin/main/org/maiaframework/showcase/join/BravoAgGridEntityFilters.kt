@@ -41,7 +41,7 @@ class BravoAgGridEntityFilters {
     }
 
 
-    val alphaId: FieldFilter<DomainId> 
+    val alpha: FieldFilter<DomainId> 
         get() {
 
             return FieldFilter("alpha_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }

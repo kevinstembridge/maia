@@ -41,16 +41,16 @@ data class LeftToRightManyToManyJoinEntityUpdater(
         }
 
 
-        fun leftId(leftId: DomainId) {
+        fun left(left: DomainId) {
 
-            this.fields.add(FieldUpdate("leftId", "left_id", leftId))
+            this.fields.add(FieldUpdate("left", "left_id", left))
 
         }
 
 
-        fun rightId(rightId: DomainId) {
+        fun right(right: DomainId) {
 
-            this.fields.add(FieldUpdate("rightId", "right_id", rightId))
+            this.fields.add(FieldUpdate("right", "right_id", right))
 
         }
 

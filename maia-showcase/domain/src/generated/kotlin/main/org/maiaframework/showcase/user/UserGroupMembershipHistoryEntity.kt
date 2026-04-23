@@ -12,8 +12,8 @@ class UserGroupMembershipHistoryEntity(
     val changeType: ChangeType,
     val createdTimestampUtc: Instant,
     val id: DomainId,
-    val userGroupId: DomainId,
-    val userId: DomainId,
+    val user: DomainId,
+    val userGroup: DomainId,
     val version: Long
 ) {
 
@@ -27,8 +27,8 @@ class UserGroupMembershipHistoryEntity(
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "userGroupId = '" + this.userGroupId + '\'' + ", " + 
-                "userId = '" + this.userId + '\'' + ", " + 
+                "user = '" + this.user + '\'' + ", " + 
+                "userGroup = '" + this.userGroup + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
 

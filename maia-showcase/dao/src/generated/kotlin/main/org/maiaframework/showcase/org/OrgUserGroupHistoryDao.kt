@@ -48,7 +48,7 @@ class OrgUserGroupHistoryDao(
                 :description,
                 :id,
                 :name,
-                :orgId,
+                :org,
                 :systemManaged,
                 :version
             )
@@ -60,7 +60,7 @@ class OrgUserGroupHistoryDao(
                 addValue("description", entity.description)
                 addValue("id", entity.id)
                 addValue("name", entity.name)
-                addValue("orgId", entity.orgId)
+                addValue("org", entity.org)
                 addValue("systemManaged", entity.systemManaged)
                 addValue("version", entity.version)
             }
@@ -92,7 +92,7 @@ class OrgUserGroupHistoryDao(
                 :description,
                 :id,
                 :name,
-                :orgId,
+                :org,
                 :systemManaged,
                 :version
             )
@@ -105,7 +105,7 @@ class OrgUserGroupHistoryDao(
                     addValue("description", entity.description)
                     addValue("id", entity.id)
                     addValue("name", entity.name)
-                    addValue("orgId", entity.orgId)
+                    addValue("org", entity.org)
                     addValue("systemManaged", entity.systemManaged)
                     addValue("version", entity.version)
                 }
@@ -285,15 +285,15 @@ class OrgUserGroupHistoryDao(
     }
 
 
-    fun existsByOrgId(orgId: DomainId): Boolean {
+    fun existsByOrg(org: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.user_group_history
-            where org_id = :orgId
+            where org_id = :org
             """.trimIndent(),
             SqlParams().apply {
-            addValue("orgId", orgId)
+            addValue("org", org)
             }
         )
 

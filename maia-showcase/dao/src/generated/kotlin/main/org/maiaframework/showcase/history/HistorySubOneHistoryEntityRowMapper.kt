@@ -14,20 +14,20 @@ class HistorySubOneHistoryEntityRowMapper : MaiaRowMapper<HistorySubOneHistoryEn
     override fun mapRow(rsa: ResultSetAdapter): HistorySubOneHistoryEntity {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdById = rsa.readDomainId("created_by_id")
+        val createdBy = rsa.readDomainId("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
-        val lastModifiedById = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val someString = rsa.readString("some_string")
         val version = rsa.readLong("version")
 
         return HistorySubOneHistoryEntity(
                 changeType,
-                createdById,
+                createdBy,
                 createdTimestampUtc,
                 id,
-                lastModifiedById,
+                lastModifiedBy,
                 lastModifiedTimestampUtc,
                 someString,
                 version

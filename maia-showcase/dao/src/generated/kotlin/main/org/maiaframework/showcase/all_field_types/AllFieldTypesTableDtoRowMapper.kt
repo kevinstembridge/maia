@@ -22,10 +22,10 @@ class AllFieldTypesTableDtoRowMapper : MaiaRowMapper<AllFieldTypesTableDto> {
     override fun mapRow(rsa: ResultSetAdapter): AllFieldTypesTableDto {
 
         return AllFieldTypesTableDto(
-            rsa.readDomainId("createdById"),
+            rsa.readDomainId("createdBy"),
             rsa.readString("createdByUsername"),
             rsa.readDomainId("id"),
-            rsa.readDomainId("lastModifiedById"),
+            rsa.readDomainId("lastModifiedBy"),
             rsa.readString("lastModifiedByUsername"),
             rsa.readInstant("lastModifiedTimestampUtc"),
             rsa.readBoolean("someBoolean"),
