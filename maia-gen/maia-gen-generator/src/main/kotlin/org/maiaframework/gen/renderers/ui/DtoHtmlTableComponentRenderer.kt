@@ -1,17 +1,18 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.DataSourceType
 import org.maiaframework.gen.spec.definition.DtoHtmlTableActionColumnDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableColumnDef
 import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableSearchableDtoSourceDef
 
 
 class DtoHtmlTableComponentRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : AbstractTypescriptRenderer() {
 
 
-    private val searchResultUqcn = when (dtoHtmlTableDef.dataSourceType) {
-        DataSourceType.ELASTIC_SEARCH -> "IndexSearchResult"
-        DataSourceType.DATABASE -> "SearchResultPage"
+    private val searchResultUqcn = when (dtoHtmlTableDef.dtoHtmlTableSourceDef) {
+        is DtoHtmlTableEsDocSourceDef -> "IndexSearchResult"
+        is DtoHtmlTableSearchableDtoSourceDef -> "SearchResultPage"
     }
 
 
@@ -153,8 +154,8 @@ class DtoHtmlTableComponentRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef
         appendLine("      tap(() => this.loading = false)")
         appendLine("    ).subscribe(result => {")
 
-        when (this.dtoHtmlTableDef.dataSourceType) {
-            DataSourceType.ELASTIC_SEARCH -> {
+        when (this.dtoHtmlTableDef.dtoHtmlTableSourceDef) {
+            is DtoHtmlTableEsDocSourceDef -> {
 
                 appendLine("      this._rows$.next(result.hits);")
                 appendLine("      this._total$.next(result.totalHits.count);")
@@ -163,7 +164,7 @@ class DtoHtmlTableComponentRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef
                 appendLine("      this._lastResultIndex.next(result.lastResultIndex);")
 
             }
-            DataSourceType.DATABASE -> {
+            is DtoHtmlTableSearchableDtoSourceDef -> {
 
                 appendLine("      this._rows$.next(result.results);")
                 appendLine("      this._total$.next(result.totalResultCount);")

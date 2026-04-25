@@ -15,7 +15,6 @@ class DtoHtmlTableDef(
     val dtoHtmlTableColumnDefs: List<AbstractDtoHtmlTableColumnDef>,
     val addButtonDef: AddButtonDef?,
     val disableRendering: Boolean,
-    val dataSourceType: DataSourceType, // TODO is this redundant now that we have a DtoHtmlTableSourceDef?
     val withGeneratedDto: WithGeneratedDto,
     val withPreAuthorize: WithPreAuthorize? = null,
     val dtoHtmlTableSourceDef: DtoHtmlTableSourceDef,
@@ -74,7 +73,7 @@ class DtoHtmlTableDef(
         DtoSuffix("TableDto"),
         dtoClassFields,
         defaultSortModel = emptyList(),
-        dataSourceType = dataSourceType,
+        dataSourceType = dtoHtmlTableSourceDef.dataSourceType,
         searchModelType = searchModelType,
         searchApiUrl = "/api/$modulePath${dtoBaseName.toSnakeCase()}_table/search",
         countApiUrl = "/api/$modulePath${dtoBaseName.toSnakeCase()}_table/count",

@@ -1,25 +1,28 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.DataSourceType
 import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableSearchableDtoSourceDef
 
 
 class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : AbstractTypescriptRenderer() {
 
 
-    private val searchResultUqcn = when (dtoHtmlTableDef.dataSourceType) {
-        DataSourceType.ELASTIC_SEARCH -> "IndexSearchResult"
-        DataSourceType.DATABASE -> "SearchResultPage"
+    private val searchResultUqcn = when (dtoHtmlTableDef.dtoHtmlTableSourceDef) {
+        is DtoHtmlTableEsDocSourceDef -> "IndexSearchResult"
+        is DtoHtmlTableSearchableDtoSourceDef -> "SearchResultPage"
     }
 
-    private val hitsOrResults = when (dtoHtmlTableDef.dataSourceType) {
-        DataSourceType.ELASTIC_SEARCH -> "hits"
-        DataSourceType.DATABASE -> "results"
+
+    private val hitsOrResults = when (dtoHtmlTableDef.dtoHtmlTableSourceDef) {
+        is DtoHtmlTableEsDocSourceDef -> "hits"
+        is DtoHtmlTableSearchableDtoSourceDef -> "results"
     }
 
-    private val totalResultsOrTotalHitCount = when (dtoHtmlTableDef.dataSourceType) {
-        DataSourceType.ELASTIC_SEARCH -> "totalHits.count"
-        DataSourceType.DATABASE -> "totalResultCount"
+
+    private val totalResultsOrTotalHitCount = when (dtoHtmlTableDef.dtoHtmlTableSourceDef) {
+        is DtoHtmlTableEsDocSourceDef -> "totalHits.count"
+        is DtoHtmlTableSearchableDtoSourceDef -> "totalResultCount"
     }
 
 

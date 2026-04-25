@@ -1,8 +1,16 @@
 package org.maiaframework.gen.generator
 
-import org.maiaframework.gen.renderers.*
-import org.maiaframework.gen.spec.definition.DataSourceType
+import org.maiaframework.gen.renderers.CrudNotifierRenderer
+import org.maiaframework.gen.renderers.CrudServiceRenderer
+import org.maiaframework.gen.renderers.ElasticSearchDtoSearchServiceRenderer
+import org.maiaframework.gen.renderers.EntityDetailDtoServiceRenderer
+import org.maiaframework.gen.renderers.ForeignKeyReferenceServiceRenderer
+import org.maiaframework.gen.renderers.RequestDtoHandlerRenderer
+import org.maiaframework.gen.renderers.SearchDtoSearchServiceRenderer
+import org.maiaframework.gen.renderers.TypeaheadCrudListenerRenderer
+import org.maiaframework.gen.renderers.TypeaheadServiceRenderer
 import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableSearchableDtoSourceDef
 
 
 fun main(args: Array<String>) {
@@ -136,13 +144,9 @@ class ServiceLayerModuleGenerator(
 
         this.modelDef.dtoHtmlTableDefs.forEach {
 
-            when (it.dataSourceType) {
-                DataSourceType.ELASTIC_SEARCH -> ElasticSearchDtoSearchServiceRenderer(
-                    it.searchDtoDef,
-                    (it.dtoHtmlTableSourceDef as DtoHtmlTableEsDocSourceDef).esDocDef
-                ).renderToDir(this.kotlinOutputDir)
-
-                DataSourceType.DATABASE -> SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)
+            when (it.dtoHtmlTableSourceDef) {
+                is DtoHtmlTableEsDocSourceDef -> ElasticSearchDtoSearchServiceRenderer(it.searchDtoDef, (it.dtoHtmlTableSourceDef as DtoHtmlTableEsDocSourceDef).esDocDef)
+                is DtoHtmlTableSearchableDtoSourceDef -> SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)
             }
 
         }

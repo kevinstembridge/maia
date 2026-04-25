@@ -2,12 +2,14 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.DataSourceType
 import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
+import org.maiaframework.gen.spec.definition.DtoHtmlTableSearchableDtoSourceDef
 
 class DtoHtmlTableServiceTypescriptRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : AbstractTypescriptRenderer() {
 
-    private val searchResultType = when (dtoHtmlTableDef.dataSourceType) {
-        DataSourceType.DATABASE -> "SearchResultPage"
-        DataSourceType.ELASTIC_SEARCH -> "IndexSearchResult"
+    private val searchResultType = when (dtoHtmlTableDef.dtoHtmlTableSourceDef) {
+        is DtoHtmlTableEsDocSourceDef -> "IndexSearchResult"
+        is DtoHtmlTableSearchableDtoSourceDef -> "SearchResultPage"
     }
 
 

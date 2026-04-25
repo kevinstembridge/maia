@@ -14,6 +14,9 @@ sealed class DtoHtmlTableSourceDef {
     abstract val withGeneratedEndpoint: WithGeneratedEndpoint
 
 
+    abstract val dataSourceType: DataSourceType
+
+
     abstract fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef
 
 
@@ -29,6 +32,9 @@ class DtoHtmlTableSearchableDtoSourceDef(
 
 
     override val withGeneratedEndpoint = this.searchableDtoDef.withGeneratedEndpoint
+
+
+    override val dataSourceType: DataSourceType = DataSourceType.DATABASE
 
 
     override fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef {
@@ -49,6 +55,9 @@ class DtoHtmlTableEsDocSourceDef(
 
 
     override val withGeneratedEndpoint: WithGeneratedEndpoint = WithGeneratedEndpoint.FALSE
+
+
+    override val dataSourceType: DataSourceType = DataSourceType.ELASTIC_SEARCH
 
 
     override fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef {
