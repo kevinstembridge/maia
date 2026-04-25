@@ -14,7 +14,7 @@ class ModelDef(
     val simpleResponseDtoDefs: List<SimpleResponseDtoDef>,
     val hazelcastDtoDefs: List<HazelcastDtoDef>,
     val searchableDtoDefs: List<SearchableDtoDef>,
-    val dtoHtmlTableDefs: List<DtoHtmlTableDef>,
+    val blotterDefs: List<BlotterDef>,
     val requestDtoHtmlFormDefs: List<HtmlFormDef>,
     val angularFormDefs: List<AngularFormDef>,
     val dataClassDefs: List<DataClassDef>,
@@ -24,7 +24,7 @@ class ModelDef(
     val longTypeDefs: List<LongTypeDef>,
     val stringTypeDefs: List<StringTypeDef>,
     val typeaheadDefs: List<TypeaheadDef>,
-    val crudTableDefs: List<CrudTableDef>,
+    val crudBlotterDefs: List<CrudBlotterDef>,
     val esDocsDefs: List<EsDocDef>,
     val hazelcastEntityConfigClassDef: ClassDef,
     val rowMapperDefs: List<RowMapperDef>
@@ -37,7 +37,7 @@ class ModelDef(
     private val entityDefs = rootEntityHierarchies.flatMap { it.entityDefs }
 
 
-    val allSearchableDtoDefs = dtoHtmlTableDefs.mapNotNull { it.searchableDtoDef }.plus(searchableDtoDefs)
+    val allSearchableDtoDefs = blotterDefs.mapNotNull { it.searchableDtoDef }.plus(searchableDtoDefs)
 
 
     val entityCrudApiDefs = entityDefs.mapNotNull { it.entityCrudApiDef }

@@ -1,11 +1,11 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
+import org.maiaframework.gen.spec.definition.BlotterDef
 
 class EsDocFieldNameMapperRenderer(
-    private val dtoHtmlTableDef: DtoHtmlTableDef
+    private val blotterDef: BlotterDef
 ) : AbstractKotlinRenderer(
-    dtoHtmlTableDef.searchDtoDef.fieldNameMapperClassDef
+    blotterDef.searchDtoDef.fieldNameMapperClassDef
 ) {
 
 
@@ -16,7 +16,7 @@ class EsDocFieldNameMapperRenderer(
         appendLine("    val mappingFunction: (String) -> String = {")
         appendLine("        when (it) {")
 
-        dtoHtmlTableDef.dtoHtmlTableColumnFields.forEach { dtoField ->
+        blotterDef.blotterColumnFields.forEach { dtoField ->
             appendLine("            \"${dtoField.dtoFieldName}\" -> \"${dtoField.fieldPathInSourceData}\"")
         }
 

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {
-    SimpleCrudTableComponent
-} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-table.component';
+    SimpleCrudBlotterComponent
+} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-blotter.component';
 import {PageLayoutComponent} from '@app/components/page-layout/page-layout.component';
 
 @Component({
@@ -9,7 +9,7 @@ import {PageLayoutComponent} from '@app/components/page-layout/page-layout.compo
     templateUrl: './simple-page.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        SimpleCrudTableComponent,
+        SimpleCrudBlotterComponent,
         PageLayoutComponent
     ]
 })

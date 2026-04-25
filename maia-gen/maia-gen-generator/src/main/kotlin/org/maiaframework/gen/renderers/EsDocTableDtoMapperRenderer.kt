@@ -1,20 +1,20 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
-import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterDef
+import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
 
 
 class EsDocTableDtoMapperRenderer(
-    private val dtoHtmlTableDef: DtoHtmlTableDef
+    private val blotterDef: BlotterDef
 ): AbstractKotlinRenderer(
-    dtoHtmlTableDef.searchDtoDef.esDocMapperClassDef
+    blotterDef.searchDtoDef.esDocMapperClassDef
 ) {
 
 
-    private val tableDtoUqcn = dtoHtmlTableDef.searchDtoDef.uqcn
+    private val blotterDtoUqcn = blotterDef.searchDtoDef.uqcn
 
 
-    private val esDocDef = (dtoHtmlTableDef.dtoHtmlTableSourceDef as DtoHtmlTableEsDocSourceDef).esDocDef
+    private val esDocDef = (blotterDef.blotterSourceDef as BlotterEsDocSourceDef).esDocDef
 
 
     override fun renderFunctions() {
@@ -28,12 +28,12 @@ class EsDocTableDtoMapperRenderer(
 
         append("""            |
             |
-            |    fun mapEsDoc(esDoc: ${esDocDef.uqcn}): ${this.tableDtoUqcn} {
+            |    fun mapEsDoc(esDoc: ${esDocDef.uqcn}): ${this.blotterDtoUqcn} {
             |
-            |        return ${this.tableDtoUqcn}(
+            |        return ${this.blotterDtoUqcn}(
             |""".trimMargin())
 
-        this.dtoHtmlTableDef.dtoHtmlTableColumnFields.forEach { dtoHtmlTableColumnDef ->
+        this.blotterDef.blotterColumnFields.forEach { dtoHtmlTableColumnDef ->
             appendLine("            esDoc.${dtoHtmlTableColumnDef.fieldPathInSourceData},")
         }
 

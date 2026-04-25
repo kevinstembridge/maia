@@ -8,18 +8,18 @@ import org.maiaframework.gen.renderers.ui.AuthGuardRenderer
 import org.maiaframework.gen.renderers.ui.AuthServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
-import org.maiaframework.gen.renderers.ui.CrudTableComponentRenderer
-import org.maiaframework.gen.renderers.ui.CrudTableHtmlRenderer
+import org.maiaframework.gen.renderers.ui.CrudBlotterComponentRenderer
+import org.maiaframework.gen.renderers.ui.CrudBlotterHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CurrentUserStoreRenderer
 import org.maiaframework.gen.renderers.ui.SigninRequestDtoRenderer
 import org.maiaframework.gen.renderers.ui.UserSummaryDtoRenderer
 import org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableComponentRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlAgGridTableHtmlRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlTableComponentRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlTableHtmlRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlTableScssRenderer
-import org.maiaframework.gen.renderers.ui.DtoHtmlTableServiceTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
+import org.maiaframework.gen.renderers.ui.AgGridBlotterHtmlRenderer
+import org.maiaframework.gen.renderers.ui.BlotterComponentRenderer
+import org.maiaframework.gen.renderers.ui.BlotterHtmlRenderer
+import org.maiaframework.gen.renderers.ui.BlotterScssRenderer
+import org.maiaframework.gen.renderers.ui.BlotterServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogScssRenderer
@@ -116,13 +116,13 @@ class AngularUiModuleGenerator(
     override fun onGenerateSource() {
 
         processCrudApiDefs()
-        renderAgGridDatasources()
+        renderAgGridDataSources()
         renderAngularForms()
         renderAsyncValidatorsForIndexes()
         renderAuthorityEnum()
         renderCommonModel()
         renderCrudServices()
-        renderCrudTables()
+        renderCrudBlotters()
         renderDtoHtmlTables()
         renderDtoServices()
         renderDtoTableComponents()
@@ -183,9 +183,9 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderAgGridDatasources() {
+    private fun renderAgGridDataSources() {
 
-        this.modelDef.dtoHtmlTableDefs
+        this.modelDef.blotterDefs
             .filter { it.searchDtoDef.searchModelType == SearchModelType.AG_GRID }
             .forEach {
                 AgGridDatasourceRenderer(it).renderToDir(this.typescriptOutputDir)
@@ -235,12 +235,12 @@ class AngularUiModuleGenerator(
 
     private fun renderTableDto() {
 
-        this.modelDef.dtoHtmlTableDefs.filter { it.disableRendering == false }.forEach { dtoHtmlTableDef ->
+        this.modelDef.blotterDefs.filter { it.disableRendering == false }.forEach { dtoHtmlTableDef ->
 
             renderTypescriptInterface(
                 renderedFilePath = dtoHtmlTableDef.dtoDef.typescriptRenderedFilePath,
                 className = dtoHtmlTableDef.dtoDef.uqcn,
-                fields = dtoHtmlTableDef.dtoHtmlTableColumnFields.map {
+                fields = dtoHtmlTableDef.blotterColumnFields.map {
                     aClassField(it.dtoFieldName, it.fieldType).build()
                 },
                 dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
@@ -297,11 +297,11 @@ class AngularUiModuleGenerator(
 
     private fun renderDtoTableComponents() {
 
-        this.modelDef.dtoHtmlTableDefs.forEach {
+        this.modelDef.blotterDefs.forEach {
 
             when (it.searchModelType) {
-                SearchModelType.AG_GRID -> DtoHtmlAgGridTableComponentRenderer(it, this.modelDef.authoritiesDef).renderToDir(this.typescriptOutputDir)
-                SearchModelType.MAIA -> DtoHtmlTableComponentRenderer(it).renderToDir(this.typescriptOutputDir)
+                SearchModelType.AG_GRID -> AgGridBlotterComponentRenderer(it, this.modelDef.authoritiesDef).renderToDir(this.typescriptOutputDir)
+                SearchModelType.MAIA -> BlotterComponentRenderer(it).renderToDir(this.typescriptOutputDir)
             }
 
         }
@@ -344,13 +344,13 @@ class AngularUiModuleGenerator(
 
     private fun renderDtoHtmlTables() {
 
-        this.modelDef.dtoHtmlTableDefs.forEach {
+        this.modelDef.blotterDefs.forEach {
 
             when (it.searchModelType) {
-                SearchModelType.AG_GRID -> DtoHtmlAgGridTableHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
+                SearchModelType.AG_GRID -> AgGridBlotterHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
                 SearchModelType.MAIA -> {
-                    DtoHtmlTableHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
-                    DtoHtmlTableScssRenderer(it).renderToDir(this.typescriptOutputDir)
+                    BlotterHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
+                    BlotterScssRenderer(it).renderToDir(this.typescriptOutputDir)
                 }
             }
 
@@ -359,13 +359,13 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderCrudTables() {
+    private fun renderCrudBlotters() {
 
-        this.modelDef.crudTableDefs.forEach { crudTableDef ->
+        this.modelDef.crudBlotterDefs.forEach { crudBlotterDef ->
 
-            val entityIsReferencedByForeignKeys = this.modelDef.entityIsReferencedByForeignKeys(crudTableDef.entityCrudApiDef.entityDef)
-            CrudTableHtmlRenderer(crudTableDef).renderToDir(this.typescriptOutputDir)
-            CrudTableComponentRenderer(crudTableDef, entityIsReferencedByForeignKeys).renderToDir(this.typescriptOutputDir)
+            val entityIsReferencedByForeignKeys = this.modelDef.entityIsReferencedByForeignKeys(crudBlotterDef.entityCrudApiDef.entityDef)
+            CrudBlotterHtmlRenderer(crudBlotterDef).renderToDir(this.typescriptOutputDir)
+            CrudBlotterComponentRenderer(crudBlotterDef, entityIsReferencedByForeignKeys).renderToDir(this.typescriptOutputDir)
 
         }
 
@@ -374,8 +374,8 @@ class AngularUiModuleGenerator(
 
     private fun renderDtoServices() {
 
-        this.modelDef.dtoHtmlTableDefs.forEach {
-            DtoHtmlTableServiceTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
+        this.modelDef.blotterDefs.forEach {
+            BlotterServiceTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
         }
 
     }

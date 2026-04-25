@@ -387,7 +387,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val allFieldTypesDtoHtmlTableDef = dtoHtmlTable(
+    val allFieldTypesBlotterDef = blotter(
         allFieldTypesSearchableDtoDef,
         withAddButton = true,
     ) {
@@ -447,7 +447,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val allFieldTypesCrudDef = crudTableDef(allFieldTypesDtoHtmlTableDef, allFieldTypesEntityDef.entityCrudApiDef!!)
+    val allFieldTypesCrudDef = crudBlotterDef(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!)
 
 
     val simpleEntityDef = entity(
@@ -486,7 +486,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val simpleDtoHtmlTableDef = dtoHtmlTable(
+    val simpleBlotterDef = blotter(
         simpleSearchableDtoDef,
         withAddButton = true,
         withGeneratedDto = WithGeneratedDto.TRUE,
@@ -501,7 +501,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val simpleCrudDef = crudTableDef(simpleDtoHtmlTableDef, simpleEntityDef.entityCrudApiDef!!)
+    val simpleCrudDef = crudBlotterDef(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
 
 
     val historySampleEntityDef = entity(
@@ -722,7 +722,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val someVersionedDtoHtmlTableDef = dtoHtmlTable(
+    val someVersionedBlotterDef = blotter(
         someVersionedSearchableDtoDef,
         withAddButton = true,
         withGeneratedDto = WithGeneratedDto.TRUE,
@@ -739,7 +739,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val someVersionedCrudDef = crudTableDef(someVersionedDtoHtmlTableDef, someVersionedEntityDef.entityCrudApiDef!!)
+    val someVersionedCrudDef = crudBlotterDef(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!)
 
 
     val withOptionalIndexFieldEntityDef = entity(
@@ -940,7 +940,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoDtoHtmlTableDef = dtoHtmlTable(bravoSearchableDtoDef, withAddButton = true) {
+    val bravoBlotterDef = blotter(bravoSearchableDtoDef, withAddButton = true) {
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
         columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
         columnFromDto(dtoFieldName = "createdTimestampUtc", fieldPathInSourceData = "createdTimestampUtc")
@@ -950,7 +950,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoCrudDef = crudTableDef(bravoDtoHtmlTableDef, bravoEntityDef.entityCrudApiDef!!)
+    val bravoCrudDef = crudBlotterDef(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!)
 
 
     val charlieSearchableDtoDef = searchableEntityDef(
@@ -1062,7 +1062,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val charlieDtoHtmlTableDef = dtoHtmlTable(charlieSearchableDtoDef) {
+    val charlieBlotterDef = blotter(charlieSearchableDtoDef) {
         columnFromDto(dtoFieldName = "tableStringFromCharlie", fieldPathInSourceData = "dtoStringFromCharlie")
         columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
@@ -1164,7 +1164,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftSearchableDtoHtmlTableDef = dtoHtmlTable(leftSearchableDtoDef, withAddButton = true) {
+    val leftSearchableBlotterDef = blotter(leftSearchableDtoDef, withAddButton = true) {
         columnFromDto("someStringFromLeft", "someString") { header("Some String From Left") }
         columnFromDto("someIntFromLeft", "someInt") { header("Some Int From Left") }
         columnFromDto("rightEntities") { header("Right Entities") }
@@ -1174,7 +1174,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftCrudDef = crudTableDef(leftSearchableDtoHtmlTableDef, leftEntityDef.entityCrudApiDef!!)
+    val leftCrudDef = crudBlotterDef(leftSearchableBlotterDef, leftEntityDef.entityCrudApiDef!!)
 
 
     val leftToRightManyToManySearchableDtoDef = searchableEntityDef(
@@ -1265,7 +1265,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val compositePrimaryKeyDtoHtmlTableDef = dtoHtmlTable(
+    val compositePrimaryKeyBlotterDef = blotter(
         compositePrimaryKeySearchableDtoDef,
         withAddButton = true,
         withGeneratedDto = WithGeneratedDto.TRUE,
@@ -1282,7 +1282,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val compositePrimaryKeyCrudDef = crudTableDef(compositePrimaryKeyDtoHtmlTableDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
+    val compositePrimaryKeyCrudDef = crudBlotterDef(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
 
 
     val nonSurrogatePrimaryKeyEntityDef = entity(

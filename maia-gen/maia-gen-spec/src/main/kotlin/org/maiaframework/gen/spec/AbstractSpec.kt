@@ -11,17 +11,15 @@ import org.maiaframework.gen.spec.definition.AuthoritiesDef
 import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
-import org.maiaframework.gen.spec.definition.CrudTableDef
+import org.maiaframework.gen.spec.definition.CrudBlotterDef
 import org.maiaframework.gen.spec.definition.DataClassDef
 import org.maiaframework.gen.spec.definition.DataClassName
-import org.maiaframework.gen.spec.definition.DataSourceType
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.DisplayName
 import org.maiaframework.gen.spec.definition.DtoBaseName
-import org.maiaframework.gen.spec.definition.DtoFieldInfo
-import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
-import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
-import org.maiaframework.gen.spec.definition.DtoHtmlTableSearchableDtoSourceDef
+import org.maiaframework.gen.spec.definition.BlotterDef
+import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 import org.maiaframework.gen.spec.definition.ElasticIndexBaseName
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityCrudApiDef
@@ -56,9 +54,9 @@ import org.maiaframework.gen.spec.definition.builders.AngularFormDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BooleanTypeDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BooleanValueClassDefBuilder
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
-import org.maiaframework.gen.spec.definition.builders.CrudTableDefBuilder
+import org.maiaframework.gen.spec.definition.builders.CrudBlotterDefBuilder
 import org.maiaframework.gen.spec.definition.builders.DataClassDefBuilder
-import org.maiaframework.gen.spec.definition.builders.DtoHtmlTableDefBuilder
+import org.maiaframework.gen.spec.definition.builders.BlotterDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityCreateHtmlFormDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EnumDefBuilder
@@ -116,10 +114,10 @@ abstract class AbstractSpec protected constructor(
     private val basePackageName = basePackageName ?: PackageName(appKey.value.lowercase())
     private val booleanTypeDefs = mutableListOf<BooleanTypeDef>()
     private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
-    private val crudTableDefs = mutableListOf<CrudTableDef>()
+    private val crudBlotterDefs = mutableListOf<CrudBlotterDef>()
     private val dataClassDefs = mutableListOf<DataClassDef>()
     private val defaultSchemaName = defaultSchemaName ?: SchemaName(appKey.value)
-    private val dtoHtmlTableDefs = mutableListOf<DtoHtmlTableDef>()
+    private val blotterDefs = mutableListOf<BlotterDef>()
     private val entityCreateHtmlFormDefs = mutableListOf<EntityHtmlFormDef>()
     private val entityDefs = mutableListOf<EntityDef>()
     private val enumDefs = mutableListOf<EnumDef>().also { it.add(EnumDefs.LIFECYCLE_STATE_ENUM_DEF) }
@@ -162,7 +160,7 @@ abstract class AbstractSpec protected constructor(
                 this.simpleResponseDtoDefs,
                 this.hazelcastDtoDefs,
                 this.searchableDtoDefs,
-                this.dtoHtmlTableDefs,
+                this.blotterDefs,
                 this.requestDtoHtmlFormDefs,
                 this.angularFormDefs,
                 this.dataClassDefs,
@@ -172,7 +170,7 @@ abstract class AbstractSpec protected constructor(
                 this.longTypeDefs,
                 this.stringTypeDefs,
                 this.typeaheadDefs,
-                this.crudTableDefs,
+                this.crudBlotterDefs,
                 this.esDocDefs,
                 buildHazelcastConfigClassDef(),
                 this.rowMapperDefs
@@ -892,22 +890,22 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    protected fun crudTableDef(
-        dtoDef: DtoHtmlTableDef,
+    protected fun crudBlotterDef(
+        blotterDef: BlotterDef,
         entityCrudApiDef: EntityCrudApiDef,
-        init: (CrudTableDefBuilder.() -> Unit)? = null
-    ): CrudTableDef {
+        init: (CrudBlotterDefBuilder.() -> Unit)? = null
+    ): CrudBlotterDef {
 
-        val builder = CrudTableDefBuilder(dtoDef, entityCrudApiDef)
+        val builder = CrudBlotterDefBuilder(blotterDef, entityCrudApiDef)
         init?.invoke(builder)
         val def = builder.build()
-        this.crudTableDefs.add(def)
+        this.crudBlotterDefs.add(def)
         return def
 
     }
 
 
-    protected fun dtoHtmlTable(
+    protected fun blotter(
         searchableDtoDef: SearchableDtoDef,
         withAddButton: Boolean = false,
         disableRendering: Boolean = false,
@@ -917,8 +915,8 @@ abstract class AbstractSpec protected constructor(
         withGeneratedTypescriptService: WithGeneratedTypescriptService = WithGeneratedTypescriptService.TRUE,
         withGeneratedFindAllFunction: WithGeneratedFindAllFunction = WithGeneratedFindAllFunction.FALSE,
         searchModelType: SearchModelType = SearchModelType.default(),
-        init: DtoHtmlTableDefBuilder.() -> Unit
-    ): DtoHtmlTableDef {
+        init: BlotterDefBuilder.() -> Unit
+    ): BlotterDef {
 
         val addButtonDef = if (withAddButton) {
 
@@ -933,10 +931,10 @@ abstract class AbstractSpec protected constructor(
             null
         }
 
-        val builder = DtoHtmlTableDefBuilder(
+        val builder = BlotterDefBuilder(
             searchableDtoDef.packageName,
             searchableDtoDef.dtoBaseName,
-            dtoHtmlTableSourceDef = DtoHtmlTableSearchableDtoSourceDef(searchableDtoDef),
+            blotterSourceDef = BlotterSearchableDtoSourceDef(searchableDtoDef),
             addButtonDef = addButtonDef,
             disableRendering = disableRendering,
             withGeneratedDto = withGeneratedDto,
@@ -951,13 +949,13 @@ abstract class AbstractSpec protected constructor(
 
         builder.init()
         val def = builder.build()
-        this.dtoHtmlTableDefs.add(def)
+        this.blotterDefs.add(def)
         return def
 
     }
 
 
-    protected fun dtoHtmlTable(
+    protected fun blotter(
         esDocDef: EsDocDef,
         disableRendering: Boolean = false,
         withGeneratedDto: WithGeneratedDto = WithGeneratedDto.TRUE,
@@ -966,10 +964,10 @@ abstract class AbstractSpec protected constructor(
         withGeneratedFindAllFunction: WithGeneratedFindAllFunction = WithGeneratedFindAllFunction.FALSE,
         withPreAuthorize: WithPreAuthorize? = null,
         searchModelType: SearchModelType = SearchModelType.default(),
-        init: DtoHtmlTableDefBuilder.() -> Unit
-    ): DtoHtmlTableDef {
+        init: BlotterDefBuilder.() -> Unit
+    ): BlotterDef {
 
-        val builder = DtoHtmlTableDefBuilder(
+        val builder = BlotterDefBuilder(
             esDocDef.packageName,
             esDocDef.esDocBaseName,
             addButtonDef = null,
@@ -980,12 +978,12 @@ abstract class AbstractSpec protected constructor(
             withGeneratedEndpoint = withGeneratedEndpoint,
             withGeneratedTypescriptService = withGeneratedTypescriptService,
             withGeneratedFindAllFunction = withGeneratedFindAllFunction,
-            dtoHtmlTableSourceDef = DtoHtmlTableEsDocSourceDef(esDocDef)
+            blotterSourceDef = BlotterEsDocSourceDef(esDocDef)
         )
 
         builder.init()
         val def = builder.build()
-        this.dtoHtmlTableDefs.add(def)
+        this.blotterDefs.add(def)
         return def
 
     }

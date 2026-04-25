@@ -258,7 +258,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val userDtoHtmlTableDef = dtoHtmlTable(
+    val userBlotterDef = blotter(
         userSearchableDtoDef,
         withAddButton = true,
         withGeneratedDto = WithGeneratedDto.TRUE,
@@ -275,7 +275,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val userCrudDef = crudTableDef(userDtoHtmlTableDef, userEntityDef.entityCrudApiDef!!)
+    val userCrudDef = crudBlotterDef(userBlotterDef, userEntityDef.entityCrudApiDef!!)
 
 
     val userGroupEntityDef = entity(

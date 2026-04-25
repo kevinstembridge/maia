@@ -114,23 +114,23 @@ class WebLayerModuleGenerator(
 
     private fun renderTableDtoEndpoints() {
 
-        this.modelDef.dtoHtmlTableDefs
+        this.modelDef.blotterDefs
             .filter { it.withGeneratedDto.value }
-            .forEach { processDtoHtmlDef(it) }
+            .forEach { processBlotterDef(it) }
 
     }
 
 
-    private fun processDtoHtmlDef(dtoHtmlTableDef: DtoHtmlTableDef) {
+    private fun processBlotterDef(blotterDef: BlotterDef) {
 
-        renderTableDtoEndpoint(dtoHtmlTableDef)
+        renderBlotterDtoEndpoint(blotterDef)
 
     }
 
 
-    private fun renderTableDtoEndpoint(dtoHtmlTableDef: DtoHtmlTableDef) {
+    private fun renderBlotterDtoEndpoint(blotterDef: BlotterDef) {
 
-        val searchDtoDef = dtoHtmlTableDef.searchDtoDef
+        val searchDtoDef = blotterDef.searchDtoDef
 
         if (searchDtoDef.withGeneratedEndpoint == WithGeneratedEndpoint.TRUE) {
             DtoSearchEndpointRenderer(searchDtoDef).renderToDir(this.kotlinOutputDir)

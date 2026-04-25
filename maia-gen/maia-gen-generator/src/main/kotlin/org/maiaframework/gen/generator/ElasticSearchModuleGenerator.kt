@@ -4,7 +4,7 @@ import org.maiaframework.gen.renderers.EsDocFieldNameMapperRenderer
 import org.maiaframework.gen.renderers.EsIndexControlRenderer
 import org.maiaframework.gen.renderers.EsIndexMetaClassRenderer
 import org.maiaframework.gen.renderers.EsIndexRenderer
-import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
 
 
 fun main(args: Array<String>) {
@@ -75,8 +75,8 @@ class ElasticSearchModuleGenerator(
 
     private fun renderEsDocFieldNameMappers() {
 
-        this.modelDef.dtoHtmlTableDefs
-            .filter { it.dtoHtmlTableSourceDef is DtoHtmlTableEsDocSourceDef }
+        this.modelDef.blotterDefs
+            .filter { it.blotterSourceDef is BlotterEsDocSourceDef }
             .forEach { dtoHtmlTableDef ->
                 EsDocFieldNameMapperRenderer(dtoHtmlTableDef).renderToDir(this.kotlinOutputDir)
             }

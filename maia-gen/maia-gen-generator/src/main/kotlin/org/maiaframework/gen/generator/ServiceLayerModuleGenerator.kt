@@ -9,8 +9,8 @@ import org.maiaframework.gen.renderers.RequestDtoHandlerRenderer
 import org.maiaframework.gen.renderers.SearchDtoSearchServiceRenderer
 import org.maiaframework.gen.renderers.TypeaheadCrudListenerRenderer
 import org.maiaframework.gen.renderers.TypeaheadServiceRenderer
-import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
-import org.maiaframework.gen.spec.definition.DtoHtmlTableSearchableDtoSourceDef
+import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 
 
 fun main(args: Array<String>) {
@@ -142,11 +142,11 @@ class ServiceLayerModuleGenerator(
 
     private fun `render TableDtoSearchServices`() {
 
-        this.modelDef.dtoHtmlTableDefs.forEach {
+        this.modelDef.blotterDefs.forEach {
 
-            when (it.dtoHtmlTableSourceDef) {
-                is DtoHtmlTableEsDocSourceDef -> ElasticSearchDtoSearchServiceRenderer(it.searchDtoDef, (it.dtoHtmlTableSourceDef as DtoHtmlTableEsDocSourceDef).esDocDef)
-                is DtoHtmlTableSearchableDtoSourceDef -> SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)
+            when (it.blotterSourceDef) {
+                is BlotterEsDocSourceDef -> ElasticSearchDtoSearchServiceRenderer(it.searchDtoDef, (it.blotterSourceDef as BlotterEsDocSourceDef).esDocDef)
+                is BlotterSearchableDtoSourceDef -> SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)
             }
 
         }

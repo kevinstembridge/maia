@@ -1,28 +1,28 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.DtoHtmlTableDef
-import org.maiaframework.gen.spec.definition.DtoHtmlTableEsDocSourceDef
-import org.maiaframework.gen.spec.definition.DtoHtmlTableSearchableDtoSourceDef
+import org.maiaframework.gen.spec.definition.BlotterDef
+import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 
 
-class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : AbstractTypescriptRenderer() {
+class AgGridDatasourceRenderer(private val blotterDef: BlotterDef) : AbstractTypescriptRenderer() {
 
 
-    private val searchResultUqcn = when (dtoHtmlTableDef.dtoHtmlTableSourceDef) {
-        is DtoHtmlTableEsDocSourceDef -> "IndexSearchResult"
-        is DtoHtmlTableSearchableDtoSourceDef -> "SearchResultPage"
+    private val searchResultUqcn = when (blotterDef.blotterSourceDef) {
+        is BlotterEsDocSourceDef -> "IndexSearchResult"
+        is BlotterSearchableDtoSourceDef -> "SearchResultPage"
     }
 
 
-    private val hitsOrResults = when (dtoHtmlTableDef.dtoHtmlTableSourceDef) {
-        is DtoHtmlTableEsDocSourceDef -> "hits"
-        is DtoHtmlTableSearchableDtoSourceDef -> "results"
+    private val hitsOrResults = when (blotterDef.blotterSourceDef) {
+        is BlotterEsDocSourceDef -> "hits"
+        is BlotterSearchableDtoSourceDef -> "results"
     }
 
 
-    private val totalResultsOrTotalHitCount = when (dtoHtmlTableDef.dtoHtmlTableSourceDef) {
-        is DtoHtmlTableEsDocSourceDef -> "totalHits.count"
-        is DtoHtmlTableSearchableDtoSourceDef -> "totalResultCount"
+    private val totalResultsOrTotalHitCount = when (blotterDef.blotterSourceDef) {
+        is BlotterEsDocSourceDef -> "totalHits.count"
+        is BlotterSearchableDtoSourceDef -> "totalResultCount"
     }
 
 
@@ -33,7 +33,7 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
         addImport("@angular/common/http", "HttpClient")
         addImport("ag-grid-community", "IDatasource")
         addImport("ag-grid-community", "IGetRowsParams")
-        addImport(dtoHtmlTableDef.dtoDef.typescriptDtoImport)
+        addImport(blotterDef.dtoDef.typescriptDtoImport)
         addImport("@maia/maia-ui", searchResultUqcn)
 
     }
@@ -41,7 +41,7 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
 
     override fun renderedFilePath(): String {
 
-        return this.dtoHtmlTableDef.agGridDatasourceRenderedFilePath
+        return this.blotterDef.agGridDatasourceRenderedFilePath
 
     }
 
@@ -52,7 +52,7 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
             |
             |
             |@Injectable({providedIn: 'root'})
-            |export class ${dtoHtmlTableDef.agGridDatasourceClassName} implements IDatasource {
+            |export class ${blotterDef.agGridDatasourceClassName} implements IDatasource {
             |
             |
             |    rowCount?: number = undefined;
@@ -63,8 +63,8 @@ class AgGridDatasourceRenderer(private val dtoHtmlTableDef: DtoHtmlTableDef) : A
             |
             |    getRows(params: IGetRowsParams): void {
             |
-            |        this.http.post<$searchResultUqcn<${dtoHtmlTableDef.dtoUqcn}>>(
-            |            '${dtoHtmlTableDef.searchDtoDef.searchApiUrl}',
+            |        this.http.post<$searchResultUqcn<${blotterDef.dtoUqcn}>>(
+            |            '${blotterDef.searchDtoDef.searchApiUrl}',
             |            params
             |        ).subscribe({
             |           next: searchResultPage => params.successCallback(searchResultPage.$hitsOrResults, searchResultPage.$totalResultsOrTotalHitCount)

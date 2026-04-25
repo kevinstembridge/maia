@@ -346,7 +346,7 @@ class DomainModuleGenerator(
 
     private fun `render TableDtos`() {
 
-        this.modelDef.dtoHtmlTableDefs
+        this.modelDef.blotterDefs
             .filter { it.withGeneratedDto.value }
             .forEach { processDtoHtmlTableDef(it) }
 
@@ -422,9 +422,9 @@ class DomainModuleGenerator(
     }
 
 
-    private fun processDtoHtmlTableDef(dtoHtmlTableDef: DtoHtmlTableDef) {
+    private fun processDtoHtmlTableDef(blotterDef: BlotterDef) {
 
-        renderDto(dtoHtmlTableDef.dtoDef)
+        renderDto(blotterDef.dtoDef)
 
     }
 
