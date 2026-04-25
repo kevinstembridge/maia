@@ -57,7 +57,7 @@ class DomainModuleGenerator(
         `render SearchableDtos`()
         `render SimpleResponseDtos`()
         `render StringTypes`()
-        `render TableDtos`()
+        `render blotter DTOs`()
         `render CrudListeners`()
 
     }
@@ -344,11 +344,11 @@ class DomainModuleGenerator(
     }
 
 
-    private fun `render TableDtos`() {
+    private fun `render blotter DTOs`() {
 
         this.modelDef.blotterDefs
             .filter { it.withGeneratedDto.value }
-            .forEach { processDtoHtmlTableDef(it) }
+            .forEach { processBlotterDef(it) }
 
     }
 
@@ -422,7 +422,7 @@ class DomainModuleGenerator(
     }
 
 
-    private fun processDtoHtmlTableDef(blotterDef: BlotterDef) {
+    private fun processBlotterDef(blotterDef: BlotterDef) {
 
         renderDto(blotterDef.dtoDef)
 

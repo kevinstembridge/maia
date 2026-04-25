@@ -94,12 +94,12 @@ class BlotterDef(
         is BlotterSearchableDtoSourceDef ->
             blotterSourceDef.searchableDtoDef.let { searchableDtoDef ->
 
-                val fields = blotterColumnFields.map { dtoHtmlTableColumnDef ->
+                val fields = blotterColumnFields.map { blotterColumnDef ->
 
-                    val pathInSourceData = dtoHtmlTableColumnDef.fieldPathInSourceData
+                    val pathInSourceData = blotterColumnDef.fieldPathInSourceData
                     val fieldName = pathInSourceData.head()
                     searchableDtoDef.findSearchableDtoFieldByName(fieldName)
-                        .copyWithFieldName(dtoHtmlTableColumnDef.dtoFieldName)
+                        .copyWithFieldName(blotterColumnDef.dtoFieldName)
 
                 }
 

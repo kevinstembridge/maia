@@ -123,7 +123,7 @@ class AngularUiModuleGenerator(
         renderCommonModel()
         renderCrudServices()
         renderCrudBlotters()
-        renderDtoHtmlTables()
+        renderBlotterHtml()
         renderDtoServices()
         renderDtoTableComponents()
         renderDtosForAsyncValidation()
@@ -235,12 +235,12 @@ class AngularUiModuleGenerator(
 
     private fun renderTableDto() {
 
-        this.modelDef.blotterDefs.filter { it.disableRendering == false }.forEach { dtoHtmlTableDef ->
+        this.modelDef.blotterDefs.filter { it.disableRendering == false }.forEach { blotterDef ->
 
             renderTypescriptInterface(
-                renderedFilePath = dtoHtmlTableDef.dtoDef.typescriptRenderedFilePath,
-                className = dtoHtmlTableDef.dtoDef.uqcn,
-                fields = dtoHtmlTableDef.blotterColumnFields.map {
+                renderedFilePath = blotterDef.dtoDef.typescriptRenderedFilePath,
+                className = blotterDef.dtoDef.uqcn,
+                fields = blotterDef.blotterColumnFields.map {
                     aClassField(it.dtoFieldName, it.fieldType).build()
                 },
                 dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
@@ -342,7 +342,7 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderDtoHtmlTables() {
+    private fun renderBlotterHtml() {
 
         this.modelDef.blotterDefs.forEach {
 

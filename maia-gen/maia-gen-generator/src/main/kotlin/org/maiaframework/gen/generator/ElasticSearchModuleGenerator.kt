@@ -77,8 +77,8 @@ class ElasticSearchModuleGenerator(
 
         this.modelDef.blotterDefs
             .filter { it.blotterSourceDef is BlotterEsDocSourceDef }
-            .forEach { dtoHtmlTableDef ->
-                EsDocFieldNameMapperRenderer(dtoHtmlTableDef).renderToDir(this.kotlinOutputDir)
+            .forEach { blotterDef ->
+                EsDocFieldNameMapperRenderer(blotterDef).renderToDir(this.kotlinOutputDir)
             }
 
     }

@@ -921,7 +921,7 @@ abstract class AbstractSpec protected constructor(
         val addButtonDef = if (withAddButton) {
 
             val createApiDef = searchableDtoDef.dtoRootEntityDef.entityCrudApiDef?.createApiDef
-                ?: throw RuntimeException("dtoHtmlTable with an add button must be backed by an entity with a Create API. searchableDtoDef = ${searchableDtoDef.searchDtoDef.dtoBaseName}.")
+                ?: throw RuntimeException("blotter with an add button must be backed by an entity with a Create API. searchableDtoDef = ${searchableDtoDef.searchDtoDef.dtoBaseName}.")
 
             val authority = createApiDef.crudApiDef.authority
 

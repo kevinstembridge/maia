@@ -33,8 +33,8 @@ class EsDocTableDtoMapperRenderer(
             |        return ${this.blotterDtoUqcn}(
             |""".trimMargin())
 
-        this.blotterDef.blotterColumnFields.forEach { dtoHtmlTableColumnDef ->
-            appendLine("            esDoc.${dtoHtmlTableColumnDef.fieldPathInSourceData},")
+        this.blotterDef.blotterColumnFields.forEach { blotterColumnDef ->
+            appendLine("            esDoc.${blotterColumnDef.fieldPathInSourceData},")
         }
 
         appendLine("        )")
