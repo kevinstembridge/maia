@@ -224,7 +224,9 @@ class AngularUiModuleGenerator(
 
     private fun renderSearchableServices() {
 
-        this.modelDef.searchableDtoDefs.map { it.searchDtoDef }.forEach {
+        this.modelDef.searchableDtoDefs
+            .filter { it.withGeneratedTypescriptService.value }
+            .map { it.searchDtoDef }.forEach {
             SearchDtoServiceTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
         }
 
@@ -508,14 +510,16 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityCreateFormComponent() {
 
-        this.modelDef.entityCrudApiDefs.mapNotNull { it.createApiDef }.filter { it.entityDef.isConcrete && it.crudApiDef.withEntityForm }.forEach {
+        this.modelDef.entityCrudApiDefs.mapNotNull { it.createApiDef }
+            .filter { it.entityDef.isConcrete && it.crudApiDef.withEntityForm }
+            .forEach {
 
-            it.angularInlineFormDef?.let { formDef ->
-                renderEntityForm(formDef, it.angularFormComponentNames)
-                EntityCreateFormScssRenderer(it).renderToDir(this.typescriptOutputDir)
+                it.angularInlineFormDef?.let { formDef ->
+                    renderEntityForm(formDef, it.angularFormComponentNames)
+                    EntityCreateFormScssRenderer(it).renderToDir(this.typescriptOutputDir)
+                }
+
             }
-
-        }
 
     }
 
@@ -620,9 +624,12 @@ class AngularUiModuleGenerator(
 
         this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
 
-            entityCrudApiDef.entityDef.uniqueIndexDefs.filter { it.isNotIdAndVersionIndex }.filter { it.withExistsEndpoint }.forEach { databaseIndexDef ->
-                AsyncValidatorRenderer(databaseIndexDef, entityCrudApiDef).renderToDir(this.typescriptOutputDir)
-            }
+            entityCrudApiDef.entityDef.uniqueIndexDefs
+                .filter { it.isNotIdAndVersionIndex }
+                .filter { it.withExistsEndpoint }
+                .forEach { databaseIndexDef ->
+                    AsyncValidatorRenderer(databaseIndexDef, entityCrudApiDef).renderToDir(this.typescriptOutputDir)
+                }
 
         }
 

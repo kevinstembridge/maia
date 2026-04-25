@@ -84,6 +84,7 @@ import org.maiaframework.gen.spec.definition.flags.Versioned
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
+import org.maiaframework.gen.spec.definition.flags.WithGeneratedTypescriptService
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedDao
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedEntityDao
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedEsDocRepo
@@ -861,6 +862,7 @@ abstract class AbstractSpec protected constructor(
         baseName: String,
         entityDef: EntityDef,
         withGeneratedEndpoint: WithGeneratedEndpoint = WithGeneratedEndpoint.FALSE,
+        withGeneratedTypescriptService: WithGeneratedTypescriptService = WithGeneratedTypescriptService.TRUE,
         withGeneratedFindAllFunction: WithGeneratedFindAllFunction = WithGeneratedFindAllFunction.FALSE,
         withGeneratedDto: WithGeneratedDto = WithGeneratedDto.FALSE,
         searchModelType: SearchModelType = SearchModelType.default(),
@@ -872,6 +874,7 @@ abstract class AbstractSpec protected constructor(
             PackageName(packageName),
             DtoBaseName(baseName),
             withGeneratedEndpoint,
+            withGeneratedTypescriptService,
             withGeneratedFindAllFunction,
             withGeneratedDto,
             searchModelType,
@@ -911,6 +914,7 @@ abstract class AbstractSpec protected constructor(
         withPreAuthorize: WithPreAuthorize? = null,
         withGeneratedDto: WithGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint: WithGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedTypescriptService: WithGeneratedTypescriptService = WithGeneratedTypescriptService.TRUE,
         withGeneratedFindAllFunction: WithGeneratedFindAllFunction = WithGeneratedFindAllFunction.FALSE,
         searchModelType: SearchModelType = SearchModelType.default(),
         init: DtoHtmlTableDefBuilder.() -> Unit
@@ -938,6 +942,7 @@ abstract class AbstractSpec protected constructor(
             withGeneratedDto = withGeneratedDto,
             withGeneratedFindAllFunction = withGeneratedFindAllFunction,
             withGeneratedEndpoint = withGeneratedEndpoint,
+            withGeneratedTypescriptService = withGeneratedTypescriptService,
             withPreAuthorize = withPreAuthorize,
             searchModelType = searchModelType
         )
@@ -957,6 +962,7 @@ abstract class AbstractSpec protected constructor(
         disableRendering: Boolean = false,
         withGeneratedDto: WithGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint: WithGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedTypescriptService: WithGeneratedTypescriptService = WithGeneratedTypescriptService.TRUE,
         withGeneratedFindAllFunction: WithGeneratedFindAllFunction = WithGeneratedFindAllFunction.FALSE,
         withPreAuthorize: WithPreAuthorize? = null,
         searchModelType: SearchModelType = SearchModelType.default(),
@@ -972,6 +978,7 @@ abstract class AbstractSpec protected constructor(
             withGeneratedDto = withGeneratedDto,
             withPreAuthorize = withPreAuthorize,
             withGeneratedEndpoint = withGeneratedEndpoint,
+            withGeneratedTypescriptService = withGeneratedTypescriptService,
             withGeneratedFindAllFunction = withGeneratedFindAllFunction,
             dtoHtmlTableSourceDef = DtoHtmlTableEsDocSourceDef(esDocDef)
         )

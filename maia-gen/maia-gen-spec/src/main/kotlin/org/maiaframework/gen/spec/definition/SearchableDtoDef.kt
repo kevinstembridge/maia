@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.flags.GenerateFindById
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
+import org.maiaframework.gen.spec.definition.flags.WithGeneratedTypescriptService
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.flags.WithProvidedFieldConverter
 import org.maiaframework.gen.spec.definition.lang.ClassDef
@@ -30,6 +31,7 @@ class SearchableDtoDef(
     fieldDefsNotInherited: List<SearchableDtoFieldDef>,
     val withPreAuthorize: WithPreAuthorize?,
     val withGeneratedEndpoint: WithGeneratedEndpoint,
+    val withGeneratedTypescriptService: WithGeneratedTypescriptService,
     val withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
     val withGeneratedDto: WithGeneratedDto,
     val generateFindById: GenerateFindById,
@@ -73,6 +75,7 @@ class SearchableDtoDef(
         findAllApiUrl = "/api/${dtoBaseName.toSnakeCase()}/find_all",
         withGeneratedFindAllFunction = withGeneratedFindAllFunction,
         withGeneratedEndpoint = withGeneratedEndpoint,
+        withGeneratedTypescriptService = withGeneratedTypescriptService,
         generateFindById = generateFindById,
         dataSourceType = DataSourceType.DATABASE,
         searchModelType = searchModelType

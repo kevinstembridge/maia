@@ -19,6 +19,7 @@ import org.maiaframework.gen.spec.definition.flags.GenerateFindById
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
+import org.maiaframework.gen.spec.definition.flags.WithGeneratedTypescriptService
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.flags.WithProvidedFieldConverter
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
@@ -36,6 +37,7 @@ class SearchableDtoDefBuilder(
     private val packageName: PackageName,
     private val dtoBaseName: DtoBaseName,
     private val generatedEndpoint: WithGeneratedEndpoint,
+    private val withGeneratedTypescriptService: WithGeneratedTypescriptService,
     private val withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
     private val withGeneratedDto: WithGeneratedDto,
     private val searchModelType: SearchModelType,
@@ -62,6 +64,7 @@ class SearchableDtoDefBuilder(
             this.fieldDefs,
             this.withPreAuthorize,
             this.generatedEndpoint,
+            this.withGeneratedTypescriptService,
             this.withGeneratedFindAllFunction,
             this.withGeneratedDto,
             this.generateFindById,

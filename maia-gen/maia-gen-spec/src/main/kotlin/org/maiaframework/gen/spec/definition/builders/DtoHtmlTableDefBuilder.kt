@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
+import org.maiaframework.gen.spec.definition.flags.WithGeneratedTypescriptService
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.lang.PackageName
 
@@ -15,6 +16,7 @@ class DtoHtmlTableDefBuilder(
     private val disableRendering: Boolean,
     private val withGeneratedDto: WithGeneratedDto,
     private val withGeneratedEndpoint: WithGeneratedEndpoint,
+    private val withGeneratedTypescriptService: WithGeneratedTypescriptService,
     private val withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
     private val withPreAuthorize: WithPreAuthorize?,
     private val dtoHtmlTableSourceDef: DtoHtmlTableSourceDef,
@@ -44,6 +46,7 @@ class DtoHtmlTableDefBuilder(
             this.dtoHtmlTableSourceDef,
             clickableTableRowDef,
             withGeneratedEndpoint,
+            withGeneratedTypescriptService,
             withGeneratedFindAllFunction,
             this.searchModelType
         )

@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.flags.GenerateFindById
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
+import org.maiaframework.gen.spec.definition.flags.WithGeneratedTypescriptService
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.lang.*
 
@@ -20,6 +21,7 @@ class DtoHtmlTableDef(
     val dtoHtmlTableSourceDef: DtoHtmlTableSourceDef,
     val clickableTableRowDef: ClickableTableRowDef?,
     withGeneratedEndpoint: WithGeneratedEndpoint,
+    withGeneratedTypescriptService: WithGeneratedTypescriptService,
     withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
     val searchModelType: SearchModelType
 ) {
@@ -82,7 +84,8 @@ class DtoHtmlTableDef(
         findAllApiUrl = "/api/$modulePath${dtoBaseName.toSnakeCase()}_table/find_all",
         withGeneratedFindAllFunction,
         GenerateFindById.FALSE,
-        withGeneratedEndpoint
+        withGeneratedEndpoint,
+        withGeneratedTypescriptService
     )
 
 
@@ -109,6 +112,7 @@ class DtoHtmlTableDef(
                     fields,
                     searchableDtoDef.withPreAuthorize,
                     withGeneratedEndpoint,
+                    withGeneratedTypescriptService,
                     withGeneratedFindAllFunction,
                     withGeneratedDto,
                     GenerateFindById.FALSE,
