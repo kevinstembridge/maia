@@ -1,0 +1,19 @@
+
+<div class="h-screen">
+    <ag-grid-angular
+        style="width: 100%; height: 100%;"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [rowBuffer]="rowBuffer"
+        [rowSelection]="rowSelection"
+        [rowModelType]="rowModelType"
+        [cacheBlockSize]="cacheBlockSize"
+        [cacheOverflowSize]="cacheOverflowSize"
+        [maxConcurrentDatasourceRequests]="maxConcurrentDatasourceRequests"
+        [infiniteInitialRowCount]="infiniteInitialRowCount"
+        [maxBlocksInCache]="maxBlocksInCache"
+        [rowData]="rowData"
+        [theme]="agGridTheme"
+        (gridReady)="onGridReady($event)"
+    ></ag-grid-angular>
+</div>
