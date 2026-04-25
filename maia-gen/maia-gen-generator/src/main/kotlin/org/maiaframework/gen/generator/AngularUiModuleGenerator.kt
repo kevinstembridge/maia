@@ -125,7 +125,7 @@ class AngularUiModuleGenerator(
         renderCrudBlotters()
         renderBlotterHtml()
         renderDtoServices()
-        renderDtoTableComponents()
+        renderBlotterComponents()
         renderDtosForAsyncValidation()
         renderDtosForFormDefs()
         renderEntityCreateDialogComponent()
@@ -295,7 +295,7 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderDtoTableComponents() {
+    private fun renderBlotterComponents() {
 
         this.modelDef.blotterDefs.forEach {
 

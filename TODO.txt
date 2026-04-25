@@ -11,7 +11,6 @@ TODO * Many-to-many relationship.
         from a blotter. For that, we'll have to store blotter rows in ES.
     TODO * Refactor so that CrudApiDefs don't need to have a mutable list of MTM associations.
 
-TODO * Consider renaming DtoHtmlTable... to BlotterRow...
 TODO * Test edit on an entity that has a foreign key.
     TODO * Manual test
 TODO * Create a test that tests all the validation constraints on the AllFieldTypesEntity.

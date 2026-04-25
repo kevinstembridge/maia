@@ -48,7 +48,7 @@ class CrudBlotterComponentRenderer(
         appendLine("})")
         appendLine("export class ${crudBlotterDef.crudBlotterComponentClassName} {")
         blankLine()
-        appendLine("    @ViewChild(${crudBlotterDef.dtoBlotterComponent.componentName}) tableComponent!: ${crudBlotterDef.dtoBlotterComponent.componentName};")
+        appendLine("    @ViewChild(${crudBlotterDef.dtoBlotterComponent.componentName}) blotterComponent!: ${crudBlotterDef.dtoBlotterComponent.componentName};")
         blankLine()
         blankLine()
         appendLine("    private readonly crudService = inject(${crudBlotterDef.crudServiceClassName});")
@@ -68,7 +68,7 @@ class CrudBlotterComponentRenderer(
             blankLine()
             appendLine("        dialogRef.afterClosed().subscribe((result) => {")
             appendLine("            if (result) {")
-            appendLine("                this.tableComponent.reapplyFilters();")
+            appendLine("                this.blotterComponent.reapplyFilters();")
             appendLine("            }")
             appendLine("        });")
             blankLine()
@@ -97,7 +97,7 @@ class CrudBlotterComponentRenderer(
             blankLine()
             appendLine("        dialogRef.afterClosed().subscribe(result => {")
             appendLine("            if (result) {")
-            appendLine("                this.tableComponent.reapplyFilters();")
+            appendLine("                this.blotterComponent.reapplyFilters();")
             appendLine("            }")
             appendLine("        });")
             blankLine()
@@ -138,7 +138,7 @@ class CrudBlotterComponentRenderer(
                 |
                 |        dialogRef.afterClosed().subscribe(result => {
                 |            if (result) {
-                |                this.tableComponent.reapplyFilters();
+                |                this.blotterComponent.reapplyFilters();
                 |            }
                 |        });
                 |

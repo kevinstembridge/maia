@@ -166,7 +166,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val orgSearchableDtoDef = searchableEntityDef(
+    val orgSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase",
         "Org",
         entityDef = orgEntityDef,
@@ -200,7 +200,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val personSearchableDtoDef = searchableEntityDef(
+    val personSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase",
         "Person",
         entityDef = personEntityDef,
@@ -241,7 +241,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val userSearchableDtoDef = searchableEntityDef(
+    val userSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase",
         "User",
         entityDef = userEntityDef,
@@ -275,7 +275,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val userCrudDef = crudBlotterDef(userBlotterDef, userEntityDef.entityCrudApiDef!!)
+    val userCrudDef = crudBlotter(userBlotterDef, userEntityDef.entityCrudApiDef!!)
 
 
     val userGroupEntityDef = entity(
@@ -326,7 +326,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val userGroupMembershipSearchableDtoDef = searchableEntityDef(
+    val userGroupMembershipSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.user",
         "UserGroupMembership",
         userGroupMembershipEntityDef.entityDef,
@@ -339,7 +339,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val personSummarySearchableDef = searchableEntityDef(
+    val personSummarySearchableDef = searchableDto(
         "org.maiaframework.showcase.person",
         "PersonSummary",
         entityDef = personEntityDef,

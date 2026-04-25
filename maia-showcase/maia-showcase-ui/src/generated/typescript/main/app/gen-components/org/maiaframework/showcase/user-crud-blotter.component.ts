@@ -17,7 +17,7 @@ import {UserEditDialogComponent} from '@app/gen-components/org/maiaframework/sho
 })
 export class UserCrudBlotterComponent {
 
-    @ViewChild(UserBlotterComponent) tableComponent!: UserBlotterComponent;
+    @ViewChild(UserBlotterComponent) blotterComponent!: UserBlotterComponent;
 
 
     private readonly crudService = inject(UserCrudService);
@@ -34,7 +34,7 @@ export class UserCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -50,7 +50,7 @@ export class UserCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 

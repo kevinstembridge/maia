@@ -327,7 +327,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val allFieldTypesSearchableDtoDef = searchableEntityDef(
+    val allFieldTypesSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.all_field_types",
         "AllFieldTypes",
         allFieldTypesEntityDef,
@@ -447,7 +447,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val allFieldTypesCrudDef = crudBlotterDef(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!)
+    val allFieldTypesCrudDef = crudBlotter(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!)
 
 
     val simpleEntityDef = entity(
@@ -473,7 +473,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val simpleSearchableDtoDef = searchableEntityDef(
+    val simpleSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.simple",
         "Simple",
         entityDef = simpleEntityDef,
@@ -501,7 +501,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val simpleCrudDef = crudBlotterDef(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
+    val simpleCrudDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
 
 
     val historySampleEntityDef = entity(
@@ -560,7 +560,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val parentOneSearchableDtoDef = searchableEntityDef(
+    val parentOneSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.hierarchy",
         "ParentOne",
         entityDef = parentOneEntityDef,
@@ -588,7 +588,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val childOneSearchableDtoDef = searchableEntityDef(
+    val childOneSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.hierarchy",
         "ChildOne",
         entityDef = childOneEntityDef,
@@ -622,7 +622,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val parentTwoSearchableDtoDef = searchableEntityDef(
+    val parentTwoSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.hierarchy",
         "ParentTwo",
         entityDef = parentTwoEntityDef,
@@ -707,7 +707,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val someVersionedSearchableDtoDef = searchableEntityDef(
+    val someVersionedSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.versioned",
         "SomeVersioned",
         entityDef = someVersionedEntityDef,
@@ -739,7 +739,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val someVersionedCrudDef = crudBlotterDef(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!)
+    val someVersionedCrudDef = crudBlotter(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!)
 
 
     val withOptionalIndexFieldEntityDef = entity(
@@ -923,7 +923,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoSearchableDtoDef = searchableEntityDef(
+    val bravoSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.join",
         "Bravo", // TODO rename to BravoSearchable
         entityDef = bravoEntityDef,
@@ -950,10 +950,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoCrudDef = crudBlotterDef(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!)
+    val bravoCrudDef = crudBlotter(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!)
 
 
-    val charlieSearchableDtoDef = searchableEntityDef(
+    val charlieSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.join",
         "Charlie",
         entityDef = charlieEntityDef,
@@ -1027,7 +1027,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoAgGridSearchableDtoDef = searchableEntityDef(
+    val bravoAgGridSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.join",
         "BravoAgGrid",
         entityDef = bravoAgGridEntityDef,
@@ -1044,7 +1044,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val charlieAgGridSearchableDtoDef = searchableEntityDef(
+    val charlieAgGridSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.join",
         "CharlieAgGrid",
         entityDef = charlieAgGridEntityDef,
@@ -1148,7 +1148,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftSearchableDtoDef = searchableEntityDef(
+    val leftSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.many_to_many",
         "LeftSearchable",
         entityDef = leftEntityDef,
@@ -1174,10 +1174,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftCrudDef = crudBlotterDef(leftSearchableBlotterDef, leftEntityDef.entityCrudApiDef!!)
+    val leftCrudDef = crudBlotter(leftSearchableBlotterDef, leftEntityDef.entityCrudApiDef!!)
 
 
-    val leftToRightManyToManySearchableDtoDef = searchableEntityDef(
+    val leftToRightManyToManySearchableDtoDef = searchableDto(
         "org.maiaframework.showcase",
         "LeftToRightManyToMany",
         leftToRightManyToManyJoinEntityDef.entityDef,
@@ -1193,7 +1193,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftNotMappedToRightSearchableDtoDef = searchableEntityDef(
+    val leftNotMappedToRightSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.many_to_many",
         "LeftNotMappedToRight",
         entityDef = leftEntityDef,
@@ -1250,7 +1250,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val compositePrimaryKeySearchableDtoDef = searchableEntityDef(
+    val compositePrimaryKeySearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.composite_pk",
         "CompositePrimaryKey",
         entityDef = compositePrimaryKeyEntityDef,
@@ -1282,7 +1282,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val compositePrimaryKeyCrudDef = crudBlotterDef(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
+    val compositePrimaryKeyCrudDef = crudBlotter(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
 
 
     val nonSurrogatePrimaryKeyEntityDef = entity(

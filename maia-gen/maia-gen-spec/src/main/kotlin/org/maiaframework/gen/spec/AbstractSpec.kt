@@ -834,7 +834,7 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    protected fun hazelcastDtoDef(
+    protected fun hazelcastDto(
         packageName: String,
         baseName: String,
         init: HazelcastDtoDefBuilder.() -> Unit
@@ -855,7 +855,7 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    protected fun searchableEntityDef(
+    protected fun searchableDto(
         packageName: String,
         baseName: String,
         entityDef: EntityDef,
@@ -890,7 +890,7 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    protected fun crudBlotterDef(
+    protected fun crudBlotter(
         blotterDef: BlotterDef,
         entityCrudApiDef: EntityCrudApiDef,
         init: (CrudBlotterDefBuilder.() -> Unit)? = null

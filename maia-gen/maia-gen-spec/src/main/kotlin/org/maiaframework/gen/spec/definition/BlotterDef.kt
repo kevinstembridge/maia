@@ -51,7 +51,7 @@ class BlotterDef(
     val blotterServiceImportStatement = blotterComponent.serviceImportStatement
 
 
-    private val ngMatTableComponentKebabCase = "${dtoBaseName.toKebabCase()}-table"
+    private val ngMatTableComponentKebabCase = "${dtoBaseName.toKebabCase()}-blotter"
 
 
     val blotterScssPath = blotterComponent.componentScssRenderedFilePath

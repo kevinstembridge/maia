@@ -18,7 +18,7 @@ import {SomeVersionedEditDialogComponent} from '@app/gen-components/org/maiafram
 })
 export class SomeVersionedCrudBlotterComponent {
 
-    @ViewChild(SomeVersionedBlotterComponent) tableComponent!: SomeVersionedBlotterComponent;
+    @ViewChild(SomeVersionedBlotterComponent) blotterComponent!: SomeVersionedBlotterComponent;
 
 
     private readonly crudService = inject(SomeVersionedCrudService);
@@ -35,7 +35,7 @@ export class SomeVersionedCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -51,7 +51,7 @@ export class SomeVersionedCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -67,7 +67,7 @@ export class SomeVersionedCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 

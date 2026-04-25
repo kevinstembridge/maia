@@ -19,7 +19,7 @@ import {LeftSearchableBlotterComponent} from '@app/gen-components/org/maiaframew
 })
 export class LeftSearchableCrudBlotterComponent {
 
-    @ViewChild(LeftSearchableBlotterComponent) tableComponent!: LeftSearchableBlotterComponent;
+    @ViewChild(LeftSearchableBlotterComponent) blotterComponent!: LeftSearchableBlotterComponent;
 
 
     private readonly crudService = inject(LeftCrudService);
@@ -36,7 +36,7 @@ export class LeftSearchableCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -52,7 +52,7 @@ export class LeftSearchableCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -84,7 +84,7 @@ export class LeftSearchableCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 

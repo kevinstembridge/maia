@@ -18,7 +18,7 @@ import {SimpleEditDialogComponent} from '@app/gen-components/org/maiaframework/s
 })
 export class SimpleCrudBlotterComponent {
 
-    @ViewChild(SimpleBlotterComponent) tableComponent!: SimpleBlotterComponent;
+    @ViewChild(SimpleBlotterComponent) blotterComponent!: SimpleBlotterComponent;
 
 
     private readonly crudService = inject(SimpleCrudService);
@@ -35,7 +35,7 @@ export class SimpleCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -51,7 +51,7 @@ export class SimpleCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -67,7 +67,7 @@ export class SimpleCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 

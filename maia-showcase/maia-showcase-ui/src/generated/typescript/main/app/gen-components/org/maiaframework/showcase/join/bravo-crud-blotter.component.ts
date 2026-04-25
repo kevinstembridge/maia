@@ -19,7 +19,7 @@ import {BravoEditDialogComponent} from '@app/gen-components/org/maiaframework/sh
 })
 export class BravoCrudBlotterComponent {
 
-    @ViewChild(BravoBlotterComponent) tableComponent!: BravoBlotterComponent;
+    @ViewChild(BravoBlotterComponent) blotterComponent!: BravoBlotterComponent;
 
 
     private readonly crudService = inject(BravoCrudService);
@@ -36,7 +36,7 @@ export class BravoCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -52,7 +52,7 @@ export class BravoCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -84,7 +84,7 @@ export class BravoCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 

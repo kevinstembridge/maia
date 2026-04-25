@@ -18,7 +18,7 @@ import {AllFieldTypesEditDialogComponent} from '@app/gen-components/org/maiafram
 })
 export class AllFieldTypesCrudBlotterComponent {
 
-    @ViewChild(AllFieldTypesBlotterComponent) tableComponent!: AllFieldTypesBlotterComponent;
+    @ViewChild(AllFieldTypesBlotterComponent) blotterComponent!: AllFieldTypesBlotterComponent;
 
 
     private readonly crudService = inject(AllFieldTypesCrudService);
@@ -35,7 +35,7 @@ export class AllFieldTypesCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -51,7 +51,7 @@ export class AllFieldTypesCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -67,7 +67,7 @@ export class AllFieldTypesCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 

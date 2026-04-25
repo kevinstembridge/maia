@@ -18,7 +18,7 @@ import {CompositePrimaryKeyEditDialogComponent} from '@app/gen-components/org/ma
 })
 export class CompositePrimaryKeyCrudBlotterComponent {
 
-    @ViewChild(CompositePrimaryKeyBlotterComponent) tableComponent!: CompositePrimaryKeyBlotterComponent;
+    @ViewChild(CompositePrimaryKeyBlotterComponent) blotterComponent!: CompositePrimaryKeyBlotterComponent;
 
 
     private readonly crudService = inject(CompositePrimaryKeyCrudService);
@@ -35,7 +35,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -51,7 +51,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
@@ -67,7 +67,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.tableComponent.reapplyFilters();
+                this.blotterComponent.reapplyFilters();
             }
         });
 
