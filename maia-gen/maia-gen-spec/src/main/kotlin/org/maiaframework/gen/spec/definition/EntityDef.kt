@@ -555,7 +555,7 @@ class EntityDef(
 
     val primaryKeyRowMapperDef = if (hasCompositePrimaryKey) {
         RowMapperDef(
-            entityPkClassDef.uqcn,
+            entityPkClassDef.fqcn,
             this.primaryKeyFields.map { EntityFieldRowMapperFieldDef(it, it.tableColumnName.value) },
             entityPkClassDef.rowMapperClassDef,
             isForEditDto = false

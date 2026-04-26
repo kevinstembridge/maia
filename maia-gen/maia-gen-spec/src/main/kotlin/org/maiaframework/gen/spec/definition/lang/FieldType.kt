@@ -245,7 +245,7 @@ class UrlFieldType internal constructor() : FieldType(
     "VARCHAR",
     EsDocMappingTypes.text,
     HazelcastCompatibleType.STRING,
-    defaultFormFieldValue = "https://example.com"
+    defaultFormFieldValue = "'https://example.com'"
 ) {
 
 

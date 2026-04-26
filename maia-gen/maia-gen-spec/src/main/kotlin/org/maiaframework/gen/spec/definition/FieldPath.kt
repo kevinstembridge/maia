@@ -24,7 +24,7 @@ class FieldPath private constructor(
 
 
     override fun toString(): String {
-        return "FieldPath[${this.segments}]"
+        return this.segments.joinToString(".")
     }
 
 

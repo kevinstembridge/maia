@@ -163,6 +163,7 @@ class CrudServiceRenderer(
                 val otherSideFieldName = otherSide.fieldName
                 val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
                 val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
+                addImportFor(manyToManyEntityDef.entityDef.entityFqcn)
                 val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
 
                 blankLine()

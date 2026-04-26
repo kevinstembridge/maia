@@ -30,7 +30,7 @@ class EntityPkAndNameDef(
 
 
     val rowMapperDef = RowMapperDef(
-        dtoDef.uqcn,
+        dtoDef.fqcn,
         listOf(
             EntityFieldRowMapperFieldDef(pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
             EntityFieldRowMapperFieldDef(nameEntityFieldDef, nameEntityFieldDef.tableColumnName.value)

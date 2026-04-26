@@ -62,7 +62,7 @@ class FetchForEditDtoDef(
 
 
     val rowMapperDef = RowMapperDef(
-        dtoDef.uqcn,
+        dtoDef.fqcn,
         rowMapperFieldDefs,
         dtoDef.rowMapperClassDef,
         isForEditDto = true

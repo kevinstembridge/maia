@@ -531,18 +531,19 @@ class EntityReactiveFormComponentRenderer(
             appendLine("            next: (dto: ${fetchForEditDtoDef.uqcn}) => {")
             appendLine("                this.formGroup.patchValue({")
 
-            this.formGroupFields.forEach { angularFormFieldDef ->
+            this.formGroupFields.sortedBy { it.fieldName }.forEach { angularFormFieldDef ->
                 val classFieldDef = angularFormFieldDef.classFieldDef
+                val formFieldName = angularFormFieldDef.fieldName
                 val typeaheadDef = classFieldDef.typeaheadDef
 
                 if (typeaheadDef != null) {
                     val formControlName = typeaheadDef.typeaheadName.firstToLower()
-                    appendLine("                    ${formControlName}: dto.${formControlName},")
+                    appendLine("                    ${formFieldName}: dto.${formFieldName},")
                 } else if (classFieldDef.fieldType is ForeignKeyFieldType) {
                     // Skip non-typeahead FK fields — DTO uses a PkAndName object shape
                 } else {
                     val fieldName = classFieldDef.classFieldName
-                    appendLine("                    ${fieldName}: dto.${fieldName},")
+                    appendLine("                    ${formFieldName}: dto.${formFieldName},")
                 }
             }
 

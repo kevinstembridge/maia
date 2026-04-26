@@ -1,7 +1,7 @@
 package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.EsDocMapperRenderer
-import org.maiaframework.gen.renderers.EsDocTableDtoMapperRenderer
+import org.maiaframework.gen.renderers.EsDocBlotterRowDtoMapperRenderer
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
 import org.maiaframework.gen.spec.definition.EsDocDef
 
@@ -57,7 +57,7 @@ class EsDocsModuleGenerator(
 
         this.modelDef.blotterDefs
             .filter { it.blotterSourceDef is BlotterEsDocSourceDef }
-            .forEach { EsDocTableDtoMapperRenderer(it).renderToDir(this.kotlinOutputDir) }
+            .forEach { EsDocBlotterRowDtoMapperRenderer(it).renderToDir(this.kotlinOutputDir) }
 
     }
 

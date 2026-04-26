@@ -168,7 +168,7 @@ class SearchableDtoDef(
 
 
     val rowMapperDef = RowMapperDef(
-        uqcn,
+        searchDtoDef.fqcn,
         allRowMapperFieldDefs,
         dtoRowMapperClassDef,
         isForEditDto = false

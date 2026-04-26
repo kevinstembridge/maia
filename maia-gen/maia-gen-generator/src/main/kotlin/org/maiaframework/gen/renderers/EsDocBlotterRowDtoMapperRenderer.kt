@@ -4,14 +4,14 @@ import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
 
 
-class EsDocTableDtoMapperRenderer(
+class EsDocBlotterRowDtoMapperRenderer(
     private val blotterDef: BlotterDef
 ): AbstractKotlinRenderer(
     blotterDef.searchDtoDef.esDocMapperClassDef
 ) {
 
 
-    private val blotterDtoUqcn = blotterDef.searchDtoDef.uqcn
+    private val blotterRowDtoUqcn = blotterDef.searchDtoDef.uqcn
 
 
     private val esDocDef = (blotterDef.blotterSourceDef as BlotterEsDocSourceDef).esDocDef
@@ -28,9 +28,9 @@ class EsDocTableDtoMapperRenderer(
 
         append("""            |
             |
-            |    fun mapEsDoc(esDoc: ${esDocDef.uqcn}): ${this.blotterDtoUqcn} {
+            |    fun mapEsDoc(esDoc: ${esDocDef.uqcn}): ${this.blotterRowDtoUqcn} {
             |
-            |        return ${this.blotterDtoUqcn}(
+            |        return ${this.blotterRowDtoUqcn}(
             |""".trimMargin())
 
         this.blotterDef.blotterColumnFields.forEach { blotterColumnDef ->

@@ -428,6 +428,10 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     private fun `render function fetchForEdit`() {
 
+        if (this.entityDef.isConcrete == false) {
+            return
+        }
+
         val fetchForEditDtoDef = this.entityDef.fetchForEditDtoDef
             ?: return
 

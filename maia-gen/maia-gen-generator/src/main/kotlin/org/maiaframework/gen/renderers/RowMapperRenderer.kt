@@ -34,6 +34,8 @@ class RowMapperRenderer(
 
             val entityPkAndNameDef = manyToManyRowMapperFieldDef.entityPkAndNameDef
 
+            addImportFor(entityPkAndNameDef.rowMapperDef.classDef.fqcn)
+
             append("""
                 |
                 |
@@ -56,6 +58,7 @@ class RowMapperRenderer(
     private fun `render function mapRow`() {
 
         addImportFor(Fqcns.MAIA_RESULT_SET_ADAPTER)
+        addImportFor(rowMapperDef.rowFqcn)
 
         append("""
             |
@@ -143,11 +146,13 @@ class RowMapperRenderer(
 
             addImportFor(Fqcns.MAIA_DOMAIN_ID)
             addImportFor(Fqcns.MAIA_SQL_PARAMS)
+            val entityPkAndNameDef = manyToManyRowMapperFieldDef.entityPkAndNameDef
+            addImportFor(entityPkAndNameDef.pkAndNameDtoFqcn)
 
             append("""
                 |
                 |
-                |    private fun fetch${manyToManyRowMapperFieldDef.classFieldName.firstToUpper()}PkAndNameDtos(entityId: DomainId): List<${manyToManyRowMapperFieldDef.entityPkAndNameDef.dtoUqcn}> {
+                |    private fun fetch${manyToManyRowMapperFieldDef.classFieldName.firstToUpper()}PkAndNameDtos(entityId: DomainId): List<${entityPkAndNameDef.pkAndNameDtoFqcn}> {
                 |
                 |        return this.jdbcOps.queryForList(
                 |            $tripleQuote
