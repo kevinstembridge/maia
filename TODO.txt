@@ -1,4 +1,9 @@
 
+TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveTimestamps).
+    => UserGroupMembership.
+    TODO * Test that we can create a new UserGroup without being able to specify members.
+    TODO * Test that when we add a user to a group, the front end defaults the effectiveFrom to now.
+
 TODO * Replicate the orgUserGroupMembershipSearchableDtoDef from Mahana
     =>
 

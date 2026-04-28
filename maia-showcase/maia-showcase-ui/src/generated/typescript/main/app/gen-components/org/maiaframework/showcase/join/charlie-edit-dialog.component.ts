@@ -77,9 +77,9 @@ export class CharlieEditDialogComponent implements OnInit {
         this.formService.fetchForEdit(this.entityId).subscribe({
             next: (dto: CharlieFetchForEditDto) => {
                 this.formGroup.patchValue({
+                    id: dto.id,
                     someInt: dto.someInt,
                     someString: dto.someString,
-                    id: dto.id,
                 });
                 this.loading.set(false);
             },

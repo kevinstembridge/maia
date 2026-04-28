@@ -3,7 +3,7 @@
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {AllFieldTypesTableDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesTableDto';
+import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
@@ -21,10 +21,10 @@ export class AllFieldTypesBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(searchModel: any): Observable<SearchResultPage<AllFieldTypesTableDto>> {
+    public search(searchModel: any): Observable<SearchResultPage<AllFieldTypesBlotterRowDto>> {
 
-        return this.http.post<SearchResultPage<AllFieldTypesTableDto>>(
-                '/api/all_field_types_table/search',
+        return this.http.post<SearchResultPage<AllFieldTypesBlotterRowDto>>(
+                '/api/all_field_types_blotter/search',
                 searchModel,
                 this.httpOptions);
 

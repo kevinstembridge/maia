@@ -9,6 +9,8 @@ import java.time.Instant
 
 class UserGroupMembershipEntity(
     val createdTimestampUtc: Instant,
+    val effectiveFrom: Instant?,
+    val effectiveTo: Instant?,
     val id: DomainId,
     val user: DomainId,
     val userGroup: DomainId,
@@ -20,6 +22,8 @@ class UserGroupMembershipEntity(
 
         return "UserGroupMembershipEntity{" +
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
+                "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "user = '" + this.user + '\'' + ", " + 
                 "userGroup = '" + this.userGroup + '\'' + ", " + 
@@ -39,6 +43,8 @@ class UserGroupMembershipEntity(
 
         @JvmStatic
         fun newInstance(
+            effectiveFrom: Instant?,
+            effectiveTo: Instant?,
             user: DomainId,
             userGroup: DomainId
         ): UserGroupMembershipEntity {
@@ -49,6 +55,8 @@ class UserGroupMembershipEntity(
 
             return UserGroupMembershipEntity(
                 createdTimestampUtc,
+                effectiveFrom,
+                effectiveTo,
                 id,
                 user,
                 userGroup,

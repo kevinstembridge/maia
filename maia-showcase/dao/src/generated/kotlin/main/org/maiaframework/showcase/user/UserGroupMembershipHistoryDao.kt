@@ -32,6 +32,8 @@ class UserGroupMembershipHistoryDao(
             insert into maia.user_group_membership_history (
                 change_type,
                 created_timestamp_utc,
+                effective_from,
+                effective_to,
                 id,
                 user_id,
                 user_group_id,
@@ -39,6 +41,8 @@ class UserGroupMembershipHistoryDao(
             ) values (
                 :changeType,
                 :createdTimestampUtc,
+                :effectiveFrom,
+                :effectiveTo,
                 :id,
                 :user,
                 :userGroup,
@@ -48,6 +52,8 @@ class UserGroupMembershipHistoryDao(
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("effectiveFrom", entity.effectiveFrom)
+                addValue("effectiveTo", entity.effectiveTo)
                 addValue("id", entity.id)
                 addValue("user", entity.user)
                 addValue("userGroup", entity.userGroup)
@@ -65,6 +71,8 @@ class UserGroupMembershipHistoryDao(
             insert into maia.user_group_membership_history (
                 change_type,
                 created_timestamp_utc,
+                effective_from,
+                effective_to,
                 id,
                 user_id,
                 user_group_id,
@@ -72,6 +80,8 @@ class UserGroupMembershipHistoryDao(
             ) values (
                 :changeType,
                 :createdTimestampUtc,
+                :effectiveFrom,
+                :effectiveTo,
                 :id,
                 :user,
                 :userGroup,
@@ -82,6 +92,8 @@ class UserGroupMembershipHistoryDao(
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("effectiveFrom", entity.effectiveFrom)
+                    addValue("effectiveTo", entity.effectiveTo)
                     addValue("id", entity.id)
                     addValue("user", entity.user)
                     addValue("userGroup", entity.userGroup)
@@ -189,6 +201,42 @@ class UserGroupMembershipHistoryDao(
             """
             select * from maia.user_group_membership_history
             where user_id = :user
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("user", user)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findEffectiveByUserGroup(userGroup: DomainId): List<UserGroupMembershipHistoryEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.user_group_membership_history
+            where user_group_id = :userGroup
+            and effective_from <= current_timestamp
+            and (effective_to > current_timestamp or effective_to is null)
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("userGroup", userGroup)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findEffectiveByUser(user: DomainId): List<UserGroupMembershipHistoryEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.user_group_membership_history
+            where user_id = :user
+            and effective_from <= current_timestamp
+            and (effective_to > current_timestamp or effective_to is null)
             """.trimIndent(),
             SqlParams().apply {
                 addValue("user", user)

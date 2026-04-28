@@ -3,7 +3,7 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {CompositePrimaryKeyTableDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyTableDto';
+import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 
@@ -21,8 +21,8 @@ export class CompositePrimaryKeyBlotterAgGridDatasource implements IDatasource {
 
     getRows(params: IGetRowsParams): void {
 
-        this.http.post<SearchResultPage<CompositePrimaryKeyTableDto>>(
-            '/api/composite_primary_key_table/search',
+        this.http.post<SearchResultPage<CompositePrimaryKeyBlotterRowDto>>(
+            '/api/composite_primary_key_blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

@@ -9,7 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {LeftSearchableBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableBlotterAgGridDatasource';
-import {LeftSearchableTableDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableTableDto';
+import {LeftSearchableBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableBlotterRowDto';
 import {LeftSearchableBlotterService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-searchable-blotter.service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {ChipsAgGridCellRendererComponent, IconAgGridCellRendererComponent} from '@maia/maia-ui';
@@ -27,10 +27,10 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class LeftSearchableBlotterComponent {
 
 
-    readonly edit = output<LeftSearchableTableDto>();
+    readonly edit = output<LeftSearchableBlotterRowDto>();
 
 
-    readonly delete = output<LeftSearchableTableDto>();
+    readonly delete = output<LeftSearchableBlotterRowDto>();
 
 
     readonly addButtonClicked = output();
@@ -105,10 +105,10 @@ export class LeftSearchableBlotterComponent {
     public maxBlocksInCache = 10;
 
 
-    public rowData!: LeftSearchableTableDto[];
+    public rowData!: LeftSearchableBlotterRowDto[];
 
 
-    private gridApi!: GridApi<LeftSearchableTableDto>;
+    private gridApi!: GridApi<LeftSearchableBlotterRowDto>;
 
 
     private readonly datasource = inject(LeftSearchableBlotterAgGridDatasource);
@@ -120,7 +120,7 @@ export class LeftSearchableBlotterComponent {
     private readonly authService = inject(AuthService);
 
 
-    onGridReady(params: GridReadyEvent<LeftSearchableTableDto>) {
+    onGridReady(params: GridReadyEvent<LeftSearchableBlotterRowDto>) {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
@@ -128,7 +128,7 @@ export class LeftSearchableBlotterComponent {
     }
 
 
-    onEdit(dto: LeftSearchableTableDto) {
+    onEdit(dto: LeftSearchableBlotterRowDto) {
 
         this.edit.emit(dto);
 
@@ -136,7 +136,7 @@ export class LeftSearchableBlotterComponent {
 
 
 
-    onDelete(dto: LeftSearchableTableDto) {
+    onDelete(dto: LeftSearchableBlotterRowDto) {
 
         this.delete.emit(dto);
 

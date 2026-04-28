@@ -3,7 +3,7 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {UserTableDto} from '@app/gen-components/org/maiaframework/showcase/UserTableDto';
+import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/UserBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 
@@ -21,8 +21,8 @@ export class UserBlotterAgGridDatasource implements IDatasource {
 
     getRows(params: IGetRowsParams): void {
 
-        this.http.post<SearchResultPage<UserTableDto>>(
-            '/api/user_table/search',
+        this.http.post<SearchResultPage<UserBlotterRowDto>>(
+            '/api/user_blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

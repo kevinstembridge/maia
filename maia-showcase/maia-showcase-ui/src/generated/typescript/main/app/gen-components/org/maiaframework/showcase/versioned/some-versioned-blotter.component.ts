@@ -9,7 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {SomeVersionedBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterAgGridDatasource';
-import {SomeVersionedTableDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedTableDto';
+import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterRowDto';
 import {SomeVersionedBlotterService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter.service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
@@ -27,10 +27,10 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class SomeVersionedBlotterComponent {
 
 
-    readonly edit = output<SomeVersionedTableDto>();
+    readonly edit = output<SomeVersionedBlotterRowDto>();
 
 
-    readonly delete = output<SomeVersionedTableDto>();
+    readonly delete = output<SomeVersionedBlotterRowDto>();
 
 
     readonly addButtonClicked = output();
@@ -106,10 +106,10 @@ export class SomeVersionedBlotterComponent {
     public maxBlocksInCache = 10;
 
 
-    public rowData!: SomeVersionedTableDto[];
+    public rowData!: SomeVersionedBlotterRowDto[];
 
 
-    private gridApi!: GridApi<SomeVersionedTableDto>;
+    private gridApi!: GridApi<SomeVersionedBlotterRowDto>;
 
 
     private readonly datasource = inject(SomeVersionedBlotterAgGridDatasource);
@@ -121,7 +121,7 @@ export class SomeVersionedBlotterComponent {
     private readonly authService = inject(AuthService);
 
 
-    onGridReady(params: GridReadyEvent<SomeVersionedTableDto>) {
+    onGridReady(params: GridReadyEvent<SomeVersionedBlotterRowDto>) {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
@@ -129,7 +129,7 @@ export class SomeVersionedBlotterComponent {
     }
 
 
-    onEdit(dto: SomeVersionedTableDto) {
+    onEdit(dto: SomeVersionedBlotterRowDto) {
 
         this.edit.emit(dto);
 
@@ -137,7 +137,7 @@ export class SomeVersionedBlotterComponent {
 
 
 
-    onDelete(dto: SomeVersionedTableDto) {
+    onDelete(dto: SomeVersionedBlotterRowDto) {
 
         this.delete.emit(dto);
 

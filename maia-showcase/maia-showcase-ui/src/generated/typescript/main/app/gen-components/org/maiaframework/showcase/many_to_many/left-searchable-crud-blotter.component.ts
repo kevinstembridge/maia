@@ -3,7 +3,7 @@
 
 import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {LeftSearchableTableDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableTableDto';
+import {LeftSearchableBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableBlotterRowDto';
 import {LeftCheckForeignKeyReferencesDialogComponent} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-check-foreign-key-references-dialog.component';
 import {LeftCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-create-dialog.component';
 import {LeftCrudService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-crud.service';
@@ -43,7 +43,7 @@ export class LeftSearchableCrudBlotterComponent {
     }
 
 
-    onEdit(dto: LeftSearchableTableDto) {
+    onEdit(dto: LeftSearchableBlotterRowDto) {
 
         const dialogRef = this.dialog.open(LeftEditDialogComponent, {
             width: '400px',
@@ -59,7 +59,7 @@ export class LeftSearchableCrudBlotterComponent {
     }
 
 
-    onDelete(dto: LeftSearchableTableDto) {
+    onDelete(dto: LeftSearchableBlotterRowDto) {
 
         const checkForeignKeyReferencesDialogRef = this.dialog.open(LeftCheckForeignKeyReferencesDialogComponent, {
             width: '500px',
@@ -75,7 +75,7 @@ export class LeftSearchableCrudBlotterComponent {
     }
 
 
-    private displayDeleteDialog(dto: LeftSearchableTableDto) {
+    private displayDeleteDialog(dto: LeftSearchableBlotterRowDto) {
 
         const dialogRef = this.dialog.open(LeftDeleteDialogComponent, {
             width: '400px',

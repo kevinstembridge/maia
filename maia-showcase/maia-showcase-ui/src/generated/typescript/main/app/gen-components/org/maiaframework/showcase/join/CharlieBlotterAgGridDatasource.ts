@@ -3,7 +3,7 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {CharlieTableDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieTableDto';
+import {CharlieBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 
@@ -21,8 +21,8 @@ export class CharlieBlotterAgGridDatasource implements IDatasource {
 
     getRows(params: IGetRowsParams): void {
 
-        this.http.post<SearchResultPage<CharlieTableDto>>(
-            '/api/charlie_table/search',
+        this.http.post<SearchResultPage<CharlieBlotterRowDto>>(
+            '/api/charlie_blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

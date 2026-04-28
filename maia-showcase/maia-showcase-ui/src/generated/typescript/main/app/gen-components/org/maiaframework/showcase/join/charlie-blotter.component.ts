@@ -9,7 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {CharlieBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/join/CharlieBlotterAgGridDatasource';
-import {CharlieTableDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieTableDto';
+import {CharlieBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieBlotterRowDto';
 import {CharlieBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-blotter.service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -71,10 +71,10 @@ export class CharlieBlotterComponent {
     public maxBlocksInCache = 10;
 
 
-    public rowData!: CharlieTableDto[];
+    public rowData!: CharlieBlotterRowDto[];
 
 
-    private gridApi!: GridApi<CharlieTableDto>;
+    private gridApi!: GridApi<CharlieBlotterRowDto>;
 
 
     private readonly datasource = inject(CharlieBlotterAgGridDatasource);
@@ -86,7 +86,7 @@ export class CharlieBlotterComponent {
     private readonly authService = inject(AuthService);
 
 
-    onGridReady(params: GridReadyEvent<CharlieTableDto>) {
+    onGridReady(params: GridReadyEvent<CharlieBlotterRowDto>) {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);

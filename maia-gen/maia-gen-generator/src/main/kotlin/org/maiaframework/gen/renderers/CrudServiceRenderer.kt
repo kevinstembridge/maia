@@ -130,12 +130,12 @@ class CrudServiceRenderer(
             blankLine()
             appendLine("        val currentUser = CurrentUserHolder.currentUser")
             blankLine()
-            appendLine("        logger.info(\"BEGIN: create ${this.entityDef.entityBaseName}. createdBy=\${currentUser.username}, dto=\$createDto\")")
+            appendLine($$"        logger.info(\"BEGIN: create $${this.entityDef.entityBaseName}. createdBy=${currentUser.username}, dto=$createDto\")")
 
         } else {
 
             blankLine()
-            appendLine("        logger.info(\"BEGIN: create ${this.entityDef.entityBaseName}. dto=\$createDto\")")
+            appendLine($$"        logger.info(\"BEGIN: create $${this.entityDef.entityBaseName}. dto=$createDto\")")
 
         }
 
@@ -149,15 +149,12 @@ class CrudServiceRenderer(
         appendLine("        val entity: ${this.entityDef.entityUqcn} = buildEntity(createDto${currentUserOrBlank})")
         blankLine()
 
-        if (createApiDef.crudApiDef.manyToManyAssociations.isEmpty()) {
-
-            appendLine("        return create(entity)")
-
-        } else {
+        if (createApiDef.crudApiDef.manyToManyAssociations.isNotEmpty()) {
 
             appendLine("        create(entity)")
 
             createApiDef.crudApiDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
+
                 val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
                 val thisSideEntityIdFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
                 val otherSideFieldName = otherSide.fieldName
@@ -175,10 +172,15 @@ class CrudServiceRenderer(
                 appendLine("                )")
                 appendLine("            )")
                 appendLine("        }")
+
             }
 
             blankLine()
             appendLine("        return entity")
+
+        } else {
+
+            appendLine("        return create(entity)")
 
         }
 

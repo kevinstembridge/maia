@@ -15,6 +15,8 @@ class UserGroupMembershipHistoryEntityRowMapper : MaiaRowMapper<UserGroupMembers
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val effectiveFrom = rsa.readInstantOrNull("effective_from")
+        val effectiveTo = rsa.readInstantOrNull("effective_to")
         val id = rsa.readDomainId("id")
         val user = rsa.readDomainId("user_id")
         val userGroup = rsa.readDomainId("user_group_id")
@@ -23,6 +25,8 @@ class UserGroupMembershipHistoryEntityRowMapper : MaiaRowMapper<UserGroupMembers
         return UserGroupMembershipHistoryEntity(
                 changeType,
                 createdTimestampUtc,
+                effectiveFrom,
+                effectiveTo,
                 id,
                 user,
                 userGroup,

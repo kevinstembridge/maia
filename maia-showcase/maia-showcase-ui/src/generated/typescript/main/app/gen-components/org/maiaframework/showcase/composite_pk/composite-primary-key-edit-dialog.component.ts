@@ -77,9 +77,9 @@ export class CompositePrimaryKeyEditDialogComponent implements OnInit {
         this.formService.fetchForEdit(this.entityId).subscribe({
             next: (dto: CompositePrimaryKeyFetchForEditDto) => {
                 this.formGroup.patchValue({
-                    someString: dto.someString,
                     someInt: dto.someInt,
                     someModifiableString: dto.someModifiableString,
+                    someString: dto.someString,
                     version: dto.version,
                 });
                 this.loading.set(false);

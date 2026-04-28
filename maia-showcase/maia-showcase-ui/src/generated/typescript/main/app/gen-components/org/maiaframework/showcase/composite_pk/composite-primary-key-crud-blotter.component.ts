@@ -3,7 +3,7 @@
 
 import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {CompositePrimaryKeyTableDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyTableDto';
+import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterRowDto';
 import {CompositePrimaryKeyBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-blotter.component';
 import {CompositePrimaryKeyCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-create-dialog.component';
 import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-crud.service';
@@ -42,7 +42,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
     }
 
 
-    onEdit(dto: CompositePrimaryKeyTableDto) {
+    onEdit(dto: CompositePrimaryKeyBlotterRowDto) {
 
         const dialogRef = this.dialog.open(CompositePrimaryKeyEditDialogComponent, {
             width: '400px',
@@ -58,7 +58,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
     }
 
 
-    onDelete(dto: CompositePrimaryKeyTableDto) {
+    onDelete(dto: CompositePrimaryKeyBlotterRowDto) {
 
         const dialogRef = this.dialog.open(CompositePrimaryKeyDeleteDialogComponent, {
             width: '400px',

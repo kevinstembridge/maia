@@ -3,7 +3,7 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {LeftSearchableTableDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableTableDto';
+import {LeftSearchableBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 
@@ -21,8 +21,8 @@ export class LeftSearchableBlotterAgGridDatasource implements IDatasource {
 
     getRows(params: IGetRowsParams): void {
 
-        this.http.post<SearchResultPage<LeftSearchableTableDto>>(
-            '/api/left_searchable_table/search',
+        this.http.post<SearchResultPage<LeftSearchableBlotterRowDto>>(
+            '/api/left_searchable_blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

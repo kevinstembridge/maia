@@ -13,6 +13,8 @@ class UserGroupMembershipEntityRowMapper : MaiaRowMapper<UserGroupMembershipEnti
     override fun mapRow(rsa: ResultSetAdapter): UserGroupMembershipEntity {
 
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val effectiveFrom = rsa.readInstantOrNull("effective_from")
+        val effectiveTo = rsa.readInstantOrNull("effective_to")
         val id = rsa.readDomainId("id")
         val user = rsa.readDomainId("user_id")
         val userGroup = rsa.readDomainId("user_group_id")
@@ -20,6 +22,8 @@ class UserGroupMembershipEntityRowMapper : MaiaRowMapper<UserGroupMembershipEnti
 
         return UserGroupMembershipEntity(
                 createdTimestampUtc,
+                effectiveFrom,
+                effectiveTo,
                 id,
                 user,
                 userGroup,

@@ -3,7 +3,7 @@
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {SimpleTableDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleTableDto';
+import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
@@ -21,10 +21,10 @@ export class SimpleBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(searchModel: any): Observable<SearchResultPage<SimpleTableDto>> {
+    public search(searchModel: any): Observable<SearchResultPage<SimpleBlotterRowDto>> {
 
-        return this.http.post<SearchResultPage<SimpleTableDto>>(
-                '/api/simple_table/search',
+        return this.http.post<SearchResultPage<SimpleBlotterRowDto>>(
+                '/api/simple_blotter/search',
                 searchModel,
                 this.httpOptions);
 

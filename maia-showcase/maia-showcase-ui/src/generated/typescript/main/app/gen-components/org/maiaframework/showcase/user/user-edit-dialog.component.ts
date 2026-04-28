@@ -95,14 +95,14 @@ export class UserEditDialogComponent implements OnInit {
             next: (dto: UserFetchForEditDto) => {
                 this.formGroup.patchValue({
                     authorities: dto.authorities,
+                    createdBy: dto.createdBy,
+                    displayName: dto.displayName,
                     encryptedPassword: dto.encryptedPassword,
                     firstName: dto.firstName,
-                    lastName: dto.lastName,
-                    displayName: dto.displayName,
-                    createdBy: dto.createdBy,
-                    lastModifiedBy: dto.lastModifiedBy,
-                    lifecycleState: dto.lifecycleState,
                     id: dto.id,
+                    lastModifiedBy: dto.lastModifiedBy,
+                    lastName: dto.lastName,
+                    lifecycleState: dto.lifecycleState,
                     version: dto.version,
                 });
                 this.loading.set(false);

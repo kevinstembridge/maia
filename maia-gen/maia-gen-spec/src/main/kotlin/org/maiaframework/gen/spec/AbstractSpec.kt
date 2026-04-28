@@ -483,12 +483,18 @@ abstract class AbstractSpec protected constructor(
             if (leftEntity.editableByUser.value) {
                 editableByUser()
             }
+            if (leftEntity.creatableByUser.value == false) {
+                notCreatableByUser()
+            }
         }
 
         builder.foreignKey(rightEntity.fieldName, rightEntity.entityDef) {
             fieldDisplayName(rightEntity.displayName)
             if (rightEntity.editableByUser.value) {
                 editableByUser()
+            }
+            if (rightEntity.creatableByUser.value == false) {
+                notCreatableByUser()
             }
         }
 

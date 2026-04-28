@@ -9,7 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {BravoBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterAgGridDatasource';
-import {BravoTableDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoTableDto';
+import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterRowDto';
 import {BravoBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter.service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
@@ -27,10 +27,10 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class BravoBlotterComponent {
 
 
-    readonly edit = output<BravoTableDto>();
+    readonly edit = output<BravoBlotterRowDto>();
 
 
-    readonly delete = output<BravoTableDto>();
+    readonly delete = output<BravoBlotterRowDto>();
 
 
     readonly addButtonClicked = output();
@@ -105,10 +105,10 @@ export class BravoBlotterComponent {
     public maxBlocksInCache = 10;
 
 
-    public rowData!: BravoTableDto[];
+    public rowData!: BravoBlotterRowDto[];
 
 
-    private gridApi!: GridApi<BravoTableDto>;
+    private gridApi!: GridApi<BravoBlotterRowDto>;
 
 
     private readonly datasource = inject(BravoBlotterAgGridDatasource);
@@ -120,7 +120,7 @@ export class BravoBlotterComponent {
     private readonly authService = inject(AuthService);
 
 
-    onGridReady(params: GridReadyEvent<BravoTableDto>) {
+    onGridReady(params: GridReadyEvent<BravoBlotterRowDto>) {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
@@ -128,7 +128,7 @@ export class BravoBlotterComponent {
     }
 
 
-    onEdit(dto: BravoTableDto) {
+    onEdit(dto: BravoBlotterRowDto) {
 
         this.edit.emit(dto);
 
@@ -136,7 +136,7 @@ export class BravoBlotterComponent {
 
 
 
-    onDelete(dto: BravoTableDto) {
+    onDelete(dto: BravoBlotterRowDto) {
 
         this.delete.emit(dto);
 

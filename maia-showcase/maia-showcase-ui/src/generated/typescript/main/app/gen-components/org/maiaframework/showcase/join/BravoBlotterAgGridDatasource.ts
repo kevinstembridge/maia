@@ -3,7 +3,7 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {BravoTableDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoTableDto';
+import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 
@@ -21,8 +21,8 @@ export class BravoBlotterAgGridDatasource implements IDatasource {
 
     getRows(params: IGetRowsParams): void {
 
-        this.http.post<SearchResultPage<BravoTableDto>>(
-            '/api/bravo_table/search',
+        this.http.post<SearchResultPage<BravoBlotterRowDto>>(
+            '/api/bravo_blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

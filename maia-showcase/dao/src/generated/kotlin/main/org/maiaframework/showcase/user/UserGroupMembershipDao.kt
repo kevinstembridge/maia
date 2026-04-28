@@ -14,6 +14,7 @@ import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.time.Instant
 
 
 @Repository
@@ -36,12 +37,16 @@ class UserGroupMembershipDao(
             """
             insert into maia.user_group_membership (
                 created_timestamp_utc,
+                effective_from,
+                effective_to,
                 id,
                 user_id,
                 user_group_id,
                 version
             ) values (
                 :createdTimestampUtc,
+                :effectiveFrom,
+                :effectiveTo,
                 :id,
                 :user,
                 :userGroup,
@@ -50,6 +55,8 @@ class UserGroupMembershipDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("effectiveFrom", entity.effectiveFrom)
+                addValue("effectiveTo", entity.effectiveTo)
                 addValue("id", entity.id)
                 addValue("user", entity.user)
                 addValue("userGroup", entity.userGroup)
@@ -68,12 +75,16 @@ class UserGroupMembershipDao(
             """
             insert into maia.user_group_membership (
                 created_timestamp_utc,
+                effective_from,
+                effective_to,
                 id,
                 user_id,
                 user_group_id,
                 version
             ) values (
                 :createdTimestampUtc,
+                :effectiveFrom,
+                :effectiveTo,
                 :id,
                 :user,
                 :userGroup,
@@ -83,6 +94,8 @@ class UserGroupMembershipDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("effectiveFrom", entity.effectiveFrom)
+                    addValue("effectiveTo", entity.effectiveTo)
                     addValue("id", entity.id)
                     addValue("user", entity.user)
                     addValue("userGroup", entity.userGroup)
@@ -126,12 +139,16 @@ class UserGroupMembershipDao(
 
         val id = entity.id
         val createdTimestampUtc = entity.createdTimestampUtc
+        val effectiveFrom = entity.effectiveFrom
+        val effectiveTo = entity.effectiveTo
         val user = entity.user
         val userGroup = entity.userGroup
 
         return UserGroupMembershipHistoryEntity(
                 changeType,
                 createdTimestampUtc,
+                effectiveFrom,
+                effectiveTo,
                 id,
                 user,
                 userGroup,
@@ -233,6 +250,42 @@ class UserGroupMembershipDao(
             """
             select * from maia.user_group_membership
             where user_id = :user
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("user", user)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findEffectiveByUserGroup(userGroup: DomainId): UserGroupMembershipEntity? {
+
+        return jdbcOps.queryForObjectOrNull(
+            """
+            select * from maia.user_group_membership
+            where user_group_id = :userGroup
+            and effective_from <= current_timestamp
+            and (effective_to > current_timestamp or effective_to is null)
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("userGroup", userGroup)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findEffectiveByUser(user: DomainId): UserGroupMembershipEntity? {
+
+        return jdbcOps.queryForObjectOrNull(
+            """
+            select * from maia.user_group_membership
+            where user_id = :user
+            and effective_from <= current_timestamp
+            and (effective_to > current_timestamp or effective_to is null)
             """.trimIndent(),
             SqlParams().apply {
                 addValue("user", user)
@@ -426,6 +479,8 @@ class UserGroupMembershipDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "effectiveFrom" -> sqlParams.addValue("effectiveFrom", field.value as Instant?)
+            "effectiveTo" -> sqlParams.addValue("effectiveTo", field.value as Instant?)
             "user" -> sqlParams.addValue("user", field.value as DomainId)
             "userGroup" -> sqlParams.addValue("userGroup", field.value as DomainId)
         }

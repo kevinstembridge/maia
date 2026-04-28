@@ -11,6 +11,8 @@ import java.time.Instant
 class UserGroupMembershipHistoryEntity(
     val changeType: ChangeType,
     val createdTimestampUtc: Instant,
+    val effectiveFrom: Instant?,
+    val effectiveTo: Instant?,
     val id: DomainId,
     val user: DomainId,
     val userGroup: DomainId,
@@ -26,6 +28,8 @@ class UserGroupMembershipHistoryEntity(
         return "UserGroupMembershipHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
+                "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "user = '" + this.user + '\'' + ", " + 
                 "userGroup = '" + this.userGroup + '\'' + ", " + 

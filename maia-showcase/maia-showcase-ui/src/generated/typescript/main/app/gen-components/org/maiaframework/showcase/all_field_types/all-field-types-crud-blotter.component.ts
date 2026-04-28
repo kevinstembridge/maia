@@ -3,7 +3,7 @@
 
 import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {AllFieldTypesTableDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesTableDto';
+import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesBlotterRowDto';
 import {AllFieldTypesBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-blotter.component';
 import {AllFieldTypesCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-create-dialog.component';
 import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
@@ -42,7 +42,7 @@ export class AllFieldTypesCrudBlotterComponent {
     }
 
 
-    onEdit(dto: AllFieldTypesTableDto) {
+    onEdit(dto: AllFieldTypesBlotterRowDto) {
 
         const dialogRef = this.dialog.open(AllFieldTypesEditDialogComponent, {
             width: '400px',
@@ -58,7 +58,7 @@ export class AllFieldTypesCrudBlotterComponent {
     }
 
 
-    onDelete(dto: AllFieldTypesTableDto) {
+    onDelete(dto: AllFieldTypesBlotterRowDto) {
 
         const dialogRef = this.dialog.open(AllFieldTypesDeleteDialogComponent, {
             width: '400px',

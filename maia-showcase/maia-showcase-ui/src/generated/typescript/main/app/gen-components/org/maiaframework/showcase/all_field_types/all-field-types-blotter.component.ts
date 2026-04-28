@@ -7,7 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {AllFieldTypesBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesBlotterAgGridDatasource';
-import {AllFieldTypesTableDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesTableDto';
+import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesBlotterRowDto';
 import {AllFieldTypesBlotterService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-blotter.service';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
@@ -27,10 +27,10 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class AllFieldTypesBlotterComponent {
 
 
-    readonly edit = output<AllFieldTypesTableDto>();
+    readonly edit = output<AllFieldTypesBlotterRowDto>();
 
 
-    readonly delete = output<AllFieldTypesTableDto>();
+    readonly delete = output<AllFieldTypesBlotterRowDto>();
 
 
     readonly addButtonClicked = output();
@@ -141,10 +141,10 @@ export class AllFieldTypesBlotterComponent {
     public maxBlocksInCache = 10;
 
 
-    public rowData!: AllFieldTypesTableDto[];
+    public rowData!: AllFieldTypesBlotterRowDto[];
 
 
-    private gridApi!: GridApi<AllFieldTypesTableDto>;
+    private gridApi!: GridApi<AllFieldTypesBlotterRowDto>;
 
 
     private readonly datasource = inject(AllFieldTypesBlotterAgGridDatasource);
@@ -156,7 +156,7 @@ export class AllFieldTypesBlotterComponent {
     private readonly authService = inject(AuthService);
 
 
-    onGridReady(params: GridReadyEvent<AllFieldTypesTableDto>) {
+    onGridReady(params: GridReadyEvent<AllFieldTypesBlotterRowDto>) {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
@@ -164,7 +164,7 @@ export class AllFieldTypesBlotterComponent {
     }
 
 
-    onEdit(dto: AllFieldTypesTableDto) {
+    onEdit(dto: AllFieldTypesBlotterRowDto) {
 
         this.edit.emit(dto);
 
@@ -172,7 +172,7 @@ export class AllFieldTypesBlotterComponent {
 
 
 
-    onDelete(dto: AllFieldTypesTableDto) {
+    onDelete(dto: AllFieldTypesBlotterRowDto) {
 
         this.delete.emit(dto);
 

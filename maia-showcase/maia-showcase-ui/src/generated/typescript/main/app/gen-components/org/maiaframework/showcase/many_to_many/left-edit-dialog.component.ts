@@ -123,9 +123,9 @@ export class LeftEditDialogComponent implements OnInit {
         this.formService.fetchForEdit(this.entityId).subscribe({
             next: (dto: LeftFetchForEditDto) => {
                 this.formGroup.patchValue({
+                    id: dto.id,
                     someInt: dto.someInt,
                     someString: dto.someString,
-                    id: dto.id,
                 });
                 this.selectedRightEntities = dto.rightEntities.map(r => ({
                     id: r.id,

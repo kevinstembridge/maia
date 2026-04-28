@@ -78,10 +78,10 @@ export class BravoEditDialogComponent implements OnInit {
         this.formService.fetchForEdit(this.entityId).subscribe({
             next: (dto: BravoFetchForEditDto) => {
                 this.formGroup.patchValue({
+                    alpha: dto.alpha,
+                    id: dto.id,
                     someInt: dto.someInt,
                     someString: dto.someString,
-                    id: dto.id,
-                    alpha: dto.alpha,
                 });
                 this.loading.set(false);
             },

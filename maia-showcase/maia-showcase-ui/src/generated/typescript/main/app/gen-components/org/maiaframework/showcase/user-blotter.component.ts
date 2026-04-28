@@ -7,7 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {UserBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/UserBlotterAgGridDatasource';
-import {UserTableDto} from '@app/gen-components/org/maiaframework/showcase/UserTableDto';
+import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/UserBlotterRowDto';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {UserBlotterService} from '@app/gen-components/org/maiaframework/showcase/user-blotter.service';
@@ -27,7 +27,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class UserBlotterComponent {
 
 
-    readonly edit = output<UserTableDto>();
+    readonly edit = output<UserBlotterRowDto>();
 
 
     readonly addButtonClicked = output();
@@ -92,10 +92,10 @@ export class UserBlotterComponent {
     public maxBlocksInCache = 10;
 
 
-    public rowData!: UserTableDto[];
+    public rowData!: UserBlotterRowDto[];
 
 
-    private gridApi!: GridApi<UserTableDto>;
+    private gridApi!: GridApi<UserBlotterRowDto>;
 
 
     private readonly datasource = inject(UserBlotterAgGridDatasource);
@@ -107,7 +107,7 @@ export class UserBlotterComponent {
     private readonly authService = inject(AuthService);
 
 
-    onGridReady(params: GridReadyEvent<UserTableDto>) {
+    onGridReady(params: GridReadyEvent<UserBlotterRowDto>) {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
@@ -115,7 +115,7 @@ export class UserBlotterComponent {
     }
 
 
-    onEdit(dto: UserTableDto) {
+    onEdit(dto: UserBlotterRowDto) {
 
         this.edit.emit(dto);
 

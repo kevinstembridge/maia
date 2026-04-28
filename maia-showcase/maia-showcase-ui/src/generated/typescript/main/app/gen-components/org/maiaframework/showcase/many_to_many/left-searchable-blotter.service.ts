@@ -3,7 +3,7 @@
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {LeftSearchableTableDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableTableDto';
+import {LeftSearchableBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftSearchableBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
@@ -21,10 +21,10 @@ export class LeftSearchableBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(searchModel: any): Observable<SearchResultPage<LeftSearchableTableDto>> {
+    public search(searchModel: any): Observable<SearchResultPage<LeftSearchableBlotterRowDto>> {
 
-        return this.http.post<SearchResultPage<LeftSearchableTableDto>>(
-                '/api/left_searchable_table/search',
+        return this.http.post<SearchResultPage<LeftSearchableBlotterRowDto>>(
+                '/api/left_searchable_blotter/search',
                 searchModel,
                 this.httpOptions);
 

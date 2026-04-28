@@ -16,6 +16,10 @@ object UserGroupMembershipHistoryEntityMeta {
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
+    const val effectiveFrom = "effective_from"
+
+    const val effectiveTo = "effective_to"
+
     const val id = "id"
 
     const val user = "user_id"
@@ -49,6 +53,8 @@ object UserGroupMembershipHistoryEntityMeta {
         return when(classFieldName) {
             "changeType" -> "change_type"
             "createdTimestampUtc" -> "created_timestamp_utc"
+            "effectiveFrom" -> "effective_from"
+            "effectiveTo" -> "effective_to"
             "id" -> "id"
             "user" -> "user_id"
             "userGroup" -> "user_group_id"

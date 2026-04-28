@@ -79,8 +79,8 @@ export class SimpleEditDialogComponent implements OnInit {
         this.formService.fetchForEdit(this.entityId).subscribe({
             next: (dto: SimpleFetchForEditDto) => {
                 this.formGroup.patchValue({
-                    someString: dto.someString,
                     id: dto.id,
+                    someString: dto.someString,
                 });
                 this.loading.set(false);
             },

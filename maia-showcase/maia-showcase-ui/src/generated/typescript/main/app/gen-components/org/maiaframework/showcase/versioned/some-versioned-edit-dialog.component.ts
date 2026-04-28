@@ -77,9 +77,9 @@ export class SomeVersionedEditDialogComponent implements OnInit {
         this.formService.fetchForEdit(this.entityId).subscribe({
             next: (dto: SomeVersionedFetchForEditDto) => {
                 this.formGroup.patchValue({
-                    someString: dto.someString,
-                    someInt: dto.someInt,
                     id: dto.id,
+                    someInt: dto.someInt,
+                    someString: dto.someString,
                     version: dto.version,
                 });
                 this.loading.set(false);

@@ -22,6 +22,10 @@ class UserGroupMembershipHistoryEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as ChangeType).name
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
+            "effective_from" -> // effectiveFrom
+                return inputValue
+            "effective_to" -> // effectiveTo
+                return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
             "user_id" -> // user

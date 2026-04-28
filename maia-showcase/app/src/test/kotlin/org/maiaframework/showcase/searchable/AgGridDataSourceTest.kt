@@ -1275,7 +1275,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             )
         )
 
-        return assertThat_POST("/api/all_field_types_table/search", requestBody)
+        return assertThat_POST("/api/all_field_types_blotter/search", requestBody)
 
     }
 

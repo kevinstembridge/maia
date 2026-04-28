@@ -3,7 +3,7 @@
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {SomeVersionedTableDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedTableDto';
+import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
@@ -21,10 +21,10 @@ export class SomeVersionedBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(searchModel: any): Observable<SearchResultPage<SomeVersionedTableDto>> {
+    public search(searchModel: any): Observable<SearchResultPage<SomeVersionedBlotterRowDto>> {
 
-        return this.http.post<SearchResultPage<SomeVersionedTableDto>>(
-                '/api/some_versioned_table/search',
+        return this.http.post<SearchResultPage<SomeVersionedBlotterRowDto>>(
+                '/api/some_versioned_blotter/search',
                 searchModel,
                 this.httpOptions);
 

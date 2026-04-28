@@ -3,7 +3,7 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {SimpleTableDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleTableDto';
+import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 
@@ -21,8 +21,8 @@ export class SimpleBlotterAgGridDatasource implements IDatasource {
 
     getRows(params: IGetRowsParams): void {
 
-        this.http.post<SearchResultPage<SimpleTableDto>>(
-            '/api/simple_table/search',
+        this.http.post<SearchResultPage<SimpleBlotterRowDto>>(
+            '/api/simple_blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

@@ -3,7 +3,7 @@
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {UserTableDto} from '@app/gen-components/org/maiaframework/showcase/UserTableDto';
+import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/UserBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
@@ -21,10 +21,10 @@ export class UserBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(searchModel: any): Observable<SearchResultPage<UserTableDto>> {
+    public search(searchModel: any): Observable<SearchResultPage<UserBlotterRowDto>> {
 
-        return this.http.post<SearchResultPage<UserTableDto>>(
-                '/api/user_table/search',
+        return this.http.post<SearchResultPage<UserBlotterRowDto>>(
+                '/api/user_blotter/search',
                 searchModel,
                 this.httpOptions);
 

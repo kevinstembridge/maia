@@ -3,7 +3,7 @@
 
 import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {SomeVersionedTableDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedTableDto';
+import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterRowDto';
 import {SomeVersionedBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter.component';
 import {SomeVersionedCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-create-dialog.component';
 import {SomeVersionedCrudService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud.service';
@@ -42,7 +42,7 @@ export class SomeVersionedCrudBlotterComponent {
     }
 
 
-    onEdit(dto: SomeVersionedTableDto) {
+    onEdit(dto: SomeVersionedBlotterRowDto) {
 
         const dialogRef = this.dialog.open(SomeVersionedEditDialogComponent, {
             width: '400px',
@@ -58,7 +58,7 @@ export class SomeVersionedCrudBlotterComponent {
     }
 
 
-    onDelete(dto: SomeVersionedTableDto) {
+    onDelete(dto: SomeVersionedBlotterRowDto) {
 
         const dialogRef = this.dialog.open(SomeVersionedDeleteDialogComponent, {
             width: '400px',

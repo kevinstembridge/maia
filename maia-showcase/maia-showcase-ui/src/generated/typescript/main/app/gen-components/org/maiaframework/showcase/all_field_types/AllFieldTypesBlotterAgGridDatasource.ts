@@ -3,7 +3,7 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {AllFieldTypesTableDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesTableDto';
+import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 
@@ -21,8 +21,8 @@ export class AllFieldTypesBlotterAgGridDatasource implements IDatasource {
 
     getRows(params: IGetRowsParams): void {
 
-        this.http.post<SearchResultPage<AllFieldTypesTableDto>>(
-            '/api/all_field_types_table/search',
+        this.http.post<SearchResultPage<AllFieldTypesBlotterRowDto>>(
+            '/api/all_field_types_blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

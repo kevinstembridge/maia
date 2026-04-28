@@ -3,7 +3,7 @@
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {CompositePrimaryKeyTableDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyTableDto';
+import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
@@ -21,10 +21,10 @@ export class CompositePrimaryKeyBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(searchModel: any): Observable<SearchResultPage<CompositePrimaryKeyTableDto>> {
+    public search(searchModel: any): Observable<SearchResultPage<CompositePrimaryKeyBlotterRowDto>> {
 
-        return this.http.post<SearchResultPage<CompositePrimaryKeyTableDto>>(
-                '/api/composite_primary_key_table/search',
+        return this.http.post<SearchResultPage<CompositePrimaryKeyBlotterRowDto>>(
+                '/api/composite_primary_key_blotter/search',
                 searchModel,
                 this.httpOptions);
 

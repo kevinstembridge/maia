@@ -5,6 +5,7 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.persist.FieldUpdate
+import java.time.Instant
 
 
 data class UserGroupMembershipEntityUpdater(
@@ -35,6 +36,20 @@ data class UserGroupMembershipEntityUpdater(
                 this.id,
                 this.version
             )
+
+        }
+
+
+        fun effectiveFrom(effectiveFrom: Instant?) {
+
+            this.fields.add(FieldUpdate("effectiveFrom", "effective_from", effectiveFrom))
+
+        }
+
+
+        fun effectiveTo(effectiveTo: Instant?) {
+
+            this.fields.add(FieldUpdate("effectiveTo", "effective_to", effectiveTo))
 
         }
 

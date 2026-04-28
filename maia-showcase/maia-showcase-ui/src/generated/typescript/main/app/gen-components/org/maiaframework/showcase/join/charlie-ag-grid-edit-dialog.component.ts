@@ -77,9 +77,9 @@ export class CharlieAgGridEditDialogComponent implements OnInit {
         this.formService.fetchForEdit(this.entityId).subscribe({
             next: (dto: CharlieAgGridFetchForEditDto) => {
                 this.formGroup.patchValue({
+                    id: dto.id,
                     someInt: dto.someInt,
                     someString: dto.someString,
-                    id: dto.id,
                 });
                 this.loading.set(false);
             },

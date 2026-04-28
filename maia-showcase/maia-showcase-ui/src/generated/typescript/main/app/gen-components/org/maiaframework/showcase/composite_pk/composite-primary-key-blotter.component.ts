@@ -9,7 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {CompositePrimaryKeyBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterAgGridDatasource';
-import {CompositePrimaryKeyTableDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyTableDto';
+import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterRowDto';
 import {CompositePrimaryKeyBlotterService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-blotter.service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
@@ -27,10 +27,10 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class CompositePrimaryKeyBlotterComponent {
 
 
-    readonly edit = output<CompositePrimaryKeyTableDto>();
+    readonly edit = output<CompositePrimaryKeyBlotterRowDto>();
 
 
-    readonly delete = output<CompositePrimaryKeyTableDto>();
+    readonly delete = output<CompositePrimaryKeyBlotterRowDto>();
 
 
     readonly addButtonClicked = output();
@@ -106,10 +106,10 @@ export class CompositePrimaryKeyBlotterComponent {
     public maxBlocksInCache = 10;
 
 
-    public rowData!: CompositePrimaryKeyTableDto[];
+    public rowData!: CompositePrimaryKeyBlotterRowDto[];
 
 
-    private gridApi!: GridApi<CompositePrimaryKeyTableDto>;
+    private gridApi!: GridApi<CompositePrimaryKeyBlotterRowDto>;
 
 
     private readonly datasource = inject(CompositePrimaryKeyBlotterAgGridDatasource);
@@ -121,7 +121,7 @@ export class CompositePrimaryKeyBlotterComponent {
     private readonly authService = inject(AuthService);
 
 
-    onGridReady(params: GridReadyEvent<CompositePrimaryKeyTableDto>) {
+    onGridReady(params: GridReadyEvent<CompositePrimaryKeyBlotterRowDto>) {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
@@ -129,7 +129,7 @@ export class CompositePrimaryKeyBlotterComponent {
     }
 
 
-    onEdit(dto: CompositePrimaryKeyTableDto) {
+    onEdit(dto: CompositePrimaryKeyBlotterRowDto) {
 
         this.edit.emit(dto);
 
@@ -137,7 +137,7 @@ export class CompositePrimaryKeyBlotterComponent {
 
 
 
-    onDelete(dto: CompositePrimaryKeyTableDto) {
+    onDelete(dto: CompositePrimaryKeyBlotterRowDto) {
 
         this.delete.emit(dto);
 

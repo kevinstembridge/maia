@@ -323,6 +323,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         rightEntity = ReferencedEntity("user", "User", userEntityDef, IsEditableByUser.TRUE)
     ) {
         moduleName("ops")
+        withEffectiveTimestamps()
     }
 
 

@@ -3,7 +3,7 @@
 
 import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {BravoTableDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoTableDto';
+import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterRowDto';
 import {BravoBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter.component';
 import {BravoCheckForeignKeyReferencesDialogComponent} from '@app/gen-components/org/maiaframework/showcase/join/bravo-check-foreign-key-references-dialog.component';
 import {BravoCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/join/bravo-create-dialog.component';
@@ -43,7 +43,7 @@ export class BravoCrudBlotterComponent {
     }
 
 
-    onEdit(dto: BravoTableDto) {
+    onEdit(dto: BravoBlotterRowDto) {
 
         const dialogRef = this.dialog.open(BravoEditDialogComponent, {
             width: '400px',
@@ -59,7 +59,7 @@ export class BravoCrudBlotterComponent {
     }
 
 
-    onDelete(dto: BravoTableDto) {
+    onDelete(dto: BravoBlotterRowDto) {
 
         const checkForeignKeyReferencesDialogRef = this.dialog.open(BravoCheckForeignKeyReferencesDialogComponent, {
             width: '500px',
@@ -75,7 +75,7 @@ export class BravoCrudBlotterComponent {
     }
 
 
-    private displayDeleteDialog(dto: BravoTableDto) {
+    private displayDeleteDialog(dto: BravoBlotterRowDto) {
 
         const dialogRef = this.dialog.open(BravoDeleteDialogComponent, {
             width: '400px',

@@ -9,7 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {SimpleBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterAgGridDatasource';
-import {SimpleTableDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleTableDto';
+import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
 import {SimpleBlotterService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-blotter.service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
@@ -27,10 +27,10 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class SimpleBlotterComponent {
 
 
-    readonly edit = output<SimpleTableDto>();
+    readonly edit = output<SimpleBlotterRowDto>();
 
 
-    readonly delete = output<SimpleTableDto>();
+    readonly delete = output<SimpleBlotterRowDto>();
 
 
     readonly addButtonClicked = output();
@@ -104,10 +104,10 @@ export class SimpleBlotterComponent {
     public maxBlocksInCache = 10;
 
 
-    public rowData!: SimpleTableDto[];
+    public rowData!: SimpleBlotterRowDto[];
 
 
-    private gridApi!: GridApi<SimpleTableDto>;
+    private gridApi!: GridApi<SimpleBlotterRowDto>;
 
 
     private readonly datasource = inject(SimpleBlotterAgGridDatasource);
@@ -119,7 +119,7 @@ export class SimpleBlotterComponent {
     private readonly authService = inject(AuthService);
 
 
-    onGridReady(params: GridReadyEvent<SimpleTableDto>) {
+    onGridReady(params: GridReadyEvent<SimpleBlotterRowDto>) {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
@@ -127,7 +127,7 @@ export class SimpleBlotterComponent {
     }
 
 
-    onEdit(dto: SimpleTableDto) {
+    onEdit(dto: SimpleBlotterRowDto) {
 
         this.edit.emit(dto);
 
@@ -135,7 +135,7 @@ export class SimpleBlotterComponent {
 
 
 
-    onDelete(dto: SimpleTableDto) {
+    onDelete(dto: SimpleBlotterRowDto) {
 
         this.delete.emit(dto);
 

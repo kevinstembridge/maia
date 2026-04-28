@@ -49,6 +49,22 @@ class UserGroupMembershipEntityFilters {
         }
 
 
+    val effectiveFrom: FieldFilter<Instant?> 
+        get() {
+
+            return FieldFilter("effective_from", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+
+        }
+
+
+    val effectiveTo: FieldFilter<Instant?> 
+        get() {
+
+            return FieldFilter("effective_to", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+
+        }
+
+
     val id: FieldFilter<DomainId> 
         get() {
 

@@ -3,7 +3,7 @@
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {CharlieTableDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieTableDto';
+import {CharlieBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
@@ -21,10 +21,10 @@ export class CharlieBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(searchModel: any): Observable<SearchResultPage<CharlieTableDto>> {
+    public search(searchModel: any): Observable<SearchResultPage<CharlieBlotterRowDto>> {
 
-        return this.http.post<SearchResultPage<CharlieTableDto>>(
-                '/api/charlie_table/search',
+        return this.http.post<SearchResultPage<CharlieBlotterRowDto>>(
+                '/api/charlie_blotter/search',
                 searchModel,
                 this.httpOptions);
 

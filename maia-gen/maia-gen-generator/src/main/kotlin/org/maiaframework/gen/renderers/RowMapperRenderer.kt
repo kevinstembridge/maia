@@ -152,7 +152,7 @@ class RowMapperRenderer(
             append("""
                 |
                 |
-                |    private fun fetch${manyToManyRowMapperFieldDef.classFieldName.firstToUpper()}PkAndNameDtos(entityId: DomainId): List<${entityPkAndNameDef.pkAndNameDtoFqcn}> {
+                |    private fun fetch${manyToManyRowMapperFieldDef.classFieldName.firstToUpper()}PkAndNameDtos(entityId: DomainId): List<${entityPkAndNameDef.pkAndNameDtoFqcn.uqcn}> {
                 |
                 |        return this.jdbcOps.queryForList(
                 |            $tripleQuote

@@ -3,7 +3,7 @@
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {BravoTableDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoTableDto';
+import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
@@ -21,10 +21,10 @@ export class BravoBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(searchModel: any): Observable<SearchResultPage<BravoTableDto>> {
+    public search(searchModel: any): Observable<SearchResultPage<BravoBlotterRowDto>> {
 
-        return this.http.post<SearchResultPage<BravoTableDto>>(
-                '/api/bravo_table/search',
+        return this.http.post<SearchResultPage<BravoBlotterRowDto>>(
+                '/api/bravo_blotter/search',
                 searchModel,
                 this.httpOptions);
 

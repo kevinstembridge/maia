@@ -80,6 +80,20 @@ class UserGroupMembershipRepo(
     }
 
 
+    fun findEffectiveByUserGroup(userGroup: DomainId): UserGroupMembershipEntity? {
+
+        return dao.findEffectiveByUserGroup(userGroup)
+
+    }
+
+
+    fun findEffectiveByUser(user: DomainId): UserGroupMembershipEntity? {
+
+        return dao.findEffectiveByUser(user)
+
+    }
+
+
     fun existsByUserGroup(userGroup: DomainId): Boolean {
 
         return dao.existsByUserGroup(userGroup)
