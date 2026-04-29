@@ -58,6 +58,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'user_group_memberships',
+        loadComponent: () =>
+            import('@app/pages/user-group-membership-blotter/user-group-membership-blotter-page').then(
+                (m) => m.UserGroupMembershipBlotterPage,
+            ),
+    },
+    {
         path: 'left_searchable',
         loadComponent: () =>
             import('@app/pages/left-searchable-blotter/left-searchable-blotter-page').then(
