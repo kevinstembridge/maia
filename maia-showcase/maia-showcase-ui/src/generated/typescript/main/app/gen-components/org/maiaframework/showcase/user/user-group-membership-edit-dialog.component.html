@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>Edit</h1>
+
+@if (loading()) {
+    <div mat-dialog-content style="display: flex; justify-content: center; padding: 24px;">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+} @else {
+<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+    <div mat-dialog-content>
+        @if (problemDetail()) {
+            <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
+        }
+        <mat-form-field appearance="outline">
+            <mat-label>User Group</mat-label>
+            <input
+                formControlName="userGroup"
+                name="userGroup"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['userGroup'].hasError('required')) {
+                <mat-error>User Group is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>User</mat-label>
+            <input
+                formControlName="user"
+                name="user"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['user'].hasError('required')) {
+                <mat-error>User is required.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-flat-button type="submit" color="primary">Submit</button>
+        <button mat-flat-button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+</form>
+}

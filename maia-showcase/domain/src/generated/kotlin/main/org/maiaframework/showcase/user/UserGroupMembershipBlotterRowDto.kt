@@ -7,7 +7,7 @@ import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-data class UserGroupMembershipDto(
+data class UserGroupMembershipBlotterRowDto(
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,

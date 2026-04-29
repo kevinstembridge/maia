@@ -5,24 +5,122 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class UserGroupMembershipCrudService(
     private val entityRepo: UserGroupMembershipRepo,
-    private val maiaProblems: MaiaProblems
+    private val maiaProblems: MaiaProblems,
+    private val userGroupMembershipCrudNotifier: UserGroupMembershipCrudNotifier
 ) {
 
 
     private val logger = LoggerFactory.getLogger(UserGroupMembershipCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun create(createDto: UserGroupMembershipCreateRequestDto): UserGroupMembershipEntity {
+
+        logger.info("BEGIN: create UserGroupMembership. dto=$createDto")
+
+        val entity: UserGroupMembershipEntity = buildEntity(createDto)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(createDto: UserGroupMembershipCreateRequestDto): UserGroupMembershipEntity {
+
+        val effectiveFrom: Instant? = createDto.effectiveFrom
+        val effectiveTo: Instant? = createDto.effectiveTo
+        val user: DomainId = createDto.user
+        val userGroup: DomainId = createDto.userGroup
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+        val version = 1L
+
+        return UserGroupMembershipEntity(
+            createdTimestampUtc,
+            effectiveFrom,
+            effectiveTo,
+            id,
+            user,
+            userGroup,
+            version
+        )
+
+    }
+
+
     fun create(entity: UserGroupMembershipEntity): UserGroupMembershipEntity {
 
         this.entityRepo.insert(entity)
+        this.userGroupMembershipCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    fun fetchForEdit(id: DomainId): UserGroupMembershipFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun update(editDto: UserGroupMembershipUpdateRequestDto) {
+
+        val id = editDto.id
+        val version = editDto.version
+        val updater = UserGroupMembershipEntityUpdater.forPrimaryKey(id, version) {
+            user(editDto.user)
+            userGroup(editDto.userGroup)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun updateUserGroup(editDto: UserGroupMembershipUpdate_userGroupRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateUserGroup. currentUsername=${currentUsername}, dto=$editDto")
+
+        val version = editDto.version
+
+        val updater = UserGroupMembershipEntityUpdater.forPrimaryKey(editDto.id, version) {
+            userGroup(editDto.userGroup)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun updateUser(editDto: UserGroupMembershipUpdate_userRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateUser. currentUsername=${currentUsername}, dto=$editDto")
+
+        val version = editDto.version
+
+        val updater = UserGroupMembershipEntityUpdater.forPrimaryKey(editDto.id, version) {
+            user(editDto.user)
+        }
+
+        setFields(updater)
 
     }
 
@@ -30,6 +128,7 @@ class UserGroupMembershipCrudService(
     fun setFields(updater: UserGroupMembershipEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
+        this.userGroupMembershipCrudNotifier.onEntityUpdated(updater.id)
         return count
         
     }

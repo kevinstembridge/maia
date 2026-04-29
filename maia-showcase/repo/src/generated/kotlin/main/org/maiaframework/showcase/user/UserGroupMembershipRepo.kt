@@ -108,6 +108,13 @@ class UserGroupMembershipRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): UserGroupMembershipFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: UserGroupMembershipEntity) {
 
         logger.debug("insert {}", entity)

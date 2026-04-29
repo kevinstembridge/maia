@@ -7,12 +7,12 @@ import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 
 
-class UserGroupMembershipDtoRowMapper : MaiaRowMapper<UserGroupMembershipDto> {
+class UserGroupMembershipBlotterRowDtoRowMapper : MaiaRowMapper<UserGroupMembershipBlotterRowDto> {
 
 
-    override fun mapRow(rsa: ResultSetAdapter): UserGroupMembershipDto {
+    override fun mapRow(rsa: ResultSetAdapter): UserGroupMembershipBlotterRowDto {
 
-        return UserGroupMembershipDto(
+        return UserGroupMembershipBlotterRowDto(
             rsa.readInstantOrNull("effectiveFrom"),
             rsa.readInstantOrNull("effectiveTo"),
             rsa.readDomainId("id"),

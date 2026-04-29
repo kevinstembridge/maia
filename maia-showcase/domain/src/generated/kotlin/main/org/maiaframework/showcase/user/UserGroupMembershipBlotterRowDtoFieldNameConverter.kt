@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class UserGroupMembershipDtoFieldNameConverter : SearchFieldNameConverter {
+class UserGroupMembershipBlotterRowDtoFieldNameConverter : SearchFieldNameConverter {
 
 
     override fun convertFieldName(fieldName: String): String {

@@ -31,6 +31,9 @@ class UserGroupMembershipDao(
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
+    private val fetchForEditDtoRowMapper = UserGroupMembershipFetchForEditDtoRowMapper()
+
+
     fun insert(entity: UserGroupMembershipEntity) {
 
         jdbcOps.update(
@@ -422,6 +425,37 @@ class UserGroupMembershipDao(
         )
 
         return count > 0
+
+    }
+
+
+    fun fetchForEdit(id: DomainId): UserGroupMembershipFetchForEditDto {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                maia.user_group_membership.created_timestamp_utc as createdTimestampUtc,
+                maia.user_group_membership.effective_from as effectiveFrom,
+                maia.user_group_membership.effective_to as effectiveTo,
+                maia.user_group_membership.id as id,
+                maia.v_party.id as userId,
+                maia.v_party.display_name as userName,
+                maia.user_group.id as userGroupId,
+                maia.user_group.name as userGroupName,
+                maia.user_group_membership.version as version
+            from maia.user_group_membership
+            join maia.user_group
+                on maia.user_group.id = maia.user_group_membership.user_group_id
+            join maia.v_party
+                on maia.v_party.id = maia.user_group_membership.user_id
+            where maia.user_group_membership.id = :id
+            """,
+            SqlParams().apply {
+                addValue("id", id)
+            },
+            this.fetchForEditDtoRowMapper
+        ).firstOrNull()
+            ?: throw EntityNotFoundException(EntityClassAndPk(UserGroupMembershipEntity::class.java, mapOf("id" to id)), UserGroupMembershipEntityMeta.TABLE_NAME)
 
     }
 

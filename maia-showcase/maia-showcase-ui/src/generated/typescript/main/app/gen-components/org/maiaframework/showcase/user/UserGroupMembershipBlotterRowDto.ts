@@ -2,9 +2,9 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 
-export interface UserGroupMembershipDto {
-    effectiveFrom?: string;
-    effectiveTo?: string;
+export interface UserGroupMembershipBlotterRowDto {
+    effectiveFrom: string;
+    effectiveTo: string;
     id: string;
     userDisplayName: string;
     userGroupId: string;

@@ -11,12 +11,12 @@ import tools.jackson.databind.node.JsonNodeFactory
 
 
 @Service
-class UserGroupMembershipDtoSearchService(
-    private val dtoRepo: UserGroupMembershipDtoRepo
+class UserGroupMembershipBlotterRowDtoSearchService(
+    private val dtoRepo: UserGroupMembershipBlotterRowDtoRepo
 ) {
 
 
-    fun search(searchModel: AgGridSearchModel): SearchResultPage<UserGroupMembershipDto> {
+    fun search(searchModel: AgGridSearchModel): SearchResultPage<UserGroupMembershipBlotterRowDto> {
 
         return this.dtoRepo.getRows(searchModel)
 
@@ -30,7 +30,7 @@ class UserGroupMembershipDtoSearchService(
     }
 
 
-    fun findAll(): List<UserGroupMembershipDto> {
+    fun findAll(): List<UserGroupMembershipBlotterRowDto> {
 
         val sortModel = emptyList<AgGridSortModelItem>()
 

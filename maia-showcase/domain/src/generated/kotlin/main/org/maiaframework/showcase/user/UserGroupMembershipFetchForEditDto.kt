@@ -7,14 +7,14 @@ import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-data class UserGroupMembershipDto(
+data class UserGroupMembershipFetchForEditDto(
+    val createdTimestampUtc: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,
-    val userDisplayName: String,
-    val userGroupId: DomainId,
-    val userGroupName: String,
-    val userId: DomainId
+    val user: UserPkAndNameDto,
+    val userGroup: UserGroupPkAndNameDto,
+    val version: Long
 ) {
 
 

@@ -6,7 +6,7 @@ package org.maiaframework.showcase.user
 import org.maiaframework.jdbc.JdbcCompatibleType
 
 
-object UserGroupMembershipDtoMeta {
+object UserGroupMembershipBlotterRowDtoMeta {
 
 
     fun fieldNameToColumnName(dtoFieldName: String): String {

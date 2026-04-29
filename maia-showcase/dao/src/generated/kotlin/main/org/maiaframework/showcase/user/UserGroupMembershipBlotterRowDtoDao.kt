@@ -12,21 +12,21 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class UserGroupMembershipDtoDao(
+class UserGroupMembershipBlotterRowDtoDao(
     private val jdbcOps: JdbcOps
 ) {
 
 
-    private val dtoRowMapper = UserGroupMembershipDtoRowMapper()
+    private val dtoRowMapper = UserGroupMembershipBlotterRowDtoRowMapper()
 
 
     private val searchModelConverter = AgGridSearchModelConverter(
-        UserGroupMembershipDtoMeta::fieldNameToColumnName,
-        UserGroupMembershipDtoMeta::fieldNameToJdbcType
+        UserGroupMembershipBlotterRowDtoMeta::fieldNameToColumnName,
+        UserGroupMembershipBlotterRowDtoMeta::fieldNameToJdbcType
     )
 
 
-    fun search(searchModel: AgGridSearchModel): SearchResultPage<UserGroupMembershipDto> {
+    fun search(searchModel: AgGridSearchModel): SearchResultPage<UserGroupMembershipBlotterRowDto> {
 
         val sqlParams = SqlParams()
         val whereClause = this.searchModelConverter.buildWhereClauseFor(searchModel.filterModel, sqlParams)

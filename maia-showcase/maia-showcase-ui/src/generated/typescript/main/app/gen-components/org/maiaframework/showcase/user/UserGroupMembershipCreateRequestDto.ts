@@ -2,12 +2,9 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 
-export interface UserGroupMembershipDto {
+export interface UserGroupMembershipCreateRequestDto {
     effectiveFrom?: string;
     effectiveTo?: string;
-    id: string;
-    userDisplayName: string;
-    userGroupId: string;
-    userGroupName: string;
-    userId: string;
+    user: string;
+    userGroup: string;
 }
