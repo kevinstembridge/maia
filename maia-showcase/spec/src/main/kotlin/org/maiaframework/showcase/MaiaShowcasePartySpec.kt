@@ -248,12 +248,12 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedDto = WithGeneratedDto.TRUE
     ) {
-        field("authorities", "authorities")
-        field("encryptedPassword", "encryptedPassword")
-        field("firstName", "firstName")
-        field("lastName", "lastName")
-        field("displayName", "displayName")
-        field("id", "id")
+        field("authorities")
+        field("encryptedPassword")
+        field("firstName")
+        field("lastName")
+        field("displayName")
+        field("id")
         field("createdTimestampUtc")
     }
 
@@ -324,6 +324,12 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     ) {
         moduleName("ops")
         withEffectiveTimestamps()
+        crud {
+            apis(defaultAuthority = adminAuthority) {
+                create()
+                update()
+            }
+        }
     }
 
 
@@ -331,13 +337,40 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         "org.maiaframework.showcase.user",
         "UserGroupMembership",
         userGroupMembershipEntityDef.entityDef,
-        withGeneratedDto = WithGeneratedDto.TRUE
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
     ) {
         moduleName("ops")
         field("id")
         field("userId", "user.id")
         field("userGroupId", "userGroup.id")
+        field("userDisplayName", "user.displayName")
+        field("userGroupName", "userGroup.name")
+        field("effectiveFrom")
+        field("effectiveTo")
     }
+
+
+    val userGroupMembershipBlotterDef = blotter(
+        userGroupMembershipSearchableDtoDef,
+        withAddButton = true,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
+    ) {
+        columnFromDto("userDisplayName") { header("User") }
+        columnFromDto("userGroupName") { header("Group") }
+        columnFromDto("effectiveFrom") { header("Effective From") }
+        columnFromDto("effectiveTo") { header("Effective To") }
+        columnFromDto("userId") { header("User ID") }
+        columnFromDto("userGroupId") { header("Group ID") }
+        columnFromDto("id") { header("ID") }
+        editActionColumn()
+    }
+
+
+    val userGroupMembershipCrudDef = crudBlotter(userGroupMembershipBlotterDef, userGroupMembershipEntityDef.entityDef.entityCrudApiDef!!)
 
 
     val personSummarySearchableDef = searchableDto(
