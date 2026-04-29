@@ -87,6 +87,7 @@ class UserGroupMembershipBlotterPage(
         page.locator("mat-spinner").waitFor(
             Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
         )
+        page.locator("input[name='userGroup']").waitFor()
         page.locator("input[name='userGroup']").fill(userGroupId)
         page.locator("input[name='user']").fill(userId)
         page.locator("input[name='user']").press("Tab")
