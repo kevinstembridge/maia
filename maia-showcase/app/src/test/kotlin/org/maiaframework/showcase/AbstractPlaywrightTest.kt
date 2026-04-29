@@ -18,6 +18,7 @@ import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.maiaframework.showcase.testing.pages.AllFieldTypesBlotterPage
 import org.maiaframework.showcase.testing.pages.BravoBlotterPage
 import org.maiaframework.showcase.testing.pages.LeftSearchableBlotterPage
+import org.maiaframework.showcase.testing.pages.UserGroupMembershipBlotterPage
 import org.maiaframework.showcase.testing.pages.CompositePkBlotterPage
 import org.maiaframework.showcase.testing.pages.UsersBlotterPage
 import org.maiaframework.showcase.testing.pages.SomeVersionedBlotterPage
@@ -71,6 +72,9 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var leftSearchableBlotterPage: LeftSearchableBlotterPage
 
 
+    protected lateinit var userGroupMembershipBlotterPage: UserGroupMembershipBlotterPage
+
+
     protected val retryTemplate = RetryTemplate(RetryPolicy.builder()
         .includes(AssertionError::class.java, Exception::class.java)
         .backOff(ExponentialBackOff().apply { maxAttempts = 4L })
@@ -102,6 +106,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         usersBlotterPage = UsersBlotterPage(page, urlHelper)
         bravoBlotterPage = BravoBlotterPage(page, urlHelper)
         leftSearchableBlotterPage = LeftSearchableBlotterPage(page, urlHelper)
+        userGroupMembershipBlotterPage = UserGroupMembershipBlotterPage(page, urlHelper)
 
     }
 
