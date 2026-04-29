@@ -112,7 +112,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val simpleResponseDto = simpleResponseDto("org.maiaframework.showcase", "Simple") {
+    val simpleResponseDto = simpleResponseDto("org.maiaframework.showcase.simple", "Simple") {
         field("someString", FieldTypes.string)
         field("someInt", FieldTypes.int) { nullable() }
         field("someBoolean", FieldTypes.boolean) { nullable() }
@@ -167,7 +167,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
 
     val orgSearchableDtoDef = searchableDto(
-        "org.maiaframework.showcase",
+        "org.maiaframework.showcase.org",
         "Org",
         entityDef = orgEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -201,7 +201,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
 
     val personSearchableDtoDef = searchableDto(
-        "org.maiaframework.showcase",
+        "org.maiaframework.showcase.person",
         "Person",
         entityDef = personEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -242,7 +242,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
 
     val userSearchableDtoDef = searchableDto(
-        "org.maiaframework.showcase",
+        "org.maiaframework.showcase.user",
         "User",
         entityDef = userEntityDef,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
