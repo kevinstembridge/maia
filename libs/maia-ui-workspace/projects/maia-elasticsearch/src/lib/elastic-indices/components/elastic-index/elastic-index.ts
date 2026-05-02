@@ -5,9 +5,9 @@ import {MatButtonModule} from '@angular/material/button';
 @Component({
     imports: [MatButtonModule],
     selector: 'maia-elastic-index',
-    templateUrl: './elastic-index.component.html'
+    templateUrl: './elastic-index.html'
 })
-export class ElasticIndexComponent {
+export class ElasticIndex {
 
     index = input.required<EsIndexStateDto>();
 

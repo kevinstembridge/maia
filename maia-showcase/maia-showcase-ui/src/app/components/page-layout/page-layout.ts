@@ -3,9 +3,9 @@ import {Component, Input} from '@angular/core';
 @Component({
   selector: 'app-page-layout',
   standalone: true,
-  templateUrl: './page-layout.component.html'
+  templateUrl: './page-layout.html'
 })
-export class PageLayoutComponent {
+export class PageLayout {
 
   @Input() pageTitle!: string;
   @Input() dataPageId?: string;

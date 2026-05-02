@@ -7,7 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
-import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
+import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {UserBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/user/UserBlotterAgGridDatasource';
 import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserBlotterRowDto';
 import {UserBlotterService} from '@app/gen-components/org/maiaframework/showcase/user/user-blotter-service';

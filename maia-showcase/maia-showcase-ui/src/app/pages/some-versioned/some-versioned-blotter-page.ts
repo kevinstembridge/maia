@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayoutComponent} from '@app/components/page-layout/page-layout.component';
+import {PageLayout} from '../../components/page-layout/page-layout';
 import {
     SomeVersionedCrudBlotterComponent
 } from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud-blotter.component';
@@ -9,7 +9,7 @@ import {
     templateUrl: './some-versioned-blotter-page.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        PageLayoutComponent,
+        PageLayout,
         SomeVersionedCrudBlotterComponent
     ]
 })

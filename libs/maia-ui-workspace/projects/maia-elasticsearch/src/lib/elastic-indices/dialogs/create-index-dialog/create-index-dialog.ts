@@ -5,13 +5,13 @@ import {MatButtonModule} from '@angular/material/button';
 
 @Component({
     selector: 'maia-create-index-dialog',
-    templateUrl: './create-index-dialog.component.html',
+    templateUrl: './create-index-dialog.html',
     imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule]
 })
-export class CreateIndexDialogComponent {
+export class CreateIndexDialog {
 
     constructor(
-        public dialogRef: MatDialogRef<CreateIndexDialogComponent>,
+        public dialogRef: MatDialogRef<CreateIndexDialog>,
         @Inject(MAT_DIALOG_DATA) public dto: EsIndexStateDto
     ) {}
 

@@ -7,7 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
-import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
+import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {CompositePrimaryKeyBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterAgGridDatasource';
 import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterRowDto';
 import {CompositePrimaryKeyBlotterService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-blotter-service';

@@ -5,13 +5,13 @@ import {MatButtonModule} from '@angular/material/button';
 
 @Component({
     selector: 'maia-set-index-version-active-dialog',
-    templateUrl: './set-index-version-active-dialog.component.html',
+    templateUrl: './set-index-version-active-dialog.html',
     imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule]
 })
-export class SetIndexVersionActiveDialogComponent {
+export class SetIndexVersionActiveDialog {
 
     constructor(
-        public dialogRef: MatDialogRef<SetIndexVersionActiveDialogComponent>,
+        public dialogRef: MatDialogRef<SetIndexVersionActiveDialog>,
         @Inject(MAT_DIALOG_DATA) public dto: EsIndexStateDto
     ) {}
 

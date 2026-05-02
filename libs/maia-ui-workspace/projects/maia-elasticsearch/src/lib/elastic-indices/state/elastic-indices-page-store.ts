@@ -5,7 +5,7 @@ import {pipe, tap} from 'rxjs';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
 import {EsIndexStateDto} from '../models/EsIndexStateDto';
-import {ElasticIndicesApiService} from '../services/elastic-indices-api.service';
+import {ElasticIndicesApiService} from '../services/elastic-indices-api-service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 
 type ElasticIndicesPageState = {

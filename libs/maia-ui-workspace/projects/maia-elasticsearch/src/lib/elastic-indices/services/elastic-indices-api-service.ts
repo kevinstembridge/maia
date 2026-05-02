@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {EsIndexStateDto} from '../models/EsIndexStateDto';
-import {ELASTIC_INDICES_API_BASE_URL} from './elastic-indices-api-base-url.token';
+import {ELASTIC_INDICES_API_BASE_URL} from './elastic-indices-api-base-url-token';
 
 @Injectable()
 export class ElasticIndicesApiService {

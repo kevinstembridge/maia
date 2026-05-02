@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayoutComponent} from '@app/components/page-layout/page-layout.component';
+import {PageLayout} from '../../components/page-layout/page-layout';
 import {UserGroupMembershipCrudBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-crud-blotter.component';
 
 @Component({
@@ -7,7 +7,7 @@ import {UserGroupMembershipCrudBlotterComponent} from '@app/gen-components/org/m
     templateUrl: './user-group-membership-blotter-page.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        PageLayoutComponent,
+        PageLayout,
         UserGroupMembershipCrudBlotterComponent,
     ]
 })

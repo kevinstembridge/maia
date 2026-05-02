@@ -4,10 +4,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/auth/current-user.store';
-import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
-import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
-import {CurrentUserAuthStore} from '@app/state/current-user-auth.store';
+import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/auth/current-user-store';
+import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
+import {CurrentUserAuthStore} from './state/current-user-auth-store';
 
 @Component({
     selector: 'app-root',

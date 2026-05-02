@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayoutComponent} from '@app/components/page-layout/page-layout.component';
+import {PageLayout} from '../../components/page-layout/page-layout';
 import {ElasticIndicesPageComponent as MaiaElasticIndicesPageComponent} from '@maia/maia-elasticsearch';
 
 @Component({
-    imports: [PageLayoutComponent, MaiaElasticIndicesPageComponent],
+    imports: [PageLayout, MaiaElasticIndicesPageComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
         <app-page-layout pageTitle="Elastic Indices">

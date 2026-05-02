@@ -1,6 +1,6 @@
 import {signalStore, withComputed} from '@ngrx/signals';
 import {computed, inject} from '@angular/core';
-import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/auth/current-user.store';
+import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/auth/current-user-store';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 
 

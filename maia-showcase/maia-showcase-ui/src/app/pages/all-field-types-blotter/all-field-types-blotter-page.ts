@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
-import {PageLayoutComponent} from '@app/components/page-layout/page-layout.component';
+import {PageLayout} from '../../components/page-layout/page-layout';
 import {
     AllFieldTypesCrudBlotterComponent
 } from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud-blotter.component';
 
 @Component({
     imports: [
-        PageLayoutComponent,
+        PageLayout,
         AllFieldTypesCrudBlotterComponent
     ],
     selector: 'app-all-field-types-blotter-page',

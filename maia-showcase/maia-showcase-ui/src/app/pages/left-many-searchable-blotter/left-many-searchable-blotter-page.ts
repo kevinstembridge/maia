@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayoutComponent} from '@app/components/page-layout/page-layout.component';
+import {PageLayout} from '../../components/page-layout/page-layout';
 import {
     LeftManySearchableCrudBlotterComponent
 } from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-searchable-crud-blotter.component';
@@ -7,11 +7,11 @@ import {
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        PageLayoutComponent,
+        PageLayout,
         LeftManySearchableCrudBlotterComponent
     ],
     selector: 'app-left-many-searchable-blotter-page',
-    templateUrl: './left-many-searchable-blotter-page.component.html',
+    templateUrl: './left-many-searchable-blotter-page.html',
 })
 export class LeftManySearchableBlotterPage {
 
