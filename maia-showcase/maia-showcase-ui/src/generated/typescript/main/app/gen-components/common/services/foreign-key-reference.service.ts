@@ -54,7 +54,7 @@ export class ForeignKeyReferenceService {
     public checkAlphaAgGridForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
 
         return this.http.get<ForeignKeyReferencesExistResponseDto>(
-            '/api/alpha_ag_grid/check_foreign_references/' + id,
+            '/api/alpha-ag-grid/check_foreign_references/' + id,
             this.httpOptions
         );
 
@@ -64,7 +64,7 @@ export class ForeignKeyReferenceService {
     public checkBravoAgGridForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
 
         return this.http.get<ForeignKeyReferencesExistResponseDto>(
-            '/api/bravo_ag_grid/check_foreign_references/' + id,
+            '/api/bravo-ag-grid/check_foreign_references/' + id,
             this.httpOptions
         );
 
@@ -74,7 +74,7 @@ export class ForeignKeyReferenceService {
     public checkLeftManyForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
 
         return this.http.get<ForeignKeyReferencesExistResponseDto>(
-            '/api/left_many/check_foreign_references/' + id,
+            '/api/left-many/check_foreign_references/' + id,
             this.httpOptions
         );
 
@@ -84,7 +84,7 @@ export class ForeignKeyReferenceService {
     public checkRightManyForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
 
         return this.http.get<ForeignKeyReferencesExistResponseDto>(
-            '/api/right_many/check_foreign_references/' + id,
+            '/api/right-many/check_foreign_references/' + id,
             this.httpOptions
         );
 

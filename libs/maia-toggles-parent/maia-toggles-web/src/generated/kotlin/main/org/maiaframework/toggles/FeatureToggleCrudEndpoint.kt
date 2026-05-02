@@ -18,7 +18,7 @@ class FeatureToggleCrudEndpoint(
 ) {
 
 
-    @GetMapping("/api/feature_toggle/fetch_for_edit", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/maia-toggles/feature-toggle/fetch-for-edit", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable featureName: FeatureName): FeatureToggleFetchForEditDto {
 
         return this.crudService.fetchForEdit(featureName)
@@ -26,7 +26,7 @@ class FeatureToggleCrudEndpoint(
     }
 
 
-    @PutMapping("/api/maia_toggles/feature_toggle/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/maia_toggles/feature-toggle/update", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun update(@RequestBody @Valid editDto: FeatureToggleUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -34,7 +34,7 @@ class FeatureToggleCrudEndpoint(
     }
 
 
-    @PutMapping("/api/feature_toggle/inline/activation_strategies", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/maia-toggles/feature-toggle/inline/activation-strategies", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateActivationStrategies(@RequestBody @Valid editDto: FeatureToggleUpdate_activationStrategiesRequestDto) {
 
         this.crudService.updateActivationStrategies(editDto)

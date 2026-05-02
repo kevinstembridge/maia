@@ -25,7 +25,7 @@ export class SomeVersionedCrudService {
     public create(requestDto: SomeVersionedCreateRequestDto): Observable<void> {
 
         return this.http.post<void>(
-                '/api/some_versioned/create',
+                '/api/some-versioned/create',
                 requestDto,
                 this.httpOptions);
 
@@ -35,7 +35,7 @@ export class SomeVersionedCrudService {
     public edit(dto: SomeVersionedUpdateRequestDto): Observable<void> {
 
         return this.http.put<void>(
-                '/api/some_versioned/update',
+                '/api/some-versioned/update',
                 dto,
                 this.httpOptions);
 
@@ -44,14 +44,14 @@ export class SomeVersionedCrudService {
 
     public fetchForEdit(id: string): Observable<SomeVersionedFetchForEditDto> {
 
-        return this.http.get<SomeVersionedFetchForEditDto>('/api/some_versioned/fetch_for_edit/' + id, this.httpOptions);
+        return this.http.get<SomeVersionedFetchForEditDto>('/api/some-versioned/fetch-for-edit/' + id, this.httpOptions);
 
     }
 
 
     public delete(id: string): Observable<any> {
 
-        return this.http.delete('/api/some_versioned/' + id, this.httpOptions);
+        return this.http.delete('/api/some-versioned/' + id, this.httpOptions);
 
     }
 

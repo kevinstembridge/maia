@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {PageLayout} from '../../components/page-layout/page-layout';
+import {PageLayout} from '@app/components/page-layout/page-layout';
 import {
     AllFieldTypesCrudBlotterComponent
-} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud-blotter.component';
+} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-crud-blotter';
 
 @Component({
     imports: [

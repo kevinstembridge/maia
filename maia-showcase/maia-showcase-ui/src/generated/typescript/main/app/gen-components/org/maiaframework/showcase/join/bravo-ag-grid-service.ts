@@ -25,7 +25,7 @@ export class BravoAgGridService {
     public findById(id: string): Observable<BravoAgGridDto> {
 
         return this.http.get<BravoAgGridDto>(
-            '/api/bravo_ag_grid/' + id,
+            '/api/bravo-ag-grid/' + id,
             this.httpOptions
         );
 

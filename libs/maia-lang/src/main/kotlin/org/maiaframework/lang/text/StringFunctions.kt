@@ -25,7 +25,7 @@ object StringFunctions {
 
         for (ch in chars) {
 
-            if (ch == '-') {
+            if (ch == '-' || ch == '_') {
                 sb.append(separator)
             } else if (Character.isUpperCase(ch)) {
 

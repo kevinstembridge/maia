@@ -16,7 +16,7 @@ class RightManyTypeaheadEndpoint(
 ) {
 
 
-    @GetMapping("/api/typeahead/right_many", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/typeahead/right-many", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestParam("q") q: String): List<RightManyTypeaheadV1EsDoc> {
 
         return this.typeaheadService.search(SearchTerm(q))

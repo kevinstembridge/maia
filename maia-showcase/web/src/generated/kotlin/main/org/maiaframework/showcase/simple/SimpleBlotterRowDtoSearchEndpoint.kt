@@ -18,7 +18,7 @@ class SimpleBlotterRowDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/simple_blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/simple-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<SimpleBlotterRowDto> {
 
         return this.searchService.search(searchModel)
@@ -26,7 +26,7 @@ class SimpleBlotterRowDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/simple_blotter/count")
+    @PostMapping("/api/simple-blotter/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)
@@ -34,7 +34,7 @@ class SimpleBlotterRowDtoSearchEndpoint(
     }
 
 
-    @GetMapping("/api/simple_blotter/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/simple-blotter/find-all", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<SimpleBlotterRowDto> {
 
         return this.searchService.findAll()

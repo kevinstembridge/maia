@@ -53,7 +53,7 @@ export class SimpleCrudService {
 
     public fetchForEdit(id: string): Observable<SimpleFetchForEditDto> {
 
-        return this.http.get<SimpleFetchForEditDto>('/api/simple/fetch_for_edit/' + id, this.httpOptions);
+        return this.http.get<SimpleFetchForEditDto>('/api/simple/fetch-for-edit/' + id, this.httpOptions);
 
     }
 

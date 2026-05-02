@@ -20,7 +20,7 @@ class LeftManyCheckForeignKeyReferencesEndpoint(
     private val logger = LoggerFactory.getLogger(LeftManyCheckForeignKeyReferencesEndpoint::class.java)
 
 
-    @GetMapping("/api/left_many/check_foreign_references/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/left-many/check_foreign_references/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun checkForeignKeyReferences(@PathVariable("id") id: DomainId): ForeignKeyReferencesExistResponseDto {
 
         return this.service.checkForeignKeyReferences(id)

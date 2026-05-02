@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayout} from '../../components/page-layout/page-layout';
+import {PageLayout} from '@app/components/page-layout/page-layout';
 import {
     BravoCrudBlotterComponent
-} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-blotter.component';
+} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-blotter';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,

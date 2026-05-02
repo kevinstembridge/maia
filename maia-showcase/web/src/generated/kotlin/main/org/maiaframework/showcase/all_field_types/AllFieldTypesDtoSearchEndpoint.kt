@@ -17,7 +17,7 @@ class AllFieldTypesDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/all_field_types/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/all-field-types/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<AllFieldTypesDto> {
 
         return this.searchService.search(searchModel)
@@ -25,7 +25,7 @@ class AllFieldTypesDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/all_field_types/count")
+    @PostMapping("/api/all-field-types/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)

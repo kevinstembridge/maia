@@ -24,7 +24,7 @@ export class SomeVersionedBlotterService {
     public search(searchModel: any): Observable<SearchResultPage<SomeVersionedBlotterRowDto>> {
 
         return this.http.post<SearchResultPage<SomeVersionedBlotterRowDto>>(
-                '/api/some_versioned_blotter/search',
+                '/api/some-versioned-blotter/search',
                 searchModel,
                 this.httpOptions);
 

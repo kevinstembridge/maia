@@ -17,7 +17,7 @@ class CharlieAgGridDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/charlie_ag_grid/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/charlie-ag-grid/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: SearchModel): SearchResultPage<CharlieAgGridDto> {
 
         return this.searchService.search(searchModel)
@@ -25,7 +25,7 @@ class CharlieAgGridDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/charlie_ag_grid/count")
+    @PostMapping("/api/charlie-ag-grid/count")
     fun count(@RequestBody searchModel: SearchModel): Long {
 
         return this.searchService.count(searchModel)

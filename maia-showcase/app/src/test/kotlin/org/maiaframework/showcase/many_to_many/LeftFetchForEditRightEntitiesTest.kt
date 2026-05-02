@@ -48,7 +48,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
     fun `fetchForEdit returns rightEntities sorted by someString`() {
 
         assertThat(
-            mockMvc.get().uri("/api/left_many/fetch_for_edit/${leftEntity.id}")
+            mockMvc.get().uri("/api/left-many/fetch-for-edit/${leftEntity.id}")
                 .with(user("nigel").roles("ADMIN"))
                 .exchange()
         ).hasStatus(HttpStatus.OK)
@@ -75,7 +75,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
         manyToManyJoinDao.deleteAll()
 
         assertThat(
-            mockMvc.get().uri("/api/left_many/fetch_for_edit/${leftEntity.id}")
+            mockMvc.get().uri("/api/left-many/fetch-for-edit/${leftEntity.id}")
                 .with(user("nigel").roles("ADMIN"))
                 .exchange()
         ).hasStatus(HttpStatus.OK)

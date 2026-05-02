@@ -40,13 +40,13 @@ class ResponseDtoEndpointRenderer(private val responseDtoDef: ResponseDtoDef) : 
 
     override fun renderFunctions() {
 
-        renderMethod_search()
-        renderMethod_export()
+        `render function search`()
+        `render function export`()
 
     }
 
 
-    private fun renderMethod_search() {
+    private fun `render function search`() {
 
         addImportFor(Fqcns.SPRING_MEDIA_TYPE)
         addImportFor(Fqcns.SPRING_PAGE)
@@ -57,7 +57,7 @@ class ResponseDtoEndpointRenderer(private val responseDtoDef: ResponseDtoDef) : 
 
         blankLine()
         blankLine()
-        appendLine("    @PostMapping(path = [\"/api/search/${this.dtoBaseName.toSnakeCase()}\"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])")
+        appendLine("    @PostMapping(path = [\"/api/search/${this.dtoBaseName.toKebabCase()}\"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])")
         appendPreAuthorize()
         appendLine("    @ResponseBody")
         appendLine("    fun search(@RequestBody rawSearchJson: String): Page<${this.dtoUqcn}>  {")
@@ -70,7 +70,7 @@ class ResponseDtoEndpointRenderer(private val responseDtoDef: ResponseDtoDef) : 
     }
 
 
-    private fun renderMethod_export() {
+    private fun `render function export`() {
 
         addImportFor(Fqcns.SPRING_POST_MAPPING)
         addImportFor(Fqcns.SPRING_HTTP_HEADERS)
@@ -83,7 +83,7 @@ class ResponseDtoEndpointRenderer(private val responseDtoDef: ResponseDtoDef) : 
 
         blankLine()
         blankLine()
-        appendLine("    @PostMapping(path = [\"/api/export/${this.dtoBaseName.toSnakeCase()}\"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [\"text/csv\"])")
+        appendLine("    @PostMapping(path = [\"/api/export/${this.dtoBaseName.toKebabCase()}\"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [\"text/csv\"])")
         appendPreAuthorize()
         appendLine("    fun export(@RequestBody rawSearchJson: String): ResponseEntity<StreamingResponseBody> {")
         blankLine()

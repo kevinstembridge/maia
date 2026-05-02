@@ -25,7 +25,7 @@ export class ChildOneService {
     public findById(id: string): Observable<ChildOneDto> {
 
         return this.http.get<ChildOneDto>(
-            '/api/child_one/' + id,
+            '/api/child-one/' + id,
             this.httpOptions
         );
 

@@ -44,7 +44,7 @@ export class UserCrudService {
 
     public fetchForEdit(id: string): Observable<UserFetchForEditDto> {
 
-        return this.http.get<UserFetchForEditDto>('/api/user/fetch_for_edit/' + id, this.httpOptions);
+        return this.http.get<UserFetchForEditDto>('/api/user/fetch-for-edit/' + id, this.httpOptions);
 
     }
 

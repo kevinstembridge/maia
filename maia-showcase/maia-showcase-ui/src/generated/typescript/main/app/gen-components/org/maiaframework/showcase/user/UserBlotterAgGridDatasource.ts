@@ -22,7 +22,7 @@ export class UserBlotterAgGridDatasource implements IDatasource {
     getRows(params: IGetRowsParams): void {
 
         this.http.post<SearchResultPage<UserBlotterRowDto>>(
-            '/api/user_blotter/search',
+            '/api/user-blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

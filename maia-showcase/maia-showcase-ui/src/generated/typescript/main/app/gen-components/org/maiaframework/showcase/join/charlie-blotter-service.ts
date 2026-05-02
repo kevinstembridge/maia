@@ -24,7 +24,7 @@ export class CharlieBlotterService {
     public search(searchModel: any): Observable<SearchResultPage<CharlieBlotterRowDto>> {
 
         return this.http.post<SearchResultPage<CharlieBlotterRowDto>>(
-                '/api/charlie_blotter/search',
+                '/api/charlie-blotter/search',
                 searchModel,
                 this.httpOptions);
 

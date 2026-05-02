@@ -25,7 +25,7 @@ export class LeftToRightManyToManyService {
     public findById(id: string): Observable<LeftToRightManyToManyDto> {
 
         return this.http.get<LeftToRightManyToManyDto>(
-            '/api/left_to_right_many_to_many/' + id,
+            '/api/left-to-right-many-to-many/' + id,
             this.httpOptions
         );
 

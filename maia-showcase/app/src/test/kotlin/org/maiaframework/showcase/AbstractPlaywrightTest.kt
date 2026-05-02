@@ -17,7 +17,7 @@ import org.maiaframework.showcase.testing.pages.LoginPage
 import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.maiaframework.showcase.testing.pages.AllFieldTypesBlotterPage
 import org.maiaframework.showcase.testing.pages.BravoBlotterPage
-import org.maiaframework.showcase.testing.pages.LeftSearchableBlotterPage
+import org.maiaframework.showcase.testing.pages.LeftManySearchableBlotterPage
 import org.maiaframework.showcase.testing.pages.UserGroupMembershipBlotterPage
 import org.maiaframework.showcase.testing.pages.CompositePkBlotterPage
 import org.maiaframework.showcase.testing.pages.UsersBlotterPage
@@ -69,7 +69,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var bravoBlotterPage: BravoBlotterPage
 
 
-    protected lateinit var leftSearchableBlotterPage: LeftSearchableBlotterPage
+    protected lateinit var leftManySearchableBlotterPage: LeftManySearchableBlotterPage
 
 
     protected lateinit var userGroupMembershipBlotterPage: UserGroupMembershipBlotterPage
@@ -98,15 +98,16 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         page = browserContext.newPage()
         page.onConsoleMessage { msg: ConsoleMessage -> println(msg.text()) }
         urlHelper = UrlHelper(env)
-        homePage = HomePage(page, urlHelper)
-        loginPage = LoginPage(page, urlHelper)
+
         allFieldTypesBlotterPage = AllFieldTypesBlotterPage(page, urlHelper)
-        someVersionedBlotterPage = SomeVersionedBlotterPage(page, urlHelper)
-        compositePkBlotterPage = CompositePkBlotterPage(page, urlHelper)
-        usersBlotterPage = UsersBlotterPage(page, urlHelper)
         bravoBlotterPage = BravoBlotterPage(page, urlHelper)
-        leftSearchableBlotterPage = LeftSearchableBlotterPage(page, urlHelper)
+        compositePkBlotterPage = CompositePkBlotterPage(page, urlHelper)
+        homePage = HomePage(page, urlHelper)
+        leftManySearchableBlotterPage = LeftManySearchableBlotterPage(page, urlHelper)
+        loginPage = LoginPage(page, urlHelper)
+        someVersionedBlotterPage = SomeVersionedBlotterPage(page, urlHelper)
         userGroupMembershipBlotterPage = UserGroupMembershipBlotterPage(page, urlHelper)
+        usersBlotterPage = UsersBlotterPage(page, urlHelper)
 
     }
 

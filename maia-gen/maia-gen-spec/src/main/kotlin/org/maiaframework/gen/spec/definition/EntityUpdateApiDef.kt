@@ -156,7 +156,7 @@ class EntityUpdateApiDef(
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
 
 
-    val endpointUrl = "/api/${modulePath}${this.entityDef.entityBaseName.toSnakeCase()}/update"
+    val endpointUrl = "/api/${modulePath}${this.entityDef.entityBaseName.toKebabCase()}/update"
 
 
     override val angularDialogComponentNames = AngularComponentNames(this.entityDef.packageName, "${entityDef.entityBaseName}EditDialog")

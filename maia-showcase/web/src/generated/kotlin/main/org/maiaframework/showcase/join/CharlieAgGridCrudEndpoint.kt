@@ -23,7 +23,7 @@ class CharlieAgGridCrudEndpoint(
 ) {
 
 
-    @PostMapping("/api/charlie_ag_grid/create")
+    @PostMapping("/api/charlie-ag-grid/create")
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody @Valid createDto: CharlieAgGridCreateRequestDto) {
 
@@ -32,7 +32,7 @@ class CharlieAgGridCrudEndpoint(
     }
 
 
-    @GetMapping("/api/charlie_ag_grid/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/charlie-ag-grid/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): CharlieAgGridFetchForEditDto {
 
         return this.crudService.fetchForEdit(id)
@@ -40,7 +40,7 @@ class CharlieAgGridCrudEndpoint(
     }
 
 
-    @PutMapping("/api/charlie_ag_grid/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/charlie-ag-grid/update", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun update(@RequestBody @Valid editDto: CharlieAgGridUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -48,7 +48,7 @@ class CharlieAgGridCrudEndpoint(
     }
 
 
-    @PutMapping("/api/charlie_ag_grid/inline/bravo", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/charlie-ag-grid/inline/bravo", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateBravo(@RequestBody @Valid editDto: CharlieAgGridUpdate_bravoRequestDto) {
 
         this.crudService.updateBravo(editDto)
@@ -56,7 +56,7 @@ class CharlieAgGridCrudEndpoint(
     }
 
 
-    @DeleteMapping("/api/charlie_ag_grid/{id}")
+    @DeleteMapping("/api/charlie-ag-grid/{id}")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

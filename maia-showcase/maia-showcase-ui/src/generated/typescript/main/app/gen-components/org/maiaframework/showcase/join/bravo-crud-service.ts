@@ -44,7 +44,7 @@ export class BravoCrudService {
 
     public fetchForEdit(id: string): Observable<BravoFetchForEditDto> {
 
-        return this.http.get<BravoFetchForEditDto>('/api/bravo/fetch_for_edit/' + id, this.httpOptions);
+        return this.http.get<BravoFetchForEditDto>('/api/bravo/fetch-for-edit/' + id, this.httpOptions);
 
     }
 

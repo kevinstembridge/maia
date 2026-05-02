@@ -27,12 +27,12 @@ class ForeignKeyReferencesEndpointRenderer(private val entityDef: EntityDef) : A
 
     override fun renderFunctions() {
 
-        renderFunction_checkForeignKeyReferences()
+        `render function checkForeignKeyReferences`()
 
     }
 
 
-    private fun renderFunction_checkForeignKeyReferences() {
+    private fun `render function checkForeignKeyReferences`() {
 
         addImportFor(Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO)
         addImportFor(Fqcns.MAIA_DOMAIN_ID)

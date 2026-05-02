@@ -25,7 +25,7 @@ export class CharlieAgGridService {
     public findById(id: string): Observable<CharlieAgGridDto> {
 
         return this.http.get<CharlieAgGridDto>(
-            '/api/charlie_ag_grid/' + id,
+            '/api/charlie-ag-grid/' + id,
             this.httpOptions
         );
 

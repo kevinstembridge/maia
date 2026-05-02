@@ -27,8 +27,6 @@ class BlotterDef(
 ) {
 
 
-
-
     val blotterColumnFields = blotterColumnDefs.filterIsInstance<BlotterColumnDef>().sorted()
 
 
@@ -85,11 +83,11 @@ class BlotterDef(
         defaultSortModel = emptyList(),
         dataSourceType = blotterSourceDef.dataSourceType,
         searchModelType = searchModelType,
-        searchApiUrl = "/api/$modulePath${dtoBaseName.toSnakeCase()}_blotter/search",
-        countApiUrl = "/api/$modulePath${dtoBaseName.toSnakeCase()}_blotter/count",
-        findByIdClientSideApiUrl = "/api/$modulePath${dtoBaseName.toSnakeCase()}_blotter/",
-        findByIdServerSideApiUrl = "/api/$modulePath${dtoBaseName.toSnakeCase()}_blotter/{id}",
-        findAllApiUrl = "/api/$modulePath${dtoBaseName.toSnakeCase()}_blotter/find_all",
+        searchApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/search",
+        countApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/count",
+        findByIdClientSideApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/",
+        findByIdServerSideApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/{id}",
+        findAllApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/find-all",
         withGeneratedFindAllFunction,
         GenerateFindById.FALSE,
         withGeneratedEndpoint,

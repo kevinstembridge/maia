@@ -18,7 +18,7 @@ class LeftManySearchableDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/left_many_searchable/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/left-many-searchable/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<LeftManySearchableDto> {
 
         return this.searchService.search(searchModel)
@@ -26,7 +26,7 @@ class LeftManySearchableDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/left_many_searchable/count")
+    @PostMapping("/api/left-many-searchable/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)
@@ -34,7 +34,7 @@ class LeftManySearchableDtoSearchEndpoint(
     }
 
 
-    @GetMapping("/api/left_many_searchable/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/left-many-searchable/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<LeftManySearchableDto> {
 
         return this.searchService.findAll()

@@ -120,7 +120,7 @@ class EntityCreateApiDef(
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
 
 
-    val endpointUrl = "/api/$modulePath${this.entityDef.entityBaseName.toSnakeCase()}/create"
+    val endpointUrl = "/api/$modulePath${this.entityDef.entityBaseName.toKebabCase()}/create"
 
 
     override val angularDialogComponentNames = AngularComponentNames(this.entityDef.packageName, "${entityDef.entityBaseName}CreateDialog")

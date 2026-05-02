@@ -23,7 +23,7 @@ class UserGroupMembershipCrudEndpoint(
 ) {
 
 
-    @PostMapping("/api/ops/user_group_membership/create")
+    @PostMapping("/api/ops/user-group-membership/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(@RequestBody @Valid createDto: UserGroupMembershipCreateRequestDto) {
@@ -33,7 +33,7 @@ class UserGroupMembershipCrudEndpoint(
     }
 
 
-    @GetMapping("/api/user_group_membership/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/ops/user-group-membership/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): UserGroupMembershipFetchForEditDto {
 
         return this.crudService.fetchForEdit(id)
@@ -41,7 +41,7 @@ class UserGroupMembershipCrudEndpoint(
     }
 
 
-    @PutMapping("/api/ops/user_group_membership/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/ops/user-group-membership/update", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(@RequestBody @Valid editDto: UserGroupMembershipUpdateRequestDto) {
 
@@ -50,7 +50,7 @@ class UserGroupMembershipCrudEndpoint(
     }
 
 
-    @PutMapping("/api/user_group_membership/inline/user_group", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/ops/user-group-membership/inline/user-group", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateUserGroup(@RequestBody @Valid editDto: UserGroupMembershipUpdate_userGroupRequestDto) {
 
@@ -59,7 +59,7 @@ class UserGroupMembershipCrudEndpoint(
     }
 
 
-    @PutMapping("/api/user_group_membership/inline/user", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/ops/user-group-membership/inline/user", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateUser(@RequestBody @Valid editDto: UserGroupMembershipUpdate_userRequestDto) {
 

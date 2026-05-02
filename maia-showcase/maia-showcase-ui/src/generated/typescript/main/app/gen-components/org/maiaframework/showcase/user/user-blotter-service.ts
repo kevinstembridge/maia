@@ -24,7 +24,7 @@ export class UserBlotterService {
     public search(searchModel: any): Observable<SearchResultPage<UserBlotterRowDto>> {
 
         return this.http.post<SearchResultPage<UserBlotterRowDto>>(
-                '/api/user_blotter/search',
+                '/api/user-blotter/search',
                 searchModel,
                 this.httpOptions);
 

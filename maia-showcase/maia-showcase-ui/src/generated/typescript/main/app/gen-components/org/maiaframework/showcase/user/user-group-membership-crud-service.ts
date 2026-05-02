@@ -25,7 +25,7 @@ export class UserGroupMembershipCrudService {
     public create(requestDto: UserGroupMembershipCreateRequestDto): Observable<void> {
 
         return this.http.post<void>(
-                '/api/ops/user_group_membership/create',
+                '/api/ops/user-group-membership/create',
                 requestDto,
                 this.httpOptions);
 
@@ -35,7 +35,7 @@ export class UserGroupMembershipCrudService {
     public edit(dto: UserGroupMembershipUpdateRequestDto): Observable<void> {
 
         return this.http.put<void>(
-                '/api/ops/user_group_membership/update',
+                '/api/ops/user-group-membership/update',
                 dto,
                 this.httpOptions);
 
@@ -44,7 +44,7 @@ export class UserGroupMembershipCrudService {
 
     public fetchForEdit(id: string): Observable<UserGroupMembershipFetchForEditDto> {
 
-        return this.http.get<UserGroupMembershipFetchForEditDto>('/api/user_group_membership/fetch_for_edit/' + id, this.httpOptions);
+        return this.http.get<UserGroupMembershipFetchForEditDto>('/api/ops/user-group-membership/fetch-for-edit/' + id, this.httpOptions);
 
     }
 

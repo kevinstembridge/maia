@@ -294,6 +294,7 @@ class EntityDef(
             FetchForEditDtoDef(
                 packageName,
                 entityBaseName,
+                moduleName,
                 allEntityFieldsSorted,
                 fetchForEditManyToManyFieldDefs,
                 this
@@ -632,12 +633,10 @@ class EntityDef(
         AngularComponentNames(packageName, "${entityBaseName}CheckForeignKeyReferencesDialog")
 
 
-    val checkForeignKeyReferencesEndpointUrl =
-        "/api/$modulePath${entityBaseName.toSnakeCase()}/check_foreign_references"
+    val checkForeignKeyReferencesEndpointUrl = "/api/$modulePath${entityBaseName.toKebabCase()}/check_foreign_references"
 
 
-    val viewEntityUrl =
-        "/$modulePath${entityBaseName.toSnakeCase()}/view"
+    val viewEntityUrl = "/$modulePath${entityBaseName.toKebabCase()}/view"
 
 
     init {

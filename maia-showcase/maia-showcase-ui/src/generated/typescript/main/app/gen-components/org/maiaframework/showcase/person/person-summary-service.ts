@@ -25,7 +25,7 @@ export class PersonSummaryService {
     public findById(id: string): Observable<PersonSummaryDto> {
 
         return this.http.get<PersonSummaryDto>(
-            '/api/person_summary/' + id,
+            '/api/person-summary/' + id,
             this.httpOptions
         );
 

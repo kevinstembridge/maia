@@ -18,7 +18,7 @@ class LeftNotMappedToRightDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/left_not_mapped_to_right/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/left-not-mapped-to-right/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<LeftNotMappedToRightDto> {
 
         return this.searchService.search(searchModel)
@@ -26,7 +26,7 @@ class LeftNotMappedToRightDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/left_not_mapped_to_right/count")
+    @PostMapping("/api/left-not-mapped-to-right/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)
@@ -34,7 +34,7 @@ class LeftNotMappedToRightDtoSearchEndpoint(
     }
 
 
-    @GetMapping("/api/left_not_mapped_to_right/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/left-not-mapped-to-right/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<LeftNotMappedToRightDto> {
 
         return this.searchService.findAll()

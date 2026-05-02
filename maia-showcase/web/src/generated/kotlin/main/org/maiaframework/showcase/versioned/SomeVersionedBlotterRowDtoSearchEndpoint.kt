@@ -18,7 +18,7 @@ class SomeVersionedBlotterRowDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/some_versioned_blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/some-versioned-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<SomeVersionedBlotterRowDto> {
 
         return this.searchService.search(searchModel)
@@ -26,7 +26,7 @@ class SomeVersionedBlotterRowDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/some_versioned_blotter/count")
+    @PostMapping("/api/some-versioned-blotter/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)
@@ -34,7 +34,7 @@ class SomeVersionedBlotterRowDtoSearchEndpoint(
     }
 
 
-    @GetMapping("/api/some_versioned_blotter/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/some-versioned-blotter/find-all", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<SomeVersionedBlotterRowDto> {
 
         return this.searchService.findAll()

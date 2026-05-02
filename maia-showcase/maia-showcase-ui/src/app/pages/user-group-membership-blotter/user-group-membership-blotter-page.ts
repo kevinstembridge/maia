@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayout} from '../../components/page-layout/page-layout';
-import {UserGroupMembershipCrudBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-crud-blotter.component';
+import {PageLayout} from '@app/components/page-layout/page-layout';
+import {UserGroupMembershipCrudBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-crud-blotter';
 
 @Component({
     selector: 'app-user-group-membership-blotter-page',

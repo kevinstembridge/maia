@@ -58,7 +58,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
     fun `test ParentTwo search with no filter terms`() {
 
         submitSearch(
-                path = "/api/parent_two/search",
+                path = "/api/parent-two/search",
                 startRow = 0,
                 endRow = 3,
                 filterModel = listOf()
@@ -83,7 +83,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
     fun `test ParentOne search with no filter terms`() {
 
         submitSearch(
-                path = "/api/parent_one/search",
+                path = "/api/parent-one/search",
                 startRow = 0,
                 endRow = 10,
                 filterModel = listOf()
@@ -110,7 +110,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
     fun `test Child search with no filter terms`() {
 
         submitSearch(
-                path = "/api/child_one/search",
+                path = "/api/child-one/search",
                 startRow = 0,
                 endRow = 10,
                 filterModel = listOf()

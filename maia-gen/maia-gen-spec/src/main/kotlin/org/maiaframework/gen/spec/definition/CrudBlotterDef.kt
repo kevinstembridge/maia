@@ -18,7 +18,7 @@ class CrudBlotterDef(
     val crudBlotterComponentClassName: String = "${blotterDef.dtoBaseName}CrudBlotterComponent"
 
 
-    val crudBlotterComponentHtmlFileName: String = "${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter.component.html"
+    val crudBlotterComponentHtmlFileName: String = "${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter.html"
 
 
     val searchableDtoImportStatement: String = blotterDef.dtoDef.typescriptDtoImportStatement
@@ -39,10 +39,10 @@ class CrudBlotterDef(
     val crudServiceImportStatement: String = entityCrudApiDef.entityDef.crudAngularComponentNames.serviceImportStatement
 
 
-    val htmlRenderedFilePath: String = "app/gen-components/${blotterDef.packageName.asTypescriptDirs()}/${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter.component.html"
+    val htmlRenderedFilePath: String = "app/gen-components/${blotterDef.packageName.asTypescriptDirs()}/${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter.html"
 
 
-    val componentRenderedFilePath: String = "app/gen-components/${blotterDef.packageName.asTypescriptDirs()}/${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter.component.ts"
+    val componentRenderedFilePath: String = "app/gen-components/${blotterDef.packageName.asTypescriptDirs()}/${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter.ts"
 
 
 }

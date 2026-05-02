@@ -4,14 +4,19 @@ import org.maiaframework.gen.spec.definition.builders.DtoDefBuilder
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
+import org.maiaframework.lang.text.StringFunctions
 
 class FetchForEditDtoDef(
     packageName: PackageName,
     entityBaseName: EntityBaseName,
+    moduleName: ModuleName?,
     entityFieldDefs: List<EntityFieldDef>,
     manyToManyFieldDefs: List<ManyToManySearchableDtoFieldDef> = emptyList(),
     rootEntityDef: EntityDef? = null
 ) {
+
+
+    private val moduleNameString = if (moduleName != null) "${StringFunctions.toKebabCase(moduleName.value)}/" else ""
 
 
     private val fetchForEditDtoClassFields = entityFieldDefs.map { it.classFieldDef }.map { classFieldDef ->
@@ -69,7 +74,7 @@ class FetchForEditDtoDef(
     )
 
 
-    val endpointUrl = "/api/${entityBaseName.toSnakeCase()}/fetch_for_edit"
+    val endpointUrl = "/api/$moduleNameString${entityBaseName.toKebabCase()}/fetch-for-edit"
 
 
     private val typescriptFilePathWithoutSuffix = "app/gen-components/${packageName.asTypescriptDirs()}/${uqcn}"

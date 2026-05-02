@@ -20,7 +20,7 @@ class AlphaAgGridCheckForeignKeyReferencesEndpoint(
     private val logger = LoggerFactory.getLogger(AlphaAgGridCheckForeignKeyReferencesEndpoint::class.java)
 
 
-    @GetMapping("/api/alpha_ag_grid/check_foreign_references/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/alpha-ag-grid/check_foreign_references/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun checkForeignKeyReferences(@PathVariable("id") id: DomainId): ForeignKeyReferencesExistResponseDto {
 
         return this.service.checkForeignKeyReferences(id)

@@ -25,7 +25,7 @@ export class CharlieAgGridCrudService {
     public create(requestDto: CharlieAgGridCreateRequestDto): Observable<void> {
 
         return this.http.post<void>(
-                '/api/charlie_ag_grid/create',
+                '/api/charlie-ag-grid/create',
                 requestDto,
                 this.httpOptions);
 
@@ -35,7 +35,7 @@ export class CharlieAgGridCrudService {
     public edit(dto: CharlieAgGridUpdateRequestDto): Observable<void> {
 
         return this.http.put<void>(
-                '/api/charlie_ag_grid/update',
+                '/api/charlie-ag-grid/update',
                 dto,
                 this.httpOptions);
 
@@ -44,14 +44,14 @@ export class CharlieAgGridCrudService {
 
     public fetchForEdit(id: string): Observable<CharlieAgGridFetchForEditDto> {
 
-        return this.http.get<CharlieAgGridFetchForEditDto>('/api/charlie_ag_grid/fetch_for_edit/' + id, this.httpOptions);
+        return this.http.get<CharlieAgGridFetchForEditDto>('/api/charlie-ag-grid/fetch-for-edit/' + id, this.httpOptions);
 
     }
 
 
     public delete(id: string): Observable<any> {
 
-        return this.http.delete('/api/charlie_ag_grid/' + id, this.httpOptions);
+        return this.http.delete('/api/charlie-ag-grid/' + id, this.httpOptions);
 
     }
 

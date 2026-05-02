@@ -18,7 +18,7 @@ class CompositePrimaryKeyBlotterRowDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/composite_primary_key_blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/composite-primary-key-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<CompositePrimaryKeyBlotterRowDto> {
 
         return this.searchService.search(searchModel)
@@ -26,7 +26,7 @@ class CompositePrimaryKeyBlotterRowDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/composite_primary_key_blotter/count")
+    @PostMapping("/api/composite-primary-key-blotter/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)
@@ -34,7 +34,7 @@ class CompositePrimaryKeyBlotterRowDtoSearchEndpoint(
     }
 
 
-    @GetMapping("/api/composite_primary_key_blotter/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/composite-primary-key-blotter/find-all", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<CompositePrimaryKeyBlotterRowDto> {
 
         return this.searchService.findAll()

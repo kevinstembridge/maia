@@ -21,12 +21,12 @@ class TypeaheadEndpointRenderer(private val typeaheadDef: TypeaheadDef) : Abstra
 
     override fun renderFunctions() {
 
-        renderFunction_search()
+        `render function search`()
 
     }
 
 
-    private fun renderFunction_search() {
+    private fun `render function search`() {
 
         addImportFor(Fqcns.SPRING_GET_MAPPING)
         addImportFor(Fqcns.SPRING_MEDIA_TYPE)

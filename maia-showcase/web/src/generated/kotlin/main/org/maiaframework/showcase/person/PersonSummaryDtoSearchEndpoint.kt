@@ -17,7 +17,7 @@ class PersonSummaryDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/person_summary/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/person-summary/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<PersonSummaryDto> {
 
         return this.searchService.search(searchModel)
@@ -25,7 +25,7 @@ class PersonSummaryDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/person_summary/count")
+    @PostMapping("/api/person-summary/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)

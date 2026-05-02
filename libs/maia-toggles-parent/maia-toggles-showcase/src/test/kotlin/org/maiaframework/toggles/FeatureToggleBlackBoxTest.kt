@@ -71,7 +71,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
 
     private fun `list all toggles`(mockMvc: MockMvcTester) {
 
-        assertThat(mockMvc.get().uri("/api/maia_toggles/toggles"))
+        assertThat(mockMvc.get().uri("/api/maia-toggles/toggles"))
             .debug()
             .hasStatusOk()
             .hasContentType(MediaType.APPLICATION_JSON)
@@ -121,7 +121,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
 
         assertThat(
             mockMvc.post()
-                .uri("/api/maia_toggles/set_feature_toggle")
+                .uri("/api/maia-toggles/set-feature-toggle")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
@@ -164,7 +164,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
         activeFlag: Boolean
     ) {
 
-        assertThat(mockMvc.get().uri("/api/maia_toggles/$featureName/is_active"))
+        assertThat(mockMvc.get().uri("/api/maia-toggles/$featureName/is-active"))
             .debug()
             .hasStatusOk()
             .bodyJson()
@@ -182,7 +182,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
 
         assertThat(mockMvc.put()
             .with(csrf())
-            .uri("/api/feature_toggle/inline/activation_strategies")
+            .uri("/api/maia-toggles/feature-toggle/inline/activation-strategies")
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJson(mapOf(
                 "activationStrategies" to listOf(

@@ -17,7 +17,7 @@ class LeftManySearchableBlotterRowDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/left_many_searchable_blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/left-many-searchable-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<LeftManySearchableBlotterRowDto> {
 
         return this.searchService.search(searchModel)
@@ -25,7 +25,7 @@ class LeftManySearchableBlotterRowDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/left_many_searchable_blotter/count")
+    @PostMapping("/api/left-many-searchable-blotter/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)

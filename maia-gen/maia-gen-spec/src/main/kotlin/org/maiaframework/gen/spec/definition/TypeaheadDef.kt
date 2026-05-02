@@ -26,10 +26,10 @@ class TypeaheadDef(
     val angularServiceClassName = "${typeaheadName}TypeaheadApiService"
 
 
-    val endpointUrl: String = "/api/typeahead/${typeaheadName.toSnakeCase()}"
+    val endpointUrl: String = "/api/typeahead/${typeaheadName.toKebabCase()}"
 
 
-    val elasticIndexBaseName = ElasticIndexBaseName("${typeaheadName.toSnakeCase()}_typeahead")
+    val elasticIndexBaseName = ElasticIndexBaseName("${typeaheadName.toKebabCase()}-typeahead")
 
 
     val entityUqcn = entityDef?.entityClassDef?.uqcn

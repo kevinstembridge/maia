@@ -13,8 +13,8 @@ class UsersBlotterPage(
 ) : AbstractPage(
     page,
     urlHelper,
-    "/users",
-    "users_blotter"
+    "/user-blotter",
+    "user_blotter"
 ) {
 
 

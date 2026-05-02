@@ -25,7 +25,7 @@ export class SomeVersionedService {
     public findById(id: string): Observable<SomeVersionedDto> {
 
         return this.http.get<SomeVersionedDto>(
-            '/api/some_versioned/' + id,
+            '/api/some-versioned/' + id,
             this.httpOptions
         );
 

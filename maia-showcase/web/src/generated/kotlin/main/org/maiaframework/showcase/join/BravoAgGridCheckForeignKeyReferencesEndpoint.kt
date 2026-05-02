@@ -20,7 +20,7 @@ class BravoAgGridCheckForeignKeyReferencesEndpoint(
     private val logger = LoggerFactory.getLogger(BravoAgGridCheckForeignKeyReferencesEndpoint::class.java)
 
 
-    @GetMapping("/api/bravo_ag_grid/check_foreign_references/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/bravo-ag-grid/check_foreign_references/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun checkForeignKeyReferences(@PathVariable("id") id: DomainId): ForeignKeyReferencesExistResponseDto {
 
         return this.service.checkForeignKeyReferences(id)

@@ -18,12 +18,12 @@ class RequestDtoEndpointRenderer(private val requestDtoDef: RequestDtoDef) : Abs
 
     override fun renderFunctions() {
 
-        renderMethod_post()
+        `render function post`()
 
     }
 
 
-    private fun renderMethod_post() {
+    private fun `render function post`() {
 
         addImportFor(Fqcns.SPRING_POST_MAPPING)
         addImportFor(Fqcns.SPRING_REQUEST_BODY)

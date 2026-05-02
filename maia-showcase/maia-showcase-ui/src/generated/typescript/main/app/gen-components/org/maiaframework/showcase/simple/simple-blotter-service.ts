@@ -24,7 +24,7 @@ export class SimpleBlotterService {
     public search(searchModel: any): Observable<SearchResultPage<SimpleBlotterRowDto>> {
 
         return this.http.post<SearchResultPage<SimpleBlotterRowDto>>(
-                '/api/simple_blotter/search',
+                '/api/simple-blotter/search',
                 searchModel,
                 this.httpOptions);
 

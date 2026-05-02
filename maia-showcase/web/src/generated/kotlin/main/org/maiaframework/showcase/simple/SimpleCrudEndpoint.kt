@@ -53,7 +53,7 @@ class SimpleCrudEndpoint(
     }
 
 
-    @GetMapping("/api/simple/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/simple/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): SimpleFetchForEditDto {
 
         return this.crudService.fetchForEdit(id)
@@ -70,7 +70,7 @@ class SimpleCrudEndpoint(
     }
 
 
-    @PutMapping("/api/simple/inline/some_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/simple/inline/some-string", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateSomeString(@RequestBody @Valid editDto: SimpleUpdate_someStringRequestDto) {
 

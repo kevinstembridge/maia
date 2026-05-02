@@ -12,7 +12,7 @@ import org.maiaframework.elasticsearch.index.EsIndexVersion
 
 object RightManyTypeaheadEsIndexMeta_v0001 {
 
-    val indexBaseName = EsIndexBaseName("right_many_typeahead")
+    val indexBaseName = EsIndexBaseName("right-many-typeahead")
 
     val indexName = EsIndexName(indexBaseName, EsIndexVersion(1))
 

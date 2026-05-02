@@ -153,7 +153,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     fun `all field types create - unauthenticated - is forbidden`() {
 
         assertThat(
-            mockMvc.post().uri("/api/all_field_types/create")
+            mockMvc.post().uri("/api/all-field-types/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(emptyJson)
                 .with(csrf())
@@ -167,7 +167,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     fun `all field types create - wrong authority - is forbidden`() {
 
         assertThat(
-            mockMvc.post().uri("/api/all_field_types/create")
+            mockMvc.post().uri("/api/all-field-types/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(validAllFieldTypesCreateJson)
                 .with(csrf())
@@ -182,7 +182,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     fun `all field types update - unauthenticated - is forbidden`() {
 
         assertThat(
-            mockMvc.put().uri("/api/all_field_types/update")
+            mockMvc.put().uri("/api/all-field-types/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(emptyJson)
                 .with(csrf())
@@ -195,7 +195,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     @Test
     fun `all field types update - wrong authority - is forbidden`() {
         assertThat(
-            mockMvc.put().uri("/api/all_field_types/update")
+            mockMvc.put().uri("/api/all-field-types/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(validAllFieldTypesUpdateJson)
                 .with(csrf())
@@ -209,7 +209,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     fun `all field types delete - unauthenticated - is forbidden`() {
 
         assertThat(
-            mockMvc.delete().uri("/api/all_field_types/$stubId")
+            mockMvc.delete().uri("/api/all-field-types/$stubId")
                 .with(csrf())
                 .exchange()
         ).hasStatus(HttpStatus.FORBIDDEN)
@@ -221,7 +221,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     fun `all field types delete - wrong authority - is forbidden`() {
 
         assertThat(
-            mockMvc.delete().uri("/api/all_field_types/$stubId")
+            mockMvc.delete().uri("/api/all-field-types/$stubId")
                 .with(csrf())
                 .with(user("x").authorities(SimpleGrantedAuthority("READ")))
                 .exchange()

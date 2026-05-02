@@ -17,7 +17,7 @@ class ParentTwoDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/parent_two/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/parent-two/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<ParentTwoDto> {
 
         return this.searchService.search(searchModel)
@@ -25,7 +25,7 @@ class ParentTwoDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/parent_two/count")
+    @PostMapping("/api/parent-two/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)

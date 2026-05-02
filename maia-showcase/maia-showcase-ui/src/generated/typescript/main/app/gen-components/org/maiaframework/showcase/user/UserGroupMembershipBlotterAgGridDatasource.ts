@@ -22,7 +22,7 @@ export class UserGroupMembershipBlotterAgGridDatasource implements IDatasource {
     getRows(params: IGetRowsParams): void {
 
         this.http.post<SearchResultPage<UserGroupMembershipBlotterRowDto>>(
-            '/api/ops/user_group_membership_blotter/search',
+            '/api/ops/user-group-membership-blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

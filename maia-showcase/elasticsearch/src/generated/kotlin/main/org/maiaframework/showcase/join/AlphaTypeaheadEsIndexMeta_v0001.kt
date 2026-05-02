@@ -12,7 +12,7 @@ import org.maiaframework.elasticsearch.index.EsIndexVersion
 
 object AlphaTypeaheadEsIndexMeta_v0001 {
 
-    val indexBaseName = EsIndexBaseName("alpha_typeahead")
+    val indexBaseName = EsIndexBaseName("alpha-typeahead")
 
     val indexName = EsIndexName(indexBaseName, EsIndexVersion(1))
 

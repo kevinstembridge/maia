@@ -17,7 +17,7 @@ class BravoAgGridDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/bravo_ag_grid/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/bravo-ag-grid/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<BravoAgGridDto> {
 
         return this.searchService.search(searchModel)
@@ -25,7 +25,7 @@ class BravoAgGridDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/bravo_ag_grid/count")
+    @PostMapping("/api/bravo-ag-grid/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)

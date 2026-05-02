@@ -9,14 +9,14 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'all_field_types',
+        path: 'all-field-types-blotter',
         loadComponent: () =>
             import('@app/pages/all-field-types-blotter/all-field-types-blotter-page').then(
                 (m) => m.AllFieldTypesBlotterPage,
             ),
     },
     {
-        path: 'bravo',
+        path: 'bravo-blotter',
         loadComponent: () =>
             import('@app/pages/bravo-blotter/bravo-blotter-page').then(
                 (m) => m.BravoBlotterPage,
@@ -37,56 +37,56 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'some_versioned',
+        path: 'some-versioned-blotter',
         loadComponent: () =>
             import('@app/pages/some-versioned/some-versioned-blotter-page').then(
                 (m) => m.SomeVersionedBlotterPage,
             ),
     },
     {
-        path: 'composite_pk',
+        path: 'composite-pk-blotter',
         loadComponent: () =>
             import('@app/pages/composite-pk/composite-pk-blotter-page').then(
                 (m) => m.CompositePkBlotterPage,
             ),
     },
     {
-        path: 'users',
+        path: 'user-blotter',
         loadComponent: () =>
-            import('@app/pages/users-blotter/users-blotter-page').then(
-                (m) => m.UsersBlotterPage,
+            import('./pages/user-blotter/user-blotter-page').then(
+                (m) => m.UserBlotterPage,
             ),
     },
     {
-        path: 'user_group_memberships',
+        path: 'user-group-membership-blotter',
         loadComponent: () =>
             import('@app/pages/user-group-membership-blotter/user-group-membership-blotter-page').then(
                 (m) => m.UserGroupMembershipBlotterPage,
             ),
     },
     {
-        path: 'left_many_searchable',
+        path: 'left-many-searchable-blotter',
         loadComponent: () =>
             import('./pages/left-many-searchable-blotter/left-many-searchable-blotter-page').then(
                 (m) => m.LeftManySearchableBlotterPage,
             ),
     },
     {
-        path: 'left_many/view/:id',
+        path: 'left-many/view/:id',
         loadComponent: () =>
             import('./pages/left-many-view/left-many-view-page').then(
                 (m) => m.LeftManyViewPage,
             ),
     },
     {
-        path: 'elastic_indices',
+        path: 'elastic-indices',
         loadComponent: () =>
             import('./pages/elastic-indices/elastic-indices-page').then(
                 (m) => m.ElasticIndicesPage,
             ),
     },
     {
-        path: 'jobs_dashboard',
+        path: 'jobs-dashboard',
         loadComponent: () =>
             import('./pages/jobs-dashboard/jobs-dashboard-page').then(
                 (m) => m.JobsDashboardPage,

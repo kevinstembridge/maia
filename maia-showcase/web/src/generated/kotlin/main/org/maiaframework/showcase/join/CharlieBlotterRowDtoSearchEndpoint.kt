@@ -17,7 +17,7 @@ class CharlieBlotterRowDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/charlie_blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/charlie-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<CharlieBlotterRowDto> {
 
         return this.searchService.search(searchModel)
@@ -25,7 +25,7 @@ class CharlieBlotterRowDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/charlie_blotter/count")
+    @PostMapping("/api/charlie-blotter/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)

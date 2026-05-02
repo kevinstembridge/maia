@@ -25,7 +25,7 @@ export class UserGroupMembershipService {
     public findById(id: string): Observable<UserGroupMembershipDto> {
 
         return this.http.get<UserGroupMembershipDto>(
-            '/api/ops/user_group_membership/' + id,
+            '/api/ops/user-group-membership/' + id,
             this.httpOptions
         );
 

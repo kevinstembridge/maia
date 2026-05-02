@@ -21,7 +21,7 @@ class CompositePrimaryKeyCrudEndpoint(
 ) {
 
 
-    @PostMapping("/api/composite_primary_key/create")
+    @PostMapping("/api/composite-primary-key/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: CompositePrimaryKeyCreateRequestDto) {
@@ -31,7 +31,7 @@ class CompositePrimaryKeyCrudEndpoint(
     }
 
 
-    @PostMapping("/api/composite_primary_key/fetch_for_edit", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/composite-primary-key/fetch-for-edit", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@RequestBody pk: CompositePrimaryKeyEntityPk): CompositePrimaryKeyFetchForEditDto {
 
         return this.crudService.fetchForEdit(pk)
@@ -39,7 +39,7 @@ class CompositePrimaryKeyCrudEndpoint(
     }
 
 
-    @PutMapping("/api/composite_primary_key/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/composite-primary-key/update", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: CompositePrimaryKeyUpdateRequestDto) {
 
@@ -48,7 +48,7 @@ class CompositePrimaryKeyCrudEndpoint(
     }
 
 
-    @PutMapping("/api/composite_primary_key/inline/some_modifiable_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/composite-primary-key/inline/some-modifiable-string", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeModifiableString(@RequestBody @Valid editDto: CompositePrimaryKeyUpdate_someModifiableStringRequestDto) {
 
@@ -57,7 +57,7 @@ class CompositePrimaryKeyCrudEndpoint(
     }
 
 
-    @DeleteMapping("/api/composite_primary_key")
+    @DeleteMapping("/api/composite-primary-key")
     @PreAuthorize("hasAuthority('WRITE')")
     fun deleteByPrimaryKey(@RequestBody pk: CompositePrimaryKeyEntityPk) {
 

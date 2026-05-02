@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayout} from '../../components/page-layout/page-layout';
+import {PageLayout} from '@app/components/page-layout/page-layout';
 import {
     SomeVersionedCrudBlotterComponent
-} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud-blotter.component';
+} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud-blotter';
 
 @Component({
     selector: 'app-some-versioned-blotter-page',

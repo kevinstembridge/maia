@@ -25,7 +25,7 @@ export class ParentOneService {
     public findById(id: string): Observable<ParentOneDto> {
 
         return this.http.get<ParentOneDto>(
-            '/api/parent_one/' + id,
+            '/api/parent-one/' + id,
             this.httpOptions
         );
 

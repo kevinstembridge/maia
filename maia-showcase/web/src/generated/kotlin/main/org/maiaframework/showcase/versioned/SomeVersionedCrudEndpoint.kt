@@ -24,7 +24,7 @@ class SomeVersionedCrudEndpoint(
 ) {
 
 
-    @PostMapping("/api/some_versioned/create")
+    @PostMapping("/api/some-versioned/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: SomeVersionedCreateRequestDto) {
@@ -34,7 +34,7 @@ class SomeVersionedCrudEndpoint(
     }
 
 
-    @GetMapping("/api/some_versioned/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/some-versioned/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): SomeVersionedFetchForEditDto {
 
         return this.crudService.fetchForEdit(id)
@@ -42,7 +42,7 @@ class SomeVersionedCrudEndpoint(
     }
 
 
-    @PutMapping("/api/some_versioned/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/some-versioned/update", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: SomeVersionedUpdateRequestDto) {
 
@@ -51,7 +51,7 @@ class SomeVersionedCrudEndpoint(
     }
 
 
-    @PutMapping("/api/some_versioned/inline/some_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/some-versioned/inline/some-string", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(@RequestBody @Valid editDto: SomeVersionedUpdate_someStringRequestDto) {
 
@@ -60,7 +60,7 @@ class SomeVersionedCrudEndpoint(
     }
 
 
-    @PutMapping("/api/some_versioned/inline/some_int", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/some-versioned/inline/some-int", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(@RequestBody @Valid editDto: SomeVersionedUpdate_someIntRequestDto) {
 
@@ -69,7 +69,7 @@ class SomeVersionedCrudEndpoint(
     }
 
 
-    @DeleteMapping("/api/some_versioned/{id}")
+    @DeleteMapping("/api/some-versioned/{id}")
     @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 

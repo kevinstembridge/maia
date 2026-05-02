@@ -33,7 +33,7 @@ class UserCrudEndpoint(
     }
 
 
-    @GetMapping("/api/user/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/user/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): UserFetchForEditDto {
 
         return this.crudService.fetchForEdit(id)
@@ -59,7 +59,7 @@ class UserCrudEndpoint(
     }
 
 
-    @PutMapping("/api/user/inline/first_name", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/user/inline/first-name", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateFirstName(@RequestBody @Valid editDto: UserUpdate_firstNameRequestDto) {
 
@@ -68,7 +68,7 @@ class UserCrudEndpoint(
     }
 
 
-    @PutMapping("/api/user/inline/last_name", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/user/inline/last-name", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateLastName(@RequestBody @Valid editDto: UserUpdate_lastNameRequestDto) {
 

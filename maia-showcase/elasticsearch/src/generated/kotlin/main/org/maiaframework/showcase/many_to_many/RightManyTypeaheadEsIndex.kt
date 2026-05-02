@@ -15,7 +15,7 @@ class RightManyTypeaheadEsIndex(
 ) {
 
 
-    private val indexBaseName = EsIndexBaseName("right_many_typeahead")
+    private val indexBaseName = EsIndexBaseName("right-many-typeahead")
 
 
     fun indexName(): EsIndexName {

@@ -18,7 +18,7 @@ class UserGroupMembershipDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/user_group_membership/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/user-group-membership/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<UserGroupMembershipDto> {
 
         return this.searchService.search(searchModel)
@@ -26,7 +26,7 @@ class UserGroupMembershipDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/user_group_membership/count")
+    @PostMapping("/api/user-group-membership/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)
@@ -34,7 +34,7 @@ class UserGroupMembershipDtoSearchEndpoint(
     }
 
 
-    @GetMapping("/api/user_group_membership/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/user-group-membership/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<UserGroupMembershipDto> {
 
         return this.searchService.findAll()

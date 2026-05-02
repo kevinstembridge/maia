@@ -15,7 +15,7 @@ class AlphaTypeaheadEsIndex(
 ) {
 
 
-    private val indexBaseName = EsIndexBaseName("alpha_typeahead")
+    private val indexBaseName = EsIndexBaseName("alpha-typeahead")
 
 
     fun indexName(): EsIndexName {

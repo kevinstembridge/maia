@@ -17,7 +17,7 @@ class CompositePrimaryKeyDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/composite_primary_key/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/composite-primary-key/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<CompositePrimaryKeyDto> {
 
         return this.searchService.search(searchModel)
@@ -25,7 +25,7 @@ class CompositePrimaryKeyDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/composite_primary_key/count")
+    @PostMapping("/api/composite-primary-key/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)

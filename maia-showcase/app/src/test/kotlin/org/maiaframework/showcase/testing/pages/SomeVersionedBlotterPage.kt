@@ -13,7 +13,7 @@ class SomeVersionedBlotterPage(
 ) : AbstractPage(
     page,
     urlHelper,
-    "/some_versioned",
+    "/some-versioned-blotter",
     "some_versioned_blotter"
 ) {
 

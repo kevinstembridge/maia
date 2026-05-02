@@ -23,7 +23,7 @@ class LeftManyCrudEndpoint(
 ) {
 
 
-    @PostMapping("/api/left_many/create")
+    @PostMapping("/api/left-many/create")
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody @Valid createDto: LeftManyCreateRequestDto) {
 
@@ -32,7 +32,7 @@ class LeftManyCrudEndpoint(
     }
 
 
-    @GetMapping("/api/left_many/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/left-many/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): LeftManyFetchForEditDto {
 
         return this.crudService.fetchForEdit(id)
@@ -40,7 +40,7 @@ class LeftManyCrudEndpoint(
     }
 
 
-    @PutMapping("/api/left_many/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/left-many/update", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun update(@RequestBody @Valid editDto: LeftManyUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -48,7 +48,7 @@ class LeftManyCrudEndpoint(
     }
 
 
-    @PutMapping("/api/left_many/inline/some_int", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/left-many/inline/some-int", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateSomeInt(@RequestBody @Valid editDto: LeftManyUpdate_someIntRequestDto) {
 
         this.crudService.updateSomeInt(editDto)
@@ -56,7 +56,7 @@ class LeftManyCrudEndpoint(
     }
 
 
-    @PutMapping("/api/left_many/inline/some_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/left-many/inline/some-string", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateSomeString(@RequestBody @Valid editDto: LeftManyUpdate_someStringRequestDto) {
 
         this.crudService.updateSomeString(editDto)
@@ -64,7 +64,7 @@ class LeftManyCrudEndpoint(
     }
 
 
-    @DeleteMapping("/api/left_many/{id}")
+    @DeleteMapping("/api/left-many/{id}")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

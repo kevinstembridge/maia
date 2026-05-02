@@ -24,7 +24,7 @@ export class BravoBlotterService {
     public search(searchModel: any): Observable<SearchResultPage<BravoBlotterRowDto>> {
 
         return this.http.post<SearchResultPage<BravoBlotterRowDto>>(
-                '/api/bravo_blotter/search',
+                '/api/bravo-blotter/search',
                 searchModel,
                 this.httpOptions);
 

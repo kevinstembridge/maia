@@ -10,7 +10,7 @@ class ValidationBlackBoxTest : AbstractBlackBoxTest() {
     @Test
     fun `test all validators`() {
 
-        assertThat_POST("/api/all_field_types/create", "{}")
+        assertThat_POST("/api/all-field-types/create", "{}")
             .hasStatus(HttpStatus.BAD_REQUEST)
             .bodyJson()
             .isLenientlyEqualTo("""

@@ -32,7 +32,7 @@ class BravoCrudEndpoint(
     }
 
 
-    @GetMapping("/api/bravo/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/bravo/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): BravoFetchForEditDto {
 
         return this.crudService.fetchForEdit(id)
@@ -48,7 +48,7 @@ class BravoCrudEndpoint(
     }
 
 
-    @PutMapping("/api/bravo/inline/some_int", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/bravo/inline/some-int", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateSomeInt(@RequestBody @Valid editDto: BravoUpdate_someIntRequestDto) {
 
         this.crudService.updateSomeInt(editDto)
@@ -56,7 +56,7 @@ class BravoCrudEndpoint(
     }
 
 
-    @PutMapping("/api/bravo/inline/some_string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/bravo/inline/some-string", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateSomeString(@RequestBody @Valid editDto: BravoUpdate_someStringRequestDto) {
 
         this.crudService.updateSomeString(editDto)

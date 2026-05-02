@@ -25,7 +25,7 @@ class AllFieldTypesCrudEndpoint(
 ) {
 
 
-    @PostMapping("/api/all_field_types/create")
+    @PostMapping("/api/all-field-types/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: AllFieldTypesCreateRequestDto) {
@@ -125,7 +125,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @GetMapping("/api/all_field_types/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/all-field-types/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): AllFieldTypesFetchForEditDto {
 
         return this.crudService.fetchForEdit(id)
@@ -133,7 +133,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/all-field-types/update", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: AllFieldTypesUpdateRequestDto) {
 
@@ -142,7 +142,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/inline/some_instant_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/all-field-types/inline/some-instant-modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInstantModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someInstantModifiableRequestDto) {
 
@@ -151,7 +151,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/inline/some_instant_modifiable_nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/all-field-types/inline/some-instant-modifiable-nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInstantModifiableNullable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someInstantModifiableNullableRequestDto) {
 
@@ -160,7 +160,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/inline/some_int_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/all-field-types/inline/some-int-modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeIntModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someIntModifiableRequestDto) {
 
@@ -169,7 +169,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/inline/some_int_nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/all-field-types/inline/some-int-nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeIntNullable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someIntNullableRequestDto) {
 
@@ -178,7 +178,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/inline/some_local_date_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/all-field-types/inline/some-local-date-modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeLocalDateModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someLocalDateModifiableRequestDto) {
 
@@ -187,7 +187,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/inline/some_period_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/all-field-types/inline/some-period-modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomePeriodModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_somePeriodModifiableRequestDto) {
 
@@ -196,7 +196,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/inline/some_string_modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/all-field-types/inline/some-string-modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeStringModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someStringModifiableRequestDto) {
 
@@ -205,7 +205,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @PutMapping("/api/all_field_types/inline/some_list_of_strings", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/all-field-types/inline/some-list-of-strings", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeListOfStrings(@RequestBody @Valid editDto: AllFieldTypesUpdate_someListOfStringsRequestDto) {
 
@@ -214,7 +214,7 @@ class AllFieldTypesCrudEndpoint(
     }
 
 
-    @DeleteMapping("/api/all_field_types/{id}")
+    @DeleteMapping("/api/all-field-types/{id}")
     @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 

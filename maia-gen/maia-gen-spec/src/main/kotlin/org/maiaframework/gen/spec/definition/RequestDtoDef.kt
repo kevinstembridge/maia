@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.ClassType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
+import org.maiaframework.lang.text.StringFunctions
 
 
 class RequestDtoDef(
@@ -30,10 +31,10 @@ class RequestDtoDef(
     val classFieldDefs = this.dtoFieldDefs.map { it.classFieldDef }
 
 
-    private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
+    private val modulePath = if (moduleName == null) "" else "${StringFunctions.toKebabCase(moduleName.value)}/"
 
 
-    val requestMappingPath = requestMappingPath ?: "/api/$modulePath${dtoBaseName.toSnakeCase()}"
+    val requestMappingPath = requestMappingPath ?: "/api/$modulePath${dtoBaseName.toKebabCase()}"
 
 
     val classDef = aClassDef(packageName.uqcn(dtoBaseName.withSuffix(dtoSuffix).value))

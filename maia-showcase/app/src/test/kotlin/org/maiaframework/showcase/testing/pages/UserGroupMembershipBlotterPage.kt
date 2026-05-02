@@ -14,7 +14,7 @@ class UserGroupMembershipBlotterPage(
 ) : AbstractPage(
     page,
     urlHelper,
-    "/user_group_memberships",
+    "/user-group-membership-blotter",
     "user_group_memberships_blotter"
 ) {
 

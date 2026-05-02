@@ -58,9 +58,9 @@ class LeftSearchableCrudPlaywrightTest : AbstractPlaywrightTest() {
     fun `crud journey`() {
 
         `log in as admin user`()
-        `navigate to the`(leftSearchableBlotterPage)
+        `navigate to the`(leftManySearchableBlotterPage)
 
-        leftSearchableBlotterPage.apply {
+        leftManySearchableBlotterPage.apply {
             // Create with two right entity chips selected
             clickAddButton()
             fillCreateForm()

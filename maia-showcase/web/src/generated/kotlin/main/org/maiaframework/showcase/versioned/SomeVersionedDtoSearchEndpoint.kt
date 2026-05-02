@@ -17,7 +17,7 @@ class SomeVersionedDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/some_versioned/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/some-versioned/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<SomeVersionedDto> {
 
         return this.searchService.search(searchModel)
@@ -25,7 +25,7 @@ class SomeVersionedDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/some_versioned/count")
+    @PostMapping("/api/some-versioned/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)

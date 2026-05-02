@@ -32,7 +32,7 @@ class CharlieCrudEndpoint(
     }
 
 
-    @GetMapping("/api/charlie/fetch_for_edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/charlie/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun fetchForEdit(@PathVariable id: DomainId): CharlieFetchForEditDto {
 
         return this.crudService.fetchForEdit(id)

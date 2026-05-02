@@ -111,7 +111,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
         val requestBody = asJson(mapOf<String, String>())
 
         assertThat(
-            mockMvc.post().uri("/api/bravo_ag_grid/search")
+            mockMvc.post().uri("/api/bravo-ag-grid/search")
                 .content(requestBody)
                 .exchange()
         ).hasStatus(HttpStatus.FORBIDDEN)
@@ -1275,13 +1275,13 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             )
         )
 
-        return assertThat_POST("/api/all_field_types_blotter/search", requestBody)
+        return assertThat_POST("/api/all-field-types-blotter/search", requestBody)
 
     }
 
 
     private fun submitSearch(
-        path: String = "/api/bravo_ag_grid/search",
+        path: String = "/api/bravo-ag-grid/search",
         startRow: Int,
         endRow: Int,
         sortModel: List<Map<String, String>> = emptyList(),

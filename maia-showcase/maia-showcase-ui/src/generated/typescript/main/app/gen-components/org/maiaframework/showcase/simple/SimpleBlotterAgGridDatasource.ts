@@ -22,7 +22,7 @@ export class SimpleBlotterAgGridDatasource implements IDatasource {
     getRows(params: IGetRowsParams): void {
 
         this.http.post<SearchResultPage<SimpleBlotterRowDto>>(
-            '/api/simple_blotter/search',
+            '/api/simple-blotter/search',
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

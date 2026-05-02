@@ -18,7 +18,7 @@ class UserGroupMembershipBlotterRowDtoSearchEndpoint(
 ) {
 
 
-    @PostMapping("/api/ops/user_group_membership_blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/ops/user-group-membership-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestBody searchModel: AgGridSearchModel): SearchResultPage<UserGroupMembershipBlotterRowDto> {
 
         return this.searchService.search(searchModel)
@@ -26,7 +26,7 @@ class UserGroupMembershipBlotterRowDtoSearchEndpoint(
     }
 
 
-    @PostMapping("/api/ops/user_group_membership_blotter/count")
+    @PostMapping("/api/ops/user-group-membership-blotter/count")
     fun count(@RequestBody searchModel: AgGridSearchModel): Long {
 
         return this.searchService.count(searchModel)
@@ -34,7 +34,7 @@ class UserGroupMembershipBlotterRowDtoSearchEndpoint(
     }
 
 
-    @GetMapping("/api/ops/user_group_membership_blotter/find_all", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/ops/user-group-membership-blotter/find-all", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<UserGroupMembershipBlotterRowDto> {
 
         return this.searchService.findAll()

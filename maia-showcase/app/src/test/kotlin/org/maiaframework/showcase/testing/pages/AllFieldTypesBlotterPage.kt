@@ -13,7 +13,7 @@ class AllFieldTypesBlotterPage(
 ) : AbstractPage(
     page,
     urlHelper,
-    "/all_field_types",
+    "/all-field-types-blotter",
     "all_field_types_blotter"
 ) {
 

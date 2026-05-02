@@ -13,7 +13,7 @@ class CompositePkBlotterPage(
 ) : AbstractPage(
     page,
     urlHelper,
-    "/composite_pk",
+    "/composite-pk-blotter",
     "composite_pk_blotter"
 ) {
 

@@ -24,7 +24,7 @@ export class UserGroupMembershipBlotterService {
     public search(searchModel: any): Observable<SearchResultPage<UserGroupMembershipBlotterRowDto>> {
 
         return this.http.post<SearchResultPage<UserGroupMembershipBlotterRowDto>>(
-                '/api/ops/user_group_membership_blotter/search',
+                '/api/ops/user-group-membership-blotter/search',
                 searchModel,
                 this.httpOptions);
 

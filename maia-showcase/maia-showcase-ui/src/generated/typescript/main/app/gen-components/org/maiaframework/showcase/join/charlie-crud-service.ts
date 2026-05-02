@@ -44,7 +44,7 @@ export class CharlieCrudService {
 
     public fetchForEdit(id: string): Observable<CharlieFetchForEditDto> {
 
-        return this.http.get<CharlieFetchForEditDto>('/api/charlie/fetch_for_edit/' + id, this.httpOptions);
+        return this.http.get<CharlieFetchForEditDto>('/api/charlie/fetch-for-edit/' + id, this.httpOptions);
 
     }
 

@@ -14,7 +14,7 @@ class BravoBlotterPage(
 ) : AbstractPage(
     page,
     urlHelper,
-    "/bravo",
+    "/bravo-blotter",
     "bravo_blotter"
 ) {
 

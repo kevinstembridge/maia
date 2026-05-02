@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.DatabaseIndexDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.InlineEditDtoDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
+import org.maiaframework.lang.text.StringFunctions
 
 class CrudEndpointRenderer(
     private val entityCrudApiDef: EntityCrudApiDef
@@ -210,10 +211,11 @@ class CrudEndpointRenderer(
 
         val dtoUqcn = dtoDef.uqcn
         val fieldName = dtoDef.fieldDef.classFieldDef.classFieldName
+        val modulePath = this.entityDef.moduleName?.let { "${StringFunctions.toKebabCase(it.value)}/" } ?: ""
 
         blankLine()
         blankLine()
-        appendLine("    @PutMapping(\"/api/${this.entityDef.entityBaseName.toSnakeCase()}/inline/${fieldName.toSnakeCase()}\", produces = [MediaType.APPLICATION_JSON_VALUE])")
+        appendLine("    @PutMapping(\"/api/$modulePath${this.entityDef.entityBaseName.toKebabCase()}/inline/${fieldName.toKebabCase()}\", produces = [MediaType.APPLICATION_JSON_VALUE])")
         appendPreAuthorize(crudApiDef)
         appendLine("    fun update${fieldName.firstToUpper()}(@RequestBody @Valid editDto: $dtoUqcn) {")
         blankLine()
