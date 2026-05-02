@@ -117,6 +117,7 @@ export class AllFieldTypesBlotter {
 
     public rowSelection = {
          mode: 'singleRow' as const,
+         checkboxes: false,
     };
 
 

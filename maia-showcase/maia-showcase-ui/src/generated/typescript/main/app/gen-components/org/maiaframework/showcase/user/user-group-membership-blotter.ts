@@ -69,6 +69,7 @@ export class UserGroupMembershipBlotter {
 
     public rowSelection = {
          mode: 'singleRow' as const,
+         checkboxes: false,
     };
 
 

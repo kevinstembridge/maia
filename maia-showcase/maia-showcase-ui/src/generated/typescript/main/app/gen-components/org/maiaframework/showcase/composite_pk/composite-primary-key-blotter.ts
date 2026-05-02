@@ -82,6 +82,7 @@ export class CompositePrimaryKeyBlotter {
 
     public rowSelection = {
          mode: 'singleRow' as const,
+         checkboxes: false,
     };
 
 

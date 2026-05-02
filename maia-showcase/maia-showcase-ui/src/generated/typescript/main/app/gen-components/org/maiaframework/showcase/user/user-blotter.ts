@@ -68,6 +68,7 @@ export class UserBlotter {
 
     public rowSelection = {
          mode: 'singleRow' as const,
+         checkboxes: false,
     };
 
 

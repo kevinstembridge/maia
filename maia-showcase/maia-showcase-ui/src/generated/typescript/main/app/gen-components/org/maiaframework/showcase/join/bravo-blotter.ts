@@ -81,6 +81,7 @@ export class BravoBlotter {
 
     public rowSelection = {
          mode: 'singleRow' as const,
+         checkboxes: false,
     };
 
 

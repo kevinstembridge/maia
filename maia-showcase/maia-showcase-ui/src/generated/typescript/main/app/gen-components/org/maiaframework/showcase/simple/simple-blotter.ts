@@ -80,6 +80,7 @@ export class SimpleBlotter {
 
     public rowSelection = {
          mode: 'singleRow' as const,
+         checkboxes: false,
     };
 
 

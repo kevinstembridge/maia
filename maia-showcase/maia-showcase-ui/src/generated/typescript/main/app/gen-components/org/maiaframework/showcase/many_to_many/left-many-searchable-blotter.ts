@@ -96,6 +96,7 @@ export class LeftManySearchableBlotter {
 
     public rowSelection = {
          mode: 'singleRow' as const,
+         checkboxes: false,
     };
 
 

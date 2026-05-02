@@ -82,6 +82,7 @@ export class SomeVersionedBlotter {
 
     public rowSelection = {
          mode: 'singleRow' as const,
+         checkboxes: false,
     };
 
 

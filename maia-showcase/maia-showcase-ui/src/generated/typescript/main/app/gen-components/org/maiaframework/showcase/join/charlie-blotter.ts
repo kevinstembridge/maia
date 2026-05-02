@@ -47,6 +47,7 @@ export class CharlieBlotter {
 
     public rowSelection = {
          mode: 'singleRow' as const,
+         checkboxes: false,
     };
 
 

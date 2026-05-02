@@ -138,6 +138,7 @@ class AgGridBlotterComponentRenderer(
             |
             |    public rowSelection = {
             |         mode: 'singleRow' as const,
+            |         checkboxes: false,
             |    };
             |
             |
