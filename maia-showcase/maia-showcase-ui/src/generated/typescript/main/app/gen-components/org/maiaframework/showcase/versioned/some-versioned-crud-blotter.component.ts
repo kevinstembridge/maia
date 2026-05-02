@@ -3,6 +3,7 @@
 
 import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {Router} from '@angular/router';
 import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterRowDto';
 import {SomeVersionedBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter.component';
 import {SomeVersionedCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-create-dialog.component';
@@ -18,16 +19,17 @@ import {SomeVersionedEditDialogComponent} from '@app/gen-components/org/maiafram
 })
 export class SomeVersionedCrudBlotterComponent {
 
+
     @ViewChild(SomeVersionedBlotterComponent) blotterComponent!: SomeVersionedBlotterComponent;
 
 
     private readonly crudService = inject(SomeVersionedCrudService);
 
-
+    
     private readonly dialog = inject(MatDialog);
 
 
-    onAddButtonClicked() {
+    onAddButtonClicked(): void {
 
         const dialogRef = this.dialog.open(SomeVersionedCreateDialogComponent, {
             width: '400px'
@@ -42,7 +44,7 @@ export class SomeVersionedCrudBlotterComponent {
     }
 
 
-    onEdit(dto: SomeVersionedBlotterRowDto) {
+    onEdit(dto: SomeVersionedBlotterRowDto): void {
 
         const dialogRef = this.dialog.open(SomeVersionedEditDialogComponent, {
             width: '400px',
@@ -58,7 +60,7 @@ export class SomeVersionedCrudBlotterComponent {
     }
 
 
-    onDelete(dto: SomeVersionedBlotterRowDto) {
+    onDelete(dto: SomeVersionedBlotterRowDto): void {
 
         const dialogRef = this.dialog.open(SomeVersionedDeleteDialogComponent, {
             width: '400px',

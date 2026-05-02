@@ -36,27 +36,27 @@ class LeftToRightManyToManyDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.left_to_right_many_to_many_join
-            inner join maia.left
-                    on maia.left_to_right_many_to_many_join.left_id = maia.left.id
-            inner join maia.right
-                    on maia.left_to_right_many_to_many_join.right_id = maia.right.id
+            inner join maia.left_many
+                    on maia.left_to_right_many_to_many_join.left_id = maia.left_many.id
+            inner join maia.right_many
+                    on maia.left_to_right_many_to_many_join.right_id = maia.right_many.id
             $whereClause
             """.trimIndent()
 
         val sqlForPage = """
             select
                 maia.left_to_right_many_to_many_join.id as id,
-                maia.left.id as leftId,
-                maia.left.some_int as leftSomeInt,
-                maia.left.some_string as leftSomeString,
-                maia.right.id as rightId,
-                maia.right.some_int as rightSomeInt,
-                maia.right.some_string as rightSomeString
+                maia.left_many.id as leftId,
+                maia.left_many.some_int as leftSomeInt,
+                maia.left_many.some_string as leftSomeString,
+                maia.right_many.id as rightId,
+                maia.right_many.some_int as rightSomeInt,
+                maia.right_many.some_string as rightSomeString
             from maia.left_to_right_many_to_many_join
-            inner join maia.left
-                    on maia.left_to_right_many_to_many_join.left_id = maia.left.id
-            inner join maia.right
-                    on maia.left_to_right_many_to_many_join.right_id = maia.right.id
+            inner join maia.left_many
+                    on maia.left_to_right_many_to_many_join.left_id = maia.left_many.id
+            inner join maia.right_many
+                    on maia.left_to_right_many_to_many_join.right_id = maia.right_many.id
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -85,10 +85,10 @@ class LeftToRightManyToManyDtoDao(
         val sqlForTotalCount = """
             select count(*)
             from maia.left_to_right_many_to_many_join
-            inner join maia.left
-                    on maia.left_to_right_many_to_many_join.left_id = maia.left.id
-            inner join maia.right
-                    on maia.left_to_right_many_to_many_join.right_id = maia.right.id
+            inner join maia.left_many
+                    on maia.left_to_right_many_to_many_join.left_id = maia.left_many.id
+            inner join maia.right_many
+                    on maia.left_to_right_many_to_many_join.right_id = maia.right_many.id
             $whereClause
             """.trimIndent()
 

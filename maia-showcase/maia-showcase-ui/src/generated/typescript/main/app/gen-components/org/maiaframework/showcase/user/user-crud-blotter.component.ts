@@ -3,6 +3,7 @@
 
 import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {Router} from '@angular/router';
 import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserBlotterRowDto';
 import {UserBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-blotter.component';
 import {UserCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-create-dialog.component';
@@ -17,16 +18,17 @@ import {UserEditDialogComponent} from '@app/gen-components/org/maiaframework/sho
 })
 export class UserCrudBlotterComponent {
 
+
     @ViewChild(UserBlotterComponent) blotterComponent!: UserBlotterComponent;
 
 
     private readonly crudService = inject(UserCrudService);
 
-
+    
     private readonly dialog = inject(MatDialog);
 
 
-    onAddButtonClicked() {
+    onAddButtonClicked(): void {
 
         const dialogRef = this.dialog.open(UserCreateDialogComponent, {
             width: '400px'
@@ -41,7 +43,7 @@ export class UserCrudBlotterComponent {
     }
 
 
-    onEdit(dto: UserBlotterRowDto) {
+    onEdit(dto: UserBlotterRowDto): void {
 
         const dialogRef = this.dialog.open(UserEditDialogComponent, {
             width: '400px',

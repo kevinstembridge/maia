@@ -17,6 +17,9 @@ sealed class BlotterSourceDef {
     abstract val dataSourceType: DataSourceType
 
 
+    abstract val hasViewEntityPage: Boolean
+
+
     abstract fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef
 
 
@@ -35,6 +38,9 @@ class BlotterSearchableDtoSourceDef(
 
 
     override val dataSourceType: DataSourceType = DataSourceType.DATABASE
+
+
+    override val hasViewEntityPage: Boolean = this.searchableDtoDef.dtoRootEntityDef.hasViewEntityPage
 
 
     override fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef {
@@ -58,6 +64,9 @@ class BlotterEsDocSourceDef(
 
 
     override val dataSourceType: DataSourceType = DataSourceType.ELASTIC_SEARCH
+
+
+    override val hasViewEntityPage: Boolean = esDocDef.hasViewEntityPage
 
 
     override fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef {

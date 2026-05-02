@@ -68,7 +68,7 @@ export class UserGroupMembershipBlotterComponent {
 
 
     public rowSelection = {
-         mode: 'multiRow' as const,
+         mode: 'singleRow' as const,
     };
 
 

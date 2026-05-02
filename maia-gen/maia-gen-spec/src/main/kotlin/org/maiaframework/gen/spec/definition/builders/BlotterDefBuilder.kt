@@ -110,6 +110,15 @@ class BlotterDefBuilder(
     }
 
 
+    fun viewActionColumn(): BlotterActionColumnDefBuilder {
+
+        val builder = BlotterActionColumnDefBuilder(ActionName.view, AgGridCellRendererDefs.viewAction).icon("visibility").header("")
+        this.columnBuilders.add(builder)
+        return builder
+
+    }
+
+
     fun deleteActionColumn(): BlotterActionColumnDefBuilder {
 
         val builder = BlotterActionColumnDefBuilder(ActionName.delete, AgGridCellRendererDefs.deleteAction).icon("delete").header("")

@@ -12,20 +12,20 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var leftDao: LeftDao
+    private lateinit var leftDao: LeftManyDao
 
 
     @Autowired
-    private lateinit var rightDao: RightDao
+    private lateinit var rightDao: RightManyDao
 
 
     @Autowired
     private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
 
 
-    private val leftEntity = LeftEntityTestBuilder().build()
-    private val rightEntity1 = RightEntityTestBuilder(someString = "alpha").build()
-    private val rightEntity2 = RightEntityTestBuilder(someString = "beta").build()
+    private val leftEntity = LeftManyEntityTestBuilder().build()
+    private val rightEntity1 = RightManyEntityTestBuilder(someString = "alpha").build()
+    private val rightEntity2 = RightManyEntityTestBuilder(someString = "beta").build()
 
 
     @BeforeEach
@@ -48,7 +48,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
     fun `fetchForEdit returns rightEntities sorted by someString`() {
 
         assertThat(
-            mockMvc.get().uri("/api/left/fetch_for_edit/${leftEntity.id}")
+            mockMvc.get().uri("/api/left_many/fetch_for_edit/${leftEntity.id}")
                 .with(user("nigel").roles("ADMIN"))
                 .exchange()
         ).hasStatus(HttpStatus.OK)
@@ -75,7 +75,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
         manyToManyJoinDao.deleteAll()
 
         assertThat(
-            mockMvc.get().uri("/api/left/fetch_for_edit/${leftEntity.id}")
+            mockMvc.get().uri("/api/left_many/fetch_for_edit/${leftEntity.id}")
                 .with(user("nigel").roles("ADMIN"))
                 .exchange()
         ).hasStatus(HttpStatus.OK)

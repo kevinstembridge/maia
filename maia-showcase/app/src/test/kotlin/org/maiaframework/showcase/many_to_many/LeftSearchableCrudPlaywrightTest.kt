@@ -13,7 +13,7 @@ class LeftSearchableCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var rightDao: RightDao
+    private lateinit var rightManyDao: RightManyDao
 
 
     @Autowired
@@ -21,11 +21,11 @@ class LeftSearchableCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var rightTypeaheadEsIndex: RightTypeaheadEsIndex
+    private lateinit var rightManyTypeaheadEsIndex: RightManyTypeaheadEsIndex
 
 
-    private val rightAlpha = RightEntityTestBuilder(someString = "right-alpha").build()
-    private val rightBeta = RightEntityTestBuilder(someString = "right-beta").build()
+    private val rightAlpha = RightManyEntityTestBuilder(someString = "right-alpha").build()
+    private val rightBeta = RightManyEntityTestBuilder(someString = "right-beta").build()
 
 
     @BeforeAll
@@ -33,13 +33,13 @@ class LeftSearchableCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         initAdminUserFixture()
         fixtures.resetDatabaseState()
-        rightDao.deleteAll()
-        rightDao.bulkInsert(listOf(rightAlpha, rightBeta))
+        rightManyDao.deleteAll()
+        rightManyDao.bulkInsert(listOf(rightAlpha, rightBeta))
         listOf(rightAlpha, rightBeta).forEach { entity ->
             esIndexOps.upsert(EsDocHolder(
                 id = entity.id.toString(),
-                doc = RightTypeaheadV1EsDoc(id = entity.id, someString = entity.someString),
-                indexName = rightTypeaheadEsIndex.indexName()
+                doc = RightManyTypeaheadV1EsDoc(id = entity.id, someString = entity.someString),
+                indexName = rightManyTypeaheadEsIndex.indexName()
             ))
         }
 

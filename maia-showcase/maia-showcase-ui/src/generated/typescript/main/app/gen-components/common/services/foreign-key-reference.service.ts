@@ -71,20 +71,20 @@ export class ForeignKeyReferenceService {
     }
 
 
-    public checkLeftForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
+    public checkLeftManyForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
 
         return this.http.get<ForeignKeyReferencesExistResponseDto>(
-            '/api/left/check_foreign_references/' + id,
+            '/api/left_many/check_foreign_references/' + id,
             this.httpOptions
         );
 
     }
 
 
-    public checkRightForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
+    public checkRightManyForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
 
         return this.http.get<ForeignKeyReferencesExistResponseDto>(
-            '/api/right/check_foreign_references/' + id,
+            '/api/right_many/check_foreign_references/' + id,
             this.httpOptions
         );
 

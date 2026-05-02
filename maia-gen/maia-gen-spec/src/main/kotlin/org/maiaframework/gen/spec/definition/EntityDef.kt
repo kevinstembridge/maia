@@ -14,6 +14,7 @@ import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
 import org.maiaframework.gen.spec.definition.flags.HasEntityDetailDtoDef
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
+import org.maiaframework.gen.spec.definition.flags.HasViewEntityPage
 import org.maiaframework.gen.spec.definition.flags.IsCappedCollection
 import org.maiaframework.gen.spec.definition.flags.IsCreatableByUser
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
@@ -92,7 +93,6 @@ class EntityDef(
 
     val entityUqcn = Uqcn("${entityBaseName}Entity")
 
-
     val entityCacheName = entityUqcn.toSnakeCase()
 
 
@@ -105,7 +105,7 @@ class EntityDef(
     val schemaAndTableName: String = if (this.configurableSchemaPropertyName == null) {
         "${schemaName}.${tableName}".lowercase()
     } else {
-        "\$schemaName.${tableName.value.lowercase()}"
+        $$"$schemaName.$${tableName.value.lowercase()}"
     }
 
 
@@ -224,6 +224,9 @@ class EntityDef(
         .withFieldDefsNotInherited(this.allEntityFields.filter { it.isPrimaryKey.value }.map { it.classFieldDef })
         .ofType(ClassType.DATA_CLASS)
         .build()
+
+
+    val hasViewEntityPage: Boolean = this.crudDef.hasViewEntityPage.value
 
 
     val hasAnyMatSelectFields = allEntityFields.any { it.fieldType is EnumFieldType }
@@ -631,6 +634,10 @@ class EntityDef(
 
     val checkForeignKeyReferencesEndpointUrl =
         "/api/$modulePath${entityBaseName.toSnakeCase()}/check_foreign_references"
+
+
+    val viewEntityUrl =
+        "/$modulePath${entityBaseName.toSnakeCase()}/view"
 
 
     init {

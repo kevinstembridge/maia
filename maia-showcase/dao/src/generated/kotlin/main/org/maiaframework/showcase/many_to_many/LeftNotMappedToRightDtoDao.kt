@@ -35,17 +35,17 @@ class LeftNotMappedToRightDtoDao(
 
         val sqlForTotalCount = """
             select count(*)
-            from maia.left
+            from maia.left_many
             $whereClause
             """.trimIndent()
 
         val sqlForPage = """
             select
-                maia.left.created_timestamp_utc as createdTimestampUtc,
-                maia.left.id as id,
-                maia.left.some_int as someIntFromLeft,
-                maia.left.some_string as someStringFromLeft
-            from maia.left
+                maia.left_many.created_timestamp_utc as createdTimestampUtc,
+                maia.left_many.id as id,
+                maia.left_many.some_int as someIntFromLeft,
+                maia.left_many.some_string as someStringFromLeft
+            from maia.left_many
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -73,7 +73,7 @@ class LeftNotMappedToRightDtoDao(
 
         val sqlForTotalCount = """
             select count(*)
-            from maia.left
+            from maia.left_many
             $whereClause
             """.trimIndent()
 

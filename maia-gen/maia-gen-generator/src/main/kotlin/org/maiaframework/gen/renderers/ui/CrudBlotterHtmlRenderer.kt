@@ -18,19 +18,14 @@ class CrudBlotterHtmlRenderer(private val crudBlotterDef: CrudBlotterDef): Abstr
         appendLine("<${crudBlotterDef.dtoBlotterComponent.componentSelector}")
 
         if (this.crudBlotterDef.blotterDef.addButtonDef != null) {
-            appendLine("  (addButtonClicked)=\"onAddButtonClicked()\"")
+            appendLine("""    (addButtonClicked)="onAddButtonClicked()"""")
         }
 
-        if (this.crudBlotterDef.entityCrudApiDef.deleteApiDef != null) {
-            appendLine("  (delete)=\"onDelete(\$event)\"")
+        this.crudBlotterDef.blotterDef.actionColumnFields.sortedBy { it.actionName.value }.forEach { actionColumnDef ->
+            appendLine($$"""    ($${actionColumnDef.actionName})="on$${actionColumnDef.actionName.firstToUpper()}($event)"""")
         }
 
-        if (this.crudBlotterDef.entityCrudApiDef.updateApiDef != null) {
-            appendLine("  (edit)=\"onEdit(\$event)\"")
-        }
-
-        appendLine("  >")
-        appendLine("</${crudBlotterDef.dtoBlotterComponent.componentSelector}>")
+        appendLine("/>")
 
         return sourceCode.toString()
 

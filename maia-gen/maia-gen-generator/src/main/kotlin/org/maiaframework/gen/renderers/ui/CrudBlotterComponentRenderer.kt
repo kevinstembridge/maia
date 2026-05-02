@@ -13,6 +13,7 @@ class CrudBlotterComponentRenderer(
         addImport("@angular/core", "Component")
         addImport("@angular/core", "inject")
         addImport("@angular/core", "ViewChild")
+        addImport("@angular/router", "Router")
         addImport("@angular/material/dialog", "MatDialog")
         addImport("@angular/material/dialog", "MatDialogRef")
         addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
@@ -40,45 +41,75 @@ class CrudBlotterComponentRenderer(
 
     override fun renderSourceBody() {
 
-        blankLine()
-        appendLine("@Component({")
-        appendLine("    imports: [${this.crudBlotterDef.dtoBlotterComponent.componentName}],")
-        appendLine("    selector: '${crudBlotterDef.crudBlotterComponentSelector}',")
-        appendLine("    templateUrl: './${crudBlotterDef.crudBlotterComponentHtmlFileName}'")
-        appendLine("})")
-        appendLine("export class ${crudBlotterDef.crudBlotterComponentClassName} {")
-        blankLine()
-        appendLine("    @ViewChild(${crudBlotterDef.dtoBlotterComponent.componentName}) blotterComponent!: ${crudBlotterDef.dtoBlotterComponent.componentName};")
-        blankLine()
-        blankLine()
-        appendLine("    private readonly crudService = inject(${crudBlotterDef.crudServiceClassName});")
-        blankLine()
-        blankLine()
-        appendLine("    private readonly dialog = inject(MatDialog);")
+        append("""
+            |
+            |@Component({
+            |    imports: [${this.crudBlotterDef.dtoBlotterComponent.componentName}],
+            |    selector: '${crudBlotterDef.crudBlotterComponentSelector}',
+            |    templateUrl: './${crudBlotterDef.crudBlotterComponentHtmlFileName}'
+            |})
+            |export class ${crudBlotterDef.crudBlotterComponentClassName} {
+            |
+            |
+            |    @ViewChild(${crudBlotterDef.dtoBlotterComponent.componentName}) blotterComponent!: ${crudBlotterDef.dtoBlotterComponent.componentName};
+            |
+            |
+            |    private readonly crudService = inject(${crudBlotterDef.crudServiceClassName});
+            |
+            |    
+            |    private readonly dialog = inject(MatDialog);
+            |""".trimMargin())
+
+        if (crudBlotterDef.blotterDef.hasViewActionColumn) {
+
+            append("""
+                |
+                |    private readonly router = inject(Router);
+                |""".trimMargin())
+
+        }
 
         crudBlotterDef.entityCrudApiDef.createApiDef?.let { apiDef ->
 
-            blankLine()
-            blankLine()
-            appendLine("    onAddButtonClicked() {")
-            blankLine()
-            appendLine("        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {")
-            appendLine("            width: '400px'")
-            appendLine("        });")
-            blankLine()
-            appendLine("        dialogRef.afterClosed().subscribe((result) => {")
-            appendLine("            if (result) {")
-            appendLine("                this.blotterComponent.reapplyFilters();")
-            appendLine("            }")
-            appendLine("        });")
-            blankLine()
-            appendLine("    }")
+            append("""
+                |
+                |
+                |    onAddButtonClicked(): void {
+                |
+                |        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {
+                |            width: '400px'
+                |        });
+                |
+                |        dialogRef.afterClosed().subscribe((result) => {
+                |            if (result) {
+                |                this.blotterComponent.reapplyFilters();
+                |            }
+                |        });
+                |
+                |    }
+                |""".trimMargin())
+
+        }
+
+        if (crudBlotterDef.blotterDef.hasViewActionColumn) {
+
+            append("""
+                |
+                |
+                |    onView(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
+                |
+                |        this.router.navigate(['${crudBlotterDef.blotterDef.searchableDtoDef!!.dtoRootEntityDef.viewEntityUrl}', dto.id]);
+                |
+                |    }
+                |""".trimMargin()
+            )
 
         }
 
         crudBlotterDef.entityCrudApiDef.updateApiDef?.let { apiDef ->
 
             val entityDef = crudBlotterDef.entityCrudApiDef.entityDef
+
             val entityIdExpression = if (entityDef.hasCompositePrimaryKey) {
                 val parts = entityDef.primaryKeyFields.joinToString(", ") { "${it.classFieldName.value}: dto.${it.classFieldName.value}" }
                 "{$parts}"
@@ -86,29 +117,32 @@ class CrudBlotterComponentRenderer(
                 "dto.id"
             }
 
-            blankLine()
-            blankLine()
-            appendLine("    onEdit(dto: ${crudBlotterDef.blotterDef.dtoUqcn}) {")
-            blankLine()
-            appendLine("        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {")
-            appendLine("            width: '400px',")
-            appendLine("            data: $entityIdExpression")
-            appendLine("        });")
-            blankLine()
-            appendLine("        dialogRef.afterClosed().subscribe(result => {")
-            appendLine("            if (result) {")
-            appendLine("                this.blotterComponent.reapplyFilters();")
-            appendLine("            }")
-            appendLine("        });")
-            blankLine()
-            appendLine("    }")
+            append("""
+                |
+                |
+                |    onEdit(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
+                |
+                |        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {
+                |            width: '400px',
+                |            data: $entityIdExpression
+                |        });
+                |
+                |        dialogRef.afterClosed().subscribe(result => {
+                |            if (result) {
+                |                this.blotterComponent.reapplyFilters();
+                |            }
+                |        });
+                |
+                |    }
+                |""".trimMargin())
+
         }
 
         crudBlotterDef.entityCrudApiDef.deleteApiDef?.let { apiDef ->
 
             blankLine()
             blankLine()
-            appendLine("    onDelete(dto: ${crudBlotterDef.blotterDef.dtoUqcn}) {")
+            appendLine("    onDelete(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {")
 
             if (this.entityIsReferencedByForeignKeys) {
                 blankLine()

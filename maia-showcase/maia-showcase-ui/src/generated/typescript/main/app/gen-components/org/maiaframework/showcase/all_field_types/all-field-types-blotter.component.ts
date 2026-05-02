@@ -116,7 +116,7 @@ export class AllFieldTypesBlotterComponent {
 
 
     public rowSelection = {
-         mode: 'multiRow' as const,
+         mode: 'singleRow' as const,
     };
 
 

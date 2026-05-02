@@ -13,7 +13,7 @@ import org.maiaframework.showcase.join.AlphaDao
 import org.maiaframework.showcase.join.AlphaEntity
 import org.maiaframework.showcase.join.AlphaEntityMeta
 import org.maiaframework.showcase.join.AlphaEntityTestBuilder
-import org.maiaframework.showcase.many_to_many.LeftEntityMeta
+import org.maiaframework.showcase.many_to_many.LeftManyEntityMeta
 import org.maiaframework.showcase.many_to_many.LeftToRightManyToManyJoinEntityMeta
 import org.maiaframework.showcase.party.PartyEmailAddressEntityTestBuilder
 import org.maiaframework.showcase.party.PartyEntityMeta
@@ -155,7 +155,7 @@ class Fixtures(
         truncateTable(UserGroupEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(AlphaEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(LeftToRightManyToManyJoinEntityMeta.SCHEMA_AND_TABLE_NAME)
-        truncateTable(LeftEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(LeftManyEntityMeta.SCHEMA_AND_TABLE_NAME)
 //        truncateTable(WebsiteUrlEntityMeta.SCHEMA_AND_TABLE_NAME)
         deleteParties()
 

@@ -17,6 +17,12 @@ object AgGridCellRendererDefs {
     )
 
 
+    val viewAction = AgGridCellRendererDef(
+        TypescriptImport("IconAgGridCellRendererComponent", "@maia/maia-ui"),
+        "IconAgGridCellRendererComponent"
+    )
+
+
     val chips = AgGridCellRendererDef(
         TypescriptImport("ChipsAgGridCellRendererComponent", "@maia/maia-ui"),
         "ChipsAgGridCellRendererComponent"

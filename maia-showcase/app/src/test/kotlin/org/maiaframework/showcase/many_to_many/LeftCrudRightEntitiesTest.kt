@@ -13,20 +13,20 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var leftDao: LeftDao
+    private lateinit var leftDao: LeftManyDao
 
 
     @Autowired
-    private lateinit var rightDao: RightDao
+    private lateinit var rightDao: RightManyDao
 
 
     @Autowired
     private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
 
 
-    private val rightEntity1 = RightEntityTestBuilder(someString = "right1").build()
-    private val rightEntity2 = RightEntityTestBuilder(someString = "right2").build()
-    private val rightEntity3 = RightEntityTestBuilder(someString = "right3").build()
+    private val rightEntity1 = RightManyEntityTestBuilder(someString = "right1").build()
+    private val rightEntity2 = RightManyEntityTestBuilder(someString = "right2").build()
+    private val rightEntity3 = RightManyEntityTestBuilder(someString = "right3").build()
 
 
     @BeforeEach
@@ -44,7 +44,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     fun `create with rightEntityIds creates join records`() {
 
         assertThat_POST(
-            "/api/left/create",
+            "/api/left_many/create",
             """
             {
                 "someInt": 1,
@@ -67,7 +67,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     fun `create with no rightEntityIds creates no join records`() {
 
         assertThat_POST(
-            "/api/left/create",
+            "/api/left_many/create",
             """{"someInt": 1, "someString": "test"}"""
         ).hasStatus(HttpStatus.CREATED)
 
@@ -85,7 +85,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         // Create with right1 and right2
         assertThat_POST(
-            "/api/left/create",
+            "/api/left_many/create",
             """{"someInt": 1, "someString": "test", "rightEntityIds": ["${rightEntity1.id}", "${rightEntity2.id}"]}"""
         ).hasStatus(HttpStatus.CREATED)
 
@@ -94,7 +94,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         // Update to right2 and right3 only
         val csrfCookie = `fetch CSRF cookie`()
         assertThat(
-            mockMvc.put().uri("/api/left/update")
+            mockMvc.put().uri("/api/left_many/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""{"id": "$leftId", "someInt": 2, "someString": "test2", "rightEntityIds": ["${rightEntity2.id}", "${rightEntity3.id}"]}""")
                 .header("X-XSRF-TOKEN", csrfCookie.value)
@@ -115,7 +115,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         // Create with right1
         assertThat_POST(
-            "/api/left/create",
+            "/api/left_many/create",
             """{"someInt": 1, "someString": "test", "rightEntityIds": ["${rightEntity1.id}"]}"""
         ).hasStatus(HttpStatus.CREATED)
 
@@ -123,7 +123,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         val csrfCookie = `fetch CSRF cookie`()
         assertThat(
-            mockMvc.put().uri("/api/left/update")
+            mockMvc.put().uri("/api/left_many/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntityIds": []}""")
                 .header("X-XSRF-TOKEN", csrfCookie.value)

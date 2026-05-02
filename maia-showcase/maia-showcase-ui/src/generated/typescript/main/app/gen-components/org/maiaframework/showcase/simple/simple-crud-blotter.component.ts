@@ -3,6 +3,7 @@
 
 import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {Router} from '@angular/router';
 import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
 import {SimpleBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/simple/simple-blotter.component';
 import {SimpleCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/simple/simple-create-dialog.component';
@@ -18,16 +19,17 @@ import {SimpleEditDialogComponent} from '@app/gen-components/org/maiaframework/s
 })
 export class SimpleCrudBlotterComponent {
 
+
     @ViewChild(SimpleBlotterComponent) blotterComponent!: SimpleBlotterComponent;
 
 
     private readonly crudService = inject(SimpleCrudService);
 
-
+    
     private readonly dialog = inject(MatDialog);
 
 
-    onAddButtonClicked() {
+    onAddButtonClicked(): void {
 
         const dialogRef = this.dialog.open(SimpleCreateDialogComponent, {
             width: '400px'
@@ -42,7 +44,7 @@ export class SimpleCrudBlotterComponent {
     }
 
 
-    onEdit(dto: SimpleBlotterRowDto) {
+    onEdit(dto: SimpleBlotterRowDto): void {
 
         const dialogRef = this.dialog.open(SimpleEditDialogComponent, {
             width: '400px',
@@ -58,7 +60,7 @@ export class SimpleCrudBlotterComponent {
     }
 
 
-    onDelete(dto: SimpleBlotterRowDto) {
+    onDelete(dto: SimpleBlotterRowDto): void {
 
         const dialogRef = this.dialog.open(SimpleDeleteDialogComponent, {
             width: '400px',

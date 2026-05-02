@@ -3,6 +3,7 @@
 
 import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {Router} from '@angular/router';
 import {UserGroupMembershipBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipBlotterRowDto';
 import {UserGroupMembershipBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-blotter.component';
 import {UserGroupMembershipCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-create-dialog.component';
@@ -17,16 +18,17 @@ import {UserGroupMembershipEditDialogComponent} from '@app/gen-components/org/ma
 })
 export class UserGroupMembershipCrudBlotterComponent {
 
+
     @ViewChild(UserGroupMembershipBlotterComponent) blotterComponent!: UserGroupMembershipBlotterComponent;
 
 
     private readonly crudService = inject(UserGroupMembershipCrudService);
 
-
+    
     private readonly dialog = inject(MatDialog);
 
 
-    onAddButtonClicked() {
+    onAddButtonClicked(): void {
 
         const dialogRef = this.dialog.open(UserGroupMembershipCreateDialogComponent, {
             width: '400px'
@@ -41,7 +43,7 @@ export class UserGroupMembershipCrudBlotterComponent {
     }
 
 
-    onEdit(dto: UserGroupMembershipBlotterRowDto) {
+    onEdit(dto: UserGroupMembershipBlotterRowDto): void {
 
         const dialogRef = this.dialog.open(UserGroupMembershipEditDialogComponent, {
             width: '400px',

@@ -19,16 +19,20 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var leftDao: LeftDao
+    private lateinit var leftManyDao: LeftManyDao
+
 
     @Autowired
-    private lateinit var rightDao: RightDao
+    private lateinit var rightManyDao: RightManyDao
+
 
     @Autowired
     private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
 
+
     @Autowired
     private lateinit var jsonFacade: JsonFacade
+
 
     private val timestamp1 = Instant.now().truncatedTo(ChronoUnit.MILLIS).minusSeconds(24 * 60 * 60)
     private val timestamp2 = Instant.now().truncatedTo(ChronoUnit.MILLIS)
@@ -38,13 +42,13 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
     private val someInt2 = 2
     private val someInt3 = 3
 
-    private val leftEntity1 = LeftEntityTestBuilder(someInt = someInt1, someString = "aSomeLeftValue1", createdTimestampUtc = timestamp1).build()
-    private val leftEntity2 = LeftEntityTestBuilder(someInt = someInt2, someString = "bSomeLeftValue1", createdTimestampUtc = timestamp2).build()
-    private val leftEntity3 = LeftEntityTestBuilder(someInt = someInt3, someString = "bSomeLeftValue2", createdTimestampUtc = timestamp3).build()
+    private val leftEntity1 = LeftManyEntityTestBuilder(someInt = someInt1, someString = "aSomeLeftValue1", createdTimestampUtc = timestamp1).build()
+    private val leftEntity2 = LeftManyEntityTestBuilder(someInt = someInt2, someString = "bSomeLeftValue1", createdTimestampUtc = timestamp2).build()
+    private val leftEntity3 = LeftManyEntityTestBuilder(someInt = someInt3, someString = "bSomeLeftValue2", createdTimestampUtc = timestamp3).build()
 
-    private val rightEntity1 = RightEntityTestBuilder(someInt = someInt1, someString = "aSomeRightValue1").build()
-    private val rightEntity2 = RightEntityTestBuilder(someInt = someInt2, someString = "aSomeRightValue2").build()
-    private val rightEntity3 = RightEntityTestBuilder(someInt = someInt3, someString = "aSomeRightValue3").build()
+    private val rightEntity1 = RightManyEntityTestBuilder(someInt = someInt1, someString = "aSomeRightValue1").build()
+    private val rightEntity2 = RightManyEntityTestBuilder(someInt = someInt2, someString = "aSomeRightValue2").build()
+    private val rightEntity3 = RightManyEntityTestBuilder(someInt = someInt3, someString = "aSomeRightValue3").build()
 
     private val left1ToRight1 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity1.id, rightId = rightEntity1.id).build()
     private val left1ToRight2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity1.id, rightId = rightEntity2.id).build()
@@ -55,16 +59,15 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
     private val left3ToRight2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity3.id, rightId = rightEntity2.id).build()
 
 
-
     @BeforeEach
     fun beforeEach() {
 
         this.manyToManyJoinDao.deleteAll()
-        this.leftDao.deleteAll()
-        this.rightDao.deleteAll()
+        this.leftManyDao.deleteAll()
+        this.rightManyDao.deleteAll()
 
-        this.leftDao.bulkInsert(listOf(leftEntity1, leftEntity2, leftEntity3))
-        this.rightDao.bulkInsert(listOf(rightEntity1, rightEntity2, rightEntity3))
+        this.leftManyDao.bulkInsert(listOf(leftEntity1, leftEntity2, leftEntity3))
+        this.rightManyDao.bulkInsert(listOf(rightEntity1, rightEntity2, rightEntity3))
 
         this.manyToManyJoinDao.bulkInsert(listOf(
             left1ToRight1,
@@ -86,7 +89,7 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
         val requestBody = asJson(mapOf<String, String>())
 
         assertThat(
-            mockMvc.post().uri("/api/left_searchable/aggrid_datasource")
+            mockMvc.post().uri("/api/left_many_searchable/aggrid_datasource")
                 .content(requestBody)
                 .exchange()
         ).hasStatus(HttpStatus.FORBIDDEN)
@@ -150,7 +153,7 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
 
 
     private fun submitSearch(
-        path: String = "/api/left_searchable/search",
+        path: String = "/api/left_many_searchable/search",
         requestBody: String,
     ): MvcTestResultAssert {
 

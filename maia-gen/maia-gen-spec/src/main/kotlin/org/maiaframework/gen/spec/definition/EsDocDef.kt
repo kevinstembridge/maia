@@ -125,4 +125,7 @@ class EsDocDef(
     }
 
 
+    val hasViewEntityPage = entityDef?.hasViewEntityPage ?: false
+
+
 }

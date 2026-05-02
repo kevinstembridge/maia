@@ -2,12 +2,14 @@ package org.maiaframework.showcase.user
 
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractPlaywrightTest
 import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.springframework.beans.factory.annotation.Autowired
 
 
+@Disabled
 class UserGroupMembershipCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 

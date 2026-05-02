@@ -65,10 +65,17 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'left_searchable',
+        path: 'left_many_searchable',
         loadComponent: () =>
-            import('@app/pages/left-searchable-blotter/left-searchable-blotter-page').then(
-                (m) => m.LeftSearchableBlotterPage,
+            import('@app/pages/left-many-searchable-blotter/left-many-searchable-blotter-page.component').then(
+                (m) => m.LeftManySearchableBlotterPage,
+            ),
+    },
+    {
+        path: 'left_many/view/:id',
+        loadComponent: () =>
+            import('@app/pages/left-many-view/left-many-view').then(
+                (m) => m.LeftManyView,
             ),
     },
     {

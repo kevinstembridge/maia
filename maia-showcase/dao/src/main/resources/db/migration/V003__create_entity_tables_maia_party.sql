@@ -84,9 +84,11 @@ CREATE TABLE maia.user_group_history (
 
 CREATE TABLE maia.user_group_membership (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    effective_from timestamp(3) with time zone NULL,
+    effective_to timestamp(3) with time zone NULL,
     id uuid NOT NULL,
-    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     user_id uuid NOT NULL REFERENCES maia.party(id),
+    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     version bigint NOT NULL,
     PRIMARY KEY(id)
 );
@@ -97,9 +99,11 @@ CREATE INDEX user_group_membership_user_id_idx ON maia.user_group_membership(use
 CREATE TABLE maia.user_group_membership_history (
     change_type text NOT NULL,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    effective_from timestamp(3) with time zone NULL,
+    effective_to timestamp(3) with time zone NULL,
     id uuid NOT NULL,
-    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     user_id uuid NOT NULL REFERENCES maia.party(id),
+    user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );

@@ -13,12 +13,12 @@ object LeftToRightManyToManyDtoMeta {
 
         return when(dtoFieldName) {
             "id" -> "maia.left_to_right_many_to_many_join.id"
-            "leftId" -> "maia.left.id"
-            "leftSomeInt" -> "maia.left.some_int"
-            "leftSomeString" -> "maia.left.some_string"
-            "rightId" -> "maia.right.id"
-            "rightSomeInt" -> "maia.right.some_int"
-            "rightSomeString" -> "maia.right.some_string"
+            "leftId" -> "maia.left_many.id"
+            "leftSomeInt" -> "maia.left_many.some_int"
+            "leftSomeString" -> "maia.left_many.some_string"
+            "rightId" -> "maia.right_many.id"
+            "rightSomeInt" -> "maia.right_many.some_int"
+            "rightSomeString" -> "maia.right_many.some_string"
             else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [id, leftId, leftSomeInt, leftSomeString, rightId, rightSomeInt, rightSomeString]")
         }
 

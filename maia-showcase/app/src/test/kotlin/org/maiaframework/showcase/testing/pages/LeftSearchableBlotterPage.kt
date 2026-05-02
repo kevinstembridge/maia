@@ -14,8 +14,8 @@ class LeftSearchableBlotterPage(
 ) : AbstractPage(
     page,
     urlHelper,
-    "/left_searchable",
-    "left_searchable_blotter"
+    "/left_many_searchable",
+    "left_many_searchable_blotter"
 ) {
 
 

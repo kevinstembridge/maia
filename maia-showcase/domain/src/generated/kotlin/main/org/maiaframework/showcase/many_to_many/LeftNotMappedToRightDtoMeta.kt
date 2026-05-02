@@ -12,10 +12,10 @@ object LeftNotMappedToRightDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.left.created_timestamp_utc"
-            "id" -> "maia.left.id"
-            "someIntFromLeft" -> "maia.left.some_int"
-            "someStringFromLeft" -> "maia.left.some_string"
+            "createdTimestampUtc" -> "maia.left_many.created_timestamp_utc"
+            "id" -> "maia.left_many.id"
+            "someIntFromLeft" -> "maia.left_many.some_int"
+            "someStringFromLeft" -> "maia.left_many.some_string"
             else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someIntFromLeft, someStringFromLeft]")
         }
 

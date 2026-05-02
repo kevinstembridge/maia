@@ -1,11 +1,27 @@
 
-TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveTimestamps).
-    => UserGroupMembership.
-    TODO * Test that we can create a new UserGroup without being able to specify members.
-    TODO * Test that when we add a user to a group, the front end defaults the effectiveFrom to now.
+TODO Change naming convention: remove .component.*
 
-TODO * Replicate the orgUserGroupMembershipSearchableDtoDef from Mahana
-    =>
+TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveTimestamps, approvalStatus).
+    => LeftToRightManyToManyEntity
+        -> with effective timestamps
+        -> with an approval status.
+    TODO * Test that we can create a new RightManyEntity and associate it with multiple LeftManys. The assumption
+            is that it will be a high cardinality relationship with a small number of LeftManys and a large number
+             of RightManys. When creating a LeftMany, we should not be able to associate it with multiple RightManys
+             because the number will be too high to manage from a UX perspective.
+    TODO * When a RightMany is added to a LeftMany, test that the effectiveFrom timestamp gets set automatically.
+    TODO * When a RightMany is removed from a LeftMany, test that the effectiveTo timestamp gets set automatically.
+    TODO * Test that when we display a RightMany, we only display the associated LeftManys that are effective.
+
+    Design:
+    For a complex entity that has many-to-many relationships, a simple edit dialog will not be suitable.
+    We should instead create separate pages to Create, View and Edit the entity.
+    The joins to the 'other side' entities will be displayed in a list of cards with each card displaying
+    the display name of the other side and the fields from the join entity (effective timestamps, approval status, etc).
+    Each card will have a Delete icon.
+    Above the list will be an 'Add' button that will open a dialog to create a new join entity.
+
+
 
 TODO * Mahana clean build
 

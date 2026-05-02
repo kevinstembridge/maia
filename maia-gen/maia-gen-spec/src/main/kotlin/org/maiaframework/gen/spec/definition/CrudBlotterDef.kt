@@ -1,6 +1,9 @@
 package org.maiaframework.gen.spec.definition
 
-class CrudBlotterDef(val blotterDef: BlotterDef, val entityCrudApiDef: EntityCrudApiDef) {
+class CrudBlotterDef(
+    val blotterDef: BlotterDef,
+    val entityCrudApiDef: EntityCrudApiDef
+) {
 
 
     val crudServiceClassName: String = entityCrudApiDef.entityDef.crudAngularComponentNames.serviceName
