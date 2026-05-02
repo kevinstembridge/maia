@@ -5,21 +5,21 @@ import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserBlotterRowDto';
-import {UserBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-blotter.component';
-import {UserCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-create-dialog.component';
+import {UserBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-blotter';
+import {UserCreateDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-create-dialog';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
-import {UserEditDialogComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-edit-dialog.component';
+import {UserEditDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-edit-dialog';
 
 
 @Component({
-    imports: [UserBlotterComponent],
+    imports: [UserBlotter],
     selector: 'app-user-crud-blotter',
     templateUrl: './user-crud-blotter.component.html'
 })
 export class UserCrudBlotterComponent {
 
 
-    @ViewChild(UserBlotterComponent) blotterComponent!: UserBlotterComponent;
+    @ViewChild(UserBlotter) blotterComponent!: UserBlotter;
 
 
     private readonly crudService = inject(UserCrudService);
@@ -30,7 +30,7 @@ export class UserCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(UserCreateDialogComponent, {
+        const dialogRef = this.dialog.open(UserCreateDialog, {
             width: '400px'
         });
 
@@ -45,7 +45,7 @@ export class UserCrudBlotterComponent {
 
     onEdit(dto: UserBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(UserEditDialogComponent, {
+        const dialogRef = this.dialog.open(UserEditDialog, {
             width: '400px',
             data: dto.id
         });

@@ -5,23 +5,23 @@ import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {LeftManySearchableBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftManySearchableBlotterRowDto';
-import {LeftManyCheckForeignKeyReferencesDialogComponent} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-check-foreign-key-references-dialog.component';
-import {LeftManyCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-create-dialog.component';
+import {LeftManyCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-check-foreign-key-references-dialog';
+import {LeftManyCreateDialog} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-create-dialog';
 import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-crud.service';
-import {LeftManyDeleteDialogComponent} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-delete-dialog.component';
-import {LeftManyEditDialogComponent} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-edit-dialog.component';
-import {LeftManySearchableBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-searchable-blotter.component';
+import {LeftManyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-delete-dialog';
+import {LeftManyEditDialog} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-edit-dialog';
+import {LeftManySearchableBlotter} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-searchable-blotter';
 
 
 @Component({
-    imports: [LeftManySearchableBlotterComponent],
+    imports: [LeftManySearchableBlotter],
     selector: 'app-left-many-searchable-crud-blotter',
     templateUrl: './left-many-searchable-crud-blotter.component.html'
 })
 export class LeftManySearchableCrudBlotterComponent {
 
 
-    @ViewChild(LeftManySearchableBlotterComponent) blotterComponent!: LeftManySearchableBlotterComponent;
+    @ViewChild(LeftManySearchableBlotter) blotterComponent!: LeftManySearchableBlotter;
 
 
     private readonly crudService = inject(LeftManyCrudService);
@@ -34,7 +34,7 @@ export class LeftManySearchableCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(LeftManyCreateDialogComponent, {
+        const dialogRef = this.dialog.open(LeftManyCreateDialog, {
             width: '400px'
         });
 
@@ -56,7 +56,7 @@ export class LeftManySearchableCrudBlotterComponent {
 
     onEdit(dto: LeftManySearchableBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(LeftManyEditDialogComponent, {
+        const dialogRef = this.dialog.open(LeftManyEditDialog, {
             width: '400px',
             data: dto.id
         });
@@ -72,7 +72,7 @@ export class LeftManySearchableCrudBlotterComponent {
 
     onDelete(dto: LeftManySearchableBlotterRowDto): void {
 
-        const checkForeignKeyReferencesDialogRef = this.dialog.open(LeftManyCheckForeignKeyReferencesDialogComponent, {
+        const checkForeignKeyReferencesDialogRef = this.dialog.open(LeftManyCheckForeignKeyReferencesDialog, {
             width: '500px',
             data: dto
         });
@@ -88,7 +88,7 @@ export class LeftManySearchableCrudBlotterComponent {
 
     private displayDeleteDialog(dto: LeftManySearchableBlotterRowDto) {
 
-        const dialogRef = this.dialog.open(LeftManyDeleteDialogComponent, {
+        const dialogRef = this.dialog.open(LeftManyDeleteDialog, {
             width: '400px',
             data: dto
         });

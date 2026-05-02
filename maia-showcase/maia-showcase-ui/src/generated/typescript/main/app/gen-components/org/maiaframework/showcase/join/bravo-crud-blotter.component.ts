@@ -5,23 +5,23 @@ import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterRowDto';
-import {BravoBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter.component';
-import {BravoCheckForeignKeyReferencesDialogComponent} from '@app/gen-components/org/maiaframework/showcase/join/bravo-check-foreign-key-references-dialog.component';
-import {BravoCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/join/bravo-create-dialog.component';
+import {BravoBlotter} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter';
+import {BravoCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-check-foreign-key-references-dialog';
+import {BravoCreateDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-create-dialog';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud.service';
-import {BravoDeleteDialogComponent} from '@app/gen-components/org/maiaframework/showcase/join/bravo-delete-dialog.component';
-import {BravoEditDialogComponent} from '@app/gen-components/org/maiaframework/showcase/join/bravo-edit-dialog.component';
+import {BravoDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-delete-dialog';
+import {BravoEditDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-edit-dialog';
 
 
 @Component({
-    imports: [BravoBlotterComponent],
+    imports: [BravoBlotter],
     selector: 'app-bravo-crud-blotter',
     templateUrl: './bravo-crud-blotter.component.html'
 })
 export class BravoCrudBlotterComponent {
 
 
-    @ViewChild(BravoBlotterComponent) blotterComponent!: BravoBlotterComponent;
+    @ViewChild(BravoBlotter) blotterComponent!: BravoBlotter;
 
 
     private readonly crudService = inject(BravoCrudService);
@@ -32,7 +32,7 @@ export class BravoCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(BravoCreateDialogComponent, {
+        const dialogRef = this.dialog.open(BravoCreateDialog, {
             width: '400px'
         });
 
@@ -47,7 +47,7 @@ export class BravoCrudBlotterComponent {
 
     onEdit(dto: BravoBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(BravoEditDialogComponent, {
+        const dialogRef = this.dialog.open(BravoEditDialog, {
             width: '400px',
             data: dto.id
         });
@@ -63,7 +63,7 @@ export class BravoCrudBlotterComponent {
 
     onDelete(dto: BravoBlotterRowDto): void {
 
-        const checkForeignKeyReferencesDialogRef = this.dialog.open(BravoCheckForeignKeyReferencesDialogComponent, {
+        const checkForeignKeyReferencesDialogRef = this.dialog.open(BravoCheckForeignKeyReferencesDialog, {
             width: '500px',
             data: dto
         });
@@ -79,7 +79,7 @@ export class BravoCrudBlotterComponent {
 
     private displayDeleteDialog(dto: BravoBlotterRowDto) {
 
-        const dialogRef = this.dialog.open(BravoDeleteDialogComponent, {
+        const dialogRef = this.dialog.open(BravoDeleteDialog, {
             width: '400px',
             data: dto
         });

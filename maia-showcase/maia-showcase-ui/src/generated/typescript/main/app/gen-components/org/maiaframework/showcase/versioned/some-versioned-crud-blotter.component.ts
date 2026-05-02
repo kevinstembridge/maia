@@ -5,22 +5,22 @@ import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterRowDto';
-import {SomeVersionedBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter.component';
-import {SomeVersionedCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-create-dialog.component';
+import {SomeVersionedBlotter} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter';
+import {SomeVersionedCreateDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-create-dialog';
 import {SomeVersionedCrudService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud.service';
-import {SomeVersionedDeleteDialogComponent} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-delete-dialog.component';
-import {SomeVersionedEditDialogComponent} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-edit-dialog.component';
+import {SomeVersionedDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-delete-dialog';
+import {SomeVersionedEditDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-edit-dialog';
 
 
 @Component({
-    imports: [SomeVersionedBlotterComponent],
+    imports: [SomeVersionedBlotter],
     selector: 'app-some-versioned-crud-blotter',
     templateUrl: './some-versioned-crud-blotter.component.html'
 })
 export class SomeVersionedCrudBlotterComponent {
 
 
-    @ViewChild(SomeVersionedBlotterComponent) blotterComponent!: SomeVersionedBlotterComponent;
+    @ViewChild(SomeVersionedBlotter) blotterComponent!: SomeVersionedBlotter;
 
 
     private readonly crudService = inject(SomeVersionedCrudService);
@@ -31,7 +31,7 @@ export class SomeVersionedCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(SomeVersionedCreateDialogComponent, {
+        const dialogRef = this.dialog.open(SomeVersionedCreateDialog, {
             width: '400px'
         });
 
@@ -46,7 +46,7 @@ export class SomeVersionedCrudBlotterComponent {
 
     onEdit(dto: SomeVersionedBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(SomeVersionedEditDialogComponent, {
+        const dialogRef = this.dialog.open(SomeVersionedEditDialog, {
             width: '400px',
             data: dto.id
         });
@@ -62,7 +62,7 @@ export class SomeVersionedCrudBlotterComponent {
 
     onDelete(dto: SomeVersionedBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(SomeVersionedDeleteDialogComponent, {
+        const dialogRef = this.dialog.open(SomeVersionedDeleteDialog, {
             width: '400px',
             data: dto
         });

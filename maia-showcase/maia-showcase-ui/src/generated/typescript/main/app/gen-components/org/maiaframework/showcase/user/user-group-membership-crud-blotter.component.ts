@@ -5,21 +5,21 @@ import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {UserGroupMembershipBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipBlotterRowDto';
-import {UserGroupMembershipBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-blotter.component';
-import {UserGroupMembershipCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-create-dialog.component';
+import {UserGroupMembershipBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-blotter';
+import {UserGroupMembershipCreateDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-create-dialog';
 import {UserGroupMembershipCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-crud.service';
-import {UserGroupMembershipEditDialogComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-edit-dialog.component';
+import {UserGroupMembershipEditDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-edit-dialog';
 
 
 @Component({
-    imports: [UserGroupMembershipBlotterComponent],
+    imports: [UserGroupMembershipBlotter],
     selector: 'app-user-group-membership-crud-blotter',
     templateUrl: './user-group-membership-crud-blotter.component.html'
 })
 export class UserGroupMembershipCrudBlotterComponent {
 
 
-    @ViewChild(UserGroupMembershipBlotterComponent) blotterComponent!: UserGroupMembershipBlotterComponent;
+    @ViewChild(UserGroupMembershipBlotter) blotterComponent!: UserGroupMembershipBlotter;
 
 
     private readonly crudService = inject(UserGroupMembershipCrudService);
@@ -30,7 +30,7 @@ export class UserGroupMembershipCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(UserGroupMembershipCreateDialogComponent, {
+        const dialogRef = this.dialog.open(UserGroupMembershipCreateDialog, {
             width: '400px'
         });
 
@@ -45,7 +45,7 @@ export class UserGroupMembershipCrudBlotterComponent {
 
     onEdit(dto: UserGroupMembershipBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(UserGroupMembershipEditDialogComponent, {
+        const dialogRef = this.dialog.open(UserGroupMembershipEditDialog, {
             width: '400px',
             data: dto.id
         });

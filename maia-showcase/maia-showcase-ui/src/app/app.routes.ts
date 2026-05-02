@@ -4,8 +4,8 @@ export const routes: Routes = [
     {
         path: '',
         loadComponent: () =>
-            import('@app/pages/home/home-page.component').then(
-                (m) => m.HomePageComponent,
+            import('./pages/home/home-page').then(
+                (m) => m.HomePage,
             ),
     },
     {
@@ -25,15 +25,15 @@ export const routes: Routes = [
     {
         path: 'simple',
         loadComponent: () =>
-            import('@app/pages/simple/simple-page.component').then(
-                (m) => m.SimplePageComponent,
+            import('./pages/simple/simple-page').then(
+                (m) => m.SimplePage,
             ),
     },
     {
         path: 'login',
         loadComponent: () =>
-            import('@app/pages/login/login-page.component').then(
-                (m) => m.LoginPageComponent,
+            import('./pages/login/login-page').then(
+                (m) => m.LoginPage,
             ),
     },
     {
@@ -67,29 +67,29 @@ export const routes: Routes = [
     {
         path: 'left_many_searchable',
         loadComponent: () =>
-            import('@app/pages/left-many-searchable-blotter/left-many-searchable-blotter-page.component').then(
+            import('./pages/left-many-searchable-blotter/left-many-searchable-blotter-page').then(
                 (m) => m.LeftManySearchableBlotterPage,
             ),
     },
     {
         path: 'left_many/view/:id',
         loadComponent: () =>
-            import('@app/pages/left-many-view/left-many-view').then(
-                (m) => m.LeftManyView,
+            import('./pages/left-many-view/left-many-view-page').then(
+                (m) => m.LeftManyViewPage,
             ),
     },
     {
         path: 'elastic_indices',
         loadComponent: () =>
-            import('@app/pages/elastic-indices/elastic-indices-page.component').then(
-                (m) => m.ElasticIndicesPageComponent,
+            import('./pages/elastic-indices/elastic-indices-page').then(
+                (m) => m.ElasticIndicesPage,
             ),
     },
     {
         path: 'jobs_dashboard',
         loadComponent: () =>
-            import('@app/pages/jobs-dashboard/jobs-dashboard-page.component').then(
-                (m) => m.JobsDashboardPageComponent,
+            import('./pages/jobs-dashboard/jobs-dashboard-page').then(
+                (m) => m.JobsDashboardPage,
             ),
     },
 ];

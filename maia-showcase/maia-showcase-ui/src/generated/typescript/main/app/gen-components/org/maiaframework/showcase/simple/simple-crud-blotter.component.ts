@@ -5,22 +5,22 @@ import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
-import {SimpleBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/simple/simple-blotter.component';
-import {SimpleCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/simple/simple-create-dialog.component';
+import {SimpleBlotter} from '@app/gen-components/org/maiaframework/showcase/simple/simple-blotter';
+import {SimpleCreateDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-create-dialog';
 import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud.service';
-import {SimpleDeleteDialogComponent} from '@app/gen-components/org/maiaframework/showcase/simple/simple-delete-dialog.component';
-import {SimpleEditDialogComponent} from '@app/gen-components/org/maiaframework/showcase/simple/simple-edit-dialog.component';
+import {SimpleDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-delete-dialog';
+import {SimpleEditDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-edit-dialog';
 
 
 @Component({
-    imports: [SimpleBlotterComponent],
+    imports: [SimpleBlotter],
     selector: 'app-simple-crud-blotter',
     templateUrl: './simple-crud-blotter.component.html'
 })
 export class SimpleCrudBlotterComponent {
 
 
-    @ViewChild(SimpleBlotterComponent) blotterComponent!: SimpleBlotterComponent;
+    @ViewChild(SimpleBlotter) blotterComponent!: SimpleBlotter;
 
 
     private readonly crudService = inject(SimpleCrudService);
@@ -31,7 +31,7 @@ export class SimpleCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(SimpleCreateDialogComponent, {
+        const dialogRef = this.dialog.open(SimpleCreateDialog, {
             width: '400px'
         });
 
@@ -46,7 +46,7 @@ export class SimpleCrudBlotterComponent {
 
     onEdit(dto: SimpleBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(SimpleEditDialogComponent, {
+        const dialogRef = this.dialog.open(SimpleEditDialog, {
             width: '400px',
             data: dto.id
         });
@@ -62,7 +62,7 @@ export class SimpleCrudBlotterComponent {
 
     onDelete(dto: SimpleBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(SimpleDeleteDialogComponent, {
+        const dialogRef = this.dialog.open(SimpleDeleteDialog, {
             width: '400px',
             data: dto
         });

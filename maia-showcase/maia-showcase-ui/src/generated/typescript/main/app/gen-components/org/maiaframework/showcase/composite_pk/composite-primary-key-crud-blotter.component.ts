@@ -5,22 +5,22 @@ import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterRowDto';
-import {CompositePrimaryKeyBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-blotter.component';
-import {CompositePrimaryKeyCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-create-dialog.component';
+import {CompositePrimaryKeyBlotter} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-blotter';
+import {CompositePrimaryKeyCreateDialog} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-create-dialog';
 import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-crud.service';
-import {CompositePrimaryKeyDeleteDialogComponent} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-delete-dialog.component';
-import {CompositePrimaryKeyEditDialogComponent} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-edit-dialog.component';
+import {CompositePrimaryKeyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-delete-dialog';
+import {CompositePrimaryKeyEditDialog} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-edit-dialog';
 
 
 @Component({
-    imports: [CompositePrimaryKeyBlotterComponent],
+    imports: [CompositePrimaryKeyBlotter],
     selector: 'app-composite-primary-key-crud-blotter',
     templateUrl: './composite-primary-key-crud-blotter.component.html'
 })
 export class CompositePrimaryKeyCrudBlotterComponent {
 
 
-    @ViewChild(CompositePrimaryKeyBlotterComponent) blotterComponent!: CompositePrimaryKeyBlotterComponent;
+    @ViewChild(CompositePrimaryKeyBlotter) blotterComponent!: CompositePrimaryKeyBlotter;
 
 
     private readonly crudService = inject(CompositePrimaryKeyCrudService);
@@ -31,7 +31,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(CompositePrimaryKeyCreateDialogComponent, {
+        const dialogRef = this.dialog.open(CompositePrimaryKeyCreateDialog, {
             width: '400px'
         });
 
@@ -46,7 +46,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
     onEdit(dto: CompositePrimaryKeyBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(CompositePrimaryKeyEditDialogComponent, {
+        const dialogRef = this.dialog.open(CompositePrimaryKeyEditDialog, {
             width: '400px',
             data: {someString: dto.someString, someInt: dto.someInt}
         });
@@ -62,7 +62,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
     onDelete(dto: CompositePrimaryKeyBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(CompositePrimaryKeyDeleteDialogComponent, {
+        const dialogRef = this.dialog.open(CompositePrimaryKeyDeleteDialog, {
             width: '400px',
             data: dto
         });

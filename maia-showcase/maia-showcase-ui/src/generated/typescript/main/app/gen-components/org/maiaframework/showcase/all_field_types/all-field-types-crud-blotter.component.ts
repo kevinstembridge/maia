@@ -5,22 +5,22 @@ import {Component, ViewChild, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesBlotterRowDto';
-import {AllFieldTypesBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-blotter.component';
-import {AllFieldTypesCreateDialogComponent} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-create-dialog.component';
+import {AllFieldTypesBlotter} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-blotter';
+import {AllFieldTypesCreateDialog} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-create-dialog';
 import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
-import {AllFieldTypesDeleteDialogComponent} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-delete-dialog.component';
-import {AllFieldTypesEditDialogComponent} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-edit-dialog.component';
+import {AllFieldTypesDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-delete-dialog';
+import {AllFieldTypesEditDialog} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-edit-dialog';
 
 
 @Component({
-    imports: [AllFieldTypesBlotterComponent],
+    imports: [AllFieldTypesBlotter],
     selector: 'app-all-field-types-crud-blotter',
     templateUrl: './all-field-types-crud-blotter.component.html'
 })
 export class AllFieldTypesCrudBlotterComponent {
 
 
-    @ViewChild(AllFieldTypesBlotterComponent) blotterComponent!: AllFieldTypesBlotterComponent;
+    @ViewChild(AllFieldTypesBlotter) blotterComponent!: AllFieldTypesBlotter;
 
 
     private readonly crudService = inject(AllFieldTypesCrudService);
@@ -31,7 +31,7 @@ export class AllFieldTypesCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(AllFieldTypesCreateDialogComponent, {
+        const dialogRef = this.dialog.open(AllFieldTypesCreateDialog, {
             width: '400px'
         });
 
@@ -46,7 +46,7 @@ export class AllFieldTypesCrudBlotterComponent {
 
     onEdit(dto: AllFieldTypesBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(AllFieldTypesEditDialogComponent, {
+        const dialogRef = this.dialog.open(AllFieldTypesEditDialog, {
             width: '400px',
             data: dto.id
         });
@@ -62,7 +62,7 @@ export class AllFieldTypesCrudBlotterComponent {
 
     onDelete(dto: AllFieldTypesBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(AllFieldTypesDeleteDialogComponent, {
+        const dialogRef = this.dialog.open(AllFieldTypesDeleteDialog, {
             width: '400px',
             data: dto
         });
