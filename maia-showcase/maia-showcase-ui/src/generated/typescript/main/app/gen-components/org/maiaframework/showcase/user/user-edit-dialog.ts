@@ -17,7 +17,7 @@ import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Aut
 import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/auth/AuthoritySelectOptions';
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
-import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
+import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

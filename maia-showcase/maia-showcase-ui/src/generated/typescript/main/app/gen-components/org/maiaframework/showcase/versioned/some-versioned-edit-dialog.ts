@@ -12,7 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {SomeVersionedFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedFetchForEditDto';
 import {SomeVersionedUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedUpdateRequestDto';
-import {SomeVersionedCrudService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud.service';
+import {SomeVersionedCrudService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

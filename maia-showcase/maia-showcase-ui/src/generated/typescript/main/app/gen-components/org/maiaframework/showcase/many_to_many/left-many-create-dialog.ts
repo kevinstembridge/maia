@@ -13,7 +13,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {LeftManyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftManyCreateRequestDto';
 import {RightManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many_to_many/RightManyTypeaheadV1EsDoc';
-import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-crud.service';
+import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-crud-service';
 import {RightManyTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/right-many-typeahead-api.service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';

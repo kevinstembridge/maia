@@ -12,7 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {UserGroupMembershipFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipFetchForEditDto';
 import {UserGroupMembershipUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipUpdateRequestDto';
-import {UserGroupMembershipCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-crud.service';
+import {UserGroupMembershipCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

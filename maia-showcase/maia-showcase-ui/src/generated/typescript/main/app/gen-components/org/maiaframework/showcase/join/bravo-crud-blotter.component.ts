@@ -8,7 +8,7 @@ import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase
 import {BravoBlotter} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter';
 import {BravoCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-check-foreign-key-references-dialog';
 import {BravoCreateDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-create-dialog';
-import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud.service';
+import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {BravoDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-delete-dialog';
 import {BravoEditDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-edit-dialog';
 

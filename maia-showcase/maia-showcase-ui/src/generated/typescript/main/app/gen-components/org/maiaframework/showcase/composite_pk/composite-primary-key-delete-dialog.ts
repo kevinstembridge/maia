@@ -5,7 +5,7 @@ import {Component, inject, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-crud.service';
+import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 

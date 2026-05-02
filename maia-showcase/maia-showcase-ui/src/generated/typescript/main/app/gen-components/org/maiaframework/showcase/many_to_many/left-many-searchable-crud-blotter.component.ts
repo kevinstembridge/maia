@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import {LeftManySearchableBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftManySearchableBlotterRowDto';
 import {LeftManyCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-check-foreign-key-references-dialog';
 import {LeftManyCreateDialog} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-create-dialog';
-import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-crud.service';
+import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-crud-service';
 import {LeftManyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-delete-dialog';
 import {LeftManyEditDialog} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-edit-dialog';
 import {LeftManySearchableBlotter} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-searchable-blotter';

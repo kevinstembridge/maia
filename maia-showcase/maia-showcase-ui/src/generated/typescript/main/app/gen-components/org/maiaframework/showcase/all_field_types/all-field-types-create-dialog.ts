@@ -20,7 +20,7 @@ import {AllFieldTypesSomeLongTypeAsyncValidator} from '@app/gen-components/org/m
 import {AllFieldTypesSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringAsyncValidator';
 import {AllFieldTypesSomeStringNullableAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringNullableAsyncValidator';
 import {AllFieldTypesSomeStringTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringTypeAsyncValidator';
-import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
+import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud-service';
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnumSelectOptions';
 import {ProblemDetail} from '@maia/maia-ui';

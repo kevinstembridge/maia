@@ -10,7 +10,7 @@ import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Aut
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {CompositePrimaryKeyBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterAgGridDatasource';
 import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterRowDto';
-import {CompositePrimaryKeyBlotterService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-blotter.service';
+import {CompositePrimaryKeyBlotterService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';

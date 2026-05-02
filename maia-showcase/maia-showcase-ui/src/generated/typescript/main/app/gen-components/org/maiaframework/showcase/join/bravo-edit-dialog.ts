@@ -13,7 +13,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {BravoFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoFetchForEditDto';
 import {BravoUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoUpdateRequestDto';
 import {bravo_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaRequiredValidator';
-import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud.service';
+import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

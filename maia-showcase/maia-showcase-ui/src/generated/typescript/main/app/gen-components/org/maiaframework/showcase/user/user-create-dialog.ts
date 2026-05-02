@@ -14,7 +14,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/auth/AuthoritySelectOptions';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
-import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
+import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

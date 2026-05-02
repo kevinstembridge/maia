@@ -10,7 +10,7 @@ import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Aut
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {LeftManySearchableBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftManySearchableBlotterAgGridDatasource';
 import {LeftManySearchableBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many_to_many/LeftManySearchableBlotterRowDto';
-import {LeftManySearchableBlotterService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-searchable-blotter.service';
+import {LeftManySearchableBlotterService} from '@app/gen-components/org/maiaframework/showcase/many_to_many/left-many-searchable-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {ChipsAgGridCellRendererComponent, IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';

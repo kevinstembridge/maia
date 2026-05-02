@@ -10,7 +10,7 @@ import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Aut
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {SomeVersionedBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterAgGridDatasource';
 import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterRowDto';
-import {SomeVersionedBlotterService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter.service';
+import {SomeVersionedBlotterService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';

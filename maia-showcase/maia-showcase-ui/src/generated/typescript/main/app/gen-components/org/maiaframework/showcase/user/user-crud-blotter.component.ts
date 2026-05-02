@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserBlotterRowDto';
 import {UserBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-blotter';
 import {UserCreateDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-create-dialog';
-import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud.service';
+import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
 import {UserEditDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-edit-dialog';
 
 

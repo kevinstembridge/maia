@@ -12,7 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {CompositePrimaryKeyFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyFetchForEditDto';
 import {CompositePrimaryKeyUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyUpdateRequestDto';
-import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-crud.service';
+import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

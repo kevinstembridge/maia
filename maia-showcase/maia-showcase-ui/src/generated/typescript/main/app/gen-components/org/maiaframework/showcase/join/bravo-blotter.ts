@@ -10,7 +10,7 @@ import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Aut
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {BravoBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterAgGridDatasource';
 import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterRowDto';
-import {BravoBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter.service';
+import {BravoBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';

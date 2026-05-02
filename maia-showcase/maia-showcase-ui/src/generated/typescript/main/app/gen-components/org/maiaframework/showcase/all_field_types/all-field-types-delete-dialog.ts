@@ -5,7 +5,7 @@ import {Component, inject, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
+import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 

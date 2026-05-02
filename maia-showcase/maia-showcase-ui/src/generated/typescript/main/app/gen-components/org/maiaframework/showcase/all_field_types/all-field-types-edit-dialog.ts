@@ -19,7 +19,7 @@ import {AllFieldTypesSomeStringAsyncValidator} from '@app/gen-components/org/mai
 import {AllFieldTypesSomeStringNullableAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringNullableAsyncValidator';
 import {AllFieldTypesSomeStringTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringTypeAsyncValidator';
 import {AllFieldTypesUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesUpdateRequestDto';
-import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
+import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud-service';
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';

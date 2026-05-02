@@ -11,7 +11,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
 import {SimpleSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringAsyncValidator';
-import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud.service';
+import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

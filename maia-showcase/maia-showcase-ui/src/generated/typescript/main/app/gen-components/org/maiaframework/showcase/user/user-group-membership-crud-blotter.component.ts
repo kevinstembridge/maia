@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import {UserGroupMembershipBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipBlotterRowDto';
 import {UserGroupMembershipBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-blotter';
 import {UserGroupMembershipCreateDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-create-dialog';
-import {UserGroupMembershipCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-crud.service';
+import {UserGroupMembershipCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-crud-service';
 import {UserGroupMembershipEditDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-edit-dialog';
 
 

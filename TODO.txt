@@ -1,6 +1,4 @@
 
-TODO Change naming convention: remove .component.*
-
 TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveTimestamps, approvalStatus).
     => LeftToRightManyToManyEntity
         -> with effective timestamps

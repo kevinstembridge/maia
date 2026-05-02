@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesBlotterRowDto';
 import {AllFieldTypesBlotter} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-blotter';
 import {AllFieldTypesCreateDialog} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-create-dialog';
-import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
+import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud-service';
 import {AllFieldTypesDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-delete-dialog';
 import {AllFieldTypesEditDialog} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-edit-dialog';
 

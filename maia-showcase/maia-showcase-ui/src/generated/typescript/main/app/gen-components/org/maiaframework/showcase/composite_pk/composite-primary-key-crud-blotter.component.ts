@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyBlotterRowDto';
 import {CompositePrimaryKeyBlotter} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-blotter';
 import {CompositePrimaryKeyCreateDialog} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-create-dialog';
-import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-crud.service';
+import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-crud-service';
 import {CompositePrimaryKeyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-delete-dialog';
 import {CompositePrimaryKeyEditDialog} from '@app/gen-components/org/maiaframework/showcase/composite_pk/composite-primary-key-edit-dialog';
 

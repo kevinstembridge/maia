@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
 import {SimpleBlotter} from '@app/gen-components/org/maiaframework/showcase/simple/simple-blotter';
 import {SimpleCreateDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-create-dialog';
-import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud.service';
+import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
 import {SimpleDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-delete-dialog';
 import {SimpleEditDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-edit-dialog';
 

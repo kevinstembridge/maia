@@ -13,7 +13,7 @@ import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showc
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
 import {bravo_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaRequiredValidator';
 import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
-import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud.service';
+import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

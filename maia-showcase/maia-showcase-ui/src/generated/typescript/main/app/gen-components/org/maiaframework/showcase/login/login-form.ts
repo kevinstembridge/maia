@@ -9,7 +9,7 @@ import {MatOptionModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {LoginRequestDto} from '@app/gen-components/org/maiaframework/showcase/login/LoginRequestDto';
-import {LoginFormApiService} from '@app/gen-components/org/maiaframework/showcase/login/login-form-api.service';
+import {LoginFormApiService} from '@app/gen-components/org/maiaframework/showcase/login/login-form-api-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

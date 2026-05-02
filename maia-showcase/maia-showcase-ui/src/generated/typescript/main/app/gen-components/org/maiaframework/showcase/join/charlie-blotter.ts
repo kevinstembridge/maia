@@ -10,7 +10,7 @@ import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Aut
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth.service';
 import {CharlieBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/join/CharlieBlotterAgGridDatasource';
 import {CharlieBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieBlotterRowDto';
-import {CharlieBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-blotter.service';
+import {CharlieBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';

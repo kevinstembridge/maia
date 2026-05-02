@@ -13,7 +13,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {SimpleFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleFetchForEditDto';
 import {SimpleSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringAsyncValidator';
 import {SimpleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleUpdateRequestDto';
-import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud.service';
+import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {Observable, Subject, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';

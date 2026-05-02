@@ -4,7 +4,7 @@
 import {Injectable, inject} from '@angular/core';
 import {AbstractControl, AsyncValidator, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {AllFieldTypesSomeStringTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all_field_types/AllFieldTypesSomeStringTypeRequestDto';
-import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud.service';
+import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all_field_types/all-field-types-crud-service';
 import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
