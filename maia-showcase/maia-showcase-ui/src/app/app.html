@@ -4,37 +4,37 @@
     </button>
     <mat-menu #menu="matMenu">
         @if (hasReadAuthority()) {
-            <button mat-menu-item routerLink="/simple">
+            <button mat-menu-item routerLink="/simple-blotter">
                 <mat-icon>dialpad</mat-icon>
                 <span>Simple</span>
             </button>
         }
         @if (hasReadAuthority()) {
-            <button mat-menu-item routerLink="/all-field-types">
+            <button mat-menu-item routerLink="/all-field-types-blotter">
                 <mat-icon>dialpad</mat-icon>
                 <span>All Field Types</span>
             </button>
         }
         @if (hasReadAuthority()) {
-            <button mat-menu-item routerLink="/some-versioned">
+            <button mat-menu-item routerLink="/some-versioned-blotter">
                 <mat-icon>dialpad</mat-icon>
                 <span>Some Versioned</span>
             </button>
         }
         @if (hasReadAuthority()) {
-            <button mat-menu-item routerLink="/composite-pk">
+            <button mat-menu-item routerLink="/composite-pk-blotter">
                 <mat-icon>dialpad</mat-icon>
                 <span>Composite PK</span>
             </button>
         }
         @if (hasReadAuthority()) {
-            <button mat-menu-item routerLink="/users">
+            <button mat-menu-item routerLink="/user-blotter">
                 <mat-icon>people</mat-icon>
                 <span>Users</span>
             </button>
         }
         @if (hasReadAuthority()) {
-            <button mat-menu-item routerLink="/left-many-searchable">
+            <button mat-menu-item routerLink="/left-many-searchable-blotter">
                 <mat-icon>dialpad</mat-icon>
                 <span>Left Many to Many</span>
             </button>
