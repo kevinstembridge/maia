@@ -11,7 +11,8 @@ import {LoginForm} from '@app/gen-components/org/maiaframework/showcase/login/lo
     imports: [
         LoginForm
     ],
-    templateUrl: './login-page.html'
+    templateUrl: './login-page.html',
+    styleUrl: './login-page.scss'
 })
 export class LoginPage implements OnInit {
 
