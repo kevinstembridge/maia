@@ -1,0 +1,18 @@
+<app-page-layout pageTitle="Simple" dataPageId="simple_view">
+    @if (dto()) {
+        <dl class="simple-view-fields">
+            <div class="simple-view-field">
+                <dt>Some String</dt>
+                <dd>{{ dto()!.someString }}</dd>
+            </div>
+            <div class="simple-view-field">
+                <dt>Created</dt>
+                <dd>{{ dto()!.createdTimestampUtc }}</dd>
+            </div>
+            <div class="simple-view-field">
+                <dt>ID</dt>
+                <dd>{{ dto()!.id }}</dd>
+            </div>
+        </dl>
+    }
+</app-page-layout>
