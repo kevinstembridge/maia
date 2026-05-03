@@ -12,7 +12,7 @@ import {CurrentUserAuthStore} from './state/current-user-auth-store';
     selector: 'app-root',
     imports: [RouterOutlet, RouterLink, MatToolbarModule, MatButtonModule, MatIconModule, MatMenu, MatMenuItem, MatMenuTrigger],
     templateUrl: './app.html',
-    styleUrl: './app.css',
+    styleUrl: './app.scss',
 })
 export class App {
 

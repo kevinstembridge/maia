@@ -1,0 +1,13 @@
+.toolbar-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-left: 8px;
+
+  @media (min-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+.toolbar-spacer {
+  flex: 1;
+}

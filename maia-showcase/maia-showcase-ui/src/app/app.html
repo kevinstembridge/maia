@@ -51,9 +51,9 @@
         }
     </mat-menu>
 
-    <span class="ml-2 text-xl font-medium md:ml-0">{{ title() }}</span>
+    <span class="toolbar-title">{{ title() }}</span>
 
-    <span class="flex-1" aria-hidden="true"></span>
+    <span class="toolbar-spacer" aria-hidden="true"></span>
 
     @if (isLoggedIn()) {
         <button mat-button (click)="logout()">Logout</button>
