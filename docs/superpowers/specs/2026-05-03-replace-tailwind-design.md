@@ -53,7 +53,7 @@ Replaces the current `src/styles.css` (which contains only `@import "tailwindcss
 
 ## Component Stylesheets
 
-### `app.component.scss`
+### `app.scss`
 
 ```scss
 .toolbar-title {
@@ -68,7 +68,7 @@ Replaces the current `src/styles.css` (which contains only `@import "tailwindcss
 }
 ```
 
-### `home-page.component.scss`
+### `home-page.scss`
 
 ```scss
 .page-heading {
@@ -82,7 +82,7 @@ Replaces the current `src/styles.css` (which contains only `@import "tailwindcss
 }
 ```
 
-### `login-page.component.scss`
+### `login-page.scss`
 
 ```scss
 .login-card {

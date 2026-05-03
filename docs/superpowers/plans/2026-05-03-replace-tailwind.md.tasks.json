@@ -1,0 +1,43 @@
+{
+  "planPath": "docs/superpowers/plans/2026-05-03-replace-tailwind.md",
+  "tasks": [
+    {
+      "id": 7,
+      "subject": "Task 1: Global stylesheet and Angular config",
+      "status": "pending",
+      "description": "**Goal:** Replace `styles.css` with `styles.scss` containing two global layout patterns and update `angular.json`.\n\n**Files:**\n- Create: `maia-showcase/maia-showcase-ui/src/styles.scss`\n- Delete: `maia-showcase/maia-showcase-ui/src/styles.css`\n- Modify: `maia-showcase/maia-showcase-ui/angular.json`\n\n**Verify:** `cd maia-showcase/maia-showcase-ui && ng build` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/styles.scss\", \"maia-showcase/maia-showcase-ui/angular.json\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && ng build\", \"acceptanceCriteria\": [\"styles.scss exists\", \"angular.json references styles.scss\", \"ng build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 8,
+      "subject": "Task 2: Update app component",
+      "status": "pending",
+      "description": "**Goal:** Replace `app.css` with `app.scss` and remove Tailwind classes from `app.html`.\n\n**Files:**\n- Create: `maia-showcase/maia-showcase-ui/src/app/app.scss`\n- Delete: `maia-showcase/maia-showcase-ui/src/app/app.css`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/app.ts`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/app.html`\n\n**Verify:** `cd maia-showcase/maia-showcase-ui && ng build` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/app.scss\", \"maia-showcase/maia-showcase-ui/src/app/app.ts\", \"maia-showcase/maia-showcase-ui/src/app/app.html\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && ng build\", \"acceptanceCriteria\": [\"app.scss exists\", \"app.ts references app.scss\", \"app.html has no Tailwind classes\", \"ng build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 9,
+      "subject": "Task 3: Update home-page component",
+      "status": "pending",
+      "description": "**Goal:** Create `home-page.scss` and replace Tailwind classes in `home-page.html`.\n\n**Files:**\n- Create: `maia-showcase/maia-showcase-ui/src/app/pages/home/home-page.scss`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/pages/home/home-page.ts`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/pages/home/home-page.html`\n\n**Verify:** `cd maia-showcase/maia-showcase-ui && ng build` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/pages/home/home-page.scss\", \"maia-showcase/maia-showcase-ui/src/app/pages/home/home-page.ts\", \"maia-showcase/maia-showcase-ui/src/app/pages/home/home-page.html\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && ng build\", \"acceptanceCriteria\": [\"home-page.scss exists\", \"home-page.ts has styleUrl\", \"home-page.html has no Tailwind classes\", \"ng build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 10,
+      "subject": "Task 4: Update login-page component",
+      "status": "pending",
+      "description": "**Goal:** Create `login-page.scss` and replace Tailwind classes in `login-page.html`.\n\n**Files:**\n- Create: `maia-showcase/maia-showcase-ui/src/app/pages/login/login-page.scss`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/pages/login/login-page.ts`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/pages/login/login-page.html`\n\n**Verify:** `cd maia-showcase/maia-showcase-ui && ng build` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/pages/login/login-page.scss\", \"maia-showcase/maia-showcase-ui/src/app/pages/login/login-page.ts\", \"maia-showcase/maia-showcase-ui/src/app/pages/login/login-page.html\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && ng build\", \"acceptanceCriteria\": [\"login-page.scss exists\", \"login-page.ts has styleUrl\", \"login-page.html has no Tailwind classes\", \"ng build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 11,
+      "subject": "Task 5: Update page-layout component",
+      "status": "pending",
+      "description": "**Goal:** Replace `mx-3 mt-3` with `.page-content` in `page-layout.html`.\n\n**Files:**\n- Modify: `maia-showcase/maia-showcase-ui/src/app/components/page-layout/page-layout.html`\n\n**Verify:** `cd maia-showcase/maia-showcase-ui && ng build` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/components/page-layout/page-layout.html\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && ng build\", \"acceptanceCriteria\": [\"page-layout.html uses .page-content\", \"ng build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 12,
+      "subject": "Task 6: Remove Tailwind dependencies",
+      "status": "pending",
+      "blockedBy": [7, 8, 9, 10, 11],
+      "description": "**Goal:** Remove tailwindcss, @tailwindcss/postcss, and postcss from package.json.\n\n**Files:**\n- Modify: `maia-showcase/maia-showcase-ui/package.json`\n- Modify: `maia-showcase/maia-showcase-ui/package-lock.json`\n\n**Verify:** `cd maia-showcase/maia-showcase-ui && ng build` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/package.json\", \"maia-showcase/maia-showcase-ui/package-lock.json\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && ng build\", \"acceptanceCriteria\": [\"tailwindcss absent\", \"@tailwindcss/postcss absent\", \"postcss absent\", \"ng build passes\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-05-03T00:00:00Z"
+}
