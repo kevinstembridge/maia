@@ -89,7 +89,7 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
         val requestBody = asJson(mapOf<String, String>())
 
         assertThat(
-            mockMvc.post().uri("/api/left-many-searchable/aggrid_datasource")
+            mockMvc.post().uri("/api/left-many/aggrid_datasource")
                 .content(requestBody)
                 .exchange()
         ).hasStatus(HttpStatus.FORBIDDEN)
@@ -153,7 +153,7 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
 
 
     private fun submitSearch(
-        path: String = "/api/left-many-searchable/search",
+        path: String = "/api/left-many/search",
         requestBody: String,
     ): MvcTestResultAssert {
 

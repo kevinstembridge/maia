@@ -1150,7 +1150,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val leftManySearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.many_to_many",
-        "LeftManySearchable",
+        "LeftMany",
         entityDef = leftManyEntityDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
@@ -1164,7 +1164,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftManySearchableBlotterDef = blotter(leftManySearchableDtoDef, withAddButton = true) {
+    val leftManyBlotterDef = blotter(leftManySearchableDtoDef, withAddButton = true) {
         viewActionColumn()
         editActionColumn()
         columnFromDto("someStringFromLeft", "someString") { header("Some String From Left") }
@@ -1175,7 +1175,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftManyCrudDef = crudBlotter(leftManySearchableBlotterDef, leftManyEntityDef.entityCrudApiDef!!)
+    val leftManyCrudDef = crudBlotter(leftManyBlotterDef, leftManyEntityDef.entityCrudApiDef!!)
 
 
     val leftToRightManyToManySearchableDtoDef = searchableDto(

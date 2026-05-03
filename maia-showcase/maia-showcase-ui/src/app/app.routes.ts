@@ -25,8 +25,8 @@ export const routes: Routes = [
     {
         path: 'simple',
         loadComponent: () =>
-            import('./pages/simple/simple-page').then(
-                (m) => m.SimplePage,
+            import('./pages/simple-blotter/simple-blotter-page').then(
+                (m) => m.SimpleBlotterPage,
             ),
     },
     {
@@ -39,14 +39,14 @@ export const routes: Routes = [
     {
         path: 'some-versioned-blotter',
         loadComponent: () =>
-            import('@app/pages/some-versioned/some-versioned-blotter-page').then(
+            import('./pages/some-versioned-blotter/some-versioned-blotter-page').then(
                 (m) => m.SomeVersionedBlotterPage,
             ),
     },
     {
         path: 'composite-pk-blotter',
         loadComponent: () =>
-            import('@app/pages/composite-pk/composite-pk-blotter-page').then(
+            import('./pages/composite-pk-blotter/composite-pk-blotter-page').then(
                 (m) => m.CompositePkBlotterPage,
             ),
     },
@@ -65,10 +65,10 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'left-many-searchable-blotter',
+        path: 'left-many-blotter',
         loadComponent: () =>
-            import('./pages/left-many-searchable-blotter/left-many-searchable-blotter-page').then(
-                (m) => m.LeftManySearchableBlotterPage,
+            import('./pages/left-many-blotter/left-many-blotter-page').then(
+                (m) => m.LeftManyBlotterPage,
             ),
     },
     {
