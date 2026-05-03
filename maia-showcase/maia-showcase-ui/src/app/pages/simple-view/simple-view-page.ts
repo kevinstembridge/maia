@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {map, switchMap} from 'rxjs';
+import {filter, map, switchMap} from 'rxjs';
 import {SimpleService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-service';
 import {PageLayout} from '@app/components/page-layout/page-layout';
 
@@ -22,7 +22,8 @@ export class SimpleViewPage {
 
     protected readonly dto = toSignal(
         this.route.paramMap.pipe(
-            map(p => p.get('id')!),
+            map(p => p.get('id')),
+            filter((id): id is string => id !== null),
             switchMap(id => this.simpleService.findById(id))
         )
     );
