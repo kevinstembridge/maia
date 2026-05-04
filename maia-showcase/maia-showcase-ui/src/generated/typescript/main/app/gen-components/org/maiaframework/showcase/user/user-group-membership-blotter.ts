@@ -124,7 +124,6 @@ export class UserGroupMembershipBlotter {
     }
 
 
-
     get addButtonVisible(): boolean {
 
         return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);

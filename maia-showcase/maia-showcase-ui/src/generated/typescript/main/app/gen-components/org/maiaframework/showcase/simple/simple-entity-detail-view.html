@@ -1,0 +1,18 @@
+@if (detailDto$ | async; as detailDto) {
+  <div>
+    <div class="row">
+      <div class="col">Some String</div>
+      <div class="col">{{detailDto.someString}}</div>
+    </div>
+    <div class="row">
+      <div class="col">ID</div>
+      <div class="col">{{detailDto.id}}</div>
+    </div>
+    <div class="row">
+      <div class="col">Created At</div>
+      <div class="col">{{detailDto.createdTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    </div>
+  </div>
+} @else {
+  <mat-spinner></mat-spinner>
+}

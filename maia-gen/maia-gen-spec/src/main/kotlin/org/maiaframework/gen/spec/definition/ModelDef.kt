@@ -46,7 +46,7 @@ class ModelDef(
     val fetchForEditDtoDefs = entityDefs.filter { it.isConcrete }.mapNotNull { it.fetchForEditDtoDef }
 
 
-    val entityDetailDtoDefs = entityDefs.filterNot { it.isHistoryEntity }.mapNotNull { it.entityDetailDtoDef }
+    val entityDetailDtoDefs = entityDefs.filterNot { it.isHistoryEntity }.mapNotNull { it.entityDetailViewDef }
 
 
     val entitiesReferencedByForeignKey = entityDefs

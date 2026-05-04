@@ -1,9 +1,9 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.EntityDetailDtoDef
+import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 
 class EntityDetailDtoServiceTypescriptRenderer(
-    private val entityDetailDtoDef: EntityDetailDtoDef
+    private val entityDetailViewDef: EntityDetailViewDef
 ) : AbstractTypescriptRenderer() {
 
 
@@ -14,14 +14,14 @@ class EntityDetailDtoServiceTypescriptRenderer(
         addImport("@angular/common/http", "HttpClient")
         addImport("@angular/common/http", "HttpHeaders")
         addImport("rxjs", "Observable")
-        addImport(entityDetailDtoDef.dtoDef.typescriptDtoImport)
+        addImport(entityDetailViewDef.dtoDef.typescriptDtoImport)
 
     }
 
 
     override fun renderedFilePath(): String {
 
-        return this.entityDetailDtoDef.componentBaseName.serviceRenderedFilePath
+        return this.entityDetailViewDef.componentNames.serviceRenderedFilePath
 
     }
 
@@ -32,7 +32,7 @@ class EntityDetailDtoServiceTypescriptRenderer(
             |
             |
             |@Injectable({providedIn: 'root'})
-            |export class ${this.entityDetailDtoDef.componentBaseName.serviceName} {
+            |export class ${this.entityDetailViewDef.componentNames.serviceName} {
             |
             |
             |    private httpOptions = {
@@ -45,10 +45,10 @@ class EntityDetailDtoServiceTypescriptRenderer(
             |    private readonly http = inject(HttpClient);
             |
             |
-            |    public fetch(id: string): Observable<${entityDetailDtoDef.dtoDef.uqcn}> {
+            |    public fetch(id: string): Observable<${entityDetailViewDef.dtoDef.uqcn}> {
             |
-            |      return this.http.get<${entityDetailDtoDef.dtoDef.uqcn}>(
-            |          `${entityDetailDtoDef.fetchApiUrlForTypescript}`,
+            |      return this.http.get<${entityDetailViewDef.dtoDef.uqcn}>(
+            |          `${entityDetailViewDef.fetchApiUrlForTypescript}`,
             |          this.httpOptions
             |      );
             |

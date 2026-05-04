@@ -1,18 +1,18 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.EntityDetailDtoDef
+import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isValueFieldWrapper
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
-class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDtoDef) : AbstractKotlinRenderer(entityDetailDtoDef.repoClassDef) {
+class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailViewDef) : AbstractKotlinRenderer(entityDetailViewDef.repoClassDef) {
 
 
     init {
 
-        addConstructorArg(aClassField("entityRepo", entityDetailDtoDef.entityRepoClassDef.fqcn).privat().build())
+        addConstructorArg(aClassField("entityRepo", entityDetailViewDef.entityRepoClassDef.fqcn).privat().build())
 
-        entityDetailDtoDef.dtoDef.allFields
+        entityDetailViewDef.dtoDef.allFields
             .filter { it.fieldType is PkAndNameFieldType }
             .groupBy { it.fieldType.fqcn }
             .mapValues { entry -> entry.value.first() }
@@ -45,24 +45,24 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
 
     private fun `render function fetch`() {
 
-        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDetailDtoDef.entityDef.primaryKeyClassFields)
-        val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDetailDtoDef.entityDef.primaryKeyClassFields)
+        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDetailViewDef.entityDef.primaryKeyClassFields)
+        val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDetailViewDef.entityDef.primaryKeyClassFields)
 
-        entityDetailDtoDef.entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
+        entityDetailViewDef.entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
 
         append("""
             |
             |
-            |    fun fetch($primaryKeyFieldNamesAndTypesCsv): ${entityDetailDtoDef.dtoDef.uqcn} {
+            |    fun fetch($primaryKeyFieldNamesAndTypesCsv): ${entityDetailViewDef.dtoDef.uqcn} {
             |
             |        val entity = this.entityRepo.findByPrimaryKey($primaryKeyFieldNamesCsv)
             |        
-            |        return ${entityDetailDtoDef.dtoDef.uqcn}(
+            |        return ${entityDetailViewDef.dtoDef.uqcn}(
             |""".trimMargin()
         )
 
 
-        entityDetailDtoDef.dtoDef.allFieldsSorted.forEach { classFieldDef ->
+        entityDetailViewDef.dtoDef.allFieldsSorted.forEach { classFieldDef ->
 
             val classFieldName = classFieldDef.classFieldName
             val fieldType = classFieldDef.fieldType
@@ -106,7 +106,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
 
     private fun `render functions for value mapping fields`() {
 
-        entityDetailDtoDef.dtoDef.allFieldsSorted
+        entityDetailViewDef.dtoDef.allFieldsSorted
             .filter { it.valueMappings != null }
             .forEach { classFieldDef ->
 
@@ -139,7 +139,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailDtoDef: EntityDetailDt
 
     private fun `render functions for PkAndName fields`() {
 
-        entityDetailDtoDef.dtoDef.allFields
+        entityDetailViewDef.dtoDef.allFields
             .filter { it.fieldType is PkAndNameFieldType }
             .groupBy { it.fieldType.fqcn }
             .mapValues { entry -> entry.value.first() }

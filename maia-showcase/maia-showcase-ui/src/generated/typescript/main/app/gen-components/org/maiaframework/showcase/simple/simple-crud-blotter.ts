@@ -28,6 +28,8 @@ export class SimpleCrudBlotterComponent {
     
     private readonly dialog = inject(MatDialog);
 
+    private readonly router = inject(Router);
+
 
     onAddButtonClicked(): void {
 
@@ -40,6 +42,13 @@ export class SimpleCrudBlotterComponent {
                 this.blotterComponent.reapplyFilters();
             }
         });
+
+    }
+
+
+    onView(dto: SimpleBlotterRowDto): void {
+
+        this.router.navigate(['/simple/view', dto.id]);
 
     }
 

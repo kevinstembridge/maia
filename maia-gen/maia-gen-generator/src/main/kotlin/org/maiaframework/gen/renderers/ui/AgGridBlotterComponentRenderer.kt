@@ -203,8 +203,7 @@ class AgGridBlotterComponentRenderer(
                 |
                 |        this.${actionColumnDef.actionName}.emit(dto);
                 |
-                |    }
-                |""".trimMargin())
+                |    }""".trimMargin())
         }
 
         this.blotterDef.addButtonDef?.let { addButtonDef ->

@@ -1,15 +1,15 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
-import org.maiaframework.gen.spec.definition.EntityDetailDtoDef
+import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
-class EntityDetailDtoHtmlRenderer(private val entityDetailDtoDef: EntityDetailDtoDef) : AbstractSourceFileRenderer() {
+class EntityDetailDtoHtmlRenderer(private val entityDetailViewDef: EntityDetailViewDef) : AbstractSourceFileRenderer() {
 
 
     override fun renderedFilePath(): String {
 
-        return entityDetailDtoDef.componentBaseName.htmlRenderedFilePath
+        return entityDetailViewDef.componentNames.htmlRenderedFilePath
 
     }
 
@@ -19,7 +19,7 @@ class EntityDetailDtoHtmlRenderer(private val entityDetailDtoDef: EntityDetailDt
         appendLine("@if (detailDto$ | async; as detailDto) {")
         appendLine("  <div>")
 
-        this.entityDetailDtoDef.dtoDef.allFields.forEach { classFieldDef ->
+        this.entityDetailViewDef.dtoDef.allFields.forEach { classFieldDef ->
 
             val pipes = if (classFieldDef.pipes.isEmpty()) {
                 ""

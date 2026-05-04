@@ -27,6 +27,9 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class SimpleBlotter {
 
 
+    readonly view = output<SimpleBlotterRowDto>();
+
+
     readonly edit = output<SimpleBlotterRowDto>();
 
 
@@ -37,9 +40,18 @@ export class SimpleBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
+        {
+            field: 'view',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'visibility' },
+            onCellClicked: event => {
+                this.view.emit(event.data);
+            }
+        },
         {
             field: 'edit',
             headerName: '',
@@ -52,6 +64,9 @@ export class SimpleBlotter {
                 this.edit.emit(event.data);
             }
         },
+        { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
         {
             field: 'delete',
             headerName: '',
@@ -128,6 +143,13 @@ export class SimpleBlotter {
     }
 
 
+    onView(dto: SimpleBlotterRowDto) {
+
+        this.view.emit(dto);
+
+    }
+
+
     onEdit(dto: SimpleBlotterRowDto) {
 
         this.edit.emit(dto);
@@ -135,13 +157,11 @@ export class SimpleBlotter {
     }
 
 
-
     onDelete(dto: SimpleBlotterRowDto) {
 
         this.delete.emit(dto);
 
     }
-
 
 
     get addButtonVisible(): boolean {

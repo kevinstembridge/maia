@@ -183,9 +183,9 @@ class WebLayerModuleGenerator(
     }
 
 
-    private fun renderEntityDetailEndpoint(entityDetailDtoDef: EntityDetailDtoDef) {
+    private fun renderEntityDetailEndpoint(entityDetailViewDef: EntityDetailViewDef) {
 
-        EntityDetailDtoEndpointRenderer(entityDetailDtoDef).renderToDir(this.kotlinOutputDir)
+        EntityDetailDtoEndpointRenderer(entityDetailViewDef).renderToDir(this.kotlinOutputDir)
 
     }
 

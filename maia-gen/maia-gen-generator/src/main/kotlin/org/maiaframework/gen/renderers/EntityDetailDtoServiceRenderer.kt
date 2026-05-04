@@ -1,19 +1,19 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.EntityDetailDtoDef
+import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 
 class EntityDetailDtoServiceRenderer(
-    private val entityDetailDtoDef: EntityDetailDtoDef
+    private val entityDetailViewDef: EntityDetailViewDef
 ) : AbstractKotlinRenderer(
-    entityDetailDtoDef.serviceClassDef
+    entityDetailViewDef.serviceClassDef
 ) {
 
 
     init {
 
-        addConstructorArg(ClassFieldDef.aClassField("repo", entityDetailDtoDef.repoClassDef.fqcn).privat().build())
+        addConstructorArg(ClassFieldDef.aClassField("repo", entityDetailViewDef.repoClassDef.fqcn).privat().build())
 
     }
 
@@ -32,7 +32,7 @@ class EntityDetailDtoServiceRenderer(
         appendLine("""
             |
             |
-            |    fun fetch(id: DomainId): ${this.entityDetailDtoDef.dtoDef.uqcn}? {
+            |    fun fetch(id: DomainId): ${this.entityDetailViewDef.dtoDef.uqcn}? {
             |
             |        return repo.fetch(id)
             |

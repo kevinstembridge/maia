@@ -391,7 +391,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allFieldTypesSearchableDtoDef,
         withAddButton = true,
     ) {
-
+        editActionColumn()
         columnFromDto("someBoolean")
         columnFromDto("someBooleanNullable")
         columnFromDto("someBooleanType")
@@ -442,7 +442,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("lastModifiedBy")
         columnFromDto("lastModifiedByUsername")
         columnFromDto("lastModifiedTimestampUtc")
-        editActionColumn()
         deleteActionColumn()
     }
 
@@ -457,6 +456,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
         cacheable {  }
+        withDetailDto()
         field("someString", FieldTypes.string) {
             fieldDisplayName("Some String")
             lengthConstraint(min = 3, max = 100)
@@ -493,10 +493,11 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
     ) {
+        viewActionColumn()
+        editActionColumn()
         columnFromDto("someString")
         columnFromDto("id")
         columnFromDto("createdTimestampUtc")
-        editActionColumn()
         deleteActionColumn()
     }
 
@@ -729,12 +730,12 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
     ) {
+        editActionColumn()
         columnFromDto("someString")
         columnFromDto("someInt")
         columnFromDto("version")
         columnFromDto("id")
         columnFromDto("createdTimestampUtc")
-        editActionColumn()
         deleteActionColumn()
     }
 
@@ -941,11 +942,11 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val bravoBlotterDef = blotter(bravoSearchableDtoDef, withAddButton = true) {
+        editActionColumn()
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
         columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
         columnFromDto(dtoFieldName = "createdTimestampUtc", fieldPathInSourceData = "createdTimestampUtc")
         columnFromDto("id")
-        editActionColumn()
         deleteActionColumn()
     }
 
@@ -1273,12 +1274,12 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
     ) {
+        editActionColumn()
         columnFromDto("someString")
         columnFromDto("someInt")
         columnFromDto("someModifiableString")
         columnFromDto("version")
         columnFromDto("createdTimestampUtc")
-        editActionColumn()
         deleteActionColumn()
     }
 

@@ -1,4 +1,12 @@
 
+TODO * Handcode a SimpleViewPage and hook it into the SimpleBlotter view icon.
+    TODO * Generate
+    TODO * Include an Edit button for authorised users.
+    TODO * On Edit clicked, switch to an EditPage.
+
+
+
+
 TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveTimestamps, approvalStatus).
     => LeftToRightManyToManyEntity
         -> with effective timestamps

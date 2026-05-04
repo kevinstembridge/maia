@@ -37,11 +37,6 @@ export class SomeVersionedBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'someInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
-        { field: 'version', headerName: 'Version', cellDataType: 'number', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
         {
             field: 'edit',
             headerName: '',
@@ -54,6 +49,11 @@ export class SomeVersionedBlotter {
                 this.edit.emit(event.data);
             }
         },
+        { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
+        { field: 'someInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
+        { field: 'version', headerName: 'Version', cellDataType: 'number', filter: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
         {
             field: 'delete',
             headerName: '',
@@ -137,13 +137,11 @@ export class SomeVersionedBlotter {
     }
 
 
-
     onDelete(dto: SomeVersionedBlotterRowDto) {
 
         this.delete.emit(dto);
 
     }
-
 
 
     get addButtonVisible(): boolean {

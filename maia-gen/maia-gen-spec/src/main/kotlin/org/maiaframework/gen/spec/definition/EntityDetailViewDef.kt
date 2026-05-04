@@ -9,27 +9,34 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 
-class EntityDetailDtoDef(
+class EntityDetailViewDef(
     val entityDef: EntityDef
 ) {
 
 
-    private val moduleName = if (entityDef.moduleName == null) "" else "/${entityDef.moduleName.value}"
+
+    private val entityDetailBaseName = entityDef.entityBaseName.withSuffix("EntityDetail")
 
 
-    val dtoBaseName = DtoBaseName(entityDef.entityBaseName.withSuffix("EntityDetailDto").value)
+    private val modulePath = if (entityDef.moduleName == null) "" else "/${entityDef.moduleName.value}"
 
 
-    val fetchApiUrlForTypescript = $$"/api$$moduleName/$${dtoBaseName.toKebabCase()}/${id}"
+    val componentBaseName = DtoBaseName(entityDetailBaseName.withSuffix("View").value)
 
 
-    val fetchApiUrlForKotlin = "/api$moduleName/${dtoBaseName.toKebabCase()}/{id}"
+    val dtoBaseName = DtoBaseName(componentBaseName.withSuffix("Dto").value)
+
+
+    val fetchApiUrlForTypescript = $$"/api$$modulePath/$${dtoBaseName.toKebabCase()}/${id}"
+
+
+    val fetchApiUrlForKotlin = "/api$modulePath/${dtoBaseName.toKebabCase()}/{id}"
 
 
     val dtoDef = DtoDefBuilder(
         entityDef.packageName,
         DtoBaseName(entityDef.entityBaseName.value),
-        DtoSuffix("EntityDetailDto"),
+        DtoSuffix("EntityDetailViewDto"),
         entityDef.allClassFields.map { toDtoClassField(it) }
     )
         .withCharacteristic(DtoCharacteristic.RESPONSE_DTO)
@@ -70,7 +77,7 @@ class EntityDetailDtoDef(
     }
 
 
-    val componentBaseName = AngularComponentNames(this.entityDef.packageName, dtoBaseName.value)
+    val componentNames = AngularComponentNames(this.entityDef.packageName, componentBaseName.value)
 
 
     val endpointClassDef = aClassDef(entityDef.packageName.uqcn(dtoDef.uqcn.withSuffix("Endpoint")))

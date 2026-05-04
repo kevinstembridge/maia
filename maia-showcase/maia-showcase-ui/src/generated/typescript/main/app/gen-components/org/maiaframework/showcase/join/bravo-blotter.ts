@@ -37,10 +37,6 @@ export class BravoBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         {
             field: 'edit',
             headerName: '',
@@ -53,6 +49,10 @@ export class BravoBlotter {
                 this.edit.emit(event.data);
             }
         },
+        { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
+        { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         {
             field: 'delete',
             headerName: '',
@@ -136,13 +136,11 @@ export class BravoBlotter {
     }
 
 
-
     onDelete(dto: BravoBlotterRowDto) {
 
         this.delete.emit(dto);
 
     }
-
 
 
     get addButtonVisible(): boolean {

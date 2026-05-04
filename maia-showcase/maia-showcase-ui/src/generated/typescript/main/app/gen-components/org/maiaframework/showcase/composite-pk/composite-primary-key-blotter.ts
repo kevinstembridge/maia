@@ -37,11 +37,6 @@ export class CompositePrimaryKeyBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'someInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
-        { field: 'someModifiableString', headerName: 'Some Modifiable String', cellDataType: 'text', filter: true },
-        { field: 'version', headerName: 'Version', cellDataType: 'number', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
         {
             field: 'edit',
             headerName: '',
@@ -54,6 +49,11 @@ export class CompositePrimaryKeyBlotter {
                 this.edit.emit(event.data);
             }
         },
+        { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
+        { field: 'someInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
+        { field: 'someModifiableString', headerName: 'Some Modifiable String', cellDataType: 'text', filter: true },
+        { field: 'version', headerName: 'Version', cellDataType: 'number', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
         {
             field: 'delete',
             headerName: '',
@@ -137,13 +137,11 @@ export class CompositePrimaryKeyBlotter {
     }
 
 
-
     onDelete(dto: CompositePrimaryKeyBlotterRowDto) {
 
         this.delete.emit(dto);
 
     }
-
 
 
     get addButtonVisible(): boolean {

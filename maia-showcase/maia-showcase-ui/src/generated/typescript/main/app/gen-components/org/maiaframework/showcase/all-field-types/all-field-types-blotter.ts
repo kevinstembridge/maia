@@ -37,6 +37,18 @@ export class AllFieldTypesBlotter {
 
 
     public columnDefs: ColDef[] = [
+        {
+            field: 'edit',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'edit' },
+            onCellClicked: event => {
+                this.edit.emit(event.data);
+            }
+        },
         { field: 'someBoolean', headerName: 'Some Boolean', cellDataType: 'boolean', filter: true },
         { field: 'someBooleanNullable', headerName: 'Some Boolean Nullable', cellDataType: 'boolean', filter: true },
         { field: 'someBooleanType', headerName: 'Some Boolean Type', cellDataType: 'boolean', filter: true },
@@ -77,18 +89,6 @@ export class AllFieldTypesBlotter {
         { field: 'lastModifiedBy', headerName: 'ID', cellDataType: 'text', filter: true },
         { field: 'lastModifiedByUsername', headerName: 'Last Modified By', cellDataType: 'text', filter: true },
         { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text', filter: true },
-        {
-            field: 'edit',
-            headerName: '',
-            width: 100,
-            maxWidth: 100,
-            filter: false,
-            cellRenderer: IconAgGridCellRendererComponent,
-            cellRendererParams: { iconName: 'edit' },
-            onCellClicked: event => {
-                this.edit.emit(event.data);
-            }
-        },
         {
             field: 'delete',
             headerName: '',
@@ -172,13 +172,11 @@ export class AllFieldTypesBlotter {
     }
 
 
-
     onDelete(dto: AllFieldTypesBlotterRowDto) {
 
         this.delete.emit(dto);
 
     }
-
 
 
     get addButtonVisible(): boolean {

@@ -28,7 +28,7 @@ import org.maiaframework.gen.renderers.ui.EntityCreateFormScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityDetailDtoComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityDetailViewComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailDtoHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailDtoServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogHtmlRenderer
@@ -313,7 +313,7 @@ class AngularUiModuleGenerator(
 
         this.modelDef.entityDetailDtoDefs.forEach {
 
-            EntityDetailDtoComponentRenderer(it).renderToDir(this.typescriptOutputDir)
+            EntityDetailViewComponentRenderer(it).renderToDir(this.typescriptOutputDir)
 
         }
 

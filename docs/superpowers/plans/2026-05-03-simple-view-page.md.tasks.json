@@ -1,0 +1,12 @@
+{
+  "planPath": "docs/superpowers/plans/2026-05-03-simple-view-page.md",
+  "tasks": [
+    {
+      "id": 3,
+      "subject": "Task 1: Implement SimpleViewPage component and template",
+      "status": "pending",
+      "description": "**Goal:** Replace the stub SimpleViewPage with a working component that reads `:id` from the route, fetches the entity, and renders its fields vertically.\n\n**Files:**\n- Modify: `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.ts`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.html`\n- Create: `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.spec.ts`\n\n**Verify:** `cd maia-showcase/maia-showcase-ui && npx ng test --include='**/simple-view-page.spec.ts' --watch=false`\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.ts\", \"maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.html\", \"maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.spec.ts\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && npx ng test --include='**/simple-view-page.spec.ts' --watch=false\", \"acceptanceCriteria\": [\"component compiles\", \"template renders field labels and values\", \"all 3 tests pass\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-05-03T00:00:00Z"
+}

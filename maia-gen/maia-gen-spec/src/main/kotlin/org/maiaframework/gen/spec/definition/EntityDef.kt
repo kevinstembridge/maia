@@ -12,9 +12,8 @@ import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
-import org.maiaframework.gen.spec.definition.flags.HasEntityDetailDtoDef
+import org.maiaframework.gen.spec.definition.flags.HasEntityDetailViewDef
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
-import org.maiaframework.gen.spec.definition.flags.HasViewEntityPage
 import org.maiaframework.gen.spec.definition.flags.IsCappedCollection
 import org.maiaframework.gen.spec.definition.flags.IsCreatableByUser
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
@@ -85,13 +84,14 @@ class EntityDef(
     val hasEffectiveTimestamps: HasEffectiveTimestamps,
     val hasEffectiveLocalDates: HasEffectiveLocalDates,
     val hasSingleEffectiveRecord: HasSingleEffectiveRecord,
-    private val hasEntityDetailDtoDef: HasEntityDetailDtoDef,
+    private val hasEntityDetailViewDef: HasEntityDetailViewDef,
     val cacheableDef: CacheableDef?,
     val angularFormSystem: AngularFormSystem
 ) {
 
 
     val entityUqcn = Uqcn("${entityBaseName}Entity")
+
 
     val entityCacheName = entityUqcn.toSnakeCase()
 
@@ -457,7 +457,7 @@ class EntityDef(
             entityFieldsNotInherited = historyFieldDefs,
             hasEffectiveLocalDates = this.hasEffectiveLocalDates,
             hasEffectiveTimestamps = this.hasEffectiveTimestamps,
-            hasEntityDetailDtoDef = this.hasEntityDetailDtoDef,
+            hasEntityDetailViewDef = this.hasEntityDetailViewDef,
             hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
             isAbstract = this.isAbstract,
             isCappedCollection = IsCappedCollection.FALSE,
@@ -546,11 +546,9 @@ class EntityDef(
         .build()
 
 
-    val entityDetailDtoDef: EntityDetailDtoDef? by lazy {
-        if (hasEntityDetailDtoDef.value) {
-            EntityDetailDtoDef(
-                this
-            )
+    val entityDetailViewDef: EntityDetailViewDef? by lazy {
+        if (hasEntityDetailViewDef.value) {
+            EntityDetailViewDef(this)
         } else {
             null
         }

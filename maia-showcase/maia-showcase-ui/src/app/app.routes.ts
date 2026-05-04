@@ -23,10 +23,17 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'simple',
+        path: 'simple-blotter',
         loadComponent: () =>
             import('./pages/simple-blotter/simple-blotter-page').then(
                 (m) => m.SimpleBlotterPage,
+            ),
+    },
+    {
+        path: 'simple/view/:id',
+        loadComponent: () =>
+            import('./pages/simple-view/simple-view-page').then(
+                (m) => m.SimpleViewPage,
             ),
     },
     {

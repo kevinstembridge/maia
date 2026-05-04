@@ -1,14 +1,14 @@
 package org.maiaframework.gen.spec.definition.flags
 
 @JvmInline
-value class HasEntityDetailDtoDef(val value: Boolean) {
+value class HasEntityDetailViewDef(val value: Boolean) {
 
 
     companion object {
 
-        val TRUE = HasEntityDetailDtoDef(true)
+        val TRUE = HasEntityDetailViewDef(true)
 
-        val FALSE = HasEntityDetailDtoDef(false)
+        val FALSE = HasEntityDetailViewDef(false)
 
     }
 

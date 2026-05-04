@@ -151,7 +151,6 @@ export class LeftManyBlotter {
     }
 
 
-
     onEdit(dto: LeftManyBlotterRowDto) {
 
         this.edit.emit(dto);
@@ -159,13 +158,11 @@ export class LeftManyBlotter {
     }
 
 
-
     onDelete(dto: LeftManyBlotterRowDto) {
 
         this.delete.emit(dto);
 
     }
-
 
 
     get addButtonVisible(): boolean {
