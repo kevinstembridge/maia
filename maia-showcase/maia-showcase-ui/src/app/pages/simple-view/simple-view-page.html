@@ -1,18 +1,5 @@
 <app-page-layout pageTitle="Simple" dataPageId="simple_view">
-    @if (simpleEntityDetailDto(); as data) {
-        <dl class="simple-view-fields">
-            <div class="simple-view-field">
-                <dt>Some String</dt>
-                <dd>{{ data.someString }}</dd>
-            </div>
-            <div class="simple-view-field">
-                <dt>ID</dt>
-                <dd>{{ data.id }}</dd>
-            </div>
-            <div class="simple-view-field">
-                <dt>Created</dt>
-                <dd>{{ data.createdTimestampUtc }}</dd>
-            </div>
-        </dl>
+    @if (entityId(); as id) {
+        <app-simple-entity-detail-view [entityId]="id" />
     }
 </app-page-layout>
