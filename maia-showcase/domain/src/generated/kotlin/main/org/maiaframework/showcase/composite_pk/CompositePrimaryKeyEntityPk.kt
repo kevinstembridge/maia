@@ -30,7 +30,6 @@ data class CompositePrimaryKeyEntityPk(
             val someString = URLDecoder.decode(parts[0], "UTF-8")
             val someInt = URLDecoder.decode(parts[1], "UTF-8").toInt()
 
-
             return CompositePrimaryKeyEntityPk(someString, someInt)
 
         }
