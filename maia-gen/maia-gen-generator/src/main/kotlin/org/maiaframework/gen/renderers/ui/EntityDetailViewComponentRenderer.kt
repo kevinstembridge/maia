@@ -1,9 +1,9 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.EntityDetailDtoDef
+import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 
-class EntityDetailDtoComponentRenderer(
-    private val entityDetailDtoDef: EntityDetailDtoDef
+class EntityDetailViewComponentRenderer(
+    private val entityDetailViewDef: EntityDetailViewDef
 ) : AbstractTypescriptRenderer() {
 
 
@@ -17,15 +17,15 @@ class EntityDetailDtoComponentRenderer(
         addImport("@angular/common", "DatePipe")
         addImport("rxjs", "Observable")
         addImport("@angular/material/progress-spinner", "MatProgressSpinner")
-        addImport(entityDetailDtoDef.componentBaseName.serviceTypescriptImport)
-        addImport(entityDetailDtoDef.dtoDef.typescriptDtoImport)
+        addImport(entityDetailViewDef.componentNames.serviceTypescriptImport)
+        addImport(entityDetailViewDef.dtoDef.typescriptDtoImport)
 
     }
 
 
     override fun renderedFilePath(): String {
 
-        return this.entityDetailDtoDef.componentBaseName.componentRenderedFilePath
+        return this.entityDetailViewDef.componentNames.componentRenderedFilePath
 
     }
 
@@ -41,19 +41,19 @@ class EntityDetailDtoComponentRenderer(
             |        DatePipe,
             |        MatProgressSpinner
             |    ],
-            |    selector: '${this.entityDetailDtoDef.componentBaseName.componentSelector}',
-            |    templateUrl: './${this.entityDetailDtoDef.componentBaseName.htmlFileName}'
+            |    selector: '${this.entityDetailViewDef.componentNames.componentSelector}',
+            |    templateUrl: './${this.entityDetailViewDef.componentNames.htmlFileName}'
             |})
-            |export class ${this.entityDetailDtoDef.componentBaseName.componentName} {
+            |export class ${this.entityDetailViewDef.componentNames.componentName} {
             |
             |
             |    entityId = input.required<string>();
             |
             |
-            |    detailDto$: Observable<${this.entityDetailDtoDef.dtoDef.uqcn}>;
+            |    detailDto$!: Observable<${this.entityDetailViewDef.dtoDef.uqcn}>;
             |
             |
-            |    private readonly service = inject(${this.entityDetailDtoDef.componentBaseName.serviceName});
+            |    private readonly service = inject(${this.entityDetailViewDef.componentNames.serviceName});
             |
             |
             |    constructor() {

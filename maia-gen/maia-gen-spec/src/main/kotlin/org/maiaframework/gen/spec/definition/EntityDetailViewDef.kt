@@ -20,7 +20,7 @@ class EntityDetailDtoDef(
     val dtoBaseName = DtoBaseName(entityDef.entityBaseName.withSuffix("EntityDetailDto").value)
 
 
-    val fetchApiUrlForTypescript = "/api$moduleName/${dtoBaseName.toKebabCase()}/\${id}"
+    val fetchApiUrlForTypescript = $$"/api$$moduleName/$${dtoBaseName.toKebabCase()}/${id}"
 
 
     val fetchApiUrlForKotlin = "/api$moduleName/${dtoBaseName.toKebabCase()}/{id}"
