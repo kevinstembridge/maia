@@ -32,13 +32,13 @@ data class CompositePrimaryKeyHistoryEntityPk(
             val someInt = URLDecoder.decode(parts[1], "UTF-8").toInt()
             val version = URLDecoder.decode(parts[2], "UTF-8").toLong()
 
-
             return CompositePrimaryKeyHistoryEntityPk(someString, someInt, version)
 
         }
 
 
     }
+
 
 }
 
