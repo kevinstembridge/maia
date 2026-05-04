@@ -4,12 +4,39 @@
 package org.maiaframework.showcase.history
 
 import org.maiaframework.domain.DomainId
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 
 data class HistorySuperHistoryEntityPk(
     val id: DomainId,
     val version: Long
 ) {
+
+
+    override fun toString(): String {
+
+        return listOf(id, version)
+            .joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+
+    }
+
+
+    companion object {
+
+
+        fun from(pk: String): HistorySuperHistoryEntityPk {
+
+            val parts = pk.split(":")
+            val id = DomainId(URLDecoder.decode(parts[0], "UTF-8"))
+            val version = URLDecoder.decode(parts[1], "UTF-8").toLong()
+
+            return HistorySuperHistoryEntityPk(id, version)
+
+        }
+
+
+    }
 
 
 }

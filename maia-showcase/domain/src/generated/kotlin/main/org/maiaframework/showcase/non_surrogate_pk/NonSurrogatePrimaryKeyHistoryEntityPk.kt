@@ -4,12 +4,39 @@
 package org.maiaframework.showcase.non_surrogate_pk
 
 import org.maiaframework.showcase.types.SomeStringValueClass
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 
 data class NonSurrogatePrimaryKeyHistoryEntityPk(
     val someString: SomeStringValueClass,
     val version: Long
 ) {
+
+
+    override fun toString(): String {
+
+        return listOf(someString, version)
+            .joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+
+    }
+
+
+    companion object {
+
+
+        fun from(pk: String): NonSurrogatePrimaryKeyHistoryEntityPk {
+
+            val parts = pk.split(":")
+            val someString = SomeStringValueClass(URLDecoder.decode(parts[0], "UTF-8"))
+            val version = URLDecoder.decode(parts[1], "UTF-8").toLong()
+
+            return NonSurrogatePrimaryKeyHistoryEntityPk(someString, version)
+
+        }
+
+
+    }
 
 
 }
