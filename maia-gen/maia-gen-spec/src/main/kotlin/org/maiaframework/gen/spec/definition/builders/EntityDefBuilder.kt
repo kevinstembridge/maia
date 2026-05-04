@@ -697,7 +697,7 @@ class EntityDefBuilder(
     }
 
 
-    fun withDetailDto() {
+    fun withEntityDetailView() {
 
         this.hasEntityDetailViewDef = HasEntityDetailViewDef.TRUE
 
