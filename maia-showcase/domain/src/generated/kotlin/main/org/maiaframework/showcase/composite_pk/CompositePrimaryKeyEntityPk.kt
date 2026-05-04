@@ -3,12 +3,40 @@
 
 package org.maiaframework.showcase.composite_pk
 
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 
 data class CompositePrimaryKeyEntityPk(
     val someString: String,
     val someInt: Int
 ) {
+
+
+    override fun toString(): String {
+
+        return listOf(someString, someInt)
+            .joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+
+    }
+
+
+    companion object {
+
+
+        fun from(pk: String): CompositePrimaryKeyEntityPk {
+
+            val parts = pk.split(":")
+            val someString = URLDecoder.decode(parts[0], "UTF-8")
+            val someInt = URLDecoder.decode(parts[1], "UTF-8").toInt()
+
+
+            return CompositePrimaryKeyEntityPk(someString, someInt)
+
+        }
+
+
+    }
 
 
 }
