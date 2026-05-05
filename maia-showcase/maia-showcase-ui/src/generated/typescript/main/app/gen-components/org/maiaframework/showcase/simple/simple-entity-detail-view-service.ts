@@ -22,10 +22,10 @@ export class SimpleEntityDetailViewService {
     private readonly http = inject(HttpClient);
 
 
-    public fetch(id: string): Observable<SimpleEntityDetailViewDto> {
+    public fetch(pk: string): Observable<SimpleEntityDetailViewDto> {
 
       return this.http.get<SimpleEntityDetailViewDto>(
-          `/api/simple-entity-detail-view-dto/${id}`,
+          `/api/simple-entity-detail-view-dto/${pk}`,
           this.httpOptions
       );
 

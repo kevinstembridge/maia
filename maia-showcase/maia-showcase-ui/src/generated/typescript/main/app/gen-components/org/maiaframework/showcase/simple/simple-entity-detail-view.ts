@@ -22,7 +22,7 @@ import {Observable} from 'rxjs';
 export class SimpleEntityDetailView {
 
 
-    entityId = input.required<string>();
+    entityPk = input.required<string>();
 
 
     detailDto$!: Observable<SimpleEntityDetailViewDto>;
@@ -34,7 +34,7 @@ export class SimpleEntityDetailView {
     constructor() {
 
         effect(() => {
-            this.detailDto$ = this.service.fetch(this.entityId());
+            this.detailDto$ = this.service.fetch(this.entityPk());
         });
 
     }
