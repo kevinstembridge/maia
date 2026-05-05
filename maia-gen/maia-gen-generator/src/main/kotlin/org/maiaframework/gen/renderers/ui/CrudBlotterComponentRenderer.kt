@@ -163,7 +163,7 @@ class CrudBlotterComponentRenderer(
                 appendLine("    private displayDeleteDialog(dto: ${crudBlotterDef.blotterDef.dtoUqcn}) {")
             }
 
-            appendLine("""
+            append("""
                 |
                 |        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentName}, {
                 |            width: '400px',
@@ -177,7 +177,7 @@ class CrudBlotterComponentRenderer(
                 |        });
                 |
                 |    }
-            """.trimMargin())
+                |""".trimMargin())
 
         }
 

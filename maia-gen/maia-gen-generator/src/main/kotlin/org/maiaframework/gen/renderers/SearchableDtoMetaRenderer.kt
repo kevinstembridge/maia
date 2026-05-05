@@ -20,23 +20,24 @@ class SearchableDtoMetaRenderer(
 
     private fun `render function fieldNameToColumnName`() {
 
-        appendLine("""
+        append("""
             |
             |
             |    fun fieldNameToColumnName(dtoFieldName: String): String {
             |
-            |        return when(dtoFieldName) {""".trimMargin())
+            |        return when(dtoFieldName) {
+            |""".trimMargin())
 
         searchableDtoDef.nonManyToManyFields.forEach { field ->
             appendLine("            \"${field.classFieldName}\" -> \"${field.schemaAndTableName}.${field.databaseColumn}\"")
         }
 
-        appendLine("""
+        append("""
             |            else -> throw IllegalArgumentException("Unknown field name [${'$'}dtoFieldName]. Expected one of ${searchableDtoDef.allFields.map { it.classFieldName }}")
             |        }
             |
             |    }
-        """.trimMargin())
+            |""".trimMargin())
 
     }
 
@@ -45,12 +46,13 @@ class SearchableDtoMetaRenderer(
 
         addImportFor<JdbcCompatibleType>()
 
-        appendLine("""
+        append("""
             |
             |
             |    fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
             |
-            |        return when(dtoFieldName) {""".trimMargin())
+            |        return when(dtoFieldName) {
+            |""".trimMargin())
 
         searchableDtoDef.nonManyToManyFields.forEach { field ->
 

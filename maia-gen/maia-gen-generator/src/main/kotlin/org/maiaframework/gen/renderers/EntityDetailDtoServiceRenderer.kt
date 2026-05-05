@@ -27,17 +27,77 @@ class EntityDetailDtoServiceRenderer(
 
     private fun `render function fetch`() {
 
+        if (entityDetailViewDef.entityDef.hasSurrogatePrimaryKey) {
+
+            `render fetch for surrogate primary key`()
+
+        } else if (entityDetailViewDef.entityDef.hasCompositePrimaryKey) {
+
+            `render fetch for composite primary key`()
+
+        } else {
+
+            `render fetch for natural primary key`()
+
+        }
+
+    }
+
+
+    private fun `render fetch for surrogate primary key`() {
+
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
-        appendLine("""
+        append(
+            """
+                |
+                |
+                |    fun fetch(id: DomainId): ${this.entityDetailViewDef.dtoDef.uqcn}? {
+                |
+                |        return repo.fetch(id)
+                |
+                |    }
+                |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render fetch for composite primary key`() {
+
+        addImportFor(entityDetailViewDef.entityDef.entityPkClassDef.fqcn)
+
+        append("""
             |
             |
-            |    fun fetch(id: DomainId): ${this.entityDetailViewDef.dtoDef.uqcn}? {
+            |    fun fetch(primaryKey: ${entityDetailViewDef.entityDef.entityPkClassDef.uqcn}): ${this.entityDetailViewDef.dtoDef.uqcn}? {
             |
-            |        return repo.fetch(id)
+            |        return repo.fetch(primaryKey)
             |
             |    }
-        """.trimMargin())
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render fetch for natural primary key`() {
+
+        val fqcn = entityDetailViewDef.entityDef.primaryKeyFields.first().classFieldDef.fqcn
+        val pkUqcn = fqcn.uqcn
+
+        addImportFor(fqcn)
+
+        append("""
+            |
+            |
+            |    fun fetch(primaryKey: ${pkUqcn}): ${this.entityDetailViewDef.dtoDef.uqcn}? {
+            |
+            |        return repo.fetch(primaryKey)
+            |
+            |    }
+            |""".trimMargin()
+        )
 
     }
 

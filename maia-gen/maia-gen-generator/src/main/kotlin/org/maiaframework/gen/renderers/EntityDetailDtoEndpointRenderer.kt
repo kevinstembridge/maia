@@ -28,21 +28,84 @@ class EntityDetailDtoEndpointRenderer(
 
     private fun `render function fetch`() {
 
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
         addImportFor(Fqcns.SPRING_GET_MAPPING)
         addImportFor(Fqcns.SPRING_MEDIA_TYPE)
         addImportFor(Fqcns.SPRING_PATH_VARIABLE)
 
-        appendLine("""
+        if (entityDetailViewDef.entityDef.hasSurrogatePrimaryKey) {
+
+            `render fetch for surrogate primary key`()
+
+        } else if (entityDetailViewDef.entityDef.hasCompositePrimaryKey) {
+
+            `render fetch for composite primary key`()
+
+        } else {
+
+            `render fetch for natural primary key`()
+
+        }
+
+    }
+
+
+    private fun `render fetch for surrogate primary key`() {
+
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+
+        append("""
             |
             |
             |    @GetMapping("${entityDetailViewDef.fetchApiUrlForKotlin}", produces = [MediaType.APPLICATION_JSON_VALUE])
-            |    fun fetch(@PathVariable id: DomainId): ${entityDetailViewDef.dtoDef.uqcn}? {
+            |    fun fetch(@PathVariable pk: DomainId): ${entityDetailViewDef.dtoDef.uqcn}? {
             |
-            |        return this.service.fetch(id)
+            |        return this.service.fetch(pk)
             |
-            |    }""".trimMargin()
+            |    }
+            |""".trimMargin()
 
+        )
+
+    }
+
+
+    private fun `render fetch for composite primary key`() {
+
+        append("""
+            |
+            |
+            |    @GetMapping("${entityDetailViewDef.fetchApiUrlForKotlin}", produces = [MediaType.APPLICATION_JSON_VALUE])
+            |    fun fetch(@PathVariable pk: String): ${entityDetailViewDef.dtoDef.uqcn}? {
+            |
+            |        val primaryKey = ${entityDetailViewDef.entityDef.entityPkClassDef.uqcn}.from(pk)
+            |        return this.service.fetch(primaryKey)
+            |
+            |    }
+            |""".trimMargin()
+
+        )
+
+    }
+
+
+    private fun `render fetch for natural primary key`() {
+
+        val fqcn = entityDetailViewDef.entityDef.primaryKeyFields.first().classFieldDef.fqcn
+        val pkUqcn = fqcn.uqcn
+
+        addImportFor(fqcn)
+
+        append(
+            """
+            |
+            |
+            |    @GetMapping("${entityDetailViewDef.fetchApiUrlForKotlin}", produces = [MediaType.APPLICATION_JSON_VALUE])
+            |    fun fetch(@PathVariable pk: $pkUqcn): ${entityDetailViewDef.dtoDef.uqcn}? {
+            |
+            |        return this.service.fetch(primaryKey)
+            |
+            |    }
+            |""".trimMargin()
         )
 
     }

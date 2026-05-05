@@ -15,7 +15,7 @@ class CheckForeignKeyReferencesDialogHtmlRenderer(private val entityDef: EntityD
 
     override fun renderSource(): String {
 
-        appendLine("""
+        append("""
             |<h1 mat-dialog-title>Checking Foreign Key References</h1>
             |<div mat-dialog-content>
             |    @if (checking) {
@@ -25,7 +25,8 @@ class CheckForeignKeyReferencesDialogHtmlRenderer(private val entityDef: EntityD
             |</div>
             |<div mat-dialog-actions>
             |    <button mat-flat-button (click)="onCancel()">Cancel</button>
-            |</div>""".trimMargin())
+            |</div>
+            |""".trimMargin())
 
         return sourceCode.toString()
 

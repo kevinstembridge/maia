@@ -41,7 +41,7 @@ class ElasticSearchDtoSearchServiceRenderer(
         addImportFor(Fqcns.MAIA_INDEX_SEARCH_RESULTS)
         addImportFor(searchModelFqcn)
 
-        appendLine("""
+        append("""
             |
             |
             |    fun search(searchModel: ${searchModelFqcn.uqcn}): IndexSearchResults<${this.searchDtoDef.uqcn}> {
@@ -54,7 +54,8 @@ class ElasticSearchDtoSearchServiceRenderer(
             |            { esDoc -> esDocMapper.mapEsDoc(esDoc) }
             |        )
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
     }
 
@@ -69,7 +70,7 @@ class ElasticSearchDtoSearchServiceRenderer(
         addImportFor(Fqcns.MAIA_INDEX_SEARCH_RESULTS)
         addImportFor(searchModelFqcn)
 
-        appendLine("""
+        append("""
             |
             |
             |    fun count(searchModel: ${searchModelFqcn.uqcn}): Long {
@@ -80,7 +81,8 @@ class ElasticSearchDtoSearchServiceRenderer(
             |            ${searchDtoDef.fieldNameMapperClassDef.uqcn}.mappingFunction
             |        )
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
     }
 

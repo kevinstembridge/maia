@@ -39,7 +39,7 @@ class TypeaheadCrudListenerRenderer(
 
             if (contextDtoDef != null) {
                 addImportFor(contextDtoDef.fqcn)
-                appendLine("""
+                append("""
                     |
                     |
                     |    override fun on${entityUqcn}Created(entity: $entityUqcn, context: ${contextDtoDef.uqcn}) {
@@ -49,7 +49,7 @@ class TypeaheadCrudListenerRenderer(
                     |    }
                     |""".trimMargin())
             } else {
-                appendLine("""
+                append("""
                     |
                     |
                     |    override fun on${entityUqcn}Created(entity: $entityUqcn) {
@@ -70,7 +70,7 @@ class TypeaheadCrudListenerRenderer(
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
         this.entityCrudApiDef.updateApiDef?.let {
-            appendLine("""
+            append("""
                 |
                 |    override fun on${this.entityCrudApiDef.entityDef.entityUqcn}Updated(id: DomainId) {
                 |
@@ -87,7 +87,7 @@ class TypeaheadCrudListenerRenderer(
     private fun `render function onDelete`() {
 
         this.entityCrudApiDef.deleteApiDef?.let {
-            appendLine("""
+            append("""
                 |
                 |    override fun on${this.entityCrudApiDef.entityDef.entityUqcn}Deleted(entity: ${this.entityCrudApiDef.entityDef.entityUqcn}) {
                 |

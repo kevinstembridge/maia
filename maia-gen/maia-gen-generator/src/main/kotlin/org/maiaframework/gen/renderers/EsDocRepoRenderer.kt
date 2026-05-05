@@ -47,7 +47,7 @@ class EsDocRepoRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRenderer
 
     private fun `render function findAllAsSequence`() {
 
-        appendLine("""
+        append("""
             |
             |
             |    fun findAllAsSequence(): Sequence<${this.esDocDef.uqcn}> {
@@ -55,7 +55,7 @@ class EsDocRepoRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRenderer
             |        return this.entityRepo.findAllAsSequence().map { buildEsDoc(it) }
             |
             |    }
-            """.trimMargin())
+            |""".trimMargin())
 
     }
 

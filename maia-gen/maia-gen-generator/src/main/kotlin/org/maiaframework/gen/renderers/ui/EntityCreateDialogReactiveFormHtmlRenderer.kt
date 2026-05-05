@@ -29,7 +29,7 @@ class EntityCreateDialogReactiveFormHtmlRenderer(
     override fun renderManyToManyChipFields() {
 
         chipFields.forEach { chip ->
-            appendLine("""
+            append("""
                 |        <mat-form-field appearance="outline">
                 |            <mat-label>${chip.labelText}</mat-label>
                 |            <mat-chip-grid #chipGrid>
@@ -55,7 +55,8 @@ class EntityCreateDialogReactiveFormHtmlRenderer(
                 |                    <mat-option [value]="option">{{ option.${chip.searchTermFieldName} }}</mat-option>
                 |                }
                 |            </mat-autocomplete>
-                |        </mat-form-field>""".trimMargin())
+                |        </mat-form-field>
+                |""".trimMargin())
         }
 
     }

@@ -28,7 +28,7 @@ class TypeaheadAngularServiceRenderer(private val typeaheadDef: TypeaheadDef) : 
 
     override fun renderSourceBody() {
 
-        appendLine("""
+        append("""
             |
             |
             |@Injectable()
@@ -69,7 +69,8 @@ class TypeaheadAngularServiceRenderer(private val typeaheadDef: TypeaheadDef) : 
             |    }
             |
             |
-            |}""".trimMargin())
+            |}
+            |""".trimMargin())
 
     }
 

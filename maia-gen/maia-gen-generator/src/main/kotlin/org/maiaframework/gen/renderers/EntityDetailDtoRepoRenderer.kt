@@ -45,22 +45,43 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
 
     private fun `render function fetch`() {
 
-        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDetailViewDef.entityDef.primaryKeyClassFields)
-        val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDetailViewDef.entityDef.primaryKeyClassFields)
+        if (entityDetailViewDef.entityDef.hasCompositePrimaryKey) {
 
-        entityDetailViewDef.entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
+            val primaryKeyFqcn = entityDetailViewDef.entityDef.entityPkClassDef.fqcn
+            val pkUqcn = primaryKeyFqcn.uqcn
 
-        append("""
+            addImportFor(primaryKeyFqcn)
+
+            append("""
             |
             |
-            |    fun fetch($primaryKeyFieldNamesAndTypesCsv): ${entityDetailViewDef.dtoDef.uqcn} {
+            |    fun fetch(primaryKey: $pkUqcn): ${entityDetailViewDef.dtoDef.uqcn} {
             |
-            |        val entity = this.entityRepo.findByPrimaryKey($primaryKeyFieldNamesCsv)
+            |        val entity = this.entityRepo.findByPrimaryKey(primaryKey)
             |        
             |        return ${entityDetailViewDef.dtoDef.uqcn}(
             |""".trimMargin()
-        )
+            )
 
+        } else {
+
+            val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDetailViewDef.entityDef.primaryKeyClassFields)
+            val primaryKeyFieldNamesCsv = fieldNamesCsv(entityDetailViewDef.entityDef.primaryKeyClassFields)
+
+            entityDetailViewDef.entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
+
+            append("""
+                |
+                |
+                |    fun fetch($primaryKeyFieldNamesAndTypesCsv): ${entityDetailViewDef.dtoDef.uqcn} {
+                |
+                |        val entity = this.entityRepo.findByPrimaryKey($primaryKeyFieldNamesCsv)
+                |        
+                |        return ${entityDetailViewDef.dtoDef.uqcn}(
+                |""".trimMargin()
+            )
+
+        }
 
         entityDetailViewDef.dtoDef.allFieldsSorted.forEach { classFieldDef ->
 
@@ -120,7 +141,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
                 )
 
                 classFieldDef.valueMappings!!.forEach { (key, value) ->
-                    appendLine("""            "$key" -> "$value"""".trimMargin())
+                    appendLine("""            "$key" -> "$value"""")
                 }
 
                 append("""

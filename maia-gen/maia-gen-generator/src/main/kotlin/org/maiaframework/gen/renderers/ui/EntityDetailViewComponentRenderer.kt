@@ -32,7 +32,7 @@ class EntityDetailViewComponentRenderer(
 
     override fun renderSourceBody() {
 
-        appendLine("""
+        append("""
             |
             |
             |@Component({
@@ -47,7 +47,7 @@ class EntityDetailViewComponentRenderer(
             |export class ${this.entityDetailViewDef.componentNames.componentName} {
             |
             |
-            |    entityId = input.required<string>();
+            |    entityPk = input.required<string>();
             |
             |
             |    detailDto$!: Observable<${this.entityDetailViewDef.dtoDef.uqcn}>;
@@ -59,13 +59,14 @@ class EntityDetailViewComponentRenderer(
             |    constructor() {
             |
             |        effect(() => {
-            |            this.detailDto$ = this.service.fetch(this.entityId());
+            |            this.detailDto$ = this.service.fetch(this.entityPk());
             |        });
             |
             |    }
             |
             |
-            |}""".trimMargin())
+            |}
+            |""".trimMargin())
 
     }
 

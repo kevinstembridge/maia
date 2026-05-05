@@ -40,10 +40,11 @@ abstract class AbstractCrudFormHtmlRenderer(
             |        }""".trimMargin())
 
         if (this.entityDef.multiFieldUniqueIndexDefs.isNotEmpty()) {
-            appendLine("""
+            append("""
                 |        @if (formGroup.errors?.message && (formGroup.touched || formGroup.dirty)) {
                 |            {{ formGroup.errors.message }}
-                |        }""".trimMargin())
+                |        }
+                |""".trimMargin())
         }
 
         formFields.forEach { formFieldDef ->

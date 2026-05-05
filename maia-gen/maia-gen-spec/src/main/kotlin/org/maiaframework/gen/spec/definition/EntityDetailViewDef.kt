@@ -27,10 +27,10 @@ class EntityDetailViewDef(
     val dtoBaseName = DtoBaseName(componentBaseName.withSuffix("Dto").value)
 
 
-    val fetchApiUrlForTypescript = $$"/api$$modulePath/$${dtoBaseName.toKebabCase()}/${id}"
+    val fetchApiUrlForTypescript = $$"/api$$modulePath/$${dtoBaseName.toKebabCase()}/${pk}"
 
 
-    val fetchApiUrlForKotlin = "/api$modulePath/${dtoBaseName.toKebabCase()}/{id}"
+    val fetchApiUrlForKotlin = "/api$modulePath/${dtoBaseName.toKebabCase()}/{pk}"
 
 
     val dtoDef = DtoDefBuilder(

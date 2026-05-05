@@ -33,7 +33,7 @@ class TypeaheadServiceRenderer(private val typeaheadDef: TypeaheadDef) : Abstrac
     private fun `render function search`() {
 
         // TODO capture metrics
-        appendLine("""
+        append("""
             |
             |
             |    fun search(searchTerm: SearchTerm): List<${esDocUqcn}> {
@@ -43,7 +43,8 @@ class TypeaheadServiceRenderer(private val typeaheadDef: TypeaheadDef) : Abstrac
             |        val searchResults = buildResults(searchResponse)
             |        return searchResults
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
     }
 
@@ -75,7 +76,7 @@ class TypeaheadServiceRenderer(private val typeaheadDef: TypeaheadDef) : Abstrac
 
         val searchTermFieldName = this.typeaheadDef.searchTermFieldName
 
-        appendLine("""
+        append("""
             |
             |
             |    private fun searchRequest(searchTerm: SearchTerm): SearchRequest {
@@ -94,21 +95,23 @@ class TypeaheadServiceRenderer(private val typeaheadDef: TypeaheadDef) : Abstrac
             |                }.size(searchSize())
             |        }
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
     }
 
 
     private fun `render function searchSize`() {
 
-        appendLine("""
+        append("""
             |
             |
             |    private fun searchSize(): Int {
             |
             |       return this.props.getIntOrNull("typeahead.search_size.${this.typeaheadDef.esDocDef.fqcn}") ?: 40
             |
-            |   }""".trimMargin())
+            |   }
+            |""".trimMargin())
 
     }
 

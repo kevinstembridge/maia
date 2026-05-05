@@ -122,7 +122,7 @@ class AgGridBlotterComponentRenderer(
         }
 
         appendLine("    ];")
-        appendLine("""
+        append("""
             |
             |    public defaultColDef: ColDef = {
             |        filter: true,
@@ -172,7 +172,8 @@ class AgGridBlotterComponentRenderer(
             |    private readonly datasource = inject(${blotterDef.agGridDatasourceClassName});
             |
             |
-            |    private readonly injector = inject(EnvironmentInjector);""".trimMargin()
+            |    private readonly injector = inject(EnvironmentInjector);
+            |""".trimMargin()
         )
 
         if (requiresRouter) {
@@ -196,22 +197,24 @@ class AgGridBlotterComponentRenderer(
             |""".trimMargin())
 
         this.blotterDef.actionColumnFields.forEach { actionColumnDef ->
-            appendLine("""
+            append("""
                 |
                 |
                 |    on${actionColumnDef.actionName.firstToUpper()}(dto: ${this.blotterDef.dtoUqcn}) {
                 |
                 |        this.${actionColumnDef.actionName}.emit(dto);
                 |
-                |    }""".trimMargin())
+                |    }
+                |""".trimMargin())
         }
 
         this.blotterDef.addButtonDef?.let { addButtonDef ->
 
-            appendLine("""
+            append("""
                 |
                 |
                 |    get addButtonVisible(): boolean {
+                |
                 |""".trimMargin())
 
             if (addButtonDef.authority != null) {
@@ -245,7 +248,7 @@ class AgGridBlotterComponentRenderer(
             appendLine("    }")
         }
 
-        appendLine("""
+        append("""
             |
             |
             |    reapplyFilters() {
@@ -264,7 +267,8 @@ class AgGridBlotterComponentRenderer(
             |    }
             |
             |
-            |}""".trimMargin())
+            |}
+            |""".trimMargin())
 
     }
 
@@ -307,7 +311,7 @@ class AgGridBlotterComponentRenderer(
 
     private fun renderColDefFor(fieldDef: BlotterActionColumnDef) {
 
-        appendLine("""
+        append("""
             |        {
             |            field: '${fieldDef.actionName}',
             |            headerName: '${fieldDef.columnHeader}',
@@ -319,7 +323,8 @@ class AgGridBlotterComponentRenderer(
             |            onCellClicked: event => {
             |                this.${fieldDef.actionName}.emit(event.data);
             |            }
-            |        },""".trimMargin())
+            |        },
+            |""".trimMargin())
 
     }
 

@@ -451,19 +451,21 @@ class CrudNotifierRenderer(
 
         this.entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType)}
 
-        appendLine("""
+        append("""
             |
             |
-            |    fun onEntityUpdated($primaryKeyFieldNamesAndTypesCsv) {""".trimMargin()
+            |    fun onEntityUpdated($primaryKeyFieldNamesAndTypesCsv) {
+            |""".trimMargin()
         )
 
         if (this.entityDef.crudDef.withCrudListener.value) {
             renderNotificationOfUpdateListeners(this.entityDef)
         }
 
-        appendLine("""
+        append("""
             |
-            |    }""".trimMargin()
+            |    }
+            |""".trimMargin()
         )
 
     }

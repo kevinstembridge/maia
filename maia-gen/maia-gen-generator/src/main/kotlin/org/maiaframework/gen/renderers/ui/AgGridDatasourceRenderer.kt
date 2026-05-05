@@ -48,7 +48,7 @@ class AgGridDatasourceRenderer(private val blotterDef: BlotterDef) : AbstractTyp
 
     override fun renderSourceBody() {
 
-        appendLine("""
+        append("""
             |
             |
             |@Injectable({providedIn: 'root'})
@@ -73,7 +73,8 @@ class AgGridDatasourceRenderer(private val blotterDef: BlotterDef) : AbstractTyp
             |    }
             |
             |
-            |}""".trimMargin())
+            |}
+            |""".trimMargin())
 
     }
 

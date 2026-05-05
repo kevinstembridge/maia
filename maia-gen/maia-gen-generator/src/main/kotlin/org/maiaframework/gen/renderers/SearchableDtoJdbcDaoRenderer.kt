@@ -122,28 +122,26 @@ class SearchableDtoJdbcDaoRenderer(
 
             SearchModelType.AG_GRID -> {
 
-                appendLine("""
+                append("""
                     |
                     |
                     |    private val searchModelConverter = ${searchModelConverterFqcn.uqcn}(
                     |        ${searchableDtoDef.metaClassDef.uqcn}::fieldNameToColumnName,
                     |        ${searchableDtoDef.metaClassDef.uqcn}::fieldNameToJdbcType
                     |    )
-                    """.trimMargin())
-
-
+                    |""".trimMargin())
 
             }
 
             SearchModelType.MAIA -> {
 
-                appendLine("""
+                append("""
                     |
                     |
                     |    private val searchModelConverter = ${searchModelConverterFqcn.uqcn}(
                     |            ${searchableDtoDef.metaClassDef.uqcn}::fieldNameToColumnName
                     |    )        
-                    """.trimMargin())
+                    |""".trimMargin())
 
             }
 

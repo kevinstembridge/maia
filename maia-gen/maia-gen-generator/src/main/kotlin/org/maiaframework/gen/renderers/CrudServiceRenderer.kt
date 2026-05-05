@@ -567,22 +567,24 @@ class CrudServiceRenderer(
         }
 
 
-        appendLine("""
+        append("""
             |
             |
             |    fun setFields(updater: ${this.entityDef.entityBaseName}EntityUpdater): Int {
             |        
-            |        val count = this.entityRepo.setFields(updater)""".trimMargin()
+            |        val count = this.entityRepo.setFields(updater)
+            |""".trimMargin()
         )
 
         if (this.entityDef.crudDef.withCrudListener.value) {
             appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityUpdated($primaryKeyFieldNamesCsv)")
         }
 
-        appendLine("""
+        append("""
             |        return count
             |        
-            |    }""".trimMargin()
+            |    }
+            |""".trimMargin()
         )
 
     }

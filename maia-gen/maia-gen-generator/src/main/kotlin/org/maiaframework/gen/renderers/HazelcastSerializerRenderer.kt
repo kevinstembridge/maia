@@ -63,14 +63,15 @@ class HazelcastSerializerRenderer(
 
     private fun `render function getTypeName`() {
 
-        appendLine("""
+        append("""
             |
             |
             |    override fun getTypeName(): String {
             |
             |        return "${this.cacheableDef.cacheName}"
             |
-            |    }""".trimMargin()
+            |    }
+            |""".trimMargin()
         )
 
     }
@@ -78,14 +79,15 @@ class HazelcastSerializerRenderer(
 
     private fun `render function getCompactClass`() {
 
-        appendLine("""
+        append("""
             |
             |
             |    override fun getCompactClass(): Class<${this.serializedClassUqcn}> {
             |
             |        return ${this.serializedClassUqcn}::class.java
             |
-            |    }""".trimMargin()
+            |    }
+            |""".trimMargin()
         )
 
     }

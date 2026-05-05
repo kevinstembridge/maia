@@ -16,12 +16,13 @@ class AgGridBlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSource
     override fun renderSource(): String {
 
         if (this.dtoDef.addButtonDef != null) {
-            appendLine("""
+            append("""
                  |@if (addButtonVisible) {
                  |    <div class="flex">
                  |        <button (click)="onAddButtonClicked()" mat-flat-button color="primary" class="ms-auto">Add</button>
                  |    </div>
-                 |}""".trimMargin())
+                 |}
+                 |""".trimMargin())
         }
 
         append(

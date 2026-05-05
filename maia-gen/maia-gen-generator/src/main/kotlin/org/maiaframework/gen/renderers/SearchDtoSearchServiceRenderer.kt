@@ -38,14 +38,15 @@ class SearchDtoSearchServiceRenderer(
 
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
-        appendLine("""
+        append("""
             |
             |
             |    fun findById(id: DomainId): ${searchDtoDef.uqcn}? {
             |
             |        return this.dtoRepo.findById(id)
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
     }
 
@@ -60,14 +61,15 @@ class SearchDtoSearchServiceRenderer(
         addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
         addImportFor(searchModelFqcn)
 
-        appendLine("""
+        append("""
             |
             |
             |    fun search(searchModel: ${searchModelFqcn.uqcn}): SearchResultPage<${this.searchDtoDef.uqcn}> {
             |
             |        return this.dtoRepo.getRows(searchModel)
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
     }
 
@@ -81,14 +83,15 @@ class SearchDtoSearchServiceRenderer(
 
         addImportFor(searchModelFqcn)
 
-        appendLine("""
+        append("""
             |
             |
             |    fun count(searchModel: ${searchModelFqcn.uqcn}): Long {
             |
             |        return this.dtoRepo.countRows(searchModel)
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
     }
 

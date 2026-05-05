@@ -48,7 +48,7 @@ class TypeaheadIndexServiceRenderer(
 
     private fun `render function refreshById`() {
 
-        appendLine("""
+        append("""
             |
             |
             |    fun refreshById(id: DomainId) {
@@ -66,7 +66,8 @@ class TypeaheadIndexServiceRenderer(
             |
             |        logger.debug("END: Refreshing typeahead index ${"$"}{this.esIndex.indexName()} for id ${"$"}id with result ${"$"}{indexResponse.result()}")
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
     }
 
@@ -75,7 +76,7 @@ class TypeaheadIndexServiceRenderer(
 
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
-        appendLine("""
+        append("""
             |
             |
             |    fun deleteById(id: DomainId) {
@@ -86,7 +87,8 @@ class TypeaheadIndexServiceRenderer(
             |
             |        logger.debug("END: Deleting from typeahead index ${"$"}{this.esIndex.indexName()} for id ${"$"}id with result ${"$"}{deleteResponse.result()}")
             |
-            |    }""".trimMargin())
+            |    }
+            |""".trimMargin())
 
     }
 
@@ -95,7 +97,7 @@ class TypeaheadIndexServiceRenderer(
 
         addImportFor(Fqcns.MAIA_JOB_METRICS)
 
-        appendLine("""
+        append("""
             |
             |
             |    suspend fun refreshIndex(jm: JobMetrics) {
@@ -108,7 +110,7 @@ class TypeaheadIndexServiceRenderer(
             |        logger.info("END: Refresh index ${"$"}{this.esIndex.indexName()}")
             |
             |    }
-        """.trimMargin())
+            |""".trimMargin())
 
     }
 

@@ -43,7 +43,7 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
             "this.dto.id"
         }
 
-        appendLine("""
+        append("""
             |
             |
             |@Component({
@@ -87,7 +87,7 @@ class EntityDeleteDialogComponentRenderer(private val apiDef: EntityDeleteApiDef
             |
             |
             |}
-        """.trimMargin())
+            |""".trimMargin())
 
     }
 

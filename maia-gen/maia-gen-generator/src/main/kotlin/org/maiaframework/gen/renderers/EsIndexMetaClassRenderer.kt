@@ -26,7 +26,7 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
         addImportFor(Fqcns.ES_TYPE_MAPPING)
         addImportFor(Fqcns.ES_PROPERTY)
 
-        appendLine("""
+        append("""
             |
             |    val indexBaseName = EsIndexBaseName("${this.esDocDef.elasticIndexBaseName}")
             |
@@ -34,7 +34,8 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
             |
             |    const val indexDescription = "${this.esDocDef.indexDescription}"
             |
-            |    val typeMapping = TypeMapping.of { m ->""".trimMargin())
+            |    val typeMapping = TypeMapping.of { m ->
+            |""".trimMargin())
 
         this.esDocDef.fields.forEach { esDocFieldDef ->
 
@@ -90,12 +91,13 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
 
     private fun renderPropertyWithRawKeywordField(fieldName: String) {
 
-        appendLine("""
+        append("""
             |            m.properties("$fieldName") {
             |                propertyBuilder -> propertyBuilder.text {
             |                    t -> t.fields(mapOf("raw" to Property.of { p -> p.keyword { it } }))
             |                }
-            |            }""".trimMargin())
+            |            }
+            |""".trimMargin())
 
     }
 

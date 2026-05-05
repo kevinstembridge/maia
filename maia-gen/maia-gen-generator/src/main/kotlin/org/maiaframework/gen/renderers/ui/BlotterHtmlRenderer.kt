@@ -21,13 +21,13 @@ class BlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSourceFileRe
         blankLine()
 
         if (this.dtoDef.addButtonDef != null) {
-            appendLine("""
+            append("""
                 |    @if (addButtonVisible) {
                 |        <div class="col d-flex">
                 |            <button (click)=\"onAddButtonClicked()\" mat-flat-button color=\"primary\" class=\"ms-auto\">Add</button>
                 |        </div>
                 |    }
-            """.trimMargin())
+                |""".trimMargin())
         }
 
         blankLine()

@@ -45,18 +45,20 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
                 |""".trimMargin())
         }
 
-        appendLine("""
+        append("""
             |<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
             |    <div$matDialogContentText>
             |        @if (problemDetail()) {
             |            <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
-            |        }""".trimMargin())
+            |        }
+            |""".trimMargin())
 
         if (this.entityDef.multiFieldUniqueIndexDefs.isNotEmpty()) {
-            appendLine("""
+            append("""
                 |        @if (formGroup.errors?.message && (formGroup.touched || formGroup.dirty)) {
                 |            {{ formGroup.errors.message }}
-                |        }""".trimMargin())
+                |        }
+                |""".trimMargin())
         }
 
         formFields.forEach { formFieldDef ->

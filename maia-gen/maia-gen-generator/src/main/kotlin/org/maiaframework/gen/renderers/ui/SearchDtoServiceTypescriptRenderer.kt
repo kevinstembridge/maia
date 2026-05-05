@@ -26,7 +26,7 @@ class SearchDtoServiceTypescriptRenderer(private val searchDtoDef: SearchDtoDef)
 
     override fun renderSourceBody() {
 
-        appendLine("""
+        append("""
             |
             |
             |@Injectable({providedIn: 'root'})
@@ -53,7 +53,8 @@ class SearchDtoServiceTypescriptRenderer(private val searchDtoDef: SearchDtoDef)
             |    }
             |
             |
-            |}""".trimMargin())
+            |}
+            |""".trimMargin())
 
     }
 

@@ -15,7 +15,7 @@ class EntityDeleteDialogHtmlRenderer(private val deleteApiDef: EntityDeleteApiDe
 
     override fun renderSource(): String {
 
-        appendLine("""
+        append("""
             |<h1 mat-dialog-title>Delete?</h1>
             |<div mat-dialog-content>
             |    @if (problemDetail()) {
@@ -27,7 +27,8 @@ class EntityDeleteDialogHtmlRenderer(private val deleteApiDef: EntityDeleteApiDe
             |<div mat-dialog-actions>
             |    <button mat-flat-button (click)="onYes()" color="primary" cdkFocusInitial>Yes</button>
             |    <button mat-flat-button (click)="onCancel()">Cancel</button>
-            |</div>""".trimMargin())
+            |</div>
+            |""".trimMargin())
 
         return sourceCode.toString()
 
