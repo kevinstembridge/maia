@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.composite_pk
 
-import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Service
 
 
