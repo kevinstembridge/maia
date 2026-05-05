@@ -16,10 +16,10 @@ class SimpleEntityDetailViewDtoEndpoint(
 ) {
 
 
-    @GetMapping("/api/simple-entity-detail-view-dto/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun fetch(@PathVariable id: DomainId): SimpleEntityDetailViewDto? {
+    @GetMapping("/api/simple-entity-detail-view-dto/{pk}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun fetch(@PathVariable pk: DomainId): SimpleEntityDetailViewDto? {
 
-        return this.service.fetch(id)
+        return this.service.fetch(pk)
 
     }
 
