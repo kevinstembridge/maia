@@ -25,8 +25,11 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
     private readonly crudService = inject(CompositePrimaryKeyCrudService);
 
-    
+
     private readonly dialog = inject(MatDialog);
+
+
+    private readonly router = inject(Router);
 
 
     onAddButtonClicked(): void {
@@ -40,6 +43,13 @@ export class CompositePrimaryKeyCrudBlotterComponent {
                 this.blotterComponent.reapplyFilters();
             }
         });
+
+    }
+
+
+    onView(dto: CompositePrimaryKeyBlotterRowDto): void {
+
+        this.router.navigate(['/composite-primary-key/view', dto.pk]);
 
     }
 

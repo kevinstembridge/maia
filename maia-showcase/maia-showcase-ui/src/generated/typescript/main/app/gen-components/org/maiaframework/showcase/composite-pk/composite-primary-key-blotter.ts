@@ -27,6 +27,9 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class CompositePrimaryKeyBlotter {
 
 
+    readonly view = output<CompositePrimaryKeyBlotterRowDto>();
+
+
     readonly edit = output<CompositePrimaryKeyBlotterRowDto>();
 
 
@@ -37,6 +40,18 @@ export class CompositePrimaryKeyBlotter {
 
 
     public columnDefs: ColDef[] = [
+        {
+            field: 'view',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'visibility' },
+            onCellClicked: event => {
+                this.view.emit(event.data);
+            }
+        },
         {
             field: 'edit',
             headerName: '',
@@ -126,6 +141,13 @@ export class CompositePrimaryKeyBlotter {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);
+
+    }
+
+
+    onView(dto: CompositePrimaryKeyBlotterRowDto) {
+
+        this.view.emit(dto);
 
     }
 
