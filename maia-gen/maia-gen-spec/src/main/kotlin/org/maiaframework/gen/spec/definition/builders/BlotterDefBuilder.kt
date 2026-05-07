@@ -25,7 +25,11 @@ class BlotterDefBuilder(
 
 
     private val columnBuilders = mutableListOf<DefBuilder<out AbstractBlotterColumnDef>>()
+
+
     private var clickableRowBuilder: ClickableRowBuilder? = null
+
+
     private var moduleName: ModuleName? = null
 
 
