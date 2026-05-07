@@ -13,10 +13,9 @@ data class CompositePrimaryKeyEntityPk(
 ) {
 
 
-    override fun toString(): String {
+    val encoded: String by lazy {
 
-        return listOf(someString, someInt)
-            .joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+        listOf(someString, someInt).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
 
     }
 

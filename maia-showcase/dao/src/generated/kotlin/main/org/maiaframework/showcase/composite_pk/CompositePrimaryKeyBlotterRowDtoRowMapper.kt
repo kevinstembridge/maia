@@ -5,6 +5,7 @@ package org.maiaframework.showcase.composite_pk
 
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import java.net.URLEncoder.encode
 
 
 class CompositePrimaryKeyBlotterRowDtoRowMapper : MaiaRowMapper<CompositePrimaryKeyBlotterRowDto> {
@@ -12,12 +13,21 @@ class CompositePrimaryKeyBlotterRowDtoRowMapper : MaiaRowMapper<CompositePrimary
 
     override fun mapRow(rsa: ResultSetAdapter): CompositePrimaryKeyBlotterRowDto {
 
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val someInt = rsa.readInt("someInt")
+        val someModifiableString = rsa.readString("someModifiableString")
+        val someString = rsa.readString("someString")
+        val version = rsa.readLong("version")
+
+        val pk = listOf(someString, someInt).joinToString(":") { encode(it.toString(), "UTF-8") }
+
         return CompositePrimaryKeyBlotterRowDto(
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readInt("someInt"),
-            rsa.readString("someModifiableString"),
-            rsa.readString("someString"),
-            rsa.readLong("version"),
+            createdTimestampUtc,
+            pk,
+            someInt,
+            someModifiableString,
+            someString,
+            version,
         )
 
     }
