@@ -38,7 +38,6 @@ class EsDocDef(
 
 
     val dtoDef = DtoDefBuilder(packageName, esDocBaseNameWithVersion, dtoSuffix, allClassFields)
-//    val dtoDef = DtoDefBuilder(packageName, esDocBaseName, dtoSuffix, allClassFields)
         .withCharacteristic(DtoCharacteristic.ELASTIC_SEARCH_DOC, DtoCharacteristic.RESPONSE_DTO)
         .build()
 
