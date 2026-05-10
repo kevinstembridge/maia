@@ -24,7 +24,7 @@ export class UserCrudBlotterComponent {
 
     private readonly crudService = inject(UserCrudService);
 
-    
+
     private readonly dialog = inject(MatDialog);
 
 
