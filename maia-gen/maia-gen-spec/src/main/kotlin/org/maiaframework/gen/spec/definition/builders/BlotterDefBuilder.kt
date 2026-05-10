@@ -24,7 +24,7 @@ class BlotterDefBuilder(
 ) {
 
 
-    private val columnBuilders = mutableListOf<DefBuilder<out AbstractBlotterColumnDef>>()
+    private val columnDefs = mutableListOf<AbstractBlotterColumnDef>()
 
 
     private var clickableRowBuilder: ClickableRowBuilder? = null
@@ -35,14 +35,14 @@ class BlotterDefBuilder(
 
     fun build(): BlotterDef {
 
-        val fieldDefs = buildFieldDefs()
+        val blotterColumnDefs = buildColumnDefs()
         val clickableTableRowDef = this.clickableRowBuilder?.build()
 
         return BlotterDef(
             this.dtoBaseName,
             this.packageName,
             this.moduleName,
-            fieldDefs,
+            blotterColumnDefs,
             this.addButtonDef,
             this.disableRendering,
             this.withGeneratedDto,
@@ -58,12 +58,10 @@ class BlotterDefBuilder(
     }
 
 
-    private fun buildFieldDefs(): List<AbstractBlotterColumnDef> {
+    private fun buildColumnDefs(): List<AbstractBlotterColumnDef> {
 
         val idColumDef = BlotterIdColumnDef(blotterSourceDef.rowIdField)
-        val columns = this.columnBuilders.map { it.build() }
-
-        return listOf(idColumDef) + columns
+        return listOf(idColumDef) + this.columnDefs
 
     }
 
@@ -90,8 +88,8 @@ class BlotterDefBuilder(
 
         classFieldDef.displayName?.let { builder.header(it.value) }
 
-        this.columnBuilders.add(builder)
         init?.invoke(builder)
+        this.columnDefs.add(builder.build())
 
     }
 
@@ -99,11 +97,10 @@ class BlotterDefBuilder(
     fun actionColumn(
         actionName: String,
         cellRendererDef: AgGridCellRendererDef
-    ): BlotterActionColumnDefBuilder {
+    ) {
 
         val builder = BlotterActionColumnDefBuilder(ActionName(actionName), cellRendererDef)
-        this.columnBuilders.add(builder)
-        return builder
+        this.columnDefs.add(builder.build())
 
     }
 
@@ -111,26 +108,24 @@ class BlotterDefBuilder(
     fun editActionColumn(): BlotterActionColumnDefBuilder {
 
         val builder = BlotterActionColumnDefBuilder(ActionName.edit, AgGridCellRendererDefs.editAction).icon("edit").header("")
-        this.columnBuilders.add(builder)
+        this.columnDefs.add(builder.build())
         return builder
 
     }
 
 
-    fun viewActionColumn(): BlotterActionColumnDefBuilder {
+    fun viewActionColumn() {
 
         val builder = BlotterActionColumnDefBuilder(ActionName.view, AgGridCellRendererDefs.viewAction).icon("visibility").header("")
-        this.columnBuilders.add(builder)
-        return builder
+        this.columnDefs.add(builder.build())
 
     }
 
 
-    fun deleteActionColumn(): BlotterActionColumnDefBuilder {
+    fun deleteActionColumn() {
 
         val builder = BlotterActionColumnDefBuilder(ActionName.delete, AgGridCellRendererDefs.deleteAction).icon("delete").header("")
-        this.columnBuilders.add(builder)
-        return builder
+        this.columnDefs.add(builder.build())
 
     }
 
