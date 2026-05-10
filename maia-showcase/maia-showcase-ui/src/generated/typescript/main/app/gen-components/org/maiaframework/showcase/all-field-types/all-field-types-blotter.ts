@@ -38,11 +38,6 @@ export class AllFieldTypesBlotter {
 
     public columnDefs: ColDef[] = [
         {
-            field: 'id',
-            filter: false,
-            hide: true
-        },
-        {
             field: 'edit',
             headerName: '',
             width: 100,
