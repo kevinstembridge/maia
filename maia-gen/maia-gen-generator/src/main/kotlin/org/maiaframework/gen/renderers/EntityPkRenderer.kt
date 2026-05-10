@@ -52,9 +52,19 @@ class EntityPkRenderer(
     }
 
 
-    override fun renderFunctions() {
+    override fun renderPreClassFields() {
 
-        `render function toString`()
+        addImportRaw("java.net.URLEncoder")
+
+        append("""
+            |
+            |
+            |    val encoded: String by lazy {
+            |
+            |        listOf(${pkFields.joinToString(", ") { it.classFieldName.toString() }}).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+            |
+            |    }
+            |""".trimMargin())
 
     }
 
