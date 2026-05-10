@@ -436,6 +436,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        columnFromDto("someMapOfStringTypeToStringType")
 //        columnFromDto("someDto")
 //        columnFromDto("someDtoNullable")
+        columnFromDto("id")
         columnFromDto("createdBy")
         columnFromDto("createdByUsername")
         columnFromDto("lastModifiedBy")
@@ -495,6 +496,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         viewActionColumn()
         editActionColumn()
         columnFromDto("someString")
+        columnFromDto("id")
         columnFromDto("createdTimestampUtc")
         deleteActionColumn()
     }
@@ -732,6 +734,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("someString")
         columnFromDto("someInt")
         columnFromDto("version")
+        columnFromDto("id")
         columnFromDto("createdTimestampUtc")
         deleteActionColumn()
     }
@@ -943,6 +946,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
         columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
         columnFromDto(dtoFieldName = "createdTimestampUtc", fieldPathInSourceData = "createdTimestampUtc")
+        columnFromDto("id")
         deleteActionColumn()
     }
 
@@ -1167,6 +1171,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("someStringFromLeft", "someString") { header("Some String From Left") }
         columnFromDto("someIntFromLeft", "someInt") { header("Some Int From Left") }
         columnFromDto("rightEntities") { header("Right Entities") }
+        columnFromDto("id")
         deleteActionColumn()
     }
 

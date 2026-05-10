@@ -270,6 +270,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         columnFromDto("lastName") { header("Last Name") }
         columnFromDto("authorities") { header("Authorities") }
         columnFromDto("createdTimestampUtc") { header("Created") }
+        columnFromDto("id") { header("ID") }
         editActionColumn()
     }
 
@@ -364,6 +365,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         columnFromDto("effectiveTo") { header("Effective To") }
         columnFromDto("userId") { header("User ID") }
         columnFromDto("userGroupId") { header("Group ID") }
+        columnFromDto("id") { header("ID") }
         editActionColumn()
     }
 
