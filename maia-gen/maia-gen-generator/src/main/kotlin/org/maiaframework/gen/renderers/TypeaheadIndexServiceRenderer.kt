@@ -163,7 +163,7 @@ class TypeaheadIndexServiceRenderer(
         blankLine()
         appendLine("    private fun buildEsDocHolder(esDoc: ${this.typeaheadDef.esDocDef.uqcn}): EsDocHolder<${this.typeaheadDef.esDocDef.uqcn}> {")
         blankLine()
-        appendLine("        return EsDocHolder(esDoc.${this.typeaheadDef.idFieldName}.value, esDoc, this.esIndex.indexName())")
+        appendLine("        return EsDocHolder(esDoc.${this.typeaheadDef.idField.fieldName}.value, esDoc, this.esIndex.indexName())")
         blankLine()
         appendLine("    }")
 
