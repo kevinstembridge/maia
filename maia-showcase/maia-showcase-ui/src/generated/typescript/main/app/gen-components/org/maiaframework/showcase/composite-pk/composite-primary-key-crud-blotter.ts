@@ -49,7 +49,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
     onView(dto: CompositePrimaryKeyBlotterRowDto): void {
 
-        this.router.navigate(['/composite-primary-key/view', dto.pk]);
+        this.router.navigate(['/composite-primary-key/view', dto.id]);
 
     }
 
