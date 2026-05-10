@@ -8,7 +8,7 @@ export interface UserBlotterRowDto {
     authorities: ReadonlyArray<Authority>;
     createdTimestampUtc: string;
     displayName: string;
-    firstName: string;
+    firstName?: string;
     id: string;
     lastName: string;
 }
