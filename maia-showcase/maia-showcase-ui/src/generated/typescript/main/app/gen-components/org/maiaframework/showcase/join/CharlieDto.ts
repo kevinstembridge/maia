@@ -10,4 +10,5 @@ export interface CharlieDto {
     dtoStringFromAlpha: string;
     dtoStringFromBravo: string;
     dtoStringFromCharlie: string;
+    id: string;
 }

@@ -10,4 +10,5 @@ export interface CharlieAgGridDto {
     dtoStringFromAlpha: string;
     dtoStringFromBravo: string;
     dtoStringFromCharlie: string;
+    id: string;
 }
