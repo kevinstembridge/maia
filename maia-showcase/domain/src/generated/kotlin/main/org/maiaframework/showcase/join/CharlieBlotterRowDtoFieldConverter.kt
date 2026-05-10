@@ -16,6 +16,8 @@ class CharlieBlotterRowDtoFieldConverter : SearchFieldConverter {
         when(tableColumnPath) {
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
+            "id" -> // id
+                return inputValue
             "some_string" -> // tableStringFromAlpha
                 return inputValue
             "some_string" -> // tableStringFromBravo
