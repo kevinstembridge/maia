@@ -56,13 +56,14 @@ class CrudBlotterComponentRenderer(
             |
             |    private readonly crudService = inject(${crudBlotterDef.crudServiceClassName});
             |
-            |    
+            |
             |    private readonly dialog = inject(MatDialog);
             |""".trimMargin())
 
         if (crudBlotterDef.blotterDef.hasViewActionColumn) {
 
             append("""
+                |
                 |
                 |    private readonly router = inject(Router);
                 |""".trimMargin())
