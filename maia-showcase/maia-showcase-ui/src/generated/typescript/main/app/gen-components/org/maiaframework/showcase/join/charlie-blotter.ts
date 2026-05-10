@@ -27,6 +27,11 @@ export class CharlieBlotter {
 
 
     public columnDefs: ColDef[] = [
+        {
+            field: 'id',
+            filter: false,
+            hide: true
+        },
         { field: 'tableStringFromCharlie', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
