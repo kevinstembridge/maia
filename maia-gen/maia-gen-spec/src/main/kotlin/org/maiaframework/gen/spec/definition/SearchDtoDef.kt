@@ -6,12 +6,8 @@ import org.maiaframework.gen.spec.definition.flags.GenerateFindById
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedTypescriptService
-import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
-import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.ClassType
-import org.maiaframework.gen.spec.definition.lang.ClassVisibility
-import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 
@@ -87,41 +83,6 @@ class SearchDtoDef(
     val documentMapperClassDef = aClassDef(fqcn.withSuffix("DocumentMapper"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
-
-
-    val tableDtoSearchConverterClassDef = aClassDef(packageName.uqcn("${dtoBaseName}TableDtoSearchConverter"))
-        .withSuperclass(initMongoSearchRequestFactoryClassDef())
-        .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
-        .build()
-
-
-    private fun initMongoSearchRequestFactoryClassDef(): ClassDef {
-
-        val objectMapperFieldDef = aClassField("jsonMapper", FieldTypes.byFqcn(Fqcns.JACKSON_JSON_MAPPER)).build()
-        val searchFieldNameConverterFieldDef =
-            aClassField("fieldNameConverter", FieldTypes.byFqcn(Fqcns.SEARCH_FIELD_NAME_CONVERTER)).build()
-        val searchFieldConverterFieldDef = aClassField("fieldConverter", FieldTypes.byFqcn(Fqcns.SEARCH_FIELD_CONVERTER)).build()
-
-        val fieldDefsNotIndexFieldDef = listOf(
-            objectMapperFieldDef,
-            searchFieldNameConverterFieldDef,
-            searchFieldConverterFieldDef
-        )
-
-        return ClassDef(
-            ParameterizedType(Fqcns.MONGO_SEARCH_REQUEST_FACTORY),
-            Fqcns.MONGO_SEARCH_REQUEST_FACTORY,
-            true,
-            ClassType.CLASS,
-            ClassVisibility.PUBLIC,
-            fieldDefsNotIndexFieldDef,
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            null
-        )
-
-    }
 
 
 }
