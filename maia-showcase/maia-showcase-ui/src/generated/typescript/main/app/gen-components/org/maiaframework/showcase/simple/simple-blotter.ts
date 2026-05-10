@@ -41,6 +41,11 @@ export class SimpleBlotter {
 
     public columnDefs: ColDef[] = [
         {
+            field: 'id',
+            filter: false,
+            hide: true
+        },
+        {
             field: 'view',
             headerName: '',
             width: 100,
@@ -65,7 +70,6 @@ export class SimpleBlotter {
             }
         },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
         {
             field: 'delete',
