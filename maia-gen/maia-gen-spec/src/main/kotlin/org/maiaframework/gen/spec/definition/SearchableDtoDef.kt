@@ -254,8 +254,8 @@ class SearchableDtoDef(
 
     fun findSearchableDtoFieldByName(dtoFieldName: String): SearchableDtoFieldDef {
 
-        return this.allFields.firstOrNull { it.classFieldName.value == dtoFieldName }
-            ?: throw IllegalArgumentException("No field named $dtoFieldName found on SearchableDtoDef with base name $dtoBaseName. Existing fields: ${this.allFields.map { it.classFieldName.value }}")
+        return this.rootDtoFieldDefs.firstOrNull { it.classFieldName.value == dtoFieldName }
+            ?: throw IllegalArgumentException("No field named $dtoFieldName found on SearchableDtoDef with base name $dtoBaseName. Existing fields: ${this.allFieldsSorted.map { it.classFieldName.value }}")
 
     }
 
