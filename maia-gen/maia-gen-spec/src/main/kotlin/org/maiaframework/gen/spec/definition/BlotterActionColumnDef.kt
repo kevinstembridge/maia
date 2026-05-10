@@ -10,5 +10,6 @@ class BlotterActionColumnDef(
     columnHeader,
     cellRenderer,
     colId = actionName.value,
-    hide = false
+    hide = false,
+    filter = false
 )

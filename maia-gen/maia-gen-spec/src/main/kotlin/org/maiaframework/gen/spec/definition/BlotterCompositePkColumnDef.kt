@@ -8,7 +8,8 @@ class BlotterCompositePkColumnDef : AbstractBlotterColumnDef(
     columnHeader = "ID",
     cellRenderer = null,
     colId = "id",
-    hide = true
+    hide = true,
+    filter = false
 ) {
 
 

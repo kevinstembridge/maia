@@ -53,7 +53,8 @@ class BlotterColumnDef(
     columnHeader,
     cellRenderer,
     dtoFieldName,
-    hide
+    hide,
+    filter = isFilterable
 ), Comparable<BlotterColumnDef> {
 
 
