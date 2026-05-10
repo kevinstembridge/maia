@@ -45,11 +45,22 @@ class SearchableDtoDefBuilder(
     private val defaultFieldTypeFieldWriterProvider: (FieldType) -> ParameterizedType?
 ) {
 
+
     private val manyToManyJoinEntityDefs = mutableListOf<JoinEntityDef>()
+
+
     private val fieldDefs = mutableListOf<SearchableDtoFieldDef>()
+
+
     private var moduleName: ModuleName? = null
+
+
     private var withPreAuthorize: WithPreAuthorize? = null
+
+
     private var withProvidedFieldConverter = WithProvidedFieldConverter.FALSE
+
+
     private var generateFindById: GenerateFindById = GenerateFindById.FALSE
 
 
