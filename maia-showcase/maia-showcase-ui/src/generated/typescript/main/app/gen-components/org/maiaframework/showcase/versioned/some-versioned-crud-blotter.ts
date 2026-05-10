@@ -25,7 +25,7 @@ export class SomeVersionedCrudBlotterComponent {
 
     private readonly crudService = inject(SomeVersionedCrudService);
 
-    
+
     private readonly dialog = inject(MatDialog);
 
 
