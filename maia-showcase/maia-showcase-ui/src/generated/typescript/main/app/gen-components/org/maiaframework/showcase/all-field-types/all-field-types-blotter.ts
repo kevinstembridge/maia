@@ -38,6 +38,11 @@ export class AllFieldTypesBlotter {
 
     public columnDefs: ColDef[] = [
         {
+            field: 'id',
+            filter: false,
+            hide: true
+        },
+        {
             field: 'edit',
             headerName: '',
             width: 100,
@@ -83,10 +88,9 @@ export class AllFieldTypesBlotter {
         { field: 'someProvidedStringType', headerName: 'Some Provided String Type', cellDataType: 'text', filter: true },
         { field: 'someProvidedStringTypeNullable', headerName: 'Some Provided String Type Nullable', cellDataType: 'text', filter: true },
         { field: 'someListOfStrings', headerName: 'Some List Of Strings', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
-        { field: 'createdBy', headerName: 'ID', cellDataType: 'text', filter: true },
+        { field: 'createdBy', headerName: 'Created By ID', cellDataType: 'text', filter: true },
         { field: 'createdByUsername', headerName: 'Created By', cellDataType: 'text', filter: true },
-        { field: 'lastModifiedBy', headerName: 'ID', cellDataType: 'text', filter: true },
+        { field: 'lastModifiedBy', headerName: 'Last Modified By ID', cellDataType: 'text', filter: true },
         { field: 'lastModifiedByUsername', headerName: 'Last Modified By', cellDataType: 'text', filter: true },
         { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text', filter: true },
         {
