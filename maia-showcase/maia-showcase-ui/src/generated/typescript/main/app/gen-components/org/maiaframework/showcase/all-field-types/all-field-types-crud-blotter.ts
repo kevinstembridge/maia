@@ -25,7 +25,7 @@ export class AllFieldTypesCrudBlotterComponent {
 
     private readonly crudService = inject(AllFieldTypesCrudService);
 
-    
+
     private readonly dialog = inject(MatDialog);
 
 
