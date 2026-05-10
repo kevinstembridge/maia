@@ -3,7 +3,7 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.EntityDetailDtoRepoRenderer
 import org.maiaframework.gen.renderers.EntityRepoRenderer
 import org.maiaframework.gen.renderers.ResponseDtoRepoRenderer
-import org.maiaframework.gen.renderers.SearchableTableDtoJdbcRepoRenderer
+import org.maiaframework.gen.renderers.SearchableDtoRepoRenderer
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 
 
@@ -73,7 +73,7 @@ class RepoLayerModuleGenerator(
 
     private fun processSearchableDtoDef(searchableDtoDef: SearchableDtoDef) {
 
-        SearchableTableDtoJdbcRepoRenderer(searchableDtoDef).renderToDir(kotlinOutputDir)
+        SearchableDtoRepoRenderer(searchableDtoDef).renderToDir(kotlinOutputDir)
 
     }
 

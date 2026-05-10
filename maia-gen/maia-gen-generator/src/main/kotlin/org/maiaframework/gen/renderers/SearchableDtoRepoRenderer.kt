@@ -5,7 +5,7 @@ import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 
-class SearchableTableDtoJdbcRepoRenderer(
+class SearchableDtoRepoRenderer(
     private val searchableDtoDef: SearchableDtoDef
 ): AbstractKotlinRenderer(
     searchableDtoDef.dtoRepoClassDef
