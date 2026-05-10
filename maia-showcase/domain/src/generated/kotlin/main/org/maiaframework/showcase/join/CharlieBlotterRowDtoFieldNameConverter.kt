@@ -15,6 +15,7 @@ class CharlieBlotterRowDtoFieldNameConverter : SearchFieldNameConverter {
 
         return when(fieldName) {
             "createdTimestampUtc" -> "created_timestamp_utc"
+            "id" -> "id"
             "tableStringFromAlpha" -> "some_string"
             "tableStringFromBravo" -> "some_string"
             "tableStringFromCharlie" -> "some_string"
