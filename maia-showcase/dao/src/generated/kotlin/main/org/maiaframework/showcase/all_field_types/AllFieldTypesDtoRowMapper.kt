@@ -21,47 +21,88 @@ class AllFieldTypesDtoRowMapper : MaiaRowMapper<AllFieldTypesDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): AllFieldTypesDto {
 
+        val createdBy = rsa.readDomainId("createdBy")
+        val createdByUsername = rsa.readString("createdByUsername")
+        val id = rsa.readDomainId("id")
+        val lastModifiedBy = rsa.readDomainId("lastModifiedBy")
+        val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
+        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val someBoolean = rsa.readBoolean("someBoolean")
+        val someBooleanNullable = rsa.readBooleanOrNull("someBooleanNullable")
+        val someBooleanType = rsa.readBoolean("someBooleanType") { SomeBooleanType(it) }
+        val someBooleanTypeNullable = rsa.readBooleanOrNull("someBooleanTypeNullable") { SomeBooleanType(it) }
+        val someBooleanTypeProvided = rsa.readBoolean("someBooleanTypeProvided") { SomeProvidedBooleanType(it) }
+        val someBooleanTypeProvidedNullable = rsa.readBooleanOrNull("someBooleanTypeProvidedNullable") { SomeProvidedBooleanType(it) }
+        val someEnum = rsa.readEnum("someEnum", SomeEnum::class.java)
+        val someEnumNullable = rsa.readEnumOrNull("someEnumNullable", SomeEnum::class.java)
+        val someInstant = rsa.readInstant("someInstant")
+        val someInstantModifiable = rsa.readInstant("someInstantModifiable")
+        val someInstantModifiableNullable = rsa.readInstantOrNull("someInstantModifiableNullable")
+        val someInstantNullable = rsa.readInstantOrNull("someInstantNullable")
+        val someInt = rsa.readInt("someInt")
+        val someIntModifiable = rsa.readInt("someIntModifiable")
+        val someIntNullable = rsa.readIntOrNull("someIntNullable")
+        val someIntType = rsa.readInt("someIntType") { SomeIntType(it) }
+        val someIntTypeNullable = rsa.readIntOrNull("someIntTypeNullable") { SomeIntType(it) }
+        val someIntTypeProvided = rsa.readInt("someIntTypeProvided") { SomeProvidedIntType(it) }
+        val someIntTypeProvidedNullable = rsa.readIntOrNull("someIntTypeProvidedNullable") { SomeProvidedIntType(it) }
+        val someListOfStrings = rsa.readListOfStrings("someListOfStrings")
+        val someLocalDateModifiable = rsa.readLocalDate("someLocalDateModifiable")
+        val someLongType = rsa.readLong("someLongType") { SomeLongType(it) }
+        val someLongTypeNullable = rsa.readLongOrNull("someLongTypeNullable") { SomeLongType(it) }
+        val someLongTypeProvided = rsa.readLong("someLongTypeProvided") { SomeProvidedLongType(it) }
+        val someLongTypeProvidedNullable = rsa.readLongOrNull("someLongTypeProvidedNullable") { SomeProvidedLongType(it) }
+        val somePeriodModifiable = rsa.readPeriod("somePeriodModifiable")
+        val somePeriodNullable = rsa.readPeriodOrNull("somePeriodNullable")
+        val someProvidedStringType = rsa.readString("someProvidedStringType") { SomeProvidedStringType(it) }
+        val someProvidedStringTypeNullable = rsa.readStringOrNull("someProvidedStringTypeNullable") { SomeProvidedStringType(it) }
+        val someString = rsa.readString("someString")
+        val someStringModifiable = rsa.readString("someStringModifiable")
+        val someStringNullable = rsa.readStringOrNull("someStringNullable")
+        val someStringType = rsa.readString("someStringType") { SomeStringType(it) }
+        val someStringTypeNullable = rsa.readStringOrNull("someStringTypeNullable") { SomeStringType(it) }
+
         return AllFieldTypesDto(
-            rsa.readDomainId("createdBy"),
-            rsa.readString("createdByUsername"),
-            rsa.readDomainId("id"),
-            rsa.readDomainId("lastModifiedBy"),
-            rsa.readString("lastModifiedByUsername"),
-            rsa.readInstant("lastModifiedTimestampUtc"),
-            rsa.readBoolean("someBoolean"),
-            rsa.readBooleanOrNull("someBooleanNullable"),
-            rsa.readBoolean("someBooleanType") { SomeBooleanType(it) },
-            rsa.readBooleanOrNull("someBooleanTypeNullable") { SomeBooleanType(it) },
-            rsa.readBoolean("someBooleanTypeProvided") { SomeProvidedBooleanType(it) },
-            rsa.readBooleanOrNull("someBooleanTypeProvidedNullable") { SomeProvidedBooleanType(it) },
-            rsa.readEnum("someEnum", SomeEnum::class.java),
-            rsa.readEnumOrNull("someEnumNullable", SomeEnum::class.java),
-            rsa.readInstant("someInstant"),
-            rsa.readInstant("someInstantModifiable"),
-            rsa.readInstantOrNull("someInstantModifiableNullable"),
-            rsa.readInstantOrNull("someInstantNullable"),
-            rsa.readInt("someInt"),
-            rsa.readInt("someIntModifiable"),
-            rsa.readIntOrNull("someIntNullable"),
-            rsa.readInt("someIntType") { SomeIntType(it) },
-            rsa.readIntOrNull("someIntTypeNullable") { SomeIntType(it) },
-            rsa.readInt("someIntTypeProvided") { SomeProvidedIntType(it) },
-            rsa.readIntOrNull("someIntTypeProvidedNullable") { SomeProvidedIntType(it) },
-            rsa.readListOfStrings("someListOfStrings"),
-            rsa.readLocalDate("someLocalDateModifiable"),
-            rsa.readLong("someLongType") { SomeLongType(it) },
-            rsa.readLongOrNull("someLongTypeNullable") { SomeLongType(it) },
-            rsa.readLong("someLongTypeProvided") { SomeProvidedLongType(it) },
-            rsa.readLongOrNull("someLongTypeProvidedNullable") { SomeProvidedLongType(it) },
-            rsa.readPeriod("somePeriodModifiable"),
-            rsa.readPeriodOrNull("somePeriodNullable"),
-            rsa.readString("someProvidedStringType") { SomeProvidedStringType(it) },
-            rsa.readStringOrNull("someProvidedStringTypeNullable") { SomeProvidedStringType(it) },
-            rsa.readString("someString"),
-            rsa.readString("someStringModifiable"),
-            rsa.readStringOrNull("someStringNullable"),
-            rsa.readString("someStringType") { SomeStringType(it) },
-            rsa.readStringOrNull("someStringTypeNullable") { SomeStringType(it) },
+            createdBy,
+            createdByUsername,
+            id,
+            lastModifiedBy,
+            lastModifiedByUsername,
+            lastModifiedTimestampUtc,
+            someBoolean,
+            someBooleanNullable,
+            someBooleanType,
+            someBooleanTypeNullable,
+            someBooleanTypeProvided,
+            someBooleanTypeProvidedNullable,
+            someEnum,
+            someEnumNullable,
+            someInstant,
+            someInstantModifiable,
+            someInstantModifiableNullable,
+            someInstantNullable,
+            someInt,
+            someIntModifiable,
+            someIntNullable,
+            someIntType,
+            someIntTypeNullable,
+            someIntTypeProvided,
+            someIntTypeProvidedNullable,
+            someListOfStrings,
+            someLocalDateModifiable,
+            someLongType,
+            someLongTypeNullable,
+            someLongTypeProvided,
+            someLongTypeProvidedNullable,
+            somePeriodModifiable,
+            somePeriodNullable,
+            someProvidedStringType,
+            someProvidedStringTypeNullable,
+            someString,
+            someStringModifiable,
+            someStringNullable,
+            someStringType,
+            someStringTypeNullable,
         )
 
     }
