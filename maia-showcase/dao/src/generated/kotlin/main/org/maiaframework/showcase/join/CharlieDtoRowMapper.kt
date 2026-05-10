@@ -20,6 +20,7 @@ class CharlieDtoRowMapper : MaiaRowMapper<CharlieDto> {
             rsa.readString("dtoStringFromAlpha"),
             rsa.readString("dtoStringFromBravo"),
             rsa.readString("dtoStringFromCharlie"),
+            rsa.readDomainId("id"),
         )
 
     }

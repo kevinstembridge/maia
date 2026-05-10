@@ -50,7 +50,8 @@ class CharlieDtoDao(
                 maia.charlie.some_int as dtoIntFromCharlie,
                 maia.alpha.some_string as dtoStringFromAlpha,
                 maia.bravo.some_string as dtoStringFromBravo,
-                maia.charlie.some_string as dtoStringFromCharlie
+                maia.charlie.some_string as dtoStringFromCharlie,
+                maia.charlie.id as id
             from maia.charlie
             inner join maia.bravo
                     on maia.charlie.bravo_id = maia.bravo.id
