@@ -21,6 +21,7 @@ class CharlieDtoFieldNameConverter : SearchFieldNameConverter {
             "dtoStringFromAlpha" -> "some_string"
             "dtoStringFromBravo" -> "some_string"
             "dtoStringFromCharlie" -> "some_string"
+            "id" -> "id"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")
         }
 

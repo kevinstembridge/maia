@@ -19,7 +19,8 @@ object CharlieDtoMeta {
             "dtoStringFromAlpha" -> "maia.alpha.some_string"
             "dtoStringFromBravo" -> "maia.bravo.some_string"
             "dtoStringFromCharlie" -> "maia.charlie.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoIntFromCharlie, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie]")
+            "id" -> "maia.charlie.id"
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoIntFromCharlie, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie, id]")
         }
 
     }
@@ -35,7 +36,8 @@ object CharlieDtoMeta {
             "dtoStringFromAlpha" -> JdbcCompatibleType.text
             "dtoStringFromBravo" -> JdbcCompatibleType.text
             "dtoStringFromCharlie" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoIntFromCharlie, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie]")
+            "id" -> JdbcCompatibleType.uuid
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoIntFromCharlie, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie, id]")
         }
 
     }

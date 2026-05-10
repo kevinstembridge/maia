@@ -3,6 +3,7 @@
 
 package org.maiaframework.showcase.join
 
+import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
@@ -13,7 +14,8 @@ data class CharlieDto(
     val dtoIntFromCharlie: Int,
     val dtoStringFromAlpha: String,
     val dtoStringFromBravo: String,
-    val dtoStringFromCharlie: String
+    val dtoStringFromCharlie: String,
+    val id: DomainId
 ) {
 
 
