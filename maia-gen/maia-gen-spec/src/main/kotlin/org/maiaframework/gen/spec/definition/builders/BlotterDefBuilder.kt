@@ -60,6 +60,7 @@ class BlotterDefBuilder(
 
     private fun buildColumnDefs(): List<AbstractBlotterColumnDef> {
 
+        // TODO We only need to add an id column for composite pk entities
         val idColumDef = BlotterIdColumnDef(blotterSourceDef.rowIdField)
         return listOf(idColumDef) + this.columnDefs
 
