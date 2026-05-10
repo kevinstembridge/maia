@@ -4,8 +4,8 @@ import org.maiaframework.gen.spec.definition.AgGridCellRendererDefs
 import org.maiaframework.gen.spec.definition.AuthoritiesDef
 import org.maiaframework.gen.spec.definition.BlotterActionColumnDef
 import org.maiaframework.gen.spec.definition.BlotterColumnDef
+import org.maiaframework.gen.spec.definition.BlotterCompositePkColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
-import org.maiaframework.gen.spec.definition.BlotterIdColumnDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
@@ -13,7 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
 class AgGridBlotterComponentRenderer(
     private val blotterDef: BlotterDef,
-    private val authoritiesDef: AuthoritiesDef?
+    authoritiesDef: AuthoritiesDef?
 ) : AbstractTypescriptRenderer() {
 
 
@@ -119,7 +119,7 @@ class AgGridBlotterComponentRenderer(
             when (fieldDef) {
                 is BlotterActionColumnDef -> renderColDefFor(fieldDef)
                 is BlotterColumnDef -> appendLine("        ${renderColDefFor(fieldDef)},")
-                is BlotterIdColumnDef -> renderColDefForIdColumn(fieldDef)
+                is BlotterCompositePkColumnDef -> renderColDefFor(fieldDef)
             }
         }
 
@@ -335,14 +335,10 @@ class AgGridBlotterComponentRenderer(
     }
 
 
-    private fun renderColDefForIdColumn(fieldDef: BlotterIdColumnDef) {
+    private fun renderColDefFor(fieldDef: BlotterCompositePkColumnDef) {
 
         append("""
-            |        {
-            |            field: '${fieldDef.colId}',
-            |            filter: false,
-            |            hide: ${fieldDef.hide}
-            |        },
+            |        { field: '${fieldDef.colId}', headerName: '${fieldDef.columnHeader}', filter: ${fieldDef.filter}, hide: ${fieldDef.hide} },
             |""".trimMargin())
 
     }
