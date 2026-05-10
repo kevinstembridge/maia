@@ -13,10 +13,11 @@ object CharlieBlotterRowDtoMeta {
 
         return when(dtoFieldName) {
             "createdTimestampUtc" -> "maia.charlie.created_timestamp_utc"
+            "id" -> "maia.charlie.id"
             "tableStringFromAlpha" -> "maia.alpha.some_string"
             "tableStringFromBravo" -> "maia.bravo.some_string"
             "tableStringFromCharlie" -> "maia.charlie.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
         }
 
     }
@@ -26,10 +27,11 @@ object CharlieBlotterRowDtoMeta {
 
         return when(dtoFieldName) {
             "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "id" -> JdbcCompatibleType.uuid
             "tableStringFromAlpha" -> JdbcCompatibleType.text
             "tableStringFromBravo" -> JdbcCompatibleType.text
             "tableStringFromCharlie" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
         }
 
     }
