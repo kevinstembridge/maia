@@ -28,6 +28,8 @@ class CharlieAgGridDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "some_string" -> // dtoStringFromCharlie
                 return inputValue
+            "id" -> // id
+                return inputValue
             else -> throw IllegalArgumentException("Unknown tableColumnPath [$tableColumnPath]")
         }
 
