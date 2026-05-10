@@ -26,7 +26,7 @@ export class BravoCrudBlotterComponent {
 
     private readonly crudService = inject(BravoCrudService);
 
-    
+
     private readonly dialog = inject(MatDialog);
 
 
