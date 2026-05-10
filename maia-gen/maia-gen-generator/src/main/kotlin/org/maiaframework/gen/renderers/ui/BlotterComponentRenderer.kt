@@ -2,9 +2,9 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.BlotterActionColumnDef
 import org.maiaframework.gen.spec.definition.BlotterColumnDef
+import org.maiaframework.gen.spec.definition.BlotterCompositePkColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
-import org.maiaframework.gen.spec.definition.BlotterIdColumnDef
 import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 
 
@@ -98,10 +98,10 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
         appendLine("  displayedColumns = [")
 
         this.blotterDef.blotterColumnDefs.forEach { fieldDef ->
-            when(fieldDef) {
+            when (fieldDef) {
                 is BlotterActionColumnDef -> appendLine("    '${fieldDef.colId}',")
                 is BlotterColumnDef -> appendLine("    '${fieldDef.colId}',")
-                is BlotterIdColumnDef -> if (fieldDef.hide == false) { appendLine("    '${fieldDef.colId}','")}
+                is BlotterCompositePkColumnDef -> {}// DO nothing
             }
         }
 
@@ -113,7 +113,7 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
             when (fieldDef) {
                 is BlotterActionColumnDef -> appendLine("    '${fieldDef.colId}Filter',")
                 is BlotterColumnDef -> appendLine("    '${fieldDef.colId}Filter',")
-                is BlotterIdColumnDef -> if (fieldDef.hide == false) { appendLine("    '${fieldDef.colId}','")}
+                is BlotterCompositePkColumnDef -> {} // DO nothing
             }
         }
 
@@ -167,6 +167,7 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
                 appendLine("      this._lastResultIndex.next(result.lastResultIndex);")
 
             }
+
             is BlotterSearchableDtoSourceDef -> {
 
                 appendLine("      this._rows$.next(result.results);")
