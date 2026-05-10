@@ -41,6 +41,11 @@ export class CompositePrimaryKeyBlotter {
 
     public columnDefs: ColDef[] = [
         {
+            field: 'id',
+            filter: false,
+            hide: true
+        },
+        {
             field: 'view',
             headerName: '',
             width: 100,
