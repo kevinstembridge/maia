@@ -1,4 +1,20 @@
 
+TODO * When we navigate to the entity-detail view for a composite PK entity, we must url_encode the PK values.
+    ? Should we do this on the server-side and send the url-encoded pk to the ui?
+    A: Give it a try. When we generate the CompositePrimaryKeyBlotterRowDto, include a pk field.
+        => Every EsDocDef and BlotterDef should have a pk field.
+
+    An EsDoc or a BlotterRow must always have an 'id' field. This may come from several places.
+    1. An underlying EntityDef
+        a. with a surrogate primary key
+        b. with an explicit primary key => might not be named 'id'.
+        c. encoded from a composite PK
+    2. If an EsDoc is not backed by an EntityDef, it must have an explicit id field provided.
+        =>
+
+
+
+
 TODO * Handcode a SimpleViewPage and hook it into the SimpleBlotter view icon.
     TODO * Generate
     TODO * Include an Edit button for authorised users.
