@@ -275,36 +275,38 @@ class AgGridBlotterComponentRenderer(
     }
 
 
-    private fun renderColDefFor(fieldDef: BlotterColumnDef): String {
+    private fun renderColDefFor(blotterColumnDef: BlotterColumnDef): String {
 
         val attributes = mutableMapOf<String, Any>()
 
-        attributes["field"] = "'${fieldDef.dtoFieldName}'"
+        attributes["field"] = "'${blotterColumnDef.dtoFieldName}'"
 
-        val columnHeader = fieldDef.columnHeader
+        val columnHeader = blotterColumnDef.columnHeader
             ?: throw IllegalStateException(
-                "Field '${fieldDef.dtoFieldName}' in table DTO '${blotterDef.dtoBaseName}' has no columnHeader (fieldDisplayName). " +
+                "Field '${blotterColumnDef.dtoFieldName}' in table DTO '${blotterDef.dtoBaseName}' has no columnHeader (fieldDisplayName). " +
                 "Add a fieldDisplayName to the entity/EsDoc field, or override the header at the columnFromDto() call site."
             )
 
         attributes["headerName"] = "'${columnHeader.replace("'", "\\'")}'"
 
-        attributes["cellDataType"] = "'${fieldDef.agGridCellDateType.name}'"
+        attributes["cellDataType"] = "'${blotterColumnDef.agGridCellDateType.name}'"
 
-        if (fieldDef.isFilterable) {
+        if (blotterColumnDef.isFilterable) {
             attributes["filter"] = true
         }
 
-        if (fieldDef.fieldType is ListFieldType) {
-            val listFieldType = fieldDef.fieldType as ListFieldType
+        if (blotterColumnDef.hide) {
+            attributes["hide"] = true
+        }
+
+        if (blotterColumnDef.fieldType is ListFieldType) {
+            val listFieldType = blotterColumnDef.fieldType as ListFieldType
             if (listFieldType.parameterFieldType is PkAndNameFieldType) {
                 attributes["cellRenderer"] = AgGridCellRendererDefs.chips.componentClassName
             } else {
                 attributes["valueFormatter"] = "(params) => params.value?.join(', ') ?? ''"
             }
         }
-
-        TODO("render the hide flag")
 
         val keyValues = attributes.map { "${it.key}: ${it.value}" }
 
