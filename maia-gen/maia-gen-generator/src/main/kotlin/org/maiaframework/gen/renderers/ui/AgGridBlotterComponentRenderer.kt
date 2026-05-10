@@ -337,9 +337,7 @@ class AgGridBlotterComponentRenderer(
 
     private fun renderColDefFor(fieldDef: BlotterCompositePkColumnDef) {
 
-        append("""
-            |        { field: '${fieldDef.colId}', headerName: '${fieldDef.columnHeader}', filter: ${fieldDef.filter}, hide: ${fieldDef.hide} },
-            |""".trimMargin())
+        appendLine("        { field: '${fieldDef.colId}', headerName: '${fieldDef.columnHeader}', filter: ${fieldDef.filter}, hide: ${fieldDef.hide} },")
 
     }
 
