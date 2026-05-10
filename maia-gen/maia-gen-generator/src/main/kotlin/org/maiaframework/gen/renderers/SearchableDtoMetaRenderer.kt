@@ -33,7 +33,7 @@ class SearchableDtoMetaRenderer(
         }
 
         append("""
-            |            else -> throw IllegalArgumentException("Unknown field name [${'$'}dtoFieldName]. Expected one of ${searchableDtoDef.allFields.map { it.classFieldName }}")
+            |            else -> throw IllegalArgumentException("Unknown field name [${'$'}dtoFieldName]. Expected one of ${searchableDtoDef.allFieldsSorted.map { it.classFieldName }}")
             |        }
             |
             |    }
@@ -63,7 +63,7 @@ class SearchableDtoMetaRenderer(
 
         appendLine(
             $$"""
-            |            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of $${searchableDtoDef.allFields.map { it.classFieldName }}")
+            |            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of $${searchableDtoDef.allFieldsSorted.map { it.classFieldName }}")
             |        }
             |
             |    }""".trimMargin())
