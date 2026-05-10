@@ -756,7 +756,7 @@ class EntityFormComponentRenderer(
                 } else {
 
                     val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
-                    appendLine("            ${typeaheadDef.idFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
+                    appendLine("            ${typeaheadDef.idField.fieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
 
                 }
 
