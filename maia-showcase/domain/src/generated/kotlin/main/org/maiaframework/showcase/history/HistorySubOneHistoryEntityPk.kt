@@ -14,10 +14,9 @@ data class HistorySubOneHistoryEntityPk(
 ) {
 
 
-    override fun toString(): String {
+    val encoded: String by lazy {
 
-        return listOf(id, version)
-            .joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+        listOf(id, version).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
 
     }
 
