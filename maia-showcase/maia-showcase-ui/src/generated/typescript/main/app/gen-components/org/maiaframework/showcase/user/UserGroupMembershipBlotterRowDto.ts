@@ -3,8 +3,8 @@
 
 
 export interface UserGroupMembershipBlotterRowDto {
-    effectiveFrom: string;
-    effectiveTo: string;
+    effectiveFrom?: string;
+    effectiveTo?: string;
     id: string;
     userDisplayName: string;
     userGroupId: string;
