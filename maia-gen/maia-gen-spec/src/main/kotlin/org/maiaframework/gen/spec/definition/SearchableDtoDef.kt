@@ -2,6 +2,8 @@ package org.maiaframework.gen.spec.definition
 
 
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
+import org.maiaframework.gen.spec.definition.builders.SearchableDtoFieldDefBuilder
+import org.maiaframework.gen.spec.definition.flags.CaseSensitive
 import org.maiaframework.gen.spec.definition.flags.GenerateFindById
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
@@ -41,16 +43,52 @@ class SearchableDtoDef(
 ) {
 
 
+    private val rootDtoFieldDefs = enrichFields(fieldDefsNotInherited)
+
+
+    private fun enrichFields(fieldDefsNotInherited: List<SearchableDtoFieldDef>): List<SearchableDtoFieldDef> {
+
+        val fields = mutableListOf<SearchableDtoFieldDef>()
+
+        if (dtoRootEntityDef.primaryKeyFields.size == 1) {
+
+            val pkField = dtoRootEntityDef.primaryKeyFields.first()
+
+            if (fieldDefsNotInherited.none { it.classFieldName == pkField.classFieldName }) {
+
+                val entityAndField = EntityAndField(dtoRootEntityDef, pkField, null)
+                val fieldPath = FieldPath.of(pkField.classFieldName.value)
+
+                val builder = SearchableDtoFieldDefBuilder(
+                    pkField.classFieldName,
+                    entityAndField,
+                    fieldPath,
+                    caseSensitive = CaseSensitive.FALSE,
+                    defaultFieldTypeFieldReaderProvider = { null },
+                    defaultFieldTypeFieldWriterProvider = { null }
+                )
+
+                fields.add(builder.build())
+
+            }
+
+        }
+
+        return fields + fieldDefsNotInherited
+
+    }
+
+
     val idField = dtoRootEntityDef.idField
 
 
-    val allFields = fieldDefsNotInherited.sortedBy { it.classFieldDef.classFieldName }
+    val allFieldsSorted = rootDtoFieldDefs.sortedBy { it.classFieldDef.classFieldName }
 
 
-    val nonManyToManyFields = allFields.filterIsInstance<SimpleSearchableDtoFieldDef>()
+    val nonManyToManyFields = allFieldsSorted.filterIsInstance<SimpleSearchableDtoFieldDef>()
 
 
-    private val allRowMapperFieldDefs = allFields
+    private val allRowMapperFieldDefs = allFieldsSorted
             .map {
                 when(it) {
                     is SimpleSearchableDtoFieldDef -> EntityFieldRowMapperFieldDef(it.entityFieldDef, it.responseDtoFieldDef.classFieldName.value)
@@ -69,8 +107,8 @@ class SearchableDtoDef(
         packageName,
         dtoBaseName,
         DtoSuffix("Dto"),
-        allFields.map { it.classFieldDef },
-        defaultSortModel = defaultSortModel(fieldDefsNotInherited),
+        allFieldsSorted.map { it.classFieldDef },
+        defaultSortModel = defaultSortModel(rootDtoFieldDefs),
         searchApiUrl = "/api/${dtoBaseName.toKebabCase()}/search",
         countApiUrl = "/api/${dtoBaseName.toKebabCase()}/count",
         findByIdServerSideApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}/{id}",
@@ -94,13 +132,10 @@ class SearchableDtoDef(
     val fqcn = searchDtoDef.fqcn
 
 
-    val rootDtoFields = fieldDefsNotInherited
+    val hasAnyMapFields: Boolean = rootDtoFieldDefs.any { it.classFieldDef.isMap }
 
 
-    val hasAnyMapFields: Boolean = rootDtoFields.any { it.classFieldDef.isMap }
-
-
-    val hasAnyManyToManyFields: Boolean = allFields.any { it is ManyToManySearchableDtoFieldDef }
+    val hasAnyManyToManyFields: Boolean = allFieldsSorted.any { it is ManyToManySearchableDtoFieldDef }
 
 
     private fun defaultSortModel(fields: List<SearchableDtoFieldDef>): List<FieldSortModel> {
