@@ -26,8 +26,9 @@ export class LeftManyCrudBlotterComponent {
 
     private readonly crudService = inject(LeftManyCrudService);
 
-    
+
     private readonly dialog = inject(MatDialog);
+
 
     private readonly router = inject(Router);
 
