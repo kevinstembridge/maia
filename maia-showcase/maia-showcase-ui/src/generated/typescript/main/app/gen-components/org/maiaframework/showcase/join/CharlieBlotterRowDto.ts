@@ -4,6 +4,7 @@
 
 export interface CharlieBlotterRowDto {
     createdTimestampUtc: string;
+    id: string;
     tableStringFromAlpha: string;
     tableStringFromBravo: string;
     tableStringFromCharlie: string;
