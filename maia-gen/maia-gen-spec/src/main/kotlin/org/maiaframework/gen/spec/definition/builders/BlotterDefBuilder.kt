@@ -35,14 +35,13 @@ class BlotterDefBuilder(
 
     fun build(): BlotterDef {
 
-        val blotterColumnDefs = buildColumnDefs()
         val clickableTableRowDef = this.clickableRowBuilder?.build()
 
         return BlotterDef(
             this.dtoBaseName,
             this.packageName,
             this.moduleName,
-            blotterColumnDefs,
+            this.columnDefs,
             this.addButtonDef,
             this.disableRendering,
             this.withGeneratedDto,
@@ -54,15 +53,6 @@ class BlotterDefBuilder(
             this.withGeneratedFindAllFunction,
             this.searchModelType
         )
-
-    }
-
-
-    private fun buildColumnDefs(): List<AbstractBlotterColumnDef> {
-
-        // TODO We only need to add an id column for composite pk entities
-        val idColumDef = BlotterIdColumnDef(blotterSourceDef.rowIdField)
-        return listOf(idColumDef) + this.columnDefs
 
     }
 
