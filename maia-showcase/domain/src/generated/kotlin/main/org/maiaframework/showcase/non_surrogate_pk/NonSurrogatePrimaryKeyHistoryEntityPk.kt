@@ -14,10 +14,9 @@ data class NonSurrogatePrimaryKeyHistoryEntityPk(
 ) {
 
 
-    override fun toString(): String {
+    val encoded: String by lazy {
 
-        return listOf(someString, version)
-            .joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+        listOf(someString, version).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
 
     }
 
