@@ -14,6 +14,7 @@ class CharlieBlotterRowDtoRowMapper : MaiaRowMapper<CharlieBlotterRowDto> {
 
         return CharlieBlotterRowDto(
             rsa.readInstant("createdTimestampUtc"),
+            rsa.readDomainId("id"),
             rsa.readString("tableStringFromAlpha"),
             rsa.readString("tableStringFromBravo"),
             rsa.readString("tableStringFromCharlie"),
