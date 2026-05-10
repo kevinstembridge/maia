@@ -4,7 +4,7 @@
 
 export interface CompositePrimaryKeyBlotterRowDto {
     createdTimestampUtc: string;
-    pk: string;
+    id: string;
     someInt: number;
     someModifiableString: string;
     someString: string;
