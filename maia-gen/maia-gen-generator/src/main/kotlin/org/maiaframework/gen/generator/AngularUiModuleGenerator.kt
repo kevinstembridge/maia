@@ -151,7 +151,7 @@ class AngularUiModuleGenerator(
         renderSimpleResponseDtos()
         renderSearchableResponseDtos()
         renderSearchableServices()
-        renderTableDto()
+        renderBlotterDto()
         renderTypeaheadDtos()
         renderTypeaheadServices()
         renderValidatorsForTypeaheadFields()
@@ -233,16 +233,14 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderTableDto() {
+    private fun renderBlotterDto() {
 
         this.modelDef.blotterDefs.filter { it.disableRendering == false }.forEach { blotterDef ->
 
             renderTypescriptInterface(
                 renderedFilePath = blotterDef.dtoDef.typescriptRenderedFilePath,
                 className = blotterDef.dtoDef.uqcn,
-                fields = blotterDef.blotterColumnFields.map {
-                    aClassField(it.dtoFieldName, it.fieldType).build()
-                },
+                fields = blotterDef.dtoClassFields,
                 dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
             )
 
