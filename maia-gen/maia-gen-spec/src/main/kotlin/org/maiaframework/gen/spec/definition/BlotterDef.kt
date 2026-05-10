@@ -6,14 +6,15 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedTypescriptService
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
-import org.maiaframework.gen.spec.definition.lang.*
+import org.maiaframework.gen.spec.definition.lang.Nullability
+import org.maiaframework.gen.spec.definition.lang.PackageName
 
 
 class BlotterDef(
     val dtoBaseName: DtoBaseName,
     val packageName: PackageName,
     val moduleName: ModuleName?,
-    val blotterColumnDefs: List<AbstractBlotterColumnDef>,
+    providedBlotterColumnDefs: List<AbstractBlotterColumnDef>,
     val addButtonDef: AddButtonDef?,
     val disableRendering: Boolean,
     val withGeneratedDto: WithGeneratedDto,
@@ -25,6 +26,58 @@ class BlotterDef(
     withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
     val searchModelType: SearchModelType
 ) {
+
+
+    val blotterColumnDefs = initBlotterColumnDefs(providedBlotterColumnDefs)
+
+
+
+    private fun initBlotterColumnDefs(provided: List<AbstractBlotterColumnDef>): List<AbstractBlotterColumnDef> {
+
+        val fields = mutableListOf<AbstractBlotterColumnDef>()
+
+        when (blotterSourceDef) {
+            is BlotterEsDocSourceDef -> TODO()
+            is BlotterSearchableDtoSourceDef -> {
+
+                if (blotterSourceDef.searchableDtoDef.dtoRootEntityDef.hasCompositePrimaryKey) {
+
+                    fields.add(BlotterCompositePkColumnDef())
+
+                } else if (blotterSourceDef.searchableDtoDef.dtoRootEntityDef.primaryKeyFields.size == 1) {
+
+                    val pkField = blotterSourceDef.searchableDtoDef.dtoRootEntityDef.primaryKeyFields.first()
+
+                    if (provided.none { it.colId == pkField.classFieldName.value }) {
+
+                        val fieldPath = FieldPath.of(pkField.classFieldName.value)
+
+                        val blotterColumnDef = BlotterColumnDef(
+                            fieldPathInSourceData = fieldPath,
+                            dtoFieldName = pkField.classFieldName.value,
+                            columnHeader = "ID",
+                            isSortable = false,
+                            isFilterable = false,
+                            fieldType = pkField.fieldType,
+                            nullability = Nullability.NOT_NULLABLE,
+                            hide = true,
+                            providedAgGridCellDataType = null,
+                            cellRenderer = null,
+                            pipes = emptyList()
+                        )
+
+                        fields.add(blotterColumnDef)
+
+                    }
+
+                }
+
+            }
+        }
+
+        return fields + provided
+
+    }
 
 
     val blotterColumnFields = blotterColumnDefs.filterIsInstance<BlotterColumnDef>().sorted()
@@ -64,7 +117,7 @@ class BlotterDef(
         .mapNotNull { when (it) {
             is BlotterActionColumnDef -> null
             is BlotterColumnDef -> it.classFieldDef
-            is BlotterIdColumnDef -> it.classFieldDef
+            is BlotterCompositePkColumnDef -> it.classFieldDef
         } }
 
 
