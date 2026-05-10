@@ -16,6 +16,9 @@ class EsDocFieldDefBuilder(
 ) {
 
 
+    private var isIdField = false
+
+
     private var nullability = Nullability.NOT_NULLABLE
 
 
@@ -30,7 +33,19 @@ class EsDocFieldDefBuilder(
             nullability = this.nullability
         )
 
-        return EsDocFieldDef(classFieldDef, this.mappingType, entityFieldDef = null)
+        return EsDocFieldDef(
+            classFieldDef,
+            this.mappingType,
+            entityFieldDef = null,
+            this.isIdField
+        )
+
+    }
+
+
+    fun isIdField() {
+
+        this.isIdField = true
 
     }
 

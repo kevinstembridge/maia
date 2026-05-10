@@ -37,6 +37,9 @@ class BlotterColumnDefBuilder(
     var agGridCellRendererDef: AgGridCellRendererDef? = null
 
 
+    var hide: Boolean = false
+
+
     init {
 
         if (fieldType is InstantFieldType) {
@@ -56,6 +59,7 @@ class BlotterColumnDefBuilder(
             this.isFilterable,
             this.fieldType,
             this.classFieldDef.nullability,
+            this.hide,
             this.cellDataType,
             this.agGridCellRendererDef,
             this.pipes.toList()
@@ -64,18 +68,23 @@ class BlotterColumnDefBuilder(
     }
 
 
-    fun header(columnHeader: String): BlotterColumnDefBuilder {
+    fun header(columnHeader: String) {
 
         this.columnHeader = columnHeader
-        return this
 
     }
 
 
-    fun pipes(vararg pipes: String): BlotterColumnDefBuilder {
+    fun hide() {
+
+        this.hide = true
+
+    }
+
+
+    fun pipes(vararg pipes: String) {
 
         this.pipes.addAll(pipes)
-        return this
 
     }
 

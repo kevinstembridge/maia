@@ -60,7 +60,12 @@ class BlotterDef(
     val blotterComponentScssFileName = "${ngMatTableComponentKebabCase}.component.scss"
 
 
-    private val dtoClassFields = blotterColumnFields.map { it.classFieldDef }
+    val dtoClassFields = blotterColumnDefs
+        .mapNotNull { when (it) {
+            is BlotterActionColumnDef -> null
+            is BlotterColumnDef -> it.classFieldDef
+            is BlotterIdColumnDef -> it.classFieldDef
+        } }
 
 
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"

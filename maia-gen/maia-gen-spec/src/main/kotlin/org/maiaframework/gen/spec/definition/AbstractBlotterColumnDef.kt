@@ -1,6 +1,8 @@
 package org.maiaframework.gen.spec.definition
 
-abstract class AbstractBlotterColumnDef(
+sealed class AbstractBlotterColumnDef(
     val columnHeader: String?,
-    val cellRenderer: AgGridCellRendererDef?
+    val cellRenderer: AgGridCellRendererDef?,
+    val colId: String,
+    val hide: Boolean
 )

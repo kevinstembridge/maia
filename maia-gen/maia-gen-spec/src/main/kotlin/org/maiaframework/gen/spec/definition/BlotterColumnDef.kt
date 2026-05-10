@@ -45,12 +45,15 @@ class BlotterColumnDef(
     val isFilterable: Boolean,
     val fieldType: FieldType,
     val nullability: Nullability,
+    hide: Boolean,
     providedAgGridCellDataType: AgGridCellDataType?,
     cellRenderer: AgGridCellRendererDef?,
     val pipes: List<String>
 ) : AbstractBlotterColumnDef(
     columnHeader,
-    cellRenderer
+    cellRenderer,
+    dtoFieldName,
+    hide
 ), Comparable<BlotterColumnDef> {
 
 

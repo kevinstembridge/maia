@@ -90,6 +90,25 @@ class EntityDef(
 ) {
 
 
+    val idField: ClassFieldDef by lazy {
+
+        if (hasCompositePrimaryKey) {
+
+            aClassField("id", FieldTypes.string)
+                .displayName("ID")
+                .description("The encoded composite primary key for this entity")
+                .unique()
+                .build()
+
+        } else {
+
+            primaryKeyFields.first().classFieldDef.convertToUnmodifiable()
+
+        }
+
+    }
+
+
     val entityUqcn = Uqcn("${entityBaseName}Entity")
 
 

@@ -49,9 +49,9 @@ class BlotterDefBuilder(
             this.withPreAuthorize,
             this.blotterSourceDef,
             clickableTableRowDef,
-            withGeneratedEndpoint,
-            withGeneratedTypescriptService,
-            withGeneratedFindAllFunction,
+            this.withGeneratedEndpoint,
+            this.withGeneratedTypescriptService,
+            this.withGeneratedFindAllFunction,
             this.searchModelType
         )
 
@@ -60,7 +60,10 @@ class BlotterDefBuilder(
 
     private fun buildFieldDefs(): List<AbstractBlotterColumnDef> {
 
-        return this.columnBuilders.asSequence().map { it.build() }.toList()
+        val idColumDef = BlotterIdColumnDef(blotterSourceDef.rowIdField)
+        val columns = this.columnBuilders.map { it.build() }
+
+        return listOf(idColumDef) + columns
 
     }
 

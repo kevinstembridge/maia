@@ -33,7 +33,4 @@ class ForeignKeyFieldDef(
     val searchTermFieldName = typeaheadDef?.searchTermFieldName ?: searchTermFieldName
 
 
-    val idFieldName = typeaheadDef?.idFieldName ?: "id"
-
-
 }

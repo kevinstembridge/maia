@@ -28,6 +28,9 @@ class EsDocDef(
 ) {
 
 
+    val idField: ClassFieldDef
+
+
     private val dtoSuffix = DtoSuffix("EsDoc")
 
 
@@ -125,6 +128,17 @@ class EsDocDef(
 
 
     val hasViewEntityPage = entityDef?.hasViewEntityPage ?: false
+
+
+    init {
+
+        val idFieldCount = this.fields.count { it.isIdField }
+
+        require(idFieldCount == 1) { "An EsDoc must have exactly one id field. The $esDocBaseName EsDoc has the following id fields: ${this.fields.filter { it.isIdField }}" }
+
+        idField = this.fields.first { it.isIdField }.classFieldDef
+
+    }
 
 
 }

@@ -13,6 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.Nullability
 class TypeaheadFieldDefBuilder(
     private val dtoFieldName: String,
     private val fieldType: FieldType,
+    private val isIdField: Boolean,
     private val entityFieldDef: EntityFieldDef?
 ) {
 
@@ -30,9 +31,10 @@ class TypeaheadFieldDefBuilder(
             ?: aClassField(dtoFieldName, fieldType).nullability(nullability).build()
 
         return TypeaheadFieldDef(
-            this.entityFieldDef,
+            classFieldDef,
+            this.isIdField,
             this.esDocMappingType,
-            classFieldDef
+            this.entityFieldDef
         )
 
     }

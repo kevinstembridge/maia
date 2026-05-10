@@ -19,12 +19,10 @@ class EsDocDefBuilder(
     private val disableRendering: Boolean
 ) {
 
-    private val fieldBuilders = mutableListOf<EsDocFieldDefBuilder>()
+    private val fieldDefs = mutableListOf<EsDocFieldDef>()
 
 
     fun build(): EsDocDef {
-
-        val fields = this.fieldBuilders.map { it.build() }
 
         return EsDocDef(
             this.packageName,
@@ -32,7 +30,7 @@ class EsDocDefBuilder(
             this.elasticIndexBaseName,
             this.esDocVersion,
             this.indexDescription,
-            fields,
+            this.fieldDefs,
             this.renderFieldEnum,
             this.generateRefreshIndexJob,
             this.disableRendering,
@@ -55,7 +53,7 @@ class EsDocDefBuilder(
 
         init?.invoke(fieldBuilder)
 
-        this.fieldBuilders.add(fieldBuilder)
+        this.fieldDefs.add(fieldBuilder.build())
 
     }
 
@@ -73,7 +71,7 @@ class EsDocDefBuilder(
 
         init?.invoke(fieldBuilder)
 
-        this.fieldBuilders.add(fieldBuilder)
+        this.fieldDefs.add(fieldBuilder.build())
 
     }
 
@@ -90,7 +88,7 @@ class EsDocDefBuilder(
         )
 
         init?.invoke(fieldBuilder)
-        this.fieldBuilders.add(fieldBuilder)
+        this.fieldDefs.add(fieldBuilder.build())
 
     }
 
@@ -108,7 +106,7 @@ class EsDocDefBuilder(
 
         init?.invoke(fieldBuilder)
 
-        this.fieldBuilders.add(fieldBuilder)
+        this.fieldDefs.add(fieldBuilder.build())
 
     }
 
@@ -126,7 +124,7 @@ class EsDocDefBuilder(
 
         init?.invoke(fieldBuilder)
 
-        this.fieldBuilders.add(fieldBuilder)
+        this.fieldDefs.add(fieldBuilder.build())
 
     }
 

@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.BlotterActionColumnDef
 import org.maiaframework.gen.spec.definition.BlotterColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterIdColumnDef
 import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 
 
@@ -98,8 +99,9 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
 
         this.blotterDef.blotterColumnDefs.forEach { fieldDef ->
             when(fieldDef) {
-                is BlotterColumnDef -> appendLine("    '${fieldDef.dtoFieldName}',")
-                is BlotterActionColumnDef -> appendLine("    '${fieldDef.actionName}',")
+                is BlotterActionColumnDef -> appendLine("    '${fieldDef.colId}',")
+                is BlotterColumnDef -> appendLine("    '${fieldDef.colId}',")
+                is BlotterIdColumnDef -> if (fieldDef.hide == false) { appendLine("    '${fieldDef.colId}','")}
             }
         }
 
@@ -109,8 +111,9 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
 
         this.blotterDef.blotterColumnDefs.forEach { fieldDef ->
             when (fieldDef) {
-                is BlotterColumnDef -> appendLine("    '${fieldDef.dtoFieldName}Filter',")
-                is BlotterActionColumnDef -> appendLine("    '${fieldDef.actionName}Filter',")
+                is BlotterActionColumnDef -> appendLine("    '${fieldDef.colId}Filter',")
+                is BlotterColumnDef -> appendLine("    '${fieldDef.colId}Filter',")
+                is BlotterIdColumnDef -> if (fieldDef.hide == false) { appendLine("    '${fieldDef.colId}','")}
             }
         }
 
@@ -118,7 +121,7 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
         blankLine()
 
         this.blotterDef.blotterColumnFields.forEach { fieldDef ->
-            appendLine("  private _${fieldDef.dtoFieldName} = null;")
+            appendLine("  private _${fieldDef.colId} = null;")
         }
 
         appendLine("  pageSize: number = 10;")

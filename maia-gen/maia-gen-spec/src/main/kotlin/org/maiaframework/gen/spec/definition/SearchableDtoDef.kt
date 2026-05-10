@@ -41,6 +41,9 @@ class SearchableDtoDef(
 ) {
 
 
+    val idField = dtoRootEntityDef.idField
+
+
     val allFields = fieldDefsNotInherited.sortedBy { it.classFieldDef.classFieldName }
 
 

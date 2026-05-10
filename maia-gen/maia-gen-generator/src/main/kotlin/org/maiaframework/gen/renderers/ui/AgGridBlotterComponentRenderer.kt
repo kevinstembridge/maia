@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.AuthoritiesDef
 import org.maiaframework.gen.spec.definition.BlotterActionColumnDef
 import org.maiaframework.gen.spec.definition.BlotterColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
+import org.maiaframework.gen.spec.definition.BlotterIdColumnDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
@@ -116,8 +117,9 @@ class AgGridBlotterComponentRenderer(
 
         this.blotterDef.blotterColumnDefs.forEach { fieldDef ->
             when (fieldDef) {
-                is BlotterColumnDef -> appendLine("        ${renderColDefFor(fieldDef)},")
                 is BlotterActionColumnDef -> renderColDefFor(fieldDef)
+                is BlotterColumnDef -> appendLine("        ${renderColDefFor(fieldDef)},")
+                is BlotterIdColumnDef -> renderColDefForIdColumn(fieldDef)
             }
         }
 
@@ -302,6 +304,8 @@ class AgGridBlotterComponentRenderer(
             }
         }
 
+        TODO("render the hide flag")
+
         val keyValues = attributes.map { "${it.key}: ${it.value}" }
 
         return keyValues.joinToString(prefix = "{ ", separator = ", ", postfix = " }")
@@ -323,6 +327,19 @@ class AgGridBlotterComponentRenderer(
             |            onCellClicked: event => {
             |                this.${fieldDef.actionName}.emit(event.data);
             |            }
+            |        },
+            |""".trimMargin())
+
+    }
+
+
+    private fun renderColDefForIdColumn(fieldDef: BlotterIdColumnDef) {
+
+        append("""
+            |        {
+            |            field: '${fieldDef.colId}',
+            |            filter: false,
+            |            hide: ${fieldDef.hide}
             |        },
             |""".trimMargin())
 

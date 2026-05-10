@@ -1,5 +1,6 @@
 package org.maiaframework.gen.spec.definition
 
+
 class BlotterActionColumnDef(
     val actionName: ActionName,
     columnHeader: String?,
@@ -7,5 +8,7 @@ class BlotterActionColumnDef(
     cellRenderer: AgGridCellRendererDef?
 ): AbstractBlotterColumnDef(
     columnHeader,
-    cellRenderer
+    cellRenderer,
+    colId = actionName.value,
+    hide = false
 )

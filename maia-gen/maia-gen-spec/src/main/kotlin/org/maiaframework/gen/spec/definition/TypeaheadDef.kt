@@ -11,13 +11,19 @@ class TypeaheadDef(
     packageName: PackageName,
     val typeaheadName: TypeaheadName,
     entityDef: EntityDef?,
-    val idFieldName: ClassFieldName,
     val sortByFieldName: String,
     val searchTermFieldName: String,
     indexVersion: Int,
     val withHandCodedEsDocRepo: WithHandCodedEsDocRepo,
     val fieldDefs: List<TypeaheadFieldDef>
 ) {
+
+
+    val idField: TypeaheadFieldDef by lazy {
+
+        this.fieldDefs.first { it.isIdField }
+
+    }
 
 
     val angularServiceFileName = "${typeaheadName.toKebabCase()}-typeahead-api.service"
@@ -83,7 +89,14 @@ class TypeaheadDef(
     }?.classFieldDef?.classFieldName?.value ?: "id"
 
 
-    private val esDocFields = this.fieldDefs.map { EsDocFieldDef(it.classFieldDef, it.esDocMappingType, it.entityFieldDef) }
+    private val esDocFields = this.fieldDefs.map {
+        EsDocFieldDef(
+            it.classFieldDef,
+            it.esDocMappingType,
+            it.entityFieldDef,
+            it.isIdField
+        )
+    }
 
 
     val esDocDef = EsDocDef(
@@ -107,6 +120,15 @@ class TypeaheadDef(
 
 
     val typescriptServiceImport = TypescriptImport(angularServiceClassName, "@app/gen-components/${packageName.asTypescriptDirs()}/${this.angularServiceFileName}")
+
+
+    init {
+
+        require(this.fieldDefs.count { it.isIdField } == 1) {
+            "The ${typeaheadName}Typeahead must have exactly one ID field. Found ${this.fieldDefs.filter { it.isIdField }}."
+        }
+
+    }
 
 
 }
