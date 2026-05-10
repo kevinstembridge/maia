@@ -50,7 +50,8 @@ class CharlieAgGridDtoDao(
                 maia.charlie_ag_grid.some_int as dtoIntFromCharlie,
                 maia.alpha_ag_grid.some_string as dtoStringFromAlpha,
                 maia.bravo_ag_grid.some_string as dtoStringFromBravo,
-                maia.charlie_ag_grid.some_string as dtoStringFromCharlie
+                maia.charlie_ag_grid.some_string as dtoStringFromCharlie,
+                maia.charlie_ag_grid.id as id
             from maia.charlie_ag_grid
             inner join maia.bravo_ag_grid
                     on maia.charlie_ag_grid.bravo_id = maia.bravo_ag_grid.id

@@ -20,6 +20,7 @@ class CharlieAgGridDtoRowMapper : MaiaRowMapper<CharlieAgGridDto> {
             rsa.readString("dtoStringFromAlpha"),
             rsa.readString("dtoStringFromBravo"),
             rsa.readString("dtoStringFromCharlie"),
+            rsa.readDomainId("id"),
         )
 
     }
