@@ -18,8 +18,6 @@ class AllFieldTypesBlotterRowDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "created_by_name" -> // createdByUsername
                 return inputValue
-            "id" -> // id
-                return inputValue
             "id" -> // lastModifiedBy
                 return inputValue
             "last_modified_by_name" -> // lastModifiedByUsername
