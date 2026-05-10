@@ -24,7 +24,7 @@ export class UserGroupMembershipCrudBlotterComponent {
 
     private readonly crudService = inject(UserGroupMembershipCrudService);
 
-    
+
     private readonly dialog = inject(MatDialog);
 
 
