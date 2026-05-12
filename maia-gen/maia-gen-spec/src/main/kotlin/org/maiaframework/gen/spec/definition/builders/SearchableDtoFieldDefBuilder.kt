@@ -32,7 +32,7 @@ class SearchableDtoFieldDefBuilder(
     private var fieldDisplayName: FieldDisplayName? = null
 
 
-    private var nullability = entityAndField.entityFieldDef.classFieldDef.nullability
+    private var nullability = classFieldDef.nullability
 
 
     private var sortIndexAndDirection: SortIndexAndDirection? = null
@@ -62,7 +62,7 @@ class SearchableDtoFieldDefBuilder(
 
     fun build(): SimpleSearchableDtoFieldDef {
 
-        val classFieldDef = this.entityAndField.entityFieldDef.classFieldDef
+        val classFieldDef = this.classFieldDef
         val displayName = this.fieldDisplayName ?: classFieldDef.displayName
 
         val fieldReaderClassName = fieldReaderClassName
