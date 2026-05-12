@@ -56,7 +56,7 @@ class FetchForEditDtoDef(
 
         } else {
 
-            EntityFieldRowMapperFieldDef(entityFieldDef)
+            EntityFieldRowMapperFieldDef(entityFieldDef.classFieldName, entityFieldDef)
 
         }
 
@@ -70,7 +70,8 @@ class FetchForEditDtoDef(
         dtoDef.fqcn,
         rowMapperFieldDefs,
         dtoDef.rowMapperClassDef,
-        isForEditDto = true
+        isForEditDto = true,
+        compositeIdFields = emptyList()
     )
 
 

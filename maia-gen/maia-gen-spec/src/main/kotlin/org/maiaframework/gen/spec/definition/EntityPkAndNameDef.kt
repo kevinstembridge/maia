@@ -32,11 +32,12 @@ class EntityPkAndNameDef(
     val rowMapperDef = RowMapperDef(
         dtoDef.fqcn,
         listOf(
-            EntityFieldRowMapperFieldDef(pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
-            EntityFieldRowMapperFieldDef(nameEntityFieldDef, nameEntityFieldDef.tableColumnName.value)
+            EntityFieldRowMapperFieldDef(pkEntityFieldDef.classFieldName, pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
+            EntityFieldRowMapperFieldDef(nameEntityFieldDef.classFieldName, nameEntityFieldDef, nameEntityFieldDef.tableColumnName.value)
         ),
         dtoDef.rowMapperClassDef,
-        isForEditDto = true
+        isForEditDto = true,
+        compositeIdFields = emptyList()
     )
 
 

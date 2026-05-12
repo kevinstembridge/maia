@@ -11,11 +11,12 @@ sealed class RowMapperFieldDef(
 
 
 class EntityFieldRowMapperFieldDef(
+    classFieldName: ClassFieldName,
     val entityFieldDef: EntityFieldDef,
     val resultSetFieldName: String? = null
 ) : RowMapperFieldDef(
     entityFieldDef.nullability,
-    entityFieldDef.classFieldDef.classFieldName
+    classFieldName
 )
 
 

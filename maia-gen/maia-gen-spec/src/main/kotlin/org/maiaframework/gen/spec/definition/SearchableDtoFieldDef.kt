@@ -106,3 +106,25 @@ class ManyToManySearchableDtoFieldDef(
 
 
 }
+
+
+class CompositeIdFieldDef(
+    classFieldDef: ClassFieldDef
+) : SearchableDtoFieldDef(
+    classFieldDef,
+    sortIndexAndDirection = null
+) {
+
+
+    override fun copyWithFieldName(dtoFieldName: String): SearchableDtoFieldDef {
+        TODO("Not yet implemented")
+    }
+
+
+    override val displayName: FieldDisplayName = FieldDisplayName("ID")
+
+
+    override val nullability: Nullability = Nullability.NOT_NULLABLE
+
+
+}

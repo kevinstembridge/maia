@@ -72,6 +72,13 @@ class SearchableDtoDef(
 
             }
 
+        } else if (dtoRootEntityDef.hasCompositePrimaryKey) {
+
+            val idField = aClassField("id", FieldTypes.string).build()
+            val compositeIdFieldDef = CompositeIdFieldDef(idField)
+
+            fields.add(compositeIdFieldDef)
+
         }
 
         return fields + fieldDefsNotInherited
@@ -89,10 +96,11 @@ class SearchableDtoDef(
 
 
     private val allRowMapperFieldDefs = allFieldsSorted
-            .map {
-                when(it) {
-                    is SimpleSearchableDtoFieldDef -> EntityFieldRowMapperFieldDef(it.entityFieldDef, it.responseDtoFieldDef.classFieldName.value)
+            .mapNotNull {
+                when (it) {
+                    is CompositeIdFieldDef -> null
                     is ManyToManySearchableDtoFieldDef -> ManyToManyRowMapperFieldDef(it, this.dtoRootEntityDef)
+                    is SimpleSearchableDtoFieldDef -> EntityFieldRowMapperFieldDef(it.classFieldName, it.entityFieldDef, it.responseDtoFieldDef.classFieldName.value)
                 }
             }
 
@@ -205,11 +213,19 @@ class SearchableDtoDef(
     val dtoRowMapperClassDef = this.searchDtoDef.dtoDef.rowMapperClassDef
 
 
+    private val compositeIdFieldNames = if (dtoRootEntityDef.primaryKeyFields.size > 1) {
+        dtoRootEntityDef.primaryKeyFields.map { it.classFieldName.value }
+    } else {
+        emptyList()
+    }
+
+
     val rowMapperDef = RowMapperDef(
         searchDtoDef.fqcn,
         allRowMapperFieldDefs,
         dtoRowMapperClassDef,
-        isForEditDto = false
+        isForEditDto = false,
+        compositeIdFields = compositeIdFieldNames
     )
 
 

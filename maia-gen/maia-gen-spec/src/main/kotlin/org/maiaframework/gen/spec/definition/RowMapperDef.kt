@@ -7,7 +7,8 @@ class RowMapperDef(
     val rowFqcn: Fqcn,
     val fieldDefs: List<RowMapperFieldDef>,
     val classDef: ClassDef,
-    val isForEditDto: Boolean
+    val isForEditDto: Boolean,
+    val compositeIdFields: List<String>
 ) {
 
 
