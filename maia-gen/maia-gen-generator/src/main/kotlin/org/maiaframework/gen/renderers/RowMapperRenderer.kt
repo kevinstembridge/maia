@@ -82,32 +82,61 @@ class RowMapperRenderer(
 
         }
 
-        appendLine("        return ${rowMapperDef.rowUqcn}(")
+        val fieldNames = mutableListOf<String>()
 
         rowMapperDef.fieldDefs.forEach { rowMapperFieldDef ->
 
             when (rowMapperFieldDef) {
-                is EntityFieldRowMapperFieldDef -> `render for Entity field`(rowMapperFieldDef)
-                is ForeignKeyRowMapperFieldDef -> `render for ForeignKey field`(rowMapperFieldDef)
-                is ManyToManyRowMapperFieldDef -> `render for ManyToMany field`(rowMapperFieldDef)
+                is EntityFieldRowMapperFieldDef -> {
+                    fieldNames.add(rowMapperFieldDef.classFieldName.value)
+                    `render for Entity field`(rowMapperFieldDef)
+                }
+                is ForeignKeyRowMapperFieldDef -> {
+                    fieldNames.add(rowMapperFieldDef.classFieldName.value)
+                    `render for ForeignKey field`(rowMapperFieldDef)
+                }
+                is ManyToManyRowMapperFieldDef -> {
+                    fieldNames.add("${rowMapperFieldDef.classFieldName}PkAndNameDtoList")
+                }
             }
 
         }
 
-        append(
-            """
-                |        )
-                |
-                |    }
-                |""".trimMargin()
+        if (rowMapperDef.compositeIdFields.isNotEmpty()) {
+
+            addImportRaw("java.net.URLEncoder.encode")
+            fieldNames.add("id")
+
+            val fieldCsv = rowMapperDef.compositeIdFields.joinToString(", ")
+
+            blankLine()
+            appendLine("""        val id = listOf($fieldCsv).joinToString(":") { encode(it.toString(), "UTF-8") }""")
+
+        }
+
+        blankLine()
+        appendLine("        return ${rowMapperDef.rowUqcn}(")
+
+        fieldNames
+            .sorted()
+            .forEach { fieldName ->
+                appendLine("            $fieldName,")
+            }
+
+        append("""
+            |        )
+            |
+            |    }
+            |""".trimMargin()
         )
+
     }
 
 
     private fun `render for Entity field`(rowMapperFieldDef: EntityFieldRowMapperFieldDef) {
 
-        val line = renderRowMapperField(rowMapperFieldDef, indentSize = 12, orElseText = "", ::addImportFor)
-        appendLine("$line,")
+        val line = renderRowMapperField(rowMapperFieldDef, indentSize = 0, orElseText = "", ::addImportFor)
+        appendLine("        val ${rowMapperFieldDef.classFieldName} = $line")
 
     }
 
@@ -123,17 +152,10 @@ class RowMapperRenderer(
 
         addImportFor(pkAndNameDef.dtoDef.fqcn)
 
-        appendLine("            ${pkAndNameDef.dtoUqcn}(")
-        appendLine(renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 16, orElseText = "", ::addImportFor) + ",")
-        appendLine(renderRowMapperField(pkAndNameDef.nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 16, orElseText = "(blank)", ::addImportFor) + ",")
-        appendLine("            ),")
-
-    }
-
-
-    private fun `render for ManyToMany field`(rowMapperFieldDef: ManyToManyRowMapperFieldDef) {
-
-        appendLine("            ${rowMapperFieldDef.classFieldName}PkAndNameDtoList,")
+        appendLine("        val ${rowMapperFieldDef.classFieldName} = ${pkAndNameDef.dtoUqcn}(")
+        appendLine(renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 12, orElseText = "", ::addImportFor) + ",")
+        appendLine(renderRowMapperField(pkAndNameDef.nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 12, orElseText = "", ::addImportFor) + ",")
+        appendLine("        )")
 
     }
 
@@ -157,11 +179,9 @@ class RowMapperRenderer(
                 |        return this.jdbcOps.queryForList(
                 |            $tripleQuote
                 |            select
+                |                other.id,
+                |                other.${manyToManyRowMapperFieldDef.otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
                 |""".trimMargin())
-
-            appendLine("                other.id,")
-            appendLine("                other.${manyToManyRowMapperFieldDef.otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}")
-
 
             val otherSideEntity = manyToManyRowMapperFieldDef.otherSideEntity
             val otherSideIdTableColumnName = manyToManyRowMapperFieldDef.otherSideIdTableColumnName
@@ -183,8 +203,6 @@ class RowMapperRenderer(
                 |
                 |    }
                 |""".trimMargin())
-
-
 
         }
 
