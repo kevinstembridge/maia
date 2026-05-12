@@ -12,10 +12,14 @@ class SimpleFetchForEditDtoRowMapper : MaiaRowMapper<SimpleFetchForEditDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): SimpleFetchForEditDto {
 
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val id = rsa.readDomainId("id")
+        val someString = rsa.readString("someString")
+
         return SimpleFetchForEditDto(
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readDomainId("id"),
-            rsa.readString("someString"),
+            createdTimestampUtc,
+            id,
+            someString,
         )
 
     }
