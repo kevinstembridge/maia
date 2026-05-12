@@ -12,9 +12,12 @@ class HistorySubTwoHistoryEntityPkRowMapper : MaiaRowMapper<HistorySubTwoHistory
 
     override fun mapRow(rsa: ResultSetAdapter): HistorySubTwoHistoryEntityPk {
 
+        val id = rsa.readDomainId("id")
+        val version = rsa.readLong("version")
+
         return HistorySubTwoHistoryEntityPk(
-            rsa.readDomainId("id"),
-            rsa.readLong("version"),
+            id,
+            version,
         )
 
     }
