@@ -24,14 +24,14 @@ class AllFieldTypesFetchForEditDtoRowMapper : MaiaRowMapper<AllFieldTypesFetchFo
 
         val createdBy = PartyPkAndNameDto(
             rsa.readDomainId("createdById"),
-            rsa.readStringOrNull("createdByName") ?: "(blank)",
+            rsa.readString("createdByName"),
         )
         val createdByUsername = rsa.readString("createdByUsername")
         val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = PartyPkAndNameDto(
             rsa.readDomainId("lastModifiedById"),
-            rsa.readStringOrNull("lastModifiedByName") ?: "(blank)",
+            rsa.readString("lastModifiedByName"),
         )
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
         val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")

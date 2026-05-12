@@ -12,9 +12,12 @@ class CompositePrimaryKeyEntityPkRowMapper : MaiaRowMapper<CompositePrimaryKeyEn
 
     override fun mapRow(rsa: ResultSetAdapter): CompositePrimaryKeyEntityPk {
 
+        val someString = rsa.readString("some_string")
+        val someInt = rsa.readInt("some_int")
+
         return CompositePrimaryKeyEntityPk(
-            rsa.readString("some_string"),
-            rsa.readInt("some_int"),
+            someInt,
+            someString,
         )
 
     }
