@@ -24,11 +24,15 @@ class LeftManyBlotterRowDtoRowMapper(
 
         val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(entityId)
 
+        val id = rsa.readDomainId("id")
+        val someInt = rsa.readInt("someInt")
+        val someString = rsa.readString("someString")
+
         return LeftManyBlotterRowDto(
-            rsa.readDomainId("id"),
+            id,
             rightEntitiesPkAndNameDtoList,
-            rsa.readInt("someInt"),
-            rsa.readString("someString"),
+            someInt,
+            someString,
         )
 
     }

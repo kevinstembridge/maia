@@ -12,11 +12,16 @@ class LeftNotMappedToRightDtoRowMapper : MaiaRowMapper<LeftNotMappedToRightDto> 
 
     override fun mapRow(rsa: ResultSetAdapter): LeftNotMappedToRightDto {
 
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val id = rsa.readDomainId("id")
+        val someIntFromLeft = rsa.readInt("someIntFromLeft")
+        val someStringFromLeft = rsa.readString("someStringFromLeft")
+
         return LeftNotMappedToRightDto(
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readDomainId("id"),
-            rsa.readInt("someIntFromLeft"),
-            rsa.readString("someStringFromLeft"),
+            createdTimestampUtc,
+            id,
+            someIntFromLeft,
+            someStringFromLeft,
         )
 
     }

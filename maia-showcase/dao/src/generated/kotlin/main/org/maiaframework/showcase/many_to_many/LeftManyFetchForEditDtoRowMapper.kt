@@ -24,12 +24,17 @@ class LeftManyFetchForEditDtoRowMapper(
 
         val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(entityId)
 
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val id = rsa.readDomainId("id")
+        val someInt = rsa.readInt("someInt")
+        val someString = rsa.readString("someString")
+
         return LeftManyFetchForEditDto(
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readDomainId("id"),
+            createdTimestampUtc,
+            id,
             rightEntitiesPkAndNameDtoList,
-            rsa.readInt("someInt"),
-            rsa.readString("someString"),
+            someInt,
+            someString,
         )
 
     }
