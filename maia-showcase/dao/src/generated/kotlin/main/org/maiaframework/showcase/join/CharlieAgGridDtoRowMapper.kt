@@ -12,15 +12,24 @@ class CharlieAgGridDtoRowMapper : MaiaRowMapper<CharlieAgGridDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): CharlieAgGridDto {
 
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val dtoIntFromAlpha = rsa.readInt("dtoIntFromAlpha")
+        val dtoIntFromBravo = rsa.readInt("dtoIntFromBravo")
+        val dtoIntFromCharlie = rsa.readInt("dtoIntFromCharlie")
+        val dtoStringFromAlpha = rsa.readString("dtoStringFromAlpha")
+        val dtoStringFromBravo = rsa.readString("dtoStringFromBravo")
+        val dtoStringFromCharlie = rsa.readString("dtoStringFromCharlie")
+        val id = rsa.readDomainId("id")
+
         return CharlieAgGridDto(
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readInt("dtoIntFromAlpha"),
-            rsa.readInt("dtoIntFromBravo"),
-            rsa.readInt("dtoIntFromCharlie"),
-            rsa.readString("dtoStringFromAlpha"),
-            rsa.readString("dtoStringFromBravo"),
-            rsa.readString("dtoStringFromCharlie"),
-            rsa.readDomainId("id"),
+            createdTimestampUtc,
+            dtoIntFromAlpha,
+            dtoIntFromBravo,
+            dtoIntFromCharlie,
+            dtoStringFromAlpha,
+            dtoStringFromBravo,
+            dtoStringFromCharlie,
+            id,
         )
 
     }

@@ -12,11 +12,16 @@ class BravoBlotterRowDtoRowMapper : MaiaRowMapper<BravoBlotterRowDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): BravoBlotterRowDto {
 
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val id = rsa.readDomainId("id")
+        val tableStringFromAlpha = rsa.readString("tableStringFromAlpha")
+        val tableStringFromBravo = rsa.readString("tableStringFromBravo")
+
         return BravoBlotterRowDto(
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readDomainId("id"),
-            rsa.readString("tableStringFromAlpha"),
-            rsa.readString("tableStringFromBravo"),
+            createdTimestampUtc,
+            id,
+            tableStringFromAlpha,
+            tableStringFromBravo,
         )
 
     }

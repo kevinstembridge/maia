@@ -12,13 +12,20 @@ class BravoDtoRowMapper : MaiaRowMapper<BravoDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): BravoDto {
 
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val dtoIntFromAlpha = rsa.readInt("dtoIntFromAlpha")
+        val dtoIntFromBravo = rsa.readInt("dtoIntFromBravo")
+        val dtoStringFromAlpha = rsa.readString("dtoStringFromAlpha")
+        val dtoStringFromBravo = rsa.readString("dtoStringFromBravo")
+        val id = rsa.readDomainId("id")
+
         return BravoDto(
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readInt("dtoIntFromAlpha"),
-            rsa.readInt("dtoIntFromBravo"),
-            rsa.readString("dtoStringFromAlpha"),
-            rsa.readString("dtoStringFromBravo"),
-            rsa.readDomainId("id"),
+            createdTimestampUtc,
+            dtoIntFromAlpha,
+            dtoIntFromBravo,
+            dtoStringFromAlpha,
+            dtoStringFromBravo,
+            id,
         )
 
     }

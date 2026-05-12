@@ -12,15 +12,21 @@ class CharlieAgGridFetchForEditDtoRowMapper : MaiaRowMapper<CharlieAgGridFetchFo
 
     override fun mapRow(rsa: ResultSetAdapter): CharlieAgGridFetchForEditDto {
 
+        val bravo = BravoAgGridPkAndNameDto(
+            rsa.readDomainId("bravoId"),
+            rsa.readString("bravoName"),
+        )
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val id = rsa.readDomainId("id")
+        val someInt = rsa.readInt("someInt")
+        val someString = rsa.readString("someString")
+
         return CharlieAgGridFetchForEditDto(
-            BravoAgGridPkAndNameDto(
-                rsa.readDomainId("bravoId"),
-                rsa.readString("bravoName") ?: "(blank)",
-            ),
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readDomainId("id"),
-            rsa.readInt("someInt"),
-            rsa.readString("someString"),
+            bravo,
+            createdTimestampUtc,
+            id,
+            someInt,
+            someString,
         )
 
     }
