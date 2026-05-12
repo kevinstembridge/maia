@@ -8,6 +8,7 @@ import java.time.Instant
 
 data class CompositePrimaryKeyDto(
     val createdTimestampUtc: Instant,
+    val id: String,
     val someInt: Int,
     val someModifiableString: String,
     val someString: String,

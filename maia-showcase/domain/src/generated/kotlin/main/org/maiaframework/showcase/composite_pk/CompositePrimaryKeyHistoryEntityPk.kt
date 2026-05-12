@@ -8,15 +8,15 @@ import java.net.URLEncoder
 
 
 data class CompositePrimaryKeyHistoryEntityPk(
-    val someString: String,
     val someInt: Int,
+    val someString: String,
     val version: Long
 ) {
 
 
     val encoded: String by lazy {
 
-        listOf(someString, someInt, version).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+        listOf(someInt, someString, version).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
 
     }
 
@@ -27,11 +27,11 @@ data class CompositePrimaryKeyHistoryEntityPk(
         fun from(pk: String): CompositePrimaryKeyHistoryEntityPk {
 
             val parts = pk.split(":")
-            val someString = URLDecoder.decode(parts[0], "UTF-8")
-            val someInt = URLDecoder.decode(parts[1], "UTF-8").toInt()
+            val someInt = URLDecoder.decode(parts[0], "UTF-8").toInt()
+            val someString = URLDecoder.decode(parts[1], "UTF-8")
             val version = URLDecoder.decode(parts[2], "UTF-8").toLong()
 
-            return CompositePrimaryKeyHistoryEntityPk(someString, someInt, version)
+            return CompositePrimaryKeyHistoryEntityPk(someInt, someString, version)
 
         }
 
