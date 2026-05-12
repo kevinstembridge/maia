@@ -21,21 +21,36 @@ class FeatureToggleFetchForEditDtoRowMapper(
 
     override fun mapRow(rsa: ResultSetAdapter): FeatureToggleFetchForEditDto {
 
+        val activationStrategies = rsa.readString("activationStrategies") { jsonMapper.readValue(it, object : TypeReference<List<ActivationStrategyDescriptor>>() {}) }
+        val attributes = rsa.readString("attributes") { jsonMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) }
+        val comment = rsa.readStringOrNull("comment")
+        val contactPerson = rsa.readStringOrNull("contactPerson") { ContactPerson(it) }
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val description = rsa.readStringOrNull("description") { Description(it) }
+        val enabled = rsa.readBoolean("enabled")
+        val featureName = rsa.readString("featureName") { FeatureName(it) }
+        val infoLink = rsa.readStringOrNull("infoLink") { InfoLink(it) }
+        val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
+        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val reviewDate = rsa.readLocalDateOrNull("reviewDate")
+        val ticketKey = rsa.readStringOrNull("ticketKey") { TicketKey(it) }
+        val version = rsa.readLong("version")
+
         return FeatureToggleFetchForEditDto(
-            rsa.readString("activationStrategies") { jsonMapper.readValue(it, object : TypeReference<List<ActivationStrategyDescriptor>>() {}) },
-            rsa.readString("attributes") { jsonMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) },
-            rsa.readStringOrNull("comment"),
-            rsa.readStringOrNull("contactPerson") { ContactPerson(it) },
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readStringOrNull("description") { Description(it) },
-            rsa.readBoolean("enabled"),
-            rsa.readString("featureName") { FeatureName(it) },
-            rsa.readStringOrNull("infoLink") { InfoLink(it) },
-            rsa.readString("lastModifiedByUsername"),
-            rsa.readInstant("lastModifiedTimestampUtc"),
-            rsa.readLocalDateOrNull("reviewDate"),
-            rsa.readStringOrNull("ticketKey") { TicketKey(it) },
-            rsa.readLong("version"),
+            activationStrategies,
+            attributes,
+            comment,
+            contactPerson,
+            createdTimestampUtc,
+            description,
+            enabled,
+            featureName,
+            infoLink,
+            lastModifiedByUsername,
+            lastModifiedTimestampUtc,
+            reviewDate,
+            ticketKey,
+            version,
         )
 
     }

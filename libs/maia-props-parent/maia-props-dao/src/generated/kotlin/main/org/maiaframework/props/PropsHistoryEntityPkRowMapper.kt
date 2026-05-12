@@ -12,9 +12,12 @@ class PropsHistoryEntityPkRowMapper : MaiaRowMapper<PropsHistoryEntityPk> {
 
     override fun mapRow(rsa: ResultSetAdapter): PropsHistoryEntityPk {
 
+        val propertyName = rsa.readString("property_name")
+        val version = rsa.readLong("version")
+
         return PropsHistoryEntityPk(
-            rsa.readString("property_name"),
-            rsa.readLong("version"),
+            propertyName,
+            version,
         )
 
     }
