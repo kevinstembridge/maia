@@ -12,9 +12,12 @@ class OrganizationHistoryEntityPkRowMapper : MaiaRowMapper<OrganizationHistoryEn
 
     override fun mapRow(rsa: ResultSetAdapter): OrganizationHistoryEntityPk {
 
+        val id = rsa.readDomainId("id")
+        val version = rsa.readLong("version")
+
         return OrganizationHistoryEntityPk(
-            rsa.readDomainId("id"),
-            rsa.readLong("version"),
+            id,
+            version,
         )
 
     }

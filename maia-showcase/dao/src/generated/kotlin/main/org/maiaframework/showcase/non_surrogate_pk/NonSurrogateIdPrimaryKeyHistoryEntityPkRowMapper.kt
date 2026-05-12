@@ -13,9 +13,12 @@ class NonSurrogateIdPrimaryKeyHistoryEntityPkRowMapper : MaiaRowMapper<NonSurrog
 
     override fun mapRow(rsa: ResultSetAdapter): NonSurrogateIdPrimaryKeyHistoryEntityPk {
 
+        val id = rsa.readString("id") { SomeStringValueClass(it) }
+        val version = rsa.readLong("version")
+
         return NonSurrogateIdPrimaryKeyHistoryEntityPk(
-            rsa.readString("id") { SomeStringValueClass(it) },
-            rsa.readLong("version"),
+            id,
+            version,
         )
 
     }
