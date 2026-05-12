@@ -12,14 +12,22 @@ class LeftToRightManyToManyDtoRowMapper : MaiaRowMapper<LeftToRightManyToManyDto
 
     override fun mapRow(rsa: ResultSetAdapter): LeftToRightManyToManyDto {
 
+        val id = rsa.readDomainId("id")
+        val leftId = rsa.readDomainId("leftId")
+        val leftSomeInt = rsa.readInt("leftSomeInt")
+        val leftSomeString = rsa.readString("leftSomeString")
+        val rightId = rsa.readDomainId("rightId")
+        val rightSomeInt = rsa.readInt("rightSomeInt")
+        val rightSomeString = rsa.readString("rightSomeString")
+
         return LeftToRightManyToManyDto(
-            rsa.readDomainId("id"),
-            rsa.readDomainId("leftId"),
-            rsa.readInt("leftSomeInt"),
-            rsa.readString("leftSomeString"),
-            rsa.readDomainId("rightId"),
-            rsa.readInt("rightSomeInt"),
-            rsa.readString("rightSomeString"),
+            id,
+            leftId,
+            leftSomeInt,
+            leftSomeString,
+            rightId,
+            rightSomeInt,
+            rightSomeString,
         )
 
     }

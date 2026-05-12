@@ -12,12 +12,18 @@ class SomeVersionedBlotterRowDtoRowMapper : MaiaRowMapper<SomeVersionedBlotterRo
 
     override fun mapRow(rsa: ResultSetAdapter): SomeVersionedBlotterRowDto {
 
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val id = rsa.readDomainId("id")
+        val someInt = rsa.readInt("someInt")
+        val someString = rsa.readString("someString")
+        val version = rsa.readLong("version")
+
         return SomeVersionedBlotterRowDto(
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readDomainId("id"),
-            rsa.readInt("someInt"),
-            rsa.readString("someString"),
-            rsa.readLong("version"),
+            createdTimestampUtc,
+            id,
+            someInt,
+            someString,
+            version,
         )
 
     }
