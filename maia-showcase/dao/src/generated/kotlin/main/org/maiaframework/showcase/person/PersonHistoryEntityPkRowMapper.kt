@@ -12,9 +12,12 @@ class PersonHistoryEntityPkRowMapper : MaiaRowMapper<PersonHistoryEntityPk> {
 
     override fun mapRow(rsa: ResultSetAdapter): PersonHistoryEntityPk {
 
+        val id = rsa.readDomainId("id")
+        val version = rsa.readLong("version")
+
         return PersonHistoryEntityPk(
-            rsa.readDomainId("id"),
-            rsa.readLong("version"),
+            id,
+            version,
         )
 
     }

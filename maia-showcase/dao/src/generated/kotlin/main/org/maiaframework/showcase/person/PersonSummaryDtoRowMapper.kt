@@ -14,11 +14,16 @@ class PersonSummaryDtoRowMapper : MaiaRowMapper<PersonSummaryDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): PersonSummaryDto {
 
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val firstName = rsa.readStringOrNull("firstName") { FirstName(it) }
+        val id = rsa.readDomainId("id")
+        val lastName = rsa.readString("lastName") { LastName(it) }
+
         return PersonSummaryDto(
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readStringOrNull("firstName") { FirstName(it) },
-            rsa.readDomainId("id"),
-            rsa.readString("lastName") { LastName(it) },
+            createdTimestampUtc,
+            firstName,
+            id,
+            lastName,
         )
 
     }

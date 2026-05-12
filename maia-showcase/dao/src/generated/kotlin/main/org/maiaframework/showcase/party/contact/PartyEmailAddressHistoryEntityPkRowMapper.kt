@@ -12,9 +12,12 @@ class PartyEmailAddressHistoryEntityPkRowMapper : MaiaRowMapper<PartyEmailAddres
 
     override fun mapRow(rsa: ResultSetAdapter): PartyEmailAddressHistoryEntityPk {
 
+        val id = rsa.readDomainId("id")
+        val version = rsa.readLong("version")
+
         return PartyEmailAddressHistoryEntityPk(
-            rsa.readDomainId("id"),
-            rsa.readLong("version"),
+            id,
+            version,
         )
 
     }
