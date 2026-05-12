@@ -41,12 +41,12 @@ class EntityPkRenderer(
 ) {
 
 
-    private val pkFields = this.classDef.allFields
+    private val pkFields = this.classDef.allFieldsSorted
 
 
     init {
 
-        val constructorArgs = this.classDef.allFields.map { ConstructorArg(it) }
+        val constructorArgs = this.pkFields.map { ConstructorArg(it) }
         setConstructorArgs(constructorArgs)
 
     }
