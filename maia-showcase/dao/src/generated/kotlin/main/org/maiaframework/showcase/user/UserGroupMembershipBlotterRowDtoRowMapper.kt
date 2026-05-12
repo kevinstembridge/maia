@@ -12,14 +12,22 @@ class UserGroupMembershipBlotterRowDtoRowMapper : MaiaRowMapper<UserGroupMembers
 
     override fun mapRow(rsa: ResultSetAdapter): UserGroupMembershipBlotterRowDto {
 
+        val effectiveFrom = rsa.readInstantOrNull("effectiveFrom")
+        val effectiveTo = rsa.readInstantOrNull("effectiveTo")
+        val id = rsa.readDomainId("id")
+        val userDisplayName = rsa.readString("userDisplayName")
+        val userGroupId = rsa.readDomainId("userGroupId")
+        val userGroupName = rsa.readString("userGroupName")
+        val userId = rsa.readDomainId("userId")
+
         return UserGroupMembershipBlotterRowDto(
-            rsa.readInstantOrNull("effectiveFrom"),
-            rsa.readInstantOrNull("effectiveTo"),
-            rsa.readDomainId("id"),
-            rsa.readString("userDisplayName"),
-            rsa.readDomainId("userGroupId"),
-            rsa.readString("userGroupName"),
-            rsa.readDomainId("userId"),
+            effectiveFrom,
+            effectiveTo,
+            id,
+            userDisplayName,
+            userGroupId,
+            userGroupName,
+            userId,
         )
 
     }

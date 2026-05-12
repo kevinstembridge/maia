@@ -15,14 +15,22 @@ class UserDtoRowMapper : MaiaRowMapper<UserDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): UserDto {
 
+        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val displayName = rsa.readString("displayName")
+        val encryptedPassword = rsa.readString("encryptedPassword")
+        val firstName = rsa.readStringOrNull("firstName") { FirstName(it) }
+        val id = rsa.readDomainId("id")
+        val lastName = rsa.readString("lastName") { LastName(it) }
+
         return UserDto(
-            rsa.readListOfStrings("authorities") { Authority.valueOf(it) },
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readString("displayName"),
-            rsa.readString("encryptedPassword"),
-            rsa.readStringOrNull("firstName") { FirstName(it) },
-            rsa.readDomainId("id"),
-            rsa.readString("lastName") { LastName(it) },
+            authorities,
+            createdTimestampUtc,
+            displayName,
+            encryptedPassword,
+            firstName,
+            id,
+            lastName,
         )
 
     }

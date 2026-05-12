@@ -16,19 +16,32 @@ class UserFetchForEditDtoRowMapper : MaiaRowMapper<UserFetchForEditDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): UserFetchForEditDto {
 
+        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val createdBy = rsa.readDomainIdOrNull("createdBy")
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val displayName = rsa.readString("displayName")
+        val encryptedPassword = rsa.readString("encryptedPassword")
+        val firstName = rsa.readStringOrNull("firstName") { FirstName(it) }
+        val id = rsa.readDomainId("id")
+        val lastModifiedBy = rsa.readDomainIdOrNull("lastModifiedBy")
+        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastName = rsa.readString("lastName") { LastName(it) }
+        val lifecycleState = rsa.readEnum("lifecycleState", LifecycleState::class.java)
+        val version = rsa.readLong("version")
+
         return UserFetchForEditDto(
-            rsa.readListOfStrings("authorities") { Authority.valueOf(it) },
-            rsa.readDomainIdOrNull("createdBy"),
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readString("displayName"),
-            rsa.readString("encryptedPassword"),
-            rsa.readStringOrNull("firstName") { FirstName(it) },
-            rsa.readDomainId("id"),
-            rsa.readDomainIdOrNull("lastModifiedBy"),
-            rsa.readInstant("lastModifiedTimestampUtc"),
-            rsa.readString("lastName") { LastName(it) },
-            rsa.readEnum("lifecycleState", LifecycleState::class.java),
-            rsa.readLong("version"),
+            authorities,
+            createdBy,
+            createdTimestampUtc,
+            displayName,
+            encryptedPassword,
+            firstName,
+            id,
+            lastModifiedBy,
+            lastModifiedTimestampUtc,
+            lastName,
+            lifecycleState,
+            version,
         )
 
     }

@@ -15,13 +15,20 @@ class UserBlotterRowDtoRowMapper : MaiaRowMapper<UserBlotterRowDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): UserBlotterRowDto {
 
+        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val displayName = rsa.readString("displayName")
+        val firstName = rsa.readStringOrNull("firstName") { FirstName(it) }
+        val id = rsa.readDomainId("id")
+        val lastName = rsa.readString("lastName") { LastName(it) }
+
         return UserBlotterRowDto(
-            rsa.readListOfStrings("authorities") { Authority.valueOf(it) },
-            rsa.readInstant("createdTimestampUtc"),
-            rsa.readString("displayName"),
-            rsa.readStringOrNull("firstName") { FirstName(it) },
-            rsa.readDomainId("id"),
-            rsa.readString("lastName") { LastName(it) },
+            authorities,
+            createdTimestampUtc,
+            displayName,
+            firstName,
+            id,
+            lastName,
         )
 
     }

@@ -12,9 +12,12 @@ class UserGroupHistoryEntityPkRowMapper : MaiaRowMapper<UserGroupHistoryEntityPk
 
     override fun mapRow(rsa: ResultSetAdapter): UserGroupHistoryEntityPk {
 
+        val id = rsa.readDomainId("id")
+        val version = rsa.readLong("version")
+
         return UserGroupHistoryEntityPk(
-            rsa.readDomainId("id"),
-            rsa.readLong("version"),
+            id,
+            version,
         )
 
     }
