@@ -11,7 +11,7 @@ interface CompositePrimaryKeyCrudListener {
     fun onCompositePrimaryKeyEntityCreated(entity: CompositePrimaryKeyEntity)
 
 
-    fun onCompositePrimaryKeyEntityUpdated(someString: String, someInt: Int)
+    fun onCompositePrimaryKeyEntityUpdated(someInt: Int, someString: String)
 
 
     fun onCompositePrimaryKeyEntityDeleted(entity: CompositePrimaryKeyEntity)

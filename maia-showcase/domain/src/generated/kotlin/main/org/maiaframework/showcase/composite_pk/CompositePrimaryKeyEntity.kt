@@ -15,7 +15,7 @@ class CompositePrimaryKeyEntity(
 ) {
 
 
-    val primaryKey = CompositePrimaryKeyEntityPk(someString, someInt)
+    val primaryKey = CompositePrimaryKeyEntityPk(someInt, someString)
 
 
     override fun toString(): String {
