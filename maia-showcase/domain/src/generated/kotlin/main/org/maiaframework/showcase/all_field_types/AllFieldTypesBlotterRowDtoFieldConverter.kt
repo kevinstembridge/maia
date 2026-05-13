@@ -14,13 +14,13 @@ class AllFieldTypesBlotterRowDtoFieldConverter : SearchFieldConverter {
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
 
         when(tableColumnPath) {
-            "createdById" -> // createdBy
+            "id" -> // createdBy
                 return inputValue
             "created_by_name" -> // createdByUsername
                 return inputValue
             "id" -> // id
                 return inputValue
-            "lastModifiedById" -> // lastModifiedBy
+            "id" -> // lastModifiedBy
                 return inputValue
             "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue

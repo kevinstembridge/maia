@@ -437,9 +437,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        columnFromDto("someDto")
 //        columnFromDto("someDtoNullable")
         columnFromDto("id")
-        columnFromDto("createdBy")
+        columnFromDto("createdBy") { header("Created By ID") }
         columnFromDto("createdByUsername")
-        columnFromDto("lastModifiedBy")
+        columnFromDto("lastModifiedBy") { header("Last Modified By ID") }
         columnFromDto("lastModifiedByUsername")
         columnFromDto("lastModifiedTimestampUtc")
         deleteActionColumn()
