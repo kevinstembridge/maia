@@ -1,7 +1,6 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.EsDocDef
-import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 
 class EsDocRepoRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRenderer(esDocDef.esDocRepoClassDef) {
