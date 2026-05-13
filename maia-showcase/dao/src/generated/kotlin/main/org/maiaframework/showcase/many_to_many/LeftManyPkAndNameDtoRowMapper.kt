@@ -13,11 +13,11 @@ class LeftManyPkAndNameDtoRowMapper : MaiaRowMapper<LeftManyPkAndNameDto> {
     override fun mapRow(rsa: ResultSetAdapter): LeftManyPkAndNameDto {
 
         val id = rsa.readDomainId("id")
-        val someString = rsa.readString("some_string")
+        val name = rsa.readString("some_string")
 
         return LeftManyPkAndNameDto(
             id,
-            someString,
+            name,
         )
 
     }

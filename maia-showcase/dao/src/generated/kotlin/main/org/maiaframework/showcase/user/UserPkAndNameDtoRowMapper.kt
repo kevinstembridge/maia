@@ -13,11 +13,11 @@ class UserPkAndNameDtoRowMapper : MaiaRowMapper<UserPkAndNameDto> {
     override fun mapRow(rsa: ResultSetAdapter): UserPkAndNameDto {
 
         val id = rsa.readDomainId("id")
-        val displayName = rsa.readString("display_name")
+        val name = rsa.readString("display_name")
 
         return UserPkAndNameDto(
-            displayName,
             id,
+            name,
         )
 
     }
