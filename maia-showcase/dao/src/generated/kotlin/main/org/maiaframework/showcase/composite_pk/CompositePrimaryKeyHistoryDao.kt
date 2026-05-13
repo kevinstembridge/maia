@@ -154,7 +154,7 @@ class CompositePrimaryKeyHistoryDao(
     }
 
 
-    fun existsByPrimaryKey(someString: String, someInt: Int, version: Long): Boolean {
+    fun existsByPrimaryKey(someInt: Int, someString: String, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
             "select count(*) from maia.composite_primary_key_history where some_string = :someString and some_int = :someInt and version = :version",

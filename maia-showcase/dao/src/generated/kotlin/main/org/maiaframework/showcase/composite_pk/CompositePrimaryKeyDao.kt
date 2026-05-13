@@ -203,7 +203,7 @@ class CompositePrimaryKeyDao(
     }
 
 
-    fun existsByPrimaryKey(someString: String, someInt: Int): Boolean {
+    fun existsByPrimaryKey(someInt: Int, someString: String): Boolean {
 
         val count = jdbcOps.queryForInt(
             "select count(*) from maia.composite_primary_key where some_string = :someString and some_int = :someInt",
@@ -332,7 +332,7 @@ class CompositePrimaryKeyDao(
             },
             this.fetchForEditDtoRowMapper
         ).firstOrNull()
-            ?: throw EntityNotFoundException(EntityClassAndPk(CompositePrimaryKeyEntity::class.java, mapOf("someString" to primaryKey.someString, "someInt" to primaryKey.someInt)), CompositePrimaryKeyEntityMeta.TABLE_NAME)
+            ?: throw EntityNotFoundException(EntityClassAndPk(CompositePrimaryKeyEntity::class.java, mapOf("someInt" to primaryKey.someInt, "someString" to primaryKey.someString)), CompositePrimaryKeyEntityMeta.TABLE_NAME)
 
     }
 
