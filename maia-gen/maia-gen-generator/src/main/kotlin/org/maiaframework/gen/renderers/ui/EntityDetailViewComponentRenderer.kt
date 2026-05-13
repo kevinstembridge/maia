@@ -47,7 +47,7 @@ class EntityDetailViewComponentRenderer(
             |export class ${this.entityDetailViewDef.componentNames.componentName} {
             |
             |
-            |    entityPk = input.required<string>();
+            |    entityId = input.required<string>();
             |
             |
             |    detailDto$!: Observable<${this.entityDetailViewDef.dtoDef.uqcn}>;
@@ -59,7 +59,7 @@ class EntityDetailViewComponentRenderer(
             |    constructor() {
             |
             |        effect(() => {
-            |            this.detailDto$ = this.service.fetch(this.entityPk());
+            |            this.detailDto$ = this.service.fetch(this.entityId());
             |        });
             |
             |    }
