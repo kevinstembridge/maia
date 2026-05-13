@@ -21,7 +21,7 @@ class EntityPkAndNameDef(
         DtoSuffix("Dto"),
         listOf(
             aClassField(pkEntityFieldDef.classFieldName.value, pkEntityFieldDef.fieldType).build(),
-            aClassField("name", nameEntityFieldDef.fieldType).build(),
+            aClassField(nameEntityFieldDef.classFieldName.value, nameEntityFieldDef.fieldType).build(),
         )
     ).build()
 
