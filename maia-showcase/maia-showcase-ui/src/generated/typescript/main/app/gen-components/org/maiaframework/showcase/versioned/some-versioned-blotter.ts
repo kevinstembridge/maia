@@ -37,6 +37,7 @@ export class SomeVersionedBlotter {
 
 
     public columnDefs: ColDef[] = [
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         {
             field: 'edit',
             headerName: '',
@@ -52,7 +53,6 @@ export class SomeVersionedBlotter {
         { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'someInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
         { field: 'version', headerName: 'Version', cellDataType: 'number', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
         {
             field: 'delete',

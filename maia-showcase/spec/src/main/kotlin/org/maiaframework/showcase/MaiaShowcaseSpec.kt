@@ -378,7 +378,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        field("someMapOfStringTypeToStringType")
 //        field("someDto")
 //        field("someDtoNullable")
-        field("id")
         field("createdBy", "createdBy.id")
         field("createdByUsername")
         field("lastModifiedBy", "lastModifiedBy.id")
@@ -436,7 +435,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        columnFromDto("someMapOfStringTypeToStringType")
 //        columnFromDto("someDto")
 //        columnFromDto("someDtoNullable")
-        columnFromDto("id")
         columnFromDto("createdBy") { header("Created By ID") }
         columnFromDto("createdByUsername")
         columnFromDto("lastModifiedBy") { header("Last Modified By ID") }
@@ -481,7 +479,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedDto = WithGeneratedDto.TRUE
     ) {
         field("someString")
-        field("id")
         field("createdTimestampUtc")
     }
 
@@ -496,7 +493,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         viewActionColumn()
         editActionColumn()
         columnFromDto("someString")
-        columnFromDto("id")
         columnFromDto("createdTimestampUtc")
         deleteActionColumn()
     }
@@ -570,7 +566,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         field("someString")
         field("someUniqueString")
-        field("id", "id")
         field("createdTimestampUtc")
     }
 
@@ -599,7 +594,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("someInt")
         field("someString")
         field("someUniqueString")
-        field("id", "id")
         field("createdTimestampUtc")
     }
 
@@ -632,7 +626,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         field("someInt")
         field("someUniqueString")
-        field("id", "id")
         field("createdTimestampUtc")
     }
 
@@ -718,7 +711,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("someString")
         field("someInt")
         field("version")
-        field("id")
         field("createdTimestampUtc")
     }
 
@@ -734,7 +726,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("someString")
         columnFromDto("someInt")
         columnFromDto("version")
-        columnFromDto("id")
         columnFromDto("createdTimestampUtc")
         deleteActionColumn()
     }
@@ -936,7 +927,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("dtoIntFromAlpha", "alpha.someInt")
         field("dtoStringFromBravo", "someString")
         field("dtoIntFromBravo", "someInt")
-        field("id", "id")
         field("createdTimestampUtc")
     }
 
@@ -946,7 +936,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
         columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
         columnFromDto(dtoFieldName = "createdTimestampUtc", fieldPathInSourceData = "createdTimestampUtc")
-        columnFromDto("id")
         deleteActionColumn()
     }
 
@@ -1040,7 +1029,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("dtoIntFromAlpha", "alpha.someInt")
         field("dtoStringFromBravo", "someString")
         field("dtoIntFromBravo", "someInt")
-        field("id", "id")
         field("createdTimestampUtc")
     }
 
@@ -1157,7 +1145,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE
     ) {
-        field("id")
         field("createdTimestampUtc")
         field("someIntFromLeft", "someInt")
         field("someStringFromLeft", "someString")
@@ -1171,7 +1158,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("someStringFromLeft", "someString") { header("Some String From Left") }
         columnFromDto("someIntFromLeft", "someInt") { header("Some Int From Left") }
         columnFromDto("rightEntities") { header("Right Entities") }
-        columnFromDto("id")
         deleteActionColumn()
     }
 
@@ -1185,7 +1171,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         leftToRightManyToManyJoinEntityDef.entityDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
     ) {
-        field("id")
         field("leftId", "left.id")
         field("rightId", "right.id")
         field("leftSomeString", "left.someString")
@@ -1204,7 +1189,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE
     ) {
         manyToManyJoin(leftToRightManyToManyJoinEntityDef, joinType = JoinType.LEFT_OUTER)
-        field("id", "id")
         field("createdTimestampUtc", "createdTimestampUtc")
         field("someIntFromLeft", "someInt")
         field("someStringFromLeft", "someString")

@@ -37,6 +37,7 @@ export class BravoBlotter {
 
 
     public columnDefs: ColDef[] = [
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         {
             field: 'edit',
             headerName: '',
@@ -52,7 +53,6 @@ export class BravoBlotter {
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         {
             field: 'delete',
             headerName: '',

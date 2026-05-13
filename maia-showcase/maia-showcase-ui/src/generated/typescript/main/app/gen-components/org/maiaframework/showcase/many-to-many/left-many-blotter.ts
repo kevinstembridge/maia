@@ -40,6 +40,7 @@ export class LeftManyBlotter {
 
 
     public columnDefs: ColDef[] = [
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         {
             field: 'view',
             headerName: '',
@@ -67,7 +68,6 @@ export class LeftManyBlotter {
         { field: 'someString', headerName: 'Some String From Left', cellDataType: 'text', filter: true },
         { field: 'someInt', headerName: 'Some Int From Left', cellDataType: 'number', filter: true },
         { field: 'rightEntities', headerName: 'Right Entities', cellDataType: 'text', filter: true, cellRenderer: ChipsAgGridCellRendererComponent },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         {
             field: 'delete',
             headerName: '',
