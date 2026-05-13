@@ -20,8 +20,8 @@ class EntityPkAndNameDef(
         dtoBaseName.withSuffix("PkAndName"),
         DtoSuffix("Dto"),
         listOf(
-            aClassField(pkEntityFieldDef.classFieldName.value, pkEntityFieldDef.fieldType).build(),
-            aClassField(nameEntityFieldDef.classFieldName.value, nameEntityFieldDef.fieldType).build(),
+            aClassField("id", pkEntityFieldDef.fieldType).build(),
+            aClassField("name", nameEntityFieldDef.fieldType).build(),
         )
     ).build()
 
