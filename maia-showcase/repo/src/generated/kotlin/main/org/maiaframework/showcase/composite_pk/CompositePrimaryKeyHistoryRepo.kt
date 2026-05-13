@@ -30,9 +30,9 @@ class CompositePrimaryKeyHistoryRepo(
     }
 
 
-    fun existsByPrimaryKey(someString: String, someInt: Int, version: Long): Boolean {
+    fun existsByPrimaryKey(someInt: Int, someString: String, version: Long): Boolean {
 
-        return dao.existsByPrimaryKey(someString, someInt, version)
+        return dao.existsByPrimaryKey(someInt, someString, version)
 
     }
 

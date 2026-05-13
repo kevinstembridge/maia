@@ -42,9 +42,9 @@ class CompositePrimaryKeyRepo(
     }
 
 
-    fun existsByPrimaryKey(someString: String, someInt: Int): Boolean {
+    fun existsByPrimaryKey(someInt: Int, someString: String): Boolean {
 
-        return dao.existsByPrimaryKey(someString, someInt)
+        return dao.existsByPrimaryKey(someInt, someString)
 
     }
 
