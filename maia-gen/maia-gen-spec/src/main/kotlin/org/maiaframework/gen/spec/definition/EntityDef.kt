@@ -333,7 +333,10 @@ class EntityDef(
     val primaryKeyFields: List<EntityFieldDef> = allEntityFields.filter { it.isPrimaryKey.value }
 
 
-    val primaryKeyClassFields: List<ClassFieldDef> = allEntityFields.filter { it.isPrimaryKey.value }.map { it.classFieldDef }
+    val primaryKeyClassFields: List<ClassFieldDef> = allEntityFields
+        .filter { it.isPrimaryKey.value }
+        .map { it.classFieldDef }
+        .sortedBy { it.classFieldName }
 
 
     val hasSurrogatePrimaryKey = primaryKeyFields.size == 1
