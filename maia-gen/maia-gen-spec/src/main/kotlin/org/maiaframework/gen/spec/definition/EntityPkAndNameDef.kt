@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition
 import org.maiaframework.gen.spec.definition.builders.DtoDefBuilder
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 
@@ -32,8 +33,8 @@ class EntityPkAndNameDef(
     val rowMapperDef = RowMapperDef(
         dtoDef.fqcn,
         listOf(
-            EntityFieldRowMapperFieldDef(pkEntityFieldDef.classFieldName, pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
-            EntityFieldRowMapperFieldDef(nameEntityFieldDef.classFieldName, nameEntityFieldDef, nameEntityFieldDef.tableColumnName.value)
+            EntityFieldRowMapperFieldDef(ClassFieldName("id"), pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
+            EntityFieldRowMapperFieldDef(ClassFieldName("name"), nameEntityFieldDef, nameEntityFieldDef.tableColumnName.value)
         ),
         dtoDef.rowMapperClassDef,
         isForEditDto = true,
