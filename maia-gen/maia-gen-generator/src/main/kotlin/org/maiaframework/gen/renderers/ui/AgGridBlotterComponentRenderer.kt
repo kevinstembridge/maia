@@ -81,8 +81,7 @@ class AgGridBlotterComponentRenderer(
 
     override fun renderSourceBody() {
 
-        appendLine(
-            """
+        append("""
             |
             |
             |@Component({
@@ -90,7 +89,7 @@ class AgGridBlotterComponentRenderer(
             |    providers: [${this.blotterDef.angularBlotterServiceName}, DecimalPipe],
             |    selector: '${this.blotterDef.blotterComponent.componentSelector}',
             |    templateUrl: './${this.blotterDef.blotterComponent.htmlFileName}'
-        """.trimMargin())
+            |""".trimMargin())
 
         if (this.blotterDef.searchModelType == SearchModelType.MAIA) {
             appendLine("    styleUrls: ['./${this.blotterDef.blotterComponentScssFileName}'],")
