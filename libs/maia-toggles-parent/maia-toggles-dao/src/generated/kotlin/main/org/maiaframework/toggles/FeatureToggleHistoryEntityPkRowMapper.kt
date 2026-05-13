@@ -12,9 +12,12 @@ class FeatureToggleHistoryEntityPkRowMapper : MaiaRowMapper<FeatureToggleHistory
 
     override fun mapRow(rsa: ResultSetAdapter): FeatureToggleHistoryEntityPk {
 
+        val featureName = rsa.readString("feature_name") { FeatureName(it) }
+        val version = rsa.readLong("version")
+
         return FeatureToggleHistoryEntityPk(
-            rsa.readString("feature_name") { FeatureName(it) },
-            rsa.readLong("version"),
+            featureName,
+            version,
         )
 
     }
