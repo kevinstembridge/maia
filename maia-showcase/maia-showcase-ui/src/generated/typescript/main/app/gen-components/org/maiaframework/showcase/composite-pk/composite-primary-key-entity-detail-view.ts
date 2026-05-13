@@ -22,7 +22,7 @@ import {Observable} from 'rxjs';
 export class CompositePrimaryKeyEntityDetailView {
 
 
-    entityPk = input.required<string>();
+    entityId = input.required<string>();
 
 
     detailDto$!: Observable<CompositePrimaryKeyEntityDetailViewDto>;
@@ -34,7 +34,7 @@ export class CompositePrimaryKeyEntityDetailView {
     constructor() {
 
         effect(() => {
-            this.detailDto$ = this.service.fetch(this.entityPk());
+            this.detailDto$ = this.service.fetch(this.entityId());
         });
 
     }

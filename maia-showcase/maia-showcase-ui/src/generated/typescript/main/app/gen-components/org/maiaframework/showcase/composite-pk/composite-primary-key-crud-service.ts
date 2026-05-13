@@ -42,7 +42,7 @@ export class CompositePrimaryKeyCrudService {
     }
 
 
-    public fetchForEdit(pk: {someString: string, someInt: number}): Observable<CompositePrimaryKeyFetchForEditDto> {
+    public fetchForEdit(pk: {someInt: number, someString: string}): Observable<CompositePrimaryKeyFetchForEditDto> {
 
         return this.http.post<CompositePrimaryKeyFetchForEditDto>(
                 '/api/composite-primary-key/fetch-for-edit',
@@ -52,7 +52,7 @@ export class CompositePrimaryKeyCrudService {
     }
 
 
-    public delete(pk: {someString: string, someInt: number}): Observable<any> {
+    public delete(pk: {someInt: number, someString: string}): Observable<any> {
 
         return this.http.delete('/api/composite-primary-key', {
             headers: new HttpHeaders({'Content-Type': 'application/json'}),
