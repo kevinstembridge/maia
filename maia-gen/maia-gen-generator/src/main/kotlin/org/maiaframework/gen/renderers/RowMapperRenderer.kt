@@ -146,6 +146,7 @@ class RowMapperRenderer(
         val foreignKeyFieldDef = rowMapperFieldDef.foreignKeyFieldDef
         val pkAndNameDef = foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef
         val pkEntityFieldDef = pkAndNameDef.pkEntityFieldDef
+        val nameEntityFieldDef = pkAndNameDef.nameEntityFieldDef
 
         val idResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Id"
         val nameResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Name"
@@ -154,7 +155,7 @@ class RowMapperRenderer(
 
         appendLine("        val ${rowMapperFieldDef.classFieldName} = ${pkAndNameDef.dtoUqcn}(")
         appendLine(renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 12, orElseText = "", ::addImportFor) + ",")
-        appendLine(renderRowMapperField(pkAndNameDef.nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 12, orElseText = "", ::addImportFor) + ",")
+        appendLine(renderRowMapperField(nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 12, orElseText = "", ::addImportFor) + ",")
         appendLine("        )")
 
     }
