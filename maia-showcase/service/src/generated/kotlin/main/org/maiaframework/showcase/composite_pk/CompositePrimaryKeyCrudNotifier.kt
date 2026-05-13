@@ -40,10 +40,10 @@ class CompositePrimaryKeyCrudNotifier : ApplicationContextAware, InitializingBea
     }
 
 
-    fun onEntityUpdated(someString: String, someInt: Int) {
+    fun onEntityUpdated(someInt: Int, someString: String) {
 
         this.compositePrimaryKeyCrudListeners.forEach { (_, listener) ->
-            listener.onCompositePrimaryKeyEntityUpdated(someString, someInt)
+            listener.onCompositePrimaryKeyEntityUpdated(someInt, someString)
         }
 
     }

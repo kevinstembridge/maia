@@ -72,9 +72,9 @@ class CompositePrimaryKeyCrudService(
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: CompositePrimaryKeyUpdateRequestDto) {
 
-        val someString = editDto.someString
         val someInt = editDto.someInt
-        val primaryKey = CompositePrimaryKeyEntityPk(someString, someInt)
+        val someString = editDto.someString
+        val primaryKey = CompositePrimaryKeyEntityPk(someInt, someString)
         val version = editDto.version
         val updater = CompositePrimaryKeyEntityUpdater.forPrimaryKey(primaryKey, version) {
             someModifiableString(editDto.someModifiableString)
@@ -94,7 +94,7 @@ class CompositePrimaryKeyCrudService(
 
         val version = editDto.version
 
-        val updater = CompositePrimaryKeyEntityUpdater.forPrimaryKey(CompositePrimaryKeyEntityPk(editDto.someString, editDto.someInt), version) {
+        val updater = CompositePrimaryKeyEntityUpdater.forPrimaryKey(CompositePrimaryKeyEntityPk(editDto.someInt, editDto.someString), version) {
             someModifiableString(editDto.someModifiableString)
         }
 
@@ -106,7 +106,7 @@ class CompositePrimaryKeyCrudService(
     fun setFields(updater: CompositePrimaryKeyEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
-        this.compositePrimaryKeyCrudNotifier.onEntityUpdated(updater.primaryKey.someString, updater.primaryKey.someInt)
+        this.compositePrimaryKeyCrudNotifier.onEntityUpdated(updater.primaryKey.someInt, updater.primaryKey.someString)
         return count
         
     }
