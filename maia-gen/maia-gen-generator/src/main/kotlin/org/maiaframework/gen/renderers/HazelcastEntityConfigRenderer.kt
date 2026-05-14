@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 
 
 class HazelcastEntityConfigRenderer(
@@ -17,7 +18,25 @@ class HazelcastEntityConfigRenderer(
     init {
 
         cacheableEntityDefs.forEach {
-            addConstructorArg(ClassFieldDef.aClassField(it.hazelcastSerializerClassDef.uqcn.firstToLower(), it.hazelcastSerializerClassDef.fqcn).privat().build())
+
+            val classFieldDef = aClassField(
+                it.hazelcastSerializerClassDef.uqcn.firstToLower(),
+                it.hazelcastSerializerClassDef.fqcn
+            ).privat().build()
+
+            addConstructorArg(classFieldDef)
+
+            if (it.hasCompositePrimaryKey) {
+
+                val classFieldDef = aClassField(
+                    it.hazelcastPrimaryKeySerializerClassDef.uqcn.firstToLower(),
+                    it.hazelcastPrimaryKeySerializerClassDef.fqcn
+                ).privat().build()
+
+                addConstructorArg(classFieldDef)
+
+            }
+
         }
 
     }
@@ -39,6 +58,11 @@ class HazelcastEntityConfigRenderer(
 
             addImportFor(it.entityFqcn)
             appendLine("        ${it.hazelcastSerializerClassDef.uqcn.firstToLower()},")
+
+            if (it.hasCompositePrimaryKey) {
+                addImportFor(it.entityPkClassDef.fqcn)
+                appendLine("        ${it.hazelcastPrimaryKeySerializerClassDef.uqcn.firstToLower()},")
+            }
 
         }
 
