@@ -9,4 +9,11 @@ value class CacheName(val value: String) {
     }
 
 
+    fun withSuffix(suffix: String): CacheName {
+
+        return CacheName("$value$suffix")
+
+    }
+
+
 }

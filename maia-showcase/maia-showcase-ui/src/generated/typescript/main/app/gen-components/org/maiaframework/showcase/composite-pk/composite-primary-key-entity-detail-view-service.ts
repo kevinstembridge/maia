@@ -25,7 +25,7 @@ export class CompositePrimaryKeyEntityDetailViewService {
     public fetch(pk: string): Observable<CompositePrimaryKeyEntityDetailViewDto> {
 
       return this.http.get<CompositePrimaryKeyEntityDetailViewDto>(
-          `/api/composite-primary-key-entity-detail-view-dto/${pk}`,
+          `/api/composite-primary-key-entity-detail-view-dto/${id}`,
           this.httpOptions
       );
 

@@ -19,7 +19,7 @@ class CompositePrimaryKeyBlotterRowDtoRowMapper : MaiaRowMapper<CompositePrimary
         val someString = rsa.readString("someString")
         val version = rsa.readLong("version")
 
-        val id = listOf(someString, someInt).joinToString(":") { encode(it.toString(), "UTF-8") }
+        val id = listOf(someInt, someString).joinToString(":") { encode(it.toString(), "UTF-8") }
 
         return CompositePrimaryKeyBlotterRowDto(
             createdTimestampUtc,

@@ -58,7 +58,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
         const dialogRef = this.dialog.open(CompositePrimaryKeyEditDialog, {
             width: '400px',
-            data: {someString: dto.someString, someInt: dto.someInt}
+            data: {someInt: dto.someInt, someString: dto.someString}
         });
 
         dialogRef.afterClosed().subscribe(result => {

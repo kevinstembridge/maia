@@ -1,8 +1,8 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.HazelcastCompatibleType
-import org.maiaframework.gen.spec.definition.CacheableDef
+import org.maiaframework.gen.spec.definition.CacheName
 import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
@@ -17,7 +17,6 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -29,6 +28,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -40,7 +40,7 @@ import java.time.ZoneOffset
 
 
 class HazelcastSerializerRenderer(
-    private val cacheableDef: CacheableDef,
+    private val cacheName: CacheName,
     private val serializedClassDef: ClassDef,
     serializerClassDef: ClassDef
 ) : AbstractKotlinRenderer(
@@ -68,7 +68,7 @@ class HazelcastSerializerRenderer(
             |
             |    override fun getTypeName(): String {
             |
-            |        return "${this.cacheableDef.cacheName}"
+            |        return "${this.cacheName}"
             |
             |    }
             |""".trimMargin()

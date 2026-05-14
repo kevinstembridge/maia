@@ -57,9 +57,9 @@ class EntityDetailDtoEndpointRenderer(
             |
             |
             |    @GetMapping("${entityDetailViewDef.fetchApiUrlForKotlin}", produces = [MediaType.APPLICATION_JSON_VALUE])
-            |    fun fetch(@PathVariable pk: DomainId): ${entityDetailViewDef.dtoDef.uqcn}? {
+            |    fun fetch(@PathVariable id: DomainId): ${entityDetailViewDef.dtoDef.uqcn}? {
             |
-            |        return this.service.fetch(pk)
+            |        return this.service.fetch(id)
             |
             |    }
             |""".trimMargin()
@@ -75,9 +75,9 @@ class EntityDetailDtoEndpointRenderer(
             |
             |
             |    @GetMapping("${entityDetailViewDef.fetchApiUrlForKotlin}", produces = [MediaType.APPLICATION_JSON_VALUE])
-            |    fun fetch(@PathVariable pk: String): ${entityDetailViewDef.dtoDef.uqcn}? {
+            |    fun fetch(@PathVariable id: String): ${entityDetailViewDef.dtoDef.uqcn}? {
             |
-            |        val primaryKey = ${entityDetailViewDef.entityDef.entityPkClassDef.uqcn}.from(pk)
+            |        val primaryKey = ${entityDetailViewDef.entityDef.entityPkClassDef.uqcn}.from(id)
             |        return this.service.fetch(primaryKey)
             |
             |    }
@@ -100,9 +100,9 @@ class EntityDetailDtoEndpointRenderer(
             |
             |
             |    @GetMapping("${entityDetailViewDef.fetchApiUrlForKotlin}", produces = [MediaType.APPLICATION_JSON_VALUE])
-            |    fun fetch(@PathVariable pk: $pkUqcn): ${entityDetailViewDef.dtoDef.uqcn}? {
+            |    fun fetch(@PathVariable id: $pkUqcn): ${entityDetailViewDef.dtoDef.uqcn}? {
             |
-            |        return this.service.fetch(primaryKey)
+            |        return this.service.fetch(id)
             |
             |    }
             |""".trimMargin()

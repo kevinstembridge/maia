@@ -25,7 +25,7 @@ export class SimpleEntityDetailViewService {
     public fetch(pk: string): Observable<SimpleEntityDetailViewDto> {
 
       return this.http.get<SimpleEntityDetailViewDto>(
-          `/api/simple-entity-detail-view-dto/${pk}`,
+          `/api/simple-entity-detail-view-dto/${id}`,
           this.httpOptions
       );
 

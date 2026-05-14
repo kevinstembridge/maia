@@ -112,7 +112,7 @@ class CrudBlotterComponentRenderer(
             val entityDef = crudBlotterDef.entityCrudApiDef.entityDef
 
             val entityIdExpression = if (entityDef.hasCompositePrimaryKey) {
-                val parts = entityDef.primaryKeyFields.joinToString(", ") { "${it.classFieldName.value}: dto.${it.classFieldName.value}" }
+                val parts = entityDef.primaryKeyFieldsSorted.joinToString(", ") { "${it.classFieldName.value}: dto.${it.classFieldName.value}" }
                 "{$parts}"
             } else {
                 "dto.id"

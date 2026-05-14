@@ -330,7 +330,16 @@ class EntityDef(
         .build()
 
 
+    val hazelcastPrimaryKeySerializerClassDef = aClassDef(packageName.uqcn(entityBaseName.withSuffix("PkSerializer").value))
+        .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
+        .withInterface(ParameterizedTypes.hazelcastCompactSerializer(ParameterizedType(entityPkClassDef.fqcn)))
+        .build()
+
+
     val primaryKeyFields: List<EntityFieldDef> = allEntityFields.filter { it.isPrimaryKey.value }
+
+
+    val primaryKeyFieldsSorted: List<EntityFieldDef> = primaryKeyFields.sorted()
 
 
     val primaryKeyClassFields: List<ClassFieldDef> = allEntityFields
@@ -580,7 +589,7 @@ class EntityDef(
     val primaryKeyRowMapperDef = if (hasCompositePrimaryKey) {
         RowMapperDef(
             entityPkClassDef.fqcn,
-            this.primaryKeyFields.map { EntityFieldRowMapperFieldDef(it.classFieldName, it, it.tableColumnName.value) },
+            this.primaryKeyFieldsSorted.map { EntityFieldRowMapperFieldDef(it.classFieldName, it, it.tableColumnName.value) },
             entityPkClassDef.rowMapperClassDef,
             isForEditDto = false,
             compositeIdFields = emptyList()

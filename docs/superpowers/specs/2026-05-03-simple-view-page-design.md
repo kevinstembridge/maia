@@ -2,7 +2,7 @@
 
 ## Overview
 
-Implement `SimpleViewPage` to display the attributes of a `Simple` entity fetched by primary key from the route.
+Implement `CompositePrimaryKeyViewPage` to display the attributes of a `Simple` entity fetched by primary key from the route.
 
 ## Route
 
@@ -13,7 +13,7 @@ simple/view/:id
 
 ## Component
 
-**File:** `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.ts`
+**File:** `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/composite-primary-key-view-page.ts`
 
 - Standalone, `ChangeDetectionStrategy.OnPush`
 - Inject `ActivatedRoute` and `SimpleService`
@@ -54,4 +54,4 @@ Fields displayed (from `SimpleDto`):
 
 ## No new files
 
-Only `simple-view-page.ts` and `simple-view-page.html` are modified.
+Only `composite-primary-key-view-page.ts` and `simple-view-page.html` are modified.

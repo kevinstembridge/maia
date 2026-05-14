@@ -101,24 +101,6 @@ class EntityPkRenderer(
     }
 
 
-    private fun `render function toString`() {
-
-        addImportRaw("java.net.URLEncoder")
-
-        append("""
-            |
-            |
-            |    override fun toString(): String {
-            |
-            |        return listOf(${pkFields.joinToString(", ") { it.classFieldName.toString() }})
-            |            .joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
-            |
-            |    }
-            |""".trimMargin())
-
-    }
-
-
     private fun parseExpression(field: ClassFieldDef, index: Int): String {
 
         val decoded = "URLDecoder.decode(parts[$index], \"UTF-8\")"

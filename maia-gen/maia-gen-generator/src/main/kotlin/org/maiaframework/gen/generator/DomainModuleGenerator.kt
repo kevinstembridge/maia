@@ -237,11 +237,23 @@ class DomainModuleGenerator(
         val entityDef = entityHierarchy.entityDef
 
         entityDef.cacheableDef?.let {
+
             HazelcastSerializerRenderer(
-                it,
+                it.cacheName,
                 entityDef.entityClassDef,
                 entityDef.hazelcastSerializerClassDef
             ).renderToDir(this.kotlinOutputDir)
+
+            if (entityDef.hasCompositePrimaryKey) {
+
+                HazelcastSerializerRenderer(
+                    it.cacheName.withSuffix("_pk"),
+                    entityDef.entityPkClassDef,
+                    entityDef.hazelcastPrimaryKeySerializerClassDef
+                ).renderToDir(this.kotlinOutputDir)
+
+            }
+
         }
 
     }
@@ -255,7 +267,7 @@ class DomainModuleGenerator(
             it.cacheableDef?.let { cacheableDef ->
 
                 HazelcastSerializerRenderer(
-                    cacheableDef,
+                    cacheableDef.cacheName,
                     it.classDef,
                     it.hazelcastSerializerClassDef
                 ).renderToDir(this.kotlinOutputDir)
@@ -568,7 +580,7 @@ class DomainModuleGenerator(
     private fun renderHzSerializer(hazelcastDtoDef: HazelcastDtoDef) {
 
         HazelcastSerializerRenderer(
-            hazelcastDtoDef.cacheableDef,
+            hazelcastDtoDef.cacheableDef.cacheName,
             hazelcastDtoDef.dtoDef,
             hazelcastDtoDef.serializerClassDef
         ).renderToDir(this.kotlinOutputDir)

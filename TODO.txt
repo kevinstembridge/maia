@@ -7,7 +7,7 @@ TODO * Run it and manually test that the blotter for a composite pk entity can n
 TODO * When we navigate to the entity-detail view for a composite PK entity, we must url_encode the PK values.
 
 
-TODO * Handcode a SimpleViewPage and hook it into the SimpleBlotter view icon.
+TODO * Handcode a CompositePrimaryKeyViewPage and hook it into the SimpleBlotter view icon.
     TODO * Generate
     TODO * Include an Edit button for authorised users.
     TODO * On Edit clicked, switch to an EditPage.

@@ -214,7 +214,7 @@ class SearchableDtoDef(
 
 
     private val compositeIdFieldNames = if (dtoRootEntityDef.primaryKeyFields.size > 1) {
-        dtoRootEntityDef.primaryKeyFields.map { it.classFieldName.value }
+        dtoRootEntityDef.primaryKeyFieldsSorted.map { it.classFieldName.value }
     } else {
         emptyList()
     }

@@ -37,6 +37,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'composite-primary-key/view/:id',
+        loadComponent: () =>
+            import('./pages/composite-primary-key-view/composite-primary-key-view-page').then(
+                (m) => m.CompositePrimaryKeyViewPage,
+            ),
+    },
+    {
         path: 'login',
         loadComponent: () =>
             import('./pages/login/login-page').then(

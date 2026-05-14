@@ -4,6 +4,7 @@ import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.domain.types.TypeDiscriminator
 import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
+import org.maiaframework.gen.spec.definition.CacheableDef
 import org.maiaframework.gen.spec.definition.ConfigurableSchemaPropertyName
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.EntityBaseName
@@ -107,7 +108,7 @@ class EntityDefBuilder(
     private var hasEntityDetailViewDef: HasEntityDetailViewDef = HasEntityDetailViewDef.FALSE
 
 
-    private var cacheableDefBuilder: EntityCacheableDefBuilder? = null
+    private var cacheableDef: CacheableDef? = null
 
 
     private var configurableSchemaPropertyName: ConfigurableSchemaPropertyName? = null
@@ -136,7 +137,6 @@ class EntityDefBuilder(
         val entityFieldDefs = buildEntityFieldDefs()
         val indexDefs = buildIndexDefs(entityFieldDefs)
         val crudDef = this.crudDefBuilder.build(this.superclassEntityDef)
-        val cacheableDef = this.cacheableDefBuilder?.build()
 
         val recordVersionHistory = if (this.superclassEntityDef?.withVersionHistory?.value == true) {
             WithVersionHistory.TRUE
@@ -171,13 +171,13 @@ class EntityDefBuilder(
             recordVersionHistory,
             this.versioned,
             isHistoryEntity = false,
-            nameFieldForPkAndNameDto,
+            this.nameFieldForPkAndNameDto,
             stagingEntityFieldDefs = emptyList(),
             HasEffectiveTimestamps(this.hasEffectiveTimestamps),
             HasEffectiveLocalDates(this.hasEffectiveLocalDates),
             HasSingleEffectiveRecord(this.hasSingleEffectiveRecord),
-            hasEntityDetailViewDef,
-            cacheableDef,
+            this.hasEntityDetailViewDef,
+            this.cacheableDef,
             this.angularFormSystem
         )
 
@@ -691,8 +691,8 @@ class EntityDefBuilder(
     fun cacheable(init: EntityCacheableDefBuilder.() -> Unit) {
 
         val builder = EntityCacheableDefBuilder(this.entityBaseName)
-        this.cacheableDefBuilder = builder
         builder.init()
+        this.cacheableDef = builder.build()
 
     }
 

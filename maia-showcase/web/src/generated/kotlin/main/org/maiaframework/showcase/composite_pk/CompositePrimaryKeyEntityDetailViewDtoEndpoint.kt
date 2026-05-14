@@ -15,10 +15,10 @@ class CompositePrimaryKeyEntityDetailViewDtoEndpoint(
 ) {
 
 
-    @GetMapping("/api/composite-primary-key-entity-detail-view-dto/{pk}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun fetch(@PathVariable pk: String): CompositePrimaryKeyEntityDetailViewDto? {
+    @GetMapping("/api/composite-primary-key-entity-detail-view-dto/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun fetch(@PathVariable id: String): CompositePrimaryKeyEntityDetailViewDto? {
 
-        val primaryKey = CompositePrimaryKeyEntityPk.from(pk)
+        val primaryKey = CompositePrimaryKeyEntityPk.from(id)
         return this.service.fetch(primaryKey)
 
     }

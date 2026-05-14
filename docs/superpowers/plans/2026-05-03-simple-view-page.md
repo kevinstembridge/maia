@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers-extended-cc:subagent-driven-development (recommended) or superpowers-extended-cc:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Implement `SimpleViewPage` to display a `Simple` entity's attributes fetched by ID from the route.
+**Goal:** Implement `CompositePrimaryKeyViewPage` to display a `Simple` entity's attributes fetched by ID from the route.
 
 **Architecture:** Standalone Angular component with `ChangeDetectionStrategy.OnPush`. Uses `toSignal` + `switchMap` on `ActivatedRoute.paramMap` to reactively fetch from `SimpleService.findById`. Template guarded with `@if (dto())`.
 
@@ -16,18 +16,18 @@
 
 | File | Action |
 |---|---|
-| `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.ts` | Modify — implement component |
+| `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/composite-primary-key-view-page.ts` | Modify — implement component |
 | `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.html` | Modify — implement template |
 | `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.spec.ts` | Create — component tests |
 
 ---
 
-### Task 1: Implement SimpleViewPage component and template
+### Task 1: Implement CompositePrimaryKeyViewPage component and template
 
-**Goal:** Replace the stub `SimpleViewPage` with a working component that reads `:id` from the route, fetches the entity, and renders its fields vertically.
+**Goal:** Replace the stub `CompositePrimaryKeyViewPage` with a working component that reads `:id` from the route, fetches the entity, and renders its fields vertically.
 
 **Files:**
-- Modify: `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.ts`
+- Modify: `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/composite-primary-key-view-page.ts`
 - Modify: `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.html`
 - Create: `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.spec.ts`
 
@@ -50,11 +50,11 @@ import {TestBed} from '@angular/core/testing';
 import {convertToParamMap} from '@angular/router';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
-import {SimpleViewPage} from './simple-view-page';
+import {CompositePrimaryKeyViewPage} from './simple-view-page';
 import {SimpleService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-service';
 import {SimpleDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleDto';
 
-describe('SimpleViewPage', () => {
+describe('CompositePrimaryKeyViewPage', () => {
     const mockDto: SimpleDto = {
         id: 'test-id-123',
         someString: 'Hello World',
@@ -63,7 +63,7 @@ describe('SimpleViewPage', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [SimpleViewPage],
+            imports: [CompositePrimaryKeyViewPage],
             providers: [
                 {
                     provide: ActivatedRoute,
@@ -78,12 +78,12 @@ describe('SimpleViewPage', () => {
     });
 
     it('should create', () => {
-        const fixture = TestBed.createComponent(SimpleViewPage);
+        const fixture = TestBed.createComponent(CompositePrimaryKeyViewPage);
         expect(fixture.componentInstance).toBeTruthy();
     });
 
     it('should display field values after fetch', async () => {
-        const fixture = TestBed.createComponent(SimpleViewPage);
+        const fixture = TestBed.createComponent(CompositePrimaryKeyViewPage);
         await fixture.whenStable();
         const el = fixture.nativeElement as HTMLElement;
         expect(el.textContent).toContain('Hello World');
@@ -94,7 +94,7 @@ describe('SimpleViewPage', () => {
     it('should call findById with the route id', () => {
         const service = TestBed.inject(SimpleService);
         const spy = spyOn(service, 'findById').and.returnValue(of(mockDto));
-        TestBed.createComponent(SimpleViewPage);
+        TestBed.createComponent(CompositePrimaryKeyViewPage);
         expect(spy).toHaveBeenCalledWith('test-id-123');
     });
 });
@@ -106,11 +106,11 @@ describe('SimpleViewPage', () => {
 cd maia-showcase/maia-showcase-ui && npx ng test --include='**/simple-view-page.spec.ts' --watch=false
 ```
 
-Expected: errors because `SimpleViewPage` is a stub (no `toSignal`, no `dto` signal).
+Expected: errors because `CompositePrimaryKeyViewPage` is a stub (no `toSignal`, no `dto` signal).
 
 - [ ] **Step 3: Implement the component**
 
-Replace `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.ts` with:
+Replace `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/composite-primary-key-view-page.ts` with:
 
 ```typescript
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
@@ -131,7 +131,7 @@ import {PageLayout} from '@app/components/page-layout/page-layout';
         .simple-view-field dd { margin: 0; }
     `],
 })
-export class SimpleViewPage {
+export class CompositePrimaryKeyViewPage {
     private readonly simpleService = inject(SimpleService);
 
     protected readonly dto = toSignal(
@@ -179,12 +179,12 @@ Expected: all 3 specs pass (create, display field values, findById called with r
 - [ ] **Step 6: Commit**
 
 ```bash
-git add maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.ts \
+git add maia-showcase/maia-showcase-ui/src/app/pages/simple-view/composite-primary-key-view-page.ts \
         maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.html \
         maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.spec.ts
-git commit -m "Implement SimpleViewPage with signals-based fetch and vertical label/value layout"
+git commit -m "Implement CompositePrimaryKeyViewPage with signals-based fetch and vertical label/value layout"
 ```
 
 ```json:metadata
-{"files": ["maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.ts", "maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.html", "maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.spec.ts"], "verifyCommand": "cd maia-showcase/maia-showcase-ui && npx ng test --include='**/simple-view-page.spec.ts' --watch=false", "acceptanceCriteria": ["component compiles with no TypeScript errors", "template renders someString, createdTimestampUtc, and id labels and values", "template is blank before fetch resolves", "all 3 tests pass"], "requiresUserVerification": false}
+{"files": ["maia-showcase/maia-showcase-ui/src/app/pages/simple-view/composite-primary-key-view-page.ts", "maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.html", "maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-page.spec.ts"], "verifyCommand": "cd maia-showcase/maia-showcase-ui && npx ng test --include='**/simple-view-page.spec.ts' --watch=false", "acceptanceCriteria": ["component compiles with no TypeScript errors", "template renders someString, createdTimestampUtc, and id labels and values", "template is blank before fetch resolves", "all 3 tests pass"], "requiresUserVerification": false}
 ```
