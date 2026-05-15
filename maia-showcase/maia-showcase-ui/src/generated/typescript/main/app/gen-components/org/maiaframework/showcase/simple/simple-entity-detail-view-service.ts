@@ -22,7 +22,7 @@ export class SimpleEntityDetailViewService {
     private readonly http = inject(HttpClient);
 
 
-    public fetch(pk: string): Observable<SimpleEntityDetailViewDto> {
+    public fetch(id: string): Observable<SimpleEntityDetailViewDto> {
 
       return this.http.get<SimpleEntityDetailViewDto>(
           `/api/simple-entity-detail-view-dto/${id}`,

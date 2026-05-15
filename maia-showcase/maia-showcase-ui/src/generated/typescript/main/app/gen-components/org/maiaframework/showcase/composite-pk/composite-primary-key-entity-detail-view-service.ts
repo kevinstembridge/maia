@@ -22,7 +22,7 @@ export class CompositePrimaryKeyEntityDetailViewService {
     private readonly http = inject(HttpClient);
 
 
-    public fetch(pk: string): Observable<CompositePrimaryKeyEntityDetailViewDto> {
+    public fetch(id: string): Observable<CompositePrimaryKeyEntityDetailViewDto> {
 
       return this.http.get<CompositePrimaryKeyEntityDetailViewDto>(
           `/api/composite-primary-key-entity-detail-view-dto/${id}`,

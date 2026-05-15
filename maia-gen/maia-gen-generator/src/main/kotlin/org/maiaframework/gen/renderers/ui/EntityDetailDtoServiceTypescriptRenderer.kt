@@ -45,7 +45,7 @@ class EntityDetailDtoServiceTypescriptRenderer(
             |    private readonly http = inject(HttpClient);
             |
             |
-            |    public fetch(pk: string): Observable<${entityDetailViewDef.dtoDef.uqcn}> {
+            |    public fetch(id: string): Observable<${entityDetailViewDef.dtoDef.uqcn}> {
             |
             |      return this.http.get<${entityDetailViewDef.dtoDef.uqcn}>(
             |          `${entityDetailViewDef.fetchApiUrlForTypescript}`,

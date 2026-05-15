@@ -74,7 +74,7 @@ class UsersBlotterPage(
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
 
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
+        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
         val editCell = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first()
         editCell.waitFor()
         editCell.scrollIntoViewIfNeeded()

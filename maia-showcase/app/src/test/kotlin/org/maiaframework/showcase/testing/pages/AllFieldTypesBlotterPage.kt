@@ -90,15 +90,17 @@ class AllFieldTypesBlotterPage(
 
 
     fun clickEditButtonForFirstRow() {
+        // Scroll to 0 so the edit column (leftmost) stays in the virtual DOM.
+        // AllFieldTypes has 30+ columns — scrolling right removes leftmost columns via AG Grid
+        // column virtualization. SomeVersioned's few columns all fit, so scroll=99999 works there.
+        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
         // Wait for a cell with actual content: AG Grid keeps row DOM nodes after reapplyFilters()
-        // but sets rowNode.data = undefined immediately. Waiting for text "42" (someInt value from
-        // fillCreateForm) confirms the datasource response has arrived and data is truly loaded.
+        // but sets rowNode.data = undefined immediately. Waiting for someInt (visible at scroll=0)
+        // confirms the datasource response has arrived and data is truly loaded.
         page.waitForFunction(
             "() => { const c = document.querySelector('.ag-cell[col-id=\"someInt\"]'); " +
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
-        // Scroll the grid body to the right so the virtually-rendered edit column becomes visible
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
         // Click the edit cell — row data is guaranteed to be loaded (rowNode.data is defined)
         val editCell = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first()
         editCell.waitFor()
