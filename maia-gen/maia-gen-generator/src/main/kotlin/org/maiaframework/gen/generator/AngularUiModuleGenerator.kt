@@ -138,7 +138,7 @@ class AngularUiModuleGenerator(
         renderEntityEditDialogComponent()
         renderEntityEditDialogHtml()
         renderEntityDetailDtoComponents()
-        renderEntityDetailDtoHtml()
+        renderEntityDetailViewHtml()
         renderEntityDetailDtoServices()
         renderEntityDetailsDtos()
         renderEnums()
@@ -318,7 +318,7 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderEntityDetailDtoHtml() {
+    private fun renderEntityDetailViewHtml() {
 
         this.modelDef.entityDetailDtoDefs.forEach {
 
