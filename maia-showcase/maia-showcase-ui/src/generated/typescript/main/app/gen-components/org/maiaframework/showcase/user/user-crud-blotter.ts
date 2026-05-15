@@ -2,12 +2,11 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.CrudBlotterComponentRenderer
 
 import {Component, ViewChild, inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserBlotterRowDto';
 import {UserBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-blotter';
 import {UserCreateDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-create-dialog';
-import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
 import {UserEditDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-edit-dialog';
 
 
@@ -20,9 +19,6 @@ export class UserCrudBlotterComponent {
 
 
     @ViewChild(UserBlotter) blotterComponent!: UserBlotter;
-
-
-    private readonly crudService = inject(UserCrudService);
 
 
     private readonly dialog = inject(MatDialog);

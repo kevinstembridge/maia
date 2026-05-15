@@ -2,13 +2,12 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.CrudBlotterComponentRenderer
 
 import {Component, ViewChild, inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {LeftManyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyBlotterRowDto';
 import {LeftManyBlotter} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-blotter';
 import {LeftManyCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-check-foreign-key-references-dialog';
 import {LeftManyCreateDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-create-dialog';
-import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-crud-service';
 import {LeftManyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-delete-dialog';
 import {LeftManyEditDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-edit-dialog';
 
@@ -22,9 +21,6 @@ export class LeftManyCrudBlotterComponent {
 
 
     @ViewChild(LeftManyBlotter) blotterComponent!: LeftManyBlotter;
-
-
-    private readonly crudService = inject(LeftManyCrudService);
 
 
     private readonly dialog = inject(MatDialog);

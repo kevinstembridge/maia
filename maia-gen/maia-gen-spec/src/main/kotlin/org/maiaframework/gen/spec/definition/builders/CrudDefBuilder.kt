@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.CrudApiDefs
 import org.maiaframework.gen.spec.definition.CrudDef
 import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.flags.HasEditEntityPage
 import org.maiaframework.gen.spec.definition.flags.HasViewEntityPage
 import org.maiaframework.gen.spec.definition.flags.WithCrudListener
 
@@ -19,6 +20,9 @@ class CrudDefBuilder {
     var withViewEntityPage = HasViewEntityPage.TRUE
 
 
+    var withEditEntityPage = HasEditEntityPage.FALSE
+
+
     private var crudApiDefsBuilder: CrudApiDefsBuilder? = null
 
 
@@ -27,6 +31,7 @@ class CrudDefBuilder {
         return CrudDef(
             this.withCrudListener,
             this.withViewEntityPage,
+            this.withEditEntityPage,
             this.crudApiDefsBuilder?.build(superclassEntityDef) ?: CrudApiDefs.EMPTY
         )
 
@@ -43,8 +48,8 @@ class CrudDefBuilder {
             preAuthorizeExpression,
         )
 
-        this.crudApiDefsBuilder = builder
         builder.init()
+        this.crudApiDefsBuilder = builder
 
     }
 

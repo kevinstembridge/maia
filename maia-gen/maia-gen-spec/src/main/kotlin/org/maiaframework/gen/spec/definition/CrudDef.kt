@@ -1,11 +1,13 @@
 package org.maiaframework.gen.spec.definition
 
+import org.maiaframework.gen.spec.definition.flags.HasEditEntityPage
 import org.maiaframework.gen.spec.definition.flags.HasViewEntityPage
 import org.maiaframework.gen.spec.definition.flags.WithCrudListener
 
 data class CrudDef(
     val withCrudListener: WithCrudListener,
     val hasViewEntityPage: HasViewEntityPage,
+    val hasEditEntityPage: HasEditEntityPage,
     val crudApiDefs: CrudApiDefs
 ) {
 
@@ -15,6 +17,7 @@ data class CrudDef(
         val EMPTY = CrudDef(
             WithCrudListener.FALSE,
             HasViewEntityPage.FALSE,
+            HasEditEntityPage.FALSE,
             CrudApiDefs.EMPTY
         )
 

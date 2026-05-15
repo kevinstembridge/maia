@@ -2,12 +2,11 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.CrudBlotterComponentRenderer
 
 import {Component, ViewChild, inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesBlotterRowDto';
 import {AllFieldTypesBlotter} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-blotter';
 import {AllFieldTypesCreateDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-create-dialog';
-import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-crud-service';
 import {AllFieldTypesDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-delete-dialog';
 import {AllFieldTypesEditDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-edit-dialog';
 
@@ -21,9 +20,6 @@ export class AllFieldTypesCrudBlotterComponent {
 
 
     @ViewChild(AllFieldTypesBlotter) blotterComponent!: AllFieldTypesBlotter;
-
-
-    private readonly crudService = inject(AllFieldTypesCrudService);
 
 
     private readonly dialog = inject(MatDialog);

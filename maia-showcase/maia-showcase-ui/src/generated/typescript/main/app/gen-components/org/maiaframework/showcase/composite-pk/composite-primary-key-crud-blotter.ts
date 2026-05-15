@@ -2,12 +2,11 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.CrudBlotterComponentRenderer
 
 import {Component, ViewChild, inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyBlotterRowDto';
 import {CompositePrimaryKeyBlotter} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-blotter';
 import {CompositePrimaryKeyCreateDialog} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-create-dialog';
-import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-crud-service';
 import {CompositePrimaryKeyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-delete-dialog';
 import {CompositePrimaryKeyEditDialog} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-edit-dialog';
 
@@ -21,9 +20,6 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
 
     @ViewChild(CompositePrimaryKeyBlotter) blotterComponent!: CompositePrimaryKeyBlotter;
-
-
-    private readonly crudService = inject(CompositePrimaryKeyCrudService);
 
 
     private readonly dialog = inject(MatDialog);

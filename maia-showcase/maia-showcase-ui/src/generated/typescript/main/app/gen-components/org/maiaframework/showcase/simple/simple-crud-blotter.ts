@@ -2,14 +2,12 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.CrudBlotterComponentRenderer
 
 import {Component, ViewChild, inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
 import {SimpleBlotter} from '@app/gen-components/org/maiaframework/showcase/simple/simple-blotter';
 import {SimpleCreateDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-create-dialog';
-import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
 import {SimpleDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-delete-dialog';
-import {SimpleEditDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-edit-dialog';
 
 
 @Component({
@@ -21,9 +19,6 @@ export class SimpleCrudBlotterComponent {
 
 
     @ViewChild(SimpleBlotter) blotterComponent!: SimpleBlotter;
-
-
-    private readonly crudService = inject(SimpleCrudService);
 
 
     private readonly dialog = inject(MatDialog);
@@ -56,16 +51,7 @@ export class SimpleCrudBlotterComponent {
 
     onEdit(dto: SimpleBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(SimpleEditDialog, {
-            width: '400px',
-            data: dto.id
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
+        this.router.navigate(['/simple/edit', dto.id]);
 
     }
 

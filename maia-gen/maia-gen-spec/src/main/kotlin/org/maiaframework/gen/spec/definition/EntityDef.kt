@@ -248,6 +248,9 @@ class EntityDef(
     val hasViewEntityPage: Boolean = this.crudDef.hasViewEntityPage.value
 
 
+    val hasEditEntityPage: Boolean = this.crudDef.hasEditEntityPage.value
+
+
     val hasAnyMatSelectFields = allEntityFields.any { it.fieldType is EnumFieldType }
 
 
@@ -667,6 +670,9 @@ class EntityDef(
 
 
     val viewEntityUrl = "/$modulePath${entityBaseName.toKebabCase()}/view"
+
+
+    val editEntityUrl = "/$modulePath${entityBaseName.toKebabCase()}/edit"
 
 
     init {

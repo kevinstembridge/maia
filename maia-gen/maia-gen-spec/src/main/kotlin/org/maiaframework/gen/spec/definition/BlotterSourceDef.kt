@@ -20,6 +20,9 @@ sealed class BlotterSourceDef {
     abstract val hasViewEntityPage: Boolean
 
 
+    abstract val hasEditEntityPage: Boolean
+
+
     abstract val rowIdField: ClassFieldDef
 
 
@@ -44,6 +47,9 @@ class BlotterSearchableDtoSourceDef(
 
 
     override val hasViewEntityPage: Boolean = this.searchableDtoDef.dtoRootEntityDef.hasViewEntityPage
+
+
+    override val hasEditEntityPage: Boolean = this.searchableDtoDef.dtoRootEntityDef.hasEditEntityPage
 
 
     override val rowIdField: ClassFieldDef = this.searchableDtoDef.idField
@@ -73,6 +79,9 @@ class BlotterEsDocSourceDef(
 
 
     override val hasViewEntityPage: Boolean = esDocDef.hasViewEntityPage
+
+
+    override val hasEditEntityPage: Boolean = esDocDef.hasEditEntityPage
 
 
     override val rowIdField: ClassFieldDef = esDocDef.idField

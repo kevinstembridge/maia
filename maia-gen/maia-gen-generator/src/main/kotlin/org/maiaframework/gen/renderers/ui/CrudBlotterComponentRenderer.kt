@@ -15,10 +15,8 @@ class CrudBlotterComponentRenderer(
         addImport("@angular/core", "ViewChild")
         addImport("@angular/router", "Router")
         addImport("@angular/material/dialog", "MatDialog")
-        addImport("@angular/material/dialog", "MatDialogRef")
-        addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
-        addImport(crudBlotterDef.entityCrudApiDef.entityDef.crudAngularComponentNames.serviceTypescriptImport)
         addImport(crudBlotterDef.blotterDef.blotterComponent.componentTypescriptImport)
+        addImport(crudBlotterDef.blotterDef.dtoDef.typescriptDtoImport)
         crudBlotterDef.entityCrudApiDef.createApiDef?.let { addImport(it.angularDialogComponentNames.componentTypescriptImport) }
         crudBlotterDef.entityCrudApiDef.deleteApiDef?.let {
             addImport(it.angularDialogComponentTypescriptImport)
@@ -26,8 +24,9 @@ class CrudBlotterComponentRenderer(
                 addImport(crudBlotterDef.entityCrudApiDef.entityDef.checkForeignKeyReferencesDialog.componentTypescriptImport)
             }
         }
-        crudBlotterDef.entityCrudApiDef.updateApiDef?.let { addImport(it.angularDialogComponentNames.componentTypescriptImport) }
-        addImport(crudBlotterDef.blotterDef.dtoDef.typescriptDtoImport)
+        if (!crudBlotterDef.blotterDef.hasEditEntityPage) {
+            crudBlotterDef.entityCrudApiDef.updateApiDef?.let { addImport(it.angularDialogComponentNames.componentTypescriptImport) }
+        }
 
     }
 
@@ -54,13 +53,13 @@ class CrudBlotterComponentRenderer(
             |    @ViewChild(${crudBlotterDef.dtoBlotterComponent.componentName}) blotterComponent!: ${crudBlotterDef.dtoBlotterComponent.componentName};
             |
             |
-            |    private readonly crudService = inject(${crudBlotterDef.crudServiceClassName});
-            |
-            |
             |    private readonly dialog = inject(MatDialog);
             |""".trimMargin())
 
-        if (crudBlotterDef.blotterDef.hasViewActionColumn) {
+        val needsRouter = crudBlotterDef.blotterDef.hasViewActionColumn ||
+            (crudBlotterDef.blotterDef.hasEditEntityPage && crudBlotterDef.entityCrudApiDef.updateApiDef != null)
+
+        if (needsRouter) {
 
             append("""
                 |
@@ -111,31 +110,47 @@ class CrudBlotterComponentRenderer(
 
             val entityDef = crudBlotterDef.entityCrudApiDef.entityDef
 
-            val entityIdExpression = if (entityDef.hasCompositePrimaryKey) {
-                val parts = entityDef.primaryKeyFieldsSorted.joinToString(", ") { "${it.classFieldName.value}: dto.${it.classFieldName.value}" }
-                "{$parts}"
-            } else {
-                "dto.id"
-            }
+            if (crudBlotterDef.blotterDef.hasEditEntityPage) {
 
-            append("""
-                |
-                |
-                |    onEdit(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
-                |
-                |        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {
-                |            width: '400px',
-                |            data: $entityIdExpression
-                |        });
-                |
-                |        dialogRef.afterClosed().subscribe(result => {
-                |            if (result) {
-                |                this.blotterComponent.reapplyFilters();
-                |            }
-                |        });
-                |
-                |    }
-                |""".trimMargin())
+                append("""
+                    |
+                    |
+                    |    onEdit(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
+                    |
+                    |        this.router.navigate(['${entityDef.editEntityUrl}', dto.id]);
+                    |
+                    |    }
+                    |""".trimMargin())
+
+            } else {
+
+                val entityIdExpression = if (entityDef.hasCompositePrimaryKey) {
+                    val parts = entityDef.primaryKeyFieldsSorted.joinToString(", ") { "${it.classFieldName.value}: dto.${it.classFieldName.value}" }
+                    "{$parts}"
+                } else {
+                    "dto.id"
+                }
+
+                append("""
+                    |
+                    |
+                    |    onEdit(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
+                    |
+                    |        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {
+                    |            width: '400px',
+                    |            data: $entityIdExpression
+                    |        });
+                    |
+                    |        dialogRef.afterClosed().subscribe(result => {
+                    |            if (result) {
+                    |                this.blotterComponent.reapplyFilters();
+                    |            }
+                    |        });
+                    |
+                    |    }
+                    |""".trimMargin())
+
+            }
 
         }
 
