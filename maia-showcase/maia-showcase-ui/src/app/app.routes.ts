@@ -37,6 +37,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'simple/edit/:id',
+        loadComponent: () =>
+            import('./pages/simple-edit/simple-edit-page').then(
+                (m) => m.SimpleEditPage,
+            ),
+    },
+    {
         path: 'composite-primary-key/view/:id',
         loadComponent: () =>
             import('./pages/composite-primary-key-view/composite-primary-key-view-page').then(

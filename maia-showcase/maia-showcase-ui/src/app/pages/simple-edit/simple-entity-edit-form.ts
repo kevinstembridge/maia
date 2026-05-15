@@ -1,0 +1,117 @@
+import {Component, OnInit, inject, input, output, signal} from '@angular/core';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {SimpleFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleFetchForEditDto';
+import {SimpleSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringAsyncValidator';
+import {SimpleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleUpdateRequestDto';
+import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
+import {ProblemDetail} from '@maia/maia-ui';
+
+
+@Component({
+    imports: [
+        FormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+    ],
+    selector: 'app-simple-entity-edit-form',
+    styleUrls: ['./simple-entity-edit-form.scss'],
+    templateUrl: './simple-entity-edit-form.html',
+})
+export class SimpleEntityEditForm implements OnInit {
+
+
+    entityId = input.required<string>();
+
+
+    onSave = output();
+
+
+    onCancel = output();
+
+
+    problemDetail = signal<ProblemDetail | null>(null);
+
+
+    loading = signal(true);
+
+
+    formGroup: FormGroup;
+
+
+    private readonly formService = inject(SimpleCrudService);
+
+
+    private readonly simpleSomeStringAsyncValidator = inject(SimpleSomeStringAsyncValidator);
+
+
+    constructor() {
+
+        this.formGroup = new FormGroup({
+            someString: new FormControl('', {
+                updateOn: 'change',
+                validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
+                asyncValidators: [this.simpleSomeStringAsyncValidator.validate.bind(this.simpleSomeStringAsyncValidator)],
+            }),
+            id: new FormControl({value: '', disabled: true}),
+        });
+
+    }
+
+
+    ngOnInit() {
+
+        this.formService.fetchForEdit(this.entityId()).subscribe({
+            next: (dto: SimpleFetchForEditDto) => {
+                this.formGroup.patchValue({
+                    id: dto.id,
+                    someString: dto.someString,
+                });
+                this.loading.set(false);
+            },
+            error: (err) => {
+                this.problemDetail.set(err.error);
+                this.loading.set(false);
+            },
+        });
+
+    }
+
+
+    onSubmit() {
+
+        this.problemDetail.set(null);
+
+        if (this.formGroup.invalid) {
+            return;
+        }
+
+        const requestDto = {
+            id: this.formGroup.getRawValue().id,
+            someString: this.formGroup.getRawValue().someString,
+        } as SimpleUpdateRequestDto;
+
+        this.formService.edit(requestDto).subscribe({
+            next: () => {
+                this.onSave.emit();
+            },
+            error: err => {
+                this.problemDetail.set(err.error);
+            },
+        });
+
+    }
+
+
+    onCancelClicked(): void {
+        this.onCancel.emit();
+    }
+
+
+}

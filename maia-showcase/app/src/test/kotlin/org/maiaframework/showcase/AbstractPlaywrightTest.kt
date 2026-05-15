@@ -18,6 +18,9 @@ import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.maiaframework.showcase.testing.pages.AllFieldTypesBlotterPage
 import org.maiaframework.showcase.testing.pages.BravoBlotterPage
 import org.maiaframework.showcase.testing.pages.LeftManyBlotterPage
+import org.maiaframework.showcase.testing.pages.SimpleBlotterPage
+import org.maiaframework.showcase.testing.pages.SimpleEditPage
+import org.maiaframework.showcase.testing.pages.SimpleViewPage
 import org.maiaframework.showcase.testing.pages.UserGroupMembershipBlotterPage
 import org.maiaframework.showcase.testing.pages.CompositePkBlotterPage
 import org.maiaframework.showcase.testing.pages.UsersBlotterPage
@@ -72,6 +75,15 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var leftManyBlotterPage: LeftManyBlotterPage
 
 
+    protected lateinit var simpleBlotterPage: SimpleBlotterPage
+
+
+    protected lateinit var simpleViewPage: SimpleViewPage
+
+
+    protected lateinit var simpleEditPage: SimpleEditPage
+
+
     protected lateinit var userGroupMembershipBlotterPage: UserGroupMembershipBlotterPage
 
 
@@ -105,6 +117,9 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         homePage = HomePage(page, urlHelper)
         leftManyBlotterPage = LeftManyBlotterPage(page, urlHelper)
         loginPage = LoginPage(page, urlHelper)
+        simpleBlotterPage = SimpleBlotterPage(page, urlHelper)
+        simpleEditPage = SimpleEditPage(page, urlHelper)
+        simpleViewPage = SimpleViewPage(page, urlHelper)
         someVersionedBlotterPage = SomeVersionedBlotterPage(page, urlHelper)
         userGroupMembershipBlotterPage = UserGroupMembershipBlotterPage(page, urlHelper)
         usersBlotterPage = UsersBlotterPage(page, urlHelper)
