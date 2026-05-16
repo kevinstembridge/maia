@@ -17,7 +17,7 @@ class EntityDetailViewComponentRenderer(
         addImport("@angular/common", "DatePipe")
         addImport("rxjs", "Observable")
         addImport("@angular/material/progress-spinner", "MatProgressSpinner")
-        addImport(entityDetailViewDef.angularComponentNames.serviceTypescriptImport)
+        addImport(entityDetailViewDef.viewContentAngularComponentNames.serviceTypescriptImport)
         addImport(entityDetailViewDef.dtoDef.typescriptDtoImport)
 
     }
@@ -25,7 +25,7 @@ class EntityDetailViewComponentRenderer(
 
     override fun renderedFilePath(): String {
 
-        return this.entityDetailViewDef.angularComponentNames.componentRenderedFilePath
+        return this.entityDetailViewDef.viewContentAngularComponentNames.componentRenderedFilePath
 
     }
 
@@ -41,10 +41,10 @@ class EntityDetailViewComponentRenderer(
             |        DatePipe,
             |        MatProgressSpinner
             |    ],
-            |    selector: '${this.entityDetailViewDef.angularComponentNames.componentSelector}',
-            |    templateUrl: './${this.entityDetailViewDef.angularComponentNames.htmlFileName}'
+            |    selector: '${this.entityDetailViewDef.viewContentAngularComponentNames.componentSelector}',
+            |    templateUrl: './${this.entityDetailViewDef.viewContentAngularComponentNames.htmlFileName}'
             |})
-            |export class ${this.entityDetailViewDef.angularComponentNames.componentName} {
+            |export class ${this.entityDetailViewDef.viewContentAngularComponentNames.componentName} {
             |
             |
             |    entityId = input.required<string>();
@@ -53,7 +53,7 @@ class EntityDetailViewComponentRenderer(
             |    detailDto$!: Observable<${this.entityDetailViewDef.dtoDef.uqcn}>;
             |
             |
-            |    private readonly service = inject(${this.entityDetailViewDef.angularComponentNames.serviceName});
+            |    private readonly service = inject(${this.entityDetailViewDef.viewContentAngularComponentNames.serviceName});
             |
             |
             |    constructor() {

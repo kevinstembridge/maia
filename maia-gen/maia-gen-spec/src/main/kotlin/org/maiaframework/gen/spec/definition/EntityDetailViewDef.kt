@@ -9,6 +9,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 
+
 class EntityDetailViewDef(
     val entityDef: EntityDef
 ) {
@@ -20,16 +21,22 @@ class EntityDetailViewDef(
     private val modulePath = if (entityDef.moduleName == null) "" else "/${entityDef.moduleName.value}"
 
 
-    val viewComponentBaseName = DtoBaseName(entityDetailBaseName.withSuffix("View").value)
+    private val viewBaseName = entityDetailBaseName.withSuffix("View").value
 
 
-    val dtoBaseName = DtoBaseName(viewComponentBaseName.withSuffix("Dto").value)
+    private val viewContentComponentBaseName = DtoBaseName(viewBaseName)
 
 
-    val angularComponentNames = AngularComponentNames(this.entityDef.packageName, this.viewComponentBaseName.value)
+    val viewContentAngularComponentNames = AngularComponentNames(this.entityDef.packageName, this.viewContentComponentBaseName.value)
 
 
-    val viewComponentHtmlRenderedFilePath = angularComponentNames.htmlRenderedFilePath
+    private val dtoBaseName = DtoBaseName(viewContentComponentBaseName.withSuffix("Dto").value)
+
+
+    val typescriptServiceName = viewContentAngularComponentNames.serviceName
+
+
+    val viewContentComponentHtmlRenderedFilePath = viewContentAngularComponentNames.htmlRenderedFilePath
 
 
     val fetchApiUrlForTypescript = $$"/api$$modulePath/$${dtoBaseName.toKebabCase()}/${id}"

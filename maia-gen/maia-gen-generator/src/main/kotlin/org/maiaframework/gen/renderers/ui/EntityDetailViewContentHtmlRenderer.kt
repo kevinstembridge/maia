@@ -9,7 +9,7 @@ class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: Entit
 
     override fun renderedFilePath(): String {
 
-        return entityDetailViewDef.viewComponentHtmlRenderedFilePath
+        return entityDetailViewDef.viewContentComponentHtmlRenderedFilePath
 
     }
 
