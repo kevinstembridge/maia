@@ -17,6 +17,35 @@ object StringFunctions {
     }
 
 
+    fun toTitleCase(input: String): String {
+
+        val chars = input.toCharArray()
+        val sb = StringBuilder()
+        var newWord = true
+
+        for (ch in chars) {
+            when {
+                ch == '-' || ch == '_' -> {
+                    if (sb.isNotEmpty()) sb.append(' ')
+                    newWord = true
+                }
+                Character.isUpperCase(ch) -> {
+                    if (sb.isNotEmpty() && !newWord) sb.append(' ')
+                    sb.append(ch)
+                    newWord = false
+                }
+                else -> {
+                    sb.append(if (newWord) Character.toUpperCase(ch) else ch)
+                    newWord = false
+                }
+            }
+        }
+
+        return sb.toString()
+
+    }
+
+
     private fun toLowerCaseWithSeparator(input: String, separator: String): String {
 
         val chars = input.toCharArray()

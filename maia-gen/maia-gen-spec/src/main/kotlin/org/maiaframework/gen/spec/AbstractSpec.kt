@@ -24,6 +24,7 @@ import org.maiaframework.gen.spec.definition.ElasticIndexBaseName
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityCrudApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.EntityHtmlFormDef
 import org.maiaframework.gen.spec.definition.EnumDef
@@ -59,6 +60,7 @@ import org.maiaframework.gen.spec.definition.builders.DataClassDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BlotterDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityCreateHtmlFormDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityDefBuilder
+import org.maiaframework.gen.spec.definition.builders.EntityDetailViewDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EnumDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EsDocDefBuilder
 import org.maiaframework.gen.spec.definition.builders.FixedWidthFileStagingEntityDefBuilder
@@ -119,6 +121,7 @@ abstract class AbstractSpec protected constructor(
     private val defaultSchemaName = defaultSchemaName ?: SchemaName(appKey.value)
     private val blotterDefs = mutableListOf<BlotterDef>()
     private val entityCreateHtmlFormDefs = mutableListOf<EntityHtmlFormDef>()
+    private val entityDetailViewDefs = mutableListOf<EntityDetailViewDef>()
     private val entityDefs = mutableListOf<EntityDef>()
     private val enumDefs = mutableListOf<EnumDef>().also { it.add(EnumDefs.LIFECYCLE_STATE_ENUM_DEF) }
     private val esDocDefs = mutableListOf<EsDocDef>()
@@ -173,7 +176,8 @@ abstract class AbstractSpec protected constructor(
                 this.crudBlotterDefs,
                 this.esDocDefs,
                 buildHazelcastConfigClassDef(),
-                this.rowMapperDefs
+                this.rowMapperDefs,
+                this.entityDetailViewDefs
             )
 
         }
@@ -990,6 +994,22 @@ abstract class AbstractSpec protected constructor(
         builder.init()
         val def = builder.build()
         this.blotterDefs.add(def)
+        return def
+
+    }
+
+
+    protected fun entityDetailView(
+        entityDef: EntityDef,
+        init: (EntityDetailViewDefBuilder.() -> Unit)? = null
+    ): EntityDetailViewDef {
+
+        val builder = EntityDetailViewDefBuilder(entityDef)
+        init?.invoke(builder)
+
+        val def = builder.build()
+        this.entityDetailViewDefs.add(def)
+
         return def
 
     }

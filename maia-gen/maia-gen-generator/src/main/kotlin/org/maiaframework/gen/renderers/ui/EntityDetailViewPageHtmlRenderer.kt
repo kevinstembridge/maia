@@ -17,9 +17,9 @@ class EntityDetailViewPageHtmlRenderer(private val entityDetailViewDef: EntityDe
     override fun renderSource(): String {
 
         append("""
-            |<app-page-layout pageTitle="" dataPageId="TODO">
+            |<app-page-layout pageTitle="${entityDetailViewDef.pageTitle}" dataPageId="${entityDetailViewDef.dataPageId}">
             |    @if (entityId(); as id) {
-            |        <app-huh [entityId]="id" />
+            |        <${entityDetailViewDef.viewContentAngularComponentNames.componentSelector} [entityId]="id" />
             |    }
             |    @if (canEdit && entityId()) {
             |        <button matButton aria-label="Edit" (click)="onEditClicked()">

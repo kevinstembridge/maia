@@ -18,7 +18,6 @@ import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
-import org.maiaframework.gen.spec.definition.flags.HasEntityDetailViewDef
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 import org.maiaframework.gen.spec.definition.flags.IsCappedCollection
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
@@ -95,7 +94,6 @@ class FixedWidthFileStagingEntityDefBuilder(
             stagingEntityFieldDefs = stagingEntityFieldDefs,
             hasEffectiveTimestamps = HasEffectiveTimestamps.FALSE,
             hasEffectiveLocalDates = HasEffectiveLocalDates.FALSE,
-            hasEntityDetailViewDef = HasEntityDetailViewDef.FALSE,
             hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
             cacheableDef = null,
             crudDef = CrudDef.EMPTY,

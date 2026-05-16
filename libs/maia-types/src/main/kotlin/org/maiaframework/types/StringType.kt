@@ -89,6 +89,13 @@ abstract class StringType<T : StringType<T>> protected constructor(
     }
 
 
+    fun toTitleCase(): String {
+
+        return StringFunctions.toTitleCase(this.value)
+
+    }
+
+
     private fun transformFirstChar(func: (Char) -> Char): String {
 
         val chars = this.value.toCharArray()

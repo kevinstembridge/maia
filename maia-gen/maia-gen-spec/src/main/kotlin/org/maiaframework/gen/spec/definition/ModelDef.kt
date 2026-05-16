@@ -27,7 +27,8 @@ class ModelDef(
     val crudBlotterDefs: List<CrudBlotterDef>,
     val esDocsDefs: List<EsDocDef>,
     val hazelcastEntityConfigClassDef: ClassDef,
-    val rowMapperDefs: List<RowMapperDef>
+    val rowMapperDefs: List<RowMapperDef>,
+    val entityDetailViewDefs: List<EntityDetailViewDef>
 ) {
 
 
@@ -44,9 +45,6 @@ class ModelDef(
 
 
     val fetchForEditDtoDefs = entityDefs.filter { it.isConcrete }.mapNotNull { it.fetchForEditDtoDef }
-
-
-    val entityDetailViewDefs = entityDefs.filterNot { it.isHistoryEntity }.mapNotNull { it.entityDetailViewDef }
 
 
     val entitiesReferencedByForeignKey = entityDefs

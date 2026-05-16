@@ -12,7 +12,6 @@ import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
-import org.maiaframework.gen.spec.definition.flags.HasEntityDetailViewDef
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 import org.maiaframework.gen.spec.definition.flags.IsCappedCollection
 import org.maiaframework.gen.spec.definition.flags.IsCreatableByUser
@@ -84,7 +83,6 @@ class EntityDef(
     val hasEffectiveTimestamps: HasEffectiveTimestamps,
     val hasEffectiveLocalDates: HasEffectiveLocalDates,
     val hasSingleEffectiveRecord: HasSingleEffectiveRecord,
-    private val hasEntityDetailViewDef: HasEntityDetailViewDef,
     val cacheableDef: CacheableDef?,
     val angularFormSystem: AngularFormSystem
 ) {
@@ -491,7 +489,6 @@ class EntityDef(
             entityFieldsNotInherited = historyFieldDefs,
             hasEffectiveLocalDates = this.hasEffectiveLocalDates,
             hasEffectiveTimestamps = this.hasEffectiveTimestamps,
-            hasEntityDetailViewDef = this.hasEntityDetailViewDef,
             hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
             isAbstract = this.isAbstract,
             isCappedCollection = IsCappedCollection.FALSE,
@@ -578,15 +575,6 @@ class EntityDef(
     val fetchForEditDtoRowMapperClassDef = aClassDef(this.fetchForEditDtoRowMapperFqcn)
         .withInterface(ParameterizedType(Fqcns.MAIA_JDBC_ROW_MAPPER, ParameterizedType(this.fetchForEditDtoFqcn)))
         .build()
-
-
-    val entityDetailViewDef: EntityDetailViewDef? by lazy {
-        if (hasEntityDetailViewDef.value) {
-            EntityDetailViewDef(this)
-        } else {
-            null
-        }
-    }
 
 
     val primaryKeyRowMapperDef = if (hasCompositePrimaryKey) {

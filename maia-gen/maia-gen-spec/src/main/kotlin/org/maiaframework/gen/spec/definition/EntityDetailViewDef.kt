@@ -11,8 +11,12 @@ import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 
 
 class EntityDetailViewDef(
-    val entityDef: EntityDef
+    val entityDef: EntityDef,
+    val pageTitle: String
 ) {
+
+
+    val dataPageId = "${entityDef.entityBaseName.toSnakeCase()}_view"
 
 
     private val entityDetailBaseName = entityDef.entityBaseName.withSuffix("EntityDetail")

@@ -455,7 +455,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
         cacheable {  }
-        withEntityDetailView()
         field("someString", FieldTypes.string) {
             fieldDisplayName("Some String")
             lengthConstraint(min = 3, max = 100)
@@ -501,6 +500,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val simpleCrudDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
+
+
+    val simpleEntityDetailViewDef = entityDetailView(simpleEntityDef)
 
 
     val historySampleEntityDef = entity(
@@ -1214,7 +1216,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         recordVersionHistory = true
     ) {
         cacheable {  }
-        withEntityDetailView()
         field("someString", FieldTypes.string) {
             fieldDisplayName("Some String")
             primaryKey()

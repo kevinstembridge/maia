@@ -27,7 +27,6 @@ import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
-import org.maiaframework.gen.spec.definition.flags.HasEntityDetailViewDef
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 import org.maiaframework.gen.spec.definition.flags.IsCappedCollection
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
@@ -105,9 +104,6 @@ class EntityDefBuilder(
     private val crudDefBuilder = CrudDefBuilder()
 
 
-    private var hasEntityDetailViewDef: HasEntityDetailViewDef = HasEntityDetailViewDef.FALSE
-
-
     private var cacheableDef: CacheableDef? = null
 
 
@@ -176,7 +172,6 @@ class EntityDefBuilder(
             HasEffectiveTimestamps(this.hasEffectiveTimestamps),
             HasEffectiveLocalDates(this.hasEffectiveLocalDates),
             HasSingleEffectiveRecord(this.hasSingleEffectiveRecord),
-            this.hasEntityDetailViewDef,
             this.cacheableDef,
             this.angularFormSystem
         )
@@ -693,13 +688,6 @@ class EntityDefBuilder(
         val builder = EntityCacheableDefBuilder(this.entityBaseName)
         builder.init()
         this.cacheableDef = builder.build()
-
-    }
-
-
-    fun withEntityDetailView() {
-
-        this.hasEntityDetailViewDef = HasEntityDetailViewDef.TRUE
 
     }
 
