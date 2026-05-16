@@ -1276,6 +1276,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val compositePrimaryKeyCrudDef = crudBlotter(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
 
 
+    val compositePrimaryKeyEntityDetailViewDef = entityDetailView(compositePrimaryKeyEntityDef)
+
+
     val nonSurrogatePrimaryKeyEntityDef = entity(
         "org.maiaframework.showcase.non_surrogate_pk",
         "NonSurrogatePrimaryKey",

@@ -32,8 +32,8 @@ export const routes: Routes = [
     {
         path: 'simple/view/:id',
         loadComponent: () =>
-            import('./pages/simple-view/simple-view-page').then(
-                (m) => m.SimpleViewPage,
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-entity-detail-view-page').then(
+                (m) => m.SimpleEntityDetailViewPage,
             ),
     },
     {
