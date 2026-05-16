@@ -53,7 +53,7 @@ class EntityDetailViewComponentRenderer(
             |    detailDto$!: Observable<${this.entityDetailViewDef.dtoDef.uqcn}>;
             |
             |
-            |    private readonly service = inject(${this.entityDetailViewDef.viewContentAngularComponentNames.serviceName});
+            |    private readonly service = inject(${this.entityDetailViewDef.typescriptServiceName});
             |
             |
             |    constructor() {

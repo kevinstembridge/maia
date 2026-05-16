@@ -21,16 +21,13 @@ class EntityDetailViewDef(
     private val modulePath = if (entityDef.moduleName == null) "" else "/${entityDef.moduleName.value}"
 
 
-    private val viewBaseName = entityDetailBaseName.withSuffix("View").value
+    private val entityDetailViewBaseName = entityDetailBaseName.withSuffix("View").value
 
 
-    private val viewContentComponentBaseName = DtoBaseName(viewBaseName)
+    val viewContentAngularComponentNames = AngularComponentNames(this.entityDef.packageName, this.entityDetailViewBaseName)
 
 
-    val viewContentAngularComponentNames = AngularComponentNames(this.entityDef.packageName, this.viewContentComponentBaseName.value)
-
-
-    private val dtoBaseName = DtoBaseName(viewContentComponentBaseName.withSuffix("Dto").value)
+    private val dtoBaseName = DtoBaseName(entityDetailViewBaseName).withSuffix("Dto")
 
 
     val typescriptServiceName = viewContentAngularComponentNames.serviceName
