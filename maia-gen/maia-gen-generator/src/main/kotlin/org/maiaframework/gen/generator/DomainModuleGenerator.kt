@@ -132,7 +132,7 @@ class DomainModuleGenerator(
 
     private fun `render EntityDetailDtos`() {
 
-        this.modelDef.entityDetailDtoDefs.forEach { renderDto(it.dtoDef) }
+        this.modelDef.entityDetailViewDefs.forEach { renderDto(it.dtoDef) }
 
     }
 

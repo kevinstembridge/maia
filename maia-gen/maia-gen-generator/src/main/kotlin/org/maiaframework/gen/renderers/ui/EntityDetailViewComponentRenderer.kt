@@ -17,7 +17,7 @@ class EntityDetailViewComponentRenderer(
         addImport("@angular/common", "DatePipe")
         addImport("rxjs", "Observable")
         addImport("@angular/material/progress-spinner", "MatProgressSpinner")
-        addImport(entityDetailViewDef.componentNames.serviceTypescriptImport)
+        addImport(entityDetailViewDef.angularComponentNames.serviceTypescriptImport)
         addImport(entityDetailViewDef.dtoDef.typescriptDtoImport)
 
     }
@@ -25,7 +25,7 @@ class EntityDetailViewComponentRenderer(
 
     override fun renderedFilePath(): String {
 
-        return this.entityDetailViewDef.componentNames.componentRenderedFilePath
+        return this.entityDetailViewDef.angularComponentNames.componentRenderedFilePath
 
     }
 
@@ -41,10 +41,10 @@ class EntityDetailViewComponentRenderer(
             |        DatePipe,
             |        MatProgressSpinner
             |    ],
-            |    selector: '${this.entityDetailViewDef.componentNames.componentSelector}',
-            |    templateUrl: './${this.entityDetailViewDef.componentNames.htmlFileName}'
+            |    selector: '${this.entityDetailViewDef.angularComponentNames.componentSelector}',
+            |    templateUrl: './${this.entityDetailViewDef.angularComponentNames.htmlFileName}'
             |})
-            |export class ${this.entityDetailViewDef.componentNames.componentName} {
+            |export class ${this.entityDetailViewDef.angularComponentNames.componentName} {
             |
             |
             |    entityId = input.required<string>();
@@ -53,7 +53,7 @@ class EntityDetailViewComponentRenderer(
             |    detailDto$!: Observable<${this.entityDetailViewDef.dtoDef.uqcn}>;
             |
             |
-            |    private readonly service = inject(${this.entityDetailViewDef.componentNames.serviceName});
+            |    private readonly service = inject(${this.entityDetailViewDef.angularComponentNames.serviceName});
             |
             |
             |    constructor() {

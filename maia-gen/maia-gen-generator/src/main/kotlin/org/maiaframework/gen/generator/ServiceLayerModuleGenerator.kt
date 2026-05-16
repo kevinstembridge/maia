@@ -85,7 +85,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render EntityDetailDto services`() {
 
-        this.modelDef.entityDetailDtoDefs.forEach {
+        this.modelDef.entityDetailViewDefs.forEach {
             EntityDetailDtoServiceRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 

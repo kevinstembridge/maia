@@ -14,17 +14,22 @@ class EntityDetailViewDef(
 ) {
 
 
-
     private val entityDetailBaseName = entityDef.entityBaseName.withSuffix("EntityDetail")
 
 
     private val modulePath = if (entityDef.moduleName == null) "" else "/${entityDef.moduleName.value}"
 
 
-    val componentBaseName = DtoBaseName(entityDetailBaseName.withSuffix("View").value)
+    val viewComponentBaseName = DtoBaseName(entityDetailBaseName.withSuffix("View").value)
 
 
-    val dtoBaseName = DtoBaseName(componentBaseName.withSuffix("Dto").value)
+    val dtoBaseName = DtoBaseName(viewComponentBaseName.withSuffix("Dto").value)
+
+
+    val angularComponentNames = AngularComponentNames(this.entityDef.packageName, this.viewComponentBaseName.value)
+
+
+    val viewComponentHtmlRenderedFilePath = angularComponentNames.htmlRenderedFilePath
 
 
     val fetchApiUrlForTypescript = $$"/api$$modulePath/$${dtoBaseName.toKebabCase()}/${id}"
@@ -75,9 +80,6 @@ class EntityDetailViewDef(
         }
 
     }
-
-
-    val componentNames = AngularComponentNames(this.entityDef.packageName, componentBaseName.value)
 
 
     val endpointClassDef = aClassDef(entityDef.packageName.uqcn(dtoDef.uqcn.withSuffix("Endpoint")))

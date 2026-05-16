@@ -21,7 +21,7 @@ class EntityDetailDtoServiceTypescriptRenderer(
 
     override fun renderedFilePath(): String {
 
-        return this.entityDetailViewDef.componentNames.serviceRenderedFilePath
+        return this.entityDetailViewDef.angularComponentNames.serviceRenderedFilePath
 
     }
 
@@ -32,7 +32,7 @@ class EntityDetailDtoServiceTypescriptRenderer(
             |
             |
             |@Injectable({providedIn: 'root'})
-            |export class ${this.entityDetailViewDef.componentNames.serviceName} {
+            |export class ${this.entityDetailViewDef.angularComponentNames.serviceName} {
             |
             |
             |    private httpOptions = {

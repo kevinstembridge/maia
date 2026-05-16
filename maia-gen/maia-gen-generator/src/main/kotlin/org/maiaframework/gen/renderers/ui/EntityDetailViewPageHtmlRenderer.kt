@@ -4,12 +4,14 @@ import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
-class EntityDetailDtoHtmlRenderer(private val entityDetailViewDef: EntityDetailViewDef) : AbstractSourceFileRenderer() {
+class EntityDetailViewPageHtmlRenderer(
+    private val entityDetailViewDef: EntityDetailViewDef
+) : AbstractSourceFileRenderer() {
 
 
     override fun renderedFilePath(): String {
 
-        return entityDetailViewDef.viewComponentHtmlRenderedFilePath
+        return entityDetailViewDef.angularComponentNames.viewPageHtmlRenderedFilePath
 
     }
 

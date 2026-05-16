@@ -80,7 +80,7 @@ class RepoLayerModuleGenerator(
 
     private fun `render EntityDetailDto repos`() {
 
-        modelDef.entityDetailDtoDefs.forEach {
+        modelDef.entityDetailViewDefs.forEach {
             EntityDetailDtoRepoRenderer(it).renderToDir(kotlinOutputDir)
         }
 

@@ -61,7 +61,6 @@ import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
-import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.Uqcn
 
 
@@ -309,7 +308,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDetailDtoComponents() {
 
-        this.modelDef.entityDetailDtoDefs.forEach {
+        this.modelDef.entityDetailViewDefs.forEach {
 
             EntityDetailViewComponentRenderer(it).renderToDir(this.typescriptOutputDir)
 
@@ -320,7 +319,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDetailViewHtml() {
 
-        this.modelDef.entityDetailDtoDefs.forEach {
+        this.modelDef.entityDetailViewDefs.forEach {
 
             EntityDetailDtoHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
 
@@ -331,7 +330,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDetailDtoServices() {
 
-        this.modelDef.entityDetailDtoDefs.forEach {
+        this.modelDef.entityDetailViewDefs.forEach {
 
             EntityDetailDtoServiceTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
 
@@ -689,7 +688,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDetailsDtos() {
 
-        modelDef.entityDetailDtoDefs
+        modelDef.entityDetailViewDefs
             .map { it.dtoDef }
             .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
