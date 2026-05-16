@@ -1,16 +1,32 @@
 package org.maiaframework.gen.renderers.ui
 
+import org.maiaframework.gen.spec.definition.AuthoritiesDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 
 class EntityDetailViewPageComponentRenderer(
-    private val entityDetailViewDef: EntityDetailViewDef
+    private val entityDetailViewDef: EntityDetailViewDef,
+    authoritiesDef: AuthoritiesDef?,
 ) : AbstractTypescriptRenderer() {
 
 
     init {
 
         addImport("@angular/core", "Component")
+        addImport("@angular/core", "ChangeDetectionStrategy")
         addImport("@angular/core", "inject")
+        addImport("@angular/core/rxjs-interop", "toSignal")
+        addImport("@angular/material/button", "MatButtonModule")
+        addImport("@angular/material/icon", "MatIconModule")
+        addImport("@angular/router", "ActivatedRoute")
+        addImport("@angular/router", "Router")
+        addImport("rxjs", "map")
+        addImport("@app/components/page-layout/page-layout", "PageLayout")
+        addImport(this.entityDetailViewDef.viewContentAngularComponentNames.componentTypescriptImport)
+
+        authoritiesDef?.let {
+            addImport(it.authServiceTypescriptImport)
+            addImport(it.enumDef.typescriptImport)
+        }
 
     }
 

@@ -2,17 +2,15 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityDetailViewPageComponentRenderer
 
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {PageLayout} from '@app/components/page-layout/page-layout';
-import {
-    CompositePrimaryKeyEntityDetailView
-} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-entity-detail-view';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {map} from 'rxjs';
+import {PageLayout} from '@app/components/page-layout/page-layout';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
+import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
+import {CompositePrimaryKeyEntityDetailView} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-entity-detail-view';
+import {map} from 'rxjs';
 
 
 @Component({

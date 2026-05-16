@@ -312,7 +312,7 @@ class AngularUiModuleGenerator(
         this.modelDef.entityDetailViewDefs.forEach {
 
             EntityDetailViewComponentRenderer(it).renderToDir(this.typescriptOutputDir)
-            EntityDetailViewPageComponentRenderer(it).renderToDir(this.typescriptOutputDir)
+            EntityDetailViewPageComponentRenderer(it, this.modelDef.authoritiesDef).renderToDir(this.typescriptOutputDir)
             EntityDetailViewContentHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
             EntityDetailViewPageHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
 
