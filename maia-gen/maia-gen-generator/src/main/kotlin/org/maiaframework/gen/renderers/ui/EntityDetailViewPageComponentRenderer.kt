@@ -5,7 +5,7 @@ import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 
 class EntityDetailViewPageComponentRenderer(
     private val entityDetailViewDef: EntityDetailViewDef,
-    authoritiesDef: AuthoritiesDef?,
+    private val authoritiesDef: AuthoritiesDef?,
 ) : AbstractTypescriptRenderer() {
 
 
@@ -70,19 +70,30 @@ class EntityDetailViewPageComponentRenderer(
             |            map(p => p.get('id'))
             |        )
             |    );
-            |
-            |
-            |    protected get canEdit(): boolean {
-            |        return this.authService.currentUserHasThisAuthority(Authority.WRITE);
-            |    }
-            |
-            |
-            |    onEditClicked(): void {
-            |        const id = this.entityId();
-            |        if (id) {
-            |            this.router.navigate(['${this.entityDetailViewDef.editPageUrl}', id]);
-            |        }
-            |    }
+            |""".trimMargin())
+
+        this.authoritiesDef?.let {
+
+            append("""
+                |
+                |
+                |    protected get canEdit(): boolean {
+                |        return this.authService.currentUserHasThisAuthority(${it.enumDef.uqcn}.${entityDetailViewDef.editPermission});
+                |    }
+                |
+                |
+                |    onEditClicked(): void {
+                |        const id = this.entityId();
+                |        if (id) {
+                |            this.router.navigate(['${this.entityDetailViewDef.editPageUrl}', id]);
+                |        }
+                |    }
+                |""".trimMargin())
+
+        }
+
+
+        append("""
             |
             |
             |}

@@ -1,7 +1,5 @@
 
 
-TODO * Create an EntityDetailViewDef like a CrudBlotterDef
-
 TODO * On an entity-detail-view page, include an Edit button for authorised users.
 TODO * On Edit clicked, switch to an EditPage.
     TODO * Handcode an edit page, based on the edit dialog.
