@@ -137,8 +137,7 @@ class AngularUiModuleGenerator(
         renderEntityDeleteDialogHtml()
         renderEntityEditDialogComponent()
         renderEntityEditDialogHtml()
-        renderEntityDetailDtoComponents()
-        renderEntityDetailViewHtml()
+        renderEntityDetailViews()
         renderEntityDetailDtoServices()
         renderEntityDetailsDtos()
         renderEnums()
@@ -307,25 +306,13 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderEntityDetailDtoComponents() {
+    private fun renderEntityDetailViews() {
 
         this.modelDef.entityDetailViewDefs.forEach {
 
             EntityDetailViewComponentRenderer(it).renderToDir(this.typescriptOutputDir)
-
-        }
-
-    }
-
-
-    private fun renderEntityDetailViewHtml() {
-
-        this.modelDef.entityDetailViewDefs.forEach {
-
             EntityDetailViewContentHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
             EntityDetailViewPageHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
-
-
 
         }
 
