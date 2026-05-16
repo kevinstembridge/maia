@@ -24,7 +24,13 @@ class EntityDetailViewDef(
     private val entityDetailViewBaseName = entityDetailBaseName.withSuffix("View").value
 
 
+    private val entityDetailViewPageBaseName = entityDetailBaseName.withSuffix("ViewPage").value
+
+
     val viewContentAngularComponentNames = AngularComponentNames(this.entityDef.packageName, this.entityDetailViewBaseName)
+
+
+    val viewPageAngularComponentNames = AngularComponentNames(this.entityDef.packageName, this.entityDetailViewPageBaseName)
 
 
     private val dtoBaseName = DtoBaseName(entityDetailViewBaseName).withSuffix("Dto")
@@ -34,6 +40,9 @@ class EntityDetailViewDef(
 
 
     val viewContentComponentHtmlRenderedFilePath = viewContentAngularComponentNames.htmlRenderedFilePath
+
+
+    val viewPageComponentHtmlRenderedFilePath = viewPageAngularComponentNames.htmlRenderedFilePath
 
 
     val fetchApiUrlForTypescript = $$"/api$$modulePath/$${dtoBaseName.toKebabCase()}/${id}"
