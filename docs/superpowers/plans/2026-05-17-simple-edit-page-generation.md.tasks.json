@@ -1,0 +1,47 @@
+{
+  "planPath": "docs/superpowers/plans/2026-05-17-simple-edit-page-generation.md",
+  "tasks": [
+    {
+      "id": 5,
+      "subject": "Task 1: EntityEditPageDef spec class + model wiring",
+      "status": "pending",
+      "description": "**Goal:** Introduce `EntityEditPageDef`, `EntityEditPageDefBuilder`, and wire them into `EntityDetailViewDefBuilder`, `AbstractSpec`, and `ModelDef`.\n\n**Files:**\n- Create: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityEditPageDef.kt`\n- Create: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/EntityEditPageDefBuilder.kt`\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/EntityDetailViewDefBuilder.kt`\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/AbstractSpec.kt`\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/ModelDef.kt`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-spec:build` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityEditPageDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/EntityEditPageDefBuilder.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/EntityDetailViewDefBuilder.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/AbstractSpec.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/ModelDef.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:build\", \"acceptanceCriteria\": [\"EntityEditPageDef computes correct angular component names\", \"entityDetailView { withEditPage { ... } } registers in modelDef.entityEditPageDefs\", \"ModelDef.hasEditEntityPage helper works\", \"spec build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 6,
+      "subject": "Task 2: Remove HasEditEntityPage and update blotter edit navigation",
+      "status": "pending",
+      "blockedBy": [5],
+      "description": "**Goal:** Delete the `HasEditEntityPage` flag and all usages; update `CrudBlotterComponentRenderer` to derive `hasEditEntityPage` from the model.\n\n**Files:**\n- Delete: `HasEditEntityPage.kt`\n- Modify: `CrudDef.kt`, `CrudDefBuilder.kt`, `EntityDef.kt`, `BlotterDef.kt`, `BlotterSourceDef.kt`, `EsDocDef.kt`, `CrudBlotterComponentRenderer.kt`, `AngularUiModuleGenerator.kt`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-generator:build` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/flags/HasEditEntityPage.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/CrudDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/CrudDefBuilder.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/BlotterDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/BlotterSourceDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EsDocDef.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/CrudBlotterComponentRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:build\", \"acceptanceCriteria\": [\"HasEditEntityPage.kt deleted\", \"CrudBlotterComponentRenderer takes hasEditEntityPage constructor param\", \"renderCrudBlotters() computes hasEditEntityPage from modelDef\", \"generator build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 7,
+      "subject": "Task 3: EntityEditFormScssRenderer update + EntityEditFormComponentRenderer",
+      "status": "pending",
+      "blockedBy": [6],
+      "description": "**Goal:** Update `EntityEditFormScssRenderer` to accept `EntityEditPageDef`; create `EntityEditFormComponentRenderer`.\n\n**Files:**\n- Modify: `EntityEditFormScssRenderer.kt`\n- Create: `EntityEditFormComponentRenderer.kt`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-generator:build` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityEditFormScssRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityEditFormComponentRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:build\", \"acceptanceCriteria\": [\"EntityEditFormScssRenderer uses editFormAngularComponentNames for path\", \"EntityEditFormComponentRenderer generates input.required + output signals\", \"generator build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 8,
+      "subject": "Task 4: EntityEditFormPageComponentRenderer + EntityEditFormPageHtmlRenderer",
+      "status": "pending",
+      "blockedBy": [7],
+      "description": "**Goal:** Create the two page-level renderers.\n\n**Files:**\n- Create: `EntityEditFormPageComponentRenderer.kt`\n- Create: `EntityEditFormPageHtmlRenderer.kt`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-generator:build` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityEditFormPageComponentRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityEditFormPageHtmlRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:build\", \"acceptanceCriteria\": [\"page component reads route param and navigates to viewPageUrl\", \"page HTML wires entityId onSave onCancel bindings\", \"generator build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 9,
+      "subject": "Task 5: Wire renderers into AngularUiModuleGenerator",
+      "status": "pending",
+      "blockedBy": [8],
+      "description": "**Goal:** Add `renderEntityEditPages()` to `AngularUiModuleGenerator` and call it from `onGenerateSource()`.\n\n**Files:**\n- Modify: `AngularUiModuleGenerator.kt`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-generator:build` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:build\", \"acceptanceCriteria\": [\"renderEntityEditPages() invokes all 5 renderers per entityEditPageDef\", \"onGenerateSource() calls renderEntityEditPages()\", \"generator build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 10,
+      "subject": "Task 6: Update showcase spec, delete manual files, regenerate",
+      "status": "pending",
+      "blockedBy": [9],
+      "description": "**Goal:** Update `MaiaShowcaseSpec`, delete 5 manual files, update route, run generation, verify output.\n\n**Files:**\n- Modify: `MaiaShowcaseSpec.kt`, `app.routes.ts`\n- Delete: `maia-showcase/maia-showcase-ui/src/app/pages/simple-edit/` (5 files)\n\n**Verify:** `./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration` + 5 generated files present\n\n```json:metadata\n{\"files\": [\"maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec.kt\", \"maia-showcase/maia-showcase-ui/src/app/app.routes.ts\"], \"verifyCommand\": \"./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration && ls maia-showcase/maia-showcase-ui/src/generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/ | grep edit-form\", \"acceptanceCriteria\": [\"maiaGeneration produces 5 edit form generated files\", \"generated form uses input.required not MAT_DIALOG_DATA\", \"blotter onEdit navigates via router\", \"route points to SimpleEntityEditFormPage\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-05-17T00:00:00Z"
+}

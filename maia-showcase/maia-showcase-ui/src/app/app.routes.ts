@@ -46,8 +46,8 @@ export const routes: Routes = [
     {
         path: 'composite-primary-key/view/:id',
         loadComponent: () =>
-            import('./pages/composite-primary-key-view/composite-primary-key-view-page').then(
-                (m) => m.CompositePrimaryKeyViewPage,
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-entity-detail-view-page').then(
+                (m) => m.CompositePrimaryKeyEntityDetailViewPage,
             ),
     },
     {
