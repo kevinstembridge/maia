@@ -81,8 +81,18 @@ Mirrors `EntityDetailViewComponentRenderer` structure but generates edit form lo
 4. Run `maiaGeneration` on the UI module
 5. Delete `HasEditEntityPage` flag class and all references across `CrudDef`, `CrudDefBuilder`, `EntityDef`, `EntityDetailViewDef`
 
+## Blotter Edit Action Column Navigation
+
+`CrudBlotterComponentRenderer` already has two branches for `onEdit`: navigate to the edit page URL (router) vs. open the edit dialog (`MatDialog`). Today the branch is selected via `blotterDef.hasEditEntityPage`, which traces back through `BlotterSourceDef` → `EntityDef.hasEditEntityPage` → `CrudDef.hasEditEntityPage` → the obsolete `HasEditEntityPage` flag.
+
+With `HasEditEntityPage` removed, the branch must be driven by the presence of an `EntityEditPageDef` in the model. The cleanest approach mirrors how `entityIsReferencedByForeignKeys` is handled: compute the flag in the generator and pass it as a constructor parameter to `CrudBlotterComponentRenderer`.
+
+Changes:
+- Remove `hasEditEntityPage` from `BlotterDef`, `BlotterSourceDef`, `EntityDef` (all derived from the now-deleted `HasEditEntityPage`)
+- In `AngularUiModuleGenerator.renderCrudBlotters()`, compute `hasEditEntityPage = modelDef.entityEditPageDefs.any { it.entityDef == crudBlotterDef.entityCrudApiDef.entityDef }` and pass it to `CrudBlotterComponentRenderer`
+- `CrudBlotterComponentRenderer` uses the passed parameter instead of `blotterDef.hasEditEntityPage`
+
 ## Out of Scope
 
 - Route generation (routes remain manually maintained in `app.routes.ts`)
 - Auth guard wiring in the route (developer manually applies the auth guard when registering the route, using the authority from the spec)
-- Changes to blotter edit action column navigation
