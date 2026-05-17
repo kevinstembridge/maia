@@ -169,7 +169,7 @@ export class CompositePrimaryKeyBlotter {
 
     get addButtonVisible(): boolean {
 
-        return this.authService.currentUserHasThisAuthority(Authority.WRITE);
+        return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
 
     }
 

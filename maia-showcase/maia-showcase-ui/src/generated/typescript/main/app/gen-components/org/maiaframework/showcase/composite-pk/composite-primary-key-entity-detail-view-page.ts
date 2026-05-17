@@ -44,7 +44,7 @@ export class CompositePrimaryKeyEntityDetailViewPage {
 
 
     protected get canEdit(): boolean {
-        return this.authService.currentUserHasThisAuthority(Authority.WRITE);
+        return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
     }
 
 
