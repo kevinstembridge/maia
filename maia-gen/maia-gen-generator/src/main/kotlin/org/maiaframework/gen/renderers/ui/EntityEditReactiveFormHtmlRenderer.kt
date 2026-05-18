@@ -1,11 +1,13 @@
 package org.maiaframework.gen.renderers.ui
 
+import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
 class EntityEditReactiveFormHtmlRenderer(
-    private val apiDef: EntityUpdateApiDef
+    private val apiDef: EntityUpdateApiDef,
+    private val componentNamesOverride: AngularComponentNames? = null
 ) : AbstractCrudReactiveFormHtmlRenderer(
     apiDef.entityDef,
     InlineFormOrDialog.INLINE_FORM
@@ -20,7 +22,7 @@ class EntityEditReactiveFormHtmlRenderer(
 
     override fun renderedFilePath(): String {
 
-        return this.apiDef.angularFormComponentNames.htmlRenderedFilePath
+        return (componentNamesOverride ?: this.apiDef.angularFormComponentNames).htmlRenderedFilePath
 
     }
 

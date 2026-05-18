@@ -1,14 +1,16 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
+import org.maiaframework.gen.spec.definition.EntityEditPageDef
 
 
-class EntityEditFormScssRenderer(private val apiDef: EntityUpdateApiDef) : AbstractTypescriptRenderer() {
+class EntityEditFormScssRenderer(
+    private val entityEditPageDef: EntityEditPageDef
+) : AbstractTypescriptRenderer() {
 
 
     override fun renderedFilePath(): String {
 
-        return apiDef.angularDialogComponentNames.componentScssRenderedFilePath
+        return entityEditPageDef.editFormAngularComponentNames.componentScssRenderedFilePath
 
     }
 

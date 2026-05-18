@@ -246,9 +246,6 @@ class EntityDef(
     val hasViewEntityPage: Boolean = this.crudDef.hasViewEntityPage.value
 
 
-    val hasEditEntityPage: Boolean = this.crudDef.hasEditEntityPage.value
-
-
     val hasAnyMatSelectFields = allEntityFields.any { it.fieldType is EnumFieldType }
 
 

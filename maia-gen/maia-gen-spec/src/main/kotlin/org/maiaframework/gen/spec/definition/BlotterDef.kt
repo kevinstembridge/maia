@@ -127,9 +127,6 @@ class BlotterDef(
     val hasViewEntityPage: Boolean = blotterSourceDef.hasViewEntityPage
 
 
-    val hasEditEntityPage: Boolean = blotterSourceDef.hasEditEntityPage
-
-
     val hasViewActionColumn = actionColumnFields.any { it.actionName == ActionName.view }
 
 

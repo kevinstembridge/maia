@@ -13,7 +13,6 @@ import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
-import org.maiaframework.gen.spec.definition.flags.HasEditEntityPage
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
@@ -462,7 +461,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             unique(withExistsEndpoint = true)
         }
         crud {
-            withEditEntityPage = HasEditEntityPage.TRUE
             apis(defaultAuthority = partySpec.adminAuthority) {
                 create()
                 update()
@@ -502,7 +500,12 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val simpleCrudDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
 
 
-    val simpleEntityDetailViewDef = entityDetailView(simpleEntityDef)
+    val simpleEntityDetailViewDef = entityDetailView(simpleEntityDef) {
+        withEditPage {
+            pageTitle = "Edit Simple"
+            authority = partySpec.adminAuthority
+        }
+    }
 
 
     val historySampleEntityDef = entity(

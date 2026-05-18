@@ -130,9 +130,6 @@ class EsDocDef(
     val hasViewEntityPage = entityDef?.hasViewEntityPage ?: false
 
 
-    val hasEditEntityPage = entityDef?.hasEditEntityPage ?: false
-
-
     init {
 
         val idFieldCount = this.fields.count { it.isIdField }

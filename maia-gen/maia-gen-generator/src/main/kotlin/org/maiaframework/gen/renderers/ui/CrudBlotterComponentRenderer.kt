@@ -4,7 +4,8 @@ import org.maiaframework.gen.spec.definition.CrudBlotterDef
 
 class CrudBlotterComponentRenderer(
     private val crudBlotterDef: CrudBlotterDef,
-    private val entityIsReferencedByForeignKeys: Boolean
+    private val entityIsReferencedByForeignKeys: Boolean,
+    private val hasEditEntityPage: Boolean
 ): AbstractTypescriptRenderer() {
 
 
@@ -24,7 +25,7 @@ class CrudBlotterComponentRenderer(
                 addImport(crudBlotterDef.entityCrudApiDef.entityDef.checkForeignKeyReferencesDialog.componentTypescriptImport)
             }
         }
-        if (!crudBlotterDef.blotterDef.hasEditEntityPage) {
+        if (!hasEditEntityPage) {
             crudBlotterDef.entityCrudApiDef.updateApiDef?.let { addImport(it.angularDialogComponentNames.componentTypescriptImport) }
         }
 
@@ -57,7 +58,7 @@ class CrudBlotterComponentRenderer(
             |""".trimMargin())
 
         val needsRouter = crudBlotterDef.blotterDef.hasViewActionColumn ||
-            (crudBlotterDef.blotterDef.hasEditEntityPage && crudBlotterDef.entityCrudApiDef.updateApiDef != null)
+            (hasEditEntityPage && crudBlotterDef.entityCrudApiDef.updateApiDef != null)
 
         if (needsRouter) {
 
@@ -110,7 +111,7 @@ class CrudBlotterComponentRenderer(
 
             val entityDef = crudBlotterDef.entityCrudApiDef.entityDef
 
-            if (crudBlotterDef.blotterDef.hasEditEntityPage) {
+            if (hasEditEntityPage) {
 
                 append("""
                     |

@@ -35,7 +35,11 @@ import org.maiaframework.gen.renderers.ui.EntityDetailViewPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailViewPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogScssRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditFormPageComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditFormPageHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditFormScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditReactiveDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityFormComponentRenderer
@@ -140,6 +144,7 @@ class AngularUiModuleGenerator(
         renderEntityEditDialogHtml()
         renderEntityDetailViews()
         renderEntityDetailDtoServices()
+        renderEntityEditPages()
         renderEntityDetailsDtos()
         renderEnums()
         renderEsDocs()
@@ -332,6 +337,21 @@ class AngularUiModuleGenerator(
     }
 
 
+    private fun renderEntityEditPages() {
+
+        this.modelDef.entityEditPageDefs.forEach { entityEditPageDef ->
+
+            EntityEditFormComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
+            EntityEditFormScssRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
+            EntityEditReactiveFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames).renderToDir(this.typescriptOutputDir)
+            EntityEditFormPageComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
+            EntityEditFormPageHtmlRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
+
+        }
+
+    }
+
+
     private fun renderBlotterHtml() {
 
         this.modelDef.blotterDefs.forEach {
@@ -354,8 +374,9 @@ class AngularUiModuleGenerator(
         this.modelDef.crudBlotterDefs.forEach { crudBlotterDef ->
 
             val entityIsReferencedByForeignKeys = this.modelDef.entityIsReferencedByForeignKeys(crudBlotterDef.entityCrudApiDef.entityDef)
+            val hasEditEntityPage = this.modelDef.hasEditEntityPage(crudBlotterDef.entityCrudApiDef.entityDef)
             CrudBlotterHtmlRenderer(crudBlotterDef).renderToDir(this.typescriptOutputDir)
-            CrudBlotterComponentRenderer(crudBlotterDef, entityIsReferencedByForeignKeys).renderToDir(this.typescriptOutputDir)
+            CrudBlotterComponentRenderer(crudBlotterDef, entityIsReferencedByForeignKeys, hasEditEntityPage).renderToDir(this.typescriptOutputDir)
 
         }
 
