@@ -6,6 +6,7 @@ class CrudBlotterPageComponentRenderer(
     private val crudBlotterPageDef: CrudBlotterPageDef
 ) : AbstractTypescriptRenderer() {
 
+
     init {
         addImport("@angular/core", "ChangeDetectionStrategy")
         addImport("@angular/core", "Component")
@@ -13,11 +14,16 @@ class CrudBlotterPageComponentRenderer(
         addImport(crudBlotterPageDef.crudBlotterComponentTypescriptImport)
     }
 
+
     override fun renderedFilePath(): String {
+
         return crudBlotterPageDef.pageAngularComponentNames.componentRenderedFilePath
+
     }
 
+
     override fun renderSourceBody() {
+
         append("""
             |
             |@Component({
@@ -31,6 +37,8 @@ class CrudBlotterPageComponentRenderer(
             |})
             |export class ${crudBlotterPageDef.pageAngularComponentNames.componentName} {}
             |""".trimMargin())
+
     }
+
 
 }
