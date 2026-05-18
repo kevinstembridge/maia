@@ -25,6 +25,7 @@ import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityCrudApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
+import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.EntityHtmlFormDef
 import org.maiaframework.gen.spec.definition.EnumDef
@@ -122,6 +123,7 @@ abstract class AbstractSpec protected constructor(
     private val blotterDefs = mutableListOf<BlotterDef>()
     private val entityCreateHtmlFormDefs = mutableListOf<EntityHtmlFormDef>()
     private val entityDetailViewDefs = mutableListOf<EntityDetailViewDef>()
+    private val entityEditPageDefs = mutableListOf<EntityEditPageDef>()
     private val entityDefs = mutableListOf<EntityDef>()
     private val enumDefs = mutableListOf<EnumDef>().also { it.add(EnumDefs.LIFECYCLE_STATE_ENUM_DEF) }
     private val esDocDefs = mutableListOf<EsDocDef>()
@@ -177,7 +179,8 @@ abstract class AbstractSpec protected constructor(
                 this.esDocDefs,
                 buildHazelcastConfigClassDef(),
                 this.rowMapperDefs,
-                this.entityDetailViewDefs
+                this.entityDetailViewDefs,
+                this.entityEditPageDefs
             )
 
         }
@@ -1009,6 +1012,8 @@ abstract class AbstractSpec protected constructor(
 
         val def = builder.build()
         this.entityDetailViewDefs.add(def)
+
+        builder.entityEditPageDef?.let { this.entityEditPageDefs.add(it) }
 
         return def
 

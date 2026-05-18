@@ -28,7 +28,8 @@ class ModelDef(
     val esDocsDefs: List<EsDocDef>,
     val hazelcastEntityConfigClassDef: ClassDef,
     val rowMapperDefs: List<RowMapperDef>,
-    val entityDetailViewDefs: List<EntityDetailViewDef>
+    val entityDetailViewDefs: List<EntityDetailViewDef>,
+    val entityEditPageDefs: List<EntityEditPageDef>
 ) {
 
 
@@ -79,6 +80,13 @@ class ModelDef(
 
 
     val allEsDocDefs = typeaheadDefs.map { it.esDocDef }.plus(esDocsDefs)
+
+
+    fun hasEditEntityPage(entityDef: EntityDef): Boolean {
+
+        return entityEditPageDefs.any { it.entityDef == entityDef }
+        
+    }
 
 
 }

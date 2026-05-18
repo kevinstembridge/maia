@@ -2,11 +2,15 @@ package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
+import org.maiaframework.gen.spec.definition.EntityEditPageDef
 
 class EntityDetailViewDefBuilder(private val entityDef: EntityDef) {
 
 
     private var pageTitle = entityDef.entityBaseName.toTitleCase()
+
+
+    internal var entityEditPageDef: EntityEditPageDef? = null
 
 
     fun build(): EntityDetailViewDef {
@@ -22,6 +26,15 @@ class EntityDetailViewDefBuilder(private val entityDef: EntityDef) {
     fun pageTitle(pageTitle: String) {
 
         this.pageTitle = pageTitle
+
+    }
+
+
+    fun withEditPage(init: EntityEditPageDefBuilder.() -> Unit) {
+
+        val builder = EntityEditPageDefBuilder(entityDef)
+        builder.init()
+        this.entityEditPageDef = builder.build()
 
     }
 
