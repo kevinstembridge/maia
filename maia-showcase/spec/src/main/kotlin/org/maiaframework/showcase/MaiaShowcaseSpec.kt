@@ -444,7 +444,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val allFieldTypesCrudDef = crudBlotter(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!)
+    val allFieldTypesCrudBlotterDef = crudBlotter(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!)
 
 
     val simpleEntityDef = entity(
@@ -497,7 +497,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val simpleCrudDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
+    val simpleCrudBlotterBlotterDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
 
 
     val simpleEntityDetailViewDef = entityDetailView(simpleEntityDef) {
@@ -738,7 +738,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val someVersionedCrudDef = crudBlotter(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!)
+    val someVersionedCrudBlotterDef = crudBlotter(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!)
 
 
     val withOptionalIndexFieldEntityDef = entity(
@@ -947,7 +947,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoCrudDef = crudBlotter(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!)
+    val bravoCrudBlotterDef = crudBlotter(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!)
 
 
     val charlieSearchableDtoDef = searchableDto(
@@ -1169,7 +1169,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftManyCrudDef = crudBlotter(leftManyBlotterDef, leftManyEntityDef.entityCrudApiDef!!)
+    val leftManyCrudBlotterDef = crudBlotter(leftManyBlotterDef, leftManyEntityDef.entityCrudApiDef!!)
 
 
     val leftToRightManyToManySearchableDtoDef = searchableDto(
@@ -1276,7 +1276,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val compositePrimaryKeyCrudDef = crudBlotter(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
+    val compositePrimaryKeyCrudBlotterDef = crudBlotter(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
 
 
     val compositePrimaryKeyEntityDetailViewDef = entityDetailView(compositePrimaryKeyEntityDef)
