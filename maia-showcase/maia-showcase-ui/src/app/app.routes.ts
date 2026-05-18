@@ -25,7 +25,7 @@ export const routes: Routes = [
     {
         path: 'simple-blotter',
         loadComponent: () =>
-            import('./pages/simple-blotter/simple-blotter-page').then(
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-blotter-page').then(
                 (m) => m.SimpleBlotterPage,
             ),
     },

@@ -12,6 +12,7 @@ import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
 import org.maiaframework.gen.spec.definition.CrudBlotterDef
+import org.maiaframework.gen.spec.definition.CrudBlotterPageDef
 import org.maiaframework.gen.spec.definition.DataClassDef
 import org.maiaframework.gen.spec.definition.DataClassName
 import org.maiaframework.gen.spec.definition.Description
@@ -118,6 +119,7 @@ abstract class AbstractSpec protected constructor(
     private val booleanTypeDefs = mutableListOf<BooleanTypeDef>()
     private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
     private val crudBlotterDefs = mutableListOf<CrudBlotterDef>()
+    private val crudBlotterPageDefs = mutableListOf<CrudBlotterPageDef>()
     private val dataClassDefs = mutableListOf<DataClassDef>()
     private val defaultSchemaName = defaultSchemaName ?: SchemaName(appKey.value)
     private val blotterDefs = mutableListOf<BlotterDef>()
@@ -180,7 +182,8 @@ abstract class AbstractSpec protected constructor(
                 buildHazelcastConfigClassDef(),
                 this.rowMapperDefs,
                 this.entityDetailViewDefs,
-                this.entityEditPageDefs
+                this.entityEditPageDefs,
+                this.crudBlotterPageDefs
             )
 
         }
@@ -913,6 +916,7 @@ abstract class AbstractSpec protected constructor(
         init?.invoke(builder)
         val def = builder.build()
         this.crudBlotterDefs.add(def)
+        builder.crudBlotterPageDef?.let { this.crudBlotterPageDefs.add(it) }
         return def
 
     }

@@ -29,7 +29,8 @@ class ModelDef(
     val hazelcastEntityConfigClassDef: ClassDef,
     val rowMapperDefs: List<RowMapperDef>,
     val entityDetailViewDefs: List<EntityDetailViewDef>,
-    val entityEditPageDefs: List<EntityEditPageDef>
+    val entityEditPageDefs: List<EntityEditPageDef>,
+    val crudBlotterPageDefs: List<CrudBlotterPageDef>
 ) {
 
 

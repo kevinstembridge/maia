@@ -10,6 +10,8 @@ import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogCompone
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CrudBlotterComponentRenderer
 import org.maiaframework.gen.renderers.ui.CrudBlotterHtmlRenderer
+import org.maiaframework.gen.renderers.ui.CrudBlotterPageComponentRenderer
+import org.maiaframework.gen.renderers.ui.CrudBlotterPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CurrentUserStoreRenderer
 import org.maiaframework.gen.renderers.ui.SigninRequestDtoRenderer
 import org.maiaframework.gen.renderers.ui.UserSummaryDtoRenderer
@@ -145,6 +147,7 @@ class AngularUiModuleGenerator(
         renderEntityDetailViews()
         renderEntityDetailDtoServices()
         renderEntityEditPages()
+        renderCrudBlotterPages()
         renderEntityDetailsDtos()
         renderEnums()
         renderEsDocs()
@@ -378,6 +381,16 @@ class AngularUiModuleGenerator(
             CrudBlotterHtmlRenderer(crudBlotterDef).renderToDir(this.typescriptOutputDir)
             CrudBlotterComponentRenderer(crudBlotterDef, entityIsReferencedByForeignKeys, hasEditEntityPage).renderToDir(this.typescriptOutputDir)
 
+        }
+
+    }
+
+
+    private fun renderCrudBlotterPages() {
+
+        this.modelDef.crudBlotterPageDefs.forEach { pageDef ->
+            CrudBlotterPageComponentRenderer(pageDef).renderToDir(this.typescriptOutputDir)
+            CrudBlotterPageHtmlRenderer(pageDef).renderToDir(this.typescriptOutputDir)
         }
 
     }

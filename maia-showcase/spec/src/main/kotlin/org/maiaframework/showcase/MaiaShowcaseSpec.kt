@@ -497,7 +497,11 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val simpleCrudBlotterBlotterDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
+    val simpleCrudBlotterBlotterDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!) {
+        withBlotterPage {
+            pageTitle = "Simple"
+        }
+    }
 
 
     val simpleEntityDetailViewDef = entityDetailView(simpleEntityDef) {
