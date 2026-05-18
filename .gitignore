@@ -5,3 +5,4 @@ tmp
 **/.kotlin
 /progress.txt
 /PRD.md
+.worktrees/
