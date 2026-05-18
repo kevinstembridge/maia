@@ -1,7 +1,10 @@
 
+TODO * Add withCrudBlotterPage to all the blotter pages.
+
 
 TODO * On Edit clicked, switch to an EditPage.
-    TODO * Handcode an edit page, based on the edit dialog.
+
+TODO * Add a 'Cancel' button to edit pages.
 
 TODO * Switch from 'Create' dialogs to pages
 
