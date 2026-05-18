@@ -1,0 +1,33 @@
+{
+  "planPath": "docs/superpowers/plans/2026-05-18-blotter-page-generation.md",
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Task 1: Create CrudBlotterPageDef and CrudBlotterPageDefBuilder",
+      "status": "pending",
+      "description": "**Goal:** Add spec-layer data class and builder for blotter page metadata.\n\n**Files:**\n- Create: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/CrudBlotterPageDef.kt`\n- Create: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/CrudBlotterPageDefBuilder.kt`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-spec:compileKotlin` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/CrudBlotterPageDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/CrudBlotterPageDefBuilder.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:compileKotlin\", \"acceptanceCriteria\": [\"CrudBlotterPageDef compiles\", \"CrudBlotterPageDefBuilder compiles\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 2: Wire CrudBlotterPageDef into spec DSL and ModelDef",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** Make `withBlotterPage {}` available in the spec DSL and expose page defs through `ModelDef`.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/CrudBlotterDefBuilder.kt`\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/ModelDef.kt`\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/AbstractSpec.kt`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-spec:compileKotlin` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/CrudBlotterDefBuilder.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/ModelDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/AbstractSpec.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:compileKotlin\", \"acceptanceCriteria\": [\"withBlotterPage available in DSL\", \"ModelDef exposes crudBlotterPageDefs\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 3: Create blotter page renderers and wire into generator",
+      "status": "pending",
+      "blockedBy": [2],
+      "description": "**Goal:** Add the two renderers that emit the `.ts` and `.html` files, and call them from `AngularUiModuleGenerator`.\n\n**Files:**\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/CrudBlotterPageComponentRenderer.kt`\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/CrudBlotterPageHtmlRenderer.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-generator:compileKotlin` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/CrudBlotterPageComponentRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/CrudBlotterPageHtmlRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"Renderers compile\", \"Generator wires new renderers\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 4: Update showcase spec and regenerate, migrate handcoded page",
+      "status": "pending",
+      "blockedBy": [3],
+      "description": "**Goal:** Add `withBlotterPage {}` to `simpleCrudDef`, regenerate, update the route, delete handcoded page.\n\n**Files:**\n- Modify: `maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec.kt`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/app.routes.ts`\n- Delete: `maia-showcase/maia-showcase-ui/src/app/pages/simple-blotter/simple-blotter-page.ts`\n- Delete: `maia-showcase/maia-showcase-ui/src/app/pages/simple-blotter/simple-blotter-page.html`\n\n**Verify:** `./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration` + `./gradlew :maia-showcase:maia-showcase-ui:build` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec.kt\", \"maia-showcase/maia-showcase-ui/src/app/app.routes.ts\"], \"verifyCommand\": \"./gradlew :maia-showcase:maia-showcase-ui:build\", \"acceptanceCriteria\": [\"Generated blotter page files exist\", \"Routes updated\", \"Handcoded files deleted\", \"Build passes\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-05-18T00:00:00Z"
+}
