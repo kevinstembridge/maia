@@ -22,7 +22,7 @@ class CompositePrimaryKeyCrudService(
     private val logger = LoggerFactory.getLogger(CompositePrimaryKeyCrudService::class.java)
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: CompositePrimaryKeyCreateRequestDto): CompositePrimaryKeyEntity {
 
         logger.info("BEGIN: create CompositePrimaryKey. dto=$createDto")
@@ -69,7 +69,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: CompositePrimaryKeyUpdateRequestDto) {
 
         val someInt = editDto.someInt
@@ -85,7 +85,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeModifiableString(editDto: CompositePrimaryKeyUpdate_someModifiableStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -112,7 +112,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(primaryKey: CompositePrimaryKeyEntityPk) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(primaryKey)

@@ -1234,7 +1234,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
         }
         crud {
-            apis(defaultAuthority = partySpec.adminAuthority) {
+            apis(defaultAuthority = partySpec.writeAuthority) {
                 create()
                 update()
                 delete()

@@ -23,7 +23,7 @@ class CompositePrimaryKeyCrudEndpoint(
 
     @PostMapping("/api/composite-primary-key/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: CompositePrimaryKeyCreateRequestDto) {
 
         this.crudService.create(createDto)
@@ -40,7 +40,7 @@ class CompositePrimaryKeyCrudEndpoint(
 
 
     @PutMapping("/api/composite-primary-key/update", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: CompositePrimaryKeyUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -49,7 +49,7 @@ class CompositePrimaryKeyCrudEndpoint(
 
 
     @PutMapping("/api/composite-primary-key/inline/some-modifiable-string", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeModifiableString(@RequestBody @Valid editDto: CompositePrimaryKeyUpdate_someModifiableStringRequestDto) {
 
         this.crudService.updateSomeModifiableString(editDto)
@@ -58,7 +58,7 @@ class CompositePrimaryKeyCrudEndpoint(
 
 
     @DeleteMapping("/api/composite-primary-key")
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun deleteByPrimaryKey(@RequestBody pk: CompositePrimaryKeyEntityPk) {
 
         this.crudService.delete(pk)
