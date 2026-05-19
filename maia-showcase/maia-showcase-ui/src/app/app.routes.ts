@@ -11,14 +11,14 @@ export const routes: Routes = [
     {
         path: 'all-field-types-blotter',
         loadComponent: () =>
-            import('@app/pages/all-field-types-blotter/all-field-types-blotter-page').then(
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-blotter-page').then(
                 (m) => m.AllFieldTypesBlotterPage,
             ),
     },
     {
         path: 'bravo-blotter',
         loadComponent: () =>
-            import('@app/pages/bravo-blotter/bravo-blotter-page').then(
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/join/bravo-blotter-page').then(
                 (m) => m.BravoBlotterPage,
             ),
     },
@@ -60,21 +60,21 @@ export const routes: Routes = [
     {
         path: 'some-versioned-blotter',
         loadComponent: () =>
-            import('./pages/some-versioned-blotter/some-versioned-blotter-page').then(
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter-page').then(
                 (m) => m.SomeVersionedBlotterPage,
             ),
     },
     {
         path: 'composite-pk-blotter',
         loadComponent: () =>
-            import('./pages/composite-pk-blotter/composite-pk-blotter-page').then(
-                (m) => m.CompositePkBlotterPage,
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-blotter-page').then(
+                (m) => m.CompositePrimaryKeyBlotterPage,
             ),
     },
     {
         path: 'user-blotter',
         loadComponent: () =>
-            import('./pages/user-blotter/user-blotter-page').then(
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/user/user-blotter-page').then(
                 (m) => m.UserBlotterPage,
             ),
     },
@@ -88,7 +88,7 @@ export const routes: Routes = [
     {
         path: 'left-many-blotter',
         loadComponent: () =>
-            import('./pages/left-many-blotter/left-many-blotter-page').then(
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/many-to-many/left-many-blotter-page').then(
                 (m) => m.LeftManyBlotterPage,
             ),
     },

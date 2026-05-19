@@ -444,7 +444,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val allFieldTypesCrudBlotterDef = crudBlotter(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!)
+    val allFieldTypesCrudBlotterDef = crudBlotter(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!) {
+        withBlotterPage { }
+    }
 
 
     val simpleEntityDef = entity(
@@ -742,7 +744,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val someVersionedCrudBlotterDef = crudBlotter(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!)
+    val someVersionedCrudBlotterDef = crudBlotter(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!) {
+        withBlotterPage { }
+    }
 
 
     val withOptionalIndexFieldEntityDef = entity(
@@ -951,7 +955,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoCrudBlotterDef = crudBlotter(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!)
+    val bravoCrudBlotterDef = crudBlotter(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!) {
+        withBlotterPage { }
+    }
 
 
     val charlieSearchableDtoDef = searchableDto(
@@ -1173,7 +1179,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftManyCrudBlotterDef = crudBlotter(leftManyBlotterDef, leftManyEntityDef.entityCrudApiDef!!)
+    val leftManyCrudBlotterDef = crudBlotter(leftManyBlotterDef, leftManyEntityDef.entityCrudApiDef!!) {
+        withBlotterPage { }
+    }
 
 
     val leftToRightManyToManySearchableDtoDef = searchableDto(
@@ -1280,7 +1288,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val compositePrimaryKeyCrudBlotterDef = crudBlotter(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
+    val compositePrimaryKeyCrudBlotterDef = crudBlotter(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!) {
+        withBlotterPage { }
+    }
 
 
     val compositePrimaryKeyEntityDetailViewDef = entityDetailView(compositePrimaryKeyEntityDef)

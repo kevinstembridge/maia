@@ -14,7 +14,7 @@ class CompositePkBlotterPage(
     page,
     urlHelper,
     "/composite-pk-blotter",
-    "composite_pk_blotter"
+    "composite_primary_key_blotter"
 ) {
 
 
