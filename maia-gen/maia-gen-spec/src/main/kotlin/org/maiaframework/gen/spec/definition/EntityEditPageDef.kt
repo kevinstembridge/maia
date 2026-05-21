@@ -15,7 +15,7 @@ class EntityEditPageDef(
 
     val editFormPageAngularComponentNames = AngularComponentNames(
         entityDef.packageName,
-        entityEditBaseName.withSuffix("FormPage").value
+        entityEditBaseName.withSuffix("Page").value
     )
 
     val dataPageId = "${entityDef.entityBaseName.toSnakeCase()}_edit"

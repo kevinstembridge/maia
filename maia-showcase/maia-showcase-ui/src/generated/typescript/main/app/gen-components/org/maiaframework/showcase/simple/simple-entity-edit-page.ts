@@ -16,10 +16,10 @@ import {map} from 'rxjs';
         PageLayout,
         SimpleEntityEditForm
     ],
-    selector: 'app-simple-entity-edit-form-page',
-    templateUrl: './simple-entity-edit-form-page.html'
+    selector: 'app-simple-entity-edit-page',
+    templateUrl: './simple-entity-edit-page.html'
 })
-export class SimpleEntityEditFormPage {
+export class SimpleEntityEditPage {
 
 
     private readonly route = inject(ActivatedRoute);
