@@ -4,7 +4,7 @@ import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
 
 
-class EntityEditFormPageHtmlRenderer(
+class EntityEditPageHtmlRenderer(
     private val entityEditPageDef: EntityEditPageDef
 ) : AbstractSourceFileRenderer() {
 

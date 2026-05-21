@@ -40,7 +40,7 @@ import org.maiaframework.gen.renderers.ui.EntityEditDialogScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormPageComponentRenderer
-import org.maiaframework.gen.renderers.ui.EntityEditFormPageHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditReactiveDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditReactiveFormHtmlRenderer
@@ -348,7 +348,7 @@ class AngularUiModuleGenerator(
             EntityEditFormScssRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
             EntityEditReactiveFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames).renderToDir(this.typescriptOutputDir)
             EntityEditFormPageComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
-            EntityEditFormPageHtmlRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
+            EntityEditPageHtmlRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
 
         }
 
