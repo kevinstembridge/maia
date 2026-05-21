@@ -6,7 +6,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
 import {SimpleBlotter} from '@app/gen-components/org/maiaframework/showcase/simple/simple-blotter';
-import {SimpleCreateDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-create-dialog';
 import {SimpleDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-delete-dialog';
 
 
@@ -29,15 +28,7 @@ export class SimpleCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(SimpleCreateDialog, {
-            width: '400px'
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
+        this.router.navigate(['/simple/create']);
 
     }
 
