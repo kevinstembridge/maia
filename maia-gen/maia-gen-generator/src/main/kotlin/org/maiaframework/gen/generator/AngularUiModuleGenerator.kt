@@ -38,7 +38,7 @@ import org.maiaframework.gen.renderers.ui.EntityDetailViewPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormComponentRenderer
-import org.maiaframework.gen.renderers.ui.EntityEditFormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditSignalFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormScssRenderer
@@ -469,7 +469,7 @@ class AngularUiModuleGenerator(
 
         when (apiDef.angularDialogDef.angularFormSystem) {
             AngularFormSystem.REACTIVE -> EntityEditReactiveFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
-            AngularFormSystem.SIGNAL -> EntityEditFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.SIGNAL -> EntityEditSignalFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
         }
 
     }

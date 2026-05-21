@@ -4,7 +4,7 @@ import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
-class EntityEditFormHtmlRenderer(
+class EntityEditSignalFormHtmlRenderer(
     private val apiDef: EntityUpdateApiDef
 ) : AbstractCrudFormHtmlRenderer(
     apiDef.entityDef,
