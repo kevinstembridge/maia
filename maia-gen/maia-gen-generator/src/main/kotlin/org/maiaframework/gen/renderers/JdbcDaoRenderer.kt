@@ -1773,7 +1773,7 @@ class JdbcDaoRenderer(
 
     private fun `render function fetchForEdit`() {
 
-        if (this.entityDef.isConcrete == false || this.entityDef.crudDef.crudApiDefs.updateApiDef == null) {
+        if (this.entityDef.isConcrete == false || this.entityDef.crudDef.crudOperationDefs.updateOperationDef == null) {
             return
         }
 
