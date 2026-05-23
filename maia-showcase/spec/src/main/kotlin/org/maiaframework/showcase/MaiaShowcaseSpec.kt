@@ -318,10 +318,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             withFieldAscending("someBoolean")
         }
         crud {
-            apis(defaultAuthority = partySpec.writeAuthority) {
-                create()
-                update()
-                delete()
+            authority(partySpec.writeAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
             }
         }
     }
@@ -473,10 +478,18 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             unique(withExistsEndpoint = true)
         }
         crud {
-            apis(defaultAuthority = partySpec.adminAuthority) {
-                create()
-                update()
-                delete()
+            authority(partySpec.adminAuthority)
+            create {
+                authority(partySpec.adminAuthority)
+                api {}
+            }
+            update {
+                authority(partySpec.adminAuthority)
+                api {}
+            }
+            delete {
+                authority(partySpec.adminAuthority)
+                api {}
             }
         }
     }
@@ -719,10 +732,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             withFieldAscending("someInt")
         }
         crud {
-            apis(defaultAuthority = partySpec.writeAuthority) {
-                create()
-                update()
-                delete()
+            authority(partySpec.writeAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
             }
         }
     }
@@ -912,10 +930,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
         }
         crud {
-            apis {
-                create()
-                update()
-                delete()
+            authority(partySpec.adminAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
             }
         }
     }
@@ -939,16 +962,23 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             lengthConstraint(max = 100)
         }
         crud {
-            apis {
-                create()
-                update()
-                delete()
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
             }
         }
     }
 
 
     val bravoEntityCreatePageDef = entityCreatePage(bravoEntityDef)
+
+
+    val bravoEntityEditPageDef = entityEditPage(bravoEntityDef)
 
 
     val bravoSearchableDtoDef = searchableDto(
@@ -1050,10 +1080,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             lengthConstraint(max = 100)
         }
         crud {
-            apis {
-                create()
-                update()
-                delete()
+            authority(partySpec.adminAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
             }
         }
     }
@@ -1118,10 +1153,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
         }
         crud {
-            apis {
-                create()
-                update()
-                delete()
+            authority(partySpec.adminAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
             }
         }
     }
@@ -1179,7 +1219,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val leftManyEntityDetailViewPageDef = entityDetailView(leftManyEntityDef)
+
+
     val leftManyEntityCreatePageDef = entityCreatePage(leftManyEntityDef)
+
+
+    val leftManyEntityEditPageDef = entityEditPage(leftManyEntityDef)
 
 
     val leftManySearchableDtoDef = searchableDto(
@@ -1278,16 +1324,24 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
         }
         crud {
-            apis(defaultAuthority = partySpec.writeAuthority) {
-                create()
-                update()
-                delete()
+            authority(partySpec.writeAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
             }
         }
     }
 
 
     val compositePrimaryKeyEntityCreatePageDef = entityCreatePage(compositePrimaryKeyEntityDef)
+
+
+    val compositePrimaryKeyEntityEditPageDef = entityEditPage(compositePrimaryKeyEntityDef)
 
 
     val compositePrimaryKeySearchableDtoDef = searchableDto(

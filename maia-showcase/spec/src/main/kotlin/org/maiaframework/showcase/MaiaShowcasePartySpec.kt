@@ -233,15 +233,21 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
             lengthConstraint(max = 100)
         }
         crud {
-            apis(defaultAuthority = adminAuthority) {
-                create()
-                update()
+            authority(adminAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
             }
         }
     }
 
 
     val userEntityCreatePageDef = entityCreatePage(userEntityDef)
+
+
+    val userEntityEditPageDef = entityEditPage(userEntityDef)
 
 
     val userSearchableDtoDef = searchableDto(
@@ -331,9 +337,12 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         moduleName("ops")
         withEffectiveTimestamps()
         crud {
-            apis(defaultAuthority = adminAuthority) {
-                create()
-                update()
+            authority(adminAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
             }
         }
     }
