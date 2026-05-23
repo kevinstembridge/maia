@@ -6,9 +6,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesBlotterRowDto';
 import {AllFieldTypesBlotter} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-blotter';
-import {AllFieldTypesCreateDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-create-dialog';
 import {AllFieldTypesDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-delete-dialog';
-import {AllFieldTypesEditDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-edit-dialog';
 
 
 @Component({
@@ -25,33 +23,19 @@ export class AllFieldTypesCrudBlotterComponent {
     private readonly dialog = inject(MatDialog);
 
 
+    private readonly router = inject(Router);
+
+
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(AllFieldTypesCreateDialog, {
-            width: '400px'
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
+        this.router.navigate(['/all-field-types/create']);
 
     }
 
 
     onEdit(dto: AllFieldTypesBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(AllFieldTypesEditDialog, {
-            width: '400px',
-            data: dto.id
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
+        this.router.navigate(['/all-field-types/edit', dto.id]);
 
     }
 
