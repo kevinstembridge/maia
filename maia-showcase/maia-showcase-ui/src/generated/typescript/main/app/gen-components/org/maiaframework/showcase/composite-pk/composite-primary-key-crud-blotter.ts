@@ -40,6 +40,13 @@ export class CompositePrimaryKeyCrudBlotterComponent {
     }
 
 
+    onEdit(dto: CompositePrimaryKeyBlotterRowDto): void {
+
+        this.router.navigate(['/composite-primary-key/edit', dto.id]);
+
+    }
+
+
     onDelete(dto: CompositePrimaryKeyBlotterRowDto): void {
 
         const dialogRef = this.dialog.open(CompositePrimaryKeyDeleteDialog, {
