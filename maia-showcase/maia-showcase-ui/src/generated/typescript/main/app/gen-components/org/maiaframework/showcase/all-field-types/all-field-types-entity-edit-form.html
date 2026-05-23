@@ -1,0 +1,132 @@
+<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+    <div>
+        @if (problemDetail()) {
+            <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
+        }
+        <mat-form-field appearance="outline">
+            <mat-label>Some Instant Modifiable Date</mat-label>
+            <input
+                matInput
+                [matDatepicker]="someInstantModifiablePicker"
+                formControlName="someInstantModifiable"
+                name="someInstantModifiable"
+            />
+            <mat-datepicker-toggle matIconSuffix [for]="someInstantModifiablePicker"></mat-datepicker-toggle>
+            <mat-datepicker #someInstantModifiablePicker></mat-datepicker>
+            @if (formGroup.controls['someInstantModifiable'].hasError('required')) {
+                <mat-error>Some Instant Modifiable is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some Instant Modifiable Time</mat-label>
+            <input
+                matInput
+                [matTimepicker]="someInstantModifiableTimepicker"
+                formControlName="someInstantModifiable"
+                name="someInstantModifiableTime"
+            />
+            <mat-timepicker #someInstantModifiableTimepicker></mat-timepicker>
+            <mat-timepicker-toggle matSuffix [for]="someInstantModifiableTimepicker"></mat-timepicker-toggle>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some Instant Modifiable Nullable Date</mat-label>
+            <input
+                matInput
+                [matDatepicker]="someInstantModifiableNullablePicker"
+                formControlName="someInstantModifiableNullable"
+                name="someInstantModifiableNullable"
+            />
+            <mat-datepicker-toggle matIconSuffix [for]="someInstantModifiableNullablePicker"></mat-datepicker-toggle>
+            <mat-datepicker #someInstantModifiableNullablePicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some Instant Modifiable Nullable Time</mat-label>
+            <input
+                matInput
+                [matTimepicker]="someInstantModifiableNullableTimepicker"
+                formControlName="someInstantModifiableNullable"
+                name="someInstantModifiableNullableTime"
+            />
+            <mat-timepicker #someInstantModifiableNullableTimepicker></mat-timepicker>
+            <mat-timepicker-toggle matSuffix [for]="someInstantModifiableNullableTimepicker"></mat-timepicker-toggle>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some Int Modifiable</mat-label>
+            <input
+                formControlName="someIntModifiable"
+                name="someIntModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someIntModifiable'].hasError('required')) {
+                <mat-error>Some Int Modifiable is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some Int Nullable</mat-label>
+            <input
+                formControlName="someIntNullable"
+                name="someIntNullable"
+                type="text"
+                matInput
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some LocalDate Modifiable</mat-label>
+            <input
+                formControlName="someLocalDateModifiable"
+                name="someLocalDateModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someLocalDateModifiable'].hasError('required')) {
+                <mat-error>Some LocalDate Modifiable is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some Period Modifiable</mat-label>
+            <input
+                formControlName="somePeriodModifiable"
+                name="somePeriodModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['somePeriodModifiable'].hasError('required')) {
+                <mat-error>Some Period Modifiable is required.</mat-error>
+            }
+            @if (formGroup.controls['somePeriodModifiable'].hasError('maxlength')) {
+                <mat-error>Some Period Modifiable must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some String Modifiable</mat-label>
+            <input
+                formControlName="someStringModifiable"
+                name="someStringModifiable"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someStringModifiable'].hasError('required')) {
+                <mat-error>Some String Modifiable is required.</mat-error>
+            }
+            @if (formGroup.controls['someStringModifiable'].hasError('maxlength')) {
+                <mat-error>Some String Modifiable must not be more than 100 characters.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some List Of Strings</mat-label>
+            <input
+                formControlName="someListOfStrings"
+                name="someListOfStrings"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someListOfStrings'].hasError('required')) {
+                <mat-error>Some List Of Strings is required.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div>
+        <button mat-flat-button type="submit" color="primary">Submit</button>
+    </div>
+</form>
