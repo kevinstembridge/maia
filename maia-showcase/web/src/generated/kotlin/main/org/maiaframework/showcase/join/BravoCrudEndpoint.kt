@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -25,6 +26,7 @@ class BravoCrudEndpoint(
 
     @PostMapping("/api/bravo/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(@RequestBody @Valid createDto: BravoCreateRequestDto) {
 
         this.crudService.create(createDto)
@@ -41,6 +43,7 @@ class BravoCrudEndpoint(
 
 
     @PutMapping("/api/bravo/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(@RequestBody @Valid editDto: BravoUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -49,6 +52,7 @@ class BravoCrudEndpoint(
 
 
     @PutMapping("/api/bravo/inline/some-int", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateSomeInt(@RequestBody @Valid editDto: BravoUpdate_someIntRequestDto) {
 
         this.crudService.updateSomeInt(editDto)
@@ -57,6 +61,7 @@ class BravoCrudEndpoint(
 
 
     @PutMapping("/api/bravo/inline/some-string", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateSomeString(@RequestBody @Valid editDto: BravoUpdate_someStringRequestDto) {
 
         this.crudService.updateSomeString(editDto)
@@ -65,6 +70,7 @@ class BravoCrudEndpoint(
 
 
     @DeleteMapping("/api/bravo/{id}")
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -25,6 +26,7 @@ class CharlieAgGridCrudEndpoint(
 
     @PostMapping("/api/charlie-ag-grid/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(@RequestBody @Valid createDto: CharlieAgGridCreateRequestDto) {
 
         this.crudService.create(createDto)
@@ -41,6 +43,7 @@ class CharlieAgGridCrudEndpoint(
 
 
     @PutMapping("/api/charlie-ag-grid/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(@RequestBody @Valid editDto: CharlieAgGridUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -49,6 +52,7 @@ class CharlieAgGridCrudEndpoint(
 
 
     @PutMapping("/api/charlie-ag-grid/inline/bravo", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateBravo(@RequestBody @Valid editDto: CharlieAgGridUpdate_bravoRequestDto) {
 
         this.crudService.updateBravo(editDto)
@@ -57,6 +61,7 @@ class CharlieAgGridCrudEndpoint(
 
 
     @DeleteMapping("/api/charlie-ag-grid/{id}")
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

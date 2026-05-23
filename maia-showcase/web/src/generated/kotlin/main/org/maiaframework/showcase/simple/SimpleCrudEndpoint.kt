@@ -27,7 +27,7 @@ class SimpleCrudEndpoint(
 
     @PostMapping("/api/simple/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: SimpleCreateRequestDto) {
 
         this.crudService.create(createDto)
@@ -62,7 +62,7 @@ class SimpleCrudEndpoint(
 
 
     @PutMapping("/api/simple/update", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: SimpleUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -71,7 +71,7 @@ class SimpleCrudEndpoint(
 
 
     @PutMapping("/api/simple/inline/some-string", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(@RequestBody @Valid editDto: SimpleUpdate_someStringRequestDto) {
 
         this.crudService.updateSomeString(editDto)
@@ -80,7 +80,7 @@ class SimpleCrudEndpoint(
 
 
     @DeleteMapping("/api/simple/{id}")
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)
