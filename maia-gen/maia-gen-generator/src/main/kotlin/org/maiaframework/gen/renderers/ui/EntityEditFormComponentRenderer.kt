@@ -1,13 +1,15 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.FormControlRendererHelper
+import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 
 
 class EntityEditFormComponentRenderer(
-    private val entityEditPageDef: EntityEditPageDef
+    entityEditPageDef: EntityEditPageDef
 ) : AbstractAngularComponentRenderer(entityEditPageDef.editFormAngularComponentNames) {
 
 
@@ -41,6 +43,29 @@ class EntityEditFormComponentRenderer(
         addImport(entityDef.crudAngularComponentNames.serviceTypescriptImport)
         formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
             addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
+        }
+
+        addImportsFoFieldTypes(formGroupFields)
+
+    }
+
+
+    private fun addImportsFoFieldTypes(formGroupFields: List<AngularFormFieldDef>) {
+
+        formGroupFields.forEach { angularFormFieldDef ->
+
+            when (angularFormFieldDef.fieldType) {
+                is InstantFieldType -> {
+                    addImport("@angular/material/datepicker", "MatDatepicker", isModule = true)
+                    addImport("@angular/material/datepicker", "MatDatepickerInput", isModule = true)
+                    addImport("@angular/material/datepicker", "MatDatepickerToggle", isModule = true)
+                    addImport("@angular/material/timepicker", "MatTimepicker", isModule = true)
+                    addImport("@angular/material/timepicker", "MatTimepickerInput", isModule = true)
+                    addImport("@angular/material/timepicker", "MatTimepickerToggle", isModule = true)
+                }
+                else -> {}
+            }
+
         }
 
     }

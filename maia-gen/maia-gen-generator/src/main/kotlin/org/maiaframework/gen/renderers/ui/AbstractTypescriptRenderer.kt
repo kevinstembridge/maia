@@ -135,7 +135,10 @@ abstract class AbstractTypescriptRenderer: AbstractSourceFileRenderer() {
 
     protected fun forEachModuleImport(action: (TypescriptImport) -> Unit) {
 
-        typescriptImports.filter { it.isModule }.sortedBy { it.name }.forEach(action)
+        typescriptImports.filter { it.isModule }
+            .distinct()
+            .sortedBy { it.name }
+            .forEach(action)
 
     }
 
