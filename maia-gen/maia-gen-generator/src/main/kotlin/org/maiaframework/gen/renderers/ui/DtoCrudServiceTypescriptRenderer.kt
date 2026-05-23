@@ -109,40 +109,15 @@ class DtoCrudServiceTypescriptRenderer(
 
         this.entityCrudApiDef.entityDef.fetchForEditDtoDef?.let { fetchForEditDtoDef ->
 
-            val entityDef = this.entityCrudApiDef.entityDef
-            if (entityDef.hasCompositePrimaryKey) {
-
-                val pkType = entityDef.primaryKeyClassFields.joinToString(", ") { field ->
-                    val tsType = if (field.fieldType is IntFieldType || field.fieldType is LongFieldType) "number" else "string"
-                    "${field.classFieldName.value}: $tsType"
-                }
-
-                append("""
-                    |
-                    |
-                    |    public fetchForEdit(pk: {$pkType}): Observable<${fetchForEditDtoDef.uqcn}> {
-                    |
-                    |        return this.http.post<${fetchForEditDtoDef.uqcn}>(
-                    |                '${fetchForEditDtoDef.endpointUrl}',
-                    |                pk,
-                    |                this.httpOptions);
-                    |
-                    |    }
-                    |""".trimMargin())
-
-            } else {
-
-                append("""
-                    |
-                    |
-                    |    public fetchForEdit(id: string): Observable<${fetchForEditDtoDef.uqcn}> {
-                    |
-                    |        return this.http.get<${fetchForEditDtoDef.uqcn}>('${fetchForEditDtoDef.endpointUrl}/' + id, this.httpOptions);
-                    |
-                    |    }
-                    |""".trimMargin())
-
-            }
+            append("""
+                |
+                |
+                |    public fetchForEdit(id: string): Observable<${fetchForEditDtoDef.uqcn}> {
+                |
+                |        return this.http.get<${fetchForEditDtoDef.uqcn}>('${fetchForEditDtoDef.endpointUrl}/' + id, this.httpOptions);
+                |
+                |    }
+                |""".trimMargin())
 
         }
 
