@@ -13,7 +13,4 @@ class EntityCrudApiDef(
     val isEmpty = this.createApiDef == null && this.updateApiDef == null && this.deleteApiDef == null
 
 
-    val angularComponentNames = entityDef.crudAngularComponentNames
-
-
 }

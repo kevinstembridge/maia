@@ -290,7 +290,7 @@ class EntityDef(
 
     private val fetchForEditManyToManyFieldDefs: List<ManyToManySearchableDtoFieldDef> by lazy {
 
-        (crudDef.crudOperationDefs.updateOperationDef?.manyToManyAssociations ?: emptyList()).map { manyToManyEntityDef ->
+        (crudDef.crudOperationDefs.updateOperationDef?.crudApiDef?.manyToManyAssociations ?: emptyList()).map { manyToManyEntityDef ->
             val otherSide = manyToManyEntityDef.otherSideFrom(this)
             val fieldName = "${otherSide.fieldName}Entities"
             val classFieldDef = aClassField(
