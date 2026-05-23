@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -23,6 +24,7 @@ class LeftManyCrudService(
     private val logger = LoggerFactory.getLogger(LeftManyCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(createDto: LeftManyCreateRequestDto): LeftManyEntity {
 
         logger.info("BEGIN: create LeftMany. dto=$createDto")
@@ -78,6 +80,7 @@ class LeftManyCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(editDto: LeftManyUpdateRequestDto) {
 
         val id = editDto.id
@@ -100,6 +103,7 @@ class LeftManyCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateSomeInt(editDto: LeftManyUpdate_someIntRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -115,6 +119,7 @@ class LeftManyCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateSomeString(editDto: LeftManyUpdate_someStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -139,6 +144,7 @@ class LeftManyCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun delete(id: DomainId) {
 
         if (this.leftToRightManyToManyJoinRepo.existsByLeft(id)) {
