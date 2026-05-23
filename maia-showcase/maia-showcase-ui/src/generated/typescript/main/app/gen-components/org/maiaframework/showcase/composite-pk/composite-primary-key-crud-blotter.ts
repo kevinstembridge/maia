@@ -6,9 +6,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyBlotterRowDto';
 import {CompositePrimaryKeyBlotter} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-blotter';
-import {CompositePrimaryKeyCreateDialog} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-create-dialog';
 import {CompositePrimaryKeyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-delete-dialog';
-import {CompositePrimaryKeyEditDialog} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-edit-dialog';
 
 
 @Component({
@@ -30,15 +28,7 @@ export class CompositePrimaryKeyCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(CompositePrimaryKeyCreateDialog, {
-            width: '400px'
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
+        this.router.navigate(['/composite-primary-key/create']);
 
     }
 
@@ -46,22 +36,6 @@ export class CompositePrimaryKeyCrudBlotterComponent {
     onView(dto: CompositePrimaryKeyBlotterRowDto): void {
 
         this.router.navigate(['/composite-primary-key/view', dto.id]);
-
-    }
-
-
-    onEdit(dto: CompositePrimaryKeyBlotterRowDto): void {
-
-        const dialogRef = this.dialog.open(CompositePrimaryKeyEditDialog, {
-            width: '400px',
-            data: {someInt: dto.someInt, someString: dto.someString}
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
 
     }
 
