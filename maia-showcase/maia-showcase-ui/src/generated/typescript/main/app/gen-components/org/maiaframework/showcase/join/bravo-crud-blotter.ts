@@ -7,9 +7,7 @@ import {Router} from '@angular/router';
 import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterRowDto';
 import {BravoBlotter} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter';
 import {BravoCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-check-foreign-key-references-dialog';
-import {BravoCreateDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-create-dialog';
 import {BravoDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-delete-dialog';
-import {BravoEditDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-edit-dialog';
 
 
 @Component({
@@ -26,33 +24,12 @@ export class BravoCrudBlotterComponent {
     private readonly dialog = inject(MatDialog);
 
 
+    private readonly router = inject(Router);
+
+
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(BravoCreateDialog, {
-            width: '400px'
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
-
-    }
-
-
-    onEdit(dto: BravoBlotterRowDto): void {
-
-        const dialogRef = this.dialog.open(BravoEditDialog, {
-            width: '400px',
-            data: dto.id
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
+        this.router.navigate(['/bravo/create']);
 
     }
 
