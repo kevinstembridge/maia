@@ -7,9 +7,7 @@ import {Router} from '@angular/router';
 import {LeftManyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyBlotterRowDto';
 import {LeftManyBlotter} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-blotter';
 import {LeftManyCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-check-foreign-key-references-dialog';
-import {LeftManyCreateDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-create-dialog';
 import {LeftManyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-delete-dialog';
-import {LeftManyEditDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-edit-dialog';
 
 
 @Component({
@@ -31,38 +29,7 @@ export class LeftManyCrudBlotterComponent {
 
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(LeftManyCreateDialog, {
-            width: '400px'
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
-
-    }
-
-
-    onView(dto: LeftManyBlotterRowDto): void {
-
-        this.router.navigate(['/left-many/view', dto.id]);
-
-    }
-
-
-    onEdit(dto: LeftManyBlotterRowDto): void {
-
-        const dialogRef = this.dialog.open(LeftManyEditDialog, {
-            width: '400px',
-            data: dto.id
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
+        this.router.navigate(['/left-many/create']);
 
     }
 
