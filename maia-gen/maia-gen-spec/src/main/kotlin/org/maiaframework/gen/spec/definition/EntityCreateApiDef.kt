@@ -105,7 +105,7 @@ class EntityCreateApiDef(
     }
 
 
-    val preAuthorizeExpression = this.crudApiDef.authority?.let { PreAuthorizeExpression("hasAuthority('$it')") }
+    val preAuthorizeExpression = this.crudApiDef.authorityDef?.let { PreAuthorizeExpression("hasAuthority('$it')") }
 
 
     override val requestDtoDef by lazy { RequestDtoDef(

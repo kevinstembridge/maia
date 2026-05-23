@@ -15,7 +15,7 @@ class AgGridBlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSource
 
     override fun renderSource(): String {
 
-        if (this.dtoDef.addButtonDef != null) {
+        if (this.dtoDef.entityCreatePageDef != null) {
             append("""
                  |@if (addButtonVisible) {
                  |    <div class="flex">

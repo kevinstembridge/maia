@@ -1,4 +1,7 @@
 
+TODO * rv if CrudApiDef.withEntityForm is still needed now that we have EntityEditPageDef instead.
+    TODO * Refactor so that EntityEditReactiveFormHtmlRenderer doesn't need a reference to the CrudApiDef.
+
 TODO * On Edit clicked, switch to an EditPage.
 
 TODO * Add a 'Cancel' button to edit pages.

@@ -16,7 +16,7 @@ class EntityEditPageDef(
     )
 
 
-    val editFormPageAngularComponentNames = AngularComponentNames(
+    val editPageAngularComponentNames = AngularComponentNames(
         entityDef.packageName,
         entityEditBaseName.withSuffix("Page").value
     )
@@ -25,7 +25,7 @@ class EntityEditPageDef(
     val dataPageId = "${entityDef.entityBaseName.toSnakeCase()}_edit"
 
 
-    val viewPageUrl: String get() = entityDef.viewEntityUrl
+    val viewPageUrl: String get() = entityDef.viewEntityPageUrl
 
 
     val updateApiDef: EntityUpdateApiDef

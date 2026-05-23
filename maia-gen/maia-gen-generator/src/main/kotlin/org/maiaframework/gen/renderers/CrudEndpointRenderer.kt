@@ -288,9 +288,9 @@ class CrudEndpointRenderer(
 
     private fun appendPreAuthorize(crudApiDef: CrudApiDef) {
 
-        crudApiDef.authority?.let { authority ->
+        crudApiDef.authorityDef?.let { authorityDef ->
             addImportFor(Fqcns.SPRING_SECURITY_PRE_AUTHORIZE)
-            appendLine("    @PreAuthorize(\"hasAuthority('$authority')\")")
+            appendLine("    @PreAuthorize(\"hasAuthority('${authorityDef.name}')\")")
         }
 
     }

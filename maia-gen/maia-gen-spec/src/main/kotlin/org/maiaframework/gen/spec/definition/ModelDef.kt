@@ -30,6 +30,7 @@ class ModelDef(
     val rowMapperDefs: List<RowMapperDef>,
     val entityDetailViewDefs: List<EntityDetailViewDef>,
     val entityEditPageDefs: List<EntityEditPageDef>,
+    val entityCreatePageDefs: List<EntityCreatePageDef>,
     val crudBlotterPageDefs: List<CrudBlotterPageDef>
 ) {
 
@@ -83,10 +84,24 @@ class ModelDef(
     val allEsDocDefs = typeaheadDefs.map { it.esDocDef }.plus(esDocsDefs)
 
 
-    fun hasEditEntityPage(entityDef: EntityDef): Boolean {
+    fun findViewEntityPage(entityDef: EntityDef): EntityDetailViewDef? {
 
-        return entityEditPageDefs.any { it.entityDef == entityDef }
+        return entityDetailViewDefs.find { it.entityDef == entityDef }
         
+    }
+
+
+    fun findEditEntityPage(entityDef: EntityDef): EntityEditPageDef? {
+
+        return entityEditPageDefs.find { it.entityDef == entityDef }
+
+    }
+
+
+    fun findCreateEntityPage(entityDef: EntityDef): EntityCreatePageDef? {
+
+        return entityCreatePageDefs.find { it.entityDef == entityDef }
+
     }
 
 

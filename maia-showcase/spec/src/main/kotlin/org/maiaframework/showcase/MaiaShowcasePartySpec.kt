@@ -241,6 +241,9 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
+    val userEntityCreatePageDef = entityCreatePage(userEntityDef)
+
+
     val userSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.user",
         "User",
@@ -260,7 +263,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
     val userBlotterDef = blotter(
         userSearchableDtoDef,
-        withAddButton = true,
+        entityCreatePageDef = userEntityCreatePageDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
@@ -356,7 +359,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
     val userGroupMembershipBlotterDef = blotter(
         userGroupMembershipSearchableDtoDef,
-        withAddButton = true,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,

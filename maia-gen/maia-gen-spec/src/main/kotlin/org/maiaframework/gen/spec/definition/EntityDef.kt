@@ -654,10 +654,13 @@ class EntityDef(
     val checkForeignKeyReferencesEndpointUrl = "/api/$modulePath${entityBaseName.toKebabCase()}/check_foreign_references"
 
 
-    val viewEntityUrl = "/$modulePath${entityBaseName.toKebabCase()}/view"
+    val createEntityPageUrl = "/$modulePath${entityBaseName.toKebabCase()}/create"
 
 
-    val editEntityUrl = "/$modulePath${entityBaseName.toKebabCase()}/edit"
+    val viewEntityPageUrl = "/$modulePath${entityBaseName.toKebabCase()}/view"
+
+
+    val editEntityPageUrl = "/$modulePath${entityBaseName.toKebabCase()}/edit"
 
 
     init {

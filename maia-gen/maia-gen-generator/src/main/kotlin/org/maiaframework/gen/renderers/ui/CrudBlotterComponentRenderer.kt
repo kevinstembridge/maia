@@ -1,11 +1,16 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.CrudBlotterDef
+import org.maiaframework.gen.spec.definition.EntityCreatePageDef
+import org.maiaframework.gen.spec.definition.EntityDetailViewDef
+import org.maiaframework.gen.spec.definition.EntityEditPageDef
 
 class CrudBlotterComponentRenderer(
     private val crudBlotterDef: CrudBlotterDef,
     private val entityIsReferencedByForeignKeys: Boolean,
-    private val hasEditEntityPage: Boolean
+    private val entityDetailViewDef: EntityDetailViewDef?,
+    private val entityEditPageDef: EntityEditPageDef?,
+    private val entityCreatePageDef: EntityCreatePageDef?
 ): AbstractTypescriptRenderer() {
 
 
@@ -18,15 +23,11 @@ class CrudBlotterComponentRenderer(
         addImport("@angular/material/dialog", "MatDialog")
         addImport(crudBlotterDef.blotterDef.blotterComponent.componentTypescriptImport)
         addImport(crudBlotterDef.blotterDef.dtoDef.typescriptDtoImport)
-        crudBlotterDef.entityCrudApiDef.createApiDef?.let { addImport(it.angularDialogComponentNames.componentTypescriptImport) }
         crudBlotterDef.entityCrudApiDef.deleteApiDef?.let {
             addImport(it.angularDialogComponentTypescriptImport)
             if (entityIsReferencedByForeignKeys) {
                 addImport(crudBlotterDef.entityCrudApiDef.entityDef.checkForeignKeyReferencesDialog.componentTypescriptImport)
             }
-        }
-        if (!hasEditEntityPage) {
-            crudBlotterDef.entityCrudApiDef.updateApiDef?.let { addImport(it.angularDialogComponentNames.componentTypescriptImport) }
         }
 
     }
@@ -57,8 +58,9 @@ class CrudBlotterComponentRenderer(
             |    private readonly dialog = inject(MatDialog);
             |""".trimMargin())
 
-        val needsRouter = crudBlotterDef.blotterDef.hasViewActionColumn ||
-            (hasEditEntityPage && crudBlotterDef.entityCrudApiDef.updateApiDef != null)
+        val needsRouter = (entityDetailViewDef != null && crudBlotterDef.blotterDef.hasViewActionColumn)
+                || entityEditPageDef != null
+                || entityCreatePageDef != null
 
         if (needsRouter) {
 
@@ -70,36 +72,14 @@ class CrudBlotterComponentRenderer(
 
         }
 
-        crudBlotterDef.entityCrudApiDef.createApiDef?.let { apiDef ->
+        if (entityCreatePageDef != null) {
 
             append("""
                 |
                 |
                 |    onAddButtonClicked(): void {
                 |
-                |        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {
-                |            width: '400px'
-                |        });
-                |
-                |        dialogRef.afterClosed().subscribe((result) => {
-                |            if (result) {
-                |                this.blotterComponent.reapplyFilters();
-                |            }
-                |        });
-                |
-                |    }
-                |""".trimMargin())
-
-        }
-
-        if (crudBlotterDef.blotterDef.hasViewActionColumn) {
-
-            append("""
-                |
-                |
-                |    onView(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
-                |
-                |        this.router.navigate(['${crudBlotterDef.blotterDef.searchableDtoDef!!.dtoRootEntityDef.viewEntityUrl}', dto.id]);
+                |        this.router.navigate(['${entityCreatePageDef.entityDef.createEntityPageUrl}']);
                 |
                 |    }
                 |""".trimMargin()
@@ -107,51 +87,33 @@ class CrudBlotterComponentRenderer(
 
         }
 
-        crudBlotterDef.entityCrudApiDef.updateApiDef?.let { apiDef ->
 
-            val entityDef = crudBlotterDef.entityCrudApiDef.entityDef
+        if (entityDetailViewDef != null && crudBlotterDef.blotterDef.hasViewActionColumn) {
 
-            if (hasEditEntityPage) {
+            append("""
+                |
+                |
+                |    onView(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
+                |
+                |        this.router.navigate(['${crudBlotterDef.blotterDef.searchableDtoDef!!.dtoRootEntityDef.viewEntityPageUrl}', dto.id]);
+                |
+                |    }
+                |""".trimMargin()
+            )
 
-                append("""
-                    |
-                    |
-                    |    onEdit(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
-                    |
-                    |        this.router.navigate(['${entityDef.editEntityUrl}', dto.id]);
-                    |
-                    |    }
-                    |""".trimMargin())
+        }
 
-            } else {
+        if (entityEditPageDef != null) {
 
-                val entityIdExpression = if (entityDef.hasCompositePrimaryKey) {
-                    val parts = entityDef.primaryKeyFieldsSorted.joinToString(", ") { "${it.classFieldName.value}: dto.${it.classFieldName.value}" }
-                    "{$parts}"
-                } else {
-                    "dto.id"
-                }
-
-                append("""
-                    |
-                    |
-                    |    onEdit(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
-                    |
-                    |        const dialogRef = this.dialog.open(${apiDef.angularDialogComponentNames.componentName}, {
-                    |            width: '400px',
-                    |            data: $entityIdExpression
-                    |        });
-                    |
-                    |        dialogRef.afterClosed().subscribe(result => {
-                    |            if (result) {
-                    |                this.blotterComponent.reapplyFilters();
-                    |            }
-                    |        });
-                    |
-                    |    }
-                    |""".trimMargin())
-
-            }
+            append("""
+                |
+                |
+                |    onEdit(dto: ${crudBlotterDef.blotterDef.dtoUqcn}): void {
+                |
+                |        this.router.navigate(['${entityEditPageDef.entityDef.editEntityPageUrl}', dto.id]);
+                |
+                |    }
+                |""".trimMargin())
 
         }
 

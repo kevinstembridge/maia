@@ -58,7 +58,7 @@ class EntityDetailViewDef(
     val editPageUrl = "/$modulePath${entityDef.entityBaseName.toSnakeCase()}/edit"
 
 
-    val editPermission = this.entityDef.crudDef.crudApiDefs.updateApiDef?.authority
+    val editPermission = this.entityDef.crudDef.crudApiDefs.updateApiDef?.authorityDef
 
 
     val dtoDef = DtoDefBuilder(

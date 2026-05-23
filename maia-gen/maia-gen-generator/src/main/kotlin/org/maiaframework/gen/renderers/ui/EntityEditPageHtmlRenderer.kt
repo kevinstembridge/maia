@@ -11,7 +11,7 @@ class EntityEditPageHtmlRenderer(
 
     override fun renderedFilePath(): String {
 
-        return entityEditPageDef.editFormPageAngularComponentNames.htmlRenderedFilePath
+        return entityEditPageDef.editPageAngularComponentNames.htmlRenderedFilePath
 
     }
 

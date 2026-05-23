@@ -90,7 +90,7 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
             appendLine("  readonly ${actionColumnDef.actionName} = output<${this.blotterDef.dtoUqcn}>();")
         }
 
-        if (this.blotterDef.addButtonDef != null) {
+        if (this.blotterDef.entityCreatePageDef != null) {
             appendLine("  readonly addButtonClicked = output();")
         }
 
@@ -210,14 +210,14 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
             appendLine("  }")
         }
 
-        this.blotterDef.addButtonDef?.let { addButtonDef ->
+        this.blotterDef.entityCreatePageDef?.let { entityCreatePageDef ->
 
             blankLine()
             blankLine()
             appendLine("  get addButtonVisible(): boolean {")
 
-            if (addButtonDef.authority != null) {
-                appendLine("    return this.authService.currentUserHasThisAuthority(Authority.${addButtonDef.authority});")
+            if (entityCreatePageDef.authority != null) {
+                appendLine("    return this.authService.currentUserHasThisAuthority(Authority.${entityCreatePageDef.authority});")
             } else {
                 appendLine("    return true;")
             }

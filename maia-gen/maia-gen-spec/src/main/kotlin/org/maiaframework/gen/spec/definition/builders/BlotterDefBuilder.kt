@@ -12,7 +12,7 @@ import org.maiaframework.gen.spec.definition.lang.PackageName
 class BlotterDefBuilder(
     private val packageName: PackageName,
     private val dtoBaseName: DtoBaseName,
-    private val addButtonDef: AddButtonDef? = null,
+    private val entityCreatePageDef: EntityCreatePageDef?,
     private val disableRendering: Boolean,
     private val withGeneratedDto: WithGeneratedDto,
     private val withGeneratedEndpoint: WithGeneratedEndpoint,
@@ -42,7 +42,7 @@ class BlotterDefBuilder(
             this.packageName,
             this.moduleName,
             this.columnDefs,
-            this.addButtonDef,
+            this.entityCreatePageDef,
             this.disableRendering,
             this.withGeneratedDto,
             this.withPreAuthorize,

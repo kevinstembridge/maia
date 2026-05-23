@@ -2,7 +2,6 @@ package org.maiaframework.gen.spec
 
 import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.gen.spec.AbstractSpec.AuthoritiesBuilder.AuthorityBuilder
-import org.maiaframework.gen.spec.definition.AddButtonDef
 import org.maiaframework.gen.spec.definition.AngularComponentBaseName
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AnnotationDefs
@@ -23,6 +22,7 @@ import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
 import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 import org.maiaframework.gen.spec.definition.ElasticIndexBaseName
 import org.maiaframework.gen.spec.definition.EntityBaseName
+import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.EntityCrudApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
@@ -61,8 +61,10 @@ import org.maiaframework.gen.spec.definition.builders.CrudBlotterDefBuilder
 import org.maiaframework.gen.spec.definition.builders.DataClassDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BlotterDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityCreateHtmlFormDefBuilder
+import org.maiaframework.gen.spec.definition.builders.EntityCreatePageDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityDetailViewDefBuilder
+import org.maiaframework.gen.spec.definition.builders.EntityEditPageDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EnumDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EsDocDefBuilder
 import org.maiaframework.gen.spec.definition.builders.FixedWidthFileStagingEntityDefBuilder
@@ -125,6 +127,7 @@ abstract class AbstractSpec protected constructor(
     private val blotterDefs = mutableListOf<BlotterDef>()
     private val entityCreateHtmlFormDefs = mutableListOf<EntityHtmlFormDef>()
     private val entityDetailViewDefs = mutableListOf<EntityDetailViewDef>()
+    private val entityCreatePageDefs = mutableListOf<EntityCreatePageDef>()
     private val entityEditPageDefs = mutableListOf<EntityEditPageDef>()
     private val entityDefs = mutableListOf<EntityDef>()
     private val enumDefs = mutableListOf<EnumDef>().also { it.add(EnumDefs.LIFECYCLE_STATE_ENUM_DEF) }
@@ -183,7 +186,8 @@ abstract class AbstractSpec protected constructor(
                 this.rowMapperDefs,
                 this.entityDetailViewDefs,
                 this.entityEditPageDefs,
-                this.crudBlotterPageDefs
+                this.entityCreatePageDefs,
+                this.crudBlotterPageDefs,
             )
 
         }
@@ -924,7 +928,7 @@ abstract class AbstractSpec protected constructor(
 
     protected fun blotter(
         searchableDtoDef: SearchableDtoDef,
-        withAddButton: Boolean = false,
+        entityCreatePageDef: EntityCreatePageDef? = null,
         disableRendering: Boolean = false,
         withPreAuthorize: WithPreAuthorize? = null,
         withGeneratedDto: WithGeneratedDto = WithGeneratedDto.TRUE,
@@ -935,24 +939,18 @@ abstract class AbstractSpec protected constructor(
         init: BlotterDefBuilder.() -> Unit
     ): BlotterDef {
 
-        val addButtonDef = if (withAddButton) {
+        if (entityCreatePageDef != null) {
 
-            val createApiDef = searchableDtoDef.dtoRootEntityDef.entityCrudApiDef?.createApiDef
+            searchableDtoDef.dtoRootEntityDef.entityCrudApiDef?.createApiDef
                 ?: throw RuntimeException("blotter with an add button must be backed by an entity with a Create API. searchableDtoDef = ${searchableDtoDef.searchDtoDef.dtoBaseName}.")
 
-            val authority = createApiDef.crudApiDef.authority
-
-            AddButtonDef(authority)
-
-        } else {
-            null
         }
 
         val builder = BlotterDefBuilder(
             searchableDtoDef.packageName,
             searchableDtoDef.dtoBaseName,
             blotterSourceDef = BlotterSearchableDtoSourceDef(searchableDtoDef),
-            addButtonDef = addButtonDef,
+            entityCreatePageDef = entityCreatePageDef,
             disableRendering = disableRendering,
             withGeneratedDto = withGeneratedDto,
             withGeneratedFindAllFunction = withGeneratedFindAllFunction,
@@ -974,6 +972,7 @@ abstract class AbstractSpec protected constructor(
 
     protected fun blotter(
         esDocDef: EsDocDef,
+        entityCreatePageDef: EntityCreatePageDef? = null,
         disableRendering: Boolean = false,
         withGeneratedDto: WithGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint: WithGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -987,7 +986,7 @@ abstract class AbstractSpec protected constructor(
         val builder = BlotterDefBuilder(
             esDocDef.packageName,
             esDocDef.esDocBaseName,
-            addButtonDef = null,
+            entityCreatePageDef = entityCreatePageDef,
             disableRendering = disableRendering,
             searchModelType = searchModelType,
             withGeneratedDto = withGeneratedDto,
@@ -1018,6 +1017,40 @@ abstract class AbstractSpec protected constructor(
         this.entityDetailViewDefs.add(def)
 
         builder.entityEditPageDef?.let { this.entityEditPageDefs.add(it) }
+
+        return def
+
+    }
+
+
+    protected fun entityEditPage(
+        entityDef: EntityDef,
+        init: (EntityEditPageDefBuilder.() -> Unit)? = null
+    ): EntityEditPageDef {
+
+        val builder = EntityEditPageDefBuilder(entityDef)
+        init?.invoke(builder)
+
+        val def = builder.build()
+
+        this.entityEditPageDefs.add(def)
+
+        return def
+
+    }
+
+
+    protected fun entityCreatePage(
+        entityDef: EntityDef,
+        init: (EntityCreatePageDefBuilder.() -> Unit)? = null
+    ): EntityCreatePageDef {
+
+        val builder = EntityCreatePageDefBuilder(entityDef)
+        init?.invoke(builder)
+
+        val def = builder.build()
+
+        this.entityCreatePageDefs.add(def)
 
         return def
 

@@ -25,7 +25,7 @@ class EntityEditFormPageComponentRenderer(
 
     override fun renderedFilePath(): String {
 
-        return entityEditPageDef.editFormPageAngularComponentNames.componentRenderedFilePath
+        return entityEditPageDef.editPageAngularComponentNames.componentRenderedFilePath
 
     }
 
@@ -41,10 +41,10 @@ class EntityEditFormPageComponentRenderer(
             |        PageLayout,
             |        ${entityEditPageDef.editFormAngularComponentNames.componentName}
             |    ],
-            |    selector: '${entityEditPageDef.editFormPageAngularComponentNames.componentSelector}',
-            |    templateUrl: './${entityEditPageDef.editFormPageAngularComponentNames.htmlFileName}'
+            |    selector: '${entityEditPageDef.editPageAngularComponentNames.componentSelector}',
+            |    templateUrl: './${entityEditPageDef.editPageAngularComponentNames.htmlFileName}'
             |})
-            |export class ${entityEditPageDef.editFormPageAngularComponentNames.componentName} {
+            |export class ${entityEditPageDef.editPageAngularComponentNames.componentName} {
             |
             |
             |    private readonly route = inject(ActivatedRoute);

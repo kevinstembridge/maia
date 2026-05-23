@@ -15,7 +15,7 @@ class BlotterDef(
     val packageName: PackageName,
     val moduleName: ModuleName?,
     providedBlotterColumnDefs: List<AbstractBlotterColumnDef>,
-    val addButtonDef: AddButtonDef?,
+    val entityCreatePageDef: EntityCreatePageDef?,
     val disableRendering: Boolean,
     val withGeneratedDto: WithGeneratedDto,
     val withPreAuthorize: WithPreAuthorize? = null,

@@ -1,6 +1,6 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.Authority
+import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.DatabaseIndexDef
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
@@ -20,7 +20,6 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -32,6 +31,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -120,7 +120,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
-        appendPreAuthorize(createApiDef.crudApiDef.authority)
+        appendPreAuthorize(createApiDef.crudApiDef.authorityDef)
         appendLine("    fun create(createDto: ${createApiDef.requestDtoDef.uqcn}): ${this.entityDef.entityUqcn} {")
 
         if (this.entityDef.hasCreatedByIdField || this.entityDef.hasCreatedByUsernameField) {
@@ -412,7 +412,7 @@ class CrudServiceRenderer(
 
             blankLine()
             blankLine()
-            appendPreAuthorize(apiDef.crudApiDef.authority)
+            appendPreAuthorize(apiDef.crudApiDef.authorityDef)
             appendLine("    fun update(editDto: ${dtoDef.uqcn}) {")
             blankLine()
 
@@ -507,7 +507,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
-        appendPreAuthorize(this.entityDef.entityCrudApiDef?.updateApiDef?.crudApiDef?.authority)
+        appendPreAuthorize(this.entityDef.entityCrudApiDef?.updateApiDef?.crudApiDef?.authorityDef)
         appendLine("    fun update${fieldName.firstToUpper()}(editDto: $dtoUqcn) {")
         blankLine()
         appendLine("        val currentUsername = CurrentUserHolder.currentUsername")
@@ -598,7 +598,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
-        appendPreAuthorize(this.entityDef.entityCrudApiDef?.deleteApiDef?.crudApiDef?.authority)
+        appendPreAuthorize(this.entityDef.entityCrudApiDef?.deleteApiDef?.crudApiDef?.authorityDef)
         appendLine("    fun delete($primaryKeyFieldNamesAndTypesCsv) {")
 
         val referencingEntities = this.modelDef.entitiesThatReference(this.entityDef)
@@ -639,11 +639,13 @@ class CrudServiceRenderer(
     }
 
 
-    private fun appendPreAuthorize(authority: Authority?) {
+    private fun appendPreAuthorize(authority: AuthorityDef?) {
+
         authority?.let {
             addImportFor(Fqcns.SPRING_SECURITY_PRE_AUTHORIZE)
-            appendLine("    @PreAuthorize(\"hasAuthority('$it')\")")
+            appendLine("    @PreAuthorize(\"hasAuthority('${it.name}')\")")
         }
+
     }
 
 

@@ -1,6 +1,5 @@
 package org.maiaframework.gen.spec.definition.builders
 
-import org.maiaframework.gen.spec.definition.Authority
 import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.CrudApiDefs
 import org.maiaframework.gen.spec.definition.CrudDef
@@ -38,10 +37,7 @@ class CrudDefBuilder {
         init: CrudApiDefsBuilder.() -> Unit
     ) {
 
-        val preAuthorizeExpression = defaultAuthority?.let { Authority(it.name) }
-        val builder = CrudApiDefsBuilder(
-            preAuthorizeExpression,
-        )
+        val builder = CrudApiDefsBuilder(defaultAuthority)
 
         builder.init()
         this.crudApiDefsBuilder = builder

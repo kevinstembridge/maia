@@ -30,13 +30,14 @@ class EntityDetailViewDefBuilder(private val entityDef: EntityDef) {
     }
 
 
-    fun withEditPage(init: EntityEditPageDefBuilder.() -> Unit) {
-
-        val builder = EntityEditPageDefBuilder(entityDef)
-        builder.init()
-        this.entityEditPageDef = builder.build()
-
-    }
+    // TODO delete me after cooling off
+//    fun withEditPage(init: EntityEditPageDefBuilder.() -> Unit) {
+//
+//        val builder = EntityEditPageDefBuilder(entityDef)
+//        builder.init()
+//        this.entityEditPageDef = builder.build()
+//
+//    }
 
 
 }

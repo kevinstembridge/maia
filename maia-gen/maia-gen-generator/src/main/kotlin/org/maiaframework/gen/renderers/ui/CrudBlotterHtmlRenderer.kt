@@ -17,7 +17,7 @@ class CrudBlotterHtmlRenderer(private val crudBlotterDef: CrudBlotterDef): Abstr
 
         appendLine("<${crudBlotterDef.dtoBlotterComponent.componentSelector}")
 
-        if (this.crudBlotterDef.blotterDef.addButtonDef != null) {
+        if (this.crudBlotterDef.blotterDef.entityCreatePageDef != null) {
             appendLine("""    (addButtonClicked)="onAddButtonClicked()"""")
         }
 

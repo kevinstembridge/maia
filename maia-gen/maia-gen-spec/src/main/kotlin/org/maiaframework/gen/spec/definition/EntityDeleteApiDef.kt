@@ -9,7 +9,7 @@ class EntityDeleteApiDef(
 ) {
 
 
-    val preAuthorizeExpression = this.crudApiDef.authority?.let { PreAuthorizeExpression("hasAuthority('$it')") }
+    val preAuthorizeExpression = this.crudApiDef.authorityDef?.let { PreAuthorizeExpression("hasAuthority('$it')") }
 
 
     private val modulePath = if (moduleName == null) "" else "${StringFunctions.toKebabCase(moduleName.value)}/"

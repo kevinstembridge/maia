@@ -327,6 +327,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val allFieldTypesEntityDetailViewDef = entityDetailView(allFieldTypesEntityDef)
+
+
+    val allFieldTypesEntityEditPageDef = entityEditPage(allFieldTypesEntityDef)
+
+
+    val allFieldTypesEntityCreatePageDef = entityCreatePage(allFieldTypesEntityDef)
+
+
     val allFieldTypesSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.all_field_types",
         "AllFieldTypes",
@@ -388,7 +397,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val allFieldTypesBlotterDef = blotter(
         allFieldTypesSearchableDtoDef,
-        withAddButton = true,
+        entityCreatePageDef = allFieldTypesEntityCreatePageDef,
     ) {
         editActionColumn()
         columnFromDto("someBoolean")
@@ -484,9 +493,22 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val simpleEntityDetailViewDef = entityDetailView(simpleEntityDef)
+
+
+    val simpleEntityEditPageDef = entityEditPage(simpleEntityDef) {
+        authority = partySpec.adminAuthority
+    }
+
+
+    val simpleEntityCreatePageDef = entityCreatePage(simpleEntityDef) {
+        authority = partySpec.adminAuthority
+    }
+
+
     val simpleBlotterDef = blotter(
         simpleSearchableDtoDef,
-        withAddButton = true,
+        entityCreatePageDef = simpleEntityCreatePageDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
@@ -502,14 +524,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val simpleCrudBlotterBlotterDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!) {
         withBlotterPage {
             pageTitle = "Simple"
-        }
-    }
-
-
-    val simpleEntityDetailViewDef = entityDetailView(simpleEntityDef) {
-        withEditPage {
-            pageTitle = "Edit Simple"
-            authority = partySpec.adminAuthority
         }
     }
 
@@ -714,6 +728,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val someVersionedEntityCreateDef = entityCreatePage(someVersionedEntityDef)
+
+
     val someVersionedSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.versioned",
         "SomeVersioned",
@@ -730,7 +747,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val someVersionedBlotterDef = blotter(
         someVersionedSearchableDtoDef,
-        withAddButton = true,
+        someVersionedEntityCreateDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
@@ -930,6 +947,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val bravoEntityCreatePageDef = entityCreatePage(bravoEntityDef)
+
+
     val bravoSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.join",
         "Bravo", // TODO rename to BravoSearchable
@@ -946,7 +966,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoBlotterDef = blotter(bravoSearchableDtoDef, withAddButton = true) {
+    val bravoBlotterDef = blotter(
+        bravoSearchableDtoDef,
+        entityCreatePageDef = bravoEntityCreatePageDef
+    ) {
         editActionColumn()
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
         columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
@@ -1154,6 +1177,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val leftManyEntityCreatePageDef = entityCreatePage(leftManyEntityDef)
+
+
     val leftManySearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.many_to_many",
         "LeftMany",
@@ -1169,7 +1195,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftManyBlotterDef = blotter(leftManySearchableDtoDef, withAddButton = true) {
+    val leftManyBlotterDef = blotter(
+        leftManySearchableDtoDef,
+        entityCreatePageDef = leftManyEntityCreatePageDef
+    ) {
         viewActionColumn()
         editActionColumn()
         columnFromDto("someStringFromLeft", "someString") { header("Some String From Left") }
@@ -1255,6 +1284,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val compositePrimaryKeyEntityCreatePageDef = entityCreatePage(compositePrimaryKeyEntityDef)
+
+
     val compositePrimaryKeySearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.composite_pk",
         "CompositePrimaryKey",
@@ -1272,7 +1304,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val compositePrimaryKeyBlotterDef = blotter(
         compositePrimaryKeySearchableDtoDef,
-        withAddButton = true,
+        entityCreatePageDef = compositePrimaryKeyEntityCreatePageDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,

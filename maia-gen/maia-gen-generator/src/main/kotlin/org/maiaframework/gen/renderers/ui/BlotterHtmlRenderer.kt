@@ -20,7 +20,7 @@ class BlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSourceFileRe
         appendLine("<form>")
         blankLine()
 
-        if (this.dtoDef.addButtonDef != null) {
+        if (this.dtoDef.entityCreatePageDef != null) {
             append("""
                 |    @if (addButtonVisible) {
                 |        <div class="col d-flex">

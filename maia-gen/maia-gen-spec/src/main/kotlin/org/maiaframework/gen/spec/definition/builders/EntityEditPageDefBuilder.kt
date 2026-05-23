@@ -9,7 +9,7 @@ class EntityEditPageDefBuilder(private val entityDef: EntityDef) {
 
     var pageTitle: String = "Edit ${entityDef.entityBaseName.toTitleCase()}"
 
-    var authority: AuthorityDef? = null
+    var authority: AuthorityDef? = entityDef.entityCrudApiDef?.updateApiDef?.crudApiDef?.authorityDef
 
     fun build(): EntityEditPageDef {
         return EntityEditPageDef(entityDef, pageTitle, authority)

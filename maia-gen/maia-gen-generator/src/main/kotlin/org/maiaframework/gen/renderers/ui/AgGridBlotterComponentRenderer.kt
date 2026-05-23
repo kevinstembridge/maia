@@ -104,7 +104,7 @@ class AgGridBlotterComponentRenderer(
             appendLine("    readonly ${actionColumnDef.actionName} = output<${this.blotterDef.dtoUqcn}>();")
         }
 
-        if (this.blotterDef.addButtonDef != null) {
+        if (this.blotterDef.entityCreatePageDef != null) {
             blankLine()
             blankLine()
             appendLine("    readonly addButtonClicked = output();")
@@ -209,7 +209,7 @@ class AgGridBlotterComponentRenderer(
                 |""".trimMargin())
         }
 
-        this.blotterDef.addButtonDef?.let { addButtonDef ->
+        this.blotterDef.entityCreatePageDef?.let { entityCreatePageDef ->
 
             append("""
                 |
@@ -218,8 +218,10 @@ class AgGridBlotterComponentRenderer(
                 |
                 |""".trimMargin())
 
-            if (addButtonDef.authority != null) {
-                appendLine("        return this.authService.currentUserHasThisAuthority(Authority.${addButtonDef.authority});")
+            val authority = entityCreatePageDef.authority
+
+            if (authority != null) {
+                appendLine("        return this.authService.currentUserHasThisAuthority(Authority.${authority.name});")
             } else {
                 appendLine("        return true;")
             }

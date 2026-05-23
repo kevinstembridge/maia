@@ -1,11 +1,17 @@
 package org.maiaframework.gen.generator
 
+import org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
+import org.maiaframework.gen.renderers.ui.AgGridBlotterHtmlRenderer
 import org.maiaframework.gen.renderers.ui.AgGridDatasourceRenderer
 import org.maiaframework.gen.renderers.ui.AngularFormServiceRenderer
 import org.maiaframework.gen.renderers.ui.AsyncValidatorRenderer
 import org.maiaframework.gen.renderers.ui.AuthApiServiceRenderer
 import org.maiaframework.gen.renderers.ui.AuthGuardRenderer
 import org.maiaframework.gen.renderers.ui.AuthServiceTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.BlotterComponentRenderer
+import org.maiaframework.gen.renderers.ui.BlotterHtmlRenderer
+import org.maiaframework.gen.renderers.ui.BlotterScssRenderer
+import org.maiaframework.gen.renderers.ui.BlotterServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CrudBlotterComponentRenderer
@@ -13,15 +19,7 @@ import org.maiaframework.gen.renderers.ui.CrudBlotterHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CrudBlotterPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.CrudBlotterPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CurrentUserStoreRenderer
-import org.maiaframework.gen.renderers.ui.SigninRequestDtoRenderer
-import org.maiaframework.gen.renderers.ui.UserSummaryDtoRenderer
 import org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
-import org.maiaframework.gen.renderers.ui.AgGridBlotterHtmlRenderer
-import org.maiaframework.gen.renderers.ui.BlotterComponentRenderer
-import org.maiaframework.gen.renderers.ui.BlotterHtmlRenderer
-import org.maiaframework.gen.renderers.ui.BlotterScssRenderer
-import org.maiaframework.gen.renderers.ui.BlotterServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogScssRenderer
@@ -30,20 +28,20 @@ import org.maiaframework.gen.renderers.ui.EntityCreateFormScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityDetailDtoServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailViewComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailViewContentHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityDetailDtoServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailViewPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailViewPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormComponentRenderer
-import org.maiaframework.gen.renderers.ui.EntityEditSignalFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormPageComponentRenderer
-import org.maiaframework.gen.renderers.ui.EntityEditPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormScssRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditReactiveDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditReactiveFormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityEditSignalFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityReactiveFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.EnumSelectionOptionsTypescriptRenderer
@@ -54,9 +52,11 @@ import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.FormScssRenderer
 import org.maiaframework.gen.renderers.ui.ManyToManyChipFieldDef
 import org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.SigninRequestDtoRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadAngularServiceRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadFieldValidatorRenderer
 import org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
+import org.maiaframework.gen.renderers.ui.UserSummaryDtoRenderer
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormSystem
@@ -135,15 +135,13 @@ class AngularUiModuleGenerator(
         renderBlotterComponents()
         renderDtosForAsyncValidation()
         renderDtosForFormDefs()
-        renderEntityCreateDialogComponent()
-        renderEntityCreateFormComponent()
-        renderEntityCreateDialogHtml()
-        renderEntityCreateFormHtml()
-        renderEntityEditFormHtml()
+//        renderEntityCreateDialogComponent()
+//        renderEntityCreateFormComponent() TODO delete this after cooling off. 2026-05-21
+//        renderEntityCreateDialogHtml()
         renderEntityDeleteDialogComponent()
         renderEntityDeleteDialogHtml()
-        renderEntityEditDialogComponent()
-        renderEntityEditDialogHtml()
+//        renderEntityEditDialogComponent()
+//        renderEntityEditDialogHtml()
         renderEntityDetailViews()
         renderEntityDetailDtoServices()
         renderEntityEditPages()
@@ -376,10 +374,20 @@ class AngularUiModuleGenerator(
 
         this.modelDef.crudBlotterDefs.forEach { crudBlotterDef ->
 
-            val entityIsReferencedByForeignKeys = this.modelDef.entityIsReferencedByForeignKeys(crudBlotterDef.entityCrudApiDef.entityDef)
-            val hasEditEntityPage = this.modelDef.hasEditEntityPage(crudBlotterDef.entityCrudApiDef.entityDef)
+            val entityDef = crudBlotterDef.entityCrudApiDef.entityDef
+            val entityIsReferencedByForeignKeys = this.modelDef.entityIsReferencedByForeignKeys(entityDef)
+            val hasViewEntityPage = this.modelDef.findViewEntityPage(entityDef)
+            val hasEditEntityPage = this.modelDef.findEditEntityPage(entityDef)
+            val hasCreateEntityPage = this.modelDef.findCreateEntityPage(entityDef)
+
             CrudBlotterHtmlRenderer(crudBlotterDef).renderToDir(this.typescriptOutputDir)
-            CrudBlotterComponentRenderer(crudBlotterDef, entityIsReferencedByForeignKeys, hasEditEntityPage).renderToDir(this.typescriptOutputDir)
+            CrudBlotterComponentRenderer(
+                crudBlotterDef,
+                entityIsReferencedByForeignKeys,
+                hasViewEntityPage,
+                hasEditEntityPage,
+                hasCreateEntityPage
+            ).renderToDir(this.typescriptOutputDir)
 
         }
 
@@ -428,19 +436,6 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderEntityCreateFormHtml() {
-
-        this.modelDef.entityCrudApiDefs
-            .filter { it.entityDef.isConcrete && (it.createApiDef?.crudApiDef?.withEntityForm ?: false) }
-            .forEach { entityCrudApiDef ->
-                entityCrudApiDef.createApiDef?.let { apiDef ->
-                    renderEntityCreateHtmlForm(apiDef)
-                }
-           }
-
-    }
-
-
     private fun renderEntityCreateHtmlForm(apiDef: EntityCreateApiDef) {
 
         when (apiDef.angularDialogDef.angularFormSystem) {
@@ -448,19 +443,6 @@ class AngularUiModuleGenerator(
             AngularFormSystem.SIGNAL -> EntityCreateFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
         }
 
-
-    }
-
-
-    private fun renderEntityEditFormHtml() {
-
-        this.modelDef.entityCrudApiDefs
-            .filter { it.entityDef.isConcrete && (it.updateApiDef?.crudApiDef?.withEntityForm ?: false) }
-            .forEach { entityCrudApiDef ->
-                entityCrudApiDef.updateApiDef?.let { apiDef ->
-                    renderEntityEditHtmlForm(apiDef)
-                }
-           }
 
     }
 
