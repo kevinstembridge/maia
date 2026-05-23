@@ -101,7 +101,7 @@ class EntityUpdateApiDef(
         .map { it.classFieldDef }
         .map { RequestDtoFieldDef(it, this.entityDef.findUniqueDatabaseIndexDefFor(it.classFieldName)) }
         .plus(
-            crudApiDef.manyToManyAssociations.map { manyToManyEntityDef ->
+            entityDef.manyToManyAssociations.map { manyToManyEntityDef ->
                 val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
                 val classFieldDef = ClassFieldDef.aClassField(
                     "${otherSide.fieldName}EntityIds",

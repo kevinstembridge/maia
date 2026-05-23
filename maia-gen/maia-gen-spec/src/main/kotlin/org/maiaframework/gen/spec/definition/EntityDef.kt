@@ -290,7 +290,7 @@ class EntityDef(
 
     private val fetchForEditManyToManyFieldDefs: List<ManyToManySearchableDtoFieldDef> by lazy {
 
-        (crudDef.crudOperationDefs.updateOperationDef?.crudApiDef?.manyToManyAssociations ?: emptyList()).map { manyToManyEntityDef ->
+        this.manyToManyAssociations.map { manyToManyEntityDef ->
             val otherSide = manyToManyEntityDef.otherSideFrom(this)
             val fieldName = "${otherSide.fieldName}Entities"
             val classFieldDef = aClassField(
@@ -601,6 +601,19 @@ class EntityDef(
     val crudListenerClassDef = aClassDef(packageName.uqcn("${entityBaseName}CrudListener"))
         .ofType(ClassType.INTERFACE)
         .build()
+
+
+    private var _manyToManyAssociations: List<ManyToManyEntityDef> = emptyList()
+
+
+    val manyToManyAssociations: List<ManyToManyEntityDef>
+        get() = _manyToManyAssociations
+
+
+    internal fun initManyToManyAssociations(associations: List<ManyToManyEntityDef>) {
+        check(_manyToManyAssociations.isEmpty()) { "manyToManyAssociations already initialized on $entityBaseName" }
+        _manyToManyAssociations = associations
+    }
 
 
     val entityCrudApiDef = initCrudApiDef()

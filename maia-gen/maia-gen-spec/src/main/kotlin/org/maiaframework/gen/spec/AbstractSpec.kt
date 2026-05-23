@@ -149,6 +149,8 @@ abstract class AbstractSpec protected constructor(
     private val stringTypeDefs = mutableListOf<StringTypeDef>()
     private val stringValueClassDefs = mutableListOf<StringValueClassDef>()
     private val typeaheadDefs = mutableListOf<TypeaheadDef>()
+    private val manyToManyAssociationsByEntityName: MutableMap<EntityBaseName, MutableList<ManyToManyEntityDef>> = mutableMapOf()
+    private var entityDefsFinalized = false
 
 
     private val lookupFieldReaderByFieldType = { fieldType: FieldType -> this.fieldReadersByFieldType[fieldType] }
@@ -159,6 +161,7 @@ abstract class AbstractSpec protected constructor(
         get() {
 
             populateEntityHierarchy()
+            finalizeEntityDefs()
 
             return ModelDef(
                 this.appKey,
@@ -192,6 +195,21 @@ abstract class AbstractSpec protected constructor(
             )
 
         }
+
+
+    private fun finalizeEntityDefs() {
+
+        if (entityDefsFinalized) return
+
+        entityDefs.forEach { entityDef ->
+            entityDef.initManyToManyAssociations(
+                manyToManyAssociationsByEntityName[entityDef.entityBaseName] ?: emptyList()
+            )
+        }
+
+        entityDefsFinalized = true
+
+    }
 
 
     private fun populateEntityHierarchy() {
@@ -530,9 +548,9 @@ abstract class AbstractSpec protected constructor(
 
         val manyToManyEntityDef = ManyToManyEntityDef(entityDef, leftEntity, rightEntity)
 
-        val leftEntityCrudApiDef = leftEntity.entityDef.entityCrudApiDef
-        leftEntityCrudApiDef?.createApiDef?.crudApiDef?._manyToManyAssociations?.add(manyToManyEntityDef)
-        leftEntityCrudApiDef?.updateApiDef?.crudApiDef?._manyToManyAssociations?.add(manyToManyEntityDef)
+        manyToManyAssociationsByEntityName
+            .getOrPut(leftEntity.entityDef.entityBaseName) { mutableListOf() }
+            .add(manyToManyEntityDef)
 
         return manyToManyEntityDef
 

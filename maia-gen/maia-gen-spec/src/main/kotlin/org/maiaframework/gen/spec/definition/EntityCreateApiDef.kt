@@ -93,7 +93,7 @@ class EntityCreateApiDef(
             )
         )}.toList()
         .plus(
-            crudApiDef.manyToManyAssociations.map { manyToManyEntityDef ->
+            entityDef.manyToManyAssociations.map { manyToManyEntityDef ->
                 val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
                 val classFieldDef = ClassFieldDef.aClassField(
                     "${otherSide.fieldName}EntityIds",

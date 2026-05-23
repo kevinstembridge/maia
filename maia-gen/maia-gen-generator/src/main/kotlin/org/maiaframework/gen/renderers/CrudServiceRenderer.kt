@@ -149,11 +149,11 @@ class CrudServiceRenderer(
         appendLine("        val entity: ${this.entityDef.entityUqcn} = buildEntity(createDto${currentUserOrBlank})")
         blankLine()
 
-        if (createApiDef.crudApiDef.manyToManyAssociations.isNotEmpty()) {
+        if (createApiDef.entityDef.manyToManyAssociations.isNotEmpty()) {
 
             appendLine("        create(entity)")
 
-            createApiDef.crudApiDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
+            createApiDef.entityDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
 
                 val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
                 val thisSideEntityIdFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
@@ -434,7 +434,7 @@ class CrudServiceRenderer(
                 appendLine("        val updater = ${this.entityDef.entityBaseName}EntityUpdater.forPrimaryKey($primaryKeyFieldNamesCsv) {")
             }
 
-            val manyToManyFieldNames = apiDef.crudApiDef.manyToManyAssociations.map { m2m ->
+            val manyToManyFieldNames = apiDef.entityDef.manyToManyAssociations.map { m2m ->
                 val otherSide = m2m.otherSideFrom(this.entityDef)
                 "${otherSide.fieldName}EntityIds"
             }.toSet()
@@ -461,7 +461,7 @@ class CrudServiceRenderer(
 
         }
 
-        apiDef.crudApiDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
+        apiDef.entityDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
             val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
             val thisSideFieldName = manyToManyEntityDef.idTableColumnName(this.entityDef).removeSuffix("_id")
             val otherSideFieldName = otherSide.fieldName

@@ -428,7 +428,7 @@ class AngularUiModuleGenerator(
     private fun renderEntityCreateDialogHtml(apiDef: EntityCreateApiDef) {
 
         // TODO MTM:
-        val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.crudApiDef.manyToManyAssociations)
+        val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.entityDef.manyToManyAssociations)
         when (apiDef.angularDialogDef.angularFormSystem) {
             AngularFormSystem.REACTIVE -> EntityCreateDialogReactiveFormHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
             AngularFormSystem.SIGNAL -> EntityCreateDialogHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
@@ -507,7 +507,7 @@ class AngularUiModuleGenerator(
             .forEach {
 
                 // TODO MTM:
-                val chipFields = manyToManyChipFieldsFor(it.entityDef, it.crudApiDef.manyToManyAssociations)
+                val chipFields = manyToManyChipFieldsFor(it.entityDef, it.entityDef.manyToManyAssociations)
                 renderEntityForm(it.angularDialogDef, it.angularDialogComponentNames, chipFields)
                 EntityCreateDialogScssRenderer(it).renderToDir(this.typescriptOutputDir)
 
@@ -552,7 +552,7 @@ class AngularUiModuleGenerator(
     private fun renderEntityEditDialogHtml(apiDef: EntityUpdateApiDef) {
 
         // TODO MTM:
-        val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.crudApiDef.manyToManyAssociations)
+        val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.entityDef.manyToManyAssociations)
         when (apiDef.angularDialogDef.angularFormSystem) {
             AngularFormSystem.REACTIVE -> EntityEditReactiveDialogHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
             AngularFormSystem.SIGNAL -> EntityEditDialogHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
@@ -568,7 +568,7 @@ class AngularUiModuleGenerator(
             entityCrudApiDef.updateApiDef?.let { apiDef ->
                 if (entityCrudApiDef.entityDef.isModifiable) {
                     // TODO MTM:
-                    val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.crudApiDef.manyToManyAssociations)
+                    val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.entityDef.manyToManyAssociations)
                     renderEntityForm(apiDef.angularDialogDef, apiDef.angularDialogComponentNames, chipFields)
                 }
             }
