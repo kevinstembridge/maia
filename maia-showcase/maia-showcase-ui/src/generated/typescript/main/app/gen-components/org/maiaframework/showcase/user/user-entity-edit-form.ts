@@ -52,6 +52,9 @@ export class UserEntityEditForm implements OnInit {
     formGroup: FormGroup;
 
 
+    protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
+
+
     private readonly formService = inject(UserCrudService);
 
 
@@ -134,8 +137,5 @@ export class UserEntityEditForm implements OnInit {
     onCancelClicked(): void {
         this.onCancel.emit();
     }
-
-
-    protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
 }
 
