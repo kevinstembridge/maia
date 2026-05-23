@@ -1,22 +1,21 @@
 package org.maiaframework.gen.spec.definition
 
-import org.maiaframework.gen.spec.definition.flags.HasViewEntityPage
 import org.maiaframework.gen.spec.definition.flags.WithCrudListener
 
 data class CrudDef(
     val withCrudListener: WithCrudListener,
-    val hasViewEntityPage: HasViewEntityPage,
-    val crudApiDefs: CrudApiDefs
+    val crudOperationDefs: CrudOperationDefs
 ) {
 
 
     companion object {
 
+
         val EMPTY = CrudDef(
             WithCrudListener.FALSE,
-            HasViewEntityPage.FALSE,
-            CrudApiDefs.EMPTY
+            CrudOperationDefs.EMPTY
         )
+
 
     }
 

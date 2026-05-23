@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition.builders
 import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.domain.types.TypeDiscriminator
 import org.maiaframework.gen.spec.definition.AngularFormSystem
+import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.CacheableDef
 import org.maiaframework.gen.spec.definition.ConfigurableSchemaPropertyName

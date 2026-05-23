@@ -17,9 +17,6 @@ sealed class BlotterSourceDef {
     abstract val dataSourceType: DataSourceType
 
 
-    abstract val hasViewEntityPage: Boolean
-
-
     abstract val rowIdField: ClassFieldDef
 
 
@@ -41,9 +38,6 @@ class BlotterSearchableDtoSourceDef(
 
 
     override val dataSourceType: DataSourceType = DataSourceType.DATABASE
-
-
-    override val hasViewEntityPage: Boolean = this.searchableDtoDef.dtoRootEntityDef.hasViewEntityPage
 
 
     override val rowIdField: ClassFieldDef = this.searchableDtoDef.idField
@@ -70,9 +64,6 @@ class BlotterEsDocSourceDef(
 
 
     override val dataSourceType: DataSourceType = DataSourceType.ELASTIC_SEARCH
-
-
-    override val hasViewEntityPage: Boolean = esDocDef.hasViewEntityPage
 
 
     override val rowIdField: ClassFieldDef = esDocDef.idField

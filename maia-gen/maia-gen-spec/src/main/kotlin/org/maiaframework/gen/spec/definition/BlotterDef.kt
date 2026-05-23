@@ -124,9 +124,6 @@ class BlotterDef(
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
 
 
-    val hasViewEntityPage: Boolean = blotterSourceDef.hasViewEntityPage
-
-
     val hasViewActionColumn = actionColumnFields.any { it.actionName == ActionName.view }
 
 

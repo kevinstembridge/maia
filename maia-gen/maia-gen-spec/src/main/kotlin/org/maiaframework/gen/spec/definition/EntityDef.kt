@@ -243,9 +243,6 @@ class EntityDef(
         .build()
 
 
-    val hasViewEntityPage: Boolean = this.crudDef.hasViewEntityPage.value
-
-
     val hasAnyMatSelectFields = allEntityFields.any { it.fieldType is EnumFieldType }
 
 
@@ -293,7 +290,7 @@ class EntityDef(
 
     private val fetchForEditManyToManyFieldDefs: List<ManyToManySearchableDtoFieldDef> by lazy {
 
-        (crudDef.crudApiDefs.updateApiDef?.manyToManyAssociations ?: emptyList()).map { manyToManyEntityDef ->
+        (crudDef.crudOperationDefs.updateOperationDef?.manyToManyAssociations ?: emptyList()).map { manyToManyEntityDef ->
             val otherSide = manyToManyEntityDef.otherSideFrom(this)
             val fieldName = "${otherSide.fieldName}Entities"
             val classFieldDef = aClassField(
@@ -307,7 +304,7 @@ class EntityDef(
 
 
     val fetchForEditDtoDef: FetchForEditDtoDef? by lazy {
-        if (crudDef.crudApiDefs.updateApiDef != null) {
+        if (crudDef.crudOperationDefs.updateOperationDef != null) {
             FetchForEditDtoDef(
                 packageName,
                 entityBaseName,
@@ -611,16 +608,16 @@ class EntityDef(
 
     private fun initCrudApiDef(): EntityCrudApiDef? {
 
-        val createApiDef = this.crudDef.crudApiDefs.createApiDef?.let { EntityCreateApiDef(this, it, this.moduleName, this.angularFormSystem) }
+        val createApiDef = this.crudDef.crudOperationDefs.createOperationDef?.crudApiDef?.let { EntityCreateApiDef(this, it, this.moduleName, this.angularFormSystem) }
 
-        val updateApiDef = this.crudDef.crudApiDefs.updateApiDef?.let {
+        val updateApiDef = this.crudDef.crudOperationDefs.updateOperationDef?.crudApiDef?.let {
             if (this.entityClassDef.isModifiable == false && this.isAbstract == false) {
                 throw RuntimeException("Entity $entityBaseName is declared with a Update API but has no modifiable fields.")
             }
             EntityUpdateApiDef(this, it, this.moduleName, this.angularFormSystem)
         }
 
-        val deleteApiDef = this.crudDef.crudApiDefs.deleteApiDef?.let {
+        val deleteApiDef = this.crudDef.crudOperationDefs.deleteOperationDef?.crudApiDef?.let {
             if (this.deletable.value == false) {
                 throw RuntimeException("Entity $entityBaseName is declared with a Delete API but is not marked as deletable.")
             }
@@ -632,7 +629,7 @@ class EntityDef(
             createApiDef,
             updateApiDef,
             deleteApiDef,
-            this.crudDef.crudApiDefs.superclassCrudApiDef
+            this.crudDef.crudOperationDefs.superclassCrudApiDef
         )
 
         return if (entityCrudApiDef.isEmpty) {

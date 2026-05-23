@@ -58,7 +58,14 @@ class EntityDetailViewDef(
     val editPageUrl = "/$modulePath${entityDef.entityBaseName.toSnakeCase()}/edit"
 
 
-    val editPermission = this.entityDef.crudDef.crudApiDefs.updateApiDef?.authorityDef
+    val editPermission by lazy {
+        this.entityDef.crudDef.crudOperationDefs.updateOperationDef?.authorityDef
+            ?: throw RuntimeException("No edit permission defined for entity ${entityDef.entityBaseName}")
+    }
+
+
+
+    val editPermission_old = this.entityDef.crudDef.crudOperationDefs.updateOperationDef?.authorityDef
 
 
     val dtoDef = DtoDefBuilder(
