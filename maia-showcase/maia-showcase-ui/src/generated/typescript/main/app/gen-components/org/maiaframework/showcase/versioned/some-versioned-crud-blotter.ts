@@ -6,9 +6,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterRowDto';
 import {SomeVersionedBlotter} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter';
-import {SomeVersionedCreateDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-create-dialog';
 import {SomeVersionedDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-delete-dialog';
-import {SomeVersionedEditDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-edit-dialog';
 
 
 @Component({
@@ -25,33 +23,12 @@ export class SomeVersionedCrudBlotterComponent {
     private readonly dialog = inject(MatDialog);
 
 
+    private readonly router = inject(Router);
+
+
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(SomeVersionedCreateDialog, {
-            width: '400px'
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
-
-    }
-
-
-    onEdit(dto: SomeVersionedBlotterRowDto): void {
-
-        const dialogRef = this.dialog.open(SomeVersionedEditDialog, {
-            width: '400px',
-            data: dto.id
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
+        this.router.navigate(['/some-versioned/create']);
 
     }
 
