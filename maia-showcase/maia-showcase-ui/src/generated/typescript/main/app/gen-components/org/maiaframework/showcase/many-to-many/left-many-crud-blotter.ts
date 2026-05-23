@@ -34,6 +34,20 @@ export class LeftManyCrudBlotterComponent {
     }
 
 
+    onView(dto: LeftManyBlotterRowDto): void {
+
+        this.router.navigate(['/left-many/view', dto.id]);
+
+    }
+
+
+    onEdit(dto: LeftManyBlotterRowDto): void {
+
+        this.router.navigate(['/left-many/edit', dto.id]);
+
+    }
+
+
     onDelete(dto: LeftManyBlotterRowDto): void {
 
         const checkForeignKeyReferencesDialogRef = this.dialog.open(LeftManyCheckForeignKeyReferencesDialog, {

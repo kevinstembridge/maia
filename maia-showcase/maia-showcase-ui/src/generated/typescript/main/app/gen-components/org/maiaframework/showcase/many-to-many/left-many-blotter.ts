@@ -167,7 +167,7 @@ export class LeftManyBlotter {
 
     get addButtonVisible(): boolean {
 
-        return true;
+        return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
 
     }
 
