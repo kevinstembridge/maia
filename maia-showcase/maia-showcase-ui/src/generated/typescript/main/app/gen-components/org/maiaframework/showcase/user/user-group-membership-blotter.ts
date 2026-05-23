@@ -30,9 +30,6 @@ export class UserGroupMembershipBlotter {
     readonly edit = output<UserGroupMembershipBlotterRowDto>();
 
 
-    readonly addButtonClicked = output();
-
-
     public columnDefs: ColDef[] = [
         { field: 'userDisplayName', headerName: 'User', cellDataType: 'text', filter: true },
         { field: 'userGroupName', headerName: 'Group', cellDataType: 'text', filter: true },
@@ -120,20 +117,6 @@ export class UserGroupMembershipBlotter {
     onEdit(dto: UserGroupMembershipBlotterRowDto) {
 
         this.edit.emit(dto);
-
-    }
-
-
-    get addButtonVisible(): boolean {
-
-        return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
-
-    }
-
-
-    onAddButtonClicked() {
-
-        this.addButtonClicked.emit();
 
     }
 
