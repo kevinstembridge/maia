@@ -7,14 +7,14 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {MatTooltip} from '@angular/material/tooltip';
 import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/LifecycleState';
+import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/auth/AuthoritySelectOptions';
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
-import {MatOption, MatSelect} from '@angular/material/select';
-import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/auth/AuthoritySelectOptions';
-import {MatTooltip} from '@angular/material/tooltip';
 
 
 
@@ -24,11 +24,11 @@ import {MatTooltip} from '@angular/material/tooltip';
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
+        MatOption,
         MatProgressSpinnerModule,
-        ReactiveFormsModule,
         MatSelect,
         MatTooltip,
-        MatOption,
+        ReactiveFormsModule,
     ],
     selector: 'app-user-entity-edit-form',
     styleUrls: ['./user-entity-edit-form.scss'],
@@ -50,9 +50,6 @@ export class UserEntityEditForm implements OnInit {
 
 
     formGroup: FormGroup;
-
-
-    protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
 
 
     private readonly formService = inject(UserCrudService);
