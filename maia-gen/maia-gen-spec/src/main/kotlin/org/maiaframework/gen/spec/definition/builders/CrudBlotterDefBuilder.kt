@@ -11,16 +11,24 @@ class CrudBlotterDefBuilder(
     private val entityCrudApiDef: EntityCrudApiDef
 ) {
 
+
     internal var crudBlotterPageDef: CrudBlotterPageDef? = null
 
+
     fun withBlotterPage(init: CrudBlotterPageDefBuilder.() -> Unit) {
+
         val builder = CrudBlotterPageDefBuilder(blotterDef)
         builder.init()
         this.crudBlotterPageDef = builder.build()
+
     }
 
+
     fun build(): CrudBlotterDef {
+
         return CrudBlotterDef(blotterDef, entityCrudApiDef)
+
     }
+
 
 }
