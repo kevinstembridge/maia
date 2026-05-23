@@ -2,16 +2,10 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {inject, Injectable} from '@angular/core';
-import {
-    CompositePrimaryKeyCreateRequestDto
-} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyCreateRequestDto';
-import {
-    CompositePrimaryKeyFetchForEditDto
-} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyFetchForEditDto';
-import {
-    CompositePrimaryKeyUpdateRequestDto
-} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyUpdateRequestDto';
+import {Injectable, inject} from '@angular/core';
+import {CompositePrimaryKeyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyCreateRequestDto';
+import {CompositePrimaryKeyFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyFetchForEditDto';
+import {CompositePrimaryKeyUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyUpdateRequestDto';
 import {Observable} from 'rxjs';
 
 
