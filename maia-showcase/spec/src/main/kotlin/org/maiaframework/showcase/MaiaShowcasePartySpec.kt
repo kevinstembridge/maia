@@ -278,9 +278,10 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val userCrudBlotterDef = crudBlotter(userBlotterDef, userEntityDef.entityCrudApiDef!!) {
-        withBlotterPage { }
-    }
+    val userCrudBlotterDef = crudBlotter(userBlotterDef, userEntityDef.entityCrudApiDef!!)
+
+
+    val userBlotterPageDef = blotterPage(userBlotterDef)
 
 
     val userGroupEntityDef = entity(

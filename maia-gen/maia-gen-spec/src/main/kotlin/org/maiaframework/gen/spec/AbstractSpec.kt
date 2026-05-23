@@ -60,6 +60,7 @@ import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.
 import org.maiaframework.gen.spec.definition.builders.CrudBlotterDefBuilder
 import org.maiaframework.gen.spec.definition.builders.DataClassDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BlotterDefBuilder
+import org.maiaframework.gen.spec.definition.builders.BlotterPageDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityCreateHtmlFormDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityCreatePageDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityDefBuilder
@@ -121,7 +122,7 @@ abstract class AbstractSpec protected constructor(
     private val booleanTypeDefs = mutableListOf<BooleanTypeDef>()
     private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
     private val crudBlotterDefs = mutableListOf<CrudBlotterDef>()
-    private val crudBlotterPageDefs = mutableListOf<CrudBlotterPageDef>()
+    private val blotterPageDefs = mutableListOf<CrudBlotterPageDef>()
     private val dataClassDefs = mutableListOf<DataClassDef>()
     private val defaultSchemaName = defaultSchemaName ?: SchemaName(appKey.value)
     private val blotterDefs = mutableListOf<BlotterDef>()
@@ -187,7 +188,7 @@ abstract class AbstractSpec protected constructor(
                 this.entityDetailViewDefs,
                 this.entityEditPageDefs,
                 this.entityCreatePageDefs,
-                this.crudBlotterPageDefs,
+                this.blotterPageDefs,
             )
 
         }
@@ -910,6 +911,20 @@ abstract class AbstractSpec protected constructor(
     }
 
 
+    protected fun blotterPage(
+        blotterDef: BlotterDef,
+        init: (BlotterPageDefBuilder.() -> Unit)? = null
+    ): CrudBlotterPageDef {
+
+        val builder = BlotterPageDefBuilder(blotterDef)
+        init?.invoke(builder)
+        val def = builder.build()
+        this.blotterPageDefs.add(def)
+        return def
+
+    }
+
+
     protected fun crudBlotter(
         blotterDef: BlotterDef,
         entityCrudApiDef: EntityCrudApiDef,
@@ -920,7 +935,6 @@ abstract class AbstractSpec protected constructor(
         init?.invoke(builder)
         val def = builder.build()
         this.crudBlotterDefs.add(def)
-        builder.crudBlotterPageDef?.let { this.crudBlotterPageDefs.add(it) }
         return def
 
     }

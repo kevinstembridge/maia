@@ -453,9 +453,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val allFieldTypesCrudBlotterDef = crudBlotter(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!) {
-        withBlotterPage { }
-    }
+    val allFieldTypesCrudBlotterDef = crudBlotter(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!)
+
+
+    val allFieldTypesBlotterPageDef = blotterPage(allFieldTypesBlotterDef)
 
 
     val simpleEntityDef = entity(
@@ -521,11 +522,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val simpleCrudBlotterBlotterDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!) {
-        withBlotterPage {
-            pageTitle = "Simple"
-        }
-    }
+    val simpleCrudBlotterBlotterDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
+
+
+    val simpleBlotterPageDef = blotterPage(simpleBlotterDef)
 
 
     val historySampleEntityDef = entity(
@@ -761,9 +761,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val someVersionedCrudBlotterDef = crudBlotter(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!) {
-        withBlotterPage { }
-    }
+    val someVersionedCrudBlotterDef = crudBlotter(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!)
+
+
+    val someVersionedBlotterPageDef = blotterPage(someVersionedBlotterDef)
 
 
     val withOptionalIndexFieldEntityDef = entity(
@@ -978,9 +979,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoCrudBlotterDef = crudBlotter(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!) {
-        withBlotterPage { }
-    }
+    val bravoCrudBlotterDef = crudBlotter(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!)
+
+
+    val bravoBlotterPageDef = blotterPage(bravoBlotterDef)
 
 
     val charlieSearchableDtoDef = searchableDto(
@@ -1208,9 +1210,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftManyCrudBlotterDef = crudBlotter(leftManyBlotterDef, leftManyEntityDef.entityCrudApiDef!!) {
-        withBlotterPage { }
-    }
+    val leftManyCrudBlotterDef = crudBlotter(leftManyBlotterDef, leftManyEntityDef.entityCrudApiDef!!)
+
+
+    val leftManyBlotterPageDef = blotterPage(leftManyBlotterDef)
 
 
     val leftToRightManyToManySearchableDtoDef = searchableDto(
@@ -1320,9 +1323,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val compositePrimaryKeyCrudBlotterDef = crudBlotter(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!) {
-        withBlotterPage { }
-    }
+    val compositePrimaryKeyCrudBlotterDef = crudBlotter(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
+
+
+    val compositePrimaryKeyBlotterPageDef = blotterPage(compositePrimaryKeyBlotterDef)
 
 
     val compositePrimaryKeyEntityDetailViewDef = entityDetailView(compositePrimaryKeyEntityDef)

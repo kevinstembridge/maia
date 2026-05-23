@@ -5,7 +5,7 @@ import org.maiaframework.gen.spec.definition.CrudBlotterPageDef
 
 
 @MaiaDslMarker
-class CrudBlotterPageDefBuilder(private val blotterDef: BlotterDef) {
+class BlotterPageDefBuilder(private val blotterDef: BlotterDef) {
 
 
     var pageTitle: String = blotterDef.dtoBaseName.toTitleCase()
