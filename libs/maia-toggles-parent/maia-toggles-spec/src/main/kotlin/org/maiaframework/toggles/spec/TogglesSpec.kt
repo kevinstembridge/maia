@@ -105,8 +105,8 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
 //            modifiableBySystem()
         }
         crud {
-            apis {
-                update()
+            update {
+                api {}
             }
         }
     }
