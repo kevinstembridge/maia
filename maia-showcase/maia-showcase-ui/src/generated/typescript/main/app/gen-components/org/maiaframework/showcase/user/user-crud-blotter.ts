@@ -32,5 +32,12 @@ export class UserCrudBlotterComponent {
     }
 
 
+    onEdit(dto: UserBlotterRowDto): void {
+
+        this.router.navigate(['/user/edit', dto.id]);
+
+    }
+
+
 }
 
