@@ -2,10 +2,16 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable, inject} from '@angular/core';
-import {CompositePrimaryKeyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyCreateRequestDto';
-import {CompositePrimaryKeyFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyFetchForEditDto';
-import {CompositePrimaryKeyUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyUpdateRequestDto';
+import {inject, Injectable} from '@angular/core';
+import {
+    CompositePrimaryKeyCreateRequestDto
+} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyCreateRequestDto';
+import {
+    CompositePrimaryKeyFetchForEditDto
+} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyFetchForEditDto';
+import {
+    CompositePrimaryKeyUpdateRequestDto
+} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyUpdateRequestDto';
 import {Observable} from 'rxjs';
 
 
@@ -42,12 +48,9 @@ export class CompositePrimaryKeyCrudService {
     }
 
 
-    public fetchForEdit(pk: {someInt: number, someString: string}): Observable<CompositePrimaryKeyFetchForEditDto> {
+    public fetchForEdit(id: string): Observable<CompositePrimaryKeyFetchForEditDto> {
 
-        return this.http.post<CompositePrimaryKeyFetchForEditDto>(
-                '/api/composite-primary-key/fetch-for-edit',
-                pk,
-                this.httpOptions);
+        return this.http.get<CompositePrimaryKeyFetchForEditDto>('/api/composite-primary-key/fetch-for-edit/' + id, this.httpOptions);
 
     }
 
