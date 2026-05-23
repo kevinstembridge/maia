@@ -413,6 +413,7 @@ class AngularUiModuleGenerator(
     }
 
 
+    // TODO Delete after cooling off: 2026-05-23
     private fun renderEntityCreateDialogHtml() {
 
         this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
@@ -497,6 +498,7 @@ class AngularUiModuleGenerator(
     }
 
 
+    // TODO Delete after cooling off: 2026-05-23
     private fun renderEntityCreateDialogComponent() {
 
         this.modelDef.entityCrudApiDefs
@@ -530,6 +532,7 @@ class AngularUiModuleGenerator(
     }
 
 
+    // TODO Delete after cooling off: 2026-05-23
     private fun renderEntityEditDialogHtml() {
 
         this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
@@ -558,6 +561,7 @@ class AngularUiModuleGenerator(
     }
 
 
+    // TODO Delete after cooling off: 2026-05-23
     private fun renderEntityEditDialogComponent() {
 
         this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
