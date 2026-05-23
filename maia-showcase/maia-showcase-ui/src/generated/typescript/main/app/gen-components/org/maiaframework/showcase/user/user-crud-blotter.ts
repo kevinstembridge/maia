@@ -6,8 +6,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserBlotterRowDto';
 import {UserBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-blotter';
-import {UserCreateDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-create-dialog';
-import {UserEditDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-edit-dialog';
 
 
 @Component({
@@ -24,33 +22,12 @@ export class UserCrudBlotterComponent {
     private readonly dialog = inject(MatDialog);
 
 
+    private readonly router = inject(Router);
+
+
     onAddButtonClicked(): void {
 
-        const dialogRef = this.dialog.open(UserCreateDialog, {
-            width: '400px'
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
-
-    }
-
-
-    onEdit(dto: UserBlotterRowDto): void {
-
-        const dialogRef = this.dialog.open(UserEditDialog, {
-            width: '400px',
-            data: dto.id
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
+        this.router.navigate(['/user/create']);
 
     }
 
