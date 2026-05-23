@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -22,6 +23,7 @@ class CharlieAgGridCrudService(
     private val logger = LoggerFactory.getLogger(CharlieAgGridCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(createDto: CharlieAgGridCreateRequestDto): CharlieAgGridEntity {
 
         logger.info("BEGIN: create CharlieAgGrid. dto=$createDto")
@@ -68,6 +70,7 @@ class CharlieAgGridCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(editDto: CharlieAgGridUpdateRequestDto) {
 
         val id = editDto.id
@@ -80,6 +83,7 @@ class CharlieAgGridCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateBravo(editDto: CharlieAgGridUpdate_bravoRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -104,6 +108,7 @@ class CharlieAgGridCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun delete(id: DomainId) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -23,6 +24,7 @@ class BravoCrudService(
     private val logger = LoggerFactory.getLogger(BravoCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun create(createDto: BravoCreateRequestDto): BravoEntity {
 
         logger.info("BEGIN: create Bravo. dto=$createDto")
@@ -69,6 +71,7 @@ class BravoCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun update(editDto: BravoUpdateRequestDto) {
 
         val id = editDto.id
@@ -82,6 +85,7 @@ class BravoCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateSomeInt(editDto: BravoUpdate_someIntRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -97,6 +101,7 @@ class BravoCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun updateSomeString(editDto: BravoUpdate_someStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -121,6 +126,7 @@ class BravoCrudService(
     }
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun delete(id: DomainId) {
 
         if (this.charlieRepo.existsByBravo(id)) {
