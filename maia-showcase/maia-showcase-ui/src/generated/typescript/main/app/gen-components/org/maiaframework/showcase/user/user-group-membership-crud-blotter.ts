@@ -6,8 +6,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {UserGroupMembershipBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipBlotterRowDto';
 import {UserGroupMembershipBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-blotter';
-import {UserGroupMembershipCreateDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-create-dialog';
-import {UserGroupMembershipEditDialog} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-edit-dialog';
 
 
 @Component({
@@ -22,37 +20,6 @@ export class UserGroupMembershipCrudBlotterComponent {
 
 
     private readonly dialog = inject(MatDialog);
-
-
-    onAddButtonClicked(): void {
-
-        const dialogRef = this.dialog.open(UserGroupMembershipCreateDialog, {
-            width: '400px'
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
-
-    }
-
-
-    onEdit(dto: UserGroupMembershipBlotterRowDto): void {
-
-        const dialogRef = this.dialog.open(UserGroupMembershipEditDialog, {
-            width: '400px',
-            data: dto.id
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.blotterComponent.reapplyFilters();
-            }
-        });
-
-    }
 
 
 }
