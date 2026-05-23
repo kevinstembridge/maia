@@ -34,6 +34,13 @@ export class BravoCrudBlotterComponent {
     }
 
 
+    onEdit(dto: BravoBlotterRowDto): void {
+
+        this.router.navigate(['/bravo/edit', dto.id]);
+
+    }
+
+
     onDelete(dto: BravoBlotterRowDto): void {
 
         const checkForeignKeyReferencesDialogRef = this.dialog.open(BravoCheckForeignKeyReferencesDialog, {
