@@ -35,7 +35,6 @@ export class PartyCheckForeignKeyReferencesDialog implements OnInit {
     private readonly foreignKeyReferenceService = inject(ForeignKeyReferenceService);
 
 
-
     ngOnInit() {
 
         this.foreignKeyReferenceService.checkPartyForReferences(this.dto.id)
