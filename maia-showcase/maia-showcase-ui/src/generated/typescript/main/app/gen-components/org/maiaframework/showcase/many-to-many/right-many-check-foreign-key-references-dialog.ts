@@ -35,7 +35,6 @@ export class RightManyCheckForeignKeyReferencesDialog implements OnInit {
     private readonly foreignKeyReferenceService = inject(ForeignKeyReferenceService);
 
 
-
     ngOnInit() {
 
         this.foreignKeyReferenceService.checkRightManyForReferences(this.dto.id)
