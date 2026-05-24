@@ -157,6 +157,20 @@ export class CompositePrimaryKeyBlotter {
     }
 
 
+    private onView(dto: CompositePrimaryKeyBlotterRowDto): void {
+
+        this.router.navigate(['/composite-primary-key/view', dto.id]);
+
+    }
+
+
+    private onEdit(dto: CompositePrimaryKeyBlotterRowDto): void {
+
+        this.router.navigate(['/composite-primary-key/edit', dto.id]);
+
+    }
+
+
     private onDelete(dto: CompositePrimaryKeyBlotterRowDto): void {
 
         const dialogRef = this.dialog.open(CompositePrimaryKeyDeleteDialog, {
