@@ -373,6 +373,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
     ) {
+        editActionColumn()
         columnFromDto("userDisplayName") { header("User") }
         columnFromDto("userGroupName") { header("Group") }
         columnFromDto("effectiveFrom") { header("Effective From") }
@@ -380,7 +381,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         columnFromDto("userId") { header("User ID") }
         columnFromDto("userGroupId") { header("Group ID") }
         columnFromDto("id") { header("ID") }
-        editActionColumn()
     }
 
 
