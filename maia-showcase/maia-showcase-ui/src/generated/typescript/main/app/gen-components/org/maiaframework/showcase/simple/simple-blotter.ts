@@ -123,13 +123,13 @@ export class SimpleBlotter {
     private readonly injector = inject(EnvironmentInjector);
 
 
-    private readonly authService = inject(AuthService);
-
-
     private readonly router = inject(Router);
 
 
     private readonly dialog = inject(MatDialog);
+
+
+    private readonly authService = inject(AuthService);
 
 
     onGridReady(params: GridReadyEvent<SimpleBlotterRowDto>) {
