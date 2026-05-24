@@ -144,6 +144,13 @@ export class SomeVersionedBlotter {
     }
 
 
+    private onEdit(dto: SomeVersionedBlotterRowDto): void {
+
+        this.router.navigate(['/some-versioned/edit', dto.id]);
+
+    }
+
+
     private onDelete(dto: SomeVersionedBlotterRowDto): void {
 
         const dialogRef = this.dialog.open(SomeVersionedDeleteDialog, {
