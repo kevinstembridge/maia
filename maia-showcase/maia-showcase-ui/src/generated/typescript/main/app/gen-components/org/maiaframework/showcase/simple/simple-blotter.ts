@@ -2,10 +2,12 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EnvironmentInjector, inject, output, runInInjectionContext} from '@angular/core';
+import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
+import {Router} from '@angular/router';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {SimpleBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterAgGridDatasource';
@@ -14,7 +16,8 @@ import {SimpleBlotterService} from '@app/gen-components/org/maiaframework/showca
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, FilterModel, GridApi, GridReadyEvent, RowModelType} from 'ag-grid-community';
+import {SimpleDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-delete-dialog';
 
 
 
@@ -25,18 +28,6 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
     templateUrl: './simple-blotter.html'
 })
 export class SimpleBlotter {
-
-
-    readonly view = output<SimpleBlotterRowDto>();
-
-
-    readonly edit = output<SimpleBlotterRowDto>();
-
-
-    readonly delete = output<SimpleBlotterRowDto>();
-
-
-    readonly addButtonClicked = output();
 
 
     public columnDefs: ColDef[] = [
@@ -50,7 +41,7 @@ export class SimpleBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'visibility' },
             onCellClicked: event => {
-                this.view.emit(event.data);
+                this.onView(event.data);
             }
         },
         {
@@ -62,7 +53,7 @@ export class SimpleBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'edit' },
             onCellClicked: event => {
-                this.edit.emit(event.data);
+                this.onEdit(event.data);
             }
         },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
@@ -76,7 +67,7 @@ export class SimpleBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'delete' },
             onCellClicked: event => {
-                this.delete.emit(event.data);
+                this.onDelete(event.data);
             }
         },
     ];
@@ -135,6 +126,12 @@ export class SimpleBlotter {
     private readonly authService = inject(AuthService);
 
 
+    private readonly router = inject(Router);
+
+
+    private readonly dialog = inject(MatDialog);
+
+
     onGridReady(params: GridReadyEvent<SimpleBlotterRowDto>) {
 
         this.gridApi = params.api;
@@ -143,23 +140,39 @@ export class SimpleBlotter {
     }
 
 
-    onView(dto: SimpleBlotterRowDto) {
+    onAddButtonClicked(): void {
 
-        this.view.emit(dto);
-
-    }
-
-
-    onEdit(dto: SimpleBlotterRowDto) {
-
-        this.edit.emit(dto);
+        this.router.navigate(['/simple/create']);
 
     }
 
 
-    onDelete(dto: SimpleBlotterRowDto) {
+    private onView(dto: SimpleBlotterRowDto): void {
 
-        this.delete.emit(dto);
+        this.router.navigate(['/simple/view', dto.id]);
+
+    }
+
+
+    private onEdit(dto: SimpleBlotterRowDto): void {
+
+        this.router.navigate(['/simple/edit', dto.id]);
+
+    }
+
+
+    private onDelete(dto: SimpleBlotterRowDto): void {
+
+        const dialogRef = this.dialog.open(SimpleDeleteDialog, {
+            width: '400px',
+            data: dto
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.reapplyFilters();
+            }
+        });
 
     }
 
@@ -171,14 +184,7 @@ export class SimpleBlotter {
     }
 
 
-    onAddButtonClicked() {
-
-        this.addButtonClicked.emit();
-
-    }
-
-
-    reapplyFilters() {
+    private reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();
