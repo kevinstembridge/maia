@@ -2,15 +2,19 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EnvironmentInjector, inject, output, runInInjectionContext} from '@angular/core';
+import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
+import {Router} from '@angular/router';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {BravoBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterAgGridDatasource';
 import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterRowDto';
 import {BravoBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter-service';
+import {BravoCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-check-foreign-key-references-dialog';
+import {BravoDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -27,15 +31,6 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class BravoBlotter {
 
 
-    readonly edit = output<BravoBlotterRowDto>();
-
-
-    readonly delete = output<BravoBlotterRowDto>();
-
-
-    readonly addButtonClicked = output();
-
-
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         {
@@ -47,7 +42,7 @@ export class BravoBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'edit' },
             onCellClicked: event => {
-                this.edit.emit(event.data);
+                this.onEdit(event.data);
             }
         },
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
@@ -62,7 +57,7 @@ export class BravoBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'delete' },
             onCellClicked: event => {
-                this.delete.emit(event.data);
+                this.onDelete(event.data);
             }
         },
     ];
@@ -118,6 +113,12 @@ export class BravoBlotter {
     private readonly injector = inject(EnvironmentInjector);
 
 
+    private readonly router = inject(Router);
+
+
+    private readonly dialog = inject(MatDialog);
+
+
     private readonly authService = inject(AuthService);
 
 
@@ -129,20 +130,6 @@ export class BravoBlotter {
     }
 
 
-    onEdit(dto: BravoBlotterRowDto) {
-
-        this.edit.emit(dto);
-
-    }
-
-
-    onDelete(dto: BravoBlotterRowDto) {
-
-        this.delete.emit(dto);
-
-    }
-
-
     get addButtonVisible(): boolean {
 
         return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
@@ -150,14 +137,46 @@ export class BravoBlotter {
     }
 
 
-    onAddButtonClicked() {
+    onAddButtonClicked(): void {
 
-        this.addButtonClicked.emit();
+        this.router.navigate(['/bravo/create']);
 
     }
 
 
-    reapplyFilters() {
+    private onDelete(dto: BravoBlotterRowDto): void {
+
+        const checkForeignKeyReferencesDialogRef = this.dialog.open(BravoCheckForeignKeyReferencesDialog, {
+            width: '500px',
+            data: dto
+        });
+
+        checkForeignKeyReferencesDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.displayDeleteDialog(dto);
+            }
+        });
+
+    }
+
+
+    private displayDeleteDialog(dto: BravoBlotterRowDto) {
+
+        const dialogRef = this.dialog.open(BravoDeleteDialog, {
+            width: '400px',
+            data: dto
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.reapplyFilters();
+            }
+        });
+
+    }
+
+
+    private reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();
