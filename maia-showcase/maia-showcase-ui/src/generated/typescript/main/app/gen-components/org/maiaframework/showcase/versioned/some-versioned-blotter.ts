@@ -110,6 +110,9 @@ export class SomeVersionedBlotter {
     private readonly datasource = inject(SomeVersionedBlotterAgGridDatasource);
 
 
+    private readonly authService = inject(AuthService);
+
+
     private readonly injector = inject(EnvironmentInjector);
 
 
@@ -117,9 +120,6 @@ export class SomeVersionedBlotter {
 
 
     private readonly dialog = inject(MatDialog);
-
-
-    private readonly authService = inject(AuthService);
 
 
     onGridReady(params: GridReadyEvent<SomeVersionedBlotterRowDto>) {
