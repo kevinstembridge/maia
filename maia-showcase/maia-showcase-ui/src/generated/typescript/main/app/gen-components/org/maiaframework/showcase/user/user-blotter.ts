@@ -109,13 +109,13 @@ export class UserBlotter {
     private readonly datasource = inject(UserBlotterAgGridDatasource);
 
 
+    private readonly authService = inject(AuthService);
+
+
     private readonly injector = inject(EnvironmentInjector);
 
 
     private readonly router = inject(Router);
-
-
-    private readonly authService = inject(AuthService);
 
 
     onGridReady(params: GridReadyEvent<UserBlotterRowDto>) {
