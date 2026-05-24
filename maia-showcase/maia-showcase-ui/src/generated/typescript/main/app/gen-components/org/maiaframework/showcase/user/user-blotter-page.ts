@@ -3,14 +3,14 @@
 
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {PageLayout} from '@app/components/page-layout/page-layout';
-import {UserCrudBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-blotter';
+import {UserBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-blotter';
 
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         PageLayout,
-        UserCrudBlotterComponent
+        UserBlotter
     ],
     selector: 'app-user-blotter-page',
     templateUrl: './user-blotter-page.html'
