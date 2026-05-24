@@ -52,13 +52,13 @@ export class UserEntityEditForm implements OnInit {
     formGroup: FormGroup;
 
 
-    protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
-
-
     private readonly formService = inject(UserCrudService);
 
 
     loading = signal(true);
+
+
+    protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
 
 
     constructor() {
