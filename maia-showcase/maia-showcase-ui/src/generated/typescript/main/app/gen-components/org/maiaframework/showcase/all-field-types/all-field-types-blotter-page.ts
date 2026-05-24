@@ -3,14 +3,14 @@
 
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {PageLayout} from '@app/components/page-layout/page-layout';
-import {AllFieldTypesCrudBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-crud-blotter';
+import {AllFieldTypesBlotter} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-blotter';
 
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         PageLayout,
-        AllFieldTypesCrudBlotterComponent
+        AllFieldTypesBlotter
     ],
     selector: 'app-all-field-types-blotter-page',
     templateUrl: './all-field-types-blotter-page.html'

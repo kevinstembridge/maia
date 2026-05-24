@@ -2,13 +2,16 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EnvironmentInjector, inject, output, runInInjectionContext} from '@angular/core';
+import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
+import {Router} from '@angular/router';
 import {AllFieldTypesBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesBlotterAgGridDatasource';
 import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesBlotterRowDto';
 import {AllFieldTypesBlotterService} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-blotter-service';
+import {AllFieldTypesDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-delete-dialog';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
@@ -27,15 +30,6 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class AllFieldTypesBlotter {
 
 
-    readonly edit = output<AllFieldTypesBlotterRowDto>();
-
-
-    readonly delete = output<AllFieldTypesBlotterRowDto>();
-
-
-    readonly addButtonClicked = output();
-
-
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         {
@@ -47,7 +41,7 @@ export class AllFieldTypesBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'edit' },
             onCellClicked: event => {
-                this.edit.emit(event.data);
+                this.onEdit(event.data);
             }
         },
         { field: 'someBoolean', headerName: 'Some Boolean', cellDataType: 'boolean', filter: true },
@@ -98,7 +92,7 @@ export class AllFieldTypesBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'delete' },
             onCellClicked: event => {
-                this.delete.emit(event.data);
+                this.onDelete(event.data);
             }
         },
     ];
@@ -154,6 +148,12 @@ export class AllFieldTypesBlotter {
     private readonly injector = inject(EnvironmentInjector);
 
 
+    private readonly router = inject(Router);
+
+
+    private readonly dialog = inject(MatDialog);
+
+
     private readonly authService = inject(AuthService);
 
 
@@ -165,20 +165,6 @@ export class AllFieldTypesBlotter {
     }
 
 
-    onEdit(dto: AllFieldTypesBlotterRowDto) {
-
-        this.edit.emit(dto);
-
-    }
-
-
-    onDelete(dto: AllFieldTypesBlotterRowDto) {
-
-        this.delete.emit(dto);
-
-    }
-
-
     get addButtonVisible(): boolean {
 
         return this.authService.currentUserHasThisAuthority(Authority.WRITE);
@@ -186,14 +172,37 @@ export class AllFieldTypesBlotter {
     }
 
 
-    onAddButtonClicked() {
+    onAddButtonClicked(): void {
 
-        this.addButtonClicked.emit();
+        this.router.navigate(['/all-field-types/create']);
 
     }
 
 
-    reapplyFilters() {
+    private onEdit(dto: AllFieldTypesBlotterRowDto): void {
+
+        this.router.navigate(['/all-field-types/edit', dto.id]);
+
+    }
+
+
+    private onDelete(dto: AllFieldTypesBlotterRowDto): void {
+
+        const dialogRef = this.dialog.open(AllFieldTypesDeleteDialog, {
+            width: '400px',
+            data: dto
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.reapplyFilters();
+            }
+        });
+
+    }
+
+
+    private reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();
