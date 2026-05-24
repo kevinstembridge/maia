@@ -5,7 +5,9 @@ import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.ListFieldType
 
 
 class EntityEditFormComponentRenderer(
@@ -52,9 +54,19 @@ class EntityEditFormComponentRenderer(
 
     private fun addImportsFoFieldTypes(formGroupFields: List<AngularFormFieldDef>) {
 
-        formGroupFields.forEach { angularFormFieldDef ->
+        formGroupFields.filter { it.isEditable }.forEach { angularFormFieldDef ->
 
-            when (angularFormFieldDef.fieldType) {
+            when (val fieldType = angularFormFieldDef.fieldType) {
+                is EnumFieldType -> {
+                    addImport("@angular/material/select", "MatSelect", isModule = true)
+                    addImport("@angular/material/select", "MatOption", isModule = true)
+                    addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
+
+                    fieldType.enumDef.selectOptionsTypescriptImport.let {
+//                        addImport(it)
+                    }
+                }
+
                 is InstantFieldType -> {
                     addImport("@angular/material/datepicker", "MatDatepicker", isModule = true)
                     addImport("@angular/material/datepicker", "MatDatepickerInput", isModule = true)
@@ -63,6 +75,26 @@ class EntityEditFormComponentRenderer(
                     addImport("@angular/material/timepicker", "MatTimepickerInput", isModule = true)
                     addImport("@angular/material/timepicker", "MatTimepickerToggle", isModule = true)
                 }
+
+                is ListFieldType -> {
+                    when (val parameterFieldType = fieldType.parameterFieldType) {
+
+                        is EnumFieldType -> {
+
+                            parameterFieldType.enumDef.selectOptionsTypescriptImport.let {
+                                addImport(it)
+                            }
+
+                            addImport("@angular/material/select", "MatSelect", isModule = true)
+                            addImport("@angular/material/select", "MatOption", isModule = true)
+                            addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
+
+                        }
+
+                        else -> {}
+                    }
+                }
+
                 else -> {}
             }
 
@@ -108,6 +140,32 @@ class EntityEditFormComponentRenderer(
             blankLine()
             blankLine()
             appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
+        }
+
+        val enumFields = formGroupFields
+            .asSequence()
+            .filter { it.isEditable }
+            .filter { it.fieldType is EnumFieldType }
+            .map { it.fieldType as EnumFieldType }
+            .map { it.enumDef }
+
+        val listOfEnumFields = formGroupFields
+            .asSequence()
+            .filter { it.isEditable }
+            .filter { it.fieldType is ListFieldType }
+            .map { it.fieldType as ListFieldType }
+            .filter { it.parameterFieldType is EnumFieldType }
+            .map { it.parameterFieldType as EnumFieldType }
+            .map { it.enumDef }
+
+        enumFields.plus(listOfEnumFields).distinctBy { it.selectOptionsUqcn }.forEach { enumDef ->
+
+            addImport(enumDef.selectOptionsTypescriptImport)
+
+            blankLine()
+            blankLine()
+            appendLine("    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};")
+
         }
 
         append("""
