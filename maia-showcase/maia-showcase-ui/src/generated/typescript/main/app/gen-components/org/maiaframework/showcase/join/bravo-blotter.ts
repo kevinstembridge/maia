@@ -144,6 +144,13 @@ export class BravoBlotter {
     }
 
 
+    private onEdit(dto: BravoBlotterRowDto): void {
+
+        this.router.navigate(['/bravo/edit', dto.id]);
+
+    }
+
+
     private onDelete(dto: BravoBlotterRowDto): void {
 
         const checkForeignKeyReferencesDialogRef = this.dialog.open(BravoCheckForeignKeyReferencesDialog, {
