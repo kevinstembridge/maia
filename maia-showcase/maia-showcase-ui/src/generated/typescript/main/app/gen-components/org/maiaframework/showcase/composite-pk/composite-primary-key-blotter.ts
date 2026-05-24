@@ -2,15 +2,18 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EnvironmentInjector, inject, output, runInInjectionContext} from '@angular/core';
+import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
+import {Router} from '@angular/router';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {CompositePrimaryKeyBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyBlotterAgGridDatasource';
 import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyBlotterRowDto';
 import {CompositePrimaryKeyBlotterService} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-blotter-service';
+import {CompositePrimaryKeyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -27,18 +30,6 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class CompositePrimaryKeyBlotter {
 
 
-    readonly view = output<CompositePrimaryKeyBlotterRowDto>();
-
-
-    readonly edit = output<CompositePrimaryKeyBlotterRowDto>();
-
-
-    readonly delete = output<CompositePrimaryKeyBlotterRowDto>();
-
-
-    readonly addButtonClicked = output();
-
-
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', filter: false, hide: true },
         {
@@ -50,7 +41,7 @@ export class CompositePrimaryKeyBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'visibility' },
             onCellClicked: event => {
-                this.view.emit(event.data);
+                this.onView(event.data);
             }
         },
         {
@@ -62,7 +53,7 @@ export class CompositePrimaryKeyBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'edit' },
             onCellClicked: event => {
-                this.edit.emit(event.data);
+                this.onEdit(event.data);
             }
         },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
@@ -79,7 +70,7 @@ export class CompositePrimaryKeyBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'delete' },
             onCellClicked: event => {
-                this.delete.emit(event.data);
+                this.onDelete(event.data);
             }
         },
     ];
@@ -135,6 +126,12 @@ export class CompositePrimaryKeyBlotter {
     private readonly injector = inject(EnvironmentInjector);
 
 
+    private readonly router = inject(Router);
+
+
+    private readonly dialog = inject(MatDialog);
+
+
     private readonly authService = inject(AuthService);
 
 
@@ -146,27 +143,6 @@ export class CompositePrimaryKeyBlotter {
     }
 
 
-    onView(dto: CompositePrimaryKeyBlotterRowDto) {
-
-        this.view.emit(dto);
-
-    }
-
-
-    onEdit(dto: CompositePrimaryKeyBlotterRowDto) {
-
-        this.edit.emit(dto);
-
-    }
-
-
-    onDelete(dto: CompositePrimaryKeyBlotterRowDto) {
-
-        this.delete.emit(dto);
-
-    }
-
-
     get addButtonVisible(): boolean {
 
         return this.authService.currentUserHasThisAuthority(Authority.WRITE);
@@ -174,14 +150,30 @@ export class CompositePrimaryKeyBlotter {
     }
 
 
-    onAddButtonClicked() {
+    onAddButtonClicked(): void {
 
-        this.addButtonClicked.emit();
+        this.router.navigate(['/composite-primary-key/create']);
 
     }
 
 
-    reapplyFilters() {
+    private onDelete(dto: CompositePrimaryKeyBlotterRowDto): void {
+
+        const dialogRef = this.dialog.open(CompositePrimaryKeyDeleteDialog, {
+            width: '400px',
+            data: dto
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.reapplyFilters();
+            }
+        });
+
+    }
+
+
+    private reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();
