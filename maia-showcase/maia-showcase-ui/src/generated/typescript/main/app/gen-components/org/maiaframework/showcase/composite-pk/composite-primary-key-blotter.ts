@@ -123,6 +123,9 @@ export class CompositePrimaryKeyBlotter {
     private readonly datasource = inject(CompositePrimaryKeyBlotterAgGridDatasource);
 
 
+    private readonly authService = inject(AuthService);
+
+
     private readonly injector = inject(EnvironmentInjector);
 
 
@@ -130,9 +133,6 @@ export class CompositePrimaryKeyBlotter {
 
 
     private readonly dialog = inject(MatDialog);
-
-
-    private readonly authService = inject(AuthService);
 
 
     onGridReady(params: GridReadyEvent<CompositePrimaryKeyBlotterRowDto>) {

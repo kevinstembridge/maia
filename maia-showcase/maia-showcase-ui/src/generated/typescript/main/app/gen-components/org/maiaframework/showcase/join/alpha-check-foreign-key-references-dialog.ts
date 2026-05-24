@@ -35,7 +35,6 @@ export class AlphaCheckForeignKeyReferencesDialog implements OnInit {
     private readonly foreignKeyReferenceService = inject(ForeignKeyReferenceService);
 
 
-
     ngOnInit() {
 
         this.foreignKeyReferenceService.checkAlphaForReferences(this.dto.id)

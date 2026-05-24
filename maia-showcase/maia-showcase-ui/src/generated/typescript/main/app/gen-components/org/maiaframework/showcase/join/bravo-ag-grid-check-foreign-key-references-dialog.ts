@@ -35,7 +35,6 @@ export class BravoAgGridCheckForeignKeyReferencesDialog implements OnInit {
     private readonly foreignKeyReferenceService = inject(ForeignKeyReferenceService);
 
 
-
     ngOnInit() {
 
         this.foreignKeyReferenceService.checkBravoAgGridForReferences(this.dto.id)

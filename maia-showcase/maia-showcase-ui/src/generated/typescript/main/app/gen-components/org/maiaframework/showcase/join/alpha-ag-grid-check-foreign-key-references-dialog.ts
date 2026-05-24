@@ -35,7 +35,6 @@ export class AlphaAgGridCheckForeignKeyReferencesDialog implements OnInit {
     private readonly foreignKeyReferenceService = inject(ForeignKeyReferenceService);
 
 
-
     ngOnInit() {
 
         this.foreignKeyReferenceService.checkAlphaAgGridForReferences(this.dto.id)

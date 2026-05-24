@@ -82,10 +82,10 @@ export class CharlieBlotter {
     private readonly datasource = inject(CharlieBlotterAgGridDatasource);
 
 
-    private readonly injector = inject(EnvironmentInjector);
-
-
     private readonly authService = inject(AuthService);
+
+
+    private readonly injector = inject(EnvironmentInjector);
 
 
     onGridReady(params: GridReadyEvent<CharlieBlotterRowDto>) {

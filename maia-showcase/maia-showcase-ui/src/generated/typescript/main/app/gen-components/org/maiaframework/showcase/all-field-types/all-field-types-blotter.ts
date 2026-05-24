@@ -145,6 +145,9 @@ export class AllFieldTypesBlotter {
     private readonly datasource = inject(AllFieldTypesBlotterAgGridDatasource);
 
 
+    private readonly authService = inject(AuthService);
+
+
     private readonly injector = inject(EnvironmentInjector);
 
 
@@ -152,9 +155,6 @@ export class AllFieldTypesBlotter {
 
 
     private readonly dialog = inject(MatDialog);
-
-
-    private readonly authService = inject(AuthService);
 
 
     onGridReady(params: GridReadyEvent<AllFieldTypesBlotterRowDto>) {

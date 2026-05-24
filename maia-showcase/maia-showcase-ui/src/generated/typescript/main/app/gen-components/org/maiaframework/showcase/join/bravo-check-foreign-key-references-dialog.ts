@@ -35,7 +35,6 @@ export class BravoCheckForeignKeyReferencesDialog implements OnInit {
     private readonly foreignKeyReferenceService = inject(ForeignKeyReferenceService);
 
 
-
     ngOnInit() {
 
         this.foreignKeyReferenceService.checkBravoForReferences(this.dto.id)
