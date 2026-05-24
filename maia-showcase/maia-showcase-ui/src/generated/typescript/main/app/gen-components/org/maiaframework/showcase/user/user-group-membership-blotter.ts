@@ -84,10 +84,10 @@ export class UserGroupMembershipBlotter {
     private readonly datasource = inject(UserGroupMembershipBlotterAgGridDatasource);
 
 
-    private readonly injector = inject(EnvironmentInjector);
-
-
     private readonly authService = inject(AuthService);
+
+
+    private readonly injector = inject(EnvironmentInjector);
 
 
     onGridReady(params: GridReadyEvent<UserGroupMembershipBlotterRowDto>) {
