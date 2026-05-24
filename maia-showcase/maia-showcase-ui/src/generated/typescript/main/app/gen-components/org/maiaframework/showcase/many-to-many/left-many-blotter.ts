@@ -2,15 +2,19 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EnvironmentInjector, inject, output, runInInjectionContext} from '@angular/core';
+import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
+import {Router} from '@angular/router';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {LeftManyBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyBlotterAgGridDatasource';
 import {LeftManyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyBlotterRowDto';
 import {LeftManyBlotterService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-blotter-service';
+import {LeftManyCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-check-foreign-key-references-dialog';
+import {LeftManyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {ChipsAgGridCellRendererComponent, IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -27,18 +31,6 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class LeftManyBlotter {
 
 
-    readonly view = output<LeftManyBlotterRowDto>();
-
-
-    readonly edit = output<LeftManyBlotterRowDto>();
-
-
-    readonly delete = output<LeftManyBlotterRowDto>();
-
-
-    readonly addButtonClicked = output();
-
-
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         {
@@ -50,7 +42,7 @@ export class LeftManyBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'visibility' },
             onCellClicked: event => {
-                this.view.emit(event.data);
+                this.onView(event.data);
             }
         },
         {
@@ -62,7 +54,7 @@ export class LeftManyBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'edit' },
             onCellClicked: event => {
-                this.edit.emit(event.data);
+                this.onEdit(event.data);
             }
         },
         { field: 'someString', headerName: 'Some String From Left', cellDataType: 'text', filter: true },
@@ -77,7 +69,7 @@ export class LeftManyBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'delete' },
             onCellClicked: event => {
-                this.delete.emit(event.data);
+                this.onDelete(event.data);
             }
         },
     ];
@@ -133,6 +125,12 @@ export class LeftManyBlotter {
     private readonly injector = inject(EnvironmentInjector);
 
 
+    private readonly router = inject(Router);
+
+
+    private readonly dialog = inject(MatDialog);
+
+
     private readonly authService = inject(AuthService);
 
 
@@ -144,27 +142,6 @@ export class LeftManyBlotter {
     }
 
 
-    onView(dto: LeftManyBlotterRowDto) {
-
-        this.view.emit(dto);
-
-    }
-
-
-    onEdit(dto: LeftManyBlotterRowDto) {
-
-        this.edit.emit(dto);
-
-    }
-
-
-    onDelete(dto: LeftManyBlotterRowDto) {
-
-        this.delete.emit(dto);
-
-    }
-
-
     get addButtonVisible(): boolean {
 
         return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
@@ -172,14 +149,46 @@ export class LeftManyBlotter {
     }
 
 
-    onAddButtonClicked() {
+    onAddButtonClicked(): void {
 
-        this.addButtonClicked.emit();
+        this.router.navigate(['/left-many/create']);
 
     }
 
 
-    reapplyFilters() {
+    private onDelete(dto: LeftManyBlotterRowDto): void {
+
+        const checkForeignKeyReferencesDialogRef = this.dialog.open(LeftManyCheckForeignKeyReferencesDialog, {
+            width: '500px',
+            data: dto
+        });
+
+        checkForeignKeyReferencesDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.displayDeleteDialog(dto);
+            }
+        });
+
+    }
+
+
+    private displayDeleteDialog(dto: LeftManyBlotterRowDto) {
+
+        const dialogRef = this.dialog.open(LeftManyDeleteDialog, {
+            width: '400px',
+            data: dto
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.reapplyFilters();
+            }
+        });
+
+    }
+
+
+    private reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();
