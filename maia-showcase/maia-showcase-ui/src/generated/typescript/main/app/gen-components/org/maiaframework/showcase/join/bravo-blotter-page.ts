@@ -3,14 +3,14 @@
 
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {PageLayout} from '@app/components/page-layout/page-layout';
-import {BravoCrudBlotterComponent} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-blotter';
+import {BravoBlotter} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter';
 
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         PageLayout,
-        BravoCrudBlotterComponent
+        BravoBlotter
     ],
     selector: 'app-bravo-blotter-page',
     templateUrl: './bravo-blotter-page.html'
