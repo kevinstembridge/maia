@@ -24,7 +24,6 @@ class ModelDef(
     val longTypeDefs: List<LongTypeDef>,
     val stringTypeDefs: List<StringTypeDef>,
     val typeaheadDefs: List<TypeaheadDef>,
-    val crudBlotterDefs: List<CrudBlotterDef>,
     val esDocsDefs: List<EsDocDef>,
     val hazelcastEntityConfigClassDef: ClassDef,
     val rowMapperDefs: List<RowMapperDef>,

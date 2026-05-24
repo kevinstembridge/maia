@@ -23,7 +23,6 @@ import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 import org.maiaframework.gen.spec.definition.ElasticIndexBaseName
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
-import org.maiaframework.gen.spec.definition.EntityCrudApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
@@ -57,7 +56,6 @@ import org.maiaframework.gen.spec.definition.builders.AngularFormDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BooleanTypeDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BooleanValueClassDefBuilder
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
-import org.maiaframework.gen.spec.definition.builders.CrudBlotterDefBuilder
 import org.maiaframework.gen.spec.definition.builders.DataClassDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BlotterDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BlotterPageDefBuilder
@@ -121,7 +119,6 @@ abstract class AbstractSpec protected constructor(
     private val basePackageName = basePackageName ?: PackageName(appKey.value.lowercase())
     private val booleanTypeDefs = mutableListOf<BooleanTypeDef>()
     private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
-    private val crudBlotterDefs = mutableListOf<CrudBlotterDef>()
     private val blotterPageDefs = mutableListOf<BlotterPageDef>()
     private val dataClassDefs = mutableListOf<DataClassDef>()
     private val defaultSchemaName = defaultSchemaName ?: SchemaName(appKey.value)
@@ -184,7 +181,6 @@ abstract class AbstractSpec protected constructor(
                 this.longTypeDefs,
                 this.stringTypeDefs,
                 this.typeaheadDefs,
-                this.crudBlotterDefs,
                 this.esDocDefs,
                 buildHazelcastConfigClassDef(),
                 this.rowMapperDefs,
@@ -938,21 +934,6 @@ abstract class AbstractSpec protected constructor(
         init?.invoke(builder)
         val def = builder.build()
         this.blotterPageDefs.add(def)
-        return def
-
-    }
-
-
-    protected fun crudBlotter(
-        blotterDef: BlotterDef,
-        entityCrudApiDef: EntityCrudApiDef,
-        init: (CrudBlotterDefBuilder.() -> Unit)? = null
-    ): CrudBlotterDef {
-
-        val builder = CrudBlotterDefBuilder(blotterDef, entityCrudApiDef)
-        init?.invoke(builder)
-        val def = builder.build()
-        this.crudBlotterDefs.add(def)
         return def
 
     }

@@ -2,7 +2,7 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.BlotterPageDef
 
-class CrudBlotterPageComponentRenderer(
+class BlotterPageComponentRenderer(
     private val blotterPageDef: BlotterPageDef
 ) : AbstractTypescriptRenderer() {
 

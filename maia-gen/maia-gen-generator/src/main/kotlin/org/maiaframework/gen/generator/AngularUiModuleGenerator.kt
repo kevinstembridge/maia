@@ -14,10 +14,8 @@ import org.maiaframework.gen.renderers.ui.BlotterScssRenderer
 import org.maiaframework.gen.renderers.ui.BlotterServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
-import org.maiaframework.gen.renderers.ui.CrudBlotterComponentRenderer
-import org.maiaframework.gen.renderers.ui.CrudBlotterHtmlRenderer
-import org.maiaframework.gen.renderers.ui.CrudBlotterPageComponentRenderer
-import org.maiaframework.gen.renderers.ui.CrudBlotterPageHtmlRenderer
+import org.maiaframework.gen.renderers.ui.BlotterPageComponentRenderer
+import org.maiaframework.gen.renderers.ui.BlotterPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CurrentUserStoreRenderer
 import org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
@@ -145,7 +143,7 @@ class AngularUiModuleGenerator(
         renderEntityDetailViews()
         renderEntityDetailDtoServices()
         renderEntityEditPages()
-        renderCrudBlotterPages()
+        renderBlotterPages()
         renderEntityDetailsDtos()
         renderEnums()
         renderEsDocs()
@@ -386,35 +384,11 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderCrudBlotters() {
-
-        this.modelDef.crudBlotterDefs.forEach { crudBlotterDef ->
-
-            val entityDef = crudBlotterDef.entityCrudApiDef.entityDef
-            val entityIsReferencedByForeignKeys = this.modelDef.entityIsReferencedByForeignKeys(entityDef)
-            val hasViewEntityPage = this.modelDef.findViewEntityPage(entityDef)
-            val hasEditEntityPage = this.modelDef.findEditEntityPage(entityDef)
-            val hasCreateEntityPage = this.modelDef.findCreateEntityPage(entityDef)
-
-            CrudBlotterHtmlRenderer(crudBlotterDef).renderToDir(this.typescriptOutputDir)
-            CrudBlotterComponentRenderer(
-                crudBlotterDef,
-                entityIsReferencedByForeignKeys,
-                hasViewEntityPage,
-                hasEditEntityPage,
-                hasCreateEntityPage
-            ).renderToDir(this.typescriptOutputDir)
-
-        }
-
-    }
-
-
-    private fun renderCrudBlotterPages() {
+    private fun renderBlotterPages() {
 
         this.modelDef.blotterPageDefs.forEach { pageDef ->
-            CrudBlotterPageComponentRenderer(pageDef).renderToDir(this.typescriptOutputDir)
-            CrudBlotterPageHtmlRenderer(pageDef).renderToDir(this.typescriptOutputDir)
+            BlotterPageComponentRenderer(pageDef).renderToDir(this.typescriptOutputDir)
+            BlotterPageHtmlRenderer(pageDef).renderToDir(this.typescriptOutputDir)
         }
 
     }

@@ -290,9 +290,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val userCrudBlotterDef = crudBlotter(userBlotterDef, userEntityDef.entityCrudApiDef!!)
-
-
     val userBlotterPageDef = blotterPage(userBlotterDef)
 
 
@@ -387,9 +384,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         columnFromDto("userGroupId") { header("Group ID") }
         columnFromDto("id") { header("ID") }
     }
-
-
-    val userGroupMembershipCrudBlotterDef = crudBlotter(userGroupMembershipBlotterDef, userGroupMembershipEntityDef.entityDef.entityCrudApiDef!!)
 
 
     val personSummarySearchableDef = searchableDto(

@@ -1,4 +1,6 @@
 
+TODO * Fix the CRUD playwright tests to work with the 'Create' page instead of a dialog.
+
 TODO * rv if CrudApiDef.withEntityForm is still needed now that we have EntityEditPageDef instead.
     TODO * Refactor so that EntityEditReactiveFormHtmlRenderer doesn't need a reference to the CrudApiDef.
 

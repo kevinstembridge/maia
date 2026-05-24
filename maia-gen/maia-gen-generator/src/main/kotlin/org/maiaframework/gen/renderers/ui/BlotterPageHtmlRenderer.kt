@@ -4,7 +4,7 @@ import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.BlotterPageDef
 
 
-class CrudBlotterPageHtmlRenderer(
+class BlotterPageHtmlRenderer(
     private val blotterPageDef: BlotterPageDef
 ) : AbstractSourceFileRenderer() {
 

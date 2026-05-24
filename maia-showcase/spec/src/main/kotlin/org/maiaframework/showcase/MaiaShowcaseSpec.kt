@@ -460,9 +460,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val allFieldTypesCrudBlotterDef = crudBlotter(allFieldTypesBlotterDef, allFieldTypesEntityDef.entityCrudApiDef!!)
-
-
     val allFieldTypesBlotterPageDef = blotterPage(allFieldTypesBlotterDef)
 
 
@@ -537,9 +534,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("createdTimestampUtc")
         deleteActionColumn()
     }
-
-
-    val simpleCrudBlotterBlotterDef = crudBlotter(simpleBlotterDef, simpleEntityDef.entityCrudApiDef!!)
 
 
     val simpleBlotterPageDef = blotterPage(simpleBlotterDef)
@@ -787,9 +781,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val someVersionedCrudBlotterDef = crudBlotter(someVersionedBlotterDef, someVersionedEntityDef.entityCrudApiDef!!)
-
-
     val someVersionedBlotterPageDef = blotterPage(someVersionedBlotterDef)
 
 
@@ -1016,9 +1007,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto(dtoFieldName = "createdTimestampUtc", fieldPathInSourceData = "createdTimestampUtc")
         deleteActionColumn()
     }
-
-
-    val bravoCrudBlotterDef = crudBlotter(bravoBlotterDef, bravoEntityDef.entityCrudApiDef!!)
 
 
     val bravoBlotterPageDef = blotterPage(bravoBlotterDef)
@@ -1267,9 +1255,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftManyCrudBlotterDef = crudBlotter(leftManyBlotterDef, leftManyEntityDef.entityCrudApiDef!!)
-
-
     val leftManyBlotterPageDef = blotterPage(leftManyBlotterDef)
 
 
@@ -1391,9 +1376,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("createdTimestampUtc")
         deleteActionColumn()
     }
-
-
-    val compositePrimaryKeyCrudBlotterDef = crudBlotter(compositePrimaryKeyBlotterDef, compositePrimaryKeyEntityDef.entityCrudApiDef!!)
 
 
     val compositePrimaryKeyBlotterPageDef = blotterPage(compositePrimaryKeyBlotterDef)
