@@ -120,6 +120,9 @@ export class SimpleBlotter {
     private readonly datasource = inject(SimpleBlotterAgGridDatasource);
 
 
+    private readonly authService = inject(AuthService);
+
+
     private readonly injector = inject(EnvironmentInjector);
 
 
@@ -127,9 +130,6 @@ export class SimpleBlotter {
 
 
     private readonly dialog = inject(MatDialog);
-
-
-    private readonly authService = inject(AuthService);
 
 
     onGridReady(params: GridReadyEvent<SimpleBlotterRowDto>) {
