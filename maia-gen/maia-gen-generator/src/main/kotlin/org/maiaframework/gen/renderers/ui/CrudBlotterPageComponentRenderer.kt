@@ -1,9 +1,9 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.CrudBlotterPageDef
+import org.maiaframework.gen.spec.definition.BlotterPageDef
 
 class CrudBlotterPageComponentRenderer(
-    private val crudBlotterPageDef: CrudBlotterPageDef
+    private val blotterPageDef: BlotterPageDef
 ) : AbstractTypescriptRenderer() {
 
 
@@ -11,13 +11,13 @@ class CrudBlotterPageComponentRenderer(
         addImport("@angular/core", "ChangeDetectionStrategy")
         addImport("@angular/core", "Component")
         addImport("@app/components/page-layout/page-layout", "PageLayout")
-        addImport(crudBlotterPageDef.crudBlotterComponentTypescriptImport)
+        addImport(blotterPageDef.blotterComponentTypescriptImport)
     }
 
 
     override fun renderedFilePath(): String {
 
-        return crudBlotterPageDef.pageAngularComponentNames.componentRenderedFilePath
+        return blotterPageDef.pageAngularComponentNames.componentRenderedFilePath
 
     }
 
@@ -30,12 +30,12 @@ class CrudBlotterPageComponentRenderer(
             |    changeDetection: ChangeDetectionStrategy.OnPush,
             |    imports: [
             |        PageLayout,
-            |        ${crudBlotterPageDef.crudBlotterComponentClassName}
+            |        ${blotterPageDef.blotterComponentClassName}
             |    ],
-            |    selector: '${crudBlotterPageDef.pageAngularComponentNames.componentSelector}',
-            |    templateUrl: './${crudBlotterPageDef.pageAngularComponentNames.htmlFileName}'
+            |    selector: '${blotterPageDef.pageAngularComponentNames.componentSelector}',
+            |    templateUrl: './${blotterPageDef.pageAngularComponentNames.htmlFileName}'
             |})
-            |export class ${crudBlotterPageDef.pageAngularComponentNames.componentName} {}
+            |export class ${blotterPageDef.pageAngularComponentNames.componentName} {}
             |""".trimMargin())
 
     }

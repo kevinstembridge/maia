@@ -129,7 +129,7 @@ class AngularUiModuleGenerator(
         renderAuthorityEnum()
         renderCommonModel()
         renderCrudServices()
-        renderCrudBlotters()
+//        renderCrudBlotters() TODO delete after cooling off. 2026-05-24
         renderBlotterHtml()
         renderDtoServices()
         renderBlotterComponents()
@@ -304,8 +304,24 @@ class AngularUiModuleGenerator(
         this.modelDef.blotterDefs.forEach {
 
             when (it.searchModelType) {
-                SearchModelType.AG_GRID -> AgGridBlotterComponentRenderer(it, this.modelDef.authoritiesDef).renderToDir(this.typescriptOutputDir)
+                SearchModelType.AG_GRID -> {
+
+                    val entityIsReferencedByForeignKeys = it.blotterSourceDef.rootEntityDef?.let { rootEntityDef ->
+                        this.modelDef.entityIsReferencedByForeignKeys(rootEntityDef)
+                    } ?: false
+
+                    AgGridBlotterComponentRenderer(
+                        it,
+                        it.entityDetailViewDef,
+                        it.entityEditPageDef,
+                        it.entityCreatePageDef,
+                        entityIsReferencedByForeignKeys,
+                        this.modelDef.authoritiesDef
+                    ).renderToDir(this.typescriptOutputDir)
+                }
+
                 SearchModelType.MAIA -> BlotterComponentRenderer(it).renderToDir(this.typescriptOutputDir)
+
             }
 
         }
@@ -396,7 +412,7 @@ class AngularUiModuleGenerator(
 
     private fun renderCrudBlotterPages() {
 
-        this.modelDef.crudBlotterPageDefs.forEach { pageDef ->
+        this.modelDef.blotterPageDefs.forEach { pageDef ->
             CrudBlotterPageComponentRenderer(pageDef).renderToDir(this.typescriptOutputDir)
             CrudBlotterPageHtmlRenderer(pageDef).renderToDir(this.typescriptOutputDir)
         }
@@ -474,15 +490,6 @@ class AngularUiModuleGenerator(
 
 
     private fun renderCommonModel() {
-
-        // TODO instead of rendering these, move them into maia-ui
-
-//        FormValidationResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
-//        TotalHitsRelationRenderer().renderToDir(this.typescriptOutputDir)
-//        TotalHitsResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
-//        ProblemDetailRenderer().renderToDir(this.typescriptOutputDir)
-//        SearchResultPageResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
-//        IndexSearchResultResponseDtoRenderer().renderToDir(this.typescriptOutputDir)
 
         this.modelDef.authoritiesDef?.let { authoritiesDef ->
 

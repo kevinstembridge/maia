@@ -32,7 +32,7 @@ class CheckForeignKeyReferencesDialogComponentRenderer(private val entityDef: En
 
     override fun renderedFilePath(): String {
 
-        return entityDef.checkForeignKeyReferencesDialog.componentRenderedFilePath
+        return entityDef.checkForeignKeyReferencesDialogComponentNames.componentRenderedFilePath
 
     }
 
@@ -44,10 +44,10 @@ class CheckForeignKeyReferencesDialogComponentRenderer(private val entityDef: En
 
             @Component({
                 imports: [MatDialogTitle, MatDialogContent, MatProgressSpinnerModule, MessagePanelComponent, MatDialogActions, MatButtonModule],
-                selector: '${this.entityDef.checkForeignKeyReferencesDialog.componentSelector}',
-                templateUrl: './${this.entityDef.checkForeignKeyReferencesDialog.htmlFileName}'
+                selector: '${this.entityDef.checkForeignKeyReferencesDialogComponentNames.componentSelector}',
+                templateUrl: './${this.entityDef.checkForeignKeyReferencesDialogComponentNames.htmlFileName}'
             })
-            export class ${this.entityDef.checkForeignKeyReferencesDialog.componentName} implements OnInit {
+            export class ${this.entityDef.checkForeignKeyReferencesDialogComponentNames.componentName} implements OnInit {
             
                 
                 checking: boolean = false;
@@ -56,14 +56,13 @@ class CheckForeignKeyReferencesDialogComponentRenderer(private val entityDef: En
                 messageDetails = new MessageDetails();
 
 
-                private readonly dialogRef = inject(MatDialogRef<${this.entityDef.checkForeignKeyReferencesDialog.componentName}>);
+                private readonly dialogRef = inject(MatDialogRef<${this.entityDef.checkForeignKeyReferencesDialogComponentNames.componentName}>);
 
 
                 private readonly dto = inject<any>(MAT_DIALOG_DATA);
 
 
                 private readonly foreignKeyReferenceService = inject(${MaiaGenConstants.FOREIGN_KEY_REFERENCE_SERVICE_CLASS_NAME});
-
 
             
                 ngOnInit() {

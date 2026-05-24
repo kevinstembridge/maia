@@ -1,11 +1,15 @@
 package org.maiaframework.gen.renderers.ui
 
+import org.maiaframework.gen.spec.definition.ActionName
 import org.maiaframework.gen.spec.definition.AgGridCellRendererDefs
 import org.maiaframework.gen.spec.definition.AuthoritiesDef
 import org.maiaframework.gen.spec.definition.BlotterActionColumnDef
 import org.maiaframework.gen.spec.definition.BlotterColumnDef
 import org.maiaframework.gen.spec.definition.BlotterCompositePkColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
+import org.maiaframework.gen.spec.definition.EntityCreatePageDef
+import org.maiaframework.gen.spec.definition.EntityDetailViewDef
+import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
@@ -13,11 +17,20 @@ import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
 class AgGridBlotterComponentRenderer(
     private val blotterDef: BlotterDef,
+    private val entityDetailViewDef: EntityDetailViewDef?,
+    private val entityEditPageDef: EntityEditPageDef?,
+    entityCreatePageDef: EntityCreatePageDef?,
+    private val entityIsReferencedByForeignKeys: Boolean,
     authoritiesDef: AuthoritiesDef?
 ) : AbstractTypescriptRenderer() {
 
 
-    private val requiresRouter = blotterDef.clickableBlotterRowDef != null
+    val requiresRouter = (entityDetailViewDef != null && blotterDef.hasViewActionColumn)
+            || entityEditPageDef != null
+            || entityCreatePageDef != null
+
+
+    val requiresDialog = blotterDef.hasDeleteActionColumn
 
 
     init {
@@ -43,7 +56,6 @@ class AgGridBlotterComponentRenderer(
         addImport("@angular/core", "EnvironmentInjector")
         addImport("@angular/core", "inject")
         addImport("@angular/core", "runInInjectionContext")
-        addImport("@angular/core", "output")
 
         authoritiesDef?.let {
             addImport(it.authServiceTypescriptImport)
@@ -81,48 +93,12 @@ class AgGridBlotterComponentRenderer(
 
     override fun renderSourceBody() {
 
-        append("""
-            |
-            |
-            |@Component({
-            |    imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-            |    providers: [${this.blotterDef.angularBlotterServiceName}, DecimalPipe],
-            |    selector: '${this.blotterDef.blotterComponent.componentSelector}',
-            |    templateUrl: './${this.blotterDef.blotterComponent.htmlFileName}'
-            |""".trimMargin())
+        `render @Component decorator`()
 
-        if (this.blotterDef.searchModelType == SearchModelType.MAIA) {
-            appendLine("    styleUrls: ['./${this.blotterDef.blotterComponentScssFileName}'],")
-        }
-
-        appendLine("})")
         appendLine("export class ${this.blotterDef.blotterComponent.componentName} {")
 
-        this.blotterDef.actionColumnFields.forEach { actionColumnDef ->
-            blankLine()
-            blankLine()
-            appendLine("    readonly ${actionColumnDef.actionName} = output<${this.blotterDef.dtoUqcn}>();")
-        }
+        `render colDefs field`()
 
-        if (this.blotterDef.entityCreatePageDef != null) {
-            blankLine()
-            blankLine()
-            appendLine("    readonly addButtonClicked = output();")
-        }
-
-        blankLine()
-        blankLine()
-        appendLine("    public columnDefs: ColDef[] = [")
-
-        this.blotterDef.blotterColumnDefs.forEach { fieldDef ->
-            when (fieldDef) {
-                is BlotterActionColumnDef -> renderColDefFor(fieldDef)
-                is BlotterColumnDef -> appendLine("        ${renderColDefFor(fieldDef)},")
-                is BlotterCompositePkColumnDef -> renderColDefFor(fieldDef)
-            }
-        }
-
-        appendLine("    ];")
         append("""
             |
             |    public defaultColDef: ColDef = {
@@ -173,88 +149,35 @@ class AgGridBlotterComponentRenderer(
             |    private readonly datasource = inject(${blotterDef.agGridDatasourceClassName});
             |
             |
+            |    private readonly authService = inject(AuthService);
+            |
+            |
             |    private readonly injector = inject(EnvironmentInjector);
             |""".trimMargin()
         )
 
-        if (requiresRouter) {
-            blankLine()
-            blankLine()
-            appendLine("    private readonly router = inject(Router);")
-        }
+        `render router field`()
+
+        `render dialog field`()
+
+        `render onGridReady function`()
+
+        `render functions for Add button`()
+
+        `render onView function`()
+
+        `render onEdit function`()
+
+        `render onDelete function`()
+
+        `render handler functions for action columns`()
+
+        `render onCellClicked function for clickable row`()
 
         append("""
             |
             |
-            |    private readonly authService = inject(AuthService);
-            |
-            |
-            |    onGridReady(params: GridReadyEvent<${blotterDef.dtoUqcn}>) {
-            |
-            |        this.gridApi = params.api;
-            |        params.api?.setGridOption('datasource', this.datasource);
-            |
-            |    }
-            |""".trimMargin())
-
-        this.blotterDef.actionColumnFields.forEach { actionColumnDef ->
-            append("""
-                |
-                |
-                |    on${actionColumnDef.actionName.firstToUpper()}(dto: ${this.blotterDef.dtoUqcn}) {
-                |
-                |        this.${actionColumnDef.actionName}.emit(dto);
-                |
-                |    }
-                |""".trimMargin())
-        }
-
-        this.blotterDef.entityCreatePageDef?.let { entityCreatePageDef ->
-
-            append("""
-                |
-                |
-                |    get addButtonVisible(): boolean {
-                |
-                |""".trimMargin())
-
-            val authority = entityCreatePageDef.authority
-
-            if (authority != null) {
-                appendLine("        return this.authService.currentUserHasThisAuthority(Authority.${authority.name});")
-            } else {
-                appendLine("        return true;")
-            }
-
-            blankLine()
-            appendLine("    }")
-            blankLine()
-            blankLine()
-            appendLine("    onAddButtonClicked() {")
-            blankLine()
-            appendLine("        this.addButtonClicked.emit();")
-            blankLine()
-            appendLine("    }")
-        }
-
-        this.blotterDef.clickableBlotterRowDef?.let { clickableTableRowDef ->
-
-            blankLine()
-            blankLine()
-            appendLine("    onCellClicked(event: CellClickedEvent) {")
-
-            clickableTableRowDef.routerNavigationArgs?.let { args ->
-                val argsFormatted = args.joinToString(prefix = "[", separator = ", ", postfix = "]")
-                appendLine("        this.router.navigate($argsFormatted);")
-            }
-
-            appendLine("    }")
-        }
-
-        append("""
-            |
-            |
-            |    reapplyFilters() {
+            |    private reapplyFilters() {
             |
             |        runInInjectionContext(this.injector, () => {
             |            this.gridApi.onFilterChanged();
@@ -272,6 +195,269 @@ class AgGridBlotterComponentRenderer(
             |
             |}
             |""".trimMargin())
+
+    }
+
+
+    private fun `render handler functions for action columns`() {
+
+        this.blotterDef.actionColumnFields
+            .filterNot { it.actionName == ActionName.view }
+            .filterNot { it.actionName == ActionName.edit }
+            .filterNot { it.actionName == ActionName.delete }
+            .forEach { actionColumnDef ->
+                append(
+                    """
+                        |
+                        |
+                        |    on${actionColumnDef.actionName.firstToUpper()}(dto: ${this.blotterDef.dtoUqcn}) {
+                        |
+                        |        this.${actionColumnDef.actionName}.emit(dto);
+                        |
+                        |    }
+                        |""".trimMargin()
+                )
+            }
+
+    }
+
+
+    private fun `render onCellClicked function for clickable row`() {
+
+        this.blotterDef.clickableBlotterRowDef?.let { clickableTableRowDef ->
+
+            blankLine()
+            blankLine()
+            appendLine("    onCellClicked(event: CellClickedEvent) {")
+
+            clickableTableRowDef.routerNavigationArgs?.let { args ->
+                val argsFormatted = args.joinToString(prefix = "[", separator = ", ", postfix = "]")
+                appendLine("        this.router.navigate($argsFormatted);")
+            }
+
+            appendLine("    }")
+        }
+
+    }
+
+
+    private fun `render @Component decorator`() {
+
+        append(
+            """
+                |
+                |
+                |@Component({
+                |    imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
+                |    providers: [${this.blotterDef.angularBlotterServiceName}, DecimalPipe],
+                |    selector: '${this.blotterDef.blotterComponent.componentSelector}',
+                |    templateUrl: './${this.blotterDef.blotterComponent.htmlFileName}'
+                |""".trimMargin()
+        )
+
+        if (this.blotterDef.searchModelType == SearchModelType.MAIA) {
+            appendLine("    styleUrls: ['./${this.blotterDef.blotterComponentScssFileName}'],")
+        }
+
+        appendLine("})")
+
+    }
+
+
+    private fun `render colDefs field`() {
+
+        blankLine()
+        blankLine()
+        appendLine("    public columnDefs: ColDef[] = [")
+
+        this.blotterDef.blotterColumnDefs.forEach { fieldDef ->
+            when (fieldDef) {
+                is BlotterActionColumnDef -> renderColDefFor(fieldDef)
+                is BlotterColumnDef -> appendLine("        ${renderColDefFor(fieldDef)},")
+                is BlotterCompositePkColumnDef -> renderColDefFor(fieldDef)
+            }
+        }
+
+        appendLine("    ];")
+
+    }
+
+
+    private fun `render router field`() {
+
+        if (requiresRouter) {
+            blankLine()
+            blankLine()
+            appendLine("    private readonly router = inject(Router);")
+        }
+
+    }
+
+
+    private fun `render dialog field`() {
+
+        if (requiresDialog) {
+
+            addImport("@angular/material/dialog", "MatDialog")
+
+            blankLine()
+            blankLine()
+            appendLine("    private readonly dialog = inject(MatDialog);")
+        }
+
+    }
+
+
+    private fun `render onGridReady function`() {
+
+        append(
+            """
+                |
+                |
+                |    onGridReady(params: GridReadyEvent<${blotterDef.dtoUqcn}>) {
+                |
+                |        this.gridApi = params.api;
+                |        params.api?.setGridOption('datasource', this.datasource);
+                |
+                |    }
+                |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render functions for Add button`() {
+
+        this.blotterDef.entityCreatePageDef?.let { entityCreatePageDef ->
+
+            append(
+                """
+                    |
+                    |
+                    |    get addButtonVisible(): boolean {
+                    |
+                    |""".trimMargin()
+            )
+
+            val authority = entityCreatePageDef.authority
+
+            if (authority != null) {
+                appendLine("        return this.authService.currentUserHasThisAuthority(Authority.${authority.name});")
+            } else {
+                appendLine("        return true;")
+            }
+
+            blankLine()
+            appendLine("    }")
+            blankLine()
+            blankLine()
+            appendLine("    onAddButtonClicked(): void {")
+            blankLine()
+            appendLine("        this.router.navigate(['${entityCreatePageDef.createPageUrl}']);")
+            blankLine()
+            appendLine("    }")
+        }
+
+    }
+
+
+    private fun `render onView function`() {
+
+        if (blotterDef.hasViewActionColumn) {
+
+            check(entityDetailViewDef != null) { "EntityDetailViewDef must be set if blotterDef has view action column. ${blotterDef.blotterComponent.componentName}" }
+
+            append(
+                """
+                    |
+                    |
+                    |    private onView(dto: ${blotterDef.dtoUqcn}): void {
+                    |
+                    |        this.router.navigate(['${entityDetailViewDef.viewPageUrl}', dto.id]);
+                    |
+                    |    }
+                    |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render onEdit function`() {
+
+        if (blotterDef.hasEditActionColumn) {
+
+            check(entityEditPageDef != null) { "EntityEditPageDef must be set if blotterDef has edit action column. ${blotterDef.blotterComponent.componentName}" }
+
+            append(
+                """
+                    |
+                    |
+                    |    private onEdit(dto: ${blotterDef.dtoUqcn}): void {
+                    |
+                    |        this.router.navigate(['${entityEditPageDef.entityDef.editEntityPageUrl}', dto.id]);
+                    |
+                    |    }
+                    |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render onDelete function`() {
+
+        if (blotterDef.hasDeleteActionColumn) {
+
+            blankLine()
+            blankLine()
+            appendLine("    private onDelete(dto: ${blotterDef.dtoUqcn}): void {")
+
+            if (this.entityIsReferencedByForeignKeys) {
+
+                addImport(this.blotterDef.checkForeignKeyReferencesDialogComponentNames.componentTypescriptImport)
+
+                blankLine()
+                appendLine("        const checkForeignKeyReferencesDialogRef = this.dialog.open(${this.blotterDef.checkForeignKeyReferencesDialogComponentNames.componentName}, {")
+                appendLine("            width: '500px',")
+                appendLine("            data: dto")
+                appendLine("        });")
+                blankLine()
+                appendLine("        checkForeignKeyReferencesDialogRef.afterClosed().subscribe(result => {")
+                appendLine("            if (result) {")
+                appendLine("                this.displayDeleteDialog(dto);")
+                appendLine("            }")
+                appendLine("        });")
+                blankLine()
+                appendLine("    }")
+                blankLine()
+                blankLine()
+                appendLine("    private displayDeleteDialog(dto: ${blotterDef.dtoUqcn}) {")
+            }
+
+            addImport(this.blotterDef.angularDeleteDialogComponentNames.componentTypescriptImport)
+
+            append(
+                """
+                    |
+                    |        const dialogRef = this.dialog.open(${this.blotterDef.angularDeleteDialogComponentNames.componentName}, {
+                    |            width: '400px',
+                    |            data: dto
+                    |        });
+                    |
+                    |        dialogRef.afterClosed().subscribe(result => {
+                    |            if (result) {
+                    |                this.reapplyFilters();
+                    |            }
+                    |        });
+                    |
+                    |    }
+                    |""".trimMargin()
+            )
+
+        }
 
     }
 
@@ -328,7 +514,7 @@ class AgGridBlotterComponentRenderer(
             |            cellRenderer: ${fieldDef.cellRenderer!!.componentClassName},
             |            cellRendererParams: { iconName: '${fieldDef.icon}' },
             |            onCellClicked: event => {
-            |                this.${fieldDef.actionName}.emit(event.data);
+            |                this.on${fieldDef.actionName.firstToUpper()}(event.data);
             |            }
             |        },
             |""".trimMargin())

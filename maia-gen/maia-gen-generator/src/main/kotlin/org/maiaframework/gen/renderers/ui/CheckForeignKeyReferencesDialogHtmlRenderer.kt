@@ -8,7 +8,7 @@ class CheckForeignKeyReferencesDialogHtmlRenderer(private val entityDef: EntityD
 
     override fun renderedFilePath(): String {
 
-        return this.entityDef.checkForeignKeyReferencesDialog.htmlRenderedFilePath
+        return this.entityDef.checkForeignKeyReferencesDialogComponentNames.htmlRenderedFilePath
 
     }
 

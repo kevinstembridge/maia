@@ -31,7 +31,7 @@ class ModelDef(
     val entityDetailViewDefs: List<EntityDetailViewDef>,
     val entityEditPageDefs: List<EntityEditPageDef>,
     val entityCreatePageDefs: List<EntityCreatePageDef>,
-    val crudBlotterPageDefs: List<CrudBlotterPageDef>
+    val blotterPageDefs: List<BlotterPageDef>
 ) {
 
 

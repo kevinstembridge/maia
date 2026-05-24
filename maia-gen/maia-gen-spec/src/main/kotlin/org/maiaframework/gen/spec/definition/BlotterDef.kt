@@ -16,6 +16,8 @@ class BlotterDef(
     val moduleName: ModuleName?,
     providedBlotterColumnDefs: List<AbstractBlotterColumnDef>,
     val entityCreatePageDef: EntityCreatePageDef?,
+    val entityDetailViewDef: EntityDetailViewDef?,
+    val entityEditPageDef: EntityEditPageDef?,
     val disableRendering: Boolean,
     val withGeneratedDto: WithGeneratedDto,
     val withPreAuthorize: WithPreAuthorize? = null,
@@ -26,6 +28,12 @@ class BlotterDef(
     withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
     val searchModelType: SearchModelType
 ) {
+
+
+    val angularDeleteDialogComponentNames = blotterSourceDef.deleteDialogComponentNames
+
+
+    val checkForeignKeyReferencesDialogComponentNames = blotterSourceDef.checkForeignKeyReferencesDialogComponentNames
 
 
     val blotterColumnDefs = initBlotterColumnDefs(providedBlotterColumnDefs)
@@ -125,6 +133,12 @@ class BlotterDef(
 
 
     val hasViewActionColumn = actionColumnFields.any { it.actionName == ActionName.view }
+
+
+    val hasEditActionColumn = actionColumnFields.any { it.actionName == ActionName.edit }
+
+
+    val hasDeleteActionColumn = actionColumnFields.any { it.actionName == ActionName.delete }
 
 
     val requiresCellClickedEvent: Boolean = clickableBlotterRowDef != null

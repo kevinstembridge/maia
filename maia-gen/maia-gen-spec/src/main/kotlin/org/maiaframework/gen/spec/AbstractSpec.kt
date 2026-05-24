@@ -11,7 +11,7 @@ import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
 import org.maiaframework.gen.spec.definition.CrudBlotterDef
-import org.maiaframework.gen.spec.definition.CrudBlotterPageDef
+import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.DataClassDef
 import org.maiaframework.gen.spec.definition.DataClassName
 import org.maiaframework.gen.spec.definition.Description
@@ -25,6 +25,7 @@ import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.EntityCrudApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.EntityDeleteDialogDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
@@ -122,7 +123,7 @@ abstract class AbstractSpec protected constructor(
     private val booleanTypeDefs = mutableListOf<BooleanTypeDef>()
     private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
     private val crudBlotterDefs = mutableListOf<CrudBlotterDef>()
-    private val blotterPageDefs = mutableListOf<CrudBlotterPageDef>()
+    private val blotterPageDefs = mutableListOf<BlotterPageDef>()
     private val dataClassDefs = mutableListOf<DataClassDef>()
     private val defaultSchemaName = defaultSchemaName ?: SchemaName(appKey.value)
     private val blotterDefs = mutableListOf<BlotterDef>()
@@ -932,7 +933,7 @@ abstract class AbstractSpec protected constructor(
     protected fun blotterPage(
         blotterDef: BlotterDef,
         init: (BlotterPageDefBuilder.() -> Unit)? = null
-    ): CrudBlotterPageDef {
+    ): BlotterPageDef {
 
         val builder = BlotterPageDefBuilder(blotterDef)
         init?.invoke(builder)
@@ -961,6 +962,8 @@ abstract class AbstractSpec protected constructor(
     protected fun blotter(
         searchableDtoDef: SearchableDtoDef,
         entityCreatePageDef: EntityCreatePageDef? = null,
+        entityDetailViewPageDef: EntityDetailViewDef? = null,
+        entityEditPageDef: EntityEditPageDef? = null,
         disableRendering: Boolean = false,
         withPreAuthorize: WithPreAuthorize? = null,
         withGeneratedDto: WithGeneratedDto = WithGeneratedDto.TRUE,
@@ -983,6 +986,8 @@ abstract class AbstractSpec protected constructor(
             searchableDtoDef.dtoBaseName,
             blotterSourceDef = BlotterSearchableDtoSourceDef(searchableDtoDef),
             entityCreatePageDef = entityCreatePageDef,
+            entityEditPageDef = entityEditPageDef,
+            entityDetailViewDef = entityDetailViewPageDef,
             disableRendering = disableRendering,
             withGeneratedDto = withGeneratedDto,
             withGeneratedFindAllFunction = withGeneratedFindAllFunction,
@@ -1005,6 +1010,8 @@ abstract class AbstractSpec protected constructor(
     protected fun blotter(
         esDocDef: EsDocDef,
         entityCreatePageDef: EntityCreatePageDef? = null,
+        entityDetailViewPageDef: EntityDetailViewDef? = null,
+        entityEditPageDef: EntityEditPageDef? = null,
         disableRendering: Boolean = false,
         withGeneratedDto: WithGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint: WithGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
@@ -1019,6 +1026,8 @@ abstract class AbstractSpec protected constructor(
             esDocDef.packageName,
             esDocDef.esDocBaseName,
             entityCreatePageDef = entityCreatePageDef,
+            entityEditPageDef = entityEditPageDef,
+            entityDetailViewDef = entityDetailViewPageDef,
             disableRendering = disableRendering,
             searchModelType = searchModelType,
             withGeneratedDto = withGeneratedDto,

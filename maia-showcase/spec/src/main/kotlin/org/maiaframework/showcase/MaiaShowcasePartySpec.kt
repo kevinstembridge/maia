@@ -244,6 +244,9 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
+    val userEntityDetailViewPageDef = entityDetailView(userEntityDef)
+
+
     val userEntityCreatePageDef = entityCreatePage(userEntityDef)
 
 
@@ -270,17 +273,20 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userBlotterDef = blotter(
         userSearchableDtoDef,
         entityCreatePageDef = userEntityCreatePageDef,
+        entityDetailViewPageDef = userEntityDetailViewPageDef,
+        entityEditPageDef = userEntityEditPageDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
     ) {
+        viewActionColumn()
+        editActionColumn()
         columnFromDto("displayName") { header("Display Name") }
         columnFromDto("firstName") { header("First Name") }
         columnFromDto("lastName") { header("Last Name") }
         columnFromDto("authorities") { header("Authorities") }
         columnFromDto("createdTimestampUtc") { header("Created") }
         columnFromDto("id") { header("ID") }
-        editActionColumn()
     }
 
 
@@ -373,7 +379,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
     ) {
-        editActionColumn()
         columnFromDto("userDisplayName") { header("User") }
         columnFromDto("userGroupName") { header("Group") }
         columnFromDto("effectiveFrom") { header("Effective From") }

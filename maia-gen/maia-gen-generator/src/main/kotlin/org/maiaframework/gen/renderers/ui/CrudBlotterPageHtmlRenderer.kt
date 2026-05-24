@@ -1,17 +1,17 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
-import org.maiaframework.gen.spec.definition.CrudBlotterPageDef
+import org.maiaframework.gen.spec.definition.BlotterPageDef
 
 
 class CrudBlotterPageHtmlRenderer(
-    private val crudBlotterPageDef: CrudBlotterPageDef
+    private val blotterPageDef: BlotterPageDef
 ) : AbstractSourceFileRenderer() {
 
 
     override fun renderedFilePath(): String {
 
-        return crudBlotterPageDef.pageAngularComponentNames.htmlRenderedFilePath
+        return blotterPageDef.pageAngularComponentNames.htmlRenderedFilePath
 
     }
 
@@ -19,8 +19,8 @@ class CrudBlotterPageHtmlRenderer(
     override fun renderSource(): String {
 
         append("""
-            |<app-page-layout pageTitle="${crudBlotterPageDef.pageTitle}" dataPageId="${crudBlotterPageDef.dataPageId}">
-            |    <${crudBlotterPageDef.crudBlotterSelector}></${crudBlotterPageDef.crudBlotterSelector}>
+            |<app-page-layout pageTitle="${blotterPageDef.pageTitle}" dataPageId="${blotterPageDef.dataPageId}">
+            |    <${blotterPageDef.blotterComponentSelector}></${blotterPageDef.blotterComponentSelector}>
             |</app-page-layout>
             |""".trimMargin())
 

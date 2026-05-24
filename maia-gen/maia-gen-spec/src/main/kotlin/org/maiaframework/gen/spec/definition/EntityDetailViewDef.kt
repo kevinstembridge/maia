@@ -55,6 +55,9 @@ class EntityDetailViewDef(
     val fetchApiUrlForKotlin = "/api$modulePath/${dtoBaseName.toKebabCase()}/{id}"
 
 
+    val viewPageUrl = entityDef.viewEntityPageUrl
+
+
     val editPageUrl = "/$modulePath${entityDef.entityBaseName.toSnakeCase()}/edit"
 
 

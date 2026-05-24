@@ -26,7 +26,7 @@ class CrudBlotterComponentRenderer(
         crudBlotterDef.entityCrudApiDef.deleteApiDef?.let {
             addImport(it.angularDialogComponentTypescriptImport)
             if (entityIsReferencedByForeignKeys) {
-                addImport(crudBlotterDef.entityCrudApiDef.entityDef.checkForeignKeyReferencesDialog.componentTypescriptImport)
+                addImport(crudBlotterDef.entityCrudApiDef.entityDef.checkForeignKeyReferencesDialogComponentNames.componentTypescriptImport)
             }
         }
 
@@ -125,7 +125,7 @@ class CrudBlotterComponentRenderer(
 
             if (this.entityIsReferencedByForeignKeys) {
                 blankLine()
-                appendLine("        const checkForeignKeyReferencesDialogRef = this.dialog.open(${this.crudBlotterDef.entityCrudApiDef.entityDef.checkForeignKeyReferencesDialog.componentName}, {")
+                appendLine("        const checkForeignKeyReferencesDialogRef = this.dialog.open(${this.crudBlotterDef.entityCrudApiDef.entityDef.checkForeignKeyReferencesDialogComponentNames.componentName}, {")
                 appendLine("            width: '500px',")
                 appendLine("            data: dto")
                 appendLine("        });")

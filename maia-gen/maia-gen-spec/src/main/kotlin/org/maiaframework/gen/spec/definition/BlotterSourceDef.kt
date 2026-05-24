@@ -5,7 +5,9 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 
 
-sealed class BlotterSourceDef {
+sealed class BlotterSourceDef(
+    val rootEntityDef: EntityDef?
+) {
 
 
     abstract val withGeneratedFindAllFunction: WithGeneratedFindAllFunction
@@ -20,6 +22,14 @@ sealed class BlotterSourceDef {
     abstract val rowIdField: ClassFieldDef
 
 
+    val deleteDialogComponentNames = this.rootEntityDef?.deleteDialogComponentNames
+        ?: throw IllegalStateException("BlotterSourceDef does not have a root Entity")
+
+
+    val checkForeignKeyReferencesDialogComponentNames = this.rootEntityDef?.checkForeignKeyReferencesDialogComponentNames
+        ?: throw IllegalStateException("BlotterSourceDef does not have a root Entity")
+
+
     abstract fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef
 
 
@@ -28,7 +38,7 @@ sealed class BlotterSourceDef {
 
 class BlotterSearchableDtoSourceDef(
     val searchableDtoDef: SearchableDtoDef
-) : BlotterSourceDef() {
+) : BlotterSourceDef(searchableDtoDef.dtoRootEntityDef) {
 
 
     override val withGeneratedFindAllFunction = this.searchableDtoDef.withGeneratedFindAllFunction
@@ -54,7 +64,7 @@ class BlotterSearchableDtoSourceDef(
 
 class BlotterEsDocSourceDef(
     val esDocDef: EsDocDef
-) : BlotterSourceDef() {
+) : BlotterSourceDef(esDocDef.entityDef) {
 
 
     override val withGeneratedFindAllFunction: WithGeneratedFindAllFunction = WithGeneratedFindAllFunction.FALSE

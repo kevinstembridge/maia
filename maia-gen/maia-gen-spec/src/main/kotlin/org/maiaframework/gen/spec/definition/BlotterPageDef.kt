@@ -3,7 +3,7 @@ package org.maiaframework.gen.spec.definition
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 
 
-class CrudBlotterPageDef(
+class BlotterPageDef(
     val blotterDef: BlotterDef,
     val pageTitle: String,
 ) {
@@ -21,15 +21,15 @@ class CrudBlotterPageDef(
     )
 
 
-    val crudBlotterSelector = "app-${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter"
+    val blotterComponentSelector = "app-${blotterDef.dtoBaseName.toKebabCase()}-blotter"
 
 
-    val crudBlotterComponentClassName = "${blotterDef.dtoBaseName}CrudBlotterComponent"
+    val blotterComponentClassName = "${blotterDef.dtoBaseName}Blotter"
 
 
-    val crudBlotterComponentTypescriptImport = TypescriptImport(
-        name = crudBlotterComponentClassName,
-        from = "@$genDir/${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter"
+    val blotterComponentTypescriptImport = TypescriptImport(
+        name = blotterComponentClassName,
+        from = "@$genDir/${blotterDef.dtoBaseName.toKebabCase()}-blotter"
     )
 
 
