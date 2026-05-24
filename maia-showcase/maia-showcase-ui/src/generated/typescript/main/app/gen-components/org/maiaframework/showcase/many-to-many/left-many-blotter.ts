@@ -156,6 +156,20 @@ export class LeftManyBlotter {
     }
 
 
+    private onView(dto: LeftManyBlotterRowDto): void {
+
+        this.router.navigate(['/left-many/view', dto.id]);
+
+    }
+
+
+    private onEdit(dto: LeftManyBlotterRowDto): void {
+
+        this.router.navigate(['/left-many/edit', dto.id]);
+
+    }
+
+
     private onDelete(dto: LeftManyBlotterRowDto): void {
 
         const checkForeignKeyReferencesDialogRef = this.dialog.open(LeftManyCheckForeignKeyReferencesDialog, {

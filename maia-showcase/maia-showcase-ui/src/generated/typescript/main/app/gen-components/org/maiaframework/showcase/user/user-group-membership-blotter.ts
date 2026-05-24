@@ -12,7 +12,6 @@ import {UserGroupMembershipBlotterAgGridDatasource} from '@app/gen-components/or
 import {UserGroupMembershipBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipBlotterRowDto';
 import {UserGroupMembershipBlotterService} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
-import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 
@@ -28,18 +27,6 @@ export class UserGroupMembershipBlotter {
 
 
     public columnDefs: ColDef[] = [
-        {
-            field: 'edit',
-            headerName: '',
-            width: 100,
-            maxWidth: 100,
-            filter: false,
-            cellRenderer: IconAgGridCellRendererComponent,
-            cellRendererParams: { iconName: 'edit' },
-            onCellClicked: event => {
-                this.onEdit(event.data);
-            }
-        },
         { field: 'userDisplayName', headerName: 'User', cellDataType: 'text', filter: true },
         { field: 'userGroupName', headerName: 'Group', cellDataType: 'text', filter: true },
         { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'text', filter: true },
@@ -111,14 +98,7 @@ export class UserGroupMembershipBlotter {
     }
 
 
-    onEdit(dto: UserGroupMembershipBlotterRowDto) {
-
-        this.edit.emit(dto);
-
-    }
-
-
-    reapplyFilters() {
+    private reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();

@@ -29,12 +29,18 @@ export class UserBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'displayName', headerName: 'Display Name', cellDataType: 'text', filter: true },
-        { field: 'firstName', headerName: 'First Name', cellDataType: 'text', filter: true },
-        { field: 'lastName', headerName: 'Last Name', cellDataType: 'text', filter: true },
-        { field: 'authorities', headerName: 'Authorities', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
-        { field: 'createdTimestampUtc', headerName: 'Created', cellDataType: 'text', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
+        {
+            field: 'view',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'visibility' },
+            onCellClicked: event => {
+                this.onView(event.data);
+            }
+        },
         {
             field: 'edit',
             headerName: '',
@@ -47,6 +53,12 @@ export class UserBlotter {
                 this.onEdit(event.data);
             }
         },
+        { field: 'displayName', headerName: 'Display Name', cellDataType: 'text', filter: true },
+        { field: 'firstName', headerName: 'First Name', cellDataType: 'text', filter: true },
+        { field: 'lastName', headerName: 'Last Name', cellDataType: 'text', filter: true },
+        { field: 'authorities', headerName: 'Authorities', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
+        { field: 'createdTimestampUtc', headerName: 'Created', cellDataType: 'text', filter: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
     ];
 
     public defaultColDef: ColDef = {
@@ -114,13 +126,6 @@ export class UserBlotter {
     }
 
 
-    onEdit(dto: UserBlotterRowDto) {
-
-        this.edit.emit(dto);
-
-    }
-
-
     get addButtonVisible(): boolean {
 
         return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
@@ -135,7 +140,21 @@ export class UserBlotter {
     }
 
 
-    reapplyFilters() {
+    private onView(dto: UserBlotterRowDto): void {
+
+        this.router.navigate(['/user/view', dto.id]);
+
+    }
+
+
+    private onEdit(dto: UserBlotterRowDto): void {
+
+        this.router.navigate(['/user/edit', dto.id]);
+
+    }
+
+
+    private reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();
