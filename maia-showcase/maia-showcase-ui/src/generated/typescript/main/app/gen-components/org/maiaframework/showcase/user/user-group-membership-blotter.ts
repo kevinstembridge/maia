@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EnvironmentInjector, inject, output, runInInjectionContext} from '@angular/core';
+import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -27,17 +27,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class UserGroupMembershipBlotter {
 
 
-    readonly edit = output<UserGroupMembershipBlotterRowDto>();
-
-
     public columnDefs: ColDef[] = [
-        { field: 'userDisplayName', headerName: 'User', cellDataType: 'text', filter: true },
-        { field: 'userGroupName', headerName: 'Group', cellDataType: 'text', filter: true },
-        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'text', filter: true },
-        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'text', filter: true },
-        { field: 'userId', headerName: 'User ID', cellDataType: 'text', filter: true },
-        { field: 'userGroupId', headerName: 'Group ID', cellDataType: 'text', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
         {
             field: 'edit',
             headerName: '',
@@ -47,9 +37,16 @@ export class UserGroupMembershipBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'edit' },
             onCellClicked: event => {
-                this.edit.emit(event.data);
+                this.onEdit(event.data);
             }
         },
+        { field: 'userDisplayName', headerName: 'User', cellDataType: 'text', filter: true },
+        { field: 'userGroupName', headerName: 'Group', cellDataType: 'text', filter: true },
+        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'text', filter: true },
+        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'text', filter: true },
+        { field: 'userId', headerName: 'User ID', cellDataType: 'text', filter: true },
+        { field: 'userGroupId', headerName: 'Group ID', cellDataType: 'text', filter: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
     ];
 
     public defaultColDef: ColDef = {
