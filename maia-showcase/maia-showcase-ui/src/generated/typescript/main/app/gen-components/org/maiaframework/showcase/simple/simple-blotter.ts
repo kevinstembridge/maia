@@ -140,6 +140,13 @@ export class SimpleBlotter {
     }
 
 
+    get addButtonVisible(): boolean {
+
+        return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
+
+    }
+
+
     onAddButtonClicked(): void {
 
         this.router.navigate(['/simple/create']);
@@ -173,13 +180,6 @@ export class SimpleBlotter {
                 this.reapplyFilters();
             }
         });
-
-    }
-
-
-    get addButtonVisible(): boolean {
-
-        return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
 
     }
 
