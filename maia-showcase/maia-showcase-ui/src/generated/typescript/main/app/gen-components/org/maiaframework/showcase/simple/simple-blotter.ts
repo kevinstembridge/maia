@@ -13,11 +13,11 @@ import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/a
 import {SimpleBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterAgGridDatasource';
 import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
 import {SimpleBlotterService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-blotter-service';
+import {SimpleDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, FilterModel, GridApi, GridReadyEvent, RowModelType} from 'ag-grid-community';
-import {SimpleDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-delete-dialog';
+import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 
 
 
