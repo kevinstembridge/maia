@@ -2,15 +2,18 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EnvironmentInjector, inject, output, runInInjectionContext} from '@angular/core';
+import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
+import {Router} from '@angular/router';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {SomeVersionedBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterAgGridDatasource';
 import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterRowDto';
 import {SomeVersionedBlotterService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter-service';
+import {SomeVersionedDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -27,15 +30,6 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class SomeVersionedBlotter {
 
 
-    readonly edit = output<SomeVersionedBlotterRowDto>();
-
-
-    readonly delete = output<SomeVersionedBlotterRowDto>();
-
-
-    readonly addButtonClicked = output();
-
-
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         {
@@ -47,7 +41,7 @@ export class SomeVersionedBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'edit' },
             onCellClicked: event => {
-                this.edit.emit(event.data);
+                this.onEdit(event.data);
             }
         },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
@@ -63,7 +57,7 @@ export class SomeVersionedBlotter {
             cellRenderer: IconAgGridCellRendererComponent,
             cellRendererParams: { iconName: 'delete' },
             onCellClicked: event => {
-                this.delete.emit(event.data);
+                this.onDelete(event.data);
             }
         },
     ];
@@ -119,6 +113,12 @@ export class SomeVersionedBlotter {
     private readonly injector = inject(EnvironmentInjector);
 
 
+    private readonly router = inject(Router);
+
+
+    private readonly dialog = inject(MatDialog);
+
+
     private readonly authService = inject(AuthService);
 
 
@@ -130,20 +130,6 @@ export class SomeVersionedBlotter {
     }
 
 
-    onEdit(dto: SomeVersionedBlotterRowDto) {
-
-        this.edit.emit(dto);
-
-    }
-
-
-    onDelete(dto: SomeVersionedBlotterRowDto) {
-
-        this.delete.emit(dto);
-
-    }
-
-
     get addButtonVisible(): boolean {
 
         return this.authService.currentUserHasThisAuthority(Authority.WRITE);
@@ -151,14 +137,30 @@ export class SomeVersionedBlotter {
     }
 
 
-    onAddButtonClicked() {
+    onAddButtonClicked(): void {
 
-        this.addButtonClicked.emit();
+        this.router.navigate(['/some-versioned/create']);
 
     }
 
 
-    reapplyFilters() {
+    private onDelete(dto: SomeVersionedBlotterRowDto): void {
+
+        const dialogRef = this.dialog.open(SomeVersionedDeleteDialog, {
+            width: '400px',
+            data: dto
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.reapplyFilters();
+            }
+        });
+
+    }
+
+
+    private reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();
