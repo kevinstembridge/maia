@@ -1,0 +1,9 @@
+<app-page-layout pageTitle="Edit Some Versioned" dataPageId="some_versioned_edit">
+    @if (entityId(); as id) {
+        <app-some-versioned-entity-edit-form
+            [entityId]="id"
+            (onSave)="onSaveClicked()"
+            (onCancel)="onCancelClicked()"
+        />
+    }
+</app-page-layout>

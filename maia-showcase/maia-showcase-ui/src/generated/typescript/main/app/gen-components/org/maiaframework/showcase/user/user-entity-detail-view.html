@@ -1,0 +1,54 @@
+@if (detailDto$ | async; as detailDto) {
+  <div>
+    <div class="row">
+      <div class="col">Authorities</div>
+      <div class="col">{{detailDto.authorities}}</div>
+    </div>
+    <div class="row">
+      <div class="col">null</div>
+      <div class="col">{{detailDto.encryptedPassword}}</div>
+    </div>
+    <div class="row">
+      <div class="col">First Name</div>
+      <div class="col">{{detailDto.firstName}}</div>
+    </div>
+    <div class="row">
+      <div class="col">Last Name</div>
+      <div class="col">{{detailDto.lastName}}</div>
+    </div>
+    <div class="row">
+      <div class="col">null</div>
+      <div class="col">{{detailDto.displayName}}</div>
+    </div>
+    <div class="row">
+      <div class="col">Created By</div>
+      <div class="col">{{detailDto.createdBy}}</div>
+    </div>
+    <div class="row">
+      <div class="col">Last Modified By</div>
+      <div class="col">{{detailDto.lastModifiedBy}}</div>
+    </div>
+    <div class="row">
+      <div class="col">Last Modified Timestamp (UTC)</div>
+      <div class="col">{{detailDto.lastModifiedTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    </div>
+    <div class="row">
+      <div class="col">Lifecycle State</div>
+      <div class="col">{{detailDto.lifecycleState}}</div>
+    </div>
+    <div class="row">
+      <div class="col">ID</div>
+      <div class="col">{{detailDto.id}}</div>
+    </div>
+    <div class="row">
+      <div class="col">Created At</div>
+      <div class="col">{{detailDto.createdTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    </div>
+    <div class="row">
+      <div class="col">Version</div>
+      <div class="col">{{detailDto.version}}</div>
+    </div>
+  </div>
+} @else {
+  <mat-spinner></mat-spinner>
+}

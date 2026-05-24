@@ -1,0 +1,11 @@
+<app-page-layout pageTitle="User" dataPageId="user_view">
+    @if (entityId(); as id) {
+        <app-user-entity-detail-view [entityId]="id" />
+    }
+    @if (canEdit && entityId()) {
+        <button matButton aria-label="Edit" (click)="onEditClicked()">
+            <mat-icon>edit</mat-icon>
+            Edit
+        </button>
+    }
+</app-page-layout>

@@ -25,7 +25,6 @@ import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.EntityCrudApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
-import org.maiaframework.gen.spec.definition.EntityDeleteDialogDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
