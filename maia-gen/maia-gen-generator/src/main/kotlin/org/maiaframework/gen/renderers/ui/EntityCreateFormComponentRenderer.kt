@@ -35,6 +35,7 @@ import org.maiaframework.gen.spec.definition.lang.StringFieldType
 import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.UrlFieldType
+import org.maiaframework.lang.text.StringFunctions
 
 
 class EntityCreateFormComponentRenderer(
@@ -109,6 +110,8 @@ class EntityCreateFormComponentRenderer(
         `render class fields for async validators`()
 
         `render class fields for typeahead fields`()
+
+        `render class fields for typeahead services`()
 
         `render class fields for enum MatSelect fields`()
 
@@ -209,6 +212,25 @@ class EntityCreateFormComponentRenderer(
                 |
                 |
                 |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class fields for typeahead services`() {
+
+        this.typeaheadDefs.forEach { typeaheadDef ->
+
+            val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
+
+            append("""
+                |
+                |
+                |
+                |    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});
                 |""".trimMargin()
             )
 

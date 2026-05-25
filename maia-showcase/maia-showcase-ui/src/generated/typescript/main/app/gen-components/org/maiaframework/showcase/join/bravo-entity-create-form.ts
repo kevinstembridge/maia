@@ -51,6 +51,10 @@ export class BravoEntityCreateForm implements OnInit {
     filteredAlphaIsLoading = signal(false);
 
 
+
+    private readonly alphaTypeaheadApiService = inject(AlphaTypeaheadApiService);
+
+
     formGroup: FormGroup;
 
 

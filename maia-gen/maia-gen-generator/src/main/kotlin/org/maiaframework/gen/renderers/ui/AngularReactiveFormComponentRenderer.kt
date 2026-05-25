@@ -78,6 +78,8 @@ class AngularReactiveFormComponentRenderer(
 
         `render class fields for typeahead fields`()
 
+        `render class fields for typeahead services`()
+
         `render class fields for chip fields`()
 
         `render class field for formService`()
@@ -298,15 +300,6 @@ class AngularReactiveFormComponentRenderer(
             appendLine("    private readonly router = inject(Router);")
         }
 
-        this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
-
-            val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
-            blankLine()
-            blankLine()
-            appendLine("    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});")
-
-        }
-
         chipFields.forEach { chip ->
             blankLine()
             blankLine()
@@ -376,6 +369,25 @@ class AngularReactiveFormComponentRenderer(
         appendLine("        );")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render class fields for typeahead services`() {
+
+        this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
+
+            val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
+
+            append("""
+                |
+                |
+                |
+                |    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});
+                |""".trimMargin()
+            )
+
+        }
 
     }
 
