@@ -99,11 +99,10 @@ class EntityCreateFormComponentRenderer(
             |
             |
             |    onCancel = output();
-            |
-            |
-            |    private readonly formService = inject(${crudAngularComponentNames.serviceName});
             |""".trimMargin()
         )
+
+        `render class field for formService`()
 
         `render class field for problemDetail`()
 
@@ -116,6 +115,18 @@ class EntityCreateFormComponentRenderer(
         `render class fields for chip fields`()
 
         `render class field for formGroup `()
+
+    }
+
+
+    private fun `render class field for formService`() {
+
+        append("""
+            |
+            |
+            |    private readonly formService = inject(${this.crudAngularComponentNames.serviceName});
+            |""".trimMargin()
+        )
 
     }
 

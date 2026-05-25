@@ -385,7 +385,6 @@ class AngularReactiveFormComponentRenderer(
         append("""
             |
             |
-            |
             |    private readonly formService = inject(${this.angularFormDef.formServiceClassName});
             |""".trimMargin()
         )
