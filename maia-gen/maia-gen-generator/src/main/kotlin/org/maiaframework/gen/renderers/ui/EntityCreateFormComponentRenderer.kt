@@ -3,6 +3,7 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
+import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
@@ -37,13 +38,16 @@ import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 
 
 class EntityCreateFormComponentRenderer(
-    entityCreatePageDef: EntityCreatePageDef
+    entityCreatePageDef: EntityCreatePageDef,
+    private val requestDtoDef: RequestDtoDef,
+    private val formGroupFields: List<AngularFormFieldDef>
 ) : AbstractAngularComponentRenderer(entityCreatePageDef.createFormAngularComponentNames) {
 
 
     private val createApiDef = entityCreatePageDef.createApiDef
+
+
     private val entityDef = entityCreatePageDef.entityDef
-    private val formGroupFields = createApiDef.htmlFormFields
 
 
     init {
@@ -62,7 +66,7 @@ class EntityCreateFormComponentRenderer(
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
         addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport(TypescriptImports.problemDetail)
-        addImport(createApiDef.requestDtoDef.typescriptImport)
+        addImport(requestDtoDef.typescriptImport)
         addImport(entityDef.crudAngularComponentNames.serviceTypescriptImport)
         formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
             addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
@@ -280,14 +284,14 @@ class EntityCreateFormComponentRenderer(
             |""".trimMargin()
         )
 
-        createApiDef.requestDtoDef.dtoFieldDefs.forEach { field ->
+        requestDtoDef.dtoFieldDefs.forEach { field ->
             val fieldName = field.classFieldDef.classFieldName
             appendLine("            ${fieldName}: this.formGroup.getRawValue().${fieldName},")
         }
 
         append(
             """
-            |        } as ${createApiDef.requestDtoDef.uqcn};
+            |        } as ${requestDtoDef.uqcn};
             |
             |        this.formService.create(requestDto).subscribe({
             |            next: () => {
