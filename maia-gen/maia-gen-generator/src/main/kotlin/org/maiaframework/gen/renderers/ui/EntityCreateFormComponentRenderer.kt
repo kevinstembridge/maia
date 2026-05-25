@@ -92,25 +92,23 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render class fields`() {
 
-        append(
-            """
-                |
-                |
-                |    onSave = output();
-                |
-                |
-                |    onCancel = output();
-                |
-                |
-                |    problemDetail = signal<ProblemDetail | null>(null);
-                |
-                |
-                |    formGroup: FormGroup;
-                |
-                |
-                |    private readonly formService = inject(${crudAngularComponentNames.serviceName});
-                |""".trimMargin()
-
+        append("""
+            |
+            |
+            |    onSave = output();
+            |
+            |
+            |    onCancel = output();
+            |
+            |
+            |    problemDetail = signal<ProblemDetail | null>(null);
+            |
+            |
+            |    formGroup: FormGroup;
+            |
+            |
+            |    private readonly formService = inject(${crudAngularComponentNames.serviceName});
+            |""".trimMargin()
         )
 
         `render class fields for async validators`()
