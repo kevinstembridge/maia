@@ -109,29 +109,7 @@ class EntityCreateFormComponentRenderer(
 
         }
 
-        append(
-            """
-            |
-            |
-            |    constructor() {
-            |
-            |        this.formGroup = new FormGroup({
-            |""".trimMargin()
-        )
-
-        formGroupFields.forEach { angularFormFieldDef ->
-            FormControlRendererHelper.renderFormControlFor(
-                angularFormFieldDef,
-                CreateOrEdit.create,
-                indentSize = 12,
-                { line -> appendLine(line) },
-                { fieldType -> addImportsFor(fieldType) }
-            )
-        }
-
-        appendLine("        });")
-        blankLine()
-        appendLine("    }")
+        `render constructor`()
 
         append(
             """
@@ -184,6 +162,32 @@ class EntityCreateFormComponentRenderer(
             |""".trimMargin()
         )
 
+    }
+
+    private fun `render constructor`() {
+        append(
+            """
+                |
+                |
+                |    constructor() {
+                |
+                |        this.formGroup = new FormGroup({
+                |""".trimMargin()
+        )
+
+        formGroupFields.forEach { angularFormFieldDef ->
+            FormControlRendererHelper.renderFormControlFor(
+                angularFormFieldDef,
+                CreateOrEdit.create,
+                indentSize = 12,
+                { line -> appendLine(line) },
+                { fieldType -> addImportsFor(fieldType) }
+            )
+        }
+
+        appendLine("        });")
+        blankLine()
+        appendLine("    }")
     }
 
 
