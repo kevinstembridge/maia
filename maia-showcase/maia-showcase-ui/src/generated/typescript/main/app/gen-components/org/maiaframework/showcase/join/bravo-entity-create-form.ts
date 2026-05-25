@@ -12,6 +12,8 @@ import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showc
 import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
+import {of} from 'rxjs';
+import {catchError, debounceTime, filter, map, switchMap, tap} from 'rxjs/operators';
 
 
 
@@ -72,7 +74,29 @@ export class BravoEntityCreateForm implements OnInit {
 
 
     ngOnInit() {
-        //TODO
+
+        this.formGroup.controls['alpha'].valueChanges
+            .pipe(
+                debounceTime(300),
+                filter(value => typeof value === 'string'),
+                tap(() => {
+                    this.filteredAlpha = [];
+                    this.filteredAlphaIsLoading.set(true);
+                }),
+                switchMap(value => this.alphaTypeaheadApiService.search(value)
+                    .pipe(
+                        catchError(err => {
+                            this.filteredAlphaIsLoading.set(false);
+                            console.error(err);
+                            return of([]);
+                        })
+                    )
+                ),
+                tap(() => this.filteredAlphaIsLoading.set(false))
+            ).subscribe(res => {
+                this.filteredAlpha = res;
+            });
+
     }
 
 
