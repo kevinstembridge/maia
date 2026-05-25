@@ -36,13 +36,14 @@ export class LoginForm implements OnInit {
     readonly onFormSubmission = output<LoginRequestDto>();
 
 
+
+    private readonly formService = inject(LoginFormApiService);
+
+
     problemDetail = signal<ProblemDetail | null>(null);
 
 
     formGroup: FormGroup;
-
-
-    private readonly formService = inject(LoginFormApiService);
 
 
     constructor() {

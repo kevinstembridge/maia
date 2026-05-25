@@ -80,6 +80,8 @@ class AngularReactiveFormComponentRenderer(
 
         `render class fields for chip fields`()
 
+        `render class field for formService`()
+
         `render class field for problemDetail`()
 
         `render class field for loading signa if fetchForEdit form`()
@@ -278,10 +280,6 @@ class AngularReactiveFormComponentRenderer(
             appendLine("    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);")
         }
 
-        blankLine()
-        blankLine()
-        appendLine("    private readonly formService = inject(${this.angularFormDef.formServiceClassName});")
-
         if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
             blankLine()
             blankLine()
@@ -378,6 +376,19 @@ class AngularReactiveFormComponentRenderer(
         appendLine("        );")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render class field for formService`() {
+
+        append("""
+            |
+            |
+            |
+            |    private readonly formService = inject(${this.angularFormDef.formServiceClassName});
+            |""".trimMargin()
+        )
 
     }
 
