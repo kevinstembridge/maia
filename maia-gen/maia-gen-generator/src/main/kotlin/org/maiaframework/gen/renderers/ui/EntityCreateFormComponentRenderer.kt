@@ -72,6 +72,8 @@ class EntityCreateFormComponentRenderer(
 
         `render TypeaheadResultFormatters`()
 
+        `render chip entity methods`()
+
         `render function onSubmit`()
 
         `render function onCancel`()
@@ -198,6 +200,36 @@ class EntityCreateFormComponentRenderer(
 
     }
 
+    private fun `render chip entity methods`() {
+
+        chipFields.forEach { chip ->
+
+            blankLine()
+            blankLine()
+            append("""
+                |    ${chip.addMethodName}(event: MatAutocompleteSelectedEvent): void {
+                |
+                |        const entity: ${chip.esDocClassName} = event.option.value;
+                |        if (!this.${chip.selectedFieldName}.some(e => e.${chip.esDocIdFieldName} === entity.${chip.esDocIdFieldName})) {
+                |            this.${chip.selectedFieldName}.push(entity);
+                |        }
+                |        this.${chip.inputRefName}.nativeElement.value = '';
+                |        this.${chip.searchControlFieldName}.setValue('', { emitEvent: false });
+                |
+                |    }
+                |
+                |
+                |    ${chip.removeMethodName}(entity: ${chip.esDocClassName}): void {
+                |
+                |        this.${chip.selectedFieldName} = this.${chip.selectedFieldName}.filter(e => e.${chip.esDocIdFieldName} !== entity.${chip.esDocIdFieldName});
+                |
+                |    }
+                |""".trimMargin())
+
+        }
+
+    }
+
 
     private fun `render function onSubmit`() {
 
@@ -279,6 +311,18 @@ class EntityCreateFormComponentRenderer(
         }
 
         addImportsForFieldTypes(formGroupFields)
+
+        if (chipFields.isNotEmpty()) {
+            addImport("@angular/core", "ElementRef")
+            addImport("@angular/core", "ViewChild")
+            addImport("@angular/material/autocomplete", "MatAutocompleteSelectedEvent")
+            addImport("@angular/material/chips", "MatChipsModule", isModule = true)
+            addImport("@angular/material/icon", "MatIconModule", isModule = true)
+            chipFields.forEach { chip ->
+                addImport(chip.serviceImport)
+                addImport(chip.esDocImport)
+            }
+        }
 
     }
 
