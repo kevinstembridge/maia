@@ -43,42 +43,16 @@ class EntityCreateFormComponentRenderer(
     private val formGroupFields: List<AngularFormFieldDef>,
     formAngularComponentNames: AngularComponentNames,
     private val crudAngularComponentNames: AngularComponentNames,
-) : AbstractAngularComponentRenderer(formAngularComponentNames) {
+    providerServices: List<String>
+) : AbstractAngularComponentRenderer(
+    formAngularComponentNames,
+    providerServices
+) {
 
 
     init {
 
         `add imports`()
-
-    }
-
-    override fun renderComponentDecorator() {
-
-        append("""
-            |
-            |
-            |@Component({
-            |""".trimMargin()
-        )
-
-        renderComponentImportArray()
-
-        val providerServices = emptyList<String>() // TODO this.angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } + this.chipFields.map { it.serviceClassName }
-        if (providerServices.isNotEmpty()) {
-            appendLine("    providers: [")
-            providerServices.distinct().forEach { serviceName ->
-                appendLine("        $serviceName,")
-            }
-            appendLine("    ],")
-        }
-
-        append("""
-            |    selector: '${this.angularComponentNames.componentSelector}',
-            |    styleUrls: ['./${this.angularComponentNames.componentScssFileName}'],
-            |    templateUrl: './${this.angularComponentNames.htmlFileName}'
-            |})
-            |""".trimMargin()
-        )
 
     }
 

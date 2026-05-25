@@ -15,8 +15,12 @@ import org.maiaframework.lang.text.StringFunctions
 class AngularReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     angularComponentNames: AngularComponentNames,
+    providerServices: List<String> = emptyList(),
     private val chipFields: List<ManyToManyChipFieldDef> = emptyList()
-) : AbstractAngularComponentRenderer(angularComponentNames) {
+) : AbstractAngularComponentRenderer(
+    angularComponentNames,
+    providerServices
+) {
 
 
     private val formGroupFields = this.angularFormDef.formModelFields
@@ -31,37 +35,6 @@ class AngularReactiveFormComponentRenderer(
     init {
 
         `add imports`()
-
-    }
-
-    override fun renderComponentDecorator() {
-
-        append("""
-            |
-            |
-            |@Component({
-            |""".trimMargin()
-        )
-
-        renderComponentImportArray()
-
-        val providerServices = this.angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } +
-            this.chipFields.map { it.serviceClassName }
-        if (providerServices.isNotEmpty()) {
-            appendLine("    providers: [")
-            providerServices.distinct().forEach { serviceName ->
-                appendLine("        $serviceName,")
-            }
-            appendLine("    ],")
-        }
-
-        append("""
-            |    selector: '${this.angularComponentNames.componentSelector}',
-            |    styleUrls: ['./${this.angularComponentNames.componentScssFileName}'],
-            |    templateUrl: './${this.angularComponentNames.htmlFileName}'
-            |})
-            |""".trimMargin()
-        )
 
     }
 

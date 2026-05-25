@@ -16,8 +16,12 @@ import org.maiaframework.lang.text.StringFunctions
 
 class EntityFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
-    angularComponentNames: AngularComponentNames
-) : AbstractAngularComponentRenderer(angularComponentNames) {
+    angularComponentNames: AngularComponentNames,
+    providerServices: List<String>
+) : AbstractAngularComponentRenderer(
+    angularComponentNames,
+    providerServices
+) {
 
 
     private val formGroupFields = this.angularFormDef.formModelFields

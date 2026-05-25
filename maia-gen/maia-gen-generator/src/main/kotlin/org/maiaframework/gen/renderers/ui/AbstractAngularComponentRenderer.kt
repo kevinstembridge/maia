@@ -3,7 +3,8 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 
 abstract class AbstractAngularComponentRenderer(
-    protected val angularComponentNames: AngularComponentNames
+    protected val angularComponentNames: AngularComponentNames,
+    protected val providerServices: List<String>
 ) : AbstractTypescriptRenderer() {
 
 
@@ -35,6 +36,14 @@ abstract class AbstractAngularComponentRenderer(
         )
 
         renderComponentImportArray()
+
+        if (providerServices.isNotEmpty()) {
+            appendLine("    providers: [")
+            providerServices.distinct().forEach { serviceName ->
+                appendLine("        $serviceName,")
+            }
+            appendLine("    ],")
+        }
 
         append("""
             |    selector: '${this.angularComponentNames.componentSelector}',

@@ -12,7 +12,7 @@ import org.maiaframework.gen.spec.definition.lang.ListFieldType
 
 class EntityEditFormComponentRenderer(
     entityEditPageDef: EntityEditPageDef
-) : AbstractAngularComponentRenderer(entityEditPageDef.editFormAngularComponentNames) {
+) : AbstractAngularComponentRenderer(entityEditPageDef.editFormAngularComponentNames, emptyList()) {
 
 
     private val updateApiDef = entityEditPageDef.updateApiDef

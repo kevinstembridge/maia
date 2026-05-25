@@ -222,9 +222,26 @@ class AngularUiModuleGenerator(
         chipFields: List<ManyToManyChipFieldDef> = emptyList()
     ) {
 
+        val providerServices = def.allTypeaheadDefs.map { it.angularServiceClassName } +
+                chipFields.map { it.serviceClassName }
+
         when (def.angularFormSystem) {
-            AngularFormSystem.REACTIVE -> AngularReactiveFormComponentRenderer(def, angularComponentNames, chipFields).renderToDir(this.typescriptOutputDir)
-            AngularFormSystem.SIGNAL -> EntityFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
+
+            AngularFormSystem.REACTIVE ->
+                AngularReactiveFormComponentRenderer(
+                    def,
+                    angularComponentNames,
+                    providerServices,
+                    chipFields
+                ).renderToDir(this.typescriptOutputDir)
+
+            AngularFormSystem.SIGNAL ->
+                EntityFormComponentRenderer(
+                    def,
+                    angularComponentNames,
+                    providerServices
+                ).renderToDir(this.typescriptOutputDir)
+
         }
 
     }
@@ -362,11 +379,14 @@ class AngularUiModuleGenerator(
 
             // TODO account for Signal forms vs Reactive forms
 
+            val providerServices = emptyList<String>() // TODO
+
             EntityCreateFormComponentRenderer(
                 entityCreatePageDef.createApiDef.requestDtoDef,
                 entityCreatePageDef.createApiDef.htmlFormFields,
                 entityCreatePageDef.createFormAngularComponentNames,
-                entityCreatePageDef.entityDef.crudAngularComponentNames
+                entityCreatePageDef.entityDef.crudAngularComponentNames,
+                providerServices
             ).renderToDir(this.typescriptOutputDir)
 
             EntityCreateFormScssRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
