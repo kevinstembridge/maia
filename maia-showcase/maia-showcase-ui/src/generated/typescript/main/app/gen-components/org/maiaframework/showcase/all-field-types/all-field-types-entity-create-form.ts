@@ -46,7 +46,7 @@ import {ProblemDetail} from '@maia/maia-ui';
     styleUrls: ['./all-field-types-entity-create-form.scss'],
     templateUrl: './all-field-types-entity-create-form.html'
 })
-export class AllFieldTypesEntityCreateForm {
+export class AllFieldTypesEntityCreateForm implements OnInit {
 
 
     onSave = output();
@@ -121,6 +121,10 @@ export class AllFieldTypesEntityCreateForm {
             someListOfStrings: new FormControl([], { updateOn: 'change' }),
         });
 
+    }
+
+    ngOnInit() {
+        //TODO
     }
 
 

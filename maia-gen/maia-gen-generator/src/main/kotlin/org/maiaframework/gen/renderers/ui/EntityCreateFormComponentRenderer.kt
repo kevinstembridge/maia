@@ -64,7 +64,7 @@ class EntityCreateFormComponentRenderer(
 
     override fun renderComponentSource() {
 
-        appendLine("export class $className {")
+        appendLine("export class $className implements OnInit {")
 
         `render class fields`()
 
@@ -83,63 +83,6 @@ class EntityCreateFormComponentRenderer(
             |
             |}
             |""".trimMargin())
-
-    }
-
-
-    private fun `render function onSubmit`() {
-
-        append(
-            """
-                |
-                |
-                |    onSubmit() {
-                |
-                |        this.problemDetail.set(null);
-                |
-                |        if (this.formGroup.invalid) {
-                |            return;
-                |        }
-                |
-                |        const requestDto = {
-                |""".trimMargin()
-        )
-
-        requestDtoDef.dtoFieldDefs.forEach { field ->
-            val fieldName = field.classFieldDef.classFieldName
-            appendLine("            ${fieldName}: this.formGroup.getRawValue().${fieldName},")
-        }
-
-        append(
-            """
-                |        } as ${requestDtoDef.uqcn};
-                |
-                |        this.formService.create(requestDto).subscribe({
-                |            next: () => {
-                |                this.onSave.emit();
-                |            },
-                |            error: err => {
-                |                this.problemDetail.set(err.error);
-                |            },
-                |        });
-                |
-                |    }
-                |""".trimMargin()
-        )
-
-    }
-
-
-    private fun `render function onCancel`() {
-
-        append("""
-            |
-            |
-            |    onCancelClicked(): void {
-            |        this.onCancel.emit();
-            |    }
-            |""".trimMargin())
-
 
     }
 
@@ -202,28 +145,6 @@ class EntityCreateFormComponentRenderer(
     }
 
 
-    private fun `render function ngOnInit`() {
-
-        // TODO
-
-    }
-
-
-    private fun `render TypeaheadResultFormatters`() {
-
-        this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
-
-            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
-
-            blankLine()
-            blankLine()
-            appendLine("    ${typeaheadDef.typeaheadName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
-
-        }
-
-    }
-
-
     private fun `render constructor`() {
 
         append(
@@ -249,6 +170,90 @@ class EntityCreateFormComponentRenderer(
         appendLine("        });")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render function ngOnInit`() {
+
+        append("""
+            |
+            |    ngOnInit() {
+            |        //TODO
+            |    }
+            |""".trimMargin())
+
+    }
+
+
+    private fun `render TypeaheadResultFormatters`() {
+
+        this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
+
+            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
+
+            blankLine()
+            blankLine()
+            appendLine("    ${typeaheadDef.typeaheadName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
+
+        }
+
+    }
+
+
+    private fun `render function onSubmit`() {
+
+        append(
+            """
+                |
+                |
+                |    onSubmit() {
+                |
+                |        this.problemDetail.set(null);
+                |
+                |        if (this.formGroup.invalid) {
+                |            return;
+                |        }
+                |
+                |        const requestDto = {
+                |""".trimMargin()
+        )
+
+        requestDtoDef.dtoFieldDefs.forEach { field ->
+            val fieldName = field.classFieldDef.classFieldName
+            appendLine("            ${fieldName}: this.formGroup.getRawValue().${fieldName},")
+        }
+
+        append(
+            """
+                |        } as ${requestDtoDef.uqcn};
+                |
+                |        this.formService.create(requestDto).subscribe({
+                |            next: () => {
+                |                this.onSave.emit();
+                |            },
+                |            error: err => {
+                |                this.problemDetail.set(err.error);
+                |            },
+                |        });
+                |
+                |    }
+                |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render function onCancel`() {
+
+        append("""
+            |
+            |
+            |    onCancelClicked(): void {
+            |        this.onCancel.emit();
+            |    }
+            |""".trimMargin())
+
 
     }
 

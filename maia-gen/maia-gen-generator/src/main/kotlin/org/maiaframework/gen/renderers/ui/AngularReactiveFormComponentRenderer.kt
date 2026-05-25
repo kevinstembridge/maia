@@ -66,116 +66,6 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `add imports`() {
-
-        addImport("@angular/core", "Component")
-        addImport("@angular/core", "inject")
-        addImport("@angular/core", "OnInit")
-        addImport("@angular/core", "output")
-        addImport("@angular/core", "signal")
-
-        addImport("@angular/forms", "FormControl")
-        addImport("@angular/forms", "FormGroup")
-        addImport("@angular/forms", "Validators")
-        addImport("@angular/forms", "FormsModule", isModule = true)
-        addImport("@angular/forms", "ReactiveFormsModule", isModule = true)
-
-        if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
-            addImport("@angular/material/dialog", "MatDialog")
-            addImport("@angular/material/dialog", "MatDialogRef")
-            addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
-            addImport("@angular/material/dialog", "MatDialogTitle", isModule = true)
-            addImport("@angular/material/dialog", "MatDialogContent", isModule = true)
-            addImport("@angular/material/dialog", "MatDialogActions", isModule = true)
-        }
-
-        this.angularFormDef.onSuccessUrl?.let {
-            addImport("@angular/router", "Router")
-        }
-
-        addImport("rxjs", "Observable")
-        addImport("rxjs", "Subject")
-        addImport("rxjs", "of")
-        addImport("rxjs/operators", "catchError")
-        addImport("rxjs/operators", "debounceTime")
-        addImport("rxjs/operators", "distinctUntilChanged")
-        addImport("rxjs/operators", "filter")
-        addImport("rxjs/operators", "map")
-        addImport("rxjs/operators", "switchMap")
-        addImport("rxjs/operators", "tap")
-        addImport(this.angularFormDef.formServiceTypescriptImport)
-        this.angularFormDef.context?.let { addImport(it.typescriptImport) }
-        addImport(this.requestDtoDef.typescriptImport)
-        addImport("@angular/material/button", "MatButtonModule", isModule = true)
-        addImport("@angular/material/core", "MatOptionModule", isModule = true)
-        addImport("@angular/material/autocomplete", "MatAutocompleteModule", isModule = true)
-        addImport("@angular/material/input", "MatInputModule", isModule = true)
-        addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
-        addImport(TypescriptImports.problemDetail)
-
-        this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
-            addImport(typeaheadDef.typescriptServiceImport)
-            addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
-        }
-
-        if (chipFields.isNotEmpty()) {
-            addImport("@angular/core", "ElementRef")
-            addImport("@angular/core", "ViewChild")
-            addImport("@angular/material/autocomplete", "MatAutocompleteSelectedEvent")
-            addImport("@angular/material/chips", "MatChipsModule", isModule = true)
-            addImport("@angular/material/icon", "MatIconModule", isModule = true)
-            chipFields.forEach { chip ->
-                addImport(chip.serviceImport)
-                addImport(chip.esDocImport)
-            }
-        }
-
-        this.angularFormDef.formModelFields.forEach { angularFieldDef ->
-            angularFieldDef.typeaheadRequiredValidatorTypescriptImport?.let { addImport(it) }
-        }
-
-        this.angularFormDef.uniqueIndexDefs.forEach { databaseIndexDef ->
-            addImport(databaseIndexDef.asyncValidator.asyncValidatorTypescriptImport)
-        }
-
-        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-            addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
-        }
-
-        this.angularFormDef.fetchForEditDtoDef?.let {
-            addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
-            addImport(it.typescriptImport)
-        }
-
-        if (this.angularFormDef.hasAnyMatSelectFields) {
-
-            addImport("@angular/material/select", "MatOption", isModule = true)
-            addImport("@angular/material/select", "MatSelect", isModule = true)
-            addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
-
-            this.angularFormDef.enumsForMatSelectFields.forEach { enumDef ->
-                addImport(enumDef.typescriptImport)
-                addImport(enumDef.selectOptionsTypescriptImport)
-            }
-
-        }
-
-        if (this.angularFormDef.hasAnyInstantFields) {
-            addImport("@angular/material/datepicker", "MatDatepickerModule", isModule = true)
-            addImport("@angular/material/timepicker", "MatTimepickerModule", isModule = true)
-        }
-
-        if (this.angularFormDef.hasAnyBooleanFields) {
-            addImport("@angular/material/checkbox", "MatCheckboxModule", isModule = true)
-        }
-
-        if (this.angularFormDef.formModelFields.any { it.hasValidationConstraint(UrlConstraintDef::class.java) }) {
-            addImport("@app/validators/CustomValidators", "CustomValidators")
-        }
-
-    }
-
-
     private fun `render class fields`() {
 
         if (this.angularFormDef.delegateFormSubmission.value) {
@@ -262,13 +152,13 @@ class AngularReactiveFormComponentRenderer(
             .distinctBy { it.selectOptionsUqcn }
             .forEach { enumDef ->
 
-            append("""
+                append("""
                 |
                 |
                 |    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};
                 |""".trimMargin())
 
-        }
+            }
 
         append("""
             |
@@ -568,37 +458,6 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `render chip entity methods`() {
-
-        chipFields.forEach { chip ->
-
-            blankLine()
-            blankLine()
-            append("""
-                |    ${chip.addMethodName}(event: MatAutocompleteSelectedEvent): void {
-                |
-                |        const entity: ${chip.esDocClassName} = event.option.value;
-                |        if (!this.${chip.selectedFieldName}.some(e => e.${chip.esDocIdFieldName} === entity.${chip.esDocIdFieldName})) {
-                |            this.${chip.selectedFieldName}.push(entity);
-                |        }
-                |        this.${chip.inputRefName}.nativeElement.value = '';
-                |        this.${chip.searchControlFieldName}.setValue('', { emitEvent: false });
-                |
-                |    }
-                |
-                |
-                |    ${chip.removeMethodName}(entity: ${chip.esDocClassName}): void {
-                |
-                |        this.${chip.selectedFieldName} = this.${chip.selectedFieldName}.filter(e => e.${chip.esDocIdFieldName} !== entity.${chip.esDocIdFieldName});
-                |
-                |    }
-                |""".trimMargin())
-
-        }
-
-    }
-
-
     private fun `render function onSubmit`() {
 
         append("""
@@ -630,6 +489,54 @@ class AngularReactiveFormComponentRenderer(
 
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render function onCancel`() {
+
+        if (this.angularFormDef.inlineFormOrDialog != InlineFormOrDialog.DIALOG) {
+            return
+        }
+
+        append("""
+            |
+            |
+            |    onCancel(): void {
+            |        this.dialogRef.close();
+            |    }
+            |""".trimMargin())
+
+    }
+
+
+    private fun `render chip entity methods`() {
+
+        chipFields.forEach { chip ->
+
+            blankLine()
+            blankLine()
+            append("""
+                |    ${chip.addMethodName}(event: MatAutocompleteSelectedEvent): void {
+                |
+                |        const entity: ${chip.esDocClassName} = event.option.value;
+                |        if (!this.${chip.selectedFieldName}.some(e => e.${chip.esDocIdFieldName} === entity.${chip.esDocIdFieldName})) {
+                |            this.${chip.selectedFieldName}.push(entity);
+                |        }
+                |        this.${chip.inputRefName}.nativeElement.value = '';
+                |        this.${chip.searchControlFieldName}.setValue('', { emitEvent: false });
+                |
+                |    }
+                |
+                |
+                |    ${chip.removeMethodName}(entity: ${chip.esDocClassName}): void {
+                |
+                |        this.${chip.selectedFieldName} = this.${chip.selectedFieldName}.filter(e => e.${chip.esDocIdFieldName} !== entity.${chip.esDocIdFieldName});
+                |
+                |    }
+                |""".trimMargin())
+
+        }
 
     }
 
@@ -784,19 +691,112 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `render function onCancel`() {
+    private fun `add imports`() {
 
-        if (this.angularFormDef.inlineFormOrDialog != InlineFormOrDialog.DIALOG) {
-            return
+        addImport("@angular/core", "Component")
+        addImport("@angular/core", "inject")
+        addImport("@angular/core", "OnInit")
+        addImport("@angular/core", "output")
+        addImport("@angular/core", "signal")
+
+        addImport("@angular/forms", "FormControl")
+        addImport("@angular/forms", "FormGroup")
+        addImport("@angular/forms", "Validators")
+        addImport("@angular/forms", "FormsModule", isModule = true)
+        addImport("@angular/forms", "ReactiveFormsModule", isModule = true)
+
+        if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
+            addImport("@angular/material/dialog", "MatDialog")
+            addImport("@angular/material/dialog", "MatDialogRef")
+            addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
+            addImport("@angular/material/dialog", "MatDialogTitle", isModule = true)
+            addImport("@angular/material/dialog", "MatDialogContent", isModule = true)
+            addImport("@angular/material/dialog", "MatDialogActions", isModule = true)
         }
 
-        append("""
-            |
-            |
-            |    onCancel(): void {
-            |        this.dialogRef.close();
-            |    }
-            |""".trimMargin())
+        this.angularFormDef.onSuccessUrl?.let {
+            addImport("@angular/router", "Router")
+        }
+
+        addImport("rxjs", "Observable")
+        addImport("rxjs", "Subject")
+        addImport("rxjs", "of")
+        addImport("rxjs/operators", "catchError")
+        addImport("rxjs/operators", "debounceTime")
+        addImport("rxjs/operators", "distinctUntilChanged")
+        addImport("rxjs/operators", "filter")
+        addImport("rxjs/operators", "map")
+        addImport("rxjs/operators", "switchMap")
+        addImport("rxjs/operators", "tap")
+        addImport(this.angularFormDef.formServiceTypescriptImport)
+        this.angularFormDef.context?.let { addImport(it.typescriptImport) }
+        addImport(this.requestDtoDef.typescriptImport)
+        addImport("@angular/material/button", "MatButtonModule", isModule = true)
+        addImport("@angular/material/core", "MatOptionModule", isModule = true)
+        addImport("@angular/material/autocomplete", "MatAutocompleteModule", isModule = true)
+        addImport("@angular/material/input", "MatInputModule", isModule = true)
+        addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
+        addImport(TypescriptImports.problemDetail)
+
+        this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
+            addImport(typeaheadDef.typescriptServiceImport)
+            addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
+        }
+
+        if (chipFields.isNotEmpty()) {
+            addImport("@angular/core", "ElementRef")
+            addImport("@angular/core", "ViewChild")
+            addImport("@angular/material/autocomplete", "MatAutocompleteSelectedEvent")
+            addImport("@angular/material/chips", "MatChipsModule", isModule = true)
+            addImport("@angular/material/icon", "MatIconModule", isModule = true)
+            chipFields.forEach { chip ->
+                addImport(chip.serviceImport)
+                addImport(chip.esDocImport)
+            }
+        }
+
+        this.angularFormDef.formModelFields.forEach { angularFieldDef ->
+            angularFieldDef.typeaheadRequiredValidatorTypescriptImport?.let { addImport(it) }
+        }
+
+        this.angularFormDef.uniqueIndexDefs.forEach { databaseIndexDef ->
+            addImport(databaseIndexDef.asyncValidator.asyncValidatorTypescriptImport)
+        }
+
+        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+            addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
+        }
+
+        this.angularFormDef.fetchForEditDtoDef?.let {
+            addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
+            addImport(it.typescriptImport)
+        }
+
+        if (this.angularFormDef.hasAnyMatSelectFields) {
+
+            addImport("@angular/material/select", "MatOption", isModule = true)
+            addImport("@angular/material/select", "MatSelect", isModule = true)
+            addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
+
+            this.angularFormDef.enumsForMatSelectFields.forEach { enumDef ->
+                addImport(enumDef.typescriptImport)
+                addImport(enumDef.selectOptionsTypescriptImport)
+            }
+
+        }
+
+        if (this.angularFormDef.hasAnyInstantFields) {
+            addImport("@angular/material/datepicker", "MatDatepickerModule", isModule = true)
+            addImport("@angular/material/timepicker", "MatTimepickerModule", isModule = true)
+        }
+
+        if (this.angularFormDef.hasAnyBooleanFields) {
+            addImport("@angular/material/checkbox", "MatCheckboxModule", isModule = true)
+        }
+
+        if (this.angularFormDef.formModelFields.any { it.hasValidationConstraint(UrlConstraintDef::class.java) }) {
+            addImport("@app/validators/CustomValidators", "CustomValidators")
+        }
 
     }
 
