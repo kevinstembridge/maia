@@ -74,6 +74,8 @@ class AngularReactiveFormComponentRenderer(
 
         `render class field for onError event`()
 
+        `render class fields for async validators`()
+
         `render class fields for typeahead fields`()
 
         `render class fields for chip fields`()
@@ -307,12 +309,6 @@ class AngularReactiveFormComponentRenderer(
             appendLine("    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});")
         }
 
-        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
-        }
-
         append("""
             |
             |
@@ -371,6 +367,14 @@ class AngularReactiveFormComponentRenderer(
         blankLine()
         appendLine("    }")
 
+    }
+
+    private fun `render class fields for async validators`() {
+        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+            blankLine()
+            blankLine()
+            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
+        }
     }
 
 
