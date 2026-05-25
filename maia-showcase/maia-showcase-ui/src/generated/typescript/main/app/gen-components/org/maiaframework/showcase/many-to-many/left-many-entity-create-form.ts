@@ -14,6 +14,8 @@ import {RightManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/s
 import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-crud-service';
 import {RightManyTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-typeahead-api.service';
 import {ProblemDetail} from '@maia/maia-ui';
+import {of} from 'rxjs';
+import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 
 
 
@@ -58,6 +60,9 @@ export class LeftManyEntityCreateForm implements OnInit {
     rightEntitySearchControl = new FormControl('');
 
 
+    rightManyTypeaheadApiService = inject(RightManyTypeaheadApiService);
+
+
     @ViewChild('rightEntityInput') rightEntityInput!: ElementRef<HTMLInputElement>;
 
 
@@ -77,7 +82,27 @@ export class LeftManyEntityCreateForm implements OnInit {
 
 
     ngOnInit() {
-        //TODO
+
+        this.rightEntitySearchControl.valueChanges.pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            filter(value => typeof value === 'string'),
+            tap(() => {
+                this.filteredRightEntities = [];
+                this.filteredRightEntitiesIsLoading.set(true);
+            }),
+            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
+                catchError(err => {
+                    this.filteredRightEntitiesIsLoading.set(false);
+                    console.error(err);
+                    return of([]);
+                })
+            )),
+            tap(() => this.filteredRightEntitiesIsLoading.set(false))
+        ).subscribe(res => {
+            this.filteredRightEntities = res;
+        });
+
     }
 
 

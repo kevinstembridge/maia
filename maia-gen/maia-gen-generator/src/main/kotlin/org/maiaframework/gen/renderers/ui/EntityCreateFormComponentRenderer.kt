@@ -249,13 +249,13 @@ class EntityCreateFormComponentRenderer(
 
         this.typeaheadDefs.forEach { typeaheadDef ->
 
-            val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
+            val serviceFieldName = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
 
             append("""
                 |
                 |
                 |
-                |    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});
+                |    private readonly $serviceFieldName = inject(${typeaheadDef.angularServiceClassName});
                 |""".trimMargin()
             )
 
@@ -317,6 +317,9 @@ class EntityCreateFormComponentRenderer(
                 |
                 |
                 |    ${chip.searchControlFieldName} = new FormControl('');
+                |
+                |
+                |    ${chip.serviceFieldName} = inject(${chip.serviceClassName});
                 |
                 |
                 |    @ViewChild('${chip.inputRefName}') ${chip.inputRefName}!: ElementRef<HTMLInputElement>;
@@ -450,6 +453,15 @@ class EntityCreateFormComponentRenderer(
         }
 
         chipFields.forEach { chip ->
+
+            addImport("rxjs", "of")
+            addImport("rxjs/operators", "catchError")
+            addImport("rxjs/operators", "debounceTime")
+            addImport("rxjs/operators", "distinctUntilChanged")
+            addImport("rxjs/operators", "filter")
+            addImport("rxjs/operators", "map")
+            addImport("rxjs/operators", "switchMap")
+            addImport("rxjs/operators", "tap")
 
             append("""
                 |
