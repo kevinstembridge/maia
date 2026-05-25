@@ -12,7 +12,7 @@ import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
 import org.maiaframework.lang.text.StringFunctions
 
 
-class EntityReactiveFormComponentRenderer(
+class AngularReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     angularComponentNames: AngularComponentNames,
     private val chipFields: List<ManyToManyChipFieldDef> = emptyList()
