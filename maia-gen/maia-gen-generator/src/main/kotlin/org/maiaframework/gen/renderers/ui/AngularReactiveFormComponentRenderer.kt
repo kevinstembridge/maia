@@ -80,13 +80,13 @@ class AngularReactiveFormComponentRenderer(
 
         `render class fields for chip fields`()
 
-        `render problemDetail class field`()
+        `render class field for problemDetail`()
 
-        `render loading class field if fetchForEdit form`()
+        `render class field for loading signa if fetchForEdit form`()
 
         `render class fields for enum MatSelect fields`()
 
-        `render formGroup class field `()
+        `render class field for formGroup `()
 
         `render class field for linked fields`()
 
@@ -141,6 +141,42 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
+    private fun `render class field for problemDetail`() {
+
+        append("""
+            |
+            |
+            |    problemDetail = signal<ProblemDetail | null>(null);
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render class field for loading signa if fetchForEdit form`() {
+
+        this.angularFormDef.fetchForEditDtoDef?.let {
+            append("""
+                |
+                |
+                |    loading = signal(true);
+                |""".trimMargin()
+            )
+        }
+
+    }
+
+    private fun `render class fields for async validators`() {
+
+        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+            blankLine()
+            blankLine()
+            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
+        }
+
+    }
+
+
     private fun `render class fields for typeahead fields`() {
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
@@ -158,6 +194,25 @@ class AngularReactiveFormComponentRenderer(
             )
 
         }
+
+    }
+
+
+    private fun `render class fields for enum MatSelect fields`() {
+
+        this.angularFormDef.enumsForMatSelectFields
+            .filter { it.withEnumSelectionOptions }
+            .distinctBy { it.selectOptionsUqcn }
+            .forEach { enumDef ->
+
+                append("""
+                    |
+                    |
+                    |    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};
+                    |""".trimMargin()
+                )
+
+            }
 
     }
 
@@ -187,50 +242,8 @@ class AngularReactiveFormComponentRenderer(
 
     }
 
-    private fun `render problemDetail class field`() {
-        append("""
-            |
-            |
-            |    problemDetail = signal<ProblemDetail | null>(null);
-            |""".trimMargin()
-        )
-    }
 
-
-    private fun `render loading class field if fetchForEdit form`() {
-
-        this.angularFormDef.fetchForEditDtoDef?.let {
-            append("""
-                |
-                |
-                |    loading = signal(true);
-                |""".trimMargin()
-            )
-        }
-
-    }
-
-
-    private fun `render class fields for enum MatSelect fields`() {
-
-        this.angularFormDef.enumsForMatSelectFields
-            .filter { it.withEnumSelectionOptions }
-            .distinctBy { it.selectOptionsUqcn }
-            .forEach { enumDef ->
-
-                append("""
-                    |
-                    |
-                    |    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};
-                    |""".trimMargin()
-                )
-
-            }
-
-    }
-
-
-    private fun `render formGroup class field `() {
+    private fun `render class field for formGroup `() {
 
         append("""
             |
@@ -256,7 +269,6 @@ class AngularReactiveFormComponentRenderer(
         }
 
     }
-
 
     private fun `render constructor`() {
 
@@ -367,14 +379,6 @@ class AngularReactiveFormComponentRenderer(
         blankLine()
         appendLine("    }")
 
-    }
-
-    private fun `render class fields for async validators`() {
-        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
-        }
     }
 
 

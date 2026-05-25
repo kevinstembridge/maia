@@ -101,15 +101,14 @@ class EntityCreateFormComponentRenderer(
             |    onCancel = output();
             |
             |
-            |    problemDetail = signal<ProblemDetail | null>(null);
-            |
-            |
             |    formGroup: FormGroup;
             |
             |
             |    private readonly formService = inject(${crudAngularComponentNames.serviceName});
             |""".trimMargin()
         )
+
+        `render class field for problemDetail`()
 
         `render class fields for async validators`()
 
@@ -118,6 +117,18 @@ class EntityCreateFormComponentRenderer(
         `render class fields for enum MatSelect fields`()
 
         `render class fields for chip fields`()
+
+    }
+
+
+    private fun `render class field for problemDetail`() {
+
+        append("""
+            |
+            |
+            |    problemDetail = signal<ProblemDetail | null>(null);
+            |""".trimMargin()
+        )
 
     }
 

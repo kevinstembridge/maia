@@ -33,13 +33,13 @@ export class SomeVersionedEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    problemDetail = signal<ProblemDetail | null>(null);
-
-
     formGroup: FormGroup;
 
 
     private readonly formService = inject(SomeVersionedCrudService);
+
+
+    problemDetail = signal<ProblemDetail | null>(null);
 
 
     constructor() {

@@ -39,13 +39,13 @@ export class UserEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    problemDetail = signal<ProblemDetail | null>(null);
-
-
     formGroup: FormGroup;
 
 
     private readonly formService = inject(UserCrudService);
+
+
+    problemDetail = signal<ProblemDetail | null>(null);
 
 
     protected readonly AuthoritySelectOptions = AuthoritySelectOptions;

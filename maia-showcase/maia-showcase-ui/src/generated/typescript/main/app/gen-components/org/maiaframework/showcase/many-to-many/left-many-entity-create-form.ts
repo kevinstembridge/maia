@@ -40,13 +40,13 @@ export class LeftManyEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    problemDetail = signal<ProblemDetail | null>(null);
-
-
     formGroup: FormGroup;
 
 
     private readonly formService = inject(LeftManyCrudService);
+
+
+    problemDetail = signal<ProblemDetail | null>(null);
 
 
     selectedRightEntities: RightManyTypeaheadV1EsDoc[] = [];

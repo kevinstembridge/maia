@@ -34,13 +34,13 @@ export class SimpleEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    problemDetail = signal<ProblemDetail | null>(null);
-
-
     formGroup: FormGroup;
 
 
     private readonly formService = inject(SimpleCrudService);
+
+
+    problemDetail = signal<ProblemDetail | null>(null);
 
 
     private readonly simpleSomeStringAsyncValidator = inject(SimpleSomeStringAsyncValidator);

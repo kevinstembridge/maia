@@ -55,13 +55,13 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    problemDetail = signal<ProblemDetail | null>(null);
-
-
     formGroup: FormGroup;
 
 
     private readonly formService = inject(AllFieldTypesCrudService);
+
+
+    problemDetail = signal<ProblemDetail | null>(null);
 
 
     private readonly allFieldTypesSomeIntTypeAsyncValidator = inject(AllFieldTypesSomeIntTypeAsyncValidator);

@@ -33,13 +33,13 @@ export class CompositePrimaryKeyEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    problemDetail = signal<ProblemDetail | null>(null);
-
-
     formGroup: FormGroup;
 
 
     private readonly formService = inject(CompositePrimaryKeyCrudService);
+
+
+    problemDetail = signal<ProblemDetail | null>(null);
 
 
     constructor() {

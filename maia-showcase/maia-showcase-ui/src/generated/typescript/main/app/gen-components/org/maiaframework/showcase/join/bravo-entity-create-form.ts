@@ -39,13 +39,13 @@ export class BravoEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    problemDetail = signal<ProblemDetail | null>(null);
-
-
     formGroup: FormGroup;
 
 
     private readonly formService = inject(BravoCrudService);
+
+
+    problemDetail = signal<ProblemDetail | null>(null);
 
 
     filteredAlpha: AlphaTypeaheadV1EsDoc[] = [];
