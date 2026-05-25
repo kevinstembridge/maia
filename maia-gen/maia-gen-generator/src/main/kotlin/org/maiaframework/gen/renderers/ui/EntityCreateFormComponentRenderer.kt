@@ -44,9 +44,6 @@ class EntityCreateFormComponentRenderer(
 ) : AbstractAngularComponentRenderer(entityCreatePageDef.createFormAngularComponentNames) {
 
 
-    private val createApiDef = entityCreatePageDef.createApiDef
-
-
     private val entityDef = entityCreatePageDef.entityDef
 
 
