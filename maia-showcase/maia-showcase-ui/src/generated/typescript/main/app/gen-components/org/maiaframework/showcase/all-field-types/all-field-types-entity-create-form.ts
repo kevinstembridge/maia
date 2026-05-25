@@ -79,6 +79,9 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
     private readonly allFieldTypesSomeStringTypeAsyncValidator = inject(AllFieldTypesSomeStringTypeAsyncValidator);
 
 
+    protected readonly SomeEnumSelectOptions = SomeEnumSelectOptions;
+
+
     constructor() {
 
         this.formGroup = new FormGroup({
@@ -186,8 +189,5 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
     onCancelClicked(): void {
         this.onCancel.emit();
     }
-
-
-    protected readonly SomeEnumSelectOptions = SomeEnumSelectOptions;
 }
 
