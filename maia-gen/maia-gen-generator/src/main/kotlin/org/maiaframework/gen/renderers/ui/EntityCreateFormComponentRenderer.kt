@@ -3,7 +3,6 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
-import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
@@ -36,7 +35,6 @@ import org.maiaframework.gen.spec.definition.lang.StringFieldType
 import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.UrlFieldType
-import org.maiaframework.lang.text.StringFunctions
 
 
 class EntityCreateFormComponentRenderer(
