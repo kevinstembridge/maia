@@ -4,10 +4,13 @@
 import {Component, OnInit, inject, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatOption, MatSelect} from '@angular/material/select';
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
+import {MatTooltip} from '@angular/material/tooltip';
 import {AllFieldTypesCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesCreateRequestDto';
 import {AllFieldTypesSomeIntTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeIntTypeAsyncValidator';
 import {AllFieldTypesSomeLongTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeLongTypeAsyncValidator';
@@ -15,11 +18,8 @@ import {AllFieldTypesSomeStringAsyncValidator} from '@app/gen-components/org/mai
 import {AllFieldTypesSomeStringNullableAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeStringNullableAsyncValidator';
 import {AllFieldTypesSomeStringTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeStringTypeAsyncValidator';
 import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-crud-service';
-import {ProblemDetail} from '@maia/maia-ui';
-import {MatCheckbox} from '@angular/material/checkbox';
 import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnumSelectOptions';
-import {MatOption, MatSelect} from '@angular/material/select';
-import {MatTooltip} from '@angular/material/tooltip';
+import {ProblemDetail} from '@maia/maia-ui';
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 
 
@@ -28,19 +28,19 @@ import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/Som
     imports: [
         FormsModule,
         MatButtonModule,
+        MatCheckbox,
         MatDatepicker,
         MatDatepickerInput,
         MatDatepickerToggle,
         MatFormFieldModule,
         MatInputModule,
+        MatOption,
+        MatSelect,
         MatTimepicker,
         MatTimepickerInput,
         MatTimepickerToggle,
-        ReactiveFormsModule,
-        MatCheckbox,
-        MatSelect,
-        MatOption,
         MatTooltip,
+        ReactiveFormsModule,
     ],
     selector: 'app-all-field-types-entity-create-form',
     styleUrls: ['./all-field-types-entity-create-form.scss'],
@@ -77,9 +77,6 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
 
 
     private readonly allFieldTypesSomeStringTypeAsyncValidator = inject(AllFieldTypesSomeStringTypeAsyncValidator);
-
-
-    protected readonly SomeEnumSelectOptions = SomeEnumSelectOptions;
 
 
     constructor() {
@@ -191,5 +188,6 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
     }
 
 
+    protected readonly SomeEnumSelectOptions = SomeEnumSelectOptions;
 }
 
