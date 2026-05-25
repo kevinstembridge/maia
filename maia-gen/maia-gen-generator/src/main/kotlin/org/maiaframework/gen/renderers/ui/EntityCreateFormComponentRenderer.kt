@@ -72,20 +72,35 @@ class EntityCreateFormComponentRenderer(
 
         `render TypeaheadResultFormatters`()
 
+        `render function onSubmit`()
+
+        `render function onCancel`()
+
+        append("""
+            |
+            |
+            |}
+            |""".trimMargin())
+
+    }
+
+
+    private fun `render function onSubmit`() {
+
         append(
             """
-            |
-            |
-            |    onSubmit() {
-            |
-            |        this.problemDetail.set(null);
-            |
-            |        if (this.formGroup.invalid) {
-            |            return;
-            |        }
-            |
-            |        const requestDto = {
-            |""".trimMargin()
+                |
+                |
+                |    onSubmit() {
+                |
+                |        this.problemDetail.set(null);
+                |
+                |        if (this.formGroup.invalid) {
+                |            return;
+                |        }
+                |
+                |        const requestDto = {
+                |""".trimMargin()
         )
 
         requestDtoDef.dtoFieldDefs.forEach { field ->
@@ -95,28 +110,34 @@ class EntityCreateFormComponentRenderer(
 
         append(
             """
-            |        } as ${requestDtoDef.uqcn};
-            |
-            |        this.formService.create(requestDto).subscribe({
-            |            next: () => {
-            |                this.onSave.emit();
-            |            },
-            |            error: err => {
-            |                this.problemDetail.set(err.error);
-            |            },
-            |        });
-            |
-            |    }
+                |        } as ${requestDtoDef.uqcn};
+                |
+                |        this.formService.create(requestDto).subscribe({
+                |            next: () => {
+                |                this.onSave.emit();
+                |            },
+                |            error: err => {
+                |                this.problemDetail.set(err.error);
+                |            },
+                |        });
+                |
+                |    }
+                |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render function onCancel`() {
+
+        append("""
             |
             |
             |    onCancelClicked(): void {
             |        this.onCancel.emit();
             |    }
-            |
-            |
-            |}
-            |""".trimMargin()
-        )
+            |""".trimMargin())
+
 
     }
 
