@@ -210,7 +210,7 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render class fields for async validators`() {
 
-        formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+        this.formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
 
             append("""
                 |
@@ -406,9 +406,150 @@ class EntityCreateFormComponentRenderer(
             |
             |
             |    ngOnInit() {
-            |        //TODO
-            |    }
             |""".trimMargin())
+
+        this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
+
+            addImport("rxjs", "of")
+            addImport("rxjs/operators", "catchError")
+            addImport("rxjs/operators", "debounceTime")
+            addImport("rxjs/operators", "filter")
+            addImport("rxjs/operators", "map")
+            addImport("rxjs/operators", "switchMap")
+            addImport("rxjs/operators", "tap")
+
+            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
+            val filteredFieldName = "filtered${typeaheadDef.typeaheadName.firstToUpper()}"
+            val filteredFieldNameIsLoading = "${filteredFieldName}IsLoading"
+
+            append("""
+                |
+                |        this.formGroup.controls['${typeaheadDef.typeaheadName.firstToLower()}'].valueChanges
+                |            .pipe(
+                |                debounceTime(300),
+                |                filter(value => typeof value === 'string'),
+                |                tap(() => {
+                |                    this.$filteredFieldName = [];
+                |                    this.$filteredFieldNameIsLoading.set(true);
+                |                }),
+                |                switchMap(value => this.${StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)}.search(value)
+                |                    .pipe(
+                |                        catchError(err => {
+                |                            this.${filteredFieldNameIsLoading}.set(false);
+                |                            console.error(err);
+                |                            return of([]);
+                |                        })
+                |                    )
+                |                ),
+                |                tap(() => this.${filteredFieldNameIsLoading}.set(false))
+                |            ).subscribe(res => {
+                |                this.${filteredFieldName} = res;
+                |            });
+                |""".trimMargin())
+
+        }
+
+        chipFields.forEach { chip ->
+
+            append("""
+                |
+                |        this.${chip.searchControlFieldName}.valueChanges.pipe(
+                |            debounceTime(300),
+                |            distinctUntilChanged(),
+                |            filter(value => typeof value === 'string'),
+                |            tap(() => {
+                |                this.${chip.filteredFieldName} = [];
+                |                this.${chip.filteredIsLoadingFieldName}.set(true);
+                |            }),
+                |            switchMap(value => this.${chip.serviceFieldName}.search(value ?? '').pipe(
+                |                catchError(err => {
+                |                    this.${chip.filteredIsLoadingFieldName}.set(false);
+                |                    console.error(err);
+                |                    return of([]);
+                |                })
+                |            )),
+                |            tap(() => this.${chip.filteredIsLoadingFieldName}.set(false))
+                |        ).subscribe(res => {
+                |            this.${chip.filteredFieldName} = res;
+                |        });
+                |""".trimMargin())
+
+        }
+
+        if (this.angularFormDef.formModelFields.any { it.linksToAField }) {
+
+            blankLine()
+            appendLine("        this.formGroup.valueChanges.subscribe(form => {")
+
+            this.angularFormDef.formModelFields.filter { it.linksToAField }.forEach { formFieldDef ->
+
+                val fieldName = formFieldDef.fieldName
+                val fieldLinkedTo = formFieldDef.classFieldDef.fieldLinkedTo!!
+
+                append("""
+                    |
+                    |            const ${fieldName}IsSelected = form.${formFieldDef.classFieldDef.fieldLinkedTo!!.classFieldName} === ${fieldLinkedTo.fieldType}.OTHER;
+                    |
+                    |            if (${fieldName}IsSelected) {
+                    |                this.formGroup.get('$fieldName').enable();
+                    |            } else {
+                    |                this.formGroup.get('$fieldName').disable();
+                    |            }
+                    |
+                    |            this.${fieldName}IsVisible.set(${fieldName}IsSelected);
+                    |
+                    |""".trimMargin())
+
+            }
+
+            appendLine("        });")
+
+        }
+
+        this.angularFormDef.fetchForEditDtoDef?.let { fetchForEditDtoDef ->
+
+            blankLine()
+            appendLine("        this.formService.fetchForEdit(this.entityId).subscribe({")
+            appendLine("            next: (dto: ${fetchForEditDtoDef.uqcn}) => {")
+            appendLine("                this.formGroup.patchValue({")
+
+            this.formGroupFields.sortedBy { it.fieldName }.forEach { angularFormFieldDef ->
+                val classFieldDef = angularFormFieldDef.classFieldDef
+                val formFieldName = angularFormFieldDef.fieldName
+                val typeaheadDef = classFieldDef.typeaheadDef
+
+                if (typeaheadDef != null) {
+                    val formControlName = typeaheadDef.typeaheadName.firstToLower()
+                    appendLine("                    ${formFieldName}: dto.${formFieldName},")
+                } else if (classFieldDef.fieldType is ForeignKeyFieldType) {
+                    // Skip non-typeahead FK fields — DTO uses a PkAndName object shape
+                } else {
+                    val fieldName = classFieldDef.classFieldName
+                    appendLine("                    ${formFieldName}: dto.${formFieldName},")
+                }
+            }
+
+            appendLine("                });")
+
+            chipFields.forEach { chip ->
+                appendLine("                this.${chip.selectedFieldName} = dto.${chip.fetchForEditDtoFieldName}.map(r => ({")
+                appendLine("                    ${chip.esDocIdFieldName}: r.${chip.esDocIdFieldName},")
+                appendLine("                    ${chip.searchTermFieldName}: r.name,")
+                appendLine("                }));")
+            }
+
+            appendLine("                this.loading.set(false);")
+            appendLine("            },")
+            appendLine("            error: (err) => {")
+            appendLine("                this.problemDetail.set(err.error);")
+            appendLine("                this.loading.set(false);")
+            appendLine("            }")
+            appendLine("        });")
+
+        }
+
+        blankLine()
+        appendLine("    }")
 
     }
 

@@ -224,10 +224,15 @@ class AngularReactiveFormComponentRenderer(
 
     private fun `render class fields for async validators`() {
 
-        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
+        this.formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+
+            append("""
+                |
+                |
+                |    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});
+                |""".trimMargin()
+            )
+
         }
 
     }
@@ -433,6 +438,14 @@ class AngularReactiveFormComponentRenderer(
             |""".trimMargin())
 
         this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
+
+            addImport("rxjs", "of")
+            addImport("rxjs/operators", "catchError")
+            addImport("rxjs/operators", "debounceTime")
+            addImport("rxjs/operators", "filter")
+            addImport("rxjs/operators", "map")
+            addImport("rxjs/operators", "switchMap")
+            addImport("rxjs/operators", "tap")
 
             val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
             val filteredFieldName = "filtered${typeaheadDef.typeaheadName.firstToUpper()}"
@@ -821,11 +834,10 @@ class AngularReactiveFormComponentRenderer(
     private fun `add imports`() {
 
         addImport("@angular/core", "Component")
-        addImport("@angular/core", "inject")
         addImport("@angular/core", "OnInit")
+        addImport("@angular/core", "inject")
         addImport("@angular/core", "output")
         addImport("@angular/core", "signal")
-
         addImport("@angular/forms", "FormControl")
         addImport("@angular/forms", "FormGroup")
         addImport("@angular/forms", "Validators")
