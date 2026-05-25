@@ -94,6 +94,42 @@ class AngularReactiveFormComponentRenderer(
 
         `render class field for linked fields`()
 
+        if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
+            blankLine()
+            blankLine()
+            appendLine("    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);")
+        }
+
+        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
+            blankLine()
+            blankLine()
+            appendLine("    private readonly entityId = inject<${angularFormDef.entityIdInjectType}>(MAT_DIALOG_DATA);")
+        }
+
+        this.angularFormDef.context?.let { context ->
+            blankLine()
+            blankLine()
+            appendLine("    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);")
+        }
+
+        this.angularFormDef.onSuccessUrl?.let {
+            blankLine()
+            blankLine()
+            appendLine("    private readonly router = inject(Router);")
+        }
+
+        chipFields.forEach { chip ->
+            blankLine()
+            blankLine()
+            appendLine("    private readonly ${chip.serviceFieldName} = inject(${chip.serviceClassName});")
+        }
+
+        this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
+            blankLine()
+            blankLine()
+            appendLine("    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});")
+        }
+
     }
 
 
@@ -275,42 +311,6 @@ class AngularReactiveFormComponentRenderer(
     }
 
     private fun `render constructor`() {
-
-        if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
-            blankLine()
-            blankLine()
-            appendLine("    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);")
-        }
-
-        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
-            blankLine()
-            blankLine()
-            appendLine("    private readonly entityId = inject<${angularFormDef.entityIdInjectType}>(MAT_DIALOG_DATA);")
-        }
-
-        this.angularFormDef.context?.let { context ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);")
-        }
-
-        this.angularFormDef.onSuccessUrl?.let {
-            blankLine()
-            blankLine()
-            appendLine("    private readonly router = inject(Router);")
-        }
-
-        chipFields.forEach { chip ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${chip.serviceFieldName} = inject(${chip.serviceClassName});")
-        }
-
-        this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});")
-        }
 
         append("""
             |
