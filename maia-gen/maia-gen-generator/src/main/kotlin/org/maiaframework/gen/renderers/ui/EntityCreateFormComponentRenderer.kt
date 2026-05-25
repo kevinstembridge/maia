@@ -53,6 +53,9 @@ class EntityCreateFormComponentRenderer(
     private val allRequestDtoFields = this.requestDtoDef.dtoFieldDefs
 
 
+    private val typeaheadDefs = requestDtoDef.classFieldDefs.mapNotNull { it.typeaheadDef }
+
+
     init {
 
         `add imports`()
@@ -140,6 +143,41 @@ class EntityCreateFormComponentRenderer(
             blankLine()
             appendLine("    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};")
 
+        }
+
+        typeaheadDefs.forEach { typeaheadDef ->
+
+            val esDocUqcn = typeaheadDef.esDocDef.dtoDef.uqcn.value
+
+            append("""
+                |
+                |
+                |    filtered${typeaheadDef.typeaheadName}: ${esDocUqcn}[] = [];
+                |
+                |
+                |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
+                |""".trimMargin())
+
+        }
+
+        chipFields.forEach { chip ->
+            append("""
+                |
+                |
+                |    ${chip.selectedFieldName}: ${chip.esDocClassName}[] = [];
+                |
+                |
+                |    ${chip.filteredFieldName}: ${chip.esDocClassName}[] = [];
+                |
+                |
+                |    ${chip.filteredIsLoadingFieldName} = signal(false);
+                |
+                |
+                |    ${chip.searchControlFieldName} = new FormControl('');
+                |
+                |
+                |    @ViewChild('${chip.inputRefName}') ${chip.inputRefName}!: ElementRef<HTMLInputElement>;
+                |""".trimMargin())
         }
 
     }
@@ -312,6 +350,11 @@ class EntityCreateFormComponentRenderer(
         }
 
         addImportsForFieldTypes(formGroupFields)
+
+        this.typeaheadDefs.forEach { typeaheadDef ->
+            addImport(typeaheadDef.typescriptServiceImport)
+            addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
+        }
 
         if (chipFields.isNotEmpty()) {
             addImport("@angular/core", "ElementRef")

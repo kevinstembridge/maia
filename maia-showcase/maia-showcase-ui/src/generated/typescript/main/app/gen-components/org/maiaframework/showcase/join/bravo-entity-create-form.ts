@@ -7,7 +7,9 @@ import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/mater
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/join/AlphaTypeaheadV1EsDoc';
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
+import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
@@ -44,6 +46,12 @@ export class BravoEntityCreateForm implements OnInit {
 
 
     private readonly formService = inject(BravoCrudService);
+
+
+    filteredAlpha: AlphaTypeaheadV1EsDoc[] = [];
+
+
+    filteredAlphaIsLoading = signal(false);
 
 
     constructor() {

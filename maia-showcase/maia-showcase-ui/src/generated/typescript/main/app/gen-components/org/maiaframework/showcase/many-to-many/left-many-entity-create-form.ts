@@ -49,6 +49,21 @@ export class LeftManyEntityCreateForm implements OnInit {
     private readonly formService = inject(LeftManyCrudService);
 
 
+    selectedRightEntities: RightManyTypeaheadV1EsDoc[] = [];
+
+
+    filteredRightEntities: RightManyTypeaheadV1EsDoc[] = [];
+
+
+    filteredRightEntitiesIsLoading = signal(false);
+
+
+    rightEntitySearchControl = new FormControl('');
+
+
+    @ViewChild('rightEntityInput') rightEntityInput!: ElementRef<HTMLInputElement>;
+
+
     constructor() {
 
         this.formGroup = new FormGroup({
