@@ -36,6 +36,7 @@ import org.maiaframework.gen.spec.definition.lang.StringFieldType
 import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.UrlFieldType
+import org.maiaframework.lang.text.StringFunctions
 
 
 class EntityCreateFormComponentRenderer(
@@ -43,7 +44,8 @@ class EntityCreateFormComponentRenderer(
     private val formGroupFields: List<AngularFormFieldDef>,
     formAngularComponentNames: AngularComponentNames,
     private val crudAngularComponentNames: AngularComponentNames,
-    providerServices: List<String>
+    providerServices: List<String>,
+    private val chipFields: List<ManyToManyChipFieldDef>
 ) : AbstractAngularComponentRenderer(
     formAngularComponentNames,
     providerServices

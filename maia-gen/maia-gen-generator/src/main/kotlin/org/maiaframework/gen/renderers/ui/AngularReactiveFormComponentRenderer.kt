@@ -16,7 +16,7 @@ class AngularReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     angularComponentNames: AngularComponentNames,
     providerServices: List<String> = emptyList(),
-    private val chipFields: List<ManyToManyChipFieldDef> = emptyList()
+    private val chipFields: List<ManyToManyChipFieldDef>
 ) : AbstractAngularComponentRenderer(
     angularComponentNames,
     providerServices

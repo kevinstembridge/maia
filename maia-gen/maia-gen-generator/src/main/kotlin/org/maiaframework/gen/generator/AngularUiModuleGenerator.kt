@@ -381,12 +381,14 @@ class AngularUiModuleGenerator(
 
             val providerServices = emptyList<String>() // TODO
 
+            val chipFields = manyToManyChipFieldsFor(entityCreatePageDef.entityDef, entityCreatePageDef.entityDef.manyToManyAssociations)
             EntityCreateFormComponentRenderer(
                 entityCreatePageDef.createApiDef.requestDtoDef,
                 entityCreatePageDef.createApiDef.htmlFormFields,
                 entityCreatePageDef.createFormAngularComponentNames,
                 entityCreatePageDef.entityDef.crudAngularComponentNames,
-                providerServices
+                providerServices,
+                chipFields
             ).renderToDir(this.typescriptOutputDir)
 
             EntityCreateFormScssRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
