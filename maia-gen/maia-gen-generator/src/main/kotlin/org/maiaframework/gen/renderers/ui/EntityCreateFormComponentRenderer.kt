@@ -113,11 +113,34 @@ class EntityCreateFormComponentRenderer(
 
         )
 
+        `render class fields for async validators`()
+
+        `render class fields for typeahead fields`()
+
+        `render class fields for enum MatSelect fields`()
+
+        `render class fields for chip fields`()
+
+    }
+
+
+    private fun `render class fields for async validators`() {
+
         formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
+
+            append("""
+                |
+                |
+                |    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});
+                |""".trimMargin()
+            )
+
         }
+
+    }
+
+
+    private fun `render class fields for enum MatSelect fields`() {
 
         val enumFields = formGroupFields
             .asSequence()
@@ -135,15 +158,26 @@ class EntityCreateFormComponentRenderer(
             .map { it.parameterFieldType as EnumFieldType }
             .map { it.enumDef }
 
-        enumFields.plus(listOfEnumFields).distinctBy { it.selectOptionsUqcn }.forEach { enumDef ->
+        enumFields
+            .plus(listOfEnumFields)
+            .distinctBy { it.selectOptionsUqcn }
+            .forEach { enumDef ->
 
-            addImport(enumDef.selectOptionsTypescriptImport)
+                addImport(enumDef.selectOptionsTypescriptImport)
 
-            blankLine()
-            blankLine()
-            appendLine("    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};")
+                append("""
+                    |
+                    |
+                    |    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};
+                    |""".trimMargin()
+                )
 
-        }
+            }
+
+    }
+
+
+    private fun `render class fields for typeahead fields`() {
 
         typeaheadDefs.forEach { typeaheadDef ->
 
@@ -156,9 +190,15 @@ class EntityCreateFormComponentRenderer(
                 |
                 |
                 |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
-                |""".trimMargin())
+                |""".trimMargin()
+            )
 
         }
+
+    }
+
+
+    private fun `render class fields for chip fields`() {
 
         chipFields.forEach { chip ->
             append("""
@@ -177,7 +217,8 @@ class EntityCreateFormComponentRenderer(
                 |
                 |
                 |    @ViewChild('${chip.inputRefName}') ${chip.inputRefName}!: ElementRef<HTMLInputElement>;
-                |""".trimMargin())
+                |""".trimMargin()
+            )
         }
 
     }

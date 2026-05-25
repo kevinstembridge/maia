@@ -68,15 +68,46 @@ class AngularReactiveFormComponentRenderer(
 
     private fun `render class fields`() {
 
+        `render class field for delegated form submission`()
+
+        `render class field for onSuccess event`()
+
+        `render class field for onError event`()
+
+        `render class fields for typeahead fields`()
+
+        `render class fields for chip fields`()
+
+        `render problemDetail class field`()
+
+        `render loading class field if fetchForEdit form`()
+
+        `render class fields for enum MatSelect fields`()
+
+        `render formGroup class field `()
+
+        `render class field for linked fields`()
+
+    }
+
+
+    private fun `render class field for delegated form submission`() {
+
         if (this.angularFormDef.delegateFormSubmission.value) {
 
             append("""
                 |
                 |
                 |    readonly onFormSubmission = output<${this.angularFormDef.requestDtoDef.uqcn}>();
-                |""".trimMargin())
+                |""".trimMargin()
+            )
 
         }
+
+    }
+
+
+    private fun `render class field for onSuccess event`() {
 
         if (this.angularFormDef.emitEventOnSuccess.value) {
 
@@ -84,9 +115,15 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    readonly onSuccessEvent = output();
-                |""".trimMargin())
+                |""".trimMargin()
+            )
 
         }
+
+    }
+
+
+    private fun `render class field for onError event`() {
 
         if (this.angularFormDef.emitEventOnError.value) {
 
@@ -94,9 +131,15 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    readonly onErrorEvent = output<any>();
-                |""".trimMargin())
+                |""".trimMargin()
+            )
 
         }
+
+    }
+
+
+    private fun `render class fields for typeahead fields`() {
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
 
@@ -109,9 +152,15 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
-                |""".trimMargin())
+                |""".trimMargin()
+            )
 
         }
+
+    }
+
+
+    private fun `render class fields for chip fields`() {
 
         chipFields.forEach { chip ->
             append("""
@@ -130,22 +179,37 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    @ViewChild('${chip.inputRefName}') ${chip.inputRefName}!: ElementRef<HTMLInputElement>;
-                |""".trimMargin())
+                |""".trimMargin()
+            )
         }
 
+    }
+
+    private fun `render problemDetail class field`() {
         append("""
             |
             |
             |    problemDetail = signal<ProblemDetail | null>(null);
-            |""".trimMargin())
+            |""".trimMargin()
+        )
+    }
+
+
+    private fun `render loading class field if fetchForEdit form`() {
 
         this.angularFormDef.fetchForEditDtoDef?.let {
             append("""
                 |
                 |
                 |    loading = signal(true);
-                |""".trimMargin())
+                |""".trimMargin()
+            )
         }
+
+    }
+
+
+    private fun `render class fields for enum MatSelect fields`() {
 
         this.angularFormDef.enumsForMatSelectFields
             .filter { it.withEnumSelectionOptions }
@@ -153,18 +217,30 @@ class AngularReactiveFormComponentRenderer(
             .forEach { enumDef ->
 
                 append("""
-                |
-                |
-                |    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};
-                |""".trimMargin())
+                    |
+                    |
+                    |    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};
+                    |""".trimMargin()
+                )
 
             }
+
+    }
+
+
+    private fun `render formGroup class field `() {
 
         append("""
             |
             |
             |    formGroup: FormGroup;
-            |""".trimMargin())
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render class field for linked fields`() {
 
         this.angularFormDef.formModelFields.filter { it.linksToAField }.forEach { fieldDef ->
 
@@ -172,7 +248,8 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    ${fieldDef.classFieldDef.classFieldName}IsVisible = signal<boolean>(false);
-                |""".trimMargin())
+                |""".trimMargin()
+            )
 
         }
 
