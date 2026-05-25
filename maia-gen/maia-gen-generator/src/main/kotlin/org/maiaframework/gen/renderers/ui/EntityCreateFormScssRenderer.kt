@@ -1,14 +1,14 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.EntityCreateApiDef
+import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 
 
-class EntityCreateFormScssRenderer(private val apiDef: EntityCreateApiDef) : AbstractTypescriptRenderer() {
+class EntityCreateFormScssRenderer(private val entityCreatePageDef: EntityCreatePageDef) : AbstractTypescriptRenderer() {
 
 
     override fun renderedFilePath(): String {
 
-        return apiDef.angularEntityFormScssPath
+        return entityCreatePageDef.createFormAngularComponentNames.componentScssRenderedFilePath
 
     }
 

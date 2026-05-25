@@ -22,7 +22,10 @@ import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreateFormComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreateFormPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormScssRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreatePageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogHtmlRenderer
@@ -142,6 +145,7 @@ class AngularUiModuleGenerator(
 //        renderEntityEditDialogHtml()
         renderEntityDetailViews()
         renderEntityDetailDtoServices()
+        renderEntityCreatePages()
         renderEntityEditPages()
         renderBlotterPages()
         renderEntityDetailsDtos()
@@ -352,6 +356,21 @@ class AngularUiModuleGenerator(
     }
 
 
+    private fun renderEntityCreatePages() {
+
+        this.modelDef.entityCreatePageDefs.forEach { entityCreatePageDef ->
+
+            EntityCreateFormComponentRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
+            EntityCreateFormScssRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
+            EntityCreateReactiveFormHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
+            EntityCreateFormPageComponentRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
+            EntityCreatePageHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
+
+        }
+
+    }
+
+
     private fun renderEntityEditPages() {
 
         this.modelDef.entityEditPageDefs.forEach { entityEditPageDef ->
@@ -430,7 +449,7 @@ class AngularUiModuleGenerator(
     private fun renderEntityCreateHtmlForm(apiDef: EntityCreateApiDef) {
 
         when (apiDef.angularDialogDef.angularFormSystem) {
-            AngularFormSystem.REACTIVE -> EntityCreateReactiveFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.REACTIVE -> {} // EntityCreateReactiveFormHtmlRenderer migrated to EntityCreatePageDef
             AngularFormSystem.SIGNAL -> EntityCreateFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
         }
 
@@ -505,7 +524,7 @@ class AngularUiModuleGenerator(
 
                 it.angularInlineFormDef?.let { formDef ->
                     renderEntityForm(formDef, it.angularFormComponentNames)
-                    EntityCreateFormScssRenderer(it).renderToDir(this.typescriptOutputDir)
+//                    EntityCreateFormScssRenderer migrated to EntityCreatePageDef
                 }
 
             }
