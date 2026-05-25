@@ -36,6 +36,9 @@ export class LoginForm implements OnInit {
     readonly onFormSubmission = output<LoginRequestDto>();
 
 
+    onCancel = output();
+
+
     private readonly formService = inject(LoginFormApiService);
 
 

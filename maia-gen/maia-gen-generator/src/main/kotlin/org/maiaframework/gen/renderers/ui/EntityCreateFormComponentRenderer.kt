@@ -4,7 +4,6 @@ import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
-import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
@@ -98,15 +97,13 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render class fields`() {
 
-        append("""
-            |
-            |
-            |    onSave = output();
-            |
-            |
-            |    onCancel = output();
-            |""".trimMargin()
-        )
+        `render class field for delegated form submission`()
+
+        `render class field for onSuccess event`()
+
+        `render class field for onCancel event`()
+
+        `render class field for onError event`()
 
         `render class field for formService`()
 
@@ -123,6 +120,66 @@ class EntityCreateFormComponentRenderer(
         `render class fields for chip fields`()
 
         `render class field for formGroup `()
+
+        `render class field for loading signal if fetchForEdit form`()
+
+        `render class field for linked fields`()
+
+    }
+
+
+    private fun `render class field for delegated form submission`() {
+
+        if (this.angularFormDef.delegateFormSubmission.value) {
+
+            append("""
+                |
+                |
+                |    readonly onFormSubmission = output<${this.angularFormDef.requestDtoDef.uqcn}>();
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field for onSuccess event`() {
+
+        append("""
+            |
+            |
+            |    onSave = output();
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render class field for onCancel event`() {
+
+        append("""
+            |
+            |
+            |    onCancel = output();
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render class field for onError event`() {
+
+        if (this.angularFormDef.emitEventOnError.value) {
+
+            append("""
+                |
+                |
+                |    readonly onErrorEvent = output<any>();
+                |""".trimMargin()
+            )
+
+        }
 
     }
 
@@ -278,6 +335,36 @@ class EntityCreateFormComponentRenderer(
             |    formGroup: FormGroup;
             |""".trimMargin()
         )
+
+    }
+
+
+    private fun `render class field for loading signal if fetchForEdit form`() {
+
+        this.angularFormDef.fetchForEditDtoDef?.let {
+            append("""
+                |
+                |
+                |    loading = signal(true);
+                |""".trimMargin()
+            )
+        }
+
+    }
+
+
+    private fun `render class field for linked fields`() {
+
+        this.angularFormDef.formModelFields.filter { it.linksToAField }.forEach { fieldDef ->
+
+            append("""
+                |
+                |
+                |    ${fieldDef.classFieldDef.classFieldName}IsVisible = signal<boolean>(false);
+                |""".trimMargin()
+            )
+
+        }
 
     }
 
