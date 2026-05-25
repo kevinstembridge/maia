@@ -3,26 +3,26 @@
 
 import {Component, OnInit, inject, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 
 
 
 @Component({
     imports: [
         FormsModule,
+        MatAutocomplete,
+        MatAutocompleteTrigger,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        ReactiveFormsModule,
-        MatAutocomplete,
-        MatAutocompleteTrigger,
         MatOption,
+        ReactiveFormsModule,
     ],
     selector: 'app-bravo-entity-create-form',
     styleUrls: ['./bravo-entity-create-form.scss'],
