@@ -5,17 +5,17 @@ import {Component, inject, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
+import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 
 
 @Component({
     imports: [MatDialogTitle, MatDialogContent, MatFormFieldModule, MatDialogActions, MatButtonModule],
-    selector: 'app-simple-delete-dialog',
-    templateUrl: './simple-delete-dialog.html'
+    selector: 'app-composite-primary-key-entity-delete-dialog',
+    templateUrl: './composite-primary-key-entity-delete-dialog.html'
 })
-export class SimpleDeleteDialog {
+export class CompositePrimaryKeyEntityDeleteDialog {
 
 
     message?: string;
@@ -24,17 +24,17 @@ export class SimpleDeleteDialog {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    private readonly dialogRef = inject(MatDialogRef<SimpleDeleteDialog>);
+    private readonly dialogRef = inject(MatDialogRef<CompositePrimaryKeyEntityDeleteDialog>);
 
 
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
 
 
-    private readonly crudService = inject(SimpleCrudService);
+    private readonly crudService = inject(CompositePrimaryKeyCrudService);
 
 
     onYes() {
-        this.crudService.delete(this.dto.id).subscribe({
+        this.crudService.delete({someInt: this.dto.someInt, someString: this.dto.someString}).subscribe({
             next: (_) => {
                 this.dialogRef.close(true);
             },

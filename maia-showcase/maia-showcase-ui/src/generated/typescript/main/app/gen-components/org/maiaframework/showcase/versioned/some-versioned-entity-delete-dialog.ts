@@ -5,17 +5,17 @@ import {Component, inject, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-crud-service';
+import {SomeVersionedCrudService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 
 
 @Component({
     imports: [MatDialogTitle, MatDialogContent, MatFormFieldModule, MatDialogActions, MatButtonModule],
-    selector: 'app-left-many-delete-dialog',
-    templateUrl: './left-many-delete-dialog.html'
+    selector: 'app-some-versioned-entity-delete-dialog',
+    templateUrl: './some-versioned-entity-delete-dialog.html'
 })
-export class LeftManyDeleteDialog {
+export class SomeVersionedEntityDeleteDialog {
 
 
     message?: string;
@@ -24,13 +24,13 @@ export class LeftManyDeleteDialog {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    private readonly dialogRef = inject(MatDialogRef<LeftManyDeleteDialog>);
+    private readonly dialogRef = inject(MatDialogRef<SomeVersionedEntityDeleteDialog>);
 
 
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
 
 
-    private readonly crudService = inject(LeftManyCrudService);
+    private readonly crudService = inject(SomeVersionedCrudService);
 
 
     onYes() {

@@ -5,17 +5,17 @@ import {Component, inject, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {CharlieCrudService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-crud-service';
+import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 
 
 @Component({
     imports: [MatDialogTitle, MatDialogContent, MatFormFieldModule, MatDialogActions, MatButtonModule],
-    selector: 'app-charlie-delete-dialog',
-    templateUrl: './charlie-delete-dialog.html'
+    selector: 'app-simple-entity-delete-dialog',
+    templateUrl: './simple-entity-delete-dialog.html'
 })
-export class CharlieDeleteDialog {
+export class SimpleEntityDeleteDialog {
 
 
     message?: string;
@@ -24,13 +24,13 @@ export class CharlieDeleteDialog {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    private readonly dialogRef = inject(MatDialogRef<CharlieDeleteDialog>);
+    private readonly dialogRef = inject(MatDialogRef<SimpleEntityDeleteDialog>);
 
 
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
 
 
-    private readonly crudService = inject(CharlieCrudService);
+    private readonly crudService = inject(SimpleCrudService);
 
 
     onYes() {

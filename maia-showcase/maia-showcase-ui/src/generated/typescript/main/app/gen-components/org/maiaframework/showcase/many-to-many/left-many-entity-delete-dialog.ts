@@ -5,17 +5,17 @@ import {Component, inject, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-crud-service';
+import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 
 
 @Component({
     imports: [MatDialogTitle, MatDialogContent, MatFormFieldModule, MatDialogActions, MatButtonModule],
-    selector: 'app-composite-primary-key-delete-dialog',
-    templateUrl: './composite-primary-key-delete-dialog.html'
+    selector: 'app-left-many-entity-delete-dialog',
+    templateUrl: './left-many-entity-delete-dialog.html'
 })
-export class CompositePrimaryKeyDeleteDialog {
+export class LeftManyEntityDeleteDialog {
 
 
     message?: string;
@@ -24,17 +24,17 @@ export class CompositePrimaryKeyDeleteDialog {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    private readonly dialogRef = inject(MatDialogRef<CompositePrimaryKeyDeleteDialog>);
+    private readonly dialogRef = inject(MatDialogRef<LeftManyEntityDeleteDialog>);
 
 
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
 
 
-    private readonly crudService = inject(CompositePrimaryKeyCrudService);
+    private readonly crudService = inject(LeftManyCrudService);
 
 
     onYes() {
-        this.crudService.delete({someInt: this.dto.someInt, someString: this.dto.someString}).subscribe({
+        this.crudService.delete(this.dto.id).subscribe({
             next: (_) => {
                 this.dialogRef.close(true);
             },

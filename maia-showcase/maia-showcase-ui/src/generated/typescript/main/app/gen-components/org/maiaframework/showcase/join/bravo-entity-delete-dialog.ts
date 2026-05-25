@@ -5,17 +5,17 @@ import {Component, inject, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {CharlieAgGridCrudService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-ag-grid-crud-service';
+import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 
 
 @Component({
     imports: [MatDialogTitle, MatDialogContent, MatFormFieldModule, MatDialogActions, MatButtonModule],
-    selector: 'app-charlie-ag-grid-delete-dialog',
-    templateUrl: './charlie-ag-grid-delete-dialog.html'
+    selector: 'app-bravo-entity-delete-dialog',
+    templateUrl: './bravo-entity-delete-dialog.html'
 })
-export class CharlieAgGridDeleteDialog {
+export class BravoEntityDeleteDialog {
 
 
     message?: string;
@@ -24,13 +24,13 @@ export class CharlieAgGridDeleteDialog {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    private readonly dialogRef = inject(MatDialogRef<CharlieAgGridDeleteDialog>);
+    private readonly dialogRef = inject(MatDialogRef<BravoEntityDeleteDialog>);
 
 
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
 
 
-    private readonly crudService = inject(CharlieAgGridCrudService);
+    private readonly crudService = inject(BravoCrudService);
 
 
     onYes() {

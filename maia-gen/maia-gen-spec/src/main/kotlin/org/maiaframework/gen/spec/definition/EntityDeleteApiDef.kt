@@ -19,7 +19,7 @@ class EntityDeleteApiDef(
 
 
     private val angularComponentNames =
-        AngularComponentNames(this.entityDef.packageName, "${entityDef.entityBaseName}DeleteDialog")
+        AngularComponentNames(this.entityDef.packageName, "${entityDef.entityBaseName}EntityDeleteDialog")
 
 
     val angularDialogComponentName = angularComponentNames.componentName

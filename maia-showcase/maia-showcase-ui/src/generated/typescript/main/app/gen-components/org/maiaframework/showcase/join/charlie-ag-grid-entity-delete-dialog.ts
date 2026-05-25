@@ -5,17 +5,17 @@ import {Component, inject, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {SomeVersionedCrudService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud-service';
+import {CharlieAgGridCrudService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-ag-grid-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 
 
 @Component({
     imports: [MatDialogTitle, MatDialogContent, MatFormFieldModule, MatDialogActions, MatButtonModule],
-    selector: 'app-some-versioned-delete-dialog',
-    templateUrl: './some-versioned-delete-dialog.html'
+    selector: 'app-charlie-ag-grid-entity-delete-dialog',
+    templateUrl: './charlie-ag-grid-entity-delete-dialog.html'
 })
-export class SomeVersionedDeleteDialog {
+export class CharlieAgGridEntityDeleteDialog {
 
 
     message?: string;
@@ -24,13 +24,13 @@ export class SomeVersionedDeleteDialog {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    private readonly dialogRef = inject(MatDialogRef<SomeVersionedDeleteDialog>);
+    private readonly dialogRef = inject(MatDialogRef<CharlieAgGridEntityDeleteDialog>);
 
 
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
 
 
-    private readonly crudService = inject(SomeVersionedCrudService);
+    private readonly crudService = inject(CharlieAgGridCrudService);
 
 
     onYes() {

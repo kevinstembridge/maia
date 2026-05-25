@@ -5,17 +5,17 @@ import {Component, inject, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-crud-service';
+import {CharlieCrudService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 
 
 @Component({
     imports: [MatDialogTitle, MatDialogContent, MatFormFieldModule, MatDialogActions, MatButtonModule],
-    selector: 'app-all-field-types-delete-dialog',
-    templateUrl: './all-field-types-delete-dialog.html'
+    selector: 'app-charlie-entity-delete-dialog',
+    templateUrl: './charlie-entity-delete-dialog.html'
 })
-export class AllFieldTypesDeleteDialog {
+export class CharlieEntityDeleteDialog {
 
 
     message?: string;
@@ -24,13 +24,13 @@ export class AllFieldTypesDeleteDialog {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    private readonly dialogRef = inject(MatDialogRef<AllFieldTypesDeleteDialog>);
+    private readonly dialogRef = inject(MatDialogRef<CharlieEntityDeleteDialog>);
 
 
     private readonly dto = inject<any>(MAT_DIALOG_DATA);
 
 
-    private readonly crudService = inject(AllFieldTypesCrudService);
+    private readonly crudService = inject(CharlieCrudService);
 
 
     onYes() {
