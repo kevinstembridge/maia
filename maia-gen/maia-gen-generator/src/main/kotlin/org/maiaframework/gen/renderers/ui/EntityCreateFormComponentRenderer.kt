@@ -42,7 +42,6 @@ import org.maiaframework.lang.text.StringFunctions
 class EntityCreateFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     formAngularComponentNames: AngularComponentNames,
-    private val crudAngularComponentNames: AngularComponentNames,
     providerServices: List<String>,
     private val chipFields: List<ManyToManyChipFieldDef>
 ) : AbstractAngularComponentRenderer(
@@ -133,7 +132,7 @@ class EntityCreateFormComponentRenderer(
         append("""
             |
             |
-            |    private readonly formService = inject(${this.crudAngularComponentNames.serviceName});
+            |    private readonly formService = inject(${this.angularFormDef.formServiceClassName});
             |""".trimMargin()
         )
 
@@ -444,7 +443,7 @@ class EntityCreateFormComponentRenderer(
         addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport(TypescriptImports.problemDetail)
         addImport(requestDtoDef.typescriptImport)
-        addImport(crudAngularComponentNames.serviceTypescriptImport)
+        addImport(angularFormDef.formServiceTypescriptImport)
         formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
             addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
         }

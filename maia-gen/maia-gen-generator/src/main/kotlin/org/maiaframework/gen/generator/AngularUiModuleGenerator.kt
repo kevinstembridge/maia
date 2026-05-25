@@ -405,7 +405,7 @@ class AngularUiModuleGenerator(
                 dialogTitle = null,
                 multiFieldDatabaseIndexDefs = emptyList(),
                 onSubmitServiceFunctionName = "create",
-                formServiceTypescriptImport = null,
+                formServiceTypescriptImport = entityCreatePageDef.entityDef.crudAngularComponentNames.serviceTypescriptImport,
                 angularFormSystem = AngularFormSystem.REACTIVE,
                 fetchForEditDtoDef = null,
                 entityIdInjectType = "string"
@@ -414,7 +414,6 @@ class AngularUiModuleGenerator(
             EntityCreateFormComponentRenderer(
                 angularFormDef,
                 entityCreatePageDef.createFormAngularComponentNames,
-                entityCreatePageDef.entityDef.crudAngularComponentNames,
                 providerServices,
                 chipFields
             ).renderToDir(this.typescriptOutputDir)
