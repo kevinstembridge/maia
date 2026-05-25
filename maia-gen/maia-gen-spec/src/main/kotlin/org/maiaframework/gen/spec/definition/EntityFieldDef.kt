@@ -58,7 +58,6 @@ class EntityFieldDef(
     val isDeltaField: IsDeltaField = IsDeltaField.FALSE,
     val isDerived: IsDerived = IsDerived.FALSE,
     val isHardcoded: IsHardcoded = IsHardcoded.FALSE,
-    val isCreatableByUser: IsCreatableByUser,
     val fieldReaderParameterizedType: ParameterizedType? = null,
     val fieldWriterParameterizedType: ParameterizedType? = null
 ) : Comparable<EntityFieldDef> {
@@ -113,6 +112,9 @@ class EntityFieldDef(
 
 
     val isVersionField = this.classFieldDef.isVersionField
+
+
+    val isCreatableByUser = this.classFieldDef.isCreatableByUser
 
 
     init {

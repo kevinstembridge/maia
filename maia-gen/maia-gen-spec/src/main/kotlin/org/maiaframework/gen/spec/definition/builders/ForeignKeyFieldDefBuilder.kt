@@ -74,17 +74,18 @@ class ForeignKeyFieldDefBuilder(
 
         val classFieldDef = ClassFieldDef(
             foreignKeyFieldName,
-            description = Description("Foreign key to the ${foreignKeyEntityDef.entityBaseName} entity. (table = ${foreignKeyEntityDef.tableName})"),
-            fieldType = FieldTypes.foreignKey(foreignKeyFieldDef),
-            isModifiableBySystem = this.modifiableBySystem,
-            isEditableByUser = this.isEditableByUser,
-            nullability = this.nullability,
-            isPrivateProperty = false,
-            isConstructorOnly = false,
             annotationDefs = sortedSetOf(),
-            providedValidationConstraints = sortedSetOf(),
+            description = Description("Foreign key to the ${foreignKeyEntityDef.entityBaseName} entity. (table = ${foreignKeyEntityDef.tableName})"),
             displayName = displayName,
+            fieldType = FieldTypes.foreignKey(foreignKeyFieldDef),
             formPlaceholderText = formPlaceholderText,
+            isConstructorOnly = false,
+            isCreatableByUser = this.isCreatableByUser,
+            isEditableByUser = this.isEditableByUser,
+            isModifiableBySystem = this.modifiableBySystem,
+            isPrivateProperty = false,
+            nullability = this.nullability,
+            providedValidationConstraints = sortedSetOf(),
             typeaheadDef = this.typeaheadDef
         )
 
@@ -96,7 +97,6 @@ class ForeignKeyFieldDefBuilder(
             isDeltaKey = IsDeltaKey.FALSE,
             isDerived = IsDerived.FALSE,
             providedTableColumnName = tableColumnName,
-            isCreatableByUser = this.isCreatableByUser
         )
 
     }

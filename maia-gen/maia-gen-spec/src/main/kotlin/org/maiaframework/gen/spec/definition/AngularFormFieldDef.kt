@@ -56,6 +56,9 @@ class AngularFormFieldDef(
         get() = hasValidationConstraint(NotNullConstraintDef::class.java) || hasValidationConstraint(NotEmptyConstraintDef::class.java)
 
 
+    val isCreatable = this.classFieldDef.isCreatableByUser.value
+
+
     val isEditable: Boolean = this.classFieldDef.isEditableByUser.value
 
 

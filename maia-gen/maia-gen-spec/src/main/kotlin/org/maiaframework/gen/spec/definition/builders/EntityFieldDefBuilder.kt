@@ -60,9 +60,6 @@ class EntityFieldDefBuilder(
     private var hardcoded = IsHardcoded.FALSE
 
 
-    private var isCreatableByUser = IsCreatableByUser.TRUE
-
-
     private var withExistsEndpoint = false
 
 
@@ -173,7 +170,6 @@ class EntityFieldDefBuilder(
             this.isDeltaField,
             this.derived,
             this.hardcoded,
-            this.isCreatableByUser,
             fieldReaderClassName,
             fieldWriterClassName
         )
@@ -197,7 +193,7 @@ class EntityFieldDefBuilder(
 
     fun notCreatableByUser() {
 
-        this.isCreatableByUser = IsCreatableByUser.FALSE
+        this.classFieldDefBuilder.isCreatableByUser = IsCreatableByUser.FALSE
 
     }
 

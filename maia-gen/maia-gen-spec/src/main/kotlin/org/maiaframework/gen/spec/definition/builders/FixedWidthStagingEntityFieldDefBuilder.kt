@@ -136,10 +136,11 @@ class FixedWidthStagingEntityFieldDefBuilder(
         val classFieldDef = ClassFieldDef(
             classFieldName = classFieldName,
             description = description,
-            fieldType = fieldType,
-            nullability = nullability,
-            isUnique = this.unique,
             displayName = this.fieldDisplayName,
+            fieldType = fieldType,
+            isCreatableByUser = IsCreatableByUser.FALSE,
+            isUnique = this.unique,
+            nullability = nullability,
             providedValidationConstraints = validationConstraints.toSortedSet()
         )
 
@@ -153,7 +154,6 @@ class FixedWidthStagingEntityFieldDefBuilder(
             IsPrimaryKey.FALSE,
             IsDeltaField.FALSE,
             IsDerived.FALSE,
-            isCreatableByUser = IsCreatableByUser.FALSE
         )
 
         return DataRowStagingEntityFieldDef(

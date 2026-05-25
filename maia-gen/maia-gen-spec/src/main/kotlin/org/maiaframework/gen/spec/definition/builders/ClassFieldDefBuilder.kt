@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.FieldDisplayName
 import org.maiaframework.gen.spec.definition.FormPlaceholderText
 import org.maiaframework.gen.spec.definition.TypeaheadDef
+import org.maiaframework.gen.spec.definition.flags.IsCreatableByUser
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.flags.TextCase
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef
@@ -22,6 +23,9 @@ class ClassFieldDefBuilder(
 
 
     var modifiableBySystem = false
+
+
+    var isCreatableByUser = IsCreatableByUser.TRUE
 
 
     var isEditableByUser = IsEditableByUser.FALSE
@@ -90,6 +94,7 @@ class ClassFieldDefBuilder(
             fieldType = fieldType,
             formPlaceholderText = formPlaceholderText,
             isConstructorOnly = isConstructorOnly,
+            isCreatableByUser = isCreatableByUser,
             isEditableByUser = isEditableByUser,
             isMasked = isMasked,
             isModifiableBySystem = modifiableBySystem,

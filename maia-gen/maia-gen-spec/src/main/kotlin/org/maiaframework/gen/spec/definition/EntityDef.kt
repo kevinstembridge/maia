@@ -447,7 +447,7 @@ class EntityDef(
                 EntityFieldDef(
                     historyEntityBaseName,
                     packageName,
-                    fd.classFieldDef.convertToUnmodifiable().convertToNotUnique(),
+                    fd.classFieldDef.convertToUnmodifiable().convertToNotUnique().convertToNotCreatable(),
                     fd.dbColumnFieldDef.tableColumnName,
                     withExistsEndpoint = false,
                     IsDeltaKey.FALSE,
@@ -455,7 +455,6 @@ class EntityDef(
                     IsDeltaField.TRUE,
                     fd.isDerived,
                     fd.isHardcoded,
-                    isCreatableByUser = IsCreatableByUser.FALSE,
                     fd.dbColumnFieldDef.fieldReaderParameterizedType,
                     fd.dbColumnFieldDef.fieldWriterParameterizedType
                 )
@@ -1004,13 +1003,13 @@ class EntityDef(
                     fieldType = FieldTypes.domainId
                 ) {
                     displayName("ID")
+                    notCreatableByUser()
                 }.build(),
                 TableColumnName.id,
                 isDeltaKey = IsDeltaKey.FALSE,
                 isDeltaField = IsDeltaField.FALSE,
                 isPrimaryKey = IsPrimaryKey.SURROGATE,
                 isDerived = IsDerived.FALSE,
-                isCreatableByUser = IsCreatableByUser.FALSE
             )
 
         }
@@ -1029,9 +1028,9 @@ class EntityDef(
                     fieldType = FieldTypes.instant
                 ) {
                     displayName("Created At")
+                    notCreatableByUser()
                 }.build(),
                 TableColumnName.createdTimestampUtc,
-                isCreatableByUser = IsCreatableByUser.FALSE
             )
 
         }
@@ -1050,9 +1049,9 @@ class EntityDef(
                     fieldType = FieldTypes.long
                 ) {
                     displayName("Version")
+                    notCreatableByUser()
                 }.build(),
                 TableColumnName.version,
-                isCreatableByUser = IsCreatableByUser.FALSE
             )
 
         }
@@ -1069,9 +1068,9 @@ class EntityDef(
                 ) {
                     displayName("Change Type")
                     lengthConstraint(max = 10)
+                    notCreatableByUser()
                 }.build(),
                 TableColumnName.changeType,
-                isCreatableByUser = IsCreatableByUser.FALSE
             )
 
         }

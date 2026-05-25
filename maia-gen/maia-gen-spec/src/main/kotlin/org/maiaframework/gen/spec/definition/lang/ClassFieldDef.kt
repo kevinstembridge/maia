@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.ForeignKeyFieldDef
 import org.maiaframework.gen.spec.definition.FormPlaceholderText
 import org.maiaframework.gen.spec.definition.TypeaheadDef
+import org.maiaframework.gen.spec.definition.flags.IsCreatableByUser
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.flags.TextCase
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isNumeric
@@ -26,6 +27,7 @@ data class ClassFieldDef(
     val description: Description? = null,
     val fieldType: FieldType,
     val isModifiableBySystem: Boolean = false,
+    val isCreatableByUser: IsCreatableByUser = IsCreatableByUser.TRUE,
     val isEditableByUser: IsEditableByUser = IsEditableByUser.FALSE,
     val nullability: Nullability = Nullability.NOT_NULLABLE,
     val isMasked: Boolean = false,
@@ -246,10 +248,21 @@ data class ClassFieldDef(
 
     fun convertToNotUnique(): ClassFieldDef {
 
-        return if (this.isUnique == false) {
-            this
-        } else {
+        return if (this.isUnique) {
             copy(isUnique = false)
+        } else {
+            this
+        }
+
+    }
+
+
+    fun convertToNotCreatable(): ClassFieldDef {
+
+        return if (this.isCreatableByUser.value) {
+            copy(isCreatableByUser = IsCreatableByUser.FALSE)
+        } else {
+            this
         }
 
     }
@@ -334,36 +347,63 @@ data class ClassFieldDef(
         private val fieldType: FieldType
     ) {
 
+
         private var description: Description? = null
+
+
         private var fieldDisplayName: FieldDisplayName? = null
+
+
         private var modifiable: Boolean = false
+
+
+        private var isCreatableByUser: IsCreatableByUser = IsCreatableByUser.TRUE
+
+
         private var nullability: Nullability = Nullability.NOT_NULLABLE
+
+
         private val annotationDefs = sortedSetOf<AnnotationDef>()
+
+
         private val validationConstraints = mutableSetOf<AbstractValidationConstraintDef>()
+
+
         private var isMasked: Boolean = false
+
+
         private var isPrivateProperty = false
+
+
         private var isConstructorOnly = false
+
+
         private var isUnique = false
+
+
         private var enrichWithImplicitValidationConstraints: Boolean = false
+
+
         private var textCase: TextCase = TextCase.ORIGINAL
 
 
         fun build(): ClassFieldDef {
 
             return ClassFieldDef(
+                annotationDefs = this.annotationDefs,
                 classFieldName = this.classFieldName,
                 description = this.description,
-                fieldType = this.fieldType,
                 displayName = this.fieldDisplayName,
-                isModifiableBySystem = this.modifiable,
-                nullability = this.nullability,
-                isMasked = this.isMasked,
-                isPrivateProperty = this.isPrivateProperty,
+                fieldType = this.fieldType,
                 isConstructorOnly = this.isConstructorOnly,
+                isCreatableByUser = this.isCreatableByUser,
+                isMasked = this.isMasked,
+                isModifiableBySystem = this.modifiable,
+                isPrivateProperty = this.isPrivateProperty,
                 isUnique = this.isUnique,
-                textCase = this.textCase,
-                annotationDefs = this.annotationDefs,
-                providedValidationConstraints = validationConstraints.toSortedSet()
+                nullability = this.nullability,
+                providedValidationConstraints = validationConstraints.toSortedSet(),
+                textCase = this.textCase
             )
 
         }
@@ -491,6 +531,14 @@ data class ClassFieldDef(
         fun constructorOnly(flag: Boolean = true): Builder {
 
             this.isConstructorOnly = flag
+            return this
+
+        }
+
+
+        fun notCreatableByUser(): Builder {
+
+            this.isCreatableByUser = IsCreatableByUser.FALSE
             return this
 
         }
