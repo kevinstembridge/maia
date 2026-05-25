@@ -223,7 +223,7 @@ class AngularUiModuleGenerator(
     ) {
 
         when (def.angularFormSystem) {
-            AngularFormSystem.REACTIVE -> EntityReactiveFormComponentRenderer(def, angularComponentNames, chipFields).renderToDir(this.typescriptOutputDir)
+            AngularFormSystem.REACTIVE -> AngularReactiveFormComponentRenderer(def, angularComponentNames, chipFields).renderToDir(this.typescriptOutputDir)
             AngularFormSystem.SIGNAL -> EntityFormComponentRenderer(def, angularComponentNames).renderToDir(this.typescriptOutputDir)
         }
 
