@@ -30,6 +30,44 @@ class AngularReactiveFormComponentRenderer(
 
     init {
 
+        `add imports`()
+
+    }
+
+    override fun renderComponentDecorator() {
+
+        append("""
+            |
+            |
+            |@Component({
+            |""".trimMargin()
+        )
+
+        renderComponentImportArray()
+
+        val providerServices = this.angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } +
+            this.chipFields.map { it.serviceClassName }
+        if (providerServices.isNotEmpty()) {
+            appendLine("    providers: [")
+            providerServices.distinct().forEach { serviceName ->
+                appendLine("        $serviceName,")
+            }
+            appendLine("    ],")
+        }
+
+        append("""
+            |    selector: '${this.angularComponentNames.componentSelector}',
+            |    styleUrls: ['./${this.angularComponentNames.componentScssFileName}'],
+            |    templateUrl: './${this.angularComponentNames.htmlFileName}'
+            |})
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `add imports`() {
+
         addImport("@angular/core", "Component")
         addImport("@angular/core", "inject")
         addImport("@angular/core", "OnInit")
@@ -134,39 +172,7 @@ class AngularReactiveFormComponentRenderer(
         if (this.angularFormDef.formModelFields.any { it.hasValidationConstraint(UrlConstraintDef::class.java) }) {
             addImport("@app/validators/CustomValidators", "CustomValidators")
         }
-
-    }
-
-
-    override fun renderComponentDecorator() {
-
-        append("""
-            |
-            |
-            |@Component({
-            |""".trimMargin()
-        )
-
-        renderComponentImportArray()
-
-        val providerServices = this.angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } +
-            this.chipFields.map { it.serviceClassName }
-        if (providerServices.isNotEmpty()) {
-            appendLine("    providers: [")
-            providerServices.distinct().forEach { serviceName ->
-                appendLine("        $serviceName,")
-            }
-            appendLine("    ],")
-        }
-
-        append("""
-            |    selector: '${this.angularComponentNames.componentSelector}',
-            |    styleUrls: ['./${this.angularComponentNames.componentScssFileName}'],
-            |    templateUrl: './${this.angularComponentNames.htmlFileName}'
-            |})
-            |""".trimMargin()
-        )
-
+        
     }
 
 
