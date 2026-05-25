@@ -1209,7 +1209,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             fieldName = "right",
             displayName = "Right",
             rightManyEntityDef,
-            IsEditableByUser.TRUE
+            IsEditableByUser.TRUE,
+            typeaheadDef = rightManyTypeaheadDef
         )
     ) {
         field_lastModifiedTimestampUtc()
