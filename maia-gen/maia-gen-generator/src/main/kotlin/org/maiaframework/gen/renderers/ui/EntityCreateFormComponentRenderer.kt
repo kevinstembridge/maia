@@ -178,6 +178,7 @@ class EntityCreateFormComponentRenderer(
 
         append("""
             |
+            |
             |    ngOnInit() {
             |        //TODO
             |    }
