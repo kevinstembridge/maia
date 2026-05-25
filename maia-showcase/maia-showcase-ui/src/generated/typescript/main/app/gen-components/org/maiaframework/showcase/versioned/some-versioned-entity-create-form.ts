@@ -44,10 +44,12 @@ export class SomeVersionedEntityCreateForm implements OnInit {
 
     constructor() {
 
-        this.formGroup = new FormGroup({
-            someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-            someInt: new FormControl(0, { updateOn: 'change' }),
-        });
+        this.formGroup = new FormGroup(
+            {
+                someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+                someInt: new FormControl(0, { updateOn: 'change' }),
+            },
+        );
 
     }
 

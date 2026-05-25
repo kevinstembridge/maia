@@ -60,11 +60,13 @@ export class BravoEntityCreateForm implements OnInit {
 
     constructor() {
 
-        this.formGroup = new FormGroup({
-            someInt: new FormControl(0, { updateOn: 'change' }),
-            someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-            alpha: new FormControl('', { updateOn: 'change' }),
-        });
+        this.formGroup = new FormGroup(
+            {
+                someInt: new FormControl(0, { updateOn: 'change' }),
+                someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+                alpha: new FormControl('', { updateOn: 'change' }),
+            },
+        );
 
     }
 

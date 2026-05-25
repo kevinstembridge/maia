@@ -53,11 +53,13 @@ export class UserEntityCreateForm implements OnInit {
 
     constructor() {
 
-        this.formGroup = new FormGroup({
-            authorities: new FormControl([], { updateOn: 'change' }),
-            firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
-            lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-        });
+        this.formGroup = new FormGroup(
+            {
+                authorities: new FormControl([], { updateOn: 'change' }),
+                firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
+                lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+            },
+        );
 
     }
 

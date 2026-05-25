@@ -15,7 +15,7 @@ import org.maiaframework.lang.text.StringFunctions
 class AngularReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     formAngularComponentNames: AngularComponentNames,
-    providerServices: List<String> = emptyList(),
+    providerServices: List<String>,
     private val chipFields: List<ManyToManyChipFieldDef>
 ) : AbstractAngularComponentRenderer(
     formAngularComponentNames,
@@ -198,6 +198,18 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
+    private fun `render class field for formService`() {
+
+        append("""
+            |
+            |
+            |    private readonly formService = inject(${this.angularFormDef.formServiceClassName});
+            |""".trimMargin()
+        )
+
+    }
+
+
     private fun `render class field for problemDetail`() {
 
         append("""
@@ -209,19 +221,6 @@ class AngularReactiveFormComponentRenderer(
 
     }
 
-
-    private fun `render class field for loading signal if fetchForEdit form`() {
-
-        this.angularFormDef.fetchForEditDtoDef?.let {
-            append("""
-                |
-                |
-                |    loading = signal(true);
-                |""".trimMargin()
-            )
-        }
-
-    }
 
     private fun `render class fields for async validators`() {
 
@@ -236,7 +235,7 @@ class AngularReactiveFormComponentRenderer(
 
     private fun `render class fields for typeahead fields`() {
 
-        this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
+        this.typeaheadDefs.forEach { typeaheadDef ->
 
             val esDocUqcn = typeaheadDef.esDocDef.dtoDef.uqcn.value
 
@@ -247,6 +246,25 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class fields for typeahead services`() {
+
+        this.typeaheadDefs.forEach { typeaheadDef ->
+
+            val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
+
+            append("""
+                |
+                |
+                |
+                |    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});
                 |""".trimMargin()
             )
 
@@ -312,6 +330,20 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
+    private fun `render class field for loading signal if fetchForEdit form`() {
+
+        this.angularFormDef.fetchForEditDtoDef?.let {
+            append("""
+                |
+                |
+                |    loading = signal(true);
+                |""".trimMargin()
+            )
+        }
+
+    }
+
+
     private fun `render class field for linked fields`() {
 
         this.angularFormDef.formModelFields.filter { it.linksToAField }.forEach { fieldDef ->
@@ -327,6 +359,7 @@ class AngularReactiveFormComponentRenderer(
 
     }
 
+
     private fun `render constructor`() {
 
         append("""
@@ -336,7 +369,8 @@ class AngularReactiveFormComponentRenderer(
             |
             |        this.formGroup = new FormGroup(
             |            {
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
         this.formGroupFields.forEach { angularFormFieldDef ->
 
@@ -386,37 +420,6 @@ class AngularReactiveFormComponentRenderer(
         appendLine("        );")
         blankLine()
         appendLine("    }")
-
-    }
-
-
-    private fun `render class fields for typeahead services`() {
-
-        this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
-
-            val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
-
-            append("""
-                |
-                |
-                |
-                |    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});
-                |""".trimMargin()
-            )
-
-        }
-
-    }
-
-
-    private fun `render class field for formService`() {
-
-        append("""
-            |
-            |
-            |    private readonly formService = inject(${this.angularFormDef.formServiceClassName});
-            |""".trimMargin()
-        )
 
     }
 
@@ -582,6 +585,37 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
+    private fun `render chip entity methods`() {
+
+        chipFields.forEach { chip ->
+
+            blankLine()
+            blankLine()
+            append("""
+                |    ${chip.addMethodName}(event: MatAutocompleteSelectedEvent): void {
+                |
+                |        const entity: ${chip.esDocClassName} = event.option.value;
+                |        if (!this.${chip.selectedFieldName}.some(e => e.${chip.esDocIdFieldName} === entity.${chip.esDocIdFieldName})) {
+                |            this.${chip.selectedFieldName}.push(entity);
+                |        }
+                |        this.${chip.inputRefName}.nativeElement.value = '';
+                |        this.${chip.searchControlFieldName}.setValue('', { emitEvent: false });
+                |
+                |    }
+                |
+                |
+                |    ${chip.removeMethodName}(entity: ${chip.esDocClassName}): void {
+                |
+                |        this.${chip.selectedFieldName} = this.${chip.selectedFieldName}.filter(e => e.${chip.esDocIdFieldName} !== entity.${chip.esDocIdFieldName});
+                |
+                |    }
+                |""".trimMargin())
+
+        }
+
+    }
+
+
     private fun `render function onSubmit`() {
 
         append("""
@@ -630,37 +664,6 @@ class AngularReactiveFormComponentRenderer(
             |        this.dialogRef.close();
             |    }
             |""".trimMargin())
-
-    }
-
-
-    private fun `render chip entity methods`() {
-
-        chipFields.forEach { chip ->
-
-            blankLine()
-            blankLine()
-            append("""
-                |    ${chip.addMethodName}(event: MatAutocompleteSelectedEvent): void {
-                |
-                |        const entity: ${chip.esDocClassName} = event.option.value;
-                |        if (!this.${chip.selectedFieldName}.some(e => e.${chip.esDocIdFieldName} === entity.${chip.esDocIdFieldName})) {
-                |            this.${chip.selectedFieldName}.push(entity);
-                |        }
-                |        this.${chip.inputRefName}.nativeElement.value = '';
-                |        this.${chip.searchControlFieldName}.setValue('', { emitEvent: false });
-                |
-                |    }
-                |
-                |
-                |    ${chip.removeMethodName}(entity: ${chip.esDocClassName}): void {
-                |
-                |        this.${chip.selectedFieldName} = this.${chip.selectedFieldName}.filter(e => e.${chip.esDocIdFieldName} !== entity.${chip.esDocIdFieldName});
-                |
-                |    }
-                |""".trimMargin())
-
-        }
 
     }
 

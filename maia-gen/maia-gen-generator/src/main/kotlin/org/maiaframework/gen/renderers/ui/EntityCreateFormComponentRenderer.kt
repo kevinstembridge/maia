@@ -224,46 +224,9 @@ class EntityCreateFormComponentRenderer(
     }
 
 
-    private fun `render class fields for enum MatSelect fields`() {
-
-        val enumFields = formGroupFields
-            .asSequence()
-            .filter { it.isCreatable }
-            .filter { it.fieldType is EnumFieldType }
-            .map { it.fieldType as EnumFieldType }
-            .map { it.enumDef }
-
-        val listOfEnumFields = formGroupFields
-            .asSequence()
-            .filter { it.isCreatable }
-            .filter { it.fieldType is ListFieldType }
-            .map { it.fieldType as ListFieldType }
-            .filter { it.parameterFieldType is EnumFieldType }
-            .map { it.parameterFieldType as EnumFieldType }
-            .map { it.enumDef }
-
-        enumFields
-            .plus(listOfEnumFields)
-            .distinctBy { it.selectOptionsUqcn }
-            .forEach { enumDef ->
-
-                addImport(enumDef.selectOptionsTypescriptImport)
-
-                append("""
-                    |
-                    |
-                    |    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};
-                    |""".trimMargin()
-                )
-
-            }
-
-    }
-
-
     private fun `render class fields for typeahead fields`() {
 
-        typeaheadDefs.forEach { typeaheadDef ->
+        this.typeaheadDefs.forEach { typeaheadDef ->
 
             val esDocUqcn = typeaheadDef.esDocDef.dtoDef.uqcn.value
 
@@ -297,6 +260,43 @@ class EntityCreateFormComponentRenderer(
             )
 
         }
+
+    }
+
+
+    private fun `render class fields for enum MatSelect fields`() {
+
+        val enumFields = formGroupFields
+            .asSequence()
+            .filter { it.isCreatable }
+            .filter { it.fieldType is EnumFieldType }
+            .map { it.fieldType as EnumFieldType }
+            .map { it.enumDef }
+
+        val listOfEnumFields = formGroupFields
+            .asSequence()
+            .filter { it.isCreatable }
+            .filter { it.fieldType is ListFieldType }
+            .map { it.fieldType as ListFieldType }
+            .filter { it.parameterFieldType is EnumFieldType }
+            .map { it.parameterFieldType as EnumFieldType }
+            .map { it.enumDef }
+
+        enumFields
+            .plus(listOfEnumFields)
+            .distinctBy { it.selectOptionsUqcn }
+            .forEach { enumDef ->
+
+                addImport(enumDef.selectOptionsTypescriptImport)
+
+                append("""
+                    |
+                    |
+                    |    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};
+                    |""".trimMargin()
+                )
+
+            }
 
     }
 
@@ -371,27 +371,29 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render constructor`() {
 
-        append(
-            """
-                |
-                |
-                |    constructor() {
-                |
-                |        this.formGroup = new FormGroup({
-                |""".trimMargin()
+        append("""
+            |
+            |
+            |    constructor() {
+            |
+            |        this.formGroup = new FormGroup(
+            |            {
+            |""".trimMargin()
         )
 
-        formGroupFields.forEach { angularFormFieldDef ->
+        this.formGroupFields.forEach { angularFormFieldDef ->
+
             FormControlRendererHelper.renderFormControlFor(
                 angularFormFieldDef,
                 CreateOrEdit.create,
-                indentSize = 12,
+                indentSize = 16,
                 { line -> appendLine(line) },
                 { fieldType -> addImportsFor(fieldType) }
             )
         }
 
-        appendLine("        });")
+        appendLine("            },")
+        appendLine("        );")
         blankLine()
         appendLine("    }")
 
@@ -424,6 +426,7 @@ class EntityCreateFormComponentRenderer(
         }
 
     }
+
 
     private fun `render chip entity methods`() {
 
@@ -458,20 +461,19 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render function onSubmit`() {
 
-        append(
-            """
-                |
-                |
-                |    onSubmit() {
-                |
-                |        this.problemDetail.set(null);
-                |
-                |        if (this.formGroup.invalid) {
-                |            return;
-                |        }
-                |
-                |        const requestDto = {
-                |""".trimMargin()
+        append("""
+            |
+            |
+            |    onSubmit() {
+            |
+            |        this.problemDetail.set(null);
+            |
+            |        if (this.formGroup.invalid) {
+            |            return;
+            |        }
+            |
+            |        const requestDto = {
+            |""".trimMargin()
         )
 
         requestDtoDef.dtoFieldDefs.forEach { field ->

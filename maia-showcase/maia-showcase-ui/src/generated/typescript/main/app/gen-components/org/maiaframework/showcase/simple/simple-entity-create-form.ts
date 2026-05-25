@@ -48,9 +48,11 @@ export class SimpleEntityCreateForm implements OnInit {
 
     constructor() {
 
-        this.formGroup = new FormGroup({
-            someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)], asyncValidators: [this.simpleSomeStringAsyncValidator.validate.bind(this.simpleSomeStringAsyncValidator)] }),
-        });
+        this.formGroup = new FormGroup(
+            {
+                someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)], asyncValidators: [this.simpleSomeStringAsyncValidator.validate.bind(this.simpleSomeStringAsyncValidator)] }),
+            },
+        );
 
     }
 
