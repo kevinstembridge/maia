@@ -68,6 +68,11 @@ import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
+import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.DelegateFormSubmission
+import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
+import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
+import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.Uqcn
@@ -382,9 +387,32 @@ class AngularUiModuleGenerator(
             val providerServices = emptyList<String>() // TODO
 
             val chipFields = manyToManyChipFieldsFor(entityCreatePageDef.entityDef, entityCreatePageDef.entityDef.manyToManyAssociations)
+
+            val angularFormDef = AngularFormDef(
+                componentBaseName = entityCreatePageDef.entityDef.crudAngularComponentBaseName,
+                requestDtoDef = entityCreatePageDef.createApiDef.requestDtoDef,
+                featureNames = sortedSetOf(),
+                htmlFormFields = entityCreatePageDef.createApiDef.htmlFormFields,
+                formModelFields = entityCreatePageDef.createApiDef.htmlFormFields,
+                delegateFormSubmission = DelegateFormSubmission.FALSE, // TODO
+                emitEventOnSuccess = EmitEventsOnSuccess.FALSE,
+                emitEventOnError = EmitEventsOnError.FALSE,
+                onSuccessUrl = null,
+                submitButtonText = null,
+                inlineFormOrDialog = InlineFormOrDialog.INLINE_FORM,
+                createOrEdit = CreateOrEdit.create,
+                context = null,
+                dialogTitle = null,
+                multiFieldDatabaseIndexDefs = emptyList(),
+                onSubmitServiceFunctionName = "create",
+                formServiceTypescriptImport = null,
+                angularFormSystem = AngularFormSystem.REACTIVE,
+                fetchForEditDtoDef = null,
+                entityIdInjectType = "string"
+            )
+
             EntityCreateFormComponentRenderer(
-                entityCreatePageDef.createApiDef.requestDtoDef,
-                entityCreatePageDef.createApiDef.htmlFormFields,
+                angularFormDef,
                 entityCreatePageDef.createFormAngularComponentNames,
                 entityCreatePageDef.entityDef.crudAngularComponentNames,
                 providerServices,

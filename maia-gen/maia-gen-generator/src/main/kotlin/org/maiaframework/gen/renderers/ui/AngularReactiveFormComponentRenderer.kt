@@ -14,11 +14,11 @@ import org.maiaframework.lang.text.StringFunctions
 
 class AngularReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
-    angularComponentNames: AngularComponentNames,
+    formAngularComponentNames: AngularComponentNames,
     providerServices: List<String> = emptyList(),
     private val chipFields: List<ManyToManyChipFieldDef>
 ) : AbstractAngularComponentRenderer(
-    angularComponentNames,
+    formAngularComponentNames,
     providerServices
 ) {
 
@@ -30,6 +30,9 @@ class AngularReactiveFormComponentRenderer(
 
 
     private val allRequestDtoFields = this.requestDtoDef.dtoFieldDefs
+
+
+    private val typeaheadDefs = this.angularFormDef.allTypeaheadDefs
 
 
     init {

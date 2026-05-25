@@ -14,7 +14,6 @@ import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 import org.maiaframework.gen.spec.definition.flags.IsCappedCollection
-import org.maiaframework.gen.spec.definition.flags.IsCreatableByUser
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
 import org.maiaframework.gen.spec.definition.flags.IsDeltaField
 import org.maiaframework.gen.spec.definition.flags.IsDeltaKey
@@ -583,7 +582,10 @@ class EntityDef(
     }
 
 
-    val crudAngularComponentNames = AngularComponentNames(this.packageName, "${this.entityBaseName}Crud")
+    val crudAngularComponentBaseName = AngularComponentBaseName("${this.entityBaseName}Crud")
+
+
+    val crudAngularComponentNames = AngularComponentNames(this.packageName, crudAngularComponentBaseName.value)
 
 
     val deleteDialogComponentNames = AngularComponentNames(this.packageName, "${this.entityBaseName}EntityDeleteDialog")

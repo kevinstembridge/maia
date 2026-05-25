@@ -2,6 +2,7 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
+import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
@@ -39,8 +40,7 @@ import org.maiaframework.lang.text.StringFunctions
 
 
 class EntityCreateFormComponentRenderer(
-    private val requestDtoDef: RequestDtoDef,
-    private val formGroupFields: List<AngularFormFieldDef>,
+    private val angularFormDef: AngularFormDef,
     formAngularComponentNames: AngularComponentNames,
     private val crudAngularComponentNames: AngularComponentNames,
     providerServices: List<String>,
@@ -51,10 +51,16 @@ class EntityCreateFormComponentRenderer(
 ) {
 
 
+    private val formGroupFields = this.angularFormDef.formModelFields
+
+
+    private val requestDtoDef = this.angularFormDef.requestDtoDef
+
+
     private val allRequestDtoFields = this.requestDtoDef.dtoFieldDefs
 
 
-    private val typeaheadDefs = requestDtoDef.classFieldDefs.mapNotNull { it.typeaheadDef }
+    private val typeaheadDefs = this.angularFormDef.allTypeaheadDefs
 
 
     init {
