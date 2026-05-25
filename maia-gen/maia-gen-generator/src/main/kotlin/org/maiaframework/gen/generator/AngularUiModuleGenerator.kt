@@ -361,7 +361,14 @@ class AngularUiModuleGenerator(
         this.modelDef.entityCreatePageDefs.forEach { entityCreatePageDef ->
 
             // TODO account for Signal forms vs Reactive forms
-            EntityCreateFormComponentRenderer(entityCreatePageDef, entityCreatePageDef.createApiDef.requestDtoDef, entityCreatePageDef.createApiDef.htmlFormFields).renderToDir(this.typescriptOutputDir)
+
+            EntityCreateFormComponentRenderer(
+                entityCreatePageDef.createApiDef.requestDtoDef,
+                entityCreatePageDef.createApiDef.htmlFormFields,
+                entityCreatePageDef.createFormAngularComponentNames,
+                entityCreatePageDef.entityDef.crudAngularComponentNames
+            ).renderToDir(this.typescriptOutputDir)
+
             EntityCreateFormScssRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
             EntityCreateReactiveFormHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
             EntityCreateFormPageComponentRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)

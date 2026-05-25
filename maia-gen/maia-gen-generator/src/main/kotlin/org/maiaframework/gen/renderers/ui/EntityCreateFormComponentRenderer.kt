@@ -1,6 +1,7 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.FormControlRendererHelper
+import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
@@ -38,13 +39,11 @@ import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 
 
 class EntityCreateFormComponentRenderer(
-    entityCreatePageDef: EntityCreatePageDef,
     private val requestDtoDef: RequestDtoDef,
-    private val formGroupFields: List<AngularFormFieldDef>
-) : AbstractAngularComponentRenderer(entityCreatePageDef.createFormAngularComponentNames) {
-
-
-    private val entityDef = entityCreatePageDef.entityDef
+    private val formGroupFields: List<AngularFormFieldDef>,
+    formAngularComponentNames: AngularComponentNames,
+    private val crudAngularComponentNames: AngularComponentNames,
+) : AbstractAngularComponentRenderer(formAngularComponentNames) {
 
 
     init {
@@ -64,7 +63,7 @@ class EntityCreateFormComponentRenderer(
         addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport(TypescriptImports.problemDetail)
         addImport(requestDtoDef.typescriptImport)
-        addImport(entityDef.crudAngularComponentNames.serviceTypescriptImport)
+        addImport(crudAngularComponentNames.serviceTypescriptImport)
         formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
             addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
         }
@@ -200,7 +199,7 @@ class EntityCreateFormComponentRenderer(
             |    formGroup: FormGroup;
             |
             |
-            |    private readonly formService = inject(${entityDef.crudAngularComponentNames.serviceName});
+            |    private readonly formService = inject(${crudAngularComponentNames.serviceName});
             |""".trimMargin()
         )
 
