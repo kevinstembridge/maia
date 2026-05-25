@@ -57,9 +57,11 @@ class AngularReactiveFormComponentRenderer(
 
         `render function onCancel`()
 
-        blankLine()
-        blankLine()
-        appendLine("}")
+        append("""
+            |
+            |
+            |}
+            |""".trimMargin())
 
     }
 
