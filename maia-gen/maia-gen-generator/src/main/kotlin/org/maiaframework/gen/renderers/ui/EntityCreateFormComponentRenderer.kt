@@ -52,6 +52,36 @@ class EntityCreateFormComponentRenderer(
 
     }
 
+    override fun renderComponentDecorator() {
+
+        append("""
+            |
+            |
+            |@Component({
+            |""".trimMargin()
+        )
+
+        renderComponentImportArray()
+
+        val providerServices = emptyList<String>() // TODO this.angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } + this.chipFields.map { it.serviceClassName }
+        if (providerServices.isNotEmpty()) {
+            appendLine("    providers: [")
+            providerServices.distinct().forEach { serviceName ->
+                appendLine("        $serviceName,")
+            }
+            appendLine("    ],")
+        }
+
+        append("""
+            |    selector: '${this.angularComponentNames.componentSelector}',
+            |    styleUrls: ['./${this.angularComponentNames.componentScssFileName}'],
+            |    templateUrl: './${this.angularComponentNames.htmlFileName}'
+            |})
+            |""".trimMargin()
+        )
+
+    }
+
 
     override fun renderComponentSource() {
 

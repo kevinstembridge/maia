@@ -66,6 +66,31 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
+    override fun renderComponentSource() {
+
+        appendLine("export class $className implements OnInit {")
+
+        `render class fields`()
+
+        `render constructor`()
+
+        `render function ngOnInit`()
+
+        `render TypeaheadResultFormatters`()
+
+        `render chip entity methods`()
+
+        `render function onSubmit`()
+
+        `render function onCancel`()
+
+        blankLine()
+        blankLine()
+        appendLine("}")
+
+    }
+
+
     private fun `add imports`() {
 
         addImport("@angular/core", "Component")
@@ -172,31 +197,6 @@ class AngularReactiveFormComponentRenderer(
         if (this.angularFormDef.formModelFields.any { it.hasValidationConstraint(UrlConstraintDef::class.java) }) {
             addImport("@app/validators/CustomValidators", "CustomValidators")
         }
-        
-    }
-
-
-    override fun renderComponentSource() {
-
-        appendLine("export class $className implements OnInit {")
-
-        `render class fields`()
-
-        `render constructor`()
-
-        `render function ngOnInit`()
-
-        `render TypeaheadResultFormatters`()
-
-        `render chip entity methods`()
-
-        `render function onSubmit`()
-
-        `render function onCancel`()
-
-        blankLine()
-        blankLine()
-        appendLine("}")
 
     }
 
