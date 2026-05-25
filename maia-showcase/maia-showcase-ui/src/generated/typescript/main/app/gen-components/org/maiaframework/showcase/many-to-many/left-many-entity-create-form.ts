@@ -40,9 +40,6 @@ export class LeftManyEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    formGroup: FormGroup;
-
-
     private readonly formService = inject(LeftManyCrudService);
 
 
@@ -62,6 +59,9 @@ export class LeftManyEntityCreateForm implements OnInit {
 
 
     @ViewChild('rightEntityInput') rightEntityInput!: ElementRef<HTMLInputElement>;
+
+
+    formGroup: FormGroup;
 
 
     constructor() {

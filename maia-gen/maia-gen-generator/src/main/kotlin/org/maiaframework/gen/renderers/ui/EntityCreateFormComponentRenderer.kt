@@ -101,9 +101,6 @@ class EntityCreateFormComponentRenderer(
             |    onCancel = output();
             |
             |
-            |    formGroup: FormGroup;
-            |
-            |
             |    private readonly formService = inject(${crudAngularComponentNames.serviceName});
             |""".trimMargin()
         )
@@ -117,6 +114,8 @@ class EntityCreateFormComponentRenderer(
         `render class fields for enum MatSelect fields`()
 
         `render class fields for chip fields`()
+
+        `render class field for formGroup `()
 
     }
 
@@ -229,6 +228,18 @@ class EntityCreateFormComponentRenderer(
                 |""".trimMargin()
             )
         }
+
+    }
+
+
+    private fun `render class field for formGroup `() {
+
+        append("""
+            |
+            |
+            |    formGroup: FormGroup;
+            |""".trimMargin()
+        )
 
     }
 

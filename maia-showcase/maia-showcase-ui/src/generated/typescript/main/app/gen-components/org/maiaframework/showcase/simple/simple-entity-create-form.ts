@@ -34,9 +34,6 @@ export class SimpleEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    formGroup: FormGroup;
-
-
     private readonly formService = inject(SimpleCrudService);
 
 
@@ -44,6 +41,9 @@ export class SimpleEntityCreateForm implements OnInit {
 
 
     private readonly simpleSomeStringAsyncValidator = inject(SimpleSomeStringAsyncValidator);
+
+
+    formGroup: FormGroup;
 
 
     constructor() {

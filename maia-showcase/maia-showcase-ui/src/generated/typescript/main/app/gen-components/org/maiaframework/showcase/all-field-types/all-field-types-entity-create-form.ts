@@ -55,9 +55,6 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    formGroup: FormGroup;
-
-
     private readonly formService = inject(AllFieldTypesCrudService);
 
 
@@ -80,6 +77,9 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
 
 
     protected readonly SomeEnumSelectOptions = SomeEnumSelectOptions;
+
+
+    formGroup: FormGroup;
 
 
     constructor() {

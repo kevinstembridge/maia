@@ -39,9 +39,6 @@ export class BravoEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    formGroup: FormGroup;
-
-
     private readonly formService = inject(BravoCrudService);
 
 
@@ -52,6 +49,9 @@ export class BravoEntityCreateForm implements OnInit {
 
 
     filteredAlphaIsLoading = signal(false);
+
+
+    formGroup: FormGroup;
 
 
     constructor() {

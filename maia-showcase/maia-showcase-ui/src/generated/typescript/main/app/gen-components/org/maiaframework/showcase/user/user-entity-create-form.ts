@@ -39,9 +39,6 @@ export class UserEntityCreateForm implements OnInit {
     onCancel = output();
 
 
-    formGroup: FormGroup;
-
-
     private readonly formService = inject(UserCrudService);
 
 
@@ -49,6 +46,9 @@ export class UserEntityCreateForm implements OnInit {
 
 
     protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
+
+
+    formGroup: FormGroup;
 
 
     constructor() {
