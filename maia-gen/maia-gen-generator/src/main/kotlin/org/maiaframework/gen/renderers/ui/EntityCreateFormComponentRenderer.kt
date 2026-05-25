@@ -48,133 +48,7 @@ class EntityCreateFormComponentRenderer(
 
     init {
 
-        addImport("@angular/core", "Component")
-        addImport("@angular/core", "OnInit")
-        addImport("@angular/core", "inject")
-        addImport("@angular/core", "output")
-        addImport("@angular/core", "signal")
-        addImport("@angular/forms", "FormControl")
-        addImport("@angular/forms", "FormGroup")
-        addImport("@angular/forms", "Validators")
-        addImport("@angular/forms", "FormsModule", isModule = true)
-        addImport("@angular/forms", "ReactiveFormsModule", isModule = true)
-        addImport("@angular/material/button", "MatButtonModule", isModule = true)
-        addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
-        addImport("@angular/material/input", "MatInputModule", isModule = true)
-        addImport(TypescriptImports.problemDetail)
-        addImport(requestDtoDef.typescriptImport)
-        addImport(crudAngularComponentNames.serviceTypescriptImport)
-        formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-            addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
-        }
-
-        addImportsForFieldTypes(formGroupFields)
-
-    }
-
-
-    private fun addImportsForFieldTypes(formGroupFields: List<AngularFormFieldDef>) {
-
-        formGroupFields.filter { it.isCreatable }.forEach { angularFormFieldDef ->
-
-            when (val fieldType = angularFormFieldDef.fieldType) {
-                is BooleanFieldType -> `add import for Material Checkbox`()
-                is BooleanTypeFieldType -> `add import for Material Checkbox`()
-                is BooleanValueClassFieldType -> `add import for Material Checkbox`()
-                is DataClassFieldType -> {}
-                is DomainIdFieldType -> {}
-                is DoubleFieldType -> {}
-                is EnumFieldType -> `add imports for Material Select component`(fieldType)
-                is EsDocFieldType -> {}
-                is ForeignKeyFieldType -> `add imports for Material Autocomplete`(fieldType)
-                is FqcnFieldType -> {}
-                is InstantFieldType -> `add imports for date and time pickers`()
-                is IntFieldType -> {}
-                is IntTypeFieldType -> {}
-                is IntValueClassFieldType -> {}
-                is ListFieldType -> `add imports for ListFieldType`(fieldType)
-                is LocalDateFieldType -> {}
-                is LongFieldType -> {}
-                is LongTypeFieldType -> {}
-                is MapFieldType -> {}
-                is ObjectIdFieldType -> {}
-                is PeriodFieldType -> {}
-                is PkAndNameFieldType -> {}
-                is RequestDtoFieldType -> {}
-                is SetFieldType -> {}
-                is SimpleResponseDtoFieldType -> {}
-                is StringFieldType -> {}
-                is StringTypeFieldType -> {}
-                is StringValueClassFieldType -> {}
-                is UrlFieldType -> {}
-            }
-
-        }
-
-    }
-
-
-    private fun `add imports for ListFieldType`(fieldType: ListFieldType) {
-
-        when (val parameterFieldType = fieldType.parameterFieldType) {
-
-            is EnumFieldType -> {
-
-                parameterFieldType.enumDef.selectOptionsTypescriptImport.let {
-                    addImport(it)
-                }
-
-                addImport("@angular/material/select", "MatSelect", isModule = true)
-                addImport("@angular/material/select", "MatOption", isModule = true)
-                addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
-
-            }
-
-            else -> {}
-        }
-
-    }
-
-
-    private fun `add imports for Material Select component`(fieldType: EnumFieldType) {
-
-        addImport("@angular/material/select", "MatSelect", isModule = true)
-        addImport("@angular/material/select", "MatOption", isModule = true)
-        addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
-
-        addImport(fieldType.enumDef.typescriptImport)
-
-        fieldType.enumDef.selectOptionsTypescriptImport.let {
-            addImport(it)
-        }
-
-    }
-
-
-    private fun `add imports for Material Autocomplete`(fieldType: ForeignKeyFieldType) {
-
-        addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
-        addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
-        addImport("@angular/material/autocomplete", "MatOption", isModule = true)
-
-    }
-
-
-    private fun `add imports for date and time pickers`() {
-
-        addImport("@angular/material/datepicker", "MatDatepicker", isModule = true)
-        addImport("@angular/material/datepicker", "MatDatepickerInput", isModule = true)
-        addImport("@angular/material/datepicker", "MatDatepickerToggle", isModule = true)
-        addImport("@angular/material/timepicker", "MatTimepicker", isModule = true)
-        addImport("@angular/material/timepicker", "MatTimepickerInput", isModule = true)
-        addImport("@angular/material/timepicker", "MatTimepickerToggle", isModule = true)
-
-    }
-
-
-    private fun `add import for Material Checkbox`() {
-
-        addImport("@angular/material/checkbox", "MatCheckbox", isModule = true)
+        `add imports`()
 
     }
 
@@ -309,6 +183,139 @@ class EntityCreateFormComponentRenderer(
             |}
             |""".trimMargin()
         )
+
+    }
+
+
+    private fun `add imports`() {
+
+        addImport("@angular/core", "Component")
+        addImport("@angular/core", "OnInit")
+        addImport("@angular/core", "inject")
+        addImport("@angular/core", "output")
+        addImport("@angular/core", "signal")
+        addImport("@angular/forms", "FormControl")
+        addImport("@angular/forms", "FormGroup")
+        addImport("@angular/forms", "Validators")
+        addImport("@angular/forms", "FormsModule", isModule = true)
+        addImport("@angular/forms", "ReactiveFormsModule", isModule = true)
+        addImport("@angular/material/button", "MatButtonModule", isModule = true)
+        addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
+        addImport("@angular/material/input", "MatInputModule", isModule = true)
+        addImport(TypescriptImports.problemDetail)
+        addImport(requestDtoDef.typescriptImport)
+        addImport(crudAngularComponentNames.serviceTypescriptImport)
+        formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+            addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
+        }
+
+        addImportsForFieldTypes(formGroupFields)
+
+    }
+
+
+    private fun addImportsForFieldTypes(formGroupFields: List<AngularFormFieldDef>) {
+
+        formGroupFields.filter { it.isCreatable }.forEach { angularFormFieldDef ->
+
+            when (val fieldType = angularFormFieldDef.fieldType) {
+                is BooleanFieldType -> `add import for Material Checkbox`()
+                is BooleanTypeFieldType -> `add import for Material Checkbox`()
+                is BooleanValueClassFieldType -> `add import for Material Checkbox`()
+                is DataClassFieldType -> {}
+                is DomainIdFieldType -> {}
+                is DoubleFieldType -> {}
+                is EnumFieldType -> `add imports for Material Select component`(fieldType)
+                is EsDocFieldType -> {}
+                is ForeignKeyFieldType -> `add imports for Material Autocomplete`(fieldType)
+                is FqcnFieldType -> {}
+                is InstantFieldType -> `add imports for date and time pickers`()
+                is IntFieldType -> {}
+                is IntTypeFieldType -> {}
+                is IntValueClassFieldType -> {}
+                is ListFieldType -> `add imports for ListFieldType`(fieldType)
+                is LocalDateFieldType -> {}
+                is LongFieldType -> {}
+                is LongTypeFieldType -> {}
+                is MapFieldType -> {}
+                is ObjectIdFieldType -> {}
+                is PeriodFieldType -> {}
+                is PkAndNameFieldType -> {}
+                is RequestDtoFieldType -> {}
+                is SetFieldType -> {}
+                is SimpleResponseDtoFieldType -> {}
+                is StringFieldType -> {}
+                is StringTypeFieldType -> {}
+                is StringValueClassFieldType -> {}
+                is UrlFieldType -> {}
+            }
+
+        }
+
+    }
+
+
+    private fun `add imports for ListFieldType`(fieldType: ListFieldType) {
+
+        when (val parameterFieldType = fieldType.parameterFieldType) {
+
+            is EnumFieldType -> {
+
+                parameterFieldType.enumDef.selectOptionsTypescriptImport.let {
+                    addImport(it)
+                }
+
+                addImport("@angular/material/select", "MatSelect", isModule = true)
+                addImport("@angular/material/select", "MatOption", isModule = true)
+                addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
+
+            }
+
+            else -> {}
+        }
+
+    }
+
+
+    private fun `add imports for Material Select component`(fieldType: EnumFieldType) {
+
+        addImport("@angular/material/select", "MatSelect", isModule = true)
+        addImport("@angular/material/select", "MatOption", isModule = true)
+        addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
+
+        addImport(fieldType.enumDef.typescriptImport)
+
+        fieldType.enumDef.selectOptionsTypescriptImport.let {
+            addImport(it)
+        }
+
+    }
+
+
+    private fun `add imports for Material Autocomplete`(fieldType: ForeignKeyFieldType) {
+
+        addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
+        addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
+        addImport("@angular/material/autocomplete", "MatOption", isModule = true)
+
+    }
+
+
+    private fun `add imports for date and time pickers`() {
+
+        addImport("@angular/material/datepicker", "MatDatepicker", isModule = true)
+        addImport("@angular/material/datepicker", "MatDatepickerInput", isModule = true)
+        addImport("@angular/material/datepicker", "MatDatepickerToggle", isModule = true)
+        addImport("@angular/material/timepicker", "MatTimepicker", isModule = true)
+        addImport("@angular/material/timepicker", "MatTimepickerInput", isModule = true)
+        addImport("@angular/material/timepicker", "MatTimepickerToggle", isModule = true)
+
+    }
+
+
+    private fun `add import for Material Checkbox`() {
+
+        addImport("@angular/material/checkbox", "MatCheckbox", isModule = true)
 
     }
 
