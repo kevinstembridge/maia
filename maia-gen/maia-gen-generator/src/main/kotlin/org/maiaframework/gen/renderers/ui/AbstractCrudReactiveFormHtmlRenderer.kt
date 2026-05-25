@@ -67,12 +67,13 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
 
         renderManyToManyChipFields()
 
+        appendLine("    </div>")
+
         val matDialogActionsText = when (inlineFormOrDialog) {
             InlineFormOrDialog.DIALOG -> " mat-dialog-actions"
             InlineFormOrDialog.INLINE_FORM -> ""
         }
 
-        appendLine("    </div>")
         appendLine("    <div$matDialogActionsText>")
         appendLine("        <button mat-flat-button type=\"submit\" color=\"primary\">Submit</button>")
 
