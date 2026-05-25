@@ -142,6 +142,8 @@ class EntityCreateFormComponentRenderer(
         addImport("@angular/material/select", "MatOption", isModule = true)
         addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
 
+        addImport(fieldType.enumDef.typescriptImport)
+
         fieldType.enumDef.selectOptionsTypescriptImport.let {
             addImport(it)
         }
@@ -209,14 +211,14 @@ class EntityCreateFormComponentRenderer(
 
         val enumFields = formGroupFields
             .asSequence()
-            .filter { it.isEditable }
+            .filter { it.isCreatable }
             .filter { it.fieldType is EnumFieldType }
             .map { it.fieldType as EnumFieldType }
             .map { it.enumDef }
 
         val listOfEnumFields = formGroupFields
             .asSequence()
-            .filter { it.isEditable }
+            .filter { it.isCreatable }
             .filter { it.fieldType is ListFieldType }
             .map { it.fieldType as ListFieldType }
             .filter { it.parameterFieldType is EnumFieldType }
