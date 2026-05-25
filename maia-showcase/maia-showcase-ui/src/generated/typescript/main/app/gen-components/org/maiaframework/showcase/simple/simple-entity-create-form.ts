@@ -58,7 +58,7 @@ export class SimpleEntityCreateForm implements OnInit {
 
 
     ngOnInit() {
-        //TODO
+
     }
 
 

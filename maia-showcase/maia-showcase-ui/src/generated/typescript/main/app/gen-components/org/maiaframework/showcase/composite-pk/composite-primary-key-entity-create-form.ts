@@ -56,7 +56,7 @@ export class CompositePrimaryKeyEntityCreateForm implements OnInit {
 
 
     ngOnInit() {
-        //TODO
+
     }
 
 

@@ -127,7 +127,7 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
 
 
     ngOnInit() {
-        //TODO
+
     }
 
 
