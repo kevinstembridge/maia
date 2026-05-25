@@ -81,32 +81,32 @@ class EntityCreateFormComponentRenderer(
                 is BooleanFieldType -> `add import for Material Checkbox`()
                 is BooleanTypeFieldType -> `add import for Material Checkbox`()
                 is BooleanValueClassFieldType -> `add import for Material Checkbox`()
-                is DataClassFieldType -> TODO("YAGNI?")
-                is DomainIdFieldType -> TODO("YAGNI?")
-                is DoubleFieldType -> TODO("YAGNI?")
+                is DataClassFieldType -> {}
+                is DomainIdFieldType -> {}
+                is DoubleFieldType -> {}
                 is EnumFieldType -> `add imports for Material Select component`(fieldType)
-                is EsDocFieldType -> TODO("YAGNI?")
-                is ForeignKeyFieldType -> TODO("YAGNI?")
-                is FqcnFieldType -> TODO("YAGNI?")
+                is EsDocFieldType -> {}
+                is ForeignKeyFieldType -> `add imports for Material Autocomplete`(fieldType)
+                is FqcnFieldType -> {}
                 is InstantFieldType -> `add imports for date and time pickers`()
-                is IntFieldType -> TODO("YAGNI?")
-                is IntTypeFieldType -> TODO("YAGNI?")
-                is IntValueClassFieldType -> TODO("YAGNI?")
+                is IntFieldType -> {}
+                is IntTypeFieldType -> {}
+                is IntValueClassFieldType -> {}
                 is ListFieldType -> `add imports for ListFieldType`(fieldType)
-                is LocalDateFieldType -> TODO("YAGNI?")
-                is LongFieldType -> TODO("YAGNI?")
-                is LongTypeFieldType -> TODO("YAGNI?")
-                is MapFieldType -> TODO("YAGNI?")
-                is ObjectIdFieldType -> TODO("YAGNI?")
-                is PeriodFieldType -> TODO("YAGNI?")
-                is PkAndNameFieldType -> TODO("YAGNI?")
-                is RequestDtoFieldType -> TODO("YAGNI?")
-                is SetFieldType -> TODO("YAGNI?")
-                is SimpleResponseDtoFieldType -> TODO("YAGNI?")
-                is StringFieldType -> TODO("YAGNI?")
-                is StringTypeFieldType -> TODO("YAGNI?")
-                is StringValueClassFieldType -> TODO("YAGNI?")
-                is UrlFieldType -> TODO("YAGNI?")
+                is LocalDateFieldType -> {}
+                is LongFieldType -> {}
+                is LongTypeFieldType -> {}
+                is MapFieldType -> {}
+                is ObjectIdFieldType -> {}
+                is PeriodFieldType -> {}
+                is PkAndNameFieldType -> {}
+                is RequestDtoFieldType -> {}
+                is SetFieldType -> {}
+                is SimpleResponseDtoFieldType -> {}
+                is StringFieldType -> {}
+                is StringTypeFieldType -> {}
+                is StringValueClassFieldType -> {}
+                is UrlFieldType -> {}
             }
 
         }
@@ -149,6 +149,15 @@ class EntityCreateFormComponentRenderer(
     }
 
 
+    private fun `add imports for Material Autocomplete`(fieldType: ForeignKeyFieldType) {
+
+        addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
+        addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
+        addImport("@angular/material/autocomplete", "MatOption", isModule = true)
+
+    }
+
+
     private fun `add imports for date and time pickers`() {
 
         addImport("@angular/material/datepicker", "MatDatepicker", isModule = true)
@@ -172,7 +181,8 @@ class EntityCreateFormComponentRenderer(
 
         appendLine("export class $className implements OnInit {")
 
-        append("""
+        append(
+            """
             |
             |
             |    onSave = output();
@@ -188,7 +198,8 @@ class EntityCreateFormComponentRenderer(
             |
             |
             |    private readonly formService = inject(${entityDef.crudAngularComponentNames.serviceName});
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
         formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
             blankLine()
@@ -222,13 +233,15 @@ class EntityCreateFormComponentRenderer(
 
         }
 
-        append("""
+        append(
+            """
             |
             |
             |    constructor() {
             |
             |        this.formGroup = new FormGroup({
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
         formGroupFields.forEach { angularFormFieldDef ->
             FormControlRendererHelper.renderFormControlFor(
@@ -244,7 +257,8 @@ class EntityCreateFormComponentRenderer(
         blankLine()
         appendLine("    }")
 
-        append("""
+        append(
+            """
             |
             |
             |    ngOnInit() {
@@ -261,14 +275,16 @@ class EntityCreateFormComponentRenderer(
             |        }
             |
             |        const requestDto = {
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
         createApiDef.requestDtoDef.dtoFieldDefs.forEach { field ->
             val fieldName = field.classFieldDef.classFieldName
             appendLine("            ${fieldName}: this.formGroup.getRawValue().${fieldName},")
         }
 
-        append("""
+        append(
+            """
             |        } as ${createApiDef.requestDtoDef.uqcn};
             |
             |        this.formService.create(requestDto).subscribe({
@@ -289,7 +305,8 @@ class EntityCreateFormComponentRenderer(
             |
             |
             |}
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
     }
 
