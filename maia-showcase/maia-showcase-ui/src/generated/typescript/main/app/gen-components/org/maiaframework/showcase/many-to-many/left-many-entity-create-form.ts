@@ -24,7 +24,7 @@ import {ProblemDetail} from '@maia/maia-ui';
     styleUrls: ['./left-many-entity-create-form.scss'],
     templateUrl: './left-many-entity-create-form.html'
 })
-export class LeftManyEntityCreateForm implements OnInit {
+export class LeftManyEntityCreateForm {
 
 
     onSave = output();
@@ -48,11 +48,6 @@ export class LeftManyEntityCreateForm implements OnInit {
             someInt: new FormControl(0, { updateOn: 'change' }),
             someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
         });
-
-    }
-
-
-    ngOnInit() {
 
     }
 

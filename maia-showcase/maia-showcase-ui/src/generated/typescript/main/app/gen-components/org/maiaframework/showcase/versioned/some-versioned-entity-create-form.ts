@@ -24,7 +24,7 @@ import {ProblemDetail} from '@maia/maia-ui';
     styleUrls: ['./some-versioned-entity-create-form.scss'],
     templateUrl: './some-versioned-entity-create-form.html'
 })
-export class SomeVersionedEntityCreateForm implements OnInit {
+export class SomeVersionedEntityCreateForm {
 
 
     onSave = output();
@@ -48,11 +48,6 @@ export class SomeVersionedEntityCreateForm implements OnInit {
             someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
             someInt: new FormControl(0, { updateOn: 'change' }),
         });
-
-    }
-
-
-    ngOnInit() {
 
     }
 

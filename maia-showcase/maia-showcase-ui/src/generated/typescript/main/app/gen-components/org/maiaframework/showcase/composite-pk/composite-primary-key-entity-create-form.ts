@@ -24,7 +24,7 @@ import {ProblemDetail} from '@maia/maia-ui';
     styleUrls: ['./composite-primary-key-entity-create-form.scss'],
     templateUrl: './composite-primary-key-entity-create-form.html'
 })
-export class CompositePrimaryKeyEntityCreateForm implements OnInit {
+export class CompositePrimaryKeyEntityCreateForm {
 
 
     onSave = output();
@@ -49,11 +49,6 @@ export class CompositePrimaryKeyEntityCreateForm implements OnInit {
             someInt: new FormControl(0, { updateOn: 'change' }),
             someModifiableString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
         });
-
-    }
-
-
-    ngOnInit() {
 
     }
 

@@ -25,7 +25,7 @@ import {ProblemDetail} from '@maia/maia-ui';
     styleUrls: ['./simple-entity-create-form.scss'],
     templateUrl: './simple-entity-create-form.html'
 })
-export class SimpleEntityCreateForm implements OnInit {
+export class SimpleEntityCreateForm {
 
 
     onSave = output();
@@ -51,11 +51,6 @@ export class SimpleEntityCreateForm implements OnInit {
         this.formGroup = new FormGroup({
             someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)], asyncValidators: [this.simpleSomeStringAsyncValidator.validate.bind(this.simpleSomeStringAsyncValidator)] }),
         });
-
-    }
-
-
-    ngOnInit() {
 
     }
 

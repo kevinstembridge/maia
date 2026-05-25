@@ -46,7 +46,7 @@ import {ProblemDetail} from '@maia/maia-ui';
     styleUrls: ['./all-field-types-entity-create-form.scss'],
     templateUrl: './all-field-types-entity-create-form.html'
 })
-export class AllFieldTypesEntityCreateForm implements OnInit {
+export class AllFieldTypesEntityCreateForm {
 
 
     onSave = output();
@@ -120,11 +120,6 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
             someProvidedStringTypeNullable: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
             someListOfStrings: new FormControl([], { updateOn: 'change' }),
         });
-
-    }
-
-
-    ngOnInit() {
 
     }
 

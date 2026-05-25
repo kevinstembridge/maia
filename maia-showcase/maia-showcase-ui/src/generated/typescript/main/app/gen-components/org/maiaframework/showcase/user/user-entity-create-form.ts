@@ -30,7 +30,7 @@ import {ProblemDetail} from '@maia/maia-ui';
     styleUrls: ['./user-entity-create-form.scss'],
     templateUrl: './user-entity-create-form.html'
 })
-export class UserEntityCreateForm implements OnInit {
+export class UserEntityCreateForm {
 
 
     onSave = output();
@@ -58,11 +58,6 @@ export class UserEntityCreateForm implements OnInit {
             firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
             lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
         });
-
-    }
-
-
-    ngOnInit() {
 
     }
 

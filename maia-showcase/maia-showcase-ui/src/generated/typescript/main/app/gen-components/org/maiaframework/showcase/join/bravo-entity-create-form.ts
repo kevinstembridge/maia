@@ -28,7 +28,7 @@ import {ProblemDetail} from '@maia/maia-ui';
     styleUrls: ['./bravo-entity-create-form.scss'],
     templateUrl: './bravo-entity-create-form.html'
 })
-export class BravoEntityCreateForm implements OnInit {
+export class BravoEntityCreateForm {
 
 
     onSave = output();
@@ -53,11 +53,6 @@ export class BravoEntityCreateForm implements OnInit {
             someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
             alpha: new FormControl('', { updateOn: 'change' }),
         });
-
-    }
-
-
-    ngOnInit() {
 
     }
 

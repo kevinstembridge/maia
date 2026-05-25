@@ -55,7 +55,7 @@ class EntityCreateFormComponentRenderer(
 
     override fun renderComponentSource() {
 
-        appendLine("export class $className implements OnInit {")
+        appendLine("export class $className {")
 
         append(
             """
@@ -113,11 +113,6 @@ class EntityCreateFormComponentRenderer(
 
         append(
             """
-            |
-            |
-            |    ngOnInit() {
-            |
-            |    }
             |
             |
             |    onSubmit() {
