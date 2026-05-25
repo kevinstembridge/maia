@@ -57,6 +57,9 @@ export class BravoEntityCreateForm {
     }
 
 
+    alphaResultFormatter = (result: any) => result.someString;
+
+
     onSubmit() {
 
         this.problemDetail.set(null);

@@ -50,6 +50,9 @@ class EntityCreateFormComponentRenderer(
 ) {
 
 
+    private val allRequestDtoFields = this.requestDtoDef.dtoFieldDefs
+
+
     init {
 
         `add imports`()
@@ -61,59 +64,13 @@ class EntityCreateFormComponentRenderer(
 
         appendLine("export class $className {")
 
-        append(
-            """
-            |
-            |
-            |    onSave = output();
-            |
-            |
-            |    onCancel = output();
-            |
-            |
-            |    problemDetail = signal<ProblemDetail | null>(null);
-            |
-            |
-            |    formGroup: FormGroup;
-            |
-            |
-            |    private readonly formService = inject(${crudAngularComponentNames.serviceName});
-            |""".trimMargin()
-        )
-
-        formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
-        }
-
-        val enumFields = formGroupFields
-            .asSequence()
-            .filter { it.isCreatable }
-            .filter { it.fieldType is EnumFieldType }
-            .map { it.fieldType as EnumFieldType }
-            .map { it.enumDef }
-
-        val listOfEnumFields = formGroupFields
-            .asSequence()
-            .filter { it.isCreatable }
-            .filter { it.fieldType is ListFieldType }
-            .map { it.fieldType as ListFieldType }
-            .filter { it.parameterFieldType is EnumFieldType }
-            .map { it.parameterFieldType as EnumFieldType }
-            .map { it.enumDef }
-
-        enumFields.plus(listOfEnumFields).distinctBy { it.selectOptionsUqcn }.forEach { enumDef ->
-
-            addImport(enumDef.selectOptionsTypescriptImport)
-
-            blankLine()
-            blankLine()
-            appendLine("    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};")
-
-        }
+        `render class fields`()
 
         `render constructor`()
+
+        `render function ngOnInit`()
+
+        `render TypeaheadResultFormatters`()
 
         append(
             """
@@ -163,7 +120,89 @@ class EntityCreateFormComponentRenderer(
 
     }
 
+
+    private fun `render class fields`() {
+
+        append(
+            """
+                |
+                |
+                |    onSave = output();
+                |
+                |
+                |    onCancel = output();
+                |
+                |
+                |    problemDetail = signal<ProblemDetail | null>(null);
+                |
+                |
+                |    formGroup: FormGroup;
+                |
+                |
+                |    private readonly formService = inject(${crudAngularComponentNames.serviceName});
+                |""".trimMargin()
+
+        )
+
+        formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+            blankLine()
+            blankLine()
+            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
+        }
+
+        val enumFields = formGroupFields
+            .asSequence()
+            .filter { it.isCreatable }
+            .filter { it.fieldType is EnumFieldType }
+            .map { it.fieldType as EnumFieldType }
+            .map { it.enumDef }
+
+        val listOfEnumFields = formGroupFields
+            .asSequence()
+            .filter { it.isCreatable }
+            .filter { it.fieldType is ListFieldType }
+            .map { it.fieldType as ListFieldType }
+            .filter { it.parameterFieldType is EnumFieldType }
+            .map { it.parameterFieldType as EnumFieldType }
+            .map { it.enumDef }
+
+        enumFields.plus(listOfEnumFields).distinctBy { it.selectOptionsUqcn }.forEach { enumDef ->
+
+            addImport(enumDef.selectOptionsTypescriptImport)
+
+            blankLine()
+            blankLine()
+            appendLine("    protected readonly ${enumDef.selectOptionsUqcn} = ${enumDef.selectOptionsUqcn};")
+
+        }
+
+    }
+
+
+    private fun `render function ngOnInit`() {
+
+        // TODO
+
+    }
+
+
+    private fun `render TypeaheadResultFormatters`() {
+
+        this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
+
+            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
+
+            blankLine()
+            blankLine()
+            appendLine("    ${typeaheadDef.typeaheadName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
+
+        }
+
+    }
+
+
     private fun `render constructor`() {
+
         append(
             """
                 |
@@ -187,6 +226,7 @@ class EntityCreateFormComponentRenderer(
         appendLine("        });")
         blankLine()
         appendLine("    }")
+
     }
 
 
