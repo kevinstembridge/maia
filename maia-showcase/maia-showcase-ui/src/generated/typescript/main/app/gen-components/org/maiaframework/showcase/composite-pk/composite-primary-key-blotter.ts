@@ -13,7 +13,7 @@ import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/a
 import {CompositePrimaryKeyBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyBlotterAgGridDatasource';
 import {CompositePrimaryKeyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyBlotterRowDto';
 import {CompositePrimaryKeyBlotterService} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-blotter-service';
-import {CompositePrimaryKeyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-delete-dialog';
+import {CompositePrimaryKeyEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-entity-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -173,7 +173,7 @@ export class CompositePrimaryKeyBlotter {
 
     private onDelete(dto: CompositePrimaryKeyBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(CompositePrimaryKeyDeleteDialog, {
+        const dialogRef = this.dialog.open(CompositePrimaryKeyEntityDeleteDialog, {
             width: '400px',
             data: dto
         });

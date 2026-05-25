@@ -13,7 +13,7 @@ import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/a
 import {SimpleBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterAgGridDatasource';
 import {SimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleBlotterRowDto';
 import {SimpleBlotterService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-blotter-service';
-import {SimpleDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-delete-dialog';
+import {SimpleEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/simple/simple-entity-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -170,7 +170,7 @@ export class SimpleBlotter {
 
     private onDelete(dto: SimpleBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(SimpleDeleteDialog, {
+        const dialogRef = this.dialog.open(SimpleEntityDeleteDialog, {
             width: '400px',
             data: dto
         });

@@ -14,7 +14,7 @@ import {LeftManyBlotterAgGridDatasource} from '@app/gen-components/org/maiaframe
 import {LeftManyBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyBlotterRowDto';
 import {LeftManyBlotterService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-blotter-service';
 import {LeftManyCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-check-foreign-key-references-dialog';
-import {LeftManyDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-delete-dialog';
+import {LeftManyEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-entity-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {ChipsAgGridCellRendererComponent, IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -188,7 +188,7 @@ export class LeftManyBlotter {
 
     private displayDeleteDialog(dto: LeftManyBlotterRowDto) {
 
-        const dialogRef = this.dialog.open(LeftManyDeleteDialog, {
+        const dialogRef = this.dialog.open(LeftManyEntityDeleteDialog, {
             width: '400px',
             data: dto
         });

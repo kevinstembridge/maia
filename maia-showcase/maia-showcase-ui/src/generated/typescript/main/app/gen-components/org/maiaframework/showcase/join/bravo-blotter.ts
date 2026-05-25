@@ -14,7 +14,7 @@ import {BravoBlotterAgGridDatasource} from '@app/gen-components/org/maiaframewor
 import {BravoBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoBlotterRowDto';
 import {BravoBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter-service';
 import {BravoCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-check-foreign-key-references-dialog';
-import {BravoDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-delete-dialog';
+import {BravoEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/join/bravo-entity-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -169,7 +169,7 @@ export class BravoBlotter {
 
     private displayDeleteDialog(dto: BravoBlotterRowDto) {
 
-        const dialogRef = this.dialog.open(BravoDeleteDialog, {
+        const dialogRef = this.dialog.open(BravoEntityDeleteDialog, {
             width: '400px',
             data: dto
         });

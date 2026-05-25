@@ -13,7 +13,7 @@ import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/a
 import {SomeVersionedBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterAgGridDatasource';
 import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedBlotterRowDto';
 import {SomeVersionedBlotterService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter-service';
-import {SomeVersionedDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-delete-dialog';
+import {SomeVersionedEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-entity-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
@@ -153,7 +153,7 @@ export class SomeVersionedBlotter {
 
     private onDelete(dto: SomeVersionedBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(SomeVersionedDeleteDialog, {
+        const dialogRef = this.dialog.open(SomeVersionedEntityDeleteDialog, {
             width: '400px',
             data: dto
         });

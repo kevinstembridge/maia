@@ -18,8 +18,7 @@ class EntityDeleteApiDef(
     val endpointUrl = "/api/${modulePath}${this.entityDef.entityBaseName.toKebabCase()}/"
 
 
-    private val angularComponentNames =
-        AngularComponentNames(this.entityDef.packageName, "${entityDef.entityBaseName}EntityDeleteDialog")
+    private val angularComponentNames = this.entityDef.deleteDialogComponentNames
 
 
     val angularDialogComponentName = angularComponentNames.componentName

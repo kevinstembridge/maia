@@ -587,6 +587,9 @@ class EntityDef(
     val crudAngularComponentNames = AngularComponentNames(this.packageName, "${this.entityBaseName}Crud")
 
 
+    val deleteDialogComponentNames = AngularComponentNames(this.packageName, "${this.entityBaseName}EntityDeleteDialog")
+
+
     val crudServiceClassDef: ClassDef
 
 
@@ -655,9 +658,6 @@ class EntityDef(
 
 
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
-
-
-    val deleteDialogComponentNames = AngularComponentNames(this.packageName, "${this.entityBaseName}DeleteDialog")
 
 
     val checkForeignKeyReferencesDialogComponentNames =

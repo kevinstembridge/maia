@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 import {AllFieldTypesBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesBlotterAgGridDatasource';
 import {AllFieldTypesBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesBlotterRowDto';
 import {AllFieldTypesBlotterService} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-blotter-service';
-import {AllFieldTypesDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-delete-dialog';
+import {AllFieldTypesEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-entity-delete-dialog';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
@@ -188,7 +188,7 @@ export class AllFieldTypesBlotter {
 
     private onDelete(dto: AllFieldTypesBlotterRowDto): void {
 
-        const dialogRef = this.dialog.open(AllFieldTypesDeleteDialog, {
+        const dialogRef = this.dialog.open(AllFieldTypesEntityDeleteDialog, {
             width: '400px',
             data: dto
         });
