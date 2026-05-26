@@ -158,12 +158,16 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render class field for onSuccess output signal`() {
 
-        append("""
-            |
-            |
-            |    onSuccess = output();
-            |""".trimMargin()
-        )
+        if (this.angularFormDef.emitEventOnSuccess.value) {
+
+            append("""
+                |
+                |
+                |    readonly onSuccess = output();
+                |""".trimMargin()
+            )
+
+        }
 
     }
 
@@ -903,7 +907,7 @@ class EntityCreateFormComponentRenderer(
 
             append("""
                 |            error: err => {
-                |                this.onErrorEvent.emit(err);
+                |                this.onError.emit(err);
                 |            }
                 |""".trimMargin())
 
@@ -932,8 +936,8 @@ class EntityCreateFormComponentRenderer(
             |    onCancelClicked(): void {
             |        this.onCancel.emit();
             |    }
-            |""".trimMargin())
-
+            |""".trimMargin()
+        )
 
     }
 

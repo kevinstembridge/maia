@@ -107,14 +107,12 @@ class AngularReactiveFormComponentRenderer(
 
         `render class field for router`()
 
-        `render class fields for chipField services`()
-
         `render class fields for multi-field unique indexes`()
 
     }
 
 
-    private fun `render class field for delegated form submission`() {
+    private fun `render class field for delegated form submission output signal`() {
 
         if (this.angularFormDef.delegateFormSubmission.value) {
 
@@ -130,14 +128,14 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `render class field for onSuccess event`() {
+    private fun `render class field for onSuccess output signal`() {
 
         if (this.angularFormDef.emitEventOnSuccess.value) {
 
             append("""
                 |
                 |
-                |    readonly onSuccessEvent = output();
+                |    readonly onSuccess = output();
                 |""".trimMargin()
             )
 
@@ -146,7 +144,7 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `render class field for onCancel event`() {
+    private fun `render class field for onCancel output signal`() {
 
         append("""
             |
@@ -158,7 +156,7 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `render class field for onError event`() {
+    private fun `render class field for onError output signal`() {
 
         if (this.angularFormDef.emitEventOnError.value) {
 
@@ -260,6 +258,8 @@ class AngularReactiveFormComponentRenderer(
             .filter { it.withEnumSelectionOptions }
             .distinctBy { it.selectOptionsUqcn }
             .forEach { enumDef ->
+
+                addImport(enumDef.selectOptionsTypescriptImport)
 
                 append("""
                     |
@@ -397,10 +397,11 @@ class AngularReactiveFormComponentRenderer(
 
     private fun `render class field for router`() {
 
-        this.angularFormDef.onSuccessUrl?.let {
+        if (`the form requires a Router`()) {
+
+            addImport("@angular/router", "Router")
 
             append("""
-                |
                 |
                 |
                 |    private readonly router = inject(Router);
@@ -408,6 +409,14 @@ class AngularReactiveFormComponentRenderer(
             )
 
         }
+
+    }
+
+
+    private fun `the form requires a Router`(): Boolean {
+
+        // TODO consider other scenarios where the form requires a router, e.g. when the form is used in a dialog
+        return this.angularFormDef.onSuccessUrl != null
 
     }
 
@@ -804,15 +813,14 @@ class AngularReactiveFormComponentRenderer(
     private fun `render formService request`() {
 
         append("""
-            |        this.formService.${angularFormDef.onSubmitServiceFunctionName}(requestDto)
-            |            .subscribe({
+            |        this.formService.${angularFormDef.onSubmitServiceFunctionName}(requestDto).subscribe({
             |""".trimMargin()
         )
 
         `render formService request next function`()
         `render formService request error function`()
 
-        appendLine("            });")
+        appendLine("        });")
 
     }
 
@@ -828,17 +836,17 @@ class AngularReactiveFormComponentRenderer(
                     if (this.angularFormDef.emitEventOnSuccess.value) {
 
                         append("""
-                            |                next: () => {
-                            |                    this.onSuccessEvent.emit();
-                            |                },
+                            |            next: () => {
+                            |                this.onSuccess.emit();
+                            |            },
                             |""".trimMargin())
 
                     } else {
 
                         append("""
-                            |                next: () => {
-                            |                    // TODO maybe emit an event?
-                            |                },
+                            |            next: () => {
+                            |                // TODO maybe emit an event?
+                            |            },
                             |""".trimMargin())
 
                     }
@@ -850,17 +858,17 @@ class AngularReactiveFormComponentRenderer(
                     if (this.angularFormDef.emitEventOnSuccess.value) {
 
                         append("""
-                            |                next: () => {
-                            |                    this.onSuccessEvent.emit();
-                            |                },
+                            |            next: () => {
+                            |                this.onSuccess.emit();
+                            |            },
                             |""".trimMargin())
 
                     } else {
 
                         append("""
-                            |                next: () => {
-                            |                    this.dialogRef.close(true);
-                            |                },
+                            |            next: () => {
+                            |                this.dialogRef.close(true);
+                            |            },
                             |""".trimMargin())
 
                     }
@@ -872,9 +880,9 @@ class AngularReactiveFormComponentRenderer(
         } else {
 
             append("""
-                |                next: (_) => {
-                |                    this.router.navigate(['${this.angularFormDef.onSuccessUrl}']);
-                |                },
+                |            next: () => {
+                |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}']);
+                |            },
                 |""".trimMargin())
 
         }
@@ -887,17 +895,17 @@ class AngularReactiveFormComponentRenderer(
         if (this.angularFormDef.emitEventOnError.value) {
 
             append("""
-                |                error: err => {
-                |                    this.onErrorEvent.emit(err);
-                |                }
+                |            error: err => {
+                |                this.onError.emit(err);
+                |            }
                 |""".trimMargin())
 
         } else {
 
             append("""
-                |                error: err => {
-                |                    this.problemDetail.set(err.error);
-                |                }
+                |            error: err => {
+                |                this.problemDetail.set(err.error);
+                |            }
                 |""".trimMargin())
 
         }
@@ -917,7 +925,8 @@ class AngularReactiveFormComponentRenderer(
             |    onCancel(): void {
             |        this.dialogRef.close();
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
     }
 
