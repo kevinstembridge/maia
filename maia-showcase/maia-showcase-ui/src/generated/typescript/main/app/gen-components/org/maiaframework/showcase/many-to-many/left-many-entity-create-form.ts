@@ -37,9 +37,6 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
 export class LeftManyEntityCreateForm implements OnInit {
 
 
-    onSuccess = output();
-
-
     onCancel = output();
 
 

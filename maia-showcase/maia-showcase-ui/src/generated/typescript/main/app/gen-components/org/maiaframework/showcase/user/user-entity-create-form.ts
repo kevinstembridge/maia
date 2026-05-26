@@ -34,9 +34,6 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class UserEntityCreateForm implements OnInit {
 
 
-    onSuccess = output();
-
-
     onCancel = output();
 
 
