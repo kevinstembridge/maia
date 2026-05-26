@@ -44,7 +44,7 @@ import org.maiaframework.gen.renderers.ui.EntityEditReactiveDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditSignalFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityFormComponentRenderer
-import org.maiaframework.gen.renderers.ui.AngularReactiveFormComponentRenderer
+import org.maiaframework.gen.renderers.ui.AngularReactiveFormComponentRenderer_old
 import org.maiaframework.gen.renderers.ui.EnumSelectionOptionsTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EnumTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
@@ -233,7 +233,7 @@ class AngularUiModuleGenerator(
         when (def.angularFormSystem) {
 
             AngularFormSystem.REACTIVE ->
-                AngularReactiveFormComponentRenderer(
+                AngularReactiveFormComponentRenderer_old(
                     def,
                     angularComponentNames,
                     providerServices,

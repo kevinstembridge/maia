@@ -40,7 +40,7 @@ import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 import org.maiaframework.lang.text.StringFunctions
 
 
-class AngularReactiveFormComponentRenderer(
+class AngularReactiveFormComponentRenderer_old(
     private val angularFormDef: AngularFormDef,
     formAngularComponentNames: AngularComponentNames,
     providerServices: List<String>,
