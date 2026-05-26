@@ -386,6 +386,8 @@ class AngularUiModuleGenerator(
 
             val providerServices = emptyList<String>() // TODO
 
+            val viewPageDef = this.modelDef.findViewEntityPage(entityCreatePageDef.entityDef)
+
             val chipFields = manyToManyChipFieldsFor(entityCreatePageDef.entityDef, entityCreatePageDef.entityDef.manyToManyAssociations)
 
             val angularFormDef = AngularFormDef(
@@ -397,7 +399,7 @@ class AngularUiModuleGenerator(
                 delegateFormSubmission = DelegateFormSubmission.FALSE, // TODO
                 emitEventOnSuccess = EmitEventsOnSuccess.FALSE,
                 emitEventOnError = EmitEventsOnError.FALSE,
-                onSuccessUrl = null,
+                onSuccessUrl = viewPageDef?.viewPageUrl,
                 submitButtonText = null,
                 inlineFormOrDialog = InlineFormOrDialog.INLINE_FORM,
                 createOrEdit = CreateOrEdit.create,
