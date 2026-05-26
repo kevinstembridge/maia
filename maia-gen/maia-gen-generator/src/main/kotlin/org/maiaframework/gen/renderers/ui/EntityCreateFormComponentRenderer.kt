@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
@@ -124,6 +125,16 @@ class EntityCreateFormComponentRenderer(
         `render class field for loading signal if fetchForEdit form`()
 
         `render class field for linked fields`()
+
+        `render class field for dialogRef`()
+
+        `render class field for entityId`()
+
+        `render class field for form context`()
+
+        `render class field for router`()
+
+        `render class fields for multi-field unique indexes`()
 
     }
 
@@ -364,6 +375,108 @@ class EntityCreateFormComponentRenderer(
                 |
                 |
                 |    ${fieldDef.classFieldDef.classFieldName}IsVisible = signal<boolean>(false);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field for dialogRef`() {
+
+        if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
+
+            append("""
+                |
+                |
+                |
+                |    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field for entityId`() {
+
+        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
+
+            append("""
+                |
+                |
+                |
+                |    private readonly entityId = inject<${angularFormDef.entityIdInjectType}>(MAT_DIALOG_DATA);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field for form context`() {
+
+        this.angularFormDef.context?.let { context ->
+
+            append("""
+                |
+                |
+                |
+                |    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field for router`() {
+
+        this.angularFormDef.onSuccessUrl?.let {
+
+            append("""
+                |
+                |
+                |
+                |    private readonly router = inject(Router);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class fields for chipField services`() {
+
+        chipFields.forEach { chip ->
+
+            append("""
+                |
+                |
+                |
+                |    private readonly ${chip.serviceFieldName} = inject(${chip.serviceClassName});
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class fields for multi-field unique indexes`() {
+
+        this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
+
+            append("""
+                |
+                |
+                |
+                |    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});
                 |""".trimMargin()
             )
 
@@ -624,6 +737,49 @@ class EntityCreateFormComponentRenderer(
             |        if (this.formGroup.invalid) {
             |            return;
             |        }
+            |""".trimMargin()
+        )
+
+        `render requestDto construction`()
+
+        blankLine()
+
+        if (this.angularFormDef.delegateFormSubmission.value) {
+
+            appendLine("        this.onFormSubmission.emit(requestDto);")
+
+        } else {
+
+            `render formService request`()
+
+        }
+
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
+    private fun `render formService request`() {
+
+        append("""
+            |        this.formService.create(requestDto).subscribe({
+            |            next: () => {
+            |                this.onSave.emit();
+            |            },
+            |            error: err => {
+            |                this.problemDetail.set(err.error);
+            |            },
+            |        });
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render requestDto construction`() {
+
+        append("""
             |
             |        const requestDto = {
             |""".trimMargin()
@@ -634,21 +790,9 @@ class EntityCreateFormComponentRenderer(
             appendLine("            ${fieldName}: this.formGroup.getRawValue().${fieldName},")
         }
 
-        append(
-            """
-                |        } as ${requestDtoDef.uqcn};
-                |
-                |        this.formService.create(requestDto).subscribe({
-                |            next: () => {
-                |                this.onSave.emit();
-                |            },
-                |            error: err => {
-                |                this.problemDetail.set(err.error);
-                |            },
-                |        });
-                |
-                |    }
-                |""".trimMargin()
+        append("""
+            |        } as ${requestDtoDef.uqcn};
+            |""".trimMargin()
         )
 
     }

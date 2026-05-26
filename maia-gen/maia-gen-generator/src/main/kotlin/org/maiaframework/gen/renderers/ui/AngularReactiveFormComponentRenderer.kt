@@ -99,41 +99,17 @@ class AngularReactiveFormComponentRenderer(
 
         `render class field for linked fields`()
 
-        if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
-            blankLine()
-            blankLine()
-            appendLine("    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);")
-        }
+        `render class field for dialogRef`()
 
-        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
-            blankLine()
-            blankLine()
-            appendLine("    private readonly entityId = inject<${angularFormDef.entityIdInjectType}>(MAT_DIALOG_DATA);")
-        }
+        `render class field for entityId`()
 
-        this.angularFormDef.context?.let { context ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);")
-        }
+        `render class field for form context`()
 
-        this.angularFormDef.onSuccessUrl?.let {
-            blankLine()
-            blankLine()
-            appendLine("    private readonly router = inject(Router);")
-        }
+        `render class field for router`()
 
-        chipFields.forEach { chip ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${chip.serviceFieldName} = inject(${chip.serviceClassName});")
-        }
+        `render class fields for chipField services`()
 
-        this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});")
-        }
+        `render class fields for multi-field unique indexes`()
 
     }
 
@@ -263,13 +239,13 @@ class AngularReactiveFormComponentRenderer(
 
         this.typeaheadDefs.forEach { typeaheadDef ->
 
-            val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
+            val serviceFieldName = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
 
             append("""
                 |
                 |
                 |
-                |    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});
+                |    private readonly $serviceFieldName = inject(${typeaheadDef.angularServiceClassName});
                 |""".trimMargin()
             )
 
@@ -315,6 +291,9 @@ class AngularReactiveFormComponentRenderer(
                 |    ${chip.searchControlFieldName} = new FormControl('');
                 |
                 |
+                |    ${chip.serviceFieldName} = inject(${chip.serviceClassName});
+                |
+                |
                 |    @ViewChild('${chip.inputRefName}') ${chip.inputRefName}!: ElementRef<HTMLInputElement>;
                 |""".trimMargin()
             )
@@ -357,6 +336,108 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    ${fieldDef.classFieldDef.classFieldName}IsVisible = signal<boolean>(false);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field for dialogRef`() {
+
+        if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
+
+            append("""
+                |
+                |
+                |
+                |    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field for entityId`() {
+
+        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
+
+            append("""
+                |
+                |
+                |
+                |    private readonly entityId = inject<${angularFormDef.entityIdInjectType}>(MAT_DIALOG_DATA);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field for form context`() {
+
+        this.angularFormDef.context?.let { context ->
+
+            append("""
+                |
+                |
+                |
+                |    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field for router`() {
+
+        this.angularFormDef.onSuccessUrl?.let {
+
+            append("""
+                |
+                |
+                |
+                |    private readonly router = inject(Router);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class fields for chipField services`() {
+
+        chipFields.forEach { chip ->
+
+            append("""
+                |
+                |
+                |
+                |    private readonly ${chip.serviceFieldName} = inject(${chip.serviceClassName});
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class fields for multi-field unique indexes`() {
+
+        this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
+
+            append("""
+                |
+                |
+                |
+                |    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});
                 |""".trimMargin()
             )
 
@@ -479,6 +560,15 @@ class AngularReactiveFormComponentRenderer(
         }
 
         chipFields.forEach { chip ->
+
+            addImport("rxjs", "of")
+            addImport("rxjs/operators", "catchError")
+            addImport("rxjs/operators", "debounceTime")
+            addImport("rxjs/operators", "distinctUntilChanged")
+            addImport("rxjs/operators", "filter")
+            addImport("rxjs/operators", "map")
+            addImport("rxjs/operators", "switchMap")
+            addImport("rxjs/operators", "tap")
 
             append("""
                 |
@@ -642,9 +732,10 @@ class AngularReactiveFormComponentRenderer(
             |            return;
             |        }
             |
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
-        renderRequestDtoConstruction()
+        `render requestDto construction`()
 
         blankLine()
 
@@ -664,6 +755,22 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
+    private fun `render formService request`() {
+
+        append("""
+            |        this.formService.${angularFormDef.onSubmitServiceFunctionName}(requestDto)
+            |            .subscribe({
+            |""".trimMargin()
+        )
+
+        `render formService request next function`()
+        `render formService request error function`()
+
+        appendLine("            });")
+
+    }
+
+
     private fun `render function onCancel`() {
 
         if (this.angularFormDef.inlineFormOrDialog != InlineFormOrDialog.DIALOG) {
@@ -677,22 +784,6 @@ class AngularReactiveFormComponentRenderer(
             |        this.dialogRef.close();
             |    }
             |""".trimMargin())
-
-    }
-
-
-    private fun `render formService request`() {
-
-        append("""
-            |        this.formService.${angularFormDef.onSubmitServiceFunctionName}(requestDto)
-            |            .subscribe({
-            |""".trimMargin()
-        )
-
-        `render formService request next function`()
-        `render formService request error function`()
-
-        appendLine("            });")
 
     }
 
@@ -785,7 +876,7 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun renderRequestDtoConstruction() {
+    private fun `render requestDto construction`() {
 
         appendLine("        const requestDto = {")
 
