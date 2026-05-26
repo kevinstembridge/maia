@@ -731,7 +731,6 @@ class AngularReactiveFormComponentRenderer(
             |        if (this.formGroup.invalid) {
             |            return;
             |        }
-            |
             |""".trimMargin()
         )
 
@@ -751,6 +750,53 @@ class AngularReactiveFormComponentRenderer(
 
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render requestDto construction`() {
+
+        blankLine()
+        appendLine("        const requestDto = {")
+
+        this.angularFormDef.context?.let {
+            appendLine("            context: this.context,")
+        }
+
+        val chipFieldsByDtoName = chipFields.associateBy { it.requestDtoFieldName }
+
+        this.allRequestDtoFields.forEach { requestDtoFieldDef ->
+
+            val dtoFieldName = requestDtoFieldDef.classFieldDef.classFieldName
+            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef
+            val chipField = chipFieldsByDtoName[dtoFieldName.value]
+
+            if (chipField != null) {
+
+                appendLine("            ${dtoFieldName}: this.${chipField.selectedFieldName}.map(e => e.${chipField.esDocIdFieldName}),")
+
+            } else if (typeaheadDef == null) {
+
+                if (dtoFieldName == ClassFieldName.context) {
+
+                    if (this.angularFormDef.context == null) {
+                        appendLine("            context: this.context,")
+                    }
+
+                } else {
+                    appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().$dtoFieldName,")
+                }
+
+            } else {
+
+                val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
+                appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
+
+            }
+
+        }
+
+        appendLine("        } as ${this.angularFormDef.requestDtoDef.uqcn};")
 
     }
 
@@ -872,52 +918,6 @@ class AngularReactiveFormComponentRenderer(
                 |""".trimMargin())
 
         }
-
-    }
-
-
-    private fun `render requestDto construction`() {
-
-        appendLine("        const requestDto = {")
-
-        this.angularFormDef.context?.let {
-            appendLine("            context: this.context,")
-        }
-
-        val chipFieldsByDtoName = chipFields.associateBy { it.requestDtoFieldName }
-
-        this.allRequestDtoFields.forEach { requestDtoFieldDef ->
-
-            val dtoFieldName = requestDtoFieldDef.classFieldDef.classFieldName
-            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef
-            val chipField = chipFieldsByDtoName[dtoFieldName.value]
-
-            if (chipField != null) {
-
-                appendLine("            ${dtoFieldName}: this.${chipField.selectedFieldName}.map(e => e.${chipField.esDocIdFieldName}),")
-
-            } else if (typeaheadDef == null) {
-
-                if (dtoFieldName == ClassFieldName.context) {
-
-                    if (this.angularFormDef.context == null) {
-                        appendLine("            context: this.context,")
-                    }
-
-                } else {
-                    appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().$dtoFieldName,")
-                }
-
-            } else {
-
-                val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
-                appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
-
-            }
-
-        }
-
-        appendLine("        } as ${this.angularFormDef.requestDtoDef.uqcn};")
 
     }
 

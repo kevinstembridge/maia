@@ -760,23 +760,6 @@ class EntityCreateFormComponentRenderer(
     }
 
 
-    private fun `render formService request`() {
-
-        append("""
-            |        this.formService.create(requestDto).subscribe({
-            |            next: () => {
-            |                this.onSave.emit();
-            |            },
-            |            error: err => {
-            |                this.problemDetail.set(err.error);
-            |            },
-            |        });
-            |""".trimMargin()
-        )
-
-    }
-
-
     private fun `render requestDto construction`() {
 
         append("""
@@ -792,6 +775,23 @@ class EntityCreateFormComponentRenderer(
 
         append("""
             |        } as ${requestDtoDef.uqcn};
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render formService request`() {
+
+        append("""
+            |        this.formService.create(requestDto).subscribe({
+            |            next: () => {
+            |                this.onSave.emit();
+            |            },
+            |            error: err => {
+            |                this.problemDetail.set(err.error);
+            |            },
+            |        });
             |""".trimMargin()
         )
 
