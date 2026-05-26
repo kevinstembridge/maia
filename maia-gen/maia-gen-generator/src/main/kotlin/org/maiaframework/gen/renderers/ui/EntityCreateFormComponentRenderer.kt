@@ -10,6 +10,7 @@ import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
 import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
@@ -98,13 +99,13 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render class fields`() {
 
-        `render class field for delegated form submission`()
+        `render class field for delegated form submission output signal`()
 
-        `render class field for onSuccess event`()
+        `render class field for onSuccess output signal`()
 
-        `render class field for onCancel event`()
+        `render class field for onCancel output signal`()
 
-        `render class field for onError event`()
+        `render class field for onError output signal`()
 
         `render class field for formService`()
 
@@ -139,7 +140,7 @@ class EntityCreateFormComponentRenderer(
     }
 
 
-    private fun `render class field for delegated form submission`() {
+    private fun `render class field for delegated form submission output signal`() {
 
         if (this.angularFormDef.delegateFormSubmission.value) {
 
@@ -155,19 +156,19 @@ class EntityCreateFormComponentRenderer(
     }
 
 
-    private fun `render class field for onSuccess event`() {
+    private fun `render class field for onSuccess output signal`() {
 
         append("""
             |
             |
-            |    onSave = output();
+            |    onSuccess = output();
             |""".trimMargin()
         )
 
     }
 
 
-    private fun `render class field for onCancel event`() {
+    private fun `render class field for onCancel output signal`() {
 
         append("""
             |
@@ -179,7 +180,7 @@ class EntityCreateFormComponentRenderer(
     }
 
 
-    private fun `render class field for onError event`() {
+    private fun `render class field for onError output signal`() {
 
         if (this.angularFormDef.emitEventOnError.value) {
 
@@ -436,10 +437,11 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render class field for router`() {
 
-        this.angularFormDef.onSuccessUrl?.let {
+        if (`the form requires a Router`()) {
+
+            addImport("@angular/router", "Router")
 
             append("""
-                |
                 |
                 |
                 |    private readonly router = inject(Router);
@@ -447,6 +449,14 @@ class EntityCreateFormComponentRenderer(
             )
 
         }
+
+    }
+
+
+    private fun `the form requires a Router`(): Boolean {
+
+        // TODO consider other scenarios where the form requires a router, e.g. when the form is used in a dialog
+        return this.angularFormDef.onSuccessUrl != null
 
     }
 
@@ -762,21 +772,47 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render requestDto construction`() {
 
-        append("""
-            |
-            |        const requestDto = {
-            |""".trimMargin()
-        )
+        blankLine()
+        appendLine("        const requestDto = {")
 
-        requestDtoDef.dtoFieldDefs.forEach { field ->
-            val fieldName = field.classFieldDef.classFieldName
-            appendLine("            ${fieldName}: this.formGroup.getRawValue().${fieldName},")
+        this.angularFormDef.context?.let {
+            appendLine("            context: this.context,")
         }
 
-        append("""
-            |        } as ${requestDtoDef.uqcn};
-            |""".trimMargin()
-        )
+        val chipFieldsByDtoName = chipFields.associateBy { it.requestDtoFieldName }
+
+        this.allRequestDtoFields.forEach { requestDtoFieldDef ->
+
+            val dtoFieldName = requestDtoFieldDef.classFieldDef.classFieldName
+            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef
+            val chipField = chipFieldsByDtoName[dtoFieldName.value]
+
+            if (chipField != null) {
+
+                appendLine("            ${dtoFieldName}: this.${chipField.selectedFieldName}.map(e => e.${chipField.esDocIdFieldName}),")
+
+            } else if (typeaheadDef == null) {
+
+                if (dtoFieldName == ClassFieldName.context) {
+
+                    if (this.angularFormDef.context == null) {
+                        appendLine("            context: this.context,")
+                    }
+
+                } else {
+                    appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().$dtoFieldName,")
+                }
+
+            } else {
+
+                val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
+                appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
+
+            }
+
+        }
+
+        appendLine("        } as ${this.angularFormDef.requestDtoDef.uqcn};")
 
     }
 
@@ -784,21 +820,111 @@ class EntityCreateFormComponentRenderer(
     private fun `render formService request`() {
 
         append("""
-            |        this.formService.create(requestDto).subscribe({
-            |            next: () => {
-            |                this.onSave.emit();
-            |            },
-            |            error: err => {
-            |                this.problemDetail.set(err.error);
-            |            },
-            |        });
+            |        this.formService.${angularFormDef.onSubmitServiceFunctionName}(requestDto).subscribe({
             |""".trimMargin()
         )
+
+        `render formService request next function`()
+        `render formService request error function`()
+
+        appendLine("        });")
+
+    }
+
+
+    private fun `render formService request next function`() {
+
+        if (this.angularFormDef.onSuccessUrl.isNullOrEmpty()) {
+
+            when (this.angularFormDef.inlineFormOrDialog) {
+
+                InlineFormOrDialog.INLINE_FORM -> {
+
+                    if (this.angularFormDef.emitEventOnSuccess.value) {
+
+                        append("""
+                            |            next: () => {
+                            |                this.onSuccess.emit();
+                            |            },
+                            |""".trimMargin())
+
+                    } else {
+
+                        append("""
+                            |            next: () => {
+                            |                // TODO maybe emit an event?
+                            |            },
+                            |""".trimMargin())
+
+                    }
+
+                }
+
+                InlineFormOrDialog.DIALOG -> {
+
+                    if (this.angularFormDef.emitEventOnSuccess.value) {
+
+                        append("""
+                            |            next: () => {
+                            |                this.onSuccess.emit();
+                            |            },
+                            |""".trimMargin())
+
+                    } else {
+
+                        append("""
+                            |            next: () => {
+                            |                this.dialogRef.close(true);
+                            |            },
+                            |""".trimMargin())
+
+                    }
+
+                }
+
+            }
+
+        } else {
+
+            append("""
+                |            next: () => {
+                |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}']);
+                |            },
+                |""".trimMargin())
+
+        }
+
+    }
+
+
+    private fun `render formService request error function`() {
+
+        if (this.angularFormDef.emitEventOnError.value) {
+
+            append("""
+                |            error: err => {
+                |                this.onErrorEvent.emit(err);
+                |            }
+                |""".trimMargin())
+
+        } else {
+
+            append("""
+                |            error: err => {
+                |                this.problemDetail.set(err.error);
+                |            }
+                |""".trimMargin())
+
+        }
 
     }
 
 
     private fun `render function onCancel`() {
+
+//        if (this.angularFormDef.inlineFormOrDialog != InlineFormOrDialog.DIALOG) {
+//            return
+//        }
 
         append("""
             |

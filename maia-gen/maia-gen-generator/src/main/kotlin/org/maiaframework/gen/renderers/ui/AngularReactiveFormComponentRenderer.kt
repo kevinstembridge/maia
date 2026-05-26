@@ -817,23 +817,6 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `render function onCancel`() {
-
-        if (this.angularFormDef.inlineFormOrDialog != InlineFormOrDialog.DIALOG) {
-            return
-        }
-
-        append("""
-            |
-            |
-            |    onCancel(): void {
-            |        this.dialogRef.close();
-            |    }
-            |""".trimMargin())
-
-    }
-
-
     private fun `render formService request next function`() {
 
         if (this.angularFormDef.onSuccessUrl.isNullOrEmpty()) {
@@ -918,6 +901,23 @@ class AngularReactiveFormComponentRenderer(
                 |""".trimMargin())
 
         }
+
+    }
+
+
+    private fun `render function onCancel`() {
+
+        if (this.angularFormDef.inlineFormOrDialog != InlineFormOrDialog.DIALOG) {
+            return
+        }
+
+        append("""
+            |
+            |
+            |    onCancel(): void {
+            |        this.dialogRef.close();
+            |    }
+            |""".trimMargin())
 
     }
 
