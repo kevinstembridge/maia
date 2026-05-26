@@ -28,9 +28,6 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class CompositePrimaryKeyEntityCreateForm implements OnInit {
 
 
-    onSuccess = output();
-
-
     onCancel = output();
 
 
