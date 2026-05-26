@@ -145,11 +145,8 @@ export class LeftManyEntityCreateForm implements OnInit {
             },
             error: err => {
                 this.problemDetail.set(err.error);
-            },
+            }
         });
-
-    }
-
 
     onCancelClicked(): void {
         this.onCancel.emit();

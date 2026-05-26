@@ -78,7 +78,7 @@ export class SomeVersionedEntityCreateForm implements OnInit {
             },
             error: err => {
                 this.problemDetail.set(err.error);
-            },
+            }
         });
 
     }

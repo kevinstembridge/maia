@@ -182,7 +182,7 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
             },
             error: err => {
                 this.problemDetail.set(err.error);
-            },
+            }
         });
 
     }

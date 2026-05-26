@@ -123,7 +123,7 @@ export class BravoEntityCreateForm implements OnInit {
             },
             error: err => {
                 this.problemDetail.set(err.error);
-            },
+            }
         });
 
     }

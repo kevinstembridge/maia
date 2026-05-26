@@ -80,7 +80,7 @@ export class CompositePrimaryKeyEntityCreateForm implements OnInit {
             },
             error: err => {
                 this.problemDetail.set(err.error);
-            },
+            }
         });
 
     }

@@ -90,7 +90,7 @@ export class UserEntityCreateForm implements OnInit {
             },
             error: err => {
                 this.problemDetail.set(err.error);
-            },
+            }
         });
 
     }
