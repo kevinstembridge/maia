@@ -71,13 +71,13 @@ class AngularReactiveFormComponentRenderer(
 
     private fun `render class fields`() {
 
-        `render class field for delegated form submission`()
+        `render class field for delegated form submission output signal`()
 
-        `render class field for onSuccess event`()
+        `render class field for onSuccess output signal`()
 
-        `render class field for onCancel event`()
+        `render class field for onCancel output signal`()
 
-        `render class field for onError event`()
+        `render class field for onError output signal`()
 
         `render class field for formService`()
 

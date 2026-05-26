@@ -50,9 +50,6 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class AllFieldTypesEntityCreateForm implements OnInit {
 
 
-    onSuccess = output();
-
-
     onCancel = output();
 
 
