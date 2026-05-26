@@ -3,12 +3,40 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
+import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
+import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
+import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
+import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
+import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
+import org.maiaframework.gen.spec.definition.lang.EnumFieldType
+import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
-import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
+import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.IntFieldType
+import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.ListFieldType
+import org.maiaframework.gen.spec.definition.lang.LocalDateFieldType
+import org.maiaframework.gen.spec.definition.lang.LongFieldType
+import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.MapFieldType
+import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
+import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
+import org.maiaframework.gen.spec.definition.lang.SetFieldType
+import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
+import org.maiaframework.gen.spec.definition.lang.StringFieldType
+import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 import org.maiaframework.lang.text.StringFunctions
 
 
@@ -943,41 +971,19 @@ class AngularReactiveFormComponentRenderer(
         addImport("@angular/forms", "Validators")
         addImport("@angular/forms", "FormsModule", isModule = true)
         addImport("@angular/forms", "ReactiveFormsModule", isModule = true)
-
-        if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
-            addImport("@angular/material/dialog", "MatDialog")
-            addImport("@angular/material/dialog", "MatDialogRef")
-            addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
-            addImport("@angular/material/dialog", "MatDialogTitle", isModule = true)
-            addImport("@angular/material/dialog", "MatDialogContent", isModule = true)
-            addImport("@angular/material/dialog", "MatDialogActions", isModule = true)
-        }
-
-        this.angularFormDef.onSuccessUrl?.let {
-            addImport("@angular/router", "Router")
-        }
-
-        addImport("rxjs", "Observable")
-        addImport("rxjs", "Subject")
-        addImport("rxjs", "of")
-        addImport("rxjs/operators", "catchError")
-        addImport("rxjs/operators", "debounceTime")
-        addImport("rxjs/operators", "distinctUntilChanged")
-        addImport("rxjs/operators", "filter")
-        addImport("rxjs/operators", "map")
-        addImport("rxjs/operators", "switchMap")
-        addImport("rxjs/operators", "tap")
-        addImport(this.angularFormDef.formServiceTypescriptImport)
-        this.angularFormDef.context?.let { addImport(it.typescriptImport) }
-        addImport(this.requestDtoDef.typescriptImport)
         addImport("@angular/material/button", "MatButtonModule", isModule = true)
-        addImport("@angular/material/core", "MatOptionModule", isModule = true)
-        addImport("@angular/material/autocomplete", "MatAutocompleteModule", isModule = true)
-        addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
+        addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport(TypescriptImports.problemDetail)
+        addImport(requestDtoDef.typescriptImport)
+        addImport(angularFormDef.formServiceTypescriptImport)
+        formGroupFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
+            addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
+        }
 
-        this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
+        addImportsForFieldTypes(formGroupFields)
+
+        this.typeaheadDefs.forEach { typeaheadDef ->
             addImport(typeaheadDef.typescriptServiceImport)
             addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
         }
@@ -994,48 +1000,111 @@ class AngularReactiveFormComponentRenderer(
             }
         }
 
-        this.angularFormDef.formModelFields.forEach { angularFieldDef ->
-            angularFieldDef.typeaheadRequiredValidatorTypescriptImport?.let { addImport(it) }
-        }
+    }
 
-        this.angularFormDef.uniqueIndexDefs.forEach { databaseIndexDef ->
-            addImport(databaseIndexDef.asyncValidator.asyncValidatorTypescriptImport)
-        }
 
-        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-            addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
-        }
+    private fun addImportsForFieldTypes(formGroupFields: List<AngularFormFieldDef>) {
 
-        this.angularFormDef.fetchForEditDtoDef?.let {
-            addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
-            addImport(it.typescriptImport)
-        }
+        formGroupFields.filter { it.isCreatable }.forEach { angularFormFieldDef ->
 
-        if (this.angularFormDef.hasAnyMatSelectFields) {
-
-            addImport("@angular/material/select", "MatOption", isModule = true)
-            addImport("@angular/material/select", "MatSelect", isModule = true)
-            addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
-
-            this.angularFormDef.enumsForMatSelectFields.forEach { enumDef ->
-                addImport(enumDef.typescriptImport)
-                addImport(enumDef.selectOptionsTypescriptImport)
+            when (val fieldType = angularFormFieldDef.fieldType) {
+                is BooleanFieldType -> `add import for Material Checkbox`()
+                is BooleanTypeFieldType -> `add import for Material Checkbox`()
+                is BooleanValueClassFieldType -> `add import for Material Checkbox`()
+                is DataClassFieldType -> {}
+                is DomainIdFieldType -> {}
+                is DoubleFieldType -> {}
+                is EnumFieldType -> `add imports for Material Select component`(fieldType)
+                is EsDocFieldType -> {}
+                is ForeignKeyFieldType -> `add imports for Material Autocomplete`(fieldType)
+                is FqcnFieldType -> {}
+                is InstantFieldType -> `add imports for date and time pickers`()
+                is IntFieldType -> {}
+                is IntTypeFieldType -> {}
+                is IntValueClassFieldType -> {}
+                is ListFieldType -> `add imports for ListFieldType`(fieldType)
+                is LocalDateFieldType -> {}
+                is LongFieldType -> {}
+                is LongTypeFieldType -> {}
+                is MapFieldType -> {}
+                is ObjectIdFieldType -> {}
+                is PeriodFieldType -> {}
+                is PkAndNameFieldType -> {}
+                is RequestDtoFieldType -> {}
+                is SetFieldType -> {}
+                is SimpleResponseDtoFieldType -> {}
+                is StringFieldType -> {}
+                is StringTypeFieldType -> {}
+                is StringValueClassFieldType -> {}
+                is UrlFieldType -> {}
             }
 
         }
 
-        if (this.angularFormDef.hasAnyInstantFields) {
-            addImport("@angular/material/datepicker", "MatDatepickerModule", isModule = true)
-            addImport("@angular/material/timepicker", "MatTimepickerModule", isModule = true)
+    }
+
+
+    private fun `add imports for ListFieldType`(fieldType: ListFieldType) {
+
+        when (val parameterFieldType = fieldType.parameterFieldType) {
+
+            is EnumFieldType -> {
+
+                parameterFieldType.enumDef.selectOptionsTypescriptImport.let {
+                    addImport(it)
+                }
+
+                addImport("@angular/material/select", "MatSelect", isModule = true)
+                addImport("@angular/material/select", "MatOption", isModule = true)
+                addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
+
+            }
+
+            else -> {}
         }
 
-        if (this.angularFormDef.hasAnyBooleanFields) {
-            addImport("@angular/material/checkbox", "MatCheckboxModule", isModule = true)
+    }
+
+
+    private fun `add imports for Material Select component`(fieldType: EnumFieldType) {
+
+        addImport("@angular/material/select", "MatSelect", isModule = true)
+        addImport("@angular/material/select", "MatOption", isModule = true)
+        addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
+
+        addImport(fieldType.enumDef.typescriptImport)
+
+        fieldType.enumDef.selectOptionsTypescriptImport.let {
+            addImport(it)
         }
 
-        if (this.angularFormDef.formModelFields.any { it.hasValidationConstraint(UrlConstraintDef::class.java) }) {
-            addImport("@app/validators/CustomValidators", "CustomValidators")
-        }
+    }
+
+
+    private fun `add imports for Material Autocomplete`(fieldType: ForeignKeyFieldType) {
+
+        addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
+        addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
+        addImport("@angular/material/autocomplete", "MatOption", isModule = true)
+
+    }
+
+
+    private fun `add imports for date and time pickers`() {
+
+        addImport("@angular/material/datepicker", "MatDatepicker", isModule = true)
+        addImport("@angular/material/datepicker", "MatDatepickerInput", isModule = true)
+        addImport("@angular/material/datepicker", "MatDatepickerToggle", isModule = true)
+        addImport("@angular/material/timepicker", "MatTimepicker", isModule = true)
+        addImport("@angular/material/timepicker", "MatTimepickerInput", isModule = true)
+        addImport("@angular/material/timepicker", "MatTimepickerToggle", isModule = true)
+
+    }
+
+
+    private fun `add import for Material Checkbox`() {
+
+        addImport("@angular/material/checkbox", "MatCheckbox", isModule = true)
 
     }
 
