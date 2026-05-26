@@ -6,6 +6,7 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {Router} from '@angular/router';
 import {CompositePrimaryKeyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyCreateRequestDto';
 import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -27,7 +28,7 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class CompositePrimaryKeyEntityCreateForm implements OnInit {
 
 
-    onSave = output();
+    onSuccess = output();
 
 
     onCancel = output();
@@ -40,6 +41,9 @@ export class CompositePrimaryKeyEntityCreateForm implements OnInit {
 
 
     formGroup: FormGroup;
+
+
+    private readonly router = inject(Router);
 
 
     constructor() {
@@ -76,7 +80,7 @@ export class CompositePrimaryKeyEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: () => {
-                this.onSave.emit();
+                this.router.navigate(['/composite-primary-key/view']);
             },
             error: err => {
                 this.problemDetail.set(err.error);

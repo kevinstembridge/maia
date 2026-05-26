@@ -8,6 +8,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatTooltip} from '@angular/material/tooltip';
+import {Router} from '@angular/router';
 import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/auth/AuthoritySelectOptions';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
@@ -33,7 +34,7 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class UserEntityCreateForm implements OnInit {
 
 
-    onSave = output();
+    onSuccess = output();
 
 
     onCancel = output();
@@ -49,6 +50,9 @@ export class UserEntityCreateForm implements OnInit {
 
 
     formGroup: FormGroup;
+
+
+    private readonly router = inject(Router);
 
 
     constructor() {
@@ -86,7 +90,7 @@ export class UserEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: () => {
-                this.onSave.emit();
+                this.router.navigate(['/user/view']);
             },
             error: err => {
                 this.problemDetail.set(err.error);

@@ -6,6 +6,7 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {Router} from '@angular/router';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
 import {SimpleSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringAsyncValidator';
 import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
@@ -28,7 +29,7 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class SimpleEntityCreateForm implements OnInit {
 
 
-    onSave = output();
+    onSuccess = output();
 
 
     onCancel = output();
@@ -44,6 +45,9 @@ export class SimpleEntityCreateForm implements OnInit {
 
 
     formGroup: FormGroup;
+
+
+    private readonly router = inject(Router);
 
 
     constructor() {
@@ -76,7 +80,7 @@ export class SimpleEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: () => {
-                this.onSave.emit();
+                this.router.navigate(['/simple/view']);
             },
             error: err => {
                 this.problemDetail.set(err.error);

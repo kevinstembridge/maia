@@ -50,7 +50,7 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class AllFieldTypesEntityCreateForm implements OnInit {
 
 
-    onSave = output();
+    onSuccess = output();
 
 
     onCancel = output();
@@ -81,6 +81,9 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
 
 
     formGroup: FormGroup;
+
+
+    private readonly router = inject(Router);
 
 
     constructor() {

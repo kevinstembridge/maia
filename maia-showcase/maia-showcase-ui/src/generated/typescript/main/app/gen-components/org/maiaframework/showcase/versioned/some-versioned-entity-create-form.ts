@@ -27,7 +27,7 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class SomeVersionedEntityCreateForm implements OnInit {
 
 
-    onSave = output();
+    onSuccess = output();
 
 
     onCancel = output();

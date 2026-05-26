@@ -35,7 +35,7 @@ import {catchError, debounceTime, filter, map, switchMap, tap} from 'rxjs/operat
 export class BravoEntityCreateForm implements OnInit {
 
 
-    onSave = output();
+    onSuccess = output();
 
 
     onCancel = output();

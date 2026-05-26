@@ -9,6 +9,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
+import {Router} from '@angular/router';
 import {LeftManyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyCreateRequestDto';
 import {RightManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyTypeaheadV1EsDoc';
 import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-crud-service';
@@ -36,7 +37,7 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
 export class LeftManyEntityCreateForm implements OnInit {
 
 
-    onSave = output();
+    onSuccess = output();
 
 
     onCancel = output();
@@ -67,6 +68,9 @@ export class LeftManyEntityCreateForm implements OnInit {
 
 
     formGroup: FormGroup;
+
+
+    private readonly router = inject(Router);
 
 
     constructor() {
