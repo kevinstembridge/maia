@@ -14,7 +14,7 @@ import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
 import org.maiaframework.lang.text.StringFunctions
 
 
-class EntityFormComponentRenderer(
+class AngularSignalFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     angularComponentNames: AngularComponentNames,
     providerServices: List<String>
