@@ -141,7 +141,7 @@ export class LeftManyEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: () => {
-                this.onSave.emit();
+                this.router.navigate(['/left-many/view']);
             },
             error: err => {
                 this.problemDetail.set(err.error);
