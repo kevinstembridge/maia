@@ -10,6 +10,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatTooltip} from '@angular/material/tooltip';
 import {Router} from '@angular/router';
+import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/LifecycleState';
 import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/auth/AuthoritySelectOptions';
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
@@ -36,7 +37,7 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class UserEntityEditForm implements OnInit {
 
 
-    private readonly entityId = input.required<string>();
+    entityId = input.required<string>();
 
 
     onCancel = output();
