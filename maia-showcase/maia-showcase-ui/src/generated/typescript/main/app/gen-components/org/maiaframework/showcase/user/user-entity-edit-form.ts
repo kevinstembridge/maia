@@ -66,15 +66,15 @@ export class UserEntityEditForm implements OnInit {
         this.formGroup = new FormGroup(
             {
                 authorities: new FormControl([], { updateOn: 'change' }),
-                encryptedPassword: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+                encryptedPassword: new FormControl({value: '', disabled: true}),
                 firstName: new FormControl('', { updateOn: 'change', validators: [Validators.maxLength(100)] }),
                 lastName: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                displayName: new FormControl('', { updateOn: 'change', validators: [Validators.required] }),
-                createdBy: new FormControl('', { updateOn: 'change' }),
-                lastModifiedBy: new FormControl('', { updateOn: 'change' }),
-                lifecycleState: new FormControl(LifecycleState.ACTIVE, { updateOn: 'change', validators: [Validators.required] }),
-                id: new FormControl('', { updateOn: 'change' }),
-                version: new FormControl(0, { updateOn: 'change' }),
+                displayName: new FormControl({value: '', disabled: true}),
+                createdBy: new FormControl({value: '', disabled: true}),
+                lastModifiedBy: new FormControl({value: '', disabled: true}),
+                lifecycleState: new FormControl({value: LifecycleState.ACTIVE, disabled: true}),
+                id: new FormControl({value: '', disabled: true}),
+                version: new FormControl({value: 0, disabled: true}),
             },
         );
 
