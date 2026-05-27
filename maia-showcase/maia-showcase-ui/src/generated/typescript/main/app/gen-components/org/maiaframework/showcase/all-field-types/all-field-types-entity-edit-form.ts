@@ -44,13 +44,13 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class AllFieldTypesEntityEditForm implements OnInit {
 
 
-    entityId = input.required<string>();
-
-
-    onSave = output();
+    private readonly entityId = input.required<string>();
 
 
     onCancel = output();
+
+
+    private readonly formService = inject(AllFieldTypesCrudService);
 
 
     problemDetail = signal<ProblemDetail | null>(null);
