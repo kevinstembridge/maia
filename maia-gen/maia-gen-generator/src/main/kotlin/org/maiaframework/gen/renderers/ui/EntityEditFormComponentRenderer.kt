@@ -10,6 +10,7 @@ import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 
 
+// TODO Delete this after cooling-off period. 2026-05-27
 class EntityEditFormComponentRenderer(
     entityEditPageDef: EntityEditPageDef
 ) : AbstractAngularComponentRenderer(entityEditPageDef.editFormAngularComponentNames, emptyList()) {

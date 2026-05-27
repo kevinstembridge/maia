@@ -99,6 +99,8 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render class fields`() {
 
+        `render class field for entityId`()
+
         `render class field for delegated form submission output signal`()
 
         `render class field for onSuccess output signal`()
@@ -129,13 +131,29 @@ class EntityCreateFormComponentRenderer(
 
         `render class field for dialogRef`()
 
-        `render class field for entityId`()
-
         `render class field for form context`()
 
         `render class field for router`()
 
         `render class fields for multi-field unique indexes`()
+
+    }
+
+
+    private fun `render class field for entityId`() {
+
+        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
+
+            addImport("@angular/core", "input")
+
+            append("""
+                |
+                |
+                |    private readonly entityId = input.required<${angularFormDef.entityIdInjectType}>();
+                |""".trimMargin()
+            )
+
+        }
 
     }
 
@@ -360,6 +378,8 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render class field for loading signal if fetchForEdit form`() {
 
+        addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
+
         this.angularFormDef.fetchForEditDtoDef?.let {
             append("""
                 |
@@ -397,23 +417,6 @@ class EntityCreateFormComponentRenderer(
                 |
                 |
                 |    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);
-                |""".trimMargin()
-            )
-
-        }
-
-    }
-
-
-    private fun `render class field for entityId`() {
-
-        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
-
-            append("""
-                |
-                |
-                |
-                |    private readonly entityId = inject<${angularFormDef.entityIdInjectType}>(MAT_DIALOG_DATA);
                 |""".trimMargin()
             )
 
@@ -630,8 +633,10 @@ class EntityCreateFormComponentRenderer(
 
         this.angularFormDef.fetchForEditDtoDef?.let { fetchForEditDtoDef ->
 
+            addImport(fetchForEditDtoDef.typescriptImport)
+
             blankLine()
-            appendLine("        this.formService.fetchForEdit(this.entityId).subscribe({")
+            appendLine("        this.formService.fetchForEdit(this.entityId()).subscribe({")
             appendLine("            next: (dto: ${fetchForEditDtoDef.uqcn}) => {")
             appendLine("                this.formGroup.patchValue({")
 

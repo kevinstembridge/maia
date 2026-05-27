@@ -36,7 +36,6 @@ import org.maiaframework.gen.renderers.ui.EntityDetailViewPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailViewPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditDialogScssRenderer
-import org.maiaframework.gen.renderers.ui.EntityEditFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditFormScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditPageHtmlRenderer
@@ -434,7 +433,47 @@ class AngularUiModuleGenerator(
 
         this.modelDef.entityEditPageDefs.forEach { entityEditPageDef ->
 
-            EntityEditFormComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
+            // TODO account for Signal forms vs Reactive forms
+
+            val providerServices = emptyList<String>() // TODO
+
+            val viewPageDef = this.modelDef.findViewEntityPage(entityEditPageDef.entityDef)
+
+            val fetchForEditDtoDef = entityEditPageDef.entityDef.fetchForEditDtoDef
+
+            val chipFields = manyToManyChipFieldsFor(entityEditPageDef.entityDef, entityEditPageDef.entityDef.manyToManyAssociations)
+
+            val angularFormDef = AngularFormDef(
+                angularFormSystem = AngularFormSystem.REACTIVE,
+                componentBaseName = entityEditPageDef.entityDef.crudAngularComponentBaseName,
+                context = null,
+                createOrEdit = CreateOrEdit.edit,
+                delegateFormSubmission = DelegateFormSubmission.FALSE, // TODO
+                dialogTitle = null,
+                emitEventOnError = EmitEventsOnError.FALSE,
+                emitEventOnSuccess = EmitEventsOnSuccess.FALSE,
+                entityIdInjectType = "string",
+                featureNames = sortedSetOf(),
+                fetchForEditDtoDef = fetchForEditDtoDef,
+                formModelFields = entityEditPageDef.updateApiDef.formGroupFields,
+                formServiceTypescriptImport = entityEditPageDef.entityDef.crudAngularComponentNames.serviceTypescriptImport,
+                htmlFormFields = entityEditPageDef.updateApiDef.htmlFormFields,
+                inlineFormOrDialog = InlineFormOrDialog.INLINE_FORM,
+                multiFieldDatabaseIndexDefs = emptyList(),
+                onSubmitServiceFunctionName = "edit",
+                onSuccessUrl = viewPageDef?.viewPageUrl,
+                requestDtoDef = entityEditPageDef.updateApiDef.requestDtoDef,
+                submitButtonText = null
+            )
+
+            EntityCreateFormComponentRenderer(
+                angularFormDef,
+                entityEditPageDef.editFormAngularComponentNames,
+                providerServices,
+                chipFields
+            ).renderToDir(this.typescriptOutputDir)
+
+//            EntityEditFormComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
             EntityEditFormScssRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
             EntityEditReactiveFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames).renderToDir(this.typescriptOutputDir)
             EntityEditFormPageComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
