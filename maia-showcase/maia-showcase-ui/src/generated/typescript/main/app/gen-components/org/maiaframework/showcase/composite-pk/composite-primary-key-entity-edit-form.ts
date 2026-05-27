@@ -54,10 +54,10 @@ export class CompositePrimaryKeyEntityEditForm implements OnInit {
 
         this.formGroup = new FormGroup(
             {
-                someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                someInt: new FormControl(0, { updateOn: 'change' }),
+                someString: new FormControl({value: '', disabled: true}),
+                someInt: new FormControl({value: 0, disabled: true}),
                 someModifiableString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                version: new FormControl(0, { updateOn: 'change' }),
+                version: new FormControl({value: 0, disabled: true}),
             },
         );
 
