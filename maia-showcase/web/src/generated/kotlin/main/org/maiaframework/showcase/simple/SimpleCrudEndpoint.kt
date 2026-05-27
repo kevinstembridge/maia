@@ -5,6 +5,7 @@ package org.maiaframework.showcase.simple
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
+import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.maiaframework.webapp.domain.FormValidationResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -28,9 +29,11 @@ class SimpleCrudEndpoint(
     @PostMapping("/api/simple/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
-    fun create(@RequestBody @Valid createDto: SimpleCreateRequestDto) {
+    fun create(@RequestBody @Valid createDto: SimpleCreateRequestDto): EntityCreatedResponseDto {
 
-        this.crudService.create(createDto)
+        val entity = this.crudService.create(createDto)
+        val id = entity.id.value
+        return EntityCreatedResponseDto(id)
 
     }
 
