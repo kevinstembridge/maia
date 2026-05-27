@@ -5,6 +5,7 @@ package org.maiaframework.showcase.join
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
+import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -25,9 +26,11 @@ class CharlieCrudEndpoint(
 
     @PostMapping("/api/charlie/create")
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody @Valid createDto: CharlieCreateRequestDto) {
+    fun create(@RequestBody @Valid createDto: CharlieCreateRequestDto): EntityCreatedResponseDto {
 
-        this.crudService.create(createDto)
+        val entity = this.crudService.create(createDto)
+        val id = entity.id.value
+        return EntityCreatedResponseDto(id)
 
     }
 
