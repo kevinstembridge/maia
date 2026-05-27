@@ -33,7 +33,7 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class BravoEntityEditForm implements OnInit {
 
 
-    private readonly entityId = input.required<string>();
+    entityId = input.required<string>();
 
 
     onCancel = output();
