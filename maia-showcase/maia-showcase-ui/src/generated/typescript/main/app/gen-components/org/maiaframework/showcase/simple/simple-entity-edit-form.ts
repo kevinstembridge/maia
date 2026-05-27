@@ -60,7 +60,7 @@ export class SimpleEntityEditForm implements OnInit {
         this.formGroup = new FormGroup(
             {
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)], asyncValidators: [this.simpleSomeStringAsyncValidator.validate.bind(this.simpleSomeStringAsyncValidator)] }),
-                id: new FormControl('', { updateOn: 'change' }),
+                id: new FormControl({value: '', disabled: true}),
             },
         );
 
