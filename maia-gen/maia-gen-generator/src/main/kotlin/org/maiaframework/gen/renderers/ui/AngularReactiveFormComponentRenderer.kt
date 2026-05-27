@@ -40,7 +40,7 @@ import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 import org.maiaframework.lang.text.StringFunctions
 
 
-class EntityCreateFormComponentRenderer(
+class AngularReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     formAngularComponentNames: AngularComponentNames,
     providerServices: List<String>,
@@ -149,7 +149,7 @@ class EntityCreateFormComponentRenderer(
             append("""
                 |
                 |
-                |    private readonly entityId = input.required<${angularFormDef.entityIdInjectType}>();
+                |    entityId = input.required<${angularFormDef.entityIdInjectType}>();
                 |""".trimMargin()
             )
 
@@ -378,15 +378,17 @@ class EntityCreateFormComponentRenderer(
 
     private fun `render class field for loading signal if fetchForEdit form`() {
 
-        addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
-
         this.angularFormDef.fetchForEditDtoDef?.let {
+
+            addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
+
             append("""
                 |
                 |
                 |    loading = signal(true);
                 |""".trimMargin()
             )
+
         }
 
     }
@@ -501,7 +503,7 @@ class EntityCreateFormComponentRenderer(
 
             FormControlRendererHelper.renderFormControlFor(
                 angularFormFieldDef,
-                CreateOrEdit.create,
+                angularFormDef.createOrEdit,
                 indentSize = 16,
                 { line -> appendLine(line) },
                 { fieldType -> addImportsFor(fieldType) }
