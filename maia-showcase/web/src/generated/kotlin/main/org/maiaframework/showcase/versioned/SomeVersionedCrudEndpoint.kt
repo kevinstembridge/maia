@@ -5,6 +5,7 @@ package org.maiaframework.showcase.versioned
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
+import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -27,9 +28,11 @@ class SomeVersionedCrudEndpoint(
     @PostMapping("/api/some-versioned/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: SomeVersionedCreateRequestDto) {
+    fun create(@RequestBody @Valid createDto: SomeVersionedCreateRequestDto): EntityCreatedResponseDto {
 
-        this.crudService.create(createDto)
+        val entity = this.crudService.create(createDto)
+        val id = entity.id.value
+        return EntityCreatedResponseDto(id)
 
     }
 
