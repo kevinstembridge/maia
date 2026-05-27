@@ -145,10 +145,8 @@ export class AllFieldTypesEntityEditForm implements OnInit {
         this.formService.fetchForEdit(this.entityId()).subscribe({
             next: (dto: AllFieldTypesFetchForEditDto) => {
                 this.formGroup.patchValue({
-                    createdBy: dto.createdBy,
                     createdByUsername: dto.createdByUsername,
                     id: dto.id,
-                    lastModifiedBy: dto.lastModifiedBy,
                     lastModifiedByUsername: dto.lastModifiedByUsername,
                     someBoolean: dto.someBoolean,
                     someBooleanNullable: dto.someBooleanNullable,
