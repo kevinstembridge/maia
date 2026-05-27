@@ -53,8 +53,8 @@ export class SomeVersionedEntityEditForm implements OnInit {
             {
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 someInt: new FormControl(0, { updateOn: 'change' }),
-                id: new FormControl('', { updateOn: 'change' }),
-                version: new FormControl(0, { updateOn: 'change' }),
+                id: new FormControl({value: '', disabled: true}),
+                version: new FormControl({value: 0, disabled: true}),
             },
         );
 
