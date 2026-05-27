@@ -465,23 +465,6 @@ class EntityCreateFormComponentRenderer(
     }
 
 
-    private fun `render class fields for chipField services`() {
-
-        chipFields.forEach { chip ->
-
-            append("""
-                |
-                |
-                |
-                |    private readonly ${chip.serviceFieldName} = inject(${chip.serviceClassName});
-                |""".trimMargin()
-            )
-
-        }
-
-    }
-
-
     private fun `render class fields for multi-field unique indexes`() {
 
         this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
