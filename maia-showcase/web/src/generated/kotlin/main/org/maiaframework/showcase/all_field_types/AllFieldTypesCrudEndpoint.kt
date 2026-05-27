@@ -5,6 +5,7 @@ package org.maiaframework.showcase.all_field_types
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
+import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.maiaframework.webapp.domain.FormValidationResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -28,9 +29,11 @@ class AllFieldTypesCrudEndpoint(
     @PostMapping("/api/all-field-types/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: AllFieldTypesCreateRequestDto) {
+    fun create(@RequestBody @Valid createDto: AllFieldTypesCreateRequestDto): EntityCreatedResponseDto {
 
-        this.crudService.create(createDto)
+        val entity = this.crudService.create(createDto)
+        val id = entity.id.value
+        return EntityCreatedResponseDto(id)
 
     }
 
