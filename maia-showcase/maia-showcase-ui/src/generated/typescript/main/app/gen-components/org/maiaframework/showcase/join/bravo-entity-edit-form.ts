@@ -18,10 +18,12 @@ import {ProblemDetail} from '@maia/maia-ui';
 @Component({
     imports: [
         FormsModule,
+        MatAutocomplete,
+        MatAutocompleteTrigger,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        MatProgressSpinnerModule,
+        MatOption,
         ReactiveFormsModule,
     ],
     selector: 'app-bravo-entity-edit-form',
@@ -31,13 +33,13 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class BravoEntityEditForm implements OnInit {
 
 
-    entityId = input.required<string>();
-
-
-    onSave = output();
+    private readonly entityId = input.required<string>();
 
 
     onCancel = output();
+
+
+    private readonly formService = inject(BravoCrudService);
 
 
     problemDetail = signal<ProblemDetail | null>(null);
@@ -46,20 +48,19 @@ export class BravoEntityEditForm implements OnInit {
     formGroup: FormGroup;
 
 
-    private readonly formService = inject(BravoCrudService);
-
-
     loading = signal(true);
 
 
     constructor() {
 
-        this.formGroup = new FormGroup({
-            someInt: new FormControl(0, { updateOn: 'change' }),
-            someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-            id: new FormControl({value: '', disabled: true}),
-            alpha: new FormControl({value: '', disabled: true}),
-        });
+        this.formGroup = new FormGroup(
+            {
+                someInt: new FormControl(0, { updateOn: 'change' }),
+                someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
+                id: new FormControl('', { updateOn: 'change' }),
+                alpha: new FormControl('', { updateOn: 'change' }),
+            },
+        );
 
     }
 
@@ -79,7 +80,7 @@ export class BravoEntityEditForm implements OnInit {
             error: (err) => {
                 this.problemDetail.set(err.error);
                 this.loading.set(false);
-            },
+            }
         });
 
     }
@@ -101,11 +102,11 @@ export class BravoEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.onSave.emit();
+                // TODO maybe emit an event?
             },
             error: err => {
                 this.problemDetail.set(err.error);
-            },
+            }
         });
 
     }
