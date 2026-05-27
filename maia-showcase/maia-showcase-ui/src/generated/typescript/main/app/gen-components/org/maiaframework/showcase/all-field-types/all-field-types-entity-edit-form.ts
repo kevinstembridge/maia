@@ -59,9 +59,6 @@ export class AllFieldTypesEntityEditForm implements OnInit {
     formGroup: FormGroup;
 
 
-    private readonly formService = inject(AllFieldTypesCrudService);
-
-
     loading = signal(true);
 
 
