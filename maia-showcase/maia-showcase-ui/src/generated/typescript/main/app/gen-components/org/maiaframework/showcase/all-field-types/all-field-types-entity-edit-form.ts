@@ -56,12 +56,6 @@ export class AllFieldTypesEntityEditForm implements OnInit {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    formGroup: FormGroup;
-
-
-    loading = signal(true);
-
-
     private readonly allFieldTypesSomeIntTypeAsyncValidator = inject(AllFieldTypesSomeIntTypeAsyncValidator);
 
 
@@ -75,6 +69,18 @@ export class AllFieldTypesEntityEditForm implements OnInit {
 
 
     private readonly allFieldTypesSomeStringTypeAsyncValidator = inject(AllFieldTypesSomeStringTypeAsyncValidator);
+
+
+    protected readonly SomeEnumSelectOptions = SomeEnumSelectOptions;
+
+
+    formGroup: FormGroup;
+
+
+    loading = signal(true);
+
+
+    private readonly router = inject(Router);
 
 
     constructor() {
