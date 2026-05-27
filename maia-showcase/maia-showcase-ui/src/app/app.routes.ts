@@ -30,6 +30,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'simple/create',
+        loadComponent: () =>
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-entity-create-page').then(
+                (m) => m.SimpleEntityCreatePage,
+            ),
+    },
+    {
         path: 'simple/view/:id',
         loadComponent: () =>
             import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-entity-detail-view-page').then(
