@@ -5,6 +5,7 @@ package org.maiaframework.showcase.join
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
+import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -27,9 +28,11 @@ class BravoCrudEndpoint(
     @PostMapping("/api/bravo/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
-    fun create(@RequestBody @Valid createDto: BravoCreateRequestDto) {
+    fun create(@RequestBody @Valid createDto: BravoCreateRequestDto): EntityCreatedResponseDto {
 
-        this.crudService.create(createDto)
+        val entity = this.crudService.create(createDto)
+        val id = entity.id.value
+        return EntityCreatedResponseDto(id)
 
     }
 
