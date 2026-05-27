@@ -29,7 +29,7 @@ import {ProblemDetail} from '@maia/maia-ui';
 export class SomeVersionedEntityEditForm implements OnInit {
 
 
-    private readonly entityId = input.required<string>();
+    entityId = input.required<string>();
 
 
     onCancel = output();
