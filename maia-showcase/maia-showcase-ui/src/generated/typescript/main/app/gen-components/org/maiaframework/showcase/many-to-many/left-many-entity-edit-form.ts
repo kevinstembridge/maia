@@ -84,7 +84,7 @@ export class LeftManyEntityEditForm implements OnInit {
             {
                 someInt: new FormControl(0, { updateOn: 'change' }),
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                id: new FormControl('', { updateOn: 'change' }),
+                id: new FormControl({value: '', disabled: true}),
             },
         );
 
