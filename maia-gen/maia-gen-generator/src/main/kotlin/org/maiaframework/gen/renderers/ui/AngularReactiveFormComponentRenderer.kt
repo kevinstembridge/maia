@@ -380,8 +380,6 @@ class AngularReactiveFormComponentRenderer(
 
         this.angularFormDef.fetchForEditDtoDef?.let {
 
-            addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
-
             append("""
                 |
                 |
@@ -947,6 +945,9 @@ class AngularReactiveFormComponentRenderer(
         addImport("@angular/material/button", "MatButtonModule", isModule = true)
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
         addImport("@angular/material/input", "MatInputModule", isModule = true)
+        if (this.angularFormDef.fetchForEditDtoDef != null) {
+            addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
+        }
         addImport(TypescriptImports.problemDetail)
         addImport(requestDtoDef.typescriptImport)
         addImport(angularFormDef.formServiceTypescriptImport)
