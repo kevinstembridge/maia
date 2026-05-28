@@ -22,7 +22,7 @@ import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityCreateFormComponentRenderer
+import org.maiaframework.gen.renderers.ui.AngularReactiveFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreatePageHtmlRenderer
@@ -412,7 +412,7 @@ class AngularUiModuleGenerator(
                 entityIdInjectType = "string"
             )
 
-            EntityCreateFormComponentRenderer(
+            AngularReactiveFormComponentRenderer(
                 angularFormDef,
                 entityCreatePageDef.createFormAngularComponentNames,
                 providerServices,
@@ -466,7 +466,7 @@ class AngularUiModuleGenerator(
                 submitButtonText = null
             )
 
-            EntityCreateFormComponentRenderer(
+            AngularReactiveFormComponentRenderer(
                 angularFormDef,
                 entityEditPageDef.editFormAngularComponentNames,
                 providerServices,
