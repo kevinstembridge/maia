@@ -59,6 +59,7 @@ class CrudEndpointRenderer(
         addImportFor(Fqcns.SPRING_POST_MAPPING)
         addImportFor(Fqcns.SPRING_REQUEST_BODY)
         addImportFor(Fqcns.SPRING_RESPONSE_STATUS)
+        addImportFor(Fqcns.MAIA_ENTITY_CREATED_RESPONSE_DTO)
 
         val createDtoUqcn = createApiDef.requestDtoDef.uqcn
 
@@ -67,9 +68,23 @@ class CrudEndpointRenderer(
         appendLine("    @PostMapping(\"${createApiDef.endpointUrl}\")")
         appendLine("    @ResponseStatus(HttpStatus.CREATED)")
         appendPreAuthorize(createApiDef.crudApiDef)
-        appendLine("    fun create(@RequestBody @Valid createDto: $createDtoUqcn) {")
+        appendLine("    fun create(@RequestBody @Valid createDto: $createDtoUqcn): EntityCreatedResponseDto {")
         blankLine()
-        appendLine("        this.crudService.create(createDto)")
+        appendLine("        val entity = this.crudService.create(createDto)")
+
+        if (entityDef.hasSurrogatePrimaryKey) {
+            appendLine("        val id = entity.id.value")
+            blankLine()
+        } else {
+
+            addImportRaw("java.net.URLEncoder.encode")
+            val fieldCsv = entityDef.primaryKeyClassFields.joinToString(", ") { "entity.${it.classFieldName}" }
+            appendLine("""        val id = listOf($fieldCsv).joinToString(":") { encode(it.toString(), "UTF-8") }""")
+            blankLine()
+
+        }
+
+        appendLine("        return EntityCreatedResponseDto(id)")
         blankLine()
         appendLine("    }")
 
