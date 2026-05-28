@@ -6,6 +6,7 @@ import {Injectable, inject} from '@angular/core';
 import {UserGroupMembershipCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipCreateRequestDto';
 import {UserGroupMembershipFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipFetchForEditDto';
 import {UserGroupMembershipUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipUpdateRequestDto';
+import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -22,9 +23,9 @@ export class UserGroupMembershipCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: UserGroupMembershipCreateRequestDto): Observable<void> {
+    public create(requestDto: UserGroupMembershipCreateRequestDto): Observable<EntityCreatedResponseDto> {
 
-        return this.http.post<void>(
+        return this.http.post<EntityCreatedResponseDto>(
                 '/api/ops/user-group-membership/create',
                 requestDto,
                 this.httpOptions);
