@@ -7,7 +7,7 @@ import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/show
 import {SimpleFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleFetchForEditDto';
 import {SimpleSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringRequestDto';
 import {SimpleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleUpdateRequestDto';
-import {FormValidationResponseDto} from '@maia/maia-ui';
+import {EntityCreatedResponseDto, FormValidationResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -24,9 +24,9 @@ export class SimpleCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: SimpleCreateRequestDto): Observable<void> {
+    public create(requestDto: SimpleCreateRequestDto): Observable<EntityCreatedResponseDto> {
 
-        return this.http.post<void>(
+        return this.http.post<EntityCreatedResponseDto>(
                 '/api/simple/create',
                 requestDto,
                 this.httpOptions);

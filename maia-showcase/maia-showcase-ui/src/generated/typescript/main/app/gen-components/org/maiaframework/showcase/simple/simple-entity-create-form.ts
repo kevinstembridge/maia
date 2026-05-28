@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
 import {SimpleSomeStringAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringAsyncValidator';
 import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
-import {ProblemDetail} from '@maia/maia-ui';
+import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
 
 
 
@@ -76,8 +76,8 @@ export class SimpleEntityCreateForm implements OnInit {
         } as SimpleCreateRequestDto;
 
         this.formService.create(requestDto).subscribe({
-            next: () => {
-                this.router.navigate(['/simple/view']);
+            next: (dto: EntityCreatedResponseDto) => {
+                this.router.navigate(['/simple/view/' + dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
