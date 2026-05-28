@@ -11,7 +11,7 @@ import {AllFieldTypesSomeStringNullableRequestDto} from '@app/gen-components/org
 import {AllFieldTypesSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeStringRequestDto';
 import {AllFieldTypesSomeStringTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeStringTypeRequestDto';
 import {AllFieldTypesUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesUpdateRequestDto';
-import {FormValidationResponseDto} from '@maia/maia-ui';
+import {EntityCreatedResponseDto, FormValidationResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -28,9 +28,9 @@ export class AllFieldTypesCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: AllFieldTypesCreateRequestDto): Observable<void> {
+    public create(requestDto: AllFieldTypesCreateRequestDto): Observable<EntityCreatedResponseDto> {
 
-        return this.http.post<void>(
+        return this.http.post<EntityCreatedResponseDto>(
                 '/api/all-field-types/create',
                 requestDto,
                 this.httpOptions);

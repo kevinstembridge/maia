@@ -6,6 +6,7 @@ import {Injectable, inject} from '@angular/core';
 import {SomeVersionedCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedCreateRequestDto';
 import {SomeVersionedFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedFetchForEditDto';
 import {SomeVersionedUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedUpdateRequestDto';
+import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -22,9 +23,9 @@ export class SomeVersionedCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: SomeVersionedCreateRequestDto): Observable<void> {
+    public create(requestDto: SomeVersionedCreateRequestDto): Observable<EntityCreatedResponseDto> {
 
-        return this.http.post<void>(
+        return this.http.post<EntityCreatedResponseDto>(
                 '/api/some-versioned/create',
                 requestDto,
                 this.httpOptions);

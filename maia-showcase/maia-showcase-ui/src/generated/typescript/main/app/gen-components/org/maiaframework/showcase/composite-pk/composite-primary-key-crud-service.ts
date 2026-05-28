@@ -6,6 +6,7 @@ import {Injectable, inject} from '@angular/core';
 import {CompositePrimaryKeyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyCreateRequestDto';
 import {CompositePrimaryKeyFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyFetchForEditDto';
 import {CompositePrimaryKeyUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyUpdateRequestDto';
+import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -22,9 +23,9 @@ export class CompositePrimaryKeyCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: CompositePrimaryKeyCreateRequestDto): Observable<void> {
+    public create(requestDto: CompositePrimaryKeyCreateRequestDto): Observable<EntityCreatedResponseDto> {
 
-        return this.http.post<void>(
+        return this.http.post<EntityCreatedResponseDto>(
                 '/api/composite-primary-key/create',
                 requestDto,
                 this.httpOptions);

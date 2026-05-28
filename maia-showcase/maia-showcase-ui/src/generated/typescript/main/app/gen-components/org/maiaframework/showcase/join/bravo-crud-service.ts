@@ -6,6 +6,7 @@ import {Injectable, inject} from '@angular/core';
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
 import {BravoFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoFetchForEditDto';
 import {BravoUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoUpdateRequestDto';
+import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -22,9 +23,9 @@ export class BravoCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: BravoCreateRequestDto): Observable<void> {
+    public create(requestDto: BravoCreateRequestDto): Observable<EntityCreatedResponseDto> {
 
-        return this.http.post<void>(
+        return this.http.post<EntityCreatedResponseDto>(
                 '/api/bravo/create',
                 requestDto,
                 this.httpOptions);

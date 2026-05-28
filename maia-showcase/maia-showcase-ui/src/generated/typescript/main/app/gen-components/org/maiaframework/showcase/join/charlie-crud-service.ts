@@ -6,6 +6,7 @@ import {Injectable, inject} from '@angular/core';
 import {CharlieCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieCreateRequestDto';
 import {CharlieFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieFetchForEditDto';
 import {CharlieUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieUpdateRequestDto';
+import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -22,9 +23,9 @@ export class CharlieCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: CharlieCreateRequestDto): Observable<void> {
+    public create(requestDto: CharlieCreateRequestDto): Observable<EntityCreatedResponseDto> {
 
-        return this.http.post<void>(
+        return this.http.post<EntityCreatedResponseDto>(
                 '/api/charlie/create',
                 requestDto,
                 this.httpOptions);

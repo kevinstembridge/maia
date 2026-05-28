@@ -6,6 +6,7 @@ import {Injectable, inject} from '@angular/core';
 import {CharlieAgGridCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieAgGridCreateRequestDto';
 import {CharlieAgGridFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieAgGridFetchForEditDto';
 import {CharlieAgGridUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieAgGridUpdateRequestDto';
+import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -22,9 +23,9 @@ export class CharlieAgGridCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: CharlieAgGridCreateRequestDto): Observable<void> {
+    public create(requestDto: CharlieAgGridCreateRequestDto): Observable<EntityCreatedResponseDto> {
 
-        return this.http.post<void>(
+        return this.http.post<EntityCreatedResponseDto>(
                 '/api/charlie-ag-grid/create',
                 requestDto,
                 this.httpOptions);
