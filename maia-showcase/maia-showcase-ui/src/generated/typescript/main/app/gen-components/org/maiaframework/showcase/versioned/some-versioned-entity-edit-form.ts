@@ -20,6 +20,7 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
     selector: 'app-some-versioned-entity-edit-form',

@@ -6,6 +6,7 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Router} from '@angular/router';
 import {CompositePrimaryKeyFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyFetchForEditDto';
 import {CompositePrimaryKeyUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyUpdateRequestDto';
@@ -20,6 +21,7 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
     selector: 'app-composite-primary-key-entity-edit-form',

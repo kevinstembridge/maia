@@ -24,6 +24,7 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatFormFieldModule,
         MatInputModule,
         MatOption,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
     selector: 'app-bravo-entity-edit-form',

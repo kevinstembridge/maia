@@ -26,6 +26,7 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatFormFieldModule,
         MatInputModule,
         MatOption,
+        MatProgressSpinnerModule,
         MatSelect,
         MatTooltip,
         ReactiveFormsModule,

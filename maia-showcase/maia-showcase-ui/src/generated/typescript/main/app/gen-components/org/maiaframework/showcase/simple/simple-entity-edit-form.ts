@@ -22,6 +22,7 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
     selector: 'app-simple-entity-edit-form',
