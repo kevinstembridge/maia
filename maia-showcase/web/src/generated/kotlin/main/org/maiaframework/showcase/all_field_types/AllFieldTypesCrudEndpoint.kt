@@ -33,6 +33,7 @@ class AllFieldTypesCrudEndpoint(
 
         val entity = this.crudService.create(createDto)
         val id = entity.id.value
+
         return EntityCreatedResponseDto(id)
 
     }

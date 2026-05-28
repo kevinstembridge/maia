@@ -5,6 +5,7 @@ package org.maiaframework.showcase.user
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
+import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -26,9 +27,12 @@ class UserGroupMembershipCrudEndpoint(
     @PostMapping("/api/ops/user-group-membership/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('SYS__ADMIN')")
-    fun create(@RequestBody @Valid createDto: UserGroupMembershipCreateRequestDto) {
+    fun create(@RequestBody @Valid createDto: UserGroupMembershipCreateRequestDto): EntityCreatedResponseDto {
 
-        this.crudService.create(createDto)
+        val entity = this.crudService.create(createDto)
+        val id = entity.id.value
+
+        return EntityCreatedResponseDto(id)
 
     }
 

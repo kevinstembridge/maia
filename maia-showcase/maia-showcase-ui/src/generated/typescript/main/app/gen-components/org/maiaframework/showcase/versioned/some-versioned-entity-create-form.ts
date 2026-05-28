@@ -71,7 +71,7 @@ export class SomeVersionedEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: () => {
-                this.onSave.emit();
+                // TODO maybe emit an event?
             },
             error: err => {
                 this.problemDetail.set(err.error);

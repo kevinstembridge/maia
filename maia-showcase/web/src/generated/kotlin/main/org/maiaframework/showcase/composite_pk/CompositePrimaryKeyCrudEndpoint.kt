@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.composite_pk
 
 import jakarta.validation.Valid
+import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.net.URLEncoder.encode
 
 
 @RestController
@@ -24,9 +26,12 @@ class CompositePrimaryKeyCrudEndpoint(
     @PostMapping("/api/composite-primary-key/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: CompositePrimaryKeyCreateRequestDto) {
+    fun create(@RequestBody @Valid createDto: CompositePrimaryKeyCreateRequestDto): EntityCreatedResponseDto {
 
-        this.crudService.create(createDto)
+        val entity = this.crudService.create(createDto)
+        val id = listOf(entity.someInt, entity.someString).joinToString(":") { encode(it.toString(), "UTF-8") }
+
+        return EntityCreatedResponseDto(id)
 
     }
 
