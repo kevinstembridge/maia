@@ -53,11 +53,13 @@ class EntityCrudRoutesRenderer(
 
     private fun renderBlotterRoute(def: BlotterPageDef) {
 
-        appendLine("    {")
-        appendLine("        path: '${def.routePath}',")
-        appendLine("        loadComponent: () =>")
-        appendLine("            import('./${def.pageAngularComponentNames.componentNameKebab}').then(m => m.${def.pageAngularComponentNames.componentName}),")
-        appendLine("    },")
+        append("""
+            |    {
+            |        path: '${def.routePath}',
+            |        loadComponent: () =>
+            |            import('./${def.pageAngularComponentNames.componentNameKebab}').then(m => m.${def.pageAngularComponentNames.componentName}),
+            |    },
+            |""".trimMargin())
 
     }
 
@@ -65,11 +67,14 @@ class EntityCrudRoutesRenderer(
     private fun renderViewRoute(def: EntityDetailViewDef) {
 
         val path = def.viewPageUrl.removePrefix("/") + "/:id"
-        appendLine("    {")
-        appendLine("        path: '$path',")
-        appendLine("        loadComponent: () =>")
-        appendLine("            import('./${def.viewPageAngularComponentNames.componentNameKebab}').then(m => m.${def.viewPageAngularComponentNames.componentName}),")
-        appendLine("    },")
+
+        append("""
+            |    {
+            |        path: '$path',
+            |        loadComponent: () =>
+            |            import('./${def.viewPageAngularComponentNames.componentNameKebab}').then(m => m.${def.viewPageAngularComponentNames.componentName}),
+            |    },
+            |""".trimMargin())
 
     }
 
@@ -77,11 +82,14 @@ class EntityCrudRoutesRenderer(
     private fun renderCreateRoute(def: EntityCreatePageDef) {
 
         val path = def.createPageUrl.removePrefix("/")
-        appendLine("    {")
-        appendLine("        path: '$path',")
-        appendLine("        loadComponent: () =>")
-        appendLine("            import('./${def.createPageAngularComponentNames.componentNameKebab}').then(m => m.${def.createPageAngularComponentNames.componentName}),")
-        appendLine("    },")
+
+        append("""
+            |    {
+            |        path: '$path',
+            |        loadComponent: () =>
+            |            import('./${def.createPageAngularComponentNames.componentNameKebab}').then(m => m.${def.createPageAngularComponentNames.componentName}),
+            |    },
+            |""".trimMargin())
 
     }
 
@@ -89,11 +97,14 @@ class EntityCrudRoutesRenderer(
     private fun renderEditRoute(def: EntityEditPageDef) {
 
         val path = def.entityDef.editEntityPageUrl.removePrefix("/") + "/:id"
-        appendLine("    {")
-        appendLine("        path: '$path',")
-        appendLine("        loadComponent: () =>")
-        appendLine("            import('./${def.editPageAngularComponentNames.componentNameKebab}').then(m => m.${def.editPageAngularComponentNames.componentName}),")
-        appendLine("    },")
+
+        append("""
+            |    {
+            |        path: '$path',
+            |        loadComponent: () =>
+            |            import('./${def.editPageAngularComponentNames.componentNameKebab}').then(m => m.${def.editPageAngularComponentNames.componentName}),
+            |    },
+            |""".trimMargin())
 
     }
 
