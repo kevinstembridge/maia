@@ -982,6 +982,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoEntityCreatePageDef = entityCreatePage(bravoEntityDef)
 
 
+    val bravoEntityDetailViewPageDef = entityDetailView(bravoEntityDef)
+
+
     val bravoEntityEditPageDef = entityEditPage(bravoEntityDef)
 
 

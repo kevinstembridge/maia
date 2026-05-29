@@ -50,7 +50,7 @@ import org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
 import org.maiaframework.gen.renderers.ui.ForeignKeyReferencesExistResponseDtoRenderer
 import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.FormScssRenderer
-import org.maiaframework.gen.renderers.ui.GenRoutesRenderer
+import org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 import org.maiaframework.gen.renderers.ui.ManyToManyChipFieldDef
 import org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.SigninRequestDtoRenderer
@@ -153,7 +153,7 @@ class AngularUiModuleGenerator(
         renderEntityCreatePages()
         renderEntityEditPages()
         renderBlotterPages()
-        renderGenRoutes()
+        renderEntityCrudRoutes()
         renderEntityDetailsDtos()
         renderEnums()
         renderEsDocs()
@@ -513,7 +513,7 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderGenRoutes() {
+    private fun renderEntityCrudRoutes() {
 
         val blotterPageByEntity = this.modelDef.blotterPageDefs
             .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
@@ -531,7 +531,7 @@ class AngularUiModuleGenerator(
         val allEntities = (blotterPageByEntity.keys + viewPageByEntity.keys + createPageByEntity.keys + editPageByEntity.keys).toSet()
 
         allEntities.forEach { entityDef ->
-            GenRoutesRenderer(
+            EntityCrudRoutesRenderer(
                 entityDef = entityDef,
                 blotterPageDef = blotterPageByEntity[entityDef],
                 entityDetailViewDef = viewPageByEntity[entityDef],

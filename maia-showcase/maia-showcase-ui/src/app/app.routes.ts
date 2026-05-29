@@ -1,11 +1,11 @@
 import {Routes} from '@angular/router';
-import {allFieldTypesGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-gen-routes';
-import {bravoGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/join/bravo-gen-routes';
-import {compositePrimaryKeyGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-gen-routes';
-import {leftManyGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/many-to-many/left-many-gen-routes';
-import {simpleGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-gen-routes';
-import {someVersionedGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-gen-routes';
-import {userGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/user/user-gen-routes';
+import {allFieldTypesRoutes} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-routes';
+import {bravoRoutes} from '@app/gen-components/org/maiaframework/showcase/join/bravo-routes';
+import {compositePrimaryKeyRoutes} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-routes';
+import {leftManyRoutes} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-routes';
+import {simpleRoutes} from '@app/gen-components/org/maiaframework/showcase/simple/simple-routes';
+import {someVersionedRoutes} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-routes';
+import {userRoutes} from '@app/gen-components/org/maiaframework/showcase/user/user-routes';
 
 export const routes: Routes = [
     {
@@ -15,9 +15,9 @@ export const routes: Routes = [
                 (m) => m.HomePage,
             ),
     },
-    ...allFieldTypesGenRoutes,
-    ...bravoGenRoutes,
-    ...compositePrimaryKeyGenRoutes,
+    ...allFieldTypesRoutes,
+    ...bravoRoutes,
+    ...compositePrimaryKeyRoutes,
     {
         path: 'left-many/view/:id',
         loadComponent: () =>
@@ -25,10 +25,10 @@ export const routes: Routes = [
                 (m) => m.LeftManyViewPage,
             ),
     },
-    ...leftManyGenRoutes,
-    ...simpleGenRoutes,
-    ...someVersionedGenRoutes,
-    ...userGenRoutes,
+    ...leftManyRoutes,
+    ...simpleRoutes,
+    ...someVersionedRoutes,
+    ...userRoutes,
     {
         path: 'login',
         loadComponent: () =>

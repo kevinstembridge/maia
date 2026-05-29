@@ -8,8 +8,8 @@ import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.GeneratedTypescriptDir
 
 
-class GenRoutesRenderer(
-    private val entityDef: EntityDef,
+class EntityCrudRoutesRenderer(
+    entityDef: EntityDef,
     private val blotterPageDef: BlotterPageDef? = null,
     private val entityDetailViewDef: EntityDetailViewDef? = null,
     private val entityCreatePageDef: EntityCreatePageDef? = null,
@@ -18,8 +18,12 @@ class GenRoutesRenderer(
 
 
     private val genDir = GeneratedTypescriptDir.forPackage(entityDef.packageName)
+
+
     private val entityBaseName = entityDef.entityBaseName
-    private val constName = "${entityBaseName.firstToLower()}GenRoutes"
+
+
+    private val constName = "${entityBaseName.firstToLower()}Routes"
 
 
     init {
@@ -28,7 +32,9 @@ class GenRoutesRenderer(
 
 
     override fun renderedFilePath(): String {
-        return "$genDir/${entityBaseName.toKebabCase()}-gen-routes.ts"
+
+        return "$genDir/${entityBaseName.toKebabCase()}-routes.ts"
+
     }
 
 
@@ -46,41 +52,49 @@ class GenRoutesRenderer(
 
 
     private fun renderBlotterRoute(def: BlotterPageDef) {
+
         appendLine("    {")
         appendLine("        path: '${def.routePath}',")
         appendLine("        loadComponent: () =>")
         appendLine("            import('./${def.pageAngularComponentNames.componentNameKebab}').then(m => m.${def.pageAngularComponentNames.componentName}),")
         appendLine("    },")
+
     }
 
 
     private fun renderViewRoute(def: EntityDetailViewDef) {
+
         val path = def.viewPageUrl.removePrefix("/") + "/:id"
         appendLine("    {")
         appendLine("        path: '$path',")
         appendLine("        loadComponent: () =>")
         appendLine("            import('./${def.viewPageAngularComponentNames.componentNameKebab}').then(m => m.${def.viewPageAngularComponentNames.componentName}),")
         appendLine("    },")
+
     }
 
 
     private fun renderCreateRoute(def: EntityCreatePageDef) {
+
         val path = def.createPageUrl.removePrefix("/")
         appendLine("    {")
         appendLine("        path: '$path',")
         appendLine("        loadComponent: () =>")
         appendLine("            import('./${def.createPageAngularComponentNames.componentNameKebab}').then(m => m.${def.createPageAngularComponentNames.componentName}),")
         appendLine("    },")
+
     }
 
 
     private fun renderEditRoute(def: EntityEditPageDef) {
+
         val path = def.entityDef.editEntityPageUrl.removePrefix("/") + "/:id"
         appendLine("    {")
         appendLine("        path: '$path',")
         appendLine("        loadComponent: () =>")
         appendLine("            import('./${def.editPageAngularComponentNames.componentNameKebab}').then(m => m.${def.editPageAngularComponentNames.componentName}),")
         appendLine("    },")
+
     }
 
 
