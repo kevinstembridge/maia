@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/auth/AuthoritySelectOptions';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
-import {ProblemDetail} from '@maia/maia-ui';
+import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
 
 
 
@@ -86,8 +86,8 @@ export class UserEntityCreateForm implements OnInit {
         } as UserCreateRequestDto;
 
         this.formService.create(requestDto).subscribe({
-            next: () => {
-                this.router.navigate(['/user/view']);
+            next: (dto: EntityCreatedResponseDto) => {
+                this.router.navigate(['/user/view/' + dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
