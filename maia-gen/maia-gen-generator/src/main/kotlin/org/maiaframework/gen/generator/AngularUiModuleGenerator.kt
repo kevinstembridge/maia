@@ -614,22 +614,6 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderEntityCreateFormComponent() {
-
-        this.modelDef.entityCrudApiDefs.mapNotNull { it.createApiDef }
-            .filter { it.entityDef.isConcrete && it.crudApiDef.withEntityForm }
-            .forEach {
-
-                it.angularInlineFormDef?.let { formDef ->
-                    renderEntityForm(formDef, it.angularFormComponentNames)
-//                    EntityCreateFormScssRenderer migrated to EntityCreatePageDef
-                }
-
-            }
-
-    }
-
-
     // TODO Delete after cooling off: 2026-05-23
     private fun renderEntityEditDialogHtml() {
 
