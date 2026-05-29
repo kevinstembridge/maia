@@ -8,6 +8,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {Router} from '@angular/router';
 import {BravoFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoFetchForEditDto';
 import {BravoUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoUpdateRequestDto';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
@@ -50,6 +51,9 @@ export class BravoEntityEditForm implements OnInit {
 
 
     loading = signal(true);
+
+
+    private readonly router = inject(Router);
 
 
     constructor() {
@@ -103,7 +107,7 @@ export class BravoEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                // TODO maybe emit an event?
+                this.router.navigate(['/bravo/view/' + this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

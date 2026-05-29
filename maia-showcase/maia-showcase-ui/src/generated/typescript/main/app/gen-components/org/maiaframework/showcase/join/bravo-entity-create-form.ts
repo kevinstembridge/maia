@@ -7,6 +7,7 @@ import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/mater
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {Router} from '@angular/router';
 import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/join/AlphaTypeaheadV1EsDoc';
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
 import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
@@ -55,6 +56,9 @@ export class BravoEntityCreateForm implements OnInit {
 
 
     formGroup: FormGroup;
+
+
+    private readonly router = inject(Router);
 
 
     constructor() {
@@ -115,8 +119,8 @@ export class BravoEntityCreateForm implements OnInit {
         } as BravoCreateRequestDto;
 
         this.formService.create(requestDto).subscribe({
-            next: () => {
-                // TODO maybe emit an event?
+            next: (dto: EntityCreatedResponseDto) => {
+                this.router.navigate(['/bravo/view/' + dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

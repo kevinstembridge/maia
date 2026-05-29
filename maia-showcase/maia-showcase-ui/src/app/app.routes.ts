@@ -1,4 +1,11 @@
 import {Routes} from '@angular/router';
+import {allFieldTypesGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-gen-routes';
+import {bravoGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/join/bravo-gen-routes';
+import {compositePrimaryKeyGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-gen-routes';
+import {leftManyGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/many-to-many/left-many-gen-routes';
+import {simpleGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-gen-routes';
+import {someVersionedGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-gen-routes';
+import {userGenRoutes} from '../generated/typescript/main/app/gen-components/org/maiaframework/showcase/user/user-gen-routes';
 
 export const routes: Routes = [
     {
@@ -8,62 +15,20 @@ export const routes: Routes = [
                 (m) => m.HomePage,
             ),
     },
+    ...allFieldTypesGenRoutes,
+    ...bravoGenRoutes,
+    ...compositePrimaryKeyGenRoutes,
     {
-        path: 'all-field-types-blotter',
+        path: 'left-many/view/:id',
         loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-blotter-page').then(
-                (m) => m.AllFieldTypesBlotterPage,
+            import('./pages/left-many-view/left-many-view-page').then(
+                (m) => m.LeftManyViewPage,
             ),
     },
-    {
-        path: 'bravo-blotter',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/join/bravo-blotter-page').then(
-                (m) => m.BravoBlotterPage,
-            ),
-    },
-    {
-        path: 'simple-blotter',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-blotter-page').then(
-                (m) => m.SimpleBlotterPage,
-            ),
-    },
-    {
-        path: 'simple/create',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-entity-create-page').then(
-                (m) => m.SimpleEntityCreatePage,
-            ),
-    },
-    {
-        path: 'simple/view/:id',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-entity-detail-view-page').then(
-                (m) => m.SimpleEntityDetailViewPage,
-            ),
-    },
-    {
-        path: 'simple/edit/:id',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-entity-edit-page').then(
-                (m) => m.SimpleEntityEditPage,
-            ),
-    },
-    {
-        path: 'composite-primary-key/view/:id',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-entity-detail-view-page').then(
-                (m) => m.CompositePrimaryKeyEntityDetailViewPage,
-            ),
-    },
-    {
-        path: 'composite-primary-key/edit/:id',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-entity-edit-page').then(
-                (m) => m.CompositePrimaryKeyEntityEditPage,
-            ),
-    },
+    ...leftManyGenRoutes,
+    ...simpleGenRoutes,
+    ...someVersionedGenRoutes,
+    ...userGenRoutes,
     {
         path: 'login',
         loadComponent: () =>
@@ -72,66 +37,10 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'some-versioned-blotter',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter-page').then(
-                (m) => m.SomeVersionedBlotterPage,
-            ),
-    },
-    {
-        path: 'some-versioned/create',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-entity-create-form').then(
-                (m) => m.SomeVersionedEntityCreateForm,
-            ),
-    },
-    {
-        path: 'some-versioned/view/:id',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-entity-detail-view-page').then(
-                (m) => m.SomeVersionedEntityDetailViewPage,
-            ),
-    },
-    {
-        path: 'some-versioned/edit/:id',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-entity-edit-form').then(
-                (m) => m.SomeVersionedEntityEditForm,
-            ),
-    },
-    {
-        path: 'composite-pk-blotter',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-blotter-page').then(
-                (m) => m.CompositePrimaryKeyBlotterPage,
-            ),
-    },
-    {
-        path: 'user-blotter',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/user/user-blotter-page').then(
-                (m) => m.UserBlotterPage,
-            ),
-    },
-    {
         path: 'user-group-membership-blotter',
         loadComponent: () =>
             import('@app/pages/user-group-membership-blotter/user-group-membership-blotter-page').then(
                 (m) => m.UserGroupMembershipBlotterPage,
-            ),
-    },
-    {
-        path: 'left-many-blotter',
-        loadComponent: () =>
-            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/many-to-many/left-many-blotter-page').then(
-                (m) => m.LeftManyBlotterPage,
-            ),
-    },
-    {
-        path: 'left-many/view/:id',
-        loadComponent: () =>
-            import('./pages/left-many-view/left-many-view-page').then(
-                (m) => m.LeftManyViewPage,
             ),
     },
     {
