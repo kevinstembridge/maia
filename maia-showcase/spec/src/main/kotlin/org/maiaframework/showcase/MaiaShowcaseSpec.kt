@@ -10,6 +10,7 @@ import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.AllowFindAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
@@ -117,6 +118,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val loginFormDef = angularForm(loginRequestDtoDef) {
         delegateFormSubmission()
+        formPurpose(FormPurpose.submit)
         field("emailAddress") {
             withLabel("Email Address")
             withoutSeparateFieldLabel()
