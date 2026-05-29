@@ -2,7 +2,7 @@ package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.AsyncValidatorDef
-import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isBooleanBased
@@ -15,7 +15,7 @@ object FormControlRendererHelper {
 
     fun renderFormControlFor(
         angularFormFieldDef: AngularFormFieldDef,
-        createOrEdit: CreateOrEdit?,
+        formPurpose: FormPurpose?,
         indentSize: Int = 8,
         appendLine: (String) -> Unit,
         addImportFor: (FieldType) -> Unit
@@ -25,7 +25,7 @@ object FormControlRendererHelper {
 
         val classFieldDef = angularFormFieldDef.classFieldDef
 
-        if (createOrEdit == CreateOrEdit.edit && classFieldDef.isEditableByUser.value == false) {
+        if (formPurpose == FormPurpose.edit && classFieldDef.isEditableByUser.value == false) {
             addImportFor(classFieldDef.fieldType)
             appendLine("${indent}${classFieldDef.classFieldName}: new FormControl({value: ${classFieldDef.defaultFormFieldValue}, disabled: true}),")
             return
@@ -63,12 +63,12 @@ object FormControlRendererHelper {
 
     fun renderFormControlFor_old(
         angularFormFieldDef: AngularFormFieldDef,
-        createOrEdit: CreateOrEdit?
+        formPurpose: FormPurpose?
     ): String {
 
         val classFieldDef = angularFormFieldDef.classFieldDef
 
-        if (createOrEdit == CreateOrEdit.edit && classFieldDef.isEditableByUser.value == false) {
+        if (formPurpose == FormPurpose.edit && classFieldDef.isEditableByUser.value == false) {
             return "new FormControl({value: ${classFieldDef.defaultFormFieldValue}, disabled: true})"
         }
 

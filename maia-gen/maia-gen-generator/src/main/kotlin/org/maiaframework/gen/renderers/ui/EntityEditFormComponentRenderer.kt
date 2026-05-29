@@ -4,7 +4,7 @@ import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
-import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
@@ -180,7 +180,7 @@ class EntityEditFormComponentRenderer(
         formGroupFields.forEach { angularFormFieldDef ->
             FormControlRendererHelper.renderFormControlFor(
                 angularFormFieldDef,
-                CreateOrEdit.edit,
+                FormPurpose.edit,
                 indentSize = 12,
                 { line -> appendLine(line) },
                 { fieldType -> addImportsFor(fieldType) }

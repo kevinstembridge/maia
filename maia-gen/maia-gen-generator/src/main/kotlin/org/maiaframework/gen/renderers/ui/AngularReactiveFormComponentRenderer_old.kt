@@ -5,7 +5,7 @@ import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
-import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
@@ -391,7 +391,7 @@ class AngularReactiveFormComponentRenderer_old(
 
     private fun `render class field for entityId`() {
 
-        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
+        if (angularFormDef.formPurpose == FormPurpose.edit) {
 
             append("""
                 |
@@ -504,7 +504,7 @@ class AngularReactiveFormComponentRenderer_old(
 
                 val newFormControl = FormControlRendererHelper.renderFormControlFor(
                     angularFormFieldDef,
-                    angularFormDef.createOrEdit,
+                    angularFormDef.formPurpose,
                     indentSize = 16,
                     { line -> appendLine(line) },
                     { fieldType -> addImportsFor(fieldType)}

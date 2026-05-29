@@ -4,7 +4,7 @@ import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
-import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
@@ -55,7 +55,7 @@ class AngularSignalFormComponentRenderer(
             addImport("@angular/material/dialog", "MatDialogActions", isModule = true)
         }
 
-        if (angularFormDef.createOrEdit == CreateOrEdit.edit || angularFormDef.context != null) {
+        if (angularFormDef.formPurpose == FormPurpose.edit || angularFormDef.context != null) {
             addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
         }
 
@@ -395,7 +395,7 @@ class AngularSignalFormComponentRenderer(
         blankLine()
         appendLine("    private readonly formService = inject(${this.angularFormDef.formServiceClassName});")
 
-        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
+        if (angularFormDef.formPurpose == FormPurpose.edit) {
             blankLine()
             blankLine()
             appendLine("    private readonly dto = inject<any>(MAT_DIALOG_DATA);")
@@ -453,7 +453,7 @@ class AngularSignalFormComponentRenderer(
 
                 val newFormControl = FormControlRendererHelper.renderFormControlFor(
                     angularFormFieldDef,
-                    angularFormDef.createOrEdit,
+                    angularFormDef.formPurpose,
                     indentSize = 16,
                     { line -> appendLine(line) },
                     { fieldType -> addImportsFor(fieldType) }
@@ -465,9 +465,10 @@ class AngularSignalFormComponentRenderer(
 
                 val validators = if (classFieldDef.nullable) "" else "${angularFormFieldDef.typeaheadRequiredValidatorFunctionName}()"
 
-                val initialValue = when (angularFormDef.createOrEdit) {
-                    CreateOrEdit.create -> "''"
-                    CreateOrEdit.edit -> typeaheadDef.fieldDefs.map { "${it.fieldName}: this.dto.${it.fieldName}" }
+                val initialValue = when (angularFormDef.formPurpose) {
+                    FormPurpose.create -> "''"
+                    FormPurpose.submit -> "''"
+                    FormPurpose.edit -> typeaheadDef.fieldDefs.map { "${it.fieldName}: this.dto.${it.fieldName}" }
                         .joinToString(prefix = "{ ", separator = ", ", postfix = " }")
 
                     null -> "''"

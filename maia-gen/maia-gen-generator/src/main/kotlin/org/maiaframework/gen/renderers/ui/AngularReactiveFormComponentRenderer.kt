@@ -5,7 +5,7 @@ import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.TypescriptImports
-import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
@@ -142,7 +142,7 @@ class AngularReactiveFormComponentRenderer(
 
     private fun `render class field for entityId`() {
 
-        if (angularFormDef.createOrEdit == CreateOrEdit.edit) {
+        if (angularFormDef.formPurpose == FormPurpose.edit) {
 
             addImport("@angular/core", "input")
 
@@ -501,7 +501,7 @@ class AngularReactiveFormComponentRenderer(
 
             FormControlRendererHelper.renderFormControlFor(
                 angularFormFieldDef,
-                angularFormDef.createOrEdit,
+                angularFormDef.formPurpose,
                 indentSize = 16,
                 { line -> appendLine(line) },
                 { fieldType -> addImportsFor(fieldType) }
@@ -826,7 +826,39 @@ class AngularReactiveFormComponentRenderer(
 
     private fun `render formService request next function`() {
 
-        if (this.angularFormDef.onSuccessUrl.isNullOrEmpty()) {
+        if (this.angularFormDef.onSuccessUrl.isNullOrEmpty() == false) {
+
+            when (this.angularFormDef.formPurpose) {
+                FormPurpose.create -> {
+
+                    append("""
+                        |            next: (dto: EntityCreatedResponseDto) => {
+                        |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}/' + dto.id]);
+                        |            },
+                        |""".trimMargin())
+
+                }
+                FormPurpose.edit -> {
+
+                    append("""
+                        |            next: () => {
+                        |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}/' + this.entityId()]);
+                        |            },
+                        |""".trimMargin())
+
+                }
+                FormPurpose.submit -> {
+
+                    append("""
+                        |            next: () => {
+                        |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}']);
+                        |            },
+                        |""".trimMargin())
+
+                }
+            }
+
+        } else {
 
             when (this.angularFormDef.inlineFormOrDialog) {
 
@@ -835,8 +867,8 @@ class AngularReactiveFormComponentRenderer(
                     if (this.angularFormDef.emitEventOnSuccess.value) {
 
                         append("""
-                            |            next: () => {
-                            |                this.onSuccess.emit();
+                            |            next: (dto: EntityCreatedResponseDto) => {
+                            |                this.onSuccess.emit(dto);
                             |            },
                             |""".trimMargin())
 
@@ -844,7 +876,7 @@ class AngularReactiveFormComponentRenderer(
 
                         append("""
                             |            next: () => {
-                            |                // TODO maybe emit an event?
+                            |                // TODO maybe emit an event? 1
                             |            },
                             |""".trimMargin())
 
@@ -857,7 +889,7 @@ class AngularReactiveFormComponentRenderer(
                     if (this.angularFormDef.emitEventOnSuccess.value) {
 
                         append("""
-                            |            next: () => {
+                            |            next: (dto: EntityCreatedResponseDto) => {
                             |                this.onSuccess.emit();
                             |            },
                             |""".trimMargin())
@@ -875,14 +907,6 @@ class AngularReactiveFormComponentRenderer(
                 }
 
             }
-
-        } else {
-
-            append("""
-                |            next: () => {
-                |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}']);
-                |            },
-                |""".trimMargin())
 
         }
 
@@ -945,9 +969,20 @@ class AngularReactiveFormComponentRenderer(
         addImport("@angular/material/button", "MatButtonModule", isModule = true)
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
         addImport("@angular/material/input", "MatInputModule", isModule = true)
+
         if (this.angularFormDef.fetchForEditDtoDef != null) {
             addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
         }
+
+        when (this.angularFormDef.formPurpose) {
+            FormPurpose.create -> {
+                addImport("@maia/maia-ui", "EntityCreatedResponseDto")
+            }
+            FormPurpose.edit -> {}
+            FormPurpose.submit -> {}
+            null -> {}
+        }
+
         addImport(TypescriptImports.problemDetail)
         addImport(requestDtoDef.typescriptImport)
         addImport(angularFormDef.formServiceTypescriptImport)
