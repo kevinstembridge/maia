@@ -51,7 +51,7 @@ export class AllFieldTypesEntityDetailViewPage {
     onEditClicked(): void {
         const id = this.entityId();
         if (id) {
-            this.router.navigate(['/all_field_types/edit', id]);
+            this.router.navigate(['/all-field-types/edit', id]);
         }
     }
 

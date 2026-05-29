@@ -51,7 +51,7 @@ export class CompositePrimaryKeyEntityDetailViewPage {
     onEditClicked(): void {
         const id = this.entityId();
         if (id) {
-            this.router.navigate(['/composite_primary_key/edit', id]);
+            this.router.navigate(['/composite-primary-key/edit', id]);
         }
     }
 

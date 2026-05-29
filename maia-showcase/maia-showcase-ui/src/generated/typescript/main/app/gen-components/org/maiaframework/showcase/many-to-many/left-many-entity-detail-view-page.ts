@@ -51,7 +51,7 @@ export class LeftManyEntityDetailViewPage {
     onEditClicked(): void {
         const id = this.entityId();
         if (id) {
-            this.router.navigate(['/left_many/edit', id]);
+            this.router.navigate(['/left-many/edit', id]);
         }
     }
 
