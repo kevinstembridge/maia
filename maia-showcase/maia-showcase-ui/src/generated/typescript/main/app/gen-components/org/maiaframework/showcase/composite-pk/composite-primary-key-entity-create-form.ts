@@ -9,7 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {Router} from '@angular/router';
 import {CompositePrimaryKeyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/composite-pk/CompositePrimaryKeyCreateRequestDto';
 import {CompositePrimaryKeyCrudService} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-crud-service';
-import {ProblemDetail} from '@maia/maia-ui';
+import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
 
 
 
@@ -76,8 +76,8 @@ export class CompositePrimaryKeyEntityCreateForm implements OnInit {
         } as CompositePrimaryKeyCreateRequestDto;
 
         this.formService.create(requestDto).subscribe({
-            next: () => {
-                this.router.navigate(['/composite-primary-key/view']);
+            next: (dto: EntityCreatedResponseDto) => {
+                this.router.navigate(['/composite-primary-key/view/' + dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

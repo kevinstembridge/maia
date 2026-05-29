@@ -217,7 +217,7 @@ export class AllFieldTypesEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.router.navigate(['/all-field-types/view']);
+                this.router.navigate(['/all-field-types/view/' + this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

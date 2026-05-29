@@ -21,7 +21,7 @@ import {AllFieldTypesSomeStringTypeAsyncValidator} from '@app/gen-components/org
 import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-crud-service';
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnumSelectOptions';
-import {ProblemDetail} from '@maia/maia-ui';
+import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
 
 
 

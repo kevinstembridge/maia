@@ -14,7 +14,7 @@ import {LeftManyCreateRequestDto} from '@app/gen-components/org/maiaframework/sh
 import {RightManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyTypeaheadV1EsDoc';
 import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-crud-service';
 import {RightManyTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-typeahead-api.service';
-import {ProblemDetail} from '@maia/maia-ui';
+import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
 import {of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 
@@ -141,8 +141,8 @@ export class LeftManyEntityCreateForm implements OnInit {
         } as LeftManyCreateRequestDto;
 
         this.formService.create(requestDto).subscribe({
-            next: () => {
-                this.router.navigate(['/left-many/view']);
+            next: (dto: EntityCreatedResponseDto) => {
+                this.router.navigate(['/left-many/view/' + dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
