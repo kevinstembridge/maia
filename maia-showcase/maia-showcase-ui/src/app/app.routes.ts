@@ -58,6 +58,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'composite-primary-key/edit/:id',
+        loadComponent: () =>
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-entity-edit-page').then(
+                (m) => m.CompositePrimaryKeyEntityEditPage,
+            ),
+    },
+    {
         path: 'login',
         loadComponent: () =>
             import('./pages/login/login-page').then(
