@@ -1,0 +1,33 @@
+{
+  "planPath": "docs/superpowers/plans/2026-05-30-gen-routes.md",
+  "tasks": [
+    {
+      "id": 4,
+      "subject": "Task 1: Add routePath to BlotterPageDef",
+      "status": "completed",
+      "description": "**Goal:** Expose the Angular route path string from `BlotterPageDef` so the renderer can use it without recomputing.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/BlotterPageDef.kt`\n\n**Acceptance Criteria:**\n- [ ] `BlotterPageDef` has a `routePath` property\n- [ ] `routePath` value for a blotter with `dtoBaseName = \"Simple\"` is `\"simple-blotter\"`\n- [ ] Spec module compiles cleanly\n\n**Verify:** `./gradlew :maia-gen:maia-gen-spec:compileKotlin` → `BUILD SUCCESSFUL`\n\n**Steps:**\n- [ ] Add `val routePath = \"${blotterDef.dtoBaseName.toKebabCase()}-blotter\"` to `BlotterPageDef` after `blotterComponentSelector`\n- [ ] Run `./gradlew :maia-gen:maia-gen-spec:compileKotlin`\n- [ ] Commit\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/BlotterPageDef.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:compileKotlin\", \"acceptanceCriteria\": [\"BlotterPageDef has routePath property\", \"routePath for Simple is simple-blotter\", \"compiles cleanly\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 5,
+      "subject": "Task 2: Implement GenRoutesRenderer",
+      "status": "pending",
+      "blockedBy": [4],
+      "description": "**Goal:** Create the renderer that produces a `*-gen-routes.ts` file for a given entity's page defs.\n\n**Files:**\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/GenRoutesRenderer.kt`\n\n**Acceptance Criteria:**\n- [ ] Renderer compiles cleanly\n- [ ] `renderedFilePath()` returns `{genDir}/{entityBaseName-kebab}-gen-routes.ts`\n- [ ] Exported const is `{entityBaseNameFirstLower}GenRoutes`\n- [ ] Only non-null page defs emit route entries\n- [ ] Route ordering: blotter → view → create → edit\n- [ ] loadComponent imports are relative (e.g. `'./simple-blotter-page'`)\n\n**Verify:** `./gradlew :maia-gen:maia-gen-generator:compileKotlin` → `BUILD SUCCESSFUL`\n\n**Steps:**\n- [ ] Create `GenRoutesRenderer.kt` — see full code in plan doc Task 2\n- [ ] Run `./gradlew :maia-gen:maia-gen-generator:compileKotlin`\n- [ ] Commit\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/GenRoutesRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"compiles cleanly\", \"renderedFilePath uses entityBaseName kebab + -gen-routes.ts\", \"const name is entityBaseName firstLower + GenRoutes\", \"null page defs emit no route entry\", \"ordering: blotter view create edit\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 6,
+      "subject": "Task 3: Wire GenRoutesRenderer into AngularUiModuleGenerator",
+      "status": "pending",
+      "blockedBy": [5],
+      "description": "**Goal:** Call `GenRoutesRenderer` from the generator, grouped by entity, so routes files are emitted during `maiaGeneration`.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt`\n\n**Acceptance Criteria:**\n- [ ] `renderGenRoutes()` is called from `onGenerateSource()`\n- [ ] One `GenRoutesRenderer` created per unique entity with at least one page def\n- [ ] Blotter page defs with null `rootEntityDef` are skipped\n- [ ] Generator module compiles cleanly\n\n**Verify:** `./gradlew :maia-gen:maia-gen-generator:compileKotlin` → `BUILD SUCCESSFUL`\n\n**Steps:**\n- [ ] Add import for `GenRoutesRenderer`\n- [ ] Add `renderGenRoutes()` call in `onGenerateSource()` after `renderBlotterPages()`\n- [ ] Add `renderGenRoutes()` method — see full code in plan doc Task 3\n- [ ] Run `./gradlew :maia-gen:maia-gen-generator:compileKotlin`\n- [ ] Commit\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"renderGenRoutes called from onGenerateSource\", \"groups page defs by entity\", \"skips null rootEntityDef blotters\", \"compiles cleanly\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 7,
+      "subject": "Task 4: Run generation and update app.routes.ts",
+      "status": "pending",
+      "blockedBy": [6],
+      "description": "**Goal:** Run the generator to produce `*-gen-routes.ts` files, verify their content, then update `app.routes.ts` to import and spread them, removing redundant manual entries.\n\n**Files:**\n- Generated (inspect): `maia-showcase/maia-showcase-ui/src/generated/typescript/main/app/gen-components/org/maiaframework/showcase/*/`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/app.routes.ts`\n\n**Acceptance Criteria:**\n- [ ] `maiaGeneration` completes successfully\n- [ ] A `*-gen-routes.ts` file exists for each entity with at least one page def\n- [ ] Each file exports correct `Routes` constant with correct paths and component names\n- [ ] `app.routes.ts` imports and spreads each generated constant\n- [ ] Old manual route entries for generated components are removed\n- [ ] Manual routes (`login`, `user-group-membership-blotter`, `left-many/view/:id`, `elastic-indices`, `jobs-dashboard`) remain untouched\n\n**Verify:** `./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration` → `BUILD SUCCESSFUL`\n\n**Steps:**\n- [ ] Run `./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration`\n- [ ] Run `find maia-showcase/maia-showcase-ui/src/generated -name \"*-gen-routes.ts\"` to see generated files\n- [ ] Verify content of at least one generated file matches expected format\n- [ ] Update `app.routes.ts` — see full structure in plan doc Task 4\n- [ ] Commit\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/app.routes.ts\"], \"verifyCommand\": \"./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration\", \"acceptanceCriteria\": [\"maiaGeneration succeeds\", \"gen-routes.ts file per entity\", \"correct paths and component names in generated files\", \"app.routes.ts uses spreads\", \"manual routes preserved\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-05-30T00:00:00Z"
+}
