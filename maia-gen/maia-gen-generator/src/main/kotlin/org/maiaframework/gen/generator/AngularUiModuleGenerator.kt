@@ -67,7 +67,7 @@ import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
-import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.DelegateFormSubmission
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
@@ -401,7 +401,7 @@ class AngularUiModuleGenerator(
                 onSuccessUrl = viewPageDef?.viewPageUrl,
                 submitButtonText = null,
                 inlineFormOrDialog = InlineFormOrDialog.INLINE_FORM,
-                createOrEdit = CreateOrEdit.create,
+                formPurpose = FormPurpose.create,
                 context = null,
                 dialogTitle = null,
                 multiFieldDatabaseIndexDefs = emptyList(),
@@ -447,7 +447,7 @@ class AngularUiModuleGenerator(
                 angularFormSystem = AngularFormSystem.REACTIVE,
                 componentBaseName = entityEditPageDef.entityDef.crudAngularComponentBaseName,
                 context = null,
-                createOrEdit = CreateOrEdit.edit,
+                formPurpose = FormPurpose.edit,
                 delegateFormSubmission = DelegateFormSubmission.FALSE, // TODO
                 dialogTitle = null,
                 emitEventOnError = EmitEventsOnError.FALSE,
