@@ -876,7 +876,7 @@ class AngularReactiveFormComponentRenderer(
 
                         append("""
                             |            next: () => {
-                            |                // TODO maybe emit an event? 1
+                            |                // TODO maybe emit an event?
                             |            },
                             |""".trimMargin())
 
