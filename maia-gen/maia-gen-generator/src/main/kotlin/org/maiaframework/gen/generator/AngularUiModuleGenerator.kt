@@ -50,6 +50,7 @@ import org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
 import org.maiaframework.gen.renderers.ui.ForeignKeyReferencesExistResponseDtoRenderer
 import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.FormScssRenderer
+import org.maiaframework.gen.renderers.ui.GenRoutesRenderer
 import org.maiaframework.gen.renderers.ui.ManyToManyChipFieldDef
 import org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.SigninRequestDtoRenderer
@@ -152,6 +153,7 @@ class AngularUiModuleGenerator(
         renderEntityCreatePages()
         renderEntityEditPages()
         renderBlotterPages()
+        renderGenRoutes()
         renderEntityDetailsDtos()
         renderEnums()
         renderEsDocs()
@@ -506,6 +508,36 @@ class AngularUiModuleGenerator(
         this.modelDef.blotterPageDefs.forEach { pageDef ->
             BlotterPageComponentRenderer(pageDef).renderToDir(this.typescriptOutputDir)
             BlotterPageHtmlRenderer(pageDef).renderToDir(this.typescriptOutputDir)
+        }
+
+    }
+
+
+    private fun renderGenRoutes() {
+
+        val blotterPageByEntity = this.modelDef.blotterPageDefs
+            .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
+            .toMap()
+
+        val viewPageByEntity = this.modelDef.entityDetailViewDefs
+            .associateBy { it.entityDef }
+
+        val createPageByEntity = this.modelDef.entityCreatePageDefs
+            .associateBy { it.entityDef }
+
+        val editPageByEntity = this.modelDef.entityEditPageDefs
+            .associateBy { it.entityDef }
+
+        val allEntities = (blotterPageByEntity.keys + viewPageByEntity.keys + createPageByEntity.keys + editPageByEntity.keys).toSet()
+
+        allEntities.forEach { entityDef ->
+            GenRoutesRenderer(
+                entityDef = entityDef,
+                blotterPageDef = blotterPageByEntity[entityDef],
+                entityDetailViewDef = viewPageByEntity[entityDef],
+                entityCreatePageDef = createPageByEntity[entityDef],
+                entityEditPageDef = editPageByEntity[entityDef],
+            ).renderToDir(this.typescriptOutputDir)
         }
 
     }
