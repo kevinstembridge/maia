@@ -58,7 +58,7 @@ class EntityDetailViewDef(
     val viewPageUrl = entityDef.viewEntityPageUrl
 
 
-    val editPageUrl = "/$modulePath${entityDef.entityBaseName.toSnakeCase()}/edit"
+    val editPageUrl = "/$modulePath${entityDef.entityBaseName.toKebabCase()}/edit"
 
 
     val editPermission by lazy {

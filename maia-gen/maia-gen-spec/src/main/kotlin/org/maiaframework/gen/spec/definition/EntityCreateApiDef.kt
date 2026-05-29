@@ -129,9 +129,6 @@ class EntityCreateApiDef(
     override val angularFormComponentNames = AngularComponentNames(this.entityDef.packageName, "${entityDef.entityBaseName}CreateForm")
 
 
-    private val entityKeyKebabCase = this.entityDef.entityBaseName.toKebabCase()
-
-
     val angularDialogComponentHtmlFilePath = angularDialogComponentNames.htmlRenderedFilePath
 
 
@@ -139,12 +136,6 @@ class EntityCreateApiDef(
 
 
     val angularDialogScssPath = angularDialogComponentNames.componentScssRenderedFilePath
-
-
-    val angularEntityFormScssPath = angularFormComponentNames.componentScssRenderedFilePath
-
-
-    val angularDialogComponentImportStatement = angularDialogComponentNames.componentImportStatement
 
 
     val angularDialogDef by lazy { AngularFormDef(
@@ -167,32 +158,6 @@ class EntityCreateApiDef(
         entityDef.crudAngularComponentNames.serviceTypescriptImport,
         angularFormSystem
     ) }
-
-
-    val angularInlineFormDef by lazy { if (this.crudApiDef.withEntityForm) {
-        AngularFormDef(
-            angularComponentBaseName,
-            requestDtoDef,
-            featureNames = TreeSet(),
-            htmlFormFields,
-            htmlFormFields,
-            delegateFormSubmission = DelegateFormSubmission.FALSE,
-            emitEventOnSuccess = EmitEventsOnSuccess.FALSE,
-            emitEventOnError = EmitEventsOnError.FALSE,
-            onSuccessUrl = null,
-            submitButtonText = null,
-            InlineFormOrDialog.INLINE_FORM,
-            FormPurpose.create,
-            context = crudApiDef.context,
-            dialogTitle = null,
-            multiFieldDatabaseIndexDefs = entityDef.databaseIndexDefs,
-            onSubmitServiceFunctionName = "create",
-            entityDef.crudAngularComponentNames.serviceTypescriptImport,
-            angularFormSystem
-        )
-    } else {
-        null
-    } }
 
 
 }
