@@ -1,9 +1,14 @@
 
-TODO * Consolidate AngularReactiveFormComponentRenderer and EntityCreateFormComponentRenderer.
-    TODO * run ng build and see what fails.
+TODO * Manually test the 'Create' page.
+
+
+TODO * Consolidate all the form component renderers into one.
+    TODO * List them all and the reason why they are currently being used.
 
 TODO * Fix the CRUD playwright tests to work with the 'Create' page instead of a dialog.
     => Ask Claude to modify the existing test to take into account the new 'Create' page.
+
+TODO * Generate the routes.
 
 TODO * ??? Create a convenience DSL to all for the construction of a standard entity CRUD stack.
 

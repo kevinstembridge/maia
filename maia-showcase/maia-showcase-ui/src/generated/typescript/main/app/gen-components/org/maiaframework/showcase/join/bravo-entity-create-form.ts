@@ -11,7 +11,7 @@ import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showc
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
 import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
-import {ProblemDetail} from '@maia/maia-ui';
+import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
 import {of} from 'rxjs';
 import {catchError, debounceTime, filter, map, switchMap, tap} from 'rxjs/operators';
 
@@ -109,7 +109,7 @@ export class BravoEntityCreateForm implements OnInit {
         }
 
         const requestDto = {
-            alpha: this.formGroup.getRawValue().alpha,
+            alpha: this.formGroup.getRawValue().alpha.id,
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
         } as BravoCreateRequestDto;

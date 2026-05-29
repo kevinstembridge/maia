@@ -6,9 +6,10 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {Router} from '@angular/router';
 import {SomeVersionedCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/versioned/SomeVersionedCreateRequestDto';
 import {SomeVersionedCrudService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-crud-service';
-import {ProblemDetail} from '@maia/maia-ui';
+import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
 
 
 
@@ -37,6 +38,9 @@ export class SomeVersionedEntityCreateForm implements OnInit {
 
 
     formGroup: FormGroup;
+
+
+    private readonly router = inject(Router);
 
 
     constructor() {
@@ -70,8 +74,8 @@ export class SomeVersionedEntityCreateForm implements OnInit {
         } as SomeVersionedCreateRequestDto;
 
         this.formService.create(requestDto).subscribe({
-            next: () => {
-                // TODO maybe emit an event?
+            next: (dto: EntityCreatedResponseDto) => {
+                this.router.navigate(['/some-versioned/view/' + dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

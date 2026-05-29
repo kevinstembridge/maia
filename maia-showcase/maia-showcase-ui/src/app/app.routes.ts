@@ -79,6 +79,27 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'some-versioned/create',
+        loadComponent: () =>
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-entity-create-form').then(
+                (m) => m.SomeVersionedEntityCreateForm,
+            ),
+    },
+    {
+        path: 'some-versioned/view/:id',
+        loadComponent: () =>
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-entity-detail-view-page').then(
+                (m) => m.SomeVersionedEntityDetailViewPage,
+            ),
+    },
+    {
+        path: 'some-versioned/edit/:id',
+        loadComponent: () =>
+            import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/versioned/some-versioned-entity-edit-form').then(
+                (m) => m.SomeVersionedEntityEditForm,
+            ),
+    },
+    {
         path: 'composite-pk-blotter',
         loadComponent: () =>
             import('../generated/typescript/main/app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-blotter-page').then(

@@ -749,6 +749,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val someVersionedEntityCreateDef = entityCreatePage(someVersionedEntityDef)
 
 
+    val someVersionedEntityDetailViewDef = entityDetailView(someVersionedEntityDef)
+
+
     val someVersionedEditPageDef = entityEditPage(someVersionedEntityDef)
 
 

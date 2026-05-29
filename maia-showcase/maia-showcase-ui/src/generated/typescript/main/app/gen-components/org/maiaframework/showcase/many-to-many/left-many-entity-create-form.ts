@@ -137,7 +137,7 @@ export class LeftManyEntityCreateForm implements OnInit {
         const requestDto = {
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
-            rightEntityIds: this.formGroup.getRawValue().rightEntityIds,
+            rightEntityIds: this.selectedRightEntities.map(e => e.id),
         } as LeftManyCreateRequestDto;
 
         this.formService.create(requestDto).subscribe({
