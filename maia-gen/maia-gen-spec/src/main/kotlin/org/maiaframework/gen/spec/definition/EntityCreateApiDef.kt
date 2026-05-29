@@ -1,6 +1,6 @@
 package org.maiaframework.gen.spec.definition
 
-import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.DelegateFormSubmission
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
@@ -159,7 +159,7 @@ class EntityCreateApiDef(
         onSuccessUrl = null,
         submitButtonText = null,
         InlineFormOrDialog.DIALOG,
-        CreateOrEdit.create,
+        FormPurpose.create,
         context = crudApiDef.context,
         dialogTitle = null,
         multiFieldDatabaseIndexDefs = entityDef.multiFieldUniqueIndexDefs,
@@ -182,7 +182,7 @@ class EntityCreateApiDef(
             onSuccessUrl = null,
             submitButtonText = null,
             InlineFormOrDialog.INLINE_FORM,
-            CreateOrEdit.create,
+            FormPurpose.create,
             context = crudApiDef.context,
             dialogTitle = null,
             multiFieldDatabaseIndexDefs = entityDef.databaseIndexDefs,

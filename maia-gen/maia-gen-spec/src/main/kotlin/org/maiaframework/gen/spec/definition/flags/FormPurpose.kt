@@ -1,8 +1,9 @@
 package org.maiaframework.gen.spec.definition.flags
 
-enum class CreateOrEdit {
+enum class FormPurpose {
 
     create,
-    edit;
+    edit,
+    submit;
 
 }

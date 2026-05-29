@@ -1,7 +1,7 @@
 package org.maiaframework.gen.spec.definition
 
 
-import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.DelegateFormSubmission
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
@@ -29,7 +29,7 @@ class AngularFormDef(
     val onSuccessUrl: String?,
     val submitButtonText: String?,
     val inlineFormOrDialog: InlineFormOrDialog,
-    val createOrEdit: CreateOrEdit?,
+    val formPurpose: FormPurpose,
     val context: RequestDtoDef?,
     val dialogTitle: String?,
     val multiFieldDatabaseIndexDefs: List<DatabaseIndexDef>,
@@ -53,19 +53,24 @@ class AngularFormDef(
     private val htmlFormKey: HtmlFormKey = HtmlFormKey("${requestDtoDef.dtoBaseName}${StringFunctions.firstToUpper(inlineFormOrDialog.name.lowercase(Locale.getDefault()))}")
 
 
-    private val componentNamesSuffix = when (createOrEdit) {
-        CreateOrEdit.create -> when (inlineFormOrDialog) {
+    private val componentNamesSuffix = when (formPurpose) {
+        FormPurpose.create -> when (inlineFormOrDialog) {
             InlineFormOrDialog.INLINE_FORM -> "CreateForm"
             InlineFormOrDialog.DIALOG -> "CreateDialog"
         }
-        CreateOrEdit.edit -> when (inlineFormOrDialog) {
+        FormPurpose.edit -> when (inlineFormOrDialog) {
             InlineFormOrDialog.INLINE_FORM -> "EditForm"
             InlineFormOrDialog.DIALOG -> "EditDialog"
+        }
+        FormPurpose.submit -> when (inlineFormOrDialog) {
+            InlineFormOrDialog.INLINE_FORM -> "Form"
+            InlineFormOrDialog.DIALOG -> "Dialog"
         }
         null -> when (inlineFormOrDialog) {
             InlineFormOrDialog.INLINE_FORM -> "Form"
             InlineFormOrDialog.DIALOG -> "Dialog"
         }
+
     }
 
 

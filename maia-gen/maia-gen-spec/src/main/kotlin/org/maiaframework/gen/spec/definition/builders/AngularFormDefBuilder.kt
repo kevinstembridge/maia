@@ -10,7 +10,7 @@ import org.maiaframework.gen.spec.definition.FormPlaceholderText
 import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.RequestDtoFieldDef
-import org.maiaframework.gen.spec.definition.flags.CreateOrEdit
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.DelegateFormSubmission
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
@@ -58,7 +58,7 @@ class AngularFormDefBuilder(
     private var inlineFormOrDialog = InlineFormOrDialog.INLINE_FORM
 
 
-    private var createOrEdit: CreateOrEdit? = null
+    private var formPurpose: FormPurpose = FormPurpose.edit
 
 
     private var angularFormSystem: AngularFormSystem = AngularFormSystem.REACTIVE
@@ -93,7 +93,7 @@ class AngularFormDefBuilder(
             this.onSuccessUrl,
             this.submitButtonText,
             this.inlineFormOrDialog,
-            this.createOrEdit,
+            this.formPurpose,
             this.context,
             this.dialogTitle,
             multiFieldDatabaseIndexDefs = emptyList(),
@@ -201,9 +201,9 @@ class AngularFormDefBuilder(
     }
 
 
-    fun asCreateOrEdit(createOrEdit: CreateOrEdit): AngularFormDefBuilder {
+    fun formPurpose(formPurpose: FormPurpose): AngularFormDefBuilder {
 
-        this.createOrEdit = createOrEdit
+        this.formPurpose = formPurpose
         return this
 
     }
