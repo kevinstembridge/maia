@@ -70,7 +70,7 @@ export class BravoEntityCreateForm implements OnInit {
             {
                 someInt: new FormControl(0, { updateOn: 'change' }),
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                alpha: new FormControl('', { updateOn: 'change' }),
+                alpha: new FormControl('', { updateOn: 'change', validators: [Validators.required] }),
             },
         );
 
