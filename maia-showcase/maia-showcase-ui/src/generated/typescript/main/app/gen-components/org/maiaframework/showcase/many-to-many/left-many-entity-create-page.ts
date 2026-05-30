@@ -29,7 +29,7 @@ export class LeftManyEntityCreatePage {
 
 
     onCancelClicked(): void {
-        this.router.navigate(['..']);
+        this.router.navigate(['/left-many-blotter']);
     }
 
 

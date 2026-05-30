@@ -29,7 +29,7 @@ export class UserEntityCreatePage {
 
 
     onCancelClicked(): void {
-        this.router.navigate(['..']);
+        this.router.navigate(['/user-blotter']);
     }
 
 

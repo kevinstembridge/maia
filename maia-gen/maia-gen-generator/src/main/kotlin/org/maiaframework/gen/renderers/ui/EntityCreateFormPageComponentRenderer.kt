@@ -1,10 +1,12 @@
 package org.maiaframework.gen.renderers.ui
 
+import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 
 
 class EntityCreateFormPageComponentRenderer(
-    private val entityCreatePageDef: EntityCreatePageDef
+    private val entityCreatePageDef: EntityCreatePageDef,
+    private val blotterPageDef: BlotterPageDef? = null,
 ) : AbstractTypescriptRenderer() {
 
 
@@ -53,7 +55,7 @@ class EntityCreateFormPageComponentRenderer(
             |
             |
             |    onCancelClicked(): void {
-            |        this.router.navigate(['..']);
+            |        ${if (blotterPageDef != null) "this.router.navigate(['/${blotterPageDef.routePath}']);" else "this.router.navigate(['..']);"}
             |    }
             |
             |

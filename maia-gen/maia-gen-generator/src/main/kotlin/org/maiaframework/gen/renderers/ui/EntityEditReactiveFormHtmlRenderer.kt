@@ -17,6 +17,9 @@ class EntityEditReactiveFormHtmlRenderer(
     override val dialogTitle = "ignored"
 
 
+    override val withCancelButton = true
+
+
     override val formFields: List<AngularFormFieldDef> = apiDef.htmlFormFields
 
 

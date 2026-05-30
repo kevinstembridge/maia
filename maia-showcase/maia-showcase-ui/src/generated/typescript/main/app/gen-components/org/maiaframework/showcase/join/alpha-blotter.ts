@@ -34,6 +34,18 @@ export class AlphaBlotter {
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         {
+            field: 'view',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'visibility' },
+            onCellClicked: event => {
+                this.onView(event.data);
+            }
+        },
+        {
             field: 'edit',
             headerName: '',
             width: 100,
@@ -140,6 +152,13 @@ export class AlphaBlotter {
     onAddButtonClicked(): void {
 
         this.router.navigate(['/alpha/create']);
+
+    }
+
+
+    private onView(dto: AlphaBlotterRowDto): void {
+
+        this.router.navigate(['/alpha/view', dto.id]);
 
     }
 

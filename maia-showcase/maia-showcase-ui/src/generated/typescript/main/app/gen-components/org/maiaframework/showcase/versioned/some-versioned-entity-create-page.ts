@@ -29,7 +29,7 @@ export class SomeVersionedEntityCreatePage {
 
 
     onCancelClicked(): void {
-        this.router.navigate(['..']);
+        this.router.navigate(['/some-versioned-blotter']);
     }
 
 

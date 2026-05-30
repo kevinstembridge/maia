@@ -954,9 +954,11 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val alphaBlotterDef = blotter(
         alphaSearchableDtoDef,
+        entityDetailViewPageDef = alphaEntityDetailViewPageDef,
         entityCreatePageDef = alphaEntityCreatePageDef,
         entityEditPageDef = alphaEntityEditPageDef,
     ) {
+        viewActionColumn()
         editActionColumn()
         columnFromDto(fieldPathInSourceData = "someString")
         columnFromDto(fieldPathInSourceData = "someInt")
@@ -1061,9 +1063,11 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val bravoBlotterDef = blotter(
         bravoSearchableDtoDef,
+        entityDetailViewPageDef = bravoEntityDetailViewPageDef,
         entityCreatePageDef = bravoEntityCreatePageDef,
         entityEditPageDef = bravoEntityEditPageDef,
     ) {
+        viewActionColumn()
         editActionColumn()
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
         columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")

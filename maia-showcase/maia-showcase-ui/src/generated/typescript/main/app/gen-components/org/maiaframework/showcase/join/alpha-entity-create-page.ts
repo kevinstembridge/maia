@@ -29,7 +29,7 @@ export class AlphaEntityCreatePage {
 
 
     onCancelClicked(): void {
-        this.router.navigate(['..']);
+        this.router.navigate(['/alpha-blotter']);
     }
 
 

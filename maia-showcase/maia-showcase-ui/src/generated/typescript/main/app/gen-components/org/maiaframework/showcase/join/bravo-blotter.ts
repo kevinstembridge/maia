@@ -34,6 +34,18 @@ export class BravoBlotter {
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         {
+            field: 'view',
+            headerName: '',
+            width: 100,
+            maxWidth: 100,
+            filter: false,
+            cellRenderer: IconAgGridCellRendererComponent,
+            cellRendererParams: { iconName: 'visibility' },
+            onCellClicked: event => {
+                this.onView(event.data);
+            }
+        },
+        {
             field: 'edit',
             headerName: '',
             width: 100,
@@ -140,6 +152,13 @@ export class BravoBlotter {
     onAddButtonClicked(): void {
 
         this.router.navigate(['/bravo/create']);
+
+    }
+
+
+    private onView(dto: BravoBlotterRowDto): void {
+
+        this.router.navigate(['/bravo/view', dto.id]);
 
     }
 

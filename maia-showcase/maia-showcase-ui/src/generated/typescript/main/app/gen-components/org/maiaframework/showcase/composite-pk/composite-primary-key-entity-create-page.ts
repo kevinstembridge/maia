@@ -29,7 +29,7 @@ export class CompositePrimaryKeyEntityCreatePage {
 
 
     onCancelClicked(): void {
-        this.router.navigate(['..']);
+        this.router.navigate(['/composite-primary-key-blotter']);
     }
 
 

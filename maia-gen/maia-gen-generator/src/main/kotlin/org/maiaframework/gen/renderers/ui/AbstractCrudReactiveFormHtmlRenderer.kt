@@ -20,6 +20,9 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
     protected open val withFetchForEditLoading: Boolean = false
 
 
+    protected open val withCancelButton: Boolean = false
+
+
     protected open fun renderManyToManyChipFields() {}
 
 
@@ -79,6 +82,8 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
 
         if (inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
             appendLine("        <button mat-flat-button type=\"button\" (click)=\"onCancel()\">Cancel</button>")
+        } else if (withCancelButton) {
+            appendLine("        <button mat-flat-button type=\"button\" (click)=\"onCancelClicked()\">Cancel</button>")
         }
 
         appendLine("    </div>")

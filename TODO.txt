@@ -1,6 +1,5 @@
 
 TODO * Manually test the 'Create' page.
-    TODO * For the Bravo entity
     TODO * For the LeftMany entity
 
 

@@ -29,7 +29,7 @@ export class AllFieldTypesEntityCreatePage {
 
 
     onCancelClicked(): void {
-        this.router.navigate(['..']);
+        this.router.navigate(['/all-field-types-blotter']);
     }
 
 

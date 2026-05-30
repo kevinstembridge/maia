@@ -385,6 +385,10 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityCreatePages() {
 
+        val blotterPageByEntity = this.modelDef.blotterPageDefs
+            .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
+            .toMap()
+
         this.modelDef.entityCreatePageDefs.forEach { entityCreatePageDef ->
 
             // TODO account for Signal forms vs Reactive forms
@@ -392,6 +396,8 @@ class AngularUiModuleGenerator(
             val providerServices = entityCreatePageDef.entityDef.allTypeaheadDefs.map { it.angularServiceClassName }
 
             val viewPageDef = this.modelDef.findViewEntityPage(entityCreatePageDef.entityDef)
+
+            val blotterPageDef = blotterPageByEntity[entityCreatePageDef.entityDef]
 
             val chipFields = manyToManyChipFieldsFor(entityCreatePageDef.entityDef, entityCreatePageDef.entityDef.manyToManyAssociations)
 
@@ -427,7 +433,7 @@ class AngularUiModuleGenerator(
 
             EntityCreateFormScssRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
             EntityCreateReactiveFormHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
-            EntityCreateFormPageComponentRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
+            EntityCreateFormPageComponentRenderer(entityCreatePageDef, blotterPageDef).renderToDir(this.typescriptOutputDir)
             EntityCreatePageHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
 
         }
