@@ -356,12 +356,16 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDetailViews() {
 
+        val blotterPageByEntity = this.modelDef.blotterPageDefs
+            .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
+            .toMap()
+
         this.modelDef.entityDetailViewDefs.forEach {
 
             EntityDetailViewComponentRenderer(it).renderToDir(this.typescriptOutputDir)
-            EntityDetailViewPageComponentRenderer(it, this.modelDef.authoritiesDef).renderToDir(this.typescriptOutputDir)
+            EntityDetailViewPageComponentRenderer(it, this.modelDef.authoritiesDef, blotterPageByEntity[it.entityDef]).renderToDir(this.typescriptOutputDir)
             EntityDetailViewContentHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
-            EntityDetailViewPageHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
+            EntityDetailViewPageHtmlRenderer(it, blotterPageByEntity[it.entityDef]).renderToDir(this.typescriptOutputDir)
 
         }
 
