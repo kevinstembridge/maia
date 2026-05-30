@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {PageLayout} from '@app/components/page-layout/page-layout';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
-import {BravoEntityDetailView} from '@app/gen-components/org/maiaframework/showcase/join/bravo-entity-detail-view';
+import {AlphaEntityDetailView} from '@app/gen-components/org/maiaframework/showcase/join/alpha-entity-detail-view';
 import {map} from 'rxjs';
 
 
@@ -19,12 +19,12 @@ import {map} from 'rxjs';
         MatButtonModule,
         MatIconModule,
         PageLayout,
-        BravoEntityDetailView
+        AlphaEntityDetailView
     ],
-    selector: 'app-bravo-entity-detail-view-page',
-    templateUrl: './bravo-entity-detail-view-page.html'
+    selector: 'app-alpha-entity-detail-view-page',
+    templateUrl: './alpha-entity-detail-view-page.html'
 })
-export class BravoEntityDetailViewPage {
+export class AlphaEntityDetailViewPage {
 
 
     private readonly route = inject(ActivatedRoute);
@@ -51,13 +51,13 @@ export class BravoEntityDetailViewPage {
     onEditClicked(): void {
         const id = this.entityId();
         if (id) {
-            this.router.navigate(['/bravo/edit', id]);
+            this.router.navigate(['/alpha/edit', id]);
         }
     }
 
 
     onBlotterClicked(): void {
-        this.router.navigate(['/bravo-blotter']);
+        this.router.navigate(['/alpha-blotter']);
     }
 
 

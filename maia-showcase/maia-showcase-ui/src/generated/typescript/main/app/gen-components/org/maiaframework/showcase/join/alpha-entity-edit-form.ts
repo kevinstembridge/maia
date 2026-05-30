@@ -3,16 +3,14 @@
 
 import {Component, OnInit, inject, input, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Router} from '@angular/router';
-import {BravoFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoFetchForEditDto';
-import {BravoUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoUpdateRequestDto';
-import {bravo_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaRequiredValidator';
-import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
+import {AlphaFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaFetchForEditDto';
+import {AlphaUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaUpdateRequestDto';
+import {AlphaCrudService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 
 
@@ -20,20 +18,17 @@ import {ProblemDetail} from '@maia/maia-ui';
 @Component({
     imports: [
         FormsModule,
-        MatAutocomplete,
-        MatAutocompleteTrigger,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        MatOption,
         MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
-    selector: 'app-bravo-entity-edit-form',
-    styleUrls: ['./bravo-entity-edit-form.scss'],
-    templateUrl: './bravo-entity-edit-form.html'
+    selector: 'app-alpha-entity-edit-form',
+    styleUrls: ['./alpha-entity-edit-form.scss'],
+    templateUrl: './alpha-entity-edit-form.html'
 })
-export class BravoEntityEditForm implements OnInit {
+export class AlphaEntityEditForm implements OnInit {
 
 
     entityId = input.required<string>();
@@ -42,7 +37,7 @@ export class BravoEntityEditForm implements OnInit {
     onCancel = output();
 
 
-    private readonly formService = inject(BravoCrudService);
+    private readonly formService = inject(AlphaCrudService);
 
 
     problemDetail = signal<ProblemDetail | null>(null);
@@ -64,7 +59,6 @@ export class BravoEntityEditForm implements OnInit {
                 someInt: new FormControl(0, { updateOn: 'change' }),
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 id: new FormControl({value: '', disabled: true}),
-                alpha: new FormControl({value: '', disabled: true}),
             },
         );
 
@@ -74,9 +68,8 @@ export class BravoEntityEditForm implements OnInit {
     ngOnInit() {
 
         this.formService.fetchForEdit(this.entityId()).subscribe({
-            next: (dto: BravoFetchForEditDto) => {
+            next: (dto: AlphaFetchForEditDto) => {
                 this.formGroup.patchValue({
-                    alpha: dto.alpha,
                     id: dto.id,
                     someInt: dto.someInt,
                     someString: dto.someString,
@@ -104,11 +97,11 @@ export class BravoEntityEditForm implements OnInit {
             id: this.formGroup.getRawValue().id,
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
-        } as BravoUpdateRequestDto;
+        } as AlphaUpdateRequestDto;
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.router.navigate(['/bravo/view/' + this.entityId()]);
+                this.router.navigate(['/alpha/view/' + this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
