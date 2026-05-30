@@ -56,5 +56,10 @@ export class LeftManyEntityDetailViewPage {
     }
 
 
+    onBlotterClicked(): void {
+        this.router.navigate(['/left-many-blotter']);
+    }
+
+
 }
 
