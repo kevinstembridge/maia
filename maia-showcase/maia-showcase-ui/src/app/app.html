@@ -10,6 +10,12 @@
             </button>
         }
         @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/alpha-blotter">
+                <mat-icon>dialpad</mat-icon>
+                <span>Alpha</span>
+            </button>
+        }
+        @if (hasReadAuthority()) {
             <button mat-menu-item routerLink="/bravo-blotter">
                 <mat-icon>dialpad</mat-icon>
                 <span>Bravo (foreign key join)</span>
