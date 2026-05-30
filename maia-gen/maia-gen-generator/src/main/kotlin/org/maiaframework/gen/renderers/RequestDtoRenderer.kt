@@ -84,12 +84,7 @@ class RequestDtoRenderer(
             val isUrl = classField.fieldType is UrlFieldType
             val isValueFieldWrapper = classField.fieldType.isValueFieldWrapper()
 
-            val usageSite = if (
-                isEnum
-                || isUrl
-//                || classField.fieldType is DomainIdFieldType
-//                || classField.fieldType is ForeignKeyFieldType
-            ) {
+            val usageSite = if (isEnum || isUrl) {
                 null
             } else {
                 AnnotationUsageSite.field
