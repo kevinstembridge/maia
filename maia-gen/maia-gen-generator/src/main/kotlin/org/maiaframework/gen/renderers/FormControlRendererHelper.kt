@@ -31,7 +31,11 @@ object FormControlRendererHelper {
             return
         }
 
-        val validators = determineValidatorsFor(classFieldDef)
+        val validators = if (angularFormFieldDef.typeaheadRequiredValidatorFunctionName != null) {
+            if (classFieldDef.nullable) emptyList() else listOf("${angularFormFieldDef.typeaheadRequiredValidatorFunctionName}()")
+        } else {
+            determineValidatorsFor(classFieldDef)
+        }
         val asyncValidators = determineAsyncValidatorsFor(angularFormFieldDef.asyncValidatorDef)
 
         val optionFields = mutableMapOf<String, String>()

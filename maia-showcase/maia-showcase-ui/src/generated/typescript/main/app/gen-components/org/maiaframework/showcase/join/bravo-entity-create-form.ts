@@ -10,6 +10,7 @@ import {MatInputModule} from '@angular/material/input';
 import {Router} from '@angular/router';
 import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/join/AlphaTypeaheadV1EsDoc';
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
+import {bravo_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaRequiredValidator';
 import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
@@ -70,7 +71,7 @@ export class BravoEntityCreateForm implements OnInit {
             {
                 someInt: new FormControl(0, { updateOn: 'change' }),
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
-                alpha: new FormControl('', { updateOn: 'change', validators: [Validators.required] }),
+                alpha: new FormControl('', { updateOn: 'change', validators: [bravo_alphaRequiredValidator()] }),
             },
         );
 

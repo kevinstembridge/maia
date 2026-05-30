@@ -997,6 +997,10 @@ class AngularReactiveFormComponentRenderer(
             addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
         }
 
+        this.angularFormDef.formModelFields.forEach { angularFieldDef ->
+            angularFieldDef.typeaheadRequiredValidatorTypescriptImport?.let { addImport(it) }
+        }
+
         if (chipFields.isNotEmpty()) {
             addImport("@angular/core", "ElementRef")
             addImport("@angular/core", "ViewChild")
