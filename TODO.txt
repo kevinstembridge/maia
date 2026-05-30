@@ -2,7 +2,6 @@
 TODO * Manually test the 'Create' page.
     TODO * For the LeftMany entity
 
-
 TODO * Consolidate all the form component renderers into one.
     TODO * List them all and the reason why they are currently being used.
 
@@ -16,12 +15,6 @@ TODO * rv if CrudApiDef.withEntityForm is still needed now that we have EntityEd
     TODO * Refactor so that EntityEditReactiveFormHtmlRenderer doesn't need a reference to the CrudApiDef.
 
 TODO * EntityDeleteApiDef no longer needs to reference any front end components. This has been moved to EntityDeleteDialogDef.
-
-TODO * On Edit clicked, switch to an EditPage.
-
-TODO * Add a 'Cancel' button to edit pages.
-
-TODO * Switch from 'Create' dialogs to pages
 
 
 TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveTimestamps, approvalStatus).
