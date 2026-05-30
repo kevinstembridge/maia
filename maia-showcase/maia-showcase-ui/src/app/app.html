@@ -4,15 +4,45 @@
     </button>
     <mat-menu #menu="matMenu">
         @if (hasReadAuthority()) {
-            <button mat-menu-item routerLink="/simple-blotter">
-                <mat-icon>dialpad</mat-icon>
-                <span>Simple</span>
-            </button>
-        }
-        @if (hasReadAuthority()) {
             <button mat-menu-item routerLink="/all-field-types-blotter">
                 <mat-icon>dialpad</mat-icon>
                 <span>All Field Types</span>
+            </button>
+        }
+        @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/bravo-blotter">
+                <mat-icon>dialpad</mat-icon>
+                <span>Bravo (foreign key join)</span>
+            </button>
+        }
+        @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/composite-pk-blotter">
+                <mat-icon>dialpad</mat-icon>
+                <span>Composite PK</span>
+            </button>
+        }
+        @if (hasSysOpsAuthority()) {
+            <button mat-menu-item routerLink="/elastic-indices">
+                <mat-icon>storage</mat-icon>
+                <span>Elastic Indices</span>
+            </button>
+        }
+        @if (hasSysOpsAuthority()) {
+            <button mat-menu-item routerLink="/jobs-dashboard">
+                <mat-icon>storage</mat-icon>
+                <span>Jobs Dashboard</span>
+            </button>
+        }
+        @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/left-many-searchable-blotter">
+                <mat-icon>dialpad</mat-icon>
+                <span>Left Many to Many</span>
+            </button>
+        }
+        @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/simple-blotter">
+                <mat-icon>dialpad</mat-icon>
+                <span>Simple</span>
             </button>
         }
         @if (hasReadAuthority()) {
@@ -22,31 +52,9 @@
             </button>
         }
         @if (hasReadAuthority()) {
-            <button mat-menu-item routerLink="/composite-pk-blotter">
-                <mat-icon>dialpad</mat-icon>
-                <span>Composite PK</span>
-            </button>
-        }
-        @if (hasReadAuthority()) {
             <button mat-menu-item routerLink="/user-blotter">
                 <mat-icon>people</mat-icon>
                 <span>Users</span>
-            </button>
-        }
-        @if (hasReadAuthority()) {
-            <button mat-menu-item routerLink="/left-many-searchable-blotter">
-                <mat-icon>dialpad</mat-icon>
-                <span>Left Many to Many</span>
-            </button>
-        }
-        @if (hasSysOpsAuthority()) {
-            <button mat-menu-item routerLink="/jobs-dashboard">
-                <mat-icon>storage</mat-icon>
-                <span>Jobs Dashboard</span>
-            </button>
-            <button mat-menu-item routerLink="/elastic-indices">
-                <mat-icon>storage</mat-icon>
-                <span>Elastic Indices</span>
             </button>
         }
     </mat-menu>

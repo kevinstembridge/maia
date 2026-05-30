@@ -29,6 +29,9 @@ import {catchError, debounceTime, filter, map, switchMap, tap} from 'rxjs/operat
         MatOption,
         ReactiveFormsModule,
     ],
+    providers: [
+        AlphaTypeaheadApiService
+    ],
     selector: 'app-bravo-entity-create-form',
     styleUrls: ['./bravo-entity-create-form.scss'],
     templateUrl: './bravo-entity-create-form.html'
