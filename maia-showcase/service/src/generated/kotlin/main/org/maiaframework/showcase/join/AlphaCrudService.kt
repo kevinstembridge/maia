@@ -5,12 +5,16 @@ package org.maiaframework.showcase.join
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class AlphaCrudService(
+    private val alphaCrudNotifier: AlphaCrudNotifier,
     private val bravoRepo: BravoRepo,
     private val entityRepo: AlphaRepo,
     private val maiaProblems: MaiaProblems
@@ -20,21 +24,118 @@ class AlphaCrudService(
     private val logger = LoggerFactory.getLogger(AlphaCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun create(createDto: AlphaCreateRequestDto): AlphaEntity {
+
+        logger.info("BEGIN: create Alpha. dto=$createDto")
+
+        val entity: AlphaEntity = buildEntity(createDto)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(createDto: AlphaCreateRequestDto): AlphaEntity {
+
+        val someInt: Int = createDto.someInt
+        val someString: String = createDto.someString
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+
+        return AlphaEntity(
+            createdTimestampUtc,
+            id,
+            someInt,
+            someString
+        )
+
+    }
+
+
     fun create(entity: AlphaEntity): AlphaEntity {
 
         this.entityRepo.insert(entity)
+        this.alphaCrudNotifier.onEntityCreated(entity)
         return entity
 
     }
 
 
+    fun fetchForEdit(id: DomainId): AlphaFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun update(editDto: AlphaUpdateRequestDto) {
+
+        val id = editDto.id
+        val updater = AlphaEntityUpdater.forPrimaryKey(id) {
+            someInt(editDto.someInt)
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun updateSomeInt(editDto: AlphaUpdate_someIntRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeInt. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = AlphaEntityUpdater.forPrimaryKey(editDto.id) {
+            someInt(editDto.someInt)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun updateSomeString(editDto: AlphaUpdate_someStringRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeString. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = AlphaEntityUpdater.forPrimaryKey(editDto.id) {
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun setFields(updater: AlphaEntityUpdater): Int {
+        
+        val count = this.entityRepo.setFields(updater)
+        this.alphaCrudNotifier.onEntityUpdated(updater.id)
+        return count
+        
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun delete(id: DomainId) {
 
         if (this.bravoRepo.existsByAlpha(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("Bravo")
         }
 
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
+                ?: return
+
         this.entityRepo.deleteByPrimaryKey(id)
+        this.alphaCrudNotifier.onEntityDeleted(entityToDelete)
 
     }
 

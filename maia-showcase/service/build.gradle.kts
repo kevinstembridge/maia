@@ -14,6 +14,7 @@ dependencies {
     implementation(kotlin("reflect"))
 
     api(project(":maia-showcase:domain"))
+    api(project(":maia-showcase:elastic-service"))
     api(project(":maia-showcase:elasticsearch"))
     api(project(":libs:maia-job-parent:maia-job"))
 
