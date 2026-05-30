@@ -66,6 +66,13 @@ class AlphaRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): AlphaFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: AlphaEntity) {
 
         logger.debug("insert {}", entity)
@@ -78,6 +85,24 @@ class AlphaRepo(
     fun bulkInsert(entities: List<AlphaEntity>) {
 
         this.dao.bulkInsert(entities)
+
+    }
+
+
+    fun setFields(updaters: List<AlphaEntityUpdater>) {
+
+        logger.debug("setFields {}", updaters)
+
+        updaters.forEach { setFields(it) }
+
+    }
+
+
+    fun setFields(updater: AlphaEntityUpdater): Int {
+
+        logger.debug("setFields {}", updater)
+
+        return this.dao.setFields(updater)
 
     }
 
