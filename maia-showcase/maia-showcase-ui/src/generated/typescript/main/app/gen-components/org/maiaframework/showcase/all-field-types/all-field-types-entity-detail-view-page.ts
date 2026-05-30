@@ -56,5 +56,10 @@ export class AllFieldTypesEntityDetailViewPage {
     }
 
 
+    onBlotterClicked(): void {
+        this.router.navigate(['/all-field-types-blotter']);
+    }
+
+
 }
 

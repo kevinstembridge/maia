@@ -56,5 +56,10 @@ export class CompositePrimaryKeyEntityDetailViewPage {
     }
 
 
+    onBlotterClicked(): void {
+        this.router.navigate(['/composite-primary-key-blotter']);
+    }
+
+
 }
 
