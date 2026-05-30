@@ -18,13 +18,6 @@ export const routes: Routes = [
     ...allFieldTypesRoutes,
     ...bravoRoutes,
     ...compositePrimaryKeyRoutes,
-    {
-        path: 'left-many/view/:id',
-        loadComponent: () =>
-            import('./pages/left-many-view/left-many-view-page').then(
-                (m) => m.LeftManyViewPage,
-            ),
-    },
     ...leftManyRoutes,
     ...simpleRoutes,
     ...someVersionedRoutes,

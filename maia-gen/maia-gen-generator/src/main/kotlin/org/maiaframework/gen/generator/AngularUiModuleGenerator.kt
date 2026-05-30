@@ -385,7 +385,7 @@ class AngularUiModuleGenerator(
 
             // TODO account for Signal forms vs Reactive forms
 
-            val providerServices = emptyList<String>() // TODO
+            val providerServices = entityCreatePageDef.entityDef.allTypeaheadDefs.map { it.angularServiceClassName }
 
             val viewPageDef = this.modelDef.findViewEntityPage(entityCreatePageDef.entityDef)
 
@@ -437,7 +437,7 @@ class AngularUiModuleGenerator(
 
             // TODO account for Signal forms vs Reactive forms
 
-            val providerServices = emptyList<String>() // TODO
+            val providerServices = entityEditPageDef.entityDef.allTypeaheadDefs.map { it.angularServiceClassName }
 
             val viewPageDef = this.modelDef.findViewEntityPage(entityEditPageDef.entityDef)
 

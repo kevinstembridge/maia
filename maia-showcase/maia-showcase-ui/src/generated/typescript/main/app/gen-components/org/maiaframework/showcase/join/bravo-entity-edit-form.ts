@@ -28,6 +28,9 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
+    providers: [
+        AlphaTypeaheadApiService,
+    ],
     selector: 'app-bravo-entity-edit-form',
     styleUrls: ['./bravo-entity-edit-form.scss'],
     templateUrl: './bravo-entity-edit-form.html'
