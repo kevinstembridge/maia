@@ -17,7 +17,7 @@ import org.maiaframework.domain.party.LastName
 @JsonIgnoreProperties(ignoreUnknown = true)
 class UserUpdate_lastNameRequestDto
 @JsonCreator constructor(
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
     @field:NotBlank

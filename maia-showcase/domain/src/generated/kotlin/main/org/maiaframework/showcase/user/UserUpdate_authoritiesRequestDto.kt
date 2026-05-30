@@ -18,7 +18,7 @@ class UserUpdate_authoritiesRequestDto
     @field:NotNull
     @param:JsonProperty("authorities", access = JsonProperty.Access.READ_WRITE) 
     private val authorities_raw: List<Authority>?,
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
     @field:NotNull

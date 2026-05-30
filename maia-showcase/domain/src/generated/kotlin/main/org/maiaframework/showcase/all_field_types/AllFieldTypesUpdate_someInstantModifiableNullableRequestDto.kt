@@ -15,7 +15,7 @@ import java.time.Instant
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesUpdate_someInstantModifiableNullableRequestDto
 @JsonCreator constructor(
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
     @param:JsonProperty("someInstantModifiableNullable", access = JsonProperty.Access.READ_WRITE) 

@@ -19,10 +19,10 @@ class UserGroupMembershipCreateRequestDto
     val effectiveFrom: Instant?,
     @param:JsonProperty("effectiveTo", access = JsonProperty.Access.READ_WRITE) 
     val effectiveTo: Instant?,
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("user", access = JsonProperty.Access.READ_WRITE) 
     private val user_raw: DomainId?,
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("userGroup", access = JsonProperty.Access.READ_WRITE) 
     private val userGroup_raw: DomainId?
 ) {

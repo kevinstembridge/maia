@@ -87,8 +87,8 @@ class RequestDtoRenderer(
             val usageSite = if (
                 isEnum
                 || isUrl
-                || classField.fieldType is DomainIdFieldType
-                || classField.fieldType is ForeignKeyFieldType
+//                || classField.fieldType is DomainIdFieldType
+//                || classField.fieldType is ForeignKeyFieldType
             ) {
                 null
             } else {

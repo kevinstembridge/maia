@@ -15,7 +15,7 @@ import java.time.LocalDate
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesUpdate_someLocalDateModifiableRequestDto
 @JsonCreator constructor(
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
     @field:NotNull

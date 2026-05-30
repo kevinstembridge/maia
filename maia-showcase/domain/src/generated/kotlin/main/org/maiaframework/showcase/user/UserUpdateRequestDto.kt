@@ -25,7 +25,7 @@ class UserUpdateRequestDto
     @field:Length(max = 100)
     @param:JsonProperty("firstName", access = JsonProperty.Access.READ_WRITE) 
     firstName: String?,
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
     @field:NotBlank

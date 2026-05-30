@@ -16,7 +16,7 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class CharlieCreateRequestDto
 @JsonCreator constructor(
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("bravo", access = JsonProperty.Access.READ_WRITE) 
     private val bravo_raw: DomainId?,
     @field:NotNull

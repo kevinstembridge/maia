@@ -14,13 +14,13 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class UserGroupMembershipUpdateRequestDto
 @JsonCreator constructor(
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("user", access = JsonProperty.Access.READ_WRITE) 
     private val user_raw: DomainId?,
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("userGroup", access = JsonProperty.Access.READ_WRITE) 
     private val userGroup_raw: DomainId?,
     @field:NotNull

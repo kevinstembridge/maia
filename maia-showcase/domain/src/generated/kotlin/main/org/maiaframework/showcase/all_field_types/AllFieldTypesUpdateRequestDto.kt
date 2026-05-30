@@ -20,7 +20,7 @@ import java.time.Period
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesUpdateRequestDto
 @JsonCreator constructor(
-    @NotNull
+    @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
     @field:NotNull
