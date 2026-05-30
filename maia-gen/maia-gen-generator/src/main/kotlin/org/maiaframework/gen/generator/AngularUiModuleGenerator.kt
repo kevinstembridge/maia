@@ -437,8 +437,6 @@ class AngularUiModuleGenerator(
 
             // TODO account for Signal forms vs Reactive forms
 
-            val providerServices = entityEditPageDef.entityDef.allTypeaheadDefs.map { it.angularServiceClassName }
-
             val viewPageDef = this.modelDef.findViewEntityPage(entityEditPageDef.entityDef)
 
             val fetchForEditDtoDef = entityEditPageDef.entityDef.fetchForEditDtoDef
@@ -467,6 +465,8 @@ class AngularUiModuleGenerator(
                 requestDtoDef = entityEditPageDef.updateApiDef.requestDtoDef,
                 submitButtonText = null
             )
+
+            val providerServices = angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName }
 
             AngularReactiveFormComponentRenderer(
                 angularFormDef,

@@ -1,10 +1,13 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
+import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
-class EntityDetailViewPageHtmlRenderer(private val entityDetailViewDef: EntityDetailViewDef) : AbstractSourceFileRenderer() {
+class EntityDetailViewPageHtmlRenderer(
+    private val entityDetailViewDef: EntityDetailViewDef,
+    private val blotterPageDef: BlotterPageDef?,
+) : AbstractSourceFileRenderer() {
 
 
     override fun renderedFilePath(): String {
@@ -21,6 +24,18 @@ class EntityDetailViewPageHtmlRenderer(private val entityDetailViewDef: EntityDe
             |    @if (entityId(); as id) {
             |        <${entityDetailViewDef.viewContentAngularComponentNames.componentSelector} [entityId]="id" />
             |    }
+            |""".trimMargin())
+
+        blotterPageDef?.let {
+            append("""
+                |    <button matButton aria-label="Blotter" (click)="onBlotterClicked()">
+                |        <mat-icon>list</mat-icon>
+                |        Go to Blotter
+                |    </button>
+                |""".trimMargin())
+        }
+
+        append("""
             |    @if (canEdit && entityId()) {
             |        <button matButton aria-label="Edit" (click)="onEditClicked()">
             |            <mat-icon>edit</mat-icon>

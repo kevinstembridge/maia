@@ -72,6 +72,7 @@ class TypeaheadCrudListenerRenderer(
         this.entityCrudApiDef.updateApiDef?.let {
             append("""
                 |
+                |
                 |    override fun on${this.entityCrudApiDef.entityDef.entityUqcn}Updated(id: DomainId) {
                 |
                 |        this.indexService.refreshById(id)
@@ -88,6 +89,7 @@ class TypeaheadCrudListenerRenderer(
 
         this.entityCrudApiDef.deleteApiDef?.let {
             append("""
+                |
                 |
                 |    override fun on${this.entityCrudApiDef.entityDef.entityUqcn}Deleted(entity: ${this.entityCrudApiDef.entityDef.entityUqcn}) {
                 |

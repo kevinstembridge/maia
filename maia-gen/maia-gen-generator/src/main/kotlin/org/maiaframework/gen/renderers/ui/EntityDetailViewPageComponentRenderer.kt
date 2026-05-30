@@ -1,11 +1,13 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.AuthoritiesDef
+import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 
 class EntityDetailViewPageComponentRenderer(
     private val entityDetailViewDef: EntityDetailViewDef,
     private val authoritiesDef: AuthoritiesDef?,
+    private val blotterPageDef: BlotterPageDef?,
 ) : AbstractTypescriptRenderer() {
 
 
@@ -87,6 +89,18 @@ class EntityDetailViewPageComponentRenderer(
                 |        if (id) {
                 |            this.router.navigate(['${this.entityDetailViewDef.editPageUrl}', id]);
                 |        }
+                |    }
+                |""".trimMargin())
+
+        }
+
+        this.blotterPageDef?.let {
+
+            append("""
+                |
+                |
+                |    onBlotterClicked(): void {
+                |        this.router.navigate(['/${it.routePath}']);
                 |    }
                 |""".trimMargin())
 
