@@ -884,12 +884,37 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
     ) {
-        field("someInt", FieldTypes.int)
+        field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
+            editableByUser()
+        }
         field("someString", FieldTypes.string) {
             fieldDisplayName("Some String")
             lengthConstraint(max = 100)
+            editableByUser()
+        }
+        crud {
+            authority(partySpec.adminAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
+            }
         }
     }
+
+
+    val alphaEntityCreatePageDef = entityCreatePage(alphaEntityDef)
+
+
+    val alphaEntityDetailViewPageDef = entityDetailView(alphaEntityDef)
+
+
+    val alphaEntityEditPageDef = entityEditPage(alphaEntityDef)
 
 
     val alphaTypeaheadDef = typeahead(
@@ -911,6 +936,36 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             esDocMappingType = EsDocMappingTypes.searchAsYouType
         )
     }
+
+
+    val alphaSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "Alpha",
+        entityDef = alphaEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        searchModelType = SearchModelType.MAIA
+    ) {
+        field("someString")
+        field("someInt")
+        field("createdTimestampUtc")
+    }
+
+
+    val alphaBlotterDef = blotter(
+        alphaSearchableDtoDef,
+        entityCreatePageDef = alphaEntityCreatePageDef,
+        entityEditPageDef = alphaEntityEditPageDef,
+    ) {
+        editActionColumn()
+        columnFromDto(fieldPathInSourceData = "someString")
+        columnFromDto(fieldPathInSourceData = "someInt")
+        columnFromDto(fieldPathInSourceData = "createdTimestampUtc")
+        deleteActionColumn()
+    }
+
+
+    val alphaBlotterPageDef = blotterPage(alphaBlotterDef)
 
 
     val bravoEntityDef = entity(
