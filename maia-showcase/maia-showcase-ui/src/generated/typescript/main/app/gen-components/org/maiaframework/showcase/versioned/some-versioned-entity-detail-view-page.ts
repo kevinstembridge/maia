@@ -56,5 +56,10 @@ export class SomeVersionedEntityDetailViewPage {
     }
 
 
+    onBlotterClicked(): void {
+        this.router.navigate(['/some-versioned-blotter']);
+    }
+
+
 }
 

@@ -56,5 +56,10 @@ export class UserEntityDetailViewPage {
     }
 
 
+    onBlotterClicked(): void {
+        this.router.navigate(['/user-blotter']);
+    }
+
+
 }
 

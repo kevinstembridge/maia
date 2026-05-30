@@ -56,5 +56,10 @@ export class SimpleEntityDetailViewPage {
     }
 
 
+    onBlotterClicked(): void {
+        this.router.navigate(['/simple-blotter']);
+    }
+
+
 }
 
