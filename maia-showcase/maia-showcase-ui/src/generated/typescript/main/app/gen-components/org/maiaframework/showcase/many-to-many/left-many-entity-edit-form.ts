@@ -33,6 +33,9 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatProgressSpinnerModule,
         ReactiveFormsModule,
     ],
+    providers: [
+        RightManyTypeaheadApiService,
+    ],
     selector: 'app-left-many-entity-edit-form',
     styleUrls: ['./left-many-entity-edit-form.scss'],
     templateUrl: './left-many-entity-edit-form.html'

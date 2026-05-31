@@ -30,6 +30,9 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         MatInputModule,
         ReactiveFormsModule,
     ],
+    providers: [
+        RightManyTypeaheadApiService,
+    ],
     selector: 'app-left-many-entity-create-form',
     styleUrls: ['./left-many-entity-create-form.scss'],
     templateUrl: './left-many-entity-create-form.html'

@@ -393,13 +393,14 @@ class AngularUiModuleGenerator(
 
             // TODO account for Signal forms vs Reactive forms
 
-            val providerServices = entityCreatePageDef.entityDef.allTypeaheadDefs.map { it.angularServiceClassName }
-
             val viewPageDef = this.modelDef.findViewEntityPage(entityCreatePageDef.entityDef)
 
             val blotterPageDef = blotterPageByEntity[entityCreatePageDef.entityDef]
 
             val chipFields = manyToManyChipFieldsFor(entityCreatePageDef.entityDef, entityCreatePageDef.entityDef.manyToManyAssociations)
+
+            val providerServices = entityCreatePageDef.entityDef.allTypeaheadDefs.map { it.angularServiceClassName } +
+                chipFields.map { it.serviceClassName }
 
             val angularFormDef = AngularFormDef(
                 componentBaseName = entityCreatePageDef.entityDef.crudAngularComponentBaseName,
@@ -476,7 +477,8 @@ class AngularUiModuleGenerator(
                 submitButtonText = null
             )
 
-            val providerServices = angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName }
+            val providerServices = angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } +
+                chipFields.map { it.serviceClassName }
 
             AngularReactiveFormComponentRenderer(
                 angularFormDef,
