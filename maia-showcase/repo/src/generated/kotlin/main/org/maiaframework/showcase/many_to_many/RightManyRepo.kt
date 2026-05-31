@@ -66,6 +66,13 @@ class RightManyRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): RightManyFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: RightManyEntity) {
 
         logger.debug("insert {}", entity)
@@ -78,6 +85,24 @@ class RightManyRepo(
     fun bulkInsert(entities: List<RightManyEntity>) {
 
         this.dao.bulkInsert(entities)
+
+    }
+
+
+    fun setFields(updaters: List<RightManyEntityUpdater>) {
+
+        logger.debug("setFields {}", updaters)
+
+        updaters.forEach { setFields(it) }
+
+    }
+
+
+    fun setFields(updater: RightManyEntityUpdater): Int {
+
+        logger.debug("setFields {}", updater)
+
+        return this.dao.setFields(updater)
 
     }
 

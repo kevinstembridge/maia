@@ -1231,6 +1231,27 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val leftManyTypeaheadDef = typeahead(
+        "org.maiaframework.showcase.many_to_many",
+        "LeftMany",
+        leftManyEntityDef,
+        sortFieldName = "someString",
+        searchTermFieldName = "someString",
+        indexVersion = 1
+    ) {
+        idFieldFromEntity(
+            dtoFieldName = "id",
+            entityFieldName = "id",
+            esDocMappingType = EsDocMappingTypes.keyword
+        )
+        fieldFromEntity(
+            dtoFieldName = "someString",
+            entityFieldName = "someString",
+            esDocMappingType = EsDocMappingTypes.searchAsYouType
+        )
+    }
+
+
     val rightManyEntityDef = entity(
         "org.maiaframework.showcase.many_to_many",
         "RightMany",
@@ -1238,10 +1259,44 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowDeleteAll = AllowDeleteAll.TRUE,
         nameFieldForPkAndNameDto = "someString"
     ) {
-        field("someInt", FieldTypes.int)
+        field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
+            editableByUser()
+        }
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
+            editableByUser()
             lengthConstraint(max = 100)
         }
+        crud {
+            authority(partySpec.adminAuthority)
+            create {
+                api {  }
+            }
+            update {
+                api {  }
+            }
+            delete {
+                api {  }
+            }
+        }
+    }
+
+
+    val leftToRightManyToManyJoinEntityDef = manyToManyEntity(
+        "org.maiaframework.showcase.many_to_many",
+        "LeftToRightManyToManyJoin",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        leftEntity = ReferencedEntity(fieldName = "left", displayName = "Left", leftManyEntityDef, IsEditableByUser.TRUE),
+        rightEntity = ReferencedEntity(
+            fieldName = "right",
+            displayName = "Right",
+            rightManyEntityDef,
+            IsEditableByUser.TRUE
+        )
+    ) {
+        field_lastModifiedTimestampUtc()
     }
 
 
@@ -1266,21 +1321,46 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftToRightManyToManyJoinEntityDef = manyToManyEntity(
+    val rightManyEntityDetailViewPageDef = entityDetailView(rightManyEntityDef)
+
+
+    val rightManyEntityCreatePageDef = entityCreatePage(rightManyEntityDef)
+
+
+    val rightManyEntityEditPageDef = entityEditPage(rightManyEntityDef)
+
+
+    val rightManySearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.many_to_many",
-        "LeftToRightManyToManyJoin",
-        deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE,
-        leftEntity = ReferencedEntity(fieldName = "left", displayName = "Left", leftManyEntityDef, IsEditableByUser.TRUE),
-        rightEntity = ReferencedEntity(
-            fieldName = "right",
-            displayName = "Right",
-            rightManyEntityDef,
-            IsEditableByUser.TRUE
-        )
+        "RightMany",
+        entityDef = rightManyEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE
     ) {
-        field_lastModifiedTimestampUtc()
+        field("createdTimestampUtc")
+        field("someIntFromLeft", "someInt")
+        field("someStringFromLeft", "someString")
+        manyToManyField("rightEntities", leftToRightManyToManyJoinEntityDef)
     }
+
+
+    val rightManyBlotterDef = blotter(
+        rightManySearchableDtoDef,
+        entityCreatePageDef = rightManyEntityCreatePageDef,
+        entityDetailViewPageDef = rightManyEntityDetailViewPageDef,
+        entityEditPageDef = rightManyEntityEditPageDef,
+    ) {
+        viewActionColumn()
+        editActionColumn()
+        columnFromDto("someStringFromLeft", "someString") { header("Some String From Left") }
+        columnFromDto("someIntFromLeft", "someInt") { header("Some Int From Left") }
+        columnFromDto("rightEntities") { header("Right Entities") }
+        deleteActionColumn()
+    }
+
+
+    val rightManyBlotterPageDef = blotterPage(rightManyBlotterDef)
 
 
     val leftManyEntityDetailViewPageDef = entityDetailView(leftManyEntityDef)

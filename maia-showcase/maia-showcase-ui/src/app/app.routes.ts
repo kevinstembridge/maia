@@ -7,6 +7,7 @@ import {simpleRoutes} from '@app/gen-components/org/maiaframework/showcase/simpl
 import {someVersionedRoutes} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-routes';
 import {userRoutes} from '@app/gen-components/org/maiaframework/showcase/user/user-routes';
 import {alphaRoutes} from '@app/gen-components/org/maiaframework/showcase/join/alpha-routes';
+import {rightManyRoutes} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-routes';
 
 export const routes: Routes = [
     {
@@ -21,6 +22,7 @@ export const routes: Routes = [
     ...bravoRoutes,
     ...compositePrimaryKeyRoutes,
     ...leftManyRoutes,
+    ...rightManyRoutes,
     ...simpleRoutes,
     ...someVersionedRoutes,
     ...userRoutes,

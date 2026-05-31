@@ -5,36 +5,137 @@ package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class RightManyCrudService(
     private val entityRepo: RightManyRepo,
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
-    private val maiaProblems: MaiaProblems
+    private val maiaProblems: MaiaProblems,
+    private val rightManyCrudNotifier: RightManyCrudNotifier
 ) {
 
 
     private val logger = LoggerFactory.getLogger(RightManyCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun create(createDto: RightManyCreateRequestDto): RightManyEntity {
+
+        logger.info("BEGIN: create RightMany. dto=$createDto")
+
+        val entity: RightManyEntity = buildEntity(createDto)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(createDto: RightManyCreateRequestDto): RightManyEntity {
+
+        val someInt: Int = createDto.someInt
+        val someString: String = createDto.someString
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+
+        return RightManyEntity(
+            createdTimestampUtc,
+            id,
+            someInt,
+            someString
+        )
+
+    }
+
+
     fun create(entity: RightManyEntity): RightManyEntity {
 
         this.entityRepo.insert(entity)
+        this.rightManyCrudNotifier.onEntityCreated(entity)
         return entity
 
     }
 
 
+    fun fetchForEdit(id: DomainId): RightManyFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun update(editDto: RightManyUpdateRequestDto) {
+
+        val id = editDto.id
+        val updater = RightManyEntityUpdater.forPrimaryKey(id) {
+            someInt(editDto.someInt)
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun updateSomeInt(editDto: RightManyUpdate_someIntRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeInt. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = RightManyEntityUpdater.forPrimaryKey(editDto.id) {
+            someInt(editDto.someInt)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    fun updateSomeString(editDto: RightManyUpdate_someStringRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeString. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = RightManyEntityUpdater.forPrimaryKey(editDto.id) {
+            someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    fun setFields(updater: RightManyEntityUpdater): Int {
+        
+        val count = this.entityRepo.setFields(updater)
+        this.rightManyCrudNotifier.onEntityUpdated(updater.id)
+        return count
+        
+    }
+
+
+    @PreAuthorize("hasAuthority('SYS__ADMIN')")
     fun delete(id: DomainId) {
 
         if (this.leftToRightManyToManyJoinRepo.existsByRight(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightManyToManyJoin")
         }
 
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
+                ?: return
+
         this.entityRepo.deleteByPrimaryKey(id)
+        this.rightManyCrudNotifier.onEntityDeleted(entityToDelete)
 
     }
 
