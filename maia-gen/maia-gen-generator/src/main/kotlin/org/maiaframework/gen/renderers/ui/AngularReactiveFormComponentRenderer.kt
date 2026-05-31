@@ -1004,7 +1004,10 @@ class AngularReactiveFormComponentRenderer(
         if (chipFields.isNotEmpty()) {
             addImport("@angular/core", "ElementRef")
             addImport("@angular/core", "ViewChild")
+            addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
             addImport("@angular/material/autocomplete", "MatAutocompleteSelectedEvent")
+            addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
+            addImport("@angular/material/autocomplete", "MatOption", isModule = true)
             addImport("@angular/material/chips", "MatChipsModule", isModule = true)
             addImport("@angular/material/icon", "MatIconModule", isModule = true)
             chipFields.forEach { chip ->

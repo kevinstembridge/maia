@@ -547,6 +547,10 @@ abstract class AbstractSpec protected constructor(
             .getOrPut(leftEntity.entityDef.entityBaseName) { mutableListOf() }
             .add(manyToManyEntityDef)
 
+        manyToManyAssociationsByEntityName
+            .getOrPut(rightEntity.entityDef.entityBaseName) { mutableListOf() }
+            .add(manyToManyEntityDef)
+
         return manyToManyEntityDef
 
     }

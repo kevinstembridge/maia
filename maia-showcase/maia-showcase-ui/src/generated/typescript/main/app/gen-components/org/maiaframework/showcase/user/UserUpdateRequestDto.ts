@@ -9,6 +9,7 @@ export interface UserUpdateRequestDto {
     firstName?: string;
     id: string;
     lastName: string;
+    userGroupEntityIds?: ReadonlyArray<string>;
     version: number;
 }
 

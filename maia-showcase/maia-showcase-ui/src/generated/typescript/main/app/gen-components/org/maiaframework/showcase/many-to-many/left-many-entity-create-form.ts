@@ -3,7 +3,7 @@
 
 import {Component, ElementRef, OnInit, ViewChild, inject, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -23,11 +23,14 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
 @Component({
     imports: [
         FormsModule,
+        MatAutocomplete,
+        MatAutocompleteTrigger,
         MatButtonModule,
         MatChipsModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
+        MatOption,
         ReactiveFormsModule,
     ],
     providers: [

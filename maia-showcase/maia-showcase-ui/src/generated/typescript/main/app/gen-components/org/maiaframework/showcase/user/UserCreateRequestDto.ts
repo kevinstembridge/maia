@@ -9,5 +9,6 @@ export interface UserCreateRequestDto {
     encryptedPassword: string;
     firstName?: string;
     lastName: string;
+    userGroupEntityIds?: ReadonlyArray<string>;
 }
 

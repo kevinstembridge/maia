@@ -3,6 +3,7 @@
 
 
 export interface RightManyCreateRequestDto {
+    leftEntityIds?: ReadonlyArray<string>;
     someInt: number;
     someString: string;
 }

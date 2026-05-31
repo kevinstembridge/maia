@@ -7,7 +7,8 @@ import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
 class EntityEditReactiveFormHtmlRenderer(
     private val apiDef: EntityUpdateApiDef,
-    private val componentNamesOverride: AngularComponentNames? = null
+    private val componentNamesOverride: AngularComponentNames? = null,
+    override val chipFields: List<ManyToManyChipFieldDef> = emptyList()
 ) : AbstractCrudReactiveFormHtmlRenderer(
     apiDef.entityDef,
     InlineFormOrDialog.INLINE_FORM

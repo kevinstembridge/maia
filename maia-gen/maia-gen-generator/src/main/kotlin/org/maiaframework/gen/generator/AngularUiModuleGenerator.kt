@@ -433,7 +433,7 @@ class AngularUiModuleGenerator(
             ).renderToDir(this.typescriptOutputDir)
 
             EntityCreateFormScssRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
-            EntityCreateReactiveFormHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
+            EntityCreateReactiveFormHtmlRenderer(entityCreatePageDef, chipFields).renderToDir(this.typescriptOutputDir)
             EntityCreateFormPageComponentRenderer(entityCreatePageDef, blotterPageDef).renderToDir(this.typescriptOutputDir)
             EntityCreatePageHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
 
@@ -489,7 +489,7 @@ class AngularUiModuleGenerator(
 
 //            EntityEditFormComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
             EntityEditFormScssRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
-            EntityEditReactiveFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames).renderToDir(this.typescriptOutputDir)
+            EntityEditReactiveFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames, chipFields).renderToDir(this.typescriptOutputDir)
             EntityEditFormPageComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
             EntityEditPageHtmlRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
 
