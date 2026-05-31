@@ -18,6 +18,10 @@ import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.maiaframework.showcase.testing.pages.AllFieldTypesBlotterPage
 import org.maiaframework.showcase.testing.pages.BravoBlotterPage
 import org.maiaframework.showcase.testing.pages.LeftManyBlotterPage
+import org.maiaframework.showcase.testing.pages.RightManyBlotterPage
+import org.maiaframework.showcase.testing.pages.RightManyCreatePage
+import org.maiaframework.showcase.testing.pages.RightManyEditPage
+import org.maiaframework.showcase.testing.pages.RightManyViewPage
 import org.maiaframework.showcase.testing.pages.SimpleBlotterPage
 import org.maiaframework.showcase.testing.pages.SimpleEditPage
 import org.maiaframework.showcase.testing.pages.SimpleViewPage
@@ -75,6 +79,18 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var leftManyBlotterPage: LeftManyBlotterPage
 
 
+    protected lateinit var rightManyBlotterPage: RightManyBlotterPage
+
+
+    protected lateinit var rightManyCreatePage: RightManyCreatePage
+
+
+    protected lateinit var rightManyEditPage: RightManyEditPage
+
+
+    protected lateinit var rightManyViewPage: RightManyViewPage
+
+
     protected lateinit var simpleBlotterPage: SimpleBlotterPage
 
 
@@ -116,6 +132,10 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         compositePkBlotterPage = CompositePkBlotterPage(page, urlHelper)
         homePage = HomePage(page, urlHelper)
         leftManyBlotterPage = LeftManyBlotterPage(page, urlHelper)
+        rightManyBlotterPage = RightManyBlotterPage(page, urlHelper)
+        rightManyCreatePage = RightManyCreatePage(page, urlHelper)
+        rightManyEditPage = RightManyEditPage(page, urlHelper)
+        rightManyViewPage = RightManyViewPage(page, urlHelper)
         loginPage = LoginPage(page, urlHelper)
         simpleBlotterPage = SimpleBlotterPage(page, urlHelper)
         simpleEditPage = SimpleEditPage(page, urlHelper)
