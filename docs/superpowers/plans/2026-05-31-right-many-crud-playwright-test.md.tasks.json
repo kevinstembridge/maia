@@ -1,0 +1,19 @@
+{
+  "planPath": "docs/superpowers/plans/2026-05-31-right-many-crud-playwright-test.md",
+  "tasks": [
+    {
+      "id": 6,
+      "subject": "Task 1: Create the four RightMany page objects",
+      "status": "pending",
+      "description": "**Goal:** Four new page-object classes that encapsulate all Playwright interactions for the RightMany UI pages.\n\n**Files:**\n- Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyBlotterPage.kt`\n- Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyCreatePage.kt`\n- Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyEditPage.kt`\n- Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyViewPage.kt`\n\n**Acceptance Criteria:**\n- [ ] All four files compile\n- [ ] RightManyBlotterPage handles FK error dialog and delete confirm dialog separately\n- [ ] Chip selection uses JS-click pattern\n\n**Verify:** `./gradlew :maia-showcase:app:compileTestKotlin` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyBlotterPage.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyCreatePage.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyEditPage.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyViewPage.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:compileTestKotlin\", \"acceptanceCriteria\": [\"All four page object files compile\", \"RightManyBlotterPage handles FK error dialog and delete confirm dialog separately\", \"Chip selection uses JS-click pattern\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 7,
+      "subject": "Task 2: Wire page objects into AbstractPlaywrightTest and write journey test",
+      "status": "pending",
+      "blockedBy": [6],
+      "description": "**Goal:** AbstractPlaywrightTest declares and instantiates the four new page objects; RightManyCrudPlaywrightTest exercises the full CRUD journey.\n\n**Files:**\n- Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/AbstractPlaywrightTest.kt`\n- Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/RightManyCrudPlaywrightTest.kt`\n\n**Acceptance Criteria:**\n- [ ] AbstractPlaywrightTest compiles with 4 new page objects\n- [ ] RightManyCrudPlaywrightTest compiles\n- [ ] Journey test passes: 1 test, 0 failures\n\n**Verify:** `./gradlew :maia-showcase:app:test --tests \"org.maiaframework.showcase.many_to_many.RightManyCrudPlaywrightTest\"` → `BUILD SUCCESSFUL`\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/AbstractPlaywrightTest.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/RightManyCrudPlaywrightTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests \\\"org.maiaframework.showcase.many_to_many.RightManyCrudPlaywrightTest\\\"\", \"acceptanceCriteria\": [\"AbstractPlaywrightTest compiles with 4 new page objects\", \"RightManyCrudPlaywrightTest compiles\", \"Journey test passes: 1 test, 0 failures\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-05-31T00:00:00Z"
+}

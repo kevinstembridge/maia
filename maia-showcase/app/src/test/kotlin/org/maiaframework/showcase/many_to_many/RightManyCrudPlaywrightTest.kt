@@ -21,10 +21,6 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var leftToRightManyToManyJoinDao: LeftToRightManyToManyJoinDao
-
-
-    @Autowired
     private lateinit var esIndexOps: EsIndexOps
 
 
@@ -40,9 +36,7 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         initAdminUserFixture()
         fixtures.resetDatabaseState()
-        leftToRightManyToManyJoinDao.deleteAll()
         rightManyDao.deleteAll()
-        leftManyDao.deleteAll()
         leftManyDao.bulkInsert(listOf(leftAlpha))
         esIndexOps.upsert(
             EsDocHolder(
@@ -69,12 +63,8 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
         `log in as admin user`()
         `navigate to the`(rightManyBlotterPage)
 
-        rightManyBlotterPage.apply {
-
-            // Create: fill form with someInt + someString + one left-entity chip, submit
-            clickAddButton()
-
-        }
+        // Create: navigate to create page, fill form with someInt + someString + left-entity chip
+        rightManyBlotterPage.clickAddButton()
 
         rightManyCreatePage.apply {
 
