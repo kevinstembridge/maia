@@ -3,18 +3,30 @@
 
 package org.maiaframework.showcase.user
 
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
+import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
+import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.showcase.auth.Authority
 
 
-class UserFetchForEditDtoRowMapper : MaiaRowMapper<UserFetchForEditDto> {
+class UserFetchForEditDtoRowMapper(
+    private val jdbcOps: JdbcOps
+) : MaiaRowMapper<UserFetchForEditDto> {
+
+
+    private val userGroupEntitiesPkAndNameDtoRowMapper = UserGroupPkAndNameDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): UserFetchForEditDto {
+
+        val entityId = rsa.readDomainId("id")
+
+        val userGroupEntitiesPkAndNameDtoList = fetchUserGroupEntitiesPkAndNameDtos(entityId)
 
         val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
         val createdBy = rsa.readDomainIdOrNull("createdBy")
@@ -41,7 +53,30 @@ class UserFetchForEditDtoRowMapper : MaiaRowMapper<UserFetchForEditDto> {
             lastModifiedTimestampUtc,
             lastName,
             lifecycleState,
+            userGroupEntitiesPkAndNameDtoList,
             version,
+        )
+
+    }
+
+
+    private fun fetchUserGroupEntitiesPkAndNameDtos(entityId: DomainId): List<UserGroupPkAndNameDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                other.id,
+                other.name
+            from maia.user_group other
+            join maia.user_group_membership mtm
+                on other.id = mtm.userGroup_id
+            where mtm.user_id = :entityId
+            order by other.name
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+            this.userGroupEntitiesPkAndNameDtoRowMapper
         )
 
     }
