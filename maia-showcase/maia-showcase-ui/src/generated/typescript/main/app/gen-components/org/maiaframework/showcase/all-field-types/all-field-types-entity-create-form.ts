@@ -179,7 +179,7 @@ export class AllFieldTypesEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: (dto: EntityCreatedResponseDto) => {
-                this.router.navigate(['/all-field-types/view/' + dto.id]);
+                this.router.navigate(['/all-field-types/view', dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
