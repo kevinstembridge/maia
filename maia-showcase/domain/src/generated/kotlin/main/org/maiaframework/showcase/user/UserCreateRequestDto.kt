@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.showcase.auth.Authority
@@ -31,7 +32,9 @@ class UserCreateRequestDto
     @field:NotBlank
     @field:Length(max = 100)
     @param:JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) 
-    private val lastName_raw: String?
+    private val lastName_raw: String?,
+    @param:JsonProperty("userGroupEntityIds", access = JsonProperty.Access.READ_WRITE) 
+    private val userGroupEntityIds_raw: List<DomainId>?
 ) {
 
 
@@ -52,13 +55,18 @@ class UserCreateRequestDto
     val firstName = firstName?.let { FirstName(it) }
 
 
+    @get:JsonIgnore
+    val userGroupEntityIds: List<DomainId> by lazy { userGroupEntityIds_raw ?: emptyList() }
+
+
     override fun toString(): String {
 
         return "UserCreateRequestDto{" +
                 "authorities = '" + this.authorities + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
-                "firstName = '" + this.firstName + '\'' +
+                "firstName = '" + this.firstName + '\'' + ", " + 
+                "userGroupEntityIds = '" + this.userGroupEntityIds + '\'' +
                 "}"
 
     }

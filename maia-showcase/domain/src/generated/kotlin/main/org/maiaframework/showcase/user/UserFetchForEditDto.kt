@@ -23,6 +23,7 @@ data class UserFetchForEditDto(
     val lastModifiedTimestampUtc: Instant,
     val lastName: LastName,
     val lifecycleState: LifecycleState,
+    val userGroupEntities: List<UserGroupPkAndNameDto>,
     val version: Long
 ) {
 
@@ -41,6 +42,7 @@ data class UserFetchForEditDto(
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
+                "userGroupEntities = '" + this.userGroupEntities + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}";
 

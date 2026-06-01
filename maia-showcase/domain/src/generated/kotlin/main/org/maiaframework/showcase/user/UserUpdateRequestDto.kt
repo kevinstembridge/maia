@@ -32,6 +32,8 @@ class UserUpdateRequestDto
     @field:Length(max = 100)
     @param:JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) 
     private val lastName_raw: String?,
+    @param:JsonProperty("userGroupEntityIds", access = JsonProperty.Access.READ_WRITE) 
+    private val userGroupEntityIds_raw: List<DomainId>?,
     @field:NotNull
     @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
     private val version_raw: Long?
@@ -59,6 +61,10 @@ class UserUpdateRequestDto
     val firstName = firstName?.let { FirstName(it) }
 
 
+    @get:JsonIgnore
+    val userGroupEntityIds: List<DomainId> by lazy { userGroupEntityIds_raw ?: emptyList() }
+
+
     override fun toString(): String {
 
         return "UserUpdateRequestDto{" +
@@ -66,7 +72,8 @@ class UserUpdateRequestDto
                 "id = '" + this.id + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "version = '" + this.version + '\'' + ", " + 
-                "firstName = '" + this.firstName + '\'' +
+                "firstName = '" + this.firstName + '\'' + ", " + 
+                "userGroupEntityIds = '" + this.userGroupEntityIds + '\'' +
                 "}"
 
     }
