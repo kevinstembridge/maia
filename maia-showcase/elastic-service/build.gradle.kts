@@ -12,8 +12,9 @@ val maiagen by configurations.creating
 dependencies {
 
     implementation(project(":maia-showcase:domain"))
+    implementation(project(":maia-showcase:elasticsearch"))
     implementation(project(":maia-showcase:repo"))
-    implementation(project(":maia-showcase:service"))
+    implementation(project(":libs:maia-elasticsearch-parent:maia-elasticsearch"))
 
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.junit.jupiter:junit-jupiter")
