@@ -39,7 +39,18 @@ class UserCrudService(
 
         val entity: UserEntity = buildEntity(createDto, currentUser)
 
-        return create(entity)
+        create(entity)
+
+        //createDto.userGroupEntityIds.forEach { userGroup ->
+        //    this.userGroupMembershipRepo.insert(
+        //        UserGroupMembershipEntity.newInstance(
+        //            user = entity.id,
+        //            userGroup = userGroup
+        //        )
+        //    )
+        //}
+
+        return entity
 
     }
 
@@ -110,6 +121,15 @@ class UserCrudService(
         }
 
         setFields(updater)
+
+        //this.userGroupMembershipRepo.findByUser(id).forEach { join ->
+        //    this.userGroupMembershipRepo.deleteByPrimaryKey(join.id)
+        //}
+
+        //val newUserGroupJoins = editDto.userGroupEntityIds.map { userGroup ->
+        //    UserGroupMembershipEntity.newInstance(user = id, userGroup = userGroup)
+        //}
+        //this.userGroupMembershipRepo.bulkInsert(newUserGroupJoins)
 
     }
 
