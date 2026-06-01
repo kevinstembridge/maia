@@ -833,7 +833,7 @@ class AngularReactiveFormComponentRenderer(
 
                     append("""
                         |            next: (dto: EntityCreatedResponseDto) => {
-                        |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}/' + dto.id]);
+                        |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}', dto.id]);
                         |            },
                         |""".trimMargin())
 
@@ -842,7 +842,7 @@ class AngularReactiveFormComponentRenderer(
 
                     append("""
                         |            next: () => {
-                        |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}/' + this.entityId()]);
+                        |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}', this.entityId()]);
                         |            },
                         |""".trimMargin())
 

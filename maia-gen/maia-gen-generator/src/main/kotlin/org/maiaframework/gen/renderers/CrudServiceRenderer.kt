@@ -164,14 +164,14 @@ class CrudServiceRenderer(
                 val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
 
                 blankLine()
-                appendLine("        createDto.${otherSideDtoFieldName}.forEach { $otherSideFieldName ->")
-                appendLine("            this.${joinRepoFieldName}.insert(")
-                appendLine("                ${joinEntityClass}.newInstance(")
-                appendLine("                    $thisSideEntityIdFieldName = entity.id,")
-                appendLine("                    $otherSideFieldName = $otherSideFieldName")
-                appendLine("                )")
-                appendLine("            )")
-                appendLine("        }")
+                appendLine("        //createDto.${otherSideDtoFieldName}.forEach { $otherSideFieldName ->")
+                appendLine("        //    this.${joinRepoFieldName}.insert(")
+                appendLine("        //        ${joinEntityClass}.newInstance(")
+                appendLine("        //            $thisSideEntityIdFieldName = entity.id,")
+                appendLine("        //            $otherSideFieldName = $otherSideFieldName")
+                appendLine("        //        )")
+                appendLine("        //    )")
+                appendLine("        //}")
 
             }
 
@@ -472,14 +472,14 @@ class CrudServiceRenderer(
             val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
 
             blankLine()
-            appendLine("        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
-            appendLine("            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
-            appendLine("        }")
+            appendLine("        //this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
+            appendLine("        //    this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
+            appendLine("        //}")
             blankLine()
-            appendLine("        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->")
-            appendLine("            ${joinEntityClass}.newInstance($thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)")
-            appendLine("        }")
-            appendLine("        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
+            appendLine("        //val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->")
+            appendLine("        //    ${joinEntityClass}.newInstance($thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)")
+            appendLine("        //}")
+            appendLine("        //this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
         }
 
         blankLine()
