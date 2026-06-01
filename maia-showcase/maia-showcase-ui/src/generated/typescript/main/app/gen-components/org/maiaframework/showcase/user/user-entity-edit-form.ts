@@ -128,7 +128,7 @@ export class UserEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.router.navigate(['/user/view/' + this.entityId()]);
+                this.router.navigate(['/user/view', this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

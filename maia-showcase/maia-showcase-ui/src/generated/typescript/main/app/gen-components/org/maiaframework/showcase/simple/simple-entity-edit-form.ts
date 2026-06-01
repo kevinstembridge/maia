@@ -102,7 +102,7 @@ export class SimpleEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.router.navigate(['/simple/view/' + this.entityId()]);
+                this.router.navigate(['/simple/view', this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

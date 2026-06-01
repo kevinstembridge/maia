@@ -77,7 +77,7 @@ export class SimpleEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: (dto: EntityCreatedResponseDto) => {
-                this.router.navigate(['/simple/view/' + dto.id]);
+                this.router.navigate(['/simple/view', dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
