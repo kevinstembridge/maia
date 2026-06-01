@@ -108,7 +108,7 @@ export class BravoEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.router.navigate(['/bravo/view/' + this.entityId()]);
+                this.router.navigate(['/bravo/view', this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

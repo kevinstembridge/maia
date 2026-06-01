@@ -124,7 +124,7 @@ export class BravoEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: (dto: EntityCreatedResponseDto) => {
-                this.router.navigate(['/bravo/view/' + dto.id]);
+                this.router.navigate(['/bravo/view', dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

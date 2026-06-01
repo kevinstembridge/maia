@@ -101,7 +101,7 @@ export class AlphaEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.router.navigate(['/alpha/view/' + this.entityId()]);
+                this.router.navigate(['/alpha/view', this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

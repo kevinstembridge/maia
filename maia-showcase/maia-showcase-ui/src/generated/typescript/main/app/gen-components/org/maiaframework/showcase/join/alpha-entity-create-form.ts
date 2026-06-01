@@ -75,7 +75,7 @@ export class AlphaEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: (dto: EntityCreatedResponseDto) => {
-                this.router.navigate(['/alpha/view/' + dto.id]);
+                this.router.navigate(['/alpha/view', dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
