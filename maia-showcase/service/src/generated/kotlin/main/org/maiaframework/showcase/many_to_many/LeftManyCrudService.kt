@@ -33,14 +33,14 @@ class LeftManyCrudService(
 
         create(entity)
 
-        createDto.rightEntityIds.forEach { right ->
-            this.leftToRightManyToManyJoinRepo.insert(
-                LeftToRightManyToManyJoinEntity.newInstance(
-                    left = entity.id,
-                    right = right
-                )
-            )
-        }
+        //createDto.rightEntityIds.forEach { right ->
+        //    this.leftToRightManyToManyJoinRepo.insert(
+        //        LeftToRightManyToManyJoinEntity.newInstance(
+        //            left = entity.id,
+        //            right = right
+        //        )
+        //    )
+        //}
 
         return entity
 
@@ -91,14 +91,14 @@ class LeftManyCrudService(
 
         setFields(updater)
 
-        this.leftToRightManyToManyJoinRepo.findByLeft(id).forEach { join ->
-            this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(join.id)
-        }
+        //this.leftToRightManyToManyJoinRepo.findByLeft(id).forEach { join ->
+        //    this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(join.id)
+        //}
 
-        val newRightJoins = editDto.rightEntityIds.map { right ->
-            LeftToRightManyToManyJoinEntity.newInstance(left = id, right = right)
-        }
-        this.leftToRightManyToManyJoinRepo.bulkInsert(newRightJoins)
+        //val newRightJoins = editDto.rightEntityIds.map { right ->
+        //    LeftToRightManyToManyJoinEntity.newInstance(left = id, right = right)
+        //}
+        //this.leftToRightManyToManyJoinRepo.bulkInsert(newRightJoins)
 
     }
 
