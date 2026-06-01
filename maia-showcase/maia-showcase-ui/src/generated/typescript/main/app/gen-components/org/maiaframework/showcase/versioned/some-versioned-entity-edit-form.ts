@@ -104,7 +104,7 @@ export class SomeVersionedEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.router.navigate(['/some-versioned/view/' + this.entityId()]);
+                this.router.navigate(['/some-versioned/view', this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

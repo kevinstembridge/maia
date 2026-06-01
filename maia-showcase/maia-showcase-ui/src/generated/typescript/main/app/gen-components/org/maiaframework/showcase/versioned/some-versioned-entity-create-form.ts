@@ -75,7 +75,7 @@ export class SomeVersionedEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: (dto: EntityCreatedResponseDto) => {
-                this.router.navigate(['/some-versioned/view/' + dto.id]);
+                this.router.navigate(['/some-versioned/view', dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
