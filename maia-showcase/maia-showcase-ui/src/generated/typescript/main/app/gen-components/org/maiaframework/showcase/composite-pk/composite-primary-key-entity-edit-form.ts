@@ -104,7 +104,7 @@ export class CompositePrimaryKeyEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.router.navigate(['/composite-primary-key/view/' + this.entityId()]);
+                this.router.navigate(['/composite-primary-key/view', this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

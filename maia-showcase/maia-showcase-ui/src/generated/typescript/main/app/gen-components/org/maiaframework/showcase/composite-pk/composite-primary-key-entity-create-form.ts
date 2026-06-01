@@ -77,7 +77,7 @@ export class CompositePrimaryKeyEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: (dto: EntityCreatedResponseDto) => {
-                this.router.navigate(['/composite-primary-key/view/' + dto.id]);
+                this.router.navigate(['/composite-primary-key/view', dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
