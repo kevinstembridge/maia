@@ -16,6 +16,9 @@ import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.testing.pages.LoginPage
 import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.maiaframework.showcase.testing.pages.AllFieldTypesBlotterPage
+import org.maiaframework.showcase.testing.pages.AllFieldTypesCreatePage
+import org.maiaframework.showcase.testing.pages.AllFieldTypesEditPage
+import org.maiaframework.showcase.testing.pages.AllFieldTypesViewPage
 import org.maiaframework.showcase.testing.pages.BravoBlotterPage
 import org.maiaframework.showcase.testing.pages.LeftManyBlotterPage
 import org.maiaframework.showcase.testing.pages.RightManyBlotterPage
@@ -63,6 +66,15 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
 
 
     protected lateinit var allFieldTypesBlotterPage: AllFieldTypesBlotterPage
+
+
+    protected lateinit var allFieldTypesCreatePage: AllFieldTypesCreatePage
+
+
+    protected lateinit var allFieldTypesEditPage: AllFieldTypesEditPage
+
+
+    protected lateinit var allFieldTypesViewPage: AllFieldTypesViewPage
 
 
     protected lateinit var someVersionedBlotterPage: SomeVersionedBlotterPage
@@ -132,6 +144,9 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         urlHelper = UrlHelper(env)
 
         allFieldTypesBlotterPage = AllFieldTypesBlotterPage(page, urlHelper)
+        allFieldTypesCreatePage = AllFieldTypesCreatePage(page, urlHelper)
+        allFieldTypesEditPage = AllFieldTypesEditPage(page, urlHelper)
+        allFieldTypesViewPage = AllFieldTypesViewPage(page, urlHelper)
         bravoBlotterPage = BravoBlotterPage(page, urlHelper)
         compositePkBlotterPage = CompositePkBlotterPage(page, urlHelper)
         homePage = HomePage(page, urlHelper)

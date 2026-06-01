@@ -32,16 +32,31 @@ class AllFieldTypesCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         `log in as admin user`()
         `navigate to the`(allFieldTypesBlotterPage)
-        allFieldTypesBlotterPage.apply {
-            clickAddButton()
+
+        allFieldTypesBlotterPage.clickAddButton()
+
+        allFieldTypesCreatePage.apply {
+            assertOnPage()
             fillCreateForm()
             clickSubmitButton()
-            assertCreateDialogClosed()
+        }
 
-            clickEditButtonForFirstRow()
+        allFieldTypesViewPage.apply {
+            assertOnPage()
+            clickEditButton()
+        }
+
+        allFieldTypesEditPage.apply {
+            assertOnPage()
             fillEditForm()
             clickSubmitButton()
-            assertEditDialogClosed()
+        }
+
+        allFieldTypesViewPage.assertOnPage()
+
+        `navigate to the`(allFieldTypesBlotterPage)
+
+        allFieldTypesBlotterPage.apply {
             assertTableContainsValue("testmodifiable_edited")
 
             // Cancel path
