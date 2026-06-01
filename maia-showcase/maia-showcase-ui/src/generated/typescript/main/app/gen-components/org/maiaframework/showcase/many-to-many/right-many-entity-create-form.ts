@@ -148,7 +148,7 @@ export class RightManyEntityCreateForm implements OnInit {
 
         this.formService.create(requestDto).subscribe({
             next: (dto: EntityCreatedResponseDto) => {
-                this.router.navigate(['/right-many/view/' + dto.id]);
+                this.router.navigate(['/right-many/view', dto.id]);
             },
             error: err => {
                 this.problemDetail.set(err.error);

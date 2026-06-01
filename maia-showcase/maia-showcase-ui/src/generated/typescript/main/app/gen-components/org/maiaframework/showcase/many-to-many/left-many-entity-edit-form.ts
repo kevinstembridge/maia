@@ -178,7 +178,7 @@ export class LeftManyEntityEditForm implements OnInit {
 
         this.formService.edit(requestDto).subscribe({
             next: () => {
-                this.router.navigate(['/left-many/view/' + this.entityId()]);
+                this.router.navigate(['/left-many/view', this.entityId()]);
             },
             error: err => {
                 this.problemDetail.set(err.error);
