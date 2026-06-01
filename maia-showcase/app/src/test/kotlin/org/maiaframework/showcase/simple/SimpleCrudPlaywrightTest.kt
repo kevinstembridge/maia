@@ -44,24 +44,30 @@ class SimpleCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         `navigate to the`(simpleBlotterPage)
 
-        simpleBlotterPage.apply {
-            clickAddButton()
+        simpleBlotterPage.clickAddButton()
+
+        simpleCreatePage.apply {
+            assertOnPage()
             fillCreateForm(someString = "original-string")
             clickSubmitButton()
-            assertCreateDialogClosed()
-            clickViewButtonForFirstRow()
         }
 
-        simpleViewPage.assertOnPage()
-        simpleViewPage.assertEditButtonIsVisible()
-        simpleViewPage.clickEditButton()
+        simpleViewPage.apply {
+            assertOnPage()
+            assertEditButtonIsVisible()
+            clickEditButton()
+        }
 
-        simpleEditPage.assertOnPage()
-        simpleEditPage.fillEditForm(someString = "edited-string")
-        simpleEditPage.clickSubmitButton()
+        simpleEditPage.apply {
+            assertOnPage()
+            fillEditForm(someString = "edited-string")
+            clickSubmitButton()
+        }
 
-        simpleViewPage.assertOnPage()
-        simpleViewPage.assertShowsText("edited-string")
+        simpleViewPage.apply {
+            assertOnPage()
+            assertShowsText("edited-string")
+        }
 
     }
 
