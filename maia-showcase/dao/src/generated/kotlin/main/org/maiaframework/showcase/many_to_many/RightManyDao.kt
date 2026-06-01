@@ -27,7 +27,7 @@ class RightManyDao(
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
-    private val fetchForEditDtoRowMapper = RightManyFetchForEditDtoRowMapper()
+    private val fetchForEditDtoRowMapper = RightManyFetchForEditDtoRowMapper(this.jdbcOps)
 
 
     fun insert(entity: RightManyEntity) {
