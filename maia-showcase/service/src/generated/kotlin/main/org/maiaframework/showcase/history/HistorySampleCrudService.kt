@@ -5,13 +5,18 @@ package org.maiaframework.showcase.history
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
+import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 
 @Component
 class HistorySampleCrudService(
     private val entityRepo: HistorySampleRepo,
+    private val historySampleCrudNotifier: HistorySampleCrudNotifier,
     private val maiaProblems: MaiaProblems
 ) {
 
@@ -19,10 +24,117 @@ class HistorySampleCrudService(
     private val logger = LoggerFactory.getLogger(HistorySampleCrudService::class.java)
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun create(createDto: HistorySampleCreateRequestDto): HistorySampleEntity {
+
+        val currentUser = CurrentUserHolder.currentUser
+
+        logger.info("BEGIN: create HistorySample. createdBy=${currentUser.username}, dto=$createDto")
+
+        val entity: HistorySampleEntity = buildEntity(createDto, currentUser)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(
+        createDto: HistorySampleCreateRequestDto,
+        currentUser: MaiaUserDetails
+    ): HistorySampleEntity {
+
+        val someInt: Int = createDto.someInt
+        val someString: String = createDto.someString
+        val createdBy = currentUser.userId
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+        val lastModifiedBy = currentUser.userId
+        val lastModifiedTimestampUtc = createdTimestampUtc
+        val version = 1L
+
+        return HistorySampleEntity(
+            createdBy,
+            createdTimestampUtc,
+            id,
+            lastModifiedBy,
+            lastModifiedTimestampUtc,
+            someInt,
+            someString,
+            version
+        )
+
+    }
+
+
     fun create(entity: HistorySampleEntity): HistorySampleEntity {
 
         this.entityRepo.insert(entity)
+        this.historySampleCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    fun fetchForEdit(id: DomainId): HistorySampleFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun update(editDto: HistorySampleUpdateRequestDto) {
+
+        val id = editDto.id
+        val version = editDto.version
+        val updater = HistorySampleEntityUpdater.forPrimaryKey(id, version) {
+            someInt(editDto.someInt)
+            someString(editDto.someString)
+            lastModifiedBy(CurrentUserHolder.userId)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateSomeString(editDto: HistorySampleUpdate_someStringRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeString. currentUsername=${currentUsername}, dto=$editDto")
+
+        val version = editDto.version
+
+        val updater = HistorySampleEntityUpdater.forPrimaryKey(editDto.id, version) {
+            someString(editDto.someString)
+            lastModifiedBy(CurrentUserHolder.userId)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateSomeInt(editDto: HistorySampleUpdate_someIntRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeInt. currentUsername=${currentUsername}, dto=$editDto")
+
+        val version = editDto.version
+
+        val updater = HistorySampleEntityUpdater.forPrimaryKey(editDto.id, version) {
+            someInt(editDto.someInt)
+            lastModifiedBy(CurrentUserHolder.userId)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
 
     }
 
@@ -30,14 +142,20 @@ class HistorySampleCrudService(
     fun setFields(updater: HistorySampleEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
+        this.historySampleCrudNotifier.onEntityUpdated(updater.id)
         return count
         
     }
 
 
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
+                ?: return
+
         this.entityRepo.deleteByPrimaryKey(id)
+        this.historySampleCrudNotifier.onEntityDeleted(entityToDelete)
 
     }
 

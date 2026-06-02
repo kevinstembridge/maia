@@ -1,0 +1,9 @@
+<app-page-layout pageTitle="Edit History Sample" dataPageId="history_sample_edit">
+    @if (entityId(); as id) {
+        <app-history-sample-entity-edit-form
+            [entityId]="id"
+            (onSave)="onSaveClicked()"
+            (onCancel)="onCancelClicked()"
+        />
+    }
+</app-page-layout>

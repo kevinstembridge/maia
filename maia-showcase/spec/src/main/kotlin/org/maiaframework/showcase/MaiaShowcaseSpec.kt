@@ -548,10 +548,12 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         deletable = Deletable.TRUE
     ) {
         field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
             editableByUser()
             lengthConstraint(max = 100)
         }
         field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
             editableByUser()
         }
         field_createdById(partySpec.partyEntityDef)
@@ -561,7 +563,66 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             unique()
             withFieldAscending("someString")
         }
+        crud {
+            authority(partySpec.writeAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
+            }
+        }
     }
+
+
+    val historySampleSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.history",
+        "HistorySample",
+        entityDef = historySampleEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE
+    ) {
+        field("someString")
+        field("someInt")
+        field("createdTimestampUtc")
+    }
+
+
+    val historySampleEntityDetailViewDef = entityDetailView(historySampleEntityDef)
+
+
+    val historySampleEntityEditPageDef = entityEditPage(historySampleEntityDef) {
+        authority = partySpec.writeAuthority
+    }
+
+
+    val historySampleEntityCreatePageDef = entityCreatePage(historySampleEntityDef) {
+        authority = partySpec.writeAuthority
+    }
+
+
+    val historySampleBlotterDef = blotter(
+        historySampleSearchableDtoDef,
+        entityCreatePageDef = historySampleEntityCreatePageDef,
+        entityDetailViewPageDef = historySampleEntityDetailViewDef,
+        entityEditPageDef = historySampleEntityEditPageDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
+    ) {
+        viewActionColumn()
+        editActionColumn()
+        columnFromDto("someString")
+        columnFromDto("someInt")
+        columnFromDto("createdTimestampUtc")
+        deleteActionColumn()
+    }
+
+
+    val historySampleBlotterPageDef = blotterPage(historySampleBlotterDef)
 
 
     val grandparentEntityDef = entity(

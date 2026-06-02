@@ -101,6 +101,13 @@ class HistorySampleRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): HistorySampleFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: HistorySampleEntity) {
 
         logger.debug("insert {}", entity)

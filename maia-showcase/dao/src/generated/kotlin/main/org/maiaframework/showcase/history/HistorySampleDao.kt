@@ -33,6 +33,9 @@ class HistorySampleDao(
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
+    private val fetchForEditDtoRowMapper = HistorySampleFetchForEditDtoRowMapper()
+
+
     fun insert(entity: HistorySampleEntity) {
 
         jdbcOps.update(
@@ -406,6 +409,38 @@ class HistorySampleDao(
         )
 
         return count > 0
+
+    }
+
+
+    fun fetchForEdit(id: DomainId): HistorySampleFetchForEditDto {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                created_by_v_party.id as createdById,
+                created_by_v_party.display_name as createdByName,
+                maia.history_sample.created_timestamp_utc as createdTimestampUtc,
+                maia.history_sample.id as id,
+                last_modified_by_v_party.id as lastModifiedById,
+                last_modified_by_v_party.display_name as lastModifiedByName,
+                maia.history_sample.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.history_sample.some_int as someInt,
+                maia.history_sample.some_string as someString,
+                maia.history_sample.version as version
+            from maia.history_sample
+            join maia.v_party created_by_v_party
+                on created_by_v_party.id = maia.history_sample.created_by_id
+            join maia.v_party last_modified_by_v_party
+                on last_modified_by_v_party.id = maia.history_sample.last_modified_by_id
+            where maia.history_sample.id = :id
+            """,
+            SqlParams().apply {
+                addValue("id", id)
+            },
+            this.fetchForEditDtoRowMapper
+        ).firstOrNull()
+            ?: throw EntityNotFoundException(EntityClassAndPk(HistorySampleEntity::class.java, mapOf("id" to id)), HistorySampleEntityMeta.TABLE_NAME)
 
     }
 
