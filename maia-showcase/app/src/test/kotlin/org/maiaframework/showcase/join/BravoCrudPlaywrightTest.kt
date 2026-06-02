@@ -5,10 +5,15 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractPlaywrightTest
+import org.maiaframework.showcase.auth.Authority
+import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.springframework.beans.factory.annotation.Autowired
 
 
 class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
+
+
+    private lateinit var testUser: UserFixture
 
 
     @Autowired
@@ -24,7 +29,10 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
     @BeforeAll
     fun setUp() {
 
-        initAdminUserFixture()
+        testUser = fixtures.aUser(
+            loginMailVerified = true,
+            { it.copy(authorities = listOf(Authority.WRITE)) }
+        )
         val alphaFixture = fixtures.anAlpha(someString = "alpha-fixture")
         fixtures.resetDatabaseState()
 
@@ -59,18 +67,33 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
     @Test
     fun `crud journey`() {
 
-        `log in as admin user`()
+        `log in user`(testUser)
         `navigate to the`(bravoBlotterPage)
-        bravoBlotterPage.apply {
-            clickAddButton()
+
+        bravoBlotterPage.clickAddButton()
+
+        bravoCreatePage.apply {
+            assertOnPage()
             fillCreateForm()
             clickSubmitButton()
-            assertCreateDialogClosed()
+        }
 
-            clickEditButtonForFirstRow()
+        bravoViewPage.apply {
+            assertOnPage()
+            clickEditButton()
+        }
+
+        bravoEditPage.apply {
+            assertOnPage()
             fillEditForm()
             clickSubmitButton()
-            assertEditDialogClosed()
+        }
+
+        bravoViewPage.assertOnPage()
+
+        `navigate to the`(bravoBlotterPage)
+
+        bravoBlotterPage.apply {
             assertTableContainsValue("testbravo_edited")
 
             // Cancel path

@@ -24,7 +24,7 @@ class BravoCrudService(
     private val logger = LoggerFactory.getLogger(BravoCrudService::class.java)
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: BravoCreateRequestDto): BravoEntity {
 
         logger.info("BEGIN: create Bravo. dto=$createDto")
@@ -71,7 +71,7 @@ class BravoCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: BravoUpdateRequestDto) {
 
         val id = editDto.id
@@ -85,7 +85,7 @@ class BravoCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: BravoUpdate_someIntRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -101,7 +101,7 @@ class BravoCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: BravoUpdate_someStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -126,7 +126,7 @@ class BravoCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
         if (this.charlieRepo.existsByBravo(id)) {

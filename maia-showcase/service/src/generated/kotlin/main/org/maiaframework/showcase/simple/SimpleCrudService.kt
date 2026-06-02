@@ -23,7 +23,7 @@ class SimpleCrudService(
     private val logger = LoggerFactory.getLogger(SimpleCrudService::class.java)
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: SimpleCreateRequestDto): SimpleEntity {
 
         logger.info("BEGIN: create Simple. dto=$createDto")
@@ -73,7 +73,7 @@ class SimpleCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: SimpleUpdateRequestDto) {
 
         val id = editDto.id
@@ -86,7 +86,7 @@ class SimpleCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: SimpleUpdate_someStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -111,7 +111,7 @@ class SimpleCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

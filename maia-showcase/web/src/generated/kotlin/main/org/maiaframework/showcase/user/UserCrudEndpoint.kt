@@ -26,7 +26,7 @@ class UserCrudEndpoint(
 
     @PostMapping("/api/user/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: UserCreateRequestDto): EntityCreatedResponseDto {
 
         val entity = this.crudService.create(createDto)
@@ -46,7 +46,7 @@ class UserCrudEndpoint(
 
 
     @PutMapping("/api/user/update", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: UserUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -55,7 +55,7 @@ class UserCrudEndpoint(
 
 
     @PutMapping("/api/user/inline/authorities", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateAuthorities(@RequestBody @Valid editDto: UserUpdate_authoritiesRequestDto) {
 
         this.crudService.updateAuthorities(editDto)
@@ -64,7 +64,7 @@ class UserCrudEndpoint(
 
 
     @PutMapping("/api/user/inline/first-name", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateFirstName(@RequestBody @Valid editDto: UserUpdate_firstNameRequestDto) {
 
         this.crudService.updateFirstName(editDto)
@@ -73,7 +73,7 @@ class UserCrudEndpoint(
 
 
     @PutMapping("/api/user/inline/last-name", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateLastName(@RequestBody @Valid editDto: UserUpdate_lastNameRequestDto) {
 
         this.crudService.updateLastName(editDto)

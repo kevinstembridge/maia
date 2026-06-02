@@ -22,7 +22,7 @@ class UsersCrudPlaywrightTest : AbstractPlaywrightTest() {
         // SYS__ADMIN required to create/edit users; initAdminUserFixture() uses WRITE authority
         sysAdminUser = fixtures.aUser(
             loginMailVerified = true,
-            { it.copy(authorities = listOf(Authority.SYS__ADMIN)) }
+            { it.copy(authorities = listOf(Authority.WRITE)) }
         )
 
         anotherUser = fixtures.aUser(
@@ -49,30 +49,41 @@ class UsersCrudPlaywrightTest : AbstractPlaywrightTest() {
         `log in user`(sysAdminUser)
         `navigate to the`(usersBlotterPage)
 
+        // Table loads and displays data for both users
         usersBlotterPage.apply {
-
-            // Table loads and displays data for both users
             assertTableContainsValue(sysAdminUser.displayName)
-            assertTableContainsValue(Authority.SYS__ADMIN.name)
+            assertTableContainsValue(Authority.WRITE.name)
             assertTableContainsValue(anotherUser.displayName)
             assertTableContainsValue(Authority.READ.name)
+        }
 
-            // Add: fill the form and submit — backend rejects because encryptedPassword is notCreatableByUser
-            clickAddButton()
+        // Add: fill the form and submit — backend rejects because encryptedPassword is notCreatableByUser
+        usersBlotterPage.clickAddButton()
+
+        usersCreatePage.apply {
+            assertOnPage()
             fillCreateForm("NewFirst", "NewLast", Authority.WRITE.name)
             clickSubmitButton()
-            assertDialogShowsError()
+            assertShowsError()
             clickCancelButton()
-            assertCreateDialogClosed()
+        }
 
-            // Edit: open dialog for anotherUser, add WRITE alongside READ, submit
-            clickEditButtonForRow(anotherUser.displayName)
+        // Edit: navigate to edit page for anotherUser, add WRITE alongside READ, submit
+        usersBlotterPage.clickEditButtonForRow(anotherUser.displayName)
+
+        usersEditPage.apply {
+            assertOnPage()
             fillEditForm(firstName = "EditedFirst", additionalAuthorities = listOf(Authority.WRITE.name))
             clickSubmitButton()
-            assertEditDialogClosed()
+        }
+
+        usersViewPage.assertOnPage()
+
+        `navigate to the`(usersBlotterPage)
+
+        usersBlotterPage.apply {
             assertTableContainsValue("EditedFirst")
             assertTableContainsValue("${Authority.READ.name}, ${Authority.WRITE.name}")
-
         }
 
     }

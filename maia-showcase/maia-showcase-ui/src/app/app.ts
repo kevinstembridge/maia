@@ -41,7 +41,7 @@ export class App {
 
 
     protected readonly hasSysOpsAuthority = computed(() =>
-        this.currentUserAuthStore.hasSysOpsAuthority()
+        this.currentUserAuthStore.hasWriteAuthority()
     );
 
 

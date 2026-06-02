@@ -20,40 +20,7 @@ class BravoBlotterPage(
 
 
     fun clickAddButton() {
-
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Add")).click()
-        page.locator("mat-dialog-container").waitFor()
-
-    }
-
-
-    fun fillCreateForm(
-        alphaSearchTerm: String = "alpha-fixture",
-        someInt: String = "42",
-        someString: String = "testbravo",
-    ) {
-
-        selectAlpha(alphaSearchTerm)
-        page.locator("input[name='someInt']").fill(someInt)
-        page.locator("input[name='someString']").fill(someString)
-
-    }
-
-
-    fun clickSubmitButton() {
-
-        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Submit"))
-            .click(Locator.ClickOptions().setForce(true))
-
-    }
-
-
-    fun assertCreateDialogClosed() {
-
-        page.locator("mat-dialog-container").waitFor(
-            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
-        )
-
     }
 
 
@@ -69,25 +36,6 @@ class BravoBlotterPage(
         editCell.waitFor()
         editCell.scrollIntoViewIfNeeded()
         editCell.click()
-        page.locator("mat-dialog-container").waitFor()
-
-    }
-
-
-    fun fillEditForm(
-        someString: String = "testbravo_edited",
-    ) {
-
-        page.locator("input[name='someString']").fill(someString)
-
-    }
-
-
-    fun assertEditDialogClosed() {
-
-        page.locator("mat-dialog-container").waitFor(
-            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
-        )
 
     }
 
@@ -160,16 +108,6 @@ class BravoBlotterPage(
             "}",
             value
         )
-
-    }
-
-
-    private fun selectAlpha(searchTerm: String) {
-
-        page.locator("input[formcontrolname='alpha']").fill(searchTerm)
-        Thread.sleep(500)
-        page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm)).waitFor()
-        page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm)).click()
 
     }
 

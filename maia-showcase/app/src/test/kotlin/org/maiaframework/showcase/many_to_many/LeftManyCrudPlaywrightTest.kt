@@ -6,10 +6,15 @@ import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.index.EsIndexOps
 import org.maiaframework.showcase.AbstractPlaywrightTest
+import org.maiaframework.showcase.auth.Authority
+import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.springframework.beans.factory.annotation.Autowired
 
 
 class LeftManyCrudPlaywrightTest : AbstractPlaywrightTest() {
+
+
+    private lateinit var testUser: UserFixture
 
 
     @Autowired
@@ -31,7 +36,10 @@ class LeftManyCrudPlaywrightTest : AbstractPlaywrightTest() {
     @BeforeAll
     fun setUp() {
 
-        initAdminUserFixture()
+        testUser = fixtures.aUser(
+            loginMailVerified = true,
+            { it.copy(authorities = listOf(Authority.WRITE)) }
+        )
         fixtures.resetDatabaseState()
         rightManyDao.deleteAll()
         rightManyDao.bulkInsert(listOf(rightAlpha, rightBeta))
@@ -57,30 +65,43 @@ class LeftManyCrudPlaywrightTest : AbstractPlaywrightTest() {
     @Test
     fun `crud journey`() {
 
-        `log in as admin user`()
+        `log in user`(testUser)
         `navigate to the`(leftManyBlotterPage)
 
-        leftManyBlotterPage.apply {
-            // Create with two right entity chips selected
-            clickAddButton()
+        // Create with two right entity chips selected
+        leftManyBlotterPage.clickAddButton()
+
+        leftManyCreatePage.apply {
+            assertOnPage()
             fillCreateForm()
             searchAndSelectRightEntity("right-alpha")
             searchAndSelectRightEntity("right-beta")
             clickSubmitButton()
-            assertCreateDialogClosed()
-            assertTableContainsValue("testleft")
+        }
 
-            // Edit: verify both chips are pre-populated, remove both, then save.
-            // Removing both chips clears all join records so the subsequent delete works
-            // without triggering the "check foreign key references" dialog.
-            clickEditButtonForFirstRow()
+        // Edit: verify both chips are pre-populated, remove both, then save.
+        // Removing both chips clears all join records so the subsequent delete works
+        // without triggering the "check foreign key references" dialog.
+        leftManyViewPage.apply {
+            assertOnPage()
+            clickEditButton()
+        }
+
+        leftManyEditPage.apply {
+            assertOnPage()
             assertChipVisible("right-alpha")
             assertChipVisible("right-beta")
             removeChip("right-alpha")
             removeChip("right-beta")
             fillEditForm()
             clickSubmitButton()
-            assertEditDialogClosed()
+        }
+
+        leftManyViewPage.assertOnPage()
+
+        `navigate to the`(leftManyBlotterPage)
+
+        leftManyBlotterPage.apply {
             assertTableContainsValue("testleft_edited")
 
             // Cancel path

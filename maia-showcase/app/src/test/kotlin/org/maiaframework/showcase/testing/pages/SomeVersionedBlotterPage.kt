@@ -20,47 +20,6 @@ class SomeVersionedBlotterPage(
 
     fun clickAddButton() {
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Add")).click()
-        page.locator("mat-dialog-container").waitFor()
-    }
-
-
-    fun fillCreateForm(
-        someString: String = "hello",
-        someInt: String = "1"
-    ) {
-        page.locator("input[name='someString']").fill(someString)
-        page.locator("input[name='someInt']").fill(someInt)
-        // Wait for async validators (debounced ~300ms)
-        Thread.sleep(1000)
-    }
-
-
-    fun fillEditForm(
-        someString: String = "hello_edited",
-        someInt: String = "1"
-    ) {
-        page.locator("input[name='someString']").fill(someString)
-        page.locator("input[name='someInt']").fill(someInt)
-        Thread.sleep(1000)
-    }
-
-
-    fun clickSubmitButton() {
-        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Submit")).click()
-    }
-
-
-    fun assertCreateDialogClosed() {
-        page.locator("mat-dialog-container").waitFor(
-            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
-        )
-    }
-
-
-    fun assertEditDialogClosed() {
-        page.locator("mat-dialog-container").waitFor(
-            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
-        )
     }
 
 
@@ -74,7 +33,6 @@ class SomeVersionedBlotterPage(
         editCell.waitFor()
         editCell.scrollIntoViewIfNeeded()
         editCell.click()
-        page.locator("mat-dialog-container").waitFor()
     }
 
 

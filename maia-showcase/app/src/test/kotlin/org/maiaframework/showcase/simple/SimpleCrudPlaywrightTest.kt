@@ -18,7 +18,7 @@ class SimpleCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         testUser = fixtures.aUser(
             loginMailVerified = true,
-            { it.copy(authorities = listOf(Authority.WRITE, Authority.SYS__ADMIN)) }
+            { it.copy(authorities = listOf(Authority.WRITE)) }
         )
 
         fixtures.resetDatabaseState()

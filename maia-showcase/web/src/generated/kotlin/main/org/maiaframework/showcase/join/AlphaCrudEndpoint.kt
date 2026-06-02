@@ -27,7 +27,7 @@ class AlphaCrudEndpoint(
 
     @PostMapping("/api/alpha/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: AlphaCreateRequestDto): EntityCreatedResponseDto {
 
         val entity = this.crudService.create(createDto)
@@ -47,7 +47,7 @@ class AlphaCrudEndpoint(
 
 
     @PutMapping("/api/alpha/update", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: AlphaUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -56,7 +56,7 @@ class AlphaCrudEndpoint(
 
 
     @PutMapping("/api/alpha/inline/some-int", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(@RequestBody @Valid editDto: AlphaUpdate_someIntRequestDto) {
 
         this.crudService.updateSomeInt(editDto)
@@ -65,7 +65,7 @@ class AlphaCrudEndpoint(
 
 
     @PutMapping("/api/alpha/inline/some-string", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(@RequestBody @Valid editDto: AlphaUpdate_someStringRequestDto) {
 
         this.crudService.updateSomeString(editDto)
@@ -74,7 +74,7 @@ class AlphaCrudEndpoint(
 
 
     @DeleteMapping("/api/alpha/{id}")
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

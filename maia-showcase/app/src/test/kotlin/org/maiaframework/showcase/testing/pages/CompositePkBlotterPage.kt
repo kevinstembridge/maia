@@ -13,54 +13,13 @@ class CompositePkBlotterPage(
 ) : AbstractPage(
     page,
     urlHelper,
-    "/composite-pk-blotter",
+    "/composite-primary-key-blotter",
     "composite_primary_key_blotter"
 ) {
 
 
     fun clickAddButton() {
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Add")).click()
-        page.locator("mat-dialog-container").waitFor()
-    }
-
-
-    fun fillCreateForm(
-        someString: String = "abc",
-        someInt: String = "1",
-        someModifiableString: String = "initial"
-    ) {
-        page.locator("input[name='someString']").fill(someString)
-        page.locator("input[name='someInt']").fill(someInt)
-        page.locator("input[name='someModifiableString']").fill(someModifiableString)
-        // Wait for async validators (debounced ~300ms)
-        Thread.sleep(1000)
-    }
-
-
-    fun fillEditForm(
-        someModifiableString: String = "edited"
-    ) {
-        page.locator("input[name='someModifiableString']").fill(someModifiableString)
-        Thread.sleep(1000)
-    }
-
-
-    fun clickSubmitButton() {
-        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Submit")).click()
-    }
-
-
-    fun assertCreateDialogClosed() {
-        page.locator("mat-dialog-container").waitFor(
-            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
-        )
-    }
-
-
-    fun assertEditDialogClosed() {
-        page.locator("mat-dialog-container").waitFor(
-            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
-        )
     }
 
 
@@ -74,7 +33,6 @@ class CompositePkBlotterPage(
         editCell.waitFor()
         editCell.scrollIntoViewIfNeeded()
         editCell.click()
-        page.locator("mat-dialog-container").waitFor()
     }
 
 

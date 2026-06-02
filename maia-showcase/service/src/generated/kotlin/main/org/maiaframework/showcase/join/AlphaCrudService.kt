@@ -24,7 +24,7 @@ class AlphaCrudService(
     private val logger = LoggerFactory.getLogger(AlphaCrudService::class.java)
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: AlphaCreateRequestDto): AlphaEntity {
 
         logger.info("BEGIN: create Alpha. dto=$createDto")
@@ -69,7 +69,7 @@ class AlphaCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: AlphaUpdateRequestDto) {
 
         val id = editDto.id
@@ -83,7 +83,7 @@ class AlphaCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: AlphaUpdate_someIntRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -99,7 +99,7 @@ class AlphaCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: AlphaUpdate_someStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -124,7 +124,7 @@ class AlphaCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
         if (this.bravoRepo.existsByAlpha(id)) {

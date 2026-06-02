@@ -23,7 +23,7 @@ class UserGroupMembershipCrudService(
     private val logger = LoggerFactory.getLogger(UserGroupMembershipCrudService::class.java)
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: UserGroupMembershipCreateRequestDto): UserGroupMembershipEntity {
 
         logger.info("BEGIN: create UserGroupMembership. dto=$createDto")
@@ -74,7 +74,7 @@ class UserGroupMembershipCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: UserGroupMembershipUpdateRequestDto) {
 
         val id = editDto.id
@@ -89,7 +89,7 @@ class UserGroupMembershipCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateUserGroup(editDto: UserGroupMembershipUpdate_userGroupRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -107,7 +107,7 @@ class UserGroupMembershipCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateUser(editDto: UserGroupMembershipUpdate_userRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername

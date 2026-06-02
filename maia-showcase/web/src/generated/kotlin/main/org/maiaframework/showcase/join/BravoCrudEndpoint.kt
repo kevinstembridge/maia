@@ -27,7 +27,7 @@ class BravoCrudEndpoint(
 
     @PostMapping("/api/bravo/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: BravoCreateRequestDto): EntityCreatedResponseDto {
 
         val entity = this.crudService.create(createDto)
@@ -47,7 +47,7 @@ class BravoCrudEndpoint(
 
 
     @PutMapping("/api/bravo/update", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: BravoUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -56,7 +56,7 @@ class BravoCrudEndpoint(
 
 
     @PutMapping("/api/bravo/inline/some-int", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(@RequestBody @Valid editDto: BravoUpdate_someIntRequestDto) {
 
         this.crudService.updateSomeInt(editDto)
@@ -65,7 +65,7 @@ class BravoCrudEndpoint(
 
 
     @PutMapping("/api/bravo/inline/some-string", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(@RequestBody @Valid editDto: BravoUpdate_someStringRequestDto) {
 
         this.crudService.updateSomeString(editDto)
@@ -74,7 +74,7 @@ class BravoCrudEndpoint(
 
 
     @DeleteMapping("/api/bravo/{id}")
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

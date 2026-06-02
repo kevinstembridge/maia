@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.ReferencedEntity
+import org.maiaframework.lang.text.StringFunctions
 
 
 data class ManyToManyEntityDef(
@@ -22,15 +23,15 @@ data class ManyToManyEntityDef(
 
     fun otherSideIdTableColumnName(entityDef: EntityDef): String {
 
-        return otherSideFrom(entityDef).fieldName + "_id"
+        return StringFunctions.toSnakeCase(otherSideFrom(entityDef).fieldName) + "_id"
 
     }
 
 
     fun idTableColumnName(entityDef: EntityDef): String {
 
-        if (entityDef == this.leftEntity.entityDef) return this.leftEntity.fieldName + "_id"
-        if (entityDef == this.rightEntity.entityDef) return this.rightEntity.fieldName + "_id"
+        if (entityDef == this.leftEntity.entityDef) return StringFunctions.toSnakeCase(this.leftEntity.fieldName) + "_id"
+        if (entityDef == this.rightEntity.entityDef) return StringFunctions.toSnakeCase(this.rightEntity.fieldName) + "_id"
 
         throw IllegalArgumentException("The provided entityDef (${entityDef.entityBaseName}) does not reference this ManyToManyEntityDef (${this.entityDef.entityBaseName}).")
 

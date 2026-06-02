@@ -67,30 +67,38 @@ class UserGroupMembershipCrudPlaywrightTest : AbstractPlaywrightTest() {
         `log in as admin user`()
         `navigate to the`(userGroupMembershipBlotterPage)
 
+        // Read: blotter shows the pre-seeded membership
         userGroupMembershipBlotterPage.apply {
-
-            // Read: blotter shows the pre-seeded membership
             assertTableContainsValue(memberUser.displayName)
             assertTableContainsValue(userGroup.name)
+        }
 
-            // Create (error path): user/userGroup absent from form → backend rejects
-            clickAddButton()
+        // Create (error path): user/userGroup absent from form → backend rejects
+        userGroupMembershipBlotterPage.clickAddButton()
+
+        userGroupMembershipCreatePage.apply {
+            assertOnPage()
             clickSubmitButton()
-            assertDialogShowsError()
+            assertShowsError()
             clickCancelButton()
-            assertCreateDialogClosed()
+        }
 
-            // Edit (success path): type in fixture DomainIds, backend accepts
-            clickEditButtonForFirstRow()
+        // Edit (success path): type in fixture DomainIds, backend accepts
+        userGroupMembershipBlotterPage.clickEditButtonForFirstRow()
+
+        userGroupMembershipEditPage.apply {
+            assertOnPage()
             fillEditForm(
                 userGroupId = userGroup.id.toString(),
                 userId = memberUser.userEntity.id.toString()
             )
             clickSubmitButton()
-            assertEditDialogClosed()
-            assertTableContainsValue(memberUser.displayName)
-
         }
+
+        userGroupMembershipViewPage.assertOnPage()
+
+        `navigate to the`(userGroupMembershipBlotterPage)
+        userGroupMembershipBlotterPage.assertTableContainsValue(memberUser.displayName)
 
     }
 

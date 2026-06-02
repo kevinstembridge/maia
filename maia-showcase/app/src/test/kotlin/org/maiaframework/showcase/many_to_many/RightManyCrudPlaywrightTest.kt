@@ -6,10 +6,15 @@ import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.index.EsIndexOps
 import org.maiaframework.showcase.AbstractPlaywrightTest
+import org.maiaframework.showcase.auth.Authority
+import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.springframework.beans.factory.annotation.Autowired
 
 
 class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
+
+
+    private lateinit var testUser: UserFixture
 
 
     @Autowired
@@ -34,7 +39,10 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
     @BeforeAll
     fun setUp() {
 
-        initAdminUserFixture()
+        testUser = fixtures.aUser(
+            loginMailVerified = true,
+            { it.copy(authorities = listOf(Authority.WRITE)) }
+        )
         fixtures.resetDatabaseState()
         rightManyDao.deleteAll()
         leftManyDao.bulkInsert(listOf(leftAlpha))
@@ -60,7 +68,7 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
     @Test
     fun `crud journey`() {
 
-        `log in as admin user`()
+        `log in user`(testUser)
         `navigate to the`(rightManyBlotterPage)
 
         // Create: navigate to create page, fill form with someInt + someString + left-entity chip

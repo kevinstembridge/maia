@@ -31,20 +31,35 @@ class CompositePkCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         `log in as admin user`()
         `navigate to the`(compositePkBlotterPage)
-        compositePkBlotterPage.apply {
 
-            // Create
-            clickAddButton()
+        // Create
+        compositePkBlotterPage.clickAddButton()
+
+        compositePkCreatePage.apply {
+            assertOnPage()
             fillCreateForm(someString = "abc", someInt = "1", someModifiableString = "initial")
             clickSubmitButton()
-            assertCreateDialogClosed()
-            assertVersionEquals(1L)
+        }
 
-            // Edit
-            clickEditButtonForFirstRow()
+        compositePkViewPage.assertOnPage()
+
+        `navigate to the`(compositePkBlotterPage)
+        compositePkBlotterPage.assertVersionEquals(1L)
+
+        // Edit
+        compositePkBlotterPage.clickEditButtonForFirstRow()
+
+        compositePkEditPage.apply {
+            assertOnPage()
             fillEditForm(someModifiableString = "edited")
             clickSubmitButton()
-            assertEditDialogClosed()
+        }
+
+        compositePkViewPage.assertOnPage()
+
+        `navigate to the`(compositePkBlotterPage)
+
+        compositePkBlotterPage.apply {
             assertTableContainsValue("edited")
             assertVersionEquals(2L)
 
@@ -60,7 +75,6 @@ class CompositePkCrudPlaywrightTest : AbstractPlaywrightTest() {
             clickYesButton()
             assertDeleteDialogClosed()
             assertTableDoesNotContainValue("edited")
-
         }
 
     }

@@ -27,7 +27,7 @@ class CharlieAgGridCrudEndpoint(
 
     @PostMapping("/api/charlie-ag-grid/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: CharlieAgGridCreateRequestDto): EntityCreatedResponseDto {
 
         val entity = this.crudService.create(createDto)
@@ -47,7 +47,7 @@ class CharlieAgGridCrudEndpoint(
 
 
     @PutMapping("/api/charlie-ag-grid/update", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: CharlieAgGridUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -56,7 +56,7 @@ class CharlieAgGridCrudEndpoint(
 
 
     @PutMapping("/api/charlie-ag-grid/inline/bravo", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateBravo(@RequestBody @Valid editDto: CharlieAgGridUpdate_bravoRequestDto) {
 
         this.crudService.updateBravo(editDto)
@@ -65,7 +65,7 @@ class CharlieAgGridCrudEndpoint(
 
 
     @DeleteMapping("/api/charlie-ag-grid/{id}")
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

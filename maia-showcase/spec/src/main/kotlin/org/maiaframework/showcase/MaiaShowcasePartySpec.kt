@@ -18,17 +18,6 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaultSchemaName = SchemaName("maia")) {
 
 
-    val opsAuthority = authority("SYS__OPS") {
-        description = "Grants access to system functions that are only available to internal employees."
-    }
-
-
-    val adminAuthority = authority("SYS__ADMIN") {
-        description = "Grants access to administer the system. This is only for internal employees. " +
-                "These functions would not normally be for day-to-day operations."
-    }
-
-
     val readAuthority = authority("READ") {
         description = "Grants read access."
     }
@@ -40,12 +29,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
 
     val authoritiesDef = authorities("org.maiaframework.showcase.auth", "Authority") {
-        authority(adminAuthority)
-        authority("SYS__DEVOPS")
-        authority("SYS__DEVOPS_READONLY")
-        authority(opsAuthority)
-        authority("SYS__SYSTEM_USER_GROUPS_EDIT")
-        authority("SYS__SYSTEM_USER_GROUPS_VIEW")
         authority(readAuthority)
         authority(writeAuthority)
     }
@@ -233,7 +216,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
             lengthConstraint(max = 100)
         }
         crud {
-            authority(adminAuthority)
+            authority(writeAuthority)
             create {
                 api {}
             }
@@ -340,7 +323,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         moduleName("ops")
         withEffectiveTimestamps()
         crud {
-            authority(adminAuthority)
+            authority(writeAuthority)
             create {
                 api {}
             }

@@ -31,20 +31,35 @@ class SomeVersionedCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         `log in as admin user`()
         `navigate to the`(someVersionedBlotterPage)
-        someVersionedBlotterPage.apply {
 
-            // Create
-            clickAddButton()
+        // Create
+        someVersionedBlotterPage.clickAddButton()
+
+        someVersionedCreatePage.apply {
+            assertOnPage()
             fillCreateForm(someString = "hello", someInt = "1")
             clickSubmitButton()
-            assertCreateDialogClosed()
-            assertVersionEquals(1L)
+        }
 
-            // Edit
-            clickEditButtonForFirstRow()
+        someVersionedViewPage.assertOnPage()
+
+        `navigate to the`(someVersionedBlotterPage)
+        someVersionedBlotterPage.assertVersionEquals(1L)
+
+        // Edit
+        someVersionedBlotterPage.clickEditButtonForFirstRow()
+
+        someVersionedEditPage.apply {
+            assertOnPage()
             fillEditForm(someString = "hello_edited", someInt = "1")
             clickSubmitButton()
-            assertEditDialogClosed()
+        }
+
+        someVersionedViewPage.assertOnPage()
+
+        `navigate to the`(someVersionedBlotterPage)
+
+        someVersionedBlotterPage.apply {
             assertTableContainsValue("hello_edited")
             assertVersionEquals(2L)
 
@@ -60,7 +75,6 @@ class SomeVersionedCrudPlaywrightTest : AbstractPlaywrightTest() {
             clickYesButton()
             assertDeleteDialogClosed()
             assertTableDoesNotContainValue("hello_edited")
-
         }
 
     }

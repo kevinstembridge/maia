@@ -6,16 +6,6 @@ import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Aut
 
 export const AuthoritySelectOptions = [
     {
-        name: Authority.SYS__ADMIN,
-        displayName: 'SYS__ADMIN',
-        description: 'Grants access to administer the system. This is only for internal employees. These functions would not normally be for day-to-day operations.'
-    },
-    {
-        name: Authority.SYS__OPS,
-        displayName: 'SYS__OPS',
-        description: 'Grants access to system functions that are only available to internal employees.'
-    },
-    {
         name: Authority.READ,
         displayName: 'READ',
         description: 'Grants read access.'
@@ -24,22 +14,6 @@ export const AuthoritySelectOptions = [
         name: Authority.WRITE,
         displayName: 'WRITE',
         description: 'Grants write access.'
-    },
-    {
-        name: Authority.SYS__DEVOPS,
-        displayName: 'SYS__DEVOPS',
-    },
-    {
-        name: Authority.SYS__DEVOPS_READONLY,
-        displayName: 'SYS__DEVOPS_READONLY',
-    },
-    {
-        name: Authority.SYS__SYSTEM_USER_GROUPS_EDIT,
-        displayName: 'SYS__SYSTEM_USER_GROUPS_EDIT',
-    },
-    {
-        name: Authority.SYS__SYSTEM_USER_GROUPS_VIEW,
-        displayName: 'SYS__SYSTEM_USER_GROUPS_VIEW',
     },
 ];
 

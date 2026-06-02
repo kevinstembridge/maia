@@ -20,7 +20,13 @@ import org.maiaframework.showcase.testing.pages.AllFieldTypesCreatePage
 import org.maiaframework.showcase.testing.pages.AllFieldTypesEditPage
 import org.maiaframework.showcase.testing.pages.AllFieldTypesViewPage
 import org.maiaframework.showcase.testing.pages.BravoBlotterPage
+import org.maiaframework.showcase.testing.pages.BravoCreatePage
+import org.maiaframework.showcase.testing.pages.BravoEditPage
+import org.maiaframework.showcase.testing.pages.BravoViewPage
 import org.maiaframework.showcase.testing.pages.LeftManyBlotterPage
+import org.maiaframework.showcase.testing.pages.LeftManyCreatePage
+import org.maiaframework.showcase.testing.pages.LeftManyEditPage
+import org.maiaframework.showcase.testing.pages.LeftManyViewPage
 import org.maiaframework.showcase.testing.pages.RightManyBlotterPage
 import org.maiaframework.showcase.testing.pages.RightManyCreatePage
 import org.maiaframework.showcase.testing.pages.RightManyEditPage
@@ -30,9 +36,21 @@ import org.maiaframework.showcase.testing.pages.SimpleCreatePage
 import org.maiaframework.showcase.testing.pages.SimpleEditPage
 import org.maiaframework.showcase.testing.pages.SimpleViewPage
 import org.maiaframework.showcase.testing.pages.UserGroupMembershipBlotterPage
+import org.maiaframework.showcase.testing.pages.UserGroupMembershipCreatePage
+import org.maiaframework.showcase.testing.pages.UserGroupMembershipEditPage
+import org.maiaframework.showcase.testing.pages.UserGroupMembershipViewPage
 import org.maiaframework.showcase.testing.pages.CompositePkBlotterPage
+import org.maiaframework.showcase.testing.pages.CompositePkCreatePage
+import org.maiaframework.showcase.testing.pages.CompositePkEditPage
+import org.maiaframework.showcase.testing.pages.CompositePkViewPage
 import org.maiaframework.showcase.testing.pages.UsersBlotterPage
+import org.maiaframework.showcase.testing.pages.UsersCreatePage
+import org.maiaframework.showcase.testing.pages.UsersEditPage
+import org.maiaframework.showcase.testing.pages.UsersViewPage
 import org.maiaframework.showcase.testing.pages.SomeVersionedBlotterPage
+import org.maiaframework.showcase.testing.pages.SomeVersionedCreatePage
+import org.maiaframework.showcase.testing.pages.SomeVersionedEditPage
+import org.maiaframework.showcase.testing.pages.SomeVersionedViewPage
 import org.maiaframework.showcase.testing.pages.HomePage
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -80,16 +98,61 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var someVersionedBlotterPage: SomeVersionedBlotterPage
 
 
+    protected lateinit var someVersionedCreatePage: SomeVersionedCreatePage
+
+
+    protected lateinit var someVersionedEditPage: SomeVersionedEditPage
+
+
+    protected lateinit var someVersionedViewPage: SomeVersionedViewPage
+
+
     protected lateinit var compositePkBlotterPage: CompositePkBlotterPage
+
+
+    protected lateinit var compositePkCreatePage: CompositePkCreatePage
+
+
+    protected lateinit var compositePkEditPage: CompositePkEditPage
+
+
+    protected lateinit var compositePkViewPage: CompositePkViewPage
 
 
     protected lateinit var usersBlotterPage: UsersBlotterPage
 
 
+    protected lateinit var usersCreatePage: UsersCreatePage
+
+
+    protected lateinit var usersEditPage: UsersEditPage
+
+
+    protected lateinit var usersViewPage: UsersViewPage
+
+
     protected lateinit var bravoBlotterPage: BravoBlotterPage
 
 
+    protected lateinit var bravoCreatePage: BravoCreatePage
+
+
+    protected lateinit var bravoEditPage: BravoEditPage
+
+
+    protected lateinit var bravoViewPage: BravoViewPage
+
+
     protected lateinit var leftManyBlotterPage: LeftManyBlotterPage
+
+
+    protected lateinit var leftManyCreatePage: LeftManyCreatePage
+
+
+    protected lateinit var leftManyEditPage: LeftManyEditPage
+
+
+    protected lateinit var leftManyViewPage: LeftManyViewPage
 
 
     protected lateinit var rightManyBlotterPage: RightManyBlotterPage
@@ -117,6 +180,15 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
 
 
     protected lateinit var userGroupMembershipBlotterPage: UserGroupMembershipBlotterPage
+
+
+    protected lateinit var userGroupMembershipCreatePage: UserGroupMembershipCreatePage
+
+
+    protected lateinit var userGroupMembershipEditPage: UserGroupMembershipEditPage
+
+
+    protected lateinit var userGroupMembershipViewPage: UserGroupMembershipViewPage
 
 
     protected val retryTemplate = RetryTemplate(RetryPolicy.builder()
@@ -148,9 +220,18 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         allFieldTypesEditPage = AllFieldTypesEditPage(page, urlHelper)
         allFieldTypesViewPage = AllFieldTypesViewPage(page, urlHelper)
         bravoBlotterPage = BravoBlotterPage(page, urlHelper)
+        bravoCreatePage = BravoCreatePage(page, urlHelper)
+        bravoEditPage = BravoEditPage(page, urlHelper)
+        bravoViewPage = BravoViewPage(page, urlHelper)
         compositePkBlotterPage = CompositePkBlotterPage(page, urlHelper)
+        compositePkCreatePage = CompositePkCreatePage(page, urlHelper)
+        compositePkEditPage = CompositePkEditPage(page, urlHelper)
+        compositePkViewPage = CompositePkViewPage(page, urlHelper)
         homePage = HomePage(page, urlHelper)
         leftManyBlotterPage = LeftManyBlotterPage(page, urlHelper)
+        leftManyCreatePage = LeftManyCreatePage(page, urlHelper)
+        leftManyEditPage = LeftManyEditPage(page, urlHelper)
+        leftManyViewPage = LeftManyViewPage(page, urlHelper)
         rightManyBlotterPage = RightManyBlotterPage(page, urlHelper)
         rightManyCreatePage = RightManyCreatePage(page, urlHelper)
         rightManyEditPage = RightManyEditPage(page, urlHelper)
@@ -161,8 +242,17 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         simpleEditPage = SimpleEditPage(page, urlHelper)
         simpleViewPage = SimpleViewPage(page, urlHelper)
         someVersionedBlotterPage = SomeVersionedBlotterPage(page, urlHelper)
+        someVersionedCreatePage = SomeVersionedCreatePage(page, urlHelper)
+        someVersionedEditPage = SomeVersionedEditPage(page, urlHelper)
+        someVersionedViewPage = SomeVersionedViewPage(page, urlHelper)
         userGroupMembershipBlotterPage = UserGroupMembershipBlotterPage(page, urlHelper)
+        userGroupMembershipCreatePage = UserGroupMembershipCreatePage(page, urlHelper)
+        userGroupMembershipEditPage = UserGroupMembershipEditPage(page, urlHelper)
+        userGroupMembershipViewPage = UserGroupMembershipViewPage(page, urlHelper)
         usersBlotterPage = UsersBlotterPage(page, urlHelper)
+        usersCreatePage = UsersCreatePage(page, urlHelper)
+        usersEditPage = UsersEditPage(page, urlHelper)
+        usersViewPage = UsersViewPage(page, urlHelper)
 
     }
 

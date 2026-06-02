@@ -16,8 +16,8 @@ export const CurrentUserAuthStore = signalStore(
             return currentUserStore.currentUser()?.grantedAuthorities.includes(Authority.READ) ?? false;
         }),
 
-        hasSysOpsAuthority: computed<boolean>(() => {
-            return currentUserStore.currentUser()?.grantedAuthorities.includes(Authority.SYS__OPS) ?? false;
+        hasWriteAuthority: computed<boolean>(() => {
+            return currentUserStore.currentUser()?.grantedAuthorities.includes(Authority.WRITE) ?? false;
         })
 
     })),

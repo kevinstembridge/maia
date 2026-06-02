@@ -26,7 +26,7 @@ class UserGroupMembershipCrudEndpoint(
 
     @PostMapping("/api/ops/user-group-membership/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: UserGroupMembershipCreateRequestDto): EntityCreatedResponseDto {
 
         val entity = this.crudService.create(createDto)
@@ -46,7 +46,7 @@ class UserGroupMembershipCrudEndpoint(
 
 
     @PutMapping("/api/ops/user-group-membership/update", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: UserGroupMembershipUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -55,7 +55,7 @@ class UserGroupMembershipCrudEndpoint(
 
 
     @PutMapping("/api/ops/user-group-membership/inline/user-group", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateUserGroup(@RequestBody @Valid editDto: UserGroupMembershipUpdate_userGroupRequestDto) {
 
         this.crudService.updateUserGroup(editDto)
@@ -64,7 +64,7 @@ class UserGroupMembershipCrudEndpoint(
 
 
     @PutMapping("/api/ops/user-group-membership/inline/user", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateUser(@RequestBody @Valid editDto: UserGroupMembershipUpdate_userRequestDto) {
 
         this.crudService.updateUser(editDto)

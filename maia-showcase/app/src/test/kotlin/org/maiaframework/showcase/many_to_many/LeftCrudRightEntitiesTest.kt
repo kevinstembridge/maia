@@ -7,7 +7,9 @@ import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
+import org.springframework.test.web.servlet.assertj.MvcTestResultAssert
 
 class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
@@ -29,6 +31,33 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     private val rightEntity3 = RightManyEntityTestBuilder(someString = "right3").build()
 
 
+    private fun post(path: String, body: String): MvcTestResultAssert {
+        val csrfCookie = `fetch CSRF cookie`()
+        return assertThat(
+            mockMvc.post().uri(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)
+                .header("X-XSRF-TOKEN", csrfCookie.value)
+                .with(user("nigel").authorities(SimpleGrantedAuthority("WRITE")))
+                .cookie(csrfCookie)
+                .exchange()
+        )
+    }
+
+    private fun put(path: String, body: String): MvcTestResultAssert {
+        val csrfCookie = `fetch CSRF cookie`()
+        return assertThat(
+            mockMvc.put().uri(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)
+                .header("X-XSRF-TOKEN", csrfCookie.value)
+                .with(user("nigel").authorities(SimpleGrantedAuthority("WRITE")))
+                .cookie(csrfCookie)
+                .exchange()
+        )
+    }
+
+
     @BeforeEach
     fun setUp() {
 
@@ -43,7 +72,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     @Test
     fun `create with rightEntityIds creates join records`() {
 
-        assertThat_POST(
+        post(
             "/api/left-many/create",
             """
             {
@@ -66,7 +95,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     @Test
     fun `create with no rightEntityIds creates no join records`() {
 
-        assertThat_POST(
+        post(
             "/api/left-many/create",
             """{"someInt": 1, "someString": "test"}"""
         ).hasStatus(HttpStatus.CREATED)
@@ -84,7 +113,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     fun `update replaces rightEntityIds`() {
 
         // Create with right1 and right2
-        assertThat_POST(
+        post(
             "/api/left-many/create",
             """{"someInt": 1, "someString": "test", "rightEntityIds": ["${rightEntity1.id}", "${rightEntity2.id}"]}"""
         ).hasStatus(HttpStatus.CREATED)
@@ -92,15 +121,9 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         val leftId = leftDao.findAllAsSequence().first().id
 
         // Update to right2 and right3 only
-        val csrfCookie = `fetch CSRF cookie`()
-        assertThat(
-            mockMvc.put().uri("/api/left-many/update")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""{"id": "$leftId", "someInt": 2, "someString": "test2", "rightEntityIds": ["${rightEntity2.id}", "${rightEntity3.id}"]}""")
-                .header("X-XSRF-TOKEN", csrfCookie.value)
-                .with(user("nigel").roles("ADMIN"))
-                .cookie(csrfCookie)
-                .exchange()
+        put(
+            "/api/left-many/update",
+            """{"id": "$leftId", "someInt": 2, "someString": "test2", "rightEntityIds": ["${rightEntity2.id}", "${rightEntity3.id}"]}"""
         ).hasStatus(HttpStatus.OK)
 
         val joins = manyToManyJoinDao.findByLeft(leftId)
@@ -114,22 +137,16 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     fun `update with empty rightEntityIds removes all join records`() {
 
         // Create with right1
-        assertThat_POST(
+        post(
             "/api/left-many/create",
             """{"someInt": 1, "someString": "test", "rightEntityIds": ["${rightEntity1.id}"]}"""
         ).hasStatus(HttpStatus.CREATED)
 
         val leftId = leftDao.findAllAsSequence().first().id
 
-        val csrfCookie = `fetch CSRF cookie`()
-        assertThat(
-            mockMvc.put().uri("/api/left-many/update")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntityIds": []}""")
-                .header("X-XSRF-TOKEN", csrfCookie.value)
-                .with(user("nigel").roles("ADMIN"))
-                .cookie(csrfCookie)
-                .exchange()
+        put(
+            "/api/left-many/update",
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntityIds": []}"""
         ).hasStatus(HttpStatus.OK)
 
         val joins = manyToManyJoinDao.findByLeft(leftId)

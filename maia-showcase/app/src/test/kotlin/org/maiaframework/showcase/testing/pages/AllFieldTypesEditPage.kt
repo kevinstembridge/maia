@@ -24,6 +24,12 @@ class AllFieldTypesEditPage(
         somePeriodModifiable: String = "P2Y",
         someStringModifiable: String = "testmodifiable_edited",
     ) {
+        // Wait for fetchForEdit() to patch the form before filling — patchValue() runs asynchronously
+        // after ngOnInit() completes the HTTP call. Without this wait, patchValue() can overwrite
+        // our fills (and reset id to '' which causes a silent backend error on submit).
+        page.waitForFunction(
+            "() => (document.querySelector('input[name=\"someStringModifiable\"]')?.value ?? '') !== ''"
+        )
         page.locator("input[name='someIntModifiable']").fill(someIntModifiable)
         page.locator("input[name='someLocalDateModifiable']").fill(someLocalDateModifiable)
         page.locator("input[name='someInstantModifiable']").fill(someInstantModifiableDate)

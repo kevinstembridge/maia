@@ -44,7 +44,7 @@ export class AlphaEntityDetailViewPage {
 
 
     protected get canEdit(): boolean {
-        return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
+        return this.authService.currentUserHasThisAuthority(Authority.WRITE);
     }
 
 

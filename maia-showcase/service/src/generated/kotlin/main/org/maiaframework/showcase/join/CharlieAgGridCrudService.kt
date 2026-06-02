@@ -23,7 +23,7 @@ class CharlieAgGridCrudService(
     private val logger = LoggerFactory.getLogger(CharlieAgGridCrudService::class.java)
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: CharlieAgGridCreateRequestDto): CharlieAgGridEntity {
 
         logger.info("BEGIN: create CharlieAgGrid. dto=$createDto")
@@ -70,7 +70,7 @@ class CharlieAgGridCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: CharlieAgGridUpdateRequestDto) {
 
         val id = editDto.id
@@ -83,7 +83,7 @@ class CharlieAgGridCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateBravo(editDto: CharlieAgGridUpdate_bravoRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -108,7 +108,7 @@ class CharlieAgGridCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

@@ -17,6 +17,7 @@ class SimpleEditPage(
 
 
     fun fillEditForm(someString: String = "edited-string") {
+        page.waitForFunction("() => (document.querySelector('input[name=\"someString\"]')?.value ?? '') !== ''")
         page.locator("input[name='someString']").fill(someString)
         // Wait for async validators (debounced ~300ms)
         Thread.sleep(1000)

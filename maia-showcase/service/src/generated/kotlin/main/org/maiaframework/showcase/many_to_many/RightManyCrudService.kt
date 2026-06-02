@@ -24,7 +24,7 @@ class RightManyCrudService(
     private val logger = LoggerFactory.getLogger(RightManyCrudService::class.java)
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: RightManyCreateRequestDto): RightManyEntity {
 
         logger.info("BEGIN: create RightMany. dto=$createDto")
@@ -33,14 +33,14 @@ class RightManyCrudService(
 
         create(entity)
 
-        //createDto.leftEntityIds.forEach { left ->
-        //    this.leftToRightManyToManyJoinRepo.insert(
-        //        LeftToRightManyToManyJoinEntity.newInstance(
-        //            right = entity.id,
-        //            left = left
-        //        )
-        //    )
-        //}
+        createDto.leftEntityIds.forEach { left ->
+            this.leftToRightManyToManyJoinRepo.insert(
+                LeftToRightManyToManyJoinEntity.newInstance(
+                    right = entity.id,
+                    left = left
+                )
+            )
+        }
 
         return entity
 
@@ -80,7 +80,7 @@ class RightManyCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: RightManyUpdateRequestDto) {
 
         val id = editDto.id
@@ -91,19 +91,19 @@ class RightManyCrudService(
 
         setFields(updater)
 
-        //this.leftToRightManyToManyJoinRepo.findByRight(id).forEach { join ->
-        //    this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(join.id)
-        //}
+        this.leftToRightManyToManyJoinRepo.findByRight(id).forEach { join ->
+            this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(join.id)
+        }
 
-        //val newLeftJoins = editDto.leftEntityIds.map { left ->
-        //    LeftToRightManyToManyJoinEntity.newInstance(right = id, left = left)
-        //}
-        //this.leftToRightManyToManyJoinRepo.bulkInsert(newLeftJoins)
+        val newLeftJoins = editDto.leftEntityIds.map { left ->
+            LeftToRightManyToManyJoinEntity.newInstance(right = id, left = left)
+        }
+        this.leftToRightManyToManyJoinRepo.bulkInsert(newLeftJoins)
 
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: RightManyUpdate_someIntRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -119,7 +119,7 @@ class RightManyCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: RightManyUpdate_someStringRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -144,7 +144,7 @@ class RightManyCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
         if (this.leftToRightManyToManyJoinRepo.existsByRight(id)) {

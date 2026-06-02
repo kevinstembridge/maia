@@ -30,7 +30,7 @@ class UserCrudService(
     private val logger = LoggerFactory.getLogger(UserCrudService::class.java)
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: UserCreateRequestDto): UserEntity {
 
         val currentUser = CurrentUserHolder.currentUser
@@ -107,7 +107,7 @@ class UserCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: UserUpdateRequestDto) {
 
         val id = editDto.id
@@ -134,7 +134,7 @@ class UserCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateAuthorities(editDto: UserUpdate_authoritiesRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -154,7 +154,7 @@ class UserCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateFirstName(editDto: UserUpdate_firstNameRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -174,7 +174,7 @@ class UserCrudService(
     }
 
 
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateLastName(editDto: UserUpdate_lastNameRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername

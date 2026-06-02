@@ -144,7 +144,7 @@ export class AlphaBlotter {
 
     get addButtonVisible(): boolean {
 
-        return this.authService.currentUserHasThisAuthority(Authority.SYS__ADMIN);
+        return this.authService.currentUserHasThisAuthority(Authority.WRITE);
 
     }
 

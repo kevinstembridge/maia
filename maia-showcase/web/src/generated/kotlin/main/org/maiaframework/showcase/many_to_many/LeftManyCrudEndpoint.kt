@@ -27,7 +27,7 @@ class LeftManyCrudEndpoint(
 
     @PostMapping("/api/left-many/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun create(@RequestBody @Valid createDto: LeftManyCreateRequestDto): EntityCreatedResponseDto {
 
         val entity = this.crudService.create(createDto)
@@ -47,7 +47,7 @@ class LeftManyCrudEndpoint(
 
 
     @PutMapping("/api/left-many/update", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun update(@RequestBody @Valid editDto: LeftManyUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -56,7 +56,7 @@ class LeftManyCrudEndpoint(
 
 
     @PutMapping("/api/left-many/inline/some-int", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(@RequestBody @Valid editDto: LeftManyUpdate_someIntRequestDto) {
 
         this.crudService.updateSomeInt(editDto)
@@ -65,7 +65,7 @@ class LeftManyCrudEndpoint(
 
 
     @PutMapping("/api/left-many/inline/some-string", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(@RequestBody @Valid editDto: LeftManyUpdate_someStringRequestDto) {
 
         this.crudService.updateSomeString(editDto)
@@ -74,7 +74,7 @@ class LeftManyCrudEndpoint(
 
 
     @DeleteMapping("/api/left-many/{id}")
-    @PreAuthorize("hasAuthority('SYS__ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
 
         this.crudService.delete(id)

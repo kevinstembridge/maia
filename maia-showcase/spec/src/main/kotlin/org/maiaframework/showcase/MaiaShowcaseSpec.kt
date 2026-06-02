@@ -479,17 +479,17 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             unique(withExistsEndpoint = true)
         }
         crud {
-            authority(partySpec.adminAuthority)
+            authority(partySpec.writeAuthority)
             create {
-                authority(partySpec.adminAuthority)
+                authority(partySpec.writeAuthority)
                 api {}
             }
             update {
-                authority(partySpec.adminAuthority)
+                authority(partySpec.writeAuthority)
                 api {}
             }
             delete {
-                authority(partySpec.adminAuthority)
+                authority(partySpec.writeAuthority)
                 api {}
             }
         }
@@ -512,12 +512,12 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val simpleEntityEditPageDef = entityEditPage(simpleEntityDef) {
-        authority = partySpec.adminAuthority
+        authority = partySpec.writeAuthority
     }
 
 
     val simpleEntityCreatePageDef = entityCreatePage(simpleEntityDef) {
-        authority = partySpec.adminAuthority
+        authority = partySpec.writeAuthority
     }
 
 
@@ -894,7 +894,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
         }
         crud {
-            authority(partySpec.adminAuthority)
+            authority(partySpec.writeAuthority)
             create {
                 api {}
             }
@@ -991,7 +991,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
         }
         crud {
-            authority(partySpec.adminAuthority)
+            authority(partySpec.writeAuthority)
             create {
                 api {}
             }
@@ -1144,7 +1144,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             lengthConstraint(max = 100)
         }
         crud {
-            authority(partySpec.adminAuthority)
+            authority(partySpec.writeAuthority)
             create {
                 api {}
             }
@@ -1217,7 +1217,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
         }
         crud {
-            authority(partySpec.adminAuthority)
+            authority(partySpec.writeAuthority)
             create {
                 api {}
             }
@@ -1269,7 +1269,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             lengthConstraint(max = 100)
         }
         crud {
-            authority(partySpec.adminAuthority)
+            authority(partySpec.writeAuthority)
             create {
                 api {  }
             }

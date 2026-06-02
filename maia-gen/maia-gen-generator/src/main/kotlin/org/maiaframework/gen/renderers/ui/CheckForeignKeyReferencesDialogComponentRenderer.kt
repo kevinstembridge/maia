@@ -72,14 +72,18 @@ class CheckForeignKeyReferencesDialogComponentRenderer(private val entityDef: En
                       .pipe(
                         tap(() => this.checking = true),
                         catchError(err => {
-                          this.messageDetails.setErrorDetailsFromHttpError(err);
+                          const errDetails = new MessageDetails();
+                          errDetails.setErrorDetailsFromHttpError(err);
+                          this.messageDetails.set(errDetails);
                           return of(null);
                         }),
                         tap(() => this.checking = false)
                       ).subscribe(
                         res => {
                           if (res?.exists) {
-                            this.messageDetails.setErrorMessage('Foreign key references to entity ' + res.entityKey + ' exist.');
+                            const errorDetails = new MessageDetails();
+                            errorDetails.setErrorMessage('Foreign key references to entity ' + res.entityKey + ' exist.');
+                            this.messageDetails.set(errorDetails);
                           } else {
                             this.dialogRef.close(true);
                           }
