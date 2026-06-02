@@ -100,16 +100,16 @@ class CrudEndpointRenderer(
 
         if (entityDef.hasCompositePrimaryKey) {
 
-            addImportFor(Fqcns.SPRING_POST_MAPPING)
-            addImportFor(Fqcns.SPRING_REQUEST_BODY)
+            addImportFor(Fqcns.SPRING_GET_MAPPING)
+            addImportFor(Fqcns.SPRING_PATH_VARIABLE)
 
             append("""
                 |
                 |
-                |    @PostMapping("${fetchForEditDtoDef.endpointUrl}", produces = [MediaType.APPLICATION_JSON_VALUE])
-                |    fun fetchForEdit(@RequestBody pk: ${entityDef.entityPkClassDef.uqcn}): ${entityDef.fetchForEditDtoFqcn.uqcn} {
+                |    @GetMapping("${fetchForEditDtoDef.endpointUrl}/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+                |    fun fetchForEdit(@PathVariable id: String): ${entityDef.fetchForEditDtoFqcn.uqcn} {
                 |
-                |        return this.crudService.fetchForEdit(pk)
+                |        return this.crudService.fetchForEdit(${entityDef.entityPkClassDef.uqcn}.from(id))
                 |
                 |    }
                 |""".trimMargin())
