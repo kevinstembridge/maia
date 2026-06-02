@@ -21,7 +21,7 @@ class CheckForeignKeyReferencesDialogHtmlRenderer(private val entityDef: EntityD
             |    @if (checking) {
             |        <mat-spinner></mat-spinner>
             |    }
-            |    <app-message-panel [messageDetails]="messageDetails"></app-message-panel>
+            |    <app-message-panel [messageDetails]="messageDetails()"></app-message-panel>
             |</div>
             |<div mat-dialog-actions>
             |    <button mat-flat-button (click)="onCancel()">Cancel</button>
