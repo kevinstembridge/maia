@@ -8,6 +8,7 @@ import {someVersionedRoutes} from '@app/gen-components/org/maiaframework/showcas
 import {userRoutes} from '@app/gen-components/org/maiaframework/showcase/user/user-routes';
 import {alphaRoutes} from '@app/gen-components/org/maiaframework/showcase/join/alpha-routes';
 import {rightManyRoutes} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-routes';
+import {historySampleRoutes} from '@app/gen-components/org/maiaframework/showcase/history/history-sample-routes';
 
 export const routes: Routes = [
     {
@@ -21,6 +22,7 @@ export const routes: Routes = [
     ...alphaRoutes,
     ...bravoRoutes,
     ...compositePrimaryKeyRoutes,
+    ...historySampleRoutes,
     ...leftManyRoutes,
     ...rightManyRoutes,
     ...simpleRoutes,

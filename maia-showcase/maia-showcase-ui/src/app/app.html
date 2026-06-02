@@ -27,13 +27,19 @@
                 <span>Composite PK</span>
             </button>
         }
-        @if (hasSysOpsAuthority()) {
+        @if (hasWriteAuthority()) {
             <button mat-menu-item routerLink="/elastic-indices">
                 <mat-icon>storage</mat-icon>
                 <span>Elastic Indices</span>
             </button>
         }
-        @if (hasSysOpsAuthority()) {
+        @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/history-sample-blotter">
+                <mat-icon>storage</mat-icon>
+                <span>History Sample</span>
+            </button>
+        }
+        @if (hasWriteAuthority()) {
             <button mat-menu-item routerLink="/jobs-dashboard">
                 <mat-icon>storage</mat-icon>
                 <span>Jobs Dashboard</span>
