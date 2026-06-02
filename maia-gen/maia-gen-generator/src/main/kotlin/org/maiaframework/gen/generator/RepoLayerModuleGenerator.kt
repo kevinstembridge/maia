@@ -1,6 +1,7 @@
 package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.EntityDetailDtoRepoRenderer
+import org.maiaframework.gen.renderers.EntityHistoryBlotterRowDtoRepoRenderer
 import org.maiaframework.gen.renderers.EntityRepoRenderer
 import org.maiaframework.gen.renderers.ResponseDtoRepoRenderer
 import org.maiaframework.gen.renderers.SearchableDtoRepoRenderer
@@ -40,6 +41,7 @@ class RepoLayerModuleGenerator(
         `render ResponseDto repos`()
         `render SearchableDto repos`()
         `render EntityDetailDto repos`()
+        `render EntityHistoryBlotter repos`()
 
     }
 
@@ -82,6 +84,15 @@ class RepoLayerModuleGenerator(
 
         modelDef.entityDetailViewDefs.forEach {
             EntityDetailDtoRepoRenderer(it).renderToDir(kotlinOutputDir)
+        }
+
+    }
+
+
+    private fun `render EntityHistoryBlotter repos`() {
+
+        modelDef.entityHistoryBlotterDefs.forEach { def ->
+            EntityHistoryBlotterRowDtoRepoRenderer(def).renderToDir(kotlinOutputDir)
         }
 
     }

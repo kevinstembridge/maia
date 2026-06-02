@@ -6,6 +6,10 @@
         <mat-icon>list</mat-icon>
         Go to Blotter
     </button>
+    <button matButton aria-label="History" (click)="onHistoryClicked()">
+        <mat-icon>history</mat-icon>
+        History
+    </button>
     @if (canEdit && entityId()) {
         <button matButton aria-label="Edit" (click)="onEditClicked()">
             <mat-icon>edit</mat-icon>

@@ -1,0 +1,5 @@
+<app-page-layout pageTitle="Party History" dataPageId="party_history_blotter">
+    @if (entityId(); as id) {
+        <app-party-history-blotter [entityId]="id" />
+    }
+</app-page-layout>

@@ -504,6 +504,11 @@ class EntityDef(
     }
 
 
+    val historyBlotterDef: EntityHistoryBlotterDef? =
+        if (withVersionHistory.value && !isHistoryEntity) EntityHistoryBlotterDef(this)
+        else null
+
+
     private val allIndexDefs = providedIndexDefs //initIndexDefs()
 
 

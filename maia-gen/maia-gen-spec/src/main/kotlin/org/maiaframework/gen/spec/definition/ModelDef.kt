@@ -49,6 +49,10 @@ class ModelDef(
     val fetchForEditDtoDefs = entityDefs.filter { it.isConcrete }.mapNotNull { it.fetchForEditDtoDef }
 
 
+    val entityHistoryBlotterDefs: List<EntityHistoryBlotterDef> =
+        entityDefs.mapNotNull { it.historyBlotterDef }
+
+
     val entitiesReferencedByForeignKey = entityDefs
         .filter { it.deletable.value }
         .flatMap { it.allForeignKeyEntityFieldDefs }

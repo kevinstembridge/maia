@@ -3,6 +3,13 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 import org.maiaframework.gen.renderers.ui.AgGridBlotterHtmlRenderer
 import org.maiaframework.gen.renderers.ui.AgGridDatasourceRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterAgGridDatasourceRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterPageComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterPageHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterRowDtoTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterServiceRenderer
 import org.maiaframework.gen.renderers.ui.AngularFormServiceRenderer
 import org.maiaframework.gen.renderers.ui.AsyncValidatorRenderer
 import org.maiaframework.gen.renderers.ui.AuthApiServiceRenderer
@@ -129,6 +136,7 @@ class AngularUiModuleGenerator(
     override fun onGenerateSource() {
 
         processCrudApiDefs()
+        renderEntityHistoryBlotters()
         renderAgGridDataSources()
         renderAngularForms()
         renderAsyncValidatorsForIndexes()
@@ -204,6 +212,21 @@ class AngularUiModuleGenerator(
             .forEach {
                 AgGridDatasourceRenderer(it).renderToDir(this.typescriptOutputDir)
             }
+
+    }
+
+
+    private fun renderEntityHistoryBlotters() {
+
+        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+            EntityHistoryBlotterRowDtoTypescriptRenderer(def).renderToDir(this.typescriptOutputDir)
+            EntityHistoryBlotterServiceRenderer(def).renderToDir(this.typescriptOutputDir)
+            EntityHistoryBlotterAgGridDatasourceRenderer(def).renderToDir(this.typescriptOutputDir)
+            EntityHistoryBlotterComponentRenderer(def).renderToDir(this.typescriptOutputDir)
+            EntityHistoryBlotterHtmlRenderer(def).renderToDir(this.typescriptOutputDir)
+            EntityHistoryBlotterPageComponentRenderer(def).renderToDir(this.typescriptOutputDir)
+            EntityHistoryBlotterPageHtmlRenderer(def).renderToDir(this.typescriptOutputDir)
+        }
 
     }
 

@@ -16,6 +16,11 @@ export const compositePrimaryKeyRoutes: Routes = [
             import('./composite-primary-key-entity-detail-view-page').then(m => m.CompositePrimaryKeyEntityDetailViewPage),
     },
     {
+        path: 'composite-primary-key/history/:id',
+        loadComponent: () =>
+            import('./composite-primary-key-history-blotter-page').then(m => m.CompositePrimaryKeyHistoryBlotterPage),
+    },
+    {
         path: 'composite-primary-key/create',
         loadComponent: () =>
             import('./composite-primary-key-entity-create-page').then(m => m.CompositePrimaryKeyEntityCreatePage),

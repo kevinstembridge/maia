@@ -35,6 +35,15 @@ class EntityDetailViewPageHtmlRenderer(
                 |""".trimMargin())
         }
 
+        entityDetailViewDef.entityDef.historyBlotterDef?.let {
+            append("""
+                |    <button matButton aria-label="History" (click)="onHistoryClicked()">
+                |        <mat-icon>history</mat-icon>
+                |        History
+                |    </button>
+                |""".trimMargin())
+        }
+
         append("""
             |    @if (canEdit && entityId()) {
             |        <button matButton aria-label="Edit" (click)="onEditClicked()">

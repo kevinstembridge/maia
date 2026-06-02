@@ -5,11 +5,12 @@ import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
+import org.maiaframework.gen.spec.definition.EntityHistoryBlotterDef
 import org.maiaframework.gen.spec.definition.GeneratedTypescriptDir
 
 
 class EntityCrudRoutesRenderer(
-    entityDef: EntityDef,
+    private val entityDef: EntityDef,
     private val blotterPageDef: BlotterPageDef? = null,
     private val entityDetailViewDef: EntityDetailViewDef? = null,
     private val entityCreatePageDef: EntityCreatePageDef? = null,
@@ -44,6 +45,7 @@ class EntityCrudRoutesRenderer(
         appendLine("export const $constName: Routes = [")
         blotterPageDef?.let { renderBlotterRoute(it) }
         entityDetailViewDef?.let { renderViewRoute(it) }
+        entityDef.historyBlotterDef?.let { renderHistoryRoute(it) }
         entityCreatePageDef?.let { renderCreateRoute(it) }
         entityEditPageDef?.let { renderEditRoute(it) }
         appendLine("];")
@@ -103,6 +105,19 @@ class EntityCrudRoutesRenderer(
             |        path: '$path',
             |        loadComponent: () =>
             |            import('./${def.editPageAngularComponentNames.componentNameKebab}').then(m => m.${def.editPageAngularComponentNames.componentName}),
+            |    },
+            |""".trimMargin())
+
+    }
+
+
+    private fun renderHistoryRoute(def: EntityHistoryBlotterDef) {
+
+        append("""
+            |    {
+            |        path: '${def.routePath}/:id',
+            |        loadComponent: () =>
+            |            import('./${def.blotterPageComponentNames.componentNameKebab}').then(m => m.${def.blotterPageComponentNames.componentName}),
             |    },
             |""".trimMargin())
 

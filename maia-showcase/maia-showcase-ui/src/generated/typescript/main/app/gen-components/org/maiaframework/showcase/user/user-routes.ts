@@ -16,6 +16,11 @@ export const userRoutes: Routes = [
             import('./user-entity-detail-view-page').then(m => m.UserEntityDetailViewPage),
     },
     {
+        path: 'user/history/:id',
+        loadComponent: () =>
+            import('./user-history-blotter-page').then(m => m.UserHistoryBlotterPage),
+    },
+    {
         path: 'user/create',
         loadComponent: () =>
             import('./user-entity-create-page').then(m => m.UserEntityCreatePage),

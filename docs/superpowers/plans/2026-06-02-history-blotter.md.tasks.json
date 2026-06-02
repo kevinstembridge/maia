@@ -1,0 +1,54 @@
+{
+  "planPath": "docs/superpowers/plans/2026-06-02-history-blotter.md",
+  "tasks": [
+    {
+      "id": 6,
+      "subject": "Task 1: Spec definition layer",
+      "status": "done",
+      "description": "**Goal:** Create EntityHistoryBlotterDef, wire into EntityDef and ModelDef.\n\n**Files:**\n- Create: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityHistoryBlotterDef.kt`\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityDef.kt`\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/ModelDef.kt`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-spec:build`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityHistoryBlotterDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/ModelDef.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:build\", \"acceptanceCriteria\": [\"historyBlotterDef non-null for versioned entities\", \"blotterColumns excludes id/createdBy/lastModifiedBy/createdTimestampUtc\", \"spec builds\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 7,
+      "subject": "Task 2: Backend domain artifacts",
+      "status": "pending",
+      "blockedBy": [6],
+      "description": "**Goal:** Generate HistorySampleHistoryBlotterRowDto.kt, RowMapper, and Meta. Wire into DomainModuleGenerator.\n\n**Files:**\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowMapperRenderer.kt`\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoMetaRenderer.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/DomainModuleGenerator.kt`\n\n**Verify:** `./gradlew :maia-showcase:domain:maiaGeneration :maia-showcase:domain:build`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowMapperRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoMetaRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/DomainModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:domain:maiaGeneration :maia-showcase:domain:build\", \"acceptanceCriteria\": [\"HistorySampleHistoryBlotterRowDto.kt has 5 fields\", \"Meta has fieldNameToColumnName for 5 fields\", \"domain build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 8,
+      "subject": "Task 3: Backend DAO and Repo",
+      "status": "pending",
+      "blockedBy": [7],
+      "description": "**Goal:** Generate HistorySampleHistoryBlotterRowDtoDao.kt and Repo. Wire into RepoLayerModuleGenerator.\n\n**Files:**\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoDaoRenderer.kt`\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoRepoRenderer.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/RepoLayerModuleGenerator.kt`\n\n**Verify:** `./gradlew :maia-showcase:dao:maiaGeneration :maia-showcase:dao:build`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoDaoRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoRepoRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/RepoLayerModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:dao:maiaGeneration :maia-showcase:dao:build\", \"acceptanceCriteria\": [\"DAO search/count accept entityId parameter\", \"SQL WHERE includes id = :entityId\", \"dao build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 9,
+      "subject": "Task 4: Backend Service and Endpoint",
+      "status": "pending",
+      "blockedBy": [8],
+      "description": "**Goal:** Generate SearchService and Endpoint. Wire into ServiceLayerModuleGenerator and WebLayerModuleGenerator.\n\n**Files:**\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterSearchServiceRenderer.kt`\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterSearchEndpointRenderer.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/ServiceLayerModuleGenerator.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/WebLayerModuleGenerator.kt`\n\n**Verify:** `./gradlew :maia-showcase:service:maiaGeneration :maia-showcase:service:build :maia-showcase:web:maiaGeneration :maia-showcase:web:build`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterSearchServiceRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterSearchEndpointRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/ServiceLayerModuleGenerator.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/WebLayerModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:service:maiaGeneration :maia-showcase:service:build :maia-showcase:web:maiaGeneration :maia-showcase:web:build\", \"acceptanceCriteria\": [\"endpoint POST /api/history-sample/{entityId}/history/search exists\", \"service and web builds pass\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 10,
+      "subject": "Task 5: Frontend artifacts",
+      "status": "pending",
+      "blockedBy": [6],
+      "description": "**Goal:** Generate 7 TS/HTML files for the history blotter. Wire into AngularUiModuleGenerator.\n\n**Files:** 7 new renderers under `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotter*.kt` + AngularUiModuleGenerator.kt\n\n**Verify:** `./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration :maia-showcase:maia-showcase-ui:build`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterRowDtoTypescriptRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterServiceRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterAgGridDatasourceRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterComponentRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterHtmlRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterPageComponentRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterPageHtmlRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration :maia-showcase:maia-showcase-ui:build\", \"acceptanceCriteria\": [\"all 7 files generated\", \"datasource @Injectable() only\", \"blotter has @Input() entityId\", \"Angular build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 11,
+      "subject": "Task 6: Navigation — History button and route",
+      "status": "pending",
+      "blockedBy": [10],
+      "description": "**Goal:** Update EntityDetailViewPageHtmlRenderer, EntityDetailViewPageComponentRenderer, EntityCrudRoutesRenderer.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityDetailViewPageHtmlRenderer.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityDetailViewPageComponentRenderer.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityCrudRoutesRenderer.kt`\n\n**Verify:** `./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration :maia-showcase:maia-showcase-ui:build`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityDetailViewPageHtmlRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityDetailViewPageComponentRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityCrudRoutesRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration :maia-showcase:maia-showcase-ui:build\", \"acceptanceCriteria\": [\"History button in history-sample detail view\", \"history-sample/history/:id route added\", \"other entities unaffected\", \"Angular build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 12,
+      "subject": "Task 7: Integration test and full app build",
+      "status": "pending",
+      "blockedBy": [9, 11],
+      "description": "**Goal:** Write integration test for history search endpoint. Verify full app build.\n\n**Files:**\n- Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/history/HistoryBlotterEndpointTest.kt`\n\n**Verify:** `./gradlew :maia-showcase:app:test --tests \"org.maiaframework.showcase.history.HistoryBlotterEndpointTest\"`\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/history/HistoryBlotterEndpointTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests \\\"org.maiaframework.showcase.history.HistoryBlotterEndpointTest\\\"\", \"acceptanceCriteria\": [\"test verifies 2 history records for entity after create+update\", \"app build passes\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-06-02T00:00:00Z"
+}

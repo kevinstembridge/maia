@@ -44,6 +44,7 @@ class WebLayerModuleGenerator(
         renderSearchableDtoEndpoints()
         renderTableDtoEndpoints()
         renderTypeaheadEndpoints()
+        renderEntityHistoryBlotterEndpoints()
 
     }
 
@@ -207,6 +208,15 @@ class WebLayerModuleGenerator(
     private fun renderTypeaheadDtoEndpoint(typeaheadDef: TypeaheadDef) {
 
         TypeaheadEndpointRenderer(typeaheadDef).renderToDir(this.kotlinOutputDir)
+
+    }
+
+
+    private fun renderEntityHistoryBlotterEndpoints() {
+
+        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+            EntityHistoryBlotterSearchEndpointRenderer(def).renderToDir(this.kotlinOutputDir)
+        }
 
     }
 

@@ -59,6 +59,7 @@ class DomainModuleGenerator(
         `render StringTypes`()
         `render blotter DTOs`()
         `render CrudListeners`()
+        `render EntityHistoryBlotterDomainArtifacts`()
 
     }
 
@@ -600,6 +601,16 @@ class DomainModuleGenerator(
     private fun renderDto(dtoDef: ClassDef) {
 
         DtoRenderer(dtoDef).renderToDir(this.kotlinOutputDir)
+
+    }
+
+
+    private fun `render EntityHistoryBlotterDomainArtifacts`() {
+
+        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+            DtoRenderer(def.rowDtoClassDef).renderToDir(this.kotlinOutputDir)
+            EntityHistoryBlotterRowDtoMetaRenderer(def).renderToDir(this.kotlinOutputDir)
+        }
 
     }
 

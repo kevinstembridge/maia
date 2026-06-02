@@ -1,6 +1,8 @@
 package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.CreateTableSqlRenderer
+import org.maiaframework.gen.renderers.EntityHistoryBlotterRowDtoDaoRenderer
+import org.maiaframework.gen.renderers.EntityHistoryBlotterRowMapperRenderer
 import org.maiaframework.gen.renderers.EntityRowMapperRenderer
 import org.maiaframework.gen.renderers.JdbcDaoRenderer
 import org.maiaframework.gen.renderers.RowMapperRenderer
@@ -45,6 +47,8 @@ class DaoLayerModuleGenerator(
         `render RowMapperDefs`()
         `process SearchableDtoDefs`()
         `render DAOs`()
+        `render EntityHistoryBlotterRowMappers`()
+        `render EntityHistoryBlotterRowDtoDaos`()
 
     }
 
@@ -129,6 +133,24 @@ class DaoLayerModuleGenerator(
 
         this.modelDef.rowMapperDefs.forEach { rowMapperDef ->
             RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
+        }
+
+    }
+
+
+    private fun `render EntityHistoryBlotterRowMappers`() {
+
+        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+            EntityHistoryBlotterRowMapperRenderer(def).renderToDir(this.kotlinOutputDir)
+        }
+
+    }
+
+
+    private fun `render EntityHistoryBlotterRowDtoDaos`() {
+
+        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+            EntityHistoryBlotterRowDtoDaoRenderer(def).renderToDir(this.kotlinOutputDir)
         }
 
     }

@@ -16,6 +16,11 @@ export const historySampleRoutes: Routes = [
             import('./history-sample-entity-detail-view-page').then(m => m.HistorySampleEntityDetailViewPage),
     },
     {
+        path: 'history-sample/history/:id',
+        loadComponent: () =>
+            import('./history-sample-history-blotter-page').then(m => m.HistorySampleHistoryBlotterPage),
+    },
+    {
         path: 'history-sample/create',
         loadComponent: () =>
             import('./history-sample-entity-create-page').then(m => m.HistorySampleEntityCreatePage),

@@ -106,6 +106,19 @@ class EntityDetailViewPageComponentRenderer(
 
         }
 
+        entityDetailViewDef.entityDef.historyBlotterDef?.let { historyDef ->
+            append("""
+                |
+                |
+                |    onHistoryClicked(): void {
+                |        const id = this.entityId();
+                |        if (id) {
+                |            this.router.navigate(['/${historyDef.routePath}', id]);
+                |        }
+                |    }
+                |""".trimMargin())
+        }
+
         append("""
             |
             |

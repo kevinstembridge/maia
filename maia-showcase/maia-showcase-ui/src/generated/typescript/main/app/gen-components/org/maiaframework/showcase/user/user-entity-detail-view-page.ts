@@ -61,5 +61,13 @@ export class UserEntityDetailViewPage {
     }
 
 
+    onHistoryClicked(): void {
+        const id = this.entityId();
+        if (id) {
+            this.router.navigate(['/user/history', id]);
+        }
+    }
+
+
 }
 

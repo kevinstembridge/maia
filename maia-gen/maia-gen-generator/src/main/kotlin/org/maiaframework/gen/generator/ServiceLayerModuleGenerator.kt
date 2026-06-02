@@ -4,6 +4,7 @@ import org.maiaframework.gen.renderers.CrudNotifierRenderer
 import org.maiaframework.gen.renderers.CrudServiceRenderer
 import org.maiaframework.gen.renderers.ElasticSearchDtoSearchServiceRenderer
 import org.maiaframework.gen.renderers.EntityDetailDtoServiceRenderer
+import org.maiaframework.gen.renderers.EntityHistoryBlotterSearchServiceRenderer
 import org.maiaframework.gen.renderers.ForeignKeyReferenceServiceRenderer
 import org.maiaframework.gen.renderers.RequestDtoHandlerRenderer
 import org.maiaframework.gen.renderers.SearchDtoSearchServiceRenderer
@@ -52,6 +53,7 @@ class ServiceLayerModuleGenerator(
         `render RequestDtoHandlers`()
         `render SearchableDtoSearchServices`()
         `render TableDtoSearchServices`()
+        `render EntityHistoryBlotterServices`()
 
     }
 
@@ -149,6 +151,15 @@ class ServiceLayerModuleGenerator(
                 is BlotterSearchableDtoSourceDef -> SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)
             }
 
+        }
+
+    }
+
+
+    private fun `render EntityHistoryBlotterServices`() {
+
+        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+            EntityHistoryBlotterSearchServiceRenderer(def).renderToDir(this.kotlinOutputDir)
         }
 
     }

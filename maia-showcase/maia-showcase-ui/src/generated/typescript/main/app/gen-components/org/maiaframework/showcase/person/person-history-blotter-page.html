@@ -1,0 +1,5 @@
+<app-page-layout pageTitle="Person History" dataPageId="person_history_blotter">
+    @if (entityId(); as id) {
+        <app-person-history-blotter [entityId]="id" />
+    }
+</app-page-layout>
