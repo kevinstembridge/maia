@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -36,10 +38,10 @@ class CompositePrimaryKeyCrudEndpoint(
     }
 
 
-    @PostMapping("/api/composite-primary-key/fetch-for-edit", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun fetchForEdit(@RequestBody pk: CompositePrimaryKeyEntityPk): CompositePrimaryKeyFetchForEditDto {
+    @GetMapping("/api/composite-primary-key/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun fetchForEdit(@PathVariable id: String): CompositePrimaryKeyFetchForEditDto {
 
-        return this.crudService.fetchForEdit(pk)
+        return this.crudService.fetchForEdit(CompositePrimaryKeyEntityPk.from(id))
 
     }
 
