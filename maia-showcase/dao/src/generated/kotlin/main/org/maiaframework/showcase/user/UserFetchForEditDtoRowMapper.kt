@@ -69,7 +69,7 @@ class UserFetchForEditDtoRowMapper(
                 other.name
             from maia.user_group other
             join maia.user_group_membership mtm
-                on other.id = mtm.userGroup_id
+                on other.id = mtm.user_group_id
             where mtm.user_id = :entityId
             order by other.name
             """.trimIndent(),
