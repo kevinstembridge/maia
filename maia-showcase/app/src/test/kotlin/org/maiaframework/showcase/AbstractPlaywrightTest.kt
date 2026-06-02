@@ -197,7 +197,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         .build())
 
 
-    private lateinit var adminUser: UserFixture
+    protected lateinit var adminUser: UserFixture
 
 
     @Autowired

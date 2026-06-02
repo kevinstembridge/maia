@@ -5,22 +5,19 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractPlaywrightTest
-import org.maiaframework.showcase.auth.Authority
-import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.springframework.beans.factory.annotation.Autowired
 
 
 class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
-    private lateinit var testUser: UserFixture
-
-
     @Autowired
     private lateinit var elasticsearchClient: ElasticsearchClient
 
+
     @Autowired
     private lateinit var alphaTypeaheadEsIndex: AlphaTypeaheadEsIndex
+
 
     @Autowired
     private lateinit var alphaTypeaheadEsIndexControl: AlphaTypeaheadEsIndexControl_v0001
@@ -29,10 +26,8 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
     @BeforeAll
     fun setUp() {
 
-        testUser = fixtures.aUser(
-            loginMailVerified = true,
-            { it.copy(authorities = listOf(Authority.WRITE)) }
-        )
+        initAdminUserFixture()
+
         val alphaFixture = fixtures.anAlpha(someString = "alpha-fixture")
         fixtures.resetDatabaseState()
 
@@ -67,7 +62,7 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
     @Test
     fun `crud journey`() {
 
-        `log in user`(testUser)
+        `log in as admin user`()
         `navigate to the`(bravoBlotterPage)
 
         bravoBlotterPage.clickAddButton()

@@ -10,20 +10,13 @@ import org.maiaframework.showcase.testing.fixtures.UserFixture
 class UsersCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
-    private lateinit var sysAdminUser: UserFixture
-
-
     private lateinit var anotherUser: UserFixture
 
 
     @BeforeAll
     fun setUp() {
 
-        // SYS__ADMIN required to create/edit users; initAdminUserFixture() uses WRITE authority
-        sysAdminUser = fixtures.aUser(
-            loginMailVerified = true,
-            { it.copy(authorities = listOf(Authority.WRITE)) }
-        )
+        initAdminUserFixture()
 
         anotherUser = fixtures.aUser(
             loginMailVerified = true,
@@ -46,12 +39,12 @@ class UsersCrudPlaywrightTest : AbstractPlaywrightTest() {
     @Test
     fun `users crud journey`() {
 
-        `log in user`(sysAdminUser)
+        `log in as admin user`()
         `navigate to the`(usersBlotterPage)
 
         // Table loads and displays data for both users
         usersBlotterPage.apply {
-            assertTableContainsValue(sysAdminUser.displayName)
+            assertTableContainsValue(adminUser.displayName)
             assertTableContainsValue(Authority.WRITE.name)
             assertTableContainsValue(anotherUser.displayName)
             assertTableContainsValue(Authority.READ.name)

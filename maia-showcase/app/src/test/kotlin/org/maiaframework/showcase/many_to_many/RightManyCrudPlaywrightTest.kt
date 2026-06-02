@@ -14,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired
 class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
-    private lateinit var testUser: UserFixture
-
-
     @Autowired
     private lateinit var leftManyDao: LeftManyDao
 
@@ -39,10 +36,8 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
     @BeforeAll
     fun setUp() {
 
-        testUser = fixtures.aUser(
-            loginMailVerified = true,
-            { it.copy(authorities = listOf(Authority.WRITE)) }
-        )
+        initAdminUserFixture()
+
         fixtures.resetDatabaseState()
         rightManyDao.deleteAll()
         leftManyDao.bulkInsert(listOf(leftAlpha))
@@ -68,7 +63,7 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
     @Test
     fun `crud journey`() {
 
-        `log in user`(testUser)
+        `log in as admin user`()
         `navigate to the`(rightManyBlotterPage)
 
         // Create: navigate to create page, fill form with someInt + someString + left-entity chip
