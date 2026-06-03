@@ -51,7 +51,7 @@ class AgGridDatasourceRenderer(private val blotterDef: BlotterDef) : AbstractTyp
         append("""
             |
             |
-            |@Injectable({providedIn: 'root'})
+            |@Injectable()
             |export class ${blotterDef.agGridDatasourceClassName} implements IDatasource {
             |
             |

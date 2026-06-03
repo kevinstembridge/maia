@@ -249,7 +249,7 @@ class AgGridBlotterComponentRenderer(
                 |
                 |@Component({
                 |    imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-                |    providers: [${this.blotterDef.angularBlotterServiceName}, DecimalPipe],
+                |    providers: [${this.blotterDef.angularBlotterServiceName}, ${this.blotterDef.agGridDatasourceClassName}, DecimalPipe],
                 |    selector: '${this.blotterDef.blotterComponent.componentSelector}',
                 |    templateUrl: './${this.blotterDef.blotterComponent.htmlFileName}'
                 |""".trimMargin()
