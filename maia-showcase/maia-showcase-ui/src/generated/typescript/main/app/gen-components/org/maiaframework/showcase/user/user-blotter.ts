@@ -21,7 +21,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [UserBlotterService, DecimalPipe],
+    providers: [UserBlotterService, UserBlotterAgGridDatasource, DecimalPipe],
     selector: 'app-user-blotter',
     templateUrl: './user-blotter.html'
 })

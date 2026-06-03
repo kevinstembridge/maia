@@ -3,14 +3,24 @@ package org.maiaframework.toggles
 import com.hazelcast.config.Config
 import com.hazelcast.config.YamlConfigBuilder
 import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
+import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.toggles.activation.ActivationStrategy
 import org.maiaframework.toggles.sample.SampleFeatureOne
 import org.maiaframework.toggles.sample.SampleFeatureTwo
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 
 @Configuration
 class ToggleShowcaseConfiguration {
+
+
+    @Bean
+    fun jdbcOps(jdbcOps: NamedParameterJdbcOperations): JdbcOps {
+
+        return JdbcOps(jdbcOps)
+
+    }
 
 
     @Bean

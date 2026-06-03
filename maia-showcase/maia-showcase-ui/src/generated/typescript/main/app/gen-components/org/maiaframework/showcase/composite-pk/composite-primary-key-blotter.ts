@@ -23,7 +23,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [CompositePrimaryKeyBlotterService, DecimalPipe],
+    providers: [CompositePrimaryKeyBlotterService, CompositePrimaryKeyBlotterAgGridDatasource, DecimalPipe],
     selector: 'app-composite-primary-key-blotter',
     templateUrl: './composite-primary-key-blotter.html'
 })

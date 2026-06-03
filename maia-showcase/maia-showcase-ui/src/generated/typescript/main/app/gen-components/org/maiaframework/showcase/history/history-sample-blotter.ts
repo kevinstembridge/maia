@@ -23,7 +23,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [HistorySampleBlotterService, DecimalPipe],
+    providers: [HistorySampleBlotterService, HistorySampleBlotterAgGridDatasource, DecimalPipe],
     selector: 'app-history-sample-blotter',
     templateUrl: './history-sample-blotter.html'
 })

@@ -19,7 +19,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [CharlieBlotterService, DecimalPipe],
+    providers: [CharlieBlotterService, CharlieBlotterAgGridDatasource, DecimalPipe],
     selector: 'app-charlie-blotter',
     templateUrl: './charlie-blotter.html'
 })

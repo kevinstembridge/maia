@@ -23,7 +23,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [SimpleBlotterService, DecimalPipe],
+    providers: [SimpleBlotterService, SimpleBlotterAgGridDatasource, DecimalPipe],
     selector: 'app-simple-blotter',
     templateUrl: './simple-blotter.html'
 })

@@ -24,7 +24,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [AlphaBlotterService, DecimalPipe],
+    providers: [AlphaBlotterService, AlphaBlotterAgGridDatasource, DecimalPipe],
     selector: 'app-alpha-blotter',
     templateUrl: './alpha-blotter.html'
 })

@@ -13,6 +13,10 @@ class EntityHistoryBlotterRowDtoDaoRenderer(
 
     init {
 
+        if (def.requiresJsonMapper) {
+            addConstructorArg(aClassField("jsonMapper", Fqcns.JACKSON_JSON_MAPPER).privat().build())
+        }
+
         addConstructorArg(aClassField("jdbcOps", Fqcns.MAIA_JDBC_OPS).privat().build())
 
     }
@@ -25,7 +29,7 @@ class EntityHistoryBlotterRowDtoDaoRenderer(
         append("""
             |
             |
-            |    private val dtoRowMapper = ${def.rowMapperUqcn}()
+            |    private val dtoRowMapper = ${def.rowMapperUqcn}(${if (def.requiresJsonMapper) "jsonMapper" else ""})
             |
             |
             |    private val searchModelConverter = ${Fqcns.MAIA_AG_GRID_SEARCH_MODEL_CONVERTER.uqcn}(

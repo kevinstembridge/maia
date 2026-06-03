@@ -9,7 +9,7 @@ import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 
 
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class AlphaBlotterAgGridDatasource implements IDatasource {
 
 

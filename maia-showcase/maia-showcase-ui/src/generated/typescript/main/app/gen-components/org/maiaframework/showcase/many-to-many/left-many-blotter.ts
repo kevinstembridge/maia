@@ -24,7 +24,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [LeftManyBlotterService, DecimalPipe],
+    providers: [LeftManyBlotterService, LeftManyBlotterAgGridDatasource, DecimalPipe],
     selector: 'app-left-many-blotter',
     templateUrl: './left-many-blotter.html'
 })

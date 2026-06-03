@@ -19,7 +19,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [UserGroupMembershipBlotterService, DecimalPipe],
+    providers: [UserGroupMembershipBlotterService, UserGroupMembershipBlotterAgGridDatasource, DecimalPipe],
     selector: 'app-user-group-membership-blotter',
     templateUrl: './user-group-membership-blotter.html'
 })

@@ -3,6 +3,7 @@ package org.maiaframework.gen.renderers
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityHistoryBlotterDef
 import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
@@ -39,6 +40,15 @@ class EntityHistoryBlotterRowMapperRenderer(
 ) : AbstractKotlinRenderer(
     def.rowMapperClassDef
 ) {
+
+
+    init {
+
+        if (def.requiresJsonMapper) {
+            addConstructorArg(ClassFieldDef.aClassField("jsonMapper", Fqcns.JACKSON_JSON_MAPPER).privat().build())
+        }
+
+    }
 
 
     override fun renderFunctions() {
@@ -115,6 +125,12 @@ class EntityHistoryBlotterRowMapperRenderer(
             is ListFieldType -> {
                 val listElementFieldType = fieldType.parameterFieldType
                 when (listElementFieldType) {
+                    is DataClassFieldType -> {
+                        addImportFor(Fqcns.JACKSON_TYPE_REFERENCE)
+                        addImportFor(listElementFieldType.fqcn)
+                        val nullableSuffix = if (col.nullable) "OrNull" else ""
+                        appendLine("        val $fieldName = rsa.readString$nullableSuffix(\"$columnName\") { jsonMapper.readValue(it, object : TypeReference<${col.classFieldDef.unqualifiedToString}>() {}) }")
+                    }
                     is EnumFieldType -> {
                         addImportFor(listElementFieldType.fqcn)
                         appendLine("        val $fieldName = rsa.readListOfStrings(\"$columnName\") { ${listElementFieldType.fqcn.uqcn}.valueOf(it) }")
@@ -135,7 +151,11 @@ class EntityHistoryBlotterRowMapperRenderer(
                 addImportFor(fieldType.fqcn)
                 appendLine("        val $fieldName = rsa.readLong(\"$columnName\") { ${fieldType.uqcn}(it) }")
             }
-            is MapFieldType -> TODO()
+            is MapFieldType -> {
+                addImportFor(Fqcns.JACKSON_TYPE_REFERENCE)
+                val nullableSuffix = if (col.nullable) "OrNull" else ""
+                appendLine("        val $fieldName = rsa.readString$nullableSuffix(\"$columnName\") { jsonMapper.readValue(it, object : TypeReference<${col.classFieldDef.unqualifiedToString}>() {}) }")
+            }
             is ObjectIdFieldType -> appendLine("        val $fieldName = rsa.readObjectId(\"$columnName\")")
             is PeriodFieldType -> appendLine("        val $fieldName = rsa.readPeriod(\"$columnName\")")
             is RequestDtoFieldType -> TODO()

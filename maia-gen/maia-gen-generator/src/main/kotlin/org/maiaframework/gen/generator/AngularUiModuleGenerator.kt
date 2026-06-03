@@ -136,7 +136,6 @@ class AngularUiModuleGenerator(
     override fun onGenerateSource() {
 
         processCrudApiDefs()
-        renderEntityHistoryBlotters()
         renderAgGridDataSources()
         renderAngularForms()
         renderAsyncValidatorsForIndexes()
@@ -161,6 +160,7 @@ class AngularUiModuleGenerator(
         renderEntityCreatePages()
         renderEntityEditPages()
         renderBlotterPages()
+        renderEntityHistoryBlotters()
         renderEntityCrudRoutes()
         renderEntityDetailsDtos()
         renderEnums()

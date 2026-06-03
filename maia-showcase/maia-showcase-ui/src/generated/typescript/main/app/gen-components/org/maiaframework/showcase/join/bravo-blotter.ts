@@ -24,7 +24,7 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [BravoBlotterService, DecimalPipe],
+    providers: [BravoBlotterService, BravoBlotterAgGridDatasource, DecimalPipe],
     selector: 'app-bravo-blotter',
     templateUrl: './bravo-blotter.html'
 })
