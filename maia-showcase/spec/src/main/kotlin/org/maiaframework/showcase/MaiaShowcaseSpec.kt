@@ -1349,7 +1349,12 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "LeftToRightManyToManyJoin",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        leftEntity = ReferencedEntity(fieldName = "left", displayName = "Left", leftManyEntityDef, IsEditableByUser.TRUE),
+        leftEntity = ReferencedEntity(
+            fieldName = "left",
+            displayName = "Left",
+            leftManyEntityDef,
+            IsEditableByUser.TRUE
+        ),
         rightEntity = ReferencedEntity(
             fieldName = "right",
             displayName = "Right",
