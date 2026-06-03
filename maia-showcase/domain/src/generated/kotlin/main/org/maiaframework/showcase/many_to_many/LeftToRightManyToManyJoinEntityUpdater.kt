@@ -34,6 +34,20 @@ data class LeftToRightManyToManyJoinEntityUpdater(
         }
 
 
+        fun effectiveFrom(effectiveFrom: Instant?) {
+
+            this.fields.add(FieldUpdate("effectiveFrom", "effective_from", effectiveFrom))
+
+        }
+
+
+        fun effectiveTo(effectiveTo: Instant?) {
+
+            this.fields.add(FieldUpdate("effectiveTo", "effective_to", effectiveTo))
+
+        }
+
+
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
             this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))

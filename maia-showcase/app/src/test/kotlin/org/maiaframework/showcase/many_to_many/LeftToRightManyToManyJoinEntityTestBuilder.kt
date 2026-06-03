@@ -7,6 +7,8 @@ import java.time.Instant
 
 data class LeftToRightManyToManyJoinEntityTestBuilder(
     val createdTimestampUtc: Instant = anyInstant(),
+    val effectiveFrom: Instant = anyInstant(),
+    val effectiveTo: Instant? = null,
     val id: DomainId = DomainId.newId(),
     val lastModifiedTimestampUtc: Instant = anyInstant(),
     val leftId: DomainId,
@@ -18,6 +20,8 @@ data class LeftToRightManyToManyJoinEntityTestBuilder(
 
         return LeftToRightManyToManyJoinEntity(
             this.createdTimestampUtc,
+            this.effectiveFrom,
+            this.effectiveTo,
             this.id,
             this.lastModifiedTimestampUtc,
             this.leftId,

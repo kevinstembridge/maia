@@ -36,6 +36,8 @@ class RightManyCrudService(
         createDto.leftEntityIds.forEach { left ->
             this.leftToRightManyToManyJoinRepo.insert(
                 LeftToRightManyToManyJoinEntity.newInstance(
+                    effectiveFrom = Instant.now(),
+                    effectiveTo = null,
                     right = entity.id,
                     left = left
                 )
@@ -96,7 +98,7 @@ class RightManyCrudService(
         }
 
         val newLeftJoins = editDto.leftEntityIds.map { left ->
-            LeftToRightManyToManyJoinEntity.newInstance(right = id, left = left)
+            LeftToRightManyToManyJoinEntity.newInstance(effectiveFrom = Instant.now(), effectiveTo = null, right = id, left = left)
         }
         this.leftToRightManyToManyJoinRepo.bulkInsert(newLeftJoins)
 

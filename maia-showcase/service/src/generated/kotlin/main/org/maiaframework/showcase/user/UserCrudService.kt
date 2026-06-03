@@ -41,14 +41,16 @@ class UserCrudService(
 
         create(entity)
 
-        //createDto.userGroupEntityIds.forEach { userGroup ->
-        //    this.userGroupMembershipRepo.insert(
-        //        UserGroupMembershipEntity.newInstance(
-        //            user = entity.id,
-        //            userGroup = userGroup
-        //        )
-        //    )
-        //}
+        createDto.userGroupEntityIds.forEach { userGroup ->
+            this.userGroupMembershipRepo.insert(
+                UserGroupMembershipEntity.newInstance(
+                    effectiveFrom = Instant.now(),
+                    effectiveTo = null,
+                    user = entity.id,
+                    userGroup = userGroup
+                )
+            )
+        }
 
         return entity
 
@@ -127,7 +129,7 @@ class UserCrudService(
         //}
 
         //val newUserGroupJoins = editDto.userGroupEntityIds.map { userGroup ->
-        //    UserGroupMembershipEntity.newInstance(user = id, userGroup = userGroup)
+        //    UserGroupMembershipEntity.newInstance(effectiveFrom = Instant.now(), effectiveTo = null, user = id, userGroup = userGroup)
         //}
         //this.userGroupMembershipRepo.bulkInsert(newUserGroupJoins)
 

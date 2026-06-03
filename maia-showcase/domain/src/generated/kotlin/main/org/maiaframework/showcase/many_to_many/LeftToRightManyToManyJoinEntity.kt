@@ -9,6 +9,8 @@ import java.time.Instant
 
 class LeftToRightManyToManyJoinEntity(
     val createdTimestampUtc: Instant,
+    val effectiveFrom: Instant?,
+    val effectiveTo: Instant?,
     val id: DomainId,
     val lastModifiedTimestampUtc: Instant,
     val left: DomainId,
@@ -20,6 +22,8 @@ class LeftToRightManyToManyJoinEntity(
 
         return "LeftToRightManyToManyJoinEntity{" +
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
+                "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "left = '" + this.left + '\'' + ", " + 
@@ -39,6 +43,8 @@ class LeftToRightManyToManyJoinEntity(
 
         @JvmStatic
         fun newInstance(
+            effectiveFrom: Instant?,
+            effectiveTo: Instant?,
             left: DomainId,
             right: DomainId
         ): LeftToRightManyToManyJoinEntity {
@@ -49,6 +55,8 @@ class LeftToRightManyToManyJoinEntity(
 
             return LeftToRightManyToManyJoinEntity(
                 createdTimestampUtc,
+                effectiveFrom,
+                effectiveTo,
                 id,
                 lastModifiedTimestampUtc,
                 left,

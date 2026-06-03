@@ -13,6 +13,8 @@ class LeftToRightManyToManyJoinEntityRowMapper : MaiaRowMapper<LeftToRightManyTo
     override fun mapRow(rsa: ResultSetAdapter): LeftToRightManyToManyJoinEntity {
 
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val effectiveFrom = rsa.readInstantOrNull("effective_from")
+        val effectiveTo = rsa.readInstantOrNull("effective_to")
         val id = rsa.readDomainId("id")
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val left = rsa.readDomainId("left_id")
@@ -20,6 +22,8 @@ class LeftToRightManyToManyJoinEntityRowMapper : MaiaRowMapper<LeftToRightManyTo
 
         return LeftToRightManyToManyJoinEntity(
                 createdTimestampUtc,
+                effectiveFrom,
+                effectiveTo,
                 id,
                 lastModifiedTimestampUtc,
                 left,

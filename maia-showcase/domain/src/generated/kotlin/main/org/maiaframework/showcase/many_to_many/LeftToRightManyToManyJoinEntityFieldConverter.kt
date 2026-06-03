@@ -19,6 +19,10 @@ class LeftToRightManyToManyJoinEntityFieldConverter : EntityFieldConverter {
 
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
+            "effective_from" -> // effectiveFrom
+                return inputValue
+            "effective_to" -> // effectiveTo
+                return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
             "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc

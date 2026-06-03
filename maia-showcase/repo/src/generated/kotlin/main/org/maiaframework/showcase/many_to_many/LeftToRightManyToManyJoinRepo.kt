@@ -80,6 +80,20 @@ class LeftToRightManyToManyJoinRepo(
     }
 
 
+    fun findEffectiveByLeft(left: DomainId): List<LeftToRightManyToManyJoinEntity> {
+
+        return dao.findEffectiveByLeft(left)
+
+    }
+
+
+    fun findEffectiveByRight(right: DomainId): List<LeftToRightManyToManyJoinEntity> {
+
+        return dao.findEffectiveByRight(right)
+
+    }
+
+
     fun existsByLeft(left: DomainId): Boolean {
 
         return dao.existsByLeft(left)

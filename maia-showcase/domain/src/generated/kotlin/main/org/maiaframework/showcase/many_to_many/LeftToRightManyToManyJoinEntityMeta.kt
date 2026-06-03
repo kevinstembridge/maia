@@ -14,6 +14,10 @@ object LeftToRightManyToManyJoinEntityMeta {
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
+    const val effectiveFrom = "effective_from"
+
+    const val effectiveTo = "effective_to"
+
     const val id = "id"
 
     const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
@@ -46,6 +50,8 @@ object LeftToRightManyToManyJoinEntityMeta {
 
         return when(classFieldName) {
             "createdTimestampUtc" -> "created_timestamp_utc"
+            "effectiveFrom" -> "effective_from"
+            "effectiveTo" -> "effective_to"
             "id" -> "id"
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "left" -> "left_id"

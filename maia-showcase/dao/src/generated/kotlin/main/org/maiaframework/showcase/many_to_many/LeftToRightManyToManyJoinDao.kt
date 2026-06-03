@@ -34,12 +34,16 @@ class LeftToRightManyToManyJoinDao(
             """
             insert into maia.left_to_right_many_to_many_join (
                 created_timestamp_utc,
+                effective_from,
+                effective_to,
                 id,
                 last_modified_timestamp_utc,
                 left_id,
                 right_id
             ) values (
                 :createdTimestampUtc,
+                :effectiveFrom,
+                :effectiveTo,
                 :id,
                 :lastModifiedTimestampUtc,
                 :left,
@@ -48,6 +52,8 @@ class LeftToRightManyToManyJoinDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("effectiveFrom", entity.effectiveFrom)
+                addValue("effectiveTo", entity.effectiveTo)
                 addValue("id", entity.id)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("left", entity.left)
@@ -64,12 +70,16 @@ class LeftToRightManyToManyJoinDao(
             """
             insert into maia.left_to_right_many_to_many_join (
                 created_timestamp_utc,
+                effective_from,
+                effective_to,
                 id,
                 last_modified_timestamp_utc,
                 left_id,
                 right_id
             ) values (
                 :createdTimestampUtc,
+                :effectiveFrom,
+                :effectiveTo,
                 :id,
                 :lastModifiedTimestampUtc,
                 :left,
@@ -79,6 +89,8 @@ class LeftToRightManyToManyJoinDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("effectiveFrom", entity.effectiveFrom)
+                    addValue("effectiveTo", entity.effectiveTo)
                     addValue("id", entity.id)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("left", entity.left)
@@ -183,6 +195,42 @@ class LeftToRightManyToManyJoinDao(
             """
             select * from maia.left_to_right_many_to_many_join
             where right_id = :right
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("right", right)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findEffectiveByLeft(left: DomainId): List<LeftToRightManyToManyJoinEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.left_to_right_many_to_many_join
+            where left_id = :left
+            and effective_from <= current_timestamp
+            and (effective_to > current_timestamp or effective_to is null)
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("left", left)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findEffectiveByRight(right: DomainId): List<LeftToRightManyToManyJoinEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.left_to_right_many_to_many_join
+            where right_id = :right
+            and effective_from <= current_timestamp
+            and (effective_to > current_timestamp or effective_to is null)
             """.trimIndent(),
             SqlParams().apply {
                 addValue("right", right)
@@ -358,6 +406,8 @@ class LeftToRightManyToManyJoinDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "effectiveFrom" -> sqlParams.addValue("effectiveFrom", field.value as Instant?)
+            "effectiveTo" -> sqlParams.addValue("effectiveTo", field.value as Instant?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "left" -> sqlParams.addValue("left", field.value as DomainId)
             "right" -> sqlParams.addValue("right", field.value as DomainId)

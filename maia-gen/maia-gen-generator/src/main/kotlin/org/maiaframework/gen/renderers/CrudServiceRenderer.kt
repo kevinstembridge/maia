@@ -165,14 +165,17 @@ class CrudServiceRenderer(
 
                 blankLine()
                 if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
-                    appendLine("        //createDto.${otherSideDtoFieldName}.forEach { $otherSideFieldName ->")
-                    appendLine("        //    this.${joinRepoFieldName}.insert(")
-                    appendLine("        //        ${joinEntityClass}.newInstance(")
-                    appendLine("        //            $thisSideEntityIdFieldName = entity.id,")
-                    appendLine("        //            $otherSideFieldName = $otherSideFieldName")
-                    appendLine("        //        )")
-                    appendLine("        //    )")
-                    appendLine("        //}")
+                    addImportFor<Instant>()
+                    appendLine("        createDto.${otherSideDtoFieldName}.forEach { $otherSideFieldName ->")
+                    appendLine("            this.${joinRepoFieldName}.insert(")
+                    appendLine("                ${joinEntityClass}.newInstance(")
+                    appendLine("                    effectiveFrom = Instant.now(),")
+                    appendLine("                    effectiveTo = null,")
+                    appendLine("                    $thisSideEntityIdFieldName = entity.id,")
+                    appendLine("                    $otherSideFieldName = $otherSideFieldName")
+                    appendLine("                )")
+                    appendLine("            )")
+                    appendLine("        }")
                 } else {
                     appendLine("        createDto.${otherSideDtoFieldName}.forEach { $otherSideFieldName ->")
                     appendLine("            this.${joinRepoFieldName}.insert(")
@@ -483,13 +486,23 @@ class CrudServiceRenderer(
             val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
 
             blankLine()
-            if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+            if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value && !manyToManyEntityDef.entityDef.isNotDeletable) {
+                addImportFor<Instant>()
+                appendLine("        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
+                appendLine("            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
+                appendLine("        }")
+                blankLine()
+                appendLine("        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->")
+                appendLine("            ${joinEntityClass}.newInstance(effectiveFrom = Instant.now(), effectiveTo = null, $thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)")
+                appendLine("        }")
+                appendLine("        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
+            } else if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
                 appendLine("        //this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
                 appendLine("        //    this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
                 appendLine("        //}")
                 blankLine()
                 appendLine("        //val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->")
-                appendLine("        //    ${joinEntityClass}.newInstance($thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)")
+                appendLine("        //    ${joinEntityClass}.newInstance(effectiveFrom = Instant.now(), effectiveTo = null, $thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)")
                 appendLine("        //}")
                 appendLine("        //this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
             } else {

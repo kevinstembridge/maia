@@ -276,6 +276,8 @@ CREATE TABLE maia.right_many (
 
 CREATE TABLE maia.left_to_right_many_to_many_join (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    effective_from timestamp(3) with time zone NULL,
+    effective_to timestamp(3) with time zone NULL,
     id uuid NOT NULL,
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     left_id uuid NOT NULL REFERENCES maia.left_many(id),
