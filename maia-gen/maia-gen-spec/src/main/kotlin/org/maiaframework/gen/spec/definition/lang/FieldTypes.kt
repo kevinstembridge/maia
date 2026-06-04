@@ -12,6 +12,7 @@ import org.maiaframework.gen.spec.definition.EsDocMappingType
 import org.maiaframework.gen.spec.definition.ForeignKeyFieldDef
 import org.maiaframework.gen.spec.definition.IntTypeDef
 import org.maiaframework.gen.spec.definition.IntValueClassDef
+import org.maiaframework.gen.spec.definition.JoinFetchDtoDef
 import org.maiaframework.gen.spec.definition.LongTypeDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SimpleResponseDtoDef
@@ -121,6 +122,9 @@ object FieldTypes {
     fun pkAndName(pkAndNameDef: EntityPkAndNameDef) = PkAndNameFieldType(pkAndNameDef)
 
 
+    fun joinFetchDto(joinFetchDtoDef: JoinFetchDtoDef) = JoinFetchDtoFieldType(joinFetchDtoDef)
+
+
     fun list(fieldType: FieldType) = ListFieldType(fieldType)
 
 
@@ -141,6 +145,7 @@ object FieldTypes {
         is EsDocFieldType -> false
         is ForeignKeyFieldType -> false
         is FqcnFieldType -> false
+        is JoinFetchDtoFieldType -> false
         is PkAndNameFieldType -> false
         is InstantFieldType -> false
         is IntFieldType -> false
@@ -164,7 +169,7 @@ object FieldTypes {
 
     
     fun FieldType.isNumeric(): Boolean {
-        
+
         return when (this) {
             is BooleanFieldType -> false
             is BooleanTypeFieldType -> false
@@ -176,6 +181,7 @@ object FieldTypes {
             is EsDocFieldType -> false
             is ForeignKeyFieldType -> false
             is FqcnFieldType -> false
+            is JoinFetchDtoFieldType -> false
             is PkAndNameFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> true
@@ -196,7 +202,7 @@ object FieldTypes {
             is StringValueClassFieldType -> false
             is UrlFieldType -> false
         }
-        
+
     }
 
 
@@ -213,6 +219,7 @@ object FieldTypes {
             is EsDocFieldType -> false
             is ForeignKeyFieldType -> false
             is FqcnFieldType -> false
+            is JoinFetchDtoFieldType -> false
             is PkAndNameFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> false
@@ -250,6 +257,7 @@ object FieldTypes {
             is EsDocFieldType -> false
             is ForeignKeyFieldType -> false
             is FqcnFieldType -> false
+            is JoinFetchDtoFieldType -> false
             is PkAndNameFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> false
@@ -287,6 +295,7 @@ object FieldTypes {
             is EsDocFieldType -> false
             is ForeignKeyFieldType -> false
             is FqcnFieldType -> false
+            is JoinFetchDtoFieldType -> false
             is PkAndNameFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> false

@@ -1,0 +1,33 @@
+{
+  "planPath": "docs/superpowers/plans/2026-06-04-mtm-effective-timestamps-edit-form.md",
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Task 1: UpdateRequestDto + CrudServiceRenderer",
+      "status": "done",
+      "description": "**Goal:** For timestamped M2M associations, the update request DTO accepts `${otherSide}Entities: List<{OtherSide}JoinRequestDto>` instead of bare IDs; the backend service uses the provided timestamps.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityUpdateApiDef.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CrudServiceRenderer.kt`\n\n**Verify:** `./gradlew :maia-showcase:domain:compileKotlin :maia-showcase:service:compileKotlin`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityUpdateApiDef.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CrudServiceRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:domain:compileKotlin :maia-showcase:service:compileKotlin\", \"acceptanceCriteria\": [\"RightManyUpdateRequestDto has leftEntities: List<LeftJoinRequestDto>\", \"RightManyCrudService.update uses joinDto.effectiveFrom\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 2: JoinFetchDtoDef + FetchForEditDto with Timestamps",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** `{Entity}FetchForEditDto` exposes `List<{OtherSide}JoinFetchDto>` for timestamped M2M; row mapper sub-query includes timestamp columns; Kotlin data class and TypeScript interface are both rendered.\n\n**Verify:** `./gradlew :maia-showcase:domain:compileKotlin :maia-showcase:dao:compileKotlin`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/JoinFetchDtoDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/lang/JoinFetchDtoFieldType.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/lang/FieldTypes.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/RowMapperFieldDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/FetchForEditDtoDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/ModelDef.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/RowMapperRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:domain:compileKotlin :maia-showcase:dao:compileKotlin\", \"acceptanceCriteria\": [\"LeftJoinFetchDto.kt generated with 4 fields\", \"RightManyFetchForEditDto.leftEntities is List<LeftJoinFetchDto>\", \"Row mapper SQL includes effective_from and effective_to\", \"LeftJoinFetchDto.ts generated\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 3: Edit Form Renderers",
+      "status": "pending",
+      "blockedBy": [2],
+      "description": "**Goal:** The edit form HTML uses mini forms for timestamped M2M; the component TypeScript pre-populates join entries from the fetched DTO.\n\n**Verify:** `./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityEditReactiveFormHtmlRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/AngularReactiveFormComponentRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:maia-showcase-ui:maiaGeneration\", \"acceptanceCriteria\": [\"right-many-entity-edit-form.html has join-entries div\", \"right-many-entity-edit-form.ts populates leftJoins from dto.leftEntities\", \"No mat-chip-grid in edit form HTML\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 4: Update Playwright Tests",
+      "status": "pending",
+      "blockedBy": [3],
+      "description": "**Goal:** Edit page objects use join-entry mini-form methods; Playwright tests pass.\n\n**Verify:** `./gradlew :maia-showcase:app:test --tests 'org.maiaframework.showcase.many_to_many.RightManyCrudPlaywrightTest' --tests 'org.maiaframework.showcase.many_to_many.LeftManyCrudPlaywrightTest'`\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyEditPage.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/LeftManyEditPage.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/RightManyCrudPlaywrightTest.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/LeftManyCrudPlaywrightTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests 'org.maiaframework.showcase.many_to_many.RightManyCrudPlaywrightTest' --tests 'org.maiaframework.showcase.many_to_many.LeftManyCrudPlaywrightTest'\", \"acceptanceCriteria\": [\"RightManyCrudPlaywrightTest passes\", \"LeftManyCrudPlaywrightTest passes\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-06-04T00:00:00Z"
+}

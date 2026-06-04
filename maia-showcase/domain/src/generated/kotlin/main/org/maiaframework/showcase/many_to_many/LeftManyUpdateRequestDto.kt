@@ -19,8 +19,8 @@ class LeftManyUpdateRequestDto
     @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @param:JsonProperty("rightEntityIds", access = JsonProperty.Access.READ_WRITE) 
-    private val rightEntityIds_raw: List<DomainId>?,
+    @param:JsonProperty("rightEntities", access = JsonProperty.Access.READ_WRITE) 
+    private val rightEntities_raw: List<RightJoinRequestDto>?,
     @field:NotNull
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
     private val someInt_raw: Int?,
@@ -44,7 +44,7 @@ class LeftManyUpdateRequestDto
 
 
     @get:JsonIgnore
-    val rightEntityIds: List<DomainId> by lazy { rightEntityIds_raw ?: emptyList() }
+    val rightEntities: List<RightJoinRequestDto> by lazy { rightEntities_raw ?: emptyList() }
 
 
     override fun toString(): String {
@@ -53,7 +53,7 @@ class LeftManyUpdateRequestDto
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
-                "rightEntityIds = '" + this.rightEntityIds + '\'' +
+                "rightEntities = '" + this.rightEntities + '\'' +
                 "}"
 
     }

@@ -24,6 +24,13 @@ class EntityUpdateApiDef(
     private val angularComponentBaseName = AngularComponentBaseName(this.entityDef.entityBaseName.value)
 
 
+    val timestampedJoinRequestDtosByAssociation: Map<ManyToManyEntityDef, RequestDtoDef> by lazy {
+        entityDef.entityCrudApiDef?.createApiDef
+            ?.timestampedJoinRequestDtosByAssociation
+            ?: emptyMap()
+    }
+
+
     val formGroupFields = this.entityDef.allEntityFields
         .filter { entityFieldDef ->
             val classFieldDef = entityFieldDef.classFieldDef
@@ -103,11 +110,23 @@ class EntityUpdateApiDef(
         .plus(
             entityDef.manyToManyAssociations.map { manyToManyEntityDef ->
                 val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
-                val classFieldDef = ClassFieldDef.aClassField(
-                    "${otherSide.fieldName}EntityIds",
-                    FieldTypes.list(FieldTypes.domainId)
-                ).nullable().build()
-                RequestDtoFieldDef(classFieldDef, null)
+                if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+                    val joinDtoDef = timestampedJoinRequestDtosByAssociation[manyToManyEntityDef]
+                        ?: error("No timestamped join DTO for association ${manyToManyEntityDef.entityDef.entityBaseName} — entity ${entityDef.entityBaseName} has an update API but no create API")
+                    RequestDtoFieldDef(
+                        ClassFieldDef.aClassField(
+                            "${otherSide.fieldName}Entities",
+                            FieldTypes.list(FieldTypes.requestDto(joinDtoDef))
+                        ).nullable().build(), null
+                    )
+                } else {
+                    RequestDtoFieldDef(
+                        ClassFieldDef.aClassField(
+                            "${otherSide.fieldName}EntityIds",
+                            FieldTypes.list(FieldTypes.domainId)
+                        ).nullable().build(), null
+                    )
+                }
             }
         )
     }

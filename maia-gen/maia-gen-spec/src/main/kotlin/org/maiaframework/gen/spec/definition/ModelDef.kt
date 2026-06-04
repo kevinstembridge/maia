@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.lang.ClassDef
+import org.maiaframework.gen.spec.definition.JoinFetchDtoDef
 
 
 class ModelDef(
@@ -47,6 +48,11 @@ class ModelDef(
 
 
     val fetchForEditDtoDefs = entityDefs.filter { it.isConcrete }.mapNotNull { it.fetchForEditDtoDef }
+
+
+    val joinFetchDtoDefs: List<JoinFetchDtoDef> = entityDefs.filter { it.isConcrete }
+        .flatMap { it.joinFetchDtoDefs }
+        .distinctBy { it.fqcn }
 
 
     val entityHistoryBlotterDefs: List<EntityHistoryBlotterDef> =

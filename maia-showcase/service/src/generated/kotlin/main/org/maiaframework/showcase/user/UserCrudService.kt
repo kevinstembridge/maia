@@ -128,8 +128,8 @@ class UserCrudService(
         //    this.userGroupMembershipRepo.deleteByPrimaryKey(join.id)
         //}
 
-        //val newUserGroupJoins = editDto.userGroupEntityIds.map { userGroup ->
-        //    UserGroupMembershipEntity.newInstance(effectiveFrom = Instant.now(), effectiveTo = null, user = id, userGroup = userGroup)
+        //val newUserGroupJoins = editDto.userGroupEntities.map { joinDto ->
+        //    UserGroupMembershipEntity.newInstance(effectiveFrom = joinDto.effectiveFrom, effectiveTo = joinDto.effectiveTo, user = id, userGroup = joinDto.userGroupEntityId)
         //}
         //this.userGroupMembershipRepo.bulkInsert(newUserGroupJoins)
 

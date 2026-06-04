@@ -14,6 +14,7 @@ import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -111,6 +112,7 @@ class EntityHistoryBlotterRowMapperRenderer(
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> appendLine("        val $fieldName = rsa.readDomainId(\"$columnName\")")
             is FqcnFieldType -> TODO()
+            is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is PkAndNameFieldType -> TODO()
             is InstantFieldType -> appendLine("        val $fieldName = rsa.readInstant(\"$columnName\")")
             is IntFieldType -> appendLine("        val $fieldName = rsa.readInt(\"$columnName\")")

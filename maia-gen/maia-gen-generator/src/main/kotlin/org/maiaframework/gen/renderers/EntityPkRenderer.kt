@@ -13,6 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -116,6 +117,7 @@ class EntityPkRenderer(
             is EsDocFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> TODO("YAGNI?")
             is FqcnFieldType -> TODO("YAGNI?")
+            is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is InstantFieldType -> TODO("YAGNI?")
             is IntFieldType, is IntTypeFieldType -> "$decoded.toInt()"
             is IntValueClassFieldType -> TODO("YAGNI?")

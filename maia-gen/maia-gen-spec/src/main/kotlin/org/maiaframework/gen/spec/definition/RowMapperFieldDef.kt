@@ -32,7 +32,8 @@ class ForeignKeyRowMapperFieldDef(
 
 class ManyToManyRowMapperFieldDef(
     val manyToManySearchableDtoFieldDef: ManyToManySearchableDtoFieldDef,
-    val rootEntityDef: EntityDef
+    val rootEntityDef: EntityDef,
+    val joinFetchDtoDef: JoinFetchDtoDef? = null
 ) : RowMapperFieldDef(
     manyToManySearchableDtoFieldDef.nullability,
     manyToManySearchableDtoFieldDef.classFieldName
@@ -48,7 +49,7 @@ class ManyToManyRowMapperFieldDef(
     val thisSideIdTableColumnName = manyToManySearchableDtoFieldDef.manyToManyEntityDef.idTableColumnName(rootEntityDef)
 
 
-    val entityPkAndNameDef = otherSideEntity.entityDef.entityPkAndNameDef
+    val entityPkAndNameDef: EntityPkAndNameDef by lazy { otherSideEntity.entityDef.entityPkAndNameDef }
 
 
 }

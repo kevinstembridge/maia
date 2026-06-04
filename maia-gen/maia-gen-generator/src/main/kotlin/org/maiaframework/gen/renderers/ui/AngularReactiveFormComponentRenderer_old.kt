@@ -18,6 +18,7 @@ import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -1018,6 +1019,7 @@ class AngularReactiveFormComponentRenderer_old(
                 is EsDocFieldType -> {}
                 is ForeignKeyFieldType -> `add imports for Material Autocomplete`(fieldType)
                 is FqcnFieldType -> {}
+                is JoinFetchDtoFieldType -> TODO("YAGNI?")
                 is InstantFieldType -> `add imports for date and time pickers`()
                 is IntFieldType -> {}
                 is IntTypeFieldType -> {}

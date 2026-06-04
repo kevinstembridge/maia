@@ -97,8 +97,8 @@ class LeftManyCrudService(
             this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(join.id)
         }
 
-        val newRightJoins = editDto.rightEntityIds.map { right ->
-            LeftToRightManyToManyJoinEntity.newInstance(effectiveFrom = Instant.now(), effectiveTo = null, left = id, right = right)
+        val newRightJoins = editDto.rightEntities.map { joinDto ->
+            LeftToRightManyToManyJoinEntity.newInstance(effectiveFrom = joinDto.effectiveFrom, effectiveTo = joinDto.effectiveTo, left = id, right = joinDto.rightEntityId)
         }
         this.leftToRightManyToManyJoinRepo.bulkInsert(newRightJoins)
 

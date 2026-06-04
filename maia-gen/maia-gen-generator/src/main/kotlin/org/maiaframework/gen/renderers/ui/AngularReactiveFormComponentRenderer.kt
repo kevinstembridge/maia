@@ -18,6 +18,7 @@ import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -750,6 +751,15 @@ class AngularReactiveFormComponentRenderer(
                 appendLine("                }));")
             }
 
+            timestampedFields.forEach { field ->
+                appendLine("                this.${field.joinsFieldName} = dto.${field.requestDtoFieldName}?.map(e => ({")
+                appendLine("                    entityId: e.id,")
+                appendLine("                    entityName: e.name,")
+                appendLine("                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,")
+                appendLine("                    effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,")
+                appendLine("                })) ?? [];")
+            }
+
             appendLine("                this.loading.set(false);")
             appendLine("            },")
             appendLine("            error: (err) => {")
@@ -1197,6 +1207,7 @@ class AngularReactiveFormComponentRenderer(
                 is EsDocFieldType -> {}
                 is ForeignKeyFieldType -> `add imports for Material Autocomplete`(fieldType)
                 is FqcnFieldType -> {}
+                is JoinFetchDtoFieldType -> TODO("YAGNI?")
                 is InstantFieldType -> `add imports for date and time pickers`()
                 is IntFieldType -> {}
                 is IntTypeFieldType -> {}

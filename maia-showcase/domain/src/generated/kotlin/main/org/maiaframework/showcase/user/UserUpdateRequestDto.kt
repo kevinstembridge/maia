@@ -32,8 +32,8 @@ class UserUpdateRequestDto
     @field:Length(max = 100)
     @param:JsonProperty("lastName", access = JsonProperty.Access.READ_WRITE) 
     private val lastName_raw: String?,
-    @param:JsonProperty("userGroupEntityIds", access = JsonProperty.Access.READ_WRITE) 
-    private val userGroupEntityIds_raw: List<DomainId>?,
+    @param:JsonProperty("userGroupEntities", access = JsonProperty.Access.READ_WRITE) 
+    private val userGroupEntities_raw: List<UserGroupJoinRequestDto>?,
     @field:NotNull
     @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
     private val version_raw: Long?
@@ -62,7 +62,7 @@ class UserUpdateRequestDto
 
 
     @get:JsonIgnore
-    val userGroupEntityIds: List<DomainId> by lazy { userGroupEntityIds_raw ?: emptyList() }
+    val userGroupEntities: List<UserGroupJoinRequestDto> by lazy { userGroupEntities_raw ?: emptyList() }
 
 
     override fun toString(): String {
@@ -73,7 +73,7 @@ class UserUpdateRequestDto
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "version = '" + this.version + '\'' + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
-                "userGroupEntityIds = '" + this.userGroupEntityIds + '\'' +
+                "userGroupEntities = '" + this.userGroupEntities + '\'' +
                 "}"
 
     }

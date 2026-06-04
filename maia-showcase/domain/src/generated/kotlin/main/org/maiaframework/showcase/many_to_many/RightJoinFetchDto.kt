@@ -7,12 +7,11 @@ import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-data class LeftManyFetchForEditDto(
-    val createdTimestampUtc: Instant,
+data class RightJoinFetchDto(
+    val effectiveFrom: Instant?,
+    val effectiveTo: Instant?,
     val id: DomainId,
-    val rightEntities: List<RightJoinFetchDto>,
-    val someInt: Int,
-    val someString: String
+    val name: String
 ) {
 
 

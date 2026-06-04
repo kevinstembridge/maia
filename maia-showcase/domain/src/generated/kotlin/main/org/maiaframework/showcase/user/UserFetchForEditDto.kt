@@ -23,7 +23,7 @@ data class UserFetchForEditDto(
     val lastModifiedTimestampUtc: Instant,
     val lastName: LastName,
     val lifecycleState: LifecycleState,
-    val userGroupEntities: List<UserGroupPkAndNameDto>,
+    val userGroupEntities: List<UserGroupJoinFetchDto>,
     val version: Long
 ) {
 

@@ -88,10 +88,10 @@ class LeftManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         leftManyEditPage.apply {
             assertOnPage()
-            assertChipVisible("right-alpha")
-            assertChipVisible("right-beta")
-            removeChip("right-alpha")
-            removeChip("right-beta")
+            assertJoinEntryVisible("right-alpha")
+            assertJoinEntryVisible("right-beta")
+            removeJoinEntry("right-alpha")
+            removeJoinEntry("right-beta")
             fillEditForm()
             clickSubmitButton()
         }

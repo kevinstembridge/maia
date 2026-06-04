@@ -71,6 +71,7 @@ import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
+import org.maiaframework.gen.spec.definition.JoinFetchDtoDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
@@ -142,10 +143,29 @@ class AngularUiModuleGenerator(
     ): List<ManyToManyChipFieldDef> {
 
         return associations
+            .filter { !it.entityDef.hasEffectiveTimestamps.value }
             .mapNotNull { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
                 ManyToManyChipFieldDef(entityDef, m2m, typeaheadDef)
+            }
+
+    }
+
+
+    private fun manyToManyTimestampedFieldsForEdit(
+        entityDef: EntityDef,
+        associations: List<ManyToManyEntityDef>
+    ): List<ManyToManyTimestampedFieldDef> {
+
+        val updateApiDef = entityDef.entityCrudApiDef?.updateApiDef ?: return emptyList()
+        return associations
+            .filter { it.entityDef.hasEffectiveTimestamps.value }
+            .mapNotNull { m2m ->
+                val otherSide = m2m.otherSideFrom(entityDef)
+                val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
+                val joinDtoDef = updateApiDef.timestampedJoinRequestDtosByAssociation[m2m] ?: return@mapNotNull null
+                ManyToManyTimestampedFieldDef(entityDef, m2m, typeaheadDef, joinDtoDef)
             }
 
     }
@@ -515,6 +535,7 @@ class AngularUiModuleGenerator(
             val fetchForEditDtoDef = entityEditPageDef.entityDef.fetchForEditDtoDef
 
             val chipFields = manyToManyChipFieldsForEdit(entityEditPageDef.entityDef, entityEditPageDef.entityDef.manyToManyAssociations)
+            val timestampedFields = manyToManyTimestampedFieldsForEdit(entityEditPageDef.entityDef, entityEditPageDef.entityDef.manyToManyAssociations)
 
             val angularFormDef = AngularFormDef(
                 angularFormSystem = AngularFormSystem.REACTIVE,
@@ -540,18 +561,20 @@ class AngularUiModuleGenerator(
             )
 
             val providerServices = angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } +
-                chipFields.map { it.serviceClassName }
+                chipFields.map { it.serviceClassName } +
+                timestampedFields.map { it.serviceClassName }
 
             AngularReactiveFormComponentRenderer(
                 angularFormDef,
                 entityEditPageDef.editFormAngularComponentNames,
                 providerServices,
-                chipFields
+                chipFields,
+                timestampedFields
             ).renderToDir(this.typescriptOutputDir)
 
 //            EntityEditFormComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
             EntityEditFormScssRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
-            EntityEditReactiveFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames, chipFields).renderToDir(this.typescriptOutputDir)
+            EntityEditReactiveFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames, chipFields, timestampedFields).renderToDir(this.typescriptOutputDir)
             EntityEditFormPageComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
             EntityEditPageHtmlRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
 
@@ -892,6 +915,15 @@ class AngularUiModuleGenerator(
         modelDef.entityDetailViewDefs
             .map { it.dtoDef }
             .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
+
+        modelDef.joinFetchDtoDefs.forEach { joinFetchDtoDef ->
+            renderTypescriptInterface(
+                renderedFilePath = joinFetchDtoDef.typescriptRenderedFilePath,
+                className = joinFetchDtoDef.uqcn,
+                fields = joinFetchDtoDef.dtoDef.allFieldsSorted,
+                dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
+            )
+        }
 
     }
 

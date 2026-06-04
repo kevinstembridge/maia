@@ -413,6 +413,7 @@ abstract class AbstractKotlinRenderer protected constructor(
             is EsDocFieldType -> addImportFor(fieldType.fqcn)
             is ForeignKeyFieldType -> addImportFor(fieldType.fqcn)
             is FqcnFieldType -> addImportFor(fieldType.fqcn)
+            is JoinFetchDtoFieldType -> addImportFor(fieldType.fqcn)
             is PkAndNameFieldType -> addImportFor(fieldType.fqcn)
             is InstantFieldType -> addImportFor(fieldType.fqcn)
             is IntFieldType -> addImportFor(fieldType.fqcn)

@@ -23,6 +23,7 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
@@ -67,6 +68,10 @@ open class TypescriptInterfaceDtoRenderer(
 
                 if (listElementType is ForeignKeyFieldType && dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
                     addImport(listElementType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
+                }
+
+                if (listElementType is JoinFetchDtoFieldType) {
+                    addImport(listElementType.typescriptImport)
                 }
 
             }
@@ -115,6 +120,7 @@ open class TypescriptInterfaceDtoRenderer(
                 is EsDocFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.esDocDef.uqcn};")
                 is ForeignKeyFieldType -> renderForForeignKeyField(fieldDef, nullableClause, fieldType)
                 is FqcnFieldType -> renderForPlainField(fieldDef, nullableClause)
+                is JoinFetchDtoFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.uqcn};")
                 is PkAndNameFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.pkAndNameDef.dtoUqcn};")
                 is InstantFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is IntFieldType -> renderForPlainField(fieldDef, nullableClause)
@@ -169,6 +175,7 @@ open class TypescriptInterfaceDtoRenderer(
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> parameterFieldType.uqcn.value
+            is JoinFetchDtoFieldType -> parameterFieldType.uqcn.value
             is PkAndNameFieldType -> parameterFieldType.uqcn.value
             is InstantFieldType -> "string"
             is IntFieldType -> "number"

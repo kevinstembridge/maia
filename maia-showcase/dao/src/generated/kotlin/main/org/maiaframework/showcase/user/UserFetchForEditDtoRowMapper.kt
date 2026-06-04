@@ -19,14 +19,11 @@ class UserFetchForEditDtoRowMapper(
 ) : MaiaRowMapper<UserFetchForEditDto> {
 
 
-    private val userGroupEntitiesPkAndNameDtoRowMapper = UserGroupPkAndNameDtoRowMapper()
-
-
     override fun mapRow(rsa: ResultSetAdapter): UserFetchForEditDto {
 
         val entityId = rsa.readDomainId("id")
 
-        val userGroupEntitiesPkAndNameDtoList = fetchUserGroupEntitiesPkAndNameDtos(entityId)
+        val userGroupEntitiesJoinFetchDtoList = fetchUserGroupEntitiesJoinFetchDtos(entityId)
 
         val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
         val createdBy = rsa.readDomainIdOrNull("createdBy")
@@ -53,20 +50,22 @@ class UserFetchForEditDtoRowMapper(
             lastModifiedTimestampUtc,
             lastName,
             lifecycleState,
-            userGroupEntitiesPkAndNameDtoList,
+            userGroupEntitiesJoinFetchDtoList,
             version,
         )
 
     }
 
 
-    private fun fetchUserGroupEntitiesPkAndNameDtos(entityId: DomainId): List<UserGroupPkAndNameDto> {
+    private fun fetchUserGroupEntitiesJoinFetchDtos(entityId: DomainId): List<UserGroupJoinFetchDto> {
 
         return this.jdbcOps.queryForList(
             """
             select
                 other.id,
-                other.name
+                other.name,
+                mtm.effective_from,
+                mtm.effective_to
             from maia.user_group other
             join maia.user_group_membership mtm
                 on other.id = mtm.user_group_id
@@ -76,8 +75,14 @@ class UserFetchForEditDtoRowMapper(
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.userGroupEntitiesPkAndNameDtoRowMapper
-        )
+        ) { rsa ->
+            UserGroupJoinFetchDto(
+                id = rsa.readDomainId("id"),
+                name = rsa.readString("name"),
+                effectiveFrom = rsa.readInstantOrNull("effective_from"),
+                effectiveTo = rsa.readInstantOrNull("effective_to"),
+            )
+        }
 
     }
 

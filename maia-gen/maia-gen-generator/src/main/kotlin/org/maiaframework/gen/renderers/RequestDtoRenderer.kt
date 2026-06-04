@@ -18,6 +18,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes.isStringBased
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isValueFieldWrapper
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
@@ -153,6 +154,7 @@ class RequestDtoRenderer(
                 is EsDocFieldType -> renderGetterIfNonNullableField(field)
                 is ForeignKeyFieldType -> renderGetterIfNonNullableField(field)
                 is FqcnFieldType -> renderGetterIfNonNullableField(field)
+                is JoinFetchDtoFieldType -> TODO("YAGNI?")
                 is PkAndNameFieldType -> renderGetterIfNonNullableField(field)
                 is InstantFieldType -> renderGetterIfNonNullableField(field)
                 is IntFieldType -> renderGetterIfNonNullableField(field)

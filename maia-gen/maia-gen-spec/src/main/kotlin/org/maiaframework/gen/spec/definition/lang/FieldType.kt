@@ -14,6 +14,7 @@ import org.maiaframework.gen.spec.definition.ForeignKeyFieldDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.IntTypeDef
 import org.maiaframework.gen.spec.definition.IntValueClassDef
+import org.maiaframework.gen.spec.definition.JoinFetchDtoDef
 import org.maiaframework.gen.spec.definition.LongTypeDef
 import org.maiaframework.gen.spec.definition.ReadonlyArrayTypescriptType
 import org.maiaframework.gen.spec.definition.RequestDtoDef
@@ -526,6 +527,7 @@ private fun jdbcCompatibleTypeForListOrSet(parameterFieldType: FieldType): JdbcC
         is EsDocFieldType -> TODO("YAGNI?")
         is ForeignKeyFieldType -> TODO("YAGNI?")
         is FqcnFieldType -> TODO("YAGNI?")
+        is JoinFetchDtoFieldType -> TODO("YAGNI?")
         is PkAndNameFieldType -> TODO("YAGNI?")
         is InstantFieldType -> TODO("YAGNI?")
         is IntFieldType -> JdbcCompatibleType.integer_array
@@ -795,6 +797,32 @@ class FqcnFieldType internal constructor(
     override val jdbcCompatibleType: JdbcCompatibleType
         get() = providedJdbcCompatibleType
             ?: throw IllegalStateException("FQCN field types must have a JDBC compatible type")
+
+
+    override fun unwrap(): FieldType {
+        return this
+    }
+
+
+}
+
+
+class JoinFetchDtoFieldType(
+    val joinFetchDtoDef: JoinFetchDtoDef
+) : FieldType(
+    joinFetchDtoDef.fqcn,
+    BsonCompatibleType.DOCUMENT,
+    TypescriptCompatibleTypes.object_,
+    sqlType = null,
+    EsDocMappingTypes.`object`,
+    HazelcastCompatibleType.COMPACT,
+    defaultFormFieldValue = "{}"
+) {
+
+    val typescriptImport = joinFetchDtoDef.typescriptImport
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.jsonb
 
 
     override fun unwrap(): FieldType {

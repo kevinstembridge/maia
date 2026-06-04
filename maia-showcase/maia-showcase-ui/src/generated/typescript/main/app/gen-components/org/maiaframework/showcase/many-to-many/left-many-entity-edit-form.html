@@ -30,32 +30,72 @@
                 <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Right Entities</mat-label>
-            <mat-chip-grid #rightEntityChipGrid>
-                @for (entity of selectedRightEntities; track entity.id) {
-                    <mat-chip-row (removed)="removeRightEntity(entity)">
-                        {{ entity.someString }}
-                        <button matChipRemove type="button"><mat-icon>cancel</mat-icon></button>
-                    </mat-chip-row>
-                }
-            </mat-chip-grid>
-            <input
-                #rightEntityInput
-                placeholder="Search Right Entities..."
-                [formControl]="rightEntitySearchControl"
-                [matChipInputFor]="rightEntityChipGrid"
-                [matAutocomplete]="rightEntityAuto"
-            />
-            <mat-autocomplete #rightEntityAuto="matAutocomplete" (optionSelected)="addRightEntity($event)">
-                @if (filteredRightEntitiesIsLoading()) {
-                    <mat-option disabled>Loading...</mat-option>
-                }
-                @for (option of filteredRightEntities; track option.id) {
-                    <mat-option [value]="option">{{ option.someString }}</mat-option>
-                }
-            </mat-autocomplete>
-        </mat-form-field>
+        <div class="join-entries">
+            @for (join of rightJoins; track join.entityId) {
+                <div class="join-entry">
+                    <span>{{ join.entityName }}</span>
+                    <span>{{ join.effectiveFrom | date:'medium' }}</span>
+                    <span>{{ join.effectiveTo | date:'medium' }}</span>
+                    <button mat-icon-button type="button" (click)="removeRightJoin($index)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            }
+        </div>
+        <button mat-stroked-button type="button" (click)="showRightJoinForm.set(true)">
+            <mat-icon>add</mat-icon> Add Right Entities
+        </button>
+        @if (showRightJoinForm()) {
+            <div class="join-mini-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Right Entities</mat-label>
+                    <input
+                        matInput
+                        [formControl]="addRightJoinEntityControl"
+                        [matAutocomplete]="rightJoinEntityAuto"
+                        placeholder="Search Right Entities..."
+                    />
+                    <mat-autocomplete #rightJoinEntityAuto="matAutocomplete" [displayWith]="displayRightEntity">
+                        @if (filteredRightEntitiesIsLoading()) {
+                            <mat-option disabled>Loading...</mat-option>
+                        }
+                        @for (option of filteredRightEntities; track option.id) {
+                            <mat-option [value]="option">{{ option.someString }}</mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective From Date</mat-label>
+                    <input matInput [matDatepicker]="effectiveFromPickerright"
+                        [formControl]="addRightJoinEffectiveFromControl" />
+                    <mat-datepicker-toggle matIconSuffix [for]="effectiveFromPickerright"></mat-datepicker-toggle>
+                    <mat-datepicker #effectiveFromPickerright></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective From Time</mat-label>
+                    <input matInput [matTimepicker]="effectiveFromTimepickerright"
+                        [formControl]="addRightJoinEffectiveFromControl" />
+                    <mat-timepicker #effectiveFromTimepickerright></mat-timepicker>
+                    <mat-timepicker-toggle matSuffix [for]="effectiveFromTimepickerright"></mat-timepicker-toggle>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective To Date</mat-label>
+                    <input matInput [matDatepicker]="effectiveToPickerright"
+                        [formControl]="addRightJoinEffectiveToControl" />
+                    <mat-datepicker-toggle matIconSuffix [for]="effectiveToPickerright"></mat-datepicker-toggle>
+                    <mat-datepicker #effectiveToPickerright></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective To Time</mat-label>
+                    <input matInput [matTimepicker]="effectiveToTimepickerright"
+                        [formControl]="addRightJoinEffectiveToControl" />
+                    <mat-timepicker #effectiveToTimepickerright></mat-timepicker>
+                    <mat-timepicker-toggle matSuffix [for]="effectiveToTimepickerright"></mat-timepicker-toggle>
+                </mat-form-field>
+                <button mat-flat-button type="button" (click)="confirmAddRightJoin()">Add</button>
+                <button mat-flat-button type="button" (click)="cancelAddRightJoin()">Cancel</button>
+            </div>
+        }
     </div>
     <div>
         <button mat-flat-button type="submit" color="primary">Submit</button>

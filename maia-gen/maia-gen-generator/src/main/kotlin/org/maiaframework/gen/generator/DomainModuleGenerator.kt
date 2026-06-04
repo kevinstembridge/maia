@@ -47,6 +47,7 @@ class DomainModuleGenerator(
         `render enums`()
         `render EsDocs`()
         `render FetchForEditDtos`()
+        `render JoinFetchDtos`()
         `render form models`()
         `render HazelcastEntityConfig`()
         `render PkAndNameDtos`()
@@ -339,6 +340,13 @@ class DomainModuleGenerator(
     private fun `render FetchForEditDtos`() {
 
         this.modelDef.fetchForEditDtoDefs.forEach { renderDto(it.dtoDef) }
+
+    }
+
+
+    private fun `render JoinFetchDtos`() {
+
+        this.modelDef.joinFetchDtoDefs.forEach { renderDto(it.dtoDef) }
 
     }
 

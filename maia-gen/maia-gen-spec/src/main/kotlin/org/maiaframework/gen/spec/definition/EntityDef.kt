@@ -287,15 +287,44 @@ class EntityDef(
         }
 
 
+    private val joinFetchDtoDefsByAssociation: Map<ManyToManyEntityDef, JoinFetchDtoDef> by lazy {
+        manyToManyAssociations
+            .filter { it.entityDef.hasEffectiveTimestamps.value }
+            .associateWith { m2m ->
+                val otherSide = m2m.otherSideFrom(this)
+                JoinFetchDtoDef(
+                    packageName = this.packageName,
+                    otherSideDisplayName = otherSide.displayName.replace(" ", ""),
+                    nameTableColumnName = otherSide.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName.value,
+                    joinEntitySchemaAndTableName = m2m.entityDef.schemaAndTableName,
+                    otherSideIdTableColumnName = m2m.idTableColumnName(otherSide.entityDef),
+                    thisSideIdTableColumnName = m2m.idTableColumnName(this),
+                    otherSideEntitySchemaAndTableName = otherSide.entityDef.schemaAndTableName,
+                )
+            }
+    }
+
+
+    val joinFetchDtoDefs: List<JoinFetchDtoDef> by lazy {
+        joinFetchDtoDefsByAssociation.values.toList()
+    }
+
+
+    fun joinFetchDtoDefFor(m2m: ManyToManyEntityDef): JoinFetchDtoDef? = joinFetchDtoDefsByAssociation[m2m]
+
+
     private val fetchForEditManyToManyFieldDefs: List<ManyToManySearchableDtoFieldDef> by lazy {
 
         this.manyToManyAssociations.map { manyToManyEntityDef ->
             val otherSide = manyToManyEntityDef.otherSideFrom(this)
             val fieldName = "${otherSide.fieldName}Entities"
-            val classFieldDef = aClassField(
-                fieldName,
+            val fieldType = if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+                val joinFetchDtoDef = joinFetchDtoDefsByAssociation[manyToManyEntityDef]!!
+                FieldTypes.list(FieldTypes.joinFetchDto(joinFetchDtoDef))
+            } else {
                 FieldTypes.list(FieldTypes.pkAndName(otherSide.entityDef.entityPkAndNameDef))
-            ).build()
+            }
+            val classFieldDef = aClassField(fieldName, fieldType).build()
             ManyToManySearchableDtoFieldDef(classFieldDef, manyToManyEntityDef, null, Nullability.NOT_NULLABLE)
         }
 

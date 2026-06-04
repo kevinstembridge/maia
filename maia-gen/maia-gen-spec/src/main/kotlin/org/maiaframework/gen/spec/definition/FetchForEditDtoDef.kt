@@ -61,7 +61,10 @@ class FetchForEditDtoDef(
         }
 
     }.plus(
-        if (rootEntityDef != null) manyToManyFieldDefs.map { ManyToManyRowMapperFieldDef(it, rootEntityDef) }
+        if (rootEntityDef != null) manyToManyFieldDefs.map { mtmFieldDef ->
+            val joinFetchDtoDef = rootEntityDef.joinFetchDtoDefFor(mtmFieldDef.manyToManyEntityDef)
+            ManyToManyRowMapperFieldDef(mtmFieldDef, rootEntityDef, joinFetchDtoDef)
+        }
         else emptyList()
     ).sortedBy { it.classFieldName.value }
 

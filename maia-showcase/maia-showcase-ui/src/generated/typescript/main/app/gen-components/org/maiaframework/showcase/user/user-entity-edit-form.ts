@@ -123,7 +123,7 @@ export class UserEntityEditForm implements OnInit {
             lastName: this.formGroup.getRawValue().lastName,
             version: this.formGroup.getRawValue().version,
             firstName: this.formGroup.getRawValue().firstName,
-            userGroupEntityIds: this.formGroup.getRawValue().userGroupEntityIds,
+            userGroupEntities: this.formGroup.getRawValue().userGroupEntities,
         } as UserUpdateRequestDto;
 
         this.formService.edit(requestDto).subscribe({

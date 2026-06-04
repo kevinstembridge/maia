@@ -19,34 +19,42 @@ class LeftManyEditPage(
 ) {
 
 
-    fun assertChipVisible(chipLabel: String) {
-        page.locator("mat-chip-row")
-            .filter(Locator.FilterOptions().setHasText(chipLabel))
+    fun assertJoinEntryVisible(entityName: String) {
+
+        page.locator(".join-entry")
+            .filter(Locator.FilterOptions().setHasText(entityName))
             .waitFor()
+
     }
 
 
-    fun removeChip(chipLabel: String) {
-        page.locator("mat-chip-row")
-            .filter(Locator.FilterOptions().setHasText(chipLabel))
-            .locator("button")
+    fun removeJoinEntry(entityName: String) {
+
+        page.locator(".join-entry")
+            .filter(Locator.FilterOptions().setHasText(entityName))
+            .locator("button[type='button']")
             .click()
-        page.locator("mat-chip-row")
-            .filter(Locator.FilterOptions().setHasText(chipLabel))
+        page.locator(".join-entry")
+            .filter(Locator.FilterOptions().setHasText(entityName))
             .waitFor(Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN))
+
     }
 
 
     fun fillEditForm(
         someString: String = "testleft_edited",
     ) {
+
         page.locator("input[name='someString']").fill(someString)
+
     }
 
 
     fun clickSubmitButton() {
+
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Submit"))
             .click(Locator.ClickOptions().setForce(true))
+
     }
 
 

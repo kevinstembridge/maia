@@ -32,15 +32,17 @@ class RowMapperRenderer(
 
         this.rowMapperDef.manyToManyFieldDefs.forEach { manyToManyRowMapperFieldDef ->
 
-            val entityPkAndNameDef = manyToManyRowMapperFieldDef.entityPkAndNameDef
+            if (manyToManyRowMapperFieldDef.joinFetchDtoDef == null) {
+                val entityPkAndNameDef = manyToManyRowMapperFieldDef.entityPkAndNameDef
 
-            addImportFor(entityPkAndNameDef.rowMapperDef.classDef.fqcn)
+                addImportFor(entityPkAndNameDef.rowMapperDef.classDef.fqcn)
 
-            append("""
-                |
-                |
-                |    private val ${manyToManyRowMapperFieldDef.classFieldName}PkAndNameDtoRowMapper = ${entityPkAndNameDef.rowMapperDef.classDef.uqcn}()
-                |""".trimMargin())
+                append("""
+                    |
+                    |
+                    |    private val ${manyToManyRowMapperFieldDef.classFieldName}PkAndNameDtoRowMapper = ${entityPkAndNameDef.rowMapperDef.classDef.uqcn}()
+                    |""".trimMargin())
+            }
 
         }
 
@@ -76,7 +78,11 @@ class RowMapperRenderer(
             rowMapperDef.manyToManyFieldDefs.forEach { manyToManyRowMapperFieldDef ->
 
                 val classFieldName = manyToManyRowMapperFieldDef.classFieldName
-                appendLine("        val ${classFieldName}PkAndNameDtoList = fetch${manyToManyRowMapperFieldDef.classFieldName.firstToUpper()}PkAndNameDtos(entityId)")
+                if (manyToManyRowMapperFieldDef.joinFetchDtoDef != null) {
+                    appendLine("        val ${classFieldName}JoinFetchDtoList = fetch${classFieldName.firstToUpper()}JoinFetchDtos(entityId)")
+                } else {
+                    appendLine("        val ${classFieldName}PkAndNameDtoList = fetch${classFieldName.firstToUpper()}PkAndNameDtos(entityId)")
+                }
                 blankLine()
             }
 
@@ -96,7 +102,11 @@ class RowMapperRenderer(
                     `render for ForeignKey field`(rowMapperFieldDef)
                 }
                 is ManyToManyRowMapperFieldDef -> {
-                    fieldNames.add("${rowMapperFieldDef.classFieldName}PkAndNameDtoList")
+                    if (rowMapperFieldDef.joinFetchDtoDef != null) {
+                        fieldNames.add("${rowMapperFieldDef.classFieldName}JoinFetchDtoList")
+                    } else {
+                        fieldNames.add("${rowMapperFieldDef.classFieldName}PkAndNameDtoList")
+                    }
                 }
             }
 
@@ -167,43 +177,86 @@ class RowMapperRenderer(
 
         this.rowMapperDef.manyToManyFieldDefs.forEach { manyToManyRowMapperFieldDef ->
 
-            addImportFor(Fqcns.MAIA_DOMAIN_ID)
-            addImportFor(Fqcns.MAIA_SQL_PARAMS)
-            val entityPkAndNameDef = manyToManyRowMapperFieldDef.entityPkAndNameDef
-            addImportFor(entityPkAndNameDef.pkAndNameDtoFqcn)
+            val joinFetchDtoDef = manyToManyRowMapperFieldDef.joinFetchDtoDef
+            val classFieldName = manyToManyRowMapperFieldDef.classFieldName
 
-            append("""
-                |
-                |
-                |    private fun fetch${manyToManyRowMapperFieldDef.classFieldName.firstToUpper()}PkAndNameDtos(entityId: DomainId): List<${entityPkAndNameDef.pkAndNameDtoFqcn.uqcn}> {
-                |
-                |        return this.jdbcOps.queryForList(
-                |            $tripleQuote
-                |            select
-                |                other.id,
-                |                other.${manyToManyRowMapperFieldDef.otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
-                |""".trimMargin())
+            if (joinFetchDtoDef != null) {
 
-            val otherSideEntity = manyToManyRowMapperFieldDef.otherSideEntity
-            val otherSideIdTableColumnName = manyToManyRowMapperFieldDef.otherSideIdTableColumnName
-            val thisSideIdTableColumnName = manyToManyRowMapperFieldDef.thisSideIdTableColumnName
-            val manyToManyEntityDef = manyToManyRowMapperFieldDef.manyToManySearchableDtoFieldDef.manyToManyEntityDef
+                addImportFor(Fqcns.MAIA_DOMAIN_ID)
+                addImportFor(Fqcns.MAIA_SQL_PARAMS)
+                addImportFor(joinFetchDtoDef.fqcn)
 
-            append("""
-                |            from ${otherSideEntity.entityDef.schemaAndTableName} other
-                |            join ${manyToManyEntityDef.entityDef.schemaAndTableName} mtm
-                |                on other.id = mtm.${otherSideIdTableColumnName}
-                |            where mtm.${thisSideIdTableColumnName} = :entityId
-                |            order by other.${otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
-                |            $tripleQuote.trimIndent(),
-                |            SqlParams().apply {
-                |                addValue("entityId", entityId)
-                |            },
-                |            this.${manyToManyRowMapperFieldDef.classFieldName}PkAndNameDtoRowMapper
-                |        )
-                |
-                |    }
-                |""".trimMargin())
+                append("""
+                    |
+                    |
+                    |    private fun fetch${classFieldName.firstToUpper()}JoinFetchDtos(entityId: DomainId): List<${joinFetchDtoDef.uqcn}> {
+                    |
+                    |        return this.jdbcOps.queryForList(
+                    |            $tripleQuote
+                    |            select
+                    |                other.id,
+                    |                other.${joinFetchDtoDef.nameTableColumnName},
+                    |                mtm.effective_from,
+                    |                mtm.effective_to
+                    |            from ${joinFetchDtoDef.otherSideEntitySchemaAndTableName} other
+                    |            join ${joinFetchDtoDef.joinEntitySchemaAndTableName} mtm
+                    |                on other.id = mtm.${joinFetchDtoDef.otherSideIdTableColumnName}
+                    |            where mtm.${joinFetchDtoDef.thisSideIdTableColumnName} = :entityId
+                    |            order by other.${joinFetchDtoDef.nameTableColumnName}
+                    |            $tripleQuote.trimIndent(),
+                    |            SqlParams().apply {
+                    |                addValue("entityId", entityId)
+                    |            },
+                    |        ) { rsa ->
+                    |            ${joinFetchDtoDef.uqcn}(
+                    |                id = rsa.readDomainId("id"),
+                    |                name = rsa.readString("${joinFetchDtoDef.nameTableColumnName}"),
+                    |                effectiveFrom = rsa.readInstantOrNull("effective_from"),
+                    |                effectiveTo = rsa.readInstantOrNull("effective_to"),
+                    |            )
+                    |        }
+                    |
+                    |    }
+                    |""".trimMargin())
+
+            } else {
+
+                addImportFor(Fqcns.MAIA_DOMAIN_ID)
+                addImportFor(Fqcns.MAIA_SQL_PARAMS)
+                val entityPkAndNameDef = manyToManyRowMapperFieldDef.entityPkAndNameDef
+                addImportFor(entityPkAndNameDef.pkAndNameDtoFqcn)
+
+                val otherSideEntity = manyToManyRowMapperFieldDef.otherSideEntity
+                val otherSideIdTableColumnName = manyToManyRowMapperFieldDef.otherSideIdTableColumnName
+                val thisSideIdTableColumnName = manyToManyRowMapperFieldDef.thisSideIdTableColumnName
+                val manyToManyEntityDef = manyToManyRowMapperFieldDef.manyToManySearchableDtoFieldDef.manyToManyEntityDef
+
+                append("""
+                    |
+                    |
+                    |    private fun fetch${classFieldName.firstToUpper()}PkAndNameDtos(entityId: DomainId): List<${entityPkAndNameDef.pkAndNameDtoFqcn.uqcn}> {
+                    |
+                    |        return this.jdbcOps.queryForList(
+                    |            $tripleQuote
+                    |            select
+                    |                other.id,
+                    |                other.${otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
+                    |            from ${otherSideEntity.entityDef.schemaAndTableName} other
+                    |            join ${manyToManyEntityDef.entityDef.schemaAndTableName} mtm
+                    |                on other.id = mtm.${otherSideIdTableColumnName}
+                    |            where mtm.${thisSideIdTableColumnName} = :entityId
+                    |            order by other.${otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
+                    |            $tripleQuote.trimIndent(),
+                    |            SqlParams().apply {
+                    |                addValue("entityId", entityId)
+                    |            },
+                    |            this.${classFieldName}PkAndNameDtoRowMapper
+                    |        )
+                    |
+                    |    }
+                    |""".trimMargin())
+
+            }
 
         }
 

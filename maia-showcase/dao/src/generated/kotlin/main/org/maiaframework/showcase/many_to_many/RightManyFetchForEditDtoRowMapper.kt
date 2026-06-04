@@ -15,14 +15,11 @@ class RightManyFetchForEditDtoRowMapper(
 ) : MaiaRowMapper<RightManyFetchForEditDto> {
 
 
-    private val leftEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
-
-
     override fun mapRow(rsa: ResultSetAdapter): RightManyFetchForEditDto {
 
         val entityId = rsa.readDomainId("id")
 
-        val leftEntitiesPkAndNameDtoList = fetchLeftEntitiesPkAndNameDtos(entityId)
+        val leftEntitiesJoinFetchDtoList = fetchLeftEntitiesJoinFetchDtos(entityId)
 
         val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
         val id = rsa.readDomainId("id")
@@ -32,7 +29,7 @@ class RightManyFetchForEditDtoRowMapper(
         return RightManyFetchForEditDto(
             createdTimestampUtc,
             id,
-            leftEntitiesPkAndNameDtoList,
+            leftEntitiesJoinFetchDtoList,
             someInt,
             someString,
         )
@@ -40,13 +37,15 @@ class RightManyFetchForEditDtoRowMapper(
     }
 
 
-    private fun fetchLeftEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
+    private fun fetchLeftEntitiesJoinFetchDtos(entityId: DomainId): List<LeftJoinFetchDto> {
 
         return this.jdbcOps.queryForList(
             """
             select
                 other.id,
-                other.some_string
+                other.some_string,
+                mtm.effective_from,
+                mtm.effective_to
             from maia.left_many other
             join maia.left_to_right_many_to_many_join mtm
                 on other.id = mtm.left_id
@@ -56,8 +55,14 @@ class RightManyFetchForEditDtoRowMapper(
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.leftEntitiesPkAndNameDtoRowMapper
-        )
+        ) { rsa ->
+            LeftJoinFetchDto(
+                id = rsa.readDomainId("id"),
+                name = rsa.readString("some_string"),
+                effectiveFrom = rsa.readInstantOrNull("effective_from"),
+                effectiveTo = rsa.readInstantOrNull("effective_to"),
+            )
+        }
 
     }
 

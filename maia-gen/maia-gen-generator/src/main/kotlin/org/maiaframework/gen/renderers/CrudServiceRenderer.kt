@@ -20,6 +20,7 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
+import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -344,6 +345,7 @@ class CrudServiceRenderer(
             is EsDocFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> TODO("YAGNI?")
             is FqcnFieldType -> TODO("YAGNI?")
+            is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is PkAndNameFieldType -> TODO("YAGNI?")
             is InstantFieldType -> TODO("YAGNI?")
             is IntFieldType -> TODO("YAGNI?")
@@ -450,7 +452,8 @@ class CrudServiceRenderer(
 
             val manyToManyFieldNames = apiDef.entityDef.manyToManyAssociations.map { m2m ->
                 val otherSide = m2m.otherSideFrom(this.entityDef)
-                "${otherSide.fieldName}EntityIds"
+                if (m2m.entityDef.hasEffectiveTimestamps.value) "${otherSide.fieldName}Entities"
+                else "${otherSide.fieldName}EntityIds"
             }.toSet()
 
             dtoDef.classFieldDefs
@@ -479,7 +482,6 @@ class CrudServiceRenderer(
             val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
             val thisSideFieldName = manyToManyEntityDef.idTableColumnName(this.entityDef).removeSuffix("_id")
             val otherSideFieldName = otherSide.fieldName
-            val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
             val thisSideFieldNameCapitalized = thisSideFieldName.replaceFirstChar { it.uppercaseChar() }
             val otherSideFieldNameCapitalized = otherSideFieldName.replaceFirstChar { it.uppercaseChar() }
             val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
@@ -487,25 +489,27 @@ class CrudServiceRenderer(
 
             blankLine()
             if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value && !manyToManyEntityDef.entityDef.isNotDeletable) {
-                addImportFor<Instant>()
+                val otherSideDtoFieldName = "${otherSideFieldName}Entities"
                 appendLine("        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
                 appendLine("            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
                 appendLine("        }")
                 blankLine()
-                appendLine("        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->")
-                appendLine("            ${joinEntityClass}.newInstance(effectiveFrom = Instant.now(), effectiveTo = null, $thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)")
+                appendLine("        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { joinDto ->")
+                appendLine("            ${joinEntityClass}.newInstance(effectiveFrom = joinDto.effectiveFrom, effectiveTo = joinDto.effectiveTo, $thisSideFieldName = id, $otherSideFieldName = joinDto.${otherSideFieldName}EntityId)")
                 appendLine("        }")
                 appendLine("        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
             } else if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+                val otherSideDtoFieldName = "${otherSideFieldName}Entities"
                 appendLine("        //this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
                 appendLine("        //    this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
                 appendLine("        //}")
                 blankLine()
-                appendLine("        //val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->")
-                appendLine("        //    ${joinEntityClass}.newInstance(effectiveFrom = Instant.now(), effectiveTo = null, $thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)")
+                appendLine("        //val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { joinDto ->")
+                appendLine("        //    ${joinEntityClass}.newInstance(effectiveFrom = joinDto.effectiveFrom, effectiveTo = joinDto.effectiveTo, $thisSideFieldName = id, $otherSideFieldName = joinDto.${otherSideFieldName}EntityId)")
                 appendLine("        //}")
                 appendLine("        //this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
             } else {
+                val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
                 appendLine("        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
                 appendLine("            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
                 appendLine("        }")

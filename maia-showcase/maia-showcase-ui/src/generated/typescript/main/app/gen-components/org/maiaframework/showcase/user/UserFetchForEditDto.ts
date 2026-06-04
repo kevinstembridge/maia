@@ -3,7 +3,7 @@
 
 import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/LifecycleState';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
-import {UserGroupPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupPkAndNameDto';
+import {UserGroupJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupJoinFetchDto';
 
 
 export interface UserFetchForEditDto {
@@ -18,7 +18,7 @@ export interface UserFetchForEditDto {
     lastModifiedTimestampUtc: string;
     lastName: string;
     lifecycleState: LifecycleState;
-    userGroupEntities: ReadonlyArray<UserGroupPkAndNameDto>;
+    userGroupEntities: ReadonlyArray<UserGroupJoinFetchDto>;
     version: number;
 }
 

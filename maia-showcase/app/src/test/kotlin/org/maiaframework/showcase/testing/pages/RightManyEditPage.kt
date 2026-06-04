@@ -19,23 +19,23 @@ class RightManyEditPage(
 ) {
 
 
-    fun assertChipVisible(chipLabel: String) {
+    fun assertJoinEntryVisible(entityName: String) {
 
-        page.locator("mat-chip-row")
-            .filter(Locator.FilterOptions().setHasText(chipLabel))
+        page.locator(".join-entry")
+            .filter(Locator.FilterOptions().setHasText(entityName))
             .waitFor()
 
     }
 
 
-    fun removeChip(chipLabel: String) {
+    fun removeJoinEntry(entityName: String) {
 
-        page.locator("mat-chip-row")
-            .filter(Locator.FilterOptions().setHasText(chipLabel))
-            .locator("button")
+        page.locator(".join-entry")
+            .filter(Locator.FilterOptions().setHasText(entityName))
+            .locator("button[type='button']")
             .click()
-        page.locator("mat-chip-row")
-            .filter(Locator.FilterOptions().setHasText(chipLabel))
+        page.locator(".join-entry")
+            .filter(Locator.FilterOptions().setHasText(entityName))
             .waitFor(Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN))
 
     }

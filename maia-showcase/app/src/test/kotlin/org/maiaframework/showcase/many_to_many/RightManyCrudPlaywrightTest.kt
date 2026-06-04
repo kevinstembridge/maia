@@ -101,8 +101,8 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
         rightManyEditPage.apply {
 
             assertOnPage()
-            assertChipVisible("left-alpha")
-            removeChip("left-alpha")
+            assertJoinEntryVisible("left-alpha")
+            removeJoinEntry("left-alpha")
             fillForm(someString = "testright_edited")
             clickSubmitButton()
 

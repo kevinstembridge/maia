@@ -2,6 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
+import {UserGroupJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupJoinRequestDto';
 
 
 export interface UserUpdateRequestDto {
@@ -9,7 +10,7 @@ export interface UserUpdateRequestDto {
     firstName?: string;
     id: string;
     lastName: string;
-    userGroupEntityIds?: ReadonlyArray<string>;
+    userGroupEntities?: ReadonlyArray<UserGroupJoinRequestDto>;
     version: number;
 }
 
