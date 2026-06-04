@@ -16,12 +16,20 @@ export const AuthoritySelectOptions = [
         description: 'Grants write access.'
     },
     {
-        name: Authority.ELASTICSEARCH_SYS_OPS_WRITE,
-        displayName: 'ELASTICSEARCH_SYS_OPS_WRITE',
+        name: Authority.MAIA_ELASTICSEARCH_SYS_OPS_WRITE,
+        displayName: 'MAIA_ELASTICSEARCH_SYS_OPS_WRITE',
     },
     {
-        name: Authority.ELASTICSEARCH_SYS_OPS_READ,
-        displayName: 'ELASTICSEARCH_SYS_OPS_READ',
+        name: Authority.MAIA_ELASTICSEARCH_SYS_OPS_READ,
+        displayName: 'MAIA_ELASTICSEARCH_SYS_OPS_READ',
+    },
+    {
+        name: Authority.MAIA_JOB_READ,
+        displayName: 'MAIA_JOB_READ',
+    },
+    {
+        name: Authority.MAIA_JOB_WRITE,
+        displayName: 'MAIA_JOB_WRITE',
     },
 ];
 

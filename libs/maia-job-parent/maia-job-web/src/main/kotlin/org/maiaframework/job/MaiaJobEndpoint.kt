@@ -17,7 +17,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
 
 
     @GetMapping("/jobs/current_state", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__OPS')")
+    @PreAuthorize("hasAuthority('MAIA_JOB_READ')")
     fun getCurrentJobsState(): List<JobStateResponseDto> {
 
         return this.jobService.getAllJobsCurrentState()
@@ -26,7 +26,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
 
 
     @GetMapping("/job/recently_failed/{jobName}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__OPS')")
+    @PreAuthorize("hasAuthority('MAIA_JOB_READ')")
     fun getRecentlyFailedExecutions(
         @PathVariable jobName: String
     ): List<JobExecutionSummaryResponseDto> {
@@ -37,7 +37,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
 
 
     @GetMapping("/job/execution_detail/{jobExecutionId}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__OPS')")
+    @PreAuthorize("hasAuthority('MAIA_JOB_READ')")
     fun getExecutionDetail(
         @PathVariable jobExecutionId: String
     ): JobExecutionDetailResponseDto? {
@@ -48,7 +48,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
 
 
     @GetMapping("/job/execution_stacktrace/{jobExecutionId}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__OPS')")
+    @PreAuthorize("hasAuthority('MAIA_JOB_READ')")
     fun getStacktrace(
         @PathVariable jobExecutionId: String
     ): Map<String, String>? {
@@ -63,7 +63,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
 
 
     @PostMapping("/job/run/{jobName}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('SYS__OPS')")
+    @PreAuthorize("hasAuthority('MAIA_JOB_WRITE')")
     fun runJob(
         @PathVariable jobName: String
     ): JobExecutionSummaryResponseDto {
