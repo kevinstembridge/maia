@@ -1,4 +1,21 @@
 
+TODO * Improve the styling.
+
+
+TODO * MTM scenarios:
+    TODO * When we delete an MTM association, it should just set the effectiveTo date to now().
+    TODO * When we display the MTM associations for a given entity, it should ignore those outside effective range.
+    TODO * For some effective-dated MTMs, we don't need to make those fields editable. They can be set automatically
+        when the association is created or deleted.
+    TODO *
+
+
+TODO * We may have multiple Spec classes within a given application, and we may reference
+        Spec classes from third-party modules. We need a way to aggregate all the AuthorityDefs
+        from all the Spec classes to be used within a single application.
+        Create an AbstractApplicationSpec that will aggregate multiple ModelSpecs.
+
+
 TODO * Consolidate all the form component renderers into one.
     TODO * List them all and the reason why they are currently being used.
 
@@ -30,7 +47,7 @@ TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveT
     The joins to the 'other side' entities will be displayed in a list of cards with each card displaying
     the display name of the other side and the fields from the join entity (effective timestamps, approval status, etc).
     Each card will have a Delete icon.
-    Above the list will be an 'Add' button that will open a dialog to create a new join entity.
+    Above the list will be an 'Add' button that will open a mini form to create a new join entity.
 
 
 
