@@ -21,7 +21,7 @@ class ElasticSearchIndicesEndpoint(
 
 
     @GetMapping("/elastic_indices_state")
-    @PreAuthorize("hasAuthority('SYS__OPS')")
+    @PreAuthorize("hasAuthority('${EsConstants.Authority.ELASTICSEARCH_SYS_OPS_READ}')")
     fun getElasticIndicesDefinitions(): List<EsIndexStateDto> {
 
         return this.elasticIndexService.getIndicesState()
@@ -30,7 +30,7 @@ class ElasticSearchIndicesEndpoint(
 
 
     @PostMapping("/elastic_index/create/{indexName}")
-    @PreAuthorize("hasAuthority('SYS__OPS')")
+    @PreAuthorize("hasAuthority('${EsConstants.Authority.ELASTICSEARCH_SYS_OPS_WRITE}')")
     fun createIndex(@PathVariable("indexName") indexNameRaw: String, principal: Principal) {
 
         val indexName = this.esIndexNameFactory.indexNameFrom(indexNameRaw)
@@ -40,7 +40,7 @@ class ElasticSearchIndicesEndpoint(
 
 
     @PostMapping("/elastic_index/set_active/{indexName}")
-    @PreAuthorize("hasAuthority('SYS__OPS')")
+    @PreAuthorize("hasAuthority('${EsConstants.Authority.ELASTICSEARCH_SYS_OPS_WRITE}')")
     fun setIndexActiveVersion(@PathVariable indexName: String, principal: Principal) {
 
         val esIndexName = this.esIndexNameFactory.indexNameFrom(indexName)
