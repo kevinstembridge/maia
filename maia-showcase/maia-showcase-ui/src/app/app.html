@@ -82,7 +82,19 @@
     <span class="toolbar-spacer" aria-hidden="true"></span>
 
     @if (isLoggedIn()) {
-        <button mat-button (click)="logout()">Logout</button>
+        <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+            <button mat-menu-item (click)="openMyPermissions()">
+                <mat-icon>lock</mat-icon>
+                <span>My Permissions</span>
+            </button>
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+            </button>
+        </mat-menu>
     } @else {
         <a mat-button routerLink="/login">Login</a>
     }

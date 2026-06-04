@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>My Permissions</h2>
+<mat-dialog-content>
+    <p>{{ currentUserStore.currentUser()?.firstName }} {{ currentUserStore.currentUser()?.lastName }}</p>
+    <ul>
+        @for (authority of currentUserStore.currentUser()?.grantedAuthorities; track authority) {
+            <li>{{ authority }}</li>
+        }
+    </ul>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

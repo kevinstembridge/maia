@@ -2,11 +2,13 @@ import {Component, computed, inject, signal} from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/auth/current-user-store';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
 import {CurrentUserAuthStore} from './state/current-user-auth-store';
+import {MyPermissionsDialog} from './components/my-permissions-dialog/my-permissions-dialog';
 
 @Component({
     selector: 'app-root',
@@ -32,6 +34,9 @@ export class App {
     private readonly authService = inject(AuthService);
 
 
+    private readonly dialog = inject(MatDialog);
+
+
     protected readonly isLoggedIn = this.currentUserStore.isLoggedIn;
 
 
@@ -55,6 +60,13 @@ export class App {
     protected logout(): void {
 
         this.authService.logout();
+
+    }
+
+
+    protected openMyPermissions(): void {
+
+        this.dialog.open(MyPermissionsDialog);
 
     }
 
