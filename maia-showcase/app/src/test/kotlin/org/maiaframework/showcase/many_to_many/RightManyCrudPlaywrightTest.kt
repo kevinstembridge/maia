@@ -73,7 +73,9 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
             assertOnPage()
             fillForm(someInt = "42", someString = "testright")
-            searchAndSelectLeftEntity("left-alpha")
+            clickAddLeftEntityButton()
+            searchAndSelectLeftEntityInMiniForm("left-alpha")
+            clickConfirmAddInMiniForm()
             clickSubmitButton()
 
         }

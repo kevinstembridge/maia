@@ -181,7 +181,7 @@ open class TypescriptInterfaceDtoRenderer(
             is MapFieldType -> TODO()
             is ObjectIdFieldType -> "string"
             is PeriodFieldType -> "string"
-            is RequestDtoFieldType -> TODO()
+            is RequestDtoFieldType -> parameterFieldType.requestDtoDef.uqcn.value
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> parameterFieldType.uqcn.value
             is StringFieldType -> "string"

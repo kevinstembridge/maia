@@ -377,7 +377,10 @@ class DomainModuleGenerator(
 
     private fun processCrudApiDef(entityCrudApiDef: EntityCrudApiDef) {
 
-        entityCrudApiDef.createApiDef?.let { renderRequestDto(it.requestDtoDef) }
+        entityCrudApiDef.createApiDef?.let { createApiDef ->
+            createApiDef.manyToManyTimestampedJoinRequestDtoDefs.forEach { renderRequestDto(it) }
+            renderRequestDto(createApiDef.requestDtoDef)
+        }
         entityCrudApiDef.updateApiDef?.let {
             renderRequestDto(it.requestDtoDef)
             renderInlineEditDtos(it.inlineEditDtoDefs)

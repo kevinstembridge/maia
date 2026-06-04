@@ -1,0 +1,47 @@
+{
+  "planPath": "docs/superpowers/plans/2026-06-04-mtm-effective-timestamps-create-form.md",
+  "tasks": [
+    {
+      "id": 7,
+      "subject": "Task 1: ManyToManyTimestampedFieldDef — new metadata class",
+      "status": "complete",
+      "description": "**Goal:** Create the metadata class that carries every generated name for the timestamped join pattern.\n\n**Files:**\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/ManyToManyTimestampedFieldDef.kt`\n\n**Acceptance Criteria:**\n- [ ] File compiles cleanly\n- [ ] All name-deriving properties match design doc naming convention\n\n**Verify:** `./gradlew :maia-gen:maia-gen-generator:compileKotlin` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/ManyToManyTimestampedFieldDef.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"File compiles cleanly\", \"All name properties match design doc\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 8,
+      "subject": "Task 2: Join request DTO — spec model + Kotlin/TypeScript rendering",
+      "status": "complete",
+      "blockedBy": [7],
+      "description": "**Goal:** EntityCreateApiDef produces LeftJoinRequestDto and changes the parent DTO field from leftEntityIds to leftEntities.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityCreateApiDef.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/DomainModuleGenerator.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/TypescriptInterfaceDtoRenderer.kt`\n\n**Verify:** `./gradlew :maia-showcase:domain:maiaGeneration :maia-showcase:app:maiaGeneration && ./gradlew :maia-showcase:domain:compileKotlin`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityCreateApiDef.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/DomainModuleGenerator.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/TypescriptInterfaceDtoRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:domain:maiaGeneration :maia-showcase:app:maiaGeneration && ./gradlew :maia-showcase:domain:compileKotlin\", \"acceptanceCriteria\": [\"LeftJoinRequestDto.kt generated\", \"RightManyCreateRequestDto has leftEntities\", \"LeftJoinRequestDto.ts generated\", \"Non-timestamped associations unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 9,
+      "subject": "Task 3: CrudServiceRenderer — use provided timestamps",
+      "status": "complete",
+      "blockedBy": [8],
+      "description": "**Goal:** Generated RightManyCrudService.create() uses joinDto.effectiveFrom and joinDto.effectiveTo.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CrudServiceRenderer.kt`\n\n**Verify:** `./gradlew :maia-showcase:service:maiaGeneration && ./gradlew :maia-showcase:service:compileKotlin`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CrudServiceRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:service:maiaGeneration && ./gradlew :maia-showcase:service:compileKotlin\", \"acceptanceCriteria\": [\"RightManyCrudService iterates leftEntities\", \"Uses joinDto.effectiveFrom and joinDto.effectiveTo\", \"Non-timestamped path unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 10,
+      "subject": "Task 4: Angular component — split chip/timestamped + state/methods",
+      "status": "complete",
+      "blockedBy": [7, 8],
+      "description": "**Goal:** Component generates join-entry state, typeahead wiring, confirm/cancel/remove methods, onSubmit DTO mapping.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/AngularReactiveFormComponentRenderer.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/AbstractCrudReactiveFormHtmlRenderer.kt`\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityCreateReactiveFormHtmlRenderer.kt`\n\n**Verify:** `./gradlew :maia-showcase:app:maiaGeneration`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/AngularReactiveFormComponentRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/AbstractCrudReactiveFormHtmlRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityCreateReactiveFormHtmlRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:maiaGeneration\", \"acceptanceCriteria\": [\"Component has leftJoins state and confirm/cancel/remove methods\", \"onSubmit maps leftJoins to leftEntities\", \"Non-timestamped chip pattern not regressed\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 11,
+      "subject": "Task 5: HTML template — card list + inline mini form",
+      "status": "complete",
+      "blockedBy": [10],
+      "description": "**Goal:** renderManyToManyTimestampedFields() generates join-entry list, Add button, inline mini form with datepicker/timepicker pairs.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/AbstractCrudReactiveFormHtmlRenderer.kt`\n\n**Verify:** `./gradlew :maia-showcase:app:maiaGeneration && cd maia-showcase/maia-showcase-ui && npx ng build --configuration=development`\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/AbstractCrudReactiveFormHtmlRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:maiaGeneration\", \"acceptanceCriteria\": [\"HTML has join list and inline mini form\", \"Datepicker+timepicker pairs present\", \"Angular build succeeds\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 12,
+      "subject": "Task 6: Update Playwright test for new create-form interaction",
+      "status": "complete",
+      "blockedBy": [9, 11],
+      "description": "**Goal:** RightManyCreatePage exposes three-step Add interaction; CRUD journey test passes.\n\n**Files:**\n- Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyCreatePage.kt`\n- Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/RightManyCrudPlaywrightTest.kt`\n\n**Verify:** `./gradlew :maia-showcase:app:test --tests \"org.maiaframework.showcase.many_to_many.RightManyCrudPlaywrightTest\"`\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/testing/pages/RightManyCreatePage.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/RightManyCrudPlaywrightTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests \\\"org.maiaframework.showcase.many_to_many.RightManyCrudPlaywrightTest\\\"\", \"acceptanceCriteria\": [\"searchAndSelectLeftEntity removed\", \"Three new interaction methods present\", \"CRUD journey test passes\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-06-04T00:00:00Z"
+}

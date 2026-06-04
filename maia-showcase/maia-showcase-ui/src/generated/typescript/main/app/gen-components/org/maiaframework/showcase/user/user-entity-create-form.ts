@@ -83,7 +83,7 @@ export class UserEntityCreateForm implements OnInit {
             encryptedPassword: this.formGroup.getRawValue().encryptedPassword,
             lastName: this.formGroup.getRawValue().lastName,
             firstName: this.formGroup.getRawValue().firstName,
-            userGroupEntityIds: this.formGroup.getRawValue().userGroupEntityIds,
+            userGroupEntities: this.formGroup.getRawValue().userGroupEntities,
         } as UserCreateRequestDto;
 
         this.formService.create(requestDto).subscribe({

@@ -25,6 +25,40 @@ class EntityCreateApiDef(
     private val angularComponentBaseName = AngularComponentBaseName(this.entityDef.entityBaseName.value)
 
 
+    val timestampedJoinRequestDtosByAssociation: Map<ManyToManyEntityDef, RequestDtoDef> by lazy {
+        entityDef.manyToManyAssociations
+            .filter { it.entityDef.hasEffectiveTimestamps.value }
+            .associateWith { m2m ->
+                val otherSide = m2m.otherSideFrom(entityDef)
+                RequestDtoDef(
+                    dtoBaseName = DtoBaseName("${otherSide.displayName.replace(" ", "")}Join"),
+                    packageName = entityDef.packageName,
+                    dtoFieldDefs = listOf(
+                        RequestDtoFieldDef(
+                            ClassFieldDef.aClassField("${otherSide.fieldName}EntityId", FieldTypes.domainId).build(),
+                            null
+                        ),
+                        RequestDtoFieldDef(
+                            ClassFieldDef.aClassField("effectiveFrom", FieldTypes.instant).nullable().build(),
+                            null
+                        ),
+                        RequestDtoFieldDef(
+                            ClassFieldDef.aClassField("effectiveTo", FieldTypes.instant).nullable().build(),
+                            null
+                        )
+                    ),
+                    preAuthorizeExpression = null,
+                    moduleName = moduleName
+                )
+            }
+    }
+
+
+    val manyToManyTimestampedJoinRequestDtoDefs: List<RequestDtoDef> by lazy {
+        timestampedJoinRequestDtosByAssociation.values.toList()
+    }
+
+
     val htmlFormFields = this.entityDef.allEntityFields
         .filter { field -> field.isCreatableByUser.value }
         .map { entityFieldDef ->
@@ -95,11 +129,20 @@ class EntityCreateApiDef(
         .plus(
             entityDef.manyToManyAssociations.map { manyToManyEntityDef ->
                 val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
-                val classFieldDef = ClassFieldDef.aClassField(
-                    "${otherSide.fieldName}EntityIds",
-                    FieldTypes.list(FieldTypes.domainId)
-                ).nullable().build()
-                RequestDtoFieldDef(classFieldDef, null)
+                if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+                    val joinDtoDef = timestampedJoinRequestDtosByAssociation[manyToManyEntityDef]!!
+                    val classFieldDef = ClassFieldDef.aClassField(
+                        "${otherSide.fieldName}Entities",
+                        FieldTypes.list(FieldTypes.requestDto(joinDtoDef))
+                    ).nullable().build()
+                    RequestDtoFieldDef(classFieldDef, null)
+                } else {
+                    val classFieldDef = ClassFieldDef.aClassField(
+                        "${otherSide.fieldName}EntityIds",
+                        FieldTypes.list(FieldTypes.domainId)
+                    ).nullable().build()
+                    RequestDtoFieldDef(classFieldDef, null)
+                }
             }
         )
     }

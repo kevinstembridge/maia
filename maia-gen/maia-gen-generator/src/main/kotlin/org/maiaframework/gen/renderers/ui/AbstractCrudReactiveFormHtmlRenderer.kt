@@ -8,7 +8,8 @@ import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 abstract class AbstractCrudReactiveFormHtmlRenderer(
     protected val entityDef: EntityDef,
     private val inlineFormOrDialog: InlineFormOrDialog,
-    protected open val chipFields: List<ManyToManyChipFieldDef> = emptyList()
+    protected open val chipFields: List<ManyToManyChipFieldDef> = emptyList(),
+    protected open val timestampedFields: List<ManyToManyTimestampedFieldDef> = emptyList()
 ) : AbstractSourceFileRenderer() {
 
 
@@ -22,6 +23,84 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
 
 
     protected open val withCancelButton: Boolean = false
+
+
+    protected open fun renderManyToManyTimestampedFields() {
+
+        timestampedFields.forEach { field ->
+
+            append("""
+                |        <div class="join-entries">
+                |            @for (join of ${field.joinsFieldName}; track join.entityId) {
+                |                <div class="join-entry">
+                |                    <span>{{ join.entityName }}</span>
+                |                    <span>{{ join.effectiveFrom | date:'medium' }}</span>
+                |                    <span>{{ join.effectiveTo | date:'medium' }}</span>
+                |                    <button mat-icon-button type="button" (click)="${field.removeMethodName}(${'$'}index)">
+                |                        <mat-icon>delete</mat-icon>
+                |                    </button>
+                |                </div>
+                |            }
+                |        </div>
+                |        <button mat-stroked-button type="button" (click)="${field.showFormSignalName}.set(true)">
+                |            <mat-icon>add</mat-icon> Add ${field.labelText}
+                |        </button>
+                |        @if (${field.showFormSignalName}()) {
+                |            <div class="join-mini-form">
+                |                <mat-form-field appearance="outline">
+                |                    <mat-label>${field.labelText}</mat-label>
+                |                    <input
+                |                        matInput
+                |                        [formControl]="${field.addEntityControlName}"
+                |                        [matAutocomplete]="${field.autocompleteRefName}"
+                |                        placeholder="${field.searchPlaceholder}"
+                |                    />
+                |                    <mat-autocomplete #${field.autocompleteRefName}="matAutocomplete">
+                |                        @if (${field.filteredIsLoadingFieldName}()) {
+                |                            <mat-option disabled>Loading...</mat-option>
+                |                        }
+                |                        @for (option of ${field.filteredFieldName}; track option.${field.esDocIdFieldName}) {
+                |                            <mat-option [value]="option">{{ option.${field.searchTermFieldName} }}</mat-option>
+                |                        }
+                |                    </mat-autocomplete>
+                |                </mat-form-field>
+                |                <mat-form-field appearance="outline">
+                |                    <mat-label>Effective From Date</mat-label>
+                |                    <input matInput [matDatepicker]="effectiveFromPicker${field.fieldName}"
+                |                        [formControl]="${field.effectiveFromControlName}" />
+                |                    <mat-datepicker-toggle matIconSuffix [for]="effectiveFromPicker${field.fieldName}"></mat-datepicker-toggle>
+                |                    <mat-datepicker #effectiveFromPicker${field.fieldName}></mat-datepicker>
+                |                </mat-form-field>
+                |                <mat-form-field appearance="outline">
+                |                    <mat-label>Effective From Time</mat-label>
+                |                    <input matInput [matTimepicker]="effectiveFromTimepicker${field.fieldName}"
+                |                        [formControl]="${field.effectiveFromControlName}" />
+                |                    <mat-timepicker #effectiveFromTimepicker${field.fieldName}></mat-timepicker>
+                |                    <mat-timepicker-toggle matSuffix [for]="effectiveFromTimepicker${field.fieldName}"></mat-timepicker-toggle>
+                |                </mat-form-field>
+                |                <mat-form-field appearance="outline">
+                |                    <mat-label>Effective To Date</mat-label>
+                |                    <input matInput [matDatepicker]="effectiveToPicker${field.fieldName}"
+                |                        [formControl]="${field.effectiveToControlName}" />
+                |                    <mat-datepicker-toggle matIconSuffix [for]="effectiveToPicker${field.fieldName}"></mat-datepicker-toggle>
+                |                    <mat-datepicker #effectiveToPicker${field.fieldName}></mat-datepicker>
+                |                </mat-form-field>
+                |                <mat-form-field appearance="outline">
+                |                    <mat-label>Effective To Time</mat-label>
+                |                    <input matInput [matTimepicker]="effectiveToTimepicker${field.fieldName}"
+                |                        [formControl]="${field.effectiveToControlName}" />
+                |                    <mat-timepicker #effectiveToTimepicker${field.fieldName}></mat-timepicker>
+                |                    <mat-timepicker-toggle matSuffix [for]="effectiveToTimepicker${field.fieldName}"></mat-timepicker-toggle>
+                |                </mat-form-field>
+                |                <button mat-flat-button type="button" (click)="${field.confirmMethodName}()">Add</button>
+                |                <button mat-flat-button type="button" (click)="${field.cancelMethodName}()">Cancel</button>
+                |            </div>
+                |        }
+                |""".trimMargin())
+
+        }
+
+    }
 
 
     protected open fun renderManyToManyChipFields() {
@@ -107,6 +186,7 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
         }
 
         renderManyToManyChipFields()
+        renderManyToManyTimestampedFields()
 
         appendLine("    </div>")
 

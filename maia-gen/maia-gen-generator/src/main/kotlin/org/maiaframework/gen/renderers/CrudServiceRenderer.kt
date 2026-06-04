@@ -165,14 +165,14 @@ class CrudServiceRenderer(
 
                 blankLine()
                 if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
-                    addImportFor<Instant>()
-                    appendLine("        createDto.${otherSideDtoFieldName}.forEach { $otherSideFieldName ->")
+                    val joinDtoFieldName = "${otherSideFieldName}Entities"
+                    appendLine("        createDto.${joinDtoFieldName}.forEach { joinDto ->")
                     appendLine("            this.${joinRepoFieldName}.insert(")
                     appendLine("                ${joinEntityClass}.newInstance(")
-                    appendLine("                    effectiveFrom = Instant.now(),")
-                    appendLine("                    effectiveTo = null,")
+                    appendLine("                    effectiveFrom = joinDto.effectiveFrom,")
+                    appendLine("                    effectiveTo = joinDto.effectiveTo,")
                     appendLine("                    $thisSideEntityIdFieldName = entity.id,")
-                    appendLine("                    $otherSideFieldName = $otherSideFieldName")
+                    appendLine("                    $otherSideFieldName = joinDto.${otherSideFieldName}EntityId")
                     appendLine("                )")
                     appendLine("            )")
                     appendLine("        }")

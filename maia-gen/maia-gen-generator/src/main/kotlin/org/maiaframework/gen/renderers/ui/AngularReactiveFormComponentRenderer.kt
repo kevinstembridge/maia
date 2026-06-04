@@ -44,7 +44,8 @@ class AngularReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     formAngularComponentNames: AngularComponentNames,
     providerServices: List<String>,
-    private val chipFields: List<ManyToManyChipFieldDef>
+    private val chipFields: List<ManyToManyChipFieldDef>,
+    private val timestampedFields: List<ManyToManyTimestampedFieldDef> = emptyList()
 ) : AbstractAngularComponentRenderer(
     formAngularComponentNames,
     providerServices
@@ -84,6 +85,8 @@ class AngularReactiveFormComponentRenderer(
 
         `render chip entity methods`()
 
+        `render timestamped join methods`()
+
         `render function onSubmit`()
 
         `render function onCancel`()
@@ -122,6 +125,8 @@ class AngularReactiveFormComponentRenderer(
         `render class fields for enum MatSelect fields`()
 
         `render class fields for chip fields`()
+
+        `render class fields for timestamped fields`()
 
         `render class field for formGroup `()
 
@@ -364,6 +369,51 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
+    private fun `render class fields for timestamped fields`() {
+
+        timestampedFields.forEach { field ->
+
+            addImport(field.esDocImport)
+            addImport(field.serviceImport)
+            addImport(field.joinRequestDtoTypescriptImport)
+
+            append("""
+                |
+                |
+                |    ${field.joinsFieldName}: {
+                |        entityId: string;
+                |        entityName: string;
+                |        effectiveFrom: Date | null;
+                |        effectiveTo: Date | null;
+                |    }[] = [];
+                |
+                |
+                |    ${field.showFormSignalName} = signal(false);
+                |
+                |
+                |    ${field.addEntityControlName} = new FormControl<${field.esDocClassName} | null>(null);
+                |
+                |
+                |    ${field.effectiveFromControlName} = new FormControl<Date | null>(null);
+                |
+                |
+                |    ${field.effectiveToControlName} = new FormControl<Date | null>(null);
+                |
+                |
+                |    ${field.filteredFieldName}: ${field.esDocClassName}[] = [];
+                |
+                |
+                |    ${field.filteredIsLoadingFieldName} = signal(false);
+                |
+                |
+                |    ${field.serviceFieldName} = inject(${field.serviceClassName});
+                |""".trimMargin())
+
+        }
+
+    }
+
+
     private fun `render class field for formGroup `() {
 
         append("""
@@ -601,6 +651,41 @@ class AngularReactiveFormComponentRenderer(
 
         }
 
+        timestampedFields.forEach { field ->
+
+            addImport("rxjs", "of")
+            addImport("rxjs/operators", "catchError")
+            addImport("rxjs/operators", "debounceTime")
+            addImport("rxjs/operators", "distinctUntilChanged")
+            addImport("rxjs/operators", "filter")
+            addImport("rxjs/operators", "switchMap")
+            addImport("rxjs/operators", "tap")
+
+            append("""
+                |
+                |        this.${field.addEntityControlName}.valueChanges.pipe(
+                |            debounceTime(300),
+                |            distinctUntilChanged(),
+                |            filter(value => typeof value === 'string'),
+                |            tap(() => {
+                |                this.${field.filteredFieldName} = [];
+                |                this.${field.filteredIsLoadingFieldName}.set(true);
+                |            }),
+                |            switchMap(value => this.${field.serviceFieldName}.search(value ?? '').pipe(
+                |                catchError(err => {
+                |                    this.${field.filteredIsLoadingFieldName}.set(false);
+                |                    console.error(err);
+                |                    return of([]);
+                |                })
+                |            )),
+                |            tap(() => this.${field.filteredIsLoadingFieldName}.set(false))
+                |        ).subscribe(res => {
+                |            this.${field.filteredFieldName} = res;
+                |        });
+                |""".trimMargin())
+
+        }
+
         if (this.angularFormDef.formModelFields.any { it.linksToAField }) {
 
             blankLine()
@@ -727,6 +812,56 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
+    private fun `render timestamped join methods`() {
+
+        timestampedFields.forEach { field ->
+
+            append("""
+                |
+                |
+                |    ${field.confirmMethodName}(): void {
+                |
+                |        const entity = this.${field.addEntityControlName}.value;
+                |        if (!entity) return;
+                |        if (this.${field.joinsFieldName}.some(j => j.entityId === entity.${field.esDocIdFieldName})) return;
+                |        this.${field.joinsFieldName}.push({
+                |            entityId: entity.${field.esDocIdFieldName},
+                |            entityName: entity.${field.searchTermFieldName},
+                |            effectiveFrom: this.${field.effectiveFromControlName}.value,
+                |            effectiveTo: this.${field.effectiveToControlName}.value,
+                |        });
+                |        this.${field.addEntityControlName}.reset();
+                |        this.${field.effectiveFromControlName}.reset();
+                |        this.${field.effectiveToControlName}.reset();
+                |        this.${field.filteredFieldName} = [];
+                |        this.${field.showFormSignalName}.set(false);
+                |
+                |    }
+                |
+                |
+                |    ${field.removeMethodName}(index: number): void {
+                |
+                |        this.${field.joinsFieldName}.splice(index, 1);
+                |
+                |    }
+                |
+                |
+                |    ${field.cancelMethodName}(): void {
+                |
+                |        this.${field.addEntityControlName}.reset();
+                |        this.${field.effectiveFromControlName}.reset();
+                |        this.${field.effectiveToControlName}.reset();
+                |        this.${field.filteredFieldName} = [];
+                |        this.${field.showFormSignalName}.set(false);
+                |
+                |    }
+                |""".trimMargin())
+
+        }
+
+    }
+
+
     private fun `render function onSubmit`() {
 
         append("""
@@ -772,16 +907,22 @@ class AngularReactiveFormComponentRenderer(
         }
 
         val chipFieldsByDtoName = chipFields.associateBy { it.requestDtoFieldName }
+        val timestampedFieldsByDtoName = timestampedFields.associateBy { it.requestDtoFieldName }
 
         this.allRequestDtoFields.forEach { requestDtoFieldDef ->
 
             val dtoFieldName = requestDtoFieldDef.classFieldDef.classFieldName
             val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef
             val chipField = chipFieldsByDtoName[dtoFieldName.value]
+            val timestampedField = timestampedFieldsByDtoName[dtoFieldName.value]
 
             if (chipField != null) {
 
                 appendLine("            ${dtoFieldName}: this.${chipField.selectedFieldName}.map(e => e.${chipField.esDocIdFieldName}),")
+
+            } else if (timestampedField != null) {
+
+                // handled below by timestampedFields loop
 
             } else if (typeaheadDef == null) {
 
@@ -802,6 +943,14 @@ class AngularReactiveFormComponentRenderer(
 
             }
 
+        }
+
+        timestampedFields.forEach { field ->
+            appendLine("            ${field.requestDtoFieldName}: this.${field.joinsFieldName}.map(j => ({")
+            appendLine("                ${field.joinEntityIdFieldName}: j.entityId,")
+            appendLine("                effectiveFrom: j.effectiveFrom?.toISOString() ?? null,")
+            appendLine("                effectiveTo: j.effectiveTo?.toISOString() ?? null,")
+            appendLine("            })),")
         }
 
         appendLine("        } as ${this.angularFormDef.requestDtoDef.uqcn};")
@@ -1014,6 +1163,15 @@ class AngularReactiveFormComponentRenderer(
                 addImport(chip.serviceImport)
                 addImport(chip.esDocImport)
             }
+        }
+
+        if (timestampedFields.isNotEmpty()) {
+            `add imports for date and time pickers`()
+            addImport("@angular/common", "DatePipe", isModule = true)
+            addImport("@angular/material/icon", "MatIconModule", isModule = true)
+            addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
+            addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
+            addImport("@angular/material/autocomplete", "MatOption", isModule = true)
         }
 
     }

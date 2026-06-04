@@ -6,7 +6,8 @@ import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
 class EntityCreateReactiveFormHtmlRenderer(
     private val entityCreatePageDef: EntityCreatePageDef,
-    override val chipFields: List<ManyToManyChipFieldDef> = emptyList()
+    override val chipFields: List<ManyToManyChipFieldDef> = emptyList(),
+    override val timestampedFields: List<ManyToManyTimestampedFieldDef> = emptyList()
 ) : AbstractCrudReactiveFormHtmlRenderer(
     entityCreatePageDef.entityDef,
     InlineFormOrDialog.INLINE_FORM

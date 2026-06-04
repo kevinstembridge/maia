@@ -33,13 +33,13 @@ class RightManyCrudService(
 
         create(entity)
 
-        createDto.leftEntityIds.forEach { left ->
+        createDto.leftEntities.forEach { joinDto ->
             this.leftToRightManyToManyJoinRepo.insert(
                 LeftToRightManyToManyJoinEntity.newInstance(
-                    effectiveFrom = Instant.now(),
-                    effectiveTo = null,
+                    effectiveFrom = joinDto.effectiveFrom,
+                    effectiveTo = joinDto.effectiveTo,
                     right = entity.id,
-                    left = left
+                    left = joinDto.leftEntityId
                 )
             )
         }

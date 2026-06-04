@@ -59,6 +59,7 @@ import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.FormScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 import org.maiaframework.gen.renderers.ui.ManyToManyChipFieldDef
+import org.maiaframework.gen.renderers.ui.ManyToManyTimestampedFieldDef
 import org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.SigninRequestDtoRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadAngularServiceRenderer
@@ -124,11 +125,46 @@ class AngularUiModuleGenerator(
         associations: List<ManyToManyEntityDef>
     ): List<ManyToManyChipFieldDef> {
 
-        return associations.mapNotNull { m2m ->
-            val otherSide = m2m.otherSideFrom(entityDef)
-            val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
-            ManyToManyChipFieldDef(entityDef, m2m, typeaheadDef)
-        }
+        return associations
+            .filter { !it.entityDef.hasEffectiveTimestamps.value }
+            .mapNotNull { m2m ->
+                val otherSide = m2m.otherSideFrom(entityDef)
+                val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
+                ManyToManyChipFieldDef(entityDef, m2m, typeaheadDef)
+            }
+
+    }
+
+
+    private fun manyToManyChipFieldsForEdit(
+        entityDef: EntityDef,
+        associations: List<ManyToManyEntityDef>
+    ): List<ManyToManyChipFieldDef> {
+
+        return associations
+            .mapNotNull { m2m ->
+                val otherSide = m2m.otherSideFrom(entityDef)
+                val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
+                ManyToManyChipFieldDef(entityDef, m2m, typeaheadDef)
+            }
+
+    }
+
+
+    private fun manyToManyTimestampedFieldsFor(
+        entityDef: EntityDef,
+        associations: List<ManyToManyEntityDef>
+    ): List<ManyToManyTimestampedFieldDef> {
+
+        val createApiDef = entityDef.entityCrudApiDef?.createApiDef ?: return emptyList()
+        return associations
+            .filter { it.entityDef.hasEffectiveTimestamps.value }
+            .mapNotNull { m2m ->
+                val otherSide = m2m.otherSideFrom(entityDef)
+                val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
+                val joinDtoDef = createApiDef.timestampedJoinRequestDtosByAssociation[m2m] ?: return@mapNotNull null
+                ManyToManyTimestampedFieldDef(entityDef, m2m, typeaheadDef, joinDtoDef)
+            }
 
     }
 
@@ -421,9 +457,11 @@ class AngularUiModuleGenerator(
             val blotterPageDef = blotterPageByEntity[entityCreatePageDef.entityDef]
 
             val chipFields = manyToManyChipFieldsFor(entityCreatePageDef.entityDef, entityCreatePageDef.entityDef.manyToManyAssociations)
+            val timestampedFields = manyToManyTimestampedFieldsFor(entityCreatePageDef.entityDef, entityCreatePageDef.entityDef.manyToManyAssociations)
 
             val providerServices = entityCreatePageDef.entityDef.allTypeaheadDefs.map { it.angularServiceClassName } +
-                chipFields.map { it.serviceClassName }
+                chipFields.map { it.serviceClassName } +
+                timestampedFields.map { it.serviceClassName }
 
             val angularFormDef = AngularFormDef(
                 componentBaseName = entityCreatePageDef.entityDef.crudAngularComponentBaseName,
@@ -452,11 +490,12 @@ class AngularUiModuleGenerator(
                 angularFormDef,
                 entityCreatePageDef.createFormAngularComponentNames,
                 providerServices,
-                chipFields
+                chipFields,
+                timestampedFields
             ).renderToDir(this.typescriptOutputDir)
 
             EntityCreateFormScssRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
-            EntityCreateReactiveFormHtmlRenderer(entityCreatePageDef, chipFields).renderToDir(this.typescriptOutputDir)
+            EntityCreateReactiveFormHtmlRenderer(entityCreatePageDef, chipFields, timestampedFields).renderToDir(this.typescriptOutputDir)
             EntityCreateFormPageComponentRenderer(entityCreatePageDef, blotterPageDef).renderToDir(this.typescriptOutputDir)
             EntityCreatePageHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
 
@@ -475,7 +514,7 @@ class AngularUiModuleGenerator(
 
             val fetchForEditDtoDef = entityEditPageDef.entityDef.fetchForEditDtoDef
 
-            val chipFields = manyToManyChipFieldsFor(entityEditPageDef.entityDef, entityEditPageDef.entityDef.manyToManyAssociations)
+            val chipFields = manyToManyChipFieldsForEdit(entityEditPageDef.entityDef, entityEditPageDef.entityDef.manyToManyAssociations)
 
             val angularFormDef = AngularFormDef(
                 angularFormSystem = AngularFormSystem.REACTIVE,
@@ -909,6 +948,18 @@ class AngularUiModuleGenerator(
             )
 
         }
+
+        this.modelDef.entityCrudApiDefs
+            .mapNotNull { it.createApiDef }
+            .flatMap { it.manyToManyTimestampedJoinRequestDtoDefs }
+            .forEach { joinDtoDef ->
+                renderTypescriptInterface(
+                    renderedFilePath = joinDtoDef.typescriptDtoRenderedFilePath,
+                    className = joinDtoDef.uqcn,
+                    fields = joinDtoDef.classFieldDefs,
+                    dtoCharacteristics = emptySet()
+                )
+            }
 
     }
 
