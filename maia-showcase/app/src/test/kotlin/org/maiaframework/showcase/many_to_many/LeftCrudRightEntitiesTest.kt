@@ -113,12 +113,12 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `update replaces rightEntityIds`() {
+    fun `update replaces rightEntities`() {
 
         // Create with right1 and right2
         post(
             "/api/left-many/create",
-            """{"someInt": 1, "someString": "test", "rightEntityIds": ["${rightEntity1.id}", "${rightEntity2.id}"]}"""
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}, {"rightEntityId": "${rightEntity2.id}"}]}"""
         ).hasStatus(HttpStatus.CREATED)
 
         val leftId = leftDao.findAllAsSequence().first().id
@@ -126,7 +126,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         // Update to right2 and right3 only
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 2, "someString": "test2", "rightEntityIds": ["${rightEntity2.id}", "${rightEntity3.id}"]}"""
+            """{"id": "$leftId", "someInt": 2, "someString": "test2", "rightEntities": [{"rightEntityId": "${rightEntity2.id}"}, {"rightEntityId": "${rightEntity3.id}"}]}"""
         ).hasStatus(HttpStatus.OK)
 
         val joins = manyToManyJoinDao.findByLeft(leftId)
@@ -137,19 +137,19 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `update with empty rightEntityIds removes all join records`() {
+    fun `update with empty rightEntities removes all join records`() {
 
         // Create with right1
         post(
             "/api/left-many/create",
-            """{"someInt": 1, "someString": "test", "rightEntityIds": ["${rightEntity1.id}"]}"""
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}]}"""
         ).hasStatus(HttpStatus.CREATED)
 
         val leftId = leftDao.findAllAsSequence().first().id
 
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntityIds": []}"""
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntities": []}"""
         ).hasStatus(HttpStatus.OK)
 
         val joins = manyToManyJoinDao.findByLeft(leftId)

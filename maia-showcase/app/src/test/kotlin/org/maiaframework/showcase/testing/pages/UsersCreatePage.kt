@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole
 import com.microsoft.playwright.options.WaitForSelectorState
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
+import java.util.regex.Pattern
 
 
 class UsersCreatePage(
@@ -51,7 +52,7 @@ class UsersCreatePage(
 
     private fun selectAuthority(authority: String) {
         page.locator("mat-select[formcontrolname='authorities']").click()
-        page.locator("mat-option").filter(Locator.FilterOptions().setHasText(authority)).click()
+        page.locator("mat-option").filter(Locator.FilterOptions().setHasText(Pattern.compile("^${authority}$"))).click()
         page.mouse().move(0.0, 0.0)
         page.evaluate("document.querySelector('.cdk-overlay-transparent-backdrop')?.click()")
         page.locator("mat-option").first().waitFor(
