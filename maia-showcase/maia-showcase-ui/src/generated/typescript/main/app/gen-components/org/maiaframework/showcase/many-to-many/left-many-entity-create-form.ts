@@ -171,6 +171,11 @@ export class LeftManyEntityCreateForm implements OnInit {
     }
 
 
+    displayRightEntity = (entity: RightManyTypeaheadV1EsDoc | null): string => {
+        return entity ? entity.someString : '';
+    };
+
+
     onSubmit() {
 
         this.problemDetail.set(null);

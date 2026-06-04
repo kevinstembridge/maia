@@ -55,7 +55,7 @@
                         [matAutocomplete]="leftJoinEntityAuto"
                         placeholder="Search Left Entities..."
                     />
-                    <mat-autocomplete #leftJoinEntityAuto="matAutocomplete">
+                    <mat-autocomplete #leftJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftEntity">
                         @if (filteredLeftEntitiesIsLoading()) {
                             <mat-option disabled>Loading...</mat-option>
                         }

@@ -55,7 +55,7 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
                 |                        [matAutocomplete]="${field.autocompleteRefName}"
                 |                        placeholder="${field.searchPlaceholder}"
                 |                    />
-                |                    <mat-autocomplete #${field.autocompleteRefName}="matAutocomplete">
+                |                    <mat-autocomplete #${field.autocompleteRefName}="matAutocomplete" [displayWith]="${field.displayWithMethodName}">
                 |                        @if (${field.filteredIsLoadingFieldName}()) {
                 |                            <mat-option disabled>Loading...</mat-option>
                 |                        }

@@ -855,6 +855,11 @@ class AngularReactiveFormComponentRenderer(
                 |        this.${field.showFormSignalName}.set(false);
                 |
                 |    }
+                |
+                |
+                |    ${field.displayWithMethodName} = (entity: ${field.esDocClassName} | null): string => {
+                |        return entity ? entity.${field.searchTermFieldName} : '';
+                |    };
                 |""".trimMargin())
 
         }

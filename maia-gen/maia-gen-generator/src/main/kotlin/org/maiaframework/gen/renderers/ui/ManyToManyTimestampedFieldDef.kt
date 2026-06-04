@@ -48,5 +48,6 @@ data class ManyToManyTimestampedFieldDef(
     val labelText: String = "$displayName Entities"
     val searchPlaceholder: String = "Search $labelText..."
     val autocompleteRefName: String = "${fieldName}JoinEntityAuto"
+    val displayWithMethodName: String = "display${displayName}Entity"
 
 }
