@@ -13,7 +13,7 @@ class AuthorityEnumRenderer(private val authoritiesDef: AuthoritiesDef) : EnumRe
         appendLine("    object Values {")
         blankLine()
 
-        this.authoritiesDef.enumDef.enumValueDefs.forEach { enumValueDef ->
+        this.authoritiesDef.enumDef.enumValueDefs.sortedBy { it.name }.forEach { enumValueDef ->
             appendLine("        const val ${enumValueDef.name} = \"${enumValueDef.name}\"")
         }
 

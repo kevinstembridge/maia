@@ -1263,6 +1263,7 @@ abstract class AbstractSpec protected constructor(
             val builder = AuthorityBuilder(name)
             init?.invoke(builder)
             val authorityDef = builder.build()
+            this.authorityDefs.add(authorityDef)
             return authorityDef
 
         }

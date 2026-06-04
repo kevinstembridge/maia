@@ -31,6 +31,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val authoritiesDef = authorities("org.maiaframework.showcase.auth", "Authority") {
         authority(readAuthority)
         authority(writeAuthority)
+        authority("ELASTICSEARCH_SYS_OPS_WRITE")
+        authority("ELASTICSEARCH_SYS_OPS_READ")
     }
 
 

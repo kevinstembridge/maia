@@ -5,6 +5,12 @@
 export enum Authority {
 
 
+    ELASTICSEARCH_SYS_OPS_READ = 'ELASTICSEARCH_SYS_OPS_READ',
+
+
+    ELASTICSEARCH_SYS_OPS_WRITE = 'ELASTICSEARCH_SYS_OPS_WRITE',
+
+
     // Grants read access.
     READ = 'READ',
 

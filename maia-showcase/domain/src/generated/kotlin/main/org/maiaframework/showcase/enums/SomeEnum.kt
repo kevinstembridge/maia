@@ -9,12 +9,12 @@ enum class SomeEnum(
     val displayName: String
 ) {
 
+    NOT_OK("Not so good"),
+
     /**
      * All good
      */
-    OK("OK"),
-
-    NOT_OK("Not so good");
+    OK("OK");
 
 
 }

@@ -25,8 +25,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     private val partySpec = MaiaShowcasePartySpec()
 
 
-    init {
-        adoptAuthoritiesDef(partySpec.authoritiesDef)
+    private val authoritiesDef = authorities("org.maiaframework.showcase.auth", "Authority") {
+        adopt(partySpec.authoritiesDef)
     }
 
 

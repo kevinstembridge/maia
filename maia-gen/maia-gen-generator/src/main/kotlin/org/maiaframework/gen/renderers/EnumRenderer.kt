@@ -19,6 +19,41 @@ open class EnumRenderer(private val enumDef: EnumDef) : AbstractKotlinRenderer(e
 
     override fun renderPreClassFields() {
 
+        val count = this.enumDef.enumValueDefs.size
+
+        this.enumDef.enumValueDefs.sortedBy { it.name }.forEachIndexed { index, enumValueDef ->
+
+            blankLine()
+
+            if (enumValueDef.description != null) {
+
+                append("""
+                    |    /**
+                    |     * ${enumValueDef.description}
+                    |     */
+                    |""".trimMargin())
+
+            }
+
+            append("    ${enumValueDef.name}")
+
+            enumValueDef.displayName?.let { displayName -> append("(\"$displayName\")") }
+
+            if (index + 1 != count) {
+                append(",")
+            } else {
+                append(";")
+            }
+
+            newLine()
+
+        }
+
+    }
+
+
+    fun renderPreClassFields_old() {
+
         val itr = this.enumDef.enumValueDefs.iterator()
 
         while (itr.hasNext()) {

@@ -9,6 +9,10 @@ enum class Authority(
     val displayName: String
 ) {
 
+    ELASTICSEARCH_SYS_OPS_READ("ELASTICSEARCH_SYS_OPS_READ"),
+
+    ELASTICSEARCH_SYS_OPS_WRITE("ELASTICSEARCH_SYS_OPS_WRITE"),
+
     /**
      * Grants read access.
      */
@@ -22,6 +26,8 @@ enum class Authority(
 
     object Values {
 
+        const val ELASTICSEARCH_SYS_OPS_READ = "ELASTICSEARCH_SYS_OPS_READ"
+        const val ELASTICSEARCH_SYS_OPS_WRITE = "ELASTICSEARCH_SYS_OPS_WRITE"
         const val READ = "READ"
         const val WRITE = "WRITE"
 

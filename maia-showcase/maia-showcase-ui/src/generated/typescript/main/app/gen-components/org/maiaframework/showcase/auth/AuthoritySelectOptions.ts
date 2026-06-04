@@ -15,5 +15,13 @@ export const AuthoritySelectOptions = [
         displayName: 'WRITE',
         description: 'Grants write access.'
     },
+    {
+        name: Authority.ELASTICSEARCH_SYS_OPS_WRITE,
+        displayName: 'ELASTICSEARCH_SYS_OPS_WRITE',
+    },
+    {
+        name: Authority.ELASTICSEARCH_SYS_OPS_READ,
+        displayName: 'ELASTICSEARCH_SYS_OPS_READ',
+    },
 ];
 
