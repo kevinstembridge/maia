@@ -1184,17 +1184,6 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    fun adoptAuthoritiesDef(authoritiesDef: AuthoritiesDef) {
-
-        if (this.authoritiesDef != null) {
-            throw IllegalStateException("authoritiesDef has already been set.")
-        }
-
-        this.authoritiesDef = authoritiesDef
-
-    }
-
-
     fun authorities(
         packageName: String,
         className: String,
@@ -1223,17 +1212,12 @@ abstract class AbstractSpec protected constructor(
         private val authorityDefs = mutableListOf<AuthorityDef>()
 
 
-        private val authorityBuilders = mutableListOf<AuthorityBuilder>()
-
-
         fun build(): AuthoritiesDef {
 
             val enumUqcn = Uqcn(className)
             val fqcn = packageName.uqcn(enumUqcn)
 
-            val authorityDefsFromBuilders = this.authorityBuilders.map { it.build() }
-
-            val enumValueDefs = this.authorityDefs.plus(authorityDefsFromBuilders).map {
+            val enumValueDefs = this.authorityDefs.map {
                 EnumValueDef(
                     name = it.name,
                     description = it.description,
@@ -1255,6 +1239,15 @@ abstract class AbstractSpec protected constructor(
         }
 
 
+        fun adopt(authoritiesDef: AuthoritiesDef) {
+
+            authoritiesDef.enumDef.enumValueDefs.forEach { enumValueDef ->
+                this.authorityDefs.add(AuthorityDef(enumValueDef.name, enumValueDef.description))
+            }
+
+        }
+
+
         fun authority(authorityDef: AuthorityDef) {
 
             this.authorityDefs.add(authorityDef)
@@ -1265,17 +1258,12 @@ abstract class AbstractSpec protected constructor(
         fun authority(
             name: String,
             init: (AuthorityBuilder.() -> Unit)? = null
-        ): AuthorityBuilder {
+        ): AuthorityDef {
 
             val builder = AuthorityBuilder(name)
-
-            authorityBuilders.add(builder)
-
-            if (init != null) {
-                builder.init()
-            }
-
-            return builder
+            init?.invoke(builder)
+            val authorityDef = builder.build()
+            return authorityDef
 
         }
 
