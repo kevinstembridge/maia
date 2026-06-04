@@ -1,6 +1,5 @@
 package org.maiaframework.elasticsearch
 
-import ElasticSearchIndicesEndpoint
 import org.maiaframework.elasticsearch.index.ElasticIndexService
 import org.maiaframework.elasticsearch.index.EsIndexNameFactory
 import org.springframework.boot.autoconfigure.AutoConfiguration

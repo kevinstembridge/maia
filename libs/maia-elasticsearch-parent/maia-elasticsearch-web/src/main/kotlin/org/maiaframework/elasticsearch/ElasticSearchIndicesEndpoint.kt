@@ -1,3 +1,5 @@
+package org.maiaframework.elasticsearch
+
 import org.maiaframework.elasticsearch.index.ElasticIndexService
 import org.maiaframework.elasticsearch.index.EsIndexNameFactory
 import org.maiaframework.elasticsearch.index.EsIndexStateDto
