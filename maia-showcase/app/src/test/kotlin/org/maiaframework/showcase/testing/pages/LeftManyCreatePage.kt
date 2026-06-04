@@ -27,12 +27,29 @@ class LeftManyCreatePage(
     }
 
 
-    fun searchAndSelectRightEntity(searchTerm: String) {
+    fun clickAddRightEntityButton() {
+
+        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Add Right Entities"))
+            .click()
+
+    }
+
+
+    fun searchAndSelectRightEntityInMiniForm(searchTerm: String) {
+
         page.locator("input[placeholder='Search Right Entities...']").fill(searchTerm)
         val option = page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm))
         option.waitFor()
         option.evaluate("el => el.click()")
-        page.locator("mat-chip-row").filter(Locator.FilterOptions().setHasText(searchTerm)).waitFor()
+
+    }
+
+
+    fun clickConfirmAddInMiniForm() {
+
+        page.locator(".join-mini-form button[type='button']").filter(Locator.FilterOptions().setHasText("Add"))
+            .click()
+
     }
 
 

@@ -70,7 +70,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `create with rightEntityIds creates join records`() {
+    fun `create with rightEntities creates join records`() {
 
         post(
             "/api/left-many/create",
@@ -78,7 +78,10 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
             {
                 "someInt": 1,
                 "someString": "test",
-                "rightEntityIds": ["${rightEntity1.id}", "${rightEntity2.id}"]
+                "rightEntities": [
+                    {"rightEntityId": "${rightEntity1.id}"},
+                    {"rightEntityId": "${rightEntity2.id}"}
+                ]
             }""".trimIndent()
         ).hasStatus(201)
 

@@ -69,8 +69,12 @@ class LeftManyCrudPlaywrightTest : AbstractPlaywrightTest() {
         leftManyCreatePage.apply {
             assertOnPage()
             fillCreateForm()
-            searchAndSelectRightEntity("right-alpha")
-            searchAndSelectRightEntity("right-beta")
+            clickAddRightEntityButton()
+            searchAndSelectRightEntityInMiniForm("right-alpha")
+            clickConfirmAddInMiniForm()
+            clickAddRightEntityButton()
+            searchAndSelectRightEntityInMiniForm("right-beta")
+            clickConfirmAddInMiniForm()
             clickSubmitButton()
         }
 
