@@ -1,0 +1,12 @@
+{
+  "planPath": "docs/superpowers/plans/2026-06-05-edit-page-width-constraint.md",
+  "tasks": [
+    {
+      "id": 6,
+      "subject": "Task 1: Add container CSS, update generator, regenerate",
+      "status": "pending",
+      "description": "**Goal:** Add `.edit-form-container` CSS, update generator to wrap edit form in that div, regenerate all edit page HTML files.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityEditPageHtmlRenderer.kt`\n- Modify: `maia-showcase/maia-showcase-ui/src/styles.scss`\n- Regenerated: `maia-showcase/maia-showcase-ui/src/generated/typescript/main/app/gen-components/**/*edit-page.html`\n\n**Acceptance Criteria:**\n- [ ] `EntityEditPageHtmlRenderer.kt` wraps form selector in `<div class=\"edit-form-container\">`\n- [ ] `styles.scss` has `.edit-form-container` with `max-width: 36rem` and `margin: 0 auto`\n- [ ] All generated `*edit-page.html` files contain `edit-form-container`\n\n**Verify:** `grep -r \"edit-form-container\" maia-showcase/maia-showcase-ui/src/generated/` → one match per edit page file\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityEditPageHtmlRenderer.kt\", \"maia-showcase/maia-showcase-ui/src/styles.scss\"], \"verifyCommand\": \"grep -r 'edit-form-container' maia-showcase/maia-showcase-ui/src/generated/\", \"acceptanceCriteria\": [\"EntityEditPageHtmlRenderer wraps form in edit-form-container div\", \"styles.scss has .edit-form-container with max-width 36rem and margin 0 auto\", \"all generated *edit-page.html files contain edit-form-container\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-06-05T00:00:00Z"
+}

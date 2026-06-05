@@ -1,9 +1,11 @@
 <app-page-layout pageTitle="Edit Bravo" dataPageId="bravo_edit">
     @if (entityId(); as id) {
-        <app-bravo-entity-edit-form
-            [entityId]="id"
-            (onSave)="onSaveClicked()"
-            (onCancel)="onCancelClicked()"
-        />
+        <div class="edit-form-container">
+            <app-bravo-entity-edit-form
+                [entityId]="id"
+                (onSave)="onSaveClicked()"
+                (onCancel)="onCancelClicked()"
+            />
+        </div>
     }
 </app-page-layout>

@@ -1,9 +1,11 @@
 <app-page-layout pageTitle="Edit Composite Primary Key" dataPageId="composite_primary_key_edit">
     @if (entityId(); as id) {
-        <app-composite-primary-key-entity-edit-form
-            [entityId]="id"
-            (onSave)="onSaveClicked()"
-            (onCancel)="onCancelClicked()"
-        />
+        <div class="edit-form-container">
+            <app-composite-primary-key-entity-edit-form
+                [entityId]="id"
+                (onSave)="onSaveClicked()"
+                (onCancel)="onCancelClicked()"
+            />
+        </div>
     }
 </app-page-layout>

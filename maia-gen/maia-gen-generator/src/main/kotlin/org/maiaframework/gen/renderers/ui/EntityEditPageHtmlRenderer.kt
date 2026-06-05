@@ -21,11 +21,13 @@ class EntityEditPageHtmlRenderer(
         append("""
             |<app-page-layout pageTitle="${entityEditPageDef.pageTitle}" dataPageId="${entityEditPageDef.dataPageId}">
             |    @if (entityId(); as id) {
-            |        <${entityEditPageDef.editFormAngularComponentNames.componentSelector}
-            |            [entityId]="id"
-            |            (onSave)="onSaveClicked()"
-            |            (onCancel)="onCancelClicked()"
-            |        />
+            |        <div class="edit-form-container">
+            |            <${entityEditPageDef.editFormAngularComponentNames.componentSelector}
+            |                [entityId]="id"
+            |                (onSave)="onSaveClicked()"
+            |                (onCancel)="onCancelClicked()"
+            |            />
+            |        </div>
             |    }
             |</app-page-layout>
             |""".trimMargin())

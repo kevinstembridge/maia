@@ -1,9 +1,11 @@
 <app-page-layout pageTitle="Edit Right Many" dataPageId="right_many_edit">
     @if (entityId(); as id) {
-        <app-right-many-entity-edit-form
-            [entityId]="id"
-            (onSave)="onSaveClicked()"
-            (onCancel)="onCancelClicked()"
-        />
+        <div class="edit-form-container">
+            <app-right-many-entity-edit-form
+                [entityId]="id"
+                (onSave)="onSaveClicked()"
+                (onCancel)="onCancelClicked()"
+            />
+        </div>
     }
 </app-page-layout>

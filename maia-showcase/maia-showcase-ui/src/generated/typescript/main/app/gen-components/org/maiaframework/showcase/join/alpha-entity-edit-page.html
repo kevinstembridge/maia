@@ -1,9 +1,11 @@
 <app-page-layout pageTitle="Edit Alpha" dataPageId="alpha_edit">
     @if (entityId(); as id) {
-        <app-alpha-entity-edit-form
-            [entityId]="id"
-            (onSave)="onSaveClicked()"
-            (onCancel)="onCancelClicked()"
-        />
+        <div class="edit-form-container">
+            <app-alpha-entity-edit-form
+                [entityId]="id"
+                (onSave)="onSaveClicked()"
+                (onCancel)="onCancelClicked()"
+            />
+        </div>
     }
 </app-page-layout>

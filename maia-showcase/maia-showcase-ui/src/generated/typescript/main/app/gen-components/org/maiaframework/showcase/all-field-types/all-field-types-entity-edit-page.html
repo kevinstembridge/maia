@@ -1,9 +1,11 @@
 <app-page-layout pageTitle="Edit All Field Types" dataPageId="all_field_types_edit">
     @if (entityId(); as id) {
-        <app-all-field-types-entity-edit-form
-            [entityId]="id"
-            (onSave)="onSaveClicked()"
-            (onCancel)="onCancelClicked()"
-        />
+        <div class="edit-form-container">
+            <app-all-field-types-entity-edit-form
+                [entityId]="id"
+                (onSave)="onSaveClicked()"
+                (onCancel)="onCancelClicked()"
+            />
+        </div>
     }
 </app-page-layout>
