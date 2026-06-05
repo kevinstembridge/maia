@@ -3,8 +3,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 100%;
   padding: 2rem;
+  box-sizing: border-box;
 }
 
 .page-content {
@@ -21,4 +22,24 @@
 
 .ms-auto {
   margin-inline-start: auto;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 11.25rem 1fr;
+  border-bottom: 1px solid var(--mat-sys-surface-variant);
+}
+
+.detail-label {
+  padding: 0.4375rem 0;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mat-sys-outline);
+}
+
+.detail-value {
+  padding: 0.4375rem 0;
+  font-size: 0.8125rem;
+  color: var(--mat-sys-on-surface);
 }

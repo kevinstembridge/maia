@@ -1,168 +1,168 @@
 @if (detailDto$ | async; as detailDto) {
   <div>
-    <div class="row">
-      <div class="col">Some Boolean</div>
-      <div class="col">{{detailDto.someBoolean}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Boolean</div>
+      <div class="detail-value">{{detailDto.someBoolean}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Boolean Nullable</div>
-      <div class="col">{{detailDto.someBooleanNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Boolean Nullable</div>
+      <div class="detail-value">{{detailDto.someBooleanNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Boolean Type</div>
-      <div class="col">{{detailDto.someBooleanType}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Boolean Type</div>
+      <div class="detail-value">{{detailDto.someBooleanType}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Boolean Type Nullable</div>
-      <div class="col">{{detailDto.someBooleanTypeNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Boolean Type Nullable</div>
+      <div class="detail-value">{{detailDto.someBooleanTypeNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Boolean Type Provided</div>
-      <div class="col">{{detailDto.someBooleanTypeProvided}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Boolean Type Provided</div>
+      <div class="detail-value">{{detailDto.someBooleanTypeProvided}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Boolean Type Provided Nullable</div>
-      <div class="col">{{detailDto.someBooleanTypeProvidedNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Boolean Type Provided Nullable</div>
+      <div class="detail-value">{{detailDto.someBooleanTypeProvidedNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Instant</div>
-      <div class="col">{{detailDto.someInstant | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Instant</div>
+      <div class="detail-value">{{detailDto.someInstant | date: 'EEE MMM dd yyyy HH:mm'}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Instant Nullable</div>
-      <div class="col">{{detailDto.someInstantNullable | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Instant Nullable</div>
+      <div class="detail-value">{{detailDto.someInstantNullable | date: 'EEE MMM dd yyyy HH:mm'}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Instant Modifiable</div>
-      <div class="col">{{detailDto.someInstantModifiable | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Instant Modifiable</div>
+      <div class="detail-value">{{detailDto.someInstantModifiable | date: 'EEE MMM dd yyyy HH:mm'}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Instant Modifiable Nullable</div>
-      <div class="col">{{detailDto.someInstantModifiableNullable | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Instant Modifiable Nullable</div>
+      <div class="detail-value">{{detailDto.someInstantModifiableNullable | date: 'EEE MMM dd yyyy HH:mm'}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Int</div>
-      <div class="col">{{detailDto.someInt}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Int</div>
+      <div class="detail-value">{{detailDto.someInt}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Int Modifiable</div>
-      <div class="col">{{detailDto.someIntModifiable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Int Modifiable</div>
+      <div class="detail-value">{{detailDto.someIntModifiable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Int Nullable</div>
-      <div class="col">{{detailDto.someIntNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Int Nullable</div>
+      <div class="detail-value">{{detailDto.someIntNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Int Type</div>
-      <div class="col">{{detailDto.someIntType}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Int Type</div>
+      <div class="detail-value">{{detailDto.someIntType}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Int Type Nullable</div>
-      <div class="col">{{detailDto.someIntTypeNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Int Type Nullable</div>
+      <div class="detail-value">{{detailDto.someIntTypeNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Int Type Provided</div>
-      <div class="col">{{detailDto.someIntTypeProvided}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Int Type Provided</div>
+      <div class="detail-value">{{detailDto.someIntTypeProvided}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Int Type Provided Nullable</div>
-      <div class="col">{{detailDto.someIntTypeProvidedNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Int Type Provided Nullable</div>
+      <div class="detail-value">{{detailDto.someIntTypeProvidedNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Long Type</div>
-      <div class="col">{{detailDto.someLongType}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Long Type</div>
+      <div class="detail-value">{{detailDto.someLongType}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Long Type Nullable</div>
-      <div class="col">{{detailDto.someLongTypeNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Long Type Nullable</div>
+      <div class="detail-value">{{detailDto.someLongTypeNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Long Type Provided</div>
-      <div class="col">{{detailDto.someLongTypeProvided}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Long Type Provided</div>
+      <div class="detail-value">{{detailDto.someLongTypeProvided}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Long Type Provided Nullable</div>
-      <div class="col">{{detailDto.someLongTypeProvidedNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Long Type Provided Nullable</div>
+      <div class="detail-value">{{detailDto.someLongTypeProvidedNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some LocalDate Modifiable</div>
-      <div class="col">{{detailDto.someLocalDateModifiable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some LocalDate Modifiable</div>
+      <div class="detail-value">{{detailDto.someLocalDateModifiable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Period Modifiable</div>
-      <div class="col">{{detailDto.somePeriodModifiable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Period Modifiable</div>
+      <div class="detail-value">{{detailDto.somePeriodModifiable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Period Nullable</div>
-      <div class="col">{{detailDto.somePeriodNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Period Nullable</div>
+      <div class="detail-value">{{detailDto.somePeriodNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Enum</div>
-      <div class="col">{{detailDto.someEnum}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Enum</div>
+      <div class="detail-value">{{detailDto.someEnum}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Enum Nullable</div>
-      <div class="col">{{detailDto.someEnumNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Enum Nullable</div>
+      <div class="detail-value">{{detailDto.someEnumNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some String</div>
-      <div class="col">{{detailDto.someString}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some String</div>
+      <div class="detail-value">{{detailDto.someString}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some String Modifiable</div>
-      <div class="col">{{detailDto.someStringModifiable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some String Modifiable</div>
+      <div class="detail-value">{{detailDto.someStringModifiable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some String Nullable</div>
-      <div class="col">{{detailDto.someStringNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some String Nullable</div>
+      <div class="detail-value">{{detailDto.someStringNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some String Type</div>
-      <div class="col">{{detailDto.someStringType}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some String Type</div>
+      <div class="detail-value">{{detailDto.someStringType}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some String Type Nullable</div>
-      <div class="col">{{detailDto.someStringTypeNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some String Type Nullable</div>
+      <div class="detail-value">{{detailDto.someStringTypeNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Provided String Type</div>
-      <div class="col">{{detailDto.someProvidedStringType}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Provided String Type</div>
+      <div class="detail-value">{{detailDto.someProvidedStringType}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Provided String Type Nullable</div>
-      <div class="col">{{detailDto.someProvidedStringTypeNullable}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Provided String Type Nullable</div>
+      <div class="detail-value">{{detailDto.someProvidedStringTypeNullable}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some List Of Strings</div>
-      <div class="col">{{detailDto.someListOfStrings}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some List Of Strings</div>
+      <div class="detail-value">{{detailDto.someListOfStrings}}</div>
     </div>
-    <div class="row">
-      <div class="col">Created By</div>
-      <div class="col">{{detailDto.createdByUsername}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Created By</div>
+      <div class="detail-value">{{detailDto.createdByUsername}}</div>
     </div>
-    <div class="row">
-      <div class="col">Last Modified By</div>
-      <div class="col">{{detailDto.lastModifiedByUsername}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Last Modified By</div>
+      <div class="detail-value">{{detailDto.lastModifiedByUsername}}</div>
     </div>
-    <div class="row">
-      <div class="col">Last Modified Timestamp (UTC)</div>
-      <div class="col">{{detailDto.lastModifiedTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Last Modified Timestamp (UTC)</div>
+      <div class="detail-value">{{detailDto.lastModifiedTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
     </div>
-    <div class="row">
-      <div class="col">ID</div>
-      <div class="col">{{detailDto.id}}</div>
+    <div class="detail-row">
+      <div class="detail-label">ID</div>
+      <div class="detail-value">{{detailDto.id}}</div>
     </div>
-    <div class="row">
-      <div class="col">Created By</div>
-      <div class="col">{{detailDto.createdBy.name}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Created By</div>
+      <div class="detail-value">{{detailDto.createdBy.name}}</div>
     </div>
-    <div class="row">
-      <div class="col">Last Modified By</div>
-      <div class="col">{{detailDto.lastModifiedBy.name}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Last Modified By</div>
+      <div class="detail-value">{{detailDto.lastModifiedBy.name}}</div>
     </div>
-    <div class="row">
-      <div class="col">Created At</div>
-      <div class="col">{{detailDto.createdTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Created At</div>
+      <div class="detail-value">{{detailDto.createdTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
     </div>
   </div>
 } @else {

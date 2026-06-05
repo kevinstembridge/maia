@@ -1,0 +1,19 @@
+{
+  "planPath": "docs/superpowers/plans/2026-06-05-view-entity-page-styling.md",
+  "tasks": [
+    {
+      "id": 3,
+      "subject": "Task 1: Update PageLayout to render page title as h1",
+      "status": "complete",
+      "description": "**Goal:** Replace the unstyled `<span>` title in `PageLayout` with a styled `<h1>` using scoped component CSS.\n\n**Files:**\n- Modify: `maia-showcase/maia-showcase-ui/src/app/components/page-layout/page-layout.html`\n- Modify: `maia-showcase/maia-showcase-ui/src/app/components/page-layout/page-layout.ts`\n- Create: `maia-showcase/maia-showcase-ui/src/app/components/page-layout/page-layout.scss`\n\n**Acceptance Criteria:**\n- [ ] `page-layout.html` renders `pageTitle` inside `<h1 class=\"page-title\">` not `<span>`\n- [ ] `page-layout.ts` references `page-layout.scss` via `styleUrl`\n- [ ] `page-layout.scss` exists with `.page-title` rule using M3 CSS variables\n- [ ] Browser shows bold heading with bottom border on any detail view page\n\n**Verify:** Open browser, navigate to any entity detail view → page title renders as a large bold heading with a 2px bottom border\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/components/page-layout/page-layout.html\", \"maia-showcase/maia-showcase-ui/src/app/components/page-layout/page-layout.ts\", \"maia-showcase/maia-showcase-ui/src/app/components/page-layout/page-layout.scss\"], \"verifyCommand\": \"\", \"acceptanceCriteria\": [\"page-layout.html renders pageTitle as h1.page-title\", \"page-layout.ts has styleUrl\", \"page-layout.scss has .page-title rule with M3 CSS variables\", \"browser shows bold heading with bottom border\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 2: Rename detail view CSS classes in generator, add CSS, regenerate",
+      "status": "pending",
+      "blockedBy": [3],
+      "description": "**Goal:** Update `EntityDetailViewContentHtmlRenderer` to emit semantic class names, add the corresponding global CSS rules, and regenerate all detail view HTML files.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityDetailViewContentHtmlRenderer.kt`\n- Modify: `maia-showcase/maia-showcase-ui/src/styles.scss`\n- Regenerated: `maia-showcase/maia-showcase-ui/src/generated/typescript/main/app/gen-components/**/*detail-view.html`\n\n**Acceptance Criteria:**\n- [ ] Renderer emits `detail-row`, `detail-label`, `detail-value` (not `row`, `col`)\n- [ ] `styles.scss` contains rules for all three new classes using M3 CSS variables\n- [ ] All `*detail-view.html` files in `src/generated/` use the new class names\n- [ ] Browser shows two-column definition grid with muted uppercase labels\n\n**Verify:** `grep -r \"class=\\\"row\\\"|class=\\\"col\\\"\" maia-showcase/maia-showcase-ui/src/generated/` → no output\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityDetailViewContentHtmlRenderer.kt\", \"maia-showcase/maia-showcase-ui/src/styles.scss\"], \"verifyCommand\": \"grep -r 'class=\\\"row\\\"' maia-showcase/maia-showcase-ui/src/generated/\", \"acceptanceCriteria\": [\"renderer emits detail-row/detail-label/detail-value\", \"styles.scss has three new CSS rules with M3 variables\", \"all generated detail-view.html use new class names\", \"browser shows definition grid with muted uppercase labels\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-06-05T00:00:00Z"
+}

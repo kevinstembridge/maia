@@ -1,36 +1,36 @@
 @if (detailDto$ | async; as detailDto) {
   <div>
-    <div class="row">
-      <div class="col">Some String</div>
-      <div class="col">{{detailDto.someString}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some String</div>
+      <div class="detail-value">{{detailDto.someString}}</div>
     </div>
-    <div class="row">
-      <div class="col">Some Int</div>
-      <div class="col">{{detailDto.someInt}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Some Int</div>
+      <div class="detail-value">{{detailDto.someInt}}</div>
     </div>
-    <div class="row">
-      <div class="col">Last Modified Timestamp (UTC)</div>
-      <div class="col">{{detailDto.lastModifiedTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Last Modified Timestamp (UTC)</div>
+      <div class="detail-value">{{detailDto.lastModifiedTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
     </div>
-    <div class="row">
-      <div class="col">ID</div>
-      <div class="col">{{detailDto.id}}</div>
+    <div class="detail-row">
+      <div class="detail-label">ID</div>
+      <div class="detail-value">{{detailDto.id}}</div>
     </div>
-    <div class="row">
-      <div class="col">Created By</div>
-      <div class="col">{{detailDto.createdBy.name}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Created By</div>
+      <div class="detail-value">{{detailDto.createdBy.name}}</div>
     </div>
-    <div class="row">
-      <div class="col">Last Modified By</div>
-      <div class="col">{{detailDto.lastModifiedBy.name}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Last Modified By</div>
+      <div class="detail-value">{{detailDto.lastModifiedBy.name}}</div>
     </div>
-    <div class="row">
-      <div class="col">Created At</div>
-      <div class="col">{{detailDto.createdTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Created At</div>
+      <div class="detail-value">{{detailDto.createdTimestampUtc | date: 'EEE MMM dd yyyy HH:mm'}}</div>
     </div>
-    <div class="row">
-      <div class="col">Version</div>
-      <div class="col">{{detailDto.version}}</div>
+    <div class="detail-row">
+      <div class="detail-label">Version</div>
+      <div class="detail-value">{{detailDto.version}}</div>
     </div>
   </div>
 } @else {

@@ -32,9 +32,9 @@ class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: Entit
             if (fieldType is PkAndNameFieldType) {
 
                 append("""
-                    |    <div class="row">
-                    |      <div class="col">${classFieldDef.displayName}</div>
-                    |      <div class="col">{{detailDto.${classFieldDef.classFieldName}.name$pipes}}</div>
+                    |    <div class="detail-row">
+                    |      <div class="detail-label">${classFieldDef.displayName}</div>
+                    |      <div class="detail-value">{{detailDto.${classFieldDef.classFieldName}.name$pipes}}</div>
                     |    </div>
                     |""".trimMargin()
                 )
@@ -42,9 +42,9 @@ class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: Entit
             } else {
 
                 append("""
-                    |    <div class="row">
-                    |      <div class="col">${classFieldDef.displayName}</div>
-                    |      <div class="col">{{detailDto.${classFieldDef.classFieldName}$pipes}}</div>
+                    |    <div class="detail-row">
+                    |      <div class="detail-label">${classFieldDef.displayName}</div>
+                    |      <div class="detail-value">{{detailDto.${classFieldDef.classFieldName}$pipes}}</div>
                     |    </div>
                     |""".trimMargin()
                 )

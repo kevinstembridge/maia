@@ -1,3 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+main {
+  flex: 1;
+  overflow: auto;
+}
+
 .toolbar-title {
   font-size: 1.25rem;
   font-weight: 500;
