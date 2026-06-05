@@ -1,6 +1,8 @@
 <app-page-layout pageTitle="Create Alpha" dataPageId="alpha_create">
-    <app-alpha-entity-create-form
-        (onSave)="onSaveClicked()"
-        (onCancel)="onCancelClicked()"
-    />
+    <div class="edit-form-container">
+        <app-alpha-entity-create-form
+            (onSave)="onSaveClicked()"
+            (onCancel)="onCancelClicked()"
+        />
+    </div>
 </app-page-layout>

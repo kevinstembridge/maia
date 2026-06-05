@@ -20,10 +20,12 @@ class EntityCreatePageHtmlRenderer(
 
         append("""
             |<app-page-layout pageTitle="${entityCreatePageDef.pageTitle}" dataPageId="${entityCreatePageDef.dataPageId}">
-            |    <${entityCreatePageDef.createFormAngularComponentNames.componentSelector}
-            |        (onSave)="onSaveClicked()"
-            |        (onCancel)="onCancelClicked()"
-            |    />
+            |    <div class="edit-form-container">
+            |        <${entityCreatePageDef.createFormAngularComponentNames.componentSelector}
+            |            (onSave)="onSaveClicked()"
+            |            (onCancel)="onCancelClicked()"
+            |        />
+            |    </div>
             |</app-page-layout>
             |""".trimMargin())
 
