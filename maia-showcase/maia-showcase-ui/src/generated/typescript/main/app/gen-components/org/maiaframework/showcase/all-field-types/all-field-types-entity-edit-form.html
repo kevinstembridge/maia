@@ -3,6 +3,38 @@
         @if (problemDetail()) {
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
         }
+        <div class="detail-row">
+            <span class="detail-label">Some Boolean</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someBoolean }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Boolean Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someBooleanNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Boolean Type</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someBooleanType }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Boolean Type Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someBooleanTypeNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Boolean Type Provided</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someBooleanTypeProvided }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Boolean Type Provided Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someBooleanTypeProvidedNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Instant</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someInstant }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Instant Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someInstantNullable }}</span>
+        </div>
         <mat-form-field appearance="outline">
             <mat-label>Some Instant Modifiable Date</mat-label>
             <input
@@ -50,6 +82,10 @@
             <mat-timepicker #someInstantModifiableNullableTimepicker></mat-timepicker>
             <mat-timepicker-toggle matSuffix [for]="someInstantModifiableNullableTimepicker"></mat-timepicker-toggle>
         </mat-form-field>
+        <div class="detail-row">
+            <span class="detail-label">Some Int</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someInt }}</span>
+        </div>
         <mat-form-field appearance="outline">
             <mat-label>Some Int Modifiable</mat-label>
             <input
@@ -71,6 +107,38 @@
                 matInput
             />
         </mat-form-field>
+        <div class="detail-row">
+            <span class="detail-label">Some Int Type</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someIntType }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Int Type Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someIntTypeNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Int Type Provided</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someIntTypeProvided }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Int Type Provided Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someIntTypeProvidedNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Long Type</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someLongType }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Long Type Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someLongTypeNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Long Type Provided</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someLongTypeProvided }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Long Type Provided Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someLongTypeProvidedNullable }}</span>
+        </div>
         <mat-form-field appearance="outline">
             <mat-label>Some LocalDate Modifiable</mat-label>
             <input
@@ -98,6 +166,22 @@
                 <mat-error>Some Period Modifiable must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
+        <div class="detail-row">
+            <span class="detail-label">Some Period Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().somePeriodNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Enum</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someEnum }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Enum Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someEnumNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some String</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someString }}</span>
+        </div>
         <mat-form-field appearance="outline">
             <mat-label>Some String Modifiable</mat-label>
             <input
@@ -113,6 +197,26 @@
                 <mat-error>Some String Modifiable must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
+        <div class="detail-row">
+            <span class="detail-label">Some String Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someStringNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some String Type</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someStringType }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some String Type Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someStringTypeNullable }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Provided String Type</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someProvidedStringType }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Some Provided String Type Nullable</span>
+            <span class="detail-value">{{ formGroup.getRawValue().someProvidedStringTypeNullable }}</span>
+        </div>
         <mat-form-field appearance="outline">
             <mat-label>Some List Of Strings</mat-label>
             <input
@@ -125,6 +229,22 @@
                 <mat-error>Some List Of Strings is required.</mat-error>
             }
         </mat-form-field>
+        <div class="detail-row">
+            <span class="detail-label">Created By</span>
+            <span class="detail-value">{{ formGroup.getRawValue().createdByUsername }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Last Modified By</span>
+            <span class="detail-value">{{ formGroup.getRawValue().lastModifiedByUsername }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Created By</span>
+            <span class="detail-value">{{ formGroup.getRawValue().createdBy }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Last Modified By</span>
+            <span class="detail-value">{{ formGroup.getRawValue().lastModifiedBy }}</span>
+        </div>
     </div>
     <div>
         <button mat-flat-button type="submit" color="primary">Submit</button>

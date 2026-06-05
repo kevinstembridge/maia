@@ -68,6 +68,49 @@ class EntityUpdateApiDef(
         }
 
 
+    val editHtmlFormFields: List<AngularFormFieldDef> = this.entityDef.allEntityFields
+        .filter { entityFieldDef ->
+            val classFieldDef = entityFieldDef.classFieldDef
+            val classFieldName = classFieldDef.classFieldName
+            !entityFieldDef.isPrimaryKey.value
+                && !entityFieldDef.isVersionField
+                && classFieldName != ClassFieldName.createdTimestampUtc
+                && classFieldName != ClassFieldName.lastModifiedTimestampUtc
+                && classFieldDef.displayName != null
+        }
+        .map {
+
+            val classFieldDef = it.classFieldDef
+
+            val typeaheadRequiredValidatorFunctionName = if (classFieldDef.typeaheadDef != null) {
+                it.typeaheadRequiredValidatorFunctionName
+            } else {
+                null
+            }
+
+            val typeaheadRequiredValidatorTypescriptImport = if (classFieldDef.typeaheadDef != null) {
+                it.typeaheadRequiredValidatorTypescriptImport
+            } else {
+                null
+            }
+
+            AngularFormFieldDef(
+                dtoBaseName,
+                classFieldDef,
+                classFieldDef.displayName?.let { name -> FieldLabel(name.value) },
+                renderFieldLabel = true,
+                classFieldDef.formPlaceholderText,
+                HtmlInputType.text,
+                autoFocus = false,
+                autocomplete = null,
+                typeaheadRequiredValidatorFunctionName,
+                typeaheadRequiredValidatorTypescriptImport,
+                asyncValidatorDef = this.entityDef.findUniqueDatabaseIndexDefFor(classFieldDef.classFieldName)?.asyncValidator
+            )
+
+        }
+
+
     val htmlFormFields: List<AngularFormFieldDef> = this.entityDef.allEntityFields
         .filter { entityFieldDef -> entityFieldDef.classFieldDef.isEditableByUser.value }
         .map {

@@ -40,6 +40,18 @@
                 <mat-error>Last Name must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
+        <div class="detail-row">
+            <span class="detail-label">Created By</span>
+            <span class="detail-value">{{ formGroup.getRawValue().createdBy }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Last Modified By</span>
+            <span class="detail-value">{{ formGroup.getRawValue().lastModifiedBy }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Lifecycle State</span>
+            <span class="detail-value">{{ formGroup.getRawValue().lifecycleState }}</span>
+        </div>
     </div>
     <div>
         <button mat-flat-button type="submit" color="primary">Submit</button>

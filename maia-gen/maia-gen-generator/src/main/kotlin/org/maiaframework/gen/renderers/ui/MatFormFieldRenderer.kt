@@ -40,6 +40,30 @@ object MatFormFieldRenderer {
     }
 
 
+    fun renderReadOnlyField(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indentSize: Int = 8
+    ) {
+        val indent = " ".repeat(indentSize)
+        val fieldLabel = htmlFormField.fieldLabel ?: return
+        val fieldName = htmlFormField.fieldName
+
+        val valueExpr = if (htmlFormField.isTypeahead) {
+            "formGroup.getRawValue().${fieldName}?.name"
+        } else {
+            "formGroup.getRawValue().${fieldName}"
+        }
+
+        r.append("""
+            |${indent}<div class="detail-row">
+            |${indent}    <span class="detail-label">${fieldLabel}</span>
+            |${indent}    <span class="detail-value">{{ ${valueExpr} }}</span>
+            |${indent}</div>
+            |""".trimMargin())
+    }
+
+
     fun renderFormField(
         htmlFormField: AngularFormFieldDef,
         r: AbstractSourceRenderer,

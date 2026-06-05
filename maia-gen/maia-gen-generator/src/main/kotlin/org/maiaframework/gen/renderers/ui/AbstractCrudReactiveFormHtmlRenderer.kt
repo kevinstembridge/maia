@@ -25,6 +25,11 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
     protected open val withCancelButton: Boolean = false
 
 
+    protected open fun renderSingleFormField(formFieldDef: AngularFormFieldDef) {
+        MatFormFieldRenderer.renderFormField(formFieldDef, this)
+    }
+
+
     protected open fun renderManyToManyTimestampedFields() {
 
         timestampedFields.forEach { field ->
@@ -182,7 +187,7 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
         }
 
         formFields.forEach { formFieldDef ->
-            MatFormFieldRenderer.renderFormField(formFieldDef, this)
+            renderSingleFormField(formFieldDef)
         }
 
         renderManyToManyChipFields()

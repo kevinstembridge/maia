@@ -22,7 +22,16 @@ class EntityEditReactiveFormHtmlRenderer(
     override val withCancelButton = true
 
 
-    override val formFields: List<AngularFormFieldDef> = apiDef.htmlFormFields
+    override val formFields: List<AngularFormFieldDef> = apiDef.editHtmlFormFields
+
+
+    override fun renderSingleFormField(formFieldDef: AngularFormFieldDef) {
+        if (formFieldDef.isEditable) {
+            MatFormFieldRenderer.renderFormField(formFieldDef, this)
+        } else {
+            MatFormFieldRenderer.renderReadOnlyField(formFieldDef, this)
+        }
+    }
 
 
     override fun renderedFilePath(): String {

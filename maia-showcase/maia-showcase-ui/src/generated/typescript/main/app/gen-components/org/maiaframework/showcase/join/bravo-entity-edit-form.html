@@ -30,6 +30,10 @@
                 <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
+        <div class="detail-row">
+            <span class="detail-label">Alpha</span>
+            <span class="detail-value">{{ formGroup.getRawValue().alpha?.name }}</span>
+        </div>
     </div>
     <div>
         <button mat-flat-button type="submit" color="primary">Submit</button>
