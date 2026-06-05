@@ -18,7 +18,16 @@ Add `styleUrl: './page-layout.scss'` to the `@Component` decorator.
 
 **File:** `maia-showcase/maia-showcase-ui/src/app/components/page-layout/page-layout.scss` (new)
 
-Scoped styles for `.page-title` within the component.
+```scss
+.page-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 0 0 0.875rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 2px solid var(--mat-sys-on-surface);
+  letter-spacing: -0.02em;
+}
+```
 
 ### 2. Generator — `EntityDetailViewContentHtmlRenderer.kt`
 
