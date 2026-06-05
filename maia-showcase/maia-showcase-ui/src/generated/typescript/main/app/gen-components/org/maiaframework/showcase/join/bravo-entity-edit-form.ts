@@ -9,11 +9,15 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Router} from '@angular/router';
+import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/join/AlphaTypeaheadV1EsDoc';
 import {BravoFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoFetchForEditDto';
 import {BravoUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoUpdateRequestDto';
 import {bravo_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaRequiredValidator';
+import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
+import {of} from 'rxjs';
+import {catchError, debounceTime, filter, map, switchMap, tap} from 'rxjs/operators';
 
 
 
@@ -28,6 +32,9 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatOption,
         MatProgressSpinnerModule,
         ReactiveFormsModule,
+    ],
+    providers: [
+        AlphaTypeaheadApiService,
     ],
     selector: 'app-bravo-entity-edit-form',
     styleUrls: ['./bravo-entity-edit-form.scss'],
@@ -48,6 +55,16 @@ export class BravoEntityEditForm implements OnInit {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
+    filteredAlpha: AlphaTypeaheadV1EsDoc[] = [];
+
+
+    filteredAlphaIsLoading = signal(false);
+
+
+
+    private readonly alphaTypeaheadApiService = inject(AlphaTypeaheadApiService);
+
+
     formGroup: FormGroup;
 
 
@@ -64,7 +81,7 @@ export class BravoEntityEditForm implements OnInit {
                 someInt: new FormControl(0, { updateOn: 'change' }),
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 id: new FormControl({value: '', disabled: true}),
-                alpha: new FormControl({value: '', disabled: true}),
+                alpha: new FormControl('', { updateOn: 'change', validators: [bravo_alphaRequiredValidator()] }),
             },
         );
 
@@ -72,6 +89,28 @@ export class BravoEntityEditForm implements OnInit {
 
 
     ngOnInit() {
+
+        this.formGroup.controls['alpha'].valueChanges
+            .pipe(
+                debounceTime(300),
+                filter(value => typeof value === 'string'),
+                tap(() => {
+                    this.filteredAlpha = [];
+                    this.filteredAlphaIsLoading.set(true);
+                }),
+                switchMap(value => this.alphaTypeaheadApiService.search(value)
+                    .pipe(
+                        catchError(err => {
+                            this.filteredAlphaIsLoading.set(false);
+                            console.error(err);
+                            return of([]);
+                        })
+                    )
+                ),
+                tap(() => this.filteredAlphaIsLoading.set(false))
+            ).subscribe(res => {
+                this.filteredAlpha = res;
+            });
 
         this.formService.fetchForEdit(this.entityId()).subscribe({
             next: (dto: BravoFetchForEditDto) => {
@@ -92,6 +131,9 @@ export class BravoEntityEditForm implements OnInit {
     }
 
 
+    alphaResultFormatter = (result: any) => result.someString;
+
+
     onSubmit() {
 
         this.problemDetail.set(null);
@@ -101,6 +143,7 @@ export class BravoEntityEditForm implements OnInit {
         }
 
         const requestDto = {
+            alpha: this.formGroup.getRawValue().alpha.id,
             id: this.formGroup.getRawValue().id,
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,

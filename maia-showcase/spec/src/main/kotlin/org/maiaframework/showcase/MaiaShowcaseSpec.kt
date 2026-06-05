@@ -1041,6 +1041,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         foreignKey("alpha", alphaEntityDef) {
             fieldDisplayName("Alpha")
             typeaheadField(alphaTypeaheadDef)
+            editableByUser()
         }
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")
