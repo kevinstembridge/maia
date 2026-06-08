@@ -92,6 +92,8 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         rightManyViewPage.assertOnPage()
 
+        val rightManyEntityId = page.url().substringAfterLast("/")
+
         `navigate to the`(rightManyBlotterPage)
 
         rightManyBlotterPage.apply {
@@ -116,7 +118,6 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         }
 
-        // After edit, Angular navigates to the view page
         rightManyViewPage.assertOnPage()
 
         `navigate to the`(rightManyBlotterPage)
@@ -138,6 +139,15 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
             `click the Yes button`()
             `assert the Delete dialog closed`()
             `assert the table does not contain value`("testright_edited")
+
+        }
+
+        rightManyHistoryBlotterPage.apply {
+
+            `navigate to the history page for entity`(rightManyEntityId)
+            `assert the table contains a row with`(changeType = "CREATE", someInt = "42", someString = "testright", version = "1")
+            `assert the table contains a row with`(changeType = "UPDATE", someInt = "42", someString = "testright_edited", version = "2")
+            `assert the table contains a row with`(changeType = "DELETE", someInt = "42", someString = "testright_edited", version = "3")
 
         }
 

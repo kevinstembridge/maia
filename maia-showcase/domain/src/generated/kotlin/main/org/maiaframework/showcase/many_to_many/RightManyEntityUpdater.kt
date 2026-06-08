@@ -9,7 +9,8 @@ import org.maiaframework.domain.persist.FieldUpdate
 
 data class RightManyEntityUpdater(
     val fields: List<FieldUpdate>,
-    val id: DomainId
+    val id: DomainId,
+    val version: Long
 ) {
 
 
@@ -20,6 +21,7 @@ data class RightManyEntityUpdater(
 
     class Builder(
         val id: DomainId,
+        val version: Long
     ) {
 
 
@@ -28,7 +30,11 @@ data class RightManyEntityUpdater(
 
         fun build(): RightManyEntityUpdater {
 
-            return RightManyEntityUpdater(this.fields, this.id)
+            return RightManyEntityUpdater(
+                this.fields,
+                this.id,
+                this.version
+            )
 
         }
 
@@ -55,10 +61,14 @@ data class RightManyEntityUpdater(
 
         fun forPrimaryKey(
             id: DomainId,
+            version: Long,
             init: Builder.() -> Unit
         ): RightManyEntityUpdater {
 
-            val builder = Builder(id)
+            val builder = Builder(
+                id,
+                version
+            )
             builder.init()
             return builder.build()
 

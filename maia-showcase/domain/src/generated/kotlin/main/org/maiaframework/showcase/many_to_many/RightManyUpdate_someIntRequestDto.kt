@@ -19,7 +19,10 @@ class RightManyUpdate_someIntRequestDto
     private val id_raw: DomainId?,
     @field:NotNull
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
-    private val someInt_raw: Int?
+    private val someInt_raw: Int?,
+    @field:NotNull
+    @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
+    private val version_raw: Long?
 ) {
 
 
@@ -31,11 +34,16 @@ class RightManyUpdate_someIntRequestDto
     val someInt: Int by lazy { someInt_raw!! }
 
 
+    @get:JsonIgnore
+    val version: Long by lazy { version_raw!! }
+
+
     override fun toString(): String {
 
         return "RightManyUpdate_someIntRequestDto{" +
                 "id = '" + this.id + '\'' + ", " + 
-                "someInt = '" + this.someInt + '\'' +
+                "someInt = '" + this.someInt + '\'' + ", " + 
+                "version = '" + this.version + '\'' +
                 "}"
 
     }

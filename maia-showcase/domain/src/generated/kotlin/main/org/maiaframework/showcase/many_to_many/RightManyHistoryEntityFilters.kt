@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.common.BlankStringException
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.jdbc.sql.conditions.AndOr
@@ -14,31 +15,39 @@ import java.time.Instant
 import java.util.concurrent.atomic.AtomicInteger
 
 
-class RightManyEntityFilters {
+class RightManyHistoryEntityFilters {
 
 
     private val sqlParamCounter = AtomicInteger(1)
 
 
-    fun and(vararg filters: RightManyEntityFilter): RightManyEntityFilter {
+    fun and(vararg filters: RightManyHistoryEntityFilter): RightManyHistoryEntityFilter {
 
         return IterableFunctionFilter(filters.toList(), AndOr.and)
 
     }
 
 
-    fun or(vararg filters: RightManyEntityFilter): RightManyEntityFilter {
+    fun or(vararg filters: RightManyHistoryEntityFilter): RightManyHistoryEntityFilter {
 
         return IterableFunctionFilter(filters.toList(), AndOr.or)
 
     }
 
 
-    fun nor(vararg filters: RightManyEntityFilter): RightManyEntityFilter {
+    fun nor(vararg filters: RightManyHistoryEntityFilter): RightManyHistoryEntityFilter {
 
         return IterableFunctionFilter(filters.toList(), AndOr.nor)
 
     }
+
+
+    val changeType: FieldFilter<ChangeType> 
+        get() {
+
+            return FieldFilter("change_type", Types.VARCHAR, this.sqlParamCounter) { value -> value?.name }
+
+        }
 
 
     val createdTimestampUtc: FieldFilter<Instant> 
@@ -89,7 +98,7 @@ class RightManyEntityFilters {
     ) {
 
 
-        infix fun eq(value: T): RightManyEntityFilter {
+        infix fun eq(value: T): RightManyHistoryEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -103,7 +112,7 @@ class RightManyEntityFilters {
         }
 
 
-        infix fun gt(value: T): RightManyEntityFilter {
+        infix fun gt(value: T): RightManyHistoryEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -117,7 +126,7 @@ class RightManyEntityFilters {
         }
 
 
-        infix fun gte(value: T): RightManyEntityFilter {
+        infix fun gte(value: T): RightManyHistoryEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -131,7 +140,7 @@ class RightManyEntityFilters {
         }
 
 
-        infix fun lt(value: T): RightManyEntityFilter {
+        infix fun lt(value: T): RightManyHistoryEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -145,7 +154,7 @@ class RightManyEntityFilters {
         }
 
 
-        infix fun lte(value: T): RightManyEntityFilter {
+        infix fun lte(value: T): RightManyHistoryEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -159,7 +168,7 @@ class RightManyEntityFilters {
         }
 
 
-        infix fun ne(value: T): RightManyEntityFilter {
+        infix fun ne(value: T): RightManyHistoryEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -173,28 +182,28 @@ class RightManyEntityFilters {
         }
 
 
-        infix fun `in`(value: Iterable<T>): RightManyEntityFilter {
+        infix fun `in`(value: Iterable<T>): RightManyHistoryEntityFilter {
 
             return MultiValueFunctionFilter(this.databaseColumnName, this.sqlType, this.sqlParamCounter, value, this.valueMappingFunc)
 
         }
 
 
-        fun isNotNull(): RightManyEntityFilter {
+        fun isNotNull(): RightManyHistoryEntityFilter {
 
             return IsNotNullFilter(this.databaseColumnName)
 
         }
 
 
-        fun isNull(): RightManyEntityFilter {
+        fun isNull(): RightManyHistoryEntityFilter {
 
             return IsNullFilter(this.databaseColumnName)
 
         }
 
 
-        infix fun contains(value: T): RightManyEntityFilter {
+        infix fun contains(value: T): RightManyHistoryEntityFilter {
 
             TODO("Not implemented yet")
 
@@ -204,10 +213,10 @@ class RightManyEntityFilters {
     }
 
 
-    class NoopFilter : RightManyEntityFilter {
+    class NoopFilter : RightManyHistoryEntityFilter {
 
 
-        override fun whereClause(fieldConverter: RightManyEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: RightManyHistoryEntityFieldConverter): String {
             return "1 = 1"
         }
 
@@ -227,7 +236,7 @@ class RightManyEntityFilters {
         sqlParamCounter: AtomicInteger,
         private val sqlConditionOperator: SqlConditionOperator,
         private val valueMappingFunc: (VALUE?) -> Any?
-    ) : RightManyEntityFilter {
+    ) : RightManyHistoryEntityFilter {
 
 
         private val sqlParamName = "${fieldName}_${sqlParamCounter.getAndIncrement()}"
@@ -240,7 +249,7 @@ class RightManyEntityFilters {
         }
 
 
-        override fun whereClause(fieldConverter: RightManyEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: RightManyHistoryEntityFieldConverter): String {
 
             return "$fieldName ${operatorFor(sqlConditionOperator)} :${this.sqlParamName}"
 
@@ -279,7 +288,7 @@ class RightManyEntityFilters {
         sqlParamCounter: AtomicInteger,
         private val values: Iterable<VALUE>,
         private val valueMappingFunc: (VALUE?) -> Any?
-    ) : RightManyEntityFilter {
+    ) : RightManyHistoryEntityFilter {
 
 
         private val sqlParamName = "${fieldName}_${sqlParamCounter.getAndIncrement()}"
@@ -293,7 +302,7 @@ class RightManyEntityFilters {
         }
 
 
-        override fun whereClause(fieldConverter: RightManyEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: RightManyHistoryEntityFieldConverter): String {
 
             return "$fieldName in (:$sqlParamName)"
 
@@ -312,12 +321,12 @@ class RightManyEntityFilters {
 
 
     private class IterableFunctionFilter(
-        private val filters: List<RightManyEntityFilter>,
+        private val filters: List<RightManyHistoryEntityFilter>,
         private val andOr: AndOr
-    ) : RightManyEntityFilter {
+    ) : RightManyHistoryEntityFilter {
 
 
-        override fun whereClause(fieldConverter: RightManyEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: RightManyHistoryEntityFieldConverter): String {
 
             return this.filters.map { it.whereClause(fieldConverter) }.joinToString(" ${andOr.name} ")
 
@@ -336,10 +345,10 @@ class RightManyEntityFilters {
 
     private class IsNullFilter(
         private val databaseColumnName: String
-    ) : RightManyEntityFilter {
+    ) : RightManyHistoryEntityFilter {
 
 
-        override fun whereClause(fieldConverter: RightManyEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: RightManyHistoryEntityFieldConverter): String {
 
             return "$databaseColumnName is null"
 
@@ -358,10 +367,10 @@ class RightManyEntityFilters {
 
     private class IsNotNullFilter(
         private val databaseColumnName: String
-    ) : RightManyEntityFilter {
+    ) : RightManyHistoryEntityFilter {
 
 
-        override fun whereClause(fieldConverter: RightManyEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: RightManyHistoryEntityFieldConverter): String {
 
             return "$databaseColumnName is not null"
 

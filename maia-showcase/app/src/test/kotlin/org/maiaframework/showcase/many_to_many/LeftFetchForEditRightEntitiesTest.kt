@@ -23,13 +23,21 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
     private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
 
 
-    private val leftEntity = LeftManyEntityTestBuilder().build()
-    private val rightEntity1 = RightManyEntityTestBuilder(someString = "alpha").build()
-    private val rightEntity2 = RightManyEntityTestBuilder(someString = "beta").build()
+    private lateinit var leftEntity: LeftManyEntity
+
+
+    private lateinit var rightEntity1: RightManyEntity
+
+
+    private lateinit var rightEntity2: RightManyEntity
 
 
     @BeforeEach
     fun setUp() {
+
+        leftEntity = LeftManyEntityTestBuilder().build()
+        rightEntity1 = RightManyEntityTestBuilder(someString = "alpha").build()
+        rightEntity2 = RightManyEntityTestBuilder(someString = "beta").build()
 
         manyToManyJoinDao.deleteAll()
         leftDao.deleteAll()

@@ -27,7 +27,10 @@ class RightManyUpdateRequestDto
     @field:NotBlank
     @field:Length(max = 100)
     @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
-    private val someString_raw: String?
+    private val someString_raw: String?,
+    @field:NotNull
+    @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
+    private val version_raw: Long?
 ) {
 
 
@@ -44,6 +47,10 @@ class RightManyUpdateRequestDto
 
 
     @get:JsonIgnore
+    val version: Long by lazy { version_raw!! }
+
+
+    @get:JsonIgnore
     val leftEntities: List<LeftJoinRequestDto> by lazy { leftEntities_raw ?: emptyList() }
 
 
@@ -53,6 +60,7 @@ class RightManyUpdateRequestDto
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
+                "version = '" + this.version + '\'' + ", " + 
                 "leftEntities = '" + this.leftEntities + '\'' +
                 "}"
 

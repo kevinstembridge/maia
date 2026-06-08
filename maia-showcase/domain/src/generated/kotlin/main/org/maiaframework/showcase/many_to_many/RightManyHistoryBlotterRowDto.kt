@@ -3,14 +3,11 @@
 
 package org.maiaframework.showcase.many_to_many
 
-import org.maiaframework.domain.DomainId
-import java.time.Instant
+import org.maiaframework.domain.ChangeType
 
 
-data class RightManyFetchForEditDto(
-    val createdTimestampUtc: Instant,
-    val id: DomainId,
-    val leftEntities: List<LeftJoinFetchDto>,
+data class RightManyHistoryBlotterRowDto(
+    val changeType: ChangeType,
     val someInt: Int,
     val someString: String,
     val version: Long

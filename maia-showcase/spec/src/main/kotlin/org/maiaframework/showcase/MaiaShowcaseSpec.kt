@@ -1319,7 +1319,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "RightMany",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        nameFieldForPkAndNameDto = "someString"
+        nameFieldForPkAndNameDto = "someString",
+        recordVersionHistory = true
     ) {
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")

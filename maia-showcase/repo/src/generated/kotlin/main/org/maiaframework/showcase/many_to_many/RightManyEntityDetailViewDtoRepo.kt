@@ -22,6 +22,7 @@ class RightManyEntityDetailViewDtoRepo(
             id = entity.id,
             someInt = entity.someInt,
             someString = entity.someString,
+            version = entity.version,
         )
 
     }

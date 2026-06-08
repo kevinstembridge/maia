@@ -3,22 +3,25 @@
 
 package org.maiaframework.showcase.many_to_many
 
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 
 
-class RightManyEntityRowMapper : MaiaRowMapper<RightManyEntity> {
+class RightManyHistoryEntityRowMapper : MaiaRowMapper<RightManyHistoryEntity> {
 
 
-    override fun mapRow(rsa: ResultSetAdapter): RightManyEntity {
+    override fun mapRow(rsa: ResultSetAdapter): RightManyHistoryEntity {
 
+        val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
         val version = rsa.readLong("version")
 
-        return RightManyEntity(
+        return RightManyHistoryEntity(
+                changeType,
                 createdTimestampUtc,
                 id,
                 someInt,

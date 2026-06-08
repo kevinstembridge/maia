@@ -9,5 +9,6 @@ export interface RightManyUpdateRequestDto {
     leftEntities?: ReadonlyArray<LeftJoinRequestDto>;
     someInt: number;
     someString: string;
+    version: number;
 }
 

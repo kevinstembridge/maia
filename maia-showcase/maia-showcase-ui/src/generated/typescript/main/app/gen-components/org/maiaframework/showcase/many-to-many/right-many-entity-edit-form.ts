@@ -112,6 +112,7 @@ export class RightManyEntityEditForm implements OnInit {
                 someInt: new FormControl(0, { updateOn: 'change' }),
                 someString: new FormControl('', { updateOn: 'change', validators: [Validators.required, Validators.maxLength(100)] }),
                 id: new FormControl({value: '', disabled: true}),
+                version: new FormControl({value: 0, disabled: true}),
             },
         );
 
@@ -146,6 +147,7 @@ export class RightManyEntityEditForm implements OnInit {
                     id: dto.id,
                     someInt: dto.someInt,
                     someString: dto.someString,
+                    version: dto.version,
                 });
                 this.leftJoins = dto.leftEntities?.map(e => ({
                     entityId: e.id,
@@ -219,6 +221,7 @@ export class RightManyEntityEditForm implements OnInit {
             id: this.formGroup.getRawValue().id,
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
+            version: this.formGroup.getRawValue().version,
             leftEntities: this.leftJoins.map(j => ({
                 leftEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,

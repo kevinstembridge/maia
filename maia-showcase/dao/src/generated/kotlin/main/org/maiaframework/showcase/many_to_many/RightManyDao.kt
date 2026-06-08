@@ -3,12 +3,14 @@
 
 package org.maiaframework.showcase.many_to_many
 
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
+import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class RightManyDao(
     private val fieldConverter: RightManyEntityFieldConverter,
+    private val historyDao: RightManyHistoryDao,
     private val jdbcOps: JdbcOps
 ) {
 
@@ -38,12 +41,14 @@ class RightManyDao(
                 created_timestamp_utc,
                 id,
                 some_int,
-                some_string
+                some_string,
+                version
             ) values (
                 :createdTimestampUtc,
                 :id,
                 :someInt,
-                :someString
+                :someString,
+                :version
             )
             """.trimIndent(),
             SqlParams().apply {
@@ -51,8 +56,11 @@ class RightManyDao(
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
+                addValue("version", entity.version)
             }
         )
+
+        insertHistory(entity, ChangeType.CREATE)
 
     }
 
@@ -65,12 +73,14 @@ class RightManyDao(
                 created_timestamp_utc,
                 id,
                 some_int,
-                some_string
+                some_string,
+                version
             ) values (
                 :createdTimestampUtc,
                 :id,
                 :someInt,
-                :someString
+                :someString,
+                :version
             )
             """.trimIndent(),
             entities.map { entity ->
@@ -79,9 +89,56 @@ class RightManyDao(
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
+                    addValue("version", entity.version)
                 }
             }
         )
+
+        bulkInsertHistory(entities, ChangeType.CREATE)
+
+    }
+
+
+    private fun insertHistory(entity: RightManyEntity, changeType: ChangeType) {
+
+        insertHistory(entity, entity.version, changeType)
+
+    }
+
+
+    private fun insertHistory(entity: RightManyEntity, version: Long, changeType: ChangeType) {
+
+        this.historyDao.insert(history(entity, version, changeType))
+
+    }
+
+
+    private fun bulkInsertHistory(entities: List<RightManyEntity>, changeType: ChangeType) {
+
+        val historyEntities = entities.map { history(it, it.version, changeType) }
+        this.historyDao.bulkInsert(historyEntities)
+
+    }
+
+
+    private fun history(
+        entity: RightManyEntity,
+        version: Long,
+        changeType: ChangeType
+    ): RightManyHistoryEntity {
+
+        val id = entity.id
+        val createdTimestampUtc = entity.createdTimestampUtc
+        val someInt = entity.someInt
+        val someString = entity.someString
+
+        return RightManyHistoryEntity(
+                changeType,
+                createdTimestampUtc,
+                id,
+                someInt,
+                someString,
+                version)
 
     }
 
@@ -261,7 +318,8 @@ class RightManyDao(
                 maia.right_many.created_timestamp_utc as createdTimestampUtc,
                 maia.right_many.id as id,
                 maia.right_many.some_int as someInt,
-                maia.right_many.some_string as someString
+                maia.right_many.some_string as someString,
+                maia.right_many.version as version
             from maia.right_many
             where maia.right_many.id = :id
             """,
@@ -290,6 +348,7 @@ class RightManyDao(
         sql.append("update maia.right_many set ")
 
         val fieldClauses = updater.fields
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -299,10 +358,27 @@ class RightManyDao(
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("id", updater.id)
 
-        return this.jdbcOps.update(sql.toString(), sqlParams)
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
+
+        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
+
+        if (updateCount == 0) {
+
+            throw OptimisticLockingException(RightManyEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
+
+        } else {
+
+            val updatedEntity = findByPrimaryKey(updater.id)
+            insertHistory(updatedEntity, ChangeType.UPDATE)
+
+        }
+
+        return updateCount
 
     }
 
@@ -327,6 +403,11 @@ class RightManyDao(
                 addValue("id", id)
             }
         )
+
+        if (deletedCount > 0) {
+
+            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))
+        }
 
         return deletedCount > 0
 

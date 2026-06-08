@@ -7,4 +7,5 @@ export interface RightManyEntityDetailViewDto {
     id: string;
     someInt: number;
     someString: string;
+    version: number;
 }

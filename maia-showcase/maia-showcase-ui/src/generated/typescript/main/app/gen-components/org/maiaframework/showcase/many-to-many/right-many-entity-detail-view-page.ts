@@ -61,5 +61,13 @@ export class RightManyEntityDetailViewPage {
     }
 
 
+    onHistoryClicked(): void {
+        const id = this.entityId();
+        if (id) {
+            this.router.navigate(['/right-many/history', id]);
+        }
+    }
+
+
 }
 

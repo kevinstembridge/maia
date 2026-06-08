@@ -30,6 +30,7 @@ import org.maiaframework.showcase.testing.pages.LeftManyViewPage
 import org.maiaframework.showcase.testing.pages.RightManyBlotterPage
 import org.maiaframework.showcase.testing.pages.RightManyCreatePage
 import org.maiaframework.showcase.testing.pages.RightManyEditPage
+import org.maiaframework.showcase.testing.pages.RightManyHistoryBlotterPage
 import org.maiaframework.showcase.testing.pages.RightManyViewPage
 import org.maiaframework.showcase.testing.pages.SimpleBlotterPage
 import org.maiaframework.showcase.testing.pages.SimpleCreatePage
@@ -164,6 +165,9 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var rightManyEditPage: RightManyEditPage
 
 
+    protected lateinit var rightManyHistoryBlotterPage: RightManyHistoryBlotterPage
+
+
     protected lateinit var rightManyViewPage: RightManyViewPage
 
 
@@ -235,6 +239,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         rightManyBlotterPage = RightManyBlotterPage(page, urlHelper)
         rightManyCreatePage = RightManyCreatePage(page, urlHelper)
         rightManyEditPage = RightManyEditPage(page, urlHelper)
+        rightManyHistoryBlotterPage = RightManyHistoryBlotterPage(page, urlHelper)
         rightManyViewPage = RightManyViewPage(page, urlHelper)
         loginPage = LoginPage(page, urlHelper)
         simpleBlotterPage = SimpleBlotterPage(page, urlHelper)

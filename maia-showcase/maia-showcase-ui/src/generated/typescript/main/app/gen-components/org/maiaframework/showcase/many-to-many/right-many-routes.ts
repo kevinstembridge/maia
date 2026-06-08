@@ -16,6 +16,11 @@ export const rightManyRoutes: Routes = [
             import('./right-many-entity-detail-view-page').then(m => m.RightManyEntityDetailViewPage),
     },
     {
+        path: 'right-many/history/:id',
+        loadComponent: () =>
+            import('./right-many-history-blotter-page').then(m => m.RightManyHistoryBlotterPage),
+    },
+    {
         path: 'right-many/create',
         loadComponent: () =>
             import('./right-many-entity-create-page').then(m => m.RightManyEntityCreatePage),

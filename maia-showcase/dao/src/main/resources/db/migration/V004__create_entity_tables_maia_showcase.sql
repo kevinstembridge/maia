@@ -270,7 +270,19 @@ CREATE TABLE maia.right_many (
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.right_many_history (
+    change_type text NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
 );
 
 

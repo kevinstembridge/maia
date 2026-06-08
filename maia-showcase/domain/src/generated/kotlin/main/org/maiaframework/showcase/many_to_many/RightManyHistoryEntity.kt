@@ -3,11 +3,13 @@
 
 package org.maiaframework.showcase.many_to_many
 
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-class RightManyEntity(
+class RightManyHistoryEntity(
+    val changeType: ChangeType,
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val someInt: Int,
@@ -16,47 +18,19 @@ class RightManyEntity(
 ) {
 
 
+    val primaryKey = RightManyHistoryEntityPk(id, version)
+
+
     override fun toString(): String {
 
-        return "RightManyEntity{" +
+        return "RightManyHistoryEntity{" +
+                "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
-
-    }
-
-
-    companion object {
-
-
-        fun newId(): DomainId {
-            return DomainId.newId()
-        }
-
-
-        @JvmStatic
-        fun newInstance(
-            someInt: Int,
-            someString: String
-        ): RightManyEntity {
-
-            val createdTimestampUtc = Instant.now()
-            val id = newId()
-            val version = 1L
-
-            return RightManyEntity(
-                createdTimestampUtc,
-                id,
-                someInt,
-                someString,
-                version
-            )
-
-        }
-
 
     }
 

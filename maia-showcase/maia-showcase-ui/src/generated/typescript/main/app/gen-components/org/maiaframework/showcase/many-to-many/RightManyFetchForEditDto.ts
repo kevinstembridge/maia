@@ -10,5 +10,6 @@ export interface RightManyFetchForEditDto {
     leftEntities: ReadonlyArray<LeftJoinFetchDto>;
     someInt: number;
     someString: string;
+    version: number;
 }
 

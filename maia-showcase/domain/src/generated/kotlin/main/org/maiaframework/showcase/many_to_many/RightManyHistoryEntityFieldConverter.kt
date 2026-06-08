@@ -3,6 +3,7 @@
 
 package org.maiaframework.showcase.many_to_many
 
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityFieldConverter
 import org.springframework.stereotype.Component
@@ -10,13 +11,15 @@ import java.time.Instant
 
 
 @Component
-class RightManyEntityFieldConverter : EntityFieldConverter {
+class RightManyHistoryEntityFieldConverter : EntityFieldConverter {
 
 
     override fun convert(tableColumnName: String, inputValue: Any?): Any? {
 
         when (tableColumnName) {
 
+            "change_type" -> // changeType
+                return (inputValue as ChangeType).name
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "id" -> // id

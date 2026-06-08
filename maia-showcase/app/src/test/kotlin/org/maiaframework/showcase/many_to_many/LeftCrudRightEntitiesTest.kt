@@ -26,9 +26,13 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
 
 
-    private val rightEntity1 = RightManyEntityTestBuilder(someString = "right1").build()
-    private val rightEntity2 = RightManyEntityTestBuilder(someString = "right2").build()
-    private val rightEntity3 = RightManyEntityTestBuilder(someString = "right3").build()
+    private lateinit var rightEntity1: RightManyEntity
+
+
+    private lateinit var rightEntity2: RightManyEntity
+
+
+    private lateinit var rightEntity3: RightManyEntity
 
 
     private fun post(path: String, body: String): MvcTestResultAssert {
@@ -60,6 +64,10 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
     @BeforeEach
     fun setUp() {
+
+        rightEntity1 = RightManyEntityTestBuilder(someString = "right1").build()
+        rightEntity2 = RightManyEntityTestBuilder(someString = "right2").build()
+        rightEntity3 = RightManyEntityTestBuilder(someString = "right3").build()
 
         manyToManyJoinDao.deleteAll()
         leftDao.deleteAll()

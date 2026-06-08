@@ -55,12 +55,14 @@ class RightManyCrudService(
         val someString: String = createDto.someString
         val id = DomainId.newId()
         val createdTimestampUtc = Instant.now()
+        val version = 1L
 
         return RightManyEntity(
             createdTimestampUtc,
             id,
             someInt,
-            someString
+            someString,
+            version
         )
 
     }
@@ -86,7 +88,8 @@ class RightManyCrudService(
     fun update(editDto: RightManyUpdateRequestDto) {
 
         val id = editDto.id
-        val updater = RightManyEntityUpdater.forPrimaryKey(id) {
+        val version = editDto.version
+        val updater = RightManyEntityUpdater.forPrimaryKey(id, version) {
             someInt(editDto.someInt)
             someString(editDto.someString)
         }
@@ -112,7 +115,9 @@ class RightManyCrudService(
 
         logger.info("BEGIN: updateSomeInt. currentUsername=${currentUsername}, dto=$editDto")
 
-        val updater = RightManyEntityUpdater.forPrimaryKey(editDto.id) {
+        val version = editDto.version
+
+        val updater = RightManyEntityUpdater.forPrimaryKey(editDto.id, version) {
             someInt(editDto.someInt)
         }
 
@@ -128,7 +133,9 @@ class RightManyCrudService(
 
         logger.info("BEGIN: updateSomeString. currentUsername=${currentUsername}, dto=$editDto")
 
-        val updater = RightManyEntityUpdater.forPrimaryKey(editDto.id) {
+        val version = editDto.version
+
+        val updater = RightManyEntityUpdater.forPrimaryKey(editDto.id, version) {
             someString(editDto.someString)
         }
 

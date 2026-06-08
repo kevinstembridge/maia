@@ -10,7 +10,9 @@ import org.maiaframework.jdbc.SchemaAndTableName
 import org.maiaframework.jdbc.TableName
 
 
-object RightManyEntityMeta {
+object RightManyHistoryEntityMeta {
+
+    const val changeType = "change_type"
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
@@ -22,13 +24,13 @@ object RightManyEntityMeta {
 
     const val version = "version"
 
-    val ENTITY_KEY = EntityKey("RightMany")
+    val ENTITY_KEY = EntityKey("RightManyHistory")
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
 
     val SCHEMA_NAME = SchemaName("maia")
 
-    val TABLE_NAME = TableName("right_many")
+    val TABLE_NAME = TableName("right_many_history")
 
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
@@ -36,6 +38,7 @@ object RightManyEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
+            "changeType" -> "change_type"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
             "someInt" -> "some_int"
