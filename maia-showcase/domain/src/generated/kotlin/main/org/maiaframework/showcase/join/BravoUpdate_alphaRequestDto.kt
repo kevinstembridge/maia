@@ -7,28 +7,19 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import org.hibernate.validator.constraints.Length
 import org.maiaframework.domain.DomainId
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class BravoUpdateRequestDto
+class BravoUpdate_alphaRequestDto
 @JsonCreator constructor(
     @field:NotNull
     @param:JsonProperty("alpha", access = JsonProperty.Access.READ_WRITE) 
     private val alpha_raw: DomainId?,
     @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
-    private val id_raw: DomainId?,
-    @field:NotNull
-    @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
-    private val someInt_raw: Int?,
-    @field:NotBlank
-    @field:Length(max = 100)
-    @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
-    private val someString_raw: String?
+    private val id_raw: DomainId?
 ) {
 
 
@@ -40,21 +31,11 @@ class BravoUpdateRequestDto
     val id: DomainId by lazy { id_raw!! }
 
 
-    @get:JsonIgnore
-    val someInt: Int by lazy { someInt_raw!! }
-
-
-    @get:JsonIgnore
-    val someString: String by lazy { someString_raw!! }
-
-
     override fun toString(): String {
 
-        return "BravoUpdateRequestDto{" +
+        return "BravoUpdate_alphaRequestDto{" +
                 "alpha = '" + this.alpha + '\'' + ", " + 
-                "id = '" + this.id + '\'' + ", " + 
-                "someInt = '" + this.someInt + '\'' + ", " + 
-                "someString = '" + this.someString + '\'' +
+                "id = '" + this.id + '\'' +
                 "}"
 
     }

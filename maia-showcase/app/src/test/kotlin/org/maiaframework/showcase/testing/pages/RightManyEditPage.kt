@@ -19,7 +19,7 @@ class RightManyEditPage(
 ) {
 
 
-    fun assertJoinEntryVisible(entityName: String) {
+    fun `assert a LeftEntity is visible with name`(entityName: String) {
 
         page.locator(".join-entry")
             .filter(Locator.FilterOptions().setHasText(entityName))
@@ -28,7 +28,7 @@ class RightManyEditPage(
     }
 
 
-    fun removeJoinEntry(entityName: String) {
+    fun `remove the LeftEntity named`(entityName: String) {
 
         page.locator(".join-entry")
             .filter(Locator.FilterOptions().setHasText(entityName))
@@ -41,7 +41,7 @@ class RightManyEditPage(
     }
 
 
-    fun fillForm(
+    fun `enter form input`(
         someString: String = "testright_edited",
     ) {
 
@@ -50,7 +50,7 @@ class RightManyEditPage(
     }
 
 
-    fun clickSubmitButton() {
+    fun `click the Submit button`() {
 
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Submit"))
             .click(Locator.ClickOptions().setForce(true))

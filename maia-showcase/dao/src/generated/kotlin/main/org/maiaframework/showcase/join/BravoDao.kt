@@ -337,6 +337,7 @@ class BravoDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "alpha" -> sqlParams.addValue("alpha", field.value as DomainId)
             "someInt" -> sqlParams.addValue("someInt", field.value as Int)
             "someString" -> sqlParams.addValue("someString", field.value as String)
         }

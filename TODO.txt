@@ -1,6 +1,4 @@
 
-TODO * Improve the styling.
-
 
 TODO * MTM scenarios:
     TODO * When we delete an MTM association, it should just set the effectiveTo date to now().

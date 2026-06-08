@@ -26,7 +26,7 @@ class RightManyBlotterPage(
     }
 
 
-    fun clickEditButtonForFirstRow() {
+    fun `click to edit the first row`() {
 
         page.waitForFunction(
             "() => { const c = document.querySelector('.ag-cell[col-id=\"someString\"]'); " +
@@ -42,7 +42,7 @@ class RightManyBlotterPage(
     }
 
 
-    fun clickDeleteButtonForFirstRow() {
+    fun `click to delete the first row`() {
 
         page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
 
@@ -60,7 +60,7 @@ class RightManyBlotterPage(
     }
 
 
-    fun assertFkCheckDialogShowsError() {
+    fun `assert the FK Check dialog shows an error`() {
 
         page.locator("mat-dialog-container").waitFor()
         page.waitForFunction(
@@ -74,7 +74,7 @@ class RightManyBlotterPage(
     }
 
 
-    fun dismissFkCheckDialog() {
+    fun `dismiss the FK Check dialog`() {
 
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Cancel")).click()
         page.locator("mat-dialog-container").waitFor(
@@ -84,7 +84,7 @@ class RightManyBlotterPage(
     }
 
 
-    fun waitForDeleteDialog() {
+    fun `wait for the Delete dialog`() {
 
         page.locator("mat-dialog-container").filter(
             Locator.FilterOptions().setHasText("Do you want to delete this record?")
@@ -93,21 +93,21 @@ class RightManyBlotterPage(
     }
 
 
-    fun clickYesButton() {
+    fun `click the Yes button`() {
 
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Yes")).click()
 
     }
 
 
-    fun clickCancelButton() {
+    fun `click the Cancel button`() {
 
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Cancel")).click()
 
     }
 
 
-    fun assertDeleteDialogClosed() {
+    fun `assert the Delete dialog closed`() {
 
         page.locator("mat-dialog-container").waitFor(
             Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
@@ -116,7 +116,7 @@ class RightManyBlotterPage(
     }
 
 
-    fun assertTableContainsValue(value: String) {
+    fun `assert the table contains value`(value: String) {
 
         page.waitForFunction(
             "() => {" +
@@ -131,7 +131,7 @@ class RightManyBlotterPage(
     }
 
 
-    fun assertTableDoesNotContainValue(value: String) {
+    fun `assert the table does not contain value`(value: String) {
 
         page.waitForFunction(
             "(value) => {" +

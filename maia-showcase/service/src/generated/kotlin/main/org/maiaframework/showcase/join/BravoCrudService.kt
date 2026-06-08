@@ -76,6 +76,7 @@ class BravoCrudService(
 
         val id = editDto.id
         val updater = BravoEntityUpdater.forPrimaryKey(id) {
+            alpha(editDto.alpha)
             someInt(editDto.someInt)
             someString(editDto.someString)
         }
@@ -110,6 +111,22 @@ class BravoCrudService(
 
         val updater = BravoEntityUpdater.forPrimaryKey(editDto.id) {
             someString(editDto.someString)
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateAlpha(editDto: BravoUpdate_alphaRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateAlpha. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = BravoEntityUpdater.forPrimaryKey(editDto.id) {
+            alpha(editDto.alpha)
         }
 
         setFields(updater)

@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.index.EsIndexOps
 import org.maiaframework.showcase.AbstractPlaywrightTest
-import org.maiaframework.showcase.auth.Authority
-import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.springframework.beans.factory.annotation.Autowired
 
 
@@ -30,7 +28,10 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
     private lateinit var leftManyTypeaheadEsIndex: LeftManyTypeaheadEsIndex
 
 
-    private val leftAlpha = LeftManyEntityTestBuilder(someString = "left-alpha").build()
+    private val left1 = LeftManyEntityTestBuilder(someString = "left-1").build()
+
+
+    private val left2 = LeftManyEntityTestBuilder(someString = "left-2").build()
 
 
     @BeforeAll
@@ -40,11 +41,21 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         fixtures.resetDatabaseState()
         rightManyDao.deleteAll()
-        leftManyDao.bulkInsert(listOf(leftAlpha))
+
+        leftManyDao.bulkInsert(listOf(left1, left2))
+
+        `upsert to ElasticSearch`(left1)
+        `upsert to ElasticSearch`(left2)
+
+    }
+
+
+    private fun `upsert to ElasticSearch`(leftManyEntity: LeftManyEntity) {
+
         esIndexOps.upsert(
             EsDocHolder(
-                id = leftAlpha.id.toString(),
-                doc = LeftManyTypeaheadV1EsDoc(id = leftAlpha.id, someString = leftAlpha.someString),
+                id = leftManyEntity.id.toString(),
+                doc = LeftManyTypeaheadV1EsDoc(id = leftManyEntity.id, someString = leftManyEntity.someString),
                 indexName = leftManyTypeaheadEsIndex.indexName()
             )
         )
@@ -66,45 +77,42 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
         `log in as admin user`()
         `navigate to the`(rightManyBlotterPage)
 
-        // Create: navigate to create page, fill form with someInt + someString + left-entity chip
         rightManyBlotterPage.clickAddButton()
 
         rightManyCreatePage.apply {
 
             assertOnPage()
-            fillForm(someInt = "42", someString = "testright")
-            clickAddLeftEntityButton()
-            searchAndSelectLeftEntityInMiniForm("left-alpha")
-            clickConfirmAddInMiniForm()
-            clickSubmitButton()
+            `enter form input`(someInt = "42", someString = "testright")
+            `click the Add button for Left entities`()
+            `select a Left entity in the mini form`("left-1")
+            `click to confirm adding the Left entity`()
+            `click the Submit button`()
 
         }
 
-        // After create, Angular navigates to the view page
         rightManyViewPage.assertOnPage()
 
         `navigate to the`(rightManyBlotterPage)
-        rightManyBlotterPage.assertTableContainsValue("testright")
 
         rightManyBlotterPage.apply {
 
-            // Attempt delete while the join record exists — FK check dialog shows error
-            clickDeleteButtonForFirstRow()
-            assertFkCheckDialogShowsError()
-            dismissFkCheckDialog()
+            `assert the table contains value`("testright")
 
-            // Edit: verify chip pre-populated, remove it, change someString
-            clickEditButtonForFirstRow()
+            `click to delete the first row`()
+            `assert the FK Check dialog shows an error`()
+            `dismiss the FK Check dialog`()
+
+            `click to edit the first row`()
 
         }
 
         rightManyEditPage.apply {
 
             assertOnPage()
-            assertJoinEntryVisible("left-alpha")
-            removeJoinEntry("left-alpha")
-            fillForm(someString = "testright_edited")
-            clickSubmitButton()
+            `assert a LeftEntity is visible with name`("left-1")
+            `remove the LeftEntity named`("left-1")
+            `enter form input`(someString = "testright_edited")
+            `click the Submit button`()
 
         }
 
@@ -112,23 +120,24 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
         rightManyViewPage.assertOnPage()
 
         `navigate to the`(rightManyBlotterPage)
-        rightManyBlotterPage.assertTableContainsValue("testright_edited")
 
         rightManyBlotterPage.apply {
 
+            `assert the table contains value`("testright_edited")
+
             // Cancel delete: FK check passes (no join records), delete dialog appears, cancel
-            clickDeleteButtonForFirstRow()
-            waitForDeleteDialog()
-            clickCancelButton()
-            assertDeleteDialogClosed()
-            assertTableContainsValue("testright_edited")
+            `click to delete the first row`()
+            `wait for the Delete dialog`()
+            `click the Cancel button`()
+            `assert the Delete dialog closed`()
+            `assert the table contains value`("testright_edited")
 
             // Confirm delete
-            clickDeleteButtonForFirstRow()
-            waitForDeleteDialog()
-            clickYesButton()
-            assertDeleteDialogClosed()
-            assertTableDoesNotContainValue("testright_edited")
+            `click to delete the first row`()
+            `wait for the Delete dialog`()
+            `click the Yes button`()
+            `assert the Delete dialog closed`()
+            `assert the table does not contain value`("testright_edited")
 
         }
 

@@ -47,6 +47,13 @@ data class BravoEntityUpdater(
         }
 
 
+        fun alpha(alpha: DomainId) {
+
+            this.fields.add(FieldUpdate("alpha", "alpha_id", alpha))
+
+        }
+
+
     }
 
 

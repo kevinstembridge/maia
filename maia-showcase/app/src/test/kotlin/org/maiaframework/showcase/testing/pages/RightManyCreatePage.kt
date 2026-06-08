@@ -18,7 +18,7 @@ class RightManyCreatePage(
 ) {
 
 
-    fun fillForm(
+    fun `enter form input`(
         someInt: String = "42",
         someString: String = "testright",
     ) {
@@ -29,7 +29,7 @@ class RightManyCreatePage(
     }
 
 
-    fun clickAddLeftEntityButton() {
+    fun `click the Add button for Left entities`() {
 
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Add Left Entities"))
             .click()
@@ -37,7 +37,7 @@ class RightManyCreatePage(
     }
 
 
-    fun searchAndSelectLeftEntityInMiniForm(searchTerm: String) {
+    fun `select a Left entity in the mini form`(searchTerm: String) {
 
         val input = page.locator("input[placeholder='Search Left Entities...']")
         input.waitFor()
@@ -50,7 +50,7 @@ class RightManyCreatePage(
     }
 
 
-    fun clickConfirmAddInMiniForm() {
+    fun `click to confirm adding the Left entity`() {
 
         page.locator(".join-mini-form button[type='button']").filter(Locator.FilterOptions().setHasText("Add"))
             .click()
@@ -58,7 +58,7 @@ class RightManyCreatePage(
     }
 
 
-    fun clickSubmitButton() {
+    fun `click the Submit button`() {
 
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Submit"))
             .click(Locator.ClickOptions().setForce(true))

@@ -73,6 +73,15 @@ class BravoCrudEndpoint(
     }
 
 
+    @PutMapping("/api/bravo/inline/alpha", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateAlpha(@RequestBody @Valid editDto: BravoUpdate_alphaRequestDto) {
+
+        this.crudService.updateAlpha(editDto)
+
+    }
+
+
     @DeleteMapping("/api/bravo/{id}")
     @PreAuthorize("hasAuthority('WRITE')")
     fun deleteById(@PathVariable("id") id: DomainId) {
