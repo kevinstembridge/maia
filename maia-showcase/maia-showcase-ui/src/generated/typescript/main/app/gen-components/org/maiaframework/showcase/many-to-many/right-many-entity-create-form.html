@@ -34,9 +34,35 @@
             @for (join of leftJoins; track join.entityId) {
                 <div class="join-entry">
                     <span>{{ join.entityName }}</span>
-                    <span>{{ join.effectiveFrom | date:'medium' }}</span>
-                    <span>{{ join.effectiveTo | date:'medium' }}</span>
-                    <button mat-icon-button type="button" (click)="removeLeftJoin($index)">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Effective From Date</mat-label>
+                        <input matInput class="join-effective-from-date" [matDatepicker]="effectiveFromDatePicker"
+                            [(ngModel)]="join.effectiveFrom" [ngModelOptions]="{standalone: true}" />
+                        <mat-datepicker-toggle matIconSuffix [for]="effectiveFromDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #effectiveFromDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Effective From Time</mat-label>
+                        <input matInput class="join-effective-from-time" [matTimepicker]="effectiveFromTimePicker"
+                            [(ngModel)]="join.effectiveFrom" [ngModelOptions]="{standalone: true}" />
+                        <mat-timepicker #effectiveFromTimePicker></mat-timepicker>
+                        <mat-timepicker-toggle matSuffix [for]="effectiveFromTimePicker"></mat-timepicker-toggle>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Effective To Date</mat-label>
+                        <input matInput class="join-effective-to-date" [matDatepicker]="effectiveToDatePicker"
+                            [(ngModel)]="join.effectiveTo" [ngModelOptions]="{standalone: true}" />
+                        <mat-datepicker-toggle matIconSuffix [for]="effectiveToDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #effectiveToDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Effective To Time</mat-label>
+                        <input matInput class="join-effective-to-time" [matTimepicker]="effectiveToTimePicker"
+                            [(ngModel)]="join.effectiveTo" [ngModelOptions]="{standalone: true}" />
+                        <mat-timepicker #effectiveToTimePicker></mat-timepicker>
+                        <mat-timepicker-toggle matSuffix [for]="effectiveToTimePicker"></mat-timepicker-toggle>
+                    </mat-form-field>
+                    <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftJoin($index)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

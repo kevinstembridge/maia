@@ -1,0 +1,33 @@
+{
+  "planPath": "docs/superpowers/plans/2026-06-10-right-many-crud-test.md",
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Task 1: Make existing join effectiveFrom/To editable in the generator",
+      "status": "completed",
+      "description": "See plan Task 1"
+    },
+    {
+      "id": 2,
+      "subject": "Task 2: Rename rightEntities -> leftEntities on RightMany side",
+      "status": "completed",
+      "blockedBy": [1],
+      "description": "See plan Task 2"
+    },
+    {
+      "id": 3,
+      "subject": "Task 3: Add page-object methods for view assertions and join effectiveFrom editing",
+      "status": "completed",
+      "blockedBy": [1, 2],
+      "description": "See plan Task 3"
+    },
+    {
+      "id": 4,
+      "subject": "Task 4: Rewrite RightManyCrudPlaywrightTest to implement full journey",
+      "status": "completed",
+      "blockedBy": [3],
+      "description": "See plan Task 4"
+    }
+  ],
+  "lastUpdated": "2026-06-10T22:50:00Z"
+}

@@ -15,14 +15,14 @@ class RightManyBlotterRowDtoRowMapper(
 ) : MaiaRowMapper<RightManyBlotterRowDto> {
 
 
-    private val rightEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
+    private val leftEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): RightManyBlotterRowDto {
 
         val entityId = rsa.readDomainId("id")
 
-        val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(entityId)
+        val leftEntitiesPkAndNameDtoList = fetchLeftEntitiesPkAndNameDtos(entityId)
 
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
@@ -30,7 +30,7 @@ class RightManyBlotterRowDtoRowMapper(
 
         return RightManyBlotterRowDto(
             id,
-            rightEntitiesPkAndNameDtoList,
+            leftEntitiesPkAndNameDtoList,
             someInt,
             someString,
         )
@@ -38,7 +38,7 @@ class RightManyBlotterRowDtoRowMapper(
     }
 
 
-    private fun fetchRightEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
+    private fun fetchLeftEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
 
         return this.jdbcOps.queryForList(
             """
@@ -54,7 +54,7 @@ class RightManyBlotterRowDtoRowMapper(
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.rightEntitiesPkAndNameDtoRowMapper
+            this.leftEntitiesPkAndNameDtoRowMapper
         )
 
     }

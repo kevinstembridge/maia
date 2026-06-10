@@ -15,14 +15,14 @@ class RightManyDtoRowMapper(
 ) : MaiaRowMapper<RightManyDto> {
 
 
-    private val rightEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
+    private val leftEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): RightManyDto {
 
         val entityId = rsa.readDomainId("id")
 
-        val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(entityId)
+        val leftEntitiesPkAndNameDtoList = fetchLeftEntitiesPkAndNameDtos(entityId)
 
         val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
         val id = rsa.readDomainId("id")
@@ -32,7 +32,7 @@ class RightManyDtoRowMapper(
         return RightManyDto(
             createdTimestampUtc,
             id,
-            rightEntitiesPkAndNameDtoList,
+            leftEntitiesPkAndNameDtoList,
             someIntFromLeft,
             someStringFromLeft,
         )
@@ -40,7 +40,7 @@ class RightManyDtoRowMapper(
     }
 
 
-    private fun fetchRightEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
+    private fun fetchLeftEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
 
         return this.jdbcOps.queryForList(
             """
@@ -56,7 +56,7 @@ class RightManyDtoRowMapper(
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.rightEntitiesPkAndNameDtoRowMapper
+            this.leftEntitiesPkAndNameDtoRowMapper
         )
 
     }

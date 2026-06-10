@@ -6,7 +6,7 @@ import {LeftManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showca
 
 export interface RightManyBlotterRowDto {
     id: string;
-    rightEntities: ReadonlyArray<LeftManyPkAndNameDto>;
+    leftEntities: ReadonlyArray<LeftManyPkAndNameDto>;
     someInt: number;
     someString: string;
 }

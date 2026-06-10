@@ -32,7 +32,7 @@ class LeftManyEditPage(
 
         page.locator(".join-entry")
             .filter(Locator.FilterOptions().setHasText(entityName))
-            .locator("button[type='button']")
+            .locator("button.join-remove-button")
             .click()
         page.locator(".join-entry")
             .filter(Locator.FilterOptions().setHasText(entityName))

@@ -1,11 +1,23 @@
 
 
 TODO * MTM scenarios:
+    TODO * An MTM association can be user-managed (e.g. the user can set attributes on the join entity)
+        or they can be automatically managed (e.g. the effectiveFrom and effectiveTo dates are set automatically).
+    TODO * An effective-dated MTM association can allow multiple effective records or only one. => no overlapping dates.
+    TODO * the RightManyCrudService.update function is deleting the MTM association.
+        - Write tests for the scenarios.
+            - Adding a new
+            - Removing an existing
+            - Updating an existing
+        - It should be doing a delta.
+        - It should be setting the effectiveTo date to now() on removed associations.
+        - It should be setting the effectiveFrom date to now() on added associations.
     TODO * When we delete an MTM association, it should just set the effectiveTo date to now().
     TODO * When we display the MTM associations for a given entity, it should ignore those outside effective range.
     TODO * For some effective-dated MTMs, we don't need to make those fields editable. They can be set automatically
         when the association is created or deleted.
-
+        => Add a user-managed flag.
+    TODO * Ensure that effective date ranges don't overlap if the relationship only allows one effective record.
 
 TODO * We may have multiple Spec classes within a given application, and we may reference
         Spec classes from third-party modules. We need a way to aggregate all the AuthorityDefs

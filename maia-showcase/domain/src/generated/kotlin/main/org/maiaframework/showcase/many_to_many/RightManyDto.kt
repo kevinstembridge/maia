@@ -10,7 +10,7 @@ import java.time.Instant
 data class RightManyDto(
     val createdTimestampUtc: Instant,
     val id: DomainId,
-    val rightEntities: List<LeftManyPkAndNameDto>,
+    val leftEntities: List<LeftManyPkAndNameDto>,
     val someIntFromLeft: Int,
     val someStringFromLeft: String
 ) {

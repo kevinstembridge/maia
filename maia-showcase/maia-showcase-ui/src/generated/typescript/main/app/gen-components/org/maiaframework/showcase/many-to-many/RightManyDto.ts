@@ -7,7 +7,7 @@ import {LeftManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showca
 export interface RightManyDto {
     createdTimestampUtc: string;
     id: string;
-    rightEntities: ReadonlyArray<LeftManyPkAndNameDto>;
+    leftEntities: ReadonlyArray<LeftManyPkAndNameDto>;
     someIntFromLeft: number;
     someStringFromLeft: string;
 }
