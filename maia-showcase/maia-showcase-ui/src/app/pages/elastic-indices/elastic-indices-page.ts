@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {PageLayout} from '@app/components/page-layout/page-layout';
-import {ElasticIndicesPageComponent as MaiaElasticIndicesPageComponent} from '@maia/maia-elasticsearch';
+import {ElasticIndicesPage as MaiaElasticIndicesPageComponent} from '@maia/maia-elasticsearch';
 
 @Component({
     imports: [PageLayout, MaiaElasticIndicesPageComponent],

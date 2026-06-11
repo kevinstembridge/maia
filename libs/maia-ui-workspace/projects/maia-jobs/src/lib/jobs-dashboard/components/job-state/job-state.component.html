@@ -1,14 +1,14 @@
 <div>
-    <h2>{{ jobState.jobName }}</h2>
+    <h2>{{ jobState().jobName }}</h2>
     <div>
-        <button mat-flat-button (click)="onRun(jobState)" color="primary">Run...</button>
+        <button mat-flat-button (click)="onRun(jobState())" color="primary">Run...</button>
     </div>
     <h4>Running Executions</h4>
     <ul>
-        @if (jobState.runningJobs == undefined || jobState.runningJobs.length == 0) {
+        @if (jobState().runningJobs == undefined || jobState().runningJobs.length == 0) {
             <span>No executions are running</span>
         }
-        @for (execution of jobState.runningJobs; track execution.id) {
+        @for (execution of jobState().runningJobs; track execution.id) {
             <li><span>{{ execution.id }}</span>
                 <button mat-flat-button (click)="onDisplayJobMetrics(execution)">Metrics</button>
             </li>

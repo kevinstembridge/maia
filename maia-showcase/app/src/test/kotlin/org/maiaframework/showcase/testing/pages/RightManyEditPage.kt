@@ -53,8 +53,7 @@ class RightManyEditPage(
         input.fill(searchTerm)
         val option = page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm))
         option.waitFor()
-        input.press("ArrowDown")
-        input.press("Enter")
+        option.click()
 
     }
 
