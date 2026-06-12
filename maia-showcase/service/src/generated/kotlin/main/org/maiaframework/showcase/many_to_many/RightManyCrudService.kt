@@ -104,8 +104,8 @@ class RightManyCrudService(
             LeftToRightManyToManyJoinEntity.newInstance(
                 effectiveFrom = joinDto.effectiveFrom,
                 effectiveTo = joinDto.effectiveTo,
-                right = id,
-                left = joinDto.leftEntityId
+                left = joinDto.leftEntityId,
+                right = id
             )
         }
 
