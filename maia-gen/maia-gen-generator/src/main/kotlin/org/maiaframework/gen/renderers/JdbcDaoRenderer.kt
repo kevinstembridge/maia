@@ -332,7 +332,10 @@ class JdbcDaoRenderer(
             }
         }
 
-        val fieldNames = entityDef.allEntityFieldsSorted.filterNot { it.isDerived.value }.map { ":${it.classFieldName.value}" }
+        val fieldNames = EffectiveTimestampRendererHelper.collapseEffectiveValuePlaceholders(
+            entityDef,
+            entityDef.allEntityFieldsSorted.filterNot { it.isDerived.value }.map { ":${it.classFieldName.value}" }
+        )
         renderStrings(fieldNames, indent = 16)
         newLine()
 
@@ -364,8 +367,7 @@ class JdbcDaoRenderer(
             appendLine("                type_discriminator,")
         }
 
-        val databaseColumnNames = entityDef.allEntityFieldsSorted.filterNot { it.isDerived.value }.map { it.tableColumnName.value }
-        renderStrings(databaseColumnNames, indent = 16)
+        renderStrings(entityDef.databaseColumnNames(), indent = 16)
         newLine()
         appendLine("            ) values (")
 
@@ -379,7 +381,10 @@ class JdbcDaoRenderer(
 
         }
 
-        val fieldNames = entityDef.allEntityFieldsSorted.filterNot { it.isDerived.value }.map { ":${it.classFieldName.value}" }
+        val fieldNames = EffectiveTimestampRendererHelper.collapseEffectiveValuePlaceholders(
+            entityDef,
+            entityDef.allEntityFieldsSorted.filterNot { it.isDerived.value }.map { ":${it.classFieldName.value}" }
+        )
         renderStrings(fieldNames, indent = 16)
         newLine()
         appendLine("            )")
@@ -2201,9 +2206,12 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun EntityDef.databaseColumnNames(): List<String> = allEntityFieldsSorted
-        .filterNot { it.isDerived.value }
-        .map { it.tableColumnName.value }
+    private fun EntityDef.databaseColumnNames(): List<String> = EffectiveTimestampRendererHelper.collapseEffectiveColumns(
+        this,
+        allEntityFieldsSorted
+            .filterNot { it.isDerived.value }
+            .map { it.tableColumnName.value }
+    )
 
 
 }
