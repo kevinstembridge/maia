@@ -104,13 +104,13 @@ class CrudServiceRenderer(
     override fun renderFunctions() {
 
         `render create by API`()
-        `render function create`()
+        `render the create function`()
         `render existsBy for unique indexes`()
-        `render function fetchForEdit`()
-        `render update function`()
-        `render inline update functions`()
-        `render setFields function`()
-        `render delete function`()
+        `render the fetchForEdit function`()
+        `render the update function`()
+        `render the inline update functions`()
+        `render the setFields function`()
+        `render the delete function`()
 
     }
 
@@ -208,7 +208,7 @@ class CrudServiceRenderer(
 
 
 
-    private fun `render function create`() {
+    private fun `render the create function`() {
 
         blankLine()
         blankLine()
@@ -398,7 +398,7 @@ class CrudServiceRenderer(
     }
 
 
-    private fun `render function fetchForEdit`() {
+    private fun `render the fetchForEdit function`() {
 
         val fetchForEditDtoDef = this.entityDef.fetchForEditDtoDef
             ?: return
@@ -418,7 +418,7 @@ class CrudServiceRenderer(
     }
 
 
-    private fun `render update function`() {
+    private fun `render the update function`() {
 
         val apiDef = this.entityDef.entityCrudApiDef?.updateApiDef
             ?: return
@@ -454,7 +454,7 @@ class CrudServiceRenderer(
                 val otherSide = m2m.otherSideFrom(this.entityDef)
                 if (m2m.entityDef.hasEffectiveTimestamps.value) "${otherSide.fieldName}Entities"
                 else "${otherSide.fieldName}EntityIds"
-            }.toSet()
+            }.toSortedSet()
 
             dtoDef.classFieldDefs
                 .filterNot { entityDef.isPrimaryKey(it.classFieldName) }
@@ -479,6 +479,7 @@ class CrudServiceRenderer(
         }
 
         apiDef.entityDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
+
             val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
             val thisSideFieldName = manyToManyEntityDef.idTableColumnName(this.entityDef).removeSuffix("_id")
             val otherSideFieldName = otherSide.fieldName
@@ -487,19 +488,32 @@ class CrudServiceRenderer(
             val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
             val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
 
-            blankLine()
-            if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value && !manyToManyEntityDef.entityDef.isNotDeletable) {
+            if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value && manyToManyEntityDef.entityDef.isDeletable) {
+
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
-                appendLine("        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
-                appendLine("            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
-                appendLine("        }")
-                blankLine()
-                appendLine("        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { joinDto ->")
-                appendLine("            ${joinEntityClass}.newInstance(effectiveFrom = joinDto.effectiveFrom, effectiveTo = joinDto.effectiveTo, $thisSideFieldName = id, $otherSideFieldName = joinDto.${otherSideFieldName}EntityId)")
-                appendLine("        }")
-                appendLine("        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
+
+                append("""
+                    |
+                    |        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->
+                    |            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)
+                    |        }
+                    |
+                    |        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { joinDto ->
+                    |            ${joinEntityClass}.newInstance(
+                    |                effectiveFrom = joinDto.effectiveFrom,
+                    |                effectiveTo = joinDto.effectiveTo,
+                    |                $thisSideFieldName = id,
+                    |                $otherSideFieldName = joinDto.${otherSideFieldName}EntityId
+                    |            )
+                    |        }
+                    |
+                    |        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)
+                    |""".trimMargin())
+
             } else if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
+
                 appendLine("        //this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
                 appendLine("        //    this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
                 appendLine("        //}")
@@ -508,17 +522,25 @@ class CrudServiceRenderer(
                 appendLine("        //    ${joinEntityClass}.newInstance(effectiveFrom = joinDto.effectiveFrom, effectiveTo = joinDto.effectiveTo, $thisSideFieldName = id, $otherSideFieldName = joinDto.${otherSideFieldName}EntityId)")
                 appendLine("        //}")
                 appendLine("        //this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
+
             } else {
+
                 val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
-                appendLine("        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
-                appendLine("            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
-                appendLine("        }")
-                blankLine()
-                appendLine("        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->")
-                appendLine("            ${joinEntityClass}.newInstance($thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)")
-                appendLine("        }")
-                appendLine("        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)")
+
+                append("""
+                    |
+                    |        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->
+                    |            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)
+                    |        }
+                    |
+                    |        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->
+                    |            ${joinEntityClass}.newInstance($thisSideFieldName = id, $otherSideFieldName = $otherSideFieldName)
+                    |        }
+                    |        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)
+                    |""".trimMargin())
+
             }
+
         }
 
         blankLine()
@@ -526,7 +548,7 @@ class CrudServiceRenderer(
 
     }
 
-    private fun `render inline update functions`() {
+    private fun `render the inline update functions`() {
 
         this.entityDef.entityCrudApiDef?.updateApiDef?.let { apiDef ->
             apiDef.inlineEditDtoDefs.forEach { `render inline update function`(it) }
@@ -593,7 +615,7 @@ class CrudServiceRenderer(
     }
 
 
-    private fun `render setFields function`() {
+    private fun `render the setFields function`() {
 
         if (this.entityDef.hasNoModifiableFields()) {
             return
@@ -629,7 +651,7 @@ class CrudServiceRenderer(
     }
 
 
-    private fun `render delete function`() {
+    private fun `render the delete function`() {
 
         if (this.entityDef.isNotDeletable) {
             return
