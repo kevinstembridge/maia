@@ -727,7 +727,7 @@ class JdbcDaoRenderer(
 
         blankLine()
         appendLine("        return jdbcOps.queryForList(")
-        appendLine("            \"select * from ${this.entityDef.schemaAndTableName} where $whereClauseFields\",")
+        appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${this.entityDef.schemaAndTableName} where $whereClauseFields\",")
         appendLine("            SqlParams().apply {")
 
         if (entityDef.hasCompositePrimaryKey) {
@@ -805,7 +805,7 @@ class JdbcDaoRenderer(
         appendLine("    fun findAll(): List<${entityDef.entityUqcn}> {")
         blankLine()
         appendLine("        return this.jdbcOps.queryForList(")
-        appendLine("            \"select * from ${entityDef.schemaAndTableName}\",")
+        appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName}\",")
         appendLine("            SqlParams(),")
         appendLine("            this.entityRowMapper")
         appendLine("        )")
@@ -826,9 +826,16 @@ class JdbcDaoRenderer(
         appendLine("    fun findAllEffective(): List<${entityDef.entityUqcn}> {")
         blankLine()
         appendLine("        return this.jdbcOps.queryForList(\"\"\"")
-        appendLine("            select * from ${entityDef.schemaAndTableName}")
-        appendLine("            where effective_from <= current_timestamp")
-        appendLine("            and (effective_to > current_timestamp or effective_to is null)")
+
+        if (this.entityDef.hasEffectiveTimestamps.value) {
+            appendLine("            ${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName}")
+            appendLine("            where ${EffectiveTimestampRendererHelper.EFFECTIVE_RANGE_WHERE_CLAUSE}")
+        } else {
+            appendLine("            select * from ${entityDef.schemaAndTableName}")
+            appendLine("            where effective_from <= current_timestamp")
+            appendLine("            and (effective_to > current_timestamp or effective_to is null)")
+        }
+
         appendLine("            \"\"\".trimIndent(),")
         appendLine("            SqlParams(),")
         appendLine("            this.entityRowMapper")
@@ -851,7 +858,7 @@ class JdbcDaoRenderer(
         appendLine("        filter.populateSqlParams(sqlParams)")
         blankLine()
         appendLine("        return this.jdbcOps.queryForList(")
-        appendLine("            \"select * from ${entityDef.schemaAndTableName} where \$whereClause\",")
+        appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName} where \$whereClause\",")
         appendLine("            sqlParams,")
         appendLine("            this.entityRowMapper")
         appendLine("        )")
@@ -877,7 +884,7 @@ class JdbcDaoRenderer(
         appendLine("        filter.populateSqlParams(sqlParams)")
         blankLine()
         appendLine("        return this.jdbcOps.queryForSequence(")
-        appendLine("            \"select * from ${entityDef.schemaAndTableName} where \$whereClause\",")
+        appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName} where \$whereClause\",")
         appendLine("            sqlParams,")
         appendLine("            this.entityRowMapper")
         appendLine("        )")
@@ -938,7 +945,7 @@ class JdbcDaoRenderer(
         appendLine("        filter.populateSqlParams(sqlParams)")
         blankLine()
         appendLine("        return this.jdbcOps.queryForList(")
-        appendLine("            \"select * from ${entityDef.schemaAndTableName} where \$whereClause \$orderByClause \$limitClause \$offsetClause\",")
+        appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName} where \$whereClause \$orderByClause \$limitClause \$offsetClause\",")
         appendLine("            sqlParams,")
         appendLine("            this.entityRowMapper")
         appendLine("        )")
@@ -977,7 +984,7 @@ class JdbcDaoRenderer(
         appendLine("    fun findAllAsSequence(): Sequence<${entityDef.entityUqcn}> {")
         blankLine()
         appendLine("        return this.jdbcOps.queryForSequence(")
-        appendLine("            \"select * from ${entityDef.schemaAndTableName};\",")
+        appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName};\",")
         appendLine("            SqlParams(),")
         appendLine("            this.entityRowMapper,")
         appendLine("        )")
@@ -1326,7 +1333,7 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("        return jdbcOps.queryForList(")
         appendLine("            \"\"\"")
-        appendLine("            select * from ${entityDef.schemaAndTableName}")
+        appendLine("            ${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName}")
 
         appendWhereOrAndClauses(entityFieldDefs)
 
@@ -1404,7 +1411,7 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("        return jdbcOps.queryForList(")
         appendLine("            \"\"\"")
-        appendLine("            select * from ${this.entityDef.schemaAndTableName}")
+        appendLine("            ${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${this.entityDef.schemaAndTableName}")
 
         appendWhereOrAndClauses(entityFieldDefs)
 
@@ -1462,11 +1469,17 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("        return jdbcOps.$queryFunction(")
         appendLine("            \"\"\"")
-        appendLine("            select * from ${this.entityDef.schemaAndTableName}")
+        appendLine("            ${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${this.entityDef.schemaAndTableName}")
 
         appendWhereOrAndClauses(entityFieldDefs)
-        appendLine("            and effective_from <= current_timestamp")
-        appendLine("            and (effective_to > current_timestamp or effective_to is null)")
+
+        if (this.entityDef.hasEffectiveTimestamps.value) {
+            appendLine("            and ${EffectiveTimestampRendererHelper.EFFECTIVE_RANGE_WHERE_CLAUSE}")
+        } else {
+            appendLine("            and effective_from <= current_timestamp")
+            appendLine("            and (effective_to > current_timestamp or effective_to is null)")
+        }
+
         appendLine("            \"\"\".trimIndent(),")
         appendLine("            SqlParams().apply {")
 
