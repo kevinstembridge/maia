@@ -1943,18 +1943,62 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("        sql.append(\"update ${entityDef.schemaAndTableName} set \")")
         blankLine()
-        appendLine("        val fieldClauses = updater.fields")
+        if (entityDef.hasEffectiveTimestamps.value) {
 
-        if (entityDef.versioned.value) {
-            appendLine("            .plus(FieldUpdate(\"version_incremented\", \"version\", updater.version + 1))")
+            addImportFor<Instant>()
+
+            appendLine("        val effectiveFromUpdate = updater.fields.find { it.classFieldName == \"effectiveFrom\" }")
+            appendLine("        val effectiveToUpdate = updater.fields.find { it.classFieldName == \"effectiveTo\" }")
+            blankLine()
+            appendLine("        val fieldClauses = updater.fields")
+            appendLine("            .filterNot { it.classFieldName == \"effectiveFrom\" || it.classFieldName == \"effectiveTo\" }")
+
+            if (entityDef.versioned.value) {
+                appendLine("            .plus(FieldUpdate(\"version_incremented\", \"version\", updater.version + 1))")
+            }
+
+            appendLine("            .map { field ->")
+            blankLine()
+            appendLine("                addField(field, sqlParams)")
+            appendLine($$"                \"${field.dbColumnName} = :${field.classFieldName}\"")
+            blankLine()
+            appendLine("            }")
+            appendLine("            .plus(")
+            appendLine("                when {")
+            appendLine("                    effectiveFromUpdate != null && effectiveToUpdate != null -> {")
+            appendLine("                        sqlParams.addValue(\"effectiveFrom\", effectiveFromUpdate.value as Instant?)")
+            appendLine("                        sqlParams.addValue(\"effectiveTo\", effectiveToUpdate.value as Instant?)")
+            appendLine("                        listOf(\"effective_range = tstzrange(:effectiveFrom, :effectiveTo)\")")
+            appendLine("                    }")
+            appendLine("                    effectiveFromUpdate != null -> {")
+            appendLine("                        sqlParams.addValue(\"effectiveFrom\", effectiveFromUpdate.value as Instant?)")
+            appendLine("                        listOf(\"effective_range = tstzrange(:effectiveFrom, upper(effective_range))\")")
+            appendLine("                    }")
+            appendLine("                    effectiveToUpdate != null -> {")
+            appendLine("                        sqlParams.addValue(\"effectiveTo\", effectiveToUpdate.value as Instant?)")
+            appendLine("                        listOf(\"effective_range = tstzrange(lower(effective_range), :effectiveTo)\")")
+            appendLine("                    }")
+            appendLine("                    else -> emptyList()")
+            appendLine("                }")
+            appendLine("            )")
+            appendLine("            .joinToString(\", \")")
+
+        } else {
+
+            appendLine("        val fieldClauses = updater.fields")
+
+            if (entityDef.versioned.value) {
+                appendLine("            .plus(FieldUpdate(\"version_incremented\", \"version\", updater.version + 1))")
+            }
+
+            appendLine("            .map { field ->")
+            blankLine()
+            appendLine("                addField(field, sqlParams)")
+            appendLine($$"                \"${field.dbColumnName} = :${field.classFieldName}\"")
+            blankLine()
+            appendLine("            }.joinToString(\", \")")
+
         }
-
-        appendLine("            .map { field ->")
-        blankLine()
-        appendLine("                addField(field, sqlParams)")
-        appendLine($$"                \"${field.dbColumnName} = :${field.classFieldName}\"")
-        blankLine()
-        appendLine("            }.joinToString(\", \")")
         blankLine()
         appendLine("        sql.append(fieldClauses)")
         appendLine("        sql.append(\" where ${this.entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }}\")")
@@ -2058,6 +2102,10 @@ class JdbcDaoRenderer(
 
         this.entityDef.allEntityFieldsSorted
             .filter { it.classFieldDef.isModifiableBySystem || it.classFieldDef.isEditableByUser.value }
+            .filterNot {
+                entityDef.hasEffectiveTimestamps.value
+                        && (it.classFieldName == ClassFieldName.effectiveFrom || it.classFieldName == ClassFieldName.effectiveTo)
+            }
             .forEach { entityFieldDef ->
 
                 val classFieldDef = entityFieldDef.classFieldDef
