@@ -15,7 +15,7 @@ dependencies {
 
     constraints {
         api("com.fasterxml.uuid:java-uuid-generator:5.1.0")
-        api("com.microsoft.playwright:playwright:1.51.0")
+        api("com.microsoft.playwright:playwright:1.56.0")
         api("com.ninja-squad:springmockk:4.0.2")
         api("com.opencsv:opencsv:5.10")
         api("commons-io:commons-io:2.18.0")
