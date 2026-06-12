@@ -26,6 +26,10 @@ class ClassFieldName(value: String) : StringType<ClassFieldName>(value) {
 
         val createdTimestampUtc = ClassFieldName("createdTimestampUtc")
 
+        val effectiveFrom = ClassFieldName("effectiveFrom")
+
+        val effectiveTo = ClassFieldName("effectiveTo")
+
         val id = ClassFieldName("id")
 
         val lastModifiedByUsername = ClassFieldName("lastModifiedByUsername")
