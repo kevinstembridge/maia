@@ -1,6 +1,8 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.EntityFieldDef
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 
 object EffectiveTimestampRendererHelper {
 
@@ -56,6 +58,26 @@ object EffectiveTimestampRendererHelper {
         } else {
             "select *"
         }
+
+
+    /**
+     * SQL expression backing an effectiveFrom/effectiveTo FieldFilter. For hasEffectiveTimestamps
+     * entities, effectiveFrom/effectiveTo are derived from the effective_range column via
+     * lower()/upper() rather than being real columns. All other fields use their table column name.
+     */
+    fun fieldFilterColumnExpression(entityDef: EntityDef, fieldDef: EntityFieldDef): String {
+
+        if (!usesEffectiveRange(entityDef)) {
+            return fieldDef.tableColumnName.value
+        }
+
+        return when (fieldDef.classFieldName) {
+            ClassFieldName.effectiveFrom -> "lower($EFFECTIVE_RANGE_COLUMN)"
+            ClassFieldName.effectiveTo -> "upper($EFFECTIVE_RANGE_COLUMN)"
+            else -> fieldDef.tableColumnName.value
+        }
+
+    }
 
 
 }

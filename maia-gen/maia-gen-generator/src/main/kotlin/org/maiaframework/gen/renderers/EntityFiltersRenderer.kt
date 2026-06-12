@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
 import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
@@ -82,6 +83,19 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         appendLine("        return IterableFunctionFilter(filters.toList(), AndOr.nor)")
         blankLine()
         appendLine("    }")
+
+        if (this.entityDef.hasEffectiveTimestamps.value) {
+
+            blankLine()
+            blankLine()
+            appendLine("    fun isEffectiveNow(): $filterUqcn {")
+            blankLine()
+            appendLine("        return EffectiveNowFilter()")
+            blankLine()
+            appendLine("    }")
+
+        }
+
         renderFieldFunctionsForJdbc()
 
     }
@@ -107,6 +121,19 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
             blankLine()
             blankLine()
+
+            if (entityDef.hasEffectiveTimestamps.value &&
+                (classFieldDef.classFieldName == ClassFieldName.effectiveFrom || classFieldDef.classFieldName == ClassFieldName.effectiveTo)) {
+
+                appendLine("    /**")
+                appendLine("     * Backed by lower/upper(effective_range), which are null for unbounded ends.")
+                appendLine("     * Use isEffectiveNow() for point-in-time-effective queries instead of combining")
+                appendLine("     * lte/gte/isNull on this field - those comparisons return null/false for unbounded")
+                appendLine("     * bounds even though such rows ARE effective per effective_range @> :ts semantics.")
+                appendLine("     */")
+
+            }
+
             appendLine("    val ${classFieldDef.classFieldName}: $returnType<$uqcn> ")
             appendLine("        get() {")
             blankLine()
@@ -117,7 +144,8 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
                 addImportFor(Fqcns.SQL_TYPES)
                 val valueMappingText = valueMappingTextFor(fieldType)
-                appendLine("            return $returnType(\"${fieldDef.tableColumnName}\", Types.${fieldDef.fieldType.sqlType}, this.sqlParamCounter) { value -> $valueMappingText }")
+                val columnExpression = EffectiveTimestampRendererHelper.fieldFilterColumnExpression(entityDef, fieldDef)
+                appendLine("            return $returnType(\"$columnExpression\", Types.${fieldDef.fieldType.sqlType}, this.sqlParamCounter) { value -> $valueMappingText }")
             }
             blankLine()
             appendLine("        }")
@@ -175,6 +203,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         renderFieldFilterStaticClass()
         renderListFieldFilterStaticClass()
         renderNoOpFilterStaticClass()
+        renderEffectiveNowFilterStaticClass()
         renderSimpleFunctionFilterStaticClass()
         renderMultiValueFunctionFilterStaticClass()
         renderIterableFunctionFilterStaticClass()
@@ -554,6 +583,34 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
             |
             |        override fun populateSqlParams(sqlParams: SqlParams) {
             |            // Do nothing
+            |        }
+            |
+            |
+            |    }
+            |""".trimMargin())
+
+    }
+
+
+    private fun renderEffectiveNowFilterStaticClass() {
+
+        if (!entityDef.hasEffectiveTimestamps.value) {
+            return
+        }
+
+        append("""
+            |
+            |
+            |    private class EffectiveNowFilter : ${entityDef.entityFilterClassDef.uqcn} {
+            |
+            |
+            |        override fun whereClause(fieldConverter: ${entityDef.entityFieldConverterClassDef.uqcn}): String {
+            |            return "${EffectiveTimestampRendererHelper.EFFECTIVE_RANGE_WHERE_CLAUSE}"
+            |        }
+            |
+            |
+            |        override fun populateSqlParams(sqlParams: SqlParams) {
+            |            // do nothing
             |        }
             |
             |
