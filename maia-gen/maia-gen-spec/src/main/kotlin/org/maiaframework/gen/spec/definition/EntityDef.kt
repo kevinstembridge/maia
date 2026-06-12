@@ -451,6 +451,9 @@ class EntityDef(
     val isNotDeletable: Boolean = this.deletable.value == false
 
 
+    val isDeletable: Boolean = this.deletable.value
+
+
     val isModifiable: Boolean = this.entityClassDef.isModifiable
 
 
