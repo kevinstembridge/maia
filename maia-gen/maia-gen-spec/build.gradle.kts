@@ -6,7 +6,8 @@ plugins {
 
 dependencies {
 
+    api(project(":libs:maia-jdbc"))
     api(project(":libs:maia-lang"))
-    api(project(":maia-gen:maia-gen-library"))
+    api(project(":libs:maia-domain"))
 
 }

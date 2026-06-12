@@ -15,7 +15,6 @@ dependencies {
     api(project(":libs:maia-hazelcast"))
     api(project(":libs:maia-toggles-parent:maia-toggles-domain"))
 
-    implementation(project(":maia-gen:maia-gen-library"))
     implementation(project(":libs:maia-toggles-parent:maia-toggles-dao"))
 
     maiagen(project(":libs:maia-toggles-parent:maia-toggles-spec"))

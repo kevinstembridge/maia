@@ -1,7 +1,5 @@
 package org.maiaframework.gen.spec.definition.lang
 
-import org.maiaframework.gen.persist.BsonCompatibleType
-import org.maiaframework.gen.spec.definition.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
 import org.maiaframework.gen.spec.definition.DataClassDef
@@ -12,6 +10,7 @@ import org.maiaframework.gen.spec.definition.EsDocMappingType
 import org.maiaframework.gen.spec.definition.EsDocMappingTypes
 import org.maiaframework.gen.spec.definition.ForeignKeyFieldDef
 import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.IntTypeDef
 import org.maiaframework.gen.spec.definition.IntValueClassDef
 import org.maiaframework.gen.spec.definition.JoinFetchDtoDef
@@ -28,7 +27,6 @@ import org.maiaframework.jdbc.JdbcCompatibleType
 
 sealed class FieldType(
     val fqcn: Fqcn,
-    val bsonCompatibleType: BsonCompatibleType?,
     val typescriptCompatibleType: TypescriptCompatibleType?,
     val sqlType: String?,
     val elasticMappingType: EsDocMappingType?,
@@ -83,7 +81,6 @@ sealed class FieldType(
 
 class BooleanFieldType internal constructor() : FieldType(
     Fqcn.BOOLEAN,
-    BsonCompatibleType.BOOLEAN,
     TypescriptCompatibleTypes.boolean,
     "BIT",
     EsDocMappingTypes.boolean,
@@ -106,7 +103,6 @@ class BooleanTypeFieldType internal constructor(
     val booleanTypeDef: BooleanTypeDef
 ) : FieldType(
     booleanTypeDef.fqcn,
-    BsonCompatibleType.BOOLEAN,
     TypescriptCompatibleTypes.boolean,
     "BIT",
     EsDocMappingTypes.boolean,
@@ -127,7 +123,6 @@ class BooleanTypeFieldType internal constructor(
 
 class IntFieldType internal constructor() : FieldType(
     Fqcn.INT,
-    BsonCompatibleType.INT,
     TypescriptCompatibleTypes.number,
     "INTEGER",
     EsDocMappingTypes.long,
@@ -151,7 +146,6 @@ class IntTypeFieldType internal constructor(
     val intTypeDef: IntTypeDef
 ) : FieldType(
     intTypeDef.fqcn,
-    BsonCompatibleType.INT,
     TypescriptCompatibleTypes.number,
     "INTEGER",
     EsDocMappingTypes.long,
@@ -173,7 +167,6 @@ class IntTypeFieldType internal constructor(
 
 class DoubleFieldType internal constructor() : FieldType(
     Fqcn.DOUBLE,
-    BsonCompatibleType.DOUBLE,
     TypescriptCompatibleTypes.number,
     "NUMERIC",
     EsDocMappingTypes.double,
@@ -195,7 +188,6 @@ class DoubleFieldType internal constructor() : FieldType(
 
 class LongFieldType internal constructor() : FieldType(
     Fqcn.LONG,
-    BsonCompatibleType.LONG,
     TypescriptCompatibleTypes.number,
     "BIGINT",
     EsDocMappingTypes.long,
@@ -219,7 +211,6 @@ class LongTypeFieldType internal constructor(
     val longTypeDef: LongTypeDef
 ) : FieldType(
     longTypeDef.fqcn,
-    BsonCompatibleType.LONG,
     TypescriptCompatibleTypes.number,
     "BIGINT",
     EsDocMappingTypes.long,
@@ -241,7 +232,6 @@ class LongTypeFieldType internal constructor(
 
 class UrlFieldType internal constructor() : FieldType(
     Fqcn.URL,
-    BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.string,
     "VARCHAR",
     EsDocMappingTypes.text,
@@ -263,7 +253,6 @@ class UrlFieldType internal constructor() : FieldType(
 
 class StringFieldType internal constructor() : FieldType(
     Fqcn.STRING,
-    BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.string,
     "VARCHAR",
     EsDocMappingTypes.text,
@@ -287,7 +276,6 @@ class StringTypeFieldType(
     val stringTypeDef: StringTypeDef
 ) : FieldType(
     stringTypeDef.fqcn,
-    BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.string,
     "VARCHAR",
     EsDocMappingTypes.text,
@@ -309,7 +297,6 @@ class StringTypeFieldType(
 
 class DomainIdFieldType internal constructor() : FieldType(
     Fqcns.MAIA_DOMAIN_ID,
-    BsonCompatibleType.DOMAIN_ID,
     TypescriptCompatibleTypes.string,
     "OTHER",
     EsDocMappingTypes.keyword,
@@ -331,7 +318,6 @@ class DomainIdFieldType internal constructor() : FieldType(
 
 class ObjectIdFieldType internal constructor() : FieldType(
     Fqcn.valueOf("org.bson.types.ObjectId"),
-    BsonCompatibleType.OBJECT_ID,
     TypescriptCompatibleTypes.string,
     null,
     EsDocMappingTypes.keyword,
@@ -354,7 +340,6 @@ class EnumFieldType(
     val enumDef: EnumDef,
 ) : FieldType(
     enumDef.fqcn,
-    BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.enum,
     "VARCHAR",
     EsDocMappingTypes.keyword,
@@ -378,7 +363,6 @@ class EsDocFieldType(
     val esDocDef: EsDocDef,
 ) : FieldType(
     esDocDef.fqcn,
-    BsonCompatibleType.STRING,
     TypescriptCompatibleTypes.string,
     null,
     EsDocMappingTypes.text,
@@ -402,7 +386,6 @@ class DataClassFieldType(
     val dataClassDef: DataClassDef,
 ) : FieldType(
     dataClassDef.fqcn,
-    BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.object_,
     null,
     EsDocMappingTypes.`object`,
@@ -424,7 +407,6 @@ class DataClassFieldType(
 
 class InstantFieldType internal constructor() : FieldType(
     Fqcn.INSTANT,
-    BsonCompatibleType.INSTANT,
     TypescriptCompatibleTypes.string,
     "TIMESTAMP",
     EsDocMappingTypes.text,
@@ -446,7 +428,6 @@ class InstantFieldType internal constructor() : FieldType(
 
 class LocalDateFieldType internal constructor() : FieldType(
     Fqcn.LOCAL_DATE,
-    BsonCompatibleType.LOCAL_DATE,
     TypescriptCompatibleTypes.string,
     "DATE",
     EsDocMappingTypes.date,
@@ -468,7 +449,6 @@ class LocalDateFieldType internal constructor() : FieldType(
 
 class PeriodFieldType internal constructor() : FieldType(
     Fqcn.PERIOD,
-    BsonCompatibleType.PERIOD,
     TypescriptCompatibleTypes.string,
     "VARCHAR",
     EsDocMappingTypes.text,
@@ -492,7 +472,6 @@ class ListFieldType internal constructor(
     val parameterFieldType: FieldType
 ) : FieldType(
     Fqcn.LIST,
-    parameterFieldType.bsonCompatibleType,
     typescriptCompatibleType = ReadonlyArrayTypescriptType(parameterFieldType),
     sqlType = null,
     elasticMappingType = null,
@@ -502,6 +481,29 @@ class ListFieldType internal constructor(
 ) {
 
 
+    override val jdbcCompatibleType: JdbcCompatibleType
+        get() = jdbcCompatibleTypeForListOrSet(parameterFieldType)
+
+
+    override fun unwrap(): FieldType {
+        return this
+    }
+
+
+}
+
+
+class SetFieldType internal constructor(
+    val parameterFieldType: FieldType
+) : FieldType(
+    Fqcn.SET,
+    typescriptCompatibleType = null,
+    sqlType = null,
+    elasticMappingType = null,
+    hazelcastCompatibleType = null,
+    parameters = listOf(parameterFieldType),
+    defaultFormFieldValue = "[]"
+) {
     override val jdbcCompatibleType: JdbcCompatibleType
         get() = jdbcCompatibleTypeForListOrSet(parameterFieldType)
 
@@ -552,38 +554,11 @@ private fun jdbcCompatibleTypeForListOrSet(parameterFieldType: FieldType): JdbcC
 }
 
 
-class SetFieldType internal constructor(
-    val parameterFieldType: FieldType
-) : FieldType(
-    Fqcn.SET,
-    parameterFieldType.bsonCompatibleType,
-    typescriptCompatibleType = null,
-    sqlType = null,
-    elasticMappingType = null,
-    hazelcastCompatibleType = null,
-    parameters = listOf(parameterFieldType),
-    defaultFormFieldValue = "[]"
-) {
-
-
-    override val jdbcCompatibleType: JdbcCompatibleType
-        get() = jdbcCompatibleTypeForListOrSet(parameterFieldType)
-
-
-    override fun unwrap(): FieldType {
-        return this
-    }
-
-
-}
-
-
 class MapFieldType internal constructor(
     val keyFieldType: FieldType,
     val valueFieldType: FieldType
 ) : FieldType(
     Fqcn.MAP,
-    BsonCompatibleType.DOCUMENT,
     typescriptCompatibleType = TypescriptCompatibleTypes.record(keyFieldType, valueFieldType),
     sqlType = null,
     elasticMappingType = null,
@@ -608,7 +583,6 @@ class BooleanValueClassFieldType internal constructor(
     val valueClassDef: BooleanValueClassDef
 ) : FieldType(
     valueClassDef.fqcn,
-    valueClassDef.underlyingFieldType.bsonCompatibleType,
     valueClassDef.underlyingFieldType.typescriptCompatibleType,
     valueClassDef.underlyingFieldType.sqlType,
     valueClassDef.underlyingFieldType.elasticMappingType,
@@ -632,7 +606,6 @@ class IntValueClassFieldType internal constructor(
     val valueClassDef: IntValueClassDef
 ) : FieldType(
     valueClassDef.fqcn,
-    valueClassDef.underlyingFieldType.bsonCompatibleType,
     valueClassDef.underlyingFieldType.typescriptCompatibleType,
     valueClassDef.underlyingFieldType.sqlType,
     valueClassDef.underlyingFieldType.elasticMappingType,
@@ -656,7 +629,6 @@ class StringValueClassFieldType internal constructor(
     val valueClassDef: StringValueClassDef
 ) : FieldType(
     valueClassDef.fqcn,
-    valueClassDef.underlyingFieldType.bsonCompatibleType,
     valueClassDef.underlyingFieldType.typescriptCompatibleType,
     valueClassDef.underlyingFieldType.sqlType,
     valueClassDef.underlyingFieldType.elasticMappingType,
@@ -680,7 +652,6 @@ class ForeignKeyFieldType internal constructor(
     val foreignKeyFieldDef: ForeignKeyFieldDef
 ) : FieldType(
     Fqcns.MAIA_DOMAIN_ID,
-    BsonCompatibleType.DOMAIN_ID,
     TypescriptCompatibleTypes.string,
     "OTHER",
     EsDocMappingTypes.keyword,
@@ -704,7 +675,6 @@ class RequestDtoFieldType internal constructor(
     val requestDtoDef: RequestDtoDef
 ) : FieldType(
     requestDtoDef.fqcn,
-    BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.any,
     sqlType = null,
     EsDocMappingTypes.`object`,
@@ -731,7 +701,6 @@ class SimpleResponseDtoFieldType internal constructor(
     val responseDtoDef: SimpleResponseDtoDef
 ) : FieldType(
     responseDtoDef.fqcn,
-    BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.dto(responseDtoDef.dtoDef.fieldType),
     sqlType = "OTHER",
     EsDocMappingTypes.`object`,
@@ -756,7 +725,6 @@ class PkAndNameFieldType internal constructor(
     val pkAndNameDef: EntityPkAndNameDef
 ) : FieldType(
     pkAndNameDef.dtoDef.fqcn,
-    BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.object_,
     sqlType = null,
     EsDocMappingTypes.`object`,
@@ -778,7 +746,6 @@ class PkAndNameFieldType internal constructor(
 
 class FqcnFieldType internal constructor(
     fqcn: Fqcn,
-    bsonCompatibleType: BsonCompatibleType?,
     typescriptCompatibleType: TypescriptCompatibleType?,
     private val providedJdbcCompatibleType: JdbcCompatibleType?,
     sqlType: String?,
@@ -786,7 +753,6 @@ class FqcnFieldType internal constructor(
     hazelcastCompatibleType: HazelcastCompatibleType?
 ): FieldType(
     fqcn,
-    bsonCompatibleType,
     typescriptCompatibleType,
     sqlType,
     elasticMappingType,
@@ -811,7 +777,6 @@ class JoinFetchDtoFieldType(
     val joinFetchDtoDef: JoinFetchDtoDef
 ) : FieldType(
     joinFetchDtoDef.fqcn,
-    BsonCompatibleType.DOCUMENT,
     TypescriptCompatibleTypes.object_,
     sqlType = null,
     EsDocMappingTypes.`object`,

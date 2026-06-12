@@ -1,7 +1,5 @@
 package org.maiaframework.gen.spec.definition.lang
 
-import org.maiaframework.gen.persist.BsonCompatibleType
-import org.maiaframework.gen.spec.definition.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
 import org.maiaframework.gen.spec.definition.DataClassDef
@@ -10,6 +8,7 @@ import org.maiaframework.gen.spec.definition.EnumDef
 import org.maiaframework.gen.spec.definition.EsDocDef
 import org.maiaframework.gen.spec.definition.EsDocMappingType
 import org.maiaframework.gen.spec.definition.ForeignKeyFieldDef
+import org.maiaframework.gen.spec.definition.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.IntTypeDef
 import org.maiaframework.gen.spec.definition.IntValueClassDef
 import org.maiaframework.gen.spec.definition.JoinFetchDtoDef
@@ -92,7 +91,6 @@ object FieldTypes {
 
     fun byFqcn(
         fqcn: Fqcn,
-        bsonCompatibleType: BsonCompatibleType? = null,
         typescriptCompatibleType: TypescriptCompatibleType? = null,
         jdbcCompatibleType: JdbcCompatibleType? = null,
         sqlType: String? = null,
@@ -102,7 +100,6 @@ object FieldTypes {
 
         return FqcnFieldType(
             fqcn,
-            bsonCompatibleType,
             typescriptCompatibleType,
             jdbcCompatibleType,
             sqlType,

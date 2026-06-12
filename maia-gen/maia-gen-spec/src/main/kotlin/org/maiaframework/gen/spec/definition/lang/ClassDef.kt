@@ -1,6 +1,5 @@
 package org.maiaframework.gen.spec.definition.lang
 
-import org.maiaframework.gen.persist.BsonCompatibleType
 import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.TypescriptCompatibleTypes
@@ -61,7 +60,6 @@ class ClassDef(
 
     val fieldType = FqcnFieldType(
         this.fqcn,
-        bsonCompatibleType = BsonCompatibleType.DOCUMENT,
         typescriptCompatibleType = TypescriptCompatibleTypes.any,
         providedJdbcCompatibleType = JdbcCompatibleType.jsonb,
         sqlType = "jsonb",
