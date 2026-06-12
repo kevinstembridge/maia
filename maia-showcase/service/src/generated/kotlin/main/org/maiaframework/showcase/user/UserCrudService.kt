@@ -123,7 +123,6 @@ class UserCrudService(
         }
 
         setFields(updater)
-
         //this.userGroupMembershipRepo.findByUser(id).forEach { join ->
         //    this.userGroupMembershipRepo.deleteByPrimaryKey(join.id)
         //}
