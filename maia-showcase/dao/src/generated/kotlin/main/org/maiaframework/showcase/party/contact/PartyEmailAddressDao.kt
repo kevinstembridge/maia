@@ -39,8 +39,7 @@ class PartyEmailAddressDao(
             insert into maia.party_email_address (
                 created_by_id,
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 email_address_id,
                 id,
                 is_primary_contact,
@@ -52,8 +51,7 @@ class PartyEmailAddressDao(
             ) values (
                 :createdBy,
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :emailAddress,
                 :id,
                 :isPrimaryContact,
@@ -92,8 +90,7 @@ class PartyEmailAddressDao(
             insert into maia.party_email_address (
                 created_by_id,
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 email_address_id,
                 id,
                 is_primary_contact,
@@ -105,8 +102,7 @@ class PartyEmailAddressDao(
             ) values (
                 :createdBy,
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :emailAddress,
                 :id,
                 :isPrimaryContact,
@@ -246,7 +242,7 @@ class PartyEmailAddressDao(
     fun findByPrimaryKeyOrNull(id: DomainId): PartyEmailAddressEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia.party_email_address where id = :id",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -273,7 +269,7 @@ class PartyEmailAddressDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.party_email_address
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
             where email_address_id = :emailAddress
             """.trimIndent(),
             SqlParams().apply {
@@ -289,7 +285,7 @@ class PartyEmailAddressDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.party_email_address
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
             where party_id = :party
             """.trimIndent(),
             SqlParams().apply {
@@ -305,10 +301,9 @@ class PartyEmailAddressDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.party_email_address
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
             where email_address_id = :emailAddress
-            and effective_from <= current_timestamp
-            and (effective_to > current_timestamp or effective_to is null)
+            and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
                 addValue("emailAddress", emailAddress)
@@ -323,10 +318,9 @@ class PartyEmailAddressDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.party_email_address
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
             where party_id = :party
-            and effective_from <= current_timestamp
-            and (effective_to > current_timestamp or effective_to is null)
+            and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
                 addValue("party", party)
@@ -345,7 +339,7 @@ class PartyEmailAddressDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.party_email_address where $whereClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -392,7 +386,7 @@ class PartyEmailAddressDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.party_email_address where $whereClause $orderByClause $limitClause $offsetClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -425,7 +419,7 @@ class PartyEmailAddressDao(
     fun findAllAsSequence(): Sequence<PartyEmailAddressEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from maia.party_email_address;",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -515,14 +509,37 @@ class PartyEmailAddressDao(
 
         sql.append("update maia.party_email_address set ")
 
+        val effectiveFromUpdate = updater.fields.find { it.classFieldName == "effectiveFrom" }
+        val effectiveToUpdate = updater.fields.find { it.classFieldName == "effectiveTo" }
+
         val fieldClauses = updater.fields
+            .filterNot { it.classFieldName == "effectiveFrom" || it.classFieldName == "effectiveTo" }
             .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
                 "${field.dbColumnName} = :${field.classFieldName}"
 
-            }.joinToString(", ")
+            }
+            .plus(
+                when {
+                    effectiveFromUpdate != null && effectiveToUpdate != null -> {
+                        sqlParams.addValue("effectiveFrom", effectiveFromUpdate.value as Instant?)
+                        sqlParams.addValue("effectiveTo", effectiveToUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(:effectiveFrom, :effectiveTo)")
+                    }
+                    effectiveFromUpdate != null -> {
+                        sqlParams.addValue("effectiveFrom", effectiveFromUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(:effectiveFrom, upper(effective_range))")
+                    }
+                    effectiveToUpdate != null -> {
+                        sqlParams.addValue("effectiveTo", effectiveToUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(lower(effective_range), :effectiveTo)")
+                    }
+                    else -> emptyList()
+                }
+            )
+            .joinToString(", ")
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
@@ -554,8 +571,6 @@ class PartyEmailAddressDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "effectiveFrom" -> sqlParams.addValue("effectiveFrom", field.value as Instant?)
-            "effectiveTo" -> sqlParams.addValue("effectiveTo", field.value as Instant?)
             "isPrimaryContact" -> sqlParams.addValue("isPrimaryContact", field.value as Boolean)
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)

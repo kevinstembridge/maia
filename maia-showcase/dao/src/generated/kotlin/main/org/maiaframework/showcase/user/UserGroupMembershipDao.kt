@@ -40,16 +40,14 @@ class UserGroupMembershipDao(
             """
             insert into maia.user_group_membership (
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 id,
                 user_id,
                 user_group_id,
                 version
             ) values (
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :user,
                 :userGroup,
@@ -78,16 +76,14 @@ class UserGroupMembershipDao(
             """
             insert into maia.user_group_membership (
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 id,
                 user_id,
                 user_group_id,
                 version
             ) values (
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :user,
                 :userGroup,
@@ -208,7 +204,7 @@ class UserGroupMembershipDao(
     fun findByPrimaryKeyOrNull(id: DomainId): UserGroupMembershipEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia.user_group_membership where id = :id",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -235,7 +231,7 @@ class UserGroupMembershipDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.user_group_membership
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership
             where user_group_id = :userGroup
             """.trimIndent(),
             SqlParams().apply {
@@ -251,7 +247,7 @@ class UserGroupMembershipDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.user_group_membership
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership
             where user_id = :user
             """.trimIndent(),
             SqlParams().apply {
@@ -267,10 +263,9 @@ class UserGroupMembershipDao(
 
         return jdbcOps.queryForObjectOrNull(
             """
-            select * from maia.user_group_membership
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership
             where user_group_id = :userGroup
-            and effective_from <= current_timestamp
-            and (effective_to > current_timestamp or effective_to is null)
+            and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
                 addValue("userGroup", userGroup)
@@ -285,10 +280,9 @@ class UserGroupMembershipDao(
 
         return jdbcOps.queryForObjectOrNull(
             """
-            select * from maia.user_group_membership
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership
             where user_id = :user
-            and effective_from <= current_timestamp
-            and (effective_to > current_timestamp or effective_to is null)
+            and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
                 addValue("user", user)
@@ -307,7 +301,7 @@ class UserGroupMembershipDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.user_group_membership where $whereClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -354,7 +348,7 @@ class UserGroupMembershipDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.user_group_membership where $whereClause $orderByClause $limitClause $offsetClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -387,7 +381,7 @@ class UserGroupMembershipDao(
     fun findAllAsSequence(): Sequence<UserGroupMembershipEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from maia.user_group_membership;",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -474,14 +468,37 @@ class UserGroupMembershipDao(
 
         sql.append("update maia.user_group_membership set ")
 
+        val effectiveFromUpdate = updater.fields.find { it.classFieldName == "effectiveFrom" }
+        val effectiveToUpdate = updater.fields.find { it.classFieldName == "effectiveTo" }
+
         val fieldClauses = updater.fields
+            .filterNot { it.classFieldName == "effectiveFrom" || it.classFieldName == "effectiveTo" }
             .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
                 "${field.dbColumnName} = :${field.classFieldName}"
 
-            }.joinToString(", ")
+            }
+            .plus(
+                when {
+                    effectiveFromUpdate != null && effectiveToUpdate != null -> {
+                        sqlParams.addValue("effectiveFrom", effectiveFromUpdate.value as Instant?)
+                        sqlParams.addValue("effectiveTo", effectiveToUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(:effectiveFrom, :effectiveTo)")
+                    }
+                    effectiveFromUpdate != null -> {
+                        sqlParams.addValue("effectiveFrom", effectiveFromUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(:effectiveFrom, upper(effective_range))")
+                    }
+                    effectiveToUpdate != null -> {
+                        sqlParams.addValue("effectiveTo", effectiveToUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(lower(effective_range), :effectiveTo)")
+                    }
+                    else -> emptyList()
+                }
+            )
+            .joinToString(", ")
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
@@ -513,8 +530,6 @@ class UserGroupMembershipDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "effectiveFrom" -> sqlParams.addValue("effectiveFrom", field.value as Instant?)
-            "effectiveTo" -> sqlParams.addValue("effectiveTo", field.value as Instant?)
             "user" -> sqlParams.addValue("user", field.value as DomainId)
             "userGroup" -> sqlParams.addValue("userGroup", field.value as DomainId)
         }

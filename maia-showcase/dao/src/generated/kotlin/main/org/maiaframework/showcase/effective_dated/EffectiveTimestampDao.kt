@@ -34,14 +34,12 @@ class EffectiveTimestampDao(
             """
             insert into maia.effective_timestamp (
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 id,
                 some_string
             ) values (
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :someString
             )
@@ -64,14 +62,12 @@ class EffectiveTimestampDao(
             """
             insert into maia.effective_timestamp (
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 id,
                 some_string
             ) values (
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :someString
             )
@@ -138,7 +134,7 @@ class EffectiveTimestampDao(
     fun findByPrimaryKeyOrNull(id: DomainId): EffectiveTimestampEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia.effective_timestamp where id = :id",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -165,7 +161,7 @@ class EffectiveTimestampDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.effective_timestamp
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
@@ -181,10 +177,9 @@ class EffectiveTimestampDao(
 
         return jdbcOps.queryForObjectOrNull(
             """
-            select * from maia.effective_timestamp
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp
             where some_string = :someString
-            and effective_from <= current_timestamp
-            and (effective_to > current_timestamp or effective_to is null)
+            and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
                 addValue("someString", someString)
@@ -203,7 +198,7 @@ class EffectiveTimestampDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.effective_timestamp where $whereClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -250,7 +245,7 @@ class EffectiveTimestampDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.effective_timestamp where $whereClause $orderByClause $limitClause $offsetClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -283,7 +278,7 @@ class EffectiveTimestampDao(
     fun findAllAsSequence(): Sequence<EffectiveTimestampEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from maia.effective_timestamp;",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -305,13 +300,36 @@ class EffectiveTimestampDao(
 
         sql.append("update maia.effective_timestamp set ")
 
+        val effectiveFromUpdate = updater.fields.find { it.classFieldName == "effectiveFrom" }
+        val effectiveToUpdate = updater.fields.find { it.classFieldName == "effectiveTo" }
+
         val fieldClauses = updater.fields
+            .filterNot { it.classFieldName == "effectiveFrom" || it.classFieldName == "effectiveTo" }
             .map { field ->
 
                 addField(field, sqlParams)
                 "${field.dbColumnName} = :${field.classFieldName}"
 
-            }.joinToString(", ")
+            }
+            .plus(
+                when {
+                    effectiveFromUpdate != null && effectiveToUpdate != null -> {
+                        sqlParams.addValue("effectiveFrom", effectiveFromUpdate.value as Instant?)
+                        sqlParams.addValue("effectiveTo", effectiveToUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(:effectiveFrom, :effectiveTo)")
+                    }
+                    effectiveFromUpdate != null -> {
+                        sqlParams.addValue("effectiveFrom", effectiveFromUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(:effectiveFrom, upper(effective_range))")
+                    }
+                    effectiveToUpdate != null -> {
+                        sqlParams.addValue("effectiveTo", effectiveToUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(lower(effective_range), :effectiveTo)")
+                    }
+                    else -> emptyList()
+                }
+            )
+            .joinToString(", ")
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
@@ -326,8 +344,6 @@ class EffectiveTimestampDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "effectiveFrom" -> sqlParams.addValue("effectiveFrom", field.value as Instant?)
-            "effectiveTo" -> sqlParams.addValue("effectiveTo", field.value as Instant?)
         }
 
     }

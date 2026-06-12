@@ -84,12 +84,11 @@ CREATE TABLE maia.user_group_history (
 
 CREATE TABLE maia.user_group_membership (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    effective_from timestamp(3) with time zone NULL,
-    effective_to timestamp(3) with time zone NULL,
     id uuid NOT NULL,
     user_id uuid NOT NULL REFERENCES maia.party(id),
     user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     version bigint NOT NULL,
+    effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
 );
 CREATE INDEX user_group_membership_user_group_id_idx ON maia.user_group_membership(user_group_id);
@@ -99,12 +98,11 @@ CREATE INDEX user_group_membership_user_id_idx ON maia.user_group_membership(use
 CREATE TABLE maia.user_group_membership_history (
     change_type text NOT NULL,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    effective_from timestamp(3) with time zone NULL,
-    effective_to timestamp(3) with time zone NULL,
     id uuid NOT NULL,
     user_id uuid NOT NULL REFERENCES maia.party(id),
     user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
     version bigint NOT NULL,
+    effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id, version)
 );
 CREATE INDEX hist_user_group_membership_user_group_id_idx ON maia.user_group_membership_history(user_group_id);
@@ -126,8 +124,6 @@ CREATE UNIQUE INDEX email_address_email_address_uidx ON maia.email_address(email
 CREATE TABLE maia.party_email_address (
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    effective_from timestamp(3) with time zone NULL,
-    effective_to timestamp(3) with time zone NULL,
     email_address_id uuid NOT NULL REFERENCES maia.email_address(id),
     id uuid NOT NULL,
     is_primary_contact boolean NOT NULL,
@@ -136,6 +132,7 @@ CREATE TABLE maia.party_email_address (
     party_id uuid NOT NULL REFERENCES maia.party(id),
     purposes text[] NOT NULL,
     version bigint NOT NULL,
+    effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
 );
 CREATE INDEX party_email_address_email_address_id_idx ON maia.party_email_address(email_address_id);
@@ -146,8 +143,6 @@ CREATE TABLE maia.party_email_address_history (
     change_type text NOT NULL,
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    effective_from timestamp(3) with time zone NULL,
-    effective_to timestamp(3) with time zone NULL,
     email_address_id uuid NOT NULL REFERENCES maia.email_address(id),
     id uuid NOT NULL,
     is_primary_contact boolean NOT NULL,
@@ -156,6 +151,7 @@ CREATE TABLE maia.party_email_address_history (
     party_id uuid NOT NULL REFERENCES maia.party(id),
     purposes text[] NOT NULL,
     version bigint NOT NULL,
+    effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id, version)
 );
 CREATE INDEX hist_party_email_address_email_address_id_idx ON maia.party_email_address_history(email_address_id);
@@ -165,13 +161,12 @@ CREATE INDEX hist_party_email_address_party_id_idx ON maia.party_email_address_h
 CREATE TABLE maia.email_address_verification (
     created_by_id uuid NULL REFERENCES maia.party(id),
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    effective_from timestamp(3) with time zone NULL,
-    effective_to timestamp(3) with time zone NULL,
     email_address_id uuid NOT NULL,
     id uuid NOT NULL,
     ip_address text NULL,
     last_modified_by_id uuid NULL REFERENCES maia.party(id),
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     version bigint NOT NULL,
+    effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
 );

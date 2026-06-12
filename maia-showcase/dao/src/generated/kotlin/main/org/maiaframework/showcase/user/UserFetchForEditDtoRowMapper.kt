@@ -64,8 +64,8 @@ class UserFetchForEditDtoRowMapper(
             select
                 other.id,
                 other.name,
-                mtm.effective_from,
-                mtm.effective_to
+                lower(mtm.effective_range) as effective_from,
+                upper(mtm.effective_range) as effective_to
             from maia.user_group other
             join maia.user_group_membership mtm
                 on other.id = mtm.user_group_id

@@ -35,8 +35,7 @@ class EmailAddressVerificationDao(
             insert into maia.email_address_verification (
                 created_by_id,
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 email_address_id,
                 id,
                 ip_address,
@@ -46,8 +45,7 @@ class EmailAddressVerificationDao(
             ) values (
                 :createdBy,
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :emailAddressId,
                 :id,
                 :ipAddress,
@@ -80,8 +78,7 @@ class EmailAddressVerificationDao(
             insert into maia.email_address_verification (
                 created_by_id,
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 email_address_id,
                 id,
                 ip_address,
@@ -91,8 +88,7 @@ class EmailAddressVerificationDao(
             ) values (
                 :createdBy,
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :emailAddressId,
                 :id,
                 :ipAddress,
@@ -168,7 +164,7 @@ class EmailAddressVerificationDao(
     fun findByPrimaryKeyOrNull(id: DomainId): EmailAddressVerificationEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia.email_address_verification where id = :id",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.email_address_verification where id = :id",
             SqlParams().apply {
             addValue("id", id)
             },
@@ -199,7 +195,7 @@ class EmailAddressVerificationDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.email_address_verification where $whereClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.email_address_verification where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -246,7 +242,7 @@ class EmailAddressVerificationDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.email_address_verification where $whereClause $orderByClause $limitClause $offsetClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.email_address_verification where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -279,7 +275,7 @@ class EmailAddressVerificationDao(
     fun findAllAsSequence(): Sequence<EmailAddressVerificationEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from maia.email_address_verification;",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.email_address_verification;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -335,14 +331,37 @@ class EmailAddressVerificationDao(
 
         sql.append("update maia.email_address_verification set ")
 
+        val effectiveFromUpdate = updater.fields.find { it.classFieldName == "effectiveFrom" }
+        val effectiveToUpdate = updater.fields.find { it.classFieldName == "effectiveTo" }
+
         val fieldClauses = updater.fields
+            .filterNot { it.classFieldName == "effectiveFrom" || it.classFieldName == "effectiveTo" }
             .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
                 "${field.dbColumnName} = :${field.classFieldName}"
 
-            }.joinToString(", ")
+            }
+            .plus(
+                when {
+                    effectiveFromUpdate != null && effectiveToUpdate != null -> {
+                        sqlParams.addValue("effectiveFrom", effectiveFromUpdate.value as Instant?)
+                        sqlParams.addValue("effectiveTo", effectiveToUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(:effectiveFrom, :effectiveTo)")
+                    }
+                    effectiveFromUpdate != null -> {
+                        sqlParams.addValue("effectiveFrom", effectiveFromUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(:effectiveFrom, upper(effective_range))")
+                    }
+                    effectiveToUpdate != null -> {
+                        sqlParams.addValue("effectiveTo", effectiveToUpdate.value as Instant?)
+                        listOf("effective_range = tstzrange(lower(effective_range), :effectiveTo)")
+                    }
+                    else -> emptyList()
+                }
+            )
+            .joinToString(", ")
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
@@ -361,8 +380,6 @@ class EmailAddressVerificationDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "effectiveFrom" -> sqlParams.addValue("effectiveFrom", field.value as Instant?)
-            "effectiveTo" -> sqlParams.addValue("effectiveTo", field.value as Instant?)
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
         }

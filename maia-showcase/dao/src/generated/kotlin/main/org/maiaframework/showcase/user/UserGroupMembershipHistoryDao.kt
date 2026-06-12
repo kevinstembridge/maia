@@ -32,8 +32,7 @@ class UserGroupMembershipHistoryDao(
             insert into maia.user_group_membership_history (
                 change_type,
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 id,
                 user_id,
                 user_group_id,
@@ -41,8 +40,7 @@ class UserGroupMembershipHistoryDao(
             ) values (
                 :changeType,
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :user,
                 :userGroup,
@@ -71,8 +69,7 @@ class UserGroupMembershipHistoryDao(
             insert into maia.user_group_membership_history (
                 change_type,
                 created_timestamp_utc,
-                effective_from,
-                effective_to,
+                effective_range,
                 id,
                 user_id,
                 user_group_id,
@@ -80,8 +77,7 @@ class UserGroupMembershipHistoryDao(
             ) values (
                 :changeType,
                 :createdTimestampUtc,
-                :effectiveFrom,
-                :effectiveTo,
+                tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :user,
                 :userGroup,
@@ -154,7 +150,7 @@ class UserGroupMembershipHistoryDao(
     fun findByPrimaryKeyOrNull(primaryKey: UserGroupMembershipHistoryEntityPk): UserGroupMembershipHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia.user_group_membership_history where id = :id and version = :version",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership_history where id = :id and version = :version",
             SqlParams().apply {
                 addValue("id", primaryKey.id)
                 addValue("version", primaryKey.version)
@@ -183,7 +179,7 @@ class UserGroupMembershipHistoryDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.user_group_membership_history
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership_history
             where user_group_id = :userGroup
             """.trimIndent(),
             SqlParams().apply {
@@ -199,7 +195,7 @@ class UserGroupMembershipHistoryDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.user_group_membership_history
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership_history
             where user_id = :user
             """.trimIndent(),
             SqlParams().apply {
@@ -215,10 +211,9 @@ class UserGroupMembershipHistoryDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.user_group_membership_history
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership_history
             where user_group_id = :userGroup
-            and effective_from <= current_timestamp
-            and (effective_to > current_timestamp or effective_to is null)
+            and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
                 addValue("userGroup", userGroup)
@@ -233,10 +228,9 @@ class UserGroupMembershipHistoryDao(
 
         return jdbcOps.queryForList(
             """
-            select * from maia.user_group_membership_history
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership_history
             where user_id = :user
-            and effective_from <= current_timestamp
-            and (effective_to > current_timestamp or effective_to is null)
+            and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
                 addValue("user", user)
@@ -255,7 +249,7 @@ class UserGroupMembershipHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.user_group_membership_history where $whereClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership_history where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -302,7 +296,7 @@ class UserGroupMembershipHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.user_group_membership_history where $whereClause $orderByClause $limitClause $offsetClause",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership_history where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -335,7 +329,7 @@ class UserGroupMembershipHistoryDao(
     fun findAllAsSequence(): Sequence<UserGroupMembershipHistoryEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from maia.user_group_membership_history;",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership_history;",
             SqlParams(),
             this.entityRowMapper,
         )

@@ -4,10 +4,9 @@
 
 CREATE TABLE maia.effective_timestamp (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    effective_from timestamp(3) with time zone NULL,
-    effective_to timestamp(3) with time zone NULL,
     id uuid NOT NULL,
     some_string text NOT NULL,
+    effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
 );
 CREATE INDEX effective_timestamp_some_string_idx ON maia.effective_timestamp(some_string);
@@ -288,12 +287,11 @@ CREATE TABLE maia.right_many_history (
 
 CREATE TABLE maia.left_to_right_many_to_many_join (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
-    effective_from timestamp(3) with time zone NULL,
-    effective_to timestamp(3) with time zone NULL,
     id uuid NOT NULL,
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     left_id uuid NOT NULL REFERENCES maia.left_many(id),
     right_id uuid NOT NULL REFERENCES maia.right_many(id),
+    effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
 );
 CREATE INDEX left_to_right_many_to_many_join_left_id_idx ON maia.left_to_right_many_to_many_join(left_id);
