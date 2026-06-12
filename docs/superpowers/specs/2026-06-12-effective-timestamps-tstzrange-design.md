@@ -39,12 +39,17 @@ effective_range tstzrange NOT NULL DEFAULT tstzrange(now(), NULL)
 Notes:
 
 - Default bound type `'[)'` (inclusive lower, exclusive upper) preserves the
-  existing semantics: `effective_range @> :ts` is equivalent to
-  `effective_from <= :ts AND (effective_to > :ts OR effective_to IS NULL)`.
+  existing semantics for non-null bounds: `effective_range @> :ts` is
+  equivalent to `effective_from <= :ts AND (effective_to > :ts OR effective_to
+  IS NULL)`.
 - `lower(effective_range)` / `upper(effective_range)` return `NULL` for
   unbounded ends, and `tstzrange(NULL, x)` / `tstzrange(x, NULL)` create
   unbounded bounds — so `effectiveFrom`/`effectiveTo` being `null` round-trips
   cleanly through the range column without the column itself ever being NULL.
+  Note this is a deliberate semantic change for `effectiveFrom = null`: an
+  unbounded lower bound means "effective since the beginning of time", so
+  `effective_range @> :ts` is now `true` for such rows (previously, `NULL <=
+  :ts` was `NULL`/falsy, excluding the row).
 - The Kotlin entity class fields (`effectiveFrom: Instant?`, `effectiveTo: Instant?`)
   do not change. The entity row mapper and DAO are responsible for translating
   between the single DB column and the two entity fields.

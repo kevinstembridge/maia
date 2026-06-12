@@ -10,14 +10,13 @@ CREATE EXTENSION IF NOT EXISTS btree_gist;
 
 CREATE TABLE left_to_right_many_to_many_join (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    left_id uuid NOT NULL REFERENCES left(id),
-    right_id uuid NOT NULL REFERENCES right(id),
+    left_id uuid NOT NULL REFERENCES left_many(id),
+    right_id uuid NOT NULL REFERENCES right_many(id),
     effective_range tstzrange NOT NULL DEFAULT tstzrange(now(), NULL),
 
     -- audit columns
     created_by uuid NOT NULL REFERENCES party(id),
-    ended_by uuid REFERENCES party(id),
-    end_reason text,
+    modified_by uuid REFERENCES party(id),
 
     CONSTRAINT no_overlap EXCLUDE USING gist (
         left_id WITH =,
@@ -25,7 +24,7 @@ CREATE TABLE left_to_right_many_to_many_join (
         effective_range WITH &&
     ),
     CONSTRAINT ended_has_actor CHECK (
-        upper(effective_range) IS NULL OR ended_by IS NOT NULL
+        upper(effective_range) IS NULL OR modified_by IS NOT NULL
     )
 );
 ```
@@ -54,12 +53,11 @@ VALUES (:left_id::uuid, :right_id::uuid, :actor::uuid);
 
 -- remove
 UPDATE left_to_right_many_to_many_join
-SET effective_range   = tstzrange(lower(effective_range), now()),
-    ended_by   = :actor::uuid,
-    end_reason = :reason
+SET effective_range = tstzrange(lower(effective_range), now()),
+    modified_by = :actor::uuid
 WHERE left_id = :left_id::uuid
-  AND right_id = :right_id::uuid
-  AND upper_inf(effective_range);
+    AND right_id = :right_id::uuid
+    AND upper_inf(effective_range);
 ```
 
 **Queries**
@@ -75,11 +73,10 @@ WHERE right_id = :g::uuid AND effective_range @> :ts::timestamptz;
 
 -- audit history for one pair
 SELECT 
-    lower(effective_range) AS joined,
-    upper(effective_range) AS left,
+    lower(effective_range) AS added,
+    upper(effective_range) AS removed,
     created_by,
-    ended_by,
-    end_reason
+    modified_by
 FROM left_to_right_many_to_many_join
 WHERE left_id = :u::uuid AND right_id = :g::uuid
 ORDER BY lower(effective_range);

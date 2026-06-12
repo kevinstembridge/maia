@@ -90,7 +90,7 @@ class EffectiveTimestampTest: AbstractBlackBoxTest() {
 
 
     @Test
-    fun `should not find a record with no effectiveFrom`() {
+    fun `should find a record with no effectiveFrom`() {
 
         val effectiveTo = anyFutureInstantWithin(Period.ofDays(5)).plus(1, ChronoUnit.DAYS)
         val entity = EffectiveTimestampEntityTestBuilder(
@@ -100,9 +100,9 @@ class EffectiveTimestampTest: AbstractBlackBoxTest() {
 
         this.effectiveTimestampDao.insert(entity)
 
-        val actual = this.effectiveTimestampDao.findEffectiveBySomeString(entity.someString)
+        val actual = this.effectiveTimestampDao.findEffectiveBySomeString(entity.someString)!!
 
-        assertThat(actual).isNull()
+        assertEntity(actual, entity)
 
     }
 

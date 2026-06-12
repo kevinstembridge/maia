@@ -48,7 +48,7 @@ insert into maia.email_address (
 INSERT INTO maia.email_address_verification(
     created_by_id,
     created_timestamp_utc,
-    effective_to,
+    effective_range,
     email_address_id,
     id,
     ip_address,
@@ -58,7 +58,7 @@ INSERT INTO maia.email_address_verification(
 ) VALUES (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
-    null,
+    tstzrange(null, null),
     (select id from maia.email_address where email_address = 'user@maiaframework.org'),
     gen_random_uuid(),
     null,
@@ -71,8 +71,7 @@ INSERT INTO maia.email_address_verification(
 INSERT INTO maia.party_email_address(
     created_by_id,
     created_timestamp_utc,
-    effective_from,
-    effective_to,
+    effective_range,
     email_address_id,
     id,
     is_primary_contact,
@@ -84,8 +83,7 @@ INSERT INTO maia.party_email_address(
 ) VALUES (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
-    current_timestamp,
-    null,
+    tstzrange(current_timestamp, null),
     (select id from maia.email_address where email_address = 'user@maiaframework.org'),
     gen_random_uuid(),
     true,
@@ -175,7 +173,7 @@ insert into maia.email_address (
 INSERT INTO maia.email_address_verification(
     created_by_id,
     created_timestamp_utc,
-    effective_to,
+    effective_range,
     email_address_id,
     id,
     ip_address,
@@ -185,7 +183,7 @@ INSERT INTO maia.email_address_verification(
 ) VALUES (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
-    null,
+    tstzrange(null, null),
     (select id from maia.email_address where email_address = 'admin@maiaframework.org'),
     gen_random_uuid(),
     null,
@@ -198,8 +196,7 @@ INSERT INTO maia.email_address_verification(
 INSERT INTO maia.party_email_address(
     created_by_id,
     created_timestamp_utc,
-    effective_from,
-    effective_to,
+    effective_range,
     email_address_id,
     id,
     is_primary_contact,
@@ -211,8 +208,7 @@ INSERT INTO maia.party_email_address(
 ) VALUES (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
-    current_timestamp,
-    null,
+    tstzrange(current_timestamp, null),
     (select id from maia.email_address where email_address = 'admin@maiaframework.org'),
     gen_random_uuid(),
     true,
@@ -273,7 +269,7 @@ insert into maia.email_address (
 INSERT INTO maia.email_address_verification(
     created_by_id,
     created_timestamp_utc,
-    effective_to,
+    effective_range,
     email_address_id,
     id,
     ip_address,
@@ -283,7 +279,7 @@ INSERT INTO maia.email_address_verification(
 ) VALUES (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
-    null,
+    tstzrange(null, null),
     (select id from maia.email_address where email_address = 'sysops@maiaframework.org'),
     gen_random_uuid(),
     null,
@@ -296,8 +292,7 @@ INSERT INTO maia.email_address_verification(
 INSERT INTO maia.party_email_address(
     created_by_id,
     created_timestamp_utc,
-    effective_from,
-    effective_to,
+    effective_range,
     email_address_id,
     id,
     is_primary_contact,
@@ -309,8 +304,7 @@ INSERT INTO maia.party_email_address(
 ) VALUES (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     current_timestamp,
-    current_timestamp,
-    null,
+    tstzrange(current_timestamp, null),
     (select id from maia.email_address where email_address = 'sysops@maiaframework.org'),
     gen_random_uuid(),
     true,
