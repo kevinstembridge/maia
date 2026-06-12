@@ -19,7 +19,6 @@ import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
-import org.maiaframework.gen.spec.definition.flags.IsCappedCollection
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
 import org.maiaframework.gen.spec.definition.flags.Versioned
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedDao
@@ -45,12 +44,25 @@ class FixedWidthFileStagingEntityDefBuilder(
     private val defaultFieldTypeFieldWriterProvider: (FieldType) -> ParameterizedType?,
 ) {
 
+
     private val entityFieldDefBuilders = mutableListOf<FixedWidthStagingEntityFieldDefBuilder>()
+
+
     private var tableName: TableName? = null
+
+
     private var configurableSchemaPropertyName: ConfigurableSchemaPropertyName? = null
+
+
     private var schemaName: SchemaName = defaultSchemaName
+
+
     private var moduleName: ModuleName? = null
+
+
     private var daoHasSpringAnnotation: DaoHasSpringAnnotation = DaoHasSpringAnnotation.TRUE
+
+
     private var entityDaoHasSpringAnnotation: EntityDaoHasSpringAnnotation = EntityDaoHasSpringAnnotation.TRUE
 
 
@@ -71,8 +83,6 @@ class FixedWidthFileStagingEntityDefBuilder(
             this.schemaName,
             this.configurableSchemaPropertyName,
             description = null,
-            isCappedCollection = IsCappedCollection.FALSE,
-            cappedSizeInBytes = null,
             isDeltaEntity = IsDeltaEntity.FALSE,
             superclassEntityDef = null,
             packageName = this.packageName,

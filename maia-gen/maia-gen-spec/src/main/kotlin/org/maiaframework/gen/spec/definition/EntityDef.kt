@@ -13,7 +13,6 @@ import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
-import org.maiaframework.gen.spec.definition.flags.IsCappedCollection
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
 import org.maiaframework.gen.spec.definition.flags.IsDeltaField
 import org.maiaframework.gen.spec.definition.flags.IsDeltaKey
@@ -47,8 +46,6 @@ class EntityDef(
     tableNameOrNull: TableName?,
     val schemaName: SchemaName,
     val configurableSchemaPropertyName: ConfigurableSchemaPropertyName?,
-    val isCappedCollection: IsCappedCollection,
-    val cappedSizeInBytes: Long?,
     val packageName: PackageName,
     val description: Description?,
     val moduleName: ModuleName?,
@@ -501,7 +498,6 @@ class EntityDef(
             allowFindAll = AllowFindAll.FALSE,
             angularFormSystem = this.angularFormSystem,
             cacheableDef = null,
-            cappedSizeInBytes = null,
             tableNameOrNull = historyTableName,
             configurableSchemaPropertyName = null,
             crudDef = CrudDef.EMPTY,
@@ -515,7 +511,6 @@ class EntityDef(
             hasEffectiveTimestamps = this.hasEffectiveTimestamps,
             hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
             isAbstract = this.isAbstract,
-            isCappedCollection = IsCappedCollection.FALSE,
             isDeltaEntity = IsDeltaEntity.FALSE,
             isHistoryEntity = true,
             moduleName = this.moduleName,

@@ -3,7 +3,6 @@ package org.maiaframework.gen.spec.definition.builders
 import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.domain.types.TypeDiscriminator
 import org.maiaframework.gen.spec.definition.AngularFormSystem
-import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.CacheableDef
 import org.maiaframework.gen.spec.definition.ConfigurableSchemaPropertyName
@@ -29,7 +28,6 @@ import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
 import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
-import org.maiaframework.gen.spec.definition.flags.IsCappedCollection
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.flags.Versioned
@@ -87,12 +85,6 @@ class EntityDefBuilder(
     private var description: Description? = null
 
 
-    private var isCappedCollection: IsCappedCollection = IsCappedCollection.FALSE
-
-
-    private var cappedSizeInBytes: Long? = null
-
-
     var isAbstract: Boolean = false
 
 
@@ -146,8 +138,6 @@ class EntityDefBuilder(
             this.tableName,
             this.schemaName,
             this.configurableSchemaPropertyName,
-            this.isCappedCollection,
-            this.cappedSizeInBytes,
             this.packageName,
             this.description,
             this.moduleName,
@@ -271,14 +261,10 @@ class EntityDefBuilder(
 
     fun tableName(
         name: String,
-        viewName: String? = null,
-        capped: Boolean = false,
-        cappedSizeInBytes: Long? = null
+        viewName: String? = null
     ) {
 
         this.tableName = TableName(name, viewName)
-        this.isCappedCollection = IsCappedCollection(capped)
-        this.cappedSizeInBytes = cappedSizeInBytes
 
     }
 
