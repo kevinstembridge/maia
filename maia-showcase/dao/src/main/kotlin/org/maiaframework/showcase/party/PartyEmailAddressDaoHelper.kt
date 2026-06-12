@@ -9,7 +9,6 @@ import org.maiaframework.showcase.party.contact.PartyEmailAddressDao
 import org.maiaframework.showcase.party.contact.PartyEmailAddressEntity
 import org.maiaframework.showcase.party.contact.PartyEmailAddressEntityFilters
 import org.springframework.stereotype.Component
-import java.time.Instant
 
 
 @Component
@@ -48,11 +47,7 @@ class PartyEmailAddressDaoHelper(
         val filter = filters.and(
             filters.emailAddress eq emailAddressEntity.id,
             filters.purposes contains EmailAddressPurpose.USER_LOGIN,
-            filters.effectiveFrom lte Instant.now(),
-            filters.or(
-                filters.effectiveTo.isNull(),
-                filters.effectiveTo gte Instant.now(),
-            )
+            filters.isEffectiveNow(),
         )
 
         return partyEmailAddressDao.findAllBy(filter)
@@ -78,11 +73,7 @@ class PartyEmailAddressDaoHelper(
         val filter = filters.and(
             filters.party eq partyId,
             filters.purposes contains EmailAddressPurpose.USER_LOGIN,
-            filters.effectiveFrom lte Instant.now(),
-            filters.or(
-                filters.effectiveTo.isNull(),
-                filters.effectiveTo gte Instant.now(),
-            )
+            filters.isEffectiveNow(),
         )
 
         return partyEmailAddressDao.findAllBy(filter)
@@ -97,11 +88,7 @@ class PartyEmailAddressDaoHelper(
         val filter = filters.and(
             filters.party eq partyId,
             filters.isPrimaryContact eq true,
-            filters.effectiveFrom lte Instant.now(),
-            filters.or(
-                filters.effectiveTo.isNull(),
-                filters.effectiveTo gte Instant.now(),
-            )
+            filters.isEffectiveNow(),
         )
 
         val partyEmailAddressEntity = this.partyEmailAddressDao.findAllBy(filter).firstOrNull()

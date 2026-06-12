@@ -41,6 +41,13 @@ class UserGroupMembershipEntityFilters {
     }
 
 
+    fun isEffectiveNow(): UserGroupMembershipEntityFilter {
+
+        return EffectiveNowFilter()
+
+    }
+
+
     val createdTimestampUtc: FieldFilter<Instant> 
         get() {
 
@@ -49,18 +56,30 @@ class UserGroupMembershipEntityFilters {
         }
 
 
+    /**
+     * Backed by lower/upper(effective_range), which are null for unbounded ends.
+     * Use isEffectiveNow() for point-in-time-effective queries instead of combining
+     * lte/gte/isNull on this field - those comparisons return null/false for unbounded
+     * bounds even though such rows ARE effective per effective_range @> :ts semantics.
+     */
     val effectiveFrom: FieldFilter<Instant?> 
         get() {
 
-            return FieldFilter("effective_from", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("lower(effective_range)", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
 
+    /**
+     * Backed by lower/upper(effective_range), which are null for unbounded ends.
+     * Use isEffectiveNow() for point-in-time-effective queries instead of combining
+     * lte/gte/isNull on this field - those comparisons return null/false for unbounded
+     * bounds even though such rows ARE effective per effective_range @> :ts semantics.
+     */
     val effectiveTo: FieldFilter<Instant?> 
         get() {
 
-            return FieldFilter("effective_to", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("upper(effective_range)", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
@@ -230,6 +249,22 @@ class UserGroupMembershipEntityFilters {
 
         override fun populateSqlParams(sqlParams: SqlParams) {
             // Do nothing
+        }
+
+
+    }
+
+
+    private class EffectiveNowFilter : UserGroupMembershipEntityFilter {
+
+
+        override fun whereClause(fieldConverter: UserGroupMembershipEntityFieldConverter): String {
+            return "effective_range @> current_timestamp"
+        }
+
+
+        override fun populateSqlParams(sqlParams: SqlParams) {
+            // do nothing
         }
 
 

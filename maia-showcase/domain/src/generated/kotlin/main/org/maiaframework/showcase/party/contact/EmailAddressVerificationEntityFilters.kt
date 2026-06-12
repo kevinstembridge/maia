@@ -42,6 +42,13 @@ class EmailAddressVerificationEntityFilters {
     }
 
 
+    fun isEffectiveNow(): EmailAddressVerificationEntityFilter {
+
+        return EffectiveNowFilter()
+
+    }
+
+
     val createdBy: FieldFilter<DomainId?> 
         get() {
 
@@ -58,18 +65,30 @@ class EmailAddressVerificationEntityFilters {
         }
 
 
+    /**
+     * Backed by lower/upper(effective_range), which are null for unbounded ends.
+     * Use isEffectiveNow() for point-in-time-effective queries instead of combining
+     * lte/gte/isNull on this field - those comparisons return null/false for unbounded
+     * bounds even though such rows ARE effective per effective_range @> :ts semantics.
+     */
     val effectiveFrom: FieldFilter<Instant?> 
         get() {
 
-            return FieldFilter("effective_from", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("lower(effective_range)", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
 
+    /**
+     * Backed by lower/upper(effective_range), which are null for unbounded ends.
+     * Use isEffectiveNow() for point-in-time-effective queries instead of combining
+     * lte/gte/isNull on this field - those comparisons return null/false for unbounded
+     * bounds even though such rows ARE effective per effective_range @> :ts semantics.
+     */
     val effectiveTo: FieldFilter<Instant?> 
         get() {
 
-            return FieldFilter("effective_to", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("upper(effective_range)", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
@@ -255,6 +274,22 @@ class EmailAddressVerificationEntityFilters {
 
         override fun populateSqlParams(sqlParams: SqlParams) {
             // Do nothing
+        }
+
+
+    }
+
+
+    private class EffectiveNowFilter : EmailAddressVerificationEntityFilter {
+
+
+        override fun whereClause(fieldConverter: EmailAddressVerificationEntityFieldConverter): String {
+            return "effective_range @> current_timestamp"
+        }
+
+
+        override fun populateSqlParams(sqlParams: SqlParams) {
+            // do nothing
         }
 
 
