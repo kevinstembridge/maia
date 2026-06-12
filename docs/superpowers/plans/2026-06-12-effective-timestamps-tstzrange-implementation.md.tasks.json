@@ -1,0 +1,54 @@
+{
+  "planPath": "docs/superpowers/plans/2026-06-12-effective-timestamps-tstzrange-implementation.md",
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Task 1: ClassFieldName constants + EffectiveTimestampRendererHelper",
+      "status": "pending",
+      "description": "**Goal:** Add `effectiveFrom`/`effectiveTo` `ClassFieldName` constants and a shared `EffectiveTimestampRendererHelper` object for collapsing the effective_from/effective_to column pair.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/lang/ClassFieldName.kt`\n- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EffectiveTimestampRendererHelper.kt`\n\n**Verify:** `./gradlew :maia:maia-gen:maia-gen-spec:compileKotlin :maia:maia-gen:maia-gen-generator:compileKotlin`\n\nSee plan Task 1 for full code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/lang/ClassFieldName.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EffectiveTimestampRendererHelper.kt\"], \"verifyCommand\": \"./gradlew :maia:maia-gen:maia-gen-spec:compileKotlin :maia:maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"ClassFieldName.effectiveFrom/effectiveTo constants exist\", \"EffectiveTimestampRendererHelper provides usesEffectiveRange, collapseEffectiveColumns, collapseEffectiveValuePlaceholders, selectStarClause, EFFECTIVE_RANGE_WHERE_CLAUSE\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 2: CreateTableSqlRenderer — emit effective_range column",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** For entities with `hasEffectiveTimestamps`, emit `effective_range tstzrange not null default tstzrange(now(), null)` instead of `effective_from`/`effective_to` columns.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRenderer.kt:68-90`\n\n**Verify:** `./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin`\n\nSee plan Task 2 for full code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"effective_range column emitted for hasEffectiveTimestamps entities\", \"effective_from/effective_to columns removed for those entities\", \"hasEffectiveLocalDates entities unaffected\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 3: JdbcDaoRenderer — SELECT projections and findEffective WHERE clauses",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** Update all 10 `select * from ...` sites for `hasEffectiveTimestamps` entities to append `lower(effective_range) as effective_from, upper(effective_range) as effective_to`, and switch `findAllEffective`/`findEffectiveBy for fields` WHERE clauses to `effective_range @> current_timestamp` (preserving old behavior for `hasEffectiveLocalDates`-only entities).\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt`\n\n**Sites (current line numbers):** findByPrimaryKeyOrNull (~730), findAll (~808), findAllEffective (~826-839), findAllByFilter (~854), findAllByFilterAsSequence (~880), findAllByFilterAndPageRequest (~941), findAllAsSequence (~980), findOneOrNullByForFields (~1329), findBy for fields (~1407), findEffectiveBy for fields (~1465-1470).\n\n**Verify:** `./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin`\n\nSee plan Task 3 for full code per site.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"all 10 select * sites use selectStarClause helper\", \"findAllEffective and findEffectiveBy use effective_range @> current_timestamp for hasEffectiveTimestamps entities\", \"hasEffectiveLocalDates-only behavior unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 4: JdbcDaoRenderer — INSERT/bulkInsert column collapse",
+      "status": "pending",
+      "blockedBy": [3],
+      "description": "**Goal:** Collapse `effective_from`/`effective_to` into a single `effective_range` column with value `tstzrange(:effectiveFrom, :effectiveTo)` in `insert`/`insertSubclass`/`bulkInsert`.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt`\n  - `databaseColumnNames()` extension (~2191-2193)\n  - `renderFunctionInsertFor` fieldNames (~335)\n  - `render function bulkInsert` databaseColumnNames (~367) and fieldNames (~382)\n\n**Verify:** `./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin`\n\nSee plan Task 4 for full code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"insert/bulkInsert collapse effective_from/effective_to into effective_range column with tstzrange(:effectiveFrom, :effectiveTo) value\", \"SqlParams binding for effectiveFrom/effectiveTo unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 5,
+      "subject": "Task 5: JdbcDaoRenderer — setFields/addField collapse",
+      "status": "pending",
+      "blockedBy": [4],
+      "description": "**Goal:** For `hasEffectiveTimestamps` entities, generate `setFields` that collapses `effectiveFrom`/`effectiveTo` FieldUpdates into one `effective_range = tstzrange(...)` assignment (3 cases: both ends, from-only, to-only), and remove `effectiveFrom`/`effectiveTo` cases from `addField`'s `when` block for these entities.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt:1904-2075` (`render function setFields`)\n\n**Verify:** `./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin`\n\nSee plan Task 5 for full code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"setFields collapses effectiveFrom/effectiveTo FieldUpdates into effective_range assignment with 3-case branching\", \"addField when block excludes effectiveFrom/effectiveTo for hasEffectiveTimestamps entities\", \"non-effective entities unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 6,
+      "subject": "Task 6: RowMapperRenderer — many-to-many join-fetch query",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** Update the many-to-many join-fetch query to read effective_from/effective_to via `lower(mtm.effective_range)`/`upper(mtm.effective_range)`.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/RowMapperRenderer.kt:196-220`\n\n**Verify:** `./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin`\n\nSee plan Task 6 for full code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/RowMapperRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia:maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"join-fetch query uses lower(mtm.effective_range)/upper(mtm.effective_range) aliased to effective_from/effective_to\", \"readInstantOrNull calls unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 7,
+      "subject": "Task 7: Regenerate maia-showcase and verify",
+      "status": "pending",
+      "blockedBy": [2, 5, 6],
+      "description": "**Goal:** Regenerate maia-showcase generated sources, verify DDL/DAO/row-mapper output for `EffectiveTimestampEntity` and `LeftToRightManyToManyJoin`, confirm generated Kotlin compiles.\n\n**Files (generated, inspect only):**\n- `maia-showcase/dao/src/generated/sql/create_entity_tables_maia.sql`\n- `maia-showcase/dao/src/generated/kotlin/main/org/maiaframework/showcase/effective_dated/EffectiveTimestampDao.kt`\n- `maia-showcase/dao/src/generated/kotlin/main/org/maiaframework/showcase/effective_dated/EffectiveTimestampEntityRowMapper.kt`\n- `maia-showcase/dao/src/generated/kotlin/main/org/maiaframework/showcase/many_to_many/LeftToRightManyToManyJoinDao.kt`\n- `maia-showcase/dao/src/generated/kotlin/main/org/maiaframework/showcase/many_to_many/LeftToRightManyToManyJoinEntityRowMapper.kt`\n\n**Steps:**\n1. `./gradlew :maia-showcase:domain:maiaGeneration :maia-showcase:dao:maiaGeneration :maia-showcase:repo:maiaGeneration :maia-showcase:service:maiaGeneration`\n2. `git diff --stat -- maia-showcase/*/src/generated` — confirm only EffectiveTimestamp*/*ManyToMany*/create_entity_tables_maia.sql changed\n3. `./gradlew :maia-showcase:dao:compileKotlin :maia-showcase:domain:compileKotlin :maia-showcase:repo:compileKotlin :maia-showcase:service:compileKotlin`\n4. Commit regenerated output\n\nDo NOT run `:maia-showcase:dao:test` — Flyway migration reconciliation is the user's responsibility, out of scope.\n\n```json:metadata\n{\"files\": [\"maia-showcase/dao/src/generated/sql/create_entity_tables_maia.sql\", \"maia-showcase/dao/src/generated/kotlin/main/org/maiaframework/showcase/effective_dated/EffectiveTimestampDao.kt\", \"maia-showcase/dao/src/generated/kotlin/main/org/maiaframework/showcase/effective_dated/EffectiveTimestampEntityRowMapper.kt\", \"maia-showcase/dao/src/generated/kotlin/main/org/maiaframework/showcase/many_to_many/LeftToRightManyToManyJoinDao.kt\", \"maia-showcase/dao/src/generated/kotlin/main/org/maiaframework/showcase/many_to_many/LeftToRightManyToManyJoinEntityRowMapper.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:dao:compileKotlin :maia-showcase:domain:compileKotlin :maia-showcase:repo:compileKotlin :maia-showcase:service:compileKotlin\", \"acceptanceCriteria\": [\"DDL emits effective_range for both entities, no effective_from/effective_to\", \"DAO insert/bulkInsert/finders/setFields/addField updated per design\", \"RowMapper join-fetch query updated\", \"generated code compiles\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-06-12T00:00:00Z"
+}
