@@ -72,7 +72,15 @@ class CreateTableSqlRenderer(
             .values
             .toList()
 
-        val lines = nonDerivedSqlFields.map { sqlFieldDef ->
+        val effectiveTimestampColumnNames = setOf("effective_from", "effective_to")
+
+        val sqlFieldsForColumns = if (baseEntityDef.hasEffectiveTimestamps.value) {
+            nonDerivedSqlFields.filterNot { it.tableColumnName.value in effectiveTimestampColumnNames }
+        } else {
+            nonDerivedSqlFields
+        }
+
+        val lines = sqlFieldsForColumns.map { sqlFieldDef ->
 
             val fieldType = sqlFieldDef.fieldType
 
@@ -85,7 +93,13 @@ class CreateTableSqlRenderer(
 
         }
 
-        val allLines = listOfNotNull(typeDiscriminatorLineOrNull).plus(lines)
+        val effectiveRangeLineOrNull = if (baseEntityDef.hasEffectiveTimestamps.value) {
+            "effective_range tstzrange not null default tstzrange(now(), null)"
+        } else {
+            null
+        }
+
+        val allLines = listOfNotNull(typeDiscriminatorLineOrNull).plus(lines).plus(listOfNotNull(effectiveRangeLineOrNull))
         allLines.forEach { appendLine("    $it,") }
 
         val primaryKeyFieldCsv = nonDerivedSqlFields.filter { it.isPrimaryKey }.map { it.tableColumnName }.joinToString(", ")
