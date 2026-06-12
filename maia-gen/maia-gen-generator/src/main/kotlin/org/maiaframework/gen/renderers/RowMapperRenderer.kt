@@ -196,8 +196,8 @@ class RowMapperRenderer(
                     |            select
                     |                other.id,
                     |                other.${joinFetchDtoDef.nameTableColumnName},
-                    |                mtm.effective_from,
-                    |                mtm.effective_to
+                    |                lower(mtm.effective_range) as effective_from,
+                    |                upper(mtm.effective_range) as effective_to
                     |            from ${joinFetchDtoDef.otherSideEntitySchemaAndTableName} other
                     |            join ${joinFetchDtoDef.joinEntitySchemaAndTableName} mtm
                     |                on other.id = mtm.${joinFetchDtoDef.otherSideIdTableColumnName}
