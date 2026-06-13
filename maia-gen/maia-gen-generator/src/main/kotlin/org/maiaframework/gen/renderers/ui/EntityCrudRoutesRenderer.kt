@@ -113,9 +113,11 @@ class EntityCrudRoutesRenderer(
 
     private fun renderHistoryRoute(def: EntityHistoryBlotterDef) {
 
+        val path = if (def.isJoinEntityHistory) def.routePath else "${def.routePath}/:id"
+
         append("""
             |    {
-            |        path: '${def.routePath}/:id',
+            |        path: '$path',
             |        loadComponent: () =>
             |            import('./${def.blotterPageComponentNames.componentNameKebab}').then(m => m.${def.blotterPageComponentNames.componentName}),
             |    },

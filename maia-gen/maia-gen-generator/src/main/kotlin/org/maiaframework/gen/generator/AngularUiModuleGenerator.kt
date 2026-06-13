@@ -625,7 +625,11 @@ class AngularUiModuleGenerator(
         val editPageByEntity = this.modelDef.entityEditPageDefs
             .associateBy { it.entityDef }
 
-        val allEntities = (blotterPageByEntity.keys + viewPageByEntity.keys + createPageByEntity.keys + editPageByEntity.keys).toSet()
+        val historyOnlyEntities = this.modelDef.entityHistoryBlotterDefs
+            .map { it.entityDef }
+            .toSet()
+
+        val allEntities = (blotterPageByEntity.keys + viewPageByEntity.keys + createPageByEntity.keys + editPageByEntity.keys + historyOnlyEntities).toSet()
 
         allEntities.forEach { entityDef ->
             EntityCrudRoutesRenderer(
