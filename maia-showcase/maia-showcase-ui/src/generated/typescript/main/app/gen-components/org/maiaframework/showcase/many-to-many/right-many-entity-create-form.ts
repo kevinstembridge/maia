@@ -62,6 +62,7 @@ export class RightManyEntityCreateForm implements OnInit {
 
 
     leftJoins: {
+        id: string | null;
         entityId: string;
         entityName: string;
         effectiveFrom: Date | null;
@@ -139,6 +140,7 @@ export class RightManyEntityCreateForm implements OnInit {
         if (!entity) return;
         if (this.leftJoins.some(j => j.entityId === entity.id)) return;
         this.leftJoins.push({
+            id: null,
             entityId: entity.id,
             entityName: entity.someString,
             effectiveFrom: this.addLeftJoinEffectiveFromControl.value,
@@ -188,6 +190,7 @@ export class RightManyEntityCreateForm implements OnInit {
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
             leftEntities: this.leftJoins.map(j => ({
+                id: j.id,
                 leftEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
                 effectiveTo: j.effectiveTo?.toISOString() ?? null,

@@ -382,6 +382,7 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    ${field.joinsFieldName}: {
+                |        id: string | null;
                 |        entityId: string;
                 |        entityName: string;
                 |        effectiveFrom: Date | null;
@@ -753,6 +754,7 @@ class AngularReactiveFormComponentRenderer(
 
             timestampedFields.forEach { field ->
                 appendLine("                this.${field.joinsFieldName} = dto.${field.requestDtoFieldName}?.map(e => ({")
+                appendLine("                    id: e.id,")
                 appendLine("                    entityId: e.id,")
                 appendLine("                    entityName: e.name,")
                 appendLine("                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,")
@@ -835,6 +837,7 @@ class AngularReactiveFormComponentRenderer(
                 |        if (!entity) return;
                 |        if (this.${field.joinsFieldName}.some(j => j.entityId === entity.${field.esDocIdFieldName})) return;
                 |        this.${field.joinsFieldName}.push({
+                |            id: null,
                 |            entityId: entity.${field.esDocIdFieldName},
                 |            entityName: entity.${field.searchTermFieldName},
                 |            effectiveFrom: this.${field.effectiveFromControlName}.value,
@@ -962,6 +965,7 @@ class AngularReactiveFormComponentRenderer(
 
         timestampedFields.forEach { field ->
             appendLine("            ${field.requestDtoFieldName}: this.${field.joinsFieldName}.map(j => ({")
+            appendLine("                id: j.id,")
             appendLine("                ${field.joinEntityIdFieldName}: j.entityId,")
             appendLine("                effectiveFrom: j.effectiveFrom?.toISOString() ?? null,")
             appendLine("                effectiveTo: j.effectiveTo?.toISOString() ?? null,")

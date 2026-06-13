@@ -68,6 +68,7 @@ export class RightManyEntityEditForm implements OnInit {
 
 
     leftJoins: {
+        id: string | null;
         entityId: string;
         entityName: string;
         effectiveFrom: Date | null;
@@ -150,6 +151,7 @@ export class RightManyEntityEditForm implements OnInit {
                     version: dto.version,
                 });
                 this.leftJoins = dto.leftEntities?.map(e => ({
+                    id: e.id,
                     entityId: e.id,
                     entityName: e.name,
                     effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
@@ -172,6 +174,7 @@ export class RightManyEntityEditForm implements OnInit {
         if (!entity) return;
         if (this.leftJoins.some(j => j.entityId === entity.id)) return;
         this.leftJoins.push({
+            id: null,
             entityId: entity.id,
             entityName: entity.someString,
             effectiveFrom: this.addLeftJoinEffectiveFromControl.value,
@@ -223,6 +226,7 @@ export class RightManyEntityEditForm implements OnInit {
             someString: this.formGroup.getRawValue().someString,
             version: this.formGroup.getRawValue().version,
             leftEntities: this.leftJoins.map(j => ({
+                id: j.id,
                 leftEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
                 effectiveTo: j.effectiveTo?.toISOString() ?? null,
