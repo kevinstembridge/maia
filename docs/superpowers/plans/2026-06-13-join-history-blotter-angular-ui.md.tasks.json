@@ -4,23 +4,23 @@
     {
       "id": 0,
       "subject": "Task 1: Branch 5 Angular history-blotter renderers on isJoinEntityHistory",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** For join-entity history (LeftToRightSimpleJoinEntity), generated page component, page HTML, blotter component, service, and ag-grid datasource no longer reference entityId/route params, and post to the global search URL. Non-join entity history generates byte-identical output to before.\n\n**Files:**\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterPageComponentRenderer.kt\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterPageHtmlRenderer.kt\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterComponentRenderer.kt\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterServiceRenderer.kt\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterAgGridDatasourceRenderer.kt\n\nSee plan Task 1 (docs/superpowers/plans/2026-06-13-join-history-blotter-angular-ui.md) for full file contents to write.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterPageComponentRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterPageHtmlRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterComponentRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterServiceRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityHistoryBlotterAgGridDatasourceRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:compileKotlin :maia-showcase:maia-showcase-ui:maiaGeneration && git status --porcelain -- maia-showcase/maia-showcase-ui/src/generated\", \"acceptanceCriteria\": [\"compiles\", \"only LeftToRightSimpleJoinHistory* generated files change\", \"join history component/service/datasource drop entityId plumbing\", \"non-join history blotters unchanged\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 1,
       "subject": "Task 2: Generate routes file for entities with only a history blotter",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [0],
       "description": "**Goal:** LeftToRightSimpleJoinEntity (no blotter/view/create/edit pages) gets a generated left-to-right-simple-join-routes.ts containing its join-style history route (no :id). Non-join history routes keep /:id. All other routes files unchanged.\n\n**Files:**\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityCrudRoutesRenderer.kt:114-124 (renderHistoryRoute)\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt:613-640 (renderEntityCrudRoutes)\n\nSee plan Task 2 (docs/superpowers/plans/2026-06-13-join-history-blotter-angular-ui.md) for exact code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/ui/EntityCrudRoutesRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/AngularUiModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:compileKotlin :maia-showcase:maia-showcase-ui:maiaGeneration && git status --porcelain -- maia-showcase/maia-showcase-ui/src/generated\", \"acceptanceCriteria\": [\"compiles\", \"new left-to-right-simple-join-routes.ts generated with path 'left-to-right-simple-join-history' (no :id)\", \"existing routes files unchanged (e.g. user-routes.ts keeps /:id)\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 2,
       "subject": "Task 3: Wire global join-history page into showcase app shell",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [0, 1],
       "description": "**Goal:** /left-to-right-simple-join-history is reachable from the nav menu and renders the global history blotter grid.\n\n**Files:**\n- Modify: maia-showcase/maia-showcase-ui/src/app/app.routes.ts\n- Modify: maia-showcase/maia-showcase-ui/src/app/app.html\n\nSee plan Task 3 (docs/superpowers/plans/2026-06-13-join-history-blotter-angular-ui.md) for exact edits.\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/app.routes.ts\", \"maia-showcase/maia-showcase-ui/src/app/app.html\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && npx tsc --noEmit -p tsconfig.app.json\", \"acceptanceCriteria\": [\"app.routes.ts imports and spreads leftToRightSimpleJoinRoutes\", \"app.html has nav entry linking to /left-to-right-simple-join-history gated by hasReadAuthority()\", \"page renders with ag-grid history blotter when verified in browser\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-06-13T13:00:00Z"
+  "lastUpdated": "2026-06-13T15:00:00Z"
 }

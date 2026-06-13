@@ -582,7 +582,7 @@ git commit -m "feat: generate entityId-free Angular history blotter for join ent
 - [ ] After regenerating `:maia-showcase:maia-showcase-ui:maiaGeneration`, a new file `.../many-to-many/left-to-right-simple-join-routes.ts` is generated, exporting `leftToRightSimpleJoinRoutes` with a single route entry: `path: 'left-to-right-simple-join-history'` (no `:id`), `loadComponent` importing `./left-to-right-simple-join-history-blotter-page`.
 - [ ] All previously-existing `*-routes.ts` files are unchanged (`git diff` empty for them) — in particular `user-routes.ts` still has `path: 'user/history/:id'` (or equivalent `${routePath}/:id`).
 
-**Verify:** `./gradlew :maia-gen:maia-gen-generator:compileKotlin :maia-showcase:maia-showcase-ui:maiaGeneration` → BUILD SUCCESSFUL, then `git status --porcelain -- maia-showcase/maia-showcase-ui/src/generated` shows exactly one new file: `.../many-to-many/left-to-right-simple-join-routes.ts`.
+**Verify:** `./gradlew :maia-gen:maia-gen-generator:compileKotlin :maia-showcase:maia-showcase-ui:maiaGeneration` → BUILD SUCCESSFUL, then `git status --porcelain -- maia-showcase/maia-showcase-ui/src/generated` shows new files including `.../many-to-many/left-to-right-simple-join-routes.ts`. (In practice this also generates routes files for other entities that have a `historyBlotterDef` but no CRUD pages - e.g. person, organization, user-group - per the general fix described in the design doc. These are inert/unreferenced and harmless.)
 
 **Steps:**
 

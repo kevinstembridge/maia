@@ -52,6 +52,12 @@
             </button>
         }
         @if (hasReadAuthority()) {
+            <button mat-menu-item routerLink="/left-to-right-simple-join-history">
+                <mat-icon>history</mat-icon>
+                <span>Left-Right Join History</span>
+            </button>
+        }
+        @if (hasReadAuthority()) {
             <button mat-menu-item routerLink="/right-many-blotter">
                 <mat-icon>dialpad</mat-icon>
                 <span>Right Many to Many</span>
