@@ -3,14 +3,14 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {UserGroupMembershipHistoryBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipHistoryBlotterRowDto';
+import {LeftToRightSimpleJoinHistoryBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftToRightSimpleJoinHistoryBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 
 
 
 @Injectable()
-export class UserGroupMembershipHistoryBlotterAgGridDatasource implements IDatasource {
+export class LeftToRightSimpleJoinHistoryBlotterAgGridDatasource implements IDatasource {
 
 
     rowCount?: number = undefined;
@@ -29,8 +29,8 @@ export class UserGroupMembershipHistoryBlotterAgGridDatasource implements IDatas
 
     getRows(params: IGetRowsParams): void {
 
-        this.http.post<SearchResultPage<UserGroupMembershipHistoryBlotterRowDto>>(
-            `/api/user-group-membership/${this.entityId}/history/search`,
+        this.http.post<SearchResultPage<LeftToRightSimpleJoinHistoryBlotterRowDto>>(
+            `/api/left-to-right-simple-join/history/search`,
             params
         ).subscribe({
            next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)

@@ -3,14 +3,12 @@
 
 package org.maiaframework.showcase.user
 
-import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
-import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -20,7 +18,6 @@ import java.time.Instant
 @Repository
 class UserGroupMembershipDao(
     private val fieldConverter: UserGroupMembershipEntityFieldConverter,
-    private val historyDao: UserGroupMembershipHistoryDao,
     private val jdbcOps: JdbcOps
 ) {
 
@@ -43,15 +40,13 @@ class UserGroupMembershipDao(
                 effective_range,
                 id,
                 user_id,
-                user_group_id,
-                version
+                user_group_id
             ) values (
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :user,
-                :userGroup,
-                :version
+                :userGroup
             )
             """.trimIndent(),
             SqlParams().apply {
@@ -61,11 +56,8 @@ class UserGroupMembershipDao(
                 addValue("id", entity.id)
                 addValue("user", entity.user)
                 addValue("userGroup", entity.userGroup)
-                addValue("version", entity.version)
             }
         )
-
-        insertHistory(entity, ChangeType.CREATE)
 
     }
 
@@ -79,15 +71,13 @@ class UserGroupMembershipDao(
                 effective_range,
                 id,
                 user_id,
-                user_group_id,
-                version
+                user_group_id
             ) values (
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :user,
-                :userGroup,
-                :version
+                :userGroup
             )
             """.trimIndent(),
             entities.map { entity ->
@@ -98,60 +88,9 @@ class UserGroupMembershipDao(
                     addValue("id", entity.id)
                     addValue("user", entity.user)
                     addValue("userGroup", entity.userGroup)
-                    addValue("version", entity.version)
                 }
             }
         )
-
-        bulkInsertHistory(entities, ChangeType.CREATE)
-
-    }
-
-
-    private fun insertHistory(entity: UserGroupMembershipEntity, changeType: ChangeType) {
-
-        insertHistory(entity, entity.version, changeType)
-
-    }
-
-
-    private fun insertHistory(entity: UserGroupMembershipEntity, version: Long, changeType: ChangeType) {
-
-        this.historyDao.insert(history(entity, version, changeType))
-
-    }
-
-
-    private fun bulkInsertHistory(entities: List<UserGroupMembershipEntity>, changeType: ChangeType) {
-
-        val historyEntities = entities.map { history(it, it.version, changeType) }
-        this.historyDao.bulkInsert(historyEntities)
-
-    }
-
-
-    private fun history(
-        entity: UserGroupMembershipEntity,
-        version: Long,
-        changeType: ChangeType
-    ): UserGroupMembershipHistoryEntity {
-
-        val id = entity.id
-        val createdTimestampUtc = entity.createdTimestampUtc
-        val effectiveFrom = entity.effectiveFrom
-        val effectiveTo = entity.effectiveTo
-        val user = entity.user
-        val userGroup = entity.userGroup
-
-        return UserGroupMembershipHistoryEntity(
-                changeType,
-                createdTimestampUtc,
-                effectiveFrom,
-                effectiveTo,
-                id,
-                user,
-                userGroup,
-                version)
 
     }
 
@@ -435,8 +374,7 @@ class UserGroupMembershipDao(
                 maia.v_party.id as userId,
                 maia.v_party.display_name as userName,
                 maia.user_group.id as userGroupId,
-                maia.user_group.name as userGroupName,
-                maia.user_group_membership.version as version
+                maia.user_group.name as userGroupName
             from maia.user_group_membership
             join maia.user_group
                 on maia.user_group.id = maia.user_group_membership.user_group_id
@@ -473,7 +411,6 @@ class UserGroupMembershipDao(
 
         val fieldClauses = updater.fields
             .filterNot { it.classFieldName == "effectiveFrom" || it.classFieldName == "effectiveTo" }
-            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -502,27 +439,10 @@ class UserGroupMembershipDao(
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
-        sql.append(" and version = :version")
 
         sqlParams.addValue("id", updater.id)
 
-        sqlParams.addValue("version", updater.version)
-        sqlParams.addValue("version_incremented", updater.version + 1)
-
-        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
-
-        if (updateCount == 0) {
-
-            throw OptimisticLockingException(UserGroupMembershipEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
-
-        } else {
-
-            val updatedEntity = findByPrimaryKey(updater.id)
-            insertHistory(updatedEntity, ChangeType.UPDATE)
-
-        }
-
-        return updateCount
+        return this.jdbcOps.update(sql.toString(), sqlParams)
 
     }
 

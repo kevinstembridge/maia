@@ -3,12 +3,14 @@
 
 package org.maiaframework.showcase.many_to_many
 
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
+import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class LeftToRightSimpleJoinDao(
     private val fieldConverter: LeftToRightSimpleJoinEntityFieldConverter,
+    private val historyDao: LeftToRightSimpleJoinHistoryDao,
     private val jdbcOps: JdbcOps
 ) {
 
@@ -35,12 +38,14 @@ class LeftToRightSimpleJoinDao(
                 created_timestamp_utc,
                 id,
                 left_id,
-                right_id
+                right_id,
+                version
             ) values (
                 :createdTimestampUtc,
                 :id,
                 :left,
-                :right
+                :right,
+                :version
             )
             """.trimIndent(),
             SqlParams().apply {
@@ -48,8 +53,11 @@ class LeftToRightSimpleJoinDao(
                 addValue("id", entity.id)
                 addValue("left", entity.left)
                 addValue("right", entity.right)
+                addValue("version", entity.version)
             }
         )
+
+        insertHistory(entity, ChangeType.CREATE)
 
     }
 
@@ -62,12 +70,14 @@ class LeftToRightSimpleJoinDao(
                 created_timestamp_utc,
                 id,
                 left_id,
-                right_id
+                right_id,
+                version
             ) values (
                 :createdTimestampUtc,
                 :id,
                 :left,
-                :right
+                :right,
+                :version
             )
             """.trimIndent(),
             entities.map { entity ->
@@ -76,9 +86,56 @@ class LeftToRightSimpleJoinDao(
                     addValue("id", entity.id)
                     addValue("left", entity.left)
                     addValue("right", entity.right)
+                    addValue("version", entity.version)
                 }
             }
         )
+
+        bulkInsertHistory(entities, ChangeType.CREATE)
+
+    }
+
+
+    private fun insertHistory(entity: LeftToRightSimpleJoinEntity, changeType: ChangeType) {
+
+        insertHistory(entity, entity.version, changeType)
+
+    }
+
+
+    private fun insertHistory(entity: LeftToRightSimpleJoinEntity, version: Long, changeType: ChangeType) {
+
+        this.historyDao.insert(history(entity, version, changeType))
+
+    }
+
+
+    private fun bulkInsertHistory(entities: List<LeftToRightSimpleJoinEntity>, changeType: ChangeType) {
+
+        val historyEntities = entities.map { history(it, it.version, changeType) }
+        this.historyDao.bulkInsert(historyEntities)
+
+    }
+
+
+    private fun history(
+        entity: LeftToRightSimpleJoinEntity,
+        version: Long,
+        changeType: ChangeType
+    ): LeftToRightSimpleJoinHistoryEntity {
+
+        val id = entity.id
+        val createdTimestampUtc = entity.createdTimestampUtc
+        val left = entity.left
+        val right = entity.right
+
+        return LeftToRightSimpleJoinHistoryEntity(
+                changeType,
+                createdTimestampUtc,
+                id,
+                left,
+                right,
+                version)
 
     }
 
@@ -331,6 +388,7 @@ class LeftToRightSimpleJoinDao(
         sql.append("update maia.left_to_right_simple_join set ")
 
         val fieldClauses = updater.fields
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -340,10 +398,27 @@ class LeftToRightSimpleJoinDao(
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("id", updater.id)
 
-        return this.jdbcOps.update(sql.toString(), sqlParams)
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
+
+        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
+
+        if (updateCount == 0) {
+
+            throw OptimisticLockingException(LeftToRightSimpleJoinEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
+
+        } else {
+
+            val updatedEntity = findByPrimaryKey(updater.id)
+            insertHistory(updatedEntity, ChangeType.UPDATE)
+
+        }
+
+        return updateCount
 
     }
 
@@ -368,6 +443,11 @@ class LeftToRightSimpleJoinDao(
                 addValue("id", id)
             }
         )
+
+        if (deletedCount > 0) {
+
+            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))
+        }
 
         return deletedCount > 0
 

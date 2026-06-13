@@ -10,8 +10,7 @@ import java.time.Instant
 
 data class UserGroupMembershipEntityUpdater(
     val fields: List<FieldUpdate>,
-    val id: DomainId,
-    val version: Long
+    val id: DomainId
 ) {
 
 
@@ -22,7 +21,6 @@ data class UserGroupMembershipEntityUpdater(
 
     class Builder(
         val id: DomainId,
-        val version: Long
     ) {
 
 
@@ -31,11 +29,7 @@ data class UserGroupMembershipEntityUpdater(
 
         fun build(): UserGroupMembershipEntityUpdater {
 
-            return UserGroupMembershipEntityUpdater(
-                this.fields,
-                this.id,
-                this.version
-            )
+            return UserGroupMembershipEntityUpdater(this.fields, this.id)
 
         }
 
@@ -76,14 +70,10 @@ data class UserGroupMembershipEntityUpdater(
 
         fun forPrimaryKey(
             id: DomainId,
-            version: Long,
             init: Builder.() -> Unit
         ): UserGroupMembershipEntityUpdater {
 
-            val builder = Builder(
-                id,
-                version
-            )
+            val builder = Builder(id)
             builder.init()
             return builder.build()
 

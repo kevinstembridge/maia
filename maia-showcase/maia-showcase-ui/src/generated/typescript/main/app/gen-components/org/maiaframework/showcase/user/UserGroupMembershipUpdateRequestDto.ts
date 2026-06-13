@@ -6,5 +6,4 @@ export interface UserGroupMembershipUpdateRequestDto {
     id: string;
     user: string;
     userGroup: string;
-    version: number;
 }

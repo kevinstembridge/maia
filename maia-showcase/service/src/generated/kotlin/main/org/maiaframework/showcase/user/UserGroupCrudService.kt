@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component
 class UserGroupCrudService(
     private val entityRepo: UserGroupRepo,
     private val maiaProblems: MaiaProblems,
-    private val userGroupMembershipHistoryRepo: UserGroupMembershipHistoryRepo,
     private val userGroupMembershipRepo: UserGroupMembershipRepo
 ) {
 

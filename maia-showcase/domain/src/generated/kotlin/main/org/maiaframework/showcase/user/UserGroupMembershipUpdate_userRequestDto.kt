@@ -19,10 +19,7 @@ class UserGroupMembershipUpdate_userRequestDto
     private val id_raw: DomainId?,
     @field:NotNull
     @param:JsonProperty("user", access = JsonProperty.Access.READ_WRITE) 
-    private val user_raw: DomainId?,
-    @field:NotNull
-    @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
-    private val version_raw: Long?
+    private val user_raw: DomainId?
 ) {
 
 
@@ -34,16 +31,11 @@ class UserGroupMembershipUpdate_userRequestDto
     val user: DomainId by lazy { user_raw!! }
 
 
-    @get:JsonIgnore
-    val version: Long by lazy { version_raw!! }
-
-
     override fun toString(): String {
 
         return "UserGroupMembershipUpdate_userRequestDto{" +
                 "id = '" + this.id + '\'' + ", " + 
-                "user = '" + this.user + '\'' + ", " + 
-                "version = '" + this.version + '\'' +
+                "user = '" + this.user + '\'' +
                 "}"
 
     }

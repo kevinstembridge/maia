@@ -20,6 +20,8 @@ object LeftToRightSimpleJoinEntityMeta {
 
     const val right = "right_id"
 
+    const val version = "version"
+
     val ENTITY_KEY = EntityKey("LeftToRightSimpleJoin")
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
@@ -47,6 +49,7 @@ object LeftToRightSimpleJoinEntityMeta {
             "id" -> "id"
             "left" -> "left_id"
             "right" -> "right_id"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

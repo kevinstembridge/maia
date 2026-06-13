@@ -24,8 +24,6 @@ object UserGroupMembershipEntityMeta {
 
     const val userGroup = "user_group_id"
 
-    const val version = "version"
-
     val ENTITY_KEY = EntityKey("UserGroupMembership")
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
@@ -55,7 +53,6 @@ object UserGroupMembershipEntityMeta {
             "id" -> "id"
             "user" -> "user_id"
             "userGroup" -> "user_group_id"
-            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

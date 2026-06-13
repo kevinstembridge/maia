@@ -25,6 +25,8 @@ class LeftToRightSimpleJoinEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "right_id" -> // right
                 return (inputValue as DomainId).value
+            "version" -> // version
+                return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }
 

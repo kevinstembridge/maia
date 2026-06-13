@@ -1372,6 +1372,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val leftToRightSimpleJoinEntityDef = manyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
         "LeftToRightSimpleJoin",
+        recordVersionHistory = true,
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
         leftEntity = ReferencedEntity(

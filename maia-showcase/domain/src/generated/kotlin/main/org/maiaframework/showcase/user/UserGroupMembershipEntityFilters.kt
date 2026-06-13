@@ -108,14 +108,6 @@ class UserGroupMembershipEntityFilters {
         }
 
 
-    val version: FieldFilter<Long> 
-        get() {
-
-            return FieldFilter("version", Types.BIGINT, this.sqlParamCounter) { value -> value }
-
-        }
-
-
     class FieldFilter<T>(
         private val databaseColumnName: String,
         private val sqlType: Int,

@@ -24,7 +24,6 @@ class UserGroupMembershipFetchForEditDtoRowMapper : MaiaRowMapper<UserGroupMembe
             rsa.readDomainId("userGroupId"),
             rsa.readString("userGroupName"),
         )
-        val version = rsa.readLong("version")
 
         return UserGroupMembershipFetchForEditDto(
             createdTimestampUtc,
@@ -33,7 +32,6 @@ class UserGroupMembershipFetchForEditDtoRowMapper : MaiaRowMapper<UserGroupMembe
             id,
             user,
             userGroup,
-            version,
         )
 
     }

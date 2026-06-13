@@ -320,7 +320,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userGroupMembershipEntityDef = manyToManyEntity(
         "org.maiaframework.showcase.user",
         "UserGroupMembership",
-        recordVersionHistory = true,
         leftEntity = ReferencedEntity("userGroup", "User Group", userGroupEntityDef, IsEditableByUser.TRUE),
         rightEntity = ReferencedEntity("user", "User", userEntityDef, IsEditableByUser.TRUE)
     ) {

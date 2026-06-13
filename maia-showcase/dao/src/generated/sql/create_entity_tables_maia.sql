@@ -303,10 +303,24 @@ CREATE TABLE maia.left_to_right_simple_join (
     id uuid NOT NULL,
     left_id uuid NOT NULL REFERENCES maia.left_many(id),
     right_id uuid NOT NULL REFERENCES maia.right_many(id),
+    version bigint NOT NULL,
     PRIMARY KEY(id)
 );
 CREATE INDEX left_to_right_simple_join_left_id_idx ON maia.left_to_right_simple_join(left_id);
 CREATE INDEX left_to_right_simple_join_right_id_idx ON maia.left_to_right_simple_join(right_id);
+
+
+CREATE TABLE maia.left_to_right_simple_join_history (
+    change_type text NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    left_id uuid NOT NULL REFERENCES maia.left_many(id),
+    right_id uuid NOT NULL REFERENCES maia.right_many(id),
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
+);
+CREATE INDEX hist_left_to_right_simple_join_left_id_idx ON maia.left_to_right_simple_join_history(left_id);
+CREATE INDEX hist_left_to_right_simple_join_right_id_idx ON maia.left_to_right_simple_join_history(right_id);
 
 
 CREATE TABLE maia.unmodifiable (

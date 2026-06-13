@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component
 @Component
 class RightManyForeignKeyReferencesService(
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
+    private val leftToRightSimpleJoinHistoryRepo: LeftToRightSimpleJoinHistoryRepo,
     private val leftToRightSimpleJoinRepo: LeftToRightSimpleJoinRepo
 ) {
 
@@ -27,6 +28,10 @@ class RightManyForeignKeyReferencesService(
 
         if (this.leftToRightSimpleJoinRepo.existsByRight(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSimpleJoin")
+        }
+
+        if (this.leftToRightSimpleJoinHistoryRepo.existsByRight(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSimpleJoinHistory")
         }
 
         return ForeignKeyReferencesExistResponseDto(id, false, null)

@@ -12,6 +12,5 @@ export interface UserGroupMembershipFetchForEditDto {
     id: string;
     user: UserPkAndNameDto;
     userGroup: UserGroupPkAndNameDto;
-    version: number;
 }
 

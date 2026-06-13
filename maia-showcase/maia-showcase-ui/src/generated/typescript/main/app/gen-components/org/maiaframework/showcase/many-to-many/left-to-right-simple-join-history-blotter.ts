@@ -5,8 +5,8 @@ import {Component, Input, OnInit, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {UserGroupMembershipHistoryBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipHistoryBlotterAgGridDatasource';
-import {UserGroupMembershipHistoryBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipHistoryBlotterRowDto';
+import {LeftToRightSimpleJoinHistoryBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftToRightSimpleJoinHistoryBlotterAgGridDatasource';
+import {LeftToRightSimpleJoinHistoryBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftToRightSimpleJoinHistoryBlotterRowDto';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, GridApi, GridReadyEvent, RowModelType} from 'ag-grid-community';
@@ -15,11 +15,11 @@ import {ColDef, GridApi, GridReadyEvent, RowModelType} from 'ag-grid-community';
 
 @Component({
     imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-    providers: [UserGroupMembershipHistoryBlotterAgGridDatasource],
-    selector: 'app-user-group-membership-history-blotter',
-    templateUrl: './user-group-membership-history-blotter.html'
+    providers: [LeftToRightSimpleJoinHistoryBlotterAgGridDatasource],
+    selector: 'app-left-to-right-simple-join-history-blotter',
+    templateUrl: './left-to-right-simple-join-history-blotter.html'
 })
-export class UserGroupMembershipHistoryBlotter implements OnInit {
+export class LeftToRightSimpleJoinHistoryBlotter implements OnInit {
 
 
     @Input() entityId!: string;
@@ -28,9 +28,9 @@ export class UserGroupMembershipHistoryBlotter implements OnInit {
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         { field: 'changeType', headerName: 'Change Type', cellDataType: 'text' },
-        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'text' },
-        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'text' },
-        { field: 'version', headerName: 'Version', cellDataType: 'number' },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text' },
+        { field: 'left', headerName: 'Left', cellDataType: 'text' },
+        { field: 'right', headerName: 'Right', cellDataType: 'text' },
     ];
 
 
@@ -73,13 +73,13 @@ export class UserGroupMembershipHistoryBlotter implements OnInit {
     public maxBlocksInCache = 10;
 
 
-    public rowData!: UserGroupMembershipHistoryBlotterRowDto[];
+    public rowData!: LeftToRightSimpleJoinHistoryBlotterRowDto[];
 
 
-    private gridApi!: GridApi<UserGroupMembershipHistoryBlotterRowDto>;
+    private gridApi!: GridApi<LeftToRightSimpleJoinHistoryBlotterRowDto>;
 
 
-    private readonly datasource = inject(UserGroupMembershipHistoryBlotterAgGridDatasource);
+    private readonly datasource = inject(LeftToRightSimpleJoinHistoryBlotterAgGridDatasource);
 
 
     ngOnInit(): void {
@@ -87,7 +87,7 @@ export class UserGroupMembershipHistoryBlotter implements OnInit {
     }
 
 
-    onGridReady(params: GridReadyEvent<UserGroupMembershipHistoryBlotterRowDto>): void {
+    onGridReady(params: GridReadyEvent<LeftToRightSimpleJoinHistoryBlotterRowDto>): void {
 
         this.gridApi = params.api;
         params.api?.setGridOption('datasource', this.datasource);

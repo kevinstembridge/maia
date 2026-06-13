@@ -43,7 +43,6 @@ class UserGroupMembershipCrudService(
         val userGroup: DomainId = createDto.userGroup
         val id = DomainId.newId()
         val createdTimestampUtc = Instant.now()
-        val version = 1L
 
         return UserGroupMembershipEntity(
             createdTimestampUtc,
@@ -51,8 +50,7 @@ class UserGroupMembershipCrudService(
             effectiveTo,
             id,
             user,
-            userGroup,
-            version
+            userGroup
         )
 
     }
@@ -78,8 +76,7 @@ class UserGroupMembershipCrudService(
     fun update(editDto: UserGroupMembershipUpdateRequestDto) {
 
         val id = editDto.id
-        val version = editDto.version
-        val updater = UserGroupMembershipEntityUpdater.forPrimaryKey(id, version) {
+        val updater = UserGroupMembershipEntityUpdater.forPrimaryKey(id) {
             user(editDto.user)
             userGroup(editDto.userGroup)
         }
@@ -96,9 +93,7 @@ class UserGroupMembershipCrudService(
 
         logger.info("BEGIN: updateUserGroup. currentUsername=${currentUsername}, dto=$editDto")
 
-        val version = editDto.version
-
-        val updater = UserGroupMembershipEntityUpdater.forPrimaryKey(editDto.id, version) {
+        val updater = UserGroupMembershipEntityUpdater.forPrimaryKey(editDto.id) {
             userGroup(editDto.userGroup)
         }
 
@@ -114,9 +109,7 @@ class UserGroupMembershipCrudService(
 
         logger.info("BEGIN: updateUser. currentUsername=${currentUsername}, dto=$editDto")
 
-        val version = editDto.version
-
-        val updater = UserGroupMembershipEntityUpdater.forPrimaryKey(editDto.id, version) {
+        val updater = UserGroupMembershipEntityUpdater.forPrimaryKey(editDto.id) {
             user(editDto.user)
         }
 

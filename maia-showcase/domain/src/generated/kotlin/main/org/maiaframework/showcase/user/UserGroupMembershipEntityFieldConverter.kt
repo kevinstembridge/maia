@@ -29,8 +29,6 @@ class UserGroupMembershipEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "user_group_id" -> // userGroup
                 return (inputValue as DomainId).value
-            "version" -> // version
-                return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }
 

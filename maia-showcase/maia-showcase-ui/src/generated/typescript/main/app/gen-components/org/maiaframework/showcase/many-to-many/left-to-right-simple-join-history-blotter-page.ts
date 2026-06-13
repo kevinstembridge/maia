@@ -5,18 +5,18 @@ import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute} from '@angular/router';
 import {PageLayout} from '@app/components/page-layout/page-layout';
-import {UserGroupMembershipHistoryBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-history-blotter';
+import {LeftToRightSimpleJoinHistoryBlotter} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-simple-join-history-blotter';
 import {map} from 'rxjs';
 
 
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PageLayout, UserGroupMembershipHistoryBlotter],
-    selector: 'app-user-group-membership-history-blotter-page',
-    templateUrl: './user-group-membership-history-blotter-page.html'
+    imports: [PageLayout, LeftToRightSimpleJoinHistoryBlotter],
+    selector: 'app-left-to-right-simple-join-history-blotter-page',
+    templateUrl: './left-to-right-simple-join-history-blotter-page.html'
 })
-export class UserGroupMembershipHistoryBlotterPage {
+export class LeftToRightSimpleJoinHistoryBlotterPage {
 
 
     private readonly route = inject(ActivatedRoute);

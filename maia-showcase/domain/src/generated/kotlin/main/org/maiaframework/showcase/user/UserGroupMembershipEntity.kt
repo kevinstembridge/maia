@@ -13,8 +13,7 @@ class UserGroupMembershipEntity(
     val effectiveTo: Instant?,
     val id: DomainId,
     val user: DomainId,
-    val userGroup: DomainId,
-    val version: Long
+    val userGroup: DomainId
 ) {
 
 
@@ -26,8 +25,7 @@ class UserGroupMembershipEntity(
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "user = '" + this.user + '\'' + ", " + 
-                "userGroup = '" + this.userGroup + '\'' + ", " + 
-                "version = '" + this.version + '\'' +
+                "userGroup = '" + this.userGroup + '\'' +
                 "}"
 
     }
@@ -51,7 +49,6 @@ class UserGroupMembershipEntity(
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
-            val version = 1L
 
             return UserGroupMembershipEntity(
                 createdTimestampUtc,
@@ -59,8 +56,7 @@ class UserGroupMembershipEntity(
                 effectiveTo,
                 id,
                 user,
-                userGroup,
-                version
+                userGroup
             )
 
         }

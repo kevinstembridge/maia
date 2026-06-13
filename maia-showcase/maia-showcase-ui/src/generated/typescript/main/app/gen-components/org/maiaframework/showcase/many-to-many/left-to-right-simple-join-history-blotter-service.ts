@@ -3,13 +3,13 @@
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {UserGroupMembershipHistoryBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipHistoryBlotterRowDto';
+import {LeftToRightSimpleJoinHistoryBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftToRightSimpleJoinHistoryBlotterRowDto';
 import {SearchResultPage} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
 @Injectable({providedIn: 'root'})
-export class UserGroupMembershipHistoryBlotterService {
+export class LeftToRightSimpleJoinHistoryBlotterService {
 
     private httpOptions = {
         headers: new HttpHeaders({
@@ -21,10 +21,10 @@ export class UserGroupMembershipHistoryBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(entityId: string, searchModel: any): Observable<SearchResultPage<UserGroupMembershipHistoryBlotterRowDto>> {
+    public search(entityId: string, searchModel: any): Observable<SearchResultPage<LeftToRightSimpleJoinHistoryBlotterRowDto>> {
 
-        return this.http.post<SearchResultPage<UserGroupMembershipHistoryBlotterRowDto>>(
-                `/api/user-group-membership/${entityId}/history/search`,
+        return this.http.post<SearchResultPage<LeftToRightSimpleJoinHistoryBlotterRowDto>>(
+                `/api/left-to-right-simple-join/${entityId}/history/search`,
                 searchModel,
                 this.httpOptions);
 

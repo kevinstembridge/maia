@@ -2,9 +2,9 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityHistoryBlotterRowDtoTypescriptRenderer
 
 
-export interface UserGroupMembershipHistoryBlotterRowDto {
+export interface LeftToRightSimpleJoinHistoryBlotterRowDto {
     changeType: string;
-    effectiveFrom?: string;
-    effectiveTo?: string;
-    version: number;
+    createdTimestampUtc: string;
+    left: string;
+    right: string;
 }
