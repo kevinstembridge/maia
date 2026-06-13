@@ -10,6 +10,7 @@ import java.time.Instant
 data class LeftJoinFetchDto(
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
+    val entityId: DomainId,
     val id: DomainId,
     val name: String
 ) {

@@ -50,7 +50,8 @@ class RightManyFetchForEditDtoRowMapper(
         return this.jdbcOps.queryForList(
             """
             select
-                other.id,
+                mtm.id,
+                other.id as entity_id,
                 other.some_string,
                 lower(mtm.effective_range) as effective_from,
                 upper(mtm.effective_range) as effective_to
@@ -66,6 +67,7 @@ class RightManyFetchForEditDtoRowMapper(
         ) { rsa ->
             LeftJoinFetchDto(
                 id = rsa.readDomainId("id"),
+                entityId = rsa.readDomainId("entity_id"),
                 name = rsa.readString("some_string"),
                 effectiveFrom = rsa.readInstantOrNull("effective_from"),
                 effectiveTo = rsa.readInstantOrNull("effective_to"),

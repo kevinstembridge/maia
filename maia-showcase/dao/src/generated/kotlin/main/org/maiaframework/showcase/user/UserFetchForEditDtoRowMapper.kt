@@ -62,7 +62,8 @@ class UserFetchForEditDtoRowMapper(
         return this.jdbcOps.queryForList(
             """
             select
-                other.id,
+                mtm.id,
+                other.id as entity_id,
                 other.name,
                 lower(mtm.effective_range) as effective_from,
                 upper(mtm.effective_range) as effective_to
@@ -78,6 +79,7 @@ class UserFetchForEditDtoRowMapper(
         ) { rsa ->
             UserGroupJoinFetchDto(
                 id = rsa.readDomainId("id"),
+                entityId = rsa.readDomainId("entity_id"),
                 name = rsa.readString("name"),
                 effectiveFrom = rsa.readInstantOrNull("effective_from"),
                 effectiveTo = rsa.readInstantOrNull("effective_to"),

@@ -196,7 +196,7 @@ export class RightManyEntityEditForm implements OnInit {
                 }));
                 this.leftJoins = dto.leftEntities?.map(e => ({
                     id: e.id,
-                    entityId: e.id,
+                    entityId: e.entityId,
                     entityName: e.name,
                     effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
                     effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,

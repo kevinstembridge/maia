@@ -755,7 +755,7 @@ class AngularReactiveFormComponentRenderer(
             timestampedFields.forEach { field ->
                 appendLine("                this.${field.joinsFieldName} = dto.${field.fetchForEditDtoFieldName}?.map(e => ({")
                 appendLine("                    id: e.id,")
-                appendLine("                    entityId: e.id,")
+                appendLine("                    entityId: e.entityId,")
                 appendLine("                    entityName: e.name,")
                 appendLine("                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,")
                 appendLine("                    effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,")

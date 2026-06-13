@@ -5,6 +5,7 @@
 export interface RightJoinFetchDto {
     effectiveFrom?: string;
     effectiveTo?: string;
+    entityId: string;
     id: string;
     name: string;
 }

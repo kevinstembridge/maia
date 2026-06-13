@@ -194,7 +194,8 @@ class RowMapperRenderer(
                     |        return this.jdbcOps.queryForList(
                     |            $tripleQuote
                     |            select
-                    |                other.id,
+                    |                mtm.id,
+                    |                other.id as entity_id,
                     |                other.${joinFetchDtoDef.nameTableColumnName},
                     |                lower(mtm.effective_range) as effective_from,
                     |                upper(mtm.effective_range) as effective_to
@@ -210,6 +211,7 @@ class RowMapperRenderer(
                     |        ) { rsa ->
                     |            ${joinFetchDtoDef.uqcn}(
                     |                id = rsa.readDomainId("id"),
+                    |                entityId = rsa.readDomainId("entity_id"),
                     |                name = rsa.readString("${joinFetchDtoDef.nameTableColumnName}"),
                     |                effectiveFrom = rsa.readInstantOrNull("effective_from"),
                     |                effectiveTo = rsa.readInstantOrNull("effective_to"),

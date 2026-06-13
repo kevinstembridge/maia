@@ -24,6 +24,7 @@ class JoinFetchDtoDef(
         DtoSuffix("FetchDto"),
         listOf(
             ClassFieldDef.aClassField("id", FieldTypes.domainId).build(),
+            ClassFieldDef.aClassField("entityId", FieldTypes.domainId).build(),
             ClassFieldDef.aClassField("name", FieldTypes.string).build(),
             ClassFieldDef.aClassField("effectiveFrom", FieldTypes.instant).nullable().build(),
             ClassFieldDef.aClassField("effectiveTo", FieldTypes.instant).nullable().build(),
