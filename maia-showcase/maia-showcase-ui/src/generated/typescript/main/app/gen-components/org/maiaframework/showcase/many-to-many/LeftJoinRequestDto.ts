@@ -5,5 +5,6 @@
 export interface LeftJoinRequestDto {
     effectiveFrom?: string;
     effectiveTo?: string;
+    id?: string;
     leftEntityId: string;
 }

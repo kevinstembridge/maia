@@ -35,6 +35,10 @@ class EntityCreateApiDef(
                     packageName = entityDef.packageName,
                     dtoFieldDefs = listOf(
                         RequestDtoFieldDef(
+                            ClassFieldDef.aClassField("id", FieldTypes.domainId).nullable().build(),
+                            null
+                        ),
+                        RequestDtoFieldDef(
                             ClassFieldDef.aClassField("${otherSide.fieldName}EntityId", FieldTypes.domainId).build(),
                             null
                         ),

@@ -5,5 +5,6 @@
 export interface RightJoinRequestDto {
     effectiveFrom?: string;
     effectiveTo?: string;
+    id?: string;
     rightEntityId: string;
 }

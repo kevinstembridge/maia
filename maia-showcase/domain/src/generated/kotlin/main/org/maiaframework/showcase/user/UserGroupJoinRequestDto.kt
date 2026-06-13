@@ -19,6 +19,8 @@ class UserGroupJoinRequestDto
     val effectiveFrom: Instant?,
     @param:JsonProperty("effectiveTo", access = JsonProperty.Access.READ_WRITE) 
     val effectiveTo: Instant?,
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    val id: DomainId?,
     @field:NotNull
     @param:JsonProperty("userGroupEntityId", access = JsonProperty.Access.READ_WRITE) 
     private val userGroupEntityId_raw: DomainId?
@@ -34,7 +36,8 @@ class UserGroupJoinRequestDto
         return "UserGroupJoinRequestDto{" +
                 "userGroupEntityId = '" + this.userGroupEntityId + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
-                "effectiveTo = '" + this.effectiveTo + '\'' +
+                "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
+                "id = '" + this.id + '\'' +
                 "}"
 
     }

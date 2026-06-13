@@ -19,6 +19,8 @@ class RightJoinRequestDto
     val effectiveFrom: Instant?,
     @param:JsonProperty("effectiveTo", access = JsonProperty.Access.READ_WRITE) 
     val effectiveTo: Instant?,
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    val id: DomainId?,
     @field:NotNull
     @param:JsonProperty("rightEntityId", access = JsonProperty.Access.READ_WRITE) 
     private val rightEntityId_raw: DomainId?
@@ -34,7 +36,8 @@ class RightJoinRequestDto
         return "RightJoinRequestDto{" +
                 "rightEntityId = '" + this.rightEntityId + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
-                "effectiveTo = '" + this.effectiveTo + '\'' +
+                "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
+                "id = '" + this.id + '\'' +
                 "}"
 
     }

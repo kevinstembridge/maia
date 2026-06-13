@@ -5,5 +5,6 @@
 export interface UserGroupJoinRequestDto {
     effectiveFrom?: string;
     effectiveTo?: string;
+    id?: string;
     userGroupEntityId: string;
 }

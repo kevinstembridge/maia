@@ -26,6 +26,18 @@ class MaiaProblems(
     }
 
 
+    fun joinRecordNotFound(joinEntityName: String): Throwable {
+
+        return errorResponse(
+            "join_record_not_found",
+            "Join Record Not Found",
+            "Join record no longer exists for entity $joinEntityName",
+            HttpStatus.GONE,
+        )
+
+    }
+
+
     fun uniqueConstraintViolationErrorResponse(vararg fieldNameArray: String): Throwable {
 
         val fieldNames = fieldNameArray.toSortedSet()
