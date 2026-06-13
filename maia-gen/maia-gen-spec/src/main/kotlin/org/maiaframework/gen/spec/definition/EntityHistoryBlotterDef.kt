@@ -25,13 +25,21 @@ class EntityHistoryBlotterDef(val entityDef: EntityDef) {
     val historyTableSchemaAndTable: String = historyEntityDef.schemaAndTableName
 
 
+    val isJoinEntityHistory: Boolean = entityDef.isManyToManyJoinEntity
+
+
     val blotterColumns: List<EntityFieldDef> = historyEntityDef.allEntityFieldsSorted.filter { fieldDef ->
         val name = fieldDef.classFieldDef.classFieldName.value
         val isFK = fieldDef.classFieldDef.fieldType is ForeignKeyFieldType
         val isEntityId = name == "id"
+        val isVersion = name == "version"
         val isCreatedTimestamp = name == "createdTimestampUtc"
 
-        !isFK && !isEntityId && !isCreatedTimestamp
+        if (isJoinEntityHistory) {
+            !isEntityId && !isVersion
+        } else {
+            !isFK && !isEntityId && !isCreatedTimestamp
+        }
 
     }
 
@@ -106,16 +114,28 @@ class EntityHistoryBlotterDef(val entityDef: EntityDef) {
     private val entityKebab = entityDef.entityBaseName.toKebabCase()
 
 
-    val searchEndpointPath = "/api/${entityKebab}/{entityId}/history/search"
+    val searchEndpointPath = if (isJoinEntityHistory) {
+        "/api/${entityKebab}/history/search"
+    } else {
+        "/api/${entityKebab}/{entityId}/history/search"
+    }
 
 
-    val countEndpointPath = "/api/${entityKebab}/{entityId}/history/count"
+    val countEndpointPath = if (isJoinEntityHistory) {
+        "/api/${entityKebab}/history/count"
+    } else {
+        "/api/${entityKebab}/{entityId}/history/count"
+    }
 
 
     val pageTitle = "${entityDef.entityBaseName.value} History"
 
 
-    val routePath = "${entityKebab}/history"
+    val routePath = if (isJoinEntityHistory) {
+        "${entityKebab}-history"
+    } else {
+        "${entityKebab}/history"
+    }
 
 
     val blotterComponentNames = AngularComponentNames(packageName, historyBlotterBaseName)
@@ -133,7 +153,11 @@ class EntityHistoryBlotterDef(val entityDef: EntityDef) {
     val tsRowDtoClassName = "${historyBlotterBaseName}RowDto"
 
 
-    val searchEndpointUrlForTypescript = $$"/api/$${entityKebab}/${this.entityId}/history/search"
+    val searchEndpointUrlForTypescript = if (isJoinEntityHistory) {
+        "/api/${entityKebab}/history/search"
+    } else {
+        $$"/api/$${entityKebab}/${this.entityId}/history/search"
+    }
 
 
 }
