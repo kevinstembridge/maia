@@ -96,11 +96,14 @@ class RightManyCrudService(
 
         setFields(updater)
 
-        this.leftToRightManyToManyJoinRepo.findByRight(id).forEach { join ->
-            this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(join.id)
+        val existingLeftJoinsById = this.leftToRightManyToManyJoinRepo.findByRight(id).associateBy { it.id }
+        val submittedLeftJoinIds = editDto.leftEntities.mapNotNull { it.id }.toSet()
+
+        existingLeftJoinsById.keys.filterNot { it in submittedLeftJoinIds }.forEach {
+            this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(it)
         }
 
-        val newLeftJoins = editDto.leftEntities.map { joinDto ->
+        val newLeftJoins = editDto.leftEntities.filter { it.id == null }.map { joinDto ->
             LeftToRightManyToManyJoinEntity.newInstance(
                 effectiveFrom = joinDto.effectiveFrom,
                 effectiveTo = joinDto.effectiveTo,
@@ -108,8 +111,22 @@ class RightManyCrudService(
                 right = id
             )
         }
-
         this.leftToRightManyToManyJoinRepo.bulkInsert(newLeftJoins)
+
+        editDto.leftEntities.filter { it.id != null }.forEach { joinDto ->
+            val joinId = joinDto.id!!
+            val existingJoin = existingLeftJoinsById[joinId]
+                ?: throw this.maiaProblems.joinRecordNotFound("LeftToRightManyToManyJoinEntity")
+
+            if (existingJoin.effectiveFrom != joinDto.effectiveFrom || existingJoin.effectiveTo != joinDto.effectiveTo) {
+                this.leftToRightManyToManyJoinRepo.setFields(
+                    LeftToRightManyToManyJoinEntityUpdater.forPrimaryKey(joinId) {
+                        effectiveFrom(joinDto.effectiveFrom)
+                        effectiveTo(joinDto.effectiveTo)
+                    }
+                )
+            }
+        }
 
     }
 

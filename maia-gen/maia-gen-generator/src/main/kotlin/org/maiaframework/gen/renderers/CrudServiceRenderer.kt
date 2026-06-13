@@ -501,11 +501,14 @@ class CrudServiceRenderer(
 
                 append("""
                     |
-                    |        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->
-                    |            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)
+                    |        val existing${otherSideFieldNameCapitalized}JoinsById = this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).associateBy { it.id }
+                    |        val submitted${otherSideFieldNameCapitalized}JoinIds = editDto.${otherSideDtoFieldName}.mapNotNull { it.id }.toSet()
+                    |
+                    |        existing${otherSideFieldNameCapitalized}JoinsById.keys.filterNot { it in submitted${otherSideFieldNameCapitalized}JoinIds }.forEach {
+                    |            this.${joinRepoFieldName}.deleteByPrimaryKey(it)
                     |        }
                     |
-                    |        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { joinDto ->
+                    |        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.filter { it.id == null }.map { joinDto ->
                     |            ${joinEntityClass}.newInstance(
                     |""".trimMargin())
 
@@ -520,8 +523,22 @@ class CrudServiceRenderer(
                 append("""
                     |            )
                     |        }
-                    |
                     |        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)
+                    |
+                    |        editDto.${otherSideDtoFieldName}.filter { it.id != null }.forEach { joinDto ->
+                    |            val joinId = joinDto.id!!
+                    |            val existingJoin = existing${otherSideFieldNameCapitalized}JoinsById[joinId]
+                    |                ?: throw this.maiaProblems.joinRecordNotFound("${joinEntityClass}")
+                    |
+                    |            if (existingJoin.effectiveFrom != joinDto.effectiveFrom || existingJoin.effectiveTo != joinDto.effectiveTo) {
+                    |                this.${joinRepoFieldName}.setFields(
+                    |                    ${joinEntityClass}Updater.forPrimaryKey(joinId) {
+                    |                        effectiveFrom(joinDto.effectiveFrom)
+                    |                        effectiveTo(joinDto.effectiveTo)
+                    |                    }
+                    |                )
+                    |            }
+                    |        }
                     |""".trimMargin())
 
             } else if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
