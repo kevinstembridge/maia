@@ -63,15 +63,27 @@ class EntityHistoryBlotterRowDtoDaoRenderer(
                 "$table.${col.tableColumnName.value} as ${col.classFieldDef.classFieldName.value}"
             }
 
+        val params = if (def.isJoinEntityHistory) "searchModel: AgGridSearchModel" else "entityId: DomainId, searchModel: AgGridSearchModel"
+
         append("""
             |
             |
-            |    fun search(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<${def.rowDtoUqcn}> {
+            |    fun search($params): SearchResultPage<${def.rowDtoUqcn}> {
             |
             |        val sqlParams = SqlParams()
-            |        sqlParams.addValue("entityId", entityId)
-            |        val entityIdFilter = "$table.id = :entityId"
-            |        val whereClause = this.searchModelConverter.buildWhereClauseFor(searchModel.filterModel, sqlParams, entityIdFilter)
+            |""".trimMargin())
+
+        if (!def.isJoinEntityHistory) {
+            append("""
+                |        sqlParams.addValue("entityId", entityId)
+                |        val entityIdFilter = "$table.id = :entityId"
+                |""".trimMargin())
+        }
+
+        val whereClauseArgs = if (def.isJoinEntityHistory) "searchModel.filterModel, sqlParams" else "searchModel.filterModel, sqlParams, entityIdFilter"
+
+        append("""
+            |        val whereClause = this.searchModelConverter.buildWhereClauseFor($whereClauseArgs)
             |        val offsetAndLimitClause = this.searchModelConverter.buildOffsetAndLimitFor(searchModel)
             |        val orderByClause = this.searchModelConverter.buildOrderByClause(searchModel)
             |
@@ -115,16 +127,27 @@ class EntityHistoryBlotterRowDtoDaoRenderer(
         addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         val table = def.historyTableSchemaAndTable
+        val params = if (def.isJoinEntityHistory) "searchModel: AgGridSearchModel" else "entityId: DomainId, searchModel: AgGridSearchModel"
 
         append("""
             |
             |
-            |    fun count(entityId: DomainId, searchModel: AgGridSearchModel): Long {
+            |    fun count($params): Long {
             |
             |        val sqlParams = SqlParams()
-            |        sqlParams.addValue("entityId", entityId)
-            |        val entityIdFilter = "$table.id = :entityId"
-            |        val whereClause = this.searchModelConverter.buildWhereClauseFor(searchModel.filterModel, sqlParams, entityIdFilter)
+            |""".trimMargin())
+
+        if (!def.isJoinEntityHistory) {
+            append("""
+                |        sqlParams.addValue("entityId", entityId)
+                |        val entityIdFilter = "$table.id = :entityId"
+                |""".trimMargin())
+        }
+
+        val whereClauseArgs = if (def.isJoinEntityHistory) "searchModel.filterModel, sqlParams" else "searchModel.filterModel, sqlParams, entityIdFilter"
+
+        append("""
+            |        val whereClause = this.searchModelConverter.buildWhereClauseFor($whereClauseArgs)
             |
             |        val sqlForTotalCount = ${"\"\"\""}
             |            select count(*)

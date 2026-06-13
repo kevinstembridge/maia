@@ -33,13 +33,16 @@ class EntityHistoryBlotterRowDtoRepoRenderer(
         addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
         addImportFor(Fqcns.MAIA_AG_GRID_SEARCHABLE_EXCEPTION)
 
+        val params = if (def.isJoinEntityHistory) "searchModel: AgGridSearchModel" else "entityId: DomainId, searchModel: AgGridSearchModel"
+        val args = if (def.isJoinEntityHistory) "searchModel" else "entityId, searchModel"
+
         append("""
             |
             |
-            |    fun getRows(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<${def.rowDtoUqcn}> {
+            |    fun getRows($params): SearchResultPage<${def.rowDtoUqcn}> {
             |
             |        try {
-            |            return this.dao.search(entityId, searchModel)
+            |            return this.dao.search($args)
             |        } catch (e: Exception) {
             |            throw AgGridSearchableException(searchModel, e)
             |        }
@@ -56,13 +59,16 @@ class EntityHistoryBlotterRowDtoRepoRenderer(
         addImportFor(Fqcns.MAIA_AG_GRID_SEARCH_MODEL)
         addImportFor(Fqcns.MAIA_AG_GRID_SEARCHABLE_EXCEPTION)
 
+        val params = if (def.isJoinEntityHistory) "searchModel: AgGridSearchModel" else "entityId: DomainId, searchModel: AgGridSearchModel"
+        val args = if (def.isJoinEntityHistory) "searchModel" else "entityId, searchModel"
+
         append("""
             |
             |
-            |    fun countRows(entityId: DomainId, searchModel: AgGridSearchModel): Long {
+            |    fun countRows($params): Long {
             |
             |        try {
-            |            return this.dao.count(entityId, searchModel)
+            |            return this.dao.count($args)
             |        } catch (e: Exception) {
             |            throw AgGridSearchableException(searchModel, e)
             |        }
