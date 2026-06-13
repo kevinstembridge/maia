@@ -1,0 +1,40 @@
+{
+  "planPath": "docs/superpowers/plans/2026-06-13-many-to-many-join-history-backend.md",
+  "tasks": [
+    {
+      "id": 0,
+      "subject": "Task 1: Add isManyToManyJoinEntity flag + recordVersionHistory validation",
+      "status": "completed",
+      "description": "**Goal:** EntityDef knows it was built via manyToManyEntity(); manyToManyEntity(recordVersionHistory=true,...) rejects effective-timestamp joins.\n\n**Files:**\n- Modify: maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityDef.kt:44-84,496-527\n- Modify: maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/EntityDefBuilder.kt:49-64,136-168\n- Modify: maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/AbstractSpec.kt:476-556\n\nSee plan Task 1 for exact diffs.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityDef.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/EntityDefBuilder.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/AbstractSpec.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:compileKotlin :maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"isManyToManyJoinEntity flag added\", \"validation throws for effective-timestamp joins\", \"compiles\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 1,
+      "subject": "Task 2: EntityHistoryBlotterDef column + path rules for join history",
+      "status": "completed",
+      "blockedBy": [0],
+      "description": "**Goal:** Join-entity history blotter shows FK columns + createdTimestampUtc/changeType/createdBy (excludes id/version), and exposes global (non-{entityId}-scoped) endpoint/route paths.\n\n**Files:**\n- Modify: maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityHistoryBlotterDef.kt\n\nSee plan Task 2 for exact code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityHistoryBlotterDef.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"join-aware blotterColumns\", \"global endpoint/route paths for join history\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 3: Global search/count REST chain for join entity history",
+      "status": "completed",
+      "blockedBy": [1],
+      "description": "**Goal:** For join-entity history, search/count work globally (no entityId param/filter) across Dao -> Repo -> SearchService -> Endpoint. Regular entity history unchanged.\n\n**Files:**\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoDaoRenderer.kt\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoRepoRenderer.kt\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterSearchServiceRenderer.kt\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterSearchEndpointRenderer.kt\n\nSee plan Task 3 for exact code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoDaoRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterRowDtoRepoRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterSearchServiceRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityHistoryBlotterSearchEndpointRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:compileKotlin\", \"acceptanceCriteria\": [\"global search/count chain for join history\", \"regular entity history unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 4: Enable recordVersionHistory on LeftToRightSimpleJoin and regenerate",
+      "status": "completed",
+      "blockedBy": [2],
+      "description": "**Goal:** Showcase fixture exercises the feature end to end - history table, DAO, blotter REST endpoint generated for LeftToRightSimpleJoinEntity.\n\n**Files:**\n- Modify: maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec.kt:1372-1389 (leftToRightSimpleJoinEntityDef -> recordVersionHistory = true)\n- Regenerate: maia-showcase/domain, dao, repo, service, web src/generated\n\nSee plan Task 4.\n\n```json:metadata\n{\"files\": [\"maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:domain:maiaGeneration :maia-showcase:dao:maiaGeneration :maia-showcase:repo:maiaGeneration :maia-showcase:service:maiaGeneration :maia-showcase:web:maiaGeneration :maia-showcase:web:build\", \"acceptanceCriteria\": [\"fixture flag set\", \"regenerated code compiles\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 5: Integration test - join history rows written and queryable via REST",
+      "status": "completed",
+      "blockedBy": [3],
+      "description": "**Goal:** Verify adding/removing LeftToRightSimpleJoin pairs writes CREATE/DELETE history rows, queryable via global history search endpoint.\n\n**Files:**\n- Modify: maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/LeftCrudRightSimpleJoinTest.kt\n\nSee plan Task 5. Note: read existing test file first to confirm helper names (editDto construction, mockMvc/jsonMapper fields) referenced in the plan.\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/LeftCrudRightSimpleJoinTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests \\\"org.maiaframework.showcase.many_to_many.LeftCrudRightSimpleJoinTest\\\"\", \"acceptanceCriteria\": [\"CREATE history row on add\", \"DELETE history row on remove\", \"REST endpoint returns history rows\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-06-13T12:00:00Z"
+}
