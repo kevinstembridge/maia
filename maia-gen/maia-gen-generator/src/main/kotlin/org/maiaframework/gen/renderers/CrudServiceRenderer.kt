@@ -560,11 +560,15 @@ class CrudServiceRenderer(
 
                 append("""
                     |
-                    |        this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->
-                    |            this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)
+                    |        val existing${otherSideFieldNameCapitalized}Joins = this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id)
+                    |        val existing${otherSideFieldNameCapitalized}Ids = existing${otherSideFieldNameCapitalized}Joins.map { it.${otherSideFieldName} }.toSet()
+                    |        val desired${otherSideFieldNameCapitalized}Ids = editDto.${otherSideDtoFieldName}.toSet()
+                    |
+                    |        existing${otherSideFieldNameCapitalized}Joins.filter { it.${otherSideFieldName} !in desired${otherSideFieldNameCapitalized}Ids }.forEach {
+                    |            this.${joinRepoFieldName}.deleteByPrimaryKey(it.id)
                     |        }
                     |
-                    |        val new${otherSideFieldNameCapitalized}Joins = editDto.${otherSideDtoFieldName}.map { $otherSideFieldName ->
+                    |        val new${otherSideFieldNameCapitalized}Joins = (desired${otherSideFieldNameCapitalized}Ids - existing${otherSideFieldNameCapitalized}Ids).map { $otherSideFieldName ->
                     |            ${joinEntityClass}.newInstance(${newInstanceArgsSingleLine(thisSideFieldName to "id", otherSideFieldName to otherSideFieldName)})
                     |        }
                     |        this.${joinRepoFieldName}.bulkInsert(new${otherSideFieldNameCapitalized}Joins)
