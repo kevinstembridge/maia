@@ -753,7 +753,7 @@ class AngularReactiveFormComponentRenderer(
             }
 
             timestampedFields.forEach { field ->
-                appendLine("                this.${field.joinsFieldName} = dto.${field.requestDtoFieldName}?.map(e => ({")
+                appendLine("                this.${field.joinsFieldName} = dto.${field.fetchForEditDtoFieldName}?.map(e => ({")
                 appendLine("                    id: e.id,")
                 appendLine("                    entityId: e.id,")
                 appendLine("                    entityName: e.name,")

@@ -7,6 +7,7 @@ import {LeftJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase
 export interface RightManyUpdateRequestDto {
     id: string;
     leftEntities?: ReadonlyArray<LeftJoinRequestDto>;
+    leftEntityIds?: ReadonlyArray<string>;
     someInt: number;
     someString: string;
     version: number;

@@ -15,25 +15,35 @@ data class ManyToManyChipFieldDef(
 
     private val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
 
+    // Disambiguates UI-internal identifiers when entityDef has multiple many-to-many
+    // associations whose other side resolves to the same field/display name (e.g. two
+    // associations both pointing at a "right" entity). Empty for the first such association,
+    // preserving existing naming for backwards compatibility.
+    private val nameSuffix = manyToManyEntityDef.nameSuffixFor(entityDef)
+
     val fieldName: String = otherSide.fieldName
     val displayName: String = otherSide.displayName
-    val labelText: String = "$displayName Entities"
+
+    private val uniqueFieldName: String = "$fieldName$nameSuffix"
+    private val uniqueDisplayName: String = "$displayName$nameSuffix"
+
+    val labelText: String = "$uniqueDisplayName Entities"
     val searchPlaceholder: String = "Search $labelText..."
 
-    val selectedFieldName: String = "selected${displayName}Entities"
-    val filteredFieldName: String = "filtered${displayName}Entities"
+    val selectedFieldName: String = "selected${uniqueDisplayName}Entities"
+    val filteredFieldName: String = "filtered${uniqueDisplayName}Entities"
     val filteredIsLoadingFieldName: String = "${filteredFieldName}IsLoading"
-    val searchControlFieldName: String = "${fieldName}EntitySearchControl"
-    val inputRefName: String = "${fieldName}EntityInput"
-    val autocompleteRefName: String = "${fieldName}EntityAuto"
-    val addMethodName: String = "add${displayName}Entity"
-    val removeMethodName: String = "remove${displayName}Entity"
+    val searchControlFieldName: String = "${uniqueFieldName}EntitySearchControl"
+    val inputRefName: String = "${uniqueFieldName}EntityInput"
+    val autocompleteRefName: String = "${uniqueFieldName}EntityAuto"
+    val addMethodName: String = "add${uniqueDisplayName}Entity"
+    val removeMethodName: String = "remove${uniqueDisplayName}Entity"
     val requestDtoFieldName: String = "${fieldName}EntityIds"
-    val fetchForEditDtoFieldName: String = "${fieldName}Entities"
+    val fetchForEditDtoFieldName: String = manyToManyEntityDef.fetchForEditFieldNameFor(entityDef)
 
     val esDocClassName: String = typeaheadDef.esDocDef.dtoDef.uqcn.value
     val serviceClassName: String = typeaheadDef.angularServiceClassName
-    val serviceFieldName: String = StringFunctions.firstToLower(serviceClassName)
+    val serviceFieldName: String = if (nameSuffix.isEmpty()) StringFunctions.firstToLower(serviceClassName) else "${uniqueFieldName}TypeaheadApiService"
     val searchTermFieldName: String = typeaheadDef.searchTermFieldName
     val esDocIdFieldName: String = typeaheadDef.esDocIdFieldName
 

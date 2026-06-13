@@ -11,6 +11,7 @@ data class LeftManyFetchForEditDto(
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val rightEntities: List<RightJoinFetchDto>,
+    val rightLeftToRightSimpleJoinEntities: List<RightManyPkAndNameDto>,
     val someInt: Int,
     val someString: String
 ) {

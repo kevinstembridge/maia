@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
+import org.maiaframework.domain.DomainId
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,6 +18,8 @@ class LeftManyCreateRequestDto
 @JsonCreator constructor(
     @param:JsonProperty("rightEntities", access = JsonProperty.Access.READ_WRITE) 
     private val rightEntities_raw: List<RightJoinRequestDto>?,
+    @param:JsonProperty("rightEntityIds", access = JsonProperty.Access.READ_WRITE) 
+    private val rightEntityIds_raw: List<DomainId>?,
     @field:NotNull
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
     private val someInt_raw: Int?,
@@ -39,12 +42,17 @@ class LeftManyCreateRequestDto
     val rightEntities: List<RightJoinRequestDto> by lazy { rightEntities_raw ?: emptyList() }
 
 
+    @get:JsonIgnore
+    val rightEntityIds: List<DomainId> by lazy { rightEntityIds_raw ?: emptyList() }
+
+
     override fun toString(): String {
 
         return "LeftManyCreateRequestDto{" +
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
-                "rightEntities = '" + this.rightEntities + '\'' +
+                "rightEntities = '" + this.rightEntities + '\'' + ", " + 
+                "rightEntityIds = '" + this.rightEntityIds + '\'' +
                 "}"
 
     }

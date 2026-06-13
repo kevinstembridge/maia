@@ -16,6 +16,7 @@ import java.time.Instant
 class RightManyCrudService(
     private val entityRepo: RightManyRepo,
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
+    private val leftToRightSimpleJoinRepo: LeftToRightSimpleJoinRepo,
     private val maiaProblems: MaiaProblems,
     private val rightManyCrudNotifier: RightManyCrudNotifier
 ) {
@@ -39,6 +40,15 @@ class RightManyCrudService(
                     effectiveFrom = joinDto.effectiveFrom,
                     effectiveTo = joinDto.effectiveTo,
                     left = joinDto.leftEntityId,
+                    right = entity.id
+                )
+            )
+        }
+
+        createDto.leftEntityIds.forEach { left ->
+            this.leftToRightSimpleJoinRepo.insert(
+                LeftToRightSimpleJoinEntity.newInstance(
+                    left = left,
                     right = entity.id
                 )
             )
@@ -96,14 +106,14 @@ class RightManyCrudService(
 
         setFields(updater)
 
-        val existingLeftJoinsById = this.leftToRightManyToManyJoinRepo.findByRight(id).associateBy { it.id }
-        val submittedLeftJoinIds = editDto.leftEntities.mapNotNull { it.id }.toSet()
+        val existingLeftToRightManyToManyJoinJoinsById = this.leftToRightManyToManyJoinRepo.findByRight(id).associateBy { it.id }
+        val submittedLeftToRightManyToManyJoinJoinIds = editDto.leftEntities.mapNotNull { it.id }.toSet()
 
-        existingLeftJoinsById.keys.filterNot { it in submittedLeftJoinIds }.forEach {
+        existingLeftToRightManyToManyJoinJoinsById.keys.filterNot { it in submittedLeftToRightManyToManyJoinJoinIds }.forEach {
             this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(it)
         }
 
-        val newLeftJoins = editDto.leftEntities.filter { it.id == null }.map { joinDto ->
+        val newLeftToRightManyToManyJoinJoins = editDto.leftEntities.filter { it.id == null }.map { joinDto ->
             LeftToRightManyToManyJoinEntity.newInstance(
                 effectiveFrom = joinDto.effectiveFrom,
                 effectiveTo = joinDto.effectiveTo,
@@ -111,11 +121,11 @@ class RightManyCrudService(
                 right = id
             )
         }
-        this.leftToRightManyToManyJoinRepo.bulkInsert(newLeftJoins)
+        this.leftToRightManyToManyJoinRepo.bulkInsert(newLeftToRightManyToManyJoinJoins)
 
         editDto.leftEntities.filter { it.id != null }.forEach { joinDto ->
             val joinId = joinDto.id!!
-            val existingJoin = existingLeftJoinsById[joinId]
+            val existingJoin = existingLeftToRightManyToManyJoinJoinsById[joinId]
                 ?: throw this.maiaProblems.joinRecordNotFound("LeftToRightManyToManyJoinEntity")
 
             if (existingJoin.effectiveFrom != joinDto.effectiveFrom || existingJoin.effectiveTo != joinDto.effectiveTo) {
@@ -127,6 +137,19 @@ class RightManyCrudService(
                 )
             }
         }
+
+        val existingLeftToRightSimpleJoinJoins = this.leftToRightSimpleJoinRepo.findByRight(id)
+        val existingLeftToRightSimpleJoinIds = existingLeftToRightSimpleJoinJoins.map { it.left }.toSet()
+        val desiredLeftToRightSimpleJoinIds = editDto.leftEntityIds.toSet()
+
+        existingLeftToRightSimpleJoinJoins.filter { it.left !in desiredLeftToRightSimpleJoinIds }.forEach {
+            this.leftToRightSimpleJoinRepo.deleteByPrimaryKey(it.id)
+        }
+
+        val newLeftToRightSimpleJoinJoins = (desiredLeftToRightSimpleJoinIds - existingLeftToRightSimpleJoinIds).map { left ->
+            LeftToRightSimpleJoinEntity.newInstance(left = left, right = id)
+        }
+        this.leftToRightSimpleJoinRepo.bulkInsert(newLeftToRightSimpleJoinJoins)
 
     }
 
@@ -181,6 +204,10 @@ class RightManyCrudService(
 
         if (this.leftToRightManyToManyJoinRepo.existsByRight(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightManyToManyJoin")
+        }
+
+        if (this.leftToRightSimpleJoinRepo.existsByRight(id)) {
+            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimpleJoin")
         }
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

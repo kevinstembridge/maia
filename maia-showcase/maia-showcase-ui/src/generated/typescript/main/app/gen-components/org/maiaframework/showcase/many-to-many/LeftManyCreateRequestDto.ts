@@ -6,6 +6,7 @@ import {RightJoinRequestDto} from '@app/gen-components/org/maiaframework/showcas
 
 export interface LeftManyCreateRequestDto {
     rightEntities?: ReadonlyArray<RightJoinRequestDto>;
+    rightEntityIds?: ReadonlyArray<string>;
     someInt: number;
     someString: string;
 }

@@ -15,11 +15,16 @@ class RightManyFetchForEditDtoRowMapper(
 ) : MaiaRowMapper<RightManyFetchForEditDto> {
 
 
+    private val leftLeftToRightSimpleJoinEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
+
+
     override fun mapRow(rsa: ResultSetAdapter): RightManyFetchForEditDto {
 
         val entityId = rsa.readDomainId("id")
 
         val leftEntitiesJoinFetchDtoList = fetchLeftEntitiesJoinFetchDtos(entityId)
+
+        val leftLeftToRightSimpleJoinEntitiesPkAndNameDtoList = fetchLeftLeftToRightSimpleJoinEntitiesPkAndNameDtos(entityId)
 
         val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
         val id = rsa.readDomainId("id")
@@ -31,6 +36,7 @@ class RightManyFetchForEditDtoRowMapper(
             createdTimestampUtc,
             id,
             leftEntitiesJoinFetchDtoList,
+            leftLeftToRightSimpleJoinEntitiesPkAndNameDtoList,
             someInt,
             someString,
             version,
@@ -65,6 +71,28 @@ class RightManyFetchForEditDtoRowMapper(
                 effectiveTo = rsa.readInstantOrNull("effective_to"),
             )
         }
+
+    }
+
+
+    private fun fetchLeftLeftToRightSimpleJoinEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                other.id,
+                other.some_string
+            from maia.left_many other
+            join maia.left_to_right_simple_join mtm
+                on other.id = mtm.left_id
+            where mtm.right_id = :entityId
+            order by other.some_string
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+            this.leftLeftToRightSimpleJoinEntitiesPkAndNameDtoRowMapper
+        )
 
     }
 

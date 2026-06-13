@@ -48,4 +48,44 @@ data class ManyToManyEntityDef(
     }
 
 
+    /**
+     * A name suffix to disambiguate generated field/method names when `entityDef` has multiple
+     * many-to-many associations whose other side resolves to the same field name (e.g. two
+     * associations both pointing at a "right" entity).
+     *
+     * The first such association (in registration order) gets an empty suffix, preserving
+     * existing naming for backwards compatibility. Subsequent ones get this association's join
+     * entity base name appended, to disambiguate.
+     */
+    fun nameSuffixFor(entityDef: EntityDef): String {
+
+        val otherSideFieldName = otherSideFrom(entityDef).fieldName
+
+        val collidingAssociations = entityDef.manyToManyAssociations
+            .filter { it.otherSideFrom(entityDef).fieldName == otherSideFieldName }
+
+        return if (collidingAssociations.size > 1 && collidingAssociations.first() != this) {
+            this.entityDef.entityBaseName.value
+        } else {
+            ""
+        }
+
+    }
+
+
+    /**
+     * The field name used for this association's data on `entityDef`'s FetchForEditDto.
+     *
+     * Normally this is "${otherSideFieldName}Entities", with [nameSuffixFor] appended (if any)
+     * to disambiguate when `entityDef` has multiple many-to-many associations whose other side
+     * resolves to the same field name.
+     */
+    fun fetchForEditFieldNameFor(entityDef: EntityDef): String {
+
+        val otherSideFieldName = otherSideFrom(entityDef).fieldName
+        return "${otherSideFieldName}${nameSuffixFor(entityDef)}Entities"
+
+    }
+
+
 }

@@ -93,6 +93,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
                 "createdTimestampUtc": "${leftEntity.createdTimestampUtc}",
                 "id": "${leftEntity.id}",
                 "rightEntities": [],
+                "rightLeftToRightSimpleJoinEntities": [],
                 "someInt": ${leftEntity.someInt},
                 "someString": "${leftEntity.someString}"
             }

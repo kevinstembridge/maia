@@ -2,12 +2,14 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 import {LeftJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftJoinFetchDto';
+import {LeftManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyPkAndNameDto';
 
 
 export interface RightManyFetchForEditDto {
     createdTimestampUtc: string;
     id: string;
     leftEntities: ReadonlyArray<LeftJoinFetchDto>;
+    leftLeftToRightSimpleJoinEntities: ReadonlyArray<LeftManyPkAndNameDto>;
     someInt: number;
     someString: string;
     version: number;

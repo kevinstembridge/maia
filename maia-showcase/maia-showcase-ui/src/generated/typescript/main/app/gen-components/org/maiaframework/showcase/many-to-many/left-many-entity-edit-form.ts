@@ -2,10 +2,11 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AngularReactiveFormComponentRenderer
 
 import {DatePipe} from '@angular/common';
-import {Component, OnInit, inject, input, output, signal} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, inject, input, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
+import {MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
+import {MatChipsModule} from '@angular/material/chips';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
@@ -21,7 +22,7 @@ import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcas
 import {RightManyTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-typeahead-api.service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {of} from 'rxjs';
-import {catchError, debounceTime, distinctUntilChanged, filter, switchMap, tap} from 'rxjs/operators';
+import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 
 
 
@@ -32,6 +33,7 @@ import {catchError, debounceTime, distinctUntilChanged, filter, switchMap, tap} 
         MatAutocomplete,
         MatAutocompleteTrigger,
         MatButtonModule,
+        MatChipsModule,
         MatDatepicker,
         MatDatepickerInput,
         MatDatepickerToggle,
@@ -65,6 +67,24 @@ export class LeftManyEntityEditForm implements OnInit {
 
 
     problemDetail = signal<ProblemDetail | null>(null);
+
+
+    selectedRightLeftToRightSimpleJoinEntities: RightManyTypeaheadV1EsDoc[] = [];
+
+
+    filteredRightLeftToRightSimpleJoinEntities: RightManyTypeaheadV1EsDoc[] = [];
+
+
+    filteredRightLeftToRightSimpleJoinEntitiesIsLoading = signal(false);
+
+
+    rightLeftToRightSimpleJoinEntitySearchControl = new FormControl('');
+
+
+    rightLeftToRightSimpleJoinTypeaheadApiService = inject(RightManyTypeaheadApiService);
+
+
+    @ViewChild('rightLeftToRightSimpleJoinEntityInput') rightLeftToRightSimpleJoinEntityInput!: ElementRef<HTMLInputElement>;
 
 
     rightJoins: {
@@ -121,6 +141,26 @@ export class LeftManyEntityEditForm implements OnInit {
 
     ngOnInit() {
 
+        this.rightLeftToRightSimpleJoinEntitySearchControl.valueChanges.pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            filter(value => typeof value === 'string'),
+            tap(() => {
+                this.filteredRightLeftToRightSimpleJoinEntities = [];
+                this.filteredRightLeftToRightSimpleJoinEntitiesIsLoading.set(true);
+            }),
+            switchMap(value => this.rightLeftToRightSimpleJoinTypeaheadApiService.search(value ?? '').pipe(
+                catchError(err => {
+                    this.filteredRightLeftToRightSimpleJoinEntitiesIsLoading.set(false);
+                    console.error(err);
+                    return of([]);
+                })
+            )),
+            tap(() => this.filteredRightLeftToRightSimpleJoinEntitiesIsLoading.set(false))
+        ).subscribe(res => {
+            this.filteredRightLeftToRightSimpleJoinEntities = res;
+        });
+
         this.addRightJoinEntityControl.valueChanges.pipe(
             debounceTime(300),
             distinctUntilChanged(),
@@ -148,6 +188,10 @@ export class LeftManyEntityEditForm implements OnInit {
                     someInt: dto.someInt,
                     someString: dto.someString,
                 });
+                this.selectedRightLeftToRightSimpleJoinEntities = dto.rightLeftToRightSimpleJoinEntities.map(r => ({
+                    id: r.id,
+                    someString: r.name,
+                }));
                 this.rightJoins = dto.rightEntities?.map(e => ({
                     id: e.id,
                     entityId: e.id,
@@ -162,6 +206,25 @@ export class LeftManyEntityEditForm implements OnInit {
                 this.loading.set(false);
             }
         });
+
+    }
+
+
+    addRightLeftToRightSimpleJoinEntity(event: MatAutocompleteSelectedEvent): void {
+
+        const entity: RightManyTypeaheadV1EsDoc = event.option.value;
+        if (!this.selectedRightLeftToRightSimpleJoinEntities.some(e => e.id === entity.id)) {
+            this.selectedRightLeftToRightSimpleJoinEntities.push(entity);
+        }
+        this.rightLeftToRightSimpleJoinEntityInput.nativeElement.value = '';
+        this.rightLeftToRightSimpleJoinEntitySearchControl.setValue('', { emitEvent: false });
+
+    }
+
+
+    removeRightLeftToRightSimpleJoinEntity(entity: RightManyTypeaheadV1EsDoc): void {
+
+        this.selectedRightLeftToRightSimpleJoinEntities = this.selectedRightLeftToRightSimpleJoinEntities.filter(e => e.id !== entity.id);
 
     }
 
@@ -222,6 +285,7 @@ export class LeftManyEntityEditForm implements OnInit {
             id: this.formGroup.getRawValue().id,
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
+            rightEntityIds: this.selectedRightLeftToRightSimpleJoinEntities.map(e => e.id),
             rightEntities: this.rightJoins.map(j => ({
                 id: j.id,
                 rightEntityId: j.entityId,

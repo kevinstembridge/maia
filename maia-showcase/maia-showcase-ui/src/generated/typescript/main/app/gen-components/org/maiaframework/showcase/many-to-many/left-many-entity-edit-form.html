@@ -30,6 +30,32 @@
                 <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>RightLeftToRightSimpleJoin Entities</mat-label>
+            <mat-chip-grid #rightEntityChipGrid>
+                @for (entity of selectedRightLeftToRightSimpleJoinEntities; track entity.id) {
+                    <mat-chip-row (removed)="removeRightLeftToRightSimpleJoinEntity(entity)">
+                        {{ entity.someString }}
+                        <button matChipRemove type="button"><mat-icon>cancel</mat-icon></button>
+                    </mat-chip-row>
+                }
+            </mat-chip-grid>
+            <input
+                #rightLeftToRightSimpleJoinEntityInput
+                placeholder="Search RightLeftToRightSimpleJoin Entities..."
+                [formControl]="rightLeftToRightSimpleJoinEntitySearchControl"
+                [matChipInputFor]="rightEntityChipGrid"
+                [matAutocomplete]="rightLeftToRightSimpleJoinEntityAuto"
+            />
+            <mat-autocomplete #rightLeftToRightSimpleJoinEntityAuto="matAutocomplete" (optionSelected)="addRightLeftToRightSimpleJoinEntity($event)">
+                @if (filteredRightLeftToRightSimpleJoinEntitiesIsLoading()) {
+                    <mat-option disabled>Loading...</mat-option>
+                }
+                @for (option of filteredRightLeftToRightSimpleJoinEntities; track option.id) {
+                    <mat-option [value]="option">{{ option.someString }}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
         <div class="join-entries">
             @for (join of rightJoins; track join.entityId) {
                 <div class="join-entry">

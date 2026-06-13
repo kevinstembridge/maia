@@ -17,27 +17,37 @@ data class ManyToManyTimestampedFieldDef(
 
     private val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
 
+    // Disambiguates UI-internal identifiers when entityDef has multiple many-to-many
+    // associations whose other side resolves to the same field/display name (e.g. two
+    // associations both pointing at a "right" entity). Empty for the first such association,
+    // preserving existing naming for backwards compatibility.
+    private val nameSuffix = manyToManyEntityDef.nameSuffixFor(entityDef)
+
     val fieldName: String = otherSide.fieldName
     val displayName: String = otherSide.displayName
 
-    val joinsFieldName: String = "${fieldName}Joins"
-    val showFormSignalName: String = "show${displayName}JoinForm"
-    val addEntityControlName: String = "add${displayName}JoinEntityControl"
-    val effectiveFromControlName: String = "add${displayName}JoinEffectiveFromControl"
-    val effectiveToControlName: String = "add${displayName}JoinEffectiveToControl"
-    val filteredFieldName: String = "filtered${displayName}Entities"
+    private val uniqueFieldName: String = "$fieldName$nameSuffix"
+    private val uniqueDisplayName: String = "$displayName$nameSuffix"
+
+    val joinsFieldName: String = "${uniqueFieldName}Joins"
+    val showFormSignalName: String = "show${uniqueDisplayName}JoinForm"
+    val addEntityControlName: String = "add${uniqueDisplayName}JoinEntityControl"
+    val effectiveFromControlName: String = "add${uniqueDisplayName}JoinEffectiveFromControl"
+    val effectiveToControlName: String = "add${uniqueDisplayName}JoinEffectiveToControl"
+    val filteredFieldName: String = "filtered${uniqueDisplayName}Entities"
     val filteredIsLoadingFieldName: String = "${filteredFieldName}IsLoading"
-    val confirmMethodName: String = "confirmAdd${displayName}Join"
-    val cancelMethodName: String = "cancelAdd${displayName}Join"
-    val removeMethodName: String = "remove${displayName}Join"
-    val joinEntryTypeName: String = "${displayName}JoinEntry"
+    val confirmMethodName: String = "confirmAdd${uniqueDisplayName}Join"
+    val cancelMethodName: String = "cancelAdd${uniqueDisplayName}Join"
+    val removeMethodName: String = "remove${uniqueDisplayName}Join"
+    val joinEntryTypeName: String = "${uniqueDisplayName}JoinEntry"
     val requestDtoFieldName: String = "${fieldName}Entities"
+    val fetchForEditDtoFieldName: String = manyToManyEntityDef.fetchForEditFieldNameFor(entityDef)
     val joinRequestDtoClassName: String = joinRequestDtoDef.uqcn.value
     val joinEntityIdFieldName: String = "${fieldName}EntityId"
 
     val esDocClassName: String = typeaheadDef.esDocDef.dtoDef.uqcn.value
     val serviceClassName: String = typeaheadDef.angularServiceClassName
-    val serviceFieldName: String = StringFunctions.firstToLower(serviceClassName)
+    val serviceFieldName: String = if (nameSuffix.isEmpty()) StringFunctions.firstToLower(serviceClassName) else "${uniqueFieldName}TypeaheadApiService"
     val searchTermFieldName: String = typeaheadDef.searchTermFieldName
     val esDocIdFieldName: String = typeaheadDef.esDocIdFieldName
 
@@ -45,9 +55,9 @@ data class ManyToManyTimestampedFieldDef(
     val esDocImport: TypescriptImport = typeaheadDef.esDocDef.dtoDef.typescriptDtoImport
     val joinRequestDtoTypescriptImport: TypescriptImport = joinRequestDtoDef.typescriptImport
 
-    val labelText: String = "$displayName Entities"
+    val labelText: String = "$uniqueDisplayName Entities"
     val searchPlaceholder: String = "Search $labelText..."
-    val autocompleteRefName: String = "${fieldName}JoinEntityAuto"
-    val displayWithMethodName: String = "display${displayName}Entity"
+    val autocompleteRefName: String = "${uniqueFieldName}JoinEntityAuto"
+    val displayWithMethodName: String = "display${uniqueDisplayName}Entity"
 
 }

@@ -314,7 +314,7 @@ class EntityDef(
 
         this.manyToManyAssociations.map { manyToManyEntityDef ->
             val otherSide = manyToManyEntityDef.otherSideFrom(this)
-            val fieldName = "${otherSide.fieldName}Entities"
+            val fieldName = manyToManyEntityDef.fetchForEditFieldNameFor(this)
             val fieldType = if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
                 val joinFetchDtoDef = joinFetchDtoDefsByAssociation[manyToManyEntityDef]!!
                 FieldTypes.list(FieldTypes.joinFetchDto(joinFetchDtoDef))

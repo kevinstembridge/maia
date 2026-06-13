@@ -298,6 +298,17 @@ CREATE INDEX left_to_right_many_to_many_join_left_id_idx ON maia.left_to_right_m
 CREATE INDEX left_to_right_many_to_many_join_right_id_idx ON maia.left_to_right_many_to_many_join(right_id);
 
 
+CREATE TABLE maia.left_to_right_simple_join (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    left_id uuid NOT NULL REFERENCES maia.left_many(id),
+    right_id uuid NOT NULL REFERENCES maia.right_many(id),
+    PRIMARY KEY(id)
+);
+CREATE INDEX left_to_right_simple_join_left_id_idx ON maia.left_to_right_simple_join(left_id);
+CREATE INDEX left_to_right_simple_join_right_id_idx ON maia.left_to_right_simple_join(right_id);
+
+
 CREATE TABLE maia.unmodifiable (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
