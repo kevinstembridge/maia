@@ -16,15 +16,18 @@ class EntityHistoryBlotterPageComponentRenderer(
     init {
         addImport("@angular/core", "ChangeDetectionStrategy")
         addImport("@angular/core", "Component")
-        addImport("@angular/core", "inject")
-        addImport("@angular/core/rxjs-interop", "toSignal")
-        addImport("@angular/router", "ActivatedRoute")
-        addImport("rxjs", "map")
         addImport("@app/components/page-layout/page-layout", "PageLayout")
         addImport(TypescriptImport(
             def.blotterComponentNames.componentName,
             "@$genDir/${def.blotterComponentNames.componentNameKebab}"
         ))
+
+        if (!def.isJoinEntityHistory) {
+            addImport("@angular/core", "inject")
+            addImport("@angular/core/rxjs-interop", "toSignal")
+            addImport("@angular/router", "ActivatedRoute")
+            addImport("rxjs", "map")
+        }
     }
 
 
@@ -35,28 +38,35 @@ class EntityHistoryBlotterPageComponentRenderer(
 
     override fun renderSourceBody() {
 
-        append("""
-            |
-            |
-            |@Component({
-            |    changeDetection: ChangeDetectionStrategy.OnPush,
-            |    imports: [PageLayout, ${def.blotterComponentNames.componentName}],
-            |    selector: '${def.blotterPageComponentNames.componentSelector}',
-            |    templateUrl: './${def.blotterPageComponentNames.htmlFileName}'
-            |})
-            |export class ${def.blotterPageComponentNames.componentName} {
-            |
-            |
-            |    private readonly route = inject(ActivatedRoute);
-            |
-            |
-            |    protected readonly entityId = toSignal(
-            |        this.route.paramMap.pipe(map(p => p.get('id')))
-            |    );
-            |
-            |
-            |}
-            |""".trimMargin())
+        blankLine()
+        blankLine()
+        appendLine("@Component({")
+        appendLine("    changeDetection: ChangeDetectionStrategy.OnPush,")
+        appendLine("    imports: [PageLayout, ${def.blotterComponentNames.componentName}],")
+        appendLine("    selector: '${def.blotterPageComponentNames.componentSelector}',")
+        appendLine("    templateUrl: './${def.blotterPageComponentNames.htmlFileName}'")
+        appendLine("})")
+        appendLine("export class ${def.blotterPageComponentNames.componentName} {")
+
+        if (def.isJoinEntityHistory) {
+
+            appendLine("}")
+
+        } else {
+
+            blankLine()
+            blankLine()
+            appendLine("    private readonly route = inject(ActivatedRoute);")
+            blankLine()
+            blankLine()
+            appendLine("    protected readonly entityId = toSignal(")
+            appendLine("        this.route.paramMap.pipe(map(p => p.get('id')))")
+            appendLine("    );")
+            blankLine()
+            blankLine()
+            appendLine("}")
+
+        }
 
     }
 

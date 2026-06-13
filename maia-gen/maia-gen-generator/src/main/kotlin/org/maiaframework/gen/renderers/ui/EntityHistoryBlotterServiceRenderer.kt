@@ -45,14 +45,31 @@ class EntityHistoryBlotterServiceRenderer(
         appendLine("    private readonly http = inject(HttpClient);")
         blankLine()
         blankLine()
-        appendLine("    public search(entityId: string, searchModel: any): Observable<SearchResultPage<${def.tsRowDtoClassName}>> {")
-        blankLine()
-        appendLine("        return this.http.post<SearchResultPage<${def.tsRowDtoClassName}>>(")
-        appendLine("                `/api/${def.entityDef.entityBaseName.toKebabCase()}/\${entityId}/history/search`,")
-        appendLine("                searchModel,")
-        appendLine("                this.httpOptions);")
-        blankLine()
-        appendLine("    }")
+
+        if (def.isJoinEntityHistory) {
+
+            appendLine("    public search(searchModel: any): Observable<SearchResultPage<${def.tsRowDtoClassName}>> {")
+            blankLine()
+            appendLine("        return this.http.post<SearchResultPage<${def.tsRowDtoClassName}>>(")
+            appendLine("                `${def.searchEndpointUrlForTypescript}`,")
+            appendLine("                searchModel,")
+            appendLine("                this.httpOptions);")
+            blankLine()
+            appendLine("    }")
+
+        } else {
+
+            appendLine("    public search(entityId: string, searchModel: any): Observable<SearchResultPage<${def.tsRowDtoClassName}>> {")
+            blankLine()
+            appendLine("        return this.http.post<SearchResultPage<${def.tsRowDtoClassName}>>(")
+            appendLine("                `/api/${def.entityDef.entityBaseName.toKebabCase()}/\${entityId}/history/search`,")
+            appendLine("                searchModel,")
+            appendLine("                this.httpOptions);")
+            blankLine()
+            appendLine("    }")
+
+        }
+
         blankLine()
         blankLine()
         appendLine("}")

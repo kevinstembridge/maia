@@ -16,15 +16,7 @@ export class LeftToRightSimpleJoinHistoryBlotterAgGridDatasource implements IDat
     rowCount?: number = undefined;
 
 
-    private entityId!: string;
-
-
     private readonly http = inject(HttpClient);
-
-
-    setEntityId(id: string): void {
-        this.entityId = id;
-    }
 
 
     getRows(params: IGetRowsParams): void {

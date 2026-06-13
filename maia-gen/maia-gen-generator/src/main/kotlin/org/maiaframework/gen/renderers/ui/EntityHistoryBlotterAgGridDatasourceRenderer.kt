@@ -31,41 +31,47 @@ class EntityHistoryBlotterAgGridDatasourceRenderer(
 
     override fun renderSourceBody() {
 
-        append("""
-            |
-            |
-            |@Injectable()
-            |export class ${def.datasourceClassName} implements IDatasource {
-            |
-            |
-            |    rowCount?: number = undefined;
-            |
-            |
-            |    private entityId!: string;
-            |
-            |
-            |    private readonly http = inject(HttpClient);
-            |
-            |
-            |    setEntityId(id: string): void {
-            |        this.entityId = id;
-            |    }
-            |
-            |
-            |    getRows(params: IGetRowsParams): void {
-            |
-            |        this.http.post<SearchResultPage<${def.tsRowDtoClassName}>>(
-            |            `${def.searchEndpointUrlForTypescript}`,
-            |            params
-            |        ).subscribe({
-            |           next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)
-            |        });
-            |
-            |    }
-            |
-            |
-            |}
-            |""".trimMargin())
+        blankLine()
+        blankLine()
+        appendLine("@Injectable()")
+        appendLine("export class ${def.datasourceClassName} implements IDatasource {")
+        blankLine()
+        blankLine()
+        appendLine("    rowCount?: number = undefined;")
+        blankLine()
+        blankLine()
+
+        if (!def.isJoinEntityHistory) {
+            appendLine("    private entityId!: string;")
+            blankLine()
+            blankLine()
+        }
+
+        appendLine("    private readonly http = inject(HttpClient);")
+        blankLine()
+        blankLine()
+
+        if (!def.isJoinEntityHistory) {
+            appendLine("    setEntityId(id: string): void {")
+            appendLine("        this.entityId = id;")
+            appendLine("    }")
+            blankLine()
+            blankLine()
+        }
+
+        appendLine("    getRows(params: IGetRowsParams): void {")
+        blankLine()
+        appendLine("        this.http.post<SearchResultPage<${def.tsRowDtoClassName}>>(")
+        appendLine("            `${def.searchEndpointUrlForTypescript}`,")
+        appendLine("            params")
+        appendLine("        ).subscribe({")
+        appendLine("           next: searchResultPage => params.successCallback(searchResultPage.results, searchResultPage.totalResultCount)")
+        appendLine("        });")
+        blankLine()
+        appendLine("    }")
+        blankLine()
+        blankLine()
+        appendLine("}")
 
     }
 

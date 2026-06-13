@@ -22,13 +22,25 @@ class EntityHistoryBlotterPageHtmlRenderer(
 
     override fun renderSource(): String {
 
-        append("""
-            |<app-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
-            |    @if (entityId(); as id) {
-            |        <${blotterSelector} [entityId]="id" />
-            |    }
-            |</app-page-layout>
-            |""".trimMargin())
+        if (def.isJoinEntityHistory) {
+
+            append("""
+                |<app-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
+                |    <${blotterSelector} />
+                |</app-page-layout>
+                |""".trimMargin())
+
+        } else {
+
+            append("""
+                |<app-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
+                |    @if (entityId(); as id) {
+                |        <${blotterSelector} [entityId]="id" />
+                |    }
+                |</app-page-layout>
+                |""".trimMargin())
+
+        }
 
         return sourceCode.toString()
 

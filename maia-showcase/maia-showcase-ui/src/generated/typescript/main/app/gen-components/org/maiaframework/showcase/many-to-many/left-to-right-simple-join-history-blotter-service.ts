@@ -21,10 +21,10 @@ export class LeftToRightSimpleJoinHistoryBlotterService {
     private readonly http = inject(HttpClient);
 
 
-    public search(entityId: string, searchModel: any): Observable<SearchResultPage<LeftToRightSimpleJoinHistoryBlotterRowDto>> {
+    public search(searchModel: any): Observable<SearchResultPage<LeftToRightSimpleJoinHistoryBlotterRowDto>> {
 
         return this.http.post<SearchResultPage<LeftToRightSimpleJoinHistoryBlotterRowDto>>(
-                `/api/left-to-right-simple-join/${entityId}/history/search`,
+                `/api/left-to-right-simple-join/history/search`,
                 searchModel,
                 this.httpOptions);
 
