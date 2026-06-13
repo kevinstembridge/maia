@@ -166,4 +166,85 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     }
 
 
+    @Test
+    fun `update with unchanged effectiveFrom and effectiveTo preserves join id and createdTimestampUtc`() {
+
+        post(
+            "/api/left-many/create",
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}]}"""
+        ).hasStatus(HttpStatus.CREATED)
+
+        val leftId = leftDao.findAllAsSequence().first().id
+        val joinBefore = manyToManyJoinDao.findByLeft(leftId).single()
+
+        put(
+            "/api/left-many/update",
+            """{"id": "$leftId", "someInt": 2, "someString": "test2", "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}"}]}"""
+        ).hasStatus(HttpStatus.OK)
+
+        val joinAfter = manyToManyJoinDao.findByLeft(leftId).single()
+        assertThat(joinAfter.id).isEqualTo(joinBefore.id)
+        assertThat(joinAfter.createdTimestampUtc).isEqualTo(joinBefore.createdTimestampUtc)
+        assertThat(joinAfter.effectiveFrom).isEqualTo(joinBefore.effectiveFrom)
+        assertThat(joinAfter.effectiveTo).isEqualTo(joinBefore.effectiveTo)
+
+    }
+
+
+    @Test
+    fun `update with changed effectiveFrom updates join in place`() {
+
+        post(
+            "/api/left-many/create",
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}]}"""
+        ).hasStatus(HttpStatus.CREATED)
+
+        val leftId = leftDao.findAllAsSequence().first().id
+        val joinBefore = manyToManyJoinDao.findByLeft(leftId).single()
+
+        put(
+            "/api/left-many/update",
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}", "effectiveFrom": "2026-01-01T00:00:00Z"}]}"""
+        ).hasStatus(HttpStatus.OK)
+
+        val joinAfter = manyToManyJoinDao.findByLeft(leftId).single()
+        assertThat(joinAfter.id).isEqualTo(joinBefore.id)
+        assertThat(joinAfter.createdTimestampUtc).isEqualTo(joinBefore.createdTimestampUtc)
+        assertThat(joinAfter.effectiveFrom).isEqualTo(java.time.Instant.parse("2026-01-01T00:00:00Z"))
+
+    }
+
+
+    @Test
+    fun `update with mixed submission deletes, updates and inserts correctly`() {
+
+        post(
+            "/api/left-many/create",
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}, {"rightEntityId": "${rightEntity2.id}"}]}"""
+        ).hasStatus(HttpStatus.CREATED)
+
+        val leftId = leftDao.findAllAsSequence().first().id
+        val joins = manyToManyJoinDao.findByLeft(leftId)
+        val join1 = joins.single { it.right == rightEntity1.id }
+        // join2 (rightEntity2) will be omitted -> deleted
+
+        put(
+            "/api/left-many/update",
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntities": [
+                {"id": "${join1.id}", "rightEntityId": "${rightEntity1.id}", "effectiveFrom": "2026-01-01T00:00:00Z"},
+                {"rightEntityId": "${rightEntity3.id}"}
+            ]}"""
+        ).hasStatus(HttpStatus.OK)
+
+        val joinsAfter = manyToManyJoinDao.findByLeft(leftId)
+        assertThat(joinsAfter.map { it.right }).containsExactlyInAnyOrder(rightEntity1.id, rightEntity3.id)
+
+        val join1After = joinsAfter.single { it.right == rightEntity1.id }
+        assertThat(join1After.id).isEqualTo(join1.id)
+        assertThat(join1After.createdTimestampUtc).isEqualTo(join1.createdTimestampUtc)
+        assertThat(join1After.effectiveFrom).isEqualTo(java.time.Instant.parse("2026-01-01T00:00:00Z"))
+
+    }
+
+
 }
