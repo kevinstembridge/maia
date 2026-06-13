@@ -60,7 +60,8 @@ class EntityDefBuilder(
     private val nameFieldForPkAndNameDto: String?,
     private val withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
     private val withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-    defaultSchemaName: SchemaName
+    defaultSchemaName: SchemaName,
+    private val isManyToManyJoinEntity: Boolean = false
 ) {
 
 
@@ -164,7 +165,8 @@ class EntityDefBuilder(
             HasEffectiveLocalDates(this.hasEffectiveLocalDates),
             HasSingleEffectiveRecord(this.hasSingleEffectiveRecord),
             this.cacheableDef,
-            this.angularFormSystem
+            this.angularFormSystem,
+            isManyToManyJoinEntity = this.isManyToManyJoinEntity
         )
 
     }

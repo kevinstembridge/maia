@@ -80,7 +80,8 @@ class EntityDef(
     val hasEffectiveLocalDates: HasEffectiveLocalDates,
     val hasSingleEffectiveRecord: HasSingleEffectiveRecord,
     val cacheableDef: CacheableDef?,
-    val angularFormSystem: AngularFormSystem
+    val angularFormSystem: AngularFormSystem,
+    val isManyToManyJoinEntity: Boolean = false
 ) {
 
 
@@ -524,6 +525,7 @@ class EntityDef(
             withHandCodedDao = WithHandCodedDao.FALSE,
             withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
             withVersionHistory = WithVersionHistory.FALSE,
+            isManyToManyJoinEntity = this.isManyToManyJoinEntity,
         )
 
     } else {

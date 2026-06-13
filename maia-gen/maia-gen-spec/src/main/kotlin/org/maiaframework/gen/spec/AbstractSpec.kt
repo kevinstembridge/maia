@@ -39,6 +39,7 @@ import org.maiaframework.gen.spec.definition.IntTypeDef
 import org.maiaframework.gen.spec.definition.LongTypeDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.ModelDef
+import org.maiaframework.gen.spec.definition.ModelDefinitionException
 import org.maiaframework.gen.spec.definition.ModelDefProvider
 import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.RequestDtoDef
@@ -503,7 +504,8 @@ abstract class AbstractSpec protected constructor(
             pkAndNameFieldName,
             withHandcodedDao,
             withHandCodedEntityDao,
-            defaultSchemaName
+            defaultSchemaName,
+            isManyToManyJoinEntity = true
         )
 
         builder.foreignKey(leftEntity.fieldName, leftEntity.entityDef) {
@@ -536,6 +538,13 @@ abstract class AbstractSpec protected constructor(
 
         init?.invoke(builder)
         val entityDef = builder.build()
+
+        if (entityDef.withVersionHistory.value && entityDef.hasEffectiveTimestamps.value) {
+            throw ModelDefinitionException(
+                "manyToManyEntity '$entityBaseName': recordVersionHistory is not supported for joins with effective timestamps"
+            )
+        }
+
         entityDefs.add(entityDef)
 
         this.rowMapperDefs.add(leftEntity.entityDef.entityPkAndNameDef.rowMapperDef)
