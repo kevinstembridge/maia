@@ -1,9 +1,7 @@
-package org.maiaframework.gen.spec
+package org.maiaframework.gen.spec.definition
 
-import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.flags.IsCreatableByUser
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
-
 
 data class ReferencedEntity(
     val fieldName: String,

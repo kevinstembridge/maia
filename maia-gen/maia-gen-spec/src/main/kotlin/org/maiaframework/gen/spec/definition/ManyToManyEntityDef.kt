@@ -1,6 +1,5 @@
 package org.maiaframework.gen.spec.definition
 
-import org.maiaframework.gen.spec.ReferencedEntity
 import org.maiaframework.lang.text.StringFunctions
 
 

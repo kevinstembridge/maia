@@ -2,7 +2,7 @@ package org.maiaframework.showcase
 
 import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.gen.spec.AbstractSpec
-import org.maiaframework.gen.spec.ReferencedEntity
+import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.Deletable

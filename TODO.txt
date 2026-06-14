@@ -1,4 +1,9 @@
 
+TODO * We may have multiple Spec classes within a given application, and we may reference
+        Spec classes from third-party modules. We need a way to aggregate all the AuthorityDefs
+        from all the Spec classes to be used within a single application.
+        Create an AbstractApplicationSpec that will aggregate multiple ModelSpecs.
+
 
 TODO * MTM scenarios:
     TODO * An MTM association can be user-managed (e.g. the user can set attributes on the join entity)
@@ -18,11 +23,6 @@ TODO * MTM scenarios:
         when the association is created or deleted.
         => Add a user-managed flag.
     TODO * Ensure that effective date ranges don't overlap if the relationship only allows one effective record.
-
-TODO * We may have multiple Spec classes within a given application, and we may reference
-        Spec classes from third-party modules. We need a way to aggregate all the AuthorityDefs
-        from all the Spec classes to be used within a single application.
-        Create an AbstractApplicationSpec that will aggregate multiple ModelSpecs.
 
 
 TODO * Consolidate all the form component renderers into one.
