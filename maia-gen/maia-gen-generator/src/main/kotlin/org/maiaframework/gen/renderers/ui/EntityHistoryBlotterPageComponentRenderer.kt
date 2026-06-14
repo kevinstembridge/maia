@@ -1,16 +1,21 @@
 package org.maiaframework.gen.renderers.ui
 
+import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityHistoryBlotterDef
 import org.maiaframework.gen.spec.definition.GeneratedTypescriptDir
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 
 
 class EntityHistoryBlotterPageComponentRenderer(
-    private val def: EntityHistoryBlotterDef
+    private val def: EntityHistoryBlotterDef,
+    private val viewPageDef: EntityDetailViewDef?
 ) : AbstractTypescriptRenderer() {
 
 
     private val genDir = GeneratedTypescriptDir.forPackage(def.packageName)
+
+
+    private val showsViewButton = !def.isJoinEntityHistory && viewPageDef != null
 
 
     init {
@@ -28,6 +33,13 @@ class EntityHistoryBlotterPageComponentRenderer(
             addImport("@angular/router", "ActivatedRoute")
             addImport("rxjs", "map")
         }
+
+        if (showsViewButton) {
+            addImport("@angular/router", "Router")
+            addImport("@angular/material/button", "MatButtonModule")
+            addImport("@angular/material/icon", "MatIconModule")
+        }
+
     }
 
 
@@ -42,7 +54,11 @@ class EntityHistoryBlotterPageComponentRenderer(
         blankLine()
         appendLine("@Component({")
         appendLine("    changeDetection: ChangeDetectionStrategy.OnPush,")
-        appendLine("    imports: [PageLayout, ${def.blotterComponentNames.componentName}],")
+        if (showsViewButton) {
+            appendLine("    imports: [MatButtonModule, MatIconModule, PageLayout, ${def.blotterComponentNames.componentName}],")
+        } else {
+            appendLine("    imports: [PageLayout, ${def.blotterComponentNames.componentName}],")
+        }
         appendLine("    selector: '${def.blotterPageComponentNames.componentSelector}',")
         appendLine("    templateUrl: './${def.blotterPageComponentNames.htmlFileName}'")
         appendLine("})")
@@ -57,11 +73,30 @@ class EntityHistoryBlotterPageComponentRenderer(
             blankLine()
             blankLine()
             appendLine("    private readonly route = inject(ActivatedRoute);")
+
+            if (showsViewButton) {
+                blankLine()
+                blankLine()
+                appendLine("    private readonly router = inject(Router);")
+            }
+
             blankLine()
             blankLine()
             appendLine("    protected readonly entityId = toSignal(")
             appendLine("        this.route.paramMap.pipe(map(p => p.get('id')))")
             appendLine("    );")
+
+            if (showsViewButton) {
+                blankLine()
+                blankLine()
+                appendLine("    onViewClicked(): void {")
+                appendLine("        const id = this.entityId();")
+                appendLine("        if (id) {")
+                appendLine("            this.router.navigate(['${viewPageDef!!.entityDef.viewEntityPageUrl}', id]);")
+                appendLine("        }")
+                appendLine("    }")
+            }
+
             blankLine()
             blankLine()
             appendLine("}")

@@ -2,4 +2,8 @@
     @if (entityId(); as id) {
         <app-history-sample-history-blotter [entityId]="id" />
     }
+    <button matButton aria-label="View" (click)="onViewClicked()">
+        <mat-icon>visibility</mat-icon>
+        View
+    </button>
 </app-page-layout>

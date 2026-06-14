@@ -275,13 +275,14 @@ class AngularUiModuleGenerator(
     private fun renderEntityHistoryBlotters() {
 
         this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+            val viewPageDef = this.modelDef.findViewEntityPage(def.entityDef)
             EntityHistoryBlotterRowDtoTypescriptRenderer(def).renderToDir(this.typescriptOutputDir)
             EntityHistoryBlotterServiceRenderer(def).renderToDir(this.typescriptOutputDir)
             EntityHistoryBlotterAgGridDatasourceRenderer(def).renderToDir(this.typescriptOutputDir)
             EntityHistoryBlotterComponentRenderer(def).renderToDir(this.typescriptOutputDir)
             EntityHistoryBlotterHtmlRenderer(def).renderToDir(this.typescriptOutputDir)
-            EntityHistoryBlotterPageComponentRenderer(def).renderToDir(this.typescriptOutputDir)
-            EntityHistoryBlotterPageHtmlRenderer(def).renderToDir(this.typescriptOutputDir)
+            EntityHistoryBlotterPageComponentRenderer(def, viewPageDef).renderToDir(this.typescriptOutputDir)
+            EntityHistoryBlotterPageHtmlRenderer(def, viewPageDef).renderToDir(this.typescriptOutputDir)
         }
 
     }

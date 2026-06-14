@@ -3,7 +3,9 @@
 
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {ActivatedRoute} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PageLayout} from '@app/components/page-layout/page-layout';
 import {RightManyHistoryBlotter} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-history-blotter';
 import {map} from 'rxjs';
@@ -12,7 +14,7 @@ import {map} from 'rxjs';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PageLayout, RightManyHistoryBlotter],
+    imports: [MatButtonModule, MatIconModule, PageLayout, RightManyHistoryBlotter],
     selector: 'app-right-many-history-blotter-page',
     templateUrl: './right-many-history-blotter-page.html'
 })
@@ -22,9 +24,20 @@ export class RightManyHistoryBlotterPage {
     private readonly route = inject(ActivatedRoute);
 
 
+    private readonly router = inject(Router);
+
+
     protected readonly entityId = toSignal(
         this.route.paramMap.pipe(map(p => p.get('id')))
     );
+
+
+    onViewClicked(): void {
+        const id = this.entityId();
+        if (id) {
+            this.router.navigate(['/right-many/view', id]);
+        }
+    }
 
 
 }
