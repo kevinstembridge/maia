@@ -40,7 +40,6 @@ import org.maiaframework.gen.spec.definition.LongTypeDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.ModelDefinitionException
-import org.maiaframework.gen.spec.definition.ModelDefProvider
 import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.RequestDtoDef

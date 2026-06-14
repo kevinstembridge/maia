@@ -1,7 +1,7 @@
 package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.spec.definition.ModelDef
-import org.maiaframework.gen.spec.definition.ModelDefProvider
+import org.maiaframework.gen.spec.ModelDefProvider
 
 
 object ModelDefInstantiator {
