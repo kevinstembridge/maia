@@ -7,8 +7,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {MatTooltip} from '@angular/material/tooltip';
 import {Router} from '@angular/router';
 import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/LifecycleState';
+import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/AuthoritySelectOptions';
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
@@ -22,7 +25,10 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
+        MatOption,
         MatProgressSpinnerModule,
+        MatSelect,
+        MatTooltip,
         ReactiveFormsModule,
     ],
     selector: 'app-user-entity-edit-form',
@@ -42,6 +48,9 @@ export class UserEntityEditForm implements OnInit {
 
 
     problemDetail = signal<ProblemDetail | null>(null);
+
+
+    protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
 
 
     formGroup: FormGroup;

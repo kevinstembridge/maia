@@ -6,7 +6,10 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {MatTooltip} from '@angular/material/tooltip';
 import {Router} from '@angular/router';
+import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/AuthoritySelectOptions';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
 import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
@@ -19,6 +22,9 @@ import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
+        MatOption,
+        MatSelect,
+        MatTooltip,
         ReactiveFormsModule,
     ],
     selector: 'app-user-entity-create-form',
@@ -35,6 +41,9 @@ export class UserEntityCreateForm implements OnInit {
 
 
     problemDetail = signal<ProblemDetail | null>(null);
+
+
+    protected readonly AuthoritySelectOptions = AuthoritySelectOptions;
 
 
     formGroup: FormGroup;
