@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.gen.spec.definition.Description
+import org.maiaframework.gen.spec.definition.EnumOptionsDef
 import org.maiaframework.gen.spec.definition.FieldDisplayName
 import org.maiaframework.gen.spec.definition.FormPlaceholderText
 import org.maiaframework.gen.spec.definition.TypeaheadDef
@@ -61,6 +62,9 @@ class ClassFieldDefBuilder(
     var typeaheadDef: TypeaheadDef? = null
 
 
+    var enumOptionsDef: EnumOptionsDef? = null
+
+
     var valueMappings: Map<String, String>? = null
 
 
@@ -91,6 +95,7 @@ class ClassFieldDefBuilder(
             classFieldName = classFieldName,
             description = description,
             displayName = fieldDisplayName,
+            enumOptionsDef = enumOptionsDef,
             fieldType = fieldType,
             formPlaceholderText = formPlaceholderText,
             isConstructorOnly = isConstructorOnly,

@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition.lang
 
 import org.maiaframework.gen.spec.definition.Description
+import org.maiaframework.gen.spec.definition.EnumOptionsDef
 import org.maiaframework.gen.spec.definition.FieldDisplayName
 import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.ForeignKeyFieldDef
@@ -35,6 +36,7 @@ data class ClassFieldDef(
     val isConstructorOnly: Boolean = false,
     val isUnique: Boolean = false,
     val typeaheadDef: TypeaheadDef? = null,
+    val enumOptionsDef: EnumOptionsDef? = null,
     val displayName: FieldDisplayName? = null,
     val formPlaceholderText: FormPlaceholderText? = null,
     val textCase: TextCase = TextCase.ORIGINAL,
@@ -93,6 +95,12 @@ data class ClassFieldDef(
 
     val isEnumList: Boolean
         get() = fieldType is ListFieldType && this.fieldType.parameterFieldType is EnumFieldType
+
+
+    val isStringValueClassListWithEnumOptions: Boolean =
+        fieldType is ListFieldType
+            && fieldType.parameterFieldType is StringValueClassFieldType
+            && enumOptionsDef != null
 
 
     val isEnum: Boolean = this.fieldType is EnumFieldType

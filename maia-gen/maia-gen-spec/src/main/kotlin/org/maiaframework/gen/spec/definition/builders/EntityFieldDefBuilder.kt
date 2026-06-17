@@ -4,6 +4,7 @@ package org.maiaframework.gen.spec.definition.builders
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityFieldDef
+import org.maiaframework.gen.spec.definition.EnumOptionsDef
 import org.maiaframework.gen.spec.definition.FieldDisplayName
 import org.maiaframework.gen.spec.definition.ForeignKeyFieldDef
 import org.maiaframework.gen.spec.definition.FormPlaceholderText
@@ -315,6 +316,11 @@ class EntityFieldDefBuilder(
 
         this.classFieldDefBuilder.formPlaceholderText = FormPlaceholderText(formPlaceholderText)
 
+    }
+
+
+    fun withOptionsEnum(fqcn: String) {
+        this.classFieldDefBuilder.enumOptionsDef = EnumOptionsDef(Fqcn.valueOf(fqcn))
     }
 
 
