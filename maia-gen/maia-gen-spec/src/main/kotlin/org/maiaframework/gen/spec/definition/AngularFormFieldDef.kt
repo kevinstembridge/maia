@@ -1,6 +1,5 @@
 package org.maiaframework.gen.spec.definition
 
-import org.maiaframework.gen.spec.definition.EnumOptionsDef
 import org.maiaframework.gen.spec.definition.flags.TextCase
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
