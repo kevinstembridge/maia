@@ -217,6 +217,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field("authorities", fieldListOf(ValueClassDefs.authority)) {
             fieldDisplayName("Authorities")
             editableByUser()
+            withOptionsEnum("org.maiaframework.showcase.Authority")
         }
         field("encryptedPassword", FieldTypes.string) {
             modifiableBySystem()
@@ -306,6 +307,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         }
         field("authorities", fieldListOf(ValueClassDefs.authority)) {
             editableByUser()
+            withOptionsEnum("org.maiaframework.showcase.Authority")
         }
     }
 
