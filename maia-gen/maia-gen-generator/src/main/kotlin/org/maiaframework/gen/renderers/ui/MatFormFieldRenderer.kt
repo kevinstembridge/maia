@@ -80,6 +80,10 @@ object MatFormFieldRenderer {
 
             renderReactiveFormMultiSelectFieldForEnumList(htmlFormField, r, indent)
 
+        } else if (htmlFormField.stringValueClassListEnumOptionsDef != null) {
+
+            renderReactiveFormMultiSelectForStringValueClassList(htmlFormField, r, indent)
+
         } else if (htmlFormField.isEnum) {
 
             renderReactiveFormSelectFieldForEnum(htmlFormField, r, indent)
@@ -373,6 +377,33 @@ object MatFormFieldRenderer {
             |$indent    <mat-label>$label</mat-label>
             |$indent    <mat-select formControlName="$classFieldName" multiple>
             |$indent        @for ($classFieldName of ${enumDef.selectOptionsUqcn}; track $classFieldName.name) {
+            |$indent            <div [matTooltip]="$classFieldName.description" matTooltipShowDelay="1000">
+            |$indent                <mat-option [value]="$classFieldName.name">{{$classFieldName.displayName}}</mat-option>
+            |$indent            </div>
+            |$indent        }
+            |$indent    </mat-select>
+            |""".trimMargin())
+
+        r.appendLine("$indent</mat-form-field>")
+
+    }
+
+
+    private fun renderReactiveFormMultiSelectForStringValueClassList(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+        val label = htmlFormField.fieldLabel
+        val classFieldDef = htmlFormField.classFieldDef
+        val classFieldName = classFieldDef.classFieldName
+        val enumOptionsDef = htmlFormField.stringValueClassListEnumOptionsDef!!
+
+        r.append("""
+            |$indent<mat-form-field appearance="outline">
+            |$indent    <mat-label>$label</mat-label>
+            |$indent    <mat-select formControlName="$classFieldName" multiple>
+            |$indent        @for ($classFieldName of ${enumOptionsDef.selectOptionsUqcn}; track $classFieldName.name) {
             |$indent            <div [matTooltip]="$classFieldName.description" matTooltipShowDelay="1000">
             |$indent                <mat-option [value]="$classFieldName.name">{{$classFieldName.displayName}}</mat-option>
             |$indent            </div>

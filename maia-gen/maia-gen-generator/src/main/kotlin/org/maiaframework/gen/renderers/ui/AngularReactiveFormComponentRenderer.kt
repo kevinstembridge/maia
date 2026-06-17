@@ -338,6 +338,24 @@ class AngularReactiveFormComponentRenderer(
 
             }
 
+        formGroupFields
+            .asSequence()
+            .filter { it.isCreatable }
+            .mapNotNull { it.stringValueClassListEnumOptionsDef }
+            .distinctBy { it.selectOptionsUqcn }
+            .forEach { enumOptionsDef ->
+
+                addImport(enumOptionsDef.selectOptionsTypescriptImport)
+
+                append("""
+                    |
+                    |
+                    |    protected readonly ${enumOptionsDef.selectOptionsUqcn} = ${enumOptionsDef.selectOptionsUqcn};
+                    |""".trimMargin()
+                )
+
+            }
+
     }
 
 
@@ -1216,7 +1234,14 @@ class AngularReactiveFormComponentRenderer(
                 is IntFieldType -> {}
                 is IntTypeFieldType -> {}
                 is IntValueClassFieldType -> {}
-                is ListFieldType -> `add imports for ListFieldType`(fieldType)
+                is ListFieldType -> {
+                    `add imports for ListFieldType`(fieldType)
+                    angularFormFieldDef.stringValueClassListEnumOptionsDef?.let {
+                        addImport("@angular/material/select", "MatSelect", isModule = true)
+                        addImport("@angular/material/select", "MatOption", isModule = true)
+                        addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
+                    }
+                }
                 is LocalDateFieldType -> {}
                 is LongFieldType -> {}
                 is LongTypeFieldType -> {}
