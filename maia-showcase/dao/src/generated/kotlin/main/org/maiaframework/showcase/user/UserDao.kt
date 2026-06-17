@@ -7,6 +7,7 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.domain.persist.FieldUpdate
@@ -15,7 +16,6 @@ import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
-import org.maiaframework.showcase.auth.Authority
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.time.Instant
@@ -71,7 +71,7 @@ class UserDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addListOfStrings("authorities", entity.authorities.map { it.name })
+                addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("displayName", entity.displayName)
@@ -125,7 +125,7 @@ class UserDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addListOfStrings("authorities", entity.authorities.map { it.name })
+                    addListOfStrings("authorities", entity.authorities.map { it.value })
                     addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("displayName", entity.displayName)
@@ -454,7 +454,7 @@ class UserDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "authorities" -> sqlParams.addListOfStrings("authorities", field.value as List<Authority>) { it.name }
+            "authorities" -> sqlParams.addListOfStrings("authorities", field.value as List<Authority>) { it.value }
             "createdBy" -> sqlParams.addValue("createdBy", field.value as DomainId?)
             "encryptedPassword" -> sqlParams.addValue("encryptedPassword", field.value as String)
             "firstName" -> sqlParams.addValue("firstName", field.value as FirstName?)

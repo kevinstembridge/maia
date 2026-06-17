@@ -1,7 +1,7 @@
 package org.maiaframework.gen.plugin
 
 import org.gradle.workers.WorkAction
-import org.maiaframework.gen.generator.ModelDefInstantiator
+import org.maiaframework.gen.generator.ApplicationModelDefInstantiator
 import org.maiaframework.gen.generator.MaiaGenerationContext
 import org.maiaframework.gen.generator.ModuleGeneratorInstantiator
 
@@ -22,13 +22,13 @@ abstract class MaiaGenerationWorkAction : WorkAction<MaiaGenerationWorkParameter
 
         val specificationClassName = parameters.specificationClassName.get()
 
-        val modelDef = ModelDefInstantiator.instantiate(specificationClassName)
+        val applicationModelDef = ApplicationModelDefInstantiator.instantiate(specificationClassName)
 
         val moduleGeneratorClassName = parameters.moduleGeneratorClassName.get()
 
         val moduleGenerator = ModuleGeneratorInstantiator.instantiate(moduleGeneratorClassName, maiaGenerationContext)
 
-        moduleGenerator.generateSource(modelDef)
+        moduleGenerator.generateSource(applicationModelDef)
 
     }
 

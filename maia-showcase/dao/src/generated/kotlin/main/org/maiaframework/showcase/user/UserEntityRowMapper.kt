@@ -4,11 +4,11 @@
 package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
-import org.maiaframework.showcase.auth.Authority
 
 
 class UserEntityRowMapper : MaiaRowMapper<UserEntity> {
@@ -16,7 +16,7 @@ class UserEntityRowMapper : MaiaRowMapper<UserEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): UserEntity {
 
-        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val createdBy = rsa.readDomainIdOrNull("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val displayName = rsa.readString("display_name")

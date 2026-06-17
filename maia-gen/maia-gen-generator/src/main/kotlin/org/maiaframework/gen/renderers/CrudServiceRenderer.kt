@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.DatabaseIndexDef
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
@@ -44,7 +45,7 @@ import java.time.Instant
 
 class CrudServiceRenderer(
     private val entityDef: EntityDef,
-    private val modelDef: ModelDef
+    private val applicationModelDef: ApplicationModelDef
 ) : AbstractKotlinRenderer(
     entityDef.crudServiceClassDef
 ) {
@@ -77,7 +78,7 @@ class CrudServiceRenderer(
         addConstructorArg(ClassFieldDef.aClassField("entityRepo", this.entityDef.entityRepoFqcn).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("maiaProblems", Fqcns.MAIA_PROBLEMS).privat().build())
 
-        this.modelDef.entitiesThatReference(this.entityDef).forEach { referencingEntityDef ->
+        this.applicationModelDef.entitiesThatReference(this.entityDef).forEach { referencingEntityDef ->
             addConstructorArg(ClassFieldDef.aClassField(referencingEntityDef.entityRepoFqcn.uqcn.firstToLower(), referencingEntityDef.entityRepoFqcn).privat().build())
         }
 
@@ -701,7 +702,7 @@ class CrudServiceRenderer(
         appendPreAuthorize(this.entityDef.entityCrudApiDef?.deleteApiDef?.crudApiDef?.authorityDef)
         appendLine("    fun delete($primaryKeyFieldNamesAndTypesCsv) {")
 
-        val referencingEntities = this.modelDef.entitiesThatReference(this.entityDef)
+        val referencingEntities = this.applicationModelDef.entitiesThatReference(this.entityDef)
 
         referencingEntities.forEach { referencingEntityDef ->
 

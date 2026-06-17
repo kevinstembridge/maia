@@ -5,6 +5,7 @@ package org.maiaframework.showcase.party
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.showcase.all_field_types.AllFieldTypesRepo
+import org.maiaframework.showcase.contact.EmailAddressRepo
 import org.maiaframework.showcase.hierarchy.ChildOneRepo
 import org.maiaframework.showcase.hierarchy.GrandparentRepo
 import org.maiaframework.showcase.hierarchy.ParentOneRepo
@@ -17,6 +18,9 @@ import org.maiaframework.showcase.history.HistorySubTwoHistoryRepo
 import org.maiaframework.showcase.history.HistorySubTwoRepo
 import org.maiaframework.showcase.history.HistorySuperHistoryRepo
 import org.maiaframework.showcase.history.HistorySuperRepo
+import org.maiaframework.showcase.party.contact.EmailAddressVerificationRepo
+import org.maiaframework.showcase.party.contact.PartyEmailAddressHistoryRepo
+import org.maiaframework.showcase.party.contact.PartyEmailAddressRepo
 import org.maiaframework.webapp.domain.ForeignKeyReferencesExistResponseDto
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -26,6 +30,8 @@ import org.springframework.stereotype.Component
 class PartyForeignKeyReferencesService(
     private val allFieldTypesRepo: AllFieldTypesRepo,
     private val childOneRepo: ChildOneRepo,
+    private val emailAddressRepo: EmailAddressRepo,
+    private val emailAddressVerificationRepo: EmailAddressVerificationRepo,
     private val grandparentRepo: GrandparentRepo,
     private val historySampleHistoryRepo: HistorySampleHistoryRepo,
     private val historySampleRepo: HistorySampleRepo,
@@ -36,7 +42,9 @@ class PartyForeignKeyReferencesService(
     private val historySuperHistoryRepo: HistorySuperHistoryRepo,
     private val historySuperRepo: HistorySuperRepo,
     private val parentOneRepo: ParentOneRepo,
-    private val parentTwoRepo: ParentTwoRepo
+    private val parentTwoRepo: ParentTwoRepo,
+    private val partyEmailAddressHistoryRepo: PartyEmailAddressHistoryRepo,
+    private val partyEmailAddressRepo: PartyEmailAddressRepo
 ) {
 
 
@@ -95,6 +103,22 @@ class PartyForeignKeyReferencesService(
 
         if (this.historySuperHistoryRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySuperHistory")
+        }
+
+        if (this.emailAddressRepo.existsByCreatedBy(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "EmailAddress")
+        }
+
+        if (this.partyEmailAddressRepo.existsByParty(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "PartyEmailAddress")
+        }
+
+        if (this.partyEmailAddressHistoryRepo.existsByParty(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "PartyEmailAddressHistory")
+        }
+
+        if (this.emailAddressVerificationRepo.existsByCreatedBy(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "EmailAddressVerification")
         }
 
         return ForeignKeyReferencesExistResponseDto(id, false, null)

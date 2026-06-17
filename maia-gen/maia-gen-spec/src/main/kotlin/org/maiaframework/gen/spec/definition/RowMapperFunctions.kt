@@ -182,7 +182,7 @@ object RowMapperFunctions {
             is SimpleResponseDtoFieldType -> TODO()
             is StringFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\")"
             is StringTypeFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}(it) }"
-            is StringValueClassFieldType -> TODO()
+            is StringValueClassFieldType -> "${indentStr}rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}(it) }"
             is UrlFieldType -> TODO()
         }
 

@@ -9,13 +9,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = JobModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = JobModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -41,14 +36,14 @@ class JobModuleGenerator(
 
     private fun renderTypeaheadIndexRefreshJobs() {
 
-        renderEsIndexRefreshJobs(this.modelDef.typeaheadDefs.map { it.esDocDef })
+        renderEsIndexRefreshJobs(this.applicationModelDef.typeaheadDefs.map { it.esDocDef })
 
     }
 
 
     private fun renderEsIndexRefreshJobs() {
 
-        renderEsIndexRefreshJobs(this.modelDef.esDocsDefs)
+        renderEsIndexRefreshJobs(this.applicationModelDef.esDocsDefs)
 
     }
 

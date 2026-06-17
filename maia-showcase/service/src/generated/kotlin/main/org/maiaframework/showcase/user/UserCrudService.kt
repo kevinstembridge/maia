@@ -5,10 +5,10 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.problem.MaiaProblems
-import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.slf4j.LoggerFactory

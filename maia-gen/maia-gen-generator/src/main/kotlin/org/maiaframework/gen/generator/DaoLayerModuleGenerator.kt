@@ -8,7 +8,6 @@ import org.maiaframework.gen.renderers.JdbcDaoRenderer
 import org.maiaframework.gen.renderers.RowMapperRenderer
 import org.maiaframework.gen.renderers.SearchableDtoJdbcDaoRenderer
 import org.maiaframework.gen.spec.definition.EntityHierarchy
-import org.maiaframework.gen.spec.definition.RowMapperDef
 
 
 fun main(args: Array<String>) {
@@ -16,13 +15,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = DaoLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = DaoLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -57,8 +51,8 @@ class DaoLayerModuleGenerator(
 
         val sqlScriptsDir = this.maiaGenerationContext.sqlCreateScriptsDir
 
-        val jdbcRootEntityHierarchies = this.modelDef.rootEntityHierarchies
-        val renderedFileName = "${this.maiaGenerationContext.createTablesSqlScriptPrefix}_${this.modelDef.appKey}.sql"
+        val jdbcRootEntityHierarchies = this.applicationModelDef.rootEntityHierarchies
+        val renderedFileName = "${this.maiaGenerationContext.createTablesSqlScriptPrefix}.sql"
 
         if (jdbcRootEntityHierarchies.isNotEmpty()) {
             CreateTableSqlRenderer(jdbcRootEntityHierarchies, renderedFileName).renderToDir(sqlScriptsDir)
@@ -69,9 +63,9 @@ class DaoLayerModuleGenerator(
 
     private fun `process SearchableDtoDefs`() {
 
-        this.modelDef.allSearchableDtoDefs.forEach {
+        this.applicationModelDef.allSearchableDtoDefs.forEach {
 
-            SearchableDtoJdbcDaoRenderer(it, this.modelDef).renderToDir(this.kotlinOutputDir)
+            SearchableDtoJdbcDaoRenderer(it, this.applicationModelDef).renderToDir(this.kotlinOutputDir)
             RowMapperRenderer(it.rowMapperDef).renderToDir(this.kotlinOutputDir)
 
         }
@@ -81,7 +75,7 @@ class DaoLayerModuleGenerator(
 
     private fun `render DAOs`() {
 
-        this.modelDef.entityHierarchies.forEach { entityHierarchy ->
+        this.applicationModelDef.entityHierarchies.forEach { entityHierarchy ->
 
             JdbcDaoRenderer(entityHierarchy).renderToDir(this.kotlinOutputDir)
 
@@ -92,7 +86,7 @@ class DaoLayerModuleGenerator(
 
     private fun `render EntityRowMappers`() {
 
-        this.modelDef.entityHierarchies.forEach { renderEntityRowMapper(it) }
+        this.applicationModelDef.entityHierarchies.forEach { renderEntityRowMapper(it) }
 
     }
 
@@ -106,7 +100,7 @@ class DaoLayerModuleGenerator(
 
     private fun `render EntityPkRowMappers`() {
 
-        this.modelDef.entityHierarchies.forEach { renderEntityPkRowMapper(it) }
+        this.applicationModelDef.entityHierarchies.forEach { renderEntityPkRowMapper(it) }
 
     }
 
@@ -122,7 +116,7 @@ class DaoLayerModuleGenerator(
 
     private fun `render ForEditDtoRowMappers`() {
 
-        this.modelDef.fetchForEditDtoDefs.map { it.rowMapperDef }.forEach { rowMapperDef ->
+        this.applicationModelDef.fetchForEditDtoDefs.map { it.rowMapperDef }.forEach { rowMapperDef ->
             RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
         }
 
@@ -131,7 +125,7 @@ class DaoLayerModuleGenerator(
 
     private fun `render RowMapperDefs`() {
 
-        this.modelDef.rowMapperDefs.forEach { rowMapperDef ->
+        this.applicationModelDef.rowMapperDefs.forEach { rowMapperDef ->
             RowMapperRenderer(rowMapperDef).renderToDir(this.kotlinOutputDir)
         }
 
@@ -140,7 +134,7 @@ class DaoLayerModuleGenerator(
 
     private fun `render EntityHistoryBlotterRowMappers`() {
 
-        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+        this.applicationModelDef.entityHistoryBlotterDefs.forEach { def ->
             EntityHistoryBlotterRowMapperRenderer(def).renderToDir(this.kotlinOutputDir)
         }
 
@@ -149,7 +143,7 @@ class DaoLayerModuleGenerator(
 
     private fun `render EntityHistoryBlotterRowDtoDaos`() {
 
-        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+        this.applicationModelDef.entityHistoryBlotterDefs.forEach { def ->
             EntityHistoryBlotterRowDtoDaoRenderer(def).renderToDir(this.kotlinOutputDir)
         }
 

@@ -48,13 +48,13 @@ tasks {
 
 tasks.register<JavaExec>("maiaGeneration") {
 
-    inputs.files(file("../spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec"))
+    inputs.files(file("../spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec"), file("../spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseApplicationSpec"))
     outputs.dir("src/generated/kotlin/main")
     outputs.dir("src/generated/kotlin/test")
 
     classpath = configurations["maiagen"].asFileTree
     mainClass.set("org.maiaframework.gen.generator.ElasticServiceModuleGeneratorKt")
-    args("specificationClassNames=org.maiaframework.showcase.MaiaShowcaseSpec")
+    args("applicationSpecClassName=org.maiaframework.showcase.MaiaShowcaseApplicationSpec")
 
 }
 

@@ -11,13 +11,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = AppModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = AppModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -43,14 +38,14 @@ class AppModuleGenerator(
 
     private fun renderEntityHtmlForms() {
 
-        this.modelDef.entityHtmlFormDefs.forEach { this.processEntityHtmlFormDef(it) }
+        this.applicationModelDef.entityHtmlFormDefs.forEach { this.processEntityHtmlFormDef(it) }
 
     }
 
 
     private fun renderRequestDtoHtmlForms() {
 
-        this.modelDef.requestDtoHtmlFormDefs.forEach { this.processRequestDtoHtmlFormDef(it) }
+        this.applicationModelDef.requestDtoHtmlFormDefs.forEach { this.processRequestDtoHtmlFormDef(it) }
 
     }
 

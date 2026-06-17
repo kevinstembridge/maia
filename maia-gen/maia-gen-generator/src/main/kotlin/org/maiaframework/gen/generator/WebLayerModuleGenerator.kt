@@ -11,13 +11,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = WebLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = WebLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -51,7 +46,7 @@ class WebLayerModuleGenerator(
 
     private fun processEntityCrudApiDefs() {
 
-        this.modelDef.entityCrudApiDefs
+        this.applicationModelDef.entityCrudApiDefs
             .filter { it.entityDef.isConcrete }
             .forEach { processEntityCrudApiDef(it) }
 
@@ -60,21 +55,21 @@ class WebLayerModuleGenerator(
 
     private fun processForeignKeyEntityDefs() {
 
-        this.modelDef.entitiesReferencedByForeignKey.forEach { renderCheckForeignKeyReferencesEndpoint(it) }
+        this.applicationModelDef.entitiesReferencedByForeignKey.forEach { renderCheckForeignKeyReferencesEndpoint(it) }
 
     }
 
 
     private fun processAngularFormDefs() {
 
-        this.modelDef.angularFormDefs.forEach { processRequestDto(it.requestDtoDef) }
+        this.applicationModelDef.angularFormDefs.forEach { processRequestDto(it.requestDtoDef) }
 
     }
 
 
     private fun renderEntityDetailDtoEndpoints() {
 
-        this.modelDef.entityDetailViewDefs.forEach {
+        this.applicationModelDef.entityDetailViewDefs.forEach {
             EntityDetailDtoEndpointRenderer(it).renderToDir(kotlinOutputDir)
         }
 
@@ -83,21 +78,21 @@ class WebLayerModuleGenerator(
 
     private fun renderRequestDtoEndpoints() {
 
-        this.modelDef.requestDtoDefs.forEach { processRequestDto(it) }
+        this.applicationModelDef.requestDtoDefs.forEach { processRequestDto(it) }
 
     }
 
 
     private fun renderResponseDtoEndpoints() {
 
-        this.modelDef.responseDtoDefs.forEach { processResponseDto(it) }
+        this.applicationModelDef.responseDtoDefs.forEach { processResponseDto(it) }
 
     }
 
 
     private fun renderSearchableDtoEndpoints() {
 
-        this.modelDef.allSearchableDtoDefs.forEach { processSearchableDto(it) }
+        this.applicationModelDef.allSearchableDtoDefs.forEach { processSearchableDto(it) }
 
     }
 
@@ -115,7 +110,7 @@ class WebLayerModuleGenerator(
 
     private fun renderTableDtoEndpoints() {
 
-        this.modelDef.blotterDefs
+        this.applicationModelDef.blotterDefs
             .filter { it.withGeneratedDto.value }
             .forEach { processBlotterDef(it) }
 
@@ -142,7 +137,7 @@ class WebLayerModuleGenerator(
 
     private fun renderTypeaheadEndpoints() {
 
-        this.modelDef.typeaheadDefs.forEach { processTypeaheadDef(it) }
+        this.applicationModelDef.typeaheadDefs.forEach { processTypeaheadDef(it) }
 
     }
 
@@ -214,7 +209,7 @@ class WebLayerModuleGenerator(
 
     private fun renderEntityHistoryBlotterEndpoints() {
 
-        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+        this.applicationModelDef.entityHistoryBlotterDefs.forEach { def ->
             EntityHistoryBlotterSearchEndpointRenderer(def).renderToDir(this.kotlinOutputDir)
         }
 

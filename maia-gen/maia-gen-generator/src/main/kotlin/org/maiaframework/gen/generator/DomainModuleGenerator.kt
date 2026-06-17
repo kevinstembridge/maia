@@ -12,13 +12,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = DomainModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = DomainModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -67,7 +62,7 @@ class DomainModuleGenerator(
 
     private fun `render Authority enum`() {
 
-        this.modelDef.authoritiesDef?.let {
+        this.applicationModelDef.authoritiesDef?.let {
             AuthorityEnumRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 
@@ -76,7 +71,7 @@ class DomainModuleGenerator(
 
     private fun `render StringTypes`() {
 
-        this.modelDef.stringTypeDefs
+        this.applicationModelDef.stringTypeDefs
             .filter { it.isNotProvided }
             .forEach { StringTypeRenderer(it).renderToDir(this.kotlinOutputDir) }
 
@@ -85,7 +80,7 @@ class DomainModuleGenerator(
 
     private fun `render BooleanTypes`() {
 
-        this.modelDef.booleanTypeDefs
+        this.applicationModelDef.booleanTypeDefs
             .filter { it.isNotProvided }
             .forEach { SimpleTypeRenderer(it).renderToDir(this.kotlinOutputDir) }
 
@@ -94,18 +89,18 @@ class DomainModuleGenerator(
 
     private fun `render HazelcastEntityConfig`() {
 
-        val cacheableEntityDefs = this.modelDef.entityHierarchies
+        val cacheableEntityDefs = this.applicationModelDef.entityHierarchies
             .flatMap { it.entityDefs }
             .filter { it.cacheableDef != null }
 
-        HazelcastEntityConfigRenderer(cacheableEntityDefs, this.modelDef.hazelcastEntityConfigClassDef).renderToDir(this.kotlinOutputDir)
+        HazelcastEntityConfigRenderer(cacheableEntityDefs, this.applicationModelDef.hazelcastEntityConfigClassDef).renderToDir(this.kotlinOutputDir)
 
     }
 
 
     private fun `render PkAndNameDtos`() {
 
-        this.modelDef.entityHierarchies
+        this.applicationModelDef.entityHierarchies
             .map { it.entityDef }
             .filter { it.hasPkAndNameDtoDef }
             .map { it.entityPkAndNameDef.dtoDef }
@@ -116,7 +111,7 @@ class DomainModuleGenerator(
 
     private fun `render IntTypes`() {
 
-        this.modelDef.intTypeDefs
+        this.applicationModelDef.intTypeDefs
             .filter { it.isNotProvided }
             .forEach { SimpleTypeRenderer(it).renderToDir(this.kotlinOutputDir) }
 
@@ -125,7 +120,7 @@ class DomainModuleGenerator(
 
     private fun `render LongTypes`() {
 
-        this.modelDef.longTypeDefs
+        this.applicationModelDef.longTypeDefs
             .filter { it.isNotProvided }
             .forEach { SimpleTypeRenderer(it).renderToDir(this.kotlinOutputDir) }
 
@@ -134,14 +129,14 @@ class DomainModuleGenerator(
 
     private fun `render EntityDetailDtos`() {
 
-        this.modelDef.entityDetailViewDefs.forEach { renderDto(it.dtoDef) }
+        this.applicationModelDef.entityDetailViewDefs.forEach { renderDto(it.dtoDef) }
 
     }
 
 
     private fun `render enums`() {
 
-        this.modelDef.enumDefs.filter { enumDef -> enumDef.isProvided == false }.forEach {
+        this.applicationModelDef.enumDefs.filter { enumDef -> enumDef.isProvided == false }.forEach {
             EnumRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 
@@ -150,7 +145,7 @@ class DomainModuleGenerator(
 
     private fun `process entities`() {
 
-        this.modelDef.entityHierarchies.forEach { `process entity`(it) }
+        this.applicationModelDef.entityHierarchies.forEach { `process entity`(it) }
 
     }
 
@@ -263,7 +258,7 @@ class DomainModuleGenerator(
 
     private fun `render data classes`() {
 
-        this.modelDef.dataClassDefs.forEach {
+        this.applicationModelDef.dataClassDefs.forEach {
             DataClassRenderer(it).renderToDir(this.kotlinOutputDir)
 
             it.cacheableDef?.let { cacheableDef ->
@@ -283,21 +278,21 @@ class DomainModuleGenerator(
 
     private fun `render form models`() {
 
-        this.modelDef.formModelDefs.forEach { this.renderFormModel(it) }
+        this.applicationModelDef.formModelDefs.forEach { this.renderFormModel(it) }
 
     }
 
 
     private fun `render RequestDtos`() {
 
-        this.modelDef.requestDtoDefs.forEach { this.processRequestDto(it) }
+        this.applicationModelDef.requestDtoDefs.forEach { this.processRequestDto(it) }
 
     }
 
 
     private fun `render async validation DTOs`() {
 
-        this.modelDef.entityHierarchies.flatMap { it.entityDefs }.forEach { renderAsyncValidationDto(it) }
+        this.applicationModelDef.entityHierarchies.flatMap { it.entityDefs }.forEach { renderAsyncValidationDto(it) }
 
     }
 
@@ -332,42 +327,42 @@ class DomainModuleGenerator(
 
     private fun `render ResponseDtos`() {
 
-        this.modelDef.responseDtoDefs.forEach { this.processResponseDto(it) }
+        this.applicationModelDef.responseDtoDefs.forEach { this.processResponseDto(it) }
 
     }
 
 
     private fun `render FetchForEditDtos`() {
 
-        this.modelDef.fetchForEditDtoDefs.forEach { renderDto(it.dtoDef) }
+        this.applicationModelDef.fetchForEditDtoDefs.forEach { renderDto(it.dtoDef) }
 
     }
 
 
     private fun `render JoinFetchDtos`() {
 
-        this.modelDef.joinFetchDtoDefs.forEach { renderDto(it.dtoDef) }
+        this.applicationModelDef.joinFetchDtoDefs.forEach { renderDto(it.dtoDef) }
 
     }
 
 
     private fun `render SimpleResponseDtos`() {
 
-        this.modelDef.simpleResponseDtoDefs.forEach { this.processSimpleResponseDto(it) }
+        this.applicationModelDef.simpleResponseDtoDefs.forEach { this.processSimpleResponseDto(it) }
 
     }
 
 
     private fun `render SearchableDtos`() {
 
-        this.modelDef.allSearchableDtoDefs.forEach { processSearchableDto(it) }
+        this.applicationModelDef.allSearchableDtoDefs.forEach { processSearchableDto(it) }
 
     }
 
 
     private fun `render blotter DTOs`() {
 
-        this.modelDef.blotterDefs
+        this.applicationModelDef.blotterDefs
             .filter { it.withGeneratedDto.value }
             .forEach { processBlotterDef(it) }
 
@@ -376,7 +371,7 @@ class DomainModuleGenerator(
 
     private fun `process CrudApiDefs`() {
 
-        this.modelDef.entityCrudApiDefs
+        this.applicationModelDef.entityCrudApiDefs
             .filter { it.entityDef.isConcrete }
             .forEach { processCrudApiDef(it) }
 
@@ -552,7 +547,7 @@ class DomainModuleGenerator(
 
     private fun `render EsDocs`() {
 
-        val allEsDocs = this.modelDef.allEsDocDefs
+        val allEsDocs = this.applicationModelDef.allEsDocDefs
 
         allEsDocs.forEach {
             renderEsDoc(it)
@@ -574,7 +569,7 @@ class DomainModuleGenerator(
 
     private fun `process HazelcastDtoDefs`() {
 
-        this.modelDef.hazelcastDtoDefs.forEach {
+        this.applicationModelDef.hazelcastDtoDefs.forEach {
             renderHzDto(it)
             renderHzSerializer(it)
         }
@@ -602,7 +597,7 @@ class DomainModuleGenerator(
 
     private fun `render CrudListeners`() {
 
-        this.modelDef.entityCrudApiDefs.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs.forEach { entityCrudApiDef ->
             CrudListenerRenderer(entityCrudApiDef).renderToDir(this.kotlinOutputDir)
         }
 
@@ -618,7 +613,7 @@ class DomainModuleGenerator(
 
     private fun `render EntityHistoryBlotterDomainArtifacts`() {
 
-        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+        this.applicationModelDef.entityHistoryBlotterDefs.forEach { def ->
             DtoRenderer(def.rowDtoClassDef).renderToDir(this.kotlinOutputDir)
             EntityHistoryBlotterRowDtoMetaRenderer(def).renderToDir(this.kotlinOutputDir)
         }

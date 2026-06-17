@@ -12,13 +12,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = ElasticSearchModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = ElasticSearchModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -46,7 +41,7 @@ class ElasticSearchModuleGenerator(
 
     private fun renderEsIndexes() {
 
-        this.modelDef.esDocsDefs.forEach { esDocDef ->
+        this.applicationModelDef.esDocsDefs.forEach { esDocDef ->
             EsIndexRenderer(esDocDef.esIndexClassDef, esDocDef.elasticIndexBaseName).renderToDir(this.kotlinOutputDir)
         }
 
@@ -55,7 +50,7 @@ class ElasticSearchModuleGenerator(
 
     private fun renderTypeaheadEsIndexes() {
 
-        this.modelDef.typeaheadDefs.forEach { typeaheadDef ->
+        this.applicationModelDef.typeaheadDefs.forEach { typeaheadDef ->
             EsIndexRenderer(typeaheadDef.esIndexClassDef, typeaheadDef.elasticIndexBaseName).renderToDir(this.kotlinOutputDir)
             EsIndexMetaClassRenderer(typeaheadDef.esDocDef).renderToDir(this.kotlinOutputDir)
             EsIndexControlRenderer(typeaheadDef.esDocDef).renderToDir(this.kotlinOutputDir)
@@ -66,7 +61,7 @@ class ElasticSearchModuleGenerator(
 
     private fun renderEsDocMetaClasses() {
 
-        this.modelDef.esDocsDefs.forEach { esDocDef ->
+        this.applicationModelDef.esDocsDefs.forEach { esDocDef ->
             EsIndexMetaClassRenderer(esDocDef).renderToDir(this.kotlinOutputDir)
         }
 
@@ -75,7 +70,7 @@ class ElasticSearchModuleGenerator(
 
     private fun renderEsDocFieldNameMappers() {
 
-        this.modelDef.blotterDefs
+        this.applicationModelDef.blotterDefs
             .filter { it.blotterSourceDef is BlotterEsDocSourceDef }
             .forEach { blotterDef ->
                 EsDocFieldNameMapperRenderer(blotterDef).renderToDir(this.kotlinOutputDir)

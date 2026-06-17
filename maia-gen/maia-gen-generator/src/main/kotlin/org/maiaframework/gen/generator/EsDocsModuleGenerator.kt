@@ -11,13 +11,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = EsDocsModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = EsDocsModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -35,7 +30,7 @@ class EsDocsModuleGenerator(
 
     override fun onGenerateSource() {
 
-        val allEsDocs = this.modelDef.allEsDocDefs
+        val allEsDocs = this.applicationModelDef.allEsDocDefs
 
         allEsDocs.forEach {
             renderEsDocMapper(it)
@@ -55,7 +50,7 @@ class EsDocsModuleGenerator(
 
     private fun renderEsDocMappersForTableDtos() {
 
-        this.modelDef.blotterDefs
+        this.applicationModelDef.blotterDefs
             .filter { it.blotterSourceDef is BlotterEsDocSourceDef }
             .forEach { EsDocBlotterRowDtoMapperRenderer(it).renderToDir(this.kotlinOutputDir) }
 

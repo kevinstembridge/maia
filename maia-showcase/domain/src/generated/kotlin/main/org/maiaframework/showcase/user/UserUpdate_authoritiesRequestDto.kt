@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotNull
 import org.maiaframework.domain.DomainId
-import org.maiaframework.showcase.auth.Authority
+import org.maiaframework.domain.auth.Authority
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)

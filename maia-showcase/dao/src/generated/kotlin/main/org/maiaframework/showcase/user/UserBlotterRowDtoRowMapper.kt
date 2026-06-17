@@ -3,11 +3,11 @@
 
 package org.maiaframework.showcase.user
 
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
-import org.maiaframework.showcase.auth.Authority
 
 
 class UserBlotterRowDtoRowMapper : MaiaRowMapper<UserBlotterRowDto> {
@@ -15,7 +15,7 @@ class UserBlotterRowDtoRowMapper : MaiaRowMapper<UserBlotterRowDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): UserBlotterRowDto {
 
-        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
         val displayName = rsa.readString("displayName")
         val firstName = rsa.readStringOrNull("firstName") { FirstName(it) }

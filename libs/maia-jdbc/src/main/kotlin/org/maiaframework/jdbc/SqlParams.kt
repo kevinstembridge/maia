@@ -390,7 +390,11 @@ class SqlParams {
         values: List<String>
     ): SqlParams {
 
-        return addValue(columnName, values.toTypedArray<String>(), Types.ARRAY)
+        return addValue(
+            columnName,
+            values.toTypedArray<String>(),
+            Types.ARRAY
+        )
 
     }
 
@@ -401,7 +405,11 @@ class SqlParams {
         mapper: (T) -> String
     ): SqlParams {
 
-        return addValue(columnName, values.map(mapper).toTypedArray<String>(), Types.ARRAY)
+        return addValue(
+            columnName,
+            values.map(mapper).toTypedArray<String>(),
+            Types.ARRAY
+        )
 
     }
 

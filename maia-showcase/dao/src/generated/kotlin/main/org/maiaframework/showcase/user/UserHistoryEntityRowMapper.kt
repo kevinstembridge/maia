@@ -5,11 +5,11 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
-import org.maiaframework.showcase.auth.Authority
 
 
 class UserHistoryEntityRowMapper : MaiaRowMapper<UserHistoryEntity> {
@@ -17,7 +17,7 @@ class UserHistoryEntityRowMapper : MaiaRowMapper<UserHistoryEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): UserHistoryEntity {
 
-        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdBy = rsa.readDomainIdOrNull("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")

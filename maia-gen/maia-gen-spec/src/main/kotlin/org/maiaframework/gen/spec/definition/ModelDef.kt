@@ -1,13 +1,12 @@
 package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.lang.ClassDef
-import org.maiaframework.gen.spec.definition.JoinFetchDtoDef
 
 
 class ModelDef(
     val appKey: AppKey,
     val rootEntityHierarchies: List<EntityHierarchy>,
-    val authoritiesDef: AuthoritiesDef?,
+    val authorityDefs: List<AuthorityDef>,
     val formModelDefs: List<FormModelDef>,
     val entityHtmlFormDefs: List<EntityHtmlFormDef>,
     val requestDtoDefs: List<RequestDtoDef>,

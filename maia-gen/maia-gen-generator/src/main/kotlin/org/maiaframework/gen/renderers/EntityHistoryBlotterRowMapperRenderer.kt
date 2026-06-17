@@ -144,6 +144,10 @@ class EntityHistoryBlotterRowMapperRenderer(
                         addImportFor(listElementFieldType.fqcn)
                         appendLine("        val $fieldName = rsa.readListOfStrings(\"$columnName\") { ${listElementFieldType.fqcn.uqcn}(it) }")
                     }
+                    is StringValueClassFieldType -> {
+                        addImportFor(listElementFieldType.fqcn)
+                        appendLine("        val $fieldName = rsa.readListOfStrings(\"$columnName\") { ${listElementFieldType.fqcn.uqcn}(it) }")
+                    }
                     else -> throw NotImplementedError("No list row mapper implementation for element type ${listElementFieldType::class.simpleName} on field $fieldName")
                 }
             }

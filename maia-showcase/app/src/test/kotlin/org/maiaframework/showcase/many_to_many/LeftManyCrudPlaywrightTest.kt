@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.index.EsIndexOps
 import org.maiaframework.showcase.AbstractPlaywrightTest
-import org.maiaframework.showcase.auth.Authority
-import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.springframework.beans.factory.annotation.Autowired
 
 

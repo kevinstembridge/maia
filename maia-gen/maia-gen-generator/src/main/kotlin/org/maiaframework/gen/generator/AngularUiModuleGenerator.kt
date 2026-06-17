@@ -71,7 +71,6 @@ import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
-import org.maiaframework.gen.spec.definition.JoinFetchDtoDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
@@ -92,13 +91,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = AngularUiModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = AngularUiModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -114,7 +108,7 @@ class AngularUiModuleGenerator(
 ) {
 
     private val typeaheadByEntityDef by lazy {
-        this.modelDef.typeaheadDefs
+        this.applicationModelDef.typeaheadDefs
             .mapNotNull { td -> td.esDocDef.entityDef?.let { it to td } }
             .toMap()
     }
@@ -239,7 +233,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEnums() {
 
-        this.modelDef.enumDefs.filter { it.withTypescript }.forEach { enumDef ->
+        this.applicationModelDef.enumDefs.filter { it.withTypescript }.forEach { enumDef ->
 
             EnumTypescriptRenderer(enumDef).renderToDir(this.typescriptOutputDir)
 
@@ -254,7 +248,7 @@ class AngularUiModuleGenerator(
 
     private fun renderDtosForFormDefs() {
 
-        this.modelDef.angularFormDefs.forEach {
+        this.applicationModelDef.angularFormDefs.forEach {
             renderRequestDto(it.requestDtoDef)
         }
 
@@ -263,7 +257,7 @@ class AngularUiModuleGenerator(
 
     private fun renderAgGridDataSources() {
 
-        this.modelDef.blotterDefs
+        this.applicationModelDef.blotterDefs
             .filter { it.searchDtoDef.searchModelType == SearchModelType.AG_GRID }
             .forEach {
                 AgGridDatasourceRenderer(it).renderToDir(this.typescriptOutputDir)
@@ -274,8 +268,8 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityHistoryBlotters() {
 
-        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
-            val viewPageDef = this.modelDef.findViewEntityPage(def.entityDef)
+        this.applicationModelDef.entityHistoryBlotterDefs.forEach { def ->
+            val viewPageDef = this.applicationModelDef.findViewEntityPage(def.entityDef)
             EntityHistoryBlotterRowDtoTypescriptRenderer(def).renderToDir(this.typescriptOutputDir)
             EntityHistoryBlotterServiceRenderer(def).renderToDir(this.typescriptOutputDir)
             EntityHistoryBlotterAgGridDatasourceRenderer(def).renderToDir(this.typescriptOutputDir)
@@ -290,7 +284,7 @@ class AngularUiModuleGenerator(
 
     private fun renderAngularForms() {
 
-        this.modelDef.angularFormDefs.forEach {
+        this.applicationModelDef.angularFormDefs.forEach {
 
             FormHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
             renderEntityForm(it, it.componentNames)
@@ -335,7 +329,7 @@ class AngularUiModuleGenerator(
 
     private fun renderSearchableServices() {
 
-        this.modelDef.searchableDtoDefs
+        this.applicationModelDef.searchableDtoDefs
             .filter { it.withGeneratedTypescriptService.value }
             .map { it.searchDtoDef }.forEach {
             SearchDtoServiceTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
@@ -346,7 +340,7 @@ class AngularUiModuleGenerator(
 
     private fun renderBlotterDto() {
 
-        this.modelDef.blotterDefs.filter { it.disableRendering == false }.forEach { blotterDef ->
+        this.applicationModelDef.blotterDefs.filter { it.disableRendering == false }.forEach { blotterDef ->
 
             renderTypescriptInterface(
                 renderedFilePath = blotterDef.dtoDef.typescriptRenderedFilePath,
@@ -362,7 +356,7 @@ class AngularUiModuleGenerator(
 
     private fun processCrudApiDefs() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach {
+        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach {
 
             it.createApiDef?.let { apiDef ->
 
@@ -397,7 +391,7 @@ class AngularUiModuleGenerator(
 
     private fun renderCrudServices() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
             DtoCrudServiceTypescriptRenderer(entityCrudApiDef).renderToDir(this.typescriptOutputDir)
         }
 
@@ -406,13 +400,13 @@ class AngularUiModuleGenerator(
 
     private fun renderBlotterComponents() {
 
-        this.modelDef.blotterDefs.forEach {
+        this.applicationModelDef.blotterDefs.forEach {
 
             when (it.searchModelType) {
                 SearchModelType.AG_GRID -> {
 
                     val entityIsReferencedByForeignKeys = it.blotterSourceDef.rootEntityDef?.let { rootEntityDef ->
-                        this.modelDef.entityIsReferencedByForeignKeys(rootEntityDef)
+                        this.applicationModelDef.entityIsReferencedByForeignKeys(rootEntityDef)
                     } ?: false
 
                     AgGridBlotterComponentRenderer(
@@ -421,7 +415,7 @@ class AngularUiModuleGenerator(
                         it.entityEditPageDef,
                         it.entityCreatePageDef,
                         entityIsReferencedByForeignKeys,
-                        this.modelDef.authoritiesDef
+                        this.applicationModelDef.authoritiesDef
                     ).renderToDir(this.typescriptOutputDir)
                 }
 
@@ -436,14 +430,14 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDetailViews() {
 
-        val blotterPageByEntity = this.modelDef.blotterPageDefs
+        val blotterPageByEntity = this.applicationModelDef.blotterPageDefs
             .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
             .toMap()
 
-        this.modelDef.entityDetailViewDefs.forEach {
+        this.applicationModelDef.entityDetailViewDefs.forEach {
 
             EntityDetailViewComponentRenderer(it).renderToDir(this.typescriptOutputDir)
-            EntityDetailViewPageComponentRenderer(it, this.modelDef.authoritiesDef, blotterPageByEntity[it.entityDef]).renderToDir(this.typescriptOutputDir)
+            EntityDetailViewPageComponentRenderer(it, this.applicationModelDef.authoritiesDef, blotterPageByEntity[it.entityDef]).renderToDir(this.typescriptOutputDir)
             EntityDetailViewContentHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
             EntityDetailViewPageHtmlRenderer(it, blotterPageByEntity[it.entityDef]).renderToDir(this.typescriptOutputDir)
 
@@ -454,7 +448,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDetailDtoServices() {
 
-        this.modelDef.entityDetailViewDefs.forEach {
+        this.applicationModelDef.entityDetailViewDefs.forEach {
 
             EntityDetailDtoServiceTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
 
@@ -465,15 +459,15 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityCreatePages() {
 
-        val blotterPageByEntity = this.modelDef.blotterPageDefs
+        val blotterPageByEntity = this.applicationModelDef.blotterPageDefs
             .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
             .toMap()
 
-        this.modelDef.entityCreatePageDefs.forEach { entityCreatePageDef ->
+        this.applicationModelDef.entityCreatePageDefs.forEach { entityCreatePageDef ->
 
             // TODO account for Signal forms vs Reactive forms
 
-            val viewPageDef = this.modelDef.findViewEntityPage(entityCreatePageDef.entityDef)
+            val viewPageDef = this.applicationModelDef.findViewEntityPage(entityCreatePageDef.entityDef)
 
             val blotterPageDef = blotterPageByEntity[entityCreatePageDef.entityDef]
 
@@ -527,11 +521,11 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityEditPages() {
 
-        this.modelDef.entityEditPageDefs.forEach { entityEditPageDef ->
+        this.applicationModelDef.entityEditPageDefs.forEach { entityEditPageDef ->
 
             // TODO account for Signal forms vs Reactive forms
 
-            val viewPageDef = this.modelDef.findViewEntityPage(entityEditPageDef.entityDef)
+            val viewPageDef = this.applicationModelDef.findViewEntityPage(entityEditPageDef.entityDef)
 
             val fetchForEditDtoDef = entityEditPageDef.entityDef.fetchForEditDtoDef
 
@@ -586,7 +580,7 @@ class AngularUiModuleGenerator(
 
     private fun renderBlotterHtml() {
 
-        this.modelDef.blotterDefs.forEach {
+        this.applicationModelDef.blotterDefs.forEach {
 
             when (it.searchModelType) {
                 SearchModelType.AG_GRID -> AgGridBlotterHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
@@ -603,7 +597,7 @@ class AngularUiModuleGenerator(
 
     private fun renderBlotterPages() {
 
-        this.modelDef.blotterPageDefs.forEach { pageDef ->
+        this.applicationModelDef.blotterPageDefs.forEach { pageDef ->
             BlotterPageComponentRenderer(pageDef).renderToDir(this.typescriptOutputDir)
             BlotterPageHtmlRenderer(pageDef).renderToDir(this.typescriptOutputDir)
         }
@@ -613,20 +607,20 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityCrudRoutes() {
 
-        val blotterPageByEntity = this.modelDef.blotterPageDefs
+        val blotterPageByEntity = this.applicationModelDef.blotterPageDefs
             .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
             .toMap()
 
-        val viewPageByEntity = this.modelDef.entityDetailViewDefs
+        val viewPageByEntity = this.applicationModelDef.entityDetailViewDefs
             .associateBy { it.entityDef }
 
-        val createPageByEntity = this.modelDef.entityCreatePageDefs
+        val createPageByEntity = this.applicationModelDef.entityCreatePageDefs
             .associateBy { it.entityDef }
 
-        val editPageByEntity = this.modelDef.entityEditPageDefs
+        val editPageByEntity = this.applicationModelDef.entityEditPageDefs
             .associateBy { it.entityDef }
 
-        val historyOnlyEntities = this.modelDef.entityHistoryBlotterDefs
+        val historyOnlyEntities = this.applicationModelDef.entityHistoryBlotterDefs
             .map { it.entityDef }
             .toSet()
 
@@ -647,7 +641,7 @@ class AngularUiModuleGenerator(
 
     private fun renderDtoServices() {
 
-        this.modelDef.blotterDefs.forEach {
+        this.applicationModelDef.blotterDefs.forEach {
             BlotterServiceTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
         }
 
@@ -657,7 +651,7 @@ class AngularUiModuleGenerator(
     // TODO Delete after cooling off: 2026-05-23
     private fun renderEntityCreateDialogHtml() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
             entityCrudApiDef.createApiDef?.let { apiDef ->
                 renderEntityCreateDialogHtml(apiDef)
             }
@@ -701,7 +695,7 @@ class AngularUiModuleGenerator(
 
     private fun renderAuthorityEnum() {
 
-        this.modelDef.authoritiesDef?.enumDef?.let {
+        this.applicationModelDef.authoritiesDef?.enumDef?.let {
 
             EnumTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
 
@@ -716,7 +710,7 @@ class AngularUiModuleGenerator(
 
     private fun renderCommonModel() {
 
-        this.modelDef.authoritiesDef?.let { authoritiesDef ->
+        this.applicationModelDef.authoritiesDef?.let { authoritiesDef ->
 
             AuthApiServiceRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
             AuthGuardRenderer(authoritiesDef).renderToDir(this.typescriptOutputDir)
@@ -733,7 +727,7 @@ class AngularUiModuleGenerator(
     // TODO Delete after cooling off: 2026-05-23
     private fun renderEntityCreateDialogComponent() {
 
-        this.modelDef.entityCrudApiDefs
+        this.applicationModelDef.entityCrudApiDefs
             .mapNotNull { it.createApiDef }
             .filter { it.entityDef.isConcrete }
             .forEach {
@@ -751,7 +745,7 @@ class AngularUiModuleGenerator(
     // TODO Delete after cooling off: 2026-05-23
     private fun renderEntityEditDialogHtml() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
 
             entityCrudApiDef.updateApiDef?.let { apiDef ->
 
@@ -780,7 +774,7 @@ class AngularUiModuleGenerator(
     // TODO Delete after cooling off: 2026-05-23
     private fun renderEntityEditDialogComponent() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
             entityCrudApiDef.updateApiDef?.let { apiDef ->
                 if (entityCrudApiDef.entityDef.isModifiable) {
                     // TODO MTM:
@@ -795,7 +789,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDeleteDialogHtml() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
 
             entityCrudApiDef.deleteApiDef?.let { apiDef ->
 
@@ -810,7 +804,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDeleteDialogComponent() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
             entityCrudApiDef.deleteApiDef?.let { apiDef ->
                 EntityDeleteDialogComponentRenderer(apiDef).renderToDir(this.typescriptOutputDir)
             }
@@ -821,7 +815,7 @@ class AngularUiModuleGenerator(
 
     private fun renderTypeaheadDtos() {
 
-        this.modelDef.typeaheadDefs
+        this.applicationModelDef.typeaheadDefs
             .map { it.esDocDef.dtoDef }
             .forEach { renderTypescriptInterface(it) }
 
@@ -830,7 +824,7 @@ class AngularUiModuleGenerator(
 
     private fun renderTypeaheadServices() {
 
-        this.modelDef.typeaheadDefs.forEach {
+        this.applicationModelDef.typeaheadDefs.forEach {
             TypeaheadAngularServiceRenderer(it).renderToDir(this.typescriptOutputDir)
         }
 
@@ -839,7 +833,7 @@ class AngularUiModuleGenerator(
 
     private fun renderValidatorsForTypeaheadFields() {
 
-        this.modelDef.entityHierarchies.flatMap { it.entityDefs }.flatMap { it.allTypeaheadFields }.forEach { typeaheadFieldDef ->
+        this.applicationModelDef.entityHierarchies.flatMap { it.entityDefs }.flatMap { it.allTypeaheadFields }.forEach { typeaheadFieldDef ->
             TypeaheadFieldValidatorRenderer(typeaheadFieldDef).renderToDir(this.typescriptOutputDir)
         }
 
@@ -848,7 +842,7 @@ class AngularUiModuleGenerator(
 
     private fun renderAsyncValidatorsForIndexes() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
 
             entityCrudApiDef.entityDef.uniqueIndexDefs
                 .filter { it.isNotIdAndVersionIndex }
@@ -864,7 +858,7 @@ class AngularUiModuleGenerator(
 
     private fun renderDtosForAsyncValidation() {
 
-        this.modelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
 
             entityCrudApiDef.entityDef.databaseIndexDefs.filter { it.withExistsEndpoint }.forEach { entityIndexDef ->
 
@@ -884,7 +878,7 @@ class AngularUiModuleGenerator(
 
     private fun renderForeignKeyService() {
 
-        val foreignKeyEntityDefs = this.modelDef.entitiesReferencedByForeignKey
+        val foreignKeyEntityDefs = this.applicationModelDef.entitiesReferencedByForeignKey
 
         if (foreignKeyEntityDefs.isNotEmpty()) {
             ForeignKeyReferenceServiceRenderer(foreignKeyEntityDefs).renderToDir(this.typescriptOutputDir)
@@ -896,7 +890,7 @@ class AngularUiModuleGenerator(
 
     private fun renderForeignKeyDialogs() {
 
-        this.modelDef.entitiesReferencedByForeignKey.forEach { entityDef ->
+        this.applicationModelDef.entitiesReferencedByForeignKey.forEach { entityDef ->
 
             CheckForeignKeyReferencesDialogComponentRenderer(entityDef).renderToDir(this.typescriptOutputDir)
             CheckForeignKeyReferencesDialogHtmlRenderer(entityDef).renderToDir(this.typescriptOutputDir)
@@ -908,7 +902,7 @@ class AngularUiModuleGenerator(
 
     private fun renderFetchForEditDtos() {
 
-        modelDef.fetchForEditDtoDefs
+        applicationModelDef.fetchForEditDtoDefs
             .map { it.dtoDef }
             .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
@@ -917,11 +911,11 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDetailsDtos() {
 
-        modelDef.entityDetailViewDefs
+        applicationModelDef.entityDetailViewDefs
             .map { it.dtoDef }
             .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
-        modelDef.joinFetchDtoDefs.forEach { joinFetchDtoDef ->
+        applicationModelDef.joinFetchDtoDefs.forEach { joinFetchDtoDef ->
             renderTypescriptInterface(
                 renderedFilePath = joinFetchDtoDef.typescriptRenderedFilePath,
                 className = joinFetchDtoDef.uqcn,
@@ -935,7 +929,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEsDocs() {
 
-        modelDef.esDocsDefs
+        applicationModelDef.esDocsDefs
             .filter { it.disableRendering == false }
             .map { it.dtoDef }
             .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
@@ -945,7 +939,7 @@ class AngularUiModuleGenerator(
 
     private fun renderSimpleResponseDtos() {
 
-        this.modelDef.simpleResponseDtoDefs
+        this.applicationModelDef.simpleResponseDtoDefs
             .map { it.dtoDef }
             .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
@@ -954,7 +948,7 @@ class AngularUiModuleGenerator(
 
     private fun renderSearchableResponseDtos() {
 
-        this.modelDef.searchableDtoDefs
+        this.applicationModelDef.searchableDtoDefs
             .filter { it.withGeneratedDto.value }
             .map { it.dtoDef }
             .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
@@ -964,7 +958,7 @@ class AngularUiModuleGenerator(
 
     private fun renderPkAndNameDtos() {
 
-        this.modelDef.entityHierarchies
+        this.applicationModelDef.entityHierarchies
             .map { it.entityDef }
             .filter { it.hasPkAndNameDtoDef }
             .map { it.entityPkAndNameDef.dtoDef }
@@ -975,7 +969,7 @@ class AngularUiModuleGenerator(
 
     private fun renderRequestDtos() {
 
-        this.modelDef.requestDtoDefs.forEach { requestDtoDef ->
+        this.applicationModelDef.requestDtoDefs.forEach { requestDtoDef ->
 
             renderTypescriptInterface(
                 renderedFilePath = requestDtoDef.typescriptDtoRenderedFilePath,
@@ -986,7 +980,7 @@ class AngularUiModuleGenerator(
 
         }
 
-        this.modelDef.entityCrudApiDefs
+        this.applicationModelDef.entityCrudApiDefs
             .mapNotNull { it.createApiDef }
             .flatMap { it.manyToManyTimestampedJoinRequestDtoDefs }
             .forEach { joinDtoDef ->

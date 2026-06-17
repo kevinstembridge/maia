@@ -2,10 +2,10 @@ package org.maiaframework.showcase.party
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.auth.EncryptedPassword
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
-import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.user.UserEntity
 import org.maiaframework.testing.domain.Anys
 import org.maiaframework.testing.domain.Anys.anyDomainId

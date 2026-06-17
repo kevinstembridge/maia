@@ -42,7 +42,7 @@ tasks {
 tasks.register<JavaExec>("maiaGeneration") {
 
     group = BasePlugin.BUILD_GROUP
-    inputs.files(file("../maia-toggles-spec/src/main/kotlin/org/maiaframework/toggles/spec/TogglesSpec"))
+    inputs.files(file("../maia-toggles-spec/src/main/kotlin/org/maiaframework/toggles/spec/TogglesApplicationSpec"), file("../maia-toggles-spec/src/main/kotlin/org/maiaframework/toggles/spec/TogglesSpec"))
     outputs.dir("src/generated/kotlin/main")
     outputs.dir("src/generated/resources/main")
     outputs.dir("src/generated/kotlin/test")
@@ -51,7 +51,7 @@ tasks.register<JavaExec>("maiaGeneration") {
 
     classpath = configurations["maiagen"].asFileTree
     mainClass.set("org.maiaframework.gen.generator.DaoLayerModuleGeneratorKt")
-    args("specificationClassNames=org.maiaframework.toggles.spec.TogglesSpec")
+    args("applicationSpecClassName=org.maiaframework.toggles.spec.TogglesApplicationSpec")
 
 }
 

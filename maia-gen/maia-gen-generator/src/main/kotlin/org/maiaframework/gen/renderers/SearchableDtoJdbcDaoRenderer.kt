@@ -1,8 +1,8 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
+import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.Fqcns
-import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SimpleSearchableDtoFieldDef
@@ -13,7 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.Fqcn
 
 class SearchableDtoJdbcDaoRenderer(
     private val searchableDtoDef: SearchableDtoDef,
-    modelDef: ModelDef
+    applicationModelDef: ApplicationModelDef
 ): AbstractKotlinRenderer(
     searchableDtoDef.dtoDaoClassDef
 ) {
@@ -37,7 +37,7 @@ class SearchableDtoJdbcDaoRenderer(
     }
 
 
-    private val typeDiscriminators = modelDef.entityHierarchyFor(searchableDtoDef.dtoRootEntityDef).typeDiscriminators()
+    private val typeDiscriminators = applicationModelDef.entityHierarchyFor(searchableDtoDef.dtoRootEntityDef).typeDiscriminators()
 
 
     private val foreignKeyFieldsSortedByDepth = searchableDtoDef.nonManyToManyFields

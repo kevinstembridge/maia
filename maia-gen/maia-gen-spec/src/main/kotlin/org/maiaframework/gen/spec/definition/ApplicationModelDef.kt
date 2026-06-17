@@ -1,0 +1,116 @@
+package org.maiaframework.gen.spec.definition
+
+import org.maiaframework.gen.spec.definition.lang.ClassDef
+import org.maiaframework.gen.spec.definition.JoinFetchDtoDef
+
+
+class ApplicationModelDef(
+    val rootEntityHierarchies: List<EntityHierarchy>,
+    val authoritiesDef: AuthoritiesDef?,
+    val formModelDefs: List<FormModelDef>,
+    val entityHtmlFormDefs: List<EntityHtmlFormDef>,
+    val requestDtoDefs: List<RequestDtoDef>,
+    val responseDtoDefs: List<ResponseDtoDef>,
+    val simpleResponseDtoDefs: List<SimpleResponseDtoDef>,
+    val hazelcastDtoDefs: List<HazelcastDtoDef>,
+    val searchableDtoDefs: List<SearchableDtoDef>,
+    val blotterDefs: List<BlotterDef>,
+    val requestDtoHtmlFormDefs: List<HtmlFormDef>,
+    val angularFormDefs: List<AngularFormDef>,
+    val dataClassDefs: List<DataClassDef>,
+    val enumDefs: List<EnumDef>,
+    val booleanTypeDefs: List<BooleanTypeDef>,
+    val intTypeDefs: List<IntTypeDef>,
+    val longTypeDefs: List<LongTypeDef>,
+    val stringTypeDefs: List<StringTypeDef>,
+    val typeaheadDefs: List<TypeaheadDef>,
+    val esDocsDefs: List<EsDocDef>,
+    val hazelcastEntityConfigClassDef: ClassDef,
+    val rowMapperDefs: List<RowMapperDef>,
+    val entityDetailViewDefs: List<EntityDetailViewDef>,
+    val entityEditPageDefs: List<EntityEditPageDef>,
+    val entityCreatePageDefs: List<EntityCreatePageDef>,
+    val blotterPageDefs: List<BlotterPageDef>
+) {
+
+
+    val entityHierarchies: List<EntityHierarchy> = this.rootEntityHierarchies.flatMap { it.entityHierarchies }
+
+
+    private val entityDefs = rootEntityHierarchies.flatMap { it.entityDefs }
+
+
+    val allSearchableDtoDefs = blotterDefs.mapNotNull { it.searchableDtoDef }.plus(searchableDtoDefs)
+
+
+    val entityCrudApiDefs = entityDefs.mapNotNull { it.entityCrudApiDef }
+
+
+    val fetchForEditDtoDefs = entityDefs.filter { it.isConcrete }.mapNotNull { it.fetchForEditDtoDef }
+
+
+    val joinFetchDtoDefs: List<JoinFetchDtoDef> = entityDefs.filter { it.isConcrete }
+        .flatMap { it.joinFetchDtoDefs }
+        .distinctBy { it.fqcn }
+
+
+    val entityHistoryBlotterDefs: List<EntityHistoryBlotterDef> =
+        entityDefs.mapNotNull { it.historyBlotterDef }
+
+
+    val entitiesReferencedByForeignKey = entityDefs
+        .filter { it.deletable.value }
+        .flatMap { it.allForeignKeyEntityFieldDefs }
+        .mapNotNull { it.foreignKeyFieldDef?.foreignEntityDef }
+        .toSet()
+
+
+    fun entityIsReferencedByForeignKeys(entityDef: EntityDef): Boolean {
+        return entitiesReferencedByForeignKey.contains(entityDef)
+    }
+
+
+    fun entitiesThatReference(referencedEntityDef: EntityDef): List<EntityDef> {
+
+        return this.entityDefs.filter { entityDef: EntityDef ->
+
+            entityDef.allForeignKeyEntityFieldDefs.mapNotNull { it.foreignKeyFieldDef?.foreignEntityDef }.contains(referencedEntityDef)
+
+        }
+
+    }
+
+
+    fun entityHierarchyFor(entityDef: EntityDef): EntityHierarchy {
+
+        return this.entityHierarchies.find { it.entityDef == entityDef }
+            ?: throw IllegalArgumentException("No EntityHierarchy found for EntityDef $entityDef")
+
+    }
+
+
+    val allEsDocDefs = typeaheadDefs.map { it.esDocDef }.plus(esDocsDefs)
+
+
+    fun findViewEntityPage(entityDef: EntityDef): EntityDetailViewDef? {
+
+        return entityDetailViewDefs.find { it.entityDef == entityDef }
+        
+    }
+
+
+    fun findEditEntityPage(entityDef: EntityDef): EntityEditPageDef? {
+
+        return entityEditPageDefs.find { it.entityDef == entityDef }
+
+    }
+
+
+    fun findCreateEntityPage(entityDef: EntityDef): EntityCreatePageDef? {
+
+        return entityCreatePageDefs.find { it.entityDef == entityDef }
+
+    }
+
+
+}

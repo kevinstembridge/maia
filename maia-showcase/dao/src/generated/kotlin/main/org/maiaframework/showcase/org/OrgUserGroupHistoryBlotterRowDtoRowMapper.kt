@@ -4,9 +4,9 @@
 package org.maiaframework.showcase.org
 
 import org.maiaframework.domain.ChangeType
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
-import org.maiaframework.showcase.auth.Authority
 
 
 class OrgUserGroupHistoryBlotterRowDtoRowMapper : MaiaRowMapper<OrgUserGroupHistoryBlotterRowDto> {
@@ -14,7 +14,7 @@ class OrgUserGroupHistoryBlotterRowDtoRowMapper : MaiaRowMapper<OrgUserGroupHist
 
     override fun mapRow(rsa: ResultSetAdapter): OrgUserGroupHistoryBlotterRowDto {
 
-        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
         val description = rsa.readString("description")
         val name = rsa.readString("name")

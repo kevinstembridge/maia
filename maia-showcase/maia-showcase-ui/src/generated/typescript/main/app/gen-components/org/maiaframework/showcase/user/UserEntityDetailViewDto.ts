@@ -2,11 +2,10 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/LifecycleState';
-import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
 
 
 export interface UserEntityDetailViewDto {
-    authorities: ReadonlyArray<Authority>;
+    authorities: ReadonlyArray<string>;
     createdBy?: string;
     createdTimestampUtc: string;
     displayName: string;

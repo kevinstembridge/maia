@@ -3,9 +3,9 @@
 
 package org.maiaframework.showcase.user
 
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
-import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.org.OrgUserGroupEntity
 
 
@@ -31,7 +31,7 @@ class UserGroupEntityRowMapper : MaiaRowMapper<UserGroupEntity> {
 
     private fun orgUserGroupEntityFrom(rsa: ResultSetAdapter): OrgUserGroupEntity {
 
-        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")
@@ -56,7 +56,7 @@ class UserGroupEntityRowMapper : MaiaRowMapper<UserGroupEntity> {
 
     private fun userGroupEntityFrom(rsa: ResultSetAdapter): UserGroupEntity {
 
-        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")

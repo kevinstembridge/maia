@@ -5,6 +5,9 @@ import java.io.File
 class ModuleGeneratorArgs(args: Array<String>) {
 
 
+    val applicationSpecClassName: String
+
+
     val specificationClassNames: List<String>
 
 
@@ -36,10 +39,13 @@ class ModuleGeneratorArgs(args: Array<String>) {
 
         val argsMap = args.map { it.split("=") }.associate { Pair(it[0], it[1]) }
 
-        val specificationClassNamesCsv = argsMap["specificationClassNames"]
-            ?: throw IllegalArgumentException("Expecting an argument named specificationClassNames=<...>, a comma-separated list of fully qualified class names")
+//        val specificationClassNamesCsv = argsMap["specificationClassNames"]
+//            ?: throw IllegalArgumentException("Expecting an argument named specificationClassNames=<...>, a comma-separated list of fully qualified class names")
 
-        this.specificationClassNames = specificationClassNamesCsv.split(",")
+        this.applicationSpecClassName = argsMap["applicationSpecClassName"]
+            ?: throw IllegalArgumentException("Expecting an argument named applicationSpecClassName=<...>, the fully qualified class name of the application specification")
+
+        this.specificationClassNames = emptyList<String>() // specificationClassNamesCsv.split(",")
 
         this.generatedSourceDir = File(argsMap["generatedSourceDir"] ?: "src/generated")
         this.kotlinMainOutputDir = File(this.generatedSourceDir, "kotlin/main")

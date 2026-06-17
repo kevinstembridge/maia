@@ -4,6 +4,7 @@ import org.maiaframework.props.repo.DatabasePropsRepo
 import org.maiaframework.props.repo.InMemoryPropsRepo
 import org.maiaframework.props.repo.PropsRepo
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.props.hazelcast.HazelcastConfig
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -45,6 +46,14 @@ class MaiaPropsAutoConfiguration {
     fun propsManager(propsRepo: PropsRepo): PropsManager {
 
         return PropsManager(propsRepo)
+
+    }
+
+
+    @Bean
+    fun propsHazelcastConfig(): HazelcastConfig {
+
+        return HazelcastConfig()
 
     }
 

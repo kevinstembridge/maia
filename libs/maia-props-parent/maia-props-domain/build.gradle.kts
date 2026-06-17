@@ -47,7 +47,7 @@ tasks {
 tasks.register<JavaExec>("maiaGeneration") {
 
     group = BasePlugin.BUILD_GROUP
-    inputs.files(file("../maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsSpec"))
+    inputs.files(file("../maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsSpec"), file("../maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsApplicationSpec"))
     outputs.dir("src/generated/kotlin/main")
     outputs.dir("src/generated/resources/main")
     outputs.dir("src/generated/kotlin/test")
@@ -55,7 +55,7 @@ tasks.register<JavaExec>("maiaGeneration") {
 
     classpath = configurations["maiagen"].asFileTree
     mainClass.set("org.maiaframework.gen.generator.DomainModuleGeneratorKt")
-    args("specificationClassNames=org.maiaframework.props.spec.PropsSpec")
+    args("applicationSpecClassName=org.maiaframework.props.spec.PropsApplicationSpec")
 
 }
 

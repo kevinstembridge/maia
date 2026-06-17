@@ -3,9 +3,9 @@
 
 package org.maiaframework.showcase.org
 
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
-import org.maiaframework.showcase.auth.Authority
 
 
 class OrgUserGroupEntityRowMapper : MaiaRowMapper<OrgUserGroupEntity> {
@@ -13,7 +13,7 @@ class OrgUserGroupEntityRowMapper : MaiaRowMapper<OrgUserGroupEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): OrgUserGroupEntity {
 
-        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")

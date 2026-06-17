@@ -60,7 +60,7 @@ class UserHistoryDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addListOfStrings("authorities", entity.authorities.map { it.name })
+                addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
@@ -115,7 +115,7 @@ class UserHistoryDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addListOfStrings("authorities", entity.authorities.map { it.name })
+                    addListOfStrings("authorities", entity.authorities.map { it.value })
                     addValue("changeType", entity.changeType)
                     addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)

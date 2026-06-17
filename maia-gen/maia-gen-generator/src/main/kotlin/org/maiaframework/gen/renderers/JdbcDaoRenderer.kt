@@ -2129,7 +2129,6 @@ class JdbcDaoRenderer(
 
                 val fieldValueAsClause = fieldValueAsClauseFor(classFieldDef)
 
-
                 appendLine("            \"${classFieldName}\" -> sqlParams.$sqlParamsAddFunc(\"$classFieldName\", $fieldValueAsClause)$sqlParamsMapperFunc")
 
             }
@@ -2230,7 +2229,7 @@ class JdbcDaoRenderer(
             is SimpleResponseDtoFieldType -> TODO()
             is StringFieldType -> "field.value as List<String>"
             is StringTypeFieldType -> TODO()
-            is StringValueClassFieldType -> TODO()
+            is StringValueClassFieldType -> "field.value as List<${parameterFieldType.unqualifiedToString}>"
             is UrlFieldType -> TODO()
         }
 

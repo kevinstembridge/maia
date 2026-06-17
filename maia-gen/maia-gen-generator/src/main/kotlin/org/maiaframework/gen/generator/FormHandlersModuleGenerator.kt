@@ -9,13 +9,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = FormHandlersModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = FormHandlersModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -40,7 +35,7 @@ class FormHandlersModuleGenerator(
 
     private fun renderFormModels() {
 
-        this.modelDef.formModelDefs.forEach { this.renderFormModelHandler(it) }
+        this.applicationModelDef.formModelDefs.forEach { this.renderFormModelHandler(it) }
 
     }
 

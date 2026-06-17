@@ -2,11 +2,11 @@ package org.maiaframework.toggles
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.hazelcast.core.HazelcastInstance
-import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.json.JsonFacade
 import org.maiaframework.toggles.activation.ActivationStrategyRegistry
 import org.maiaframework.toggles.activation.UsernameActivationStrategy
+import org.maiaframework.toggles.hazelcast.HazelcastConfig
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -70,9 +70,9 @@ class MaiaTogglesAutoConfiguration {
 
 
     @Bean
-    fun toggleHazelcastConfig(featureToggleSerializer: FeatureToggleSerializer): Maia_togglesHazelcastConfig {
+    fun toggleHazelcastConfig(featureToggleSerializer: FeatureToggleSerializer): HazelcastConfig {
 
-        return Maia_togglesHazelcastConfig(featureToggleSerializer)
+        return HazelcastConfig(featureToggleSerializer)
 
     }
 

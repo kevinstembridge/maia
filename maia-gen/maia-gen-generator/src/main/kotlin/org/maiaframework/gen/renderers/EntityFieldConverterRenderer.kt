@@ -39,9 +39,7 @@ class EntityFieldConverterRenderer(private val entityDef: EntityDef) : AbstractK
             if (fieldWriterClassField != null) {
 
                 val fieldWriterClassFieldName = fieldWriterClassField.classFieldName
-                val fieldType = fieldDef.classFieldDef.fieldType
-
-                when (fieldType) {
+                when (val fieldType = fieldDef.classFieldDef.fieldType) {
                     is ListFieldType -> appendLine("                return (inputValue as List<${fieldType.parameterFieldType.unqualifiedToString}>).map($fieldWriterClassFieldName::writeField)")
                     else -> appendLine("                return $fieldWriterClassFieldName.writeField(inputValue as ${fieldDef.classFieldDef.unqualifiedToString})")
                 }

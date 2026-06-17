@@ -5,8 +5,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/auth/current-user-store';
-import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
+import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/current-user-store';
+import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth-service';
 import {CurrentUserAuthStore} from './state/current-user-auth-store';
 import {MyPermissionsDialog} from './components/my-permissions-dialog/my-permissions-dialog';
 

@@ -4,7 +4,7 @@
 package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.ChangeType
-import org.maiaframework.showcase.auth.Authority
+import org.maiaframework.domain.auth.Authority
 
 
 data class UserGroupHistoryBlotterRowDto(

@@ -1,9 +1,11 @@
 package org.maiaframework.gen.generator
 
+import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.ModelDef
 
 data class ModuleGeneratorFixture(
     val maiaGenerationContext: MaiaGenerationContext,
+    val applicationModelDef: ApplicationModelDef,
     val modelDefs: List<ModelDef>,
 ) {
 
@@ -27,7 +29,9 @@ data class ModuleGeneratorFixture(
 
             val modelDefs = moduleGeneratorArgs.specificationClassNames.map { ModelDefInstantiator.instantiate(it) }
 
-            return ModuleGeneratorFixture(maiaGenerationContext, modelDefs)
+            val applicationModelDef = ApplicationModelDefInstantiator.instantiate(moduleGeneratorArgs.applicationSpecClassName)
+
+            return ModuleGeneratorFixture(maiaGenerationContext, applicationModelDef, modelDefs)
 
         }
 

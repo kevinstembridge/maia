@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractPlaywrightTest
-import org.maiaframework.showcase.auth.Authority
+import org.maiaframework.showcase.Authority
 import org.maiaframework.showcase.testing.fixtures.UserFixture
 
 class UsersCrudPlaywrightTest : AbstractPlaywrightTest() {
@@ -20,7 +20,7 @@ class UsersCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         anotherUser = fixtures.aUser(
             loginMailVerified = true,
-            { it.copy(authorities = listOf(Authority.READ)) }
+            { it.copy(authorities = listOf(org.maiaframework.domain.auth.Authority(Authority.READ.name))) }
         )
 
         fixtures.resetDatabaseState()

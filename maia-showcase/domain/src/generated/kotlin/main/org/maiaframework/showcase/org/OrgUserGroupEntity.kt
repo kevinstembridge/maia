@@ -4,7 +4,7 @@
 package org.maiaframework.showcase.org
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.showcase.auth.Authority
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.showcase.user.UserGroupEntity
 import java.time.Instant
 

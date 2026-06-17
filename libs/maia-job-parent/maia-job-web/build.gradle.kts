@@ -47,7 +47,7 @@ tasks {
 tasks.register<JavaExec>("maiaGeneration") {
 
     group = BasePlugin.BUILD_GROUP
-    inputs.files(file("../maia-job-spec/src/main/kotlin/org/maiaframework/job/spec/MaiaJobSpec"))
+    inputs.files(file("../maia-job-spec/src/main/kotlin/org/maiaframework/job/spec/MaiaJobApplicationSpec"), file("../maia-job-spec/src/main/kotlin/org/maiaframework/job/spec/MaiaJobSpec"))
     outputs.dir("src/generated/kotlin/main")
     outputs.dir("src/generated/resources/main")
     outputs.dir("src/generated/kotlin/test")
@@ -55,7 +55,7 @@ tasks.register<JavaExec>("maiaGeneration") {
 
     classpath = configurations["maiagen"].asFileTree
     mainClass.set("org.maiaframework.gen.generator.WebLayerModuleGeneratorKt")
-    args("specificationClassNames=org.maiaframework.job.spec.MaiaJobSpec")
+    args("applicationSpecClassName=org.maiaframework.job.spec.MaiaJobApplicationSpec")
 
 }
 

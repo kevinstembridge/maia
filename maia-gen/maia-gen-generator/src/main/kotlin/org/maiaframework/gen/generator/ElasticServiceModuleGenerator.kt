@@ -9,13 +9,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = ElasticServiceModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = ElasticServiceModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -41,7 +36,7 @@ class ElasticServiceModuleGenerator(
 
     private fun renderTypeaheadIndexServices() {
 
-        this.modelDef.typeaheadDefs.filter { it.entityUqcn != null }.forEach {
+        this.applicationModelDef.typeaheadDefs.filter { it.entityUqcn != null }.forEach {
             TypeaheadIndexServiceRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 
@@ -50,7 +45,7 @@ class ElasticServiceModuleGenerator(
 
     private fun renderTypeaheadEsDocRepos() {
 
-        this.modelDef.typeaheadDefs
+        this.applicationModelDef.typeaheadDefs
             .filter { it.withHandCodedEsDocRepo.value == false && it.entityUqcn != null }
             .forEach { EsDocRepoRenderer(it.esDocDef).renderToDir(this.kotlinOutputDir) }
 

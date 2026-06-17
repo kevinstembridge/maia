@@ -5,11 +5,11 @@ package org.maiaframework.showcase.user
 
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
-import org.maiaframework.showcase.auth.Authority
 
 
 class UserHistoryBlotterRowDtoRowMapper : MaiaRowMapper<UserHistoryBlotterRowDto> {
@@ -17,7 +17,7 @@ class UserHistoryBlotterRowDtoRowMapper : MaiaRowMapper<UserHistoryBlotterRowDto
 
     override fun mapRow(rsa: ResultSetAdapter): UserHistoryBlotterRowDto {
 
-        val authorities = rsa.readListOfStrings("authorities") { Authority.valueOf(it) }
+        val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
         val createdBy = rsa.readDomainId("createdBy")
         val displayName = rsa.readString("displayName")

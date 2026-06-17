@@ -19,13 +19,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = ServiceLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = ServiceLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -60,16 +55,16 @@ class ServiceLayerModuleGenerator(
 
     private fun `render CrudServices`() {
 
-        this.modelDef.entityHierarchies
+        this.applicationModelDef.entityHierarchies
             .filter { it.entityDef.isConcrete && it.entityDef.isHistoryEntity == false }
-            .forEach { CrudServiceRenderer(it.entityDef, modelDef).renderToDir(this.kotlinOutputDir) }
+            .forEach { CrudServiceRenderer(it.entityDef, applicationModelDef).renderToDir(this.kotlinOutputDir) }
 
     }
 
 
     private fun `render CrudNotifiers`() {
 
-        this.modelDef.entityHierarchies
+        this.applicationModelDef.entityHierarchies
             .filter { it.entityDef.isConcrete && it.entityDef.isHistoryEntity == false && it.entityDef.crudDef.withCrudListener.value }
             .forEach { CrudNotifierRenderer(it.entityDef).renderToDir(this.kotlinOutputDir) }
 
@@ -78,7 +73,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render CrudListeners for typeaheads`() {
 
-        this.modelDef.typeaheadDefs
+        this.applicationModelDef.typeaheadDefs
             .filter { it.crudListenerClassDef != null && it.entityCrudApiDef != null }
             .forEach { typeaheadDef -> TypeaheadCrudListenerRenderer(typeaheadDef).renderToDir(this.kotlinOutputDir) }
 
@@ -87,7 +82,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render EntityDetailDto services`() {
 
-        this.modelDef.entityDetailViewDefs.forEach {
+        this.applicationModelDef.entityDetailViewDefs.forEach {
             EntityDetailDtoServiceRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 
@@ -96,9 +91,9 @@ class ServiceLayerModuleGenerator(
 
     private fun `render foreign key services`() {
 
-        this.modelDef.entitiesReferencedByForeignKey.forEach { entityDef ->
+        this.applicationModelDef.entitiesReferencedByForeignKey.forEach { entityDef ->
 
-            val referencingEntityDefs = this.modelDef.entitiesThatReference(entityDef)
+            val referencingEntityDefs = this.applicationModelDef.entitiesThatReference(entityDef)
             ForeignKeyReferenceServiceRenderer(entityDef, referencingEntityDefs).renderToDir(this.kotlinOutputDir)
 
         }
@@ -108,7 +103,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render typeahead services`() {
 
-        this.modelDef.typeaheadDefs.forEach {
+        this.applicationModelDef.typeaheadDefs.forEach {
             TypeaheadServiceRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 
@@ -117,7 +112,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render FormHandlers`() {
 
-        this.modelDef.angularFormDefs.map { it.requestDtoDef }.filter { it.withGeneratedEndpoint.value }.forEach {
+        this.applicationModelDef.angularFormDefs.map { it.requestDtoDef }.filter { it.withGeneratedEndpoint.value }.forEach {
             RequestDtoHandlerRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 
@@ -126,7 +121,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render RequestDtoHandlers`() {
 
-        this.modelDef.requestDtoDefs.filter { it.withGeneratedEndpoint.value }.forEach {
+        this.applicationModelDef.requestDtoDefs.filter { it.withGeneratedEndpoint.value }.forEach {
             RequestDtoHandlerRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 
@@ -135,7 +130,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render SearchableDtoSearchServices`() {
 
-        this.modelDef.allSearchableDtoDefs.forEach {
+        this.applicationModelDef.allSearchableDtoDefs.forEach {
             SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)
         }
 
@@ -144,7 +139,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render TableDtoSearchServices`() {
 
-        this.modelDef.blotterDefs.forEach {
+        this.applicationModelDef.blotterDefs.forEach {
 
             when (it.blotterSourceDef) {
                 is BlotterEsDocSourceDef -> ElasticSearchDtoSearchServiceRenderer(it.searchDtoDef, (it.blotterSourceDef as BlotterEsDocSourceDef).esDocDef)
@@ -158,7 +153,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render EntityHistoryBlotterServices`() {
 
-        this.modelDef.entityHistoryBlotterDefs.forEach { def ->
+        this.applicationModelDef.entityHistoryBlotterDefs.forEach { def ->
             EntityHistoryBlotterSearchServiceRenderer(def).renderToDir(this.kotlinOutputDir)
         }
 

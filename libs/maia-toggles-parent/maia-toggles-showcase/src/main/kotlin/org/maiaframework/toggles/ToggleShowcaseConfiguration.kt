@@ -2,9 +2,9 @@ package org.maiaframework.toggles
 
 import com.hazelcast.config.Config
 import com.hazelcast.config.YamlConfigBuilder
-import maia_toggles.hazelcast.Maia_togglesHazelcastConfig
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.toggles.activation.ActivationStrategy
+import org.maiaframework.toggles.hazelcast.HazelcastConfig
 import org.maiaframework.toggles.sample.SampleFeatureOne
 import org.maiaframework.toggles.sample.SampleFeatureTwo
 import org.springframework.context.annotation.Bean
@@ -52,7 +52,7 @@ class ToggleShowcaseConfiguration {
 
     @Bean
     fun hazelcastConfig(
-        togglesHazelcastConfig: Maia_togglesHazelcastConfig
+        togglesHazelcastConfig: HazelcastConfig
     ): Config {
 
         val config: Config = YamlConfigBuilder().build()

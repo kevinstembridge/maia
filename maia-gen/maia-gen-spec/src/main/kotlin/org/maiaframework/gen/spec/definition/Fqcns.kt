@@ -67,6 +67,7 @@ object Fqcns {
     val MAIA_AG_GRID_SEARCH_MODEL_CONVERTER = Fqcn.valueOf("org.maiaframework.jdbc.search.AgGridSearchModelConverter")
     val MAIA_AG_GRID_SEARCHABLE_EXCEPTION = Fqcn.valueOf("org.maiaframework.domain.search.AgGridSearchableException")
     val MAIA_AG_GRID_SORT_MODEL_ITEM = Fqcn.valueOf("org.maiaframework.domain.search.AgGridSortModelItem")
+    val MAIA_AUTHORITY = Fqcn.valueOf("org.maiaframework.domain.auth.Authority")
     val MAIA_CHANGE_TYPE = Fqcn.valueOf("org.maiaframework.domain.ChangeType")
     val MAIA_COMPACT_READER_EXTENSION_READ_COMPACT_NON_NULL = Fqcn.valueOf("org.maiaframework.hazelcast.serializers.CompactReaderExtension.readCompactNonNull")
     val MAIA_COMPACT_READER_EXTENSION_READ_FLOAT32_NON_NULL = Fqcn.valueOf("org.maiaframework.hazelcast.serializers.CompactReaderExtension.readFloat32NonNull")

@@ -8,13 +8,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = EntityRepoModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = EntityRepoModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -39,7 +34,7 @@ class EntityRepoModuleGenerator(
 
     private fun `render Entity repos`() {
 
-        this.modelDef.entityHierarchies.forEach {
+        this.applicationModelDef.entityHierarchies.forEach {
             EntityRepoRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 

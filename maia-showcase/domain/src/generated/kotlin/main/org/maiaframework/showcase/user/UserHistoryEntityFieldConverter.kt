@@ -7,9 +7,9 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityFieldConverter
 import org.maiaframework.domain.LifecycleState
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
-import org.maiaframework.showcase.auth.Authority
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -23,13 +23,7 @@ class UserHistoryEntityFieldConverter : EntityFieldConverter {
         when (tableColumnName) {
 
             "authorities" -> // authorities
-                {
-                    if (inputValue is List<*>) {
-                        return (inputValue as List<Authority>).map { it.name }
-                    } else {
-                        return (inputValue as Authority).name
-                    }
-                }
+                return inputValue
             "change_type" -> // changeType
                 return (inputValue as ChangeType).name
             "created_by_id" -> // createdBy

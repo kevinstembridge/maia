@@ -16,22 +16,10 @@ dependencies {
     implementation(project(":maia-showcase:domain"))
 
     api("org.maiaframework:maia-common")
-//    api("org.maiaframework:maia-csv")
     api("org.maiaframework:maia-domain")
     api("org.maiaframework:maia-lang")
-//    api("org.maiaframework:maia-staging-csv")
-//    api("org.maiaframework:maia-webapp-domain")
 
-//    implementation("org.maiaframework:maia-hazelcast")
     implementation("org.maiaframework:maia-jdbc")
-
-//    implementation("com.hazelcast:hazelcast")
-//    implementation("org.hibernate.validator:hibernate-validator")
-
-//    testImplementation("org.junit.jupiter:junit-jupiter")
-//    testImplementation("org.assertj:assertj-core")
-
-//    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     maiagen(project(":maia-gen:maia-gen-generator"))
     maiagen(project(":maia-showcase:spec"))
@@ -70,7 +58,7 @@ tasks.register<JavaExec>("maiaGeneration") {
 
     classpath = configurations["maiagen"].asFileTree
     mainClass.set("org.maiaframework.gen.generator.DaoLayerModuleGeneratorKt")
-    args("specificationClassNames=org.maiaframework.showcase.MaiaShowcaseSpec,org.maiaframework.showcase.MaiaShowcasePartySpec")
+    args("applicationSpecClassName=org.maiaframework.showcase.MaiaShowcaseApplicationSpec")
 
 }
 

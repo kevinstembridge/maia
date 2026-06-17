@@ -45,7 +45,7 @@ tasks {
 tasks.register<JavaExec>("maiaGeneration") {
 
     group = BasePlugin.BUILD_GROUP
-    inputs.files(file("../maia-file-storage-spec/src/main/kotlin/org/maiaframework/storage/spec/StorageSpec"))
+    inputs.files(file("../maia-file-storage-spec/src/main/kotlin/org/maiaframework/storage/spec/StorageApplicationSpec"), file("../maia-file-storage-spec/src/main/kotlin/org/maiaframework/storage/spec/StorageSpec"))
     outputs.dir("src/generated/kotlin/main")
     outputs.dir("src/generated/resources/main")
     outputs.dir("src/generated/kotlin/test")
@@ -53,7 +53,7 @@ tasks.register<JavaExec>("maiaGeneration") {
 
     classpath = configurations["maiagen"].asFileTree
     mainClass.set("org.maiaframework.gen.generator.DomainModuleGeneratorKt")
-    args("specificationClassNames=org.maiaframework.storage.spec.StorageSpec")
+    args("applicationSpecClassName=org.maiaframework.storage.spec.StorageApplicationSpec")
 
 }
 

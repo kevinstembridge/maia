@@ -12,7 +12,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.maiaframework.domain.contact.EmailAddress
-import org.maiaframework.showcase.auth.Authority
 import org.maiaframework.showcase.testing.pages.LoginPage
 import org.maiaframework.showcase.testing.fixtures.UserFixture
 import org.maiaframework.showcase.testing.pages.AllFieldTypesBlotterPage
@@ -265,7 +264,11 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected fun initAdminUserFixture() {
         adminUser = fixtures.aUser(
             loginMailVerified = true,
-            { userEntityTestBuilder -> userEntityTestBuilder.copy(authorities = listOf(Authority.WRITE)) }
+            { userEntityTestBuilder -> userEntityTestBuilder.copy(authorities = listOf(
+                org.maiaframework.domain.auth.Authority(
+                    Authority.WRITE.name
+                )
+            )) }
         )
     }
 

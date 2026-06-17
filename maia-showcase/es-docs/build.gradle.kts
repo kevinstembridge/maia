@@ -59,7 +59,7 @@ tasks.register<JavaExec>("maiaGeneration") {
 
     classpath = configurations["maiagen"].asFileTree
     mainClass.set("org.maiaframework.gen.generator.EsDocsModuleGeneratorKt")
-    args("specificationClassNames=org.maiaframework.showcase.MaiaShowcaseSpec")
+    args("applicationSpecClassName=org.maiaframework.showcase.MaiaShowcaseApplicationSpec")
 
 }
 

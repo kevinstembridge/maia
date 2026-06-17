@@ -6,13 +6,13 @@ package org.maiaframework.showcase.org
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
-import org.maiaframework.showcase.auth.Authority
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
@@ -58,7 +58,7 @@ class OrgUserGroupDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addListOfStrings("authorities", entity.authorities.map { it.name })
+                addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("description", entity.description)
                 addValue("id", entity.id)
@@ -102,7 +102,7 @@ class OrgUserGroupDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addListOfStrings("authorities", entity.authorities.map { it.name })
+                    addListOfStrings("authorities", entity.authorities.map { it.value })
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("description", entity.description)
                     addValue("id", entity.id)
@@ -406,7 +406,7 @@ class OrgUserGroupDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "authorities" -> sqlParams.addListOfStrings("authorities", field.value as List<Authority>) { it.name }
+            "authorities" -> sqlParams.addListOfStrings("authorities", field.value as List<Authority>) { it.value }
             "description" -> sqlParams.addValue("description", field.value as String)
             "name" -> sqlParams.addValue("name", field.value as String)
             "systemManaged" -> sqlParams.addValue("systemManaged", field.value as Boolean)

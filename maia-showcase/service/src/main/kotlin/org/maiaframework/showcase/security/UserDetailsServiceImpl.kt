@@ -70,7 +70,7 @@ class UserDetailsServiceImpl(
 
         return userEntity
             .authorities
-            .map { SimpleGrantedAuthority(it.name) }
+            .map { SimpleGrantedAuthority(it.value) }
             .toSortedSet(java.util.Comparator.comparing { it.authority ?: "" })
 
     }
@@ -88,7 +88,7 @@ class UserDetailsServiceImpl(
 
         val userGroups: List<UserGroupEntity> = this.userGroupRepo.findAllBy(userGroupFilter)
 
-        return userGroups.flatMap { it.authorities }.map { SimpleGrantedAuthority(it.name) }.toSet()
+        return userGroups.flatMap { it.authorities }.map { SimpleGrantedAuthority(it.value) }.toSet()
 
     }
 

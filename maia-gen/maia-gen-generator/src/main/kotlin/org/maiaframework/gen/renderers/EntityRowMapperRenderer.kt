@@ -280,7 +280,7 @@ class EntityRowMapperRenderer(
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
             is StringFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readListOfStrings(\"${resultSetColumnName}\")")
             is StringTypeFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}(it) }")
-            is StringValueClassFieldType -> TODO("YAGNI?")
+            is StringValueClassFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readListOfStrings(\"${resultSetColumnName}\") { ${listElementFieldType.fqcn.uqcn}(it) }")
             is UrlFieldType -> TODO("YAGNI?")
         }
 

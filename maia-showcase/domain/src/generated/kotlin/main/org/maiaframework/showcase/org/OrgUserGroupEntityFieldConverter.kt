@@ -5,7 +5,7 @@ package org.maiaframework.showcase.org
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityFieldConverter
-import org.maiaframework.showcase.auth.Authority
+import org.maiaframework.domain.auth.Authority
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -19,13 +19,7 @@ class OrgUserGroupEntityFieldConverter : EntityFieldConverter {
         when (tableColumnName) {
 
             "authorities" -> // authorities
-                {
-                    if (inputValue is List<*>) {
-                        return (inputValue as List<Authority>).map { it.name }
-                    } else {
-                        return (inputValue as Authority).name
-                    }
-                }
+                return inputValue
             "created_timestamp_utc" -> // createdTimestampUtc
                 return inputValue
             "description" -> // description

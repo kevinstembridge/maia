@@ -13,13 +13,8 @@ fun main(args: Array<String>) {
     try {
 
         val moduleGeneratorFixture = ModuleGeneratorFixture.from(args)
-
-        moduleGeneratorFixture.modelDefs.forEach {
-
-            val modelGenerator = RepoLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
-            modelGenerator.generateSource(it)
-
-        }
+        val moduleGenerator = RepoLayerModuleGenerator(moduleGeneratorFixture.maiaGenerationContext)
+        moduleGenerator.generateSource(moduleGeneratorFixture.applicationModelDef)
 
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
@@ -48,7 +43,7 @@ class RepoLayerModuleGenerator(
 
     private fun `render Entity repos`() {
 
-        this.modelDef.entityHierarchies.forEach {
+        this.applicationModelDef.entityHierarchies.forEach {
             EntityRepoRenderer(it).renderToDir(this.kotlinOutputDir)
         }
 
@@ -57,7 +52,7 @@ class RepoLayerModuleGenerator(
 
     private fun `render ResponseDto repos`() {
 
-        this.modelDef.responseDtoDefs.forEach {
+        this.applicationModelDef.responseDtoDefs.forEach {
             ResponseDtoRepoRenderer(it).renderToDir(kotlinOutputDir)
         }
 
@@ -66,7 +61,7 @@ class RepoLayerModuleGenerator(
 
     private fun `render SearchableDto repos`() {
 
-        modelDef.allSearchableDtoDefs.forEach {
+        applicationModelDef.allSearchableDtoDefs.forEach {
             processSearchableDtoDef(it)
         }
 
@@ -82,7 +77,7 @@ class RepoLayerModuleGenerator(
 
     private fun `render EntityDetailDto repos`() {
 
-        modelDef.entityDetailViewDefs.forEach {
+        applicationModelDef.entityDetailViewDefs.forEach {
             EntityDetailDtoRepoRenderer(it).renderToDir(kotlinOutputDir)
         }
 
@@ -91,7 +86,7 @@ class RepoLayerModuleGenerator(
 
     private fun `render EntityHistoryBlotter repos`() {
 
-        modelDef.entityHistoryBlotterDefs.forEach { def ->
+        applicationModelDef.entityHistoryBlotterDefs.forEach { def ->
             EntityHistoryBlotterRowDtoRepoRenderer(def).renderToDir(kotlinOutputDir)
         }
 

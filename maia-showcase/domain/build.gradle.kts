@@ -11,16 +11,10 @@ val maiagen by configurations.creating
 
 dependencies {
 
-//    api("org.maiaframework:maia-common")
     api("org.maiaframework:maia-domain")
-//    api("org.maiaframework:maia-lang")
 
     implementation("org.maiaframework:maia-hazelcast")
     implementation("org.maiaframework:maia-jdbc")
-//    implementation("org.maiaframework:maia-webapp-domain")
-
-//    implementation("com.hazelcast:hazelcast")
-//    implementation("org.hibernate.validator:hibernate-validator")
 
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core")
@@ -60,7 +54,7 @@ tasks.register<JavaExec>("maiaGeneration") {
 
     classpath = configurations["maiagen"].asFileTree
     mainClass.set("org.maiaframework.gen.generator.DomainModuleGeneratorKt")
-    args("specificationClassNames=org.maiaframework.showcase.MaiaShowcaseSpec,org.maiaframework.showcase.MaiaShowcasePartySpec")
+    args("applicationSpecClassName=org.maiaframework.showcase.MaiaShowcaseApplicationSpec")
 
 }
 

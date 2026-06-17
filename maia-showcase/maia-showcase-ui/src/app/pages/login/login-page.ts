@@ -1,8 +1,8 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
-import {LoginRequestDto} from '@app/gen-components/org/maiaframework/showcase/auth/LoginRequestDto';
-import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/auth/current-user-store';
+import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth-service';
+import {LoginRequestDto} from '@app/gen-components/org/maiaframework/showcase/LoginRequestDto';
+import {CurrentUserStore} from '@app/gen-components/org/maiaframework/showcase/current-user-store';
 import {LoginForm} from '@app/gen-components/org/maiaframework/showcase/login/login-form';
 
 

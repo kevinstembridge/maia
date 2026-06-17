@@ -4,6 +4,8 @@ import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.AppKey
+import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.ValueClassDefs
 import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
@@ -12,6 +14,7 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
+import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
@@ -23,18 +26,20 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
+    val esWriteAuthority = authority("MAIA_ELASTICSEARCH_SYS_OPS_WRITE")
+
+
+    val esReadAuthority = authority("MAIA_ELASTICSEARCH_SYS_OPS_READ")
+
+
+    val jobWriteAuthority = authority("MAIA_JOB_WRITE")
+
+
+    val jobReadAuthority = authority("MAIA_JOB_READ")
+
+
     val writeAuthority = authority("WRITE") {
         description = "Grants write access."
-    }
-
-
-    val authoritiesDef = authorities("org.maiaframework.showcase.auth", "Authority") {
-        authority(readAuthority)
-        authority(writeAuthority)
-        authority("MAIA_ELASTICSEARCH_SYS_OPS_WRITE")
-        authority("MAIA_ELASTICSEARCH_SYS_OPS_READ")
-        authority("MAIA_JOB_READ")
-        authority("MAIA_JOB_WRITE")
     }
 
 
@@ -209,7 +214,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     ) {
         superclass(personEntityDef)
         typeDiscriminator("USR")
-        field("authorities", fieldListOf(authoritiesDef.enumDef)) {
+        field("authorities", fieldListOf(ValueClassDefs.authority)) {
             fieldDisplayName("Authorities")
             editableByUser()
         }
@@ -299,7 +304,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field("systemManaged", FieldTypes.boolean) {
             editableByUser()
         }
-        field("authorities", fieldListOf(authoritiesDef.enumDef)) {
+        field("authorities", fieldListOf(ValueClassDefs.authority)) {
             editableByUser()
         }
     }

@@ -1,6 +1,6 @@
 package org.maiaframework.gen.generator
 
-import org.maiaframework.gen.spec.definition.ModelDef
+import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import java.lang.reflect.InvocationTargetException
 
 
@@ -18,14 +18,14 @@ abstract class AbstractModuleGenerator(
     protected val typescriptOutputDir = maiaGenerationContext.typescriptOutputDir
 
 
-    protected lateinit var modelDef: ModelDef
+    protected lateinit var applicationModelDef: ApplicationModelDef
 
 
-    fun generateSource(modelDef: ModelDef) {
+    fun generateSource(applicationModelDef: ApplicationModelDef) {
 
         try {
 
-            this.modelDef = modelDef
+            this.applicationModelDef = applicationModelDef
             onGenerateSource()
 
         } catch (e: InvocationTargetException) {

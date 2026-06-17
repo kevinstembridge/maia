@@ -7,8 +7,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PageLayout} from '@app/components/page-layout/page-layout';
-import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
-import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
+import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth-service';
 import {HistorySampleEntityDetailView} from '@app/gen-components/org/maiaframework/showcase/history/history-sample-entity-detail-view';
 import {map} from 'rxjs';
 

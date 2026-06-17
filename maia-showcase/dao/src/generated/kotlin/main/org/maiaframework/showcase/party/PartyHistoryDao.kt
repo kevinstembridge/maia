@@ -124,7 +124,7 @@ class PartyHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", UserHistoryEntityMeta.TYPE_DISCRIMINATOR)
-                addListOfStrings("authorities", entity.authorities.map { it.name })
+                addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)

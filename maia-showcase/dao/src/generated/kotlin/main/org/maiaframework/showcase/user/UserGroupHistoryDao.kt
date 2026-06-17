@@ -67,7 +67,7 @@ class UserGroupHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", OrgUserGroupHistoryEntityMeta.TYPE_DISCRIMINATOR)
-                addListOfStrings("authorities", entity.authorities.map { it.name })
+                addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("changeType", entity.changeType)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("description", entity.description)
@@ -110,7 +110,7 @@ class UserGroupHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("typeDiscriminator", UserGroupHistoryEntityMeta.TYPE_DISCRIMINATOR)
-                addListOfStrings("authorities", entity.authorities.map { it.name })
+                addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("changeType", entity.changeType)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("description", entity.description)
@@ -153,7 +153,7 @@ class UserGroupHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("typeDiscriminator", UserGroupHistoryEntityMeta.TYPE_DISCRIMINATOR)
-                    addListOfStrings("authorities", entity.authorities.map { it.name })
+                    addListOfStrings("authorities", entity.authorities.map { it.value })
                     addValue("changeType", entity.changeType)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("description", entity.description)

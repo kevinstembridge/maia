@@ -54,7 +54,7 @@ class OrgUserGroupHistoryDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addListOfStrings("authorities", entity.authorities.map { it.name })
+                addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("changeType", entity.changeType)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("description", entity.description)
@@ -99,7 +99,7 @@ class OrgUserGroupHistoryDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addListOfStrings("authorities", entity.authorities.map { it.name })
+                    addListOfStrings("authorities", entity.authorities.map { it.value })
                     addValue("changeType", entity.changeType)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("description", entity.description)

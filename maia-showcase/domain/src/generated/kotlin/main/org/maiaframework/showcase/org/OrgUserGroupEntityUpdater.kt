@@ -4,8 +4,8 @@
 package org.maiaframework.showcase.org
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.auth.Authority
 import org.maiaframework.domain.persist.FieldUpdate
-import org.maiaframework.showcase.auth.Authority
 
 
 data class OrgUserGroupEntityUpdater(

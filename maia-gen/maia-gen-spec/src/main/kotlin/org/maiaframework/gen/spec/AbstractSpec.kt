@@ -1,7 +1,6 @@
 package org.maiaframework.gen.spec
 
 import org.maiaframework.domain.persist.SchemaName
-import org.maiaframework.gen.spec.AbstractSpec.AuthoritiesBuilder.AuthorityBuilder
 import org.maiaframework.gen.spec.definition.AngularComponentBaseName
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AnnotationDefs
@@ -116,6 +115,7 @@ abstract class AbstractSpec protected constructor(
 
     private val angularFormDefs = mutableListOf<AngularFormDef>()
     private var authoritiesDef: AuthoritiesDef? = null
+    private val authorityDefs = mutableListOf<AuthorityDef>()
     private val basePackageName = basePackageName ?: PackageName(appKey.value.lowercase())
     private val booleanTypeDefs = mutableListOf<BooleanTypeDef>()
     private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
@@ -163,7 +163,7 @@ abstract class AbstractSpec protected constructor(
             return ModelDef(
                 this.appKey,
                 this.rootEntityHierarchies,
-                this.authoritiesDef,
+                this.authorityDefs,
                 this.formModelDefs,
                 this.entityCreateHtmlFormDefs,
                 this.requestDtoDefs,
@@ -731,6 +731,13 @@ abstract class AbstractSpec protected constructor(
     }
 
 
+    protected fun fieldListOf(stringValueClassDef: StringValueClassDef): ListFieldType {
+
+        return FieldTypes.list(FieldTypes.stringValueClass(stringValueClassDef))
+
+    }
+
+
     protected fun fieldListOf(dataClassDef: DataClassDef): ListFieldType {
 
         return FieldTypes.list(FieldTypes.dataClass(dataClassDef))
@@ -1188,110 +1195,24 @@ abstract class AbstractSpec protected constructor(
 
         val authorityBuilder = AuthorityBuilder(name)
         init?.invoke(authorityBuilder)
-        return authorityBuilder.build()
+        val authorityDef = authorityBuilder.build()
+        this.authorityDefs.add(authorityDef)
+        return authorityDef
 
     }
 
 
-    fun authorities(
-        packageName: String,
-        className: String,
-        init: AuthoritiesBuilder.() -> Unit
-    ): AuthoritiesDef {
-
-        if (this.authoritiesDef != null) {
-            throw IllegalStateException("The authorities function can only be called once.")
-        }
-
-        val builder = AuthoritiesBuilder(PackageName(packageName), className)
-        builder.init()
-        val def = builder.build()
-        this.authoritiesDef = def
-        return def
-
-    }
+    class AuthorityBuilder(val name: String) {
 
 
-    class AuthoritiesBuilder(
-        private val packageName: PackageName,
-        private val className: String
-    ) {
+        var description: String? = null
 
 
-        private val authorityDefs = mutableListOf<AuthorityDef>()
-
-
-        fun build(): AuthoritiesDef {
-
-            val enumUqcn = Uqcn(className)
-            val fqcn = packageName.uqcn(enumUqcn)
-
-            val enumValueDefs = this.authorityDefs.map {
-                EnumValueDef(
-                    name = it.name,
-                    description = it.description,
-                    displayName = DisplayName(it.name),
-                    isDefaultFormValue = false
-                )
-            }
-
-            val enumDef = EnumDef(
-                fqcn,
-                enumValueDefs,
-                isProvided = false,
-                withTypescript = true,
-                withEnumSelectionOptions = true
+        fun build(): AuthorityDef {
+            return AuthorityDef(
+                this.name,
+                this.description?.let { Description(it) }
             )
-
-            return AuthoritiesDef(enumDef)
-
-        }
-
-
-        fun adopt(authoritiesDef: AuthoritiesDef) {
-
-            authoritiesDef.enumDef.enumValueDefs.forEach { enumValueDef ->
-                this.authorityDefs.add(AuthorityDef(enumValueDef.name, enumValueDef.description))
-            }
-
-        }
-
-
-        fun authority(authorityDef: AuthorityDef) {
-
-            this.authorityDefs.add(authorityDef)
-
-        }
-
-
-        fun authority(
-            name: String,
-            init: (AuthorityBuilder.() -> Unit)? = null
-        ): AuthorityDef {
-
-            val builder = AuthorityBuilder(name)
-            init?.invoke(builder)
-            val authorityDef = builder.build()
-            this.authorityDefs.add(authorityDef)
-            return authorityDef
-
-        }
-
-
-        class AuthorityBuilder(val name: String) {
-
-
-            var description: String? = null
-
-
-            fun build(): AuthorityDef {
-                return AuthorityDef(
-                    this.name,
-                    this.description?.let { Description(it) }
-                )
-            }
-
-
         }
 
 

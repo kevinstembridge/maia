@@ -6,8 +6,8 @@ import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@an
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {Authority} from '@app/gen-components/org/maiaframework/showcase/auth/Authority';
-import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth/auth-service';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
+import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth-service';
 import {CharlieBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/join/CharlieBlotterAgGridDatasource';
 import {CharlieBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieBlotterRowDto';
 import {CharlieBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-blotter-service';

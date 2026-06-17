@@ -107,7 +107,7 @@ object SqlParamFunctions {
             is SimpleResponseDtoFieldType -> TODO()
             is StringFieldType -> "addListOfStrings"
             is StringTypeFieldType -> "addListOfStrings"
-            is StringValueClassFieldType -> TODO()
+            is StringValueClassFieldType -> "addListOfStrings"
             is UrlFieldType -> TODO()
         }
 
@@ -183,7 +183,7 @@ object SqlParamFunctions {
             is SimpleResponseDtoFieldType -> ""
             is StringFieldType -> ""
             is StringTypeFieldType -> ""
-            is StringValueClassFieldType -> ""
+            is StringValueClassFieldType -> " { it.value }"
             is UrlFieldType -> ""
         }
 
@@ -233,7 +233,7 @@ object SqlParamFunctions {
                 is SimpleResponseDtoFieldType -> TODO("YAGNI")
                 is StringFieldType -> lineAppender("${indent}addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName)")
                 is StringTypeFieldType -> lineAppender("${indent}addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.value })")
-                is StringValueClassFieldType -> TODO("YAGNI")
+                is StringValueClassFieldType -> lineAppender("${indent}addListOfStrings(\"$fieldName\", $entityNamePrefix$fieldName.map { it.value })")
                 is UrlFieldType -> TODO("YAGNI")
             }
 
