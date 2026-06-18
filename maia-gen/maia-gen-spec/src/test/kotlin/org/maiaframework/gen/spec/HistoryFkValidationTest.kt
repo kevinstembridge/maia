@@ -66,6 +66,26 @@ class HistoryFkValidationTest {
 
 
     @Test
+    fun `non-history entity FKing a non-history entity is valid`() {
+
+        val spec = object : AbstractSpec(AppKey("Test")) {
+
+            val parent = entity("com.example", "Parent") {
+                field("name", FieldTypes.string) { fieldDisplayName("Name") }
+            }
+
+            val child = entity("com.example", "Child") {
+                foreignKey("parent", parent) { fieldDisplayName("Parent") }
+            }
+
+        }
+
+        assertThatNoException().isThrownBy { spec.modelDef }
+
+    }
+
+
+    @Test
     fun `history entity FKing another history entity is valid`() {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
