@@ -184,7 +184,7 @@ class NonSurrogateIdPrimaryKeyDao(
         return jdbcOps.queryForList(
             "select * from maia.non_surrogate_id_primary_key where id = :id",
             SqlParams().apply {
-            addValue("id", id.value)
+                addValue("id", id.value)
             },
             this.entityRowMapper
         ).firstOrNull()

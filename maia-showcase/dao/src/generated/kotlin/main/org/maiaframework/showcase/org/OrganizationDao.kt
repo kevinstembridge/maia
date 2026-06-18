@@ -224,7 +224,7 @@ class OrganizationDao(
         return jdbcOps.queryForList(
             "select * from maia.v_party where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

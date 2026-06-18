@@ -219,7 +219,7 @@ class OrgUserGroupDao(
         return jdbcOps.queryForList(
             "select * from maia.user_group where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

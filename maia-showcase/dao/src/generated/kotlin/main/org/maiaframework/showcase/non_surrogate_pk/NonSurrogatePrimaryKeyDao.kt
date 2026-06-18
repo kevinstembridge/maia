@@ -184,7 +184,7 @@ class NonSurrogatePrimaryKeyDao(
         return jdbcOps.queryForList(
             "select * from maia.non_surrogate_primary_key where some_string = :someString",
             SqlParams().apply {
-            addValue("someString", someString.value)
+                addValue("someString", someString.value)
             },
             this.entityRowMapper
         ).firstOrNull()
