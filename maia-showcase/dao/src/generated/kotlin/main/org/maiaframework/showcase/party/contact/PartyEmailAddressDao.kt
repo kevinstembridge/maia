@@ -244,7 +244,7 @@ class PartyEmailAddressDao(
         return jdbcOps.queryForList(
             "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

@@ -145,7 +145,7 @@ class UserGroupMembershipDao(
         return jdbcOps.queryForList(
             "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

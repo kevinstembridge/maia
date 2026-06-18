@@ -132,7 +132,7 @@ class SimpleDao(
         return jdbcOps.queryForList(
             "select * from maia.simple where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
