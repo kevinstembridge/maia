@@ -5,6 +5,7 @@ package org.maiaframework.showcase.party.contact
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.springframework.stereotype.Repository
 
 
@@ -62,6 +63,13 @@ class EmailAddressVerificationRepo(
     fun findAllBy(filter: EmailAddressVerificationEntityFilter): List<EmailAddressVerificationEntity> {
 
         return this.dao.findAllBy(filter)
+
+    }
+
+
+    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
+
+        return dao.existsByEmailAddress(emailAddress)
 
     }
 

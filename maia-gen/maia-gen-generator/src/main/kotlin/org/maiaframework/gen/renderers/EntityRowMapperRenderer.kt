@@ -170,7 +170,7 @@ class EntityRowMapperRenderer(
             is DoubleFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is EnumFieldType -> renderForEnum(entityFieldDef, indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is EsDocFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
-            is ForeignKeyFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
+            is ForeignKeyFieldType -> renderForForeignKeyFieldType(fieldType, indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is FqcnFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is PkAndNameFieldType -> TODO("YAGNI?")
@@ -192,6 +192,36 @@ class EntityRowMapperRenderer(
             is StringTypeFieldType -> renderForValueWrapper(fieldType, indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is StringValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is UrlFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
+        }
+
+    }
+
+
+    private fun renderForForeignKeyFieldType(
+        fieldType: ForeignKeyFieldType,
+        indentStr: String,
+        classFieldName: ClassFieldName,
+        rsaGetterFunctionName: String,
+        resultSetColumnName: Any
+    ) {
+
+        when (val pkType = fieldType.pkFieldType) {
+            is DomainIdFieldType -> renderForPlainField(
+                indentStr,
+                classFieldName,
+                rsaGetterFunctionName,
+                resultSetColumnName
+            )
+
+            is StringTypeFieldType -> renderForValueWrapper(
+                pkType,
+                indentStr,
+                classFieldName,
+                rsaGetterFunctionName,
+                resultSetColumnName
+            )
+
+            else -> TODO("FK to non-UUID, non-String PK not yet supported")
         }
 
     }

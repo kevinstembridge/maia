@@ -11,11 +11,11 @@ import java.time.Instant
 class EmailAddressEntity(
     val createdBy: DomainId,
     val createdTimestampUtc: Instant,
-    val emailAddress: EmailAddress,
-    val id: DomainId,
-    val lastModifiedBy: DomainId,
-    val lastModifiedTimestampUtc: Instant
+    val emailAddress: EmailAddress
 ) {
+
+
+    val primaryKey = emailAddress
 
 
     override fun toString(): String {
@@ -23,10 +23,7 @@ class EmailAddressEntity(
         return "EmailAddressEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
-                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
-                "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' +
+                "emailAddress = '" + this.emailAddress + '\'' +
                 "}"
 
     }
@@ -35,9 +32,6 @@ class EmailAddressEntity(
     companion object {
 
 
-        fun newId(): DomainId {
-            return DomainId.newId()
-        }
 
 
         @JvmStatic
@@ -47,17 +41,11 @@ class EmailAddressEntity(
         ): EmailAddressEntity {
 
             val createdTimestampUtc = Instant.now()
-            val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
-            val lastModifiedBy = createdBy
 
             return EmailAddressEntity(
                 createdBy,
                 createdTimestampUtc,
-                emailAddress,
-                id,
-                lastModifiedBy,
-                lastModifiedTimestampUtc
+                emailAddress
             )
 
         }

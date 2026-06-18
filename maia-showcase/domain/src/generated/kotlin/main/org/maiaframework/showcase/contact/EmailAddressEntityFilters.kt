@@ -66,30 +66,6 @@ class EmailAddressEntityFilters {
         }
 
 
-    val id: FieldFilter<DomainId> 
-        get() {
-
-            return FieldFilter("id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
-
-        }
-
-
-    val lastModifiedBy: FieldFilter<DomainId> 
-        get() {
-
-            return FieldFilter("last_modified_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
-
-        }
-
-
-    val lastModifiedTimestampUtc: FieldFilter<Instant> 
-        get() {
-
-            return FieldFilter("last_modified_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
-
-        }
-
-
     class FieldFilter<T>(
         private val databaseColumnName: String,
         private val sqlType: Int,

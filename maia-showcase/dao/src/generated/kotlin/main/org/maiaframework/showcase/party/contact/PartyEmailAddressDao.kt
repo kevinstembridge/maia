@@ -6,6 +6,7 @@ package org.maiaframework.showcase.party.contact
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.contact.EmailAddressPurpose
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
@@ -40,7 +41,7 @@ class PartyEmailAddressDao(
                 created_by_id,
                 created_timestamp_utc,
                 effective_range,
-                email_address_id,
+                email_address,
                 id,
                 is_primary_contact,
                 last_modified_by_id,
@@ -91,7 +92,7 @@ class PartyEmailAddressDao(
                 created_by_id,
                 created_timestamp_utc,
                 effective_range,
-                email_address_id,
+                email_address,
                 id,
                 is_primary_contact,
                 last_modified_by_id,
@@ -265,12 +266,12 @@ class PartyEmailAddressDao(
        
     }
 
-    fun findByEmailAddress(emailAddress: DomainId): List<PartyEmailAddressEntity> {
+    fun findByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
 
         return jdbcOps.queryForList(
             """
             select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
-            where email_address_id = :emailAddress
+            where email_address = :emailAddress
             """.trimIndent(),
             SqlParams().apply {
                 addValue("emailAddress", emailAddress)
@@ -297,12 +298,12 @@ class PartyEmailAddressDao(
     }
 
 
-    fun findEffectiveByEmailAddress(emailAddress: DomainId): List<PartyEmailAddressEntity> {
+    fun findEffectiveByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
 
         return jdbcOps.queryForList(
             """
             select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
-            where email_address_id = :emailAddress
+            where email_address = :emailAddress
             and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
@@ -444,12 +445,12 @@ class PartyEmailAddressDao(
     }
 
 
-    fun existsByEmailAddress(emailAddress: DomainId): Boolean {
+    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*) from maia.party_email_address
-            where email_address_id = :emailAddress
+            where email_address = :emailAddress
             """.trimIndent(),
             SqlParams().apply {
             addValue("emailAddress", emailAddress)

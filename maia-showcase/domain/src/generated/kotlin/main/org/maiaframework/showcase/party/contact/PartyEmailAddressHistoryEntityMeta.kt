@@ -22,7 +22,7 @@ object PartyEmailAddressHistoryEntityMeta {
 
     const val effectiveTo = "effective_to"
 
-    const val emailAddress = "email_address_id"
+    const val emailAddress = "email_address"
 
     const val id = "id"
 
@@ -51,7 +51,7 @@ object PartyEmailAddressHistoryEntityMeta {
 
     object IndexName {
 
-        const val hist_party_email_address_email_address_id_idx = "hist_party_email_address_email_address_id_idx"
+        const val hist_party_email_address_email_address_idx = "hist_party_email_address_email_address_idx"
 
         const val hist_party_email_address_party_id_idx = "hist_party_email_address_party_id_idx"
 
@@ -66,7 +66,7 @@ object PartyEmailAddressHistoryEntityMeta {
             "createdTimestampUtc" -> "created_timestamp_utc"
             "effectiveFrom" -> "effective_from"
             "effectiveTo" -> "effective_to"
-            "emailAddress" -> "email_address_id"
+            "emailAddress" -> "email_address"
             "id" -> "id"
             "isPrimaryContact" -> "is_primary_contact"
             "lastModifiedBy" -> "last_modified_by_id"

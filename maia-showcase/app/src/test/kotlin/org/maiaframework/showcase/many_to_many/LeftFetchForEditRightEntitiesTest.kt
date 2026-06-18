@@ -51,6 +51,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
         join1 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity.id, rightId = rightEntity1.id).build()
         join2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity.id, rightId = rightEntity2.id).build()
 
+        jdbcOps.update("delete from maia.left_to_right_simple_join_history")
         manyToManyJoinDao.deleteAll()
         simpleJoinDao.deleteAll()
         leftDao.deleteAll()
@@ -105,7 +106,8 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
                 "rightEntities": [],
                 "rightLeftToRightSimpleJoinEntities": [],
                 "someInt": ${leftEntity.someInt},
-                "someString": "${leftEntity.someString}"
+                "someString": "${leftEntity.someString}",
+                "version": ${leftEntity.version}
             }
          """.trimIndent())
 

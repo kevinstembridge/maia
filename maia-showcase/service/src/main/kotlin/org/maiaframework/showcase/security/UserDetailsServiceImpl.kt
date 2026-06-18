@@ -34,14 +34,14 @@ class UserDetailsServiceImpl(
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(username: String): UserDetails {
 
-        val emailAddressEntity = this.emailAddressRepo.findOneOrNullByEmailAddress(EmailAddress(username))
+        val emailAddressEntity = this.emailAddressRepo.findByPrimaryKeyOrNull(EmailAddress(username))
             ?: throw UsernameNotFoundException.fromUsername(username)
 
         val loginPartyEmailAddressEntity = this.partyEmailAddressRepoHelper.findLoginEmailAddressByUsername(username)
             ?: throw UsernameNotFoundException.fromUsername(username)
 
         val userEntity = this.userRepo.findByPrimaryKey(loginPartyEmailAddressEntity.party)
-        val loginEmailVerified = this.emailAddressVerificationRepoHelper.isEmailAddressVerified(emailAddressEntity.id)
+        val loginEmailVerified = this.emailAddressVerificationRepoHelper.isEmailAddressVerified(EmailAddress(username))
         val userGrantedAuthorities = getGrantedAuthoritiesFor(userEntity)
         val userGroupGrantedAuthorities = getAuthoritiesForUserGroups(userEntity)
         val allGrantedAuthorities = userGrantedAuthorities

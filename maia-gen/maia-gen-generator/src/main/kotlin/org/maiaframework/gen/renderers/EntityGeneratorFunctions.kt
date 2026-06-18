@@ -55,7 +55,11 @@ fun renderWriteConversionForImplicitField(
         is DoubleFieldType -> TODO("YAGNI?")
         is EnumFieldType -> renderer.appendLine("${indent}return $fullCastPrefix.name")
         is EsDocFieldType -> TODO("YAGNI?")
-        is ForeignKeyFieldType -> renderer.appendLine("${indent}return (inputValue as DomainId).value")
+        is ForeignKeyFieldType -> when (val pkType = fieldType.pkFieldType) {
+            is DomainIdFieldType -> renderer.appendLine("${indent}return (inputValue as DomainId).value")
+            is StringTypeFieldType -> `render for value field wrapper`(pkType, renderer, indent)
+            else -> TODO("FK to non-UUID, non-String PK not yet supported")
+        }
         is FqcnFieldType -> TODO("YAGNI?")
         is JoinFetchDtoFieldType -> TODO("YAGNI?")
         is PkAndNameFieldType -> TODO("YAGNI?")

@@ -11,7 +11,8 @@ data class LeftManyEntityTestBuilder(
     val createdTimestampUtc: Instant = anyInstant(),
     val id: DomainId = DomainId.newId(),
     val someInt: Int = anyInt(),
-    val someString: String = anyString()
+    val someString: String = anyString(),
+    val version: Long = 1L
 ) {
 
 
@@ -21,7 +22,8 @@ data class LeftManyEntityTestBuilder(
             this.createdTimestampUtc,
             this.id,
             this.someInt,
-            this.someString
+            this.someString,
+            this.version
         )
 
     }

@@ -3,27 +3,22 @@
 
 package org.maiaframework.showcase.contact
 
-import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.contact.EmailAddress
-import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
-import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
-import java.time.Instant
 
 
 @Repository
 class EmailAddressDao(
     private val fieldConverter: EmailAddressEntityFieldConverter,
-    private val historyDao: EmailAddressHistoryDao,
     private val jdbcOps: JdbcOps
 ) {
 
@@ -31,7 +26,7 @@ class EmailAddressDao(
     private val entityRowMapper = EmailAddressEntityRowMapper()
 
 
-    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readString("email_address") { EmailAddress(it) } }
 
 
     fun insert(entity: EmailAddressEntity) {
@@ -41,33 +36,19 @@ class EmailAddressDao(
             insert into maia.email_address (
                 created_by_id,
                 created_timestamp_utc,
-                email_address,
-                id,
-                last_modified_by_id,
-                last_modified_timestamp_utc,
-                version
+                email_address
             ) values (
                 :createdBy,
                 :createdTimestampUtc,
-                :emailAddress,
-                :id,
-                :lastModifiedBy,
-                :lastModifiedTimestampUtc,
-                :version
+                :emailAddress
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("emailAddress", entity.emailAddress)
-                addValue("id", entity.id)
-                addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
-                addValue("version", entity.version)
             }
         )
-
-        insertHistory(entity, ChangeType.CREATE)
 
     }
 
@@ -79,19 +60,11 @@ class EmailAddressDao(
             insert into maia.email_address (
                 created_by_id,
                 created_timestamp_utc,
-                email_address,
-                id,
-                last_modified_by_id,
-                last_modified_timestamp_utc,
-                version
+                email_address
             ) values (
                 :createdBy,
                 :createdTimestampUtc,
-                :emailAddress,
-                :id,
-                :lastModifiedBy,
-                :lastModifiedTimestampUtc,
-                :version
+                :emailAddress
             )
             """.trimIndent(),
             entities.map { entity ->
@@ -99,63 +72,9 @@ class EmailAddressDao(
                     addValue("createdBy", entity.createdBy)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("emailAddress", entity.emailAddress)
-                    addValue("id", entity.id)
-                    addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
-                    addValue("version", entity.version)
                 }
             }
         )
-
-        bulkInsertHistory(entities, ChangeType.CREATE)
-
-    }
-
-
-    private fun insertHistory(entity: EmailAddressEntity, changeType: ChangeType) {
-
-        insertHistory(entity, entity.version, changeType)
-
-    }
-
-
-    private fun insertHistory(entity: EmailAddressEntity, version: Long, changeType: ChangeType) {
-
-        this.historyDao.insert(history(entity, version, changeType))
-
-    }
-
-
-    private fun bulkInsertHistory(entities: List<EmailAddressEntity>, changeType: ChangeType) {
-
-        val historyEntities = entities.map { history(it, it.version, changeType) }
-        this.historyDao.bulkInsert(historyEntities)
-
-    }
-
-
-    private fun history(
-        entity: EmailAddressEntity,
-        version: Long,
-        changeType: ChangeType
-    ): EmailAddressHistoryEntity {
-
-        val id = entity.id
-        val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
-        val emailAddress = entity.emailAddress
-        val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
-
-        return EmailAddressHistoryEntity(
-                changeType,
-                createdBy,
-                createdTimestampUtc,
-                emailAddress,
-                id,
-                lastModifiedBy,
-                lastModifiedTimestampUtc,
-                version)
 
     }
 
@@ -189,14 +108,14 @@ class EmailAddressDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(id: DomainId): EmailAddressEntity {
+    fun findByPrimaryKey(emailAddress: EmailAddress): EmailAddressEntity {
 
-        return findByPrimaryKeyOrNull(id)
+        return findByPrimaryKeyOrNull(emailAddress)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     EmailAddressEntity::class.java,
                     mapOf(
-                        "id" to id,
+                        "emailAddress" to emailAddress,
                     )
                 ),
                 EmailAddressEntityMeta.TABLE_NAME
@@ -205,12 +124,12 @@ class EmailAddressDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId): EmailAddressEntity? {
+    fun findByPrimaryKeyOrNull(emailAddress: EmailAddress): EmailAddressEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia.email_address where id = :id",
+            "select * from maia.email_address where email_address = :emailAddress",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("emailAddress", emailAddress)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -218,43 +137,18 @@ class EmailAddressDao(
     }
 
 
-    fun existsByPrimaryKey(id: DomainId): Boolean {
+    fun existsByPrimaryKey(emailAddress: EmailAddress): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from maia.email_address where id = :id",
+            "select count(*) from maia.email_address where email_address = :emailAddress",
             SqlParams().apply {
-                addValue("id", id)
+                addValue("emailAddress", emailAddress)
            }
         )
        
         return count > 0
        
     }
-
-    fun findOneOrNullByEmailAddress(emailAddress: EmailAddress): EmailAddressEntity? {
-
-        return jdbcOps.queryForList(
-            """
-            select * from maia.email_address
-            where email_address = :emailAddress
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("emailAddress", emailAddress)
-            },
-            this.entityRowMapper
-        ).firstOrNull()
-
-    }
-
-
-    @Throws(EntityNotFoundException::class)
-    fun findOneByEmailAddress(emailAddress: EmailAddress): EmailAddressEntity {
-
-        return findOneOrNullByEmailAddress(emailAddress)
-            ?: throw EntityNotFoundException("No record with column [email_address = $emailAddress] found in table maia.email_address.", EmailAddressEntityMeta.TABLE_NAME)
-
-    }
-
 
     fun findAllBy(filter: EmailAddressEntityFilter): List<EmailAddressEntity> {
 
@@ -272,7 +166,7 @@ class EmailAddressDao(
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: EmailAddressEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: EmailAddressEntityFilter): Sequence<EmailAddress> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -280,20 +174,20 @@ class EmailAddressDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from maia.email_address where $whereClause",
+            "select email_address from maia.email_address where $whereClause",
             sqlParams,
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }
 
 
-    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<EmailAddress> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from maia.email_address;",
+            "select email_address from maia.email_address;",
             SqlParams(),
-            { rsa -> rsa.readDomainId("id") }
+            this.primaryKeyRowMapper
         )
 
     }
@@ -352,23 +246,6 @@ class EmailAddressDao(
     }
 
 
-    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
-
-        val count = jdbcOps.queryForInt(
-            """
-            select count(*) from maia.email_address
-            where email_address = :emailAddress
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("emailAddress", emailAddress)
-            }
-        )
-
-        return count > 0
-
-    }
-
-
     fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
@@ -386,131 +263,49 @@ class EmailAddressDao(
     }
 
 
-    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
+    fun upsertByEmailAddress(upsertEntity: EmailAddressEntity): EmailAddress {
 
-        val count = jdbcOps.queryForInt(
+        return jdbcOps.execute(
             """
-            select count(*) from maia.email_address
-            where last_modified_by_id = :lastModifiedBy
-            """.trimIndent(),
-            SqlParams().apply {
-            addValue("lastModifiedBy", lastModifiedBy)
-            }
-        )
-
-        return count > 0
-
-    }
-
-
-    fun upsertByEmailAddress(upsertEntity: EmailAddressEntity): EmailAddressEntity {
-
-        val persistedEntity = jdbcOps.execute(
-            """
-            insert into maia.email_address (
+            with input_rows(
                 created_by_id,
                 created_timestamp_utc,
-                email_address,
-                id,
-                last_modified_by_id,
-                last_modified_timestamp_utc,
-                version
-            ) values (
-                :createdBy,
-                :createdTimestampUtc,
-                :emailAddress,
-                :id,
-                :lastModifiedBy,
-                :lastModifiedTimestampUtc,
-                :version
+                email_address
+            ) as (
+                values (
+                    cast(:createdBy as uuid),
+                    cast(:createdTimestampUtc as timestamp(3) with time zone),
+                    cast(:emailAddress as text)
+                )
             )
-            on conflict (email_address)
-            do update set
-                last_modified_by_id = :lastModifiedBy,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
-                version = maia.email_address.version + 1
-            returning *;
+            , ins as (
+                insert into maia.email_address (
+                    created_by_id,
+                    created_timestamp_utc,
+                    email_address
+                )
+                select * from input_rows
+                on conflict (email_address) do nothing
+                returning id
+            )
+            select 'i' as source, id
+            from ins
+            union all
+            select 's' as source, c.id
+            from input_rows
+            join maia.email_address c using (email_address);
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdBy", upsertEntity.createdBy)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
-                addValue("emailAddress", upsertEntity.emailAddress)
-                addValue("id", upsertEntity.id)
-                addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
-                addValue("version", upsertEntity.version)
+            addValue("createdBy", upsertEntity.createdBy)
+            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("emailAddress", upsertEntity.emailAddress)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
                 rs.next()
-                entityRowMapper.mapRow(ResultSetAdapter(rs))
+                primaryKeyRowMapper.mapRow(ResultSetAdapter(rs))
             }
-        )
-
-        val changeType = if (persistedEntity!!.id != upsertEntity.id) ChangeType.UPDATE else ChangeType.CREATE
-        insertHistory(persistedEntity, persistedEntity.version, changeType)
-
-        return persistedEntity!!
-
-    }
-
-
-    fun setFields(updaters: List<EmailAddressEntityUpdater>) {
-
-        updaters.forEach { setFields(it) }
-
-    }
-
-
-    fun setFields(updater: EmailAddressEntityUpdater): Int {
-
-        val sql = StringBuilder()
-        val sqlParams = SqlParams()
-
-        sql.append("update maia.email_address set ")
-
-        val fieldClauses = updater.fields
-            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
-            .map { field ->
-
-                addField(field, sqlParams)
-                "${field.dbColumnName} = :${field.classFieldName}"
-
-            }.joinToString(", ")
-
-        sql.append(fieldClauses)
-        sql.append(" where id = :id")
-        sql.append(" and version = :version")
-
-        sqlParams.addValue("id", updater.id)
-
-        sqlParams.addValue("version", updater.version)
-        sqlParams.addValue("version_incremented", updater.version + 1)
-
-        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
-
-        if (updateCount == 0) {
-
-            throw OptimisticLockingException(EmailAddressEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
-
-        } else {
-
-            val updatedEntity = findByPrimaryKey(updater.id)
-            insertHistory(updatedEntity, ChangeType.UPDATE)
-
-        }
-
-        return updateCount
-
-    }
-
-
-    private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
-
-        when (field.classFieldName) {
-            "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
-        }
+        )!!
 
     }
 

@@ -24,12 +24,6 @@ class EmailAddressEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "email_address" -> // emailAddress
                 return (inputValue as EmailAddress).value
-            "id" -> // id
-                return (inputValue as DomainId).value
-            "last_modified_by_id" -> // lastModifiedBy
-                return (inputValue as DomainId).value
-            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
-                return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }
 

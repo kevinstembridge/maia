@@ -394,15 +394,13 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val emailAddressEntityDef = entity("org.maiaframework.showcase.contact", "EmailAddress", recordVersionHistory = true) {
+    val emailAddressEntityDef = entity("org.maiaframework.showcase.contact", "EmailAddress") {
         moduleName("ops")
         field("emailAddress", emailAddressStringType) {
-            unique()
+            primaryKey()
             withEmailConstraint()
         }
         field_createdById(partyEntityDef)
-        field_lastModifiedById(partyEntityDef)
-        field_lastModifiedTimestampUtc()
     }
 
 
@@ -439,7 +437,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         versioned = true
     ) {
         moduleName("ops")
-        field("emailAddressId", FieldTypes.domainId)
+        foreignKey("emailAddress", emailAddressEntityDef)
         field("ipAddress", ipAddressStringType) {
             nullable()
             lengthConstraint(min = 11, max = 20)

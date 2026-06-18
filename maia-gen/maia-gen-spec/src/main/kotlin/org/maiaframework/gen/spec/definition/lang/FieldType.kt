@@ -651,17 +651,19 @@ class StringValueClassFieldType internal constructor(
 class ForeignKeyFieldType internal constructor(
     val foreignKeyFieldDef: ForeignKeyFieldDef
 ) : FieldType(
-    Fqcns.MAIA_DOMAIN_ID,
+    foreignKeyFieldDef.foreignEntityDef.primaryKeyFields.first().classFieldDef.fieldType.fqcn,
     TypescriptCompatibleTypes.string,
-    "OTHER",
+    foreignKeyFieldDef.foreignEntityDef.primaryKeyFields.first().classFieldDef.fieldType.sqlType,
     EsDocMappingTypes.keyword,
     HazelcastCompatibleType.STRING,
     defaultFormFieldValue = "''"
 ) {
 
+    val pkFieldType: FieldType
+        get() = foreignKeyFieldDef.foreignEntityDef.primaryKeyFields.first().classFieldDef.fieldType
 
-    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.uuid
-
+    override val jdbcCompatibleType: JdbcCompatibleType
+        get() = pkFieldType.jdbcCompatibleType
 
     override fun unwrap(): FieldType {
         return this

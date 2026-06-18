@@ -14,7 +14,7 @@ class PartyEmailAddressRepoHelper(
 
     fun findLoginEmailAddressByUsername(username: String): PartyEmailAddressEntity? {
 
-        val emailAddressEntity = this.emailAddressRepo.findOneOrNullByEmailAddress(EmailAddress(username))
+        val emailAddressEntity = this.emailAddressRepo.findByPrimaryKeyOrNull(EmailAddress(username))
             ?: return null
 
         return this.partyEmailAddressDaoHelper.findOneOrNullLoginEmailAddress(emailAddressEntity)

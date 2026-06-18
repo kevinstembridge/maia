@@ -5,6 +5,7 @@ package org.maiaframework.showcase.party.contact
 
 import org.maiaframework.common.BlankStringException
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.net.IpAddress
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.jdbc.sql.conditions.AndOr
@@ -93,10 +94,10 @@ class EmailAddressVerificationEntityFilters {
         }
 
 
-    val emailAddressId: FieldFilter<DomainId> 
+    val emailAddress: FieldFilter<EmailAddress> 
         get() {
 
-            return FieldFilter("email_address_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+            return FieldFilter("email_address", Types.VARCHAR, this.sqlParamCounter) { value -> value?.value }
 
         }
 

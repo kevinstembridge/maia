@@ -50,7 +50,13 @@ class ForeignKeyFieldDefBuilder(
     private var isEditableByUser: IsEditableByUser = IsEditableByUser.FALSE
 
 
-    private var tableColumnName: TableColumnName? = TableColumnName(foreignKeyFieldName.withSuffix("_id").toSnakeCase())
+    private var tableColumnName = TableColumnName(
+        if (foreignKeyEntityDef.hasSurrogatePrimaryKey) {
+            foreignKeyFieldName.withSuffix("_id").toSnakeCase()
+        } else {
+            foreignKeyFieldName.toSnakeCase()
+        }
+    )
 
 
     private var isCreatableByUser: IsCreatableByUser = IsCreatableByUser.TRUE

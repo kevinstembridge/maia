@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.party.contact
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.contact.EmailAddressPurpose
 import java.time.Instant
 
@@ -13,7 +14,7 @@ class PartyEmailAddressEntity(
     val createdTimestampUtc: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
-    val emailAddress: DomainId,
+    val emailAddress: EmailAddress,
     val id: DomainId,
     val isPrimaryContact: Boolean,
     val lastModifiedBy: DomainId,
@@ -57,7 +58,7 @@ class PartyEmailAddressEntity(
             createdBy: DomainId,
             effectiveFrom: Instant?,
             effectiveTo: Instant?,
-            emailAddress: DomainId,
+            emailAddress: EmailAddress,
             isPrimaryContact: Boolean,
             party: DomainId,
             purposes: List<EmailAddressPurpose>

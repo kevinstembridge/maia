@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.party.contact
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.net.IpAddress
 import java.time.Instant
 
@@ -13,7 +14,7 @@ class EmailAddressVerificationEntity(
     val createdTimestampUtc: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
-    val emailAddressId: DomainId,
+    val emailAddress: EmailAddress,
     val id: DomainId,
     val ipAddress: IpAddress?,
     val lastModifiedBy: DomainId?,
@@ -29,7 +30,7 @@ class EmailAddressVerificationEntity(
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
-                "emailAddressId = '" + this.emailAddressId + '\'' + ", " + 
+                "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "ipAddress = '" + this.ipAddress + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
@@ -53,7 +54,7 @@ class EmailAddressVerificationEntity(
             createdBy: DomainId?,
             effectiveFrom: Instant?,
             effectiveTo: Instant?,
-            emailAddressId: DomainId,
+            emailAddress: EmailAddress,
             ipAddress: IpAddress?
         ): EmailAddressVerificationEntity {
 
@@ -68,7 +69,7 @@ class EmailAddressVerificationEntity(
                 createdTimestampUtc,
                 effectiveFrom,
                 effectiveTo,
-                emailAddressId,
+                emailAddress,
                 id,
                 ipAddress,
                 lastModifiedBy,

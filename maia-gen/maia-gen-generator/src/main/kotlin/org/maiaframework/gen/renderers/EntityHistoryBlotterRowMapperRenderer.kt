@@ -110,7 +110,14 @@ class EntityHistoryBlotterRowMapperRenderer(
             is DomainIdFieldType -> appendLine("        val $fieldName = rsa.readDomainId(\"$columnName\")")
             is DoubleFieldType -> appendLine("        val $fieldName = rsa.readDouble(\"$columnName\")")
             is EsDocFieldType -> TODO()
-            is ForeignKeyFieldType -> appendLine("        val $fieldName = rsa.readDomainId(\"$columnName\")")
+            is ForeignKeyFieldType -> when (val pkType = fieldType.pkFieldType) {
+                is DomainIdFieldType -> appendLine("        val $fieldName = rsa.readDomainId(\"$columnName\")")
+                is StringTypeFieldType -> {
+                    addImportFor(pkType.fqcn)
+                    appendLine("        val $fieldName = rsa.readString(\"$columnName\") { ${pkType.uqcn}(it) }")
+                }
+                else -> TODO("FK to non-UUID, non-String PK not yet supported")
+            }
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is PkAndNameFieldType -> TODO()

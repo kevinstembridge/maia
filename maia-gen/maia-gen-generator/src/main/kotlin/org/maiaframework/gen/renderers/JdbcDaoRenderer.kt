@@ -744,7 +744,7 @@ class JdbcDaoRenderer(
         } else {
 
             this.entityDef.primaryKeyFields.forEach {
-                renderSqlParamAddValueFor(it, "            ", entityParameterName = null, 8, { line -> appendLine(line) })
+                renderSqlParamAddValueFor(it, "                ", entityParameterName = null, 8, { line -> appendLine(line) })
             }
 
         }
@@ -2154,7 +2154,11 @@ class JdbcDaoRenderer(
             is DoubleFieldType -> TODO()
             is EnumFieldType -> "field.value as ${fieldType.unqualifiedToString}"
             is EsDocFieldType -> TODO()
-            is ForeignKeyFieldType -> "field.value as DomainId${q}"
+            is ForeignKeyFieldType -> when (fieldType.pkFieldType) {
+                is DomainIdFieldType -> "field.value as DomainId${q}"
+                is StringTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
+                else -> TODO("FK to non-UUID, non-String PK not yet supported")
+            }
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is PkAndNameFieldType -> TODO()

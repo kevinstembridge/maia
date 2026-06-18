@@ -12,5 +12,6 @@ export interface LeftManyFetchForEditDto {
     rightLeftToRightSimpleJoinEntities: ReadonlyArray<RightManyPkAndNameDto>;
     someInt: number;
     someString: string;
+    version: number;
 }
 

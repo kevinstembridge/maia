@@ -95,7 +95,7 @@ class Fixtures(
 
         val partyEmailAddressEntity = PartyEmailAddressEntityTestBuilder()
             .copy(
-                emailAddressId = emailAddressEntity.id,
+                emailAddress = emailAddressEntity.emailAddress,
                 partyId = userEntity.id,
                 purposes = listOf(EmailAddressPurpose.USER_LOGIN)
             )
@@ -116,7 +116,7 @@ class Fixtures(
                 createdBy = Anys.defaultCreatedById,
                 effectiveFrom = Instant.now(),
                 effectiveTo = null,
-                emailAddressId = emailAddressEntity.id,
+                emailAddress = emailAddressEntity.emailAddress,
                 ipAddress = null
             )
             val emailAddressVerificationFixture = EmailAddressVerificationFixture(emailAddressVerificationEntity)

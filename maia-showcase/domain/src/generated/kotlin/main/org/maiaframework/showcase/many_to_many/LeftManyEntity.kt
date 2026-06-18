@@ -11,7 +11,8 @@ class LeftManyEntity(
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val someInt: Int,
-    val someString: String
+    val someString: String,
+    val version: Long
 ) {
 
 
@@ -21,7 +22,8 @@ class LeftManyEntity(
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
-                "someString = '" + this.someString + '\'' +
+                "someString = '" + this.someString + '\'' + ", " + 
+                "version = '" + this.version + '\'' +
                 "}"
 
     }
@@ -43,12 +45,14 @@ class LeftManyEntity(
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
+            val version = 1L
 
             return LeftManyEntity(
                 createdTimestampUtc,
                 id,
                 someInt,
-                someString
+                someString,
+                version
             )
 
         }

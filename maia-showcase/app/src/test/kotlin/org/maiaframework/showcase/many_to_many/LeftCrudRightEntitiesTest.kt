@@ -40,6 +40,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     private fun post(path: String, body: String): MvcTestResultAssert {
+
         val csrfCookie = `fetch CSRF cookie`()
         return assertThat(
             mockMvc.post().uri(path)
@@ -50,9 +51,12 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
                 .cookie(csrfCookie)
                 .exchange()
         )
+
     }
 
+
     private fun put(path: String, body: String): MvcTestResultAssert {
+
         val csrfCookie = `fetch CSRF cookie`()
         return assertThat(
             mockMvc.put().uri(path)
@@ -62,7 +66,8 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
                 .with(user("nigel").authorities(SimpleGrantedAuthority("WRITE")))
                 .cookie(csrfCookie)
                 .exchange()
-        )
+        ).debug()
+
     }
 
 
@@ -139,7 +144,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         // Update to right2 and right3 only
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 2, "someString": "test2", "rightEntities": [{"rightEntityId": "${rightEntity2.id}"}, {"rightEntityId": "${rightEntity3.id}"}]}"""
+            """{"id": "$leftId", "someInt": 2, "someString": "test2", "version": 1, "rightEntities": [{"rightEntityId": "${rightEntity2.id}"}, {"rightEntityId": "${rightEntity3.id}"}]}"""
         ).hasStatus(HttpStatus.OK)
 
         val joins = manyToManyJoinDao.findByLeft(leftId)
@@ -162,7 +167,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntities": []}"""
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "version": 1, "rightEntities": []}"""
         ).hasStatus(HttpStatus.OK)
 
         val joins = manyToManyJoinDao.findByLeft(leftId)
@@ -184,7 +189,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 2, "someString": "test2", "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}"}]}"""
+            """{"id": "$leftId", "someInt": 2, "someString": "test2", "version": 1, "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}"}]}"""
         ).hasStatus(HttpStatus.OK)
 
         val joinAfter = manyToManyJoinDao.findByLeft(leftId).single()
@@ -209,7 +214,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}", "effectiveFrom": "2026-01-01T00:00:00Z"}]}"""
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "version": 1, "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}", "effectiveFrom": "2026-01-01T00:00:00Z"}]}"""
         ).hasStatus(HttpStatus.OK)
 
         val joinAfter = manyToManyJoinDao.findByLeft(leftId).single()
@@ -235,7 +240,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 1, "someString": "test", "rightEntities": [
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "version": 1, "rightEntities": [
                 {"id": "${join1.id}", "rightEntityId": "${rightEntity1.id}", "effectiveFrom": "2026-01-01T00:00:00Z"},
                 {"rightEntityId": "${rightEntity3.id}"}
             ]}"""

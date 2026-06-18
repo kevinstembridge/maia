@@ -10,5 +10,6 @@ export interface LeftManyUpdateRequestDto {
     rightEntityIds?: ReadonlyArray<string>;
     someInt: number;
     someString: string;
+    version: number;
 }
 

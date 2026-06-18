@@ -87,7 +87,11 @@ class CreateTableSqlRenderer(
             val nullSuffix = if (sqlFieldDef.nullable) "NULL" else "NOT NULL"
             val postgresDataType = FieldTypeRendererHelper.determineSqlDataType(fieldType)
             val sizeConstraint = sqlFieldDef.sizeConstraint
-            val foreignKey = if (fieldType is ForeignKeyFieldType) { " REFERENCES ${schemaAndTableNameFor(fieldType.foreignKeyFieldDef.foreignEntityDef)}(id)" } else ""
+            val foreignKey = if (fieldType is ForeignKeyFieldType) {
+                val foreignEntityDef = fieldType.foreignKeyFieldDef.foreignEntityDef
+                val pkColumnName = foreignEntityDef.primaryKeyFields.first().tableColumnName.value
+                " REFERENCES ${schemaAndTableNameFor(foreignEntityDef)}($pkColumnName)"
+            } else ""
 
             "${sqlFieldDef.tableColumnName} $postgresDataType$sizeConstraint $nullSuffix$foreignKey"
 

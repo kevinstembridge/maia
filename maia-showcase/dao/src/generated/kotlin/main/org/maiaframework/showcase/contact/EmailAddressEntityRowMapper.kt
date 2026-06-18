@@ -16,19 +16,11 @@ class EmailAddressEntityRowMapper : MaiaRowMapper<EmailAddressEntity> {
         val createdBy = rsa.readDomainId("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
-        val id = rsa.readDomainId("id")
-        val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
-        val version = rsa.readLong("version")
 
         return EmailAddressEntity(
                 createdBy,
                 createdTimestampUtc,
-                emailAddress,
-                id,
-                lastModifiedBy,
-                lastModifiedTimestampUtc,
-                version
+                emailAddress
         )
 
     }

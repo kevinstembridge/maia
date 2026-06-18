@@ -5,6 +5,7 @@ package org.maiaframework.showcase.party.contact
 
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.springframework.stereotype.Repository
 
 
@@ -66,7 +67,7 @@ class PartyEmailAddressRepo(
     }
 
 
-    fun findByEmailAddress(emailAddress: DomainId): List<PartyEmailAddressEntity> {
+    fun findByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
 
         return dao.findByEmailAddress(emailAddress)
 
@@ -80,7 +81,7 @@ class PartyEmailAddressRepo(
     }
 
 
-    fun findEffectiveByEmailAddress(emailAddress: DomainId): List<PartyEmailAddressEntity> {
+    fun findEffectiveByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
 
         return dao.findEffectiveByEmailAddress(emailAddress)
 
@@ -101,7 +102,7 @@ class PartyEmailAddressRepo(
     }
 
 
-    fun existsByEmailAddress(emailAddress: DomainId): Boolean {
+    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
 
         return dao.existsByEmailAddress(emailAddress)
 

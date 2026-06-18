@@ -22,7 +22,10 @@ class LeftManyUpdate_someStringRequestDto
     @field:NotBlank
     @field:Length(max = 100)
     @param:JsonProperty("someString", access = JsonProperty.Access.READ_WRITE) 
-    private val someString_raw: String?
+    private val someString_raw: String?,
+    @field:NotNull
+    @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
+    private val version_raw: Long?
 ) {
 
 
@@ -34,11 +37,16 @@ class LeftManyUpdate_someStringRequestDto
     val someString: String by lazy { someString_raw!! }
 
 
+    @get:JsonIgnore
+    val version: Long by lazy { version_raw!! }
+
+
     override fun toString(): String {
 
         return "LeftManyUpdate_someStringRequestDto{" +
                 "id = '" + this.id + '\'' + ", " + 
-                "someString = '" + this.someString + '\'' +
+                "someString = '" + this.someString + '\'' + ", " + 
+                "version = '" + this.version + '\'' +
                 "}"
 
     }

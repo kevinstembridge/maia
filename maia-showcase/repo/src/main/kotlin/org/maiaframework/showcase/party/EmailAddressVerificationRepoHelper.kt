@@ -1,6 +1,6 @@
 package org.maiaframework.showcase.party
 
-import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.showcase.party.contact.EmailAddressVerificationDao
 import org.maiaframework.showcase.party.contact.EmailAddressVerificationEntityFilters
 import org.springframework.stereotype.Component
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component
 class EmailAddressVerificationRepoHelper(private val emailAddressVerificationDao: EmailAddressVerificationDao) {
 
 
-    fun isEmailAddressVerified(emailAddressId: DomainId): Boolean {
+    fun isEmailAddressVerified(emailAddress: EmailAddress): Boolean {
 
         val filters = EmailAddressVerificationEntityFilters()
 
         val filter = filters.and(
-            filters.emailAddressId eq emailAddressId,
+            filters.emailAddress eq emailAddress,
             filters.isEffectiveNow(),
         )
 

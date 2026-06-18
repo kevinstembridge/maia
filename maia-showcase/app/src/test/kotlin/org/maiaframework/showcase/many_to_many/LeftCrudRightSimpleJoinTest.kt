@@ -56,6 +56,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
         rightEntity2 = RightManyEntityTestBuilder(someString = "beta").build()
         rightEntity3 = RightManyEntityTestBuilder(someString = "gamma").build()
 
+        jdbcOps.update("delete from maia.left_to_right_simple_join_history")
         joinDao.deleteAll()
         manyToManyJoinDao.deleteAll()
         leftDao.deleteAll()
@@ -77,7 +78,8 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
                 rightEntities_raw = emptyList(),
                 rightEntityIds_raw = listOf(rightEntity1.id, rightEntity2.id),
                 someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString
+                someString_raw = leftEntity.someString,
+                version_raw = leftEntity.version
             )
         )
 
@@ -94,7 +96,8 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
                 rightEntities_raw = emptyList(),
                 rightEntityIds_raw = listOf(rightEntity1.id, rightEntity3.id),
                 someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString
+                someString_raw = leftEntity.someString,
+                version_raw = leftEntity.version + 1
             )
         )
 
@@ -127,7 +130,8 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
                 rightEntities_raw = emptyList(),
                 rightEntityIds_raw = listOf(rightEntity1.id),
                 someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString
+                someString_raw = leftEntity.someString,
+                version_raw = leftEntity.version
             )
         )
 
@@ -145,7 +149,8 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
                 rightEntities_raw = emptyList(),
                 rightEntityIds_raw = listOf(rightEntity2.id),
                 someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString
+                someString_raw = leftEntity.someString,
+                version_raw = leftEntity.version + 1
             )
         )
 
@@ -168,7 +173,8 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
                 rightEntities_raw = emptyList(),
                 rightEntityIds_raw = listOf(rightEntity1.id),
                 someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString
+                someString_raw = leftEntity.someString,
+                version_raw = leftEntity.version
             )
         )
 
@@ -179,7 +185,8 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
                 rightEntities_raw = emptyList(),
                 rightEntityIds_raw = emptyList(),
                 someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString
+                someString_raw = leftEntity.someString,
+                version_raw = leftEntity.version + 1
             )
         )
 

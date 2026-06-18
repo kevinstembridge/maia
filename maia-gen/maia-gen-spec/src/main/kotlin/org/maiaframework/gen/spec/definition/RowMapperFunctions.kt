@@ -85,7 +85,7 @@ object RowMapperFunctions {
             is DoubleFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is EnumFieldType -> renderForEnum(entityFieldDef, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
             is EsDocFieldType -> TODO()
-            is ForeignKeyFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is ForeignKeyFieldType -> renderForForeignKey(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, fqcnImporter)
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO()
             is PkAndNameFieldType -> TODO()
@@ -109,6 +109,32 @@ object RowMapperFunctions {
             is UrlFieldType -> renderForUrl(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
         }
 
+    }
+
+    private fun renderForForeignKey(
+        fieldType: ForeignKeyFieldType,
+        indentStr: String,
+        rsaGetterFunctionName: String,
+        resultSetColumnName: Any,
+        orElseClause: String,
+        fqcnImporter: (Fqcn) -> Unit
+    ): String = when (val pkType = fieldType.pkFieldType) {
+        is DomainIdFieldType -> renderForPlainFieldType(
+            indentStr,
+            rsaGetterFunctionName,
+            resultSetColumnName,
+            orElseClause
+        )
+
+        is StringTypeFieldType -> renderForValueWrapper(
+            pkType,
+            indentStr,
+            rsaGetterFunctionName,
+            resultSetColumnName,
+            fqcnImporter
+        )
+
+        else -> TODO("FK to non-UUID, non-String PK not yet supported")
     }
 
 

@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.party
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.contact.EmailAddressPurpose
 import org.maiaframework.showcase.contact.EmailAddressEntity
 import org.maiaframework.showcase.party.contact.PartyEmailAddressEntity
@@ -13,7 +14,7 @@ data class PartyEmailAddressEntityTestBuilder(
     val createdTimestampUtc: Instant = Instant.now(),
     val effectiveFrom: Instant = Instant.now(),
     val effectiveTo: Instant? = null,
-    val emailAddressId: DomainId = PartyEmailAddressEntity.newId(),
+    val emailAddress: EmailAddress = EmailAddress("default@example.com"),
     val id: DomainId = PartyEmailAddressEntity.newId(),
     val isPrimaryContact: Boolean = true,
     val lastModifiedById: DomainId = defaultCreatedById,
@@ -31,7 +32,7 @@ data class PartyEmailAddressEntityTestBuilder(
             createdTimestampUtc,
             effectiveFrom,
             effectiveTo,
-            emailAddressId,
+            emailAddress,
             id,
             isPrimaryContact,
             lastModifiedById,
@@ -50,7 +51,7 @@ data class PartyEmailAddressEntityTestBuilder(
         fun forEmailAddress(emailAddressEntity: EmailAddressEntity): PartyEmailAddressEntityTestBuilder {
 
             return PartyEmailAddressEntityTestBuilder(
-                emailAddressId = emailAddressEntity.id
+                emailAddress = emailAddressEntity.emailAddress
             )
 
         }
@@ -59,7 +60,7 @@ data class PartyEmailAddressEntityTestBuilder(
         fun partyEmailAddress(emailAddressEntity: EmailAddressEntity, partyEntity: PartyEntity): PartyEmailAddressEntityTestBuilder {
 
             return PartyEmailAddressEntityTestBuilder(
-                emailAddressId = emailAddressEntity.id,
+                emailAddress = emailAddressEntity.emailAddress,
                 partyId = partyEntity.id
             )
 

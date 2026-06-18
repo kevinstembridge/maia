@@ -45,7 +45,7 @@ class PartyEmailAddressDaoHelper(
         val filters = PartyEmailAddressEntityFilters()
 
         val filter = filters.and(
-            filters.emailAddress eq emailAddressEntity.id,
+            filters.emailAddress eq emailAddressEntity.emailAddress,
             filters.purposes contains EmailAddressPurpose.USER_LOGIN,
             filters.isEffectiveNow(),
         )

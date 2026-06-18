@@ -11,7 +11,8 @@ data class LeftManyEntityDetailViewDto(
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val someInt: Int,
-    val someString: String
+    val someString: String,
+    val version: Long
 ) {
 
 

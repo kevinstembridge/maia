@@ -18,23 +18,23 @@ class EmailAddressRepo(
     private val logger = getLogger<EmailAddressRepo>()
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId): EmailAddressEntity? {
+    fun findByPrimaryKeyOrNull(emailAddress: EmailAddress): EmailAddressEntity? {
 
-        return dao.findByPrimaryKeyOrNull(id)
-
-    }
-
-
-    fun findByPrimaryKey(id: DomainId): EmailAddressEntity {
-
-        return dao.findByPrimaryKey(id)
+        return dao.findByPrimaryKeyOrNull(emailAddress)
 
     }
 
 
-    fun existsByPrimaryKey(id: DomainId): Boolean {
+    fun findByPrimaryKey(emailAddress: EmailAddress): EmailAddressEntity {
 
-        return dao.existsByPrimaryKey(id)
+        return dao.findByPrimaryKey(emailAddress)
+
+    }
+
+
+    fun existsByPrimaryKey(emailAddress: EmailAddress): Boolean {
+
+        return dao.existsByPrimaryKey(emailAddress)
 
     }
 
@@ -46,14 +46,14 @@ class EmailAddressRepo(
     }
 
 
-    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<EmailAddress> {
 
         return dao.findAllPrimaryKeysAsSequence()
 
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: EmailAddressEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: EmailAddressEntityFilter): Sequence<EmailAddress> {
 
         return dao.findPrimaryKeysAsSequence(filter)
 
@@ -67,37 +67,9 @@ class EmailAddressRepo(
     }
 
 
-    fun findOneOrNullByEmailAddress(emailAddress: EmailAddress): EmailAddressEntity? {
-
-        return dao.findOneOrNullByEmailAddress(emailAddress)
-
-    }
-
-
-    fun findOneByEmailAddress(emailAddress: EmailAddress): EmailAddressEntity {
-
-        return dao.findOneByEmailAddress(emailAddress)
-
-    }
-
-
-    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
-
-        return dao.existsByEmailAddress(emailAddress)
-
-    }
-
-
     fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         return dao.existsByCreatedBy(createdBy)
-
-    }
-
-
-    fun existsByLastModifiedBy(lastModifiedBy: DomainId): Boolean {
-
-        return dao.existsByLastModifiedBy(lastModifiedBy)
 
     }
 
@@ -118,25 +90,7 @@ class EmailAddressRepo(
     }
 
 
-    fun setFields(updaters: List<EmailAddressEntityUpdater>) {
-
-        logger.debug("setFields {}", updaters)
-
-        updaters.forEach { setFields(it) }
-
-    }
-
-
-    fun setFields(updater: EmailAddressEntityUpdater): Int {
-
-        logger.debug("setFields {}", updater)
-
-        return this.dao.setFields(updater)
-
-    }
-
-
-    fun upsertByEmailAddress(upsertEntity: EmailAddressEntity): EmailAddressEntity {
+    fun upsertByEmailAddress(upsertEntity: EmailAddressEntity): EmailAddress {
 
         logger.debug("upsert {}", upsertEntity)
 

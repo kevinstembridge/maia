@@ -3,6 +3,7 @@
 
 package org.maiaframework.showcase.party.contact
 
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.net.IpAddress
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
@@ -17,7 +18,7 @@ class EmailAddressVerificationEntityRowMapper : MaiaRowMapper<EmailAddressVerifi
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val effectiveFrom = rsa.readInstantOrNull("effective_from")
         val effectiveTo = rsa.readInstantOrNull("effective_to")
-        val emailAddressId = rsa.readDomainId("email_address_id")
+        val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val id = rsa.readDomainId("id")
         val ipAddress = rsa.readStringOrNull("ip_address") { IpAddress(it) }
         val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
@@ -29,7 +30,7 @@ class EmailAddressVerificationEntityRowMapper : MaiaRowMapper<EmailAddressVerifi
                 createdTimestampUtc,
                 effectiveFrom,
                 effectiveTo,
-                emailAddressId,
+                emailAddress,
                 id,
                 ipAddress,
                 lastModifiedBy,

@@ -16,6 +16,11 @@ export const leftManyRoutes: Routes = [
             import('./left-many-entity-detail-view-page').then(m => m.LeftManyEntityDetailViewPage),
     },
     {
+        path: 'left-many/history/:id',
+        loadComponent: () =>
+            import('./left-many-history-blotter-page').then(m => m.LeftManyHistoryBlotterPage),
+    },
+    {
         path: 'left-many/create',
         loadComponent: () =>
             import('./left-many-entity-create-page').then(m => m.LeftManyEntityCreatePage),

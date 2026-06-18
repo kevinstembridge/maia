@@ -25,6 +25,8 @@ class LeftManyEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "some_string" -> // someString
                 return inputValue
+            "version" -> // version
+                return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }
 

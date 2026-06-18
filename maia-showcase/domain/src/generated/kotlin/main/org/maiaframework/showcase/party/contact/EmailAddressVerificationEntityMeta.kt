@@ -20,7 +20,7 @@ object EmailAddressVerificationEntityMeta {
 
     const val effectiveTo = "effective_to"
 
-    const val emailAddressId = "email_address_id"
+    const val emailAddress = "email_address"
 
     const val id = "id"
 
@@ -50,7 +50,7 @@ object EmailAddressVerificationEntityMeta {
             "createdTimestampUtc" -> "created_timestamp_utc"
             "effectiveFrom" -> "effective_from"
             "effectiveTo" -> "effective_to"
-            "emailAddressId" -> "email_address_id"
+            "emailAddress" -> "email_address"
             "id" -> "id"
             "ipAddress" -> "ip_address"
             "lastModifiedBy" -> "last_modified_by_id"

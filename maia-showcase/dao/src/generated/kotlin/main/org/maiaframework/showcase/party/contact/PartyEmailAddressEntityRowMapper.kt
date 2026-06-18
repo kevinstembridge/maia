@@ -3,6 +3,7 @@
 
 package org.maiaframework.showcase.party.contact
 
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.contact.EmailAddressPurpose
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
@@ -17,7 +18,7 @@ class PartyEmailAddressEntityRowMapper : MaiaRowMapper<PartyEmailAddressEntity> 
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val effectiveFrom = rsa.readInstantOrNull("effective_from")
         val effectiveTo = rsa.readInstantOrNull("effective_to")
-        val emailAddress = rsa.readDomainId("email_address_id")
+        val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val id = rsa.readDomainId("id")
         val isPrimaryContact = rsa.readBoolean("is_primary_contact")
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")

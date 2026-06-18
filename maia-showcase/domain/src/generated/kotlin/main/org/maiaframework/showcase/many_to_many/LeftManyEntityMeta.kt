@@ -20,6 +20,8 @@ object LeftManyEntityMeta {
 
     const val someString = "some_string"
 
+    const val version = "version"
+
     val ENTITY_KEY = EntityKey("LeftMany")
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
@@ -38,6 +40,7 @@ object LeftManyEntityMeta {
             "id" -> "id"
             "someInt" -> "some_int"
             "someString" -> "some_string"
+            "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

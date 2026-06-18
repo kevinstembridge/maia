@@ -693,7 +693,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
         blankLine()
         blankLine()
-        appendLine("    fun upsertBy${uniqueFieldNamesAnded}(upsertEntity: ${this.entityDef.entityUqcn}): DomainId {")
+        appendLine("    fun upsertBy${uniqueFieldNamesAnded}(upsertEntity: ${this.entityDef.entityUqcn}): ${entityDef.primaryKeyType} {")
         blankLine()
         appendLine("        logger.debug(\"upsert {}\", upsertEntity)")
         blankLine()

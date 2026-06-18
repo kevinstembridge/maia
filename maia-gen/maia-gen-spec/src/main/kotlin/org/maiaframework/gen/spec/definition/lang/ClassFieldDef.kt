@@ -324,7 +324,11 @@ data class ClassFieldDef(
             is DoubleFieldType -> "readDouble$nullableSuffix"
             is EnumFieldType -> "readEnum$nullableSuffix"
             is EsDocFieldType -> TODO("YAGNI?")
-            is ForeignKeyFieldType -> "readDomainId$nullableSuffix"
+            is ForeignKeyFieldType -> when (fieldType.pkFieldType) {
+                is DomainIdFieldType -> "readDomainId$nullableSuffix"
+                is StringTypeFieldType -> "readString$nullableSuffix"
+                else -> TODO("FK to non-UUID, non-String PK not yet supported")
+            }
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is PkAndNameFieldType -> TODO("YAGNI?")

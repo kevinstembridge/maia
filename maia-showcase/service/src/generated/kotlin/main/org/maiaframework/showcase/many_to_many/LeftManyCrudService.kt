@@ -66,12 +66,14 @@ class LeftManyCrudService(
         val someString: String = createDto.someString
         val id = DomainId.newId()
         val createdTimestampUtc = Instant.now()
+        val version = 1L
 
         return LeftManyEntity(
             createdTimestampUtc,
             id,
             someInt,
-            someString
+            someString,
+            version
         )
 
     }
@@ -97,7 +99,8 @@ class LeftManyCrudService(
     fun update(editDto: LeftManyUpdateRequestDto) {
 
         val id = editDto.id
-        val updater = LeftManyEntityUpdater.forPrimaryKey(id) {
+        val version = editDto.version
+        val updater = LeftManyEntityUpdater.forPrimaryKey(id, version) {
             someInt(editDto.someInt)
             someString(editDto.someString)
         }
@@ -159,7 +162,9 @@ class LeftManyCrudService(
 
         logger.info("BEGIN: updateSomeInt. currentUsername=${currentUsername}, dto=$editDto")
 
-        val updater = LeftManyEntityUpdater.forPrimaryKey(editDto.id) {
+        val version = editDto.version
+
+        val updater = LeftManyEntityUpdater.forPrimaryKey(editDto.id, version) {
             someInt(editDto.someInt)
         }
 
@@ -175,7 +180,9 @@ class LeftManyCrudService(
 
         logger.info("BEGIN: updateSomeString. currentUsername=${currentUsername}, dto=$editDto")
 
-        val updater = LeftManyEntityUpdater.forPrimaryKey(editDto.id) {
+        val version = editDto.version
+
+        val updater = LeftManyEntityUpdater.forPrimaryKey(editDto.id, version) {
             someString(editDto.someString)
         }
 

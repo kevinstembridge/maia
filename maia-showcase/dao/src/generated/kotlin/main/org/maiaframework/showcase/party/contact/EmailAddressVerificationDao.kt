@@ -5,6 +5,7 @@ package org.maiaframework.showcase.party.contact
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
@@ -36,7 +37,7 @@ class EmailAddressVerificationDao(
                 created_by_id,
                 created_timestamp_utc,
                 effective_range,
-                email_address_id,
+                email_address,
                 id,
                 ip_address,
                 last_modified_by_id,
@@ -46,7 +47,7 @@ class EmailAddressVerificationDao(
                 :createdBy,
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
-                :emailAddressId,
+                :emailAddress,
                 :id,
                 :ipAddress,
                 :lastModifiedBy,
@@ -59,7 +60,7 @@ class EmailAddressVerificationDao(
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
-                addValue("emailAddressId", entity.emailAddressId)
+                addValue("emailAddress", entity.emailAddress)
                 addValue("id", entity.id)
                 addValue("ipAddress", entity.ipAddress)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
@@ -79,7 +80,7 @@ class EmailAddressVerificationDao(
                 created_by_id,
                 created_timestamp_utc,
                 effective_range,
-                email_address_id,
+                email_address,
                 id,
                 ip_address,
                 last_modified_by_id,
@@ -89,7 +90,7 @@ class EmailAddressVerificationDao(
                 :createdBy,
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
-                :emailAddressId,
+                :emailAddress,
                 :id,
                 :ipAddress,
                 :lastModifiedBy,
@@ -103,7 +104,7 @@ class EmailAddressVerificationDao(
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
-                    addValue("emailAddressId", entity.emailAddressId)
+                    addValue("emailAddress", entity.emailAddress)
                     addValue("id", entity.id)
                     addValue("ipAddress", entity.ipAddress)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
@@ -279,6 +280,23 @@ class EmailAddressVerificationDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun existsByEmailAddress(emailAddress: EmailAddress): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            """
+            select count(*) from maia.email_address_verification
+            where email_address = :emailAddress
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("emailAddress", emailAddress)
+            }
+        )
+
+        return count > 0
 
     }
 

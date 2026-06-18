@@ -5,6 +5,7 @@ package org.maiaframework.showcase.party.contact
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityFieldConverter
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.net.IpAddress
 import org.springframework.stereotype.Component
 import java.time.Instant
@@ -26,8 +27,8 @@ class EmailAddressVerificationEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "effective_to" -> // effectiveTo
                 return inputValue
-            "email_address_id" -> // emailAddressId
-                return (inputValue as DomainId).value
+            "email_address" -> // emailAddress
+                return (inputValue as EmailAddress).value
             "id" -> // id
                 return (inputValue as DomainId).value
             "ip_address" -> // ipAddress
