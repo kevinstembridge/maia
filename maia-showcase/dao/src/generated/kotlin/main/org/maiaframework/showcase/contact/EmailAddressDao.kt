@@ -3,6 +3,7 @@
 
 package org.maiaframework.showcase.contact
 
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.contact.EmailAddress
@@ -10,6 +11,7 @@ import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
+import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
@@ -21,6 +23,7 @@ import java.time.Instant
 @Repository
 class EmailAddressDao(
     private val fieldConverter: EmailAddressEntityFieldConverter,
+    private val historyDao: EmailAddressHistoryDao,
     private val jdbcOps: JdbcOps
 ) {
 
@@ -41,14 +44,16 @@ class EmailAddressDao(
                 email_address,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc
+                last_modified_timestamp_utc,
+                version
             ) values (
                 :createdBy,
                 :createdTimestampUtc,
                 :emailAddress,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc
+                :lastModifiedTimestampUtc,
+                :version
             )
             """.trimIndent(),
             SqlParams().apply {
@@ -58,8 +63,11 @@ class EmailAddressDao(
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("version", entity.version)
             }
         )
+
+        insertHistory(entity, ChangeType.CREATE)
 
     }
 
@@ -74,14 +82,16 @@ class EmailAddressDao(
                 email_address,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc
+                last_modified_timestamp_utc,
+                version
             ) values (
                 :createdBy,
                 :createdTimestampUtc,
                 :emailAddress,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc
+                :lastModifiedTimestampUtc,
+                :version
             )
             """.trimIndent(),
             entities.map { entity ->
@@ -92,9 +102,60 @@ class EmailAddressDao(
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("version", entity.version)
                 }
             }
         )
+
+        bulkInsertHistory(entities, ChangeType.CREATE)
+
+    }
+
+
+    private fun insertHistory(entity: EmailAddressEntity, changeType: ChangeType) {
+
+        insertHistory(entity, entity.version, changeType)
+
+    }
+
+
+    private fun insertHistory(entity: EmailAddressEntity, version: Long, changeType: ChangeType) {
+
+        this.historyDao.insert(history(entity, version, changeType))
+
+    }
+
+
+    private fun bulkInsertHistory(entities: List<EmailAddressEntity>, changeType: ChangeType) {
+
+        val historyEntities = entities.map { history(it, it.version, changeType) }
+        this.historyDao.bulkInsert(historyEntities)
+
+    }
+
+
+    private fun history(
+        entity: EmailAddressEntity,
+        version: Long,
+        changeType: ChangeType
+    ): EmailAddressHistoryEntity {
+
+        val id = entity.id
+        val createdBy = entity.createdBy
+        val createdTimestampUtc = entity.createdTimestampUtc
+        val emailAddress = entity.emailAddress
+        val lastModifiedBy = entity.lastModifiedBy
+        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+
+        return EmailAddressHistoryEntity(
+                changeType,
+                createdBy,
+                createdTimestampUtc,
+                emailAddress,
+                id,
+                lastModifiedBy,
+                lastModifiedTimestampUtc,
+                version)
 
     }
 
@@ -352,19 +413,22 @@ class EmailAddressDao(
                 email_address,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc
+                last_modified_timestamp_utc,
+                version
             ) values (
                 :createdBy,
                 :createdTimestampUtc,
                 :emailAddress,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc
+                :lastModifiedTimestampUtc,
+                :version
             )
             on conflict (email_address)
             do update set
                 last_modified_by_id = :lastModifiedBy,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc
+                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                version = maia.email_address.version + 1
             returning *;
             """.trimIndent(),
             SqlParams().apply {
@@ -374,6 +438,7 @@ class EmailAddressDao(
                 addValue("id", upsertEntity.id)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
                 val rs = ps.executeQuery()
@@ -381,6 +446,9 @@ class EmailAddressDao(
                 entityRowMapper.mapRow(ResultSetAdapter(rs))
             }
         )
+
+        val changeType = if (persistedEntity!!.id != upsertEntity.id) ChangeType.UPDATE else ChangeType.CREATE
+        insertHistory(persistedEntity, persistedEntity.version, changeType)
 
         return persistedEntity!!
 
@@ -402,6 +470,7 @@ class EmailAddressDao(
         sql.append("update maia.email_address set ")
 
         val fieldClauses = updater.fields
+            .plus(FieldUpdate("version_incremented", "version", updater.version + 1))
             .map { field ->
 
                 addField(field, sqlParams)
@@ -411,10 +480,27 @@ class EmailAddressDao(
 
         sql.append(fieldClauses)
         sql.append(" where id = :id")
+        sql.append(" and version = :version")
 
         sqlParams.addValue("id", updater.id)
 
-        return this.jdbcOps.update(sql.toString(), sqlParams)
+        sqlParams.addValue("version", updater.version)
+        sqlParams.addValue("version_incremented", updater.version + 1)
+
+        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
+
+        if (updateCount == 0) {
+
+            throw OptimisticLockingException(EmailAddressEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
+
+        } else {
+
+            val updatedEntity = findByPrimaryKey(updater.id)
+            insertHistory(updatedEntity, ChangeType.UPDATE)
+
+        }
+
+        return updateCount
 
     }
 

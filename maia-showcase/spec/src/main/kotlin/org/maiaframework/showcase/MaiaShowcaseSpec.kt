@@ -1263,6 +1263,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
         nameFieldForPkAndNameDto = "someString",
+        recordVersionHistory = true,
     ) {
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")

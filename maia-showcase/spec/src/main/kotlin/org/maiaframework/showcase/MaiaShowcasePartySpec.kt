@@ -394,7 +394,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val emailAddressEntityDef = entity("org.maiaframework.showcase.contact", "EmailAddress") {
+    val emailAddressEntityDef = entity("org.maiaframework.showcase.contact", "EmailAddress", recordVersionHistory = true) {
         moduleName("ops")
         field("emailAddress", emailAddressStringType) {
             unique()

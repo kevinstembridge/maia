@@ -101,9 +101,24 @@ CREATE TABLE maia.email_address (
     id uuid NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(id)
 );
 CREATE UNIQUE INDEX email_address_email_address_uidx ON maia.email_address(email_address);
+
+
+CREATE TABLE maia.email_address_history (
+    change_type text NOT NULL,
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    email_address text NOT NULL,
+    id uuid NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
+);
+CREATE INDEX hist_email_address_email_address_idx ON maia.email_address_history(email_address);
 
 
 CREATE TABLE maia.party_email_address (
@@ -415,7 +430,19 @@ CREATE TABLE maia.left_many (
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
+    version bigint NOT NULL,
     PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.left_many_history (
+    change_type text NOT NULL,
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
 );
 
 

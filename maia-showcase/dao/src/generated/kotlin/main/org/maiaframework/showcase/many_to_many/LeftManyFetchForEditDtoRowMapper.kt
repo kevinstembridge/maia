@@ -30,6 +30,7 @@ class LeftManyFetchForEditDtoRowMapper(
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
+        val version = rsa.readLong("version")
 
         return LeftManyFetchForEditDto(
             createdTimestampUtc,
@@ -38,6 +39,7 @@ class LeftManyFetchForEditDtoRowMapper(
             rightLeftToRightSimpleJoinEntitiesPkAndNameDtoList,
             someInt,
             someString,
+            version,
         )
 
     }

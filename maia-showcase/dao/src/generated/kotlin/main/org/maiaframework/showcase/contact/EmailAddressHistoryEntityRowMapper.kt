@@ -3,16 +3,18 @@
 
 package org.maiaframework.showcase.contact
 
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 
 
-class EmailAddressEntityRowMapper : MaiaRowMapper<EmailAddressEntity> {
+class EmailAddressHistoryEntityRowMapper : MaiaRowMapper<EmailAddressHistoryEntity> {
 
 
-    override fun mapRow(rsa: ResultSetAdapter): EmailAddressEntity {
+    override fun mapRow(rsa: ResultSetAdapter): EmailAddressHistoryEntity {
 
+        val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdBy = rsa.readDomainId("created_by_id")
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
@@ -21,7 +23,8 @@ class EmailAddressEntityRowMapper : MaiaRowMapper<EmailAddressEntity> {
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val version = rsa.readLong("version")
 
-        return EmailAddressEntity(
+        return EmailAddressHistoryEntity(
+                changeType,
                 createdBy,
                 createdTimestampUtc,
                 emailAddress,
