@@ -220,7 +220,7 @@ class HistorySampleDao(
         return jdbcOps.queryForList(
             "select * from maia.history_sample where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

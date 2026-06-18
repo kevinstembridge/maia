@@ -212,7 +212,7 @@ class ParentOneDao(
         return jdbcOps.queryForList(
             "select * from maia.grandparent where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

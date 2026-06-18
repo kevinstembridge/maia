@@ -211,7 +211,7 @@ class HistorySubTwoDao(
         return jdbcOps.queryForList(
             "select * from maia.history_super where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

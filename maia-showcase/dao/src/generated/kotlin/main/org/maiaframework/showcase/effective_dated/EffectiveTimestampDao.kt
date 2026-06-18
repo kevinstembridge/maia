@@ -136,7 +136,7 @@ class EffectiveTimestampDao(
         return jdbcOps.queryForList(
             "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
