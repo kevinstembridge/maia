@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.AngularComponentBaseName
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AnnotationDefs
 import org.maiaframework.gen.spec.definition.AppKey
+import org.maiaframework.gen.spec.definition.AuthoritiesDef
 import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
@@ -100,6 +101,7 @@ import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
+import org.maiaframework.gen.spec.definition.lang.Uqcn
 import org.maiaframework.jdbc.JdbcCompatibleType
 import org.maiaframework.lang.text.StringFunctions
 
@@ -112,6 +114,7 @@ abstract class AbstractSpec protected constructor(
 
 
     private val angularFormDefs = mutableListOf<AngularFormDef>()
+    private var authoritiesDef: AuthoritiesDef? = null
     private val authorityDefs = mutableListOf<AuthorityDef>()
     private val basePackageName = basePackageName ?: PackageName(appKey.value.lowercase())
     private val booleanTypeDefs = mutableListOf<BooleanTypeDef>()
