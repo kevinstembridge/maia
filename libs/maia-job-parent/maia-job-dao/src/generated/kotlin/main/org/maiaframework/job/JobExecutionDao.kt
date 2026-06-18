@@ -178,7 +178,7 @@ class JobExecutionDao(
         return jdbcOps.queryForList(
             "select * from jobs.job_execution where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

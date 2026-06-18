@@ -206,7 +206,7 @@ class PropsDao(
         return jdbcOps.queryForList(
             "select * from props.props where property_name = :propertyName",
             SqlParams().apply {
-            addValue("propertyName", propertyName)
+                addValue("propertyName", propertyName)
             },
             this.entityRowMapper
         ).firstOrNull()

@@ -275,7 +275,7 @@ class FeatureToggleDao(
         return jdbcOps.queryForList(
             "select * from toggles.feature_toggle where feature_name = :featureName",
             SqlParams().apply {
-            addValue("featureName", featureName.value)
+                addValue("featureName", featureName.value)
             },
             this.entityRowMapper
         ).firstOrNull()

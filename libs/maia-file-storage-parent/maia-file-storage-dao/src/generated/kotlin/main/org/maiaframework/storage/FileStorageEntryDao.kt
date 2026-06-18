@@ -156,7 +156,7 @@ class FileStorageEntryDao(
         return jdbcOps.queryForList(
             "select * from storage.file_storage_entry where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
