@@ -138,7 +138,7 @@ class BravoAgGridDao(
         return jdbcOps.queryForList(
             "select * from maia.bravo_ag_grid where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

@@ -366,7 +366,7 @@ class AllFieldTypesDao(
         return jdbcOps.queryForList(
             "select * from maia.all_field_types where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

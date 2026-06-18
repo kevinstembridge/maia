@@ -136,7 +136,7 @@ class AlphaDao(
         return jdbcOps.queryForList(
             "select * from maia.alpha where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

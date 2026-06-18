@@ -142,7 +142,7 @@ class BravoDao(
         return jdbcOps.queryForList(
             "select * from maia.bravo where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

@@ -142,7 +142,7 @@ class CharlieDao(
         return jdbcOps.queryForList(
             "select * from maia.charlie where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

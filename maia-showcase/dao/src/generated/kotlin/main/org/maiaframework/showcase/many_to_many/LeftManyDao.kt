@@ -193,7 +193,7 @@ class LeftManyDao(
         return jdbcOps.queryForList(
             "select * from maia.left_many where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

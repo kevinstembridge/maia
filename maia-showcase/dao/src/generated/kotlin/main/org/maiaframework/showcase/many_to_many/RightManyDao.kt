@@ -193,7 +193,7 @@ class RightManyDao(
         return jdbcOps.queryForList(
             "select * from maia.right_many where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

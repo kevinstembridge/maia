@@ -190,7 +190,7 @@ class LeftToRightSimpleJoinDao(
         return jdbcOps.queryForList(
             "select * from maia.left_to_right_simple_join where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
