@@ -39,38 +39,6 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     private lateinit var rightEntity3: RightManyEntity
 
 
-    private fun post(path: String, body: String): MvcTestResultAssert {
-
-        val csrfCookie = `fetch CSRF cookie`()
-        return assertThat(
-            mockMvc.post().uri(path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(body)
-                .header("X-XSRF-TOKEN", csrfCookie.value)
-                .with(user("nigel").authorities(SimpleGrantedAuthority("WRITE")))
-                .cookie(csrfCookie)
-                .exchange()
-        )
-
-    }
-
-
-    private fun put(path: String, body: String): MvcTestResultAssert {
-
-        val csrfCookie = `fetch CSRF cookie`()
-        return assertThat(
-            mockMvc.put().uri(path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(body)
-                .header("X-XSRF-TOKEN", csrfCookie.value)
-                .with(user("nigel").authorities(SimpleGrantedAuthority("WRITE")))
-                .cookie(csrfCookie)
-                .exchange()
-        ).debug()
-
-    }
-
-
     @BeforeEach
     fun setUp() {
 
@@ -79,7 +47,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         rightEntity3 = RightManyEntityTestBuilder(someString = "right3").build()
 
         manyToManyJoinDao.deleteAll()
-        simpleJoinDao.deleteAll()
+        truncateTable(LeftToRightSimpleJoinEntityMeta.SCHEMA_AND_TABLE_NAME)
         leftDao.deleteAll()
         rightDao.deleteAll()
         rightDao.bulkInsert(listOf(rightEntity1, rightEntity2, rightEntity3))
@@ -253,6 +221,38 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         assertThat(join1After.id).isEqualTo(join1.id)
         assertThat(join1After.createdTimestampUtc).isEqualTo(join1.createdTimestampUtc)
         assertThat(join1After.effectiveFrom).isEqualTo(java.time.Instant.parse("2026-01-01T00:00:00Z"))
+
+    }
+
+
+    private fun post(path: String, body: String): MvcTestResultAssert {
+
+        val csrfCookie = `fetch CSRF cookie`()
+        return assertThat(
+            mockMvc.post().uri(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)
+                .header("X-XSRF-TOKEN", csrfCookie.value)
+                .with(user("nigel").authorities(SimpleGrantedAuthority("WRITE")))
+                .cookie(csrfCookie)
+                .exchange()
+        )
+
+    }
+
+
+    private fun put(path: String, body: String): MvcTestResultAssert {
+
+        val csrfCookie = `fetch CSRF cookie`()
+        return assertThat(
+            mockMvc.put().uri(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)
+                .header("X-XSRF-TOKEN", csrfCookie.value)
+                .with(user("nigel").authorities(SimpleGrantedAuthority("WRITE")))
+                .cookie(csrfCookie)
+                .exchange()
+        ).debug()
 
     }
 

@@ -17,7 +17,6 @@ class LeftManyCrudService(
     private val entityRepo: LeftManyRepo,
     private val leftManyCrudNotifier: LeftManyCrudNotifier,
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
-    private val leftToRightSimpleJoinHistoryRepo: LeftToRightSimpleJoinHistoryRepo,
     private val leftToRightSimpleJoinRepo: LeftToRightSimpleJoinRepo,
     private val maiaProblems: MaiaProblems
 ) {
@@ -209,10 +208,6 @@ class LeftManyCrudService(
 
         if (this.leftToRightSimpleJoinRepo.existsByLeft(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimpleJoin")
-        }
-
-        if (this.leftToRightSimpleJoinHistoryRepo.existsByLeft(id)) {
-            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimpleJoinHistory")
         }
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

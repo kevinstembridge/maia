@@ -16,14 +16,12 @@ class LeftToRightSimpleJoinEntityRowMapper : MaiaRowMapper<LeftToRightSimpleJoin
         val id = rsa.readDomainId("id")
         val left = rsa.readDomainId("left_id")
         val right = rsa.readDomainId("right_id")
-        val version = rsa.readLong("version")
 
         return LeftToRightSimpleJoinEntity(
                 createdTimestampUtc,
                 id,
                 left,
-                right,
-                version
+                right
         )
 
     }

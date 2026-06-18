@@ -16,7 +16,6 @@ import java.time.Instant
 class RightManyCrudService(
     private val entityRepo: RightManyRepo,
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
-    private val leftToRightSimpleJoinHistoryRepo: LeftToRightSimpleJoinHistoryRepo,
     private val leftToRightSimpleJoinRepo: LeftToRightSimpleJoinRepo,
     private val maiaProblems: MaiaProblems,
     private val rightManyCrudNotifier: RightManyCrudNotifier
@@ -209,10 +208,6 @@ class RightManyCrudService(
 
         if (this.leftToRightSimpleJoinRepo.existsByRight(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimpleJoin")
-        }
-
-        if (this.leftToRightSimpleJoinHistoryRepo.existsByRight(id)) {
-            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimpleJoinHistory")
         }
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

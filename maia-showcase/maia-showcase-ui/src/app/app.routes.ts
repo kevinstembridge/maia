@@ -3,7 +3,6 @@ import {allFieldTypesRoutes} from '@app/gen-components/org/maiaframework/showcas
 import {bravoRoutes} from '@app/gen-components/org/maiaframework/showcase/join/bravo-routes';
 import {compositePrimaryKeyRoutes} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-routes';
 import {leftManyRoutes} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-routes';
-import {leftToRightSimpleJoinRoutes} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-simple-join-routes';
 import {simpleRoutes} from '@app/gen-components/org/maiaframework/showcase/simple/simple-routes';
 import {someVersionedRoutes} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-routes';
 import {userRoutes} from '@app/gen-components/org/maiaframework/showcase/user/user-routes';
@@ -25,7 +24,6 @@ export const routes: Routes = [
     ...compositePrimaryKeyRoutes,
     ...historySampleRoutes,
     ...leftManyRoutes,
-    ...leftToRightSimpleJoinRoutes,
     ...rightManyRoutes,
     ...simpleRoutes,
     ...someVersionedRoutes,

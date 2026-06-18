@@ -3,10 +3,8 @@ package org.maiaframework.showcase.many_to_many
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.maiaframework.domain.ChangeType
 import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.security.test.context.support.WithMockUser
 
 class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
@@ -26,10 +24,6 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
 
     @Autowired
     private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
-
-
-    @Autowired
-    private lateinit var joinHistoryDao: LeftToRightSimpleJoinHistoryDao
 
 
     @Autowired
@@ -56,8 +50,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
         rightEntity2 = RightManyEntityTestBuilder(someString = "beta").build()
         rightEntity3 = RightManyEntityTestBuilder(someString = "gamma").build()
 
-        jdbcOps.update("delete from maia.left_to_right_simple_join_history")
-        joinDao.deleteAll()
+        truncateTable(LeftToRightSimpleJoinEntityMeta.SCHEMA_AND_TABLE_NAME)
         manyToManyJoinDao.deleteAll()
         leftDao.deleteAll()
         rightDao.deleteAll()
@@ -118,97 +111,5 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
 
     }
 
-
-    @Test
-    @WithMockUser(authorities = ["WRITE"])
-    fun `adding and removing a join pair writes CREATE and DELETE history rows`() {
-
-        // add rightEntity1
-        crudService.update(
-            LeftManyUpdateRequestDto(
-                id_raw = leftEntity.id,
-                rightEntities_raw = emptyList(),
-                rightEntityIds_raw = listOf(rightEntity1.id),
-                someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString,
-                version_raw = leftEntity.version
-            )
-        )
-
-        val joinAfterCreate = joinDao.findByLeft(leftEntity.id).single { it.right == rightEntity1.id }
-
-        val createHistory = joinHistoryDao.findByLeft(leftEntity.id)
-            .filter { it.id == joinAfterCreate.id && it.changeType == ChangeType.CREATE }
-        assertThat(createHistory).hasSize(1)
-        assertThat(createHistory.single().right).isEqualTo(rightEntity1.id)
-
-        // swap to rightEntity2 (removes rightEntity1, adds rightEntity2)
-        crudService.update(
-            LeftManyUpdateRequestDto(
-                id_raw = leftEntity.id,
-                rightEntities_raw = emptyList(),
-                rightEntityIds_raw = listOf(rightEntity2.id),
-                someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString,
-                version_raw = leftEntity.version + 1
-            )
-        )
-
-        val deleteHistory = joinHistoryDao.findByLeft(leftEntity.id)
-            .filter { it.id == joinAfterCreate.id && it.changeType == ChangeType.DELETE }
-        assertThat(deleteHistory).hasSize(1)
-        assertThat(deleteHistory.single().right).isEqualTo(rightEntity1.id)
-
-    }
-
-
-    @Test
-    @WithMockUser(authorities = ["WRITE"])
-    fun `global history search endpoint returns join history rows`() {
-
-        // add rightEntity1
-        crudService.update(
-            LeftManyUpdateRequestDto(
-                id_raw = leftEntity.id,
-                rightEntities_raw = emptyList(),
-                rightEntityIds_raw = listOf(rightEntity1.id),
-                someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString,
-                version_raw = leftEntity.version
-            )
-        )
-
-        // remove rightEntity1
-        crudService.update(
-            LeftManyUpdateRequestDto(
-                id_raw = leftEntity.id,
-                rightEntities_raw = emptyList(),
-                rightEntityIds_raw = emptyList(),
-                someInt_raw = leftEntity.someInt,
-                someString_raw = leftEntity.someString,
-                version_raw = leftEntity.version + 1
-            )
-        )
-
-        val requestBody = """
-            {
-                "filterModel": {
-                    "left": {
-                        "filterType": "text",
-                        "type": "equals",
-                        "filter": "${leftEntity.id}"
-                    }
-                },
-                "sortModel": [],
-                "startRow": 0
-            }
-        """.trimIndent()
-
-        assertThat_POST("/api/left-to-right-simple-join/history/search", requestBody)
-            .hasStatus(HttpStatus.OK)
-            .bodyJson()
-            .isLenientlyEqualTo("""{"totalResultCount": 2}""")
-
-    }
 
 }

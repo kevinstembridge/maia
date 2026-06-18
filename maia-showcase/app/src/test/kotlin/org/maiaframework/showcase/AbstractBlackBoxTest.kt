@@ -9,6 +9,7 @@ import org.maiaframework.domain.LifecycleState
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
 import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.SchemaAndTableName
 import org.maiaframework.showcase.testing.fixtures.Fixtures
 import org.maiaframework.showcase.user.UserDao
 import org.maiaframework.showcase.user.UserEntity
@@ -173,6 +174,13 @@ abstract class AbstractBlackBoxTest {
     protected fun deleteParties() {
 
         this.jdbcOps.update("delete from ${UserEntityMeta.SCHEMA_AND_TABLE_NAME} where id != '${Anys.defaultCreatedById}'")
+
+    }
+
+
+    protected fun truncateTable(table: SchemaAndTableName) {
+
+        this.jdbcOps.update("truncate table $table")
 
     }
 

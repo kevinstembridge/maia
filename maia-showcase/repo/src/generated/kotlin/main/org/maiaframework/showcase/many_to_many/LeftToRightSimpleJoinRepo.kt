@@ -135,13 +135,6 @@ class LeftToRightSimpleJoinRepo(
     }
 
 
-    fun deleteAll() {
-    
-       this.dao.deleteAll()
-       
-    }
-
-
     fun removeByPrimaryKey(id: DomainId): LeftToRightSimpleJoinEntity? {
 
         val found = findByPrimaryKeyOrNull(id)

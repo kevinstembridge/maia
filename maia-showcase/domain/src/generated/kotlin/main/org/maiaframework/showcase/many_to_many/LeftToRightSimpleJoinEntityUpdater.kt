@@ -9,8 +9,7 @@ import org.maiaframework.domain.persist.FieldUpdate
 
 data class LeftToRightSimpleJoinEntityUpdater(
     val fields: List<FieldUpdate>,
-    val id: DomainId,
-    val version: Long
+    val id: DomainId
 ) {
 
 
@@ -21,7 +20,6 @@ data class LeftToRightSimpleJoinEntityUpdater(
 
     class Builder(
         val id: DomainId,
-        val version: Long
     ) {
 
 
@@ -30,11 +28,7 @@ data class LeftToRightSimpleJoinEntityUpdater(
 
         fun build(): LeftToRightSimpleJoinEntityUpdater {
 
-            return LeftToRightSimpleJoinEntityUpdater(
-                this.fields,
-                this.id,
-                this.version
-            )
+            return LeftToRightSimpleJoinEntityUpdater(this.fields, this.id)
 
         }
 
@@ -61,14 +55,10 @@ data class LeftToRightSimpleJoinEntityUpdater(
 
         fun forPrimaryKey(
             id: DomainId,
-            version: Long,
             init: Builder.() -> Unit
         ): LeftToRightSimpleJoinEntityUpdater {
 
-            val builder = Builder(
-                id,
-                version
-            )
+            val builder = Builder(id)
             builder.init()
             return builder.build()
 

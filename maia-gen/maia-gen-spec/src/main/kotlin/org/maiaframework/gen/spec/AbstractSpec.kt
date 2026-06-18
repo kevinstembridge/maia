@@ -482,6 +482,39 @@ abstract class AbstractSpec protected constructor(
     }
 
 
+    /**
+     * A Simple many-to-many join does not have any effective time range. The join either
+     * exists or it doesn't. It has no history and is not versioned.
+     */
+    protected fun simpleManyToManyEntity(
+        packageName: String,
+        entityBaseName: String,
+        withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
+        leftEntity: ReferencedEntity,
+        rightEntity: ReferencedEntity,
+        pkAndNameFieldName: String? = null,
+        init: (EntityDefBuilder.() -> Unit)? = null
+    ): ManyToManyEntityDef {
+
+        return manyToManyEntity(
+            packageName,
+            entityBaseName,
+            recordVersionHistory = false,
+            versioned = false,
+            deletable = Deletable.TRUE,
+            allowDeleteAll = AllowDeleteAll.FALSE,
+            allowFindAll = AllowFindAll.FALSE,
+            withHandcodedDao,
+            withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
+            leftEntity,
+            rightEntity,
+            pkAndNameFieldName,
+            init = init
+        )
+
+    }
+
+
     protected fun manyToManyEntity(
         packageName: String,
         entityBaseName: String,

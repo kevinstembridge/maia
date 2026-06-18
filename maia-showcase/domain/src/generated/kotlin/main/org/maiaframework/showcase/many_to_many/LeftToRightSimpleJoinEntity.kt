@@ -11,8 +11,7 @@ class LeftToRightSimpleJoinEntity(
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val left: DomainId,
-    val right: DomainId,
-    val version: Long
+    val right: DomainId
 ) {
 
 
@@ -22,8 +21,7 @@ class LeftToRightSimpleJoinEntity(
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "left = '" + this.left + '\'' + ", " + 
-                "right = '" + this.right + '\'' + ", " + 
-                "version = '" + this.version + '\'' +
+                "right = '" + this.right + '\'' +
                 "}"
 
     }
@@ -45,14 +43,12 @@ class LeftToRightSimpleJoinEntity(
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
-            val version = 1L
 
             return LeftToRightSimpleJoinEntity(
                 createdTimestampUtc,
                 id,
                 left,
-                right,
-                version
+                right
             )
 
         }
