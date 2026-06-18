@@ -53,6 +53,22 @@ class PartyForeignKeyReferencesService(
 
     fun checkForeignKeyReferences(id: DomainId): ForeignKeyReferencesExistResponseDto {
 
+        if (this.emailAddressRepo.existsByCreatedBy(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "EmailAddress")
+        }
+
+        if (this.partyEmailAddressRepo.existsByParty(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "PartyEmailAddress")
+        }
+
+        if (this.partyEmailAddressHistoryRepo.existsByParty(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "PartyEmailAddressHistory")
+        }
+
+        if (this.emailAddressVerificationRepo.existsByCreatedBy(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "EmailAddressVerification")
+        }
+
         if (this.allFieldTypesRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "AllFieldTypes")
         }
@@ -103,22 +119,6 @@ class PartyForeignKeyReferencesService(
 
         if (this.historySuperHistoryRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "HistorySuperHistory")
-        }
-
-        if (this.emailAddressRepo.existsByCreatedBy(id)) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "EmailAddress")
-        }
-
-        if (this.partyEmailAddressRepo.existsByParty(id)) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "PartyEmailAddress")
-        }
-
-        if (this.partyEmailAddressHistoryRepo.existsByParty(id)) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "PartyEmailAddressHistory")
-        }
-
-        if (this.emailAddressVerificationRepo.existsByCreatedBy(id)) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "EmailAddressVerification")
         }
 
         return ForeignKeyReferencesExistResponseDto(id, false, null)

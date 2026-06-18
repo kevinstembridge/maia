@@ -9,8 +9,8 @@ class MaiaShowcaseApplicationSpec : ApplicationSpec("org.maiaframework.showcase"
 
 
     override val modelDefs: List<ModelDef> = listOf(
-        MaiaShowcaseSpec().modelDef,
-        MaiaShowcasePartySpec().modelDef
+        MaiaShowcasePartySpec().modelDef,
+        MaiaShowcaseSpec().modelDef
     )
 
 
