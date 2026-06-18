@@ -200,6 +200,21 @@ abstract class AbstractSpec protected constructor(
             )
         }
 
+        entityDefs
+            .filter { it.withVersionHistory.value }
+            .forEach { entityDef ->
+                entityDef.allForeignKeyEntityFieldDefs
+                    .mapNotNull { it.foreignKeyFieldDef?.foreignEntityDef }
+                    .filter { !it.withVersionHistory.value }
+                    .forEach { foreignEntityDef ->
+                        throw ModelDefinitionException(
+                            "Entity '${entityDef.entityBaseName}' has version history " +
+                            "but references '${foreignEntityDef.entityBaseName}' which does not. " +
+                            "Entities with history tables may only reference entities that also have history tables."
+                        )
+                    }
+            }
+
         entityDefsFinalized = true
 
     }
