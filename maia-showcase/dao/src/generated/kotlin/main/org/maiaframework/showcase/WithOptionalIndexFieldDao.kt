@@ -139,7 +139,7 @@ class WithOptionalIndexFieldDao(
         return jdbcOps.queryForList(
             "select * from maia.with_optional_index_field where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

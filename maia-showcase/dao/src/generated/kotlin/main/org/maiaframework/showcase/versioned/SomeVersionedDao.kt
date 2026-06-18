@@ -144,7 +144,7 @@ class SomeVersionedDao(
         return jdbcOps.queryForList(
             "select * from maia.some_versioned where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

@@ -132,7 +132,7 @@ class ForeignKeyChildDao(
         return jdbcOps.queryForList(
             "select * from maia.foreign_key_child where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()

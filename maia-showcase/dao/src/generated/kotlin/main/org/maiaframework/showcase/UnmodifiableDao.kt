@@ -131,7 +131,7 @@ class UnmodifiableDao(
         return jdbcOps.queryForList(
             "select * from maia.unmodifiable where id = :id",
             SqlParams().apply {
-            addValue("id", id)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
