@@ -320,14 +320,12 @@ insert into maia.user_group_membership (
     created_timestamp_utc,
     id,
     user_group_id,
-    user_id,
-    version
+    user_id
 ) values (
     current_timestamp,
     'cccccccc-cccc-cccc-cccc-cccccccccccc',
     (select id from maia.user_group where name = 'Read-Only'),
-    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', -- Fyrst Naime
-    1
+    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa' -- Fyrst Naime
 );
 
 
@@ -335,47 +333,11 @@ insert into maia.user_group_membership (
     created_timestamp_utc,
     id,
     user_group_id,
-    user_id,
-    version
+    user_id
 ) values (
     current_timestamp,
     'dddddddd-dddd-dddd-dddd-dddddddddddd',
     (select id from maia.user_group where name = 'Read-Write'),
-    (select id from maia.party where first_name = 'Admin' and last_name = 'System'),
-    1
-);
-
-
-insert into maia.user_group_membership_history (
-    change_type,
-    created_timestamp_utc,
-    id,
-    user_group_id,
-    user_id,
-    version
-) values (
-    'CREATE',
-    current_timestamp,
-    'cccccccc-cccc-cccc-cccc-cccccccccccc',
-    (select id from maia.user_group where name = 'Read-Only'),
-    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', -- Fyrst Naime
-    1
-);
-
-
-insert into maia.user_group_membership_history (
-    change_type,
-    created_timestamp_utc,
-    id,
-    user_group_id,
-    user_id,
-    version
-) values (
-    'CREATE',
-    current_timestamp,
-    'dddddddd-dddd-dddd-dddd-dddddddddddd',
-    (select id from maia.user_group where name = 'Read-Write'),
-    (select id from maia.party where first_name = 'Admin' and last_name = 'System'),
-    1
+    (select id from maia.party where first_name = 'Admin' and last_name = 'System')
 );
 
