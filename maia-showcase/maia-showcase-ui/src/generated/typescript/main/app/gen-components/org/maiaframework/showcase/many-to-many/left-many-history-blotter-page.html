@@ -1,0 +1,9 @@
+<app-page-layout pageTitle="LeftMany History" dataPageId="left_many_history_blotter">
+    @if (entityId(); as id) {
+        <app-left-many-history-blotter [entityId]="id" />
+    }
+    <button matButton aria-label="View" (click)="onViewClicked()">
+        <mat-icon>visibility</mat-icon>
+        View
+    </button>
+</app-page-layout>

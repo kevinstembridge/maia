@@ -6,17 +6,19 @@ import org.junit.jupiter.api.Test
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.ModelDefinitionException
 import org.maiaframework.gen.spec.definition.ReferencedEntity
+import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 class HistoryFkValidationTest {
+
 
     @Test
     fun `regular entity with history table FKing a non-history entity throws ModelDefinitionException`() {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val noHistory = entity("com.example", "NoHistory") {
+            val noHistory = entity("com.example", "NoHistory", deletable = Deletable.TRUE) {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
@@ -39,7 +41,7 @@ class HistoryFkValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val noHistory = entity("com.example", "NoHistory", nameFieldForPkAndNameDto = "name") {
+            val noHistory = entity("com.example", "NoHistory", nameFieldForPkAndNameDto = "name", deletable = Deletable.TRUE) {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
@@ -76,6 +78,26 @@ class HistoryFkValidationTest {
 
             val child = entity("com.example", "Child") {
                 foreignKey("parent", parent) { fieldDisplayName("Parent") }
+            }
+
+        }
+
+        assertThatNoException().isThrownBy { spec.modelDef }
+
+    }
+
+
+    @Test
+    fun `history entity FKing a non-deletable non-history entity is valid`() {
+
+        val spec = object : AbstractSpec(AppKey("Test")) {
+
+            val nonDeletable = entity("com.example", "NonDeletable") {
+                field("name", FieldTypes.string) { fieldDisplayName("Name") }
+            }
+
+            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+                foreignKey("nonDeletable", nonDeletable) { fieldDisplayName("Non-Deletable") }
             }
 
         }

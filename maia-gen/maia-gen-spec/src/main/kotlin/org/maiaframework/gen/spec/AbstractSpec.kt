@@ -144,20 +144,17 @@ abstract class AbstractSpec protected constructor(
     private val stringValueClassDefs = mutableListOf<StringValueClassDef>()
     private val typeaheadDefs = mutableListOf<TypeaheadDef>()
     private val manyToManyAssociationsByEntityName: MutableMap<EntityBaseName, MutableList<ManyToManyEntityDef>> = mutableMapOf()
-    private var entityDefsFinalized = false
-
 
     private val lookupFieldReaderByFieldType = { fieldType: FieldType -> this.fieldReadersByFieldType[fieldType] }
     private val lookupFieldWriterByFieldType = { fieldType: FieldType -> this.fieldWritersByFieldType[fieldType] }
 
 
-    override val modelDef: ModelDef
-        get() {
+    override val modelDef: ModelDef by lazy {
 
             populateEntityHierarchy()
             finalizeEntityDefs()
 
-            return ModelDef(
+            ModelDef(
                 this.appKey,
                 this.rootEntityHierarchies,
                 this.authorityDefs,
@@ -192,8 +189,6 @@ abstract class AbstractSpec protected constructor(
 
     private fun finalizeEntityDefs() {
 
-        if (entityDefsFinalized) return
-
         entityDefs.forEach { entityDef ->
             entityDef.initManyToManyAssociations(
                 manyToManyAssociationsByEntityName[entityDef.entityBaseName] ?: emptyList()
@@ -205,7 +200,7 @@ abstract class AbstractSpec protected constructor(
             .flatMap { entityDef ->
                 entityDef.allForeignKeyEntityFieldDefs
                     .map { it.foreignKeyFieldDef!!.foreignEntityDef }
-                    .filter { !it.withVersionHistory.value }
+                    .filter { !it.withVersionHistory.value && it.deletable.value }
                     .map { foreignEntityDef -> Pair(entityDef, foreignEntityDef) }
             }
 
@@ -214,11 +209,9 @@ abstract class AbstractSpec protected constructor(
                 "  - '${entityDef.entityBaseName}' references '${foreignEntityDef.entityBaseName}' which does not have version history"
             }
             throw ModelDefinitionException(
-                "Entities with history tables may only reference entities that also have history tables:\n$details"
+                "Entities with history tables may only reference entities that also have history tables or are non-deletable:\n$details"
             )
         }
-
-        entityDefsFinalized = true
 
     }
 
