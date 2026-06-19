@@ -167,7 +167,7 @@ class CrudServiceRenderer(
 
                 blankLine()
 
-                if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+                if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true) {
                     val joinDtoFieldName = "${otherSideFieldName}Entities"
                     appendLine("        createDto.${joinDtoFieldName}.forEach { joinDto ->")
                     appendLine("            this.${joinRepoFieldName}.insert(")
@@ -460,7 +460,7 @@ class CrudServiceRenderer(
 
             val manyToManyFieldNames = apiDef.entityDef.manyToManyAssociations.map { m2m ->
                 val otherSide = m2m.otherSideFrom(this.entityDef)
-                if (m2m.entityDef.hasEffectiveTimestamps.value) "${otherSide.fieldName}Entities"
+                if (m2m.entityDef.effectiveRangeDef?.useTimestamps == true) "${otherSide.fieldName}Entities"
                 else "${otherSide.fieldName}EntityIds"
             }.toSortedSet()
 
@@ -500,7 +500,7 @@ class CrudServiceRenderer(
             // both pointing at a "right" entity).
             val joinNamePrefix = joinEntityClass.value.removeSuffix("Entity")
 
-            if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value && manyToManyEntityDef.entityDef.isDeletable) {
+            if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true && manyToManyEntityDef.entityDef.isDeletable) {
 
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
 
@@ -546,7 +546,7 @@ class CrudServiceRenderer(
                     |        }
                     |""".trimMargin())
 
-            } else if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+            } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true) {
 
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
 

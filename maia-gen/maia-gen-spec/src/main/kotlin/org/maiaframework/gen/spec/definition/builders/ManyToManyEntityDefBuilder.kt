@@ -11,8 +11,8 @@ class ManyToManyEntityDefBuilder {
     internal var effectiveRangeDef: EffectiveRangeDef? = null
 
 
-    fun effectiveRange(managedBy: EffectiveRangeManagedBy) {
-        effectiveRangeDef = EffectiveRangeDef(managedBy)
+    fun effectiveRange(managedBy: EffectiveRangeManagedBy, useTimestamps: Boolean) {
+        effectiveRangeDef = EffectiveRangeDef(managedBy, useTimestamps)
     }
 
 

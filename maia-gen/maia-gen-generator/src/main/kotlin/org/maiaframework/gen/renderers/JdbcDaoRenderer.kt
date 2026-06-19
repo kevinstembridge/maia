@@ -822,7 +822,7 @@ class JdbcDaoRenderer(
 
     private fun `render findAllEffective`() {
 
-        if (this.entityDef.allowFindAll.value == false || (this.entityDef.hasEffectiveTimestamps.value == false && this.entityDef.hasEffectiveLocalDates.value == false)) {
+        if (this.entityDef.allowFindAll.value == false || this.entityDef.effectiveRangeDef == null) {
             return
         }
 
@@ -832,7 +832,7 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("        return this.jdbcOps.queryForList(\"\"\"")
 
-        if (this.entityDef.hasEffectiveTimestamps.value) {
+        if (this.entityDef.hasEffectiveTimestamps) {
             appendLine("            ${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName}")
             appendLine("            where ${EffectiveTimestampRendererHelper.EFFECTIVE_RANGE_WHERE_CLAUSE}")
         } else {
@@ -1304,7 +1304,7 @@ class JdbcDaoRenderer(
         this.entityDef.databaseIndexDefs.filter { it.isUnique }.forEach { `render function findOneByForFields`(it.indexDef.entityFieldDefs) }
         this.entityDef.databaseIndexDefs.filter { it.isUnique == false }.forEach { `render function findBy for fields`(it.indexDef.entityFieldDefs) }
 
-        if (this.entityDef.hasEffectiveTimestamps.value || this.entityDef.hasEffectiveLocalDates.value) {
+        if (this.entityDef.effectiveRangeDef != null) {
             this.entityDef.databaseIndexDefs.filter { it.isUnique == false }.forEach { `render function findEffectiveBy for fields`(it.indexDef.entityFieldDefs) }
         }
 
@@ -1478,7 +1478,7 @@ class JdbcDaoRenderer(
 
         appendWhereOrAndClauses(entityFieldDefs)
 
-        if (this.entityDef.hasEffectiveTimestamps.value) {
+        if (this.entityDef.hasEffectiveTimestamps) {
             appendLine("            and ${EffectiveTimestampRendererHelper.EFFECTIVE_RANGE_WHERE_CLAUSE}")
         } else {
             appendLine("            and effective_from <= current_timestamp")
@@ -1943,7 +1943,7 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("        sql.append(\"update ${entityDef.schemaAndTableName} set \")")
         blankLine()
-        if (entityDef.hasEffectiveTimestamps.value) {
+        if (entityDef.hasEffectiveTimestamps) {
 
             addImportFor<Instant>()
 
@@ -2103,7 +2103,7 @@ class JdbcDaoRenderer(
         this.entityDef.allEntityFieldsSorted
             .filter { it.classFieldDef.isModifiableBySystem || it.classFieldDef.isEditableByUser.value }
             .filterNot {
-                entityDef.hasEffectiveTimestamps.value
+                entityDef.hasEffectiveTimestamps
                         && (it.classFieldName == ClassFieldName.effectiveFrom || it.classFieldName == ClassFieldName.effectiveTo)
             }
             .forEach { entityFieldDef ->

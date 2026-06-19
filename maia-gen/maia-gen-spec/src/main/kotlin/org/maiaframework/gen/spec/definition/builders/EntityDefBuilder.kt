@@ -25,8 +25,8 @@ import org.maiaframework.gen.spec.definition.flags.AllowFindAll
 import org.maiaframework.gen.spec.definition.flags.DaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
-import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
-import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
+import org.maiaframework.gen.spec.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.EffectiveRangeDef
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
@@ -113,10 +113,7 @@ class EntityDefBuilder(
     var entityDaoHasSpringAnnotation: Boolean = true
 
 
-    private var hasEffectiveLocalDates: Boolean = false
-
-
-    private var hasEffectiveTimestamps: Boolean = false
+    private var effectiveRangeDef: EffectiveRangeDef? = null
 
 
     private var hasSingleEffectiveRecord: Boolean = true
@@ -161,8 +158,7 @@ class EntityDefBuilder(
             isHistoryEntity = false,
             this.nameFieldForPkAndNameDto,
             stagingEntityFieldDefs = emptyList(),
-            HasEffectiveTimestamps(this.hasEffectiveTimestamps),
-            HasEffectiveLocalDates(this.hasEffectiveLocalDates),
+            this.effectiveRangeDef,
             HasSingleEffectiveRecord(this.hasSingleEffectiveRecord),
             this.cacheableDef,
             this.angularFormSystem,
@@ -285,7 +281,10 @@ class EntityDefBuilder(
     }
 
 
-    fun withEffectiveTimestamps(hasSingleEffectiveRecord: Boolean = true) {
+    fun withEffectiveTimestamps(
+        managedBy: EffectiveRangeManagedBy = EffectiveRangeManagedBy.SYSTEM,
+        hasSingleEffectiveRecord: Boolean = true
+    ) {
 
         field("effectiveFrom", FieldTypes.instant) {
             fieldDisplayName("Effective From")
@@ -299,10 +298,9 @@ class EntityDefBuilder(
             modifiableBySystem()
         }
 
-        this.hasEffectiveTimestamps = true
-        this.hasSingleEffectiveRecord = hasSingleEffectiveRecord
-
         validateEffectiveTimeFields()
+        this.effectiveRangeDef = EffectiveRangeDef(managedBy, useTimestamps = true)
+        this.hasSingleEffectiveRecord = hasSingleEffectiveRecord
 
     }
 
@@ -310,7 +308,8 @@ class EntityDefBuilder(
     fun withEffectiveLocalDates(
         effectiveFromDescription: String? = null,
         effectiveToDescription: String? = null,
-        hasSingleEffectiveRecord: Boolean = true
+        hasSingleEffectiveRecord: Boolean = true,
+        managedBy: EffectiveRangeManagedBy = EffectiveRangeManagedBy.SYSTEM,
     ) {
 
         field("effectiveFrom", FieldTypes.localDate) {
@@ -327,17 +326,16 @@ class EntityDefBuilder(
             editableByUser()
         }
 
-        this.hasEffectiveLocalDates = true
-        this.hasSingleEffectiveRecord = hasSingleEffectiveRecord
-
         validateEffectiveTimeFields()
+        this.effectiveRangeDef = EffectiveRangeDef(managedBy, useTimestamps = false)
+        this.hasSingleEffectiveRecord = hasSingleEffectiveRecord
 
     }
 
 
     private fun validateEffectiveTimeFields() {
 
-        require((this.hasEffectiveTimestamps && this.hasEffectiveLocalDates) == false) { "cannot set both effectiveLocalDates and effectiveTimestamps" }
+        require(this.effectiveRangeDef == null) { "effectiveRange already set; cannot call withEffectiveTimestamps/withEffectiveLocalDates more than once" }
 
     }
 

@@ -515,10 +515,7 @@ abstract class AbstractSpec protected constructor(
             pkAndNameFieldName,
             init = manyToManyBuilder.effectiveRangeDef?.let { rangeDef ->
                 {
-                    when (rangeDef.managedBy) {
-                        EffectiveRangeManagedBy.USER -> withEffectiveTimestamps()
-                        EffectiveRangeManagedBy.SYSTEM -> withEffectiveTimestamps()
-                    }
+                    if (rangeDef.useTimestamps) withEffectiveTimestamps() else withEffectiveLocalDates()
                 }
             }
         )
@@ -591,7 +588,7 @@ abstract class AbstractSpec protected constructor(
         init?.invoke(builder)
         val entityDef = builder.build()
 
-        if (entityDef.withVersionHistory.value && entityDef.hasEffectiveTimestamps.value) {
+        if (entityDef.withVersionHistory.value && entityDef.effectiveRangeDef?.useTimestamps == true) {
             throw ModelDefinitionException(
                 "manyToManyEntity '$entityBaseName': recordVersionHistory is not supported for joins with effective timestamps"
             )

@@ -251,7 +251,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         this.entityDef.databaseIndexDefs.filter { it.isUnique }.forEach { `render function findOneByForFields`(it.indexDef.entityFieldDefs) }
         this.entityDef.databaseIndexDefs.filter { it.isUnique == false }.forEach { `render function findBy for fields`(it.indexDef.entityFieldDefs) }
 
-        if (this.entityDef.hasEffectiveTimestamps.value || this.entityDef.hasEffectiveLocalDates.value) {
+        if (this.entityDef.effectiveRangeDef != null) {
             this.entityDef.databaseIndexDefs.filter { it.isUnique == false }
                 .forEach { `render function findEffectiveBy for fields`(it.indexDef.entityFieldDefs) }
         }
@@ -505,7 +505,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     private fun `render function findAllEffective`() {
 
-        if (this.entityDef.allowFindAll.value == false || (this.entityDef.hasEffectiveTimestamps.value == false && this.entityDef.hasEffectiveLocalDates.value == false)) {
+        if (this.entityDef.allowFindAll.value == false || this.entityDef.effectiveRangeDef == null) {
             return
         }
 

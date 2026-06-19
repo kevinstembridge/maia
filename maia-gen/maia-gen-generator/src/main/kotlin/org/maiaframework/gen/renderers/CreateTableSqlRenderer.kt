@@ -74,7 +74,7 @@ class CreateTableSqlRenderer(
 
         val effectiveTimestampColumnNames = setOf("effective_from", "effective_to")
 
-        val sqlFieldsForColumns = if (baseEntityDef.hasEffectiveTimestamps.value) {
+        val sqlFieldsForColumns = if (baseEntityDef.effectiveRangeDef?.useTimestamps == true) {
             nonDerivedSqlFields.filterNot { it.tableColumnName.value in effectiveTimestampColumnNames }
         } else {
             nonDerivedSqlFields
@@ -97,7 +97,7 @@ class CreateTableSqlRenderer(
 
         }
 
-        val effectiveRangeLineOrNull = if (baseEntityDef.hasEffectiveTimestamps.value) {
+        val effectiveRangeLineOrNull = if (baseEntityDef.effectiveRangeDef?.useTimestamps == true) {
             "effective_range tstzrange not null default tstzrange(now(), null)"
         } else {
             null

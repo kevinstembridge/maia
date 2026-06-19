@@ -84,7 +84,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
         blankLine()
         appendLine("    }")
 
-        if (this.entityDef.hasEffectiveTimestamps.value) {
+        if (this.entityDef.hasEffectiveTimestamps) {
 
             blankLine()
             blankLine()
@@ -122,7 +122,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
             blankLine()
             blankLine()
 
-            if (entityDef.hasEffectiveTimestamps.value &&
+            if (entityDef.hasEffectiveTimestamps &&
                 (classFieldDef.classFieldName == ClassFieldName.effectiveFrom || classFieldDef.classFieldName == ClassFieldName.effectiveTo)) {
 
                 appendLine("    /**")
@@ -594,7 +594,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
 
     private fun renderEffectiveNowFilterStaticClass() {
 
-        if (!entityDef.hasEffectiveTimestamps.value) {
+        if (entityDef.hasEffectiveTimestamps == false) {
             return
         }
 

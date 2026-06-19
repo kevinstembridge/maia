@@ -10,8 +10,6 @@ import org.maiaframework.gen.spec.definition.flags.AllowFindAll
 import org.maiaframework.gen.spec.definition.flags.DaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
-import org.maiaframework.gen.spec.definition.flags.HasEffectiveLocalDates
-import org.maiaframework.gen.spec.definition.flags.HasEffectiveTimestamps
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
 import org.maiaframework.gen.spec.definition.flags.IsDeltaField
@@ -76,8 +74,7 @@ class EntityDef(
      */
     private val nameFieldForPkAndNameDto: String? = null,
     val stagingEntityFieldDefs: List<DataRowStagingEntityFieldDef> = emptyList(),
-    val hasEffectiveTimestamps: HasEffectiveTimestamps,
-    val hasEffectiveLocalDates: HasEffectiveLocalDates,
+    val effectiveRangeDef: EffectiveRangeDef?,
     val hasSingleEffectiveRecord: HasSingleEffectiveRecord,
     val cacheableDef: CacheableDef?,
     val angularFormSystem: AngularFormSystem,
@@ -102,6 +99,7 @@ class EntityDef(
         }
 
     }
+
 
 
     val entityUqcn = Uqcn("${entityBaseName}Entity")
@@ -287,7 +285,7 @@ class EntityDef(
 
     private val joinFetchDtoDefsByAssociation: Map<ManyToManyEntityDef, JoinFetchDtoDef> by lazy {
         manyToManyAssociations
-            .filter { it.entityDef.hasEffectiveTimestamps.value }
+            .filter { it.entityDef.effectiveRangeDef?.useTimestamps == true }
             .associateWith { m2m ->
                 val otherSide = m2m.otherSideFrom(this)
                 JoinFetchDtoDef(
@@ -316,7 +314,7 @@ class EntityDef(
         this.manyToManyAssociations.map { manyToManyEntityDef ->
             val otherSide = manyToManyEntityDef.otherSideFrom(this)
             val fieldName = manyToManyEntityDef.fetchForEditFieldNameFor(this)
-            val fieldType = if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+            val fieldType = if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true) {
                 val joinFetchDtoDef = joinFetchDtoDefsByAssociation[manyToManyEntityDef]!!
                 FieldTypes.list(FieldTypes.joinFetchDto(joinFetchDtoDef))
             } else {
@@ -387,6 +385,9 @@ class EntityDef(
 
 
     val isStagingEntity: Boolean = this.stagingEntityFieldDefs.isNotEmpty()
+
+
+    val hasEffectiveTimestamps: Boolean = this.effectiveRangeDef?.useTimestamps == true
 
 
     val allTypeaheadFields: List<EntityFieldDef>
@@ -508,8 +509,7 @@ class EntityDef(
             entityBaseName = historyEntityBaseName,
             entityDaoHasSpringAnnotation = this.entityDaoHasSpringAnnotation,
             entityFieldsNotInherited = historyFieldDefs,
-            hasEffectiveLocalDates = this.hasEffectiveLocalDates,
-            hasEffectiveTimestamps = this.hasEffectiveTimestamps,
+            effectiveRangeDef = this.effectiveRangeDef,
             hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
             isAbstract = this.isAbstract,
             isDeltaEntity = IsDeltaEntity.FALSE,

@@ -153,7 +153,7 @@ class EntityUpdateApiDef(
         .plus(
             entityDef.manyToManyAssociations.map { manyToManyEntityDef ->
                 val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
-                if (manyToManyEntityDef.entityDef.hasEffectiveTimestamps.value) {
+                if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true) {
                     val joinDtoDef = timestampedJoinRequestDtosByAssociation[manyToManyEntityDef]
                         ?: error("No timestamped join DTO for association ${manyToManyEntityDef.entityDef.entityBaseName} — entity ${entityDef.entityBaseName} has an update API but no create API")
                     RequestDtoFieldDef(

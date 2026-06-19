@@ -121,7 +121,7 @@ class AngularUiModuleGenerator(
     ): List<ManyToManyChipFieldDef> {
 
         return associations
-            .filter { !it.entityDef.hasEffectiveTimestamps.value }
+            .filter { it.entityDef.effectiveRangeDef?.useTimestamps != true }
             .mapNotNull { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
@@ -137,7 +137,7 @@ class AngularUiModuleGenerator(
     ): List<ManyToManyChipFieldDef> {
 
         return associations
-            .filter { !it.entityDef.hasEffectiveTimestamps.value }
+            .filter { it.entityDef.effectiveRangeDef?.useTimestamps != true }
             .mapNotNull { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
@@ -154,7 +154,7 @@ class AngularUiModuleGenerator(
 
         val updateApiDef = entityDef.entityCrudApiDef?.updateApiDef ?: return emptyList()
         return associations
-            .filter { it.entityDef.hasEffectiveTimestamps.value }
+            .filter { it.entityDef.effectiveRangeDef?.useTimestamps == true }
             .mapNotNull { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
@@ -172,7 +172,7 @@ class AngularUiModuleGenerator(
 
         val createApiDef = entityDef.entityCrudApiDef?.createApiDef ?: return emptyList()
         return associations
-            .filter { it.entityDef.hasEffectiveTimestamps.value }
+            .filter { it.entityDef.effectiveRangeDef?.useTimestamps == true }
             .mapNotNull { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null

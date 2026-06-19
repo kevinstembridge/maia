@@ -13,7 +13,7 @@ object EffectiveTimestampRendererHelper {
     const val EFFECTIVE_RANGE_WHERE_CLAUSE = "effective_range @> current_timestamp"
 
 
-    fun usesEffectiveRange(entityDef: EntityDef): Boolean = entityDef.hasEffectiveTimestamps.value
+    fun usesEffectiveRange(entityDef: EntityDef): Boolean = entityDef.hasEffectiveTimestamps
 
 
     /**
