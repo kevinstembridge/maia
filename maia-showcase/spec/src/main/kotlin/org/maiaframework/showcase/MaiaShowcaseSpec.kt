@@ -1,6 +1,7 @@
 package org.maiaframework.showcase
 
 import org.maiaframework.gen.spec.AbstractSpec
+import org.maiaframework.gen.spec.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
@@ -1400,7 +1401,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             IsEditableByUser.TRUE
         )
     ) {
-        effectiveRange()
+        effectiveRange(managedBy = EffectiveRangeManagedBy.USER)
     }
 
 
