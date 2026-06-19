@@ -16,6 +16,8 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class RightManyCreateRequestDto
 @JsonCreator constructor(
+    @param:JsonProperty("leftEffectiveEntities", access = JsonProperty.Access.READ_WRITE) 
+    private val leftEffectiveEntities_raw: List<LeftEffectiveJoinRequestDto>?,
     @param:JsonProperty("leftEntities", access = JsonProperty.Access.READ_WRITE) 
     private val leftEntities_raw: List<LeftJoinRequestDto>?,
     @param:JsonProperty("leftEntityIds", access = JsonProperty.Access.READ_WRITE) 
@@ -39,6 +41,10 @@ class RightManyCreateRequestDto
 
 
     @get:JsonIgnore
+    val leftEffectiveEntities: List<LeftEffectiveJoinRequestDto> by lazy { leftEffectiveEntities_raw ?: emptyList() }
+
+
+    @get:JsonIgnore
     val leftEntities: List<LeftJoinRequestDto> by lazy { leftEntities_raw ?: emptyList() }
 
 
@@ -51,6 +57,7 @@ class RightManyCreateRequestDto
         return "RightManyCreateRequestDto{" +
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
+                "leftEffectiveEntities = '" + this.leftEffectiveEntities + '\'' + ", " + 
                 "leftEntities = '" + this.leftEntities + '\'' + ", " + 
                 "leftEntityIds = '" + this.leftEntityIds + '\'' +
                 "}"

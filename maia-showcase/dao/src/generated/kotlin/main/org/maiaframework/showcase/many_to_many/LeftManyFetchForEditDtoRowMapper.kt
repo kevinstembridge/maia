@@ -22,6 +22,8 @@ class LeftManyFetchForEditDtoRowMapper(
 
         val entityId = rsa.readDomainId("id")
 
+        val rightEffectiveEntitiesJoinFetchDtoList = fetchRightEffectiveEntitiesJoinFetchDtos(entityId)
+
         val rightEntitiesJoinFetchDtoList = fetchRightEntitiesJoinFetchDtos(entityId)
 
         val rightLeftToRightSimpleJoinEntitiesPkAndNameDtoList = fetchRightLeftToRightSimpleJoinEntitiesPkAndNameDtos(entityId)
@@ -35,12 +37,45 @@ class LeftManyFetchForEditDtoRowMapper(
         return LeftManyFetchForEditDto(
             createdTimestampUtc,
             id,
+            rightEffectiveEntitiesJoinFetchDtoList,
             rightEntitiesJoinFetchDtoList,
             rightLeftToRightSimpleJoinEntitiesPkAndNameDtoList,
             someInt,
             someString,
             version,
         )
+
+    }
+
+
+    private fun fetchRightEffectiveEntitiesJoinFetchDtos(entityId: DomainId): List<RightEffectiveJoinFetchDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                mtm.id,
+                other.id as entity_id,
+                other.some_string,
+                lower(mtm.effective_range) as effective_from,
+                upper(mtm.effective_range) as effective_to
+            from maia.right_many other
+            join maia.left_to_right_effective_range mtm
+                on other.id = mtm.right_effective_id
+            where mtm.left_effective_id = :entityId
+            order by other.some_string
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+        ) { rsa ->
+            RightEffectiveJoinFetchDto(
+                id = rsa.readDomainId("id"),
+                entityId = rsa.readDomainId("entity_id"),
+                name = rsa.readString("some_string"),
+                effectiveFrom = rsa.readInstantOrNull("effective_from"),
+                effectiveTo = rsa.readInstantOrNull("effective_to"),
+            )
+        }
 
     }
 

@@ -96,12 +96,14 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
             mockMvc.get().uri("/api/left-many/fetch-for-edit/${leftEntity.id}")
                 .with(user("nigel").roles("ADMIN"))
                 .exchange()
-        ).hasStatus(HttpStatus.OK)
+        ).debug()
+            .hasStatus(HttpStatus.OK)
          .bodyJson()
          .isEqualTo("""
             {
                 "createdTimestampUtc": "${leftEntity.createdTimestampUtc}",
                 "id": "${leftEntity.id}",
+                "rightEffectiveEntities": [],
                 "rightEntities": [],
                 "rightLeftToRightSimpleJoinEntities": [],
                 "someInt": ${leftEntity.someInt},

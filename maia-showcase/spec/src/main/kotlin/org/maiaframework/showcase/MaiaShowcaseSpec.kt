@@ -3,6 +3,7 @@ package org.maiaframework.showcase
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.AppKey
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EsDocMappingTypes
 import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.JoinType
@@ -1381,6 +1382,26 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             IsEditableByUser.TRUE
         )
     )
+
+
+    val leftToRightEffectiveRangeEntityDef = simpleManyToManyEntity(
+        "org.maiaframework.showcase.many_to_many",
+        "LeftToRightEffectiveRange",
+        leftEntity = ReferencedEntity(
+            fieldName = "leftEffective",
+            displayName = "Left Effective",
+            leftManyEntityDef,
+            IsEditableByUser.TRUE
+        ),
+        rightEntity = ReferencedEntity(
+            fieldName = "rightEffective",
+            displayName = "Right Effective",
+            rightManyEntityDef,
+            IsEditableByUser.TRUE
+        )
+    ) {
+        effectiveRange()
+    }
 
 
     val rightManyTypeaheadDef = typeahead(

@@ -290,7 +290,12 @@ class EntityDefBuilder(
         field("effectiveFrom", FieldTypes.instant) {
             fieldDisplayName("Effective From")
             nullable()
-            modifiableBySystem()
+
+            when (managedBy) {
+                EffectiveRangeManagedBy.USER -> editableByUser()
+                EffectiveRangeManagedBy.SYSTEM -> modifiableBySystem()
+            }
+
         }
 
         field("effectiveTo", FieldTypes.instant) {

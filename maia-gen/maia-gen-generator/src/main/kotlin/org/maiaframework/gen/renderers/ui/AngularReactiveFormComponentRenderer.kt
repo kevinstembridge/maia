@@ -64,6 +64,7 @@ class AngularReactiveFormComponentRenderer(
 
     private val typeaheadDefs = this.angularFormDef.allTypeaheadDefs
 
+    private val renderedServiceFieldNames = mutableSetOf<String>()
 
     init {
 
@@ -375,9 +376,19 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    ${chip.searchControlFieldName} = new FormControl('');
-                |
-                |
-                |    ${chip.serviceFieldName} = inject(${chip.serviceClassName});
+                |""".trimMargin()
+            )
+
+            if (renderedServiceFieldNames.add(chip.serviceFieldName)) {
+                append("""
+                    |
+                    |
+                    |    ${chip.serviceFieldName} = inject(${chip.serviceClassName});
+                    |""".trimMargin()
+                )
+            }
+
+            append("""
                 |
                 |
                 |    @ViewChild('${chip.inputRefName}') ${chip.inputRefName}!: ElementRef<HTMLInputElement>;
@@ -424,10 +435,15 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    ${field.filteredIsLoadingFieldName} = signal(false);
-                |
-                |
-                |    ${field.serviceFieldName} = inject(${field.serviceClassName});
                 |""".trimMargin())
+
+            if (renderedServiceFieldNames.add(field.serviceFieldName)) {
+                append("""
+                    |
+                    |
+                    |    ${field.serviceFieldName} = inject(${field.serviceClassName});
+                    |""".trimMargin())
+            }
 
         }
 

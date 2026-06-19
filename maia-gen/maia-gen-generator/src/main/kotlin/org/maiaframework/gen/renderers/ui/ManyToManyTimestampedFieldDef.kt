@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.TypeaheadDef
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.lang.text.StringFunctions
+import org.maiaframework.lang.text.StringFunctions.firstToUpper
 
 
 data class ManyToManyTimestampedFieldDef(
@@ -27,19 +28,20 @@ data class ManyToManyTimestampedFieldDef(
     val displayName: String = otherSide.displayName
 
     private val uniqueFieldName: String = "$fieldName$nameSuffix"
+    private val uniqueFieldNameUpper: String = firstToUpper("$fieldName$nameSuffix")
     private val uniqueDisplayName: String = "$displayName$nameSuffix"
 
     val joinsFieldName: String = "${uniqueFieldName}Joins"
-    val showFormSignalName: String = "show${uniqueDisplayName}JoinForm"
-    val addEntityControlName: String = "add${uniqueDisplayName}JoinEntityControl"
-    val effectiveFromControlName: String = "add${uniqueDisplayName}JoinEffectiveFromControl"
-    val effectiveToControlName: String = "add${uniqueDisplayName}JoinEffectiveToControl"
-    val filteredFieldName: String = "filtered${uniqueDisplayName}Entities"
+    val showFormSignalName: String = "show${uniqueFieldNameUpper}JoinForm"
+    val addEntityControlName: String = "add${uniqueFieldNameUpper}JoinEntityControl"
+    val effectiveFromControlName: String = "add${uniqueFieldNameUpper}JoinEffectiveFromControl"
+    val effectiveToControlName: String = "add${uniqueFieldNameUpper}JoinEffectiveToControl"
+    val filteredFieldName: String = "filtered${uniqueFieldNameUpper}Entities"
     val filteredIsLoadingFieldName: String = "${filteredFieldName}IsLoading"
-    val confirmMethodName: String = "confirmAdd${uniqueDisplayName}Join"
-    val cancelMethodName: String = "cancelAdd${uniqueDisplayName}Join"
-    val removeMethodName: String = "remove${uniqueDisplayName}Join"
-    val joinEntryTypeName: String = "${uniqueDisplayName}JoinEntry"
+    val confirmMethodName: String = "confirmAdd${uniqueFieldNameUpper}Join"
+    val cancelMethodName: String = "cancelAdd${uniqueFieldNameUpper}Join"
+    val removeMethodName: String = "remove${uniqueFieldNameUpper}Join"
+    val joinEntryTypeName: String = "${uniqueFieldName}JoinEntry"
     val requestDtoFieldName: String = "${fieldName}Entities"
     val fetchForEditDtoFieldName: String = manyToManyEntityDef.fetchForEditFieldNameFor(entityDef)
     val joinRequestDtoClassName: String = joinRequestDtoDef.uqcn.value
@@ -58,6 +60,6 @@ data class ManyToManyTimestampedFieldDef(
     val labelText: String = "$uniqueDisplayName Entities"
     val searchPlaceholder: String = "Search $labelText..."
     val autocompleteRefName: String = "${uniqueFieldName}JoinEntityAuto"
-    val displayWithMethodName: String = "display${uniqueDisplayName}Entity"
+    val displayWithMethodName: String = "display${uniqueFieldNameUpper}Entity"
 
 }

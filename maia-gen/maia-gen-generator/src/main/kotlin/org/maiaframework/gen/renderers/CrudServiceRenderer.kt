@@ -489,7 +489,7 @@ class CrudServiceRenderer(
         apiDef.entityDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
 
             val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
-            val thisSideFieldName = manyToManyEntityDef.idTableColumnName(this.entityDef).removeSuffix("_id")
+            val thisSideFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
             val otherSideFieldName = otherSide.fieldName
             val thisSideFieldNameCapitalized = thisSideFieldName.replaceFirstChar { it.uppercaseChar() }
             val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
@@ -533,7 +533,7 @@ class CrudServiceRenderer(
                     |        editDto.${otherSideDtoFieldName}.filter { it.id != null }.forEach { joinDto ->
                     |            val joinId = joinDto.id!!
                     |            val existingJoin = existing${joinNamePrefix}JoinsById[joinId]
-                    |                ?: throw this.maiaProblems.joinRecordNotFound("${joinEntityClass}")
+                    |                ?: throw this.maiaProblems.joinRecordNotFound("$joinEntityClass")
                     |
                     |            if (existingJoin.effectiveFrom != joinDto.effectiveFrom || existingJoin.effectiveTo != joinDto.effectiveTo) {
                     |                this.${joinRepoFieldName}.setFields(
