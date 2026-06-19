@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers.ui
 
+import org.maiaframework.gen.spec.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
@@ -23,6 +24,9 @@ data class ManyToManyTimestampedFieldDef(
     // associations both pointing at a "right" entity). Empty for the first such association,
     // preserving existing naming for backwards compatibility.
     private val nameSuffix = manyToManyEntityDef.nameSuffixFor(entityDef)
+
+    val isManagedBySystem: Boolean =
+        manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
 
     val fieldName: String = otherSide.fieldName
     val displayName: String = otherSide.displayName

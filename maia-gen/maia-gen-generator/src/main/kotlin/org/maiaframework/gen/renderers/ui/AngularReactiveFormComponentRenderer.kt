@@ -423,12 +423,20 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    ${field.addEntityControlName} = new FormControl<${field.esDocClassName} | null>(null);
+                |""".trimMargin())
+
+            if (!field.isManagedBySystem) {
+                append("""
                 |
                 |
                 |    ${field.effectiveFromControlName} = new FormControl<Date | null>(null);
                 |
                 |
                 |    ${field.effectiveToControlName} = new FormControl<Date | null>(null);
+                |""".trimMargin())
+            }
+
+            append("""
                 |
                 |
                 |    ${field.filteredFieldName}: ${field.esDocClassName}[] = [];
@@ -862,6 +870,9 @@ class AngularReactiveFormComponentRenderer(
 
         timestampedFields.forEach { field ->
 
+            val effectiveFromValue = if (field.isManagedBySystem) "null" else "this.${field.effectiveFromControlName}.value"
+            val effectiveToValue = if (field.isManagedBySystem) "null" else "this.${field.effectiveToControlName}.value"
+
             append("""
                 |
                 |
@@ -874,12 +885,20 @@ class AngularReactiveFormComponentRenderer(
                 |            id: null,
                 |            entityId: entity.${field.esDocIdFieldName},
                 |            entityName: entity.${field.searchTermFieldName},
-                |            effectiveFrom: this.${field.effectiveFromControlName}.value,
-                |            effectiveTo: this.${field.effectiveToControlName}.value,
+                |            effectiveFrom: $effectiveFromValue,
+                |            effectiveTo: $effectiveToValue,
                 |        });
                 |        this.${field.addEntityControlName}.reset();
+                |""".trimMargin())
+
+            if (!field.isManagedBySystem) {
+                append("""
                 |        this.${field.effectiveFromControlName}.reset();
                 |        this.${field.effectiveToControlName}.reset();
+                |""".trimMargin())
+            }
+
+            append("""
                 |        this.${field.filteredFieldName} = [];
                 |        this.${field.showFormSignalName}.set(false);
                 |
@@ -896,8 +915,16 @@ class AngularReactiveFormComponentRenderer(
                 |    ${field.cancelMethodName}(): void {
                 |
                 |        this.${field.addEntityControlName}.reset();
+                |""".trimMargin())
+
+            if (!field.isManagedBySystem) {
+                append("""
                 |        this.${field.effectiveFromControlName}.reset();
                 |        this.${field.effectiveToControlName}.reset();
+                |""".trimMargin())
+            }
+
+            append("""
                 |        this.${field.filteredFieldName} = [];
                 |        this.${field.showFormSignalName}.set(false);
                 |

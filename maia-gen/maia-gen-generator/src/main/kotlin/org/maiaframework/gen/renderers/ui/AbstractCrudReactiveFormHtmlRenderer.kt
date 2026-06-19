@@ -39,6 +39,10 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
                 |            @for (join of ${field.joinsFieldName}; track join.entityId) {
                 |                <div class="join-entry">
                 |                    <span>{{ join.entityName }}</span>
+                |""".trimMargin())
+
+            if (!field.isManagedBySystem) {
+                append("""
                 |                    <mat-form-field appearance="outline">
                 |                        <mat-label>Effective From Date</mat-label>
                 |                        <input matInput class="join-effective-from-date" [matDatepicker]="effectiveFromDatePicker"
@@ -67,6 +71,10 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
                 |                        <mat-timepicker #effectiveToTimePicker></mat-timepicker>
                 |                        <mat-timepicker-toggle matSuffix [for]="effectiveToTimePicker"></mat-timepicker-toggle>
                 |                    </mat-form-field>
+                |""".trimMargin())
+            }
+
+            append("""
                 |                    <button mat-icon-button type="button" class="join-remove-button" (click)="${field.removeMethodName}(${'$'}index)">
                 |                        <mat-icon>delete</mat-icon>
                 |                    </button>
@@ -95,6 +103,10 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
                 |                        }
                 |                    </mat-autocomplete>
                 |                </mat-form-field>
+                |""".trimMargin())
+
+            if (!field.isManagedBySystem) {
+                append("""
                 |                <mat-form-field appearance="outline">
                 |                    <mat-label>Effective From Date</mat-label>
                 |                    <input matInput [matDatepicker]="effectiveFromPicker${field.fieldName}"
@@ -123,6 +135,10 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
                 |                    <mat-timepicker #effectiveToTimepicker${field.fieldName}></mat-timepicker>
                 |                    <mat-timepicker-toggle matSuffix [for]="effectiveToTimepicker${field.fieldName}"></mat-timepicker-toggle>
                 |                </mat-form-field>
+                |""".trimMargin())
+            }
+
+            append("""
                 |                <button mat-flat-button type="button" (click)="${field.confirmMethodName}()">Add</button>
                 |                <button mat-flat-button type="button" (click)="${field.cancelMethodName}()">Cancel</button>
                 |            </div>
