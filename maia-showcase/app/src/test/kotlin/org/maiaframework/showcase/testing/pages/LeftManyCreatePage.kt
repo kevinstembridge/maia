@@ -53,6 +53,32 @@ class LeftManyCreatePage(
     }
 
 
+    fun clickAddRightJoinEntityButton() {
+
+        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Add Right Entities"))
+            .click()
+
+    }
+
+
+    fun searchAndSelectRightJoinEntityInMiniForm(searchTerm: String) {
+
+        page.locator("input[placeholder='Search Right Entities...']").fill(searchTerm)
+        val option = page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm))
+        option.waitFor()
+        option.evaluate("el => el.click()")
+
+    }
+
+
+    fun clickConfirmAddRightJoinInMiniForm() {
+
+        page.locator(".join-mini-form button[type='button']").filter(Locator.FilterOptions().setHasText("Add"))
+            .click()
+
+    }
+
+
     fun clickSubmitButton() {
         page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Submit"))
             .click(Locator.ClickOptions().setForce(true))

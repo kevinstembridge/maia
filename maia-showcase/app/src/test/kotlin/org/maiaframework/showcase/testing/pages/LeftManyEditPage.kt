@@ -41,6 +41,30 @@ class LeftManyEditPage(
     }
 
 
+    fun assertRightJoinEntryVisible(entityName: String) {
+
+        page.locator(".join-entries").first()
+            .locator(".join-entry")
+            .filter(Locator.FilterOptions().setHasText(entityName))
+            .waitFor()
+
+    }
+
+
+    fun removeRightJoinEntry(entityName: String) {
+
+        val section = page.locator(".join-entries").first()
+        section.locator(".join-entry")
+            .filter(Locator.FilterOptions().setHasText(entityName))
+            .locator("button.join-remove-button")
+            .click()
+        section.locator(".join-entry")
+            .filter(Locator.FilterOptions().setHasText(entityName))
+            .waitFor(Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN))
+
+    }
+
+
     fun fillEditForm(
         someString: String = "testleft_edited",
     ) {
