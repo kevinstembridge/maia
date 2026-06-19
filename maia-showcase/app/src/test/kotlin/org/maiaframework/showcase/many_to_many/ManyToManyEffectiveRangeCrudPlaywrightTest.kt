@@ -25,6 +25,8 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     private val rightGamma = RightManyEntityTestBuilder(someString = "right-gamma").build()
+    // rightDelta is indexed so the typeahead returns multiple results, confirming the test
+    // selects by name rather than by position.
     private val rightDelta = RightManyEntityTestBuilder(someString = "right-delta").build()
 
 
