@@ -20,6 +20,7 @@ import org.maiaframework.gen.spec.definition.DtoBaseName
 import org.maiaframework.gen.spec.definition.ElasticIndexBaseName
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
@@ -515,7 +516,7 @@ abstract class AbstractSpec protected constructor(
             pkAndNameFieldName,
             init = manyToManyBuilder.effectiveRangeDef?.let { rangeDef ->
                 {
-                    if (rangeDef.useTimestamps) withEffectiveTimestamps() else withEffectiveLocalDates()
+                    if (rangeDef.dateType == EffectiveRangeDateType.TIMESTAMP) withEffectiveTimestamps() else withEffectiveLocalDates()
                 }
             }
         )
@@ -588,7 +589,7 @@ abstract class AbstractSpec protected constructor(
         init?.invoke(builder)
         val entityDef = builder.build()
 
-        if (entityDef.withVersionHistory.value && entityDef.effectiveRangeDef?.useTimestamps == true) {
+        if (entityDef.withVersionHistory.value && entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
             throw ModelDefinitionException(
                 "manyToManyEntity '$entityBaseName': recordVersionHistory is not supported for joins with effective timestamps"
             )

@@ -3,12 +3,12 @@ package org.maiaframework.gen.renderers
 import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.DatabaseIndexDef
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.InlineEditDtoDef
-import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
@@ -21,11 +21,11 @@ import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.LocalDateFieldType
 import org.maiaframework.gen.spec.definition.lang.LongFieldType
@@ -167,7 +167,7 @@ class CrudServiceRenderer(
 
                 blankLine()
 
-                if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true) {
+                if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
                     val joinDtoFieldName = "${otherSideFieldName}Entities"
                     appendLine("        createDto.${joinDtoFieldName}.forEach { joinDto ->")
                     appendLine("            this.${joinRepoFieldName}.insert(")
@@ -460,7 +460,7 @@ class CrudServiceRenderer(
 
             val manyToManyFieldNames = apiDef.entityDef.manyToManyAssociations.map { m2m ->
                 val otherSide = m2m.otherSideFrom(this.entityDef)
-                if (m2m.entityDef.effectiveRangeDef?.useTimestamps == true) "${otherSide.fieldName}Entities"
+                if (m2m.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) "${otherSide.fieldName}Entities"
                 else "${otherSide.fieldName}EntityIds"
             }.toSortedSet()
 
@@ -500,7 +500,7 @@ class CrudServiceRenderer(
             // both pointing at a "right" entity).
             val joinNamePrefix = joinEntityClass.value.removeSuffix("Entity")
 
-            if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true && manyToManyEntityDef.entityDef.isDeletable) {
+            if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP && manyToManyEntityDef.entityDef.isDeletable) {
 
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
 
@@ -546,7 +546,7 @@ class CrudServiceRenderer(
                     |        }
                     |""".trimMargin())
 
-            } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true) {
+            } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
 
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
 

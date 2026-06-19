@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
@@ -74,7 +75,7 @@ class CreateTableSqlRenderer(
 
         val effectiveTimestampColumnNames = setOf("effective_from", "effective_to")
 
-        val sqlFieldsForColumns = if (baseEntityDef.effectiveRangeDef?.useTimestamps == true) {
+        val sqlFieldsForColumns = if (baseEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
             nonDerivedSqlFields.filterNot { it.tableColumnName.value in effectiveTimestampColumnNames }
         } else {
             nonDerivedSqlFields
@@ -97,7 +98,7 @@ class CreateTableSqlRenderer(
 
         }
 
-        val effectiveRangeLineOrNull = if (baseEntityDef.effectiveRangeDef?.useTimestamps == true) {
+        val effectiveRangeLineOrNull = if (baseEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
             "effective_range tstzrange not null default tstzrange(now(), null)"
         } else {
             null

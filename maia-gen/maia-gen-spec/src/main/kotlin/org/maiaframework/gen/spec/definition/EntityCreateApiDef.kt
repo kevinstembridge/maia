@@ -27,7 +27,7 @@ class EntityCreateApiDef(
 
     val timestampedJoinRequestDtosByAssociation: Map<ManyToManyEntityDef, RequestDtoDef> by lazy {
         entityDef.manyToManyAssociations
-            .filter { it.entityDef.effectiveRangeDef?.useTimestamps == true }
+            .filter { it.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP }
             .associateWith { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 RequestDtoDef(
@@ -133,7 +133,7 @@ class EntityCreateApiDef(
         .plus(
             entityDef.manyToManyAssociations.map { manyToManyEntityDef ->
                 val otherSide = manyToManyEntityDef.otherSideFrom(entityDef)
-                if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true) {
+                if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
                     val joinDtoDef = timestampedJoinRequestDtosByAssociation[manyToManyEntityDef]!!
                     val classFieldDef = ClassFieldDef.aClassField(
                         "${otherSide.fieldName}Entities",

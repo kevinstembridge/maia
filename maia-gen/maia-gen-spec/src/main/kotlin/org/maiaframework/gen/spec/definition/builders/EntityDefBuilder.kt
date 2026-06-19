@@ -26,6 +26,7 @@ import org.maiaframework.gen.spec.definition.flags.DaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
 import org.maiaframework.gen.spec.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EffectiveRangeDef
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
@@ -299,7 +300,7 @@ class EntityDefBuilder(
         }
 
         validateEffectiveTimeFields()
-        this.effectiveRangeDef = EffectiveRangeDef(managedBy, useTimestamps = true)
+        this.effectiveRangeDef = EffectiveRangeDef(managedBy, EffectiveRangeDateType.TIMESTAMP)
         this.hasSingleEffectiveRecord = hasSingleEffectiveRecord
 
     }
@@ -327,7 +328,7 @@ class EntityDefBuilder(
         }
 
         validateEffectiveTimeFields()
-        this.effectiveRangeDef = EffectiveRangeDef(managedBy, useTimestamps = false)
+        this.effectiveRangeDef = EffectiveRangeDef(managedBy, EffectiveRangeDateType.LOCAL_DATE)
         this.hasSingleEffectiveRecord = hasSingleEffectiveRecord
 
     }

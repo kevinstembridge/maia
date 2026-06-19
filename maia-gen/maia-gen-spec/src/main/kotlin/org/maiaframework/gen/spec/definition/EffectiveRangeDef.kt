@@ -5,5 +5,5 @@ import org.maiaframework.gen.spec.EffectiveRangeManagedBy
 
 data class EffectiveRangeDef(
     val managedBy: EffectiveRangeManagedBy,
-    val useTimestamps: Boolean
+    val dateType: EffectiveRangeDateType
 )

@@ -71,6 +71,7 @@ import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
@@ -121,7 +122,7 @@ class AngularUiModuleGenerator(
     ): List<ManyToManyChipFieldDef> {
 
         return associations
-            .filter { it.entityDef.effectiveRangeDef?.useTimestamps != true }
+            .filter { it.entityDef.effectiveRangeDef?.dateType != EffectiveRangeDateType.TIMESTAMP }
             .mapNotNull { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
@@ -137,7 +138,7 @@ class AngularUiModuleGenerator(
     ): List<ManyToManyChipFieldDef> {
 
         return associations
-            .filter { it.entityDef.effectiveRangeDef?.useTimestamps != true }
+            .filter { it.entityDef.effectiveRangeDef?.dateType != EffectiveRangeDateType.TIMESTAMP }
             .mapNotNull { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
@@ -154,7 +155,7 @@ class AngularUiModuleGenerator(
 
         val updateApiDef = entityDef.entityCrudApiDef?.updateApiDef ?: return emptyList()
         return associations
-            .filter { it.entityDef.effectiveRangeDef?.useTimestamps == true }
+            .filter { it.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP }
             .mapNotNull { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null
@@ -172,7 +173,7 @@ class AngularUiModuleGenerator(
 
         val createApiDef = entityDef.entityCrudApiDef?.createApiDef ?: return emptyList()
         return associations
-            .filter { it.entityDef.effectiveRangeDef?.useTimestamps == true }
+            .filter { it.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP }
             .mapNotNull { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
                 val typeaheadDef = typeaheadByEntityDef[otherSide.entityDef] ?: return@mapNotNull null

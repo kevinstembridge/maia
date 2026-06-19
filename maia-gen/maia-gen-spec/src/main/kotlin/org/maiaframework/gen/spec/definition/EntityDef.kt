@@ -285,7 +285,7 @@ class EntityDef(
 
     private val joinFetchDtoDefsByAssociation: Map<ManyToManyEntityDef, JoinFetchDtoDef> by lazy {
         manyToManyAssociations
-            .filter { it.entityDef.effectiveRangeDef?.useTimestamps == true }
+            .filter { it.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP }
             .associateWith { m2m ->
                 val otherSide = m2m.otherSideFrom(this)
                 JoinFetchDtoDef(
@@ -314,7 +314,7 @@ class EntityDef(
         this.manyToManyAssociations.map { manyToManyEntityDef ->
             val otherSide = manyToManyEntityDef.otherSideFrom(this)
             val fieldName = manyToManyEntityDef.fetchForEditFieldNameFor(this)
-            val fieldType = if (manyToManyEntityDef.entityDef.effectiveRangeDef?.useTimestamps == true) {
+            val fieldType = if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
                 val joinFetchDtoDef = joinFetchDtoDefsByAssociation[manyToManyEntityDef]!!
                 FieldTypes.list(FieldTypes.joinFetchDto(joinFetchDtoDef))
             } else {
@@ -387,7 +387,7 @@ class EntityDef(
     val isStagingEntity: Boolean = this.stagingEntityFieldDefs.isNotEmpty()
 
 
-    val hasEffectiveTimestamps: Boolean = this.effectiveRangeDef?.useTimestamps == true
+    val hasEffectiveTimestamps: Boolean = this.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
 
 
     val allTypeaheadFields: List<EntityFieldDef>

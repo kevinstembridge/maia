@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.gen.spec.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EffectiveRangeDef
 
 
@@ -11,8 +12,8 @@ class ManyToManyEntityDefBuilder {
     internal var effectiveRangeDef: EffectiveRangeDef? = null
 
 
-    fun effectiveRange(managedBy: EffectiveRangeManagedBy, useTimestamps: Boolean) {
-        effectiveRangeDef = EffectiveRangeDef(managedBy, useTimestamps)
+    fun effectiveRange(managedBy: EffectiveRangeManagedBy, dateType: EffectiveRangeDateType) {
+        effectiveRangeDef = EffectiveRangeDef(managedBy, dateType)
     }
 
 
