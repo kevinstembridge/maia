@@ -516,7 +516,10 @@ abstract class AbstractSpec protected constructor(
             pkAndNameFieldName,
             init = manyToManyBuilder.effectiveRangeDef?.let { rangeDef ->
                 {
-                    if (rangeDef.dateType == EffectiveRangeDateType.TIMESTAMP) withEffectiveTimestamps() else withEffectiveLocalDates()
+                    if (rangeDef.dateType == EffectiveRangeDateType.TIMESTAMP)
+                        withEffectiveTimestamps()
+                    else
+                        withEffectiveLocalDates()
                 }
             }
         )
