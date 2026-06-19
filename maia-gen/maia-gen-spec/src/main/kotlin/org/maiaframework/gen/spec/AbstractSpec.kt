@@ -52,6 +52,7 @@ import org.maiaframework.gen.spec.definition.TypeaheadDef
 import org.maiaframework.gen.spec.definition.TypeaheadName
 import org.maiaframework.gen.spec.definition.builders.AngularFormDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BlotterDefBuilder
+import org.maiaframework.gen.spec.definition.builders.ManyToManyEntityDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BlotterPageDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BooleanTypeDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BooleanValueClassDefBuilder
@@ -483,8 +484,8 @@ abstract class AbstractSpec protected constructor(
 
 
     /**
-     * A Simple many-to-many join does not have any effective time range. The join either
-     * exists or it doesn't. It has no history and is not versioned.
+     * A Simple many-to-many join is not versioned and has no history. The join either
+     * exists or it doesn't. An optional effective range may be configured via the builder.
      */
     protected fun simpleManyToManyEntity(
         packageName: String,
@@ -492,8 +493,12 @@ abstract class AbstractSpec protected constructor(
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         leftEntity: ReferencedEntity,
         rightEntity: ReferencedEntity,
-        pkAndNameFieldName: String? = null
+        pkAndNameFieldName: String? = null,
+        init: (ManyToManyEntityDefBuilder.() -> Unit)? = null
     ): ManyToManyEntityDef {
+
+        val manyToManyBuilder = ManyToManyEntityDefBuilder()
+        init?.invoke(manyToManyBuilder)
 
         return manyToManyEntity(
             packageName,
@@ -507,7 +512,15 @@ abstract class AbstractSpec protected constructor(
             withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
             leftEntity,
             rightEntity,
-            pkAndNameFieldName
+            pkAndNameFieldName,
+            init = manyToManyBuilder.effectiveRangeDef?.let { rangeDef ->
+                {
+                    when (rangeDef.managedBy) {
+                        EffectiveRangeManagedBy.USER -> withEffectiveTimestamps()
+                        EffectiveRangeManagedBy.SYSTEM -> withEffectiveTimestamps()
+                    }
+                }
+            }
         )
 
     }
