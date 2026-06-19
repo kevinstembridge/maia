@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityFieldRowMapperFieldDef
 import org.maiaframework.gen.spec.definition.ForeignKeyRowMapperFieldDef
 import org.maiaframework.gen.spec.definition.Fqcns
@@ -7,6 +8,7 @@ import org.maiaframework.gen.spec.definition.ManyToManyRowMapperFieldDef
 import org.maiaframework.gen.spec.definition.RowMapperDef
 import org.maiaframework.gen.spec.definition.RowMapperFunctions.renderRowMapperField
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
+import org.maiaframework.gen.spec.EffectiveRangeManagedBy
 
 class RowMapperRenderer(
     private val rowMapperDef: RowMapperDef
@@ -182,6 +184,10 @@ class RowMapperRenderer(
 
             if (joinFetchDtoDef != null) {
 
+                val isSystemManagedJoin = manyToManyRowMapperFieldDef.manyToManySearchableDtoFieldDef.manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
+                    && manyToManyRowMapperFieldDef.manyToManySearchableDtoFieldDef.manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
+                val effectiveRangeClause = if (isSystemManagedJoin) "\n            and mtm.effective_range @> current_timestamp" else ""
+
                 addImportFor(Fqcns.MAIA_DOMAIN_ID)
                 addImportFor(Fqcns.MAIA_SQL_PARAMS)
                 addImportFor(joinFetchDtoDef.fqcn)
@@ -202,7 +208,7 @@ class RowMapperRenderer(
                     |            from ${joinFetchDtoDef.otherSideEntitySchemaAndTableName} other
                     |            join ${joinFetchDtoDef.joinEntitySchemaAndTableName} mtm
                     |                on other.id = mtm.${joinFetchDtoDef.otherSideIdTableColumnName}
-                    |            where mtm.${joinFetchDtoDef.thisSideIdTableColumnName} = :entityId
+                    |            where mtm.${joinFetchDtoDef.thisSideIdTableColumnName} = :entityId${effectiveRangeClause}
                     |            order by other.${joinFetchDtoDef.nameTableColumnName}
                     |            $tripleQuote.trimIndent(),
                     |            SqlParams().apply {
