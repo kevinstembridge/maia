@@ -322,14 +322,20 @@ class EntityDefBuilder(
             fieldDisplayName("Effective From")
             effectiveFromDescription?.let { description(it) }
             nullable()
-            editableByUser()
+            when (managedBy) {
+                EffectiveRangeManagedBy.USER -> editableByUser()
+                EffectiveRangeManagedBy.SYSTEM -> modifiableBySystem()
+            }
         }
 
         field("effectiveTo", FieldTypes.localDate) {
             fieldDisplayName("Effective To")
             effectiveToDescription?.let { description(it) }
             nullable()
-            editableByUser()
+            when (managedBy) {
+                EffectiveRangeManagedBy.USER -> editableByUser()
+                EffectiveRangeManagedBy.SYSTEM -> modifiableBySystem()
+            }
         }
 
         validateEffectiveTimeFields()
