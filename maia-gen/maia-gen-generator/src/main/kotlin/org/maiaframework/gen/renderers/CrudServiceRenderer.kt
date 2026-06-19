@@ -758,6 +758,13 @@ class CrudServiceRenderer(
             appendLine("            throw this.maiaProblems.foreignKeyRecordsExist(\"${referencingEntityDef.entityBaseName}\")")
             appendLine("        }")
 
+            if (isSystemManagedRef) {
+                blankLine()
+                appendLine("        this.${daoName}.findBy${fieldName}($primaryKeyFieldNamesCsv).forEach {")
+                appendLine("            this.${daoName}.deleteByPrimaryKey(it.id)")
+                appendLine("        }")
+            }
+
         }
 
         if (this.entityDef.crudDef.withCrudListener.value) {

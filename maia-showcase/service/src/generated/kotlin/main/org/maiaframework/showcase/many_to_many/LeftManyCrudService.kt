@@ -239,6 +239,10 @@ class LeftManyCrudService(
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightManyToManyJoin")
         }
 
+        this.leftToRightManyToManyJoinRepo.findByLeft(id).forEach {
+            this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(it.id)
+        }
+
         if (this.leftToRightSimpleJoinRepo.existsByLeft(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimpleJoin")
         }
