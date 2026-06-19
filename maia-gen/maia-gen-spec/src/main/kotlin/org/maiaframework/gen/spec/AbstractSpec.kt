@@ -492,8 +492,7 @@ abstract class AbstractSpec protected constructor(
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         leftEntity: ReferencedEntity,
         rightEntity: ReferencedEntity,
-        pkAndNameFieldName: String? = null,
-        init: (EntityDefBuilder.() -> Unit)? = null
+        pkAndNameFieldName: String? = null
     ): ManyToManyEntityDef {
 
         return manyToManyEntity(
@@ -508,8 +507,7 @@ abstract class AbstractSpec protected constructor(
             withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
             leftEntity,
             rightEntity,
-            pkAndNameFieldName,
-            init = init
+            pkAndNameFieldName
         )
 
     }
