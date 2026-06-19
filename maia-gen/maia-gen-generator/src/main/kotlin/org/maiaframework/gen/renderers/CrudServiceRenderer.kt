@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.DatabaseIndexDef
@@ -168,14 +169,18 @@ class CrudServiceRenderer(
                 blankLine()
 
                 if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
+                    val isSystemManaged = manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
+                    if (isSystemManaged) addImportFor<Instant>()
                     val joinDtoFieldName = "${otherSideFieldName}Entities"
+                    val effectiveFromValue = if (isSystemManaged) "Instant.now()" else "joinDto.effectiveFrom"
+                    val effectiveToValue = if (isSystemManaged) "null" else "joinDto.effectiveTo"
                     appendLine("        createDto.${joinDtoFieldName}.forEach { joinDto ->")
                     appendLine("            this.${joinRepoFieldName}.insert(")
                     appendLine("                ${joinEntityClass}.newInstance(")
                     renderNewInstanceArgsMultiLine(
                         indentSize = 20,
-                        "effectiveFrom" to "joinDto.effectiveFrom",
-                        "effectiveTo" to "joinDto.effectiveTo",
+                        "effectiveFrom" to effectiveFromValue,
+                        "effectiveTo" to effectiveToValue,
                         thisSideEntityIdFieldName to "entity.id",
                         otherSideFieldName to "joinDto.${otherSideFieldName}EntityId"
                     )
@@ -502,16 +507,40 @@ class CrudServiceRenderer(
 
             if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP && manyToManyEntityDef.entityDef.isDeletable) {
 
+                val isSystemManaged = manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
+                val findByMethodName = if (isSystemManaged) "findEffectiveBy${thisSideFieldNameCapitalized}" else "findBy${thisSideFieldNameCapitalized}"
+                val effectiveFromValue = if (isSystemManaged) "Instant.now()" else "joinDto.effectiveFrom"
+                val effectiveToValue = if (isSystemManaged) "null" else "joinDto.effectiveTo"
 
                 append("""
                     |
-                    |        val existing${joinNamePrefix}JoinsById = this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).associateBy { it.id }
+                    |        val existing${joinNamePrefix}JoinsById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
                     |        val submitted${joinNamePrefix}JoinIds = editDto.${otherSideDtoFieldName}.mapNotNull { it.id }.toSet()
-                    |
-                    |        existing${joinNamePrefix}JoinsById.keys.filterNot { it in submitted${joinNamePrefix}JoinIds }.forEach {
-                    |            this.${joinRepoFieldName}.deleteByPrimaryKey(it)
-                    |        }
+                    |""".trimMargin())
+
+                if (isSystemManaged) {
+                    addImportFor<Instant>()
+                    append("""
+                        |
+                        |        existing${joinNamePrefix}JoinsById.keys.filterNot { it in submitted${joinNamePrefix}JoinIds }.forEach {
+                        |            this.${joinRepoFieldName}.setFields(
+                        |                ${joinEntityClass}Updater.forPrimaryKey(it) {
+                        |                    effectiveTo(Instant.now())
+                        |                }
+                        |            )
+                        |        }
+                        |""".trimMargin())
+                } else {
+                    append("""
+                        |
+                        |        existing${joinNamePrefix}JoinsById.keys.filterNot { it in submitted${joinNamePrefix}JoinIds }.forEach {
+                        |            this.${joinRepoFieldName}.deleteByPrimaryKey(it)
+                        |        }
+                        |""".trimMargin())
+                }
+
+                append("""
                     |
                     |        val new${joinNamePrefix}Joins = editDto.${otherSideDtoFieldName}.filter { it.id == null }.map { joinDto ->
                     |            ${joinEntityClass}.newInstance(
@@ -519,8 +548,8 @@ class CrudServiceRenderer(
 
                 renderNewInstanceArgsMultiLine(
                     indentSize = 16,
-                    "effectiveFrom" to "joinDto.effectiveFrom",
-                    "effectiveTo" to "joinDto.effectiveTo",
+                    "effectiveFrom" to effectiveFromValue,
+                    "effectiveTo" to effectiveToValue,
                     thisSideFieldName to "id",
                     otherSideFieldName to "joinDto.${otherSideFieldName}EntityId"
                 )
@@ -529,22 +558,27 @@ class CrudServiceRenderer(
                     |            )
                     |        }
                     |        this.${joinRepoFieldName}.bulkInsert(new${joinNamePrefix}Joins)
-                    |
-                    |        editDto.${otherSideDtoFieldName}.filter { it.id != null }.forEach { joinDto ->
-                    |            val joinId = joinDto.id!!
-                    |            val existingJoin = existing${joinNamePrefix}JoinsById[joinId]
-                    |                ?: throw this.maiaProblems.joinRecordNotFound("$joinEntityClass")
-                    |
-                    |            if (existingJoin.effectiveFrom != joinDto.effectiveFrom || existingJoin.effectiveTo != joinDto.effectiveTo) {
-                    |                this.${joinRepoFieldName}.setFields(
-                    |                    ${joinEntityClass}Updater.forPrimaryKey(joinId) {
-                    |                        effectiveFrom(joinDto.effectiveFrom)
-                    |                        effectiveTo(joinDto.effectiveTo)
-                    |                    }
-                    |                )
-                    |            }
-                    |        }
                     |""".trimMargin())
+
+                if (!isSystemManaged) {
+                    append("""
+                        |
+                        |        editDto.${otherSideDtoFieldName}.filter { it.id != null }.forEach { joinDto ->
+                        |            val joinId = joinDto.id!!
+                        |            val existingJoin = existing${joinNamePrefix}JoinsById[joinId]
+                        |                ?: throw this.maiaProblems.joinRecordNotFound("$joinEntityClass")
+                        |
+                        |            if (existingJoin.effectiveFrom != joinDto.effectiveFrom || existingJoin.effectiveTo != joinDto.effectiveTo) {
+                        |                this.${joinRepoFieldName}.setFields(
+                        |                    ${joinEntityClass}Updater.forPrimaryKey(joinId) {
+                        |                        effectiveFrom(joinDto.effectiveFrom)
+                        |                        effectiveTo(joinDto.effectiveTo)
+                        |                    }
+                        |                )
+                        |            }
+                        |        }
+                        |""".trimMargin())
+                }
 
             } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
 
@@ -712,8 +746,15 @@ class CrudServiceRenderer(
 
             val fieldName = field!!.classFieldName.firstToUpper()
 
+            val isSystemManagedRef = referencingEntityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
+                && referencingEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
+
             blankLine()
-            appendLine("        if (this.${daoName}.existsBy$fieldName($primaryKeyFieldNamesCsv)) {")
+            if (isSystemManagedRef) {
+                appendLine("        if (this.${daoName}.findEffectiveBy$fieldName($primaryKeyFieldNamesCsv).isNotEmpty()) {")
+            } else {
+                appendLine("        if (this.${daoName}.existsBy$fieldName($primaryKeyFieldNamesCsv)) {")
+            }
             appendLine("            throw this.maiaProblems.foreignKeyRecordsExist(\"${referencingEntityDef.entityBaseName}\")")
             appendLine("        }")
 

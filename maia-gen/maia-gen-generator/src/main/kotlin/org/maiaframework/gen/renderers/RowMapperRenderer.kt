@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityFieldRowMapperFieldDef
 import org.maiaframework.gen.spec.definition.ForeignKeyRowMapperFieldDef
@@ -8,7 +9,6 @@ import org.maiaframework.gen.spec.definition.ManyToManyRowMapperFieldDef
 import org.maiaframework.gen.spec.definition.RowMapperDef
 import org.maiaframework.gen.spec.definition.RowMapperFunctions.renderRowMapperField
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
-import org.maiaframework.gen.spec.EffectiveRangeManagedBy
 
 class RowMapperRenderer(
     private val rowMapperDef: RowMapperDef

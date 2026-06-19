@@ -1,5 +1,7 @@
 package org.maiaframework.showcase.many_to_many
 
+import java.time.Instant
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -22,6 +24,13 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
 
     @Autowired
     private lateinit var rightManyTypeaheadEsIndex: RightManyTypeaheadEsIndex
+
+
+    @Autowired
+    private lateinit var leftManyDao: LeftManyDao
+
+    @Autowired
+    private lateinit var leftToRightManyToManyJoinDao: LeftToRightManyToManyJoinDao
 
 
     private val rightGamma = RightManyEntityTestBuilder(someString = "right-gamma").build()
@@ -67,6 +76,8 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         leftManyBlotterPage.clickAddButton()
 
+        val beforeCreate = Instant.now()
+
         leftManyCreatePage.apply {
             assertOnPage()
             fillCreateForm()
@@ -76,10 +87,16 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
             clickSubmitButton()
         }
 
-        leftManyViewPage.apply {
-            assertOnPage()
-            clickEditButton()
-        }
+        leftManyViewPage.assertOnPage()
+
+        val leftId = leftManyDao.findAllAsSequence().toList().single().id
+        val joinAfterCreate = leftToRightManyToManyJoinDao.findByLeft(leftId).single()
+        assertThat(joinAfterCreate.effectiveFrom).isBetween(beforeCreate, Instant.now())
+        assertThat(joinAfterCreate.effectiveTo).isNull()
+
+        leftManyViewPage.clickEditButton()
+
+        val beforeRemove = Instant.now()
 
         leftManyEditPage.apply {
             assertOnPage()
@@ -90,6 +107,9 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
         }
 
         leftManyViewPage.assertOnPage()
+
+        val joinAfterRemove = leftToRightManyToManyJoinDao.findByLeft(leftId).single()
+        assertThat(joinAfterRemove.effectiveTo).isBetween(beforeRemove, Instant.now())
 
         `navigate to the`(leftManyBlotterPage)
 

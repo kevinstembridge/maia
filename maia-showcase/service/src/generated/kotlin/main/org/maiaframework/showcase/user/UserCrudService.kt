@@ -43,8 +43,8 @@ class UserCrudService(
         createDto.userGroupEntities.forEach { joinDto ->
             this.userGroupMembershipRepo.insert(
                 UserGroupMembershipEntity.newInstance(
-                    effectiveFrom = joinDto.effectiveFrom,
-                    effectiveTo = joinDto.effectiveTo,
+                    effectiveFrom = Instant.now(),
+                    effectiveTo = null,
                     user = entity.id,
                     userGroup = joinDto.userGroupEntityId
                 )

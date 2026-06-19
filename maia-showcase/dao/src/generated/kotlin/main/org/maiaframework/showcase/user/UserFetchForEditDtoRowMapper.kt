@@ -71,6 +71,7 @@ class UserFetchForEditDtoRowMapper(
             join maia.user_group_membership mtm
                 on other.id = mtm.user_group_id
             where mtm.user_id = :entityId
+            and mtm.effective_range @> current_timestamp
             order by other.name
             """.trimIndent(),
             SqlParams().apply {
