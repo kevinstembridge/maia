@@ -110,6 +110,7 @@ class CrudServiceRenderer(
         `render existsBy for unique indexes`()
         `render the fetchForEdit function`()
         `render the update function`()
+        `render private join reconciliation functions`()
         `render the inline update functions`()
         `render the setFields function`()
         `render the delete function`()
@@ -494,47 +495,92 @@ class CrudServiceRenderer(
         apiDef.entityDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
 
             val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
+            val otherSideFieldName = otherSide.fieldName
+            val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
+            val joinNamePrefix = joinEntityClass.value.removeSuffix("Entity")
+
+            if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP && manyToManyEntityDef.entityDef.isDeletable) {
+                val otherSideDtoFieldName = "${otherSideFieldName}Entities"
+                append("""
+                    |
+                    |        reconcile${joinNamePrefix}Joins(id, editDto.${otherSideDtoFieldName})
+                    |""".trimMargin())
+            } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
+                val otherSideDtoFieldName = "${otherSideFieldName}Entities"
+                val thisSideFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
+                val thisSideFieldNameCapitalized = thisSideFieldName.replaceFirstChar { it.uppercaseChar() }
+                appendLine("        //this.${joinEntityClass.value.replaceFirstChar { it.lowercaseChar() }}Repo.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
+                appendLine("        //    this.${joinEntityClass.value.replaceFirstChar { it.lowercaseChar() }}Repo.deleteByPrimaryKey(join.id)")
+                appendLine("        //}")
+                blankLine()
+                appendLine("        //val new${joinNamePrefix}Joins = editDto.${otherSideDtoFieldName}.map { joinDto ->")
+                appendLine("        //    ${joinEntityClass}.newInstance(${newInstanceArgsSingleLine("effectiveFrom" to "joinDto.effectiveFrom", "effectiveTo" to "joinDto.effectiveTo", thisSideFieldName to "id", otherSideFieldName to "joinDto.${otherSideFieldName}EntityId")})")
+                appendLine("        //}")
+                appendLine("        //this.${joinEntityClass.value.replaceFirstChar { it.lowercaseChar() }}Repo.bulkInsert(new${joinNamePrefix}Joins)")
+            } else {
+                val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
+                append("""
+                    |
+                    |        reconcile${joinNamePrefix}Joins(id, editDto.${otherSideDtoFieldName})
+                    |""".trimMargin())
+            }
+
+        }
+
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
+    private fun `render private join reconciliation functions`() {
+
+        val apiDef = this.entityDef.entityCrudApiDef?.updateApiDef
+            ?: return
+
+        apiDef.entityDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
+
+            val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
             val thisSideFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
             val otherSideFieldName = otherSide.fieldName
             val thisSideFieldNameCapitalized = thisSideFieldName.replaceFirstChar { it.uppercaseChar() }
             val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
             val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
-
-            // Disambiguates local variable names when an entity has multiple many-to-many
-            // associations whose otherSideFieldName values collide (e.g. two associations
-            // both pointing at a "right" entity).
             val joinNamePrefix = joinEntityClass.value.removeSuffix("Entity")
 
             if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP && manyToManyEntityDef.entityDef.isDeletable) {
 
                 val isSystemManaged = manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
-                val otherSideDtoFieldName = "${otherSideFieldName}Entities"
                 val findByMethodName = if (isSystemManaged) "findEffectiveBy${thisSideFieldNameCapitalized}" else "findBy${thisSideFieldNameCapitalized}"
                 val effectiveFromValue = if (isSystemManaged) "Instant.now()" else "joinDto.effectiveFrom"
                 val effectiveToValue = if (isSystemManaged) "null" else "joinDto.effectiveTo"
 
+                val joinDtoDef = apiDef.timestampedJoinRequestDtosByAssociation[manyToManyEntityDef]!!
+                addImportFor(joinDtoDef.fqcn)
+                addImportFor(Fqcns.MAIA_DOMAIN_ID)
+                addImportFor(manyToManyEntityDef.entityDef.entityFqcn)
+                if (isSystemManaged) addImportFor<Instant>()
+
                 append("""
                     |
-                    |        val existing${joinNamePrefix}JoinsById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
-                    |        val submitted${joinNamePrefix}JoinIds = editDto.${otherSideDtoFieldName}.mapNotNull { it.id }.toSet()
+                    |
+                    |    private fun reconcile${joinNamePrefix}Joins(id: DomainId, submitted: List<${joinDtoDef.uqcn}>) {
+                    |
+                    |        val existingById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
+                    |        val submittedIds = submitted.mapNotNull { it.id }.toSet()
                     |""".trimMargin())
 
                 if (isSystemManaged) {
-                    addImportFor<Instant>()
                     append("""
                         |
-                        |        existing${joinNamePrefix}JoinsById.keys.filterNot { it in submitted${joinNamePrefix}JoinIds }.forEach {
-                        |            this.${joinRepoFieldName}.setFields(
-                        |                ${joinEntityClass}Updater.forPrimaryKey(it) {
-                        |                    effectiveTo(Instant.now())
-                        |                }
-                        |            )
+                        |        existingById.keys.filterNot { it in submittedIds }.forEach {
+                        |            this.${joinRepoFieldName}.closeEffectiveRange(it)
                         |        }
                         |""".trimMargin())
                 } else {
                     append("""
                         |
-                        |        existing${joinNamePrefix}JoinsById.keys.filterNot { it in submitted${joinNamePrefix}JoinIds }.forEach {
+                        |        existingById.keys.filterNot { it in submittedIds }.forEach {
                         |            this.${joinRepoFieldName}.deleteByPrimaryKey(it)
                         |        }
                         |""".trimMargin())
@@ -542,7 +588,7 @@ class CrudServiceRenderer(
 
                 append("""
                     |
-                    |        val new${joinNamePrefix}Joins = editDto.${otherSideDtoFieldName}.filter { it.id == null }.map { joinDto ->
+                    |        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
                     |            ${joinEntityClass}.newInstance(
                     |""".trimMargin())
 
@@ -557,15 +603,15 @@ class CrudServiceRenderer(
                 append("""
                     |            )
                     |        }
-                    |        this.${joinRepoFieldName}.bulkInsert(new${joinNamePrefix}Joins)
+                    |        this.${joinRepoFieldName}.bulkInsert(newJoins)
                     |""".trimMargin())
 
                 if (!isSystemManaged) {
                     append("""
                         |
-                        |        editDto.${otherSideDtoFieldName}.filter { it.id != null }.forEach { joinDto ->
+                        |        submitted.filter { it.id != null }.forEach { joinDto ->
                         |            val joinId = joinDto.id!!
-                        |            val existingJoin = existing${joinNamePrefix}JoinsById[joinId]
+                        |            val existingJoin = existingById[joinId]
                         |                ?: throw this.maiaProblems.joinRecordNotFound("$joinEntityClass")
                         |
                         |            if (existingJoin.effectiveFrom != joinDto.effectiveFrom || existingJoin.effectiveTo != joinDto.effectiveTo) {
@@ -580,45 +626,40 @@ class CrudServiceRenderer(
                         |""".trimMargin())
                 }
 
-            } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
+                append("""
+                    |
+                    |    }
+                    |""".trimMargin())
 
-                val otherSideDtoFieldName = "${otherSideFieldName}Entities"
+            } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType != EffectiveRangeDateType.TIMESTAMP) {
 
-                appendLine("        //this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id).forEach { join ->")
-                appendLine("        //    this.${joinRepoFieldName}.deleteByPrimaryKey(join.id)")
-                appendLine("        //}")
-                blankLine()
-                appendLine("        //val new${joinNamePrefix}Joins = editDto.${otherSideDtoFieldName}.map { joinDto ->")
-                appendLine("        //    ${joinEntityClass}.newInstance(${newInstanceArgsSingleLine("effectiveFrom" to "joinDto.effectiveFrom", "effectiveTo" to "joinDto.effectiveTo", thisSideFieldName to "id", otherSideFieldName to "joinDto.${otherSideFieldName}EntityId")})")
-                appendLine("        //}")
-                appendLine("        //this.${joinRepoFieldName}.bulkInsert(new${joinNamePrefix}Joins)")
-
-            } else {
-
-                val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
+                addImportFor(Fqcns.MAIA_DOMAIN_ID)
+                addImportFor(manyToManyEntityDef.entityDef.entityFqcn)
 
                 append("""
                     |
-                    |        val existing${joinNamePrefix}Joins = this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id)
-                    |        val existing${joinNamePrefix}Ids = existing${joinNamePrefix}Joins.map { it.${otherSideFieldName} }.toSet()
-                    |        val desired${joinNamePrefix}Ids = editDto.${otherSideDtoFieldName}.toSet()
                     |
-                    |        existing${joinNamePrefix}Joins.filter { it.${otherSideFieldName} !in desired${joinNamePrefix}Ids }.forEach {
+                    |    private fun reconcile${joinNamePrefix}Joins(id: DomainId, submittedIds: List<DomainId>) {
+                    |
+                    |        val existing = this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id)
+                    |        val existingIds = existing.map { it.${otherSideFieldName} }.toSet()
+                    |        val desiredIds = submittedIds.toSet()
+                    |
+                    |        existing.filter { it.${otherSideFieldName} !in desiredIds }.forEach {
                     |            this.${joinRepoFieldName}.deleteByPrimaryKey(it.id)
                     |        }
                     |
-                    |        val new${joinNamePrefix}Joins = (desired${joinNamePrefix}Ids - existing${joinNamePrefix}Ids).map { $otherSideFieldName ->
+                    |        val newJoins = (desiredIds - existingIds).map { $otherSideFieldName ->
                     |            ${joinEntityClass}.newInstance(${newInstanceArgsSingleLine(thisSideFieldName to "id", otherSideFieldName to otherSideFieldName)})
                     |        }
-                    |        this.${joinRepoFieldName}.bulkInsert(new${joinNamePrefix}Joins)
+                    |        this.${joinRepoFieldName}.bulkInsert(newJoins)
+                    |
+                    |    }
                     |""".trimMargin())
 
             }
 
         }
-
-        blankLine()
-        appendLine("    }")
 
     }
 

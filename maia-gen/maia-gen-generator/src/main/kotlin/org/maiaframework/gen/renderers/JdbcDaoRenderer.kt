@@ -4,6 +4,8 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.gen.renderers.SqlParamFunctions.renderSqlParamAddValueFor
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamMapperFunction
+import org.maiaframework.gen.spec.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
@@ -233,6 +235,7 @@ class JdbcDaoRenderer(
         `render upsert for primary key`()
         `render upserts for indexes`()
         `render function setFields`()
+        `render function closeEffectiveRange`()
         `render function deleteByPrimaryKey`()
         `render function deleteAll`()
         `render deleteBy for indexes`()
@@ -2253,6 +2256,32 @@ class JdbcDaoRenderer(
             renderSqlParamAddValueFor(entityFieldDef, indent, entityParameterName, indentSize, { line -> appendLine(line) })
 
         }
+
+    }
+
+
+    private fun `render function closeEffectiveRange`() {
+
+        if (!entityDef.isManyToManyJoinEntity) return
+        if (entityDef.effectiveRangeDef?.managedBy != EffectiveRangeManagedBy.SYSTEM) return
+        if (entityDef.effectiveRangeDef?.dateType != EffectiveRangeDateType.TIMESTAMP) return
+
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+
+        blankLine()
+        blankLine()
+        appendLine("    fun closeEffectiveRange(id: DomainId): Boolean {")
+        blankLine()
+        appendLine("        val updatedCount = this.jdbcOps.update(")
+        appendLine("            \"update ${entityDef.schemaAndTableName} set effective_range = tstzrange(lower(effective_range), now()) where id = :id\",")
+        appendLine("            SqlParams().apply {")
+        appendLine("                addValue(\"id\", id)")
+        appendLine("            }")
+        appendLine("        )")
+        blankLine()
+        appendLine("        return updatedCount > 0")
+        blankLine()
+        appendLine("    }")
 
     }
 

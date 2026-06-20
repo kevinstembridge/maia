@@ -457,5 +457,19 @@ class UserGroupMembershipDao(
     }
 
 
+    fun closeEffectiveRange(id: DomainId): Boolean {
+
+        val updatedCount = this.jdbcOps.update(
+            "update maia.user_group_membership set effective_range = tstzrange(lower(effective_range), now()) where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+        return updatedCount > 0
+
+    }
+
+
 }
 

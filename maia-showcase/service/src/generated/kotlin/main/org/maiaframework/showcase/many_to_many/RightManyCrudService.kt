@@ -118,18 +118,25 @@ class RightManyCrudService(
 
         setFields(updater)
 
-        val existingLeftToRightManyToManyJoinJoinsById = this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).associateBy { it.id }
-        val submittedLeftToRightManyToManyJoinJoinIds = editDto.leftEntities.mapNotNull { it.id }.toSet()
+        reconcileLeftToRightManyToManyJoinJoins(id, editDto.leftEntities)
 
-        existingLeftToRightManyToManyJoinJoinsById.keys.filterNot { it in submittedLeftToRightManyToManyJoinJoinIds }.forEach {
-            this.leftToRightManyToManyJoinRepo.setFields(
-                LeftToRightManyToManyJoinEntityUpdater.forPrimaryKey(it) {
-                    effectiveTo(Instant.now())
-                }
-            )
+        reconcileLeftToRightSimpleJoinJoins(id, editDto.leftEntityIds)
+
+        reconcileLeftToRightEffectiveRangeJoins(id, editDto.leftEffectiveEntities)
+
+    }
+
+
+    private fun reconcileLeftToRightManyToManyJoinJoins(id: DomainId, submitted: List<LeftJoinRequestDto>) {
+
+        val existingById = this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).associateBy { it.id }
+        val submittedIds = submitted.mapNotNull { it.id }.toSet()
+
+        existingById.keys.filterNot { it in submittedIds }.forEach {
+            this.leftToRightManyToManyJoinRepo.closeEffectiveRange(it)
         }
 
-        val newLeftToRightManyToManyJoinJoins = editDto.leftEntities.filter { it.id == null }.map { joinDto ->
+        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
             LeftToRightManyToManyJoinEntity.newInstance(
                 effectiveFrom = Instant.now(),
                 effectiveTo = null,
@@ -137,29 +144,39 @@ class RightManyCrudService(
                 right = id
             )
         }
-        this.leftToRightManyToManyJoinRepo.bulkInsert(newLeftToRightManyToManyJoinJoins)
+        this.leftToRightManyToManyJoinRepo.bulkInsert(newJoins)
 
-        val existingLeftToRightSimpleJoinJoins = this.leftToRightSimpleJoinRepo.findByRight(id)
-        val existingLeftToRightSimpleJoinIds = existingLeftToRightSimpleJoinJoins.map { it.left }.toSet()
-        val desiredLeftToRightSimpleJoinIds = editDto.leftEntityIds.toSet()
+    }
 
-        existingLeftToRightSimpleJoinJoins.filter { it.left !in desiredLeftToRightSimpleJoinIds }.forEach {
+
+    private fun reconcileLeftToRightSimpleJoinJoins(id: DomainId, submittedIds: List<DomainId>) {
+
+        val existing = this.leftToRightSimpleJoinRepo.findByRight(id)
+        val existingIds = existing.map { it.left }.toSet()
+        val desiredIds = submittedIds.toSet()
+
+        existing.filter { it.left !in desiredIds }.forEach {
             this.leftToRightSimpleJoinRepo.deleteByPrimaryKey(it.id)
         }
 
-        val newLeftToRightSimpleJoinJoins = (desiredLeftToRightSimpleJoinIds - existingLeftToRightSimpleJoinIds).map { left ->
+        val newJoins = (desiredIds - existingIds).map { left ->
             LeftToRightSimpleJoinEntity.newInstance(left = left, right = id)
         }
-        this.leftToRightSimpleJoinRepo.bulkInsert(newLeftToRightSimpleJoinJoins)
+        this.leftToRightSimpleJoinRepo.bulkInsert(newJoins)
 
-        val existingLeftToRightEffectiveRangeJoinsById = this.leftToRightEffectiveRangeRepo.findByRightEffective(id).associateBy { it.id }
-        val submittedLeftToRightEffectiveRangeJoinIds = editDto.leftEffectiveEntities.mapNotNull { it.id }.toSet()
+    }
 
-        existingLeftToRightEffectiveRangeJoinsById.keys.filterNot { it in submittedLeftToRightEffectiveRangeJoinIds }.forEach {
+
+    private fun reconcileLeftToRightEffectiveRangeJoins(id: DomainId, submitted: List<LeftEffectiveJoinRequestDto>) {
+
+        val existingById = this.leftToRightEffectiveRangeRepo.findByRightEffective(id).associateBy { it.id }
+        val submittedIds = submitted.mapNotNull { it.id }.toSet()
+
+        existingById.keys.filterNot { it in submittedIds }.forEach {
             this.leftToRightEffectiveRangeRepo.deleteByPrimaryKey(it)
         }
 
-        val newLeftToRightEffectiveRangeJoins = editDto.leftEffectiveEntities.filter { it.id == null }.map { joinDto ->
+        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
             LeftToRightEffectiveRangeEntity.newInstance(
                 effectiveFrom = joinDto.effectiveFrom,
                 effectiveTo = joinDto.effectiveTo,
@@ -167,11 +184,11 @@ class RightManyCrudService(
                 rightEffective = id
             )
         }
-        this.leftToRightEffectiveRangeRepo.bulkInsert(newLeftToRightEffectiveRangeJoins)
+        this.leftToRightEffectiveRangeRepo.bulkInsert(newJoins)
 
-        editDto.leftEffectiveEntities.filter { it.id != null }.forEach { joinDto ->
+        submitted.filter { it.id != null }.forEach { joinDto ->
             val joinId = joinDto.id!!
-            val existingJoin = existingLeftToRightEffectiveRangeJoinsById[joinId]
+            val existingJoin = existingById[joinId]
                 ?: throw this.maiaProblems.joinRecordNotFound("LeftToRightEffectiveRangeEntity")
 
             if (existingJoin.effectiveFrom != joinDto.effectiveFrom || existingJoin.effectiveTo != joinDto.effectiveTo) {

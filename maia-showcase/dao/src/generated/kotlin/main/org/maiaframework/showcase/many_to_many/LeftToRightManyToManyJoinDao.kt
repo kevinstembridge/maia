@@ -431,6 +431,20 @@ class LeftToRightManyToManyJoinDao(
     }
 
 
+    fun closeEffectiveRange(id: DomainId): Boolean {
+
+        val updatedCount = this.jdbcOps.update(
+            "update maia.left_to_right_many_to_many_join set effective_range = tstzrange(lower(effective_range), now()) where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+        return updatedCount > 0
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId): Boolean {
 
         val existingEntity = findByPrimaryKeyOrNull(id) ?: return false

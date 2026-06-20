@@ -122,14 +122,14 @@ class UserCrudService(
         }
 
         setFields(updater)
-        //this.userGroupMembershipRepo.findByUser(id).forEach { join ->
-        //    this.userGroupMembershipRepo.deleteByPrimaryKey(join.id)
+        //this.userGroupMembershipEntityRepo.findByUser(id).forEach { join ->
+        //    this.userGroupMembershipEntityRepo.deleteByPrimaryKey(join.id)
         //}
 
         //val newUserGroupMembershipJoins = editDto.userGroupEntities.map { joinDto ->
         //    UserGroupMembershipEntity.newInstance(effectiveFrom = joinDto.effectiveFrom, effectiveTo = joinDto.effectiveTo, user = id, userGroup = joinDto.userGroupEntityId)
         //}
-        //this.userGroupMembershipRepo.bulkInsert(newUserGroupMembershipJoins)
+        //this.userGroupMembershipEntityRepo.bulkInsert(newUserGroupMembershipJoins)
 
     }
 

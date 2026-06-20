@@ -1,5 +1,7 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.Fqcns
@@ -92,6 +94,7 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
         `render function bulkInsert`()
         `render function bulkInsertOfCsvRecords`()
         `render function setFields`()
+        `render function closeEffectiveRange`()
         `render upsert for primary key`()
         `render upserts for indexes`()
         `render function deleteByPrimaryKey`()
@@ -617,6 +620,29 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
             )
 
         }
+
+    }
+
+
+    private fun `render function closeEffectiveRange`() {
+
+        if (!entityDef.isManyToManyJoinEntity) return
+        if (entityDef.effectiveRangeDef?.managedBy != EffectiveRangeManagedBy.SYSTEM) return
+        if (entityDef.effectiveRangeDef?.dateType != EffectiveRangeDateType.TIMESTAMP) return
+
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+
+        append("""
+            |
+            |
+            |    fun closeEffectiveRange(id: DomainId): Boolean {
+            |
+            |        logger.debug("closeEffectiveRange {}", id)
+            |
+            |        return this.dao.closeEffectiveRange(id)
+            |
+            |    }
+            |""".trimMargin())
 
     }
 

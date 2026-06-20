@@ -142,6 +142,15 @@ class LeftToRightManyToManyJoinRepo(
     }
 
 
+    fun closeEffectiveRange(id: DomainId): Boolean {
+
+        logger.debug("closeEffectiveRange {}", id)
+
+        return this.dao.closeEffectiveRange(id)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

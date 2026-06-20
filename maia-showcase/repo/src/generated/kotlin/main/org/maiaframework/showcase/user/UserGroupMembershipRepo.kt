@@ -149,5 +149,14 @@ class UserGroupMembershipRepo(
     }
 
 
+    fun closeEffectiveRange(id: DomainId): Boolean {
+
+        logger.debug("closeEffectiveRange {}", id)
+
+        return this.dao.closeEffectiveRange(id)
+
+    }
+
+
 }
 
