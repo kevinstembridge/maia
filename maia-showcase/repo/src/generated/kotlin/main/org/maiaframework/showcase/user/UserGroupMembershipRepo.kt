@@ -80,14 +80,14 @@ class UserGroupMembershipRepo(
     }
 
 
-    fun findEffectiveByUserGroup(userGroup: DomainId): UserGroupMembershipEntity? {
+    fun findEffectiveByUserGroup(userGroup: DomainId): List<UserGroupMembershipEntity> {
 
         return dao.findEffectiveByUserGroup(userGroup)
 
     }
 
 
-    fun findEffectiveByUser(user: DomainId): UserGroupMembershipEntity? {
+    fun findEffectiveByUser(user: DomainId): List<UserGroupMembershipEntity> {
 
         return dao.findEffectiveByUser(user)
 

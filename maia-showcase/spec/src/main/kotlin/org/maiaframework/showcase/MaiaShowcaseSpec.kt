@@ -139,7 +139,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
-        withEffectiveTimestamps()
+        withEffectiveTimestamps(hasSingleEffectiveRecord = true)
         field("someString", FieldTypes.string) {
             lengthConstraint(max = 100)
         }
@@ -1401,7 +1401,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             IsEditableByUser.TRUE
         )
     ) {
-        effectiveRange(managedBy = EffectiveRangeManagedBy.USER)
+        effectiveRange(managedBy = EffectiveRangeManagedBy.SYSTEM)
     }
 
 

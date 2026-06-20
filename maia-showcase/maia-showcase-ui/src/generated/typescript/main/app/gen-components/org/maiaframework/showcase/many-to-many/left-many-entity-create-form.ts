@@ -121,12 +121,6 @@ export class LeftManyEntityCreateForm implements OnInit {
     addRightEffectiveJoinEntityControl = new FormControl<RightManyTypeaheadV1EsDoc | null>(null);
 
 
-    addRightEffectiveJoinEffectiveFromControl = new FormControl<Date | null>(null);
-
-
-    addRightEffectiveJoinEffectiveToControl = new FormControl<Date | null>(null);
-
-
     filteredRightEffectiveEntities: RightManyTypeaheadV1EsDoc[] = [];
 
 
@@ -284,12 +278,10 @@ export class LeftManyEntityCreateForm implements OnInit {
             id: null,
             entityId: entity.id,
             entityName: entity.someString,
-            effectiveFrom: this.addRightEffectiveJoinEffectiveFromControl.value,
-            effectiveTo: this.addRightEffectiveJoinEffectiveToControl.value,
+            effectiveFrom: null,
+            effectiveTo: null,
         });
         this.addRightEffectiveJoinEntityControl.reset();
-        this.addRightEffectiveJoinEffectiveFromControl.reset();
-        this.addRightEffectiveJoinEffectiveToControl.reset();
         this.filteredRightEffectiveEntities = [];
         this.showRightEffectiveJoinForm.set(false);
 
@@ -306,8 +298,6 @@ export class LeftManyEntityCreateForm implements OnInit {
     cancelAddRightEffectiveJoin(): void {
 
         this.addRightEffectiveJoinEntityControl.reset();
-        this.addRightEffectiveJoinEffectiveFromControl.reset();
-        this.addRightEffectiveJoinEffectiveToControl.reset();
         this.filteredRightEffectiveEntities = [];
         this.showRightEffectiveJoinForm.set(false);
 

@@ -198,9 +198,9 @@ class UserGroupMembershipDao(
     }
 
 
-    fun findEffectiveByUserGroup(userGroup: DomainId): UserGroupMembershipEntity? {
+    fun findEffectiveByUserGroup(userGroup: DomainId): List<UserGroupMembershipEntity> {
 
-        return jdbcOps.queryForObjectOrNull(
+        return jdbcOps.queryForList(
             """
             select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership
             where user_group_id = :userGroup
@@ -215,9 +215,9 @@ class UserGroupMembershipDao(
     }
 
 
-    fun findEffectiveByUser(user: DomainId): UserGroupMembershipEntity? {
+    fun findEffectiveByUser(user: DomainId): List<UserGroupMembershipEntity> {
 
-        return jdbcOps.queryForObjectOrNull(
+        return jdbcOps.queryForList(
             """
             select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.user_group_membership
             where user_id = :user

@@ -195,9 +195,9 @@ class LeftToRightEffectiveRangeDao(
     }
 
 
-    fun findEffectiveByLeftEffective(leftEffective: DomainId): LeftToRightEffectiveRangeEntity? {
+    fun findEffectiveByLeftEffective(leftEffective: DomainId): List<LeftToRightEffectiveRangeEntity> {
 
-        return jdbcOps.queryForObjectOrNull(
+        return jdbcOps.queryForList(
             """
             select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_effective_range
             where left_effective_id = :leftEffective
@@ -212,9 +212,9 @@ class LeftToRightEffectiveRangeDao(
     }
 
 
-    fun findEffectiveByRightEffective(rightEffective: DomainId): LeftToRightEffectiveRangeEntity? {
+    fun findEffectiveByRightEffective(rightEffective: DomainId): List<LeftToRightEffectiveRangeEntity> {
 
-        return jdbcOps.queryForObjectOrNull(
+        return jdbcOps.queryForList(
             """
             select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_effective_range
             where right_effective_id = :rightEffective
@@ -420,6 +420,20 @@ class LeftToRightEffectiveRangeDao(
             "leftEffective" -> sqlParams.addValue("leftEffective", field.value as DomainId)
             "rightEffective" -> sqlParams.addValue("rightEffective", field.value as DomainId)
         }
+
+    }
+
+
+    fun closeEffectiveRange(id: DomainId): Boolean {
+
+        val updatedCount = this.jdbcOps.update(
+            "update maia.left_to_right_effective_range set effective_range = tstzrange(lower(effective_range), now()) where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+        return updatedCount > 0
 
     }
 

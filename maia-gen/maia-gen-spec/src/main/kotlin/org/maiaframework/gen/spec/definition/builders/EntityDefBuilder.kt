@@ -284,7 +284,7 @@ class EntityDefBuilder(
 
     fun withEffectiveTimestamps(
         managedBy: EffectiveRangeManagedBy = EffectiveRangeManagedBy.SYSTEM,
-        hasSingleEffectiveRecord: Boolean = true
+        hasSingleEffectiveRecord: Boolean = false
     ) {
 
         field("effectiveFrom", FieldTypes.instant) {

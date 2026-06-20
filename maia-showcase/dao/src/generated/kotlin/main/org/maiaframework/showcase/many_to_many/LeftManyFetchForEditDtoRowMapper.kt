@@ -62,6 +62,7 @@ class LeftManyFetchForEditDtoRowMapper(
             join maia.left_to_right_effective_range mtm
                 on other.id = mtm.right_effective_id
             where mtm.left_effective_id = :entityId
+            and mtm.effective_range @> current_timestamp
             order by other.some_string
             """.trimIndent(),
             SqlParams().apply {

@@ -9,7 +9,11 @@ import org.maiaframework.gen.spec.definition.IndexDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import java.time.Instant
 
-class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : AbstractKotlinRenderer(entityHierarchy.entityDef.entityRepoClassDef) {
+class EntityRepoRenderer(
+    private val entityHierarchy: EntityHierarchy
+) : AbstractKotlinRenderer(
+    entityHierarchy.entityDef.entityRepoClassDef
+) {
 
 
     private val entityDef = entityHierarchy.entityDef
@@ -34,13 +38,10 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
     init {
 
-        addConstructorArg(aClassField("dao", entityDef.entityDaoFqcn) {
-
-
-        }.privat().build())
+        addConstructorArg(aClassField("dao", entityDef.entityDaoFqcn).privat().build())
 
         if (cacheable) {
-            addConstructorArg(aClassField("hazelcastInstance", Fqcns.HAZELCAST_INSTANCE) { }.privat().build())
+            addConstructorArg(aClassField("hazelcastInstance", Fqcns.HAZELCAST_INSTANCE).privat().build())
         }
 
         entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType) }
@@ -60,7 +61,6 @@ class EntityRepoRenderer(private val entityHierarchy: EntityHierarchy) : Abstrac
 
             addImportFor(Fqcns.HAZELCAST_IMAP)
 
-            // TODO cater for composite primary keys
             val primaryKeyType = if (entityDef.hasCompositePrimaryKey) {
                 entityDef.entityPkClassDef.uqcn.value
             } else {

@@ -30,7 +30,7 @@ class LeftManyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSimpleJoin")
         }
 
-        if (this.leftToRightEffectiveRangeRepo.existsByLeftEffective(id)) {
+        if (this.leftToRightEffectiveRangeRepo.findEffectiveByLeftEffective(id).isNotEmpty()) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightEffectiveRange")
         }
 

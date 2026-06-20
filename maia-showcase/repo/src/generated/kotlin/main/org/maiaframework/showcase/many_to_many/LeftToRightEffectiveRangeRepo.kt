@@ -80,14 +80,14 @@ class LeftToRightEffectiveRangeRepo(
     }
 
 
-    fun findEffectiveByLeftEffective(leftEffective: DomainId): LeftToRightEffectiveRangeEntity? {
+    fun findEffectiveByLeftEffective(leftEffective: DomainId): List<LeftToRightEffectiveRangeEntity> {
 
         return dao.findEffectiveByLeftEffective(leftEffective)
 
     }
 
 
-    fun findEffectiveByRightEffective(rightEffective: DomainId): LeftToRightEffectiveRangeEntity? {
+    fun findEffectiveByRightEffective(rightEffective: DomainId): List<LeftToRightEffectiveRangeEntity> {
 
         return dao.findEffectiveByRightEffective(rightEffective)
 
@@ -138,6 +138,15 @@ class LeftToRightEffectiveRangeRepo(
         logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
+
+    }
+
+
+    fun closeEffectiveRange(id: DomainId): Boolean {
+
+        logger.debug("closeEffectiveRange {}", id)
+
+        return this.dao.closeEffectiveRange(id)
 
     }
 
