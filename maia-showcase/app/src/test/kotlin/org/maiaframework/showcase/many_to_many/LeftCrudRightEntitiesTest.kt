@@ -115,7 +115,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
             """{"id": "$leftId", "someInt": 2, "someString": "test2", "version": 1, "rightEntities": [{"rightEntityId": "${rightEntity2.id}"}, {"rightEntityId": "${rightEntity3.id}"}]}"""
         ).hasStatus(HttpStatus.OK)
 
-        val joins = manyToManyJoinDao.findByLeft(leftId)
+        val joins = manyToManyJoinDao.findEffectiveByLeft(leftId)
         assertThat(joins).hasSize(2)
         assertThat(joins.map { it.right }).containsExactlyInAnyOrder(rightEntity2.id, rightEntity3.id)
 
@@ -138,7 +138,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
             """{"id": "$leftId", "someInt": 1, "someString": "test", "version": 1, "rightEntities": []}"""
         ).hasStatus(HttpStatus.OK)
 
-        val joins = manyToManyJoinDao.findByLeft(leftId)
+        val joins = manyToManyJoinDao.findEffectiveByLeft(leftId)
         assertThat(joins).isEmpty()
 
     }
@@ -170,7 +170,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `update with changed effectiveFrom updates join in place`() {
+    fun `update with changed effectiveFrom does not update effectiveFrom for SYSTEM-managed join`() {
 
         post(
             "/api/left-many/create",
@@ -188,7 +188,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         val joinAfter = manyToManyJoinDao.findByLeft(leftId).single()
         assertThat(joinAfter.id).isEqualTo(joinBefore.id)
         assertThat(joinAfter.createdTimestampUtc).isEqualTo(joinBefore.createdTimestampUtc)
-        assertThat(joinAfter.effectiveFrom).isEqualTo(java.time.Instant.parse("2026-01-01T00:00:00Z"))
+        assertThat(joinAfter.effectiveFrom).isEqualTo(joinBefore.effectiveFrom)
 
     }
 
@@ -204,7 +204,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         val leftId = leftDao.findAllAsSequence().first().id
         val joins = manyToManyJoinDao.findByLeft(leftId)
         val join1 = joins.single { it.right == rightEntity1.id }
-        // join2 (rightEntity2) will be omitted -> deleted
+        // join2 (rightEntity2) will be omitted -> soft-deleted
 
         put(
             "/api/left-many/update",
@@ -214,13 +214,13 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
             ]}"""
         ).hasStatus(HttpStatus.OK)
 
-        val joinsAfter = manyToManyJoinDao.findByLeft(leftId)
+        val joinsAfter = manyToManyJoinDao.findEffectiveByLeft(leftId)
         assertThat(joinsAfter.map { it.right }).containsExactlyInAnyOrder(rightEntity1.id, rightEntity3.id)
 
         val join1After = joinsAfter.single { it.right == rightEntity1.id }
         assertThat(join1After.id).isEqualTo(join1.id)
         assertThat(join1After.createdTimestampUtc).isEqualTo(join1.createdTimestampUtc)
-        assertThat(join1After.effectiveFrom).isEqualTo(java.time.Instant.parse("2026-01-01T00:00:00Z"))
+        assertThat(join1After.effectiveFrom).isEqualTo(join1.effectiveFrom)
 
     }
 

@@ -1,5 +1,7 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
@@ -54,8 +56,16 @@ class ForeignKeyReferenceServiceRenderer(
 
             val fieldName = field!!.classFieldName
 
+            val isSystemManagedMtmJoin = referencingEntityDef.isManyToManyJoinEntity
+                && referencingEntityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
+                && referencingEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
+
             blankLine()
-            appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.existsBy${fieldName.firstToUpper()}(id)) {")
+            if (isSystemManagedMtmJoin) {
+                appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.findEffectiveBy${fieldName.firstToUpper()}(id).isNotEmpty()) {")
+            } else {
+                appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.existsBy${fieldName.firstToUpper()}(id)) {")
+            }
             appendLine("            return ${Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO.uqcn}(id, true, \"${referencingEntityDef.entityBaseName}\")")
             appendLine("        }")
 

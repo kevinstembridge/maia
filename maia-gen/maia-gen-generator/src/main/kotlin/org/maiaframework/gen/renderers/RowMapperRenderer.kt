@@ -239,6 +239,10 @@ class RowMapperRenderer(
                 val thisSideIdTableColumnName = manyToManyRowMapperFieldDef.thisSideIdTableColumnName
                 val manyToManyEntityDef = manyToManyRowMapperFieldDef.manyToManySearchableDtoFieldDef.manyToManyEntityDef
 
+                val isSystemManagedJoin = manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
+                    && manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
+                val effectiveRangeClause = if (isSystemManagedJoin) "\n            and mtm.effective_range @> current_timestamp" else ""
+
                 append("""
                     |
                     |
@@ -252,7 +256,7 @@ class RowMapperRenderer(
                     |            from ${otherSideEntity.entityDef.schemaAndTableName} other
                     |            join ${manyToManyEntityDef.entityDef.schemaAndTableName} mtm
                     |                on other.id = mtm.${otherSideIdTableColumnName}
-                    |            where mtm.${thisSideIdTableColumnName} = :entityId
+                    |            where mtm.${thisSideIdTableColumnName} = :entityId${effectiveRangeClause}
                     |            order by other.${otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
                     |            $tripleQuote.trimIndent(),
                     |            SqlParams().apply {

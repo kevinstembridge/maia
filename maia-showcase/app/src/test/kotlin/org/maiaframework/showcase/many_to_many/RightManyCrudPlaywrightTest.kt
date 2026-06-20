@@ -130,8 +130,6 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
             assertOnPage()
             `assert a LeftEntity is visible with name`("left-1")
 
-            `set the effectiveFrom for the LeftEntity named`("left-1", "1/15/2026", "10:00 AM")
-
             `click the Add button for Left entities`()
             `select a Left entity in the mini form`("left-2")
             `click to confirm adding the Left entity`()
