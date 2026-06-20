@@ -7,7 +7,7 @@ import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-class LeftToRightEffectiveRangeEntity(
+class LeftToRightSystemEffectiveRangeEntity(
     val createdTimestampUtc: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
@@ -19,7 +19,7 @@ class LeftToRightEffectiveRangeEntity(
 
     override fun toString(): String {
 
-        return "LeftToRightEffectiveRangeEntity{" +
+        return "LeftToRightSystemEffectiveRangeEntity{" +
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
@@ -45,12 +45,12 @@ class LeftToRightEffectiveRangeEntity(
             effectiveTo: Instant?,
             leftEffective: DomainId,
             rightEffective: DomainId
-        ): LeftToRightEffectiveRangeEntity {
+        ): LeftToRightSystemEffectiveRangeEntity {
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
 
-            return LeftToRightEffectiveRangeEntity(
+            return LeftToRightSystemEffectiveRangeEntity(
                 createdTimestampUtc,
                 effectiveFrom,
                 effectiveTo,

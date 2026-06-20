@@ -14,34 +14,34 @@ import java.time.Instant
 import java.util.concurrent.atomic.AtomicInteger
 
 
-class LeftToRightEffectiveRangeEntityFilters {
+class LeftToRightSystemEffectiveRangeEntityFilters {
 
 
     private val sqlParamCounter = AtomicInteger(1)
 
 
-    fun and(vararg filters: LeftToRightEffectiveRangeEntityFilter): LeftToRightEffectiveRangeEntityFilter {
+    fun and(vararg filters: LeftToRightSystemEffectiveRangeEntityFilter): LeftToRightSystemEffectiveRangeEntityFilter {
 
         return IterableFunctionFilter(filters.toList(), AndOr.and)
 
     }
 
 
-    fun or(vararg filters: LeftToRightEffectiveRangeEntityFilter): LeftToRightEffectiveRangeEntityFilter {
+    fun or(vararg filters: LeftToRightSystemEffectiveRangeEntityFilter): LeftToRightSystemEffectiveRangeEntityFilter {
 
         return IterableFunctionFilter(filters.toList(), AndOr.or)
 
     }
 
 
-    fun nor(vararg filters: LeftToRightEffectiveRangeEntityFilter): LeftToRightEffectiveRangeEntityFilter {
+    fun nor(vararg filters: LeftToRightSystemEffectiveRangeEntityFilter): LeftToRightSystemEffectiveRangeEntityFilter {
 
         return IterableFunctionFilter(filters.toList(), AndOr.nor)
 
     }
 
 
-    fun isEffectiveNow(): LeftToRightEffectiveRangeEntityFilter {
+    fun isEffectiveNow(): LeftToRightSystemEffectiveRangeEntityFilter {
 
         return EffectiveNowFilter()
 
@@ -116,7 +116,7 @@ class LeftToRightEffectiveRangeEntityFilters {
     ) {
 
 
-        infix fun eq(value: T): LeftToRightEffectiveRangeEntityFilter {
+        infix fun eq(value: T): LeftToRightSystemEffectiveRangeEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -130,7 +130,7 @@ class LeftToRightEffectiveRangeEntityFilters {
         }
 
 
-        infix fun gt(value: T): LeftToRightEffectiveRangeEntityFilter {
+        infix fun gt(value: T): LeftToRightSystemEffectiveRangeEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -144,7 +144,7 @@ class LeftToRightEffectiveRangeEntityFilters {
         }
 
 
-        infix fun gte(value: T): LeftToRightEffectiveRangeEntityFilter {
+        infix fun gte(value: T): LeftToRightSystemEffectiveRangeEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -158,7 +158,7 @@ class LeftToRightEffectiveRangeEntityFilters {
         }
 
 
-        infix fun lt(value: T): LeftToRightEffectiveRangeEntityFilter {
+        infix fun lt(value: T): LeftToRightSystemEffectiveRangeEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -172,7 +172,7 @@ class LeftToRightEffectiveRangeEntityFilters {
         }
 
 
-        infix fun lte(value: T): LeftToRightEffectiveRangeEntityFilter {
+        infix fun lte(value: T): LeftToRightSystemEffectiveRangeEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -186,7 +186,7 @@ class LeftToRightEffectiveRangeEntityFilters {
         }
 
 
-        infix fun ne(value: T): LeftToRightEffectiveRangeEntityFilter {
+        infix fun ne(value: T): LeftToRightSystemEffectiveRangeEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -200,28 +200,28 @@ class LeftToRightEffectiveRangeEntityFilters {
         }
 
 
-        infix fun `in`(value: Iterable<T>): LeftToRightEffectiveRangeEntityFilter {
+        infix fun `in`(value: Iterable<T>): LeftToRightSystemEffectiveRangeEntityFilter {
 
             return MultiValueFunctionFilter(this.databaseColumnName, this.sqlType, this.sqlParamCounter, value, this.valueMappingFunc)
 
         }
 
 
-        fun isNotNull(): LeftToRightEffectiveRangeEntityFilter {
+        fun isNotNull(): LeftToRightSystemEffectiveRangeEntityFilter {
 
             return IsNotNullFilter(this.databaseColumnName)
 
         }
 
 
-        fun isNull(): LeftToRightEffectiveRangeEntityFilter {
+        fun isNull(): LeftToRightSystemEffectiveRangeEntityFilter {
 
             return IsNullFilter(this.databaseColumnName)
 
         }
 
 
-        infix fun contains(value: T): LeftToRightEffectiveRangeEntityFilter {
+        infix fun contains(value: T): LeftToRightSystemEffectiveRangeEntityFilter {
 
             TODO("Not implemented yet")
 
@@ -231,10 +231,10 @@ class LeftToRightEffectiveRangeEntityFilters {
     }
 
 
-    class NoopFilter : LeftToRightEffectiveRangeEntityFilter {
+    class NoopFilter : LeftToRightSystemEffectiveRangeEntityFilter {
 
 
-        override fun whereClause(fieldConverter: LeftToRightEffectiveRangeEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSystemEffectiveRangeEntityFieldConverter): String {
             return "1 = 1"
         }
 
@@ -247,10 +247,10 @@ class LeftToRightEffectiveRangeEntityFilters {
     }
 
 
-    private class EffectiveNowFilter : LeftToRightEffectiveRangeEntityFilter {
+    private class EffectiveNowFilter : LeftToRightSystemEffectiveRangeEntityFilter {
 
 
-        override fun whereClause(fieldConverter: LeftToRightEffectiveRangeEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSystemEffectiveRangeEntityFieldConverter): String {
             return "effective_range @> current_timestamp"
         }
 
@@ -270,7 +270,7 @@ class LeftToRightEffectiveRangeEntityFilters {
         sqlParamCounter: AtomicInteger,
         private val sqlConditionOperator: SqlConditionOperator,
         private val valueMappingFunc: (VALUE?) -> Any?
-    ) : LeftToRightEffectiveRangeEntityFilter {
+    ) : LeftToRightSystemEffectiveRangeEntityFilter {
 
 
         private val sqlParamName = "${fieldName}_${sqlParamCounter.getAndIncrement()}"
@@ -283,7 +283,7 @@ class LeftToRightEffectiveRangeEntityFilters {
         }
 
 
-        override fun whereClause(fieldConverter: LeftToRightEffectiveRangeEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSystemEffectiveRangeEntityFieldConverter): String {
 
             return "$fieldName ${operatorFor(sqlConditionOperator)} :${this.sqlParamName}"
 
@@ -322,7 +322,7 @@ class LeftToRightEffectiveRangeEntityFilters {
         sqlParamCounter: AtomicInteger,
         private val values: Iterable<VALUE>,
         private val valueMappingFunc: (VALUE?) -> Any?
-    ) : LeftToRightEffectiveRangeEntityFilter {
+    ) : LeftToRightSystemEffectiveRangeEntityFilter {
 
 
         private val sqlParamName = "${fieldName}_${sqlParamCounter.getAndIncrement()}"
@@ -336,7 +336,7 @@ class LeftToRightEffectiveRangeEntityFilters {
         }
 
 
-        override fun whereClause(fieldConverter: LeftToRightEffectiveRangeEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSystemEffectiveRangeEntityFieldConverter): String {
 
             return "$fieldName in (:$sqlParamName)"
 
@@ -355,12 +355,12 @@ class LeftToRightEffectiveRangeEntityFilters {
 
 
     private class IterableFunctionFilter(
-        private val filters: List<LeftToRightEffectiveRangeEntityFilter>,
+        private val filters: List<LeftToRightSystemEffectiveRangeEntityFilter>,
         private val andOr: AndOr
-    ) : LeftToRightEffectiveRangeEntityFilter {
+    ) : LeftToRightSystemEffectiveRangeEntityFilter {
 
 
-        override fun whereClause(fieldConverter: LeftToRightEffectiveRangeEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSystemEffectiveRangeEntityFieldConverter): String {
 
             return this.filters.map { it.whereClause(fieldConverter) }.joinToString(" ${andOr.name} ")
 
@@ -379,10 +379,10 @@ class LeftToRightEffectiveRangeEntityFilters {
 
     private class IsNullFilter(
         private val databaseColumnName: String
-    ) : LeftToRightEffectiveRangeEntityFilter {
+    ) : LeftToRightSystemEffectiveRangeEntityFilter {
 
 
-        override fun whereClause(fieldConverter: LeftToRightEffectiveRangeEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSystemEffectiveRangeEntityFieldConverter): String {
 
             return "$databaseColumnName is null"
 
@@ -401,10 +401,10 @@ class LeftToRightEffectiveRangeEntityFilters {
 
     private class IsNotNullFilter(
         private val databaseColumnName: String
-    ) : LeftToRightEffectiveRangeEntityFilter {
+    ) : LeftToRightSystemEffectiveRangeEntityFilter {
 
 
-        override fun whereClause(fieldConverter: LeftToRightEffectiveRangeEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSystemEffectiveRangeEntityFieldConverter): String {
 
             return "$databaseColumnName is not null"
 

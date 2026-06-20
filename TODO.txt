@@ -38,6 +38,9 @@ TODO * rv if CrudApiDef.withEntityForm is still needed now that we have EntityEd
 TODO * EntityDeleteApiDef no longer needs to reference any front end components. This has been moved to EntityDeleteDialogDef.
 
 
+TODO * CRUD listeners must not be notified until after the transaction has been committed.
+
+
 TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveTimestamps, approvalStatus).
     => LeftToRightManyToManyEntity
         -> with effective timestamps
@@ -58,6 +61,8 @@ TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveT
     Each card will have a Delete icon.
     Above the list will be an 'Add' button that will open a mini form to create a new join entity.
 
+
+TODO *
 
 
 TODO * Mahana clean build

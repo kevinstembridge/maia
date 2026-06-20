@@ -10,7 +10,7 @@ import java.time.Instant
 
 
 @Component
-class LeftToRightEffectiveRangeEntityFieldConverter : EntityFieldConverter {
+class LeftToRightSystemEffectiveRangeEntityFieldConverter : EntityFieldConverter {
 
 
     override fun convert(tableColumnName: String, inputValue: Any?): Any? {

@@ -9,22 +9,22 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftToRightEffectiveRangeRepo(
-    private val dao: LeftToRightEffectiveRangeDao
+class LeftToRightSystemEffectiveRangeRepo(
+    private val dao: LeftToRightSystemEffectiveRangeDao
 ) {
 
 
-    private val logger = getLogger<LeftToRightEffectiveRangeRepo>()
+    private val logger = getLogger<LeftToRightSystemEffectiveRangeRepo>()
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId): LeftToRightEffectiveRangeEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): LeftToRightSystemEffectiveRangeEntity? {
 
         return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findByPrimaryKey(id: DomainId): LeftToRightEffectiveRangeEntity {
+    fun findByPrimaryKey(id: DomainId): LeftToRightSystemEffectiveRangeEntity {
 
         return dao.findByPrimaryKey(id)
 
@@ -38,7 +38,7 @@ class LeftToRightEffectiveRangeRepo(
     }
 
 
-    fun findAllAsSequence(): Sequence<LeftToRightEffectiveRangeEntity> {
+    fun findAllAsSequence(): Sequence<LeftToRightSystemEffectiveRangeEntity> {
     
         return this.dao.findAllAsSequence()
         
@@ -52,42 +52,42 @@ class LeftToRightEffectiveRangeRepo(
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: LeftToRightEffectiveRangeEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: LeftToRightSystemEffectiveRangeEntityFilter): Sequence<DomainId> {
 
         return dao.findPrimaryKeysAsSequence(filter)
 
     }
 
 
-    fun findAllBy(filter: LeftToRightEffectiveRangeEntityFilter): List<LeftToRightEffectiveRangeEntity> {
+    fun findAllBy(filter: LeftToRightSystemEffectiveRangeEntityFilter): List<LeftToRightSystemEffectiveRangeEntity> {
 
         return this.dao.findAllBy(filter)
 
     }
 
 
-    fun findByLeftEffective(leftEffective: DomainId): List<LeftToRightEffectiveRangeEntity> {
+    fun findByLeftEffective(leftEffective: DomainId): List<LeftToRightSystemEffectiveRangeEntity> {
 
         return dao.findByLeftEffective(leftEffective)
 
     }
 
 
-    fun findByRightEffective(rightEffective: DomainId): List<LeftToRightEffectiveRangeEntity> {
+    fun findByRightEffective(rightEffective: DomainId): List<LeftToRightSystemEffectiveRangeEntity> {
 
         return dao.findByRightEffective(rightEffective)
 
     }
 
 
-    fun findEffectiveByLeftEffective(leftEffective: DomainId): List<LeftToRightEffectiveRangeEntity> {
+    fun findEffectiveByLeftEffective(leftEffective: DomainId): List<LeftToRightSystemEffectiveRangeEntity> {
 
         return dao.findEffectiveByLeftEffective(leftEffective)
 
     }
 
 
-    fun findEffectiveByRightEffective(rightEffective: DomainId): List<LeftToRightEffectiveRangeEntity> {
+    fun findEffectiveByRightEffective(rightEffective: DomainId): List<LeftToRightSystemEffectiveRangeEntity> {
 
         return dao.findEffectiveByRightEffective(rightEffective)
 
@@ -108,7 +108,7 @@ class LeftToRightEffectiveRangeRepo(
     }
 
 
-    fun insert(entity: LeftToRightEffectiveRangeEntity) {
+    fun insert(entity: LeftToRightSystemEffectiveRangeEntity) {
 
         logger.debug("insert {}", entity)
 
@@ -117,14 +117,14 @@ class LeftToRightEffectiveRangeRepo(
     }
 
 
-    fun bulkInsert(entities: List<LeftToRightEffectiveRangeEntity>) {
+    fun bulkInsert(entities: List<LeftToRightSystemEffectiveRangeEntity>) {
 
         this.dao.bulkInsert(entities)
 
     }
 
 
-    fun setFields(updaters: List<LeftToRightEffectiveRangeEntityUpdater>) {
+    fun setFields(updaters: List<LeftToRightSystemEffectiveRangeEntityUpdater>) {
 
         logger.debug("setFields {}", updaters)
 
@@ -133,7 +133,7 @@ class LeftToRightEffectiveRangeRepo(
     }
 
 
-    fun setFields(updater: LeftToRightEffectiveRangeEntityUpdater): Int {
+    fun setFields(updater: LeftToRightSystemEffectiveRangeEntityUpdater): Int {
 
         logger.debug("setFields {}", updater)
 
@@ -158,7 +158,7 @@ class LeftToRightEffectiveRangeRepo(
     }
 
 
-    fun removeByPrimaryKey(id: DomainId): LeftToRightEffectiveRangeEntity? {
+    fun removeByPrimaryKey(id: DomainId): LeftToRightSystemEffectiveRangeEntity? {
 
         val found = findByPrimaryKeyOrNull(id)
        

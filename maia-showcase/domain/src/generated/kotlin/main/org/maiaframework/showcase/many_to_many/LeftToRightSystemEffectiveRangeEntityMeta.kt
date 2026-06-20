@@ -10,7 +10,7 @@ import org.maiaframework.jdbc.SchemaAndTableName
 import org.maiaframework.jdbc.TableName
 
 
-object LeftToRightEffectiveRangeEntityMeta {
+object LeftToRightSystemEffectiveRangeEntityMeta {
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
@@ -24,22 +24,22 @@ object LeftToRightEffectiveRangeEntityMeta {
 
     const val rightEffective = "right_effective_id"
 
-    val ENTITY_KEY = EntityKey("LeftToRightEffectiveRange")
+    val ENTITY_KEY = EntityKey("LeftToRightSystemEffectiveRange")
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
 
     val SCHEMA_NAME = SchemaName("maia")
 
-    val TABLE_NAME = TableName("left_to_right_effective_range")
+    val TABLE_NAME = TableName("left_to_right_system_effective_range")
 
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
 
     object IndexName {
 
-        const val left_to_right_effective_range_left_effective_id_idx = "left_to_right_effective_range_left_effective_id_idx"
+        const val left_to_right_system_effective_range_left_effective_id_idx = "left_to_right_system_effective_range_left_effective_id_idx"
 
-        const val left_to_right_effective_range_right_effective_id_idx = "left_to_right_effective_range_right_effective_id_idx"
+        const val left_to_right_system_effective_range_right_effective_id_idx = "left_to_right_system_effective_range_right_effective_id_idx"
 
     }
 

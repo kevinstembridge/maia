@@ -7,10 +7,10 @@ import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 
 
-class LeftToRightEffectiveRangeEntityRowMapper : MaiaRowMapper<LeftToRightEffectiveRangeEntity> {
+class LeftToRightSystemEffectiveRangeEntityRowMapper : MaiaRowMapper<LeftToRightSystemEffectiveRangeEntity> {
 
 
-    override fun mapRow(rsa: ResultSetAdapter): LeftToRightEffectiveRangeEntity {
+    override fun mapRow(rsa: ResultSetAdapter): LeftToRightSystemEffectiveRangeEntity {
 
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val effectiveFrom = rsa.readInstantOrNull("effective_from")
@@ -19,7 +19,7 @@ class LeftToRightEffectiveRangeEntityRowMapper : MaiaRowMapper<LeftToRightEffect
         val leftEffective = rsa.readDomainId("left_effective_id")
         val rightEffective = rsa.readDomainId("right_effective_id")
 
-        return LeftToRightEffectiveRangeEntity(
+        return LeftToRightSystemEffectiveRangeEntity(
                 createdTimestampUtc,
                 effectiveFrom,
                 effectiveTo,

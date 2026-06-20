@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class LeftManyForeignKeyReferencesService(
-    private val leftToRightEffectiveRangeRepo: LeftToRightEffectiveRangeRepo,
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
-    private val leftToRightSimpleJoinRepo: LeftToRightSimpleJoinRepo
+    private val leftToRightSimpleJoinRepo: LeftToRightSimpleJoinRepo,
+    private val leftToRightSystemEffectiveRangeRepo: LeftToRightSystemEffectiveRangeRepo
 ) {
 
 
@@ -30,8 +30,8 @@ class LeftManyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSimpleJoin")
         }
 
-        if (this.leftToRightEffectiveRangeRepo.findEffectiveByLeftEffective(id).isNotEmpty()) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightEffectiveRange")
+        if (this.leftToRightSystemEffectiveRangeRepo.findEffectiveByLeftEffective(id).isNotEmpty()) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSystemEffectiveRange")
         }
 
         return ForeignKeyReferencesExistResponseDto(id, false, null)

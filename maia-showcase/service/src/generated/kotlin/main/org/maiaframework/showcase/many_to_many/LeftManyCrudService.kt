@@ -16,9 +16,9 @@ import java.time.Instant
 class LeftManyCrudService(
     private val entityRepo: LeftManyRepo,
     private val leftManyCrudNotifier: LeftManyCrudNotifier,
-    private val leftToRightEffectiveRangeRepo: LeftToRightEffectiveRangeRepo,
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
     private val leftToRightSimpleJoinRepo: LeftToRightSimpleJoinRepo,
+    private val leftToRightSystemEffectiveRangeRepo: LeftToRightSystemEffectiveRangeRepo,
     private val maiaProblems: MaiaProblems
 ) {
 
@@ -56,8 +56,8 @@ class LeftManyCrudService(
         }
 
         createDto.rightEffectiveEntities.forEach { joinDto ->
-            this.leftToRightEffectiveRangeRepo.insert(
-                LeftToRightEffectiveRangeEntity.newInstance(
+            this.leftToRightSystemEffectiveRangeRepo.insert(
+                LeftToRightSystemEffectiveRangeEntity.newInstance(
                     effectiveFrom = Instant.now(),
                     effectiveTo = null,
                     leftEffective = entity.id,
@@ -122,7 +122,7 @@ class LeftManyCrudService(
 
         reconcileLeftToRightSimpleJoinJoins(id, editDto.rightEntityIds)
 
-        reconcileLeftToRightEffectiveRangeJoins(id, editDto.rightEffectiveEntities)
+        reconcileLeftToRightSystemEffectiveRangeJoins(id, editDto.rightEffectiveEntities)
 
     }
 
@@ -167,24 +167,24 @@ class LeftManyCrudService(
     }
 
 
-    private fun reconcileLeftToRightEffectiveRangeJoins(id: DomainId, submitted: List<RightEffectiveJoinRequestDto>) {
+    private fun reconcileLeftToRightSystemEffectiveRangeJoins(id: DomainId, submitted: List<RightEffectiveJoinRequestDto>) {
 
-        val existingById = this.leftToRightEffectiveRangeRepo.findEffectiveByLeftEffective(id).associateBy { it.id }
+        val existingById = this.leftToRightSystemEffectiveRangeRepo.findEffectiveByLeftEffective(id).associateBy { it.id }
         val submittedIds = submitted.mapNotNull { it.id }.toSet()
 
         existingById.keys.filterNot { it in submittedIds }.forEach {
-            this.leftToRightEffectiveRangeRepo.closeEffectiveRange(it)
+            this.leftToRightSystemEffectiveRangeRepo.closeEffectiveRange(it)
         }
 
         val newJoins = submitted.filter { it.id == null }.map { joinDto ->
-            LeftToRightEffectiveRangeEntity.newInstance(
+            LeftToRightSystemEffectiveRangeEntity.newInstance(
                 effectiveFrom = Instant.now(),
                 effectiveTo = null,
                 leftEffective = id,
                 rightEffective = joinDto.rightEffectiveEntityId
             )
         }
-        this.leftToRightEffectiveRangeRepo.bulkInsert(newJoins)
+        this.leftToRightSystemEffectiveRangeRepo.bulkInsert(newJoins)
 
     }
 
@@ -249,12 +249,12 @@ class LeftManyCrudService(
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimpleJoin")
         }
 
-        if (this.leftToRightEffectiveRangeRepo.findEffectiveByLeftEffective(id).isNotEmpty()) {
-            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightEffectiveRange")
+        if (this.leftToRightSystemEffectiveRangeRepo.findEffectiveByLeftEffective(id).isNotEmpty()) {
+            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSystemEffectiveRange")
         }
 
-        this.leftToRightEffectiveRangeRepo.findByLeftEffective(id).forEach {
-            this.leftToRightEffectiveRangeRepo.deleteByPrimaryKey(it.id)
+        this.leftToRightSystemEffectiveRangeRepo.findByLeftEffective(id).forEach {
+            this.leftToRightSystemEffectiveRangeRepo.deleteByPrimaryKey(it.id)
         }
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

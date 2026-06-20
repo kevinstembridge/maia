@@ -59,7 +59,7 @@ class LeftManyFetchForEditDtoRowMapper(
                 lower(mtm.effective_range) as effective_from,
                 upper(mtm.effective_range) as effective_to
             from maia.right_many other
-            join maia.left_to_right_effective_range mtm
+            join maia.left_to_right_system_effective_range mtm
                 on other.id = mtm.right_effective_id
             where mtm.left_effective_id = :entityId
             and mtm.effective_range @> current_timestamp
