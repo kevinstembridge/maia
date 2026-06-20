@@ -199,7 +199,11 @@ class LeftToRightEffectiveRangeDao(
 
         return jdbcOps.queryForList(
             """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_effective_range
+            select 
+                *, 
+                lower(effective_range) as effective_from, 
+                upper(effective_range) as effective_to 
+            from maia.left_to_right_effective_range
             where left_effective_id = :leftEffective
             and effective_range @> current_timestamp
             """.trimIndent(),
@@ -216,7 +220,11 @@ class LeftToRightEffectiveRangeDao(
 
         return jdbcOps.queryForList(
             """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_effective_range
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_effective_range
             where right_effective_id = :rightEffective
             and effective_range @> current_timestamp
             """.trimIndent(),
@@ -237,7 +245,14 @@ class LeftToRightEffectiveRangeDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_effective_range where $whereClause",
+            """
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_effective_range
+            where $whereClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -284,7 +299,17 @@ class LeftToRightEffectiveRangeDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_effective_range where $whereClause $orderByClause $limitClause $offsetClause",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_effective_range
+            where $whereClause
+            $orderByClause
+            $limitClause
+            $offsetClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -317,7 +342,13 @@ class LeftToRightEffectiveRangeDao(
     fun findAllAsSequence(): Sequence<LeftToRightEffectiveRangeEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_effective_range;",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_effective_range;
+            """.trimIndent(),
             SqlParams(),
             this.entityRowMapper,
         )
@@ -329,11 +360,12 @@ class LeftToRightEffectiveRangeDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.left_to_right_effective_range
+            select count(*)
+            from maia.left_to_right_effective_range
             where left_effective_id = :leftEffective
             """.trimIndent(),
             SqlParams().apply {
-            addValue("leftEffective", leftEffective)
+                addValue("leftEffective", leftEffective)
             }
         )
 
@@ -346,11 +378,12 @@ class LeftToRightEffectiveRangeDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.left_to_right_effective_range
+            select count(*)
+            from maia.left_to_right_effective_range
             where right_effective_id = :rightEffective
             """.trimIndent(),
             SqlParams().apply {
-            addValue("rightEffective", rightEffective)
+                addValue("rightEffective", rightEffective)
             }
         )
 
@@ -427,7 +460,11 @@ class LeftToRightEffectiveRangeDao(
     fun closeEffectiveRange(id: DomainId): Boolean {
 
         val updatedCount = this.jdbcOps.update(
-            "update maia.left_to_right_effective_range set effective_range = tstzrange(lower(effective_range), now()) where id = :id",
+            """
+            update maia.left_to_right_effective_range
+            set effective_range = tstzrange(lower(effective_range), now())
+            where id = :id
+            """.trimIndent(),
             SqlParams().apply {
                 addValue("id", id)
             }
