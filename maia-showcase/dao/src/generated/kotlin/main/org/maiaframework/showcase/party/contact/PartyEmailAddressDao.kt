@@ -302,7 +302,11 @@ class PartyEmailAddressDao(
 
         return jdbcOps.queryForList(
             """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.party_email_address
             where email_address = :emailAddress
             and effective_range @> current_timestamp
             """.trimIndent(),
@@ -319,7 +323,11 @@ class PartyEmailAddressDao(
 
         return jdbcOps.queryForList(
             """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.party_email_address
             where party_id = :party
             and effective_range @> current_timestamp
             """.trimIndent(),
@@ -340,7 +348,14 @@ class PartyEmailAddressDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address where $whereClause",
+            """
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.party_email_address
+            where $whereClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -387,7 +402,17 @@ class PartyEmailAddressDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address where $whereClause $orderByClause $limitClause $offsetClause",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.party_email_address
+            where $whereClause
+            $orderByClause
+            $limitClause
+            $offsetClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -420,7 +445,13 @@ class PartyEmailAddressDao(
     fun findAllAsSequence(): Sequence<PartyEmailAddressEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address;",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.party_email_address;
+            """.trimIndent(),
             SqlParams(),
             this.entityRowMapper,
         )
@@ -432,11 +463,12 @@ class PartyEmailAddressDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.party_email_address
+            select count(*)
+            from maia.party_email_address
             where party_id = :party
             """.trimIndent(),
             SqlParams().apply {
-            addValue("party", party)
+                addValue("party", party)
             }
         )
 
@@ -449,11 +481,12 @@ class PartyEmailAddressDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.party_email_address
+            select count(*)
+            from maia.party_email_address
             where email_address = :emailAddress
             """.trimIndent(),
             SqlParams().apply {
-            addValue("emailAddress", emailAddress)
+                addValue("emailAddress", emailAddress)
             }
         )
 
@@ -466,11 +499,12 @@ class PartyEmailAddressDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.party_email_address
+            select count(*)
+            from maia.party_email_address
             where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdBy", createdBy)
+                addValue("createdBy", createdBy)
             }
         )
 
@@ -483,11 +517,12 @@ class PartyEmailAddressDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.party_email_address
+            select count(*)
+            from maia.party_email_address
             where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedBy", lastModifiedBy)
+                addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 

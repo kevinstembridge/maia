@@ -250,11 +250,12 @@ class EmailAddressDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.email_address
+            select count(*)
+            from maia.email_address
             where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdBy", createdBy)
+                addValue("createdBy", createdBy)
             }
         )
 

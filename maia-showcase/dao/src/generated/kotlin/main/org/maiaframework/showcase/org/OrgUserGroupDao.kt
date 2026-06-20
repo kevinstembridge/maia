@@ -340,11 +340,12 @@ class OrgUserGroupDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.user_group
+            select count(*)
+            from maia.user_group
             where org_id = :org
             """.trimIndent(),
             SqlParams().apply {
-            addValue("org", org)
+                addValue("org", org)
             }
         )
 

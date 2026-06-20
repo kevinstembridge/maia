@@ -366,11 +366,12 @@ class HistorySampleDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.history_sample
+            select count(*)
+            from maia.history_sample
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someString", someString)
+                addValue("someString", someString)
             }
         )
 
@@ -383,11 +384,12 @@ class HistorySampleDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.history_sample
+            select count(*)
+            from maia.history_sample
             where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdBy", createdBy)
+                addValue("createdBy", createdBy)
             }
         )
 
@@ -400,11 +402,12 @@ class HistorySampleDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.history_sample
+            select count(*)
+            from maia.history_sample
             where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedBy", lastModifiedBy)
+                addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 

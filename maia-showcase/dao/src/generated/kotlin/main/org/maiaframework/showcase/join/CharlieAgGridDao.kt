@@ -263,11 +263,12 @@ class CharlieAgGridDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.charlie_ag_grid
+            select count(*)
+            from maia.charlie_ag_grid
             where bravo_id = :bravo
             """.trimIndent(),
             SqlParams().apply {
-            addValue("bravo", bravo)
+                addValue("bravo", bravo)
             }
         )
 

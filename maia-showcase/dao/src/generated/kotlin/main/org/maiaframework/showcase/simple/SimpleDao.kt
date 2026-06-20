@@ -278,11 +278,12 @@ class SimpleDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.simple
+            select count(*)
+            from maia.simple
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someString", someString)
+                addValue("someString", someString)
             }
         )
 

@@ -263,11 +263,12 @@ class CharlieDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.charlie
+            select count(*)
+            from maia.charlie
             where bravo_id = :bravo
             """.trimIndent(),
             SqlParams().apply {
-            addValue("bravo", bravo)
+                addValue("bravo", bravo)
             }
         )
 

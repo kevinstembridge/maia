@@ -359,11 +359,12 @@ class ParentOneDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.grandparent
+            select count(*)
+            from maia.grandparent
             where some_unique_string = :someUniqueString
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someUniqueString", someUniqueString)
+                addValue("someUniqueString", someUniqueString)
             }
         )
 
@@ -376,11 +377,12 @@ class ParentOneDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.grandparent
+            select count(*)
+            from maia.grandparent
             where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdBy", createdBy)
+                addValue("createdBy", createdBy)
             }
         )
 
@@ -393,11 +395,12 @@ class ParentOneDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.grandparent
+            select count(*)
+            from maia.grandparent
             where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedBy", lastModifiedBy)
+                addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 

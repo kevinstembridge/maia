@@ -290,11 +290,12 @@ class SomeVersionedDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.some_versioned
+            select count(*)
+            from maia.some_versioned
             where some_int = :someInt
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someInt", someInt)
+                addValue("someInt", someInt)
             }
         )
 

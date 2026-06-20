@@ -283,11 +283,12 @@ class HistorySubOneHistoryDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.history_super_history
+            select count(*)
+            from maia.history_super_history
             where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdBy", createdBy)
+                addValue("createdBy", createdBy)
             }
         )
 
@@ -300,11 +301,12 @@ class HistorySubOneHistoryDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.history_super_history
+            select count(*)
+            from maia.history_super_history
             where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedBy", lastModifiedBy)
+                addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 

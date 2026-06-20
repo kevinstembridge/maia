@@ -196,7 +196,14 @@ class EmailAddressVerificationDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.email_address_verification where $whereClause",
+            """
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.email_address_verification
+            where $whereClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -243,7 +250,17 @@ class EmailAddressVerificationDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.email_address_verification where $whereClause $orderByClause $limitClause $offsetClause",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.email_address_verification
+            where $whereClause
+            $orderByClause
+            $limitClause
+            $offsetClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -276,7 +293,13 @@ class EmailAddressVerificationDao(
     fun findAllAsSequence(): Sequence<EmailAddressVerificationEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.email_address_verification;",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.email_address_verification;
+            """.trimIndent(),
             SqlParams(),
             this.entityRowMapper,
         )
@@ -288,11 +311,12 @@ class EmailAddressVerificationDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.email_address_verification
+            select count(*)
+            from maia.email_address_verification
             where email_address = :emailAddress
             """.trimIndent(),
             SqlParams().apply {
-            addValue("emailAddress", emailAddress)
+                addValue("emailAddress", emailAddress)
             }
         )
 
@@ -305,11 +329,12 @@ class EmailAddressVerificationDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.email_address_verification
+            select count(*)
+            from maia.email_address_verification
             where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdBy", createdBy)
+                addValue("createdBy", createdBy)
             }
         )
 
@@ -322,11 +347,12 @@ class EmailAddressVerificationDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.email_address_verification
+            select count(*)
+            from maia.email_address_verification
             where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedBy", lastModifiedBy)
+                addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 

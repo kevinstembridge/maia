@@ -259,11 +259,12 @@ class BravoAgGridDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.bravo_ag_grid
+            select count(*)
+            from maia.bravo_ag_grid
             where alpha_id = :alpha
             """.trimIndent(),
             SqlParams().apply {
-            addValue("alpha", alpha)
+                addValue("alpha", alpha)
             }
         )
 

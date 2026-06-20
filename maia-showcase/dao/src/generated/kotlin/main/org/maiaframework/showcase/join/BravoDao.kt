@@ -263,11 +263,12 @@ class BravoDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.bravo
+            select count(*)
+            from maia.bravo
             where alpha_id = :alpha
             """.trimIndent(),
             SqlParams().apply {
-            addValue("alpha", alpha)
+                addValue("alpha", alpha)
             }
         )
 

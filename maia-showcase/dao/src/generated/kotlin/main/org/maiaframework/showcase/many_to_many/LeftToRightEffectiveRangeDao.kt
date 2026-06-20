@@ -200,9 +200,9 @@ class LeftToRightEffectiveRangeDao(
         return jdbcOps.queryForList(
             """
             select 
-                *, 
-                lower(effective_range) as effective_from, 
-                upper(effective_range) as effective_to 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
             from maia.left_to_right_effective_range
             where left_effective_id = :leftEffective
             and effective_range @> current_timestamp

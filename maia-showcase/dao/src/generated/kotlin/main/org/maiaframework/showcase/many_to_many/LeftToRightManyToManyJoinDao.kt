@@ -205,7 +205,11 @@ class LeftToRightManyToManyJoinDao(
 
         return jdbcOps.queryForList(
             """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_many_to_many_join
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_many_to_many_join
             where left_id = :left
             and effective_range @> current_timestamp
             """.trimIndent(),
@@ -222,7 +226,11 @@ class LeftToRightManyToManyJoinDao(
 
         return jdbcOps.queryForList(
             """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_many_to_many_join
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_many_to_many_join
             where right_id = :right
             and effective_range @> current_timestamp
             """.trimIndent(),
@@ -243,7 +251,14 @@ class LeftToRightManyToManyJoinDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_many_to_many_join where $whereClause",
+            """
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_many_to_many_join
+            where $whereClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -290,7 +305,17 @@ class LeftToRightManyToManyJoinDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_many_to_many_join where $whereClause $orderByClause $limitClause $offsetClause",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_many_to_many_join
+            where $whereClause
+            $orderByClause
+            $limitClause
+            $offsetClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -323,7 +348,13 @@ class LeftToRightManyToManyJoinDao(
     fun findAllAsSequence(): Sequence<LeftToRightManyToManyJoinEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_many_to_many_join;",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_many_to_many_join;
+            """.trimIndent(),
             SqlParams(),
             this.entityRowMapper,
         )
@@ -335,11 +366,12 @@ class LeftToRightManyToManyJoinDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.left_to_right_many_to_many_join
+            select count(*)
+            from maia.left_to_right_many_to_many_join
             where left_id = :left
             """.trimIndent(),
             SqlParams().apply {
-            addValue("left", left)
+                addValue("left", left)
             }
         )
 
@@ -352,11 +384,12 @@ class LeftToRightManyToManyJoinDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.left_to_right_many_to_many_join
+            select count(*)
+            from maia.left_to_right_many_to_many_join
             where right_id = :right
             """.trimIndent(),
             SqlParams().apply {
-            addValue("right", right)
+                addValue("right", right)
             }
         )
 
@@ -434,7 +467,11 @@ class LeftToRightManyToManyJoinDao(
     fun closeEffectiveRange(id: DomainId): Boolean {
 
         val updatedCount = this.jdbcOps.update(
-            "update maia.left_to_right_many_to_many_join set effective_range = tstzrange(lower(effective_range), now()) where id = :id",
+            """
+            update maia.left_to_right_many_to_many_join
+            set effective_range = tstzrange(lower(effective_range), now())
+            where id = :id
+            """.trimIndent(),
             SqlParams().apply {
                 addValue("id", id)
             }

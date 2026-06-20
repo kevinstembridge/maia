@@ -277,11 +277,12 @@ class UnmodifiableDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.unmodifiable
+            select count(*)
+            from maia.unmodifiable
             where some_unique_int = :someUniqueInt
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someUniqueInt", someUniqueInt)
+                addValue("someUniqueInt", someUniqueInt)
             }
         )
 

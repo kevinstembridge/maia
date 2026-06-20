@@ -660,11 +660,12 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.all_field_types
+            select count(*)
+            from maia.all_field_types
             where some_int_type = :someIntType
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someIntType", someIntType)
+                addValue("someIntType", someIntType)
             }
         )
 
@@ -677,11 +678,12 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.all_field_types
+            select count(*)
+            from maia.all_field_types
             where some_long_type = :someLongType
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someLongType", someLongType)
+                addValue("someLongType", someLongType)
             }
         )
 
@@ -694,11 +696,12 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.all_field_types
+            select count(*)
+            from maia.all_field_types
             where some_string = :someString
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someString", someString)
+                addValue("someString", someString)
             }
         )
 
@@ -711,11 +714,12 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.all_field_types
+            select count(*)
+            from maia.all_field_types
             where some_string_nullable = :someStringNullable
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someStringNullable", someStringNullable)
+                addValue("someStringNullable", someStringNullable)
             }
         )
 
@@ -728,11 +732,12 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.all_field_types
+            select count(*)
+            from maia.all_field_types
             where some_string_type = :someStringType
             """.trimIndent(),
             SqlParams().apply {
-            addValue("someStringType", someStringType)
+                addValue("someStringType", someStringType)
             }
         )
 
@@ -745,11 +750,12 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.all_field_types
+            select count(*)
+            from maia.all_field_types
             where created_by_id = :createdBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdBy", createdBy)
+                addValue("createdBy", createdBy)
             }
         )
 
@@ -762,11 +768,12 @@ class AllFieldTypesDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.all_field_types
+            select count(*)
+            from maia.all_field_types
             where last_modified_by_id = :lastModifiedBy
             """.trimIndent(),
             SqlParams().apply {
-            addValue("lastModifiedBy", lastModifiedBy)
+                addValue("lastModifiedBy", lastModifiedBy)
             }
         )
 

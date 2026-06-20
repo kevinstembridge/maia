@@ -286,11 +286,12 @@ class LeftToRightSimpleJoinDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.left_to_right_simple_join
+            select count(*)
+            from maia.left_to_right_simple_join
             where left_id = :left
             """.trimIndent(),
             SqlParams().apply {
-            addValue("left", left)
+                addValue("left", left)
             }
         )
 
@@ -303,11 +304,12 @@ class LeftToRightSimpleJoinDao(
 
         val count = jdbcOps.queryForInt(
             """
-            select count(*) from maia.left_to_right_simple_join
+            select count(*)
+            from maia.left_to_right_simple_join
             where right_id = :right
             """.trimIndent(),
             SqlParams().apply {
-            addValue("right", right)
+                addValue("right", right)
             }
         )
 

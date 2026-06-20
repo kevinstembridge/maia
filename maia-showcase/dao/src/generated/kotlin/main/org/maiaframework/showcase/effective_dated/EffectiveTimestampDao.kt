@@ -177,7 +177,11 @@ class EffectiveTimestampDao(
 
         return jdbcOps.queryForObjectOrNull(
             """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.effective_timestamp
             where some_string = :someString
             and effective_range @> current_timestamp
             """.trimIndent(),
@@ -198,7 +202,14 @@ class EffectiveTimestampDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp where $whereClause",
+            """
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.effective_timestamp
+            where $whereClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -245,7 +256,17 @@ class EffectiveTimestampDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp where $whereClause $orderByClause $limitClause $offsetClause",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.effective_timestamp
+            where $whereClause
+            $orderByClause
+            $limitClause
+            $offsetClause
+            """.trimIndent(),
             sqlParams,
             this.entityRowMapper
         )
@@ -278,7 +299,13 @@ class EffectiveTimestampDao(
     fun findAllAsSequence(): Sequence<EffectiveTimestampEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.effective_timestamp;",
+            """
+            select
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.effective_timestamp;
+            """.trimIndent(),
             SqlParams(),
             this.entityRowMapper,
         )
