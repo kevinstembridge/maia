@@ -1381,7 +1381,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             rightManyEntityDef,
             IsEditableByUser.TRUE
         )
-    )
+    ) {
+        description("A simple many-to-many join between two entities. No effective date range. No version history.")
+    }
 
 
     val leftToRightSystemManagedEffectiveRangeEntityDef = simpleManyToManyEntity(
@@ -1400,6 +1402,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             IsEditableByUser.TRUE
         )
     ) {
+        description("A simple many-to-many join between two entities, with a system-managed effective date range.")
         effectiveRange(managedBy = EffectiveRangeManagedBy.SYSTEM)
     }
 
