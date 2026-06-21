@@ -154,7 +154,10 @@ class RightManyCrudService(
     }
 
 
-    private fun reconcileLeftToRightSimpleJoinJoins(id: DomainId, submittedIds: List<DomainId>) {
+    private fun reconcileLeftToRightSimpleJoinJoins(
+        id: DomainId,
+        submittedIds: List<DomainId>
+    ) {
 
         val existing = this.leftToRightSimpleJoinRepo.findByRightSimple(id)
         val existingIds = existing.map { it.leftSimple }.toSet()

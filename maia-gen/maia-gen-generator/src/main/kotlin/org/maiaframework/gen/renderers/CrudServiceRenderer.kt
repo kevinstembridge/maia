@@ -661,7 +661,10 @@ class CrudServiceRenderer(
                 append("""
                     |
                     |
-                    |    private fun reconcile${joinNamePrefix}Joins(id: DomainId, submittedIds: List<DomainId>) {
+                    |    private fun reconcile${joinNamePrefix}Joins(
+                    |        id: DomainId,
+                    |        submittedIds: List<DomainId>
+                    |    ) {
                     |
                     |        val existing = this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id)
                     |        val existingIds = existing.map { it.${otherSideFieldName} }.toSet()
