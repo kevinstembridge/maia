@@ -35,37 +35,11 @@ class LeftManyCrudService(
 
         create(entity)
 
-        createDto.rightEntities.forEach { joinDto ->
-            this.leftToRightManyToManyJoinRepo.insert(
-                LeftToRightManyToManyJoinEntity.newInstance(
-                    effectiveFrom = Instant.now(),
-                    effectiveTo = null,
-                    left = entity.id,
-                    right = joinDto.rightEntityId,
-                    someInt = joinDto.someInt
-                )
-            )
-        }
+        createRightJoins(createDto, entity)
 
-        createDto.rightSimpleEntityIds.forEach { rightSimple ->
-            this.leftToRightSimpleJoinRepo.insert(
-                LeftToRightSimpleJoinEntity.newInstance(
-                    leftSimple = entity.id,
-                    rightSimple = rightSimple
-                )
-            )
-        }
+        createRightSimpleJoins(createDto, entity)
 
-        createDto.rightEffectiveEntities.forEach { joinDto ->
-            this.leftToRightSystemEffectiveRangeRepo.insert(
-                LeftToRightSystemEffectiveRangeEntity.newInstance(
-                    effectiveFrom = Instant.now(),
-                    effectiveTo = null,
-                    leftEffective = entity.id,
-                    rightEffective = joinDto.rightEffectiveEntityId
-                )
-            )
-        }
+        createRightEffectiveJoins(createDto, entity)
 
         return entity
 
@@ -96,6 +70,62 @@ class LeftManyCrudService(
         this.entityRepo.insert(entity)
         this.leftManyCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    private fun createRightJoins(
+        createDto: LeftManyCreateRequestDto,
+        entity: LeftManyEntity
+    ) {
+
+        createDto.rightEntities.forEach { joinDto ->
+            this.leftToRightManyToManyJoinRepo.insert(
+                LeftToRightManyToManyJoinEntity.newInstance(
+                    effectiveFrom = Instant.now(),
+                    effectiveTo = null,
+                    left = entity.id,
+                    right = joinDto.rightEntityId,
+                    someInt = joinDto.someInt
+                )
+            )
+        }
+
+    }
+
+
+    private fun createRightSimpleJoins(
+        createDto: LeftManyCreateRequestDto,
+        entity: LeftManyEntity
+    ) {
+
+        createDto.rightSimpleEntityIds.forEach { rightSimple ->
+            this.leftToRightSimpleJoinRepo.insert(
+                LeftToRightSimpleJoinEntity.newInstance(
+                    leftSimple = entity.id,
+                    rightSimple = rightSimple
+                )
+            )
+        }
+
+    }
+
+
+    private fun createRightEffectiveJoins(
+        createDto: LeftManyCreateRequestDto,
+        entity: LeftManyEntity
+    ) {
+
+        createDto.rightEffectiveEntities.forEach { joinDto ->
+            this.leftToRightSystemEffectiveRangeRepo.insert(
+                LeftToRightSystemEffectiveRangeEntity.newInstance(
+                    effectiveFrom = Instant.now(),
+                    effectiveTo = null,
+                    leftEffective = entity.id,
+                    rightEffective = joinDto.rightEffectiveEntityId
+                )
+            )
+        }
 
     }
 
