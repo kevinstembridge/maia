@@ -625,6 +625,7 @@ class CrudServiceRenderer(
                 append("""
                     |            )
                     |        }
+                    |
                     |        this.${joinRepoFieldName}.bulkInsert(newJoins)
                     |""".trimMargin())
 
@@ -677,6 +678,7 @@ class CrudServiceRenderer(
                     |        val newJoins = (desiredIds - existingIds).map { $otherSideFieldName ->
                     |            ${joinEntityClass}.newInstance(${newInstanceArgsSingleLine(thisSideFieldName to "id", otherSideFieldName to otherSideFieldName)})
                     |        }
+                    |
                     |        this.${joinRepoFieldName}.bulkInsert(newJoins)
                     |
                     |    }

@@ -149,6 +149,7 @@ class RightManyCrudService(
                 someInt = joinDto.someInt
             )
         }
+
         this.leftToRightManyToManyJoinRepo.bulkInsert(newJoins)
 
     }
@@ -170,6 +171,7 @@ class RightManyCrudService(
         val newJoins = (desiredIds - existingIds).map { leftSimple ->
             LeftToRightSimpleJoinEntity.newInstance(leftSimple = leftSimple, rightSimple = id)
         }
+
         this.leftToRightSimpleJoinRepo.bulkInsert(newJoins)
 
     }
@@ -195,6 +197,7 @@ class RightManyCrudService(
                 rightEffective = id
             )
         }
+
         this.leftToRightSystemEffectiveRangeRepo.bulkInsert(newJoins)
 
     }
