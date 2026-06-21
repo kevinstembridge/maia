@@ -57,18 +57,18 @@ class LeftToRightSimpleJoinEntityFilters {
         }
 
 
-    val left: FieldFilter<DomainId> 
+    val leftSimple: FieldFilter<DomainId> 
         get() {
 
-            return FieldFilter("left_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+            return FieldFilter("left_simple_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 
 
-    val right: FieldFilter<DomainId> 
+    val rightSimple: FieldFilter<DomainId> 
         get() {
 
-            return FieldFilter("right_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+            return FieldFilter("right_simple_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 

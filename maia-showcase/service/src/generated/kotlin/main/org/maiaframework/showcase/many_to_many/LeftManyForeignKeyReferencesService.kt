@@ -26,7 +26,7 @@ class LeftManyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightManyToManyJoin")
         }
 
-        if (this.leftToRightSimpleJoinRepo.existsByLeft(id)) {
+        if (this.leftToRightSimpleJoinRepo.existsByLeftSimple(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSimpleJoin")
         }
 

@@ -64,22 +64,22 @@ export class RightManyEntityCreateForm implements OnInit {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    selectedLeftLeftToRightSimpleJoinEntities: LeftManyTypeaheadV1EsDoc[] = [];
+    selectedLeftSimpleEntities: LeftManyTypeaheadV1EsDoc[] = [];
 
 
-    filteredLeftLeftToRightSimpleJoinEntities: LeftManyTypeaheadV1EsDoc[] = [];
+    filteredLeftSimpleEntities: LeftManyTypeaheadV1EsDoc[] = [];
 
 
-    filteredLeftLeftToRightSimpleJoinEntitiesIsLoading = signal(false);
+    filteredLeftSimpleEntitiesIsLoading = signal(false);
 
 
-    leftLeftToRightSimpleJoinEntitySearchControl = new FormControl('');
+    leftSimpleEntitySearchControl = new FormControl('');
 
 
-    leftLeftToRightSimpleJoinTypeaheadApiService = inject(LeftManyTypeaheadApiService);
+    leftManyTypeaheadApiService = inject(LeftManyTypeaheadApiService);
 
 
-    @ViewChild('leftLeftToRightSimpleJoinEntityInput') leftLeftToRightSimpleJoinEntityInput!: ElementRef<HTMLInputElement>;
+    @ViewChild('leftSimpleEntityInput') leftSimpleEntityInput!: ElementRef<HTMLInputElement>;
 
 
     leftJoins: {
@@ -101,9 +101,6 @@ export class RightManyEntityCreateForm implements OnInit {
 
 
     filteredLeftEntitiesIsLoading = signal(false);
-
-
-    leftManyTypeaheadApiService = inject(LeftManyTypeaheadApiService);
 
 
     leftEffectiveJoins: {
@@ -147,24 +144,24 @@ export class RightManyEntityCreateForm implements OnInit {
 
     ngOnInit() {
 
-        this.leftLeftToRightSimpleJoinEntitySearchControl.valueChanges.pipe(
+        this.leftSimpleEntitySearchControl.valueChanges.pipe(
             debounceTime(300),
             distinctUntilChanged(),
             filter(value => typeof value === 'string'),
             tap(() => {
-                this.filteredLeftLeftToRightSimpleJoinEntities = [];
-                this.filteredLeftLeftToRightSimpleJoinEntitiesIsLoading.set(true);
+                this.filteredLeftSimpleEntities = [];
+                this.filteredLeftSimpleEntitiesIsLoading.set(true);
             }),
-            switchMap(value => this.leftLeftToRightSimpleJoinTypeaheadApiService.search(value ?? '').pipe(
+            switchMap(value => this.leftManyTypeaheadApiService.search(value ?? '').pipe(
                 catchError(err => {
-                    this.filteredLeftLeftToRightSimpleJoinEntitiesIsLoading.set(false);
+                    this.filteredLeftSimpleEntitiesIsLoading.set(false);
                     console.error(err);
                     return of([]);
                 })
             )),
-            tap(() => this.filteredLeftLeftToRightSimpleJoinEntitiesIsLoading.set(false))
+            tap(() => this.filteredLeftSimpleEntitiesIsLoading.set(false))
         ).subscribe(res => {
-            this.filteredLeftLeftToRightSimpleJoinEntities = res;
+            this.filteredLeftSimpleEntities = res;
         });
 
         this.addLeftJoinEntityControl.valueChanges.pipe(
@@ -210,21 +207,21 @@ export class RightManyEntityCreateForm implements OnInit {
     }
 
 
-    addLeftLeftToRightSimpleJoinEntity(event: MatAutocompleteSelectedEvent): void {
+    addLeftSimpleEntity(event: MatAutocompleteSelectedEvent): void {
 
         const entity: LeftManyTypeaheadV1EsDoc = event.option.value;
-        if (!this.selectedLeftLeftToRightSimpleJoinEntities.some(e => e.id === entity.id)) {
-            this.selectedLeftLeftToRightSimpleJoinEntities.push(entity);
+        if (!this.selectedLeftSimpleEntities.some(e => e.id === entity.id)) {
+            this.selectedLeftSimpleEntities.push(entity);
         }
-        this.leftLeftToRightSimpleJoinEntityInput.nativeElement.value = '';
-        this.leftLeftToRightSimpleJoinEntitySearchControl.setValue('', { emitEvent: false });
+        this.leftSimpleEntityInput.nativeElement.value = '';
+        this.leftSimpleEntitySearchControl.setValue('', { emitEvent: false });
 
     }
 
 
-    removeLeftLeftToRightSimpleJoinEntity(entity: LeftManyTypeaheadV1EsDoc): void {
+    removeLeftSimpleEntity(entity: LeftManyTypeaheadV1EsDoc): void {
 
-        this.selectedLeftLeftToRightSimpleJoinEntities = this.selectedLeftLeftToRightSimpleJoinEntities.filter(e => e.id !== entity.id);
+        this.selectedLeftSimpleEntities = this.selectedLeftSimpleEntities.filter(e => e.id !== entity.id);
 
     }
 
@@ -320,7 +317,7 @@ export class RightManyEntityCreateForm implements OnInit {
         const requestDto = {
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
-            leftEntityIds: this.selectedLeftLeftToRightSimpleJoinEntities.map(e => e.id),
+            leftSimpleEntityIds: this.selectedLeftSimpleEntities.map(e => e.id),
             leftEntities: this.leftJoins.map(j => ({
                 id: j.id,
                 leftEntityId: j.entityId,

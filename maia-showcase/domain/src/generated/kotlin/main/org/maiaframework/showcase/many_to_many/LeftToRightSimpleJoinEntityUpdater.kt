@@ -33,16 +33,16 @@ data class LeftToRightSimpleJoinEntityUpdater(
         }
 
 
-        fun left(left: DomainId) {
+        fun leftSimple(leftSimple: DomainId) {
 
-            this.fields.add(FieldUpdate("left", "left_id", left))
+            this.fields.add(FieldUpdate("leftSimple", "left_simple_id", leftSimple))
 
         }
 
 
-        fun right(right: DomainId) {
+        fun rightSimple(rightSimple: DomainId) {
 
-            this.fields.add(FieldUpdate("right", "right_id", right))
+            this.fields.add(FieldUpdate("rightSimple", "right_simple_id", rightSimple))
 
         }
 

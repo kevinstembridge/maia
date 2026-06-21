@@ -66,30 +66,30 @@ class LeftToRightSimpleJoinRepo(
     }
 
 
-    fun findByLeft(left: DomainId): List<LeftToRightSimpleJoinEntity> {
+    fun findByLeftSimple(leftSimple: DomainId): List<LeftToRightSimpleJoinEntity> {
 
-        return dao.findByLeft(left)
-
-    }
-
-
-    fun findByRight(right: DomainId): List<LeftToRightSimpleJoinEntity> {
-
-        return dao.findByRight(right)
+        return dao.findByLeftSimple(leftSimple)
 
     }
 
 
-    fun existsByLeft(left: DomainId): Boolean {
+    fun findByRightSimple(rightSimple: DomainId): List<LeftToRightSimpleJoinEntity> {
 
-        return dao.existsByLeft(left)
+        return dao.findByRightSimple(rightSimple)
 
     }
 
 
-    fun existsByRight(right: DomainId): Boolean {
+    fun existsByLeftSimple(leftSimple: DomainId): Boolean {
 
-        return dao.existsByRight(right)
+        return dao.existsByLeftSimple(leftSimple)
+
+    }
+
+
+    fun existsByRightSimple(rightSimple: DomainId): Boolean {
+
+        return dao.existsByRightSimple(rightSimple)
 
     }
 

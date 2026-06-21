@@ -70,22 +70,22 @@ export class LeftManyEntityEditForm implements OnInit {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    selectedRightLeftToRightSimpleJoinEntities: RightManyTypeaheadV1EsDoc[] = [];
+    selectedRightSimpleEntities: RightManyTypeaheadV1EsDoc[] = [];
 
 
-    filteredRightLeftToRightSimpleJoinEntities: RightManyTypeaheadV1EsDoc[] = [];
+    filteredRightSimpleEntities: RightManyTypeaheadV1EsDoc[] = [];
 
 
-    filteredRightLeftToRightSimpleJoinEntitiesIsLoading = signal(false);
+    filteredRightSimpleEntitiesIsLoading = signal(false);
 
 
-    rightLeftToRightSimpleJoinEntitySearchControl = new FormControl('');
+    rightSimpleEntitySearchControl = new FormControl('');
 
 
-    rightLeftToRightSimpleJoinTypeaheadApiService = inject(RightManyTypeaheadApiService);
+    rightManyTypeaheadApiService = inject(RightManyTypeaheadApiService);
 
 
-    @ViewChild('rightLeftToRightSimpleJoinEntityInput') rightLeftToRightSimpleJoinEntityInput!: ElementRef<HTMLInputElement>;
+    @ViewChild('rightSimpleEntityInput') rightSimpleEntityInput!: ElementRef<HTMLInputElement>;
 
 
     rightJoins: {
@@ -107,9 +107,6 @@ export class LeftManyEntityEditForm implements OnInit {
 
 
     filteredRightEntitiesIsLoading = signal(false);
-
-
-    rightManyTypeaheadApiService = inject(RightManyTypeaheadApiService);
 
 
     rightEffectiveJoins: {
@@ -158,24 +155,24 @@ export class LeftManyEntityEditForm implements OnInit {
 
     ngOnInit() {
 
-        this.rightLeftToRightSimpleJoinEntitySearchControl.valueChanges.pipe(
+        this.rightSimpleEntitySearchControl.valueChanges.pipe(
             debounceTime(300),
             distinctUntilChanged(),
             filter(value => typeof value === 'string'),
             tap(() => {
-                this.filteredRightLeftToRightSimpleJoinEntities = [];
-                this.filteredRightLeftToRightSimpleJoinEntitiesIsLoading.set(true);
+                this.filteredRightSimpleEntities = [];
+                this.filteredRightSimpleEntitiesIsLoading.set(true);
             }),
-            switchMap(value => this.rightLeftToRightSimpleJoinTypeaheadApiService.search(value ?? '').pipe(
+            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
                 catchError(err => {
-                    this.filteredRightLeftToRightSimpleJoinEntitiesIsLoading.set(false);
+                    this.filteredRightSimpleEntitiesIsLoading.set(false);
                     console.error(err);
                     return of([]);
                 })
             )),
-            tap(() => this.filteredRightLeftToRightSimpleJoinEntitiesIsLoading.set(false))
+            tap(() => this.filteredRightSimpleEntitiesIsLoading.set(false))
         ).subscribe(res => {
-            this.filteredRightLeftToRightSimpleJoinEntities = res;
+            this.filteredRightSimpleEntities = res;
         });
 
         this.addRightJoinEntityControl.valueChanges.pipe(
@@ -226,7 +223,7 @@ export class LeftManyEntityEditForm implements OnInit {
                     someString: dto.someString,
                     version: dto.version,
                 });
-                this.selectedRightLeftToRightSimpleJoinEntities = dto.rightLeftToRightSimpleJoinEntities.map(r => ({
+                this.selectedRightSimpleEntities = dto.rightSimpleEntities.map(r => ({
                     id: r.id,
                     someString: r.name,
                 }));
@@ -255,21 +252,21 @@ export class LeftManyEntityEditForm implements OnInit {
     }
 
 
-    addRightLeftToRightSimpleJoinEntity(event: MatAutocompleteSelectedEvent): void {
+    addRightSimpleEntity(event: MatAutocompleteSelectedEvent): void {
 
         const entity: RightManyTypeaheadV1EsDoc = event.option.value;
-        if (!this.selectedRightLeftToRightSimpleJoinEntities.some(e => e.id === entity.id)) {
-            this.selectedRightLeftToRightSimpleJoinEntities.push(entity);
+        if (!this.selectedRightSimpleEntities.some(e => e.id === entity.id)) {
+            this.selectedRightSimpleEntities.push(entity);
         }
-        this.rightLeftToRightSimpleJoinEntityInput.nativeElement.value = '';
-        this.rightLeftToRightSimpleJoinEntitySearchControl.setValue('', { emitEvent: false });
+        this.rightSimpleEntityInput.nativeElement.value = '';
+        this.rightSimpleEntitySearchControl.setValue('', { emitEvent: false });
 
     }
 
 
-    removeRightLeftToRightSimpleJoinEntity(entity: RightManyTypeaheadV1EsDoc): void {
+    removeRightSimpleEntity(entity: RightManyTypeaheadV1EsDoc): void {
 
-        this.selectedRightLeftToRightSimpleJoinEntities = this.selectedRightLeftToRightSimpleJoinEntities.filter(e => e.id !== entity.id);
+        this.selectedRightSimpleEntities = this.selectedRightSimpleEntities.filter(e => e.id !== entity.id);
 
     }
 
@@ -367,7 +364,7 @@ export class LeftManyEntityEditForm implements OnInit {
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
             version: this.formGroup.getRawValue().version,
-            rightEntityIds: this.selectedRightLeftToRightSimpleJoinEntities.map(e => e.id),
+            rightSimpleEntityIds: this.selectedRightSimpleEntities.map(e => e.id),
             rightEntities: this.rightJoins.map(j => ({
                 id: j.id,
                 rightEntityId: j.entityId,

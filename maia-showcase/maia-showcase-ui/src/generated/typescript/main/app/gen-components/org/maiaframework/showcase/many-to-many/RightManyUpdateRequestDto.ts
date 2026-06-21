@@ -9,7 +9,7 @@ export interface RightManyUpdateRequestDto {
     id: string;
     leftEffectiveEntities?: ReadonlyArray<LeftEffectiveJoinRequestDto>;
     leftEntities?: ReadonlyArray<LeftJoinRequestDto>;
-    leftEntityIds?: ReadonlyArray<string>;
+    leftSimpleEntityIds?: ReadonlyArray<string>;
     someInt: number;
     someString: string;
     version: number;

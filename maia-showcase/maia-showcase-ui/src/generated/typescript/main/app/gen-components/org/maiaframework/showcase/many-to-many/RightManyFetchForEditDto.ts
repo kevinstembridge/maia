@@ -11,7 +11,7 @@ export interface RightManyFetchForEditDto {
     id: string;
     leftEffectiveEntities: ReadonlyArray<LeftEffectiveJoinFetchDto>;
     leftEntities: ReadonlyArray<LeftJoinFetchDto>;
-    leftLeftToRightSimpleJoinEntities: ReadonlyArray<LeftManyPkAndNameDto>;
+    leftSimpleEntities: ReadonlyArray<LeftManyPkAndNameDto>;
     someInt: number;
     someString: string;
     version: number;

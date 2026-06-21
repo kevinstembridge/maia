@@ -105,7 +105,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
                 "id": "${leftEntity.id}",
                 "rightEffectiveEntities": [],
                 "rightEntities": [],
-                "rightLeftToRightSimpleJoinEntities": [],
+                "rightSimpleEntities": [],
                 "someInt": ${leftEntity.someInt},
                 "someString": "${leftEntity.someString}",
                 "version": ${leftEntity.version}

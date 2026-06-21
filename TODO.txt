@@ -1,10 +1,4 @@
 
-TODO * We may have multiple Spec classes within a given application, and we may reference
-        Spec classes from third-party modules. We need a way to aggregate all the AuthorityDefs
-        from all the Spec classes to be used within a single application.
-        Create an AbstractApplicationSpec that will aggregate multiple ModelSpecs.
-
-
 TODO * MTM scenarios:
     TODO * An MTM association can be user-managed (e.g. the user can set attributes on the join entity)
         or they can be automatically managed (e.g. the effectiveFrom and effectiveTo dates are set automatically).
@@ -19,9 +13,6 @@ TODO * MTM scenarios:
         - It should be setting the effectiveFrom date to now() on added associations.
     TODO * When we delete an MTM association, it should just set the effectiveTo date to now().
     TODO * When we display the MTM associations for a given entity, it should ignore those outside effective range.
-    TODO * For some effective-dated MTMs, we don't need to make those fields editable. They can be set automatically
-        when the association is created or deleted.
-        => Add a user-managed flag.
     TODO * Ensure that effective date ranges don't overlap if the relationship only allows one effective record.
 
 
@@ -36,9 +27,6 @@ TODO * rv if CrudApiDef.withEntityForm is still needed now that we have EntityEd
     TODO * Refactor so that EntityEditReactiveFormHtmlRenderer doesn't need a reference to the CrudApiDef.
 
 TODO * EntityDeleteApiDef no longer needs to reference any front end components. This has been moved to EntityDeleteDialogDef.
-
-
-TODO * CRUD listeners must not be notified until after the transaction has been committed.
 
 
 TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveTimestamps, approvalStatus).
@@ -62,7 +50,7 @@ TODO * Define a many-to-many entity that has extra fields on it (e.g. effectiveT
     Above the list will be an 'Add' button that will open a mini form to create a new join entity.
 
 
-TODO *
+TODO * CRUD listeners must not be notified until after the transaction has been committed.
 
 
 TODO * Mahana clean build

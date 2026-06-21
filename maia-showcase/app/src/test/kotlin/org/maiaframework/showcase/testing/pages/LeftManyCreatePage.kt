@@ -37,7 +37,7 @@ class LeftManyCreatePage(
 
     fun searchAndSelectRightEntityInMiniForm(searchTerm: String) {
 
-        page.locator("input[placeholder='Search Right Entities...']").fill(searchTerm)
+        page.locator(".join-mini-form input[placeholder='Search Right Entities...']").fill(searchTerm)
         val option = page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm))
         option.waitFor()
         option.evaluate("el => el.click()")
@@ -63,7 +63,7 @@ class LeftManyCreatePage(
 
     fun searchAndSelectRightJoinEntityInMiniForm(searchTerm: String) {
 
-        page.locator("input[placeholder='Search Right Entities...']").fill(searchTerm)
+        page.locator(".join-mini-form input[placeholder='Search Right Entities...']").fill(searchTerm)
         val option = page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm))
         option.waitFor()
         option.evaluate("el => el.click()")

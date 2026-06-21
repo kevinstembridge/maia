@@ -15,7 +15,7 @@ class RightManyFetchForEditDtoRowMapper(
 ) : MaiaRowMapper<RightManyFetchForEditDto> {
 
 
-    private val leftLeftToRightSimpleJoinEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
+    private val leftSimpleEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): RightManyFetchForEditDto {
@@ -26,7 +26,7 @@ class RightManyFetchForEditDtoRowMapper(
 
         val leftEntitiesJoinFetchDtoList = fetchLeftEntitiesJoinFetchDtos(entityId)
 
-        val leftLeftToRightSimpleJoinEntitiesPkAndNameDtoList = fetchLeftLeftToRightSimpleJoinEntitiesPkAndNameDtos(entityId)
+        val leftSimpleEntitiesPkAndNameDtoList = fetchLeftSimpleEntitiesPkAndNameDtos(entityId)
 
         val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
         val id = rsa.readDomainId("id")
@@ -39,7 +39,7 @@ class RightManyFetchForEditDtoRowMapper(
             id,
             leftEffectiveEntitiesJoinFetchDtoList,
             leftEntitiesJoinFetchDtoList,
-            leftLeftToRightSimpleJoinEntitiesPkAndNameDtoList,
+            leftSimpleEntitiesPkAndNameDtoList,
             someInt,
             someString,
             version,
@@ -114,7 +114,7 @@ class RightManyFetchForEditDtoRowMapper(
     }
 
 
-    private fun fetchLeftLeftToRightSimpleJoinEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
+    private fun fetchLeftSimpleEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
 
         return this.jdbcOps.queryForList(
             """
@@ -123,14 +123,14 @@ class RightManyFetchForEditDtoRowMapper(
                 other.some_string
             from maia.left_many other
             join maia.left_to_right_simple_join mtm
-                on other.id = mtm.left_id
-            where mtm.right_id = :entityId
+                on other.id = mtm.left_simple_id
+            where mtm.right_simple_id = :entityId
             order by other.some_string
             """.trimIndent(),
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.leftLeftToRightSimpleJoinEntitiesPkAndNameDtoRowMapper
+            this.leftSimpleEntitiesPkAndNameDtoRowMapper
         )
 
     }

@@ -70,18 +70,18 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
                 id_raw = leftEntity.id,
                 rightEffectiveEntities_raw = emptyList(),
                 rightEntities_raw = emptyList(),
-                rightEntityIds_raw = listOf(rightEntity1.id, rightEntity2.id),
+                rightSimpleEntityIds_raw = listOf(rightEntity1.id, rightEntity2.id),
                 someInt_raw = leftEntity.someInt,
                 someString_raw = leftEntity.someString,
                 version_raw = leftEntity.version,
             )
         )
 
-        val joinsAfterFirstUpdate = joinDao.findByLeft(leftEntity.id)
+        val joinsAfterFirstUpdate = joinDao.findByLeftSimple(leftEntity.id)
         assertThat(joinsAfterFirstUpdate).hasSize(2)
 
-        val unchangedJoin = joinsAfterFirstUpdate.first { it.right == rightEntity1.id }
-        val removedJoin = joinsAfterFirstUpdate.first { it.right == rightEntity2.id }
+        val unchangedJoin = joinsAfterFirstUpdate.first { it.rightSimple == rightEntity1.id }
+        val removedJoin = joinsAfterFirstUpdate.first { it.rightSimple == rightEntity2.id }
 
         // Second update: keep rightEntity1, drop rightEntity2, add rightEntity3
         crudService.update(
@@ -89,18 +89,18 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
                 id_raw = leftEntity.id,
                 rightEffectiveEntities_raw = emptyList(),
                 rightEntities_raw = emptyList(),
-                rightEntityIds_raw = listOf(rightEntity1.id, rightEntity3.id),
+                rightSimpleEntityIds_raw = listOf(rightEntity1.id, rightEntity3.id),
                 someInt_raw = leftEntity.someInt,
                 someString_raw = leftEntity.someString,
                 version_raw = leftEntity.version + 1
             )
         )
 
-        val joinsAfterSecondUpdate = joinDao.findByLeft(leftEntity.id)
-        assertThat(joinsAfterSecondUpdate.map { it.right }).containsExactlyInAnyOrder(rightEntity1.id, rightEntity3.id)
+        val joinsAfterSecondUpdate = joinDao.findByLeftSimple(leftEntity.id)
+        assertThat(joinsAfterSecondUpdate.map { it.rightSimple }).containsExactlyInAnyOrder(rightEntity1.id, rightEntity3.id)
 
         // The join row for rightEntity1 must be the SAME row (not recreated)
-        val preservedJoin = joinsAfterSecondUpdate.first { it.right == rightEntity1.id }
+        val preservedJoin = joinsAfterSecondUpdate.first { it.rightSimple == rightEntity1.id }
         assertThat(preservedJoin.id).isEqualTo(unchangedJoin.id)
         assertThat(preservedJoin.createdTimestampUtc).isEqualTo(unchangedJoin.createdTimestampUtc)
 
@@ -108,8 +108,8 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
         assertThat(joinDao.existsByPrimaryKey(removedJoin.id)).isFalse()
 
         // A new join row must exist for rightEntity3
-        val newJoin = joinsAfterSecondUpdate.first { it.right == rightEntity3.id }
-        assertThat(newJoin.left).isEqualTo(leftEntity.id)
+        val newJoin = joinsAfterSecondUpdate.first { it.rightSimple == rightEntity3.id }
+        assertThat(newJoin.leftSimple).isEqualTo(leftEntity.id)
 
     }
 

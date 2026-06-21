@@ -10,8 +10,8 @@ import java.time.Instant
 class LeftToRightSimpleJoinEntity(
     val createdTimestampUtc: Instant,
     val id: DomainId,
-    val left: DomainId,
-    val right: DomainId
+    val leftSimple: DomainId,
+    val rightSimple: DomainId
 ) {
 
 
@@ -20,8 +20,8 @@ class LeftToRightSimpleJoinEntity(
         return "LeftToRightSimpleJoinEntity{" +
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "left = '" + this.left + '\'' + ", " + 
-                "right = '" + this.right + '\'' +
+                "leftSimple = '" + this.leftSimple + '\'' + ", " + 
+                "rightSimple = '" + this.rightSimple + '\'' +
                 "}"
 
     }
@@ -37,8 +37,8 @@ class LeftToRightSimpleJoinEntity(
 
         @JvmStatic
         fun newInstance(
-            left: DomainId,
-            right: DomainId
+            leftSimple: DomainId,
+            rightSimple: DomainId
         ): LeftToRightSimpleJoinEntity {
 
             val createdTimestampUtc = Instant.now()
@@ -47,8 +47,8 @@ class LeftToRightSimpleJoinEntity(
             return LeftToRightSimpleJoinEntity(
                 createdTimestampUtc,
                 id,
-                left,
-                right
+                leftSimple,
+                rightSimple
             )
 
         }

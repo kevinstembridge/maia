@@ -31,27 +31,27 @@
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>LeftLeftToRightSimpleJoin Entities</mat-label>
-            <mat-chip-grid #leftEntityChipGrid>
-                @for (entity of selectedLeftLeftToRightSimpleJoinEntities; track entity.id) {
-                    <mat-chip-row (removed)="removeLeftLeftToRightSimpleJoinEntity(entity)">
+            <mat-label>Left Entities</mat-label>
+            <mat-chip-grid #leftSimpleEntityChipGrid>
+                @for (entity of selectedLeftSimpleEntities; track entity.id) {
+                    <mat-chip-row (removed)="removeLeftSimpleEntity(entity)">
                         {{ entity.someString }}
                         <button matChipRemove type="button"><mat-icon>cancel</mat-icon></button>
                     </mat-chip-row>
                 }
             </mat-chip-grid>
             <input
-                #leftLeftToRightSimpleJoinEntityInput
-                placeholder="Search LeftLeftToRightSimpleJoin Entities..."
-                [formControl]="leftLeftToRightSimpleJoinEntitySearchControl"
-                [matChipInputFor]="leftEntityChipGrid"
-                [matAutocomplete]="leftLeftToRightSimpleJoinEntityAuto"
+                #leftSimpleEntityInput
+                placeholder="Search Left Entities..."
+                [formControl]="leftSimpleEntitySearchControl"
+                [matChipInputFor]="leftSimpleEntityChipGrid"
+                [matAutocomplete]="leftSimpleEntityAuto"
             />
-            <mat-autocomplete #leftLeftToRightSimpleJoinEntityAuto="matAutocomplete" (optionSelected)="addLeftLeftToRightSimpleJoinEntity($event)">
-                @if (filteredLeftLeftToRightSimpleJoinEntitiesIsLoading()) {
+            <mat-autocomplete #leftSimpleEntityAuto="matAutocomplete" (optionSelected)="addLeftSimpleEntity($event)">
+                @if (filteredLeftSimpleEntitiesIsLoading()) {
                     <mat-option disabled>Loading...</mat-option>
                 }
-                @for (option of filteredLeftLeftToRightSimpleJoinEntities; track option.id) {
+                @for (option of filteredLeftSimpleEntities; track option.id) {
                     <mat-option [value]="option">{{ option.someString }}</mat-option>
                 }
             </mat-autocomplete>

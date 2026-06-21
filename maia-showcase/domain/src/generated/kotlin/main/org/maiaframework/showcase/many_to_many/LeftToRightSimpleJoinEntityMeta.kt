@@ -16,9 +16,9 @@ object LeftToRightSimpleJoinEntityMeta {
 
     const val id = "id"
 
-    const val left = "left_id"
+    const val leftSimple = "left_simple_id"
 
-    const val right = "right_id"
+    const val rightSimple = "right_simple_id"
 
     val ENTITY_KEY = EntityKey("LeftToRightSimpleJoin")
 
@@ -33,9 +33,9 @@ object LeftToRightSimpleJoinEntityMeta {
 
     object IndexName {
 
-        const val left_to_right_simple_join_left_id_idx = "left_to_right_simple_join_left_id_idx"
+        const val left_to_right_simple_join_left_simple_id_idx = "left_to_right_simple_join_left_simple_id_idx"
 
-        const val left_to_right_simple_join_right_id_idx = "left_to_right_simple_join_right_id_idx"
+        const val left_to_right_simple_join_right_simple_id_idx = "left_to_right_simple_join_right_simple_id_idx"
 
     }
 
@@ -45,8 +45,8 @@ object LeftToRightSimpleJoinEntityMeta {
         return when(classFieldName) {
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
-            "left" -> "left_id"
-            "right" -> "right_id"
+            "leftSimple" -> "left_simple_id"
+            "rightSimple" -> "right_simple_id"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

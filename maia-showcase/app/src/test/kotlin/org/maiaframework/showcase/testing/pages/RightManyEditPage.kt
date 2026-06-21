@@ -48,7 +48,7 @@ class RightManyEditPage(
 
     fun `select a Left entity in the mini form`(searchTerm: String) {
 
-        val input = page.locator("input[placeholder='Search Left Entities...']")
+        val input = page.locator(".join-mini-form input[placeholder='Search Left Entities...']")
         input.waitFor()
         input.fill(searchTerm)
         val option = page.locator("mat-option").filter(Locator.FilterOptions().setHasText(searchTerm))

@@ -34,20 +34,20 @@ class LeftToRightSimpleJoinDao(
             insert into maia.left_to_right_simple_join (
                 created_timestamp_utc,
                 id,
-                left_id,
-                right_id
+                left_simple_id,
+                right_simple_id
             ) values (
                 :createdTimestampUtc,
                 :id,
-                :left,
-                :right
+                :leftSimple,
+                :rightSimple
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
-                addValue("left", entity.left)
-                addValue("right", entity.right)
+                addValue("leftSimple", entity.leftSimple)
+                addValue("rightSimple", entity.rightSimple)
             }
         )
 
@@ -61,21 +61,21 @@ class LeftToRightSimpleJoinDao(
             insert into maia.left_to_right_simple_join (
                 created_timestamp_utc,
                 id,
-                left_id,
-                right_id
+                left_simple_id,
+                right_simple_id
             ) values (
                 :createdTimestampUtc,
                 :id,
-                :left,
-                :right
+                :leftSimple,
+                :rightSimple
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
-                    addValue("left", entity.left)
-                    addValue("right", entity.right)
+                    addValue("leftSimple", entity.leftSimple)
+                    addValue("rightSimple", entity.rightSimple)
                 }
             }
         )
@@ -154,15 +154,15 @@ class LeftToRightSimpleJoinDao(
        
     }
 
-    fun findByLeft(left: DomainId): List<LeftToRightSimpleJoinEntity> {
+    fun findByLeftSimple(leftSimple: DomainId): List<LeftToRightSimpleJoinEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.left_to_right_simple_join
-            where left_id = :left
+            where left_simple_id = :leftSimple
             """.trimIndent(),
             SqlParams().apply {
-                addValue("left", left)
+                addValue("leftSimple", leftSimple)
             },
             this.entityRowMapper
         )
@@ -170,15 +170,15 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun findByRight(right: DomainId): List<LeftToRightSimpleJoinEntity> {
+    fun findByRightSimple(rightSimple: DomainId): List<LeftToRightSimpleJoinEntity> {
 
         return jdbcOps.queryForList(
             """
             select * from maia.left_to_right_simple_join
-            where right_id = :right
+            where right_simple_id = :rightSimple
             """.trimIndent(),
             SqlParams().apply {
-                addValue("right", right)
+                addValue("rightSimple", rightSimple)
             },
             this.entityRowMapper
         )
@@ -282,16 +282,16 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun existsByLeft(left: DomainId): Boolean {
+    fun existsByLeftSimple(leftSimple: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*)
             from maia.left_to_right_simple_join
-            where left_id = :left
+            where left_simple_id = :leftSimple
             """.trimIndent(),
             SqlParams().apply {
-                addValue("left", left)
+                addValue("leftSimple", leftSimple)
             }
         )
 
@@ -300,16 +300,16 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun existsByRight(right: DomainId): Boolean {
+    fun existsByRightSimple(rightSimple: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*)
             from maia.left_to_right_simple_join
-            where right_id = :right
+            where right_simple_id = :rightSimple
             """.trimIndent(),
             SqlParams().apply {
-                addValue("right", right)
+                addValue("rightSimple", rightSimple)
             }
         )
 
@@ -353,8 +353,8 @@ class LeftToRightSimpleJoinDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "left" -> sqlParams.addValue("left", field.value as DomainId)
-            "right" -> sqlParams.addValue("right", field.value as DomainId)
+            "leftSimple" -> sqlParams.addValue("leftSimple", field.value as DomainId)
+            "rightSimple" -> sqlParams.addValue("rightSimple", field.value as DomainId)
         }
 
     }

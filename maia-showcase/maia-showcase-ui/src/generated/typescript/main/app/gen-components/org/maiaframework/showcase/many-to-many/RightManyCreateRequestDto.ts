@@ -8,7 +8,7 @@ import {LeftJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase
 export interface RightManyCreateRequestDto {
     leftEffectiveEntities?: ReadonlyArray<LeftEffectiveJoinRequestDto>;
     leftEntities?: ReadonlyArray<LeftJoinRequestDto>;
-    leftEntityIds?: ReadonlyArray<string>;
+    leftSimpleEntityIds?: ReadonlyArray<string>;
     someInt: number;
     someString: string;
 }
