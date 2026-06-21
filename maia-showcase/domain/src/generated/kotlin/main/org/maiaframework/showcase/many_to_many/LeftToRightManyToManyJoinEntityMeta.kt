@@ -26,6 +26,8 @@ object LeftToRightManyToManyJoinEntityMeta {
 
     const val right = "right_id"
 
+    const val someInt = "some_int"
+
     val ENTITY_KEY = EntityKey("LeftToRightManyToManyJoin")
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
@@ -56,6 +58,7 @@ object LeftToRightManyToManyJoinEntityMeta {
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "left" -> "left_id"
             "right" -> "right_id"
+            "someInt" -> "some_int"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

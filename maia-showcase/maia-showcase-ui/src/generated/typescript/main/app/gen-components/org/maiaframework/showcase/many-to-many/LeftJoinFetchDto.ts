@@ -8,4 +8,5 @@ export interface LeftJoinFetchDto {
     entityId: string;
     id: string;
     name: string;
+    someInt: number;
 }

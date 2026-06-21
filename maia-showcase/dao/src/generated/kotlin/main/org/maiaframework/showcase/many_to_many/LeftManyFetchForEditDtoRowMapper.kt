@@ -90,7 +90,8 @@ class LeftManyFetchForEditDtoRowMapper(
                 other.id as entity_id,
                 other.some_string,
                 lower(mtm.effective_range) as effective_from,
-                upper(mtm.effective_range) as effective_to
+                upper(mtm.effective_range) as effective_to,
+                mtm.some_int
             from maia.right_many other
             join maia.left_to_right_many_to_many_join mtm
                 on other.id = mtm.right_id
@@ -108,6 +109,7 @@ class LeftManyFetchForEditDtoRowMapper(
                 name = rsa.readString("some_string"),
                 effectiveFrom = rsa.readInstantOrNull("effective_from"),
                 effectiveTo = rsa.readInstantOrNull("effective_to"),
+                someInt = rsa.readInt("some_int"),
             )
         }
 

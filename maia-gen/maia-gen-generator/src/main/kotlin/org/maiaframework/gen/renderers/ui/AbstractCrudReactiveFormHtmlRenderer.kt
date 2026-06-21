@@ -4,6 +4,13 @@ import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
+import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
+import org.maiaframework.gen.spec.definition.lang.IntFieldType
+import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.LongFieldType
+import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
+import org.maiaframework.lang.text.StringFunctions
 
 abstract class AbstractCrudReactiveFormHtmlRenderer(
     protected val entityDef: EntityDef,
@@ -138,6 +145,15 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
                 |""".trimMargin())
             }
 
+            extraTimestampedJoinHtmlFields(field).forEach { extra ->
+                append("""
+                    |                <mat-form-field appearance="outline">
+                    |                    <mat-label>${extra.label}</mat-label>
+                    |                    <input matInput type="${extra.inputType}" [formControl]="${extra.controlName}" />
+                    |                </mat-form-field>
+                    |""".trimMargin())
+            }
+
             append("""
                 |                <button mat-flat-button type="button" (click)="${field.confirmMethodName}()">Add</button>
                 |                <button mat-flat-button type="button" (click)="${field.cancelMethodName}()">Cancel</button>
@@ -186,6 +202,30 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
                 |""".trimMargin())
 
         }
+
+    }
+
+
+    private data class ExtraJoinHtmlField(val label: String, val controlName: String, val inputType: String)
+
+
+    private fun extraTimestampedJoinHtmlFields(field: ManyToManyTimestampedFieldDef): List<ExtraJoinHtmlField> {
+
+        val knownFieldNames = setOf("id", field.joinEntityIdFieldName, "effectiveFrom", "effectiveTo")
+        val controlPrefix = field.effectiveFromControlName.removeSuffix("EffectiveFromControl")
+
+        return field.joinRequestDtoDef.classFieldDefs
+            .filterNot { it.classFieldName.value in knownFieldNames }
+            .map { f ->
+                val label = StringFunctions.toTitleCase(f.classFieldName.value)
+                val controlName = "$controlPrefix${StringFunctions.firstToUpper(f.classFieldName.value)}Control"
+                val inputType = when (f.fieldType) {
+                    is IntFieldType, is IntTypeFieldType, is IntValueClassFieldType,
+                    is LongFieldType, is LongTypeFieldType, is DoubleFieldType -> "number"
+                    else -> "text"
+                }
+                ExtraJoinHtmlField(label, controlName, inputType)
+            }
 
     }
 

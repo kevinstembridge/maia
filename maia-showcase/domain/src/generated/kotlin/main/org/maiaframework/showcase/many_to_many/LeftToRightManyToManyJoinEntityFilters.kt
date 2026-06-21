@@ -116,6 +116,14 @@ class LeftToRightManyToManyJoinEntityFilters {
         }
 
 
+    val someInt: FieldFilter<Int> 
+        get() {
+
+            return FieldFilter("some_int", Types.INTEGER, this.sqlParamCounter) { value -> value }
+
+        }
+
+
     class FieldFilter<T>(
         private val databaseColumnName: String,
         private val sqlType: Int,

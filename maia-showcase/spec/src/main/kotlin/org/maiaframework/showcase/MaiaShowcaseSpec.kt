@@ -1348,6 +1348,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "LeftToRightManyToManyJoin",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
+//        recordVersionHistory = true, TODO
         leftEntity = ReferencedEntity(
             fieldName = "left",
             displayName = "Left",
@@ -1362,6 +1363,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         )
     ) {
         withEffectiveTimestamps(hasSingleEffectiveRecord = false)
+        field("someInt", FieldTypes.int)
         field_lastModifiedTimestampUtc()
     }
 
@@ -1370,13 +1372,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.many_to_many",
         "LeftToRightSimpleJoin",
         leftEntity = ReferencedEntity(
-            fieldName = "left",
+            fieldName = "leftSimple",
             displayName = "Left",
             leftManyEntityDef,
             IsEditableByUser.TRUE
         ),
         rightEntity = ReferencedEntity(
-            fieldName = "right",
+            fieldName = "rightSimple",
             displayName = "Right",
             rightManyEntityDef,
             IsEditableByUser.TRUE
@@ -1405,6 +1407,27 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         description("A simple many-to-many join between two entities, with a system-managed effective date range.")
         effectiveRange(managedBy = EffectiveRangeManagedBy.SYSTEM)
     }
+
+
+//    val leftToRightUserManagedEffectiveRangeEntityDef = simpleManyToManyEntity(
+//        "org.maiaframework.showcase.many_to_many",
+//        "LeftToRightUserEffectiveRange",
+//        leftEntity = ReferencedEntity(
+//            fieldName = "leftUserEffective",
+//            displayName = "Left User Effective",
+//            leftManyEntityDef,
+//            IsEditableByUser.TRUE
+//        ),
+//        rightEntity = ReferencedEntity(
+//            fieldName = "rightUserEffective",
+//            displayName = "Right User Effective",
+//            rightManyEntityDef,
+//            IsEditableByUser.TRUE
+//        )
+//    ) {
+//        description("A simple many-to-many join between two entities, with a user-managed effective date range.")
+//        effectiveRange(managedBy = EffectiveRangeManagedBy.USER)
+//    }
 
 
     val rightManyTypeaheadDef = typeahead(

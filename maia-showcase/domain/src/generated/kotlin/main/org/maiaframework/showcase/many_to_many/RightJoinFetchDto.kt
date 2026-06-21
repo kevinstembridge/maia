@@ -12,7 +12,8 @@ data class RightJoinFetchDto(
     val effectiveTo: Instant?,
     val entityId: DomainId,
     val id: DomainId,
-    val name: String
+    val name: String,
+    val someInt: Int
 ) {
 
 

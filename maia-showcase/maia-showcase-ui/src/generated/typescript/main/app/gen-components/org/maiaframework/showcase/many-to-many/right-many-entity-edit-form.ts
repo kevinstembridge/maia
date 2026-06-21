@@ -94,6 +94,7 @@ export class RightManyEntityEditForm implements OnInit {
         entityName: string;
         effectiveFrom: Date | null;
         effectiveTo: Date | null;
+        someInt: number;
     }[] = [];
 
 
@@ -101,6 +102,9 @@ export class RightManyEntityEditForm implements OnInit {
 
 
     addLeftJoinEntityControl = new FormControl<LeftManyTypeaheadV1EsDoc | null>(null);
+
+
+    addLeftJoinSomeIntControl = new FormControl<number | null>(null);
 
 
     filteredLeftEntities: LeftManyTypeaheadV1EsDoc[] = [];
@@ -233,6 +237,7 @@ export class RightManyEntityEditForm implements OnInit {
                     entityName: e.name,
                     effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
                     effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
+                    someInt: e.someInt ?? 0,
                 })) ?? [];
                 this.leftEffectiveJoins = dto.leftEffectiveEntities?.map(e => ({
                     id: e.id,
@@ -282,8 +287,10 @@ export class RightManyEntityEditForm implements OnInit {
             entityName: entity.someString,
             effectiveFrom: null,
             effectiveTo: null,
+            someInt: this.addLeftJoinSomeIntControl.value ?? 0,
         });
         this.addLeftJoinEntityControl.reset();
+        this.addLeftJoinSomeIntControl.reset();
         this.filteredLeftEntities = [];
         this.showLeftJoinForm.set(false);
 
@@ -300,6 +307,7 @@ export class RightManyEntityEditForm implements OnInit {
     cancelAddLeftJoin(): void {
 
         this.addLeftJoinEntityControl.reset();
+        this.addLeftJoinSomeIntControl.reset();
         this.filteredLeftEntities = [];
         this.showLeftJoinForm.set(false);
 
@@ -370,6 +378,7 @@ export class RightManyEntityEditForm implements OnInit {
                 leftEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
                 effectiveTo: j.effectiveTo?.toISOString() ?? null,
+                someInt: j.someInt,
             })),
             leftEffectiveEntities: this.leftEffectiveJoins.map(j => ({
                 id: j.id,

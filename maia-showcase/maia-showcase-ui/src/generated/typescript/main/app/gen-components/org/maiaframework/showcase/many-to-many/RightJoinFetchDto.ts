@@ -8,4 +8,5 @@ export interface RightJoinFetchDto {
     entityId: string;
     id: string;
     name: string;
+    someInt: number;
 }

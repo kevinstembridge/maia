@@ -31,6 +31,8 @@ class LeftToRightManyToManyJoinEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "right_id" -> // right
                 return (inputValue as DomainId).value
+            "some_int" -> // someInt
+                return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }
 

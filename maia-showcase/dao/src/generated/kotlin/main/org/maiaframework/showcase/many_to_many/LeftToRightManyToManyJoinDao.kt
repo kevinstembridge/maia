@@ -38,14 +38,16 @@ class LeftToRightManyToManyJoinDao(
                 id,
                 last_modified_timestamp_utc,
                 left_id,
-                right_id
+                right_id,
+                some_int
             ) values (
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :lastModifiedTimestampUtc,
                 :left,
-                :right
+                :right,
+                :someInt
             )
             """.trimIndent(),
             SqlParams().apply {
@@ -56,6 +58,7 @@ class LeftToRightManyToManyJoinDao(
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("left", entity.left)
                 addValue("right", entity.right)
+                addValue("someInt", entity.someInt)
             }
         )
 
@@ -72,14 +75,16 @@ class LeftToRightManyToManyJoinDao(
                 id,
                 last_modified_timestamp_utc,
                 left_id,
-                right_id
+                right_id,
+                some_int
             ) values (
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :lastModifiedTimestampUtc,
                 :left,
-                :right
+                :right,
+                :someInt
             )
             """.trimIndent(),
             entities.map { entity ->
@@ -91,6 +96,7 @@ class LeftToRightManyToManyJoinDao(
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("left", entity.left)
                     addValue("right", entity.right)
+                    addValue("someInt", entity.someInt)
                 }
             }
         )

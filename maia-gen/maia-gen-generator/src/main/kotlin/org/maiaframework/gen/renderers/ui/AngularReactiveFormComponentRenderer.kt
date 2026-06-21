@@ -37,6 +37,7 @@ import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.StringFieldType
 import org.maiaframework.gen.spec.definition.lang.StringTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.StringValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 import org.maiaframework.lang.text.StringFunctions
 
@@ -407,6 +408,12 @@ class AngularReactiveFormComponentRenderer(
             addImport(field.serviceImport)
             addImport(field.joinRequestDtoTypescriptImport)
 
+            val extraDtoFields = extraTimestampedJoinFields(field)
+
+            val extraStateLines = extraDtoFields.joinToString("\n") { (name, type, _, _) ->
+                "        $name: $type;"
+            }
+
             append("""
                 |
                 |
@@ -416,7 +423,7 @@ class AngularReactiveFormComponentRenderer(
                 |        entityName: string;
                 |        effectiveFrom: Date | null;
                 |        effectiveTo: Date | null;
-                |    }[] = [];
+                |${if (extraStateLines.isNotEmpty()) "$extraStateLines\n" else ""}    }[] = [];
                 |
                 |
                 |    ${field.showFormSignalName} = signal(false);
@@ -434,6 +441,14 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |    ${field.effectiveToControlName} = new FormControl<Date | null>(null);
                 |""".trimMargin())
+            }
+
+            extraDtoFields.forEach { (_, tsType, controlName, _) ->
+                append("""
+                    |
+                    |
+                    |    $controlName = new FormControl<$tsType | null>(null);
+                    |""".trimMargin())
             }
 
             append("""
@@ -795,12 +810,16 @@ class AngularReactiveFormComponentRenderer(
             }
 
             timestampedFields.forEach { field ->
+                val extraDtoFields = extraTimestampedJoinFields(field)
                 appendLine("                this.${field.joinsFieldName} = dto.${field.fetchForEditDtoFieldName}?.map(e => ({")
                 appendLine("                    id: e.id,")
                 appendLine("                    entityId: e.entityId,")
                 appendLine("                    entityName: e.name,")
                 appendLine("                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,")
                 appendLine("                    effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,")
+                extraDtoFields.forEach { (name, _, _, defaultValue) ->
+                    appendLine("                    $name: e.$name ?? $defaultValue,")
+                }
                 appendLine("                })) ?? [];")
             }
 
@@ -872,6 +891,7 @@ class AngularReactiveFormComponentRenderer(
 
             val effectiveFromValue = if (field.isManagedBySystem) "null" else "this.${field.effectiveFromControlName}.value"
             val effectiveToValue = if (field.isManagedBySystem) "null" else "this.${field.effectiveToControlName}.value"
+            val extraDtoFields = extraTimestampedJoinFields(field)
 
             append("""
                 |
@@ -887,6 +907,13 @@ class AngularReactiveFormComponentRenderer(
                 |            entityName: entity.${field.searchTermFieldName},
                 |            effectiveFrom: $effectiveFromValue,
                 |            effectiveTo: $effectiveToValue,
+                |""".trimMargin())
+
+            extraDtoFields.forEach { (name, _, controlName, defaultValue) ->
+                appendLine("            $name: this.${controlName}.value ?? $defaultValue,")
+            }
+
+            append("""
                 |        });
                 |        this.${field.addEntityControlName}.reset();
                 |""".trimMargin())
@@ -896,6 +923,10 @@ class AngularReactiveFormComponentRenderer(
                 |        this.${field.effectiveFromControlName}.reset();
                 |        this.${field.effectiveToControlName}.reset();
                 |""".trimMargin())
+            }
+
+            extraDtoFields.forEach { (_, _, controlName, _) ->
+                appendLine("        this.${controlName}.reset();")
             }
 
             append("""
@@ -922,6 +953,10 @@ class AngularReactiveFormComponentRenderer(
                 |        this.${field.effectiveFromControlName}.reset();
                 |        this.${field.effectiveToControlName}.reset();
                 |""".trimMargin())
+            }
+
+            extraDtoFields.forEach { (_, _, controlName, _) ->
+                appendLine("        this.${controlName}.reset();")
             }
 
             append("""
@@ -1025,11 +1060,15 @@ class AngularReactiveFormComponentRenderer(
         }
 
         timestampedFields.forEach { field ->
+            val extraDtoFields = extraTimestampedJoinFields(field)
             appendLine("            ${field.requestDtoFieldName}: this.${field.joinsFieldName}.map(j => ({")
             appendLine("                id: j.id,")
             appendLine("                ${field.joinEntityIdFieldName}: j.entityId,")
             appendLine("                effectiveFrom: j.effectiveFrom?.toISOString() ?? null,")
             appendLine("                effectiveTo: j.effectiveTo?.toISOString() ?? null,")
+            extraDtoFields.forEach { (name, _, _, _) ->
+                appendLine("                $name: j.$name,")
+            }
             appendLine("            })),")
         }
 
@@ -1368,6 +1407,54 @@ class AngularReactiveFormComponentRenderer(
 
         addImport("@angular/material/checkbox", "MatCheckbox", isModule = true)
 
+    }
+
+
+    // Returns (fieldName, tsType, controlName, defaultTsValue) for extra join fields
+    // (fields on the join entity beyond the standard id/entityId/effectiveFrom/effectiveTo).
+    private fun extraTimestampedJoinFields(field: ManyToManyTimestampedFieldDef): List<Triple4> {
+
+        val knownFieldNames = setOf("id", field.joinEntityIdFieldName, "effectiveFrom", "effectiveTo")
+        val controlPrefix = field.effectiveFromControlName.removeSuffix("EffectiveFromControl")
+
+        return field.joinRequestDtoDef.classFieldDefs
+            .filterNot { it.classFieldName.value in knownFieldNames }
+            .map { f ->
+                val tsType = toJoinTsType(f.fieldType)
+                val controlName = "$controlPrefix${StringFunctions.firstToUpper(f.classFieldName.value)}Control"
+                val default = toJoinTsDefaultValue(f.fieldType)
+                Triple4(f.classFieldName.value, tsType, controlName, default)
+            }
+
+    }
+
+
+    private data class Triple4(val name: String, val tsType: String, val controlName: String, val defaultValue: String)
+
+
+    private fun toJoinTsType(fieldType: FieldType): String {
+        return when (fieldType) {
+            is BooleanFieldType, is BooleanTypeFieldType, is BooleanValueClassFieldType -> "boolean"
+            is IntFieldType, is IntTypeFieldType, is IntValueClassFieldType -> "number"
+            is LongFieldType, is LongTypeFieldType -> "number"
+            is DoubleFieldType -> "number"
+            is StringFieldType, is StringTypeFieldType, is StringValueClassFieldType -> "string"
+            is DomainIdFieldType -> "string"
+            else -> "string"
+        }
+    }
+
+
+    private fun toJoinTsDefaultValue(fieldType: FieldType): String {
+        return when (fieldType) {
+            is BooleanFieldType, is BooleanTypeFieldType, is BooleanValueClassFieldType -> "false"
+            is IntFieldType, is IntTypeFieldType, is IntValueClassFieldType -> "0"
+            is LongFieldType, is LongTypeFieldType -> "0"
+            is DoubleFieldType -> "0"
+            is StringFieldType, is StringTypeFieldType, is StringValueClassFieldType -> "''"
+            is DomainIdFieldType -> "''"
+            else -> "''"
+        }
     }
 
 

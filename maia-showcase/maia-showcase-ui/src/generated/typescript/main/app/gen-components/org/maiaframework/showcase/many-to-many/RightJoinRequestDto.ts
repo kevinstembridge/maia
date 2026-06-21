@@ -7,4 +7,5 @@ export interface RightJoinRequestDto {
     effectiveTo?: string;
     id?: string;
     rightEntityId: string;
+    someInt: number;
 }

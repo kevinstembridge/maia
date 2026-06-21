@@ -12,7 +12,8 @@ data class LeftToRightManyToManyJoinEntityTestBuilder(
     val id: DomainId = DomainId.newId(),
     val lastModifiedTimestampUtc: Instant = anyInstant(),
     val leftId: DomainId,
-    val rightId: DomainId
+    val rightId: DomainId,
+    val someInt: Int = 0
 ) {
 
 
@@ -25,7 +26,8 @@ data class LeftToRightManyToManyJoinEntityTestBuilder(
             this.id,
             this.lastModifiedTimestampUtc,
             this.leftId,
-            this.rightId
+            this.rightId,
+            this.someInt
         )
 
     }

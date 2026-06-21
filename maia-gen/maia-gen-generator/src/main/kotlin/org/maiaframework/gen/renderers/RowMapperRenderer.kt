@@ -192,6 +192,15 @@ class RowMapperRenderer(
                 addImportFor(Fqcns.MAIA_SQL_PARAMS)
                 addImportFor(joinFetchDtoDef.fqcn)
 
+                val extraSelectClauses = joinFetchDtoDef.extraFields
+                    .joinToString("") { f -> ",\n                mtm.${f.classFieldName.toSnakeCase()}" }
+                val extraCtorArgs = joinFetchDtoDef.extraFields
+                    .joinToString("") { f ->
+                        val col = f.classFieldName.toSnakeCase()
+                        val fn = f.resultSetAdapterReadFunctionName(f.nullable)
+                        "\n                ${f.classFieldName} = rsa.$fn(\"$col\"),"
+                    }
+
                 append("""
                     |
                     |
@@ -204,7 +213,7 @@ class RowMapperRenderer(
                     |                other.id as entity_id,
                     |                other.${joinFetchDtoDef.nameTableColumnName},
                     |                lower(mtm.effective_range) as effective_from,
-                    |                upper(mtm.effective_range) as effective_to
+                    |                upper(mtm.effective_range) as effective_to$extraSelectClauses
                     |            from ${joinFetchDtoDef.otherSideEntitySchemaAndTableName} other
                     |            join ${joinFetchDtoDef.joinEntitySchemaAndTableName} mtm
                     |                on other.id = mtm.${joinFetchDtoDef.otherSideIdTableColumnName}
@@ -220,7 +229,7 @@ class RowMapperRenderer(
                     |                entityId = rsa.readDomainId("entity_id"),
                     |                name = rsa.readString("${joinFetchDtoDef.nameTableColumnName}"),
                     |                effectiveFrom = rsa.readInstantOrNull("effective_from"),
-                    |                effectiveTo = rsa.readInstantOrNull("effective_to"),
+                    |                effectiveTo = rsa.readInstantOrNull("effective_to"),$extraCtorArgs
                     |            )
                     |        }
                     |

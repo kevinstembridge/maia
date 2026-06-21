@@ -19,6 +19,7 @@ class LeftToRightManyToManyJoinEntityRowMapper : MaiaRowMapper<LeftToRightManyTo
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val left = rsa.readDomainId("left_id")
         val right = rsa.readDomainId("right_id")
+        val someInt = rsa.readInt("some_int")
 
         return LeftToRightManyToManyJoinEntity(
                 createdTimestampUtc,
@@ -27,7 +28,8 @@ class LeftToRightManyToManyJoinEntityRowMapper : MaiaRowMapper<LeftToRightManyTo
                 id,
                 lastModifiedTimestampUtc,
                 left,
-                right
+                right,
+                someInt
         )
 
     }

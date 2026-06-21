@@ -14,6 +14,7 @@ class JoinFetchDtoDef(
     val otherSideIdTableColumnName: String,
     val thisSideIdTableColumnName: String,
     val otherSideEntitySchemaAndTableName: String,
+    val extraFields: List<ClassFieldDef> = emptyList(),
 ) {
 
     private val dtoBaseName = DtoBaseName("${otherSideDisplayName}Join")
@@ -28,7 +29,7 @@ class JoinFetchDtoDef(
             ClassFieldDef.aClassField("name", FieldTypes.string).build(),
             ClassFieldDef.aClassField("effectiveFrom", FieldTypes.instant).nullable().build(),
             ClassFieldDef.aClassField("effectiveTo", FieldTypes.instant).nullable().build(),
-        )
+        ) + extraFields
     ).build()
 
     val uqcn = dtoDef.uqcn

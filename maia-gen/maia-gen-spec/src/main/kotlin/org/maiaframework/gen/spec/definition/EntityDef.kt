@@ -288,6 +288,13 @@ class EntityDef(
             .filter { it.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP }
             .associateWith { m2m ->
                 val otherSide = m2m.otherSideFrom(this)
+                val thisSideFieldName = m2m.idFieldName(this)
+                val extraFields = m2m.entityDef.allFieldsRequiredInCreateRequest
+                    .filterNot { it.classFieldDef.classFieldName.value == thisSideFieldName }
+                    .filterNot { it.classFieldDef.classFieldName.value == otherSide.fieldName }
+                    .filterNot { it.classFieldDef.classFieldName.value == "effectiveFrom" }
+                    .filterNot { it.classFieldDef.classFieldName.value == "effectiveTo" }
+                    .map { it.classFieldDef }
                 JoinFetchDtoDef(
                     packageName = this.packageName,
                     otherSideDisplayName = otherSide.displayName.replace(" ", ""),
@@ -296,6 +303,7 @@ class EntityDef(
                     otherSideIdTableColumnName = m2m.idTableColumnName(otherSide.entityDef),
                     thisSideIdTableColumnName = m2m.idTableColumnName(this),
                     otherSideEntitySchemaAndTableName = otherSide.entityDef.schemaAndTableName,
+                    extraFields = extraFields,
                 )
             }
     }

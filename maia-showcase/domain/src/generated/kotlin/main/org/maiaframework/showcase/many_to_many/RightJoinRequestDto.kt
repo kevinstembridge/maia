@@ -23,7 +23,10 @@ class RightJoinRequestDto
     val id: DomainId?,
     @field:NotNull
     @param:JsonProperty("rightEntityId", access = JsonProperty.Access.READ_WRITE) 
-    private val rightEntityId_raw: DomainId?
+    private val rightEntityId_raw: DomainId?,
+    @field:NotNull
+    @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
+    private val someInt_raw: Int?
 ) {
 
 
@@ -31,10 +34,15 @@ class RightJoinRequestDto
     val rightEntityId: DomainId by lazy { rightEntityId_raw!! }
 
 
+    @get:JsonIgnore
+    val someInt: Int by lazy { someInt_raw!! }
+
+
     override fun toString(): String {
 
         return "RightJoinRequestDto{" +
                 "rightEntityId = '" + this.rightEntityId + '\'' + ", " + 
+                "someInt = '" + this.someInt + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' +

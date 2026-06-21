@@ -30,6 +30,12 @@ class EntityCreateApiDef(
             .filter { it.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP }
             .associateWith { m2m ->
                 val otherSide = m2m.otherSideFrom(entityDef)
+                val thisSideFieldName = m2m.idFieldName(entityDef)
+                val extraFields = m2m.entityDef.allFieldsRequiredInCreateRequest
+                    .filterNot { it.classFieldDef.classFieldName.value == thisSideFieldName }
+                    .filterNot { it.classFieldDef.classFieldName.value == otherSide.fieldName }
+                    .filterNot { it.classFieldDef.classFieldName.value == "effectiveFrom" }
+                    .filterNot { it.classFieldDef.classFieldName.value == "effectiveTo" }
                 RequestDtoDef(
                     dtoBaseName = DtoBaseName("${otherSide.displayName.replace(" ", "")}Join"),
                     packageName = entityDef.packageName,
@@ -50,7 +56,7 @@ class EntityCreateApiDef(
                             ClassFieldDef.aClassField("effectiveTo", FieldTypes.instant).nullable().build(),
                             null
                         )
-                    ),
+                    ) + extraFields.map { RequestDtoFieldDef(it.classFieldDef, null) },
                     preAuthorizeExpression = null,
                     moduleName = moduleName
                 )

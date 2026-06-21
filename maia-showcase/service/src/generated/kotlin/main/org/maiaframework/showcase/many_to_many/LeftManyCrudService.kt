@@ -41,7 +41,8 @@ class LeftManyCrudService(
                     effectiveFrom = Instant.now(),
                     effectiveTo = null,
                     left = entity.id,
-                    right = joinDto.rightEntityId
+                    right = joinDto.rightEntityId,
+                    someInt = joinDto.someInt
                 )
             )
         }
@@ -141,7 +142,8 @@ class LeftManyCrudService(
                 effectiveFrom = Instant.now(),
                 effectiveTo = null,
                 left = id,
-                right = joinDto.rightEntityId
+                right = joinDto.rightEntityId,
+                someInt = joinDto.someInt
             )
         }
         this.leftToRightManyToManyJoinRepo.bulkInsert(newJoins)

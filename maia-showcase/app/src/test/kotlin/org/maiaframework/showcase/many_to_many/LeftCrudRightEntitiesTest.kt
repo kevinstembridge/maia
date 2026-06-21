@@ -65,8 +65,8 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
                 "someInt": 1,
                 "someString": "test",
                 "rightEntities": [
-                    {"rightEntityId": "${rightEntity1.id}"},
-                    {"rightEntityId": "${rightEntity2.id}"}
+                    {"rightEntityId": "${rightEntity1.id}", "someInt": 10},
+                    {"rightEntityId": "${rightEntity2.id}", "someInt": 20}
                 ]
             }""".trimIndent()
         ).hasStatus(201)
@@ -104,7 +104,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         // Create with right1 and right2
         post(
             "/api/left-many/create",
-            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}, {"rightEntityId": "${rightEntity2.id}"}]}"""
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}", "someInt": 10}, {"rightEntityId": "${rightEntity2.id}", "someInt": 20}]}"""
         ).hasStatus(HttpStatus.CREATED)
 
         val leftId = leftDao.findAllAsSequence().first().id
@@ -112,7 +112,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         // Update to right2 and right3 only
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 2, "someString": "test2", "version": 1, "rightEntities": [{"rightEntityId": "${rightEntity2.id}"}, {"rightEntityId": "${rightEntity3.id}"}]}"""
+            """{"id": "$leftId", "someInt": 2, "someString": "test2", "version": 1, "rightEntities": [{"rightEntityId": "${rightEntity2.id}", "someInt": 30}, {"rightEntityId": "${rightEntity3.id}", "someInt": 40}]}"""
         ).hasStatus(HttpStatus.OK)
 
         val joins = manyToManyJoinDao.findEffectiveByLeft(leftId)
@@ -128,7 +128,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         // Create with right1
         post(
             "/api/left-many/create",
-            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}]}"""
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}", "someInt": 10}]}"""
         ).hasStatus(HttpStatus.CREATED)
 
         val leftId = leftDao.findAllAsSequence().first().id
@@ -149,7 +149,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         post(
             "/api/left-many/create",
-            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}]}"""
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}", "someInt": 10}]}"""
         ).hasStatus(HttpStatus.CREATED)
 
         val leftId = leftDao.findAllAsSequence().first().id
@@ -157,7 +157,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 2, "someString": "test2", "version": 1, "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}"}]}"""
+            """{"id": "$leftId", "someInt": 2, "someString": "test2", "version": 1, "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}", "someInt": 10}]}"""
         ).hasStatus(HttpStatus.OK)
 
         val joinAfter = manyToManyJoinDao.findByLeft(leftId).single()
@@ -174,7 +174,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         post(
             "/api/left-many/create",
-            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}]}"""
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}", "someInt": 10}]}"""
         ).hasStatus(HttpStatus.CREATED)
 
         val leftId = leftDao.findAllAsSequence().first().id
@@ -182,7 +182,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         put(
             "/api/left-many/update",
-            """{"id": "$leftId", "someInt": 1, "someString": "test", "version": 1, "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}", "effectiveFrom": "2026-01-01T00:00:00Z"}]}"""
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "version": 1, "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}", "someInt": 10, "effectiveFrom": "2026-01-01T00:00:00Z"}]}"""
         ).hasStatus(HttpStatus.OK)
 
         val joinAfter = manyToManyJoinDao.findByLeft(leftId).single()
@@ -198,7 +198,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         post(
             "/api/left-many/create",
-            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}"}, {"rightEntityId": "${rightEntity2.id}"}]}"""
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}", "someInt": 10}, {"rightEntityId": "${rightEntity2.id}", "someInt": 20}]}"""
         ).hasStatus(HttpStatus.CREATED)
 
         val leftId = leftDao.findAllAsSequence().first().id
@@ -209,8 +209,8 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         put(
             "/api/left-many/update",
             """{"id": "$leftId", "someInt": 1, "someString": "test", "version": 1, "rightEntities": [
-                {"id": "${join1.id}", "rightEntityId": "${rightEntity1.id}", "effectiveFrom": "2026-01-01T00:00:00Z"},
-                {"rightEntityId": "${rightEntity3.id}"}
+                {"id": "${join1.id}", "rightEntityId": "${rightEntity1.id}", "someInt": 10, "effectiveFrom": "2026-01-01T00:00:00Z"},
+                {"rightEntityId": "${rightEntity3.id}", "someInt": 30}
             ]}"""
         ).hasStatus(HttpStatus.OK)
 
