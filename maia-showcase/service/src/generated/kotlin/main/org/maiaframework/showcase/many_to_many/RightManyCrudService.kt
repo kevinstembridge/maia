@@ -163,12 +163,32 @@ class RightManyCrudService(
         submitted: List<LeftJoinRequestDto>
     ) {
 
+        `close effectiveRange on removed leftToRightManyToManyJoin entities`(id, submitted)
+
+        `insert added leftToRightManyToManyJoin entities`(id, submitted)
+
+    }
+
+
+    private fun `close effectiveRange on removed leftToRightManyToManyJoin entities`(
+        id: DomainId,
+        submitted: List<LeftJoinRequestDto>
+    ) {
+
         val existingById = this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).associateBy { it.id }
         val submittedIds = submitted.mapNotNull { it.id }.toSet()
 
         existingById.keys.filterNot { it in submittedIds }.forEach {
             this.leftToRightManyToManyJoinRepo.closeEffectiveRange(it)
         }
+
+    }
+
+
+    private fun `insert added leftToRightManyToManyJoin entities`(
+        id: DomainId,
+        submitted: List<LeftJoinRequestDto>
+    ) {
 
         val newJoins = submitted.filter { it.id == null }.map { joinDto ->
             LeftToRightManyToManyJoinEntity.newInstance(
@@ -212,12 +232,32 @@ class RightManyCrudService(
         submitted: List<LeftEffectiveJoinRequestDto>
     ) {
 
+        `close effectiveRange on removed leftToRightSystemEffectiveRange entities`(id, submitted)
+
+        `insert added leftToRightSystemEffectiveRange entities`(id, submitted)
+
+    }
+
+
+    private fun `close effectiveRange on removed leftToRightSystemEffectiveRange entities`(
+        id: DomainId,
+        submitted: List<LeftEffectiveJoinRequestDto>
+    ) {
+
         val existingById = this.leftToRightSystemEffectiveRangeRepo.findEffectiveByRightEffective(id).associateBy { it.id }
         val submittedIds = submitted.mapNotNull { it.id }.toSet()
 
         existingById.keys.filterNot { it in submittedIds }.forEach {
             this.leftToRightSystemEffectiveRangeRepo.closeEffectiveRange(it)
         }
+
+    }
+
+
+    private fun `insert added leftToRightSystemEffectiveRange entities`(
+        id: DomainId,
+        submitted: List<LeftEffectiveJoinRequestDto>
+    ) {
 
         val newJoins = submitted.filter { it.id == null }.map { joinDto ->
             LeftToRightSystemEffectiveRangeEntity.newInstance(

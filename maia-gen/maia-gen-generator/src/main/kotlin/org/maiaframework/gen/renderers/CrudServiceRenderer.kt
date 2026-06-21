@@ -610,34 +610,6 @@ class CrudServiceRenderer(
                 addImportFor(manyToManyEntityDef.entityDef.entityFqcn)
                 if (isSystemManaged) addImportFor<Instant>()
 
-                append("""
-                    |
-                    |
-                    |    private fun reconcile${joinNamePrefix}Joins(
-                    |        id: DomainId,
-                    |        submitted: List<${joinDtoDef.uqcn}>
-                    |    ) {
-                    |
-                    |        val existingById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
-                    |        val submittedIds = submitted.mapNotNull { it.id }.toSet()
-                    |""".trimMargin())
-
-                if (isSystemManaged) {
-                    append("""
-                        |
-                        |        existingById.keys.filterNot { it in submittedIds }.forEach {
-                        |            this.${joinRepoFieldName}.closeEffectiveRange(it)
-                        |        }
-                        |""".trimMargin())
-                } else {
-                    append("""
-                        |
-                        |        existingById.keys.filterNot { it in submittedIds }.forEach {
-                        |            this.${joinRepoFieldName}.deleteByPrimaryKey(it)
-                        |        }
-                        |""".trimMargin())
-                }
-
                 val extraReconcileArgs = manyToManyEntityDef.entityDef.allFieldsRequiredInCreateRequest
                     .asSequence()
                     .filterNot { it.classFieldDef.classFieldName.value == thisSideFieldName }
@@ -648,30 +620,108 @@ class CrudServiceRenderer(
                     .map { it.classFieldDef.classFieldName.value to "joinDto.${it.classFieldDef.classFieldName.value}" }
                     .toList()
 
-                append("""
-                    |
-                    |        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
-                    |            ${joinEntityClass}.newInstance(
-                    |""".trimMargin())
+                val newInstanceArgs = listOf(
+                    "effectiveFrom" to effectiveFromValue,
+                    "effectiveTo" to effectiveToValue,
+                    thisSideFieldName to "id",
+                    otherSideFieldName to "joinDto.${otherSideFieldName}EntityId"
+                ) + extraReconcileArgs
 
-                renderNewInstanceArgsMultiLine(
-                    indentSize = 16,
-                    listOf(
-                        "effectiveFrom" to effectiveFromValue,
-                        "effectiveTo" to effectiveToValue,
-                        thisSideFieldName to "id",
-                        otherSideFieldName to "joinDto.${otherSideFieldName}EntityId"
-                    ) + extraReconcileArgs
-                )
+                if (isSystemManaged) {
 
-                append("""
-                    |            )
-                    |        }
-                    |
-                    |        this.${joinRepoFieldName}.bulkInsert(newJoins)
-                    |""".trimMargin())
+                    val joinNamePrefixLower = joinNamePrefix.replaceFirstChar { it.lowercaseChar() }
+                    val closeMethodName = "close effectiveRange on removed $joinNamePrefixLower entities"
+                    val insertMethodName = "insert added $joinNamePrefixLower entities"
 
-                if (!isSystemManaged) {
+                    append("""
+                        |
+                        |
+                        |    private fun reconcile${joinNamePrefix}Joins(
+                        |        id: DomainId,
+                        |        submitted: List<${joinDtoDef.uqcn}>
+                        |    ) {
+                        |
+                        |        `$closeMethodName`(id, submitted)
+                        |
+                        |        `$insertMethodName`(id, submitted)
+                        |
+                        |    }
+                        |""".trimMargin())
+
+                    append("""
+                        |
+                        |
+                        |    private fun `$closeMethodName`(
+                        |        id: DomainId,
+                        |        submitted: List<${joinDtoDef.uqcn}>
+                        |    ) {
+                        |
+                        |        val existingById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
+                        |        val submittedIds = submitted.mapNotNull { it.id }.toSet()
+                        |
+                        |        existingById.keys.filterNot { it in submittedIds }.forEach {
+                        |            this.${joinRepoFieldName}.closeEffectiveRange(it)
+                        |        }
+                        |
+                        |    }
+                        |""".trimMargin())
+
+                    append("""
+                        |
+                        |
+                        |    private fun `$insertMethodName`(
+                        |        id: DomainId,
+                        |        submitted: List<${joinDtoDef.uqcn}>
+                        |    ) {
+                        |
+                        |        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
+                        |            ${joinEntityClass}.newInstance(
+                        |""".trimMargin())
+
+                    renderNewInstanceArgsMultiLine(indentSize = 16, newInstanceArgs)
+
+                    append("""
+                        |            )
+                        |        }
+                        |
+                        |        this.${joinRepoFieldName}.bulkInsert(newJoins)
+                        |
+                        |    }
+                        |""".trimMargin())
+
+                } else {
+
+                    append("""
+                        |
+                        |
+                        |    private fun reconcile${joinNamePrefix}Joins(
+                        |        id: DomainId,
+                        |        submitted: List<${joinDtoDef.uqcn}>
+                        |    ) {
+                        |
+                        |        val existingById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
+                        |        val submittedIds = submitted.mapNotNull { it.id }.toSet()
+                        |
+                        |        existingById.keys.filterNot { it in submittedIds }.forEach {
+                        |            this.${joinRepoFieldName}.deleteByPrimaryKey(it)
+                        |        }
+                        |""".trimMargin())
+
+                    append("""
+                        |
+                        |        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
+                        |            ${joinEntityClass}.newInstance(
+                        |""".trimMargin())
+
+                    renderNewInstanceArgsMultiLine(indentSize = 16, newInstanceArgs)
+
+                    append("""
+                        |            )
+                        |        }
+                        |
+                        |        this.${joinRepoFieldName}.bulkInsert(newJoins)
+                        |""".trimMargin())
+
                     append("""
                         |
                         |        submitted.filter { it.id != null }.forEach { joinDto ->
@@ -689,12 +739,13 @@ class CrudServiceRenderer(
                         |            }
                         |        }
                         |""".trimMargin())
-                }
 
-                append("""
-                    |
-                    |    }
-                    |""".trimMargin())
+                    append("""
+                        |
+                        |    }
+                        |""".trimMargin())
+
+                }
 
             } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType != EffectiveRangeDateType.TIMESTAMP) {
 
