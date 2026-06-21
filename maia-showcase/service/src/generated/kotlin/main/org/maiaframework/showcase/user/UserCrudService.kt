@@ -40,16 +40,7 @@ class UserCrudService(
 
         create(entity)
 
-        createDto.userGroupEntities.forEach { joinDto ->
-            this.userGroupMembershipRepo.insert(
-                UserGroupMembershipEntity.newInstance(
-                    effectiveFrom = Instant.now(),
-                    effectiveTo = null,
-                    user = entity.id,
-                    userGroup = joinDto.userGroupEntityId
-                )
-            )
-        }
+        createUserGroupJoins(createDto, entity)
 
         return entity
 
@@ -97,6 +88,25 @@ class UserCrudService(
         this.entityRepo.insert(entity)
         this.userCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    private fun createUserGroupJoins(
+        createDto: UserCreateRequestDto,
+        entity: UserEntity
+    ) {
+
+        createDto.userGroupEntities.forEach { joinDto ->
+            this.userGroupMembershipRepo.insert(
+                UserGroupMembershipEntity.newInstance(
+                    effectiveFrom = Instant.now(),
+                    effectiveTo = null,
+                    user = entity.id,
+                    userGroup = joinDto.userGroupEntityId
+                )
+            )
+        }
 
     }
 

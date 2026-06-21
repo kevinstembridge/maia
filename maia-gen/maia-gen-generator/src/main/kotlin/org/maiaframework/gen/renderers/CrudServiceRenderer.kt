@@ -107,6 +107,7 @@ class CrudServiceRenderer(
 
         `render create by DTO`()
         `render the create function`()
+        `render private create join functions`()
         `render existsBy for unique indexes`()
         `render the fetchForEdit function`()
         `render the update function`()
@@ -160,56 +161,11 @@ class CrudServiceRenderer(
             createApiDef.entityDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
 
                 val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
-                val thisSideEntityIdFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
                 val otherSideFieldName = otherSide.fieldName
-                val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
-                val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
-                addImportFor(manyToManyEntityDef.entityDef.entityFqcn)
-                val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
+                val createHelperName = "create${otherSideFieldName.replaceFirstChar { it.uppercaseChar() }}Joins"
 
                 blankLine()
-
-                if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
-                    val isSystemManaged = manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
-                    if (isSystemManaged) addImportFor<Instant>()
-                    val joinDtoFieldName = "${otherSideFieldName}Entities"
-                    val effectiveFromValue = if (isSystemManaged) "Instant.now()" else "joinDto.effectiveFrom"
-                    val effectiveToValue = if (isSystemManaged) "null" else "joinDto.effectiveTo"
-                    val extraArgs = manyToManyEntityDef.entityDef.allFieldsRequiredInCreateRequest
-                        .filterNot { it.classFieldDef.classFieldName.value == thisSideEntityIdFieldName }
-                        .filterNot { it.classFieldDef.classFieldName.value == otherSideFieldName }
-                        .filterNot { it.classFieldDef.classFieldName.value == "effectiveFrom" }
-                        .filterNot { it.classFieldDef.classFieldName.value == "effectiveTo" }
-                        .onEach { addImportFor(it.classFieldDef.fieldType) }
-                        .map { it.classFieldDef.classFieldName.value to "joinDto.${it.classFieldDef.classFieldName.value}" }
-                    appendLine("        createDto.${joinDtoFieldName}.forEach { joinDto ->")
-                    appendLine("            this.${joinRepoFieldName}.insert(")
-                    appendLine("                ${joinEntityClass}.newInstance(")
-                    renderNewInstanceArgsMultiLine(
-                        indentSize = 20,
-                        listOf(
-                            "effectiveFrom" to effectiveFromValue,
-                            "effectiveTo" to effectiveToValue,
-                            thisSideEntityIdFieldName to "entity.id",
-                            otherSideFieldName to "joinDto.${otherSideFieldName}EntityId"
-                        ) + extraArgs
-                    )
-                    appendLine("                )")
-                    appendLine("            )")
-                    appendLine("        }")
-                } else {
-                    appendLine("        createDto.${otherSideDtoFieldName}.forEach { $otherSideFieldName ->")
-                    appendLine("            this.${joinRepoFieldName}.insert(")
-                    appendLine("                ${joinEntityClass}.newInstance(")
-                    renderNewInstanceArgsMultiLine(
-                        indentSize = 20,
-                        thisSideEntityIdFieldName to "entity.id",
-                        otherSideFieldName to otherSideFieldName
-                    )
-                    appendLine("                )")
-                    appendLine("            )")
-                    appendLine("        }")
-                }
+                appendLine("        $createHelperName(createDto, entity)")
 
             }
 
@@ -248,6 +204,85 @@ class CrudServiceRenderer(
         appendLine("        return entity")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render private create join functions`() {
+
+        val createApiDef = this.entityDef.entityCrudApiDef?.createApiDef ?: return
+
+        createApiDef.entityDef.manyToManyAssociations.forEach { manyToManyEntityDef ->
+
+            val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
+            val thisSideEntityIdFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
+            val otherSideFieldName = otherSide.fieldName
+            val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
+            addImportFor(manyToManyEntityDef.entityDef.entityFqcn)
+            val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
+            val createHelperName = "create${otherSideFieldName.replaceFirstChar { it.uppercaseChar() }}Joins"
+
+            blankLine()
+            blankLine()
+            appendLine("    private fun $createHelperName(")
+            appendLine("        createDto: ${createApiDef.requestDtoDef.uqcn},")
+            appendLine("        entity: ${this.entityDef.entityUqcn}")
+            appendLine("    ) {")
+            blankLine()
+
+            if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
+
+                val isSystemManaged = manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
+                if (isSystemManaged) addImportFor<Instant>()
+                val joinDtoFieldName = "${otherSideFieldName}Entities"
+                val effectiveFromValue = if (isSystemManaged) "Instant.now()" else "joinDto.effectiveFrom"
+                val effectiveToValue = if (isSystemManaged) "null" else "joinDto.effectiveTo"
+                val extraArgs = manyToManyEntityDef.entityDef.allFieldsRequiredInCreateRequest
+                    .filterNot { it.classFieldDef.classFieldName.value == thisSideEntityIdFieldName }
+                    .filterNot { it.classFieldDef.classFieldName.value == otherSideFieldName }
+                    .filterNot { it.classFieldDef.classFieldName.value == "effectiveFrom" }
+                    .filterNot { it.classFieldDef.classFieldName.value == "effectiveTo" }
+                    .onEach { addImportFor(it.classFieldDef.fieldType) }
+                    .map { it.classFieldDef.classFieldName.value to "joinDto.${it.classFieldDef.classFieldName.value}" }
+
+                appendLine("        createDto.${joinDtoFieldName}.forEach { joinDto ->")
+                appendLine("            this.${joinRepoFieldName}.insert(")
+                appendLine("                ${joinEntityClass}.newInstance(")
+                renderNewInstanceArgsMultiLine(
+                    indentSize = 20,
+                    listOf(
+                        "effectiveFrom" to effectiveFromValue,
+                        "effectiveTo" to effectiveToValue,
+                        thisSideEntityIdFieldName to "entity.id",
+                        otherSideFieldName to "joinDto.${otherSideFieldName}EntityId"
+                    ) + extraArgs
+                )
+                appendLine("                )")
+                appendLine("            )")
+                appendLine("        }")
+
+            } else {
+
+                val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
+
+                appendLine("        createDto.${otherSideDtoFieldName}.forEach { $otherSideFieldName ->")
+                appendLine("            this.${joinRepoFieldName}.insert(")
+                appendLine("                ${joinEntityClass}.newInstance(")
+                renderNewInstanceArgsMultiLine(
+                    indentSize = 20,
+                    thisSideEntityIdFieldName to "entity.id",
+                    otherSideFieldName to otherSideFieldName
+                )
+                appendLine("                )")
+                appendLine("            )")
+                appendLine("        }")
+
+            }
+
+            blankLine()
+            appendLine("    }")
+
+        }
 
     }
 
