@@ -128,7 +128,10 @@ class LeftManyCrudService(
     }
 
 
-    private fun reconcileLeftToRightManyToManyJoinJoins(id: DomainId, submitted: List<RightJoinRequestDto>) {
+    private fun reconcileLeftToRightManyToManyJoinJoins(
+        id: DomainId,
+        submitted: List<RightJoinRequestDto>
+    ) {
 
         val existingById = this.leftToRightManyToManyJoinRepo.findEffectiveByLeft(id).associateBy { it.id }
         val submittedIds = submitted.mapNotNull { it.id }.toSet()
@@ -169,7 +172,10 @@ class LeftManyCrudService(
     }
 
 
-    private fun reconcileLeftToRightSystemEffectiveRangeJoins(id: DomainId, submitted: List<RightEffectiveJoinRequestDto>) {
+    private fun reconcileLeftToRightSystemEffectiveRangeJoins(
+        id: DomainId,
+        submitted: List<RightEffectiveJoinRequestDto>
+    ) {
 
         val existingById = this.leftToRightSystemEffectiveRangeRepo.findEffectiveByLeftEffective(id).associateBy { it.id }
         val submittedIds = submitted.mapNotNull { it.id }.toSet()

@@ -573,7 +573,10 @@ class CrudServiceRenderer(
                 append("""
                     |
                     |
-                    |    private fun reconcile${joinNamePrefix}Joins(id: DomainId, submitted: List<${joinDtoDef.uqcn}>) {
+                    |    private fun reconcile${joinNamePrefix}Joins(
+                    |        id: DomainId,
+                    |        submitted: List<${joinDtoDef.uqcn}>
+                    |    ) {
                     |
                     |        val existingById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
                     |        val submittedIds = submitted.mapNotNull { it.id }.toSet()
