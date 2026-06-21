@@ -1,19 +1,13 @@
 
+TODO * Modify CrudServiceRenderer for SLA functions.
+
+
 TODO * MTM scenarios:
     TODO * An MTM association can be user-managed (e.g. the user can set attributes on the join entity)
         or they can be automatically managed (e.g. the effectiveFrom and effectiveTo dates are set automatically).
     TODO * An effective-dated MTM association can allow multiple effective records or only one. => no overlapping dates.
-    TODO * the RightManyCrudService.update function is deleting the MTM association.
-        - Write tests for the scenarios.
-            - Adding a new
-            - Removing an existing
-            - Updating an existing
-        - It should be doing a delta.
-        - It should be setting the effectiveTo date to now() on removed associations.
-        - It should be setting the effectiveFrom date to now() on added associations.
-    TODO * When we delete an MTM association, it should just set the effectiveTo date to now().
+        TODO * Ensure that effective date ranges don't overlap if the relationship only allows one effective record.
     TODO * When we display the MTM associations for a given entity, it should ignore those outside effective range.
-    TODO * Ensure that effective date ranges don't overlap if the relationship only allows one effective record.
 
 
 TODO * Consolidate all the form component renderers into one.
