@@ -108,7 +108,7 @@ class CrudServiceRenderer(
         `render create by DTO`()
         `render the create function`()
         `render private create join functions`()
-        `render existsBy for unique indexes`()
+        `render existsBy functions for unique indexes`()
         `render the fetchForEdit function`()
         `render the update function`()
         `render private join reconciliation functions`()
@@ -181,10 +181,9 @@ class CrudServiceRenderer(
         blankLine()
         appendLine("    }")
 
-        `render function buildEntity`(createApiDef)
+        `render the buildEntity function`(createApiDef)
 
     }
-
 
 
     private fun `render the create function`() {
@@ -238,12 +237,14 @@ class CrudServiceRenderer(
                 val effectiveFromValue = if (isSystemManaged) "Instant.now()" else "joinDto.effectiveFrom"
                 val effectiveToValue = if (isSystemManaged) "null" else "joinDto.effectiveTo"
                 val extraArgs = manyToManyEntityDef.entityDef.allFieldsRequiredInCreateRequest
+                    .asSequence()
                     .filterNot { it.classFieldDef.classFieldName.value == thisSideEntityIdFieldName }
                     .filterNot { it.classFieldDef.classFieldName.value == otherSideFieldName }
                     .filterNot { it.classFieldDef.classFieldName.value == "effectiveFrom" }
                     .filterNot { it.classFieldDef.classFieldName.value == "effectiveTo" }
                     .onEach { addImportFor(it.classFieldDef.fieldType) }
                     .map { it.classFieldDef.classFieldName.value to "joinDto.${it.classFieldDef.classFieldName.value}" }
+                    .toList()
 
                 appendLine("        createDto.${joinDtoFieldName}.forEach { joinDto ->")
                 appendLine("            this.${joinRepoFieldName}.insert(")
@@ -269,7 +270,6 @@ class CrudServiceRenderer(
                 appendLine("            this.${joinRepoFieldName}.insert(")
                 appendLine("                ${joinEntityClass}.newInstance(")
                 renderNewInstanceArgsMultiLine(
-                    indentSize = 20,
                     thisSideEntityIdFieldName to "entity.id",
                     otherSideFieldName to otherSideFieldName
                 )
@@ -287,7 +287,7 @@ class CrudServiceRenderer(
     }
 
 
-    private fun `render function buildEntity`(apiDef: EntityCreateApiDef) {
+    private fun `render the buildEntity function`(apiDef: EntityCreateApiDef) {
 
         addImportFor<Instant>()
 
@@ -428,7 +428,7 @@ class CrudServiceRenderer(
     }
 
 
-    private fun `render existsBy for unique indexes`() {
+    private fun `render existsBy functions for unique indexes`() {
 
         this.entityDef.uniqueIndexDefs.filter { it.withExistsEndpoint }.forEach { renderExistsByForUniqueIndex(it) }
 
@@ -544,12 +544,15 @@ class CrudServiceRenderer(
             val joinNamePrefix = joinEntityClass.value.removeSuffix("Entity")
 
             if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP && manyToManyEntityDef.entityDef.isDeletable) {
+
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
                 append("""
                     |
                     |        reconcile${joinNamePrefix}Joins(id, editDto.${otherSideDtoFieldName})
                     |""".trimMargin())
+
             } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
+
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
                 val thisSideFieldName = manyToManyEntityDef.idFieldName(this.entityDef)
                 val thisSideFieldNameCapitalized = thisSideFieldName.replaceFirstChar { it.uppercaseChar() }
@@ -561,12 +564,14 @@ class CrudServiceRenderer(
                 appendLine("        //    ${joinEntityClass}.newInstance(${newInstanceArgsSingleLine("effectiveFrom" to "joinDto.effectiveFrom", "effectiveTo" to "joinDto.effectiveTo", thisSideFieldName to "id", otherSideFieldName to "joinDto.${otherSideFieldName}EntityId")})")
                 appendLine("        //}")
                 appendLine("        //this.${joinEntityClass.value.replaceFirstChar { it.lowercaseChar() }}Repo.bulkInsert(new${joinNamePrefix}Joins)")
+
             } else {
-                val otherSideDtoFieldName = "${otherSideFieldName}EntityIds"
+
                 append("""
                     |
-                    |        reconcile${joinNamePrefix}Joins(id, editDto.${otherSideDtoFieldName})
+                    |        reconcile${joinNamePrefix}Joins(id, editDto.${"${otherSideFieldName}EntityIds"})
                     |""".trimMargin())
+
             }
 
         }
@@ -634,12 +639,14 @@ class CrudServiceRenderer(
                 }
 
                 val extraReconcileArgs = manyToManyEntityDef.entityDef.allFieldsRequiredInCreateRequest
+                    .asSequence()
                     .filterNot { it.classFieldDef.classFieldName.value == thisSideFieldName }
                     .filterNot { it.classFieldDef.classFieldName.value == otherSideFieldName }
                     .filterNot { it.classFieldDef.classFieldName.value == "effectiveFrom" }
                     .filterNot { it.classFieldDef.classFieldName.value == "effectiveTo" }
                     .onEach { addImportFor(it.classFieldDef.fieldType) }
                     .map { it.classFieldDef.classFieldName.value to "joinDto.${it.classFieldDef.classFieldName.value}" }
+                    .toList()
 
                 append("""
                     |
@@ -750,7 +757,7 @@ class CrudServiceRenderer(
         blankLine()
         appendLine("        val currentUsername = CurrentUserHolder.currentUsername")
         blankLine()
-        appendLine("        logger.info(\"BEGIN: update${fieldName.firstToUpper()}. currentUsername=\${currentUsername}, dto=\$editDto\")")
+        appendLine($$"        logger.info(\"BEGIN: update$${fieldName.firstToUpper()}. currentUsername=${currentUsername}, dto=$editDto\")")
 
         if (this.entityDef.versioned.value) {
 
@@ -918,11 +925,10 @@ class CrudServiceRenderer(
     }
 
 
-    private fun renderNewInstanceArgsMultiLine(
-        indentSize: Int,
-        vararg args: Pair<String, String>
-    ) {
-        renderNewInstanceArgsMultiLine(indentSize, args.toList())
+    private fun renderNewInstanceArgsMultiLine(vararg args: Pair<String, String>) {
+
+        renderNewInstanceArgsMultiLine(20, args.toList())
+
     }
 
 
