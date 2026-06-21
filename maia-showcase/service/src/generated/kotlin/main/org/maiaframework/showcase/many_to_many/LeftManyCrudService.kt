@@ -35,11 +35,11 @@ class LeftManyCrudService(
 
         create(entity)
 
-        createRightJoins(createDto, entity)
+        `create right joins`(createDto, entity)
 
-        createRightSimpleJoins(createDto, entity)
+        `create rightSimple joins`(createDto, entity)
 
-        createRightEffectiveJoins(createDto, entity)
+        `create rightEffective joins`(createDto, entity)
 
         return entity
 
@@ -74,7 +74,7 @@ class LeftManyCrudService(
     }
 
 
-    private fun createRightJoins(
+    private fun `create right joins`(
         createDto: LeftManyCreateRequestDto,
         entity: LeftManyEntity
     ) {
@@ -94,7 +94,7 @@ class LeftManyCrudService(
     }
 
 
-    private fun createRightSimpleJoins(
+    private fun `create rightSimple joins`(
         createDto: LeftManyCreateRequestDto,
         entity: LeftManyEntity
     ) {
@@ -111,7 +111,7 @@ class LeftManyCrudService(
     }
 
 
-    private fun createRightEffectiveJoins(
+    private fun `create rightEffective joins`(
         createDto: LeftManyCreateRequestDto,
         entity: LeftManyEntity
     ) {
@@ -149,16 +149,16 @@ class LeftManyCrudService(
 
         setFields(updater)
 
-        reconcileLeftToRightManyToManyJoinJoins(id, editDto.rightEntities)
+        `reconcile leftToRightManyToManyJoin joins`(id, editDto.rightEntities)
 
-        reconcileLeftToRightSimpleJoinJoins(id, editDto.rightSimpleEntityIds)
+        `reconcile leftToRightSimpleJoin joins`(id, editDto.rightSimpleEntityIds)
 
-        reconcileLeftToRightSystemEffectiveRangeJoins(id, editDto.rightEffectiveEntities)
+        `reconcile leftToRightSystemEffectiveRange joins`(id, editDto.rightEffectiveEntities)
 
     }
 
 
-    private fun reconcileLeftToRightManyToManyJoinJoins(
+    private fun `reconcile leftToRightManyToManyJoin joins`(
         id: DomainId,
         submitted: List<RightJoinRequestDto>
     ) {
@@ -205,7 +205,7 @@ class LeftManyCrudService(
     }
 
 
-    private fun reconcileLeftToRightSimpleJoinJoins(
+    private fun `reconcile leftToRightSimpleJoin joins`(
         id: DomainId,
         submittedIds: List<DomainId>
     ) {
@@ -227,7 +227,7 @@ class LeftManyCrudService(
     }
 
 
-    private fun reconcileLeftToRightSystemEffectiveRangeJoins(
+    private fun `reconcile leftToRightSystemEffectiveRange joins`(
         id: DomainId,
         submitted: List<RightEffectiveJoinRequestDto>
     ) {
