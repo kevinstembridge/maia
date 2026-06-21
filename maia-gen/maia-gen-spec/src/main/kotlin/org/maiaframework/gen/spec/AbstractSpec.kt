@@ -513,16 +513,19 @@ abstract class AbstractSpec protected constructor(
             withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
             leftEntity,
             rightEntity,
-            pkAndNameFieldName,
-            init = manyToManyBuilder.effectiveRangeDef?.let { rangeDef ->
-                {
-                    if (rangeDef.dateType == EffectiveRangeDateType.TIMESTAMP)
-                        withEffectiveTimestamps(managedBy = rangeDef.managedBy)
-                    else
-                        withEffectiveLocalDates(managedBy = rangeDef.managedBy)
-                }
+            pkAndNameFieldName
+        ) {
+
+            manyToManyBuilder.description?.let { description(it.value) }
+
+            manyToManyBuilder.effectiveRangeDef?.let { rangeDef ->
+                if (rangeDef.dateType == EffectiveRangeDateType.TIMESTAMP)
+                    withEffectiveTimestamps(managedBy = rangeDef.managedBy)
+                else
+                    withEffectiveLocalDates(managedBy = rangeDef.managedBy)
             }
-        )
+
+        }
 
     }
 

@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.TypeaheadDef
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.lang.text.StringFunctions
+import org.maiaframework.lang.text.StringFunctions.firstToUpper
 
 
 data class ManyToManyChipFieldDef(
@@ -22,32 +23,74 @@ data class ManyToManyChipFieldDef(
     private val nameSuffix = manyToManyEntityDef.nameSuffixFor(entityDef)
 
     val fieldName: String = otherSide.fieldName
+
+
     val displayName: String = otherSide.displayName
 
     private val uniqueFieldName: String = "$fieldName$nameSuffix"
+
+
+    private val uniqueFieldNameUpper = firstToUpper(uniqueFieldName)
+
+
     private val uniqueDisplayName: String = "$displayName$nameSuffix"
 
+
     val labelText: String = "$uniqueDisplayName Entities"
+
+
     val searchPlaceholder: String = "Search $labelText..."
 
-    val selectedFieldName: String = "selected${uniqueDisplayName}Entities"
-    val filteredFieldName: String = "filtered${uniqueDisplayName}Entities"
+
+    val selectedFieldName: String = "selected${uniqueFieldNameUpper}Entities"
+
+
+    val filteredFieldName: String = "filtered${uniqueFieldNameUpper}Entities"
+
+
     val filteredIsLoadingFieldName: String = "${filteredFieldName}IsLoading"
+
+
     val searchControlFieldName: String = "${uniqueFieldName}EntitySearchControl"
+
+
     val inputRefName: String = "${uniqueFieldName}EntityInput"
+
+
     val autocompleteRefName: String = "${uniqueFieldName}EntityAuto"
-    val addMethodName: String = "add${uniqueDisplayName}Entity"
-    val removeMethodName: String = "remove${uniqueDisplayName}Entity"
+
+
+    val addMethodName: String = "add${uniqueFieldNameUpper}Entity"
+
+
+    val removeMethodName: String = "remove${uniqueFieldNameUpper}Entity"
+
+
     val requestDtoFieldName: String = "${fieldName}EntityIds"
+
+
     val fetchForEditDtoFieldName: String = manyToManyEntityDef.fetchForEditFieldNameFor(entityDef)
 
+
     val esDocClassName: String = typeaheadDef.esDocDef.dtoDef.uqcn.value
+
+
     val serviceClassName: String = typeaheadDef.angularServiceClassName
+
+
     val serviceFieldName: String = if (nameSuffix.isEmpty()) StringFunctions.firstToLower(serviceClassName) else "${uniqueFieldName}TypeaheadApiService"
+
+
     val searchTermFieldName: String = typeaheadDef.searchTermFieldName
+
+
     val esDocIdFieldName: String = typeaheadDef.esDocIdFieldName
 
+
     val serviceImport: TypescriptImport = typeaheadDef.typescriptServiceImport
+
+
     val esDocImport: TypescriptImport = typeaheadDef.esDocDef.dtoDef.typescriptDtoImport
+
 
 }
