@@ -4,7 +4,7 @@ TODO * Modify CrudServiceRenderer for SLA functions.
 
 TODO * MTM scenarios:
     TODO * An MTM association can be user-managed (e.g. the user can set attributes on the join entity)
-        or they can be automatically managed (e.g. the effectiveFrom and effectiveTo dates are set automatically).
+        or they can be system-managed (e.g. the effectiveFrom and effectiveTo dates are set automatically).
     TODO * An effective-dated MTM association can allow multiple effective records or only one. => no overlapping dates.
         TODO * Ensure that effective date ranges don't overlap if the relationship only allows one effective record.
     TODO * When we display the MTM associations for a given entity, it should ignore those outside effective range.
