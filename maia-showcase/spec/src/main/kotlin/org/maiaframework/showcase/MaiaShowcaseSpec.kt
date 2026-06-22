@@ -1343,6 +1343,26 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val leftToRightSimpleJoinEntityDef = simpleManyToManyEntity(
+        "org.maiaframework.showcase.many_to_many",
+        "LeftToRightSimpleJoin",
+        leftEntity = ReferencedEntity(
+            fieldName = "leftSimple",
+            displayName = "Left",
+            leftManyEntityDef,
+            IsEditableByUser.TRUE
+        ),
+        rightEntity = ReferencedEntity(
+            fieldName = "rightSimple",
+            displayName = "Right",
+            rightManyEntityDef,
+            IsEditableByUser.TRUE
+        )
+    ) {
+        description("A simple many-to-many join between two entities. No effective date range. No version history.")
+    }
+
+
     val leftToRightManyToManyJoinEntityDef = manyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
         "LeftToRightManyToManyJoin",
@@ -1365,26 +1385,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withEffectiveTimestamps(hasSingleEffectiveRecord = false)
         field("someInt", FieldTypes.int)
         field_lastModifiedTimestampUtc()
-    }
-
-
-    val leftToRightSimpleJoinEntityDef = simpleManyToManyEntity(
-        "org.maiaframework.showcase.many_to_many",
-        "LeftToRightSimpleJoin",
-        leftEntity = ReferencedEntity(
-            fieldName = "leftSimple",
-            displayName = "Left",
-            leftManyEntityDef,
-            IsEditableByUser.TRUE
-        ),
-        rightEntity = ReferencedEntity(
-            fieldName = "rightSimple",
-            displayName = "Right",
-            rightManyEntityDef,
-            IsEditableByUser.TRUE
-        )
-    ) {
-        description("A simple many-to-many join between two entities. No effective date range. No version history.")
     }
 
 

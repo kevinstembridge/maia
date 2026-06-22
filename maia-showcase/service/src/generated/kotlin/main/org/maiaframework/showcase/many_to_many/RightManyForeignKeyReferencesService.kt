@@ -22,12 +22,12 @@ class RightManyForeignKeyReferencesService(
 
     fun checkForeignKeyReferences(id: DomainId): ForeignKeyReferencesExistResponseDto {
 
-        if (this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).isNotEmpty()) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightManyToManyJoin")
-        }
-
         if (this.leftToRightSimpleJoinRepo.existsByRightSimple(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSimpleJoin")
+        }
+
+        if (this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).isNotEmpty()) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightManyToManyJoin")
         }
 
         if (this.leftToRightSystemEffectiveRangeRepo.findEffectiveByRightEffective(id).isNotEmpty()) {
