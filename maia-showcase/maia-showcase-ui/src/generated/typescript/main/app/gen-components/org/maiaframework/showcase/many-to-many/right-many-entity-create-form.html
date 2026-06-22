@@ -57,6 +57,42 @@
             </mat-autocomplete>
         </mat-form-field>
         <div class="join-entries">
+            @for (join of leftEffectiveJoins; track join.entityId) {
+                <div class="join-entry">
+                    <span>{{ join.entityName }}</span>
+                    <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftEffectiveJoin($index)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            }
+        </div>
+        <button mat-stroked-button type="button" (click)="showLeftEffectiveJoinForm.set(true)">
+            <mat-icon>add</mat-icon> Add Left Effective Entities
+        </button>
+        @if (showLeftEffectiveJoinForm()) {
+            <div class="join-mini-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Left Effective Entities</mat-label>
+                    <input
+                        matInput
+                        [formControl]="addLeftEffectiveJoinEntityControl"
+                        [matAutocomplete]="leftEffectiveJoinEntityAuto"
+                        placeholder="Search Left Effective Entities..."
+                    />
+                    <mat-autocomplete #leftEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftEffectiveEntity">
+                        @if (filteredLeftEffectiveEntitiesIsLoading()) {
+                            <mat-option disabled>Loading...</mat-option>
+                        }
+                        @for (option of filteredLeftEffectiveEntities; track option.id) {
+                            <mat-option [value]="option">{{ option.someString }}</mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+                <button mat-flat-button type="button" (click)="confirmAddLeftEffectiveJoin()">Add</button>
+                <button mat-flat-button type="button" (click)="cancelAddLeftEffectiveJoin()">Cancel</button>
+            </div>
+        }
+        <div class="join-entries">
             @for (join of leftJoins; track join.entityId) {
                 <div class="join-entry">
                     <span>{{ join.entityName }}</span>
@@ -94,42 +130,6 @@
                 </mat-form-field>
                 <button mat-flat-button type="button" (click)="confirmAddLeftJoin()">Add</button>
                 <button mat-flat-button type="button" (click)="cancelAddLeftJoin()">Cancel</button>
-            </div>
-        }
-        <div class="join-entries">
-            @for (join of leftEffectiveJoins; track join.entityId) {
-                <div class="join-entry">
-                    <span>{{ join.entityName }}</span>
-                    <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftEffectiveJoin($index)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </div>
-            }
-        </div>
-        <button mat-stroked-button type="button" (click)="showLeftEffectiveJoinForm.set(true)">
-            <mat-icon>add</mat-icon> Add Left Effective Entities
-        </button>
-        @if (showLeftEffectiveJoinForm()) {
-            <div class="join-mini-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Left Effective Entities</mat-label>
-                    <input
-                        matInput
-                        [formControl]="addLeftEffectiveJoinEntityControl"
-                        [matAutocomplete]="leftEffectiveJoinEntityAuto"
-                        placeholder="Search Left Effective Entities..."
-                    />
-                    <mat-autocomplete #leftEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftEffectiveEntity">
-                        @if (filteredLeftEffectiveEntitiesIsLoading()) {
-                            <mat-option disabled>Loading...</mat-option>
-                        }
-                        @for (option of filteredLeftEffectiveEntities; track option.id) {
-                            <mat-option [value]="option">{{ option.someString }}</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
-                <button mat-flat-button type="button" (click)="confirmAddLeftEffectiveJoin()">Add</button>
-                <button mat-flat-button type="button" (click)="cancelAddLeftEffectiveJoin()">Cancel</button>
             </div>
         }
     </div>

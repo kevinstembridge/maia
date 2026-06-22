@@ -1363,31 +1363,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftToRightManyToManyJoinEntityDef = manyToManyEntity(
-        "org.maiaframework.showcase.many_to_many",
-        "LeftToRightManyToManyJoin",
-        deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE,
-//        recordVersionHistory = true, TODO
-        leftEntity = ReferencedEntity(
-            fieldName = "left",
-            displayName = "Left",
-            leftManyEntityDef,
-            IsEditableByUser.TRUE
-        ),
-        rightEntity = ReferencedEntity(
-            fieldName = "right",
-            displayName = "Right",
-            rightManyEntityDef,
-            IsEditableByUser.TRUE
-        )
-    ) {
-        withEffectiveTimestamps(hasSingleEffectiveRecord = false)
-        field("someInt", FieldTypes.int)
-        field_lastModifiedTimestampUtc()
-    }
-
-
     val leftToRightSystemManagedEffectiveRangeEntityDef = simpleManyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
         "LeftToRightSystemEffectiveRange",
@@ -1428,6 +1403,31 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 //        description("A simple many-to-many join between two entities, with a user-managed effective date range.")
 //        effectiveRange(managedBy = EffectiveRangeManagedBy.USER)
 //    }
+
+
+    val leftToRightManyToManyJoinEntityDef = manyToManyEntity(
+        "org.maiaframework.showcase.many_to_many",
+        "LeftToRightManyToManyJoin",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE,
+//        recordVersionHistory = true, TODO
+        leftEntity = ReferencedEntity(
+            fieldName = "left",
+            displayName = "Left",
+            leftManyEntityDef,
+            IsEditableByUser.TRUE
+        ),
+        rightEntity = ReferencedEntity(
+            fieldName = "right",
+            displayName = "Right",
+            rightManyEntityDef,
+            IsEditableByUser.TRUE
+        )
+    ) {
+        withEffectiveTimestamps(hasSingleEffectiveRecord = false)
+        field("someInt", FieldTypes.int)
+        field_lastModifiedTimestampUtc()
+    }
 
 
     val rightManyTypeaheadDef = typeahead(

@@ -88,6 +88,27 @@ export class LeftManyEntityEditForm implements OnInit {
     @ViewChild('rightSimpleEntityInput') rightSimpleEntityInput!: ElementRef<HTMLInputElement>;
 
 
+    rightEffectiveJoins: {
+        id: string | null;
+        entityId: string;
+        entityName: string;
+        effectiveFrom: Date | null;
+        effectiveTo: Date | null;
+    }[] = [];
+
+
+    showRightEffectiveJoinForm = signal(false);
+
+
+    addRightEffectiveJoinEntityControl = new FormControl<RightManyTypeaheadV1EsDoc | null>(null);
+
+
+    filteredRightEffectiveEntities: RightManyTypeaheadV1EsDoc[] = [];
+
+
+    filteredRightEffectiveEntitiesIsLoading = signal(false);
+
+
     rightJoins: {
         id: string | null;
         entityId: string;
@@ -111,27 +132,6 @@ export class LeftManyEntityEditForm implements OnInit {
 
 
     filteredRightEntitiesIsLoading = signal(false);
-
-
-    rightEffectiveJoins: {
-        id: string | null;
-        entityId: string;
-        entityName: string;
-        effectiveFrom: Date | null;
-        effectiveTo: Date | null;
-    }[] = [];
-
-
-    showRightEffectiveJoinForm = signal(false);
-
-
-    addRightEffectiveJoinEntityControl = new FormControl<RightManyTypeaheadV1EsDoc | null>(null);
-
-
-    filteredRightEffectiveEntities: RightManyTypeaheadV1EsDoc[] = [];
-
-
-    filteredRightEffectiveEntitiesIsLoading = signal(false);
 
 
     formGroup: FormGroup;
@@ -179,26 +179,6 @@ export class LeftManyEntityEditForm implements OnInit {
             this.filteredRightSimpleEntities = res;
         });
 
-        this.addRightJoinEntityControl.valueChanges.pipe(
-            debounceTime(300),
-            distinctUntilChanged(),
-            filter(value => typeof value === 'string'),
-            tap(() => {
-                this.filteredRightEntities = [];
-                this.filteredRightEntitiesIsLoading.set(true);
-            }),
-            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
-                catchError(err => {
-                    this.filteredRightEntitiesIsLoading.set(false);
-                    console.error(err);
-                    return of([]);
-                })
-            )),
-            tap(() => this.filteredRightEntitiesIsLoading.set(false))
-        ).subscribe(res => {
-            this.filteredRightEntities = res;
-        });
-
         this.addRightEffectiveJoinEntityControl.valueChanges.pipe(
             debounceTime(300),
             distinctUntilChanged(),
@@ -219,6 +199,26 @@ export class LeftManyEntityEditForm implements OnInit {
             this.filteredRightEffectiveEntities = res;
         });
 
+        this.addRightJoinEntityControl.valueChanges.pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            filter(value => typeof value === 'string'),
+            tap(() => {
+                this.filteredRightEntities = [];
+                this.filteredRightEntitiesIsLoading.set(true);
+            }),
+            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
+                catchError(err => {
+                    this.filteredRightEntitiesIsLoading.set(false);
+                    console.error(err);
+                    return of([]);
+                })
+            )),
+            tap(() => this.filteredRightEntitiesIsLoading.set(false))
+        ).subscribe(res => {
+            this.filteredRightEntities = res;
+        });
+
         this.formService.fetchForEdit(this.entityId()).subscribe({
             next: (dto: LeftManyFetchForEditDto) => {
                 this.formGroup.patchValue({
@@ -231,6 +231,13 @@ export class LeftManyEntityEditForm implements OnInit {
                     id: r.id,
                     someString: r.name,
                 }));
+                this.rightEffectiveJoins = dto.rightEffectiveEntities?.map(e => ({
+                    id: e.id,
+                    entityId: e.entityId,
+                    entityName: e.name,
+                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
+                    effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
+                })) ?? [];
                 this.rightJoins = dto.rightEntities?.map(e => ({
                     id: e.id,
                     entityId: e.entityId,
@@ -238,13 +245,6 @@ export class LeftManyEntityEditForm implements OnInit {
                     effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
                     effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
                     someInt: e.someInt ?? 0,
-                })) ?? [];
-                this.rightEffectiveJoins = dto.rightEffectiveEntities?.map(e => ({
-                    id: e.id,
-                    entityId: e.entityId,
-                    entityName: e.name,
-                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
-                    effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
                 })) ?? [];
                 this.loading.set(false);
             },
@@ -274,6 +274,46 @@ export class LeftManyEntityEditForm implements OnInit {
         this.selectedRightSimpleEntities = this.selectedRightSimpleEntities.filter(e => e.id !== entity.id);
 
     }
+
+
+    confirmAddRightEffectiveJoin(): void {
+
+        const entity = this.addRightEffectiveJoinEntityControl.value;
+        if (!entity) return;
+        if (this.rightEffectiveJoins.some(j => j.entityId === entity.id)) return;
+        this.rightEffectiveJoins.push({
+            id: null,
+            entityId: entity.id,
+            entityName: entity.someString,
+            effectiveFrom: null,
+            effectiveTo: null,
+        });
+        this.addRightEffectiveJoinEntityControl.reset();
+        this.filteredRightEffectiveEntities = [];
+        this.showRightEffectiveJoinForm.set(false);
+
+    }
+
+
+    removeRightEffectiveJoin(index: number): void {
+
+        this.rightEffectiveJoins.splice(index, 1);
+
+    }
+
+
+    cancelAddRightEffectiveJoin(): void {
+
+        this.addRightEffectiveJoinEntityControl.reset();
+        this.filteredRightEffectiveEntities = [];
+        this.showRightEffectiveJoinForm.set(false);
+
+    }
+
+
+    displayRightEffectiveEntity = (entity: RightManyTypeaheadV1EsDoc | null): string => {
+        return entity ? entity.someString : '';
+    };
 
 
     confirmAddRightJoin(): void {
@@ -319,46 +359,6 @@ export class LeftManyEntityEditForm implements OnInit {
     };
 
 
-    confirmAddRightEffectiveJoin(): void {
-
-        const entity = this.addRightEffectiveJoinEntityControl.value;
-        if (!entity) return;
-        if (this.rightEffectiveJoins.some(j => j.entityId === entity.id)) return;
-        this.rightEffectiveJoins.push({
-            id: null,
-            entityId: entity.id,
-            entityName: entity.someString,
-            effectiveFrom: null,
-            effectiveTo: null,
-        });
-        this.addRightEffectiveJoinEntityControl.reset();
-        this.filteredRightEffectiveEntities = [];
-        this.showRightEffectiveJoinForm.set(false);
-
-    }
-
-
-    removeRightEffectiveJoin(index: number): void {
-
-        this.rightEffectiveJoins.splice(index, 1);
-
-    }
-
-
-    cancelAddRightEffectiveJoin(): void {
-
-        this.addRightEffectiveJoinEntityControl.reset();
-        this.filteredRightEffectiveEntities = [];
-        this.showRightEffectiveJoinForm.set(false);
-
-    }
-
-
-    displayRightEffectiveEntity = (entity: RightManyTypeaheadV1EsDoc | null): string => {
-        return entity ? entity.someString : '';
-    };
-
-
     onSubmit() {
 
         this.problemDetail.set(null);
@@ -373,18 +373,18 @@ export class LeftManyEntityEditForm implements OnInit {
             someString: this.formGroup.getRawValue().someString,
             version: this.formGroup.getRawValue().version,
             rightSimpleEntityIds: this.selectedRightSimpleEntities.map(e => e.id),
+            rightEffectiveEntities: this.rightEffectiveJoins.map(j => ({
+                id: j.id,
+                rightEffectiveEntityId: j.entityId,
+                effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
+                effectiveTo: j.effectiveTo?.toISOString() ?? null,
+            })),
             rightEntities: this.rightJoins.map(j => ({
                 id: j.id,
                 rightEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
                 effectiveTo: j.effectiveTo?.toISOString() ?? null,
                 someInt: j.someInt,
-            })),
-            rightEffectiveEntities: this.rightEffectiveJoins.map(j => ({
-                id: j.id,
-                rightEffectiveEntityId: j.entityId,
-                effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
-                effectiveTo: j.effectiveTo?.toISOString() ?? null,
             })),
         } as LeftManyUpdateRequestDto;
 
