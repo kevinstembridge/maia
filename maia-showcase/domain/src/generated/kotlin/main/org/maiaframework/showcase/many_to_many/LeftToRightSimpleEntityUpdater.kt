@@ -7,7 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.persist.FieldUpdate
 
 
-data class LeftToRightSimpleJoinEntityUpdater(
+data class LeftToRightSimpleEntityUpdater(
     val fields: List<FieldUpdate>,
     val id: DomainId
 ) {
@@ -26,9 +26,9 @@ data class LeftToRightSimpleJoinEntityUpdater(
         private val fields = mutableListOf<FieldUpdate>()
 
 
-        fun build(): LeftToRightSimpleJoinEntityUpdater {
+        fun build(): LeftToRightSimpleEntityUpdater {
 
-            return LeftToRightSimpleJoinEntityUpdater(this.fields, this.id)
+            return LeftToRightSimpleEntityUpdater(this.fields, this.id)
 
         }
 
@@ -56,7 +56,7 @@ data class LeftToRightSimpleJoinEntityUpdater(
         fun forPrimaryKey(
             id: DomainId,
             init: Builder.() -> Unit
-        ): LeftToRightSimpleJoinEntityUpdater {
+        ): LeftToRightSimpleEntityUpdater {
 
             val builder = Builder(id)
             builder.init()

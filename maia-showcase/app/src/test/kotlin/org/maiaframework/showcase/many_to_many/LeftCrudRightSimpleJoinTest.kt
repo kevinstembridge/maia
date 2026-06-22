@@ -19,7 +19,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var joinDao: LeftToRightSimpleJoinDao
+    private lateinit var leftToRightSimpleDao: LeftToRightSimpleDao
 
 
     @Autowired
@@ -50,7 +50,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
         rightEntity2 = RightManyEntityTestBuilder(someString = "beta").build()
         rightEntity3 = RightManyEntityTestBuilder(someString = "gamma").build()
 
-        truncateTable(LeftToRightSimpleJoinEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(LeftToRightSimpleEntityMeta.SCHEMA_AND_TABLE_NAME)
         manyToManyJoinDao.deleteAll()
         leftDao.deleteAll()
         rightDao.deleteAll()
@@ -77,7 +77,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
             )
         )
 
-        val joinsAfterFirstUpdate = joinDao.findByLeftSimple(leftEntity.id)
+        val joinsAfterFirstUpdate = leftToRightSimpleDao.findByLeftSimple(leftEntity.id)
         assertThat(joinsAfterFirstUpdate).hasSize(2)
 
         val unchangedJoin = joinsAfterFirstUpdate.first { it.rightSimple == rightEntity1.id }
@@ -96,7 +96,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
             )
         )
 
-        val joinsAfterSecondUpdate = joinDao.findByLeftSimple(leftEntity.id)
+        val joinsAfterSecondUpdate = leftToRightSimpleDao.findByLeftSimple(leftEntity.id)
         assertThat(joinsAfterSecondUpdate.map { it.rightSimple }).containsExactlyInAnyOrder(rightEntity1.id, rightEntity3.id)
 
         // The join row for rightEntity1 must be the SAME row (not recreated)
@@ -105,7 +105,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
         assertThat(preservedJoin.createdTimestampUtc).isEqualTo(unchangedJoin.createdTimestampUtc)
 
         // The join row for rightEntity2 must have been deleted
-        assertThat(joinDao.existsByPrimaryKey(removedJoin.id)).isFalse()
+        assertThat(leftToRightSimpleDao.existsByPrimaryKey(removedJoin.id)).isFalse()
 
         // A new join row must exist for rightEntity3
         val newJoin = joinsAfterSecondUpdate.first { it.rightSimple == rightEntity3.id }

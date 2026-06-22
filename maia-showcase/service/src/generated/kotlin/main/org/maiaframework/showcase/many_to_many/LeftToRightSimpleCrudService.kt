@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class LeftToRightSimpleJoinCrudService(
-    private val entityRepo: LeftToRightSimpleJoinRepo,
+class LeftToRightSimpleCrudService(
+    private val entityRepo: LeftToRightSimpleRepo,
     private val maiaProblems: MaiaProblems
 ) {
 
 
-    private val logger = LoggerFactory.getLogger(LeftToRightSimpleJoinCrudService::class.java)
+    private val logger = LoggerFactory.getLogger(LeftToRightSimpleCrudService::class.java)
 
 
-    fun create(entity: LeftToRightSimpleJoinEntity): LeftToRightSimpleJoinEntity {
+    fun create(entity: LeftToRightSimpleEntity): LeftToRightSimpleEntity {
 
         this.entityRepo.insert(entity)
         return entity
@@ -27,7 +27,7 @@ class LeftToRightSimpleJoinCrudService(
     }
 
 
-    fun setFields(updater: LeftToRightSimpleJoinEntityUpdater): Int {
+    fun setFields(updater: LeftToRightSimpleEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
         return count

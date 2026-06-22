@@ -448,15 +448,15 @@ CREATE TABLE maia.right_many_history (
 );
 
 
-CREATE TABLE maia.left_to_right_simple_join (
+CREATE TABLE maia.left_to_right_simple (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     left_simple_id uuid NOT NULL REFERENCES maia.left_many(id),
     right_simple_id uuid NOT NULL REFERENCES maia.right_many(id),
     PRIMARY KEY(id)
 );
-CREATE INDEX left_to_right_simple_join_left_simple_id_idx ON maia.left_to_right_simple_join(left_simple_id);
-CREATE INDEX left_to_right_simple_join_right_simple_id_idx ON maia.left_to_right_simple_join(right_simple_id);
+CREATE INDEX left_to_right_simple_left_simple_id_idx ON maia.left_to_right_simple(left_simple_id);
+CREATE INDEX left_to_right_simple_right_simple_id_idx ON maia.left_to_right_simple(right_simple_id);
 
 
 CREATE TABLE maia.left_to_right_system_effective_range (

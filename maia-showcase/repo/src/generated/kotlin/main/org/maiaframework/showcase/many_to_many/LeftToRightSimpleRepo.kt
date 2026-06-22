@@ -9,22 +9,22 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftToRightSimpleJoinRepo(
-    private val dao: LeftToRightSimpleJoinDao
+class LeftToRightSimpleRepo(
+    private val dao: LeftToRightSimpleDao
 ) {
 
 
-    private val logger = getLogger<LeftToRightSimpleJoinRepo>()
+    private val logger = getLogger<LeftToRightSimpleRepo>()
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId): LeftToRightSimpleJoinEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): LeftToRightSimpleEntity? {
 
         return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun findByPrimaryKey(id: DomainId): LeftToRightSimpleJoinEntity {
+    fun findByPrimaryKey(id: DomainId): LeftToRightSimpleEntity {
 
         return dao.findByPrimaryKey(id)
 
@@ -38,7 +38,7 @@ class LeftToRightSimpleJoinRepo(
     }
 
 
-    fun findAllAsSequence(): Sequence<LeftToRightSimpleJoinEntity> {
+    fun findAllAsSequence(): Sequence<LeftToRightSimpleEntity> {
     
         return this.dao.findAllAsSequence()
         
@@ -52,28 +52,28 @@ class LeftToRightSimpleJoinRepo(
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: LeftToRightSimpleJoinEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: LeftToRightSimpleEntityFilter): Sequence<DomainId> {
 
         return dao.findPrimaryKeysAsSequence(filter)
 
     }
 
 
-    fun findAllBy(filter: LeftToRightSimpleJoinEntityFilter): List<LeftToRightSimpleJoinEntity> {
+    fun findAllBy(filter: LeftToRightSimpleEntityFilter): List<LeftToRightSimpleEntity> {
 
         return this.dao.findAllBy(filter)
 
     }
 
 
-    fun findByLeftSimple(leftSimple: DomainId): List<LeftToRightSimpleJoinEntity> {
+    fun findByLeftSimple(leftSimple: DomainId): List<LeftToRightSimpleEntity> {
 
         return dao.findByLeftSimple(leftSimple)
 
     }
 
 
-    fun findByRightSimple(rightSimple: DomainId): List<LeftToRightSimpleJoinEntity> {
+    fun findByRightSimple(rightSimple: DomainId): List<LeftToRightSimpleEntity> {
 
         return dao.findByRightSimple(rightSimple)
 
@@ -94,7 +94,7 @@ class LeftToRightSimpleJoinRepo(
     }
 
 
-    fun insert(entity: LeftToRightSimpleJoinEntity) {
+    fun insert(entity: LeftToRightSimpleEntity) {
 
         logger.debug("insert {}", entity)
 
@@ -103,14 +103,14 @@ class LeftToRightSimpleJoinRepo(
     }
 
 
-    fun bulkInsert(entities: List<LeftToRightSimpleJoinEntity>) {
+    fun bulkInsert(entities: List<LeftToRightSimpleEntity>) {
 
         this.dao.bulkInsert(entities)
 
     }
 
 
-    fun setFields(updaters: List<LeftToRightSimpleJoinEntityUpdater>) {
+    fun setFields(updaters: List<LeftToRightSimpleEntityUpdater>) {
 
         logger.debug("setFields {}", updaters)
 
@@ -119,7 +119,7 @@ class LeftToRightSimpleJoinRepo(
     }
 
 
-    fun setFields(updater: LeftToRightSimpleJoinEntityUpdater): Int {
+    fun setFields(updater: LeftToRightSimpleEntityUpdater): Int {
 
         logger.debug("setFields {}", updater)
 
@@ -135,7 +135,7 @@ class LeftToRightSimpleJoinRepo(
     }
 
 
-    fun removeByPrimaryKey(id: DomainId): LeftToRightSimpleJoinEntity? {
+    fun removeByPrimaryKey(id: DomainId): LeftToRightSimpleEntity? {
 
         val found = findByPrimaryKeyOrNull(id)
        

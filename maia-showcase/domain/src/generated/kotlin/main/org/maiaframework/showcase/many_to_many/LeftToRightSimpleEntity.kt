@@ -7,7 +7,7 @@ import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-class LeftToRightSimpleJoinEntity(
+class LeftToRightSimpleEntity(
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val leftSimple: DomainId,
@@ -17,7 +17,7 @@ class LeftToRightSimpleJoinEntity(
 
     override fun toString(): String {
 
-        return "LeftToRightSimpleJoinEntity{" +
+        return "LeftToRightSimpleEntity{" +
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "leftSimple = '" + this.leftSimple + '\'' + ", " + 
@@ -39,12 +39,12 @@ class LeftToRightSimpleJoinEntity(
         fun newInstance(
             leftSimple: DomainId,
             rightSimple: DomainId
-        ): LeftToRightSimpleJoinEntity {
+        ): LeftToRightSimpleEntity {
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
 
-            return LeftToRightSimpleJoinEntity(
+            return LeftToRightSimpleEntity(
                 createdTimestampUtc,
                 id,
                 leftSimple,

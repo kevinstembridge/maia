@@ -43,7 +43,7 @@ class LeftManyEditPage(
 
     fun assertRightJoinEntryVisible(entityName: String) {
 
-        page.locator(".join-entries").first()
+        page.locator(".join-entries").nth(1)
             .locator(".join-entry")
             .filter(Locator.FilterOptions().setHasText(entityName))
             .waitFor()
@@ -53,7 +53,7 @@ class LeftManyEditPage(
 
     fun removeRightJoinEntry(entityName: String) {
 
-        val section = page.locator(".join-entries").first()
+        val section = page.locator(".join-entries").nth(1)
         section.locator(".join-entry")
             .filter(Locator.FilterOptions().setHasText(entityName))
             .locator("button.join-remove-button")

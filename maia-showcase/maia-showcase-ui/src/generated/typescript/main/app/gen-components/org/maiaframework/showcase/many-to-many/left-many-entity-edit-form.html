@@ -31,7 +31,7 @@
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>Right Entities</mat-label>
+            <mat-label>Right Simple Entities</mat-label>
             <mat-chip-grid #rightSimpleEntityChipGrid>
                 @for (entity of selectedRightSimpleEntities; track entity.id) {
                     <mat-chip-row (removed)="removeRightSimpleEntity(entity)">
@@ -42,7 +42,7 @@
             </mat-chip-grid>
             <input
                 #rightSimpleEntityInput
-                placeholder="Search Right Entities..."
+                placeholder="Search Right Simple Entities..."
                 [formControl]="rightSimpleEntitySearchControl"
                 [matChipInputFor]="rightSimpleEntityChipGrid"
                 [matAutocomplete]="rightSimpleEntityAuto"

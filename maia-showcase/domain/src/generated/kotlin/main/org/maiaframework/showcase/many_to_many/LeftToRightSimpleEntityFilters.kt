@@ -14,27 +14,27 @@ import java.time.Instant
 import java.util.concurrent.atomic.AtomicInteger
 
 
-class LeftToRightSimpleJoinEntityFilters {
+class LeftToRightSimpleEntityFilters {
 
 
     private val sqlParamCounter = AtomicInteger(1)
 
 
-    fun and(vararg filters: LeftToRightSimpleJoinEntityFilter): LeftToRightSimpleJoinEntityFilter {
+    fun and(vararg filters: LeftToRightSimpleEntityFilter): LeftToRightSimpleEntityFilter {
 
         return IterableFunctionFilter(filters.toList(), AndOr.and)
 
     }
 
 
-    fun or(vararg filters: LeftToRightSimpleJoinEntityFilter): LeftToRightSimpleJoinEntityFilter {
+    fun or(vararg filters: LeftToRightSimpleEntityFilter): LeftToRightSimpleEntityFilter {
 
         return IterableFunctionFilter(filters.toList(), AndOr.or)
 
     }
 
 
-    fun nor(vararg filters: LeftToRightSimpleJoinEntityFilter): LeftToRightSimpleJoinEntityFilter {
+    fun nor(vararg filters: LeftToRightSimpleEntityFilter): LeftToRightSimpleEntityFilter {
 
         return IterableFunctionFilter(filters.toList(), AndOr.nor)
 
@@ -81,7 +81,7 @@ class LeftToRightSimpleJoinEntityFilters {
     ) {
 
 
-        infix fun eq(value: T): LeftToRightSimpleJoinEntityFilter {
+        infix fun eq(value: T): LeftToRightSimpleEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -95,7 +95,7 @@ class LeftToRightSimpleJoinEntityFilters {
         }
 
 
-        infix fun gt(value: T): LeftToRightSimpleJoinEntityFilter {
+        infix fun gt(value: T): LeftToRightSimpleEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -109,7 +109,7 @@ class LeftToRightSimpleJoinEntityFilters {
         }
 
 
-        infix fun gte(value: T): LeftToRightSimpleJoinEntityFilter {
+        infix fun gte(value: T): LeftToRightSimpleEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -123,7 +123,7 @@ class LeftToRightSimpleJoinEntityFilters {
         }
 
 
-        infix fun lt(value: T): LeftToRightSimpleJoinEntityFilter {
+        infix fun lt(value: T): LeftToRightSimpleEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -137,7 +137,7 @@ class LeftToRightSimpleJoinEntityFilters {
         }
 
 
-        infix fun lte(value: T): LeftToRightSimpleJoinEntityFilter {
+        infix fun lte(value: T): LeftToRightSimpleEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -151,7 +151,7 @@ class LeftToRightSimpleJoinEntityFilters {
         }
 
 
-        infix fun ne(value: T): LeftToRightSimpleJoinEntityFilter {
+        infix fun ne(value: T): LeftToRightSimpleEntityFilter {
 
             return SimpleFunctionFilter(
                 this.databaseColumnName,
@@ -165,28 +165,28 @@ class LeftToRightSimpleJoinEntityFilters {
         }
 
 
-        infix fun `in`(value: Iterable<T>): LeftToRightSimpleJoinEntityFilter {
+        infix fun `in`(value: Iterable<T>): LeftToRightSimpleEntityFilter {
 
             return MultiValueFunctionFilter(this.databaseColumnName, this.sqlType, this.sqlParamCounter, value, this.valueMappingFunc)
 
         }
 
 
-        fun isNotNull(): LeftToRightSimpleJoinEntityFilter {
+        fun isNotNull(): LeftToRightSimpleEntityFilter {
 
             return IsNotNullFilter(this.databaseColumnName)
 
         }
 
 
-        fun isNull(): LeftToRightSimpleJoinEntityFilter {
+        fun isNull(): LeftToRightSimpleEntityFilter {
 
             return IsNullFilter(this.databaseColumnName)
 
         }
 
 
-        infix fun contains(value: T): LeftToRightSimpleJoinEntityFilter {
+        infix fun contains(value: T): LeftToRightSimpleEntityFilter {
 
             TODO("Not implemented yet")
 
@@ -196,10 +196,10 @@ class LeftToRightSimpleJoinEntityFilters {
     }
 
 
-    class NoopFilter : LeftToRightSimpleJoinEntityFilter {
+    class NoopFilter : LeftToRightSimpleEntityFilter {
 
 
-        override fun whereClause(fieldConverter: LeftToRightSimpleJoinEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSimpleEntityFieldConverter): String {
             return "1 = 1"
         }
 
@@ -219,7 +219,7 @@ class LeftToRightSimpleJoinEntityFilters {
         sqlParamCounter: AtomicInteger,
         private val sqlConditionOperator: SqlConditionOperator,
         private val valueMappingFunc: (VALUE?) -> Any?
-    ) : LeftToRightSimpleJoinEntityFilter {
+    ) : LeftToRightSimpleEntityFilter {
 
 
         private val sqlParamName = "${fieldName}_${sqlParamCounter.getAndIncrement()}"
@@ -232,7 +232,7 @@ class LeftToRightSimpleJoinEntityFilters {
         }
 
 
-        override fun whereClause(fieldConverter: LeftToRightSimpleJoinEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSimpleEntityFieldConverter): String {
 
             return "$fieldName ${operatorFor(sqlConditionOperator)} :${this.sqlParamName}"
 
@@ -271,7 +271,7 @@ class LeftToRightSimpleJoinEntityFilters {
         sqlParamCounter: AtomicInteger,
         private val values: Iterable<VALUE>,
         private val valueMappingFunc: (VALUE?) -> Any?
-    ) : LeftToRightSimpleJoinEntityFilter {
+    ) : LeftToRightSimpleEntityFilter {
 
 
         private val sqlParamName = "${fieldName}_${sqlParamCounter.getAndIncrement()}"
@@ -285,7 +285,7 @@ class LeftToRightSimpleJoinEntityFilters {
         }
 
 
-        override fun whereClause(fieldConverter: LeftToRightSimpleJoinEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSimpleEntityFieldConverter): String {
 
             return "$fieldName in (:$sqlParamName)"
 
@@ -304,12 +304,12 @@ class LeftToRightSimpleJoinEntityFilters {
 
 
     private class IterableFunctionFilter(
-        private val filters: List<LeftToRightSimpleJoinEntityFilter>,
+        private val filters: List<LeftToRightSimpleEntityFilter>,
         private val andOr: AndOr
-    ) : LeftToRightSimpleJoinEntityFilter {
+    ) : LeftToRightSimpleEntityFilter {
 
 
-        override fun whereClause(fieldConverter: LeftToRightSimpleJoinEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSimpleEntityFieldConverter): String {
 
             return this.filters.map { it.whereClause(fieldConverter) }.joinToString(" ${andOr.name} ")
 
@@ -328,10 +328,10 @@ class LeftToRightSimpleJoinEntityFilters {
 
     private class IsNullFilter(
         private val databaseColumnName: String
-    ) : LeftToRightSimpleJoinEntityFilter {
+    ) : LeftToRightSimpleEntityFilter {
 
 
-        override fun whereClause(fieldConverter: LeftToRightSimpleJoinEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSimpleEntityFieldConverter): String {
 
             return "$databaseColumnName is null"
 
@@ -350,10 +350,10 @@ class LeftToRightSimpleJoinEntityFilters {
 
     private class IsNotNullFilter(
         private val databaseColumnName: String
-    ) : LeftToRightSimpleJoinEntityFilter {
+    ) : LeftToRightSimpleEntityFilter {
 
 
-        override fun whereClause(fieldConverter: LeftToRightSimpleJoinEntityFieldConverter): String {
+        override fun whereClause(fieldConverter: LeftToRightSimpleEntityFieldConverter): String {
 
             return "$databaseColumnName is not null"
 

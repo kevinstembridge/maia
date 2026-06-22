@@ -15,23 +15,23 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftToRightSimpleJoinDao(
-    private val fieldConverter: LeftToRightSimpleJoinEntityFieldConverter,
+class LeftToRightSimpleDao(
+    private val fieldConverter: LeftToRightSimpleEntityFieldConverter,
     private val jdbcOps: JdbcOps
 ) {
 
 
-    private val entityRowMapper = LeftToRightSimpleJoinEntityRowMapper()
+    private val entityRowMapper = LeftToRightSimpleEntityRowMapper()
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
-    fun insert(entity: LeftToRightSimpleJoinEntity) {
+    fun insert(entity: LeftToRightSimpleEntity) {
 
         jdbcOps.update(
             """
-            insert into maia.left_to_right_simple_join (
+            insert into maia.left_to_right_simple (
                 created_timestamp_utc,
                 id,
                 left_simple_id,
@@ -54,11 +54,11 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun bulkInsert(entities: List<LeftToRightSimpleJoinEntity>) {
+    fun bulkInsert(entities: List<LeftToRightSimpleEntity>) {
 
         jdbcOps.batchUpdate(
             """
-            insert into maia.left_to_right_simple_join (
+            insert into maia.left_to_right_simple (
                 created_timestamp_utc,
                 id,
                 left_simple_id,
@@ -86,14 +86,14 @@ class LeftToRightSimpleJoinDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from maia.left_to_right_simple_join",
+            "select count(*) from maia.left_to_right_simple",
             SqlParams()
         )
 
     }
 
 
-    fun count(filter: LeftToRightSimpleJoinEntityFilter): Long {
+    fun count(filter: LeftToRightSimpleEntityFilter): Long {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -102,7 +102,7 @@ class LeftToRightSimpleJoinDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from maia.left_to_right_simple_join
+            select count(*) from maia.left_to_right_simple
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -112,26 +112,26 @@ class LeftToRightSimpleJoinDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(id: DomainId): LeftToRightSimpleJoinEntity {
+    fun findByPrimaryKey(id: DomainId): LeftToRightSimpleEntity {
 
         return findByPrimaryKeyOrNull(id)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
-                    LeftToRightSimpleJoinEntity::class.java,
+                    LeftToRightSimpleEntity::class.java,
                     mapOf(
                         "id" to id,
                     )
                 ),
-                LeftToRightSimpleJoinEntityMeta.TABLE_NAME
+                LeftToRightSimpleEntityMeta.TABLE_NAME
             )
 
     }
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId): LeftToRightSimpleJoinEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): LeftToRightSimpleEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia.left_to_right_simple_join where id = :id",
+            "select * from maia.left_to_right_simple where id = :id",
             SqlParams().apply {
                 addValue("id", id)
             },
@@ -144,7 +144,7 @@ class LeftToRightSimpleJoinDao(
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from maia.left_to_right_simple_join where id = :id",
+            "select count(*) from maia.left_to_right_simple where id = :id",
             SqlParams().apply {
                 addValue("id", id)
            }
@@ -154,11 +154,11 @@ class LeftToRightSimpleJoinDao(
        
     }
 
-    fun findByLeftSimple(leftSimple: DomainId): List<LeftToRightSimpleJoinEntity> {
+    fun findByLeftSimple(leftSimple: DomainId): List<LeftToRightSimpleEntity> {
 
         return jdbcOps.queryForList(
             """
-            select * from maia.left_to_right_simple_join
+            select * from maia.left_to_right_simple
             where left_simple_id = :leftSimple
             """.trimIndent(),
             SqlParams().apply {
@@ -170,11 +170,11 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun findByRightSimple(rightSimple: DomainId): List<LeftToRightSimpleJoinEntity> {
+    fun findByRightSimple(rightSimple: DomainId): List<LeftToRightSimpleEntity> {
 
         return jdbcOps.queryForList(
             """
-            select * from maia.left_to_right_simple_join
+            select * from maia.left_to_right_simple
             where right_simple_id = :rightSimple
             """.trimIndent(),
             SqlParams().apply {
@@ -186,7 +186,7 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun findAllBy(filter: LeftToRightSimpleJoinEntityFilter): List<LeftToRightSimpleJoinEntity> {
+    fun findAllBy(filter: LeftToRightSimpleEntityFilter): List<LeftToRightSimpleEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -194,7 +194,7 @@ class LeftToRightSimpleJoinDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.left_to_right_simple_join where $whereClause",
+            "select * from maia.left_to_right_simple where $whereClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -202,7 +202,7 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: LeftToRightSimpleJoinEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: LeftToRightSimpleEntityFilter): Sequence<DomainId> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -210,7 +210,7 @@ class LeftToRightSimpleJoinDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from maia.left_to_right_simple_join where $whereClause",
+            "select id from maia.left_to_right_simple where $whereClause",
             sqlParams,
             { rsa -> rsa.readDomainId("id") }
         )
@@ -221,7 +221,7 @@ class LeftToRightSimpleJoinDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from maia.left_to_right_simple_join;",
+            "select id from maia.left_to_right_simple;",
             SqlParams(),
             { rsa -> rsa.readDomainId("id") }
         )
@@ -229,7 +229,7 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun findAllBy(filter: LeftToRightSimpleJoinEntityFilter, pageable: Pageable): List<LeftToRightSimpleJoinEntity> {
+    fun findAllBy(filter: LeftToRightSimpleEntityFilter, pageable: Pageable): List<LeftToRightSimpleEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val orderByClause = orderByClauseFor(pageable)
@@ -241,7 +241,7 @@ class LeftToRightSimpleJoinDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForList(
-            "select * from maia.left_to_right_simple_join where $whereClause $orderByClause $limitClause $offsetClause",
+            "select * from maia.left_to_right_simple where $whereClause $orderByClause $limitClause $offsetClause",
             sqlParams,
             this.entityRowMapper
         )
@@ -271,10 +271,10 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun findAllAsSequence(): Sequence<LeftToRightSimpleJoinEntity> {
+    fun findAllAsSequence(): Sequence<LeftToRightSimpleEntity> {
 
         return this.jdbcOps.queryForSequence(
-            "select * from maia.left_to_right_simple_join;",
+            "select * from maia.left_to_right_simple;",
             SqlParams(),
             this.entityRowMapper,
         )
@@ -287,7 +287,7 @@ class LeftToRightSimpleJoinDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*)
-            from maia.left_to_right_simple_join
+            from maia.left_to_right_simple
             where left_simple_id = :leftSimple
             """.trimIndent(),
             SqlParams().apply {
@@ -305,7 +305,7 @@ class LeftToRightSimpleJoinDao(
         val count = jdbcOps.queryForInt(
             """
             select count(*)
-            from maia.left_to_right_simple_join
+            from maia.left_to_right_simple
             where right_simple_id = :rightSimple
             """.trimIndent(),
             SqlParams().apply {
@@ -318,19 +318,19 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun setFields(updaters: List<LeftToRightSimpleJoinEntityUpdater>) {
+    fun setFields(updaters: List<LeftToRightSimpleEntityUpdater>) {
 
         updaters.forEach { setFields(it) }
 
     }
 
 
-    fun setFields(updater: LeftToRightSimpleJoinEntityUpdater): Int {
+    fun setFields(updater: LeftToRightSimpleEntityUpdater): Int {
 
         val sql = StringBuilder()
         val sqlParams = SqlParams()
 
-        sql.append("update maia.left_to_right_simple_join set ")
+        sql.append("update maia.left_to_right_simple set ")
 
         val fieldClauses = updater.fields
             .map { field ->
@@ -365,7 +365,7 @@ class LeftToRightSimpleJoinDao(
         val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
 
         val deletedCount = this.jdbcOps.update(
-            "delete from maia.left_to_right_simple_join where id = :id",
+            "delete from maia.left_to_right_simple where id = :id",
             SqlParams().apply {
                 addValue("id", id)
             }
@@ -376,7 +376,7 @@ class LeftToRightSimpleJoinDao(
     }
 
 
-    fun removeByPrimaryKey(id: DomainId): LeftToRightSimpleJoinEntity? {
+    fun removeByPrimaryKey(id: DomainId): LeftToRightSimpleEntity? {
 
         val found = findByPrimaryKeyOrNull(id)
 

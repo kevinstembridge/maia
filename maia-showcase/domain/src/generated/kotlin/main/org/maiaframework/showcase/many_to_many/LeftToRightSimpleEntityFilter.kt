@@ -6,10 +6,10 @@ package org.maiaframework.showcase.many_to_many
 import org.maiaframework.jdbc.SqlParams
 
 
-interface LeftToRightSimpleJoinEntityFilter {
+interface LeftToRightSimpleEntityFilter {
 
 
-    fun whereClause(fieldConverter: LeftToRightSimpleJoinEntityFieldConverter): String 
+    fun whereClause(fieldConverter: LeftToRightSimpleEntityFieldConverter): String 
 
 
     fun populateSqlParams(sqlParams: SqlParams)

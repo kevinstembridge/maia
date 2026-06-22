@@ -17,7 +17,7 @@ class LeftManyCrudService(
     private val entityRepo: LeftManyRepo,
     private val leftManyCrudNotifier: LeftManyCrudNotifier,
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
-    private val leftToRightSimpleJoinRepo: LeftToRightSimpleJoinRepo,
+    private val leftToRightSimpleRepo: LeftToRightSimpleRepo,
     private val leftToRightSystemEffectiveRangeRepo: LeftToRightSystemEffectiveRangeRepo,
     private val maiaProblems: MaiaProblems
 ) {
@@ -80,8 +80,8 @@ class LeftManyCrudService(
     ) {
 
         createDto.rightSimpleEntityIds.forEach { rightSimple ->
-            this.leftToRightSimpleJoinRepo.insert(
-                LeftToRightSimpleJoinEntity.newInstance(
+            this.leftToRightSimpleRepo.insert(
+                LeftToRightSimpleEntity.newInstance(
                     leftSimple = entity.id,
                     rightSimple = rightSimple
                 )
@@ -149,7 +149,7 @@ class LeftManyCrudService(
 
         setFields(updater)
 
-        `reconcile leftToRightSimpleJoin joins`(id, editDto.rightSimpleEntityIds)
+        `reconcile leftToRightSimple joins`(id, editDto.rightSimpleEntityIds)
 
         `reconcile leftToRightSystemEffectiveRange joins`(id, editDto.rightEffectiveEntities)
 
@@ -158,24 +158,24 @@ class LeftManyCrudService(
     }
 
 
-    private fun `reconcile leftToRightSimpleJoin joins`(
+    private fun `reconcile leftToRightSimple joins`(
         id: DomainId,
         submittedIds: List<DomainId>
     ) {
 
-        val existing = this.leftToRightSimpleJoinRepo.findByLeftSimple(id)
+        val existing = this.leftToRightSimpleRepo.findByLeftSimple(id)
         val existingIds = existing.map { it.rightSimple }.toSet()
         val desiredIds = submittedIds.toSet()
 
         existing.filter { it.rightSimple !in desiredIds }.forEach {
-            this.leftToRightSimpleJoinRepo.deleteByPrimaryKey(it.id)
+            this.leftToRightSimpleRepo.deleteByPrimaryKey(it.id)
         }
 
         val newJoins = (desiredIds - existingIds).map { rightSimple ->
-            LeftToRightSimpleJoinEntity.newInstance(leftSimple = id, rightSimple = rightSimple)
+            LeftToRightSimpleEntity.newInstance(leftSimple = id, rightSimple = rightSimple)
         }
 
-        this.leftToRightSimpleJoinRepo.bulkInsert(newJoins)
+        this.leftToRightSimpleRepo.bulkInsert(newJoins)
 
     }
 
@@ -321,8 +321,8 @@ class LeftManyCrudService(
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
-        if (this.leftToRightSimpleJoinRepo.existsByLeftSimple(id)) {
-            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimpleJoin")
+        if (this.leftToRightSimpleRepo.existsByLeftSimple(id)) {
+            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimple")
         }
 
         if (this.leftToRightSystemEffectiveRangeRepo.findEffectiveByLeftEffective(id).isNotEmpty()) {

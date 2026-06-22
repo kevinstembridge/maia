@@ -7,17 +7,17 @@ import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 
 
-class LeftToRightSimpleJoinEntityRowMapper : MaiaRowMapper<LeftToRightSimpleJoinEntity> {
+class LeftToRightSimpleEntityRowMapper : MaiaRowMapper<LeftToRightSimpleEntity> {
 
 
-    override fun mapRow(rsa: ResultSetAdapter): LeftToRightSimpleJoinEntity {
+    override fun mapRow(rsa: ResultSetAdapter): LeftToRightSimpleEntity {
 
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
         val leftSimple = rsa.readDomainId("left_simple_id")
         val rightSimple = rsa.readDomainId("right_simple_id")
 
-        return LeftToRightSimpleJoinEntity(
+        return LeftToRightSimpleEntity(
                 createdTimestampUtc,
                 id,
                 leftSimple,

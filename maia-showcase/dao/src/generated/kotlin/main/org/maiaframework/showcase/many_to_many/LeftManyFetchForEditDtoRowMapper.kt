@@ -124,7 +124,7 @@ class LeftManyFetchForEditDtoRowMapper(
                 other.id,
                 other.some_string
             from maia.right_many other
-            join maia.left_to_right_simple_join mtm
+            join maia.left_to_right_simple mtm
                 on other.id = mtm.right_simple_id
             where mtm.left_simple_id = :entityId
             order by other.some_string

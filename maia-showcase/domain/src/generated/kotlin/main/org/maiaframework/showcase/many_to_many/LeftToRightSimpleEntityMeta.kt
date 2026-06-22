@@ -10,7 +10,7 @@ import org.maiaframework.jdbc.SchemaAndTableName
 import org.maiaframework.jdbc.TableName
 
 
-object LeftToRightSimpleJoinEntityMeta {
+object LeftToRightSimpleEntityMeta {
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
@@ -20,22 +20,22 @@ object LeftToRightSimpleJoinEntityMeta {
 
     const val rightSimple = "right_simple_id"
 
-    val ENTITY_KEY = EntityKey("LeftToRightSimpleJoin")
+    val ENTITY_KEY = EntityKey("LeftToRightSimple")
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
 
     val SCHEMA_NAME = SchemaName("maia")
 
-    val TABLE_NAME = TableName("left_to_right_simple_join")
+    val TABLE_NAME = TableName("left_to_right_simple")
 
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
 
     object IndexName {
 
-        const val left_to_right_simple_join_left_simple_id_idx = "left_to_right_simple_join_left_simple_id_idx"
+        const val left_to_right_simple_left_simple_id_idx = "left_to_right_simple_left_simple_id_idx"
 
-        const val left_to_right_simple_join_right_simple_id_idx = "left_to_right_simple_join_right_simple_id_idx"
+        const val left_to_right_simple_right_simple_id_idx = "left_to_right_simple_right_simple_id_idx"
 
     }
 

@@ -1345,16 +1345,16 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val leftToRightSimpleJoinEntityDef = simpleManyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
-        "LeftToRightSimpleJoin",
+        "LeftToRightSimple",
         leftEntity = ReferencedEntity(
             fieldName = "leftSimple",
-            displayName = "Left",
+            displayName = "Left Simple",
             leftManyEntityDef,
             IsEditableByUser.TRUE
         ),
         rightEntity = ReferencedEntity(
             fieldName = "rightSimple",
-            displayName = "Right",
+            displayName = "Right Simple",
             rightManyEntityDef,
             IsEditableByUser.TRUE
         )

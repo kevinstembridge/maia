@@ -24,7 +24,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var simpleJoinDao: LeftToRightSimpleJoinDao
+    private lateinit var leftToRightSimpleDao: LeftToRightSimpleDao
 
 
     private lateinit var leftEntity: LeftManyEntity
@@ -52,7 +52,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
         join2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity.id, rightId = rightEntity2.id).build()
 
         manyToManyJoinDao.deleteAll()
-        truncateTable(LeftToRightSimpleJoinEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(LeftToRightSimpleEntityMeta.SCHEMA_AND_TABLE_NAME)
         leftDao.deleteAll()
         rightDao.deleteAll()
         leftDao.insert(leftEntity)
