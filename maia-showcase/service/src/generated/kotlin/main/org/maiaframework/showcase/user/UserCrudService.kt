@@ -40,7 +40,7 @@ class UserCrudService(
 
         create(entity)
 
-        createUserGroupJoins(createDto, entity)
+        `create userGroup joins`(createDto, entity)
 
         return entity
 
@@ -92,7 +92,7 @@ class UserCrudService(
     }
 
 
-    private fun createUserGroupJoins(
+    private fun `create userGroup joins`(
         createDto: UserCreateRequestDto,
         entity: UserEntity
     ) {
@@ -136,10 +136,10 @@ class UserCrudService(
         //    this.userGroupMembershipEntityRepo.deleteByPrimaryKey(join.id)
         //}
 
-        //val newUserGroupMembershipJoins = editDto.userGroupEntities.map { joinDto ->
+        //val newuserGroupMembershipJoins = editDto.userGroupEntities.map { joinDto ->
         //    UserGroupMembershipEntity.newInstance(effectiveFrom = joinDto.effectiveFrom, effectiveTo = joinDto.effectiveTo, user = id, userGroup = joinDto.userGroupEntityId)
         //}
-        //this.userGroupMembershipEntityRepo.bulkInsert(newUserGroupMembershipJoins)
+        //this.userGroupMembershipEntityRepo.bulkInsert(newuserGroupMembershipJoins)
 
     }
 

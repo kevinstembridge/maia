@@ -162,7 +162,7 @@ class CrudServiceRenderer(
 
                 val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
                 val otherSideFieldName = otherSide.fieldName
-                val createHelperName = "create${otherSideFieldName.replaceFirstChar { it.uppercaseChar() }}Joins"
+                val createHelperName = "`create $otherSideFieldName joins`"
 
                 blankLine()
                 appendLine("        $createHelperName(createDto, entity)")
@@ -219,7 +219,7 @@ class CrudServiceRenderer(
             val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
             addImportFor(manyToManyEntityDef.entityDef.entityFqcn)
             val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
-            val createHelperName = "create${otherSideFieldName.replaceFirstChar { it.uppercaseChar() }}Joins"
+            val createHelperName = "`create $otherSideFieldName joins`"
 
             blankLine()
             blankLine()
@@ -541,14 +541,14 @@ class CrudServiceRenderer(
             val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
             val otherSideFieldName = otherSide.fieldName
             val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
-            val joinNamePrefix = joinEntityClass.value.removeSuffix("Entity")
+            val joinNamePrefix = joinEntityClass.value.removeSuffix("Entity").replaceFirstChar { it.lowercaseChar() }
 
             if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP && manyToManyEntityDef.entityDef.isDeletable) {
 
                 val otherSideDtoFieldName = "${otherSideFieldName}Entities"
                 append("""
                     |
-                    |        reconcile${joinNamePrefix}Joins(id, editDto.${otherSideDtoFieldName})
+                    |        `reconcile $joinNamePrefix joins`(id, editDto.${otherSideDtoFieldName})
                     |""".trimMargin())
 
             } else if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
@@ -569,7 +569,7 @@ class CrudServiceRenderer(
 
                 append("""
                     |
-                    |        reconcile${joinNamePrefix}Joins(id, editDto.${"${otherSideFieldName}EntityIds"})
+                    |        `reconcile $joinNamePrefix joins`(id, editDto.${"${otherSideFieldName}EntityIds"})
                     |""".trimMargin())
 
             }
@@ -595,7 +595,7 @@ class CrudServiceRenderer(
             val thisSideFieldNameCapitalized = thisSideFieldName.replaceFirstChar { it.uppercaseChar() }
             val joinEntityClass = manyToManyEntityDef.entityDef.entityUqcn
             val joinRepoFieldName = manyToManyEntityDef.entityDef.entityRepoFqcn.uqcn.firstToLower()
-            val joinNamePrefix = joinEntityClass.value.removeSuffix("Entity")
+            val joinNamePrefix = joinEntityClass.value.removeSuffix("Entity").replaceFirstChar { it.lowercaseChar() }
 
             if (manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP && manyToManyEntityDef.entityDef.isDeletable) {
 
@@ -636,7 +636,7 @@ class CrudServiceRenderer(
                     append("""
                         |
                         |
-                        |    private fun reconcile${joinNamePrefix}Joins(
+                        |    private fun `reconcile $joinNamePrefix joins`(
                         |        id: DomainId,
                         |        submitted: List<${joinDtoDef.uqcn}>
                         |    ) {
@@ -694,7 +694,7 @@ class CrudServiceRenderer(
                     append("""
                         |
                         |
-                        |    private fun reconcile${joinNamePrefix}Joins(
+                        |    private fun `reconcile $joinNamePrefix joins`(
                         |        id: DomainId,
                         |        submitted: List<${joinDtoDef.uqcn}>
                         |    ) {
@@ -755,7 +755,7 @@ class CrudServiceRenderer(
                 append("""
                     |
                     |
-                    |    private fun reconcile${joinNamePrefix}Joins(
+                    |    private fun `reconcile $joinNamePrefix joins`(
                     |        id: DomainId,
                     |        submittedIds: List<DomainId>
                     |    ) {
