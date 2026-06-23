@@ -48,6 +48,13 @@ data class LeftToRightManyToManyJoinEntityUpdater(
         }
 
 
+        fun someInt(someInt: Int) {
+
+            this.fields.add(FieldUpdate("someInt", "some_int", someInt))
+
+        }
+
+
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
             this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))

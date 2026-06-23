@@ -465,6 +465,7 @@ class LeftToRightManyToManyJoinDao(
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "left" -> sqlParams.addValue("left", field.value as DomainId)
             "right" -> sqlParams.addValue("right", field.value as DomainId)
+            "someInt" -> sqlParams.addValue("someInt", field.value as Int)
         }
 
     }

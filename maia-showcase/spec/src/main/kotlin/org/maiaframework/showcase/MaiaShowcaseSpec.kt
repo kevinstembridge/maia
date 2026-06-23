@@ -1425,7 +1425,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         )
     ) {
         withEffectiveTimestamps(hasSingleEffectiveRecord = false)
-        field("someInt", FieldTypes.int)
+        field("someInt", FieldTypes.int) {
+            editableByUser()
+        }
         field_lastModifiedTimestampUtc()
     }
 
