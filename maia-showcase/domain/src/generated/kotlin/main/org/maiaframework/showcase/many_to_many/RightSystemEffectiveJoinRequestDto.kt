@@ -13,7 +13,7 @@ import java.time.Instant
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class LeftEffectiveJoinRequestDto
+class RightSystemEffectiveJoinRequestDto
 @JsonCreator constructor(
     @param:JsonProperty("effectiveFrom", access = JsonProperty.Access.READ_WRITE) 
     val effectiveFrom: Instant?,
@@ -22,19 +22,19 @@ class LeftEffectiveJoinRequestDto
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     val id: DomainId?,
     @field:NotNull
-    @param:JsonProperty("leftEffectiveEntityId", access = JsonProperty.Access.READ_WRITE) 
-    private val leftEffectiveEntityId_raw: DomainId?
+    @param:JsonProperty("rightSystemEffectiveEntityId", access = JsonProperty.Access.READ_WRITE) 
+    private val rightSystemEffectiveEntityId_raw: DomainId?
 ) {
 
 
     @get:JsonIgnore
-    val leftEffectiveEntityId: DomainId by lazy { leftEffectiveEntityId_raw!! }
+    val rightSystemEffectiveEntityId: DomainId by lazy { rightSystemEffectiveEntityId_raw!! }
 
 
     override fun toString(): String {
 
-        return "LeftEffectiveJoinRequestDto{" +
-                "leftEffectiveEntityId = '" + this.leftEffectiveEntityId + '\'' + ", " + 
+        return "RightSystemEffectiveJoinRequestDto{" +
+                "rightSystemEffectiveEntityId = '" + this.rightSystemEffectiveEntityId + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' +

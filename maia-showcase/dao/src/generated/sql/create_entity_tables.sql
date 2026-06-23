@@ -459,16 +459,16 @@ CREATE INDEX left_to_right_simple_left_simple_id_idx ON maia.left_to_right_simpl
 CREATE INDEX left_to_right_simple_right_simple_id_idx ON maia.left_to_right_simple(right_simple_id);
 
 
-CREATE TABLE maia.left_to_right_system_effective_range (
+CREATE TABLE maia.left_to_right_system_effective (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    left_effective_id uuid NOT NULL REFERENCES maia.left_many(id),
-    right_effective_id uuid NOT NULL REFERENCES maia.right_many(id),
+    left_system_effective_id uuid NOT NULL REFERENCES maia.left_many(id),
+    right_system_effective_id uuid NOT NULL REFERENCES maia.right_many(id),
     effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
 );
-CREATE INDEX left_to_right_system_effective_range_left_effective_id_idx ON maia.left_to_right_system_effective_range(left_effective_id);
-CREATE INDEX left_to_right_system_effective_range_right_effective_id_idx ON maia.left_to_right_system_effective_range(right_effective_id);
+CREATE INDEX left_to_right_system_effective_left_system_effective_id_idx ON maia.left_to_right_system_effective(left_system_effective_id);
+CREATE INDEX left_to_right_system_effective_right_system_effective_id_idx ON maia.left_to_right_system_effective(right_system_effective_id);
 
 
 CREATE TABLE maia.left_to_right_many_to_many_join (

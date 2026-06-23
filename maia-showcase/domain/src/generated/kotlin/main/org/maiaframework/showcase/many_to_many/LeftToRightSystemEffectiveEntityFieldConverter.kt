@@ -10,7 +10,7 @@ import java.time.Instant
 
 
 @Component
-class LeftToRightSystemEffectiveRangeEntityFieldConverter : EntityFieldConverter {
+class LeftToRightSystemEffectiveEntityFieldConverter : EntityFieldConverter {
 
 
     override fun convert(tableColumnName: String, inputValue: Any?): Any? {
@@ -25,9 +25,9 @@ class LeftToRightSystemEffectiveRangeEntityFieldConverter : EntityFieldConverter
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
-            "left_effective_id" -> // leftEffective
+            "left_system_effective_id" -> // leftSystemEffective
                 return (inputValue as DomainId).value
-            "right_effective_id" -> // rightEffective
+            "right_system_effective_id" -> // rightSystemEffective
                 return (inputValue as DomainId).value
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

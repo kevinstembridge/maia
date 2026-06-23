@@ -57,39 +57,39 @@
             </mat-autocomplete>
         </mat-form-field>
         <div class="join-entries">
-            @for (join of leftEffectiveJoins; track join.entityId) {
+            @for (join of leftSystemEffectiveJoins; track join.entityId) {
                 <div class="join-entry">
                     <span>{{ join.entityName }}</span>
-                    <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftEffectiveJoin($index)">
+                    <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftSystemEffectiveJoin($index)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
             }
         </div>
-        <button mat-stroked-button type="button" (click)="showLeftEffectiveJoinForm.set(true)">
-            <mat-icon>add</mat-icon> Add Left Effective Entities
+        <button mat-stroked-button type="button" (click)="showLeftSystemEffectiveJoinForm.set(true)">
+            <mat-icon>add</mat-icon> Add Left System Effective Entities
         </button>
-        @if (showLeftEffectiveJoinForm()) {
+        @if (showLeftSystemEffectiveJoinForm()) {
             <div class="join-mini-form">
                 <mat-form-field appearance="outline">
-                    <mat-label>Left Effective Entities</mat-label>
+                    <mat-label>Left System Effective Entities</mat-label>
                     <input
                         matInput
-                        [formControl]="addLeftEffectiveJoinEntityControl"
-                        [matAutocomplete]="leftEffectiveJoinEntityAuto"
-                        placeholder="Search Left Effective Entities..."
+                        [formControl]="addLeftSystemEffectiveJoinEntityControl"
+                        [matAutocomplete]="leftSystemEffectiveJoinEntityAuto"
+                        placeholder="Search Left System Effective Entities..."
                     />
-                    <mat-autocomplete #leftEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftEffectiveEntity">
-                        @if (filteredLeftEffectiveEntitiesIsLoading()) {
+                    <mat-autocomplete #leftSystemEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftSystemEffectiveEntity">
+                        @if (filteredLeftSystemEffectiveEntitiesIsLoading()) {
                             <mat-option disabled>Loading...</mat-option>
                         }
-                        @for (option of filteredLeftEffectiveEntities; track option.id) {
+                        @for (option of filteredLeftSystemEffectiveEntities; track option.id) {
                             <mat-option [value]="option">{{ option.someString }}</mat-option>
                         }
                     </mat-autocomplete>
                 </mat-form-field>
-                <button mat-flat-button type="button" (click)="confirmAddLeftEffectiveJoin()">Add</button>
-                <button mat-flat-button type="button" (click)="cancelAddLeftEffectiveJoin()">Cancel</button>
+                <button mat-flat-button type="button" (click)="confirmAddLeftSystemEffectiveJoin()">Add</button>
+                <button mat-flat-button type="button" (click)="cancelAddLeftSystemEffectiveJoin()">Cancel</button>
             </div>
         }
         <div class="join-entries">

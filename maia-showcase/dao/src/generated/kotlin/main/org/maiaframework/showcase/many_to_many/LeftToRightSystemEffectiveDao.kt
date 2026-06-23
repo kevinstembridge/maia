@@ -16,34 +16,34 @@ import java.time.Instant
 
 
 @Repository
-class LeftToRightSystemEffectiveRangeDao(
-    private val fieldConverter: LeftToRightSystemEffectiveRangeEntityFieldConverter,
+class LeftToRightSystemEffectiveDao(
+    private val fieldConverter: LeftToRightSystemEffectiveEntityFieldConverter,
     private val jdbcOps: JdbcOps
 ) {
 
 
-    private val entityRowMapper = LeftToRightSystemEffectiveRangeEntityRowMapper()
+    private val entityRowMapper = LeftToRightSystemEffectiveEntityRowMapper()
 
 
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
-    fun insert(entity: LeftToRightSystemEffectiveRangeEntity) {
+    fun insert(entity: LeftToRightSystemEffectiveEntity) {
 
         jdbcOps.update(
             """
-            insert into maia.left_to_right_system_effective_range (
+            insert into maia.left_to_right_system_effective (
                 created_timestamp_utc,
                 effective_range,
                 id,
-                left_effective_id,
-                right_effective_id
+                left_system_effective_id,
+                right_system_effective_id
             ) values (
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
-                :leftEffective,
-                :rightEffective
+                :leftSystemEffective,
+                :rightSystemEffective
             )
             """.trimIndent(),
             SqlParams().apply {
@@ -51,30 +51,30 @@ class LeftToRightSystemEffectiveRangeDao(
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
                 addValue("id", entity.id)
-                addValue("leftEffective", entity.leftEffective)
-                addValue("rightEffective", entity.rightEffective)
+                addValue("leftSystemEffective", entity.leftSystemEffective)
+                addValue("rightSystemEffective", entity.rightSystemEffective)
             }
         )
 
     }
 
 
-    fun bulkInsert(entities: List<LeftToRightSystemEffectiveRangeEntity>) {
+    fun bulkInsert(entities: List<LeftToRightSystemEffectiveEntity>) {
 
         jdbcOps.batchUpdate(
             """
-            insert into maia.left_to_right_system_effective_range (
+            insert into maia.left_to_right_system_effective (
                 created_timestamp_utc,
                 effective_range,
                 id,
-                left_effective_id,
-                right_effective_id
+                left_system_effective_id,
+                right_system_effective_id
             ) values (
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
-                :leftEffective,
-                :rightEffective
+                :leftSystemEffective,
+                :rightSystemEffective
             )
             """.trimIndent(),
             entities.map { entity ->
@@ -83,8 +83,8 @@ class LeftToRightSystemEffectiveRangeDao(
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
                     addValue("id", entity.id)
-                    addValue("leftEffective", entity.leftEffective)
-                    addValue("rightEffective", entity.rightEffective)
+                    addValue("leftSystemEffective", entity.leftSystemEffective)
+                    addValue("rightSystemEffective", entity.rightSystemEffective)
                 }
             }
         )
@@ -95,14 +95,14 @@ class LeftToRightSystemEffectiveRangeDao(
     fun count(): Long {
 
         return jdbcOps.queryForLong(
-            "select count(*) from maia.left_to_right_system_effective_range",
+            "select count(*) from maia.left_to_right_system_effective",
             SqlParams()
         )
 
     }
 
 
-    fun count(filter: LeftToRightSystemEffectiveRangeEntityFilter): Long {
+    fun count(filter: LeftToRightSystemEffectiveEntityFilter): Long {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -111,7 +111,7 @@ class LeftToRightSystemEffectiveRangeDao(
 
         return jdbcOps.queryForLong(
             """
-            select count(*) from maia.left_to_right_system_effective_range
+            select count(*) from maia.left_to_right_system_effective
             where $whereClause
             """.trimIndent(),
             sqlParams
@@ -121,26 +121,26 @@ class LeftToRightSystemEffectiveRangeDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(id: DomainId): LeftToRightSystemEffectiveRangeEntity {
+    fun findByPrimaryKey(id: DomainId): LeftToRightSystemEffectiveEntity {
 
         return findByPrimaryKeyOrNull(id)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
-                    LeftToRightSystemEffectiveRangeEntity::class.java,
+                    LeftToRightSystemEffectiveEntity::class.java,
                     mapOf(
                         "id" to id,
                     )
                 ),
-                LeftToRightSystemEffectiveRangeEntityMeta.TABLE_NAME
+                LeftToRightSystemEffectiveEntityMeta.TABLE_NAME
             )
 
     }
 
 
-    fun findByPrimaryKeyOrNull(id: DomainId): LeftToRightSystemEffectiveRangeEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): LeftToRightSystemEffectiveEntity? {
 
         return jdbcOps.queryForList(
-            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_system_effective_range where id = :id",
+            "select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_system_effective where id = :id",
             SqlParams().apply {
                 addValue("id", id)
             },
@@ -153,7 +153,7 @@ class LeftToRightSystemEffectiveRangeDao(
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from maia.left_to_right_system_effective_range where id = :id",
+            "select count(*) from maia.left_to_right_system_effective where id = :id",
             SqlParams().apply {
                 addValue("id", id)
            }
@@ -163,15 +163,15 @@ class LeftToRightSystemEffectiveRangeDao(
        
     }
 
-    fun findByLeftEffective(leftEffective: DomainId): List<LeftToRightSystemEffectiveRangeEntity> {
+    fun findByLeftSystemEffective(leftSystemEffective: DomainId): List<LeftToRightSystemEffectiveEntity> {
 
         return jdbcOps.queryForList(
             """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_system_effective_range
-            where left_effective_id = :leftEffective
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_system_effective
+            where left_system_effective_id = :leftSystemEffective
             """.trimIndent(),
             SqlParams().apply {
-                addValue("leftEffective", leftEffective)
+                addValue("leftSystemEffective", leftSystemEffective)
             },
             this.entityRowMapper
         )
@@ -179,15 +179,15 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun findByRightEffective(rightEffective: DomainId): List<LeftToRightSystemEffectiveRangeEntity> {
+    fun findByRightSystemEffective(rightSystemEffective: DomainId): List<LeftToRightSystemEffectiveEntity> {
 
         return jdbcOps.queryForList(
             """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_system_effective_range
-            where right_effective_id = :rightEffective
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.left_to_right_system_effective
+            where right_system_effective_id = :rightSystemEffective
             """.trimIndent(),
             SqlParams().apply {
-                addValue("rightEffective", rightEffective)
+                addValue("rightSystemEffective", rightSystemEffective)
             },
             this.entityRowMapper
         )
@@ -195,28 +195,7 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun findEffectiveByLeftEffective(leftEffective: DomainId): List<LeftToRightSystemEffectiveRangeEntity> {
-
-        return jdbcOps.queryForList(
-            """
-            select 
-                *,
-                lower(effective_range) as effective_from,
-                upper(effective_range) as effective_to
-            from maia.left_to_right_system_effective_range
-            where left_effective_id = :leftEffective
-            and effective_range @> current_timestamp
-            """.trimIndent(),
-            SqlParams().apply {
-                addValue("leftEffective", leftEffective)
-            },
-            this.entityRowMapper
-        )
-
-    }
-
-
-    fun findEffectiveByRightEffective(rightEffective: DomainId): List<LeftToRightSystemEffectiveRangeEntity> {
+    fun findEffectiveByLeftSystemEffective(leftSystemEffective: DomainId): List<LeftToRightSystemEffectiveEntity> {
 
         return jdbcOps.queryForList(
             """
@@ -224,12 +203,12 @@ class LeftToRightSystemEffectiveRangeDao(
                 *,
                 lower(effective_range) as effective_from,
                 upper(effective_range) as effective_to
-            from maia.left_to_right_system_effective_range
-            where right_effective_id = :rightEffective
+            from maia.left_to_right_system_effective
+            where left_system_effective_id = :leftSystemEffective
             and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
-                addValue("rightEffective", rightEffective)
+                addValue("leftSystemEffective", leftSystemEffective)
             },
             this.entityRowMapper
         )
@@ -237,7 +216,28 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun findAllBy(filter: LeftToRightSystemEffectiveRangeEntityFilter): List<LeftToRightSystemEffectiveRangeEntity> {
+    fun findEffectiveByRightSystemEffective(rightSystemEffective: DomainId): List<LeftToRightSystemEffectiveEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.left_to_right_system_effective
+            where right_system_effective_id = :rightSystemEffective
+            and effective_range @> current_timestamp
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("rightSystemEffective", rightSystemEffective)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findAllBy(filter: LeftToRightSystemEffectiveEntityFilter): List<LeftToRightSystemEffectiveEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -250,7 +250,7 @@ class LeftToRightSystemEffectiveRangeDao(
                 *,
                 lower(effective_range) as effective_from,
                 upper(effective_range) as effective_to
-            from maia.left_to_right_system_effective_range
+            from maia.left_to_right_system_effective
             where $whereClause
             """.trimIndent(),
             sqlParams,
@@ -260,7 +260,7 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: LeftToRightSystemEffectiveRangeEntityFilter): Sequence<DomainId> {
+    fun findPrimaryKeysAsSequence(filter: LeftToRightSystemEffectiveEntityFilter): Sequence<DomainId> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -268,7 +268,7 @@ class LeftToRightSystemEffectiveRangeDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select id from maia.left_to_right_system_effective_range where $whereClause",
+            "select id from maia.left_to_right_system_effective where $whereClause",
             sqlParams,
             { rsa -> rsa.readDomainId("id") }
         )
@@ -279,7 +279,7 @@ class LeftToRightSystemEffectiveRangeDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select id from maia.left_to_right_system_effective_range;",
+            "select id from maia.left_to_right_system_effective;",
             SqlParams(),
             { rsa -> rsa.readDomainId("id") }
         )
@@ -287,7 +287,7 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun findAllBy(filter: LeftToRightSystemEffectiveRangeEntityFilter, pageable: Pageable): List<LeftToRightSystemEffectiveRangeEntity> {
+    fun findAllBy(filter: LeftToRightSystemEffectiveEntityFilter, pageable: Pageable): List<LeftToRightSystemEffectiveEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val orderByClause = orderByClauseFor(pageable)
@@ -304,7 +304,7 @@ class LeftToRightSystemEffectiveRangeDao(
                 *,
                 lower(effective_range) as effective_from,
                 upper(effective_range) as effective_to
-            from maia.left_to_right_system_effective_range
+            from maia.left_to_right_system_effective
             where $whereClause
             $orderByClause
             $limitClause
@@ -339,7 +339,7 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun findAllAsSequence(): Sequence<LeftToRightSystemEffectiveRangeEntity> {
+    fun findAllAsSequence(): Sequence<LeftToRightSystemEffectiveEntity> {
 
         return this.jdbcOps.queryForSequence(
             """
@@ -347,7 +347,7 @@ class LeftToRightSystemEffectiveRangeDao(
                 *,
                 lower(effective_range) as effective_from,
                 upper(effective_range) as effective_to
-            from maia.left_to_right_system_effective_range;
+            from maia.left_to_right_system_effective;
             """.trimIndent(),
             SqlParams(),
             this.entityRowMapper,
@@ -356,16 +356,16 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun existsByLeftEffective(leftEffective: DomainId): Boolean {
+    fun existsByLeftSystemEffective(leftSystemEffective: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*)
-            from maia.left_to_right_system_effective_range
-            where left_effective_id = :leftEffective
+            from maia.left_to_right_system_effective
+            where left_system_effective_id = :leftSystemEffective
             """.trimIndent(),
             SqlParams().apply {
-                addValue("leftEffective", leftEffective)
+                addValue("leftSystemEffective", leftSystemEffective)
             }
         )
 
@@ -374,16 +374,16 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun existsByRightEffective(rightEffective: DomainId): Boolean {
+    fun existsByRightSystemEffective(rightSystemEffective: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*)
-            from maia.left_to_right_system_effective_range
-            where right_effective_id = :rightEffective
+            from maia.left_to_right_system_effective
+            where right_system_effective_id = :rightSystemEffective
             """.trimIndent(),
             SqlParams().apply {
-                addValue("rightEffective", rightEffective)
+                addValue("rightSystemEffective", rightSystemEffective)
             }
         )
 
@@ -392,19 +392,19 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun setFields(updaters: List<LeftToRightSystemEffectiveRangeEntityUpdater>) {
+    fun setFields(updaters: List<LeftToRightSystemEffectiveEntityUpdater>) {
 
         updaters.forEach { setFields(it) }
 
     }
 
 
-    fun setFields(updater: LeftToRightSystemEffectiveRangeEntityUpdater): Int {
+    fun setFields(updater: LeftToRightSystemEffectiveEntityUpdater): Int {
 
         val sql = StringBuilder()
         val sqlParams = SqlParams()
 
-        sql.append("update maia.left_to_right_system_effective_range set ")
+        sql.append("update maia.left_to_right_system_effective set ")
 
         val effectiveFromUpdate = updater.fields.find { it.classFieldName == "effectiveFrom" }
         val effectiveToUpdate = updater.fields.find { it.classFieldName == "effectiveTo" }
@@ -450,8 +450,8 @@ class LeftToRightSystemEffectiveRangeDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "leftEffective" -> sqlParams.addValue("leftEffective", field.value as DomainId)
-            "rightEffective" -> sqlParams.addValue("rightEffective", field.value as DomainId)
+            "leftSystemEffective" -> sqlParams.addValue("leftSystemEffective", field.value as DomainId)
+            "rightSystemEffective" -> sqlParams.addValue("rightSystemEffective", field.value as DomainId)
         }
 
     }
@@ -461,7 +461,7 @@ class LeftToRightSystemEffectiveRangeDao(
 
         val updatedCount = this.jdbcOps.update(
             """
-            update maia.left_to_right_system_effective_range
+            update maia.left_to_right_system_effective
             set effective_range = tstzrange(lower(effective_range), now())
             where id = :id
             """.trimIndent(),
@@ -480,7 +480,7 @@ class LeftToRightSystemEffectiveRangeDao(
         val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
 
         val deletedCount = this.jdbcOps.update(
-            "delete from maia.left_to_right_system_effective_range where id = :id",
+            "delete from maia.left_to_right_system_effective where id = :id",
             SqlParams().apply {
                 addValue("id", id)
             }
@@ -491,7 +491,7 @@ class LeftToRightSystemEffectiveRangeDao(
     }
 
 
-    fun removeByPrimaryKey(id: DomainId): LeftToRightSystemEffectiveRangeEntity? {
+    fun removeByPrimaryKey(id: DomainId): LeftToRightSystemEffectiveEntity? {
 
         val found = findByPrimaryKeyOrNull(id)
 

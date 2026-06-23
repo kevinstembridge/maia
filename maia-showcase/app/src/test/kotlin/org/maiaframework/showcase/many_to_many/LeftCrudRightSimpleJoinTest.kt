@@ -68,7 +68,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
         crudService.update(
             LeftManyUpdateRequestDto(
                 id_raw = leftEntity.id,
-                rightEffectiveEntities_raw = emptyList(),
+                rightSystemEffectiveEntities_raw = emptyList(),
                 rightEntities_raw = emptyList(),
                 rightSimpleEntityIds_raw = listOf(rightEntity1.id, rightEntity2.id),
                 someInt_raw = leftEntity.someInt,
@@ -87,7 +87,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
         crudService.update(
             LeftManyUpdateRequestDto(
                 id_raw = leftEntity.id,
-                rightEffectiveEntities_raw = emptyList(),
+                rightSystemEffectiveEntities_raw = emptyList(),
                 rightEntities_raw = emptyList(),
                 rightSimpleEntityIds_raw = listOf(rightEntity1.id, rightEntity3.id),
                 someInt_raw = leftEntity.someInt,

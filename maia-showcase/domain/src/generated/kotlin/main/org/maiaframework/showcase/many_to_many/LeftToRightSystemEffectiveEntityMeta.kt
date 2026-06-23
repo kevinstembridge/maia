@@ -10,7 +10,7 @@ import org.maiaframework.jdbc.SchemaAndTableName
 import org.maiaframework.jdbc.TableName
 
 
-object LeftToRightSystemEffectiveRangeEntityMeta {
+object LeftToRightSystemEffectiveEntityMeta {
 
     const val createdTimestampUtc = "created_timestamp_utc"
 
@@ -20,26 +20,26 @@ object LeftToRightSystemEffectiveRangeEntityMeta {
 
     const val id = "id"
 
-    const val leftEffective = "left_effective_id"
+    const val leftSystemEffective = "left_system_effective_id"
 
-    const val rightEffective = "right_effective_id"
+    const val rightSystemEffective = "right_system_effective_id"
 
-    val ENTITY_KEY = EntityKey("LeftToRightSystemEffectiveRange")
+    val ENTITY_KEY = EntityKey("LeftToRightSystemEffective")
 
     val TYPE_DISCRIMINATORS = sortedSetOf<TypeDiscriminator>()
 
     val SCHEMA_NAME = SchemaName("maia")
 
-    val TABLE_NAME = TableName("left_to_right_system_effective_range")
+    val TABLE_NAME = TableName("left_to_right_system_effective")
 
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
 
     object IndexName {
 
-        const val left_to_right_system_effective_range_left_effective_id_idx = "left_to_right_system_effective_range_left_effective_id_idx"
+        const val left_to_right_system_effective_left_system_effective_id_idx = "left_to_right_system_effective_left_system_effective_id_idx"
 
-        const val left_to_right_system_effective_range_right_effective_id_idx = "left_to_right_system_effective_range_right_effective_id_idx"
+        const val left_to_right_system_effective_right_system_effective_id_idx = "left_to_right_system_effective_right_system_effective_id_idx"
 
     }
 
@@ -51,8 +51,8 @@ object LeftToRightSystemEffectiveRangeEntityMeta {
             "effectiveFrom" -> "effective_from"
             "effectiveTo" -> "effective_to"
             "id" -> "id"
-            "leftEffective" -> "left_effective_id"
-            "rightEffective" -> "right_effective_id"
+            "leftSystemEffective" -> "left_system_effective_id"
+            "rightSystemEffective" -> "right_system_effective_id"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

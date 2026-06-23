@@ -7,7 +7,7 @@ import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-data class RightEffectiveJoinFetchDto(
+data class RightSystemEffectiveJoinFetchDto(
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val entityId: DomainId,

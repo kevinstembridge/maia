@@ -7,25 +7,25 @@ import org.maiaframework.domain.DomainId
 import java.time.Instant
 
 
-class LeftToRightSystemEffectiveRangeEntity(
+class LeftToRightSystemEffectiveEntity(
     val createdTimestampUtc: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,
-    val leftEffective: DomainId,
-    val rightEffective: DomainId
+    val leftSystemEffective: DomainId,
+    val rightSystemEffective: DomainId
 ) {
 
 
     override fun toString(): String {
 
-        return "LeftToRightSystemEffectiveRangeEntity{" +
+        return "LeftToRightSystemEffectiveEntity{" +
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "leftEffective = '" + this.leftEffective + '\'' + ", " + 
-                "rightEffective = '" + this.rightEffective + '\'' +
+                "leftSystemEffective = '" + this.leftSystemEffective + '\'' + ", " + 
+                "rightSystemEffective = '" + this.rightSystemEffective + '\'' +
                 "}"
 
     }
@@ -43,20 +43,20 @@ class LeftToRightSystemEffectiveRangeEntity(
         fun newInstance(
             effectiveFrom: Instant?,
             effectiveTo: Instant?,
-            leftEffective: DomainId,
-            rightEffective: DomainId
-        ): LeftToRightSystemEffectiveRangeEntity {
+            leftSystemEffective: DomainId,
+            rightSystemEffective: DomainId
+        ): LeftToRightSystemEffectiveEntity {
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
 
-            return LeftToRightSystemEffectiveRangeEntity(
+            return LeftToRightSystemEffectiveEntity(
                 createdTimestampUtc,
                 effectiveFrom,
                 effectiveTo,
                 id,
-                leftEffective,
-                rightEffective
+                leftSystemEffective,
+                rightSystemEffective
             )
 
         }

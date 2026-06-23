@@ -1365,16 +1365,16 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val leftToRightSystemManagedEffectiveRangeEntityDef = simpleManyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
-        "LeftToRightSystemEffectiveRange",
+        "LeftToRightSystemEffective",
         leftEntity = ReferencedEntity(
-            fieldName = "leftEffective",
-            displayName = "Left Effective",
+            fieldName = "leftSystemEffective",
+            displayName = "Left System Effective",
             leftManyEntityDef,
             IsEditableByUser.TRUE
         ),
         rightEntity = ReferencedEntity(
-            fieldName = "rightEffective",
-            displayName = "Right Effective",
+            fieldName = "rightSystemEffective",
+            displayName = "Right System Effective",
             rightManyEntityDef,
             IsEditableByUser.TRUE
         )

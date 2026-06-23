@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class LeftToRightSystemEffectiveRangeCrudService(
-    private val entityRepo: LeftToRightSystemEffectiveRangeRepo,
+class LeftToRightSystemEffectiveCrudService(
+    private val entityRepo: LeftToRightSystemEffectiveRepo,
     private val maiaProblems: MaiaProblems
 ) {
 
 
-    private val logger = LoggerFactory.getLogger(LeftToRightSystemEffectiveRangeCrudService::class.java)
+    private val logger = LoggerFactory.getLogger(LeftToRightSystemEffectiveCrudService::class.java)
 
 
-    fun create(entity: LeftToRightSystemEffectiveRangeEntity): LeftToRightSystemEffectiveRangeEntity {
+    fun create(entity: LeftToRightSystemEffectiveEntity): LeftToRightSystemEffectiveEntity {
 
         this.entityRepo.insert(entity)
         return entity
@@ -27,7 +27,7 @@ class LeftToRightSystemEffectiveRangeCrudService(
     }
 
 
-    fun setFields(updater: LeftToRightSystemEffectiveRangeEntityUpdater): Int {
+    fun setFields(updater: LeftToRightSystemEffectiveEntityUpdater): Int {
         
         val count = this.entityRepo.setFields(updater)
         return count

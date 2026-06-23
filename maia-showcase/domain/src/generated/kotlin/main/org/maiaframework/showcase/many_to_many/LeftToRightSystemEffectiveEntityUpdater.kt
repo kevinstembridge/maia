@@ -8,7 +8,7 @@ import org.maiaframework.domain.persist.FieldUpdate
 import java.time.Instant
 
 
-data class LeftToRightSystemEffectiveRangeEntityUpdater(
+data class LeftToRightSystemEffectiveEntityUpdater(
     val fields: List<FieldUpdate>,
     val id: DomainId
 ) {
@@ -27,9 +27,9 @@ data class LeftToRightSystemEffectiveRangeEntityUpdater(
         private val fields = mutableListOf<FieldUpdate>()
 
 
-        fun build(): LeftToRightSystemEffectiveRangeEntityUpdater {
+        fun build(): LeftToRightSystemEffectiveEntityUpdater {
 
-            return LeftToRightSystemEffectiveRangeEntityUpdater(this.fields, this.id)
+            return LeftToRightSystemEffectiveEntityUpdater(this.fields, this.id)
 
         }
 
@@ -48,16 +48,16 @@ data class LeftToRightSystemEffectiveRangeEntityUpdater(
         }
 
 
-        fun leftEffective(leftEffective: DomainId) {
+        fun leftSystemEffective(leftSystemEffective: DomainId) {
 
-            this.fields.add(FieldUpdate("leftEffective", "left_effective_id", leftEffective))
+            this.fields.add(FieldUpdate("leftSystemEffective", "left_system_effective_id", leftSystemEffective))
 
         }
 
 
-        fun rightEffective(rightEffective: DomainId) {
+        fun rightSystemEffective(rightSystemEffective: DomainId) {
 
-            this.fields.add(FieldUpdate("rightEffective", "right_effective_id", rightEffective))
+            this.fields.add(FieldUpdate("rightSystemEffective", "right_system_effective_id", rightSystemEffective))
 
         }
 
@@ -71,7 +71,7 @@ data class LeftToRightSystemEffectiveRangeEntityUpdater(
         fun forPrimaryKey(
             id: DomainId,
             init: Builder.() -> Unit
-        ): LeftToRightSystemEffectiveRangeEntityUpdater {
+        ): LeftToRightSystemEffectiveEntityUpdater {
 
             val builder = Builder(id)
             builder.init()

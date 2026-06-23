@@ -19,12 +19,12 @@ class RightManyUpdateRequestDto
     @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
-    @param:JsonProperty("leftEffectiveEntities", access = JsonProperty.Access.READ_WRITE) 
-    private val leftEffectiveEntities_raw: List<LeftEffectiveJoinRequestDto>?,
     @param:JsonProperty("leftEntities", access = JsonProperty.Access.READ_WRITE) 
     private val leftEntities_raw: List<LeftJoinRequestDto>?,
     @param:JsonProperty("leftSimpleEntityIds", access = JsonProperty.Access.READ_WRITE) 
     private val leftSimpleEntityIds_raw: List<DomainId>?,
+    @param:JsonProperty("leftSystemEffectiveEntities", access = JsonProperty.Access.READ_WRITE) 
+    private val leftSystemEffectiveEntities_raw: List<LeftSystemEffectiveJoinRequestDto>?,
     @field:NotNull
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
     private val someInt_raw: Int?,
@@ -55,15 +55,15 @@ class RightManyUpdateRequestDto
 
 
     @get:JsonIgnore
-    val leftEffectiveEntities: List<LeftEffectiveJoinRequestDto> by lazy { leftEffectiveEntities_raw ?: emptyList() }
-
-
-    @get:JsonIgnore
     val leftEntities: List<LeftJoinRequestDto> by lazy { leftEntities_raw ?: emptyList() }
 
 
     @get:JsonIgnore
     val leftSimpleEntityIds: List<DomainId> by lazy { leftSimpleEntityIds_raw ?: emptyList() }
+
+
+    @get:JsonIgnore
+    val leftSystemEffectiveEntities: List<LeftSystemEffectiveJoinRequestDto> by lazy { leftSystemEffectiveEntities_raw ?: emptyList() }
 
 
     override fun toString(): String {
@@ -73,9 +73,9 @@ class RightManyUpdateRequestDto
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
                 "version = '" + this.version + '\'' + ", " + 
-                "leftEffectiveEntities = '" + this.leftEffectiveEntities + '\'' + ", " + 
                 "leftEntities = '" + this.leftEntities + '\'' + ", " + 
-                "leftSimpleEntityIds = '" + this.leftSimpleEntityIds + '\'' +
+                "leftSimpleEntityIds = '" + this.leftSimpleEntityIds + '\'' + ", " + 
+                "leftSystemEffectiveEntities = '" + this.leftSystemEffectiveEntities + '\'' +
                 "}"
 
     }

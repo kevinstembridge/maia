@@ -13,9 +13,9 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
 import {Router} from '@angular/router';
-import {LeftEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftEffectiveJoinRequestDto';
 import {LeftJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftJoinRequestDto';
 import {LeftManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyTypeaheadV1EsDoc';
+import {LeftSystemEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftSystemEffectiveJoinRequestDto';
 import {RightManyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyCreateRequestDto';
 import {LeftManyTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-typeahead-api.service';
 import {RightManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-crud-service';
@@ -82,7 +82,7 @@ export class RightManyEntityCreateForm implements OnInit {
     @ViewChild('leftSimpleEntityInput') leftSimpleEntityInput!: ElementRef<HTMLInputElement>;
 
 
-    leftEffectiveJoins: {
+    leftSystemEffectiveJoins: {
         id: string | null;
         entityId: string;
         entityName: string;
@@ -91,16 +91,16 @@ export class RightManyEntityCreateForm implements OnInit {
     }[] = [];
 
 
-    showLeftEffectiveJoinForm = signal(false);
+    showLeftSystemEffectiveJoinForm = signal(false);
 
 
-    addLeftEffectiveJoinEntityControl = new FormControl<LeftManyTypeaheadV1EsDoc | null>(null);
+    addLeftSystemEffectiveJoinEntityControl = new FormControl<LeftManyTypeaheadV1EsDoc | null>(null);
 
 
-    filteredLeftEffectiveEntities: LeftManyTypeaheadV1EsDoc[] = [];
+    filteredLeftSystemEffectiveEntities: LeftManyTypeaheadV1EsDoc[] = [];
 
 
-    filteredLeftEffectiveEntitiesIsLoading = signal(false);
+    filteredLeftSystemEffectiveEntitiesIsLoading = signal(false);
 
 
     leftJoins: {
@@ -168,24 +168,24 @@ export class RightManyEntityCreateForm implements OnInit {
             this.filteredLeftSimpleEntities = res;
         });
 
-        this.addLeftEffectiveJoinEntityControl.valueChanges.pipe(
+        this.addLeftSystemEffectiveJoinEntityControl.valueChanges.pipe(
             debounceTime(300),
             distinctUntilChanged(),
             filter(value => typeof value === 'string'),
             tap(() => {
-                this.filteredLeftEffectiveEntities = [];
-                this.filteredLeftEffectiveEntitiesIsLoading.set(true);
+                this.filteredLeftSystemEffectiveEntities = [];
+                this.filteredLeftSystemEffectiveEntitiesIsLoading.set(true);
             }),
             switchMap(value => this.leftManyTypeaheadApiService.search(value ?? '').pipe(
                 catchError(err => {
-                    this.filteredLeftEffectiveEntitiesIsLoading.set(false);
+                    this.filteredLeftSystemEffectiveEntitiesIsLoading.set(false);
                     console.error(err);
                     return of([]);
                 })
             )),
-            tap(() => this.filteredLeftEffectiveEntitiesIsLoading.set(false))
+            tap(() => this.filteredLeftSystemEffectiveEntitiesIsLoading.set(false))
         ).subscribe(res => {
-            this.filteredLeftEffectiveEntities = res;
+            this.filteredLeftSystemEffectiveEntities = res;
         });
 
         this.addLeftJoinEntityControl.valueChanges.pipe(
@@ -230,42 +230,42 @@ export class RightManyEntityCreateForm implements OnInit {
     }
 
 
-    confirmAddLeftEffectiveJoin(): void {
+    confirmAddLeftSystemEffectiveJoin(): void {
 
-        const entity = this.addLeftEffectiveJoinEntityControl.value;
+        const entity = this.addLeftSystemEffectiveJoinEntityControl.value;
         if (!entity) return;
-        if (this.leftEffectiveJoins.some(j => j.entityId === entity.id)) return;
-        this.leftEffectiveJoins.push({
+        if (this.leftSystemEffectiveJoins.some(j => j.entityId === entity.id)) return;
+        this.leftSystemEffectiveJoins.push({
             id: null,
             entityId: entity.id,
             entityName: entity.someString,
             effectiveFrom: null,
             effectiveTo: null,
         });
-        this.addLeftEffectiveJoinEntityControl.reset();
-        this.filteredLeftEffectiveEntities = [];
-        this.showLeftEffectiveJoinForm.set(false);
+        this.addLeftSystemEffectiveJoinEntityControl.reset();
+        this.filteredLeftSystemEffectiveEntities = [];
+        this.showLeftSystemEffectiveJoinForm.set(false);
 
     }
 
 
-    removeLeftEffectiveJoin(index: number): void {
+    removeLeftSystemEffectiveJoin(index: number): void {
 
-        this.leftEffectiveJoins.splice(index, 1);
-
-    }
-
-
-    cancelAddLeftEffectiveJoin(): void {
-
-        this.addLeftEffectiveJoinEntityControl.reset();
-        this.filteredLeftEffectiveEntities = [];
-        this.showLeftEffectiveJoinForm.set(false);
+        this.leftSystemEffectiveJoins.splice(index, 1);
 
     }
 
 
-    displayLeftEffectiveEntity = (entity: LeftManyTypeaheadV1EsDoc | null): string => {
+    cancelAddLeftSystemEffectiveJoin(): void {
+
+        this.addLeftSystemEffectiveJoinEntityControl.reset();
+        this.filteredLeftSystemEffectiveEntities = [];
+        this.showLeftSystemEffectiveJoinForm.set(false);
+
+    }
+
+
+    displayLeftSystemEffectiveEntity = (entity: LeftManyTypeaheadV1EsDoc | null): string => {
         return entity ? entity.someString : '';
     };
 
@@ -325,9 +325,9 @@ export class RightManyEntityCreateForm implements OnInit {
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,
             leftSimpleEntityIds: this.selectedLeftSimpleEntities.map(e => e.id),
-            leftEffectiveEntities: this.leftEffectiveJoins.map(j => ({
+            leftSystemEffectiveEntities: this.leftSystemEffectiveJoins.map(j => ({
                 id: j.id,
-                leftEffectiveEntityId: j.entityId,
+                leftSystemEffectiveEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
                 effectiveTo: j.effectiveTo?.toISOString() ?? null,
             })),

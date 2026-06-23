@@ -10,9 +10,9 @@ import java.time.Instant
 data class RightManyFetchForEditDto(
     val createdTimestampUtc: Instant,
     val id: DomainId,
-    val leftEffectiveEntities: List<LeftEffectiveJoinFetchDto>,
     val leftEntities: List<LeftJoinFetchDto>,
     val leftSimpleEntities: List<LeftManyPkAndNameDto>,
+    val leftSystemEffectiveEntities: List<LeftSystemEffectiveJoinFetchDto>,
     val someInt: Int,
     val someString: String,
     val version: Long

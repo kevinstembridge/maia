@@ -16,12 +16,12 @@ import org.maiaframework.domain.DomainId
 @JsonIgnoreProperties(ignoreUnknown = true)
 class LeftManyCreateRequestDto
 @JsonCreator constructor(
-    @param:JsonProperty("rightEffectiveEntities", access = JsonProperty.Access.READ_WRITE) 
-    private val rightEffectiveEntities_raw: List<RightEffectiveJoinRequestDto>?,
     @param:JsonProperty("rightEntities", access = JsonProperty.Access.READ_WRITE) 
     private val rightEntities_raw: List<RightJoinRequestDto>?,
     @param:JsonProperty("rightSimpleEntityIds", access = JsonProperty.Access.READ_WRITE) 
     private val rightSimpleEntityIds_raw: List<DomainId>?,
+    @param:JsonProperty("rightSystemEffectiveEntities", access = JsonProperty.Access.READ_WRITE) 
+    private val rightSystemEffectiveEntities_raw: List<RightSystemEffectiveJoinRequestDto>?,
     @field:NotNull
     @param:JsonProperty("someInt", access = JsonProperty.Access.READ_WRITE) 
     private val someInt_raw: Int?,
@@ -41,10 +41,6 @@ class LeftManyCreateRequestDto
 
 
     @get:JsonIgnore
-    val rightEffectiveEntities: List<RightEffectiveJoinRequestDto> by lazy { rightEffectiveEntities_raw ?: emptyList() }
-
-
-    @get:JsonIgnore
     val rightEntities: List<RightJoinRequestDto> by lazy { rightEntities_raw ?: emptyList() }
 
 
@@ -52,14 +48,18 @@ class LeftManyCreateRequestDto
     val rightSimpleEntityIds: List<DomainId> by lazy { rightSimpleEntityIds_raw ?: emptyList() }
 
 
+    @get:JsonIgnore
+    val rightSystemEffectiveEntities: List<RightSystemEffectiveJoinRequestDto> by lazy { rightSystemEffectiveEntities_raw ?: emptyList() }
+
+
     override fun toString(): String {
 
         return "LeftManyCreateRequestDto{" +
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
-                "rightEffectiveEntities = '" + this.rightEffectiveEntities + '\'' + ", " + 
                 "rightEntities = '" + this.rightEntities + '\'' + ", " + 
-                "rightSimpleEntityIds = '" + this.rightSimpleEntityIds + '\'' +
+                "rightSimpleEntityIds = '" + this.rightSimpleEntityIds + '\'' + ", " + 
+                "rightSystemEffectiveEntities = '" + this.rightSystemEffectiveEntities + '\'' +
                 "}"
 
     }

@@ -2,10 +2,9 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 
-export interface LeftEffectiveJoinFetchDto {
+export interface RightSystemEffectiveJoinRequestDto {
     effectiveFrom?: string;
     effectiveTo?: string;
-    entityId: string;
-    id: string;
-    name: string;
+    id?: string;
+    rightSystemEffectiveEntityId: string;
 }
