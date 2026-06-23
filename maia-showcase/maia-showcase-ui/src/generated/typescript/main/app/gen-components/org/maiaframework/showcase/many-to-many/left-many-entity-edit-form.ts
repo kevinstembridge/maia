@@ -19,6 +19,7 @@ import {LeftManyUpdateRequestDto} from '@app/gen-components/org/maiaframework/sh
 import {RightJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightJoinRequestDto';
 import {RightManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyTypeaheadV1EsDoc';
 import {RightSystemEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightSystemEffectiveJoinRequestDto';
+import {RightUserEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightUserEffectiveJoinRequestDto';
 import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-crud-service';
 import {RightManyTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-typeahead-api.service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -107,6 +108,33 @@ export class LeftManyEntityEditForm implements OnInit {
 
 
     filteredRightSystemEffectiveEntitiesIsLoading = signal(false);
+
+
+    rightUserEffectiveJoins: {
+        id: string | null;
+        entityId: string;
+        entityName: string;
+        effectiveFrom: Date | null;
+        effectiveTo: Date | null;
+    }[] = [];
+
+
+    showRightUserEffectiveJoinForm = signal(false);
+
+
+    addRightUserEffectiveJoinEntityControl = new FormControl<RightManyTypeaheadV1EsDoc | null>(null);
+
+
+    addRightUserEffectiveJoinEffectiveFromControl = new FormControl<Date | null>(null);
+
+
+    addRightUserEffectiveJoinEffectiveToControl = new FormControl<Date | null>(null);
+
+
+    filteredRightUserEffectiveEntities: RightManyTypeaheadV1EsDoc[] = [];
+
+
+    filteredRightUserEffectiveEntitiesIsLoading = signal(false);
 
 
     rightJoins: {
@@ -199,6 +227,26 @@ export class LeftManyEntityEditForm implements OnInit {
             this.filteredRightSystemEffectiveEntities = res;
         });
 
+        this.addRightUserEffectiveJoinEntityControl.valueChanges.pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            filter(value => typeof value === 'string'),
+            tap(() => {
+                this.filteredRightUserEffectiveEntities = [];
+                this.filteredRightUserEffectiveEntitiesIsLoading.set(true);
+            }),
+            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
+                catchError(err => {
+                    this.filteredRightUserEffectiveEntitiesIsLoading.set(false);
+                    console.error(err);
+                    return of([]);
+                })
+            )),
+            tap(() => this.filteredRightUserEffectiveEntitiesIsLoading.set(false))
+        ).subscribe(res => {
+            this.filteredRightUserEffectiveEntities = res;
+        });
+
         this.addRightJoinEntityControl.valueChanges.pipe(
             debounceTime(300),
             distinctUntilChanged(),
@@ -232,6 +280,13 @@ export class LeftManyEntityEditForm implements OnInit {
                     someString: r.name,
                 }));
                 this.rightSystemEffectiveJoins = dto.rightSystemEffectiveEntities?.map(e => ({
+                    id: e.id,
+                    entityId: e.entityId,
+                    entityName: e.name,
+                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
+                    effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
+                })) ?? [];
+                this.rightUserEffectiveJoins = dto.rightUserEffectiveEntities?.map(e => ({
                     id: e.id,
                     entityId: e.entityId,
                     entityName: e.name,
@@ -316,6 +371,50 @@ export class LeftManyEntityEditForm implements OnInit {
     };
 
 
+    confirmAddRightUserEffectiveJoin(): void {
+
+        const entity = this.addRightUserEffectiveJoinEntityControl.value;
+        if (!entity) return;
+        if (this.rightUserEffectiveJoins.some(j => j.entityId === entity.id)) return;
+        this.rightUserEffectiveJoins.push({
+            id: null,
+            entityId: entity.id,
+            entityName: entity.someString,
+            effectiveFrom: this.addRightUserEffectiveJoinEffectiveFromControl.value,
+            effectiveTo: this.addRightUserEffectiveJoinEffectiveToControl.value,
+        });
+        this.addRightUserEffectiveJoinEntityControl.reset();
+        this.addRightUserEffectiveJoinEffectiveFromControl.reset();
+        this.addRightUserEffectiveJoinEffectiveToControl.reset();
+        this.filteredRightUserEffectiveEntities = [];
+        this.showRightUserEffectiveJoinForm.set(false);
+
+    }
+
+
+    removeRightUserEffectiveJoin(index: number): void {
+
+        this.rightUserEffectiveJoins.splice(index, 1);
+
+    }
+
+
+    cancelAddRightUserEffectiveJoin(): void {
+
+        this.addRightUserEffectiveJoinEntityControl.reset();
+        this.addRightUserEffectiveJoinEffectiveFromControl.reset();
+        this.addRightUserEffectiveJoinEffectiveToControl.reset();
+        this.filteredRightUserEffectiveEntities = [];
+        this.showRightUserEffectiveJoinForm.set(false);
+
+    }
+
+
+    displayRightUserEffectiveEntity = (entity: RightManyTypeaheadV1EsDoc | null): string => {
+        return entity ? entity.someString : '';
+    };
+
+
     confirmAddRightJoin(): void {
 
         const entity = this.addRightJoinEntityControl.value;
@@ -376,6 +475,12 @@ export class LeftManyEntityEditForm implements OnInit {
             rightSystemEffectiveEntities: this.rightSystemEffectiveJoins.map(j => ({
                 id: j.id,
                 rightSystemEffectiveEntityId: j.entityId,
+                effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
+                effectiveTo: j.effectiveTo?.toISOString() ?? null,
+            })),
+            rightUserEffectiveEntities: this.rightUserEffectiveJoins.map(j => ({
+                id: j.id,
+                rightUserEffectiveEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
                 effectiveTo: j.effectiveTo?.toISOString() ?? null,
             })),

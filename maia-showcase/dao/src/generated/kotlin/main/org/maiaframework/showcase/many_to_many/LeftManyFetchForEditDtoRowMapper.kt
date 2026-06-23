@@ -28,6 +28,8 @@ class LeftManyFetchForEditDtoRowMapper(
 
         val rightSystemEffectiveEntitiesJoinFetchDtoList = fetchRightSystemEffectiveEntitiesJoinFetchDtos(entityId)
 
+        val rightUserEffectiveEntitiesJoinFetchDtoList = fetchRightUserEffectiveEntitiesJoinFetchDtos(entityId)
+
         val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
@@ -40,6 +42,7 @@ class LeftManyFetchForEditDtoRowMapper(
             rightEntitiesJoinFetchDtoList,
             rightSimpleEntitiesPkAndNameDtoList,
             rightSystemEffectiveEntitiesJoinFetchDtoList,
+            rightUserEffectiveEntitiesJoinFetchDtoList,
             someInt,
             someString,
             version,
@@ -127,6 +130,38 @@ class LeftManyFetchForEditDtoRowMapper(
             },
         ) { rsa ->
             RightSystemEffectiveJoinFetchDto(
+                id = rsa.readDomainId("id"),
+                entityId = rsa.readDomainId("entity_id"),
+                name = rsa.readString("some_string"),
+                effectiveFrom = rsa.readInstantOrNull("effective_from"),
+                effectiveTo = rsa.readInstantOrNull("effective_to"),
+            )
+        }
+
+    }
+
+
+    private fun fetchRightUserEffectiveEntitiesJoinFetchDtos(entityId: DomainId): List<RightUserEffectiveJoinFetchDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                mtm.id,
+                other.id as entity_id,
+                other.some_string,
+                lower(mtm.effective_range) as effective_from,
+                upper(mtm.effective_range) as effective_to
+            from maia.right_many other
+            join maia.left_to_right_user_effective mtm
+                on other.id = mtm.right_user_effective_id
+            where mtm.left_user_effective_id = :entityId
+            order by other.some_string
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+        ) { rsa ->
+            RightUserEffectiveJoinFetchDto(
                 id = rsa.readDomainId("id"),
                 entityId = rsa.readDomainId("entity_id"),
                 name = rsa.readString("some_string"),

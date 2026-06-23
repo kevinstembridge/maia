@@ -13,6 +13,7 @@ data class RightManyFetchForEditDto(
     val leftEntities: List<LeftJoinFetchDto>,
     val leftSimpleEntities: List<LeftManyPkAndNameDto>,
     val leftSystemEffectiveEntities: List<LeftSystemEffectiveJoinFetchDto>,
+    val leftUserEffectiveEntities: List<LeftUserEffectiveJoinFetchDto>,
     val someInt: Int,
     val someString: String,
     val version: Long

@@ -103,9 +103,10 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
             {
                 "createdTimestampUtc": "${leftEntity.createdTimestampUtc}",
                 "id": "${leftEntity.id}",
-                "rightSystemEffectiveEntities": [],
                 "rightEntities": [],
                 "rightSimpleEntities": [],
+                "rightSystemEffectiveEntities": [],
+                "rightUserEffectiveEntities": [],
                 "someInt": ${leftEntity.someInt},
                 "someString": "${leftEntity.someString}",
                 "version": ${leftEntity.version}

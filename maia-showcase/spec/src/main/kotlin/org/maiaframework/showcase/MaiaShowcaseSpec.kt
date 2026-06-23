@@ -1384,25 +1384,25 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-//    val leftToRightUserManagedEffectiveRangeEntityDef = simpleManyToManyEntity(
-//        "org.maiaframework.showcase.many_to_many",
-//        "LeftToRightUserEffectiveRange",
-//        leftEntity = ReferencedEntity(
-//            fieldName = "leftUserEffective",
-//            displayName = "Left User Effective",
-//            leftManyEntityDef,
-//            IsEditableByUser.TRUE
-//        ),
-//        rightEntity = ReferencedEntity(
-//            fieldName = "rightUserEffective",
-//            displayName = "Right User Effective",
-//            rightManyEntityDef,
-//            IsEditableByUser.TRUE
-//        )
-//    ) {
-//        description("A simple many-to-many join between two entities, with a user-managed effective date range.")
-//        effectiveRange(managedBy = EffectiveRangeManagedBy.USER)
-//    }
+    val leftToRightUserManagedEffectiveRangeEntityDef = simpleManyToManyEntity(
+        "org.maiaframework.showcase.many_to_many",
+        "LeftToRightUserEffective",
+        leftEntity = ReferencedEntity(
+            fieldName = "leftUserEffective",
+            displayName = "Left User Effective",
+            leftManyEntityDef,
+            IsEditableByUser.TRUE
+        ),
+        rightEntity = ReferencedEntity(
+            fieldName = "rightUserEffective",
+            displayName = "Right User Effective",
+            rightManyEntityDef,
+            IsEditableByUser.TRUE
+        )
+    ) {
+        description("A simple many-to-many join between two entities, with a user-managed effective date range.")
+        effectiveRange(managedBy = EffectiveRangeManagedBy.USER)
+    }
 
 
     val leftToRightManyToManyJoinEntityDef = manyToManyEntity(

@@ -93,6 +93,98 @@
             </div>
         }
         <div class="join-entries">
+            @for (join of leftUserEffectiveJoins; track join.entityId) {
+                <div class="join-entry">
+                    <span>{{ join.entityName }}</span>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Effective From Date</mat-label>
+                        <input matInput class="join-effective-from-date" [matDatepicker]="effectiveFromDatePicker"
+                            [(ngModel)]="join.effectiveFrom" [ngModelOptions]="{standalone: true}" />
+                        <mat-datepicker-toggle matIconSuffix [for]="effectiveFromDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #effectiveFromDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Effective From Time</mat-label>
+                        <input matInput class="join-effective-from-time" [matTimepicker]="effectiveFromTimePicker"
+                            [(ngModel)]="join.effectiveFrom" [ngModelOptions]="{standalone: true}" />
+                        <mat-timepicker #effectiveFromTimePicker></mat-timepicker>
+                        <mat-timepicker-toggle matSuffix [for]="effectiveFromTimePicker"></mat-timepicker-toggle>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Effective To Date</mat-label>
+                        <input matInput class="join-effective-to-date" [matDatepicker]="effectiveToDatePicker"
+                            [(ngModel)]="join.effectiveTo" [ngModelOptions]="{standalone: true}" />
+                        <mat-datepicker-toggle matIconSuffix [for]="effectiveToDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #effectiveToDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Effective To Time</mat-label>
+                        <input matInput class="join-effective-to-time" [matTimepicker]="effectiveToTimePicker"
+                            [(ngModel)]="join.effectiveTo" [ngModelOptions]="{standalone: true}" />
+                        <mat-timepicker #effectiveToTimePicker></mat-timepicker>
+                        <mat-timepicker-toggle matSuffix [for]="effectiveToTimePicker"></mat-timepicker-toggle>
+                    </mat-form-field>
+                    <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftUserEffectiveJoin($index)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            }
+        </div>
+        <button mat-stroked-button type="button" (click)="showLeftUserEffectiveJoinForm.set(true)">
+            <mat-icon>add</mat-icon> Add Left User Effective Entities
+        </button>
+        @if (showLeftUserEffectiveJoinForm()) {
+            <div class="join-mini-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Left User Effective Entities</mat-label>
+                    <input
+                        matInput
+                        [formControl]="addLeftUserEffectiveJoinEntityControl"
+                        [matAutocomplete]="leftUserEffectiveJoinEntityAuto"
+                        placeholder="Search Left User Effective Entities..."
+                    />
+                    <mat-autocomplete #leftUserEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftUserEffectiveEntity">
+                        @if (filteredLeftUserEffectiveEntitiesIsLoading()) {
+                            <mat-option disabled>Loading...</mat-option>
+                        }
+                        @for (option of filteredLeftUserEffectiveEntities; track option.id) {
+                            <mat-option [value]="option">{{ option.someString }}</mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective From Date</mat-label>
+                    <input matInput [matDatepicker]="effectiveFromPickerleftUserEffective"
+                        [formControl]="addLeftUserEffectiveJoinEffectiveFromControl" />
+                    <mat-datepicker-toggle matIconSuffix [for]="effectiveFromPickerleftUserEffective"></mat-datepicker-toggle>
+                    <mat-datepicker #effectiveFromPickerleftUserEffective></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective From Time</mat-label>
+                    <input matInput [matTimepicker]="effectiveFromTimepickerleftUserEffective"
+                        [formControl]="addLeftUserEffectiveJoinEffectiveFromControl" />
+                    <mat-timepicker #effectiveFromTimepickerleftUserEffective></mat-timepicker>
+                    <mat-timepicker-toggle matSuffix [for]="effectiveFromTimepickerleftUserEffective"></mat-timepicker-toggle>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective To Date</mat-label>
+                    <input matInput [matDatepicker]="effectiveToPickerleftUserEffective"
+                        [formControl]="addLeftUserEffectiveJoinEffectiveToControl" />
+                    <mat-datepicker-toggle matIconSuffix [for]="effectiveToPickerleftUserEffective"></mat-datepicker-toggle>
+                    <mat-datepicker #effectiveToPickerleftUserEffective></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective To Time</mat-label>
+                    <input matInput [matTimepicker]="effectiveToTimepickerleftUserEffective"
+                        [formControl]="addLeftUserEffectiveJoinEffectiveToControl" />
+                    <mat-timepicker #effectiveToTimepickerleftUserEffective></mat-timepicker>
+                    <mat-timepicker-toggle matSuffix [for]="effectiveToTimepickerleftUserEffective"></mat-timepicker-toggle>
+                </mat-form-field>
+                <button mat-flat-button type="button" (click)="confirmAddLeftUserEffectiveJoin()">Add</button>
+                <button mat-flat-button type="button" (click)="cancelAddLeftUserEffectiveJoin()">Cancel</button>
+            </div>
+        }
+        <div class="join-entries">
             @for (join of leftJoins; track join.entityId) {
                 <div class="join-entry">
                     <span>{{ join.entityName }}</span>

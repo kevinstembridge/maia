@@ -47,6 +47,8 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
         rightEntity3 = RightManyEntityTestBuilder(someString = "right3").build()
 
         manyToManyJoinDao.deleteAll()
+        truncateTable(LeftToRightUserEffectiveEntityMeta.SCHEMA_AND_TABLE_NAME)
+        truncateTable(LeftToRightSystemEffectiveEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(LeftToRightSimpleEntityMeta.SCHEMA_AND_TABLE_NAME)
         leftDao.deleteAll()
         rightDao.deleteAll()
@@ -115,7 +117,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
             """{"id": "$leftId", "someInt": 2, "someString": "test2", "version": 1, "rightEntities": [{"rightEntityId": "${rightEntity2.id}", "someInt": 30}, {"rightEntityId": "${rightEntity3.id}", "someInt": 40}]}"""
         ).hasStatus(HttpStatus.OK)
 
-        val joins = manyToManyJoinDao.findEffectiveByLeft(leftId)
+        val joins = manyToManyJoinDao.findByLeft(leftId).filter { it.effectiveTo == null }
         assertThat(joins).hasSize(2)
         assertThat(joins.map { it.right }).containsExactlyInAnyOrder(rightEntity2.id, rightEntity3.id)
 
@@ -214,7 +216,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
             ]}"""
         ).hasStatus(HttpStatus.OK)
 
-        val joinsAfter = manyToManyJoinDao.findEffectiveByLeft(leftId)
+        val joinsAfter = manyToManyJoinDao.findByLeft(leftId).filter { it.effectiveTo == null }
         assertThat(joinsAfter.map { it.right }).containsExactlyInAnyOrder(rightEntity1.id, rightEntity3.id)
 
         val join1After = joinsAfter.single { it.right == rightEntity1.id }

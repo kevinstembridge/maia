@@ -18,6 +18,7 @@ class RightManyCrudService(
     private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
     private val leftToRightSimpleRepo: LeftToRightSimpleRepo,
     private val leftToRightSystemEffectiveRepo: LeftToRightSystemEffectiveRepo,
+    private val leftToRightUserEffectiveRepo: LeftToRightUserEffectiveRepo,
     private val maiaProblems: MaiaProblems,
     private val rightManyCrudNotifier: RightManyCrudNotifier
 ) {
@@ -38,6 +39,8 @@ class RightManyCrudService(
         `create leftSimple joins`(createDto, entity)
 
         `create leftSystemEffective joins`(createDto, entity)
+
+        `create leftUserEffective joins`(createDto, entity)
 
         `create left joins`(createDto, entity)
 
@@ -110,6 +113,25 @@ class RightManyCrudService(
     }
 
 
+    private fun `create leftUserEffective joins`(
+        createDto: RightManyCreateRequestDto,
+        entity: RightManyEntity
+    ) {
+
+        createDto.leftUserEffectiveEntities.forEach { joinDto ->
+            this.leftToRightUserEffectiveRepo.insert(
+                LeftToRightUserEffectiveEntity.newInstance(
+                    effectiveFrom = joinDto.effectiveFrom,
+                    effectiveTo = joinDto.effectiveTo,
+                    leftUserEffective = joinDto.leftUserEffectiveEntityId,
+                    rightUserEffective = entity.id
+                )
+            )
+        }
+
+    }
+
+
     private fun `create left joins`(
         createDto: RightManyCreateRequestDto,
         entity: RightManyEntity
@@ -152,6 +174,8 @@ class RightManyCrudService(
         `reconcile leftToRightSimple joins`(id, editDto.leftSimpleEntityIds)
 
         `reconcile leftToRightSystemEffective joins`(id, editDto.leftSystemEffectiveEntities)
+
+        `reconcile leftToRightUserEffective joins`(id, editDto.leftUserEffectiveEntities)
 
         `reconcile leftToRightManyToManyJoin joins`(id, editDto.leftEntities)
 
@@ -222,6 +246,47 @@ class RightManyCrudService(
         }
 
         this.leftToRightSystemEffectiveRepo.bulkInsert(newJoins)
+
+    }
+
+
+    private fun `reconcile leftToRightUserEffective joins`(
+        id: DomainId,
+        submitted: List<LeftUserEffectiveJoinRequestDto>
+    ) {
+
+        val existingById = this.leftToRightUserEffectiveRepo.findByRightUserEffective(id).associateBy { it.id }
+        val submittedIds = submitted.mapNotNull { it.id }.toSet()
+
+        existingById.keys.filterNot { it in submittedIds }.forEach {
+            this.leftToRightUserEffectiveRepo.deleteByPrimaryKey(it)
+        }
+
+        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
+            LeftToRightUserEffectiveEntity.newInstance(
+                effectiveFrom = joinDto.effectiveFrom,
+                effectiveTo = joinDto.effectiveTo,
+                leftUserEffective = joinDto.leftUserEffectiveEntityId,
+                rightUserEffective = id
+            )
+        }
+
+        this.leftToRightUserEffectiveRepo.bulkInsert(newJoins)
+
+        submitted.filter { it.id != null }.forEach { joinDto ->
+            val joinId = joinDto.id!!
+            val existingJoin = existingById[joinId]
+                ?: throw this.maiaProblems.joinRecordNotFound("LeftToRightUserEffectiveEntity")
+
+            if (existingJoin.effectiveFrom != joinDto.effectiveFrom || existingJoin.effectiveTo != joinDto.effectiveTo) {
+                this.leftToRightUserEffectiveRepo.setFields(
+                    LeftToRightUserEffectiveEntityUpdater.forPrimaryKey(joinId) {
+                        effectiveFrom(joinDto.effectiveFrom)
+                        effectiveTo(joinDto.effectiveTo)
+                    }
+                )
+            }
+        }
 
     }
 
@@ -331,6 +396,10 @@ class RightManyCrudService(
 
         this.leftToRightSystemEffectiveRepo.findByRightSystemEffective(id).forEach {
             this.leftToRightSystemEffectiveRepo.deleteByPrimaryKey(it.id)
+        }
+
+        if (this.leftToRightUserEffectiveRepo.existsByRightUserEffective(id)) {
+            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightUserEffective")
         }
 
         if (this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).isNotEmpty()) {

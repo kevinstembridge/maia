@@ -3,6 +3,7 @@
 
 import {LeftJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftJoinRequestDto';
 import {LeftSystemEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftSystemEffectiveJoinRequestDto';
+import {LeftUserEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftUserEffectiveJoinRequestDto';
 
 
 export interface RightManyUpdateRequestDto {
@@ -10,6 +11,7 @@ export interface RightManyUpdateRequestDto {
     leftEntities?: ReadonlyArray<LeftJoinRequestDto>;
     leftSimpleEntityIds?: ReadonlyArray<string>;
     leftSystemEffectiveEntities?: ReadonlyArray<LeftSystemEffectiveJoinRequestDto>;
+    leftUserEffectiveEntities?: ReadonlyArray<LeftUserEffectiveJoinRequestDto>;
     someInt: number;
     someString: string;
     version: number;
