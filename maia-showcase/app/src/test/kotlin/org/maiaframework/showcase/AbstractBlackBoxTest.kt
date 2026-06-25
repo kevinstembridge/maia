@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.MediaType
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.security.web.FilterChainProxy
@@ -155,7 +156,7 @@ abstract class AbstractBlackBoxTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
                 .header("X-XSRF-TOKEN", csrfCookie.value)
-                .with(user("nigel").roles("ADMIN"))
+                .with(user("nigel").authorities(SimpleGrantedAuthority("ROLE_ADMIN"), SimpleGrantedAuthority("WRITE")))
                 .cookie(csrfCookie)
                 .exchange()
         ).debug()

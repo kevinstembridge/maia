@@ -14,6 +14,7 @@ import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -29,6 +30,7 @@ class UserCrudService(
     private val logger = LoggerFactory.getLogger(UserCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: UserCreateRequestDto): UserEntity {
 
@@ -83,6 +85,7 @@ class UserCrudService(
     }
 
 
+    @Transactional
     fun create(entity: UserEntity): UserEntity {
 
         this.entityRepo.insert(entity)
@@ -111,6 +114,7 @@ class UserCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): UserFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -118,6 +122,7 @@ class UserCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: UserUpdateRequestDto) {
 
@@ -144,6 +149,7 @@ class UserCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateAuthorities(editDto: UserUpdate_authoritiesRequestDto) {
 
@@ -164,6 +170,7 @@ class UserCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateFirstName(editDto: UserUpdate_firstNameRequestDto) {
 
@@ -184,6 +191,7 @@ class UserCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateLastName(editDto: UserUpdate_lastNameRequestDto) {
 
@@ -204,8 +212,9 @@ class UserCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: UserEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.userCrudNotifier.onEntityUpdated(updater.id)
         return count

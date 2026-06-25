@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 
 @Component
@@ -20,6 +21,7 @@ class AlphaAgGridCrudService(
     private val logger = LoggerFactory.getLogger(AlphaAgGridCrudService::class.java)
 
 
+    @Transactional
     fun create(entity: AlphaAgGridEntity): AlphaAgGridEntity {
 
         this.entityRepo.insert(entity)
@@ -28,6 +30,7 @@ class AlphaAgGridCrudService(
     }
 
 
+    @Transactional
     fun delete(id: DomainId) {
 
         if (this.bravoAgGridRepo.existsByAlpha(id)) {

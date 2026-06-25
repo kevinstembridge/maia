@@ -125,6 +125,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
+        appendTransactional()
         appendPreAuthorize(createApiDef.crudApiDef.authorityDef)
         appendLine("    fun create(createDto: ${createApiDef.requestDtoDef.uqcn}): ${this.entityDef.entityUqcn} {")
 
@@ -190,6 +191,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
+        appendTransactional()
         appendLine("    fun create(entity: ${this.entityDef.entityUqcn}): ${this.entityDef.entityUqcn} {")
         blankLine()
         appendLine("        this.entityRepo.insert(entity)")
@@ -443,15 +445,14 @@ class CrudServiceRenderer(
         val fieldNameAndTypesCsv = databaseIndexDef.indexDef.classFieldDefs.joinToString(", ") { "${it.classFieldName}: ${it.fieldType.unqualifiedToString}" }
         val fieldNamesCsv = databaseIndexDef.indexDef.classFieldDefs.map { it.classFieldName }.joinToString(", ")
 
-        append("""
-            |
-            |
-            |    fun $functionName($fieldNameAndTypesCsv): Boolean {
-            |
-            |        return this.entityRepo.$functionName(${fieldNamesCsv})
-            |
-            |    }
-            |""".trimMargin())
+        blankLine()
+        blankLine()
+        appendTransactional(readOnly = true)
+        appendLine("    fun $functionName($fieldNameAndTypesCsv): Boolean {")
+        blankLine()
+        appendLine("        return this.entityRepo.$functionName(${fieldNamesCsv})")
+        blankLine()
+        appendLine("    }")
 
     }
 
@@ -463,15 +464,14 @@ class CrudServiceRenderer(
 
         addImportFor(fetchForEditDtoDef.dtoDef.fqcn)
 
-        append("""
-            |
-            |
-            |    fun fetchForEdit($primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {
-            |
-            |        return this.entityRepo.fetchForEdit($primaryKeyFieldNamesCsv)
-            |
-            |    }
-            |""".trimMargin())
+        blankLine()
+        blankLine()
+        appendTransactional(readOnly = true)
+        appendLine("    fun fetchForEdit($primaryKeyFieldNamesAndTypesCsv): ${entityDef.fetchForEditDtoFqcn.uqcn} {")
+        blankLine()
+        appendLine("        return this.entityRepo.fetchForEdit($primaryKeyFieldNamesCsv)")
+        blankLine()
+        appendLine("    }")
 
     }
 
@@ -486,6 +486,7 @@ class CrudServiceRenderer(
 
             blankLine()
             blankLine()
+            appendTransactional()
             appendPreAuthorize(apiDef.crudApiDef.authorityDef)
             appendLine("    fun update(editDto: ${dtoDef.uqcn}) {")
             blankLine()
@@ -803,6 +804,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
+        appendTransactional()
         appendPreAuthorize(this.entityDef.entityCrudApiDef?.updateApiDef?.crudApiDef?.authorityDef)
         appendLine("    fun update${fieldName.firstToUpper()}(editDto: $dtoUqcn) {")
         blankLine()
@@ -863,11 +865,11 @@ class CrudServiceRenderer(
         }
 
 
-        append("""
+        blankLine()
+        blankLine()
+        appendTransactional()
+        append("""    fun setFields(updater: ${this.entityDef.entityBaseName}EntityUpdater): Int {
             |
-            |
-            |    fun setFields(updater: ${this.entityDef.entityBaseName}EntityUpdater): Int {
-            |        
             |        val count = this.entityRepo.setFields(updater)
             |""".trimMargin()
         )
@@ -894,6 +896,7 @@ class CrudServiceRenderer(
 
         blankLine()
         blankLine()
+        appendTransactional()
         appendPreAuthorize(this.entityDef.entityCrudApiDef?.deleteApiDef?.crudApiDef?.authorityDef)
         appendLine("    fun delete($primaryKeyFieldNamesAndTypesCsv) {")
 
@@ -956,6 +959,16 @@ class CrudServiceRenderer(
             appendLine("    @PreAuthorize(\"hasAuthority('${it.name}')\")")
         }
 
+    }
+
+
+    private fun appendTransactional(readOnly: Boolean = false) {
+        addImportFor(Fqcns.SPRING_TRANSACTIONAL)
+        if (readOnly) {
+            appendLine("    @Transactional(readOnly = true)")
+        } else {
+            appendLine("    @Transactional")
+        }
     }
 
 

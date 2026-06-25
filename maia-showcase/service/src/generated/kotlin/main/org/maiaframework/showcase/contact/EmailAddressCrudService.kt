@@ -10,6 +10,7 @@ import org.maiaframework.showcase.party.contact.PartyEmailAddressHistoryRepo
 import org.maiaframework.showcase.party.contact.PartyEmailAddressRepo
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 
 @Component
@@ -25,6 +26,7 @@ class EmailAddressCrudService(
     private val logger = LoggerFactory.getLogger(EmailAddressCrudService::class.java)
 
 
+    @Transactional
     fun create(entity: EmailAddressEntity): EmailAddressEntity {
 
         this.entityRepo.insert(entity)

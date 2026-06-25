@@ -9,6 +9,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -23,6 +24,7 @@ class CharlieAgGridCrudService(
     private val logger = LoggerFactory.getLogger(CharlieAgGridCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: CharlieAgGridCreateRequestDto): CharlieAgGridEntity {
 
@@ -54,6 +56,7 @@ class CharlieAgGridCrudService(
     }
 
 
+    @Transactional
     fun create(entity: CharlieAgGridEntity): CharlieAgGridEntity {
 
         this.entityRepo.insert(entity)
@@ -63,6 +66,7 @@ class CharlieAgGridCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): CharlieAgGridFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -70,6 +74,7 @@ class CharlieAgGridCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: CharlieAgGridUpdateRequestDto) {
 
@@ -83,6 +88,7 @@ class CharlieAgGridCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateBravo(editDto: CharlieAgGridUpdate_bravoRequestDto) {
 
@@ -99,8 +105,9 @@ class CharlieAgGridCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: CharlieAgGridEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.charlieAgGridCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -108,6 +115,7 @@ class CharlieAgGridCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 

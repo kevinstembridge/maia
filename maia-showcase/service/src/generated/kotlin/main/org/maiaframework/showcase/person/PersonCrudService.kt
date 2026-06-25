@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 
 @Component
@@ -19,6 +20,7 @@ class PersonCrudService(
     private val logger = LoggerFactory.getLogger(PersonCrudService::class.java)
 
 
+    @Transactional
     fun create(entity: PersonEntity): PersonEntity {
 
         this.entityRepo.insert(entity)
@@ -27,8 +29,9 @@ class PersonCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: PersonEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         return count
         

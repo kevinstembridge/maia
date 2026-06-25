@@ -7,6 +7,7 @@ import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.showcase.types.SomeStringValueClass
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 
 @Component
@@ -19,6 +20,7 @@ class NonSurrogateIdPrimaryKeyCrudService(
     private val logger = LoggerFactory.getLogger(NonSurrogateIdPrimaryKeyCrudService::class.java)
 
 
+    @Transactional
     fun create(entity: NonSurrogateIdPrimaryKeyEntity): NonSurrogateIdPrimaryKeyEntity {
 
         this.entityRepo.insert(entity)
@@ -27,14 +29,16 @@ class NonSurrogateIdPrimaryKeyCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: NonSurrogateIdPrimaryKeyEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         return count
         
     }
 
 
+    @Transactional
     fun delete(id: SomeStringValueClass) {
 
         this.entityRepo.deleteByPrimaryKey(id)

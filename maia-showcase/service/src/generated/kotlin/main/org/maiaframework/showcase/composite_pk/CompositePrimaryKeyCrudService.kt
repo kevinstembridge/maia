@@ -8,6 +8,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -22,6 +23,7 @@ class CompositePrimaryKeyCrudService(
     private val logger = LoggerFactory.getLogger(CompositePrimaryKeyCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: CompositePrimaryKeyCreateRequestDto): CompositePrimaryKeyEntity {
 
@@ -53,6 +55,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
+    @Transactional
     fun create(entity: CompositePrimaryKeyEntity): CompositePrimaryKeyEntity {
 
         this.entityRepo.insert(entity)
@@ -62,6 +65,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(primaryKey)
@@ -69,6 +73,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: CompositePrimaryKeyUpdateRequestDto) {
 
@@ -85,6 +90,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeModifiableString(editDto: CompositePrimaryKeyUpdate_someModifiableStringRequestDto) {
 
@@ -103,8 +109,9 @@ class CompositePrimaryKeyCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: CompositePrimaryKeyEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.compositePrimaryKeyCrudNotifier.onEntityUpdated(updater.primaryKey.someInt, updater.primaryKey.someString)
         return count
@@ -112,6 +119,7 @@ class CompositePrimaryKeyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(primaryKey: CompositePrimaryKeyEntityPk) {
 

@@ -9,6 +9,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -23,6 +24,7 @@ class UserGroupMembershipCrudService(
     private val logger = LoggerFactory.getLogger(UserGroupMembershipCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: UserGroupMembershipCreateRequestDto): UserGroupMembershipEntity {
 
@@ -56,6 +58,7 @@ class UserGroupMembershipCrudService(
     }
 
 
+    @Transactional
     fun create(entity: UserGroupMembershipEntity): UserGroupMembershipEntity {
 
         this.entityRepo.insert(entity)
@@ -65,6 +68,7 @@ class UserGroupMembershipCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): UserGroupMembershipFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -72,6 +76,7 @@ class UserGroupMembershipCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: UserGroupMembershipUpdateRequestDto) {
 
@@ -86,6 +91,7 @@ class UserGroupMembershipCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateUserGroup(editDto: UserGroupMembershipUpdate_userGroupRequestDto) {
 
@@ -102,6 +108,7 @@ class UserGroupMembershipCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateUser(editDto: UserGroupMembershipUpdate_userRequestDto) {
 
@@ -118,8 +125,9 @@ class UserGroupMembershipCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: UserGroupMembershipEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.userGroupMembershipCrudNotifier.onEntityUpdated(updater.id)
         return count

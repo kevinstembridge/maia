@@ -196,6 +196,7 @@ object Fqcns {
     val SPRING_SECURITY_PRE_AUTHORIZE = Fqcn.valueOf("org.springframework.security.access.prepost.PreAuthorize")
     val SPRING_SERVICE = Fqcn.valueOf("org.springframework.stereotype.Service")
     val SPRING_STREAMING_RESPONSE_BODY = Fqcn.valueOf("org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody")
+    val SPRING_TRANSACTIONAL = Fqcn.valueOf("org.springframework.transaction.annotation.Transactional")
     val SPRING_VALUE_ANNOTATION = Fqcn.valueOf("org.springframework.beans.factory.annotation.Value")
     val SQL_TYPES = Fqcn.valueOf("java.sql.Types")
     val STRING = Fqcn.valueOf("java.lang.String")

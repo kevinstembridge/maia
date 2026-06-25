@@ -10,6 +10,7 @@ import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -24,6 +25,7 @@ class HistorySampleCrudService(
     private val logger = LoggerFactory.getLogger(HistorySampleCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: HistorySampleCreateRequestDto): HistorySampleEntity {
 
@@ -66,6 +68,7 @@ class HistorySampleCrudService(
     }
 
 
+    @Transactional
     fun create(entity: HistorySampleEntity): HistorySampleEntity {
 
         this.entityRepo.insert(entity)
@@ -75,6 +78,7 @@ class HistorySampleCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): HistorySampleFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -82,6 +86,7 @@ class HistorySampleCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: HistorySampleUpdateRequestDto) {
 
@@ -99,6 +104,7 @@ class HistorySampleCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: HistorySampleUpdate_someStringRequestDto) {
 
@@ -119,6 +125,7 @@ class HistorySampleCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: HistorySampleUpdate_someIntRequestDto) {
 
@@ -139,8 +146,9 @@ class HistorySampleCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: HistorySampleEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.historySampleCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -148,6 +156,7 @@ class HistorySampleCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 

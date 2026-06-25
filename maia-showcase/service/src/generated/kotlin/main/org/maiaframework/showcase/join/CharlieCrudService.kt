@@ -8,6 +8,7 @@ import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -22,6 +23,7 @@ class CharlieCrudService(
     private val logger = LoggerFactory.getLogger(CharlieCrudService::class.java)
 
 
+    @Transactional
     fun create(createDto: CharlieCreateRequestDto): CharlieEntity {
 
         logger.info("BEGIN: create Charlie. dto=$createDto")
@@ -52,6 +54,7 @@ class CharlieCrudService(
     }
 
 
+    @Transactional
     fun create(entity: CharlieEntity): CharlieEntity {
 
         this.entityRepo.insert(entity)
@@ -61,6 +64,7 @@ class CharlieCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): CharlieFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -68,6 +72,7 @@ class CharlieCrudService(
     }
 
 
+    @Transactional
     fun update(editDto: CharlieUpdateRequestDto) {
 
         val id = editDto.id
@@ -80,6 +85,7 @@ class CharlieCrudService(
     }
 
 
+    @Transactional
     fun updateBravo(editDto: CharlieUpdate_bravoRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -95,8 +101,9 @@ class CharlieCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: CharlieEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.charlieCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -104,6 +111,7 @@ class CharlieCrudService(
     }
 
 
+    @Transactional
     fun delete(id: DomainId) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

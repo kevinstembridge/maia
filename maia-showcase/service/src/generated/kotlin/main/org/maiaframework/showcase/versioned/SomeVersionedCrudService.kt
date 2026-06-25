@@ -9,6 +9,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -23,6 +24,7 @@ class SomeVersionedCrudService(
     private val logger = LoggerFactory.getLogger(SomeVersionedCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: SomeVersionedCreateRequestDto): SomeVersionedEntity {
 
@@ -54,6 +56,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @Transactional
     fun create(entity: SomeVersionedEntity): SomeVersionedEntity {
 
         this.entityRepo.insert(entity)
@@ -63,6 +66,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): SomeVersionedFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -70,6 +74,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: SomeVersionedUpdateRequestDto) {
 
@@ -85,6 +90,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: SomeVersionedUpdate_someStringRequestDto) {
 
@@ -103,6 +109,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: SomeVersionedUpdate_someIntRequestDto) {
 
@@ -121,8 +128,9 @@ class SomeVersionedCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: SomeVersionedEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.someVersionedCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -130,6 +138,7 @@ class SomeVersionedCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 

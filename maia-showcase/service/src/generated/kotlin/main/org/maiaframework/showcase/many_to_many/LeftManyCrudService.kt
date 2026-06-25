@@ -9,6 +9,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -27,6 +28,7 @@ class LeftManyCrudService(
     private val logger = LoggerFactory.getLogger(LeftManyCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: LeftManyCreateRequestDto): LeftManyEntity {
 
@@ -68,6 +70,7 @@ class LeftManyCrudService(
     }
 
 
+    @Transactional
     fun create(entity: LeftManyEntity): LeftManyEntity {
 
         this.entityRepo.insert(entity)
@@ -152,6 +155,7 @@ class LeftManyCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): LeftManyFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -159,6 +163,7 @@ class LeftManyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: LeftManyUpdateRequestDto) {
 
@@ -338,6 +343,7 @@ class LeftManyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: LeftManyUpdate_someIntRequestDto) {
 
@@ -356,6 +362,7 @@ class LeftManyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: LeftManyUpdate_someStringRequestDto) {
 
@@ -374,8 +381,9 @@ class LeftManyCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: LeftManyEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.leftManyCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -383,6 +391,7 @@ class LeftManyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 

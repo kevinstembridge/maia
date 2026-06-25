@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 
 @Component
@@ -19,6 +20,7 @@ class HistorySubTwoCrudService(
     private val logger = LoggerFactory.getLogger(HistorySubTwoCrudService::class.java)
 
 
+    @Transactional
     fun create(entity: HistorySubTwoEntity): HistorySubTwoEntity {
 
         this.entityRepo.insert(entity)
@@ -27,14 +29,16 @@ class HistorySubTwoCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: HistorySubTwoEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         return count
         
     }
 
 
+    @Transactional
     fun delete(id: DomainId) {
 
         this.entityRepo.deleteByPrimaryKey(id)

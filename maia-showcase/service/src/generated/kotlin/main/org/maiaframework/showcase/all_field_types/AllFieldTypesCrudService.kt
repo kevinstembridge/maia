@@ -19,6 +19,7 @@ import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -35,6 +36,7 @@ class AllFieldTypesCrudService(
     private val logger = LoggerFactory.getLogger(AllFieldTypesCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: AllFieldTypesCreateRequestDto): AllFieldTypesEntity {
 
@@ -143,6 +145,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     fun create(entity: AllFieldTypesEntity): AllFieldTypesEntity {
 
         this.entityRepo.insert(entity)
@@ -152,6 +155,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun existsBySomeIntType(someIntType: SomeIntType): Boolean {
 
         return this.entityRepo.existsBySomeIntType(someIntType)
@@ -159,6 +163,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun existsBySomeLongType(someLongType: SomeLongType): Boolean {
 
         return this.entityRepo.existsBySomeLongType(someLongType)
@@ -166,6 +171,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun existsBySomeString(someString: String): Boolean {
 
         return this.entityRepo.existsBySomeString(someString)
@@ -173,6 +179,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun existsBySomeStringNullable(someStringNullable: String): Boolean {
 
         return this.entityRepo.existsBySomeStringNullable(someStringNullable)
@@ -180,6 +187,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun existsBySomeStringType(someStringType: SomeStringType): Boolean {
 
         return this.entityRepo.existsBySomeStringType(someStringType)
@@ -187,6 +195,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): AllFieldTypesFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -194,6 +203,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: AllFieldTypesUpdateRequestDto) {
 
@@ -216,6 +226,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInstantModifiable(editDto: AllFieldTypesUpdate_someInstantModifiableRequestDto) {
 
@@ -235,6 +246,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInstantModifiableNullable(editDto: AllFieldTypesUpdate_someInstantModifiableNullableRequestDto) {
 
@@ -254,6 +266,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeIntModifiable(editDto: AllFieldTypesUpdate_someIntModifiableRequestDto) {
 
@@ -273,6 +286,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeIntNullable(editDto: AllFieldTypesUpdate_someIntNullableRequestDto) {
 
@@ -292,6 +306,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeLocalDateModifiable(editDto: AllFieldTypesUpdate_someLocalDateModifiableRequestDto) {
 
@@ -311,6 +326,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomePeriodModifiable(editDto: AllFieldTypesUpdate_somePeriodModifiableRequestDto) {
 
@@ -330,6 +346,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeStringModifiable(editDto: AllFieldTypesUpdate_someStringModifiableRequestDto) {
 
@@ -349,6 +366,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeListOfStrings(editDto: AllFieldTypesUpdate_someListOfStringsRequestDto) {
 
@@ -368,8 +386,9 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: AllFieldTypesEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.allFieldTypesCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -377,6 +396,7 @@ class AllFieldTypesCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 

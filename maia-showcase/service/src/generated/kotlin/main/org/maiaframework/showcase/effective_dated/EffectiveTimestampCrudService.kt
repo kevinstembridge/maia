@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 
 @Component
@@ -19,6 +20,7 @@ class EffectiveTimestampCrudService(
     private val logger = LoggerFactory.getLogger(EffectiveTimestampCrudService::class.java)
 
 
+    @Transactional
     fun create(entity: EffectiveTimestampEntity): EffectiveTimestampEntity {
 
         this.entityRepo.insert(entity)
@@ -27,14 +29,16 @@ class EffectiveTimestampCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: EffectiveTimestampEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         return count
         
     }
 
 
+    @Transactional
     fun delete(id: DomainId) {
 
         this.entityRepo.deleteByPrimaryKey(id)

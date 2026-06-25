@@ -9,6 +9,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -23,6 +24,7 @@ class SimpleCrudService(
     private val logger = LoggerFactory.getLogger(SimpleCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: SimpleCreateRequestDto): SimpleEntity {
 
@@ -50,6 +52,7 @@ class SimpleCrudService(
     }
 
 
+    @Transactional
     fun create(entity: SimpleEntity): SimpleEntity {
 
         this.entityRepo.insert(entity)
@@ -59,6 +62,7 @@ class SimpleCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun existsBySomeString(someString: String): Boolean {
 
         return this.entityRepo.existsBySomeString(someString)
@@ -66,6 +70,7 @@ class SimpleCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): SimpleFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -73,6 +78,7 @@ class SimpleCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: SimpleUpdateRequestDto) {
 
@@ -86,6 +92,7 @@ class SimpleCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: SimpleUpdate_someStringRequestDto) {
 
@@ -102,8 +109,9 @@ class SimpleCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: SimpleEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.simpleCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -111,6 +119,7 @@ class SimpleCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 

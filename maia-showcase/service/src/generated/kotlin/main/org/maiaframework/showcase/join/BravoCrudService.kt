@@ -9,6 +9,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -24,6 +25,7 @@ class BravoCrudService(
     private val logger = LoggerFactory.getLogger(BravoCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: BravoCreateRequestDto): BravoEntity {
 
@@ -55,6 +57,7 @@ class BravoCrudService(
     }
 
 
+    @Transactional
     fun create(entity: BravoEntity): BravoEntity {
 
         this.entityRepo.insert(entity)
@@ -64,6 +67,7 @@ class BravoCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): BravoFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -71,6 +75,7 @@ class BravoCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: BravoUpdateRequestDto) {
 
@@ -86,6 +91,7 @@ class BravoCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: BravoUpdate_someIntRequestDto) {
 
@@ -102,6 +108,7 @@ class BravoCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: BravoUpdate_someStringRequestDto) {
 
@@ -118,6 +125,7 @@ class BravoCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateAlpha(editDto: BravoUpdate_alphaRequestDto) {
 
@@ -134,8 +142,9 @@ class BravoCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: BravoEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.bravoCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -143,6 +152,7 @@ class BravoCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 

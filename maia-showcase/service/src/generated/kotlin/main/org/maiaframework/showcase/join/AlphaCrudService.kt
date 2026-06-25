@@ -9,6 +9,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -24,6 +25,7 @@ class AlphaCrudService(
     private val logger = LoggerFactory.getLogger(AlphaCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: AlphaCreateRequestDto): AlphaEntity {
 
@@ -53,6 +55,7 @@ class AlphaCrudService(
     }
 
 
+    @Transactional
     fun create(entity: AlphaEntity): AlphaEntity {
 
         this.entityRepo.insert(entity)
@@ -62,6 +65,7 @@ class AlphaCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): AlphaFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -69,6 +73,7 @@ class AlphaCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: AlphaUpdateRequestDto) {
 
@@ -83,6 +88,7 @@ class AlphaCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: AlphaUpdate_someIntRequestDto) {
 
@@ -99,6 +105,7 @@ class AlphaCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: AlphaUpdate_someStringRequestDto) {
 
@@ -115,8 +122,9 @@ class AlphaCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: AlphaEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.alphaCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -124,6 +132,7 @@ class AlphaCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 

@@ -9,6 +9,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -27,6 +28,7 @@ class RightManyCrudService(
     private val logger = LoggerFactory.getLogger(RightManyCrudService::class.java)
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun create(createDto: RightManyCreateRequestDto): RightManyEntity {
 
@@ -68,6 +70,7 @@ class RightManyCrudService(
     }
 
 
+    @Transactional
     fun create(entity: RightManyEntity): RightManyEntity {
 
         this.entityRepo.insert(entity)
@@ -152,6 +155,7 @@ class RightManyCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(id: DomainId): RightManyFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(id)
@@ -159,6 +163,7 @@ class RightManyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun update(editDto: RightManyUpdateRequestDto) {
 
@@ -338,6 +343,7 @@ class RightManyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInt(editDto: RightManyUpdate_someIntRequestDto) {
 
@@ -356,6 +362,7 @@ class RightManyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeString(editDto: RightManyUpdate_someStringRequestDto) {
 
@@ -374,8 +381,9 @@ class RightManyCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: RightManyEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.rightManyCrudNotifier.onEntityUpdated(updater.id)
         return count
@@ -383,6 +391,7 @@ class RightManyCrudService(
     }
 
 
+    @Transactional
     @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 

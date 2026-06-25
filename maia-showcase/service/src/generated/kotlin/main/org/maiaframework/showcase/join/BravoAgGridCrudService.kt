@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 
 @Component
@@ -20,6 +21,7 @@ class BravoAgGridCrudService(
     private val logger = LoggerFactory.getLogger(BravoAgGridCrudService::class.java)
 
 
+    @Transactional
     fun create(entity: BravoAgGridEntity): BravoAgGridEntity {
 
         this.entityRepo.insert(entity)
@@ -28,6 +30,7 @@ class BravoAgGridCrudService(
     }
 
 
+    @Transactional
     fun delete(id: DomainId) {
 
         if (this.charlieAgGridRepo.existsByBravo(id)) {

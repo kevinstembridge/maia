@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 
 @Component
@@ -19,6 +20,7 @@ class ForeignKeyParentCrudService(
     private val logger = LoggerFactory.getLogger(ForeignKeyParentCrudService::class.java)
 
 
+    @Transactional
     fun create(entity: ForeignKeyParentEntity): ForeignKeyParentEntity {
 
         this.entityRepo.insert(entity)
