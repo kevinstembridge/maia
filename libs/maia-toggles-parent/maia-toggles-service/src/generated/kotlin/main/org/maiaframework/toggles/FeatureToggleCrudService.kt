@@ -7,6 +7,7 @@ import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 
@@ -21,6 +22,7 @@ class FeatureToggleCrudService(
     private val logger = LoggerFactory.getLogger(FeatureToggleCrudService::class.java)
 
 
+    @Transactional
     fun create(entity: FeatureToggleEntity): FeatureToggleEntity {
 
         this.entityRepo.insert(entity)
@@ -30,6 +32,7 @@ class FeatureToggleCrudService(
     }
 
 
+    @Transactional(readOnly = true)
     fun fetchForEdit(featureName: FeatureName): FeatureToggleFetchForEditDto {
 
         return this.entityRepo.fetchForEdit(featureName)
@@ -37,6 +40,7 @@ class FeatureToggleCrudService(
     }
 
 
+    @Transactional
     fun update(editDto: FeatureToggleUpdateRequestDto) {
 
         val featureName = editDto.featureName
@@ -51,6 +55,7 @@ class FeatureToggleCrudService(
     }
 
 
+    @Transactional
     fun updateActivationStrategies(editDto: FeatureToggleUpdate_activationStrategiesRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -70,8 +75,9 @@ class FeatureToggleCrudService(
     }
 
 
+    @Transactional
     fun setFields(updater: FeatureToggleEntityUpdater): Int {
-        
+
         val count = this.entityRepo.setFields(updater)
         this.featureToggleCrudNotifier.onEntityUpdated(updater.featureName)
         return count
@@ -79,6 +85,7 @@ class FeatureToggleCrudService(
     }
 
 
+    @Transactional
     fun delete(featureName: FeatureName) {
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(featureName)

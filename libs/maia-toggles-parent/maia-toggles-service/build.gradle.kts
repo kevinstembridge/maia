@@ -18,6 +18,8 @@ dependencies {
     implementation(project(":libs:maia-toggles-parent:maia-toggles-repo"))
     implementation(project(":libs:maia-webapp:maia-webapp-domain"))
 
+    implementation("org.springframework:spring-tx")
+
     maiagen(project(":libs:maia-toggles-parent:maia-toggles-spec"))
     maiagen(project(":maia-gen:maia-gen-generator"))
 
