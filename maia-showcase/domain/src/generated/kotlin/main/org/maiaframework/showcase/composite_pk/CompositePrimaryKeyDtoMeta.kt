@@ -17,7 +17,7 @@ object CompositePrimaryKeyDtoMeta {
             "someModifiableString" -> "maia.composite_primary_key.some_modifiable_string"
             "someString" -> "maia.composite_primary_key.some_string"
             "version" -> "maia.composite_primary_key.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someModifiableString, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, someInt, someModifiableString, someString, version]")
         }
 
     }
@@ -31,7 +31,7 @@ object CompositePrimaryKeyDtoMeta {
             "someModifiableString" -> JdbcCompatibleType.text
             "someString" -> JdbcCompatibleType.text
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someModifiableString, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, someInt, someModifiableString, someString, version]")
         }
 
     }

@@ -15,7 +15,7 @@ object LeftManyBlotterRowDtoMeta {
             "id" -> "maia.left_many.id"
             "someInt" -> "maia.left_many.some_int"
             "someString" -> "maia.left_many.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [id, rightEntities, rightSimpleEntities, someInt, someString]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [id, someInt, someString]")
         }
 
     }
@@ -27,7 +27,7 @@ object LeftManyBlotterRowDtoMeta {
             "id" -> JdbcCompatibleType.uuid
             "someInt" -> JdbcCompatibleType.integer
             "someString" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [id, rightEntities, rightSimpleEntities, someInt, someString]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [id, someInt, someString]")
         }
 
     }
