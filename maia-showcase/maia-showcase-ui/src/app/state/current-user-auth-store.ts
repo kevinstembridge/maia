@@ -18,7 +18,15 @@ export const CurrentUserAuthStore = signalStore(
 
         hasWriteAuthority: computed<boolean>(() => {
             return currentUserStore.currentUser()?.grantedAuthorities.includes(Authority.WRITE) ?? false;
-        })
+        }),
+
+        hasMaiaJobReadAuthority: computed<boolean>(() => {
+            return currentUserStore.currentUser()?.grantedAuthorities.includes(Authority.MAIA_JOB_READ) ?? false;
+        }),
+
+        hasMaiaJobWriteAuthority: computed<boolean>(() => {
+            return currentUserStore.currentUser()?.grantedAuthorities.includes(Authority.MAIA_JOB_WRITE) ?? false;
+        }),
 
     })),
 

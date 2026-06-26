@@ -50,6 +50,16 @@ export class App {
     );
 
 
+    protected readonly hasMaiaJobReadAuthority = computed(() =>
+        this.currentUserAuthStore.hasMaiaJobReadAuthority()
+    );
+
+
+    protected readonly hasMaiaJobWriteAuthority = computed(() =>
+        this.currentUserAuthStore.hasMaiaJobWriteAuthority()
+    );
+
+
     protected toggleMenu(): void {
 
         this.menuOpen.update((open) => !open);
