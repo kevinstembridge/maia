@@ -71,6 +71,7 @@ import org.maiaframework.gen.spec.definition.builders.FormModelDefBuilder
 import org.maiaframework.gen.spec.definition.builders.HazelcastDtoDefBuilder
 import org.maiaframework.gen.spec.definition.builders.IntTypeDefBuilder
 import org.maiaframework.gen.spec.definition.builders.LongTypeDefBuilder
+import org.maiaframework.gen.spec.definition.builders.MaiaDslMarker
 import org.maiaframework.gen.spec.definition.builders.RequestDtoDefBuilder
 import org.maiaframework.gen.spec.definition.builders.RequestDtoHtmlFormDefBuilder
 import org.maiaframework.gen.spec.definition.builders.ResponseDtoDefBuilder
@@ -731,20 +732,6 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    protected fun mapOfStringToString(): MapFieldType {
-
-        return FieldTypes.MapFieldTypeBuilder(FieldTypes.string).to(FieldTypes.string)
-
-    }
-
-
-    protected fun mapOfStringToAny(): MapFieldType {
-
-        return FieldTypes.MapFieldTypeBuilder(FieldTypes.string).to(Fqcn.ANY, JdbcCompatibleType.jsonb)
-
-    }
-
-
     protected fun fieldMapOf(keyFieldType: FieldType): FieldTypes.MapFieldTypeBuilder {
 
         return FieldTypes.MapFieldTypeBuilder(keyFieldType)
@@ -1258,6 +1245,7 @@ abstract class AbstractSpec protected constructor(
     }
 
 
+    @MaiaDslMarker
     class AuthorityBuilder(val name: String) {
 
 

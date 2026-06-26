@@ -12,6 +12,12 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = SchemaName("jobs")) {
 
 
+    val readAuthority = authority("MAIA_JOB_READ")
+
+
+    val writeAuthority = authority("MAIA_JOB_WRITE")
+
+
     val jobNameStringType = stringType("org.maiaframework.job.JobName") {
         provided()
     }
@@ -22,7 +28,6 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
 
     val jobExecutionEntityDef = entity("org.maiaframework.job", "JobExecution") {
         daoHasSpringAnnotation = false
-        tableName(name = "job_execution")
         field("jobName", jobNameStringType) {
             lengthConstraint(max = 100)
         }
@@ -39,7 +44,7 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
             modifiableBySystem()
             lengthConstraint(max = 50)
         }
-        field("metrics", mapOfStringToAny()) {
+        field("metrics", FieldTypes.mapOfStringToAny()) {
             modifiableBySystem()
         }
         field("errorMessage", FieldTypes.string) {
@@ -65,7 +70,7 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
         field("jobName", jobNameStringType)
         field("invokedBy", FieldTypes.string)
         field("startTimestampUtc", FieldTypes.instant)
-        field("metrics", mapOfStringToAny())
+        field("metrics", FieldTypes.mapOfStringToAny())
     }
 
 

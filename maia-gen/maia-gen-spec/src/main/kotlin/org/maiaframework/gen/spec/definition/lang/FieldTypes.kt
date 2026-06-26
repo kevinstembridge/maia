@@ -128,9 +128,29 @@ object FieldTypes {
     fun set(fieldType: FieldType) = SetFieldType(fieldType)
 
 
-    fun mapFieldType(keyFieldType: FieldType, valueFieldType: FieldType) = MapFieldType(keyFieldType, valueFieldType)
-    
-    
+    fun mapFieldType(
+        keyFieldType: FieldType,
+        valueFieldType: FieldType
+    ) = MapFieldType(
+        keyFieldType,
+        valueFieldType
+    )
+
+
+    fun mapOfStringToString(): MapFieldType {
+
+        return MapFieldTypeBuilder(string).to(string)
+
+    }
+
+
+    fun mapOfStringToAny(): MapFieldType {
+
+        return MapFieldTypeBuilder(string).to(Fqcn.ANY, JdbcCompatibleType.jsonb)
+
+    }
+
+
     fun FieldType.canHaveLengthConstraint(): Boolean = when (this) {
         is BooleanFieldType -> false
         is BooleanTypeFieldType -> false
