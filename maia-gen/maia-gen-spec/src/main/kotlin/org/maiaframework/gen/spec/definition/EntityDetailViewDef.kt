@@ -67,10 +67,6 @@ class EntityDetailViewDef(
     }
 
 
-
-    val editPermission_old = this.entityDef.crudDef.crudOperationDefs.updateOperationDef?.authorityDef
-
-
     val dtoDef = DtoDefBuilder(
         entityDef.packageName,
         DtoBaseName(entityDef.entityBaseName.value),
