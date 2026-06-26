@@ -1,10 +1,7 @@
 package org.maiaframework.gen.spec.definition
 
-import org.maiaframework.gen.spec.definition.lang.ClassDef
-
 
 class ModelDef(
-    val appKey: AppKey,
     val rootEntityHierarchies: List<EntityHierarchy>,
     val authorityDefs: List<AuthorityDef>,
     val formModelDefs: List<FormModelDef>,
@@ -13,7 +10,7 @@ class ModelDef(
     val responseDtoDefs: List<ResponseDtoDef>,
     val simpleResponseDtoDefs: List<SimpleResponseDtoDef>,
     val hazelcastDtoDefs: List<HazelcastDtoDef>,
-    val searchableDtoDefs: List<SearchableDtoDef>,
+    searchableDtoDefs: List<SearchableDtoDef>,
     val blotterDefs: List<BlotterDef>,
     val requestDtoHtmlFormDefs: List<HtmlFormDef>,
     val angularFormDefs: List<AngularFormDef>,
@@ -25,7 +22,6 @@ class ModelDef(
     val stringTypeDefs: List<StringTypeDef>,
     val typeaheadDefs: List<TypeaheadDef>,
     val esDocsDefs: List<EsDocDef>,
-    val hazelcastEntityConfigClassDef: ClassDef,
     val rowMapperDefs: List<RowMapperDef>,
     val entityDetailViewDefs: List<EntityDetailViewDef>,
     val entityEditPageDefs: List<EntityEditPageDef>,

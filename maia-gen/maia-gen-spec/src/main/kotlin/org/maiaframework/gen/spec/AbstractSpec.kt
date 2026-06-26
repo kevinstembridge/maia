@@ -3,7 +3,6 @@ package org.maiaframework.gen.spec
 import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.gen.spec.definition.AngularComponentBaseName
 import org.maiaframework.gen.spec.definition.AngularFormDef
-import org.maiaframework.gen.spec.definition.AnnotationDefs
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.BlotterDef
@@ -57,7 +56,6 @@ import org.maiaframework.gen.spec.definition.builders.ManyToManyEntityDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BlotterPageDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BooleanTypeDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BooleanValueClassDefBuilder
-import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
 import org.maiaframework.gen.spec.definition.builders.DataClassDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityCreateHtmlFormDefBuilder
 import org.maiaframework.gen.spec.definition.builders.EntityCreatePageDefBuilder
@@ -94,29 +92,24 @@ import org.maiaframework.gen.spec.definition.flags.WithHandCodedEntityDao
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedEsDocRepo
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.flags.WithVersionHistory
-import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.Fqcn
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
-import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
-import org.maiaframework.jdbc.JdbcCompatibleType
 import org.maiaframework.lang.text.StringFunctions
 
 
 abstract class AbstractSpec protected constructor(
-    private val appKey: AppKey,
-    defaultSchemaName: SchemaName? = null,
-    basePackageName: PackageName? = null
+    appKey: AppKey,
+    defaultSchemaName: SchemaName? = null
 ) : ModelDefProvider {
 
 
     private val angularFormDefs = mutableListOf<AngularFormDef>()
     private val authorityDefs = mutableListOf<AuthorityDef>()
-    private val basePackageName = basePackageName ?: PackageName(appKey.value.lowercase())
     private val booleanTypeDefs = mutableListOf<BooleanTypeDef>()
     private val booleanValueClassDefs = mutableListOf<BooleanValueClassDef>()
     private val blotterPageDefs = mutableListOf<BlotterPageDef>()
@@ -158,7 +151,6 @@ abstract class AbstractSpec protected constructor(
             finalizeEntityDefs()
 
             ModelDef(
-                this.appKey,
                 this.rootEntityHierarchies,
                 this.authorityDefs,
                 this.formModelDefs,
@@ -179,7 +171,6 @@ abstract class AbstractSpec protected constructor(
                 this.stringTypeDefs,
                 this.typeaheadDefs,
                 this.esDocDefs,
-                buildHazelcastConfigClassDef(),
                 this.rowMapperDefs,
                 this.entityDetailViewDefs,
                 this.entityEditPageDefs,
@@ -268,16 +259,6 @@ abstract class AbstractSpec protected constructor(
         }
 
         throw RuntimeException("Could not find an existing entity hierarchy for entity: " + entityDef.entityBaseName)
-
-    }
-
-
-    private fun buildHazelcastConfigClassDef(): ClassDef {
-
-        val fqcn = this.basePackageName.plusSubPackage("hazelcast").uqcn("${appKey.firstToUpper()}HazelcastConfig")
-        return aClassDef(fqcn)
-            .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
-            .build()
 
     }
 
