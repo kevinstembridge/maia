@@ -19,7 +19,7 @@ class AllFieldTypesEntityDetailViewDtoRepo(
     fun fetch(id: DomainId): AllFieldTypesEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(id)
-        
+
         return AllFieldTypesEntityDetailViewDto(
             createdBy = partyPkAndNameDtoFor(entity.createdBy),
             createdByUsername = entity.createdByUsername,

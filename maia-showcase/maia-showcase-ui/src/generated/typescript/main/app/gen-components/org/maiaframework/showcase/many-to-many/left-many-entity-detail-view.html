@@ -20,6 +20,18 @@
       <div class="detail-label">Version</div>
       <div class="detail-value">{{detailDto.version}}</div>
     </div>
+    <div class="detail-row">
+      <div class="detail-label">Right Simple Entities</div>
+      <div class="detail-value">
+        @for (item of detailDto.rightSimpleEntities; track item.id) {<span>{{item.name}}</span>}
+      </div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Right Entities</div>
+      <div class="detail-value">
+        @for (item of detailDto.rightEntities; track item.id) {<span>{{item.name}}</span>}
+      </div>
+    </div>
   </div>
 } @else {
   <mat-spinner></mat-spinner>

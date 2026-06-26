@@ -16,7 +16,7 @@ class AlphaEntityDetailViewDtoRepo(
     fun fetch(id: DomainId): AlphaEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(id)
-        
+
         return AlphaEntityDetailViewDto(
             createdTimestampUtc = entity.createdTimestampUtc,
             id = entity.id,

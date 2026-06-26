@@ -15,7 +15,7 @@ class CompositePrimaryKeyEntityDetailViewDtoRepo(
     fun fetch(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(primaryKey)
-        
+
         return CompositePrimaryKeyEntityDetailViewDto(
             createdTimestampUtc = entity.createdTimestampUtc,
             someInt = entity.someInt,

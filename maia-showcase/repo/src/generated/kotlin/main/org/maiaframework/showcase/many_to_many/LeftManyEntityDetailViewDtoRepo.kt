@@ -4,25 +4,86 @@
 package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.jdbc.JdbcOps
+import org.maiaframework.jdbc.SqlParams
 import org.springframework.stereotype.Repository
 
 
 @Repository
 class LeftManyEntityDetailViewDtoRepo(
-    private val entityRepo: LeftManyRepo
+    private val entityRepo: LeftManyRepo,
+    private val jdbcOps: JdbcOps
 ) {
+
+
+    private val rightSimpleEntitiesPkAndNameDtoRowMapper = RightManyPkAndNameDtoRowMapper()
+
+
+    private val rightEntitiesPkAndNameDtoRowMapper = RightManyPkAndNameDtoRowMapper()
 
 
     fun fetch(id: DomainId): LeftManyEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(id)
-        
+
+        val rightSimpleEntitiesPkAndNameDtoList = fetchRightSimpleEntitiesPkAndNameDtos(id)
+
+        val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(id)
+
+
         return LeftManyEntityDetailViewDto(
             createdTimestampUtc = entity.createdTimestampUtc,
             id = entity.id,
+            rightEntities = rightEntitiesPkAndNameDtoList,
+            rightSimpleEntities = rightSimpleEntitiesPkAndNameDtoList,
             someInt = entity.someInt,
             someString = entity.someString,
             version = entity.version,
+        )
+
+    }
+
+
+    private fun fetchRightSimpleEntitiesPkAndNameDtos(entityId: DomainId): List<RightManyPkAndNameDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                other.id,
+                other.some_string
+            from maia.right_many other
+            join maia.left_to_right_simple mtm
+                on other.id = mtm.right_simple_id
+            where mtm.left_simple_id = :entityId
+            order by other.some_string
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+            this.rightSimpleEntitiesPkAndNameDtoRowMapper
+        )
+
+    }
+
+
+    private fun fetchRightEntitiesPkAndNameDtos(entityId: DomainId): List<RightManyPkAndNameDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                other.id,
+                other.some_string
+            from maia.right_many other
+            join maia.left_to_right_many_to_many_join mtm
+                on other.id = mtm.right_id
+            where mtm.left_id = :entityId
+            and mtm.effective_range @> current_timestamp
+            order by other.some_string
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+            this.rightEntitiesPkAndNameDtoRowMapper
         )
 
     }

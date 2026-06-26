@@ -16,7 +16,7 @@ class RightManyEntityDetailViewDtoRepo(
     fun fetch(id: DomainId): RightManyEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(id)
-        
+
         return RightManyEntityDetailViewDto(
             createdTimestampUtc = entity.createdTimestampUtc,
             id = entity.id,

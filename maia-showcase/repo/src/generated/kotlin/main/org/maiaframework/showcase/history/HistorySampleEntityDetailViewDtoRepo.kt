@@ -19,7 +19,7 @@ class HistorySampleEntityDetailViewDtoRepo(
     fun fetch(id: DomainId): HistorySampleEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(id)
-        
+
         return HistorySampleEntityDetailViewDto(
             createdBy = partyPkAndNameDtoFor(entity.createdBy),
             createdTimestampUtc = entity.createdTimestampUtc,

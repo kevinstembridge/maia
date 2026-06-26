@@ -16,7 +16,7 @@ class UserEntityDetailViewDtoRepo(
     fun fetch(id: DomainId): UserEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(id)
-        
+
         return UserEntityDetailViewDto(
             authorities = entity.authorities,
             createdBy = entity.createdBy,

@@ -12,7 +12,8 @@ import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 
 class EntityDetailViewDef(
     val entityDef: EntityDef,
-    val pageTitle: String
+    val pageTitle: String,
+    val manyToManyFieldDefs: List<ManyToManySearchableDtoFieldDef> = emptyList()
 ) {
 
 
@@ -71,7 +72,7 @@ class EntityDetailViewDef(
         entityDef.packageName,
         DtoBaseName(entityDef.entityBaseName.value),
         DtoSuffix("EntityDetailViewDto"),
-        entityDef.allClassFields.map { toDtoClassField(it) }
+        entityDef.allClassFields.map { toDtoClassField(it) } + manyToManyFieldDefs.map { it.classFieldDef }
     )
         .withCharacteristic(DtoCharacteristic.RESPONSE_DTO)
         .build()

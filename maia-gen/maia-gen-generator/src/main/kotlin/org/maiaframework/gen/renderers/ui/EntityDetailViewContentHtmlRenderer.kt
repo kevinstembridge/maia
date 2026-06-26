@@ -2,6 +2,7 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
+import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 
 class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: EntityDetailViewDef) : AbstractSourceFileRenderer() {
@@ -35,6 +36,18 @@ class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: Entit
                     |    <div class="detail-row">
                     |      <div class="detail-label">${classFieldDef.displayName}</div>
                     |      <div class="detail-value">{{detailDto.${classFieldDef.classFieldName}.name$pipes}}</div>
+                    |    </div>
+                    |""".trimMargin()
+                )
+
+            } else if (fieldType is ListFieldType && fieldType.parameterFieldType is PkAndNameFieldType) {
+
+                append("""
+                    |    <div class="detail-row">
+                    |      <div class="detail-label">${classFieldDef.displayName}</div>
+                    |      <div class="detail-value">
+                    |        @for (item of detailDto.${classFieldDef.classFieldName}; track item.id) {<span>{{item.name}}</span>}
+                    |      </div>
                     |    </div>
                     |""".trimMargin()
                 )

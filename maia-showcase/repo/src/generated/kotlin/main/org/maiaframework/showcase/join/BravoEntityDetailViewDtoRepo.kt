@@ -17,7 +17,7 @@ class BravoEntityDetailViewDtoRepo(
     fun fetch(id: DomainId): BravoEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(id)
-        
+
         return BravoEntityDetailViewDto(
             alpha = alphaPkAndNameDtoFor(entity.alpha),
             createdTimestampUtc = entity.createdTimestampUtc,

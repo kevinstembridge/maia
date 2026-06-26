@@ -1495,7 +1495,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val rightManyBlotterPageDef = blotterPage(rightManyBlotterDef)
 
 
-    val leftManyEntityDetailViewPageDef = entityDetailView(leftManyEntityDef)
+    val leftManyEntityDetailViewPageDef = entityDetailView(leftManyEntityDef) {
+        manyToManyField("rightSimpleEntities", leftToRightSimpleJoinEntityDef)
+        manyToManyField("rightEntities", leftToRightManyToManyJoinEntityDef)
+    }
 
 
     val leftManyEntityCreatePageDef = entityCreatePage(leftManyEntityDef)

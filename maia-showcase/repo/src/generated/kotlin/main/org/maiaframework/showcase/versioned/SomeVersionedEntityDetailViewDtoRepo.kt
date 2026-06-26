@@ -16,7 +16,7 @@ class SomeVersionedEntityDetailViewDtoRepo(
     fun fetch(id: DomainId): SomeVersionedEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(id)
-        
+
         return SomeVersionedEntityDetailViewDto(
             createdTimestampUtc = entity.createdTimestampUtc,
             id = entity.id,
