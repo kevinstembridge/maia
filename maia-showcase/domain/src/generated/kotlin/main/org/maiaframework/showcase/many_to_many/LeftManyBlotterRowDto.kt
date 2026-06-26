@@ -9,6 +9,7 @@ import org.maiaframework.domain.DomainId
 data class LeftManyBlotterRowDto(
     val id: DomainId,
     val rightEntities: List<RightManyPkAndNameDto>,
+    val rightSimpleEntities: List<RightManyPkAndNameDto>,
     val someInt: Int,
     val someString: String
 ) {

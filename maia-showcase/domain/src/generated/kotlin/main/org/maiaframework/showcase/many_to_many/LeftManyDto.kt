@@ -11,6 +11,7 @@ data class LeftManyDto(
     val createdTimestampUtc: Instant,
     val id: DomainId,
     val rightEntities: List<RightManyPkAndNameDto>,
+    val rightSimpleEntities: List<RightManyPkAndNameDto>,
     val someIntFromLeft: Int,
     val someStringFromLeft: String
 ) {

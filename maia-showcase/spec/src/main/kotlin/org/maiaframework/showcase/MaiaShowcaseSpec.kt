@@ -1515,6 +1515,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("createdTimestampUtc")
         field("someIntFromLeft", "someInt")
         field("someStringFromLeft", "someString")
+        manyToManyField("rightSimpleEntities", leftToRightSimpleJoinEntityDef)
         manyToManyField("rightEntities", leftToRightManyToManyJoinEntityDef)
     }
 
@@ -1529,6 +1530,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         editActionColumn()
         columnFromDto("someStringFromLeft", "someString") { header("Some String From Left") }
         columnFromDto("someIntFromLeft", "someInt") { header("Some Int From Left") }
+        columnFromDto("rightSimpleEntities") { header("Right Simple Entities") }
         columnFromDto("rightEntities") { header("Right Entities") }
         deleteActionColumn()
     }

@@ -8,6 +8,7 @@ export interface LeftManyDto {
     createdTimestampUtc: string;
     id: string;
     rightEntities: ReadonlyArray<RightManyPkAndNameDto>;
+    rightSimpleEntities: ReadonlyArray<RightManyPkAndNameDto>;
     someIntFromLeft: number;
     someStringFromLeft: string;
 }

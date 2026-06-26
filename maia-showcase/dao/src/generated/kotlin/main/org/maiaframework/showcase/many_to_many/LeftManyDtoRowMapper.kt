@@ -18,11 +18,16 @@ class LeftManyDtoRowMapper(
     private val rightEntitiesPkAndNameDtoRowMapper = RightManyPkAndNameDtoRowMapper()
 
 
+    private val rightSimpleEntitiesPkAndNameDtoRowMapper = RightManyPkAndNameDtoRowMapper()
+
+
     override fun mapRow(rsa: ResultSetAdapter): LeftManyDto {
 
         val entityId = rsa.readDomainId("id")
 
         val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(entityId)
+
+        val rightSimpleEntitiesPkAndNameDtoList = fetchRightSimpleEntitiesPkAndNameDtos(entityId)
 
         val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
         val id = rsa.readDomainId("id")
@@ -33,6 +38,7 @@ class LeftManyDtoRowMapper(
             createdTimestampUtc,
             id,
             rightEntitiesPkAndNameDtoList,
+            rightSimpleEntitiesPkAndNameDtoList,
             someIntFromLeft,
             someStringFromLeft,
         )
@@ -58,6 +64,28 @@ class LeftManyDtoRowMapper(
                 addValue("entityId", entityId)
             },
             this.rightEntitiesPkAndNameDtoRowMapper
+        )
+
+    }
+
+
+    private fun fetchRightSimpleEntitiesPkAndNameDtos(entityId: DomainId): List<RightManyPkAndNameDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                other.id,
+                other.some_string
+            from maia.right_many other
+            join maia.left_to_right_simple mtm
+                on other.id = mtm.right_simple_id
+            where mtm.left_simple_id = :entityId
+            order by other.some_string
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+            this.rightSimpleEntitiesPkAndNameDtoRowMapper
         )
 
     }

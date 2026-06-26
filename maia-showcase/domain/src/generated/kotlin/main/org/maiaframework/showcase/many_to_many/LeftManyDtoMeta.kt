@@ -16,7 +16,7 @@ object LeftManyDtoMeta {
             "id" -> "maia.left_many.id"
             "someIntFromLeft" -> "maia.left_many.some_int"
             "someStringFromLeft" -> "maia.left_many.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, rightEntities, someIntFromLeft, someStringFromLeft]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, rightEntities, rightSimpleEntities, someIntFromLeft, someStringFromLeft]")
         }
 
     }
@@ -29,7 +29,7 @@ object LeftManyDtoMeta {
             "id" -> JdbcCompatibleType.uuid
             "someIntFromLeft" -> JdbcCompatibleType.integer
             "someStringFromLeft" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, rightEntities, someIntFromLeft, someStringFromLeft]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, rightEntities, rightSimpleEntities, someIntFromLeft, someStringFromLeft]")
         }
 
     }

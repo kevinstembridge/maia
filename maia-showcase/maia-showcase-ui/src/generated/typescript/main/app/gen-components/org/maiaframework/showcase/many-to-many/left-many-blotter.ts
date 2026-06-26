@@ -59,6 +59,7 @@ export class LeftManyBlotter {
         },
         { field: 'someString', headerName: 'Some String From Left', cellDataType: 'text', filter: true },
         { field: 'someInt', headerName: 'Some Int From Left', cellDataType: 'number', filter: true },
+        { field: 'rightSimpleEntities', headerName: 'Right Simple Entities', cellDataType: 'text', filter: true, cellRenderer: ChipsAgGridCellRendererComponent },
         { field: 'rightEntities', headerName: 'Right Entities', cellDataType: 'text', filter: true, cellRenderer: ChipsAgGridCellRendererComponent },
         {
             field: 'delete',
