@@ -138,6 +138,7 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
                                     "name": "${rightEntity2.someString}"
                                 }
                             ],
+                            "rightSimpleEntities": [],
                             "someIntFromLeft": ${leftEntity1.someInt},
                             "someStringFromLeft": "${leftEntity1.someString}"
                         }
