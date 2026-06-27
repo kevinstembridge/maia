@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.party.contact
 
-import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.contact.EmailAddress
@@ -12,7 +11,6 @@ import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
-import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -22,7 +20,6 @@ import java.time.Instant
 @Repository
 class PartyEmailAddressDao(
     private val fieldConverter: PartyEmailAddressEntityFieldConverter,
-    private val historyDao: PartyEmailAddressHistoryDao,
     private val jdbcOps: JdbcOps
 ) {
 
@@ -79,8 +76,6 @@ class PartyEmailAddressDao(
             }
         )
 
-        insertHistory(entity, ChangeType.CREATE)
-
     }
 
 
@@ -131,66 +126,6 @@ class PartyEmailAddressDao(
                 }
             }
         )
-
-        bulkInsertHistory(entities, ChangeType.CREATE)
-
-    }
-
-
-    private fun insertHistory(entity: PartyEmailAddressEntity, changeType: ChangeType) {
-
-        insertHistory(entity, entity.version, changeType)
-
-    }
-
-
-    private fun insertHistory(entity: PartyEmailAddressEntity, version: Long, changeType: ChangeType) {
-
-        this.historyDao.insert(history(entity, version, changeType))
-
-    }
-
-
-    private fun bulkInsertHistory(entities: List<PartyEmailAddressEntity>, changeType: ChangeType) {
-
-        val historyEntities = entities.map { history(it, it.version, changeType) }
-        this.historyDao.bulkInsert(historyEntities)
-
-    }
-
-
-    private fun history(
-        entity: PartyEmailAddressEntity,
-        version: Long,
-        changeType: ChangeType
-    ): PartyEmailAddressHistoryEntity {
-
-        val id = entity.id
-        val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
-        val effectiveFrom = entity.effectiveFrom
-        val effectiveTo = entity.effectiveTo
-        val emailAddress = entity.emailAddress
-        val isPrimaryContact = entity.isPrimaryContact
-        val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
-        val party = entity.party
-        val purposes = entity.purposes
-
-        return PartyEmailAddressHistoryEntity(
-                changeType,
-                createdBy,
-                createdTimestampUtc,
-                effectiveFrom,
-                effectiveTo,
-                emailAddress,
-                id,
-                isPrimaryContact,
-                lastModifiedBy,
-                lastModifiedTimestampUtc,
-                party,
-                purposes,
-                version)
 
     }
 
@@ -266,22 +201,6 @@ class PartyEmailAddressDao(
        
     }
 
-    fun findByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
-
-        return jdbcOps.queryForList(
-            """
-            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
-            where email_address = :emailAddress
-            """.trimIndent(),
-            SqlParams().apply {
-                addValue("emailAddress", emailAddress)
-            },
-            this.entityRowMapper
-        )
-
-    }
-
-
     fun findByParty(party: DomainId): List<PartyEmailAddressEntity> {
 
         return jdbcOps.queryForList(
@@ -298,17 +217,12 @@ class PartyEmailAddressDao(
     }
 
 
-    fun findEffectiveByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
+    fun findByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
 
         return jdbcOps.queryForList(
             """
-            select 
-                *,
-                lower(effective_range) as effective_from,
-                upper(effective_range) as effective_to
-            from maia.party_email_address
+            select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.party_email_address
             where email_address = :emailAddress
-            and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
                 addValue("emailAddress", emailAddress)
@@ -333,6 +247,27 @@ class PartyEmailAddressDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("party", party)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
+
+    fun findEffectiveByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select 
+                *,
+                lower(effective_range) as effective_from,
+                upper(effective_range) as effective_to
+            from maia.party_email_address
+            where email_address = :emailAddress
+            and effective_range @> current_timestamp
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("emailAddress", emailAddress)
             },
             this.entityRowMapper
         )
@@ -586,20 +521,7 @@ class PartyEmailAddressDao(
         sqlParams.addValue("version", updater.version)
         sqlParams.addValue("version_incremented", updater.version + 1)
 
-        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
-
-        if (updateCount == 0) {
-
-            throw OptimisticLockingException(PartyEmailAddressEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
-
-        } else {
-
-            val updatedEntity = findByPrimaryKey(updater.id)
-            insertHistory(updatedEntity, ChangeType.UPDATE)
-
-        }
-
-        return updateCount
+        return this.jdbcOps.update(sql.toString(), sqlParams)
 
     }
 
@@ -607,11 +529,31 @@ class PartyEmailAddressDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "emailAddress" -> sqlParams.addValue("emailAddress", (field.value as EmailAddress).value)
             "isPrimaryContact" -> sqlParams.addValue("isPrimaryContact", field.value as Boolean)
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "party" -> sqlParams.addValue("party", field.value as DomainId)
             "purposes" -> sqlParams.addListOfStrings("purposes", field.value as List<EmailAddressPurpose>) { it.name }
         }
+
+    }
+
+
+    fun closeEffectiveRange(id: DomainId): Boolean {
+
+        val updatedCount = this.jdbcOps.update(
+            """
+            update maia.party_email_address
+            set effective_range = tstzrange(lower(effective_range), now())
+            where id = :id
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+        return updatedCount > 0
 
     }
 

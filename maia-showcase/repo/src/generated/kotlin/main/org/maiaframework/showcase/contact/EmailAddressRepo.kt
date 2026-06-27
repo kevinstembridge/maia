@@ -99,5 +99,16 @@ class EmailAddressRepo(
     }
 
 
+    fun pkAndNameFor(emailAddress: EmailAddress): EmailAddressPkAndNameDto {
+
+        val entity = findByPrimaryKey(emailAddress)
+        return EmailAddressPkAndNameDto(
+            entity.emailAddress,
+            entity.emailAddress
+        )
+
+    }
+
+
 }
 

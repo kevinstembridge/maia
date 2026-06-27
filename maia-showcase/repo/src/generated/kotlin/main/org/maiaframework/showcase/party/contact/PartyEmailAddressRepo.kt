@@ -67,13 +67,6 @@ class PartyEmailAddressRepo(
     }
 
 
-    fun findByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
-
-        return dao.findByEmailAddress(emailAddress)
-
-    }
-
-
     fun findByParty(party: DomainId): List<PartyEmailAddressEntity> {
 
         return dao.findByParty(party)
@@ -81,9 +74,9 @@ class PartyEmailAddressRepo(
     }
 
 
-    fun findEffectiveByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
+    fun findByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
 
-        return dao.findEffectiveByEmailAddress(emailAddress)
+        return dao.findByEmailAddress(emailAddress)
 
     }
 
@@ -91,6 +84,13 @@ class PartyEmailAddressRepo(
     fun findEffectiveByParty(party: DomainId): List<PartyEmailAddressEntity> {
 
         return dao.findEffectiveByParty(party)
+
+    }
+
+
+    fun findEffectiveByEmailAddress(emailAddress: EmailAddress): List<PartyEmailAddressEntity> {
+
+        return dao.findEffectiveByEmailAddress(emailAddress)
 
     }
 
@@ -153,6 +153,15 @@ class PartyEmailAddressRepo(
         logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
+
+    }
+
+
+    fun closeEffectiveRange(id: DomainId): Boolean {
+
+        logger.debug("closeEffectiveRange {}", id)
+
+        return this.dao.closeEffectiveRange(id)
 
     }
 

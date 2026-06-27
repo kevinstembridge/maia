@@ -23,7 +23,6 @@ import org.maiaframework.showcase.party.contact.EmailAddressVerificationEntity
 import org.maiaframework.showcase.party.contact.EmailAddressVerificationEntityMeta
 import org.maiaframework.showcase.party.contact.PartyEmailAddressDao
 import org.maiaframework.showcase.party.contact.PartyEmailAddressEntityMeta
-import org.maiaframework.showcase.party.contact.PartyEmailAddressHistoryEntityMeta
 import org.maiaframework.showcase.testing.MaiaShowcaseAnys
 import org.maiaframework.showcase.user.UserDao
 import org.maiaframework.showcase.user.UserGroupEntityMeta
@@ -144,7 +143,6 @@ class Fixtures(
 
         logger.info("Resetting database state")
 
-        truncateTable(PartyEmailAddressHistoryEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(PartyEmailAddressEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(EmailAddressEntityMeta.SCHEMA_AND_TABLE_NAME)
         truncateTable(EmailAddressVerificationEntityMeta.SCHEMA_AND_TABLE_NAME)

@@ -92,7 +92,10 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val emailAddressPurposeEnumDef = enumDef("org.maiaframework.domain.contact.EmailAddressPurpose") { provided() }
+    val emailAddressPurposeEnumDef = enumDef("org.maiaframework.domain.contact.EmailAddressPurpose") {
+        provided()
+        withTypescript(withEnumSelectionOptions = true)
+    }
 
 
     val someDataClass = dataClass(
@@ -394,7 +397,11 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val emailAddressEntityDef = entity("org.maiaframework.showcase.contact", "EmailAddress") {
+    val emailAddressEntityDef = entity(
+        "org.maiaframework.showcase.contact",
+        "EmailAddress",
+        nameFieldForPkAndNameDto = "emailAddress",
+    ) {
         moduleName("ops")
         field("emailAddress", emailAddressStringType) {
             primaryKey()
@@ -404,15 +411,15 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val partyEmailAddressEntityDef = entity(
+    val partyEmailAddressEntityDef = manyToManyEntity(
         "org.maiaframework.showcase.party.contact",
         "PartyEmailAddress",
-        recordVersionHistory = true
+        leftEntity = ReferencedEntity("party", "Party", partyEntityDef, IsEditableByUser.TRUE),
+        rightEntity = ReferencedEntity("emailAddress", "Email Address", emailAddressEntityDef, IsEditableByUser.TRUE),
+        versioned = true
     ) {
         moduleName("ops")
         withEffectiveTimestamps(hasSingleEffectiveRecord = false)
-        foreignKey("party", partyEntityDef)
-        foreignKey("emailAddress", emailAddressEntityDef)
         field("isPrimaryContact", FieldTypes.boolean) {
             editableByUser()
         }
@@ -422,12 +429,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field_createdById(partyEntityDef)
         field_lastModifiedById(partyEntityDef)
         field_lastModifiedTimestampUtc()
-        index {
-            withFieldAscending("emailAddress")
-        }
-        index {
-            withFieldAscending("party")
-        }
     }
 
 

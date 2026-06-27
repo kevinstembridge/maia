@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.party.contact
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.contact.EmailAddressPurpose
 import org.maiaframework.domain.persist.FieldUpdate
 import java.time.Instant
@@ -72,6 +73,20 @@ data class PartyEmailAddressEntityUpdater(
         fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
 
             this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))
+
+        }
+
+
+        fun party(party: DomainId) {
+
+            this.fields.add(FieldUpdate("party", "party_id", party))
+
+        }
+
+
+        fun emailAddress(emailAddress: EmailAddress) {
+
+            this.fields.add(FieldUpdate("emailAddress", "email_address", emailAddress))
 
         }
 

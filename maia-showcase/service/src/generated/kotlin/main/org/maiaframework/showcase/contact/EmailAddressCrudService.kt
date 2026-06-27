@@ -6,7 +6,6 @@ package org.maiaframework.showcase.contact
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.showcase.party.contact.EmailAddressVerificationRepo
-import org.maiaframework.showcase.party.contact.PartyEmailAddressHistoryRepo
 import org.maiaframework.showcase.party.contact.PartyEmailAddressRepo
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -18,7 +17,6 @@ class EmailAddressCrudService(
     private val emailAddressVerificationRepo: EmailAddressVerificationRepo,
     private val entityRepo: EmailAddressRepo,
     private val maiaProblems: MaiaProblems,
-    private val partyEmailAddressHistoryRepo: PartyEmailAddressHistoryRepo,
     private val partyEmailAddressRepo: PartyEmailAddressRepo
 ) {
 

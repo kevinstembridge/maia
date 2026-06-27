@@ -19,7 +19,6 @@ import org.maiaframework.showcase.history.HistorySubTwoRepo
 import org.maiaframework.showcase.history.HistorySuperHistoryRepo
 import org.maiaframework.showcase.history.HistorySuperRepo
 import org.maiaframework.showcase.party.contact.EmailAddressVerificationRepo
-import org.maiaframework.showcase.party.contact.PartyEmailAddressHistoryRepo
 import org.maiaframework.showcase.party.contact.PartyEmailAddressRepo
 import org.maiaframework.webapp.domain.ForeignKeyReferencesExistResponseDto
 import org.slf4j.LoggerFactory
@@ -43,7 +42,6 @@ class PartyForeignKeyReferencesService(
     private val historySuperRepo: HistorySuperRepo,
     private val parentOneRepo: ParentOneRepo,
     private val parentTwoRepo: ParentTwoRepo,
-    private val partyEmailAddressHistoryRepo: PartyEmailAddressHistoryRepo,
     private val partyEmailAddressRepo: PartyEmailAddressRepo
 ) {
 
@@ -57,12 +55,8 @@ class PartyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "EmailAddress")
         }
 
-        if (this.partyEmailAddressRepo.existsByParty(id)) {
+        if (this.partyEmailAddressRepo.findEffectiveByParty(id).isNotEmpty()) {
             return ForeignKeyReferencesExistResponseDto(id, true, "PartyEmailAddress")
-        }
-
-        if (this.partyEmailAddressHistoryRepo.existsByParty(id)) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "PartyEmailAddressHistory")
         }
 
         if (this.emailAddressVerificationRepo.existsByCreatedBy(id)) {

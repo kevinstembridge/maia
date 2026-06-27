@@ -49,9 +49,9 @@ object PartyEmailAddressEntityMeta {
 
     object IndexName {
 
-        const val party_email_address_email_address_idx = "party_email_address_email_address_idx"
-
         const val party_email_address_party_id_idx = "party_email_address_party_id_idx"
+
+        const val party_email_address_email_address_idx = "party_email_address_email_address_idx"
 
     }
 
