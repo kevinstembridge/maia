@@ -26,15 +26,15 @@ class TimelineBlotterRowDtoDaoRenderer(
         addImportFor(def.rowMapperClassDef.fqcn)
         addImportFor(def.metaClassDef.fqcn)
 
-        renderDtoRowMapperField()
-        renderSearchModelConverterField()
-        `render function search`()
-        `render function count`()
+        `render the dtoRowMapper field`()
+        `render the searchModelConverter field`()
+        `render the search function`()
+        `render the count function`()
 
     }
 
 
-    private fun renderDtoRowMapperField() {
+    private fun `render the dtoRowMapper field`() {
 
         blankLine()
         blankLine()
@@ -43,9 +43,10 @@ class TimelineBlotterRowDtoDaoRenderer(
     }
 
 
-    private fun renderSearchModelConverterField() {
+    private fun `render the searchModelConverter field`() {
 
         addImportFor(Fqcns.MAIA_AG_GRID_SEARCH_MODEL_CONVERTER)
+
         blankLine()
         blankLine()
         appendLine("    private val searchModelConverter = AgGridSearchModelConverter(")
@@ -56,7 +57,7 @@ class TimelineBlotterRowDtoDaoRenderer(
     }
 
 
-    private fun `render function search`() {
+    private fun `render the search function`() {
 
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
         addImportFor(Fqcns.MAIA_AG_GRID_SEARCH_MODEL)
@@ -64,10 +65,14 @@ class TimelineBlotterRowDtoDaoRenderer(
         addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         val tripleQ = "\"\"\""
-        append("""
+
+        append($$"""
             |
             |
-            |    fun search(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<${def.rowDtoUqcn}> {
+            |    fun search(
+            |       entityId: DomainId,
+            |       searchModel: AgGridSearchModel
+            |    ): SearchResultPage<$${def.rowDtoUqcn}> {
             |
             |        val sqlParams = SqlParams()
             |        sqlParams.addValue("entityId", entityId)
@@ -77,19 +82,19 @@ class TimelineBlotterRowDtoDaoRenderer(
             |
             |        val unionSql = buildUnionSql()
             |
-            |        val sqlForTotalCount = $tripleQ
+            |        val sqlForTotalCount = $$tripleQ
             |            SELECT count(*)
-            |            FROM (${'$'}{unionSql}) AS timeline
-            |            ${'$'}whereClause
-            |            $tripleQ.trimIndent()
+            |            FROM (${unionSql}) AS timeline
+            |            $whereClause
+            |            $$tripleQ.trimIndent()
             |
-            |        val sqlForPage = $tripleQ
+            |        val sqlForPage = $$tripleQ
             |            SELECT *
-            |            FROM (${'$'}{unionSql}) AS timeline
-            |            ${'$'}whereClause
-            |            ${'$'}orderByClause
-            |            ${'$'}offsetAndLimitClause
-            |            $tripleQ.trimIndent()
+            |            FROM (${unionSql}) AS timeline
+            |            $whereClause
+            |            $orderByClause
+            |            $offsetAndLimitClause
+            |            $$tripleQ.trimIndent()
             |
             |        val totalResultCount = this.jdbcOps.queryForLong(sqlForTotalCount, sqlParams)
             |        val results = this.jdbcOps.queryForList(sqlForPage, sqlParams, this.dtoRowMapper)
@@ -109,17 +114,21 @@ class TimelineBlotterRowDtoDaoRenderer(
     }
 
 
-    private fun `render function count`() {
+    private fun `render the count function`() {
 
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
         addImportFor(Fqcns.MAIA_AG_GRID_SEARCH_MODEL)
         addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         val tripleQ = "\"\"\""
-        append("""
+
+        append($$"""
             |
             |
-            |    fun count(entityId: DomainId, searchModel: AgGridSearchModel): Long {
+            |    fun count(
+            |        entityId: DomainId,
+            |        searchModel: AgGridSearchModel
+            |    ): Long {
             |
             |        val sqlParams = SqlParams()
             |        sqlParams.addValue("entityId", entityId)
@@ -127,11 +136,11 @@ class TimelineBlotterRowDtoDaoRenderer(
             |
             |        val unionSql = buildUnionSql()
             |
-            |        val sqlForTotalCount = $tripleQ
+            |        val sqlForTotalCount = $$tripleQ
             |            SELECT count(*)
-            |            FROM (${'$'}{unionSql}) AS timeline
-            |            ${'$'}whereClause
-            |            $tripleQ.trimIndent()
+            |            FROM (${unionSql}) AS timeline
+            |            $whereClause
+            |            $$tripleQ.trimIndent()
             |
             |        return this.jdbcOps.queryForLong(sqlForTotalCount, sqlParams)
             |
@@ -191,14 +200,18 @@ class TimelineBlotterRowDtoDaoRenderer(
 
 
     private fun buildJoinNullsForEntityArm(): String {
+
         if (def.joinDefs.isEmpty()) return ""
+
         return def.joinDefs.joinToString("") { joinDef ->
             ",\n                NULL::uuid AS ${joinDef.rightFkSqlAlias},\n                NULL::text AS ${joinDef.displayFieldSqlAlias}"
         }
+
     }
 
 
     private fun buildJoinArms(joinNullSelectClause: String): String {
+
         if (def.joinDefs.isEmpty()) return ""
 
         return def.joinDefs.joinToString("\n") { joinDef ->
@@ -235,10 +248,12 @@ class TimelineBlotterRowDtoDaoRenderer(
             WHERE j.$entityFkCol = :entityId
               AND upper(j.effective_range) IS NOT NULL"""
         }
+
     }
 
 
     private fun jdbcTypeToPgCast(type: JdbcCompatibleType): String {
+
         return when (type) {
             JdbcCompatibleType.integer, JdbcCompatibleType.integer_array -> "integer"
             JdbcCompatibleType.bigint -> "bigint"
@@ -251,6 +266,7 @@ class TimelineBlotterRowDtoDaoRenderer(
             JdbcCompatibleType.date -> "date"
             JdbcCompatibleType.jsonb -> "jsonb"
         }
+
     }
 
 

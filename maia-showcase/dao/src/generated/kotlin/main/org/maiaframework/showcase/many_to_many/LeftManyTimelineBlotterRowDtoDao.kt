@@ -27,7 +27,10 @@ class LeftManyTimelineBlotterRowDtoDao(
     )
 
 
-    fun search(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<LeftManyTimelineBlotterRowDto> {
+    fun search(
+       entityId: DomainId,
+       searchModel: AgGridSearchModel
+    ): SearchResultPage<LeftManyTimelineBlotterRowDto> {
 
         val sqlParams = SqlParams()
         sqlParams.addValue("entityId", entityId)
@@ -66,7 +69,10 @@ class LeftManyTimelineBlotterRowDtoDao(
     }
 
 
-    fun count(entityId: DomainId, searchModel: AgGridSearchModel): Long {
+    fun count(
+        entityId: DomainId,
+        searchModel: AgGridSearchModel
+    ): Long {
 
         val sqlParams = SqlParams()
         sqlParams.addValue("entityId", entityId)
