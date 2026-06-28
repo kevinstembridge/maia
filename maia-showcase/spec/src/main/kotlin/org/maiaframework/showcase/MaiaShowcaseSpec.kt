@@ -1423,7 +1423,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "LeftToRightManyToManyJoin",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-//        recordVersionHistory = true, TODO
         leftEntity = ReferencedEntity(
             fieldName = "left",
             displayName = "Left",
