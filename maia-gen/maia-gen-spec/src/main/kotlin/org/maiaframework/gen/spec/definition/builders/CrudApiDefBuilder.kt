@@ -20,6 +20,7 @@ class CrudApiDefBuilder {
 
     }
 
+
     fun contextDto(contextDtoDef: RequestDtoDef) {
 
         this.contextDtoDef = contextDtoDef
