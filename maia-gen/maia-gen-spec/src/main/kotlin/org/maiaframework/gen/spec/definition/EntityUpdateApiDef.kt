@@ -265,30 +265,4 @@ class EntityUpdateApiDef(
     ) }
 
 
-    val angularInlineFormDef by lazy { if (crudApiDef.withEntityForm) {
-        AngularFormDef(
-            angularComponentBaseName,
-            requestDtoDef,
-            TreeSet(),
-            htmlFormFields,
-            formGroupFields,
-            delegateFormSubmission = DelegateFormSubmission.FALSE,
-            emitEventOnSuccess = EmitEventsOnSuccess.FALSE,
-            emitEventOnError = EmitEventsOnError.FALSE,
-            onSuccessUrl = null,
-            submitButtonText = null,
-            InlineFormOrDialog.INLINE_FORM,
-            FormPurpose.edit,
-            context = crudApiDef.context,
-            dialogTitle = null,
-            multiFieldDatabaseIndexDefs = entityDef.databaseIndexDefs,
-            onSubmitServiceFunctionName = "edit",
-            entityDef.crudAngularComponentNames.serviceTypescriptImport,
-            angularFormSystem
-        )
-    } else {
-        null
-    } }
-
-
 }

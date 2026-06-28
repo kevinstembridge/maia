@@ -17,9 +17,6 @@ TODO * Consolidate all the form component renderers into one.
 TODO * ??? Create a convenience DSL to allow for the construction of a standard entity CRUD stack.
 
 
-TODO * rv if CrudApiDef.withEntityForm is still needed now that we have EntityEditPageDef instead.
-    TODO * Refactor so that EntityEditReactiveFormHtmlRenderer doesn't need a reference to the CrudApiDef.
-
 TODO * EntityDeleteApiDef no longer needs to reference any front end components. This has been moved to EntityDeleteDialogDef.
 
 

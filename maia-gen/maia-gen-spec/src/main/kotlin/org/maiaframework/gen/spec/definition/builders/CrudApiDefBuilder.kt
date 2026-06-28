@@ -33,8 +33,7 @@ class CrudApiDefBuilder {
 
         return CrudApiDef(
             authorityToUse,
-            this.contextDtoDef,
-            withEntityForm = false
+            this.contextDtoDef
         )
 
     }
