@@ -16,8 +16,14 @@ class TimelineBlotterDefBuilder(
     private val joinDisplayFields: MutableMap<ManyToManyEntityDef, Pair<EntityDef, String>> = mutableMapOf()
 
 
-    fun joinDisplayField(joinDef: ManyToManyEntityDef, fromEntityDef: EntityDef, fieldName: String) {
+    fun joinDisplayField(
+        joinDef: ManyToManyEntityDef,
+        fromEntityDef: EntityDef,
+        fieldName: String
+    ) {
+
         joinDisplayFields[joinDef] = Pair(fromEntityDef, fieldName)
+
     }
 
 
