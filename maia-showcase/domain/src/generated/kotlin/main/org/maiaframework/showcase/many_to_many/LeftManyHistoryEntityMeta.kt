@@ -18,6 +18,8 @@ object LeftManyHistoryEntityMeta {
 
     const val id = "id"
 
+    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+
     const val someInt = "some_int"
 
     const val someString = "some_string"
@@ -41,6 +43,7 @@ object LeftManyHistoryEntityMeta {
             "changeType" -> "change_type"
             "createdTimestampUtc" -> "created_timestamp_utc"
             "id" -> "id"
+            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "someInt" -> "some_int"
             "someString" -> "some_string"
             "version" -> "version"

@@ -3,11 +3,13 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.spec.definition.AuthoritiesDef
 import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
+import org.maiaframework.gen.spec.definition.TimelineBlotterDef
 
 class EntityDetailViewPageComponentRenderer(
     private val entityDetailViewDef: EntityDetailViewDef,
     private val authoritiesDef: AuthoritiesDef?,
     private val blotterPageDef: BlotterPageDef?,
+    private val timelineBlotterDef: TimelineBlotterDef? = null,
 ) : AbstractTypescriptRenderer() {
 
 
@@ -114,6 +116,19 @@ class EntityDetailViewPageComponentRenderer(
                 |        const id = this.entityId();
                 |        if (id) {
                 |            this.router.navigate(['/${historyDef.routePath}', id]);
+                |        }
+                |    }
+                |""".trimMargin())
+        }
+
+        timelineBlotterDef?.let { timelineDef ->
+            append("""
+                |
+                |
+                |    onTimelineClicked(): void {
+                |        const id = this.entityId();
+                |        if (id) {
+                |            this.router.navigate(['/${timelineDef.routePath}', id]);
                 |        }
                 |    }
                 |""".trimMargin())

@@ -38,6 +38,8 @@ import org.maiaframework.gen.spec.definition.LongTypeDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.ModelDefinitionException
+import org.maiaframework.gen.spec.definition.TimelineBlotterDef
+import org.maiaframework.gen.spec.definition.builders.TimelineBlotterDefBuilder
 import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.RequestDtoDef
@@ -140,6 +142,7 @@ abstract class AbstractSpec protected constructor(
     private val stringValueClassDefs = mutableListOf<StringValueClassDef>()
     private val typeaheadDefs = mutableListOf<TypeaheadDef>()
     private val manyToManyAssociationsByEntityName: MutableMap<EntityBaseName, MutableList<ManyToManyEntityDef>> = mutableMapOf()
+    private val timelineBlotterDefs = mutableListOf<TimelineBlotterDef>()
 
     private val lookupFieldReaderByFieldType = { fieldType: FieldType -> this.fieldReadersByFieldType[fieldType] }
     private val lookupFieldWriterByFieldType = { fieldType: FieldType -> this.fieldWritersByFieldType[fieldType] }
@@ -176,6 +179,7 @@ abstract class AbstractSpec protected constructor(
                 this.entityEditPageDefs,
                 this.entityCreatePageDefs,
                 this.blotterPageDefs,
+                this.timelineBlotterDefs,
             )
 
         }
@@ -977,6 +981,21 @@ abstract class AbstractSpec protected constructor(
         init?.invoke(builder)
         val def = builder.build()
         this.blotterPageDefs.add(def)
+        return def
+
+    }
+
+
+    protected fun timelineBlotter(
+        entityDef: EntityDef,
+        joinDefs: List<ManyToManyEntityDef>,
+        init: TimelineBlotterDefBuilder.() -> Unit
+    ): TimelineBlotterDef {
+
+        val builder = TimelineBlotterDefBuilder(entityDef, joinDefs)
+        builder.init()
+        val def = builder.build()
+        this.timelineBlotterDefs.add(def)
         return def
 
     }

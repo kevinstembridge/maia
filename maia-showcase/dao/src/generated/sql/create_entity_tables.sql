@@ -390,6 +390,7 @@ CREATE TABLE maia.charlie_ag_grid (
 CREATE TABLE maia.left_many (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
     version bigint NOT NULL,
@@ -401,6 +402,7 @@ CREATE TABLE maia.left_many_history (
     change_type text NOT NULL,
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
     version bigint NOT NULL,

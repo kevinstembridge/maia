@@ -7,6 +7,7 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.EntityHistoryBlotterDef
 import org.maiaframework.gen.spec.definition.GeneratedTypescriptDir
+import org.maiaframework.gen.spec.definition.TimelineBlotterDef
 
 
 class EntityCrudRoutesRenderer(
@@ -15,6 +16,7 @@ class EntityCrudRoutesRenderer(
     private val entityDetailViewDef: EntityDetailViewDef? = null,
     private val entityCreatePageDef: EntityCreatePageDef? = null,
     private val entityEditPageDef: EntityEditPageDef? = null,
+    private val timelineBlotterDef: TimelineBlotterDef? = null,
 ) : AbstractTypescriptRenderer() {
 
 
@@ -46,6 +48,7 @@ class EntityCrudRoutesRenderer(
         blotterPageDef?.let { renderBlotterRoute(it) }
         entityDetailViewDef?.let { renderViewRoute(it) }
         entityDef.historyBlotterDef?.let { renderHistoryRoute(it) }
+        timelineBlotterDef?.let { renderTimelineRoute(it) }
         entityCreatePageDef?.let { renderCreateRoute(it) }
         entityEditPageDef?.let { renderEditRoute(it) }
         appendLine("];")
@@ -114,6 +117,21 @@ class EntityCrudRoutesRenderer(
     private fun renderHistoryRoute(def: EntityHistoryBlotterDef) {
 
         val path = if (def.isJoinEntityHistory) def.routePath else "${def.routePath}/:id"
+
+        append("""
+            |    {
+            |        path: '$path',
+            |        loadComponent: () =>
+            |            import('./${def.blotterPageComponentNames.componentNameKebab}').then(m => m.${def.blotterPageComponentNames.componentName}),
+            |    },
+            |""".trimMargin())
+
+    }
+
+
+    private fun renderTimelineRoute(def: TimelineBlotterDef) {
+
+        val path = "${def.routePath}/:id"
 
         append("""
             |    {

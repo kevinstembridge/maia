@@ -4,6 +4,7 @@
 
 export interface LeftManyHistoryBlotterRowDto {
     changeType: string;
+    lastModifiedTimestampUtc: string;
     someInt: number;
     someString: string;
     version: number;

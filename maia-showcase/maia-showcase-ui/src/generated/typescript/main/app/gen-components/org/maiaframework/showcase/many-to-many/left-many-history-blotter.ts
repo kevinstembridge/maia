@@ -28,6 +28,7 @@ export class LeftManyHistoryBlotter implements OnInit {
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         { field: 'changeType', headerName: 'Change Type', cellDataType: 'text' },
+        { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text' },
         { field: 'someInt', headerName: 'Some Int', cellDataType: 'number' },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text' },
         { field: 'version', headerName: 'Version', cellDataType: 'number' },

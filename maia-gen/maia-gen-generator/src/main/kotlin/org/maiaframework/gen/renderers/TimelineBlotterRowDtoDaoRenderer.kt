@@ -1,0 +1,257 @@
+package org.maiaframework.gen.renderers
+
+import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.TimelineBlotterDef
+import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
+import org.maiaframework.jdbc.JdbcCompatibleType
+import org.maiaframework.lang.text.StringFunctions
+
+
+class TimelineBlotterRowDtoDaoRenderer(
+    private val def: TimelineBlotterDef
+) : AbstractKotlinRenderer(
+    def.daoClassDef
+) {
+
+
+    init {
+
+        addConstructorArg(aClassField("jdbcOps", Fqcns.MAIA_JDBC_OPS).privat().build())
+
+    }
+
+
+    override fun renderFunctions() {
+
+        addImportFor(def.rowMapperClassDef.fqcn)
+        addImportFor(def.metaClassDef.fqcn)
+
+        renderDtoRowMapperField()
+        renderSearchModelConverterField()
+        `render function search`()
+        `render function count`()
+
+    }
+
+
+    private fun renderDtoRowMapperField() {
+
+        blankLine()
+        blankLine()
+        appendLine("    private val dtoRowMapper = ${def.rowMapperUqcn}()")
+
+    }
+
+
+    private fun renderSearchModelConverterField() {
+
+        addImportFor(Fqcns.MAIA_AG_GRID_SEARCH_MODEL_CONVERTER)
+        blankLine()
+        blankLine()
+        appendLine("    private val searchModelConverter = AgGridSearchModelConverter(")
+        appendLine("        ${def.metaUqcn}::fieldNameToColumnName,")
+        appendLine("        ${def.metaUqcn}::fieldNameToJdbcType")
+        appendLine("    )")
+
+    }
+
+
+    private fun `render function search`() {
+
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_AG_GRID_SEARCH_MODEL)
+        addImportFor(Fqcns.MAIA_SEARCH_RESULT_PAGE)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
+
+        val tripleQ = "\"\"\""
+        append("""
+            |
+            |
+            |    fun search(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<${def.rowDtoUqcn}> {
+            |
+            |        val sqlParams = SqlParams()
+            |        sqlParams.addValue("entityId", entityId)
+            |        val whereClause = this.searchModelConverter.buildWhereClauseFor(searchModel.filterModel, sqlParams)
+            |        val offsetAndLimitClause = this.searchModelConverter.buildOffsetAndLimitFor(searchModel)
+            |        val orderByClause = this.searchModelConverter.buildOrderByClause(searchModel)
+            |
+            |        val unionSql = buildUnionSql()
+            |
+            |        val sqlForTotalCount = $tripleQ
+            |            SELECT count(*)
+            |            FROM (${'$'}{unionSql}) AS timeline
+            |            ${'$'}whereClause
+            |            $tripleQ.trimIndent()
+            |
+            |        val sqlForPage = $tripleQ
+            |            SELECT *
+            |            FROM (${'$'}{unionSql}) AS timeline
+            |            ${'$'}whereClause
+            |            ${'$'}orderByClause
+            |            ${'$'}offsetAndLimitClause
+            |            $tripleQ.trimIndent()
+            |
+            |        val totalResultCount = this.jdbcOps.queryForLong(sqlForTotalCount, sqlParams)
+            |        val results = this.jdbcOps.queryForList(sqlForPage, sqlParams, this.dtoRowMapper)
+            |        val endRow = searchModel.endRow
+            |        val limit = if (endRow == null) null else (endRow - searchModel.startRow)
+            |
+            |        return SearchResultPage(
+            |            results,
+            |            totalResultCount,
+            |            searchModel.startRow,
+            |            limit
+            |        )
+            |
+            |    }
+            |""".trimMargin())
+
+    }
+
+
+    private fun `render function count`() {
+
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_AG_GRID_SEARCH_MODEL)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
+
+        val tripleQ = "\"\"\""
+        append("""
+            |
+            |
+            |    fun count(entityId: DomainId, searchModel: AgGridSearchModel): Long {
+            |
+            |        val sqlParams = SqlParams()
+            |        sqlParams.addValue("entityId", entityId)
+            |        val whereClause = this.searchModelConverter.buildWhereClauseFor(searchModel.filterModel, sqlParams)
+            |
+            |        val unionSql = buildUnionSql()
+            |
+            |        val sqlForTotalCount = $tripleQ
+            |            SELECT count(*)
+            |            FROM (${'$'}{unionSql}) AS timeline
+            |            ${'$'}whereClause
+            |            $tripleQ.trimIndent()
+            |
+            |        return this.jdbcOps.queryForLong(sqlForTotalCount, sqlParams)
+            |
+            |    }
+            |""".trimMargin())
+
+    }
+
+
+    override fun renderInnerClasses() {
+
+        renderBuildUnionSqlFunction()
+
+    }
+
+
+    private fun renderBuildUnionSqlFunction() {
+
+        val tripleQ = "\"\"\""
+        val historyTable = def.historyTableSchemaAndTable
+
+        val entityFieldSelects = def.entityHistoryColumns.joinToString(", ") { col ->
+            val colName = StringFunctions.toSnakeCase(col.classFieldDef.classFieldName.value)
+            "lmh.$colName"
+        }
+        val entityFieldSelectClause = if (entityFieldSelects.isNotEmpty()) ", $entityFieldSelects" else ""
+
+        val joinNullSelects = def.entityHistoryColumns.joinToString(", ") { col ->
+            val colName = StringFunctions.toSnakeCase(col.classFieldDef.classFieldName.value)
+            val pgCast = jdbcTypeToPgCast(col.classFieldDef.fieldType.jdbcCompatibleType)
+            "NULL::$pgCast AS $colName"
+        }
+        val joinNullSelectClause = if (joinNullSelects.isNotEmpty()) ", $joinNullSelects" else ""
+
+        val joinArms = buildJoinArms(joinNullSelectClause)
+
+        append("""
+            |
+            |
+            |    private fun buildUnionSql(): String {
+            |
+            |        return $tripleQ
+            |            SELECT
+            |                lmh.last_modified_timestamp_utc AS event_timestamp,
+            |                'ENTITY_CHANGE' AS event_type,
+            |                lmh.change_type,
+            |                lmh.version$entityFieldSelectClause${buildJoinNullsForEntityArm()}
+            |            FROM $historyTable lmh
+            |            WHERE lmh.id = :entityId
+            |$joinArms
+            |            $tripleQ.trimIndent()
+            |
+            |    }
+            |""".trimMargin())
+
+    }
+
+
+    private fun buildJoinNullsForEntityArm(): String {
+        if (def.joinDefs.isEmpty()) return ""
+        return def.joinDefs.joinToString("") { joinDef ->
+            ",\n                NULL::uuid AS ${joinDef.rightFkSqlAlias},\n                NULL::text AS ${joinDef.displayFieldSqlAlias}"
+        }
+    }
+
+
+    private fun buildJoinArms(joinNullSelectClause: String): String {
+        if (def.joinDefs.isEmpty()) return ""
+
+        return def.joinDefs.joinToString("\n") { joinDef ->
+            val joinTable = joinDef.joinTableSchemaAndTable
+            val rightTable = joinDef.rightEntitySchemaAndTable
+            val entityFkCol = joinDef.entityFkColumnName
+            val rightFkCol = joinDef.rightFkColumnName
+            val rightFkAlias = joinDef.rightFkSqlAlias
+            val displayCol = joinDef.rightEntityDisplayFieldColumnName
+            val displayAlias = joinDef.displayFieldSqlAlias
+
+            """            UNION ALL
+            SELECT
+                lower(j.effective_range) AS event_timestamp,
+                'JOIN_ADDED' AS event_type,
+                NULL::varchar AS change_type,
+                NULL::bigint AS version$joinNullSelectClause,
+                j.$rightFkCol AS $rightFkAlias,
+                r.$displayCol AS $displayAlias
+            FROM $joinTable j
+            JOIN $rightTable r ON r.id = j.$rightFkCol
+            WHERE j.$entityFkCol = :entityId
+
+            UNION ALL
+            SELECT
+                upper(j.effective_range) AS event_timestamp,
+                'JOIN_REMOVED' AS event_type,
+                NULL::varchar AS change_type,
+                NULL::bigint AS version$joinNullSelectClause,
+                j.$rightFkCol AS $rightFkAlias,
+                r.$displayCol AS $displayAlias
+            FROM $joinTable j
+            JOIN $rightTable r ON r.id = j.$rightFkCol
+            WHERE j.$entityFkCol = :entityId
+              AND upper(j.effective_range) IS NOT NULL"""
+        }
+    }
+
+
+    private fun jdbcTypeToPgCast(type: JdbcCompatibleType): String {
+        return when (type) {
+            JdbcCompatibleType.integer, JdbcCompatibleType.integer_array -> "integer"
+            JdbcCompatibleType.bigint -> "bigint"
+            JdbcCompatibleType.smallint, JdbcCompatibleType.smallint_array -> "smallint"
+            JdbcCompatibleType.decimal, JdbcCompatibleType.decimal_array -> "numeric"
+            JdbcCompatibleType.text, JdbcCompatibleType.text_array, JdbcCompatibleType.varchar -> "text"
+            JdbcCompatibleType.uuid, JdbcCompatibleType.uuid_array -> "uuid"
+            JdbcCompatibleType.boolean, JdbcCompatibleType.boolean_array -> "boolean"
+            JdbcCompatibleType.timestamp_with_time_zone, JdbcCompatibleType.timestamp, JdbcCompatibleType.timestamp_array -> "timestamptz"
+            JdbcCompatibleType.date -> "date"
+            JdbcCompatibleType.jsonb -> "jsonb"
+        }
+    }
+
+
+}

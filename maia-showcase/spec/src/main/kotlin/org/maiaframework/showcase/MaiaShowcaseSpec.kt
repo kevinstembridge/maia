@@ -1275,6 +1275,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             lengthConstraint(max = 100)
             editableByUser()
         }
+        field_lastModifiedTimestampUtc()
         crud {
             authority(partySpec.writeAuthority)
             create {
@@ -1402,6 +1403,18 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         description("A simple many-to-many join between two entities, with a user-managed effective date range.")
         effectiveRange(managedBy = EffectiveRangeManagedBy.USER)
+    }
+
+
+    val leftManyTimelineBlotterDef = timelineBlotter(
+        entityDef = leftManyEntityDef,
+        joinDefs = listOf(leftToRightSystemManagedEffectiveRangeEntityDef)
+    ) {
+        joinDisplayField(
+            joinDef = leftToRightSystemManagedEffectiveRangeEntityDef,
+            fromEntityDef = rightManyEntityDef,
+            fieldName = "someString"
+        )
     }
 
 

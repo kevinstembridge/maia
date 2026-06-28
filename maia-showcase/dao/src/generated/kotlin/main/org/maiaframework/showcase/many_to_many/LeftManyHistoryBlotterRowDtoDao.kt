@@ -45,6 +45,7 @@ class LeftManyHistoryBlotterRowDtoDao(
         val sqlForPage = """
             select
                 maia.left_many_history.change_type as changeType,
+                maia.left_many_history.last_modified_timestamp_utc as lastModifiedTimestampUtc,
                 maia.left_many_history.some_int as someInt,
                 maia.left_many_history.some_string as someString,
                 maia.left_many_history.version as version

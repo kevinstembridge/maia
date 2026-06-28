@@ -21,6 +21,8 @@ class LeftManyEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
+            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
+                return inputValue
             "some_int" -> // someInt
                 return inputValue
             "some_string" -> // someString

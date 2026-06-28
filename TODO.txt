@@ -1,4 +1,8 @@
 
+TODO * We need to display a history of changes to a MtM association.
+    => If the history is maintained solely by way of effective timestamps, how would we display it?
+
+
 TODO * MTM scenarios:
     TODO * The effective range of an MTM association can be user-managed (e.g. the user can set attributes on the join entity)
         or they can be system-managed (e.g. the effectiveFrom and effectiveTo dates are set automatically).

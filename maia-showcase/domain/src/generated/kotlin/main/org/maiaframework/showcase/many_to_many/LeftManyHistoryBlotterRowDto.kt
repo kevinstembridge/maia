@@ -4,10 +4,12 @@
 package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.domain.ChangeType
+import java.time.Instant
 
 
 data class LeftManyHistoryBlotterRowDto(
     val changeType: ChangeType,
+    val lastModifiedTimestampUtc: Instant,
     val someInt: Int,
     val someString: String,
     val version: Long

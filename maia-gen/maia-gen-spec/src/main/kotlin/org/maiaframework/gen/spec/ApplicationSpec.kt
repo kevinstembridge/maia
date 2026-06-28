@@ -52,6 +52,7 @@ abstract class ApplicationSpec(
             searchableDtoDefs = this.modelDefs.flatMap { it.allSearchableDtoDefs },
             simpleResponseDtoDefs =  this.modelDefs.flatMap { it.simpleResponseDtoDefs },
             stringTypeDefs = this.modelDefs.flatMap { it.stringTypeDefs },
+            timelineBlotterDefs = this.modelDefs.flatMap { it.timelineBlotterDefs },
             typeaheadDefs = this.modelDefs.flatMap { it.typeaheadDefs }
         )
 

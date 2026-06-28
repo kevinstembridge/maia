@@ -3,10 +3,12 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
+import org.maiaframework.gen.spec.definition.TimelineBlotterDef
 
 class EntityDetailViewPageHtmlRenderer(
     private val entityDetailViewDef: EntityDetailViewDef,
     private val blotterPageDef: BlotterPageDef?,
+    private val timelineBlotterDef: TimelineBlotterDef? = null,
 ) : AbstractSourceFileRenderer() {
 
 
@@ -40,6 +42,15 @@ class EntityDetailViewPageHtmlRenderer(
                 |    <button matButton aria-label="History" (click)="onHistoryClicked()">
                 |        <mat-icon>history</mat-icon>
                 |        History
+                |    </button>
+                |""".trimMargin())
+        }
+
+        timelineBlotterDef?.let {
+            append("""
+                |    <button matButton aria-label="Timeline" (click)="onTimelineClicked()">
+                |        <mat-icon>timeline</mat-icon>
+                |        View Timeline
                 |    </button>
                 |""".trimMargin())
         }

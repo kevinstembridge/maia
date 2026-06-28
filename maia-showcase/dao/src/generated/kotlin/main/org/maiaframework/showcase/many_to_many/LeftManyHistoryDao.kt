@@ -33,6 +33,7 @@ class LeftManyHistoryDao(
                 change_type,
                 created_timestamp_utc,
                 id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_string,
                 version
@@ -40,6 +41,7 @@ class LeftManyHistoryDao(
                 :changeType,
                 :createdTimestampUtc,
                 :id,
+                :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
                 :version
@@ -49,6 +51,7 @@ class LeftManyHistoryDao(
                 addValue("changeType", entity.changeType)
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
+                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
@@ -66,6 +69,7 @@ class LeftManyHistoryDao(
                 change_type,
                 created_timestamp_utc,
                 id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_string,
                 version
@@ -73,6 +77,7 @@ class LeftManyHistoryDao(
                 :changeType,
                 :createdTimestampUtc,
                 :id,
+                :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
                 :version
@@ -83,6 +88,7 @@ class LeftManyHistoryDao(
                     addValue("changeType", entity.changeType)
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
+                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
                     addValue("version", entity.version)

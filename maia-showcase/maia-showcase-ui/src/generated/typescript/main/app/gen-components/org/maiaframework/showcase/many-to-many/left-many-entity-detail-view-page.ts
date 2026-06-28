@@ -69,5 +69,13 @@ export class LeftManyEntityDetailViewPage {
     }
 
 
+    onTimelineClicked(): void {
+        const id = this.entityId();
+        if (id) {
+            this.router.navigate(['/left-many/timeline', id]);
+        }
+    }
+
+
 }
 

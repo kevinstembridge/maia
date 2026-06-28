@@ -66,6 +66,14 @@ class LeftManyHistoryEntityFilters {
         }
 
 
+    val lastModifiedTimestampUtc: FieldFilter<Instant> 
+        get() {
+
+            return FieldFilter("last_modified_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+
+        }
+
+
     val someInt: FieldFilter<Int> 
         get() {
 

@@ -10,6 +10,7 @@ import java.time.Instant
 class LeftManyEntity(
     val createdTimestampUtc: Instant,
     val id: DomainId,
+    val lastModifiedTimestampUtc: Instant,
     val someInt: Int,
     val someString: String,
     val version: Long
@@ -21,6 +22,7 @@ class LeftManyEntity(
         return "LeftManyEntity{" +
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
@@ -45,11 +47,13 @@ class LeftManyEntity(
 
             val createdTimestampUtc = Instant.now()
             val id = newId()
+            val lastModifiedTimestampUtc = createdTimestampUtc
             val version = 1L
 
             return LeftManyEntity(
                 createdTimestampUtc,
                 id,
+                lastModifiedTimestampUtc,
                 someInt,
                 someString,
                 version

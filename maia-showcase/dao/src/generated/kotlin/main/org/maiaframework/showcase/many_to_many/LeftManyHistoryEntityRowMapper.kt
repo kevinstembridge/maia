@@ -16,6 +16,7 @@ class LeftManyHistoryEntityRowMapper : MaiaRowMapper<LeftManyHistoryEntity> {
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
         val id = rsa.readDomainId("id")
+        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
         val version = rsa.readLong("version")
@@ -24,6 +25,7 @@ class LeftManyHistoryEntityRowMapper : MaiaRowMapper<LeftManyHistoryEntity> {
                 changeType,
                 createdTimestampUtc,
                 id,
+                lastModifiedTimestampUtc,
                 someInt,
                 someString,
                 version

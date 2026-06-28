@@ -21,6 +21,11 @@ export const leftManyRoutes: Routes = [
             import('./left-many-history-blotter-page').then(m => m.LeftManyHistoryBlotterPage),
     },
     {
+        path: 'left-many/timeline/:id',
+        loadComponent: () =>
+            import('./left-many-timeline-blotter-page').then(m => m.LeftManyTimelineBlotterPage),
+    },
+    {
         path: 'left-many/create',
         loadComponent: () =>
             import('./left-many-entity-create-page').then(m => m.LeftManyEntityCreatePage),

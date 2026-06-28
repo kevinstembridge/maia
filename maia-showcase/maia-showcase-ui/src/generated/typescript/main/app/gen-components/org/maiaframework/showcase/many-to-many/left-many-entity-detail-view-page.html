@@ -10,6 +10,10 @@
         <mat-icon>history</mat-icon>
         History
     </button>
+    <button matButton aria-label="Timeline" (click)="onTimelineClicked()">
+        <mat-icon>timeline</mat-icon>
+        View Timeline
+    </button>
     @if (canEdit && entityId()) {
         <button matButton aria-label="Edit" (click)="onEditClicked()">
             <mat-icon>edit</mat-icon>

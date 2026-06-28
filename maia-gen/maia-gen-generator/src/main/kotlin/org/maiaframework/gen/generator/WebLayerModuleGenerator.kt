@@ -2,6 +2,7 @@ package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.*
 import org.maiaframework.gen.renderers.RequestDtoEndpointRenderer
+import org.maiaframework.gen.renderers.TimelineBlotterSearchEndpointRenderer
 import org.maiaframework.gen.spec.definition.*
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 
@@ -40,6 +41,7 @@ class WebLayerModuleGenerator(
         renderTableDtoEndpoints()
         renderTypeaheadEndpoints()
         renderEntityHistoryBlotterEndpoints()
+        renderTimelineBlotterEndpoints()
 
     }
 
@@ -211,6 +213,15 @@ class WebLayerModuleGenerator(
 
         this.applicationModelDef.entityHistoryBlotterDefs.forEach { def ->
             EntityHistoryBlotterSearchEndpointRenderer(def).renderToDir(this.kotlinOutputDir)
+        }
+
+    }
+
+
+    private fun renderTimelineBlotterEndpoints() {
+
+        this.applicationModelDef.timelineBlotterDefs.forEach { def ->
+            TimelineBlotterSearchEndpointRenderer(def).renderToDir(this.kotlinOutputDir)
         }
 
     }

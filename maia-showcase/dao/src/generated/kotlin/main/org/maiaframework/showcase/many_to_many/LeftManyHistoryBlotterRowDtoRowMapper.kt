@@ -14,12 +14,14 @@ class LeftManyHistoryBlotterRowDtoRowMapper : MaiaRowMapper<LeftManyHistoryBlott
     override fun mapRow(rsa: ResultSetAdapter): LeftManyHistoryBlotterRowDto {
 
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
+        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
         val version = rsa.readLong("version")
 
         return LeftManyHistoryBlotterRowDto(
             changeType,
+            lastModifiedTimestampUtc,
             someInt,
             someString,
             version,

@@ -3,37 +3,33 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 import org.maiaframework.gen.renderers.ui.AgGridBlotterHtmlRenderer
 import org.maiaframework.gen.renderers.ui.AgGridDatasourceRenderer
-import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterAgGridDatasourceRenderer
-import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterComponentRenderer
-import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterPageComponentRenderer
-import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterPageHtmlRenderer
-import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterRowDtoTypescriptRenderer
-import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterServiceRenderer
 import org.maiaframework.gen.renderers.ui.AngularFormServiceRenderer
+import org.maiaframework.gen.renderers.ui.AngularReactiveFormComponentRenderer
+import org.maiaframework.gen.renderers.ui.AngularReactiveFormComponentRenderer_old
+import org.maiaframework.gen.renderers.ui.AngularSignalFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.AsyncValidatorRenderer
 import org.maiaframework.gen.renderers.ui.AuthApiServiceRenderer
 import org.maiaframework.gen.renderers.ui.AuthGuardRenderer
 import org.maiaframework.gen.renderers.ui.AuthServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.BlotterComponentRenderer
 import org.maiaframework.gen.renderers.ui.BlotterHtmlRenderer
+import org.maiaframework.gen.renderers.ui.BlotterPageComponentRenderer
+import org.maiaframework.gen.renderers.ui.BlotterPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.BlotterScssRenderer
 import org.maiaframework.gen.renderers.ui.BlotterServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
-import org.maiaframework.gen.renderers.ui.BlotterPageComponentRenderer
-import org.maiaframework.gen.renderers.ui.BlotterPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CurrentUserStoreRenderer
 import org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormHtmlRenderer
-import org.maiaframework.gen.renderers.ui.AngularReactiveFormComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreatePageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateReactiveFormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityDeleteDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityDetailDtoServiceTypescriptRenderer
@@ -49,19 +45,29 @@ import org.maiaframework.gen.renderers.ui.EntityEditPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditReactiveDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityEditSignalFormHtmlRenderer
-import org.maiaframework.gen.renderers.ui.AngularSignalFormComponentRenderer
-import org.maiaframework.gen.renderers.ui.AngularReactiveFormComponentRenderer_old
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterAgGridDatasourceRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterPageComponentRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterPageHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterRowDtoTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.EntityHistoryBlotterServiceRenderer
 import org.maiaframework.gen.renderers.ui.EnumSelectionOptionsTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EnumTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
 import org.maiaframework.gen.renderers.ui.ForeignKeyReferencesExistResponseDtoRenderer
 import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.FormScssRenderer
-import org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 import org.maiaframework.gen.renderers.ui.ManyToManyChipFieldDef
 import org.maiaframework.gen.renderers.ui.ManyToManyTimestampedFieldDef
 import org.maiaframework.gen.renderers.ui.SearchDtoServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.SigninRequestDtoRenderer
+import org.maiaframework.gen.renderers.ui.TimelineBlotterAgGridDatasourceRenderer
+import org.maiaframework.gen.renderers.ui.TimelineBlotterComponentRenderer
+import org.maiaframework.gen.renderers.ui.TimelineBlotterHtmlRenderer
+import org.maiaframework.gen.renderers.ui.TimelineBlotterPageComponentRenderer
+import org.maiaframework.gen.renderers.ui.TimelineBlotterPageHtmlRenderer
+import org.maiaframework.gen.renderers.ui.TimelineBlotterRowDtoTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadAngularServiceRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadFieldValidatorRenderer
 import org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
@@ -70,17 +76,17 @@ import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
-import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
+import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.SearchModelType
-import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.DelegateFormSubmission
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnError
 import org.maiaframework.gen.spec.definition.flags.EmitEventsOnSuccess
+import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
@@ -212,6 +218,7 @@ class AngularUiModuleGenerator(
         renderEntityEditPages()
         renderBlotterPages()
         renderEntityHistoryBlotters()
+        renderTimelineBlotters()
         renderEntityCrudRoutes()
         renderEntityDetailsDtos()
         renderEnums()
@@ -278,6 +285,20 @@ class AngularUiModuleGenerator(
             EntityHistoryBlotterHtmlRenderer(def).renderToDir(this.typescriptOutputDir)
             EntityHistoryBlotterPageComponentRenderer(def, viewPageDef).renderToDir(this.typescriptOutputDir)
             EntityHistoryBlotterPageHtmlRenderer(def, viewPageDef).renderToDir(this.typescriptOutputDir)
+        }
+
+    }
+
+
+    private fun renderTimelineBlotters() {
+
+        this.applicationModelDef.timelineBlotterDefs.forEach { def ->
+            TimelineBlotterRowDtoTypescriptRenderer(def).renderToDir(this.typescriptOutputDir)
+            TimelineBlotterAgGridDatasourceRenderer(def).renderToDir(this.typescriptOutputDir)
+            TimelineBlotterComponentRenderer(def).renderToDir(this.typescriptOutputDir)
+            TimelineBlotterHtmlRenderer(def).renderToDir(this.typescriptOutputDir)
+            TimelineBlotterPageComponentRenderer(def).renderToDir(this.typescriptOutputDir)
+            TimelineBlotterPageHtmlRenderer(def).renderToDir(this.typescriptOutputDir)
         }
 
     }
@@ -435,12 +456,18 @@ class AngularUiModuleGenerator(
             .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
             .toMap()
 
+        val timelineBlotterByEntity = this.applicationModelDef.timelineBlotterDefs
+            .associateBy { it.entityDef }
+
         this.applicationModelDef.entityDetailViewDefs.forEach {
 
+            val blotterPageDef = blotterPageByEntity[it.entityDef]
+            val timelineBlotterDef = timelineBlotterByEntity[it.entityDef]
+
             EntityDetailViewComponentRenderer(it).renderToDir(this.typescriptOutputDir)
-            EntityDetailViewPageComponentRenderer(it, this.applicationModelDef.authoritiesDef, blotterPageByEntity[it.entityDef]).renderToDir(this.typescriptOutputDir)
+            EntityDetailViewPageComponentRenderer(it, this.applicationModelDef.authoritiesDef, blotterPageDef, timelineBlotterDef).renderToDir(this.typescriptOutputDir)
             EntityDetailViewContentHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
-            EntityDetailViewPageHtmlRenderer(it, blotterPageByEntity[it.entityDef]).renderToDir(this.typescriptOutputDir)
+            EntityDetailViewPageHtmlRenderer(it, blotterPageDef, timelineBlotterDef).renderToDir(this.typescriptOutputDir)
 
         }
 
@@ -625,7 +652,10 @@ class AngularUiModuleGenerator(
             .map { it.entityDef }
             .toSet()
 
-        val allEntities = (blotterPageByEntity.keys + viewPageByEntity.keys + createPageByEntity.keys + editPageByEntity.keys + historyOnlyEntities).toSet()
+        val timelineBlotterByEntity = this.applicationModelDef.timelineBlotterDefs
+            .associateBy { it.entityDef }
+
+        val allEntities = (blotterPageByEntity.keys + viewPageByEntity.keys + createPageByEntity.keys + editPageByEntity.keys + historyOnlyEntities + timelineBlotterByEntity.keys).toSet()
 
         allEntities.forEach { entityDef ->
             EntityCrudRoutesRenderer(
@@ -634,6 +664,7 @@ class AngularUiModuleGenerator(
                 entityDetailViewDef = viewPageByEntity[entityDef],
                 entityCreatePageDef = createPageByEntity[entityDef],
                 entityEditPageDef = editPageByEntity[entityDef],
+                timelineBlotterDef = timelineBlotterByEntity[entityDef],
             ).renderToDir(this.typescriptOutputDir)
         }
 

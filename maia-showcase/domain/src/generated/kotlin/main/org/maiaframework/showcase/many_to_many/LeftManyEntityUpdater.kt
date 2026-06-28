@@ -5,6 +5,7 @@ package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.persist.FieldUpdate
+import java.time.Instant
 
 
 data class LeftManyEntityUpdater(
@@ -49,6 +50,13 @@ data class LeftManyEntityUpdater(
         fun someString(someString: String) {
 
             this.fields.add(FieldUpdate("someString", "some_string", someString))
+
+        }
+
+
+        fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
+
+            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))
 
         }
 

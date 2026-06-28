@@ -12,6 +12,7 @@ class LeftManyHistoryEntity(
     val changeType: ChangeType,
     val createdTimestampUtc: Instant,
     val id: DomainId,
+    val lastModifiedTimestampUtc: Instant,
     val someInt: Int,
     val someString: String,
     val version: Long
@@ -27,6 +28,7 @@ class LeftManyHistoryEntity(
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
+                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

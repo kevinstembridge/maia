@@ -10,6 +10,7 @@ import java.time.Instant
 data class LeftManyEntityTestBuilder(
     val createdTimestampUtc: Instant = anyInstant(),
     val id: DomainId = DomainId.newId(),
+    val lastModifiedTimestampUtc: Instant = anyInstant(),
     val someInt: Int = anyInt(),
     val someString: String = anyString(),
     val version: Long = 1L
@@ -21,6 +22,7 @@ data class LeftManyEntityTestBuilder(
         return LeftManyEntity(
             this.createdTimestampUtc,
             this.id,
+            this.lastModifiedTimestampUtc,
             this.someInt,
             this.someString,
             this.version

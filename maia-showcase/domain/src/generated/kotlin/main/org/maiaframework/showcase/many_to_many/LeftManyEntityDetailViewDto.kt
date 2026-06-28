@@ -10,6 +10,7 @@ import java.time.Instant
 data class LeftManyEntityDetailViewDto(
     val createdTimestampUtc: Instant,
     val id: DomainId,
+    val lastModifiedTimestampUtc: Instant,
     val rightEntities: List<RightManyPkAndNameDto>,
     val rightSimpleEntities: List<RightManyPkAndNameDto>,
     val someInt: Int,

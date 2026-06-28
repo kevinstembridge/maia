@@ -14,6 +14,7 @@ import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.time.Instant
 
 
 @Repository
@@ -40,12 +41,14 @@ class LeftManyDao(
             insert into maia.left_many (
                 created_timestamp_utc,
                 id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_string,
                 version
             ) values (
                 :createdTimestampUtc,
                 :id,
+                :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
                 :version
@@ -54,6 +57,7 @@ class LeftManyDao(
             SqlParams().apply {
                 addValue("createdTimestampUtc", entity.createdTimestampUtc)
                 addValue("id", entity.id)
+                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
@@ -72,12 +76,14 @@ class LeftManyDao(
             insert into maia.left_many (
                 created_timestamp_utc,
                 id,
+                last_modified_timestamp_utc,
                 some_int,
                 some_string,
                 version
             ) values (
                 :createdTimestampUtc,
                 :id,
+                :lastModifiedTimestampUtc,
                 :someInt,
                 :someString,
                 :version
@@ -87,6 +93,7 @@ class LeftManyDao(
                 SqlParams().apply {
                     addValue("createdTimestampUtc", entity.createdTimestampUtc)
                     addValue("id", entity.id)
+                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
                     addValue("version", entity.version)
@@ -129,6 +136,7 @@ class LeftManyDao(
 
         val id = entity.id
         val createdTimestampUtc = entity.createdTimestampUtc
+        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
         val someInt = entity.someInt
         val someString = entity.someString
 
@@ -136,6 +144,7 @@ class LeftManyDao(
                 changeType,
                 createdTimestampUtc,
                 id,
+                lastModifiedTimestampUtc,
                 someInt,
                 someString,
                 version)
@@ -317,6 +326,7 @@ class LeftManyDao(
             select
                 maia.left_many.created_timestamp_utc as createdTimestampUtc,
                 maia.left_many.id as id,
+                maia.left_many.last_modified_timestamp_utc as lastModifiedTimestampUtc,
                 maia.left_many.some_int as someInt,
                 maia.left_many.some_string as someString,
                 maia.left_many.version as version
@@ -386,6 +396,7 @@ class LeftManyDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "someInt" -> sqlParams.addValue("someInt", field.value as Int)
             "someString" -> sqlParams.addValue("someString", field.value as String)
         }

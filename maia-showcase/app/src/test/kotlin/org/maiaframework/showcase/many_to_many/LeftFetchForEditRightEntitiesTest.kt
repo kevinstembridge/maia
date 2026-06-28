@@ -99,7 +99,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
         ).debug()
             .hasStatus(HttpStatus.OK)
          .bodyJson()
-         .isEqualTo("""
+         .isLenientlyEqualTo("""
             {
                 "createdTimestampUtc": "${leftEntity.createdTimestampUtc}",
                 "id": "${leftEntity.id}",

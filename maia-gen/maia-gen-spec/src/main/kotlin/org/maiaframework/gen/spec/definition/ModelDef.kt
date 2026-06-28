@@ -26,7 +26,8 @@ class ModelDef(
     val entityDetailViewDefs: List<EntityDetailViewDef>,
     val entityEditPageDefs: List<EntityEditPageDef>,
     val entityCreatePageDefs: List<EntityCreatePageDef>,
-    val blotterPageDefs: List<BlotterPageDef>
+    val blotterPageDefs: List<BlotterPageDef>,
+    val timelineBlotterDefs: List<TimelineBlotterDef>
 ) {
 
 

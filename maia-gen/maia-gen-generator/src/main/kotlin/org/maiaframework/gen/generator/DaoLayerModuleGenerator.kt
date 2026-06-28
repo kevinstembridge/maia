@@ -3,6 +3,8 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.CreateTableSqlRenderer
 import org.maiaframework.gen.renderers.EntityHistoryBlotterRowDtoDaoRenderer
 import org.maiaframework.gen.renderers.EntityHistoryBlotterRowMapperRenderer
+import org.maiaframework.gen.renderers.TimelineBlotterRowDtoDaoRenderer
+import org.maiaframework.gen.renderers.TimelineBlotterRowMapperRenderer
 import org.maiaframework.gen.renderers.EntityRowMapperRenderer
 import org.maiaframework.gen.renderers.JdbcDaoRenderer
 import org.maiaframework.gen.renderers.RowMapperRenderer
@@ -43,6 +45,8 @@ class DaoLayerModuleGenerator(
         `render DAOs`()
         `render EntityHistoryBlotterRowMappers`()
         `render EntityHistoryBlotterRowDtoDaos`()
+        `render TimelineBlotterRowMappers`()
+        `render TimelineBlotterRowDtoDaos`()
 
     }
 
@@ -145,6 +149,24 @@ class DaoLayerModuleGenerator(
 
         this.applicationModelDef.entityHistoryBlotterDefs.forEach { def ->
             EntityHistoryBlotterRowDtoDaoRenderer(def).renderToDir(this.kotlinOutputDir)
+        }
+
+    }
+
+
+    private fun `render TimelineBlotterRowMappers`() {
+
+        this.applicationModelDef.timelineBlotterDefs.forEach { def ->
+            TimelineBlotterRowMapperRenderer(def).renderToDir(this.kotlinOutputDir)
+        }
+
+    }
+
+
+    private fun `render TimelineBlotterRowDtoDaos`() {
+
+        this.applicationModelDef.timelineBlotterDefs.forEach { def ->
+            TimelineBlotterRowDtoDaoRenderer(def).renderToDir(this.kotlinOutputDir)
         }
 
     }
