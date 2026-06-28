@@ -471,8 +471,8 @@ abstract class AbstractSpec protected constructor(
 
 
     /**
-     * A Simple many-to-many join is not versioned and has no history. The join either
-     * exists or it doesn't. An optional effective range may be configured via the builder.
+     * A Simple many-to-many join is not versioned and does not have a separate history table.
+     * An optional effective range may be configured via the builder to capture a historical record.
      */
     protected fun simpleManyToManyEntity(
         packageName: String,
@@ -741,6 +741,13 @@ abstract class AbstractSpec protected constructor(
     protected fun fieldSetOf(enumDef: EnumDef): SetFieldType {
 
         return FieldTypes.set(FieldTypes.enum(enumDef))
+
+    }
+
+
+    protected fun fieldSetOf(stringValueClassDef: StringValueClassDef): SetFieldType {
+
+        return FieldTypes.set(FieldTypes.stringValueClass(stringValueClassDef))
 
     }
 
