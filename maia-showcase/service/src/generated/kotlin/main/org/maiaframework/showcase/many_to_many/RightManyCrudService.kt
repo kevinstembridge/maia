@@ -303,7 +303,9 @@ class RightManyCrudService(
 
         `close effectiveRange on removed leftToRightManyToManyJoin entities`(id, submitted)
 
-        `insert added leftToRightManyToManyJoin entities`(id, submitted)
+        val modifiedDtos = `close effectiveRange on modified leftToRightManyToManyJoin entities`(id, submitted)
+
+        `insert added and replaced leftToRightManyToManyJoin entities`(id, submitted, modifiedDtos)
 
     }
 
@@ -323,12 +325,29 @@ class RightManyCrudService(
     }
 
 
-    private fun `insert added leftToRightManyToManyJoin entities`(
+    private fun `close effectiveRange on modified leftToRightManyToManyJoin entities`(
         id: DomainId,
         submitted: List<LeftJoinRequestDto>
+    ): List<LeftJoinRequestDto> {
+
+        val existingById = this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).associateBy { it.id }
+
+        return submitted.filter { it.id != null }.filter { joinDto ->
+            val existing = existingById[joinDto.id!!]
+                ?: throw this.maiaProblems.joinRecordNotFound("LeftToRightManyToManyJoinEntity")
+            existing.someInt != joinDto.someInt
+        }.onEach { this.leftToRightManyToManyJoinRepo.closeEffectiveRange(it.id!!) }
+
+    }
+
+
+    private fun `insert added and replaced leftToRightManyToManyJoin entities`(
+        id: DomainId,
+        submitted: List<LeftJoinRequestDto>,
+        modifiedDtos: List<LeftJoinRequestDto>
     ) {
 
-        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
+        val newJoins = (submitted.filter { it.id == null } + modifiedDtos).map { joinDto ->
             LeftToRightManyToManyJoinEntity.newInstance(
                 effectiveFrom = Instant.now(),
                 effectiveTo = null,
