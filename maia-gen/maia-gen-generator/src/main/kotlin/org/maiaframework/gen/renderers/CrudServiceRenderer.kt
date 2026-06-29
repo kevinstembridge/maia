@@ -631,28 +631,49 @@ class CrudServiceRenderer(
                 if (isSystemManaged) {
 
                     val joinNamePrefixLower = joinNamePrefix.replaceFirstChar { it.lowercaseChar() }
-                    val closeMethodName = "close effectiveRange on removed $joinNamePrefixLower entities"
-                    val insertMethodName = "insert added $joinNamePrefixLower entities"
+                    val closeRemovedMethodName = "close effectiveRange on removed $joinNamePrefixLower entities"
+                    val hasExtraFields = extraReconcileArgs.isNotEmpty()
+                    val closeModifiedMethodName = "close effectiveRange on modified $joinNamePrefixLower entities"
+                    val insertMethodName = if (hasExtraFields) "insert added and replaced $joinNamePrefixLower entities" else "insert added $joinNamePrefixLower entities"
+
+                    if (hasExtraFields) {
+                        append("""
+                            |
+                            |
+                            |    private fun `reconcile $joinNamePrefix joins`(
+                            |        id: DomainId,
+                            |        submitted: List<${joinDtoDef.uqcn}>
+                            |    ) {
+                            |
+                            |        `$closeRemovedMethodName`(id, submitted)
+                            |
+                            |        val modifiedDtos = `$closeModifiedMethodName`(id, submitted)
+                            |
+                            |        `$insertMethodName`(id, submitted, modifiedDtos)
+                            |
+                            |    }
+                            |""".trimMargin())
+                    } else {
+                        append("""
+                            |
+                            |
+                            |    private fun `reconcile $joinNamePrefix joins`(
+                            |        id: DomainId,
+                            |        submitted: List<${joinDtoDef.uqcn}>
+                            |    ) {
+                            |
+                            |        `$closeRemovedMethodName`(id, submitted)
+                            |
+                            |        `$insertMethodName`(id, submitted)
+                            |
+                            |    }
+                            |""".trimMargin())
+                    }
 
                     append("""
                         |
                         |
-                        |    private fun `reconcile $joinNamePrefix joins`(
-                        |        id: DomainId,
-                        |        submitted: List<${joinDtoDef.uqcn}>
-                        |    ) {
-                        |
-                        |        `$closeMethodName`(id, submitted)
-                        |
-                        |        `$insertMethodName`(id, submitted)
-                        |
-                        |    }
-                        |""".trimMargin())
-
-                    append("""
-                        |
-                        |
-                        |    private fun `$closeMethodName`(
+                        |    private fun `$closeRemovedMethodName`(
                         |        id: DomainId,
                         |        submitted: List<${joinDtoDef.uqcn}>
                         |    ) {
@@ -667,17 +688,54 @@ class CrudServiceRenderer(
                         |    }
                         |""".trimMargin())
 
-                    append("""
-                        |
-                        |
-                        |    private fun `$insertMethodName`(
-                        |        id: DomainId,
-                        |        submitted: List<${joinDtoDef.uqcn}>
-                        |    ) {
-                        |
-                        |        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
-                        |            ${joinEntityClass}.newInstance(
-                        |""".trimMargin())
+                    if (hasExtraFields) {
+                        val changeDetection = extraReconcileArgs.joinToString(" ||\n            ") { (fieldName, _) -> "existing.$fieldName != joinDto.$fieldName" }
+                        append("""
+                            |
+                            |
+                            |    private fun `$closeModifiedMethodName`(
+                            |        id: DomainId,
+                            |        submitted: List<${joinDtoDef.uqcn}>
+                            |    ): List<${joinDtoDef.uqcn}> {
+                            |
+                            |        val existingById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
+                            |
+                            |        return submitted.filter { it.id != null }.filter { joinDto ->
+                            |            val existing = existingById[joinDto.id!!]
+                            |                ?: throw this.maiaProblems.joinRecordNotFound("$joinEntityClass")
+                            |            $changeDetection
+                            |        }.onEach { this.${joinRepoFieldName}.closeEffectiveRange(it.id!!) }
+                            |
+                            |    }
+                            |""".trimMargin())
+                    }
+
+                    if (hasExtraFields) {
+                        append("""
+                            |
+                            |
+                            |    private fun `$insertMethodName`(
+                            |        id: DomainId,
+                            |        submitted: List<${joinDtoDef.uqcn}>,
+                            |        modifiedDtos: List<${joinDtoDef.uqcn}>
+                            |    ) {
+                            |
+                            |        val newJoins = (submitted.filter { it.id == null } + modifiedDtos).map { joinDto ->
+                            |            ${joinEntityClass}.newInstance(
+                            |""".trimMargin())
+                    } else {
+                        append("""
+                            |
+                            |
+                            |    private fun `$insertMethodName`(
+                            |        id: DomainId,
+                            |        submitted: List<${joinDtoDef.uqcn}>
+                            |    ) {
+                            |
+                            |        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
+                            |            ${joinEntityClass}.newInstance(
+                            |""".trimMargin())
+                    }
 
                     renderNewInstanceArgsMultiLine(indentSize = 16, newInstanceArgs)
 
