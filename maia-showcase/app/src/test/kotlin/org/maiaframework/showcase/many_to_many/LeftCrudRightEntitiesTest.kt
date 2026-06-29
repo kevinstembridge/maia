@@ -227,6 +227,60 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
     }
 
 
+    @Test
+    fun `update with changed someInt closes old record and creates new record`() {
+
+        post(
+            "/api/left-many/create",
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}", "someInt": 10}]}"""
+        ).hasStatus(HttpStatus.CREATED)
+
+        val leftId = leftDao.findAllAsSequence().first().id
+        val joinBefore = manyToManyJoinDao.findByLeft(leftId).single()
+
+        put(
+            "/api/left-many/update",
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "version": 1, "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}", "someInt": 20}]}"""
+        ).hasStatus(HttpStatus.OK)
+
+        val allJoins = manyToManyJoinDao.findByLeft(leftId)
+        assertThat(allJoins).hasSize(2)
+
+        val closedJoin = allJoins.single { it.id == joinBefore.id }
+        assertThat(closedJoin.effectiveTo).isNotNull()
+
+        val newJoin = allJoins.single { it.id != joinBefore.id }
+        assertThat(newJoin.effectiveTo).isNull()
+        assertThat(newJoin.someInt).isEqualTo(20)
+        assertThat(newJoin.right).isEqualTo(rightEntity1.id)
+
+    }
+
+
+    @Test
+    fun `update with unchanged someInt preserves join record`() {
+
+        post(
+            "/api/left-many/create",
+            """{"someInt": 1, "someString": "test", "rightEntities": [{"rightEntityId": "${rightEntity1.id}", "someInt": 10}]}"""
+        ).hasStatus(HttpStatus.CREATED)
+
+        val leftId = leftDao.findAllAsSequence().first().id
+        val joinBefore = manyToManyJoinDao.findByLeft(leftId).single()
+
+        put(
+            "/api/left-many/update",
+            """{"id": "$leftId", "someInt": 1, "someString": "test", "version": 1, "rightEntities": [{"id": "${joinBefore.id}", "rightEntityId": "${rightEntity1.id}", "someInt": 10}]}"""
+        ).hasStatus(HttpStatus.OK)
+
+        val allJoins = manyToManyJoinDao.findByLeft(leftId)
+        assertThat(allJoins).hasSize(1)
+        assertThat(allJoins.single().id).isEqualTo(joinBefore.id)
+        assertThat(allJoins.single().effectiveTo).isNull()
+
+    }
+
+
     private fun post(path: String, body: String): MvcTestResultAssert {
 
         val csrfCookie = `fetch CSRF cookie`()
