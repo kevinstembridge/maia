@@ -11,4 +11,6 @@ export interface LeftManyTimelineBlotterRowDto {
     someString?: string;
     rightSystemEffectiveId?: string;
     rightSystemEffectiveDisplayName?: string;
+    rightId?: string;
+    rightDisplayName?: string;
 }

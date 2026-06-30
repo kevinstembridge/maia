@@ -22,6 +22,8 @@ class LeftManyTimelineBlotterRowDtoRowMapper : MaiaRowMapper<LeftManyTimelineBlo
         val someString = rsa.readStringOrNull("some_string")
         val rightSystemEffectiveId = rsa.readDomainIdOrNull("right_system_effective_id")
         val rightSystemEffectiveDisplayName = rsa.readStringOrNull("right_system_effective_display_name")
+        val rightId = rsa.readDomainIdOrNull("right_id")
+        val rightDisplayName = rsa.readStringOrNull("right_display_name")
 
         return LeftManyTimelineBlotterRowDto(
             eventTimestamp,
@@ -32,6 +34,8 @@ class LeftManyTimelineBlotterRowDtoRowMapper : MaiaRowMapper<LeftManyTimelineBlo
             someString,
             rightSystemEffectiveId,
             rightSystemEffectiveDisplayName,
+            rightId,
+            rightDisplayName,
         )
 
     }

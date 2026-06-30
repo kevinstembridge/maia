@@ -20,7 +20,9 @@ object LeftManyTimelineBlotterRowDtoMeta {
             "someString" -> "some_string"
             "rightSystemEffectiveId" -> "right_system_effective_id"
             "rightSystemEffectiveDisplayName" -> "right_system_effective_display_name"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [eventTimestamp, eventType, changeType, version, someInt, someString, rightSystemEffectiveId, rightSystemEffectiveDisplayName]")
+            "rightId" -> "right_id"
+            "rightDisplayName" -> "right_display_name"
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [eventTimestamp, eventType, changeType, version, someInt, someString, rightSystemEffectiveId, rightSystemEffectiveDisplayName, rightId, rightDisplayName]")
         }
 
     }
@@ -37,7 +39,9 @@ object LeftManyTimelineBlotterRowDtoMeta {
             "someString" -> JdbcCompatibleType.text
             "rightSystemEffectiveId" -> JdbcCompatibleType.uuid
             "rightSystemEffectiveDisplayName" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [eventTimestamp, eventType, changeType, version, someInt, someString, rightSystemEffectiveId, rightSystemEffectiveDisplayName]")
+            "rightId" -> JdbcCompatibleType.uuid
+            "rightDisplayName" -> JdbcCompatibleType.text
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [eventTimestamp, eventType, changeType, version, someInt, someString, rightSystemEffectiveId, rightSystemEffectiveDisplayName, rightId, rightDisplayName]")
         }
 
     }

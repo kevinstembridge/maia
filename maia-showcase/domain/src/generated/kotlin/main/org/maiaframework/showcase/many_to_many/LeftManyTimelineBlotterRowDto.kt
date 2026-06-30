@@ -17,6 +17,8 @@ data class LeftManyTimelineBlotterRowDto(
     val someString: String?,
     val rightSystemEffectiveId: DomainId?,
     val rightSystemEffectiveDisplayName: String?,
+    val rightId: DomainId?,
+    val rightDisplayName: String?,
 ) {
 
 

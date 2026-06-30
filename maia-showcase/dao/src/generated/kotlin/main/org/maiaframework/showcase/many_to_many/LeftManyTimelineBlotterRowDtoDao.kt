@@ -100,7 +100,9 @@ class LeftManyTimelineBlotterRowDtoDao(
                 lmh.change_type,
                 lmh.version, lmh.some_int, lmh.some_string,
                 NULL::uuid AS right_system_effective_id,
-                NULL::text AS right_system_effective_display_name
+                NULL::text AS right_system_effective_display_name,
+                NULL::uuid AS right_id,
+                NULL::text AS right_display_name
             FROM maia.left_many_history lmh
             WHERE lmh.id = :entityId
             UNION ALL
@@ -110,7 +112,9 @@ class LeftManyTimelineBlotterRowDtoDao(
                 NULL::varchar AS change_type,
                 NULL::bigint AS version, NULL::integer AS some_int, NULL::text AS some_string,
                 j.right_system_effective_id AS right_system_effective_id,
-                r.some_string AS right_system_effective_display_name
+                r.some_string AS right_system_effective_display_name,
+                NULL::uuid AS right_id,
+                NULL::text AS right_display_name
             FROM maia.left_to_right_system_effective j
             JOIN maia.right_many r ON r.id = j.right_system_effective_id
             WHERE j.left_system_effective_id = :entityId
@@ -122,10 +126,40 @@ class LeftManyTimelineBlotterRowDtoDao(
                 NULL::varchar AS change_type,
                 NULL::bigint AS version, NULL::integer AS some_int, NULL::text AS some_string,
                 j.right_system_effective_id AS right_system_effective_id,
-                r.some_string AS right_system_effective_display_name
+                r.some_string AS right_system_effective_display_name,
+                NULL::uuid AS right_id,
+                NULL::text AS right_display_name
             FROM maia.left_to_right_system_effective j
             JOIN maia.right_many r ON r.id = j.right_system_effective_id
             WHERE j.left_system_effective_id = :entityId
+              AND upper(j.effective_range) IS NOT NULL
+            UNION ALL
+            SELECT
+                lower(j.effective_range) AS event_timestamp,
+                'JOIN_ADDED' AS event_type,
+                NULL::varchar AS change_type,
+                NULL::bigint AS version, NULL::integer AS some_int, NULL::text AS some_string,
+                NULL::uuid AS right_system_effective_id,
+                NULL::text AS right_system_effective_display_name,
+                j.right_id AS right_id,
+                r.some_string AS right_display_name
+            FROM maia.left_to_right_many_to_many_join j
+            JOIN maia.right_many r ON r.id = j.right_id
+            WHERE j.left_id = :entityId
+
+            UNION ALL
+            SELECT
+                upper(j.effective_range) AS event_timestamp,
+                'JOIN_REMOVED' AS event_type,
+                NULL::varchar AS change_type,
+                NULL::bigint AS version, NULL::integer AS some_int, NULL::text AS some_string,
+                NULL::uuid AS right_system_effective_id,
+                NULL::text AS right_system_effective_display_name,
+                j.right_id AS right_id,
+                r.some_string AS right_display_name
+            FROM maia.left_to_right_many_to_many_join j
+            JOIN maia.right_many r ON r.id = j.right_id
+            WHERE j.left_id = :entityId
               AND upper(j.effective_range) IS NOT NULL
             """.trimIndent()
 

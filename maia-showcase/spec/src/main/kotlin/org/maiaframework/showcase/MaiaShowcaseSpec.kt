@@ -1406,18 +1406,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftManyTimelineBlotterDef = timelineBlotter(
-        entityDef = leftManyEntityDef,
-        joinDefs = listOf(leftToRightSystemManagedEffectiveRangeEntityDef)
-    ) {
-        joinDisplayField(
-            joinDef = leftToRightSystemManagedEffectiveRangeEntityDef,
-            fromEntityDef = rightManyEntityDef,
-            fieldName = "someString"
-        )
-    }
-
-
     val leftToRightManyToManyJoinEntityDef = manyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
         "LeftToRightManyToManyJoin",
@@ -1441,6 +1429,23 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
         }
         field_lastModifiedTimestampUtc()
+    }
+
+
+    val leftManyTimelineBlotterDef = timelineBlotter(
+        entityDef = leftManyEntityDef,
+        joinDefs = listOf(leftToRightSystemManagedEffectiveRangeEntityDef, leftToRightManyToManyJoinEntityDef),
+    ) {
+        joinDisplayField(
+            joinDef = leftToRightSystemManagedEffectiveRangeEntityDef,
+            fromEntityDef = rightManyEntityDef,
+            fieldName = "someString"
+        )
+        joinDisplayField(
+            joinDef = leftToRightManyToManyJoinEntityDef,
+            fromEntityDef = rightManyEntityDef,
+            fieldName = "someString"
+        )
     }
 
 

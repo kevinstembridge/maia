@@ -34,6 +34,8 @@ export class LeftManyTimelineBlotter implements OnInit {
         { field: 'someString', headerName: 'Some String', cellDataType: 'text' },
         { field: 'rightSystemEffectiveId', headerName: 'Join ID', cellDataType: 'text', hide: true },
         { field: 'rightSystemEffectiveDisplayName', headerName: 'Join', cellDataType: 'text' },
+        { field: 'rightId', headerName: 'Join ID', cellDataType: 'text', hide: true },
+        { field: 'rightDisplayName', headerName: 'Join', cellDataType: 'text' },
     ];
 
 

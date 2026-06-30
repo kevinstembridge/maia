@@ -214,23 +214,26 @@ class TimelineBlotterRowDtoDaoRenderer(
 
         if (def.joinDefs.isEmpty()) return ""
 
-        return def.joinDefs.joinToString("\n") { joinDef ->
-            val joinTable = joinDef.joinTableSchemaAndTable
-            val rightTable = joinDef.rightEntitySchemaAndTable
-            val entityFkCol = joinDef.entityFkColumnName
-            val rightFkCol = joinDef.rightFkColumnName
-            val rightFkAlias = joinDef.rightFkSqlAlias
-            val displayCol = joinDef.rightEntityDisplayFieldColumnName
-            val displayAlias = joinDef.displayFieldSqlAlias
+        return def.joinDefs.joinToString("\n") { currentJoinDef ->
+            val joinTable = currentJoinDef.joinTableSchemaAndTable
+            val rightTable = currentJoinDef.rightEntitySchemaAndTable
+            val entityFkCol = currentJoinDef.entityFkColumnName
+            val rightFkCol = currentJoinDef.rightFkColumnName
+
+            val joinColumnSelects = def.joinDefs.joinToString("") { joinDef ->
+                if (joinDef == currentJoinDef) {
+                    ",\n                j.${joinDef.rightFkColumnName} AS ${joinDef.rightFkSqlAlias},\n                r.${joinDef.rightEntityDisplayFieldColumnName} AS ${joinDef.displayFieldSqlAlias}"
+                } else {
+                    ",\n                NULL::uuid AS ${joinDef.rightFkSqlAlias},\n                NULL::text AS ${joinDef.displayFieldSqlAlias}"
+                }
+            }
 
             """            UNION ALL
             SELECT
                 lower(j.effective_range) AS event_timestamp,
                 'JOIN_ADDED' AS event_type,
                 NULL::varchar AS change_type,
-                NULL::bigint AS version$joinNullSelectClause,
-                j.$rightFkCol AS $rightFkAlias,
-                r.$displayCol AS $displayAlias
+                NULL::bigint AS version$joinNullSelectClause$joinColumnSelects
             FROM $joinTable j
             JOIN $rightTable r ON r.id = j.$rightFkCol
             WHERE j.$entityFkCol = :entityId
@@ -240,9 +243,7 @@ class TimelineBlotterRowDtoDaoRenderer(
                 upper(j.effective_range) AS event_timestamp,
                 'JOIN_REMOVED' AS event_type,
                 NULL::varchar AS change_type,
-                NULL::bigint AS version$joinNullSelectClause,
-                j.$rightFkCol AS $rightFkAlias,
-                r.$displayCol AS $displayAlias
+                NULL::bigint AS version$joinNullSelectClause$joinColumnSelects
             FROM $joinTable j
             JOIN $rightTable r ON r.id = j.$rightFkCol
             WHERE j.$entityFkCol = :entityId
