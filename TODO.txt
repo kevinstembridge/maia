@@ -3,7 +3,7 @@ TODO * MTM scenarios:
     TODO * If an MtM entity has extra fields on it and they are modifiable, when the entity is modified we must
         create a new record and close the effective range of the old record.
         e.g. PartyEmailAddress or something with an approval status.
-        TODO * The timelineBlotterDef builder assumes only one join per other side entity but there could be many.
+        TODO * Define a history page for the join entity so that we can confirm the effective ranges are being closed.
     TODO * The effective range of an MTM association can be user-managed (e.g. the user can set attributes on the join entity)
         or they can be system-managed (e.g. the effectiveFrom and effectiveTo dates are set automatically).
     TODO * An effective-dated MTM association can allow multiple effective records or only one. => no overlapping dates.
