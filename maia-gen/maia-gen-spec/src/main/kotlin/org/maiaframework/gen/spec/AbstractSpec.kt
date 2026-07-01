@@ -945,8 +945,8 @@ abstract class AbstractSpec protected constructor(
 
 
     protected fun searchableDto(
-        packageName: String,
-        baseName: String,
+        packageName: String? = null,
+        baseName: String? = null,
         entityDef: EntityDef,
         withGeneratedEndpoint: WithGeneratedEndpoint = WithGeneratedEndpoint.FALSE,
         withGeneratedTypescriptService: WithGeneratedTypescriptService = WithGeneratedTypescriptService.TRUE,
@@ -955,6 +955,9 @@ abstract class AbstractSpec protected constructor(
         searchModelType: SearchModelType = SearchModelType.default(),
         init: SearchableDtoDefBuilder.() -> Unit
     ): SearchableDtoDef {
+
+        val packageName = packageName ?: entityDef.packageName.value
+        val baseName = baseName ?: entityDef.entityBaseName.value
 
         val builder = SearchableDtoDefBuilder(
             entityDef,
