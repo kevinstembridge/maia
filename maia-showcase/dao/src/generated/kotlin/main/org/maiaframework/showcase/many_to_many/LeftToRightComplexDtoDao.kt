@@ -45,8 +45,8 @@ class LeftToRightComplexDtoDao(
 
         val sqlForPage = """
             select
-                maia.left_to_right_complex.effective_from as effectiveFrom,
-                maia.left_to_right_complex.effective_to as effectiveTo,
+                lower(maia.left_to_right_complex.effective_range) as effectiveFrom,
+                upper(maia.left_to_right_complex.effective_range) as effectiveTo,
                 maia.left_to_right_complex.id as id,
                 maia.left_many.id as leftId,
                 maia.left_many.some_int as leftSomeInt,

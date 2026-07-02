@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SimpleSearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.ConstructorArg
 import org.maiaframework.gen.spec.definition.lang.Fqcn
 
@@ -345,7 +346,17 @@ class SearchableDtoJdbcDaoRenderer(
                     searchableDtoFieldDef.schemaAndTableName
                 }
 
-                "${tableOrAlias}.${searchableDtoFieldDef.databaseColumn} as ${searchableDtoFieldDef.classFieldName}"
+                val fieldExpression = if (searchableDtoFieldDef.entityAndField.entityDef.hasEffectiveTimestamps) {
+                    when (searchableDtoFieldDef.classFieldName) {
+                        ClassFieldName.effectiveFrom -> "lower(${tableOrAlias}.effective_range)"
+                        ClassFieldName.effectiveTo -> "upper(${tableOrAlias}.effective_range)"
+                        else -> "${tableOrAlias}.${searchableDtoFieldDef.databaseColumn}"
+                    }
+                } else {
+                    "${tableOrAlias}.${searchableDtoFieldDef.databaseColumn}"
+                }
+
+                "$fieldExpression as ${searchableDtoFieldDef.classFieldName}"
 
             }.plus(selectTypeDiscriminatorColumn())
             .filterNotNull()

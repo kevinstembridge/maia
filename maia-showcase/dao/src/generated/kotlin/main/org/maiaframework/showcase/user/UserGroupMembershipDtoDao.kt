@@ -45,8 +45,8 @@ class UserGroupMembershipDtoDao(
 
         val sqlForPage = """
             select
-                maia.user_group_membership.effective_from as effectiveFrom,
-                maia.user_group_membership.effective_to as effectiveTo,
+                lower(maia.user_group_membership.effective_range) as effectiveFrom,
+                upper(maia.user_group_membership.effective_range) as effectiveTo,
                 maia.user_group_membership.id as id,
                 maia.v_party.display_name as userDisplayName,
                 maia.user_group.id as userGroupId,
