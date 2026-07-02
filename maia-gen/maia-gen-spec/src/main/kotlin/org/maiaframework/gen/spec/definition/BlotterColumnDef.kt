@@ -158,8 +158,8 @@ class BlotterColumnDef(
             is ForeignKeyFieldType -> AgGridCellDataType.text
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> AgGridCellDataType.date
-            is InstantFieldType -> AgGridCellDataType.text
+            is PkAndNameFieldType -> AgGridCellDataType.text
+            is InstantFieldType -> AgGridCellDataType.dateString
             is IntFieldType -> AgGridCellDataType.number
             is IntTypeFieldType -> AgGridCellDataType.number
             is IntValueClassFieldType -> AgGridCellDataType.number

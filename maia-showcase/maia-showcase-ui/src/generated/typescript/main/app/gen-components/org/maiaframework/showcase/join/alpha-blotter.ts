@@ -59,7 +59,7 @@ export class AlphaBlotter {
         },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'someInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'text', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'dateString', filter: true },
         {
             field: 'delete',
             headerName: '',

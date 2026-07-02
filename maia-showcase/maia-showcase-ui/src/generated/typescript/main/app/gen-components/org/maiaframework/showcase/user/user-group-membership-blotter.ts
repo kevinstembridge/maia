@@ -29,8 +29,8 @@ export class UserGroupMembershipBlotter {
     public columnDefs: ColDef[] = [
         { field: 'userDisplayName', headerName: 'User', cellDataType: 'text', filter: true },
         { field: 'userGroupName', headerName: 'Group', cellDataType: 'text', filter: true },
-        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'text', filter: true },
-        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'text', filter: true },
+        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'dateString', filter: true },
+        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'dateString', filter: true },
         { field: 'userId', headerName: 'User ID', cellDataType: 'text', filter: true },
         { field: 'userGroupId', headerName: 'Group ID', cellDataType: 'text', filter: true },
         { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },

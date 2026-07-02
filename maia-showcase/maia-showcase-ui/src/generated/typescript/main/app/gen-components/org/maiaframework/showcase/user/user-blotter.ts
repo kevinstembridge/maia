@@ -57,7 +57,7 @@ export class UserBlotter {
         { field: 'firstName', headerName: 'First Name', cellDataType: 'text', filter: true },
         { field: 'lastName', headerName: 'Last Name', cellDataType: 'text', filter: true },
         { field: 'authorities', headerName: 'Authorities', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
-        { field: 'createdTimestampUtc', headerName: 'Created', cellDataType: 'text', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created', cellDataType: 'dateString', filter: true },
         { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
     ];
 

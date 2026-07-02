@@ -32,8 +32,8 @@ export class LeftToRightComplexBlotter {
         { field: 'leftSomeInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
         { field: 'rightSomeString', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'rightSomeInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
-        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'text', filter: true },
-        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'text', filter: true },
+        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'dateString', filter: true },
+        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'dateString', filter: true },
     ];
 
     public defaultColDef: ColDef = {
