@@ -98,9 +98,7 @@ class LeftManyTimelineBlotterRowDtoDao(
                 lmh.last_modified_timestamp_utc AS event_timestamp,
                 'ENTITY_CHANGE' AS event_type,
                 lmh.change_type,
-                lmh.version,
-                lmh.some_int,
-                lmh.some_string,
+                lmh.version, lmh.some_int, lmh.some_string,
                 NULL::uuid AS right_system_effective_id,
                 NULL::text AS right_system_effective_display_name,
                 NULL::uuid AS right_id,
@@ -112,9 +110,7 @@ class LeftManyTimelineBlotterRowDtoDao(
                 lower(j.effective_range) AS event_timestamp,
                 'JOIN_ADDED' AS event_type,
                 NULL::varchar AS change_type,
-                NULL::bigint AS version,
-                NULL::integer AS some_int,
-                NULL::text AS some_string,
+                NULL::bigint AS version, NULL::integer AS some_int, NULL::text AS some_string,
                 j.right_system_effective_id AS right_system_effective_id,
                 r.some_string AS right_system_effective_display_name,
                 NULL::uuid AS right_id,
@@ -128,9 +124,7 @@ class LeftManyTimelineBlotterRowDtoDao(
                 upper(j.effective_range) AS event_timestamp,
                 'JOIN_REMOVED' AS event_type,
                 NULL::varchar AS change_type,
-                NULL::bigint AS version,
-                NULL::integer AS some_int,
-                NULL::text AS some_string,
+                NULL::bigint AS version, NULL::integer AS some_int, NULL::text AS some_string,
                 j.right_system_effective_id AS right_system_effective_id,
                 r.some_string AS right_system_effective_display_name,
                 NULL::uuid AS right_id,
@@ -149,7 +143,7 @@ class LeftManyTimelineBlotterRowDtoDao(
                 NULL::text AS right_system_effective_display_name,
                 j.right_id AS right_id,
                 r.some_string AS right_display_name
-            FROM maia.left_to_right_many_to_many_join j
+            FROM maia.left_to_right_complex j
             JOIN maia.right_many r ON r.id = j.right_id
             WHERE j.left_id = :entityId
 
@@ -158,14 +152,12 @@ class LeftManyTimelineBlotterRowDtoDao(
                 upper(j.effective_range) AS event_timestamp,
                 'JOIN_REMOVED' AS event_type,
                 NULL::varchar AS change_type,
-                NULL::bigint AS version,
-                NULL::integer AS some_int,
-                NULL::text AS some_string,
+                NULL::bigint AS version, NULL::integer AS some_int, NULL::text AS some_string,
                 NULL::uuid AS right_system_effective_id,
                 NULL::text AS right_system_effective_display_name,
                 j.right_id AS right_id,
                 r.some_string AS right_display_name
-            FROM maia.left_to_right_many_to_many_join j
+            FROM maia.left_to_right_complex j
             JOIN maia.right_many r ON r.id = j.right_id
             WHERE j.left_id = :entityId
               AND upper(j.effective_range) IS NOT NULL

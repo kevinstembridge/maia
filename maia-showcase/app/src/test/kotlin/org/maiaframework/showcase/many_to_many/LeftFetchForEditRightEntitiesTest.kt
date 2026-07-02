@@ -20,7 +20,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
+    private lateinit var leftToRightComplexDao: LeftToRightComplexDao
 
 
     @Autowired
@@ -36,10 +36,10 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
     private lateinit var rightEntity2: RightManyEntity
 
 
-    private lateinit var join1: LeftToRightManyToManyJoinEntity
+    private lateinit var join1: LeftToRightComplexEntity
 
 
-    private lateinit var join2: LeftToRightManyToManyJoinEntity
+    private lateinit var join2: LeftToRightComplexEntity
 
 
     @BeforeEach
@@ -48,16 +48,16 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
         leftEntity = LeftManyEntityTestBuilder().build()
         rightEntity1 = RightManyEntityTestBuilder(someString = "alpha").build()
         rightEntity2 = RightManyEntityTestBuilder(someString = "beta").build()
-        join1 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity.id, rightId = rightEntity1.id).build()
-        join2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity.id, rightId = rightEntity2.id).build()
+        join1 = LeftToRightComplexEntityTestBuilder(leftId = leftEntity.id, rightId = rightEntity1.id).build()
+        join2 = LeftToRightComplexEntityTestBuilder(leftId = leftEntity.id, rightId = rightEntity2.id).build()
 
-        manyToManyJoinDao.deleteAll()
+        leftToRightComplexDao.deleteAll()
         truncateTable(LeftToRightSimpleEntityMeta.SCHEMA_AND_TABLE_NAME)
         leftDao.deleteAll()
         rightDao.deleteAll()
         leftDao.insert(leftEntity)
         rightDao.bulkInsert(listOf(rightEntity1, rightEntity2))
-        manyToManyJoinDao.bulkInsert(listOf(join1, join2))
+        leftToRightComplexDao.bulkInsert(listOf(join1, join2))
 
     }
 
@@ -90,7 +90,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
     @Test
     fun `fetchForEdit returns empty rightEntities when none associated`() {
 
-        manyToManyJoinDao.deleteAll()
+        leftToRightComplexDao.deleteAll()
 
         assertThat(
             mockMvc.get().uri("/api/left-many/fetch-for-edit/${leftEntity.id}")

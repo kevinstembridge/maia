@@ -1,8 +1,8 @@
 package org.maiaframework.showcase.all_field_types
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.showcase.SimpleResponseDto
 import org.maiaframework.showcase.enums.SomeEnum
+import org.maiaframework.showcase.simple.SimpleResponseDto
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
 import org.maiaframework.showcase.types.SomeLongType

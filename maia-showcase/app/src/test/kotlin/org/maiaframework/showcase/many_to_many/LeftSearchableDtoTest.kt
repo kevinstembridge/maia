@@ -27,7 +27,7 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
+    private lateinit var leftToRightComplexDao: LeftToRightComplexDao
 
 
     @Autowired
@@ -50,26 +50,26 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
     private val rightEntity2 = RightManyEntityTestBuilder(someInt = someInt2, someString = "aSomeRightValue2").build()
     private val rightEntity3 = RightManyEntityTestBuilder(someInt = someInt3, someString = "aSomeRightValue3").build()
 
-    private val left1ToRight1 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity1.id, rightId = rightEntity1.id).build()
-    private val left1ToRight2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity1.id, rightId = rightEntity2.id).build()
-    private val left2ToRight1 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity2.id, rightId = rightEntity1.id).build()
-    private val left2ToRight2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity2.id, rightId = rightEntity2.id).build()
-    private val left2ToRight3 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity2.id, rightId = rightEntity3.id).build()
-    private val left3ToRight1 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity3.id, rightId = rightEntity1.id).build()
-    private val left3ToRight2 = LeftToRightManyToManyJoinEntityTestBuilder(leftId = leftEntity3.id, rightId = rightEntity2.id).build()
+    private val left1ToRight1 = LeftToRightComplexEntityTestBuilder(leftId = leftEntity1.id, rightId = rightEntity1.id).build()
+    private val left1ToRight2 = LeftToRightComplexEntityTestBuilder(leftId = leftEntity1.id, rightId = rightEntity2.id).build()
+    private val left2ToRight1 = LeftToRightComplexEntityTestBuilder(leftId = leftEntity2.id, rightId = rightEntity1.id).build()
+    private val left2ToRight2 = LeftToRightComplexEntityTestBuilder(leftId = leftEntity2.id, rightId = rightEntity2.id).build()
+    private val left2ToRight3 = LeftToRightComplexEntityTestBuilder(leftId = leftEntity2.id, rightId = rightEntity3.id).build()
+    private val left3ToRight1 = LeftToRightComplexEntityTestBuilder(leftId = leftEntity3.id, rightId = rightEntity1.id).build()
+    private val left3ToRight2 = LeftToRightComplexEntityTestBuilder(leftId = leftEntity3.id, rightId = rightEntity2.id).build()
 
 
     @BeforeEach
     fun beforeEach() {
 
-        this.manyToManyJoinDao.deleteAll()
+        this.leftToRightComplexDao.deleteAll()
         this.leftManyDao.deleteAll()
         this.rightManyDao.deleteAll()
 
         this.leftManyDao.bulkInsert(listOf(leftEntity1, leftEntity2, leftEntity3))
         this.rightManyDao.bulkInsert(listOf(rightEntity1, rightEntity2, rightEntity3))
 
-        this.manyToManyJoinDao.bulkInsert(listOf(
+        this.leftToRightComplexDao.bulkInsert(listOf(
             left1ToRight1,
             left1ToRight2,
             left2ToRight1,

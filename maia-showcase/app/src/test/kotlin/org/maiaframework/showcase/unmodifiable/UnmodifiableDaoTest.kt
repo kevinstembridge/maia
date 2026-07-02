@@ -3,7 +3,6 @@ package org.maiaframework.showcase.unmodifiable
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
-import org.maiaframework.showcase.UnmodifiableDao
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.Instant
 

@@ -466,7 +466,7 @@ CREATE INDEX left_to_right_user_effective_left_user_effective_id_idx ON maia.lef
 CREATE INDEX left_to_right_user_effective_right_user_effective_id_idx ON maia.left_to_right_user_effective(right_user_effective_id);
 
 
-CREATE TABLE maia.left_to_right_many_to_many_join (
+CREATE TABLE maia.left_to_right_complex (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
@@ -476,8 +476,8 @@ CREATE TABLE maia.left_to_right_many_to_many_join (
     effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
 );
-CREATE INDEX left_to_right_many_to_many_join_left_id_idx ON maia.left_to_right_many_to_many_join(left_id);
-CREATE INDEX left_to_right_many_to_many_join_right_id_idx ON maia.left_to_right_many_to_many_join(right_id);
+CREATE INDEX left_to_right_complex_left_id_idx ON maia.left_to_right_complex(left_id);
+CREATE INDEX left_to_right_complex_right_id_idx ON maia.left_to_right_complex(right_id);
 
 
 CREATE TABLE maia.unmodifiable (

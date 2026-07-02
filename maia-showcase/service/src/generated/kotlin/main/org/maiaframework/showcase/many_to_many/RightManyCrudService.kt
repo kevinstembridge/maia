@@ -16,7 +16,7 @@ import java.time.Instant
 @Component
 class RightManyCrudService(
     private val entityRepo: RightManyRepo,
-    private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
+    private val leftToRightComplexRepo: LeftToRightComplexRepo,
     private val leftToRightSimpleRepo: LeftToRightSimpleRepo,
     private val leftToRightSystemEffectiveRepo: LeftToRightSystemEffectiveRepo,
     private val leftToRightUserEffectiveRepo: LeftToRightUserEffectiveRepo,
@@ -141,8 +141,8 @@ class RightManyCrudService(
     ) {
 
         createDto.leftEntities.forEach { joinDto ->
-            this.leftToRightManyToManyJoinRepo.insert(
-                LeftToRightManyToManyJoinEntity.newInstance(
+            this.leftToRightComplexRepo.insert(
+                LeftToRightComplexEntity.newInstance(
                     effectiveFrom = Instant.now(),
                     effectiveTo = null,
                     left = joinDto.leftEntityId,
@@ -182,7 +182,7 @@ class RightManyCrudService(
 
         `reconcile leftToRightUserEffective joins`(id, editDto.leftUserEffectiveEntities)
 
-        `reconcile leftToRightManyToManyJoin joins`(id, editDto.leftEntities)
+        `reconcile leftToRightComplex joins`(id, editDto.leftEntities)
 
     }
 
@@ -296,59 +296,59 @@ class RightManyCrudService(
     }
 
 
-    private fun `reconcile leftToRightManyToManyJoin joins`(
+    private fun `reconcile leftToRightComplex joins`(
         id: DomainId,
         submitted: List<LeftJoinRequestDto>
     ) {
 
-        `close effectiveRange on removed leftToRightManyToManyJoin entities`(id, submitted)
+        `close effectiveRange on removed leftToRightComplex entities`(id, submitted)
 
-        val modifiedDtos = `close effectiveRange on modified leftToRightManyToManyJoin entities`(id, submitted)
+        val modifiedDtos = `close effectiveRange on modified leftToRightComplex entities`(id, submitted)
 
-        `insert added and replaced leftToRightManyToManyJoin entities`(id, submitted, modifiedDtos)
+        `insert added and replaced leftToRightComplex entities`(id, submitted, modifiedDtos)
 
     }
 
 
-    private fun `close effectiveRange on removed leftToRightManyToManyJoin entities`(
+    private fun `close effectiveRange on removed leftToRightComplex entities`(
         id: DomainId,
         submitted: List<LeftJoinRequestDto>
     ) {
 
-        val existingById = this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).associateBy { it.id }
+        val existingById = this.leftToRightComplexRepo.findEffectiveByRight(id).associateBy { it.id }
         val submittedIds = submitted.mapNotNull { it.id }.toSet()
 
         existingById.keys.filterNot { it in submittedIds }.forEach {
-            this.leftToRightManyToManyJoinRepo.closeEffectiveRange(it)
+            this.leftToRightComplexRepo.closeEffectiveRange(it)
         }
 
     }
 
 
-    private fun `close effectiveRange on modified leftToRightManyToManyJoin entities`(
+    private fun `close effectiveRange on modified leftToRightComplex entities`(
         id: DomainId,
         submitted: List<LeftJoinRequestDto>
     ): List<LeftJoinRequestDto> {
 
-        val existingById = this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).associateBy { it.id }
+        val existingById = this.leftToRightComplexRepo.findEffectiveByRight(id).associateBy { it.id }
 
         return submitted.filter { it.id != null }.filter { joinDto ->
             val existing = existingById[joinDto.id!!]
-                ?: throw this.maiaProblems.joinRecordNotFound("LeftToRightManyToManyJoinEntity")
+                ?: throw this.maiaProblems.joinRecordNotFound("LeftToRightComplexEntity")
             existing.someInt != joinDto.someInt
-        }.onEach { this.leftToRightManyToManyJoinRepo.closeEffectiveRange(it.id!!) }
+        }.onEach { this.leftToRightComplexRepo.closeEffectiveRange(it.id!!) }
 
     }
 
 
-    private fun `insert added and replaced leftToRightManyToManyJoin entities`(
+    private fun `insert added and replaced leftToRightComplex entities`(
         id: DomainId,
         submitted: List<LeftJoinRequestDto>,
         modifiedDtos: List<LeftJoinRequestDto>
     ) {
 
         val newJoins = (submitted.filter { it.id == null } + modifiedDtos).map { joinDto ->
-            LeftToRightManyToManyJoinEntity.newInstance(
+            LeftToRightComplexEntity.newInstance(
                 effectiveFrom = Instant.now(),
                 effectiveTo = null,
                 left = joinDto.leftEntityId,
@@ -357,7 +357,7 @@ class RightManyCrudService(
             )
         }
 
-        this.leftToRightManyToManyJoinRepo.bulkInsert(newJoins)
+        this.leftToRightComplexRepo.bulkInsert(newJoins)
 
     }
 
@@ -430,12 +430,12 @@ class RightManyCrudService(
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightUserEffective")
         }
 
-        if (this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).isNotEmpty()) {
-            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightManyToManyJoin")
+        if (this.leftToRightComplexRepo.findEffectiveByRight(id).isNotEmpty()) {
+            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightComplex")
         }
 
-        this.leftToRightManyToManyJoinRepo.findByRight(id).forEach {
-            this.leftToRightManyToManyJoinRepo.deleteByPrimaryKey(it.id)
+        this.leftToRightComplexRepo.findByRight(id).forEach {
+            this.leftToRightComplexRepo.deleteByPrimaryKey(it.id)
         }
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

@@ -23,7 +23,7 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var leftToRightManyToManyJoinDao: LeftToRightManyToManyJoinDao
+    private lateinit var leftToRightComplexDao: LeftToRightComplexDao
 
 
     @Autowired
@@ -146,7 +146,7 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         }
 
-        val joinsAfterEdit1 = leftToRightManyToManyJoinDao.findByRight(DomainId(rightManyEntityId))
+        val joinsAfterEdit1 = leftToRightComplexDao.findByRight(DomainId(rightManyEntityId))
         val left1JoinAfterEdit1 = joinsAfterEdit1.first { it.left == left1.id }
         assertThat(left1JoinAfterEdit1.effectiveFrom).isNotNull()
 

@@ -1,0 +1,29 @@
+{
+  "planPath": "docs/superpowers/plans/2026-06-28-m2m-system-effective-modify-as-reinsert.md",
+  "tasks": [
+    {
+      "id": 7,
+      "subject": "Task 1: Write failing integration tests",
+      "status": "completed",
+      "lastUpdated": "2026-06-29T06:15:00Z",
+      "description": "**Goal:** Add two tests to `LeftCrudRightEntitiesTest` that document the expected close+reinsert behaviour; the changed-fields test fails before the generator change is made.\n\n**Files:**\n- Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/LeftCrudRightEntitiesTest.kt`\n\n**Acceptance Criteria:**\n- [ ] Test `update with changed someInt closes old record and creates new record` exists and fails with current generated code\n- [ ] Test `update with unchanged someInt preserves join record` exists and passes with current generated code\n\n**Verify:** `./gradlew :maia-showcase:app:test --tests \"*.LeftCrudRightEntitiesTest.update with changed someInt*\" 2>&1 | tail -20` → FAILED\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/many_to_many/LeftCrudRightEntitiesTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests '*.LeftCrudRightEntitiesTest.update with changed someInt*' 2>&1 | tail -20\", \"acceptanceCriteria\": [\"new failing test exists and fails for right reason\", \"no-op test passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 8,
+      "subject": "Task 2: Modify CrudServiceRenderer to generate three-phase reconcile",
+      "status": "completed",
+      "lastUpdated": "2026-06-29T06:30:00Z",
+      "blockedBy": [7],
+      "description": "**Goal:** Replace the two-helper system-managed reconcile block in `CrudServiceRenderer` with a three-helper block that detects changed extra fields and closes+reinserts the affected records.\n\n**Files:**\n- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CrudServiceRenderer.kt:631-691`\n\n**Acceptance Criteria:**\n- [ ] When `extraReconcileArgs` non-empty: reconcile calls close-removed, close-modified (returns list), insert-added-and-replaced\n- [ ] When `extraReconcileArgs` empty: reconcile still calls two helpers with unchanged signatures\n- [ ] `close effectiveRange on modified` compares extra fields only, closes changed records, returns their DTOs\n- [ ] `insert added and replaced` inserts both `id == null` and `modifiedDtos` with `effectiveFrom = Instant.now()`\n- [ ] Invalid submitted id throws `maiaProblems.joinRecordNotFound`\n\n**Verify:** `./gradlew :maia-gen:maia-gen-generator:compileKotlin 2>&1 | tail -20` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CrudServiceRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:compileKotlin 2>&1 | tail -20\", \"acceptanceCriteria\": [\"generator compiles\", \"three helpers when extraReconcileArgs non-empty\", \"two helpers when extraReconcileArgs empty\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 9,
+      "subject": "Task 3: Regenerate showcase and verify all tests pass",
+      "status": "completed",
+      "lastUpdated": "2026-06-29T06:45:00Z",
+      "blockedBy": [8],
+      "description": "**Goal:** Regenerate `LeftManyCrudService.kt` from the updated generator and confirm all existing and new tests pass.\n\n**Files:**\n- Modify (generated): `maia-showcase/service/src/generated/kotlin/main/org/maiaframework/showcase/many_to_many/LeftManyCrudService.kt`\n\n**Acceptance Criteria:**\n- [ ] Generated service contains `close effectiveRange on modified leftToRightManyToManyJoin entities`\n- [ ] Generated service contains `insert added and replaced leftToRightManyToManyJoin entities`\n- [ ] `leftToRightSystemEffective` join does NOT get the new helpers (no extra fields)\n- [ ] All tests in `LeftCrudRightEntitiesTest` pass\n\n**Verify:** `./gradlew :maia-showcase:app:test --tests \"*.LeftCrudRightEntitiesTest\" 2>&1 | tail -30` → BUILD SUCCESSFUL\n\n```json:metadata\n{\"files\": [\"maia-showcase/service/src/generated/kotlin/main/org/maiaframework/showcase/many_to_many/LeftManyCrudService.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests '*.LeftCrudRightEntitiesTest' 2>&1 | tail -30\", \"acceptanceCriteria\": [\"generated service has close-modified helper\", \"generated service has insert-added-and-replaced helper\", \"leftToRightSystemEffective unchanged\", \"all LeftCrudRightEntitiesTest pass\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-06-29T06:15:00Z"
+}

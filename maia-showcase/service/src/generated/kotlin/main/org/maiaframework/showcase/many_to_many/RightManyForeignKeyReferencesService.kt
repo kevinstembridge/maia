@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class RightManyForeignKeyReferencesService(
-    private val leftToRightManyToManyJoinRepo: LeftToRightManyToManyJoinRepo,
+    private val leftToRightComplexRepo: LeftToRightComplexRepo,
     private val leftToRightSimpleRepo: LeftToRightSimpleRepo,
     private val leftToRightSystemEffectiveRepo: LeftToRightSystemEffectiveRepo,
     private val leftToRightUserEffectiveRepo: LeftToRightUserEffectiveRepo
@@ -35,8 +35,8 @@ class RightManyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightUserEffective")
         }
 
-        if (this.leftToRightManyToManyJoinRepo.findEffectiveByRight(id).isNotEmpty()) {
-            return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightManyToManyJoin")
+        if (this.leftToRightComplexRepo.findEffectiveByRight(id).isNotEmpty()) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightComplex")
         }
 
         return ForeignKeyReferencesExistResponseDto(id, false, null)

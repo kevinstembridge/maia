@@ -9,6 +9,9 @@ import {userRoutes} from '@app/gen-components/org/maiaframework/showcase/user/us
 import {alphaRoutes} from '@app/gen-components/org/maiaframework/showcase/join/alpha-routes';
 import {rightManyRoutes} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-routes';
 import {historySampleRoutes} from '@app/gen-components/org/maiaframework/showcase/history/history-sample-routes';
+import {
+    leftToRightComplexRoutes
+} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-complex-routes';
 
 export const routes: Routes = [
     {
@@ -24,6 +27,7 @@ export const routes: Routes = [
     ...compositePrimaryKeyRoutes,
     ...historySampleRoutes,
     ...leftManyRoutes,
+    ...leftToRightComplexRoutes,
     ...rightManyRoutes,
     ...simpleRoutes,
     ...someVersionedRoutes,

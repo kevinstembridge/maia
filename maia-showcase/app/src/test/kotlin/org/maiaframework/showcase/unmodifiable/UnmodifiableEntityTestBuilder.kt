@@ -1,7 +1,6 @@
 package org.maiaframework.showcase.unmodifiable
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.showcase.UnmodifiableEntity
 import org.maiaframework.testing.domain.Anys.anyInt
 import java.time.Instant
 

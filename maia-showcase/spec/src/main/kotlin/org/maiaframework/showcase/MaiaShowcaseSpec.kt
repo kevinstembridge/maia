@@ -90,7 +90,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val simpleResponseDtoDef = simpleResponseDto("org.maiaframework.showcase", "Simple") {
+    val simpleResponseDtoDef = simpleResponseDto("org.maiaframework.showcase.simple", "Simple") {
         field("someString", FieldTypes.string)
         field("someInt", FieldTypes.int) { nullable() }
         field("someBoolean", FieldTypes.boolean) { nullable() }
@@ -847,7 +847,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val withOptionalIndexFieldEntityDef = entity(
-        "org.maiaframework.showcase",
+        "org.maiaframework.showcase.indexed",
         "WithOptionalIndexField"
     ) {
         field("someOptionalString1", someStringTypeDef) {
@@ -871,36 +871,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-//    val verySimpleEntityDef = entity(
-//        "org.maiaframework.showcase.simple",
-//        "VerySimple"
-//    ) {
-//        cacheable {  }
-//        field("someString", FieldTypes.string) {
-//            lengthConstraint(max = 100)
-//            editableByUser()
-//            unique()
-//        }
-//    }
-
-
-//        searchableEntityDef("org.maiaframework.showcase", "SomeCaseSensitivity", entityDef = someCaseSensitivityEntityDef, generateDto = WithGeneratedDto.TRUE)
-//                .withPreAuthorize("hasAuthority('ROLE_ADMIN')")
-//                .field("id").and()
-//                .field("caseSensitiveString", caseSensitive = true).and()
-//                .field("caseInsensitiveString", caseSensitive = false).and()
-//                .field("createdTimestampUtc").and()
-//                .build()
-
-
-    // TODO uncomment and implement
-//    val verySimpleSearchableDef = searchableEntityDef("org.maiaframework.showcase.simple", "VerySimple", entityDef = verySimpleEntityDef, generateDto = WithGeneratedDto.TRUE)
-//            .field("someString").and()
-//            .build()
-
-
     val foreignKeyParentEntityDef = entity(
-        "org.maiaframework.showcase",
+        "org.maiaframework.showcase.fk",
         "ForeignKeyParent"
     ) {
         field("someString", FieldTypes.string) {
@@ -911,7 +883,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val foreignKeyEntityDef = entity(
-        "org.maiaframework.showcase",
+        "org.maiaframework.showcase.fk",
         "ForeignKeyChild"
     ) {
         field("parentId", FieldTypes.domainId)
@@ -1406,9 +1378,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftToRightManyToManyJoinEntityDef = manyToManyEntity(
+    val leftToRightComplexEntityDef = manyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
-        "LeftToRightManyToManyJoin",
+        "LeftToRightComplex",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
         leftEntity = ReferencedEntity(
@@ -1434,7 +1406,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val leftManyTimelineBlotterDef = timelineBlotter(
         entityDef = leftManyEntityDef,
-        joinDefs = listOf(leftToRightSystemManagedEffectiveRangeEntityDef, leftToRightManyToManyJoinEntityDef),
+        joinDefs = listOf(leftToRightSystemManagedEffectiveRangeEntityDef, leftToRightComplexEntityDef),
     ) {
         joinDisplayField(
             joinDef = leftToRightSystemManagedEffectiveRangeEntityDef,
@@ -1442,7 +1414,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             fieldName = "someString"
         )
         joinDisplayField(
-            joinDef = leftToRightManyToManyJoinEntityDef,
+            joinDef = leftToRightComplexEntityDef,
             fromEntityDef = rightManyEntityDef,
             fieldName = "someString"
         )
@@ -1490,7 +1462,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("createdTimestampUtc")
         field("someIntFromLeft", "someInt")
         field("someStringFromLeft", "someString")
-        manyToManyField("leftEntities", leftToRightManyToManyJoinEntityDef)
+        manyToManyField("leftEntities", leftToRightComplexEntityDef)
     }
 
 
@@ -1514,7 +1486,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val leftManyEntityDetailViewPageDef = entityDetailView(leftManyEntityDef) {
         manyToManyField("rightSimpleEntities", leftToRightSimpleJoinEntityDef)
-        manyToManyField("rightEntities", leftToRightManyToManyJoinEntityDef)
+        manyToManyField("rightEntities", leftToRightComplexEntityDef)
     }
 
 
@@ -1536,7 +1508,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("someIntFromLeft", "someInt")
         field("someStringFromLeft", "someString")
         manyToManyField("rightSimpleEntities", leftToRightSimpleJoinEntityDef)
-        manyToManyField("rightEntities", leftToRightManyToManyJoinEntityDef)
+        manyToManyField("rightEntities", leftToRightComplexEntityDef)
     }
 
 
@@ -1559,11 +1531,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val leftManyBlotterPageDef = blotterPage(leftManyBlotterDef)
 
 
-    val leftToRightManyToManySearchableDtoDef = searchableDto(
-        "org.maiaframework.showcase",
-        "LeftToRightManyToMany",
-        leftToRightManyToManyJoinEntityDef.entityDef,
-        withGeneratedDto = WithGeneratedDto.TRUE,
+    val leftToRightComplexSearchableDtoDef = searchableDto(
+        entityDef = leftToRightComplexEntityDef.entityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE
     ) {
         field("leftId", "left.id")
         field("rightId", "right.id")
@@ -1571,7 +1541,24 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("leftSomeInt", "left.someInt")
         field("rightSomeString", "right.someString")
         field("rightSomeInt", "right.someInt")
+        field("effectiveFrom")
+        field("effectiveTo")
     }
+
+
+    val leftToRightManyToManyBlotterDef = blotter(
+        leftToRightComplexSearchableDtoDef
+    ) {
+        columnFromDto("leftSomeString")
+        columnFromDto("leftSomeInt")
+        columnFromDto("rightSomeString")
+        columnFromDto("rightSomeInt")
+        columnFromDto("effectiveFrom")
+        columnFromDto("effectiveTo")
+    }
+
+
+    val leftToRightManyToManyBlotterPageDef = blotterPage(leftToRightManyToManyBlotterDef)
 
 
     val leftNotMappedToRightSearchableDtoDef = searchableDto(
@@ -1582,7 +1569,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE
     ) {
-        manyToManyJoin(leftToRightManyToManyJoinEntityDef, joinType = JoinType.LEFT_OUTER)
+        manyToManyJoin(leftToRightComplexEntityDef, joinType = JoinType.LEFT_OUTER)
         field("createdTimestampUtc", "createdTimestampUtc")
         field("someIntFromLeft", "someInt")
         field("someStringFromLeft", "someString")
@@ -1590,7 +1577,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val unmodifiableEntityDef = entity(
-        "org.maiaframework.showcase",
+        "org.maiaframework.showcase.unmodifiable",
         "Unmodifiable"
     ) {
         field("someUniqueInt", FieldTypes.int) { unique() }

@@ -23,7 +23,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var manyToManyJoinDao: LeftToRightManyToManyJoinDao
+    private lateinit var leftToRightComplexDao: LeftToRightComplexDao
 
 
     @Autowired
@@ -51,7 +51,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
         rightEntity3 = RightManyEntityTestBuilder(someString = "gamma").build()
 
         truncateTable(LeftToRightSimpleEntityMeta.SCHEMA_AND_TABLE_NAME)
-        manyToManyJoinDao.deleteAll()
+        leftToRightComplexDao.deleteAll()
         leftDao.deleteAll()
         rightDao.deleteAll()
         leftDao.insert(leftEntity)

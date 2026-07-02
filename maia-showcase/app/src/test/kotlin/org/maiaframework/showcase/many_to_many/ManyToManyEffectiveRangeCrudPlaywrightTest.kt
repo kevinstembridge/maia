@@ -30,7 +30,7 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
     private lateinit var leftManyDao: LeftManyDao
 
     @Autowired
-    private lateinit var leftToRightManyToManyJoinDao: LeftToRightManyToManyJoinDao
+    private lateinit var leftToRightComplexDao: LeftToRightComplexDao
 
 
     private val rightGamma = RightManyEntityTestBuilder(someString = "right-gamma").build()
@@ -90,7 +90,7 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
         leftManyViewPage.assertOnPage()
 
         val leftId = leftManyDao.findAllAsSequence().toList().single().id
-        val joinAfterCreate = leftToRightManyToManyJoinDao.findByLeft(leftId).single()
+        val joinAfterCreate = leftToRightComplexDao.findByLeft(leftId).single()
         assertThat(joinAfterCreate.effectiveFrom).isBetween(beforeCreate, Instant.now())
         assertThat(joinAfterCreate.effectiveTo).isNull()
 
@@ -108,7 +108,7 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         leftManyViewPage.assertOnPage()
 
-        val joinAfterRemove = leftToRightManyToManyJoinDao.findByLeft(leftId).single()
+        val joinAfterRemove = leftToRightComplexDao.findByLeft(leftId).single()
         assertThat(joinAfterRemove.effectiveTo).isBetween(beforeRemove, Instant.now())
 
         `navigate to the`(leftManyBlotterPage)
