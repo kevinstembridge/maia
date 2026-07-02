@@ -12,8 +12,8 @@ object UserGroupMembershipDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "effectiveFrom" -> "maia.user_group_membership.effective_from"
-            "effectiveTo" -> "maia.user_group_membership.effective_to"
+            "effectiveFrom" -> "lower(maia.user_group_membership.effective_range)"
+            "effectiveTo" -> "upper(maia.user_group_membership.effective_range)"
             "id" -> "maia.user_group_membership.id"
             "userDisplayName" -> "maia.v_party.display_name"
             "userGroupId" -> "maia.user_group.id"

@@ -1,6 +1,7 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
+import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.jdbc.JdbcCompatibleType
 
 class SearchableDtoMetaRenderer(
@@ -29,7 +30,19 @@ class SearchableDtoMetaRenderer(
             |""".trimMargin())
 
         searchableDtoDef.nonManyToManyFields.forEach { field ->
-            appendLine("            \"${field.classFieldName}\" -> \"${field.schemaAndTableName}.${field.databaseColumn}\"")
+
+            val columnExpression = if (field.entityAndField.entityDef.hasEffectiveTimestamps) {
+                when (field.classFieldName) {
+                    ClassFieldName.effectiveFrom -> "lower(${field.schemaAndTableName}.effective_range)"
+                    ClassFieldName.effectiveTo -> "upper(${field.schemaAndTableName}.effective_range)"
+                    else -> "${field.schemaAndTableName}.${field.databaseColumn}"
+                }
+            } else {
+                "${field.schemaAndTableName}.${field.databaseColumn}"
+            }
+
+            appendLine("            \"${field.classFieldName}\" -> \"$columnExpression\"")
+
         }
 
         append($$"""

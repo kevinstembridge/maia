@@ -12,8 +12,8 @@ object LeftToRightComplexBlotterRowDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "effectiveFrom" -> "maia.left_to_right_complex.effective_from"
-            "effectiveTo" -> "maia.left_to_right_complex.effective_to"
+            "effectiveFrom" -> "lower(maia.left_to_right_complex.effective_range)"
+            "effectiveTo" -> "upper(maia.left_to_right_complex.effective_range)"
             "id" -> "maia.left_to_right_complex.id"
             "leftSomeInt" -> "maia.left_many.some_int"
             "leftSomeString" -> "maia.left_many.some_string"
