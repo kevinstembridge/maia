@@ -141,6 +141,10 @@ class BlotterDef(
     val hasDeleteActionColumn = actionColumnFields.any { it.actionName == ActionName.delete }
 
 
+    val hasDateTimeStringColumn = blotterColumnFields
+        .any { it.agGridCellDateType == BlotterColumnDef.AgGridCellDataType.dateTimeString }
+
+
     val requiresCellClickedEvent: Boolean = clickableBlotterRowDef != null
 
 

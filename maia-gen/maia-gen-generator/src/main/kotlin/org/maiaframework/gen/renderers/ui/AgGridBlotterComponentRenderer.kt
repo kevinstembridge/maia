@@ -74,6 +74,9 @@ class AgGridBlotterComponentRenderer(
             addImport("ag-grid-community", "CellClickedEvent")
         }
         addImport("ag-grid-community", "ColDef")
+        if (blotterDef.hasDateTimeStringColumn) {
+            addImport("ag-grid-community", "DataTypeDefinitions")
+        }
         addImport("ag-grid-community", "FilterModel")
         addImport("ag-grid-community", "GridApi")
         addImport("ag-grid-community", "GridReadyEvent")
@@ -96,6 +99,8 @@ class AgGridBlotterComponentRenderer(
         `render @Component decorator`()
 
         appendLine("export class ${this.blotterDef.blotterComponent.componentName} {")
+
+        `render dataTypeDefinitions field`()
 
         `render colDefs field`()
 
@@ -260,6 +265,36 @@ class AgGridBlotterComponentRenderer(
         }
 
         appendLine("})")
+
+    }
+
+
+    private fun `render dataTypeDefinitions field`() {
+
+        if (!blotterDef.hasDateTimeStringColumn) {
+            return
+        }
+
+        append(
+            $$"""
+                |
+                |
+                |    public dataTypeDefinitions = {
+                |        dateTimeString: {
+                |            baseDataType: 'dateTimeString',
+                |            extendsDataType: 'dateTimeString',
+                |            valueFormatter: params => {
+                |                if (!params.value) return '';
+                |                const d = new Date(params.value);
+                |                const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+                |                const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                |                const pad = (n: number) => String(n).padStart(2, '0');
+                |                return `${days[d.getDay()]} ${months[d.getMonth()]} ${pad(d.getDate())} ${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                |            },
+                |        }
+                |    } satisfies DataTypeDefinitions;
+                |""".trimMargin()
+        )
 
     }
 

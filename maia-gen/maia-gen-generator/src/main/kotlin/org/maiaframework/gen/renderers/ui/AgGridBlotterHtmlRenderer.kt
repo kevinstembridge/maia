@@ -33,6 +33,15 @@ class AgGridBlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSource
             |        style="width: 100%; height: 100%;"
             |        [columnDefs]="columnDefs"
             |        [defaultColDef]="defaultColDef"
+            |""".trimMargin()
+        )
+
+        if (dtoDef.hasDateTimeStringColumn) {
+            appendLine("        [dataTypeDefinitions]=\"dataTypeDefinitions\"")
+        }
+
+        append(
+            $$"""
             |        [rowBuffer]="rowBuffer"
             |        [rowSelection]="rowSelection"
             |        [rowModelType]="rowModelType"
