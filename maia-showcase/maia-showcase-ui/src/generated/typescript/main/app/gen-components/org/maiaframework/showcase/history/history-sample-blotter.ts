@@ -17,7 +17,8 @@ import {HistorySampleEntityDeleteDialog} from '@app/gen-components/org/maiaframe
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, DataTypeDefinitions, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {DateTime} from 'luxon';
 
 
 
@@ -28,6 +29,18 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
     templateUrl: './history-sample-blotter.html'
 })
 export class HistorySampleBlotter {
+
+
+    public dataTypeDefinitions = {
+        dateTimeString: {
+            baseDataType: 'dateTimeString',
+            extendsDataType: 'dateTimeString',
+            valueFormatter: params => {
+                if (!params.value) return '';
+                return DateTime.fromISO(params.value).toFormat('EEE MMM dd yyyy HH:mm');
+            },
+        }
+    } satisfies DataTypeDefinitions;
 
 
     public columnDefs: ColDef[] = [
@@ -58,7 +71,7 @@ export class HistorySampleBlotter {
         },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'someInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'dateString', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
         {
             field: 'delete',
             headerName: '',

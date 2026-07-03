@@ -10,6 +10,7 @@ import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
+import org.maiaframework.gen.spec.definition.Pipes
 import org.maiaframework.gen.spec.definition.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
@@ -76,6 +77,7 @@ class AgGridBlotterComponentRenderer(
         addImport("ag-grid-community", "ColDef")
         if (blotterDef.hasDateTimeStringColumn) {
             addImport("ag-grid-community", "DataTypeDefinitions")
+            addImport("luxon", "DateTime")
         }
         addImport("ag-grid-community", "FilterModel")
         addImport("ag-grid-community", "GridApi")
@@ -285,11 +287,7 @@ class AgGridBlotterComponentRenderer(
                 |            extendsDataType: 'dateTimeString',
                 |            valueFormatter: params => {
                 |                if (!params.value) return '';
-                |                const d = new Date(params.value);
-                |                const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-                |                const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-                |                const pad = (n: number) => String(n).padStart(2, '0');
-                |                return `${days[d.getDay()]} ${months[d.getMonth()]} ${pad(d.getDate())} ${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                |                return DateTime.fromISO(params.value).toFormat('$${Pipes.INSTANT_DATE_FORMAT}');
                 |            },
                 |        }
                 |    } satisfies DataTypeDefinitions;

@@ -13,7 +13,8 @@ import {LeftToRightComplexBlotterRowDto} from '@app/gen-components/org/maiaframe
 import {LeftToRightComplexBlotterService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-complex-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, DataTypeDefinitions, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {DateTime} from 'luxon';
 
 
 
@@ -26,14 +27,26 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class LeftToRightComplexBlotter {
 
 
+    public dataTypeDefinitions = {
+        dateTimeString: {
+            baseDataType: 'dateTimeString',
+            extendsDataType: 'dateTimeString',
+            valueFormatter: params => {
+                if (!params.value) return '';
+                return DateTime.fromISO(params.value).toFormat('EEE MMM dd yyyy HH:mm');
+            },
+        }
+    } satisfies DataTypeDefinitions;
+
+
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         { field: 'leftSomeString', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'leftSomeInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
         { field: 'rightSomeString', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'rightSomeInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
-        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'dateString', filter: true },
-        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'dateString', filter: true },
+        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'dateTimeString', filter: true },
+        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'dateTimeString', filter: true },
     ];
 
     public defaultColDef: ColDef = {

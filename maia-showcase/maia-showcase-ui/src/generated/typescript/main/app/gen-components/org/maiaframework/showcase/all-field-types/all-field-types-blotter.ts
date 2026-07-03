@@ -17,7 +17,8 @@ import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth-s
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, DataTypeDefinitions, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {DateTime} from 'luxon';
 
 
 
@@ -28,6 +29,18 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
     templateUrl: './all-field-types-blotter.html'
 })
 export class AllFieldTypesBlotter {
+
+
+    public dataTypeDefinitions = {
+        dateTimeString: {
+            baseDataType: 'dateTimeString',
+            extendsDataType: 'dateTimeString',
+            valueFormatter: params => {
+                if (!params.value) return '';
+                return DateTime.fromISO(params.value).toFormat('EEE MMM dd yyyy HH:mm');
+            },
+        }
+    } satisfies DataTypeDefinitions;
 
 
     public columnDefs: ColDef[] = [
@@ -50,10 +63,10 @@ export class AllFieldTypesBlotter {
         { field: 'someBooleanTypeNullable', headerName: 'Some Boolean Type Nullable', cellDataType: 'boolean', filter: true },
         { field: 'someBooleanTypeProvided', headerName: 'Some Boolean Type Provided', cellDataType: 'boolean', filter: true },
         { field: 'someBooleanTypeProvidedNullable', headerName: 'Some Boolean Type Provided Nullable', cellDataType: 'boolean', filter: true },
-        { field: 'someInstant', headerName: 'Some Instant', cellDataType: 'dateString', filter: true },
-        { field: 'someInstantNullable', headerName: 'Some Instant Nullable', cellDataType: 'dateString', filter: true },
-        { field: 'someInstantModifiable', headerName: 'Some Instant Modifiable', cellDataType: 'dateString', filter: true },
-        { field: 'someInstantModifiableNullable', headerName: 'Some Instant Modifiable Nullable', cellDataType: 'dateString', filter: true },
+        { field: 'someInstant', headerName: 'Some Instant', cellDataType: 'dateTimeString', filter: true },
+        { field: 'someInstantNullable', headerName: 'Some Instant Nullable', cellDataType: 'dateTimeString', filter: true },
+        { field: 'someInstantModifiable', headerName: 'Some Instant Modifiable', cellDataType: 'dateTimeString', filter: true },
+        { field: 'someInstantModifiableNullable', headerName: 'Some Instant Modifiable Nullable', cellDataType: 'dateTimeString', filter: true },
         { field: 'someInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
         { field: 'someIntModifiable', headerName: 'Some Int Modifiable', cellDataType: 'number', filter: true },
         { field: 'someIntNullable', headerName: 'Some Int Nullable', cellDataType: 'number', filter: true },
@@ -82,7 +95,7 @@ export class AllFieldTypesBlotter {
         { field: 'createdByUsername', headerName: 'Created By', cellDataType: 'text', filter: true },
         { field: 'lastModifiedBy', headerName: 'Last Modified By ID', cellDataType: 'text', filter: true },
         { field: 'lastModifiedByUsername', headerName: 'Last Modified By', cellDataType: 'text', filter: true },
-        { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'dateString', filter: true },
+        { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'dateTimeString', filter: true },
         {
             field: 'delete',
             headerName: '',

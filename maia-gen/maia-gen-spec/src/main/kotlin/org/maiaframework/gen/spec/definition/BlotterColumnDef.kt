@@ -159,7 +159,7 @@ class BlotterColumnDef(
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is PkAndNameFieldType -> AgGridCellDataType.text
-            is InstantFieldType -> AgGridCellDataType.dateString
+            is InstantFieldType -> AgGridCellDataType.dateTimeString
             is IntFieldType -> AgGridCellDataType.number
             is IntTypeFieldType -> AgGridCellDataType.number
             is IntValueClassFieldType -> AgGridCellDataType.number
@@ -217,7 +217,8 @@ class BlotterColumnDef(
         number,
         boolean,
         date,
-        dateString
+        dateString,
+        dateTimeString
 
     }
 

@@ -13,7 +13,8 @@ import {CharlieBlotterRowDto} from '@app/gen-components/org/maiaframework/showca
 import {CharlieBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, DataTypeDefinitions, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {DateTime} from 'luxon';
 
 
 
@@ -26,12 +27,24 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class CharlieBlotter {
 
 
+    public dataTypeDefinitions = {
+        dateTimeString: {
+            baseDataType: 'dateTimeString',
+            extendsDataType: 'dateTimeString',
+            valueFormatter: params => {
+                if (!params.value) return '';
+                return DateTime.fromISO(params.value).toFormat('EEE MMM dd yyyy HH:mm');
+            },
+        }
+    } satisfies DataTypeDefinitions;
+
+
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         { field: 'tableStringFromCharlie', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'dateString', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
     ];
 
     public defaultColDef: ColDef = {

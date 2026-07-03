@@ -15,7 +15,8 @@ import {UserBlotterService} from '@app/gen-components/org/maiaframework/showcase
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, DataTypeDefinitions, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {DateTime} from 'luxon';
 
 
 
@@ -26,6 +27,18 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
     templateUrl: './user-blotter.html'
 })
 export class UserBlotter {
+
+
+    public dataTypeDefinitions = {
+        dateTimeString: {
+            baseDataType: 'dateTimeString',
+            extendsDataType: 'dateTimeString',
+            valueFormatter: params => {
+                if (!params.value) return '';
+                return DateTime.fromISO(params.value).toFormat('EEE MMM dd yyyy HH:mm');
+            },
+        }
+    } satisfies DataTypeDefinitions;
 
 
     public columnDefs: ColDef[] = [
@@ -57,7 +70,7 @@ export class UserBlotter {
         { field: 'firstName', headerName: 'First Name', cellDataType: 'text', filter: true },
         { field: 'lastName', headerName: 'Last Name', cellDataType: 'text', filter: true },
         { field: 'authorities', headerName: 'Authorities', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
-        { field: 'createdTimestampUtc', headerName: 'Created', cellDataType: 'dateString', filter: true },
+        { field: 'createdTimestampUtc', headerName: 'Created', cellDataType: 'dateTimeString', filter: true },
         { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
     ];
 

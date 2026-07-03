@@ -13,7 +13,8 @@ import {UserGroupMembershipBlotterRowDto} from '@app/gen-components/org/maiafram
 import {UserGroupMembershipBlotterService} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, DataTypeDefinitions, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {DateTime} from 'luxon';
 
 
 
@@ -26,11 +27,23 @@ import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowMo
 export class UserGroupMembershipBlotter {
 
 
+    public dataTypeDefinitions = {
+        dateTimeString: {
+            baseDataType: 'dateTimeString',
+            extendsDataType: 'dateTimeString',
+            valueFormatter: params => {
+                if (!params.value) return '';
+                return DateTime.fromISO(params.value).toFormat('EEE MMM dd yyyy HH:mm');
+            },
+        }
+    } satisfies DataTypeDefinitions;
+
+
     public columnDefs: ColDef[] = [
         { field: 'userDisplayName', headerName: 'User', cellDataType: 'text', filter: true },
         { field: 'userGroupName', headerName: 'Group', cellDataType: 'text', filter: true },
-        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'dateString', filter: true },
-        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'dateString', filter: true },
+        { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'dateTimeString', filter: true },
+        { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'dateTimeString', filter: true },
         { field: 'userId', headerName: 'User ID', cellDataType: 'text', filter: true },
         { field: 'userGroupId', headerName: 'Group ID', cellDataType: 'text', filter: true },
         { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
