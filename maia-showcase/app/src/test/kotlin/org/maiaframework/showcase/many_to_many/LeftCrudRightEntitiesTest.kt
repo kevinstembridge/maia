@@ -251,7 +251,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         val newJoin = allJoins.single { it.id != joinBefore.id }
         assertThat(newJoin.effectiveTo).isNull()
-        assertThat(newJoin.someInt).isEqualTo(20)
+        assertThat(newJoin.someIntOnComplex).isEqualTo(20)
         assertThat(newJoin.right).isEqualTo(rightEntity1.id)
 
     }
