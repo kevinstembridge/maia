@@ -137,7 +137,7 @@ export class RightManyEntityCreateForm implements OnInit {
         entityName: string;
         effectiveFrom: Date | null;
         effectiveTo: Date | null;
-        someInt: number;
+        someIntOnComplex: number;
     }[] = [];
 
 
@@ -147,7 +147,7 @@ export class RightManyEntityCreateForm implements OnInit {
     addLeftJoinEntityControl = new FormControl<LeftManyTypeaheadV1EsDoc | null>(null);
 
 
-    addLeftJoinSomeIntControl = new FormControl<number | null>(null);
+    addLeftJoinSomeIntOnComplexControl = new FormControl<number | null>(null);
 
 
     filteredLeftEntities: LeftManyTypeaheadV1EsDoc[] = [];
@@ -373,10 +373,10 @@ export class RightManyEntityCreateForm implements OnInit {
             entityName: entity.someString,
             effectiveFrom: null,
             effectiveTo: null,
-            someInt: this.addLeftJoinSomeIntControl.value ?? 0,
+            someIntOnComplex: this.addLeftJoinSomeIntOnComplexControl.value ?? 0,
         });
         this.addLeftJoinEntityControl.reset();
-        this.addLeftJoinSomeIntControl.reset();
+        this.addLeftJoinSomeIntOnComplexControl.reset();
         this.filteredLeftEntities = [];
         this.showLeftJoinForm.set(false);
 
@@ -393,7 +393,7 @@ export class RightManyEntityCreateForm implements OnInit {
     cancelAddLeftJoin(): void {
 
         this.addLeftJoinEntityControl.reset();
-        this.addLeftJoinSomeIntControl.reset();
+        this.addLeftJoinSomeIntOnComplexControl.reset();
         this.filteredLeftEntities = [];
         this.showLeftJoinForm.set(false);
 
@@ -434,7 +434,7 @@ export class RightManyEntityCreateForm implements OnInit {
                 leftEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
                 effectiveTo: j.effectiveTo?.toISOString() ?? null,
-                someInt: j.someInt,
+                someIntOnComplex: j.someIntOnComplex,
             })),
         } as RightManyCreateRequestDto;
 

@@ -1397,7 +1397,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         )
     ) {
         withEffectiveTimestamps(hasSingleEffectiveRecord = false)
-        field("someInt", FieldTypes.int) {
+        field("someIntOnComplex", FieldTypes.int) {
+            fieldDisplayName("Some Int On Complex")
             editableByUser()
         }
         field_lastModifiedTimestampUtc()
@@ -1535,6 +1536,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         entityDef = leftToRightComplexEntityDef.entityDef,
         withGeneratedDto = WithGeneratedDto.TRUE
     ) {
+        field("someIntOnComplex")
         field("leftId", "left.id")
         field("rightId", "right.id")
         field("leftSomeString", "left.someString")
@@ -1549,6 +1551,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val leftToRightManyToManyBlotterDef = blotter(
         leftToRightComplexSearchableDtoDef
     ) {
+        columnFromDto("someIntOnComplex")
         columnFromDto("leftSomeString")
         columnFromDto("leftSomeInt")
         columnFromDto("rightSomeString")

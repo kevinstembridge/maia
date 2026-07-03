@@ -13,7 +13,7 @@ data class LeftJoinFetchDto(
     val entityId: DomainId,
     val id: DomainId,
     val name: String,
-    val someInt: Int
+    val someIntOnComplex: Int
 ) {
 
 

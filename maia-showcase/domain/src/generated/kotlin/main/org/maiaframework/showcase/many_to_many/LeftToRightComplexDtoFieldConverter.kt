@@ -32,6 +32,8 @@ class LeftToRightComplexDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "some_string" -> // rightSomeString
                 return inputValue
+            "some_int_on_complex" -> // someIntOnComplex
+                return inputValue
             else -> throw IllegalArgumentException("Unknown tableColumnPath [$tableColumnPath]")
         }
 

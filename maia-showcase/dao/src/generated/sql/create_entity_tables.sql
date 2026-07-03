@@ -472,7 +472,7 @@ CREATE TABLE maia.left_to_right_complex (
     last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
     left_id uuid NOT NULL REFERENCES maia.left_many(id),
     right_id uuid NOT NULL REFERENCES maia.right_many(id),
-    some_int integer NOT NULL,
+    some_int_on_complex integer NOT NULL,
     effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
 );

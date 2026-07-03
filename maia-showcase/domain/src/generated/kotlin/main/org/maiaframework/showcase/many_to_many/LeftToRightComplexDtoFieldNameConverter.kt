@@ -23,6 +23,7 @@ class LeftToRightComplexDtoFieldNameConverter : SearchFieldNameConverter {
             "rightId" -> "id"
             "rightSomeInt" -> "some_int"
             "rightSomeString" -> "some_string"
+            "someIntOnComplex" -> "some_int_on_complex"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")
         }
 

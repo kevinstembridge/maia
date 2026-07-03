@@ -14,7 +14,8 @@ data class LeftToRightComplexBlotterRowDto(
     val leftSomeInt: Int,
     val leftSomeString: String,
     val rightSomeInt: Int,
-    val rightSomeString: String
+    val rightSomeString: String,
+    val someIntOnComplex: Int
 ) {
 
 

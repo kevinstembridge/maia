@@ -19,6 +19,7 @@ class LeftToRightComplexBlotterRowDtoRowMapper : MaiaRowMapper<LeftToRightComple
         val leftSomeString = rsa.readString("leftSomeString")
         val rightSomeInt = rsa.readInt("rightSomeInt")
         val rightSomeString = rsa.readString("rightSomeString")
+        val someIntOnComplex = rsa.readInt("someIntOnComplex")
 
         return LeftToRightComplexBlotterRowDto(
             effectiveFrom,
@@ -28,6 +29,7 @@ class LeftToRightComplexBlotterRowDtoRowMapper : MaiaRowMapper<LeftToRightComple
             leftSomeString,
             rightSomeInt,
             rightSomeString,
+            someIntOnComplex,
         )
 
     }

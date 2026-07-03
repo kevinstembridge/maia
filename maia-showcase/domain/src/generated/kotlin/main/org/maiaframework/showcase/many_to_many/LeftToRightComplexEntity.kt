@@ -15,7 +15,7 @@ class LeftToRightComplexEntity(
     val lastModifiedTimestampUtc: Instant,
     val left: DomainId,
     val right: DomainId,
-    val someInt: Int
+    val someIntOnComplex: Int
 ) {
 
 
@@ -29,7 +29,7 @@ class LeftToRightComplexEntity(
                 "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
                 "left = '" + this.left + '\'' + ", " + 
                 "right = '" + this.right + '\'' + ", " + 
-                "someInt = '" + this.someInt + '\'' +
+                "someIntOnComplex = '" + this.someIntOnComplex + '\'' +
                 "}"
 
     }
@@ -49,7 +49,7 @@ class LeftToRightComplexEntity(
             effectiveTo: Instant?,
             left: DomainId,
             right: DomainId,
-            someInt: Int
+            someIntOnComplex: Int
         ): LeftToRightComplexEntity {
 
             val createdTimestampUtc = Instant.now()
@@ -64,7 +64,7 @@ class LeftToRightComplexEntity(
                 lastModifiedTimestampUtc,
                 left,
                 right,
-                someInt
+                someIntOnComplex
             )
 
         }

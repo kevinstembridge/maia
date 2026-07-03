@@ -16,7 +16,8 @@ data class LeftToRightComplexDto(
     val leftSomeString: String,
     val rightId: DomainId,
     val rightSomeInt: Int,
-    val rightSomeString: String
+    val rightSomeString: String,
+    val someIntOnComplex: Int
 ) {
 
 

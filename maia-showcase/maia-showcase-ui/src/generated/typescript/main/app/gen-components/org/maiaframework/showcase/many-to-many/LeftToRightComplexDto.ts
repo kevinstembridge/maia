@@ -12,4 +12,5 @@ export interface LeftToRightComplexDto {
     rightId: string;
     rightSomeInt: number;
     rightSomeString: string;
+    someIntOnComplex: number;
 }

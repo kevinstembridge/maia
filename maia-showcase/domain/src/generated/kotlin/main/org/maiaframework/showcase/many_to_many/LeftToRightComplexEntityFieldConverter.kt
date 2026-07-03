@@ -31,7 +31,7 @@ class LeftToRightComplexEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "right_id" -> // right
                 return (inputValue as DomainId).value
-            "some_int" -> // someInt
+            "some_int_on_complex" -> // someIntOnComplex
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

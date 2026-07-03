@@ -21,7 +21,8 @@ object LeftToRightComplexDtoMeta {
             "rightId" -> "maia.right_many.id"
             "rightSomeInt" -> "maia.right_many.some_int"
             "rightSomeString" -> "maia.right_many.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [effectiveFrom, effectiveTo, id, leftId, leftSomeInt, leftSomeString, rightId, rightSomeInt, rightSomeString]")
+            "someIntOnComplex" -> "maia.left_to_right_complex.some_int_on_complex"
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [effectiveFrom, effectiveTo, id, leftId, leftSomeInt, leftSomeString, rightId, rightSomeInt, rightSomeString, someIntOnComplex]")
         }
 
     }
@@ -39,7 +40,8 @@ object LeftToRightComplexDtoMeta {
             "rightId" -> JdbcCompatibleType.uuid
             "rightSomeInt" -> JdbcCompatibleType.integer
             "rightSomeString" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [effectiveFrom, effectiveTo, id, leftId, leftSomeInt, leftSomeString, rightId, rightSomeInt, rightSomeString]")
+            "someIntOnComplex" -> JdbcCompatibleType.integer
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [effectiveFrom, effectiveTo, id, leftId, leftSomeInt, leftSomeString, rightId, rightSomeInt, rightSomeString, someIntOnComplex]")
         }
 
     }

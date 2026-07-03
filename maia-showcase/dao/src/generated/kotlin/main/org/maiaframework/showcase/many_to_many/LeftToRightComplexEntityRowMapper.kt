@@ -19,7 +19,7 @@ class LeftToRightComplexEntityRowMapper : MaiaRowMapper<LeftToRightComplexEntity
         val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
         val left = rsa.readDomainId("left_id")
         val right = rsa.readDomainId("right_id")
-        val someInt = rsa.readInt("some_int")
+        val someIntOnComplex = rsa.readInt("some_int_on_complex")
 
         return LeftToRightComplexEntity(
                 createdTimestampUtc,
@@ -29,7 +29,7 @@ class LeftToRightComplexEntityRowMapper : MaiaRowMapper<LeftToRightComplexEntity
                 lastModifiedTimestampUtc,
                 left,
                 right,
-                someInt
+                someIntOnComplex
         )
 
     }

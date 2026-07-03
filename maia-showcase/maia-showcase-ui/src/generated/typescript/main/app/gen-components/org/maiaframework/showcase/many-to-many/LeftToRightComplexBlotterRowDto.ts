@@ -10,4 +10,5 @@ export interface LeftToRightComplexBlotterRowDto {
     leftSomeString: string;
     rightSomeInt: number;
     rightSomeString: string;
+    someIntOnComplex: number;
 }

@@ -116,10 +116,10 @@ class LeftToRightComplexEntityFilters {
         }
 
 
-    val someInt: FieldFilter<Int> 
+    val someIntOnComplex: FieldFilter<Int> 
         get() {
 
-            return FieldFilter("some_int", Types.INTEGER, this.sqlParamCounter) { value -> value }
+            return FieldFilter("some_int_on_complex", Types.INTEGER, this.sqlParamCounter) { value -> value }
 
         }
 

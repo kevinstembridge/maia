@@ -41,6 +41,7 @@ export class LeftToRightComplexBlotter {
 
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'someIntOnComplex', headerName: 'Some Int On Complex', cellDataType: 'number', filter: true },
         { field: 'leftSomeString', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'leftSomeInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
         { field: 'rightSomeString', headerName: 'Some String', cellDataType: 'text', filter: true },

@@ -21,6 +21,7 @@ class LeftToRightComplexBlotterRowDtoFieldNameConverter : SearchFieldNameConvert
             "leftSomeString" -> "some_string"
             "rightSomeInt" -> "some_int"
             "rightSomeString" -> "some_string"
+            "someIntOnComplex" -> "some_int_on_complex"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")
         }
 

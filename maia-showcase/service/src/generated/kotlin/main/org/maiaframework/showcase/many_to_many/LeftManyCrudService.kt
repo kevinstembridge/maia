@@ -149,7 +149,7 @@ class LeftManyCrudService(
                     effectiveTo = null,
                     left = entity.id,
                     right = joinDto.rightEntityId,
-                    someInt = joinDto.someInt
+                    someIntOnComplex = joinDto.someIntOnComplex
                 )
             )
         }
@@ -338,7 +338,7 @@ class LeftManyCrudService(
         return submitted.filter { it.id != null }.filter { joinDto ->
             val existing = existingById[joinDto.id!!]
                 ?: throw this.maiaProblems.joinRecordNotFound("LeftToRightComplexEntity")
-            existing.someInt != joinDto.someInt
+            existing.someIntOnComplex != joinDto.someIntOnComplex
         }.onEach { this.leftToRightComplexRepo.closeEffectiveRange(it.id!!) }
 
     }
@@ -356,7 +356,7 @@ class LeftManyCrudService(
                 effectiveTo = null,
                 left = id,
                 right = joinDto.rightEntityId,
-                someInt = joinDto.someInt
+                someIntOnComplex = joinDto.someIntOnComplex
             )
         }
 

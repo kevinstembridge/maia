@@ -19,7 +19,8 @@ object LeftToRightComplexBlotterRowDtoMeta {
             "leftSomeString" -> "maia.left_many.some_string"
             "rightSomeInt" -> "maia.right_many.some_int"
             "rightSomeString" -> "maia.right_many.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [effectiveFrom, effectiveTo, id, leftSomeInt, leftSomeString, rightSomeInt, rightSomeString]")
+            "someIntOnComplex" -> "maia.left_to_right_complex.some_int_on_complex"
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [effectiveFrom, effectiveTo, id, leftSomeInt, leftSomeString, rightSomeInt, rightSomeString, someIntOnComplex]")
         }
 
     }
@@ -35,7 +36,8 @@ object LeftToRightComplexBlotterRowDtoMeta {
             "leftSomeString" -> JdbcCompatibleType.text
             "rightSomeInt" -> JdbcCompatibleType.integer
             "rightSomeString" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [effectiveFrom, effectiveTo, id, leftSomeInt, leftSomeString, rightSomeInt, rightSomeString]")
+            "someIntOnComplex" -> JdbcCompatibleType.integer
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [effectiveFrom, effectiveTo, id, leftSomeInt, leftSomeString, rightSomeInt, rightSomeString, someIntOnComplex]")
         }
 
     }

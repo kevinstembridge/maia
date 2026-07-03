@@ -48,9 +48,9 @@ data class LeftToRightComplexEntityUpdater(
         }
 
 
-        fun someInt(someInt: Int) {
+        fun someIntOnComplex(someIntOnComplex: Int) {
 
-            this.fields.add(FieldUpdate("someInt", "some_int", someInt))
+            this.fields.add(FieldUpdate("someIntOnComplex", "some_int_on_complex", someIntOnComplex))
 
         }
 

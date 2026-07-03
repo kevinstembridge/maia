@@ -143,7 +143,7 @@ export class LeftManyEntityEditForm implements OnInit {
         entityName: string;
         effectiveFrom: Date | null;
         effectiveTo: Date | null;
-        someInt: number;
+        someIntOnComplex: number;
     }[] = [];
 
 
@@ -153,7 +153,7 @@ export class LeftManyEntityEditForm implements OnInit {
     addRightJoinEntityControl = new FormControl<RightManyTypeaheadV1EsDoc | null>(null);
 
 
-    addRightJoinSomeIntControl = new FormControl<number | null>(null);
+    addRightJoinSomeIntOnComplexControl = new FormControl<number | null>(null);
 
 
     filteredRightEntities: RightManyTypeaheadV1EsDoc[] = [];
@@ -299,7 +299,7 @@ export class LeftManyEntityEditForm implements OnInit {
                     entityName: e.name,
                     effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
                     effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
-                    someInt: e.someInt ?? 0,
+                    someIntOnComplex: e.someIntOnComplex ?? 0,
                 })) ?? [];
                 this.loading.set(false);
             },
@@ -426,10 +426,10 @@ export class LeftManyEntityEditForm implements OnInit {
             entityName: entity.someString,
             effectiveFrom: null,
             effectiveTo: null,
-            someInt: this.addRightJoinSomeIntControl.value ?? 0,
+            someIntOnComplex: this.addRightJoinSomeIntOnComplexControl.value ?? 0,
         });
         this.addRightJoinEntityControl.reset();
-        this.addRightJoinSomeIntControl.reset();
+        this.addRightJoinSomeIntOnComplexControl.reset();
         this.filteredRightEntities = [];
         this.showRightJoinForm.set(false);
 
@@ -446,7 +446,7 @@ export class LeftManyEntityEditForm implements OnInit {
     cancelAddRightJoin(): void {
 
         this.addRightJoinEntityControl.reset();
-        this.addRightJoinSomeIntControl.reset();
+        this.addRightJoinSomeIntOnComplexControl.reset();
         this.filteredRightEntities = [];
         this.showRightJoinForm.set(false);
 
@@ -489,7 +489,7 @@ export class LeftManyEntityEditForm implements OnInit {
                 rightEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
                 effectiveTo: j.effectiveTo?.toISOString() ?? null,
-                someInt: j.someInt,
+                someIntOnComplex: j.someIntOnComplex,
             })),
         } as LeftManyUpdateRequestDto;
 

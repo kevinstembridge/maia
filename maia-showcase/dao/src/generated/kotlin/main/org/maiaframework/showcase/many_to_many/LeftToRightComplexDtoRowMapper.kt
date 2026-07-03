@@ -21,6 +21,7 @@ class LeftToRightComplexDtoRowMapper : MaiaRowMapper<LeftToRightComplexDto> {
         val rightId = rsa.readDomainId("rightId")
         val rightSomeInt = rsa.readInt("rightSomeInt")
         val rightSomeString = rsa.readString("rightSomeString")
+        val someIntOnComplex = rsa.readInt("someIntOnComplex")
 
         return LeftToRightComplexDto(
             effectiveFrom,
@@ -32,6 +33,7 @@ class LeftToRightComplexDtoRowMapper : MaiaRowMapper<LeftToRightComplexDto> {
             rightId,
             rightSomeInt,
             rightSomeString,
+            someIntOnComplex,
         )
 
     }

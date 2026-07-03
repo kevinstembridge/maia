@@ -26,7 +26,7 @@ object LeftToRightComplexEntityMeta {
 
     const val right = "right_id"
 
-    const val someInt = "some_int"
+    const val someIntOnComplex = "some_int_on_complex"
 
     val ENTITY_KEY = EntityKey("LeftToRightComplex")
 
@@ -58,7 +58,7 @@ object LeftToRightComplexEntityMeta {
             "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
             "left" -> "left_id"
             "right" -> "right_id"
-            "someInt" -> "some_int"
+            "someIntOnComplex" -> "some_int_on_complex"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

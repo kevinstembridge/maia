@@ -53,7 +53,8 @@ class LeftToRightComplexDtoDao(
                 maia.left_many.some_string as leftSomeString,
                 maia.right_many.id as rightId,
                 maia.right_many.some_int as rightSomeInt,
-                maia.right_many.some_string as rightSomeString
+                maia.right_many.some_string as rightSomeString,
+                maia.left_to_right_complex.some_int_on_complex as someIntOnComplex
             from maia.left_to_right_complex
             inner join maia.left_many
                     on maia.left_to_right_complex.left_id = maia.left_many.id

@@ -39,7 +39,7 @@ class LeftToRightComplexDao(
                 last_modified_timestamp_utc,
                 left_id,
                 right_id,
-                some_int
+                some_int_on_complex
             ) values (
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
@@ -47,7 +47,7 @@ class LeftToRightComplexDao(
                 :lastModifiedTimestampUtc,
                 :left,
                 :right,
-                :someInt
+                :someIntOnComplex
             )
             """.trimIndent(),
             SqlParams().apply {
@@ -58,7 +58,7 @@ class LeftToRightComplexDao(
                 addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                 addValue("left", entity.left)
                 addValue("right", entity.right)
-                addValue("someInt", entity.someInt)
+                addValue("someIntOnComplex", entity.someIntOnComplex)
             }
         )
 
@@ -76,7 +76,7 @@ class LeftToRightComplexDao(
                 last_modified_timestamp_utc,
                 left_id,
                 right_id,
-                some_int
+                some_int_on_complex
             ) values (
                 :createdTimestampUtc,
                 tstzrange(:effectiveFrom, :effectiveTo),
@@ -84,7 +84,7 @@ class LeftToRightComplexDao(
                 :lastModifiedTimestampUtc,
                 :left,
                 :right,
-                :someInt
+                :someIntOnComplex
             )
             """.trimIndent(),
             entities.map { entity ->
@@ -96,7 +96,7 @@ class LeftToRightComplexDao(
                     addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
                     addValue("left", entity.left)
                     addValue("right", entity.right)
-                    addValue("someInt", entity.someInt)
+                    addValue("someIntOnComplex", entity.someIntOnComplex)
                 }
             }
         )
@@ -465,7 +465,7 @@ class LeftToRightComplexDao(
             "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
             "left" -> sqlParams.addValue("left", field.value as DomainId)
             "right" -> sqlParams.addValue("right", field.value as DomainId)
-            "someInt" -> sqlParams.addValue("someInt", field.value as Int)
+            "someIntOnComplex" -> sqlParams.addValue("someIntOnComplex", field.value as Int)
         }
 
     }
