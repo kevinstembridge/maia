@@ -654,7 +654,14 @@ class AngularUiModuleGenerator(
         val timelineBlotterByEntity = this.applicationModelDef.timelineBlotterDefs
             .associateBy { it.entityDef }
 
-        val allEntities = (blotterPageByEntity.keys + viewPageByEntity.keys + createPageByEntity.keys + editPageByEntity.keys + historyOnlyEntities + timelineBlotterByEntity.keys).toSet()
+        val allEntities = (
+                blotterPageByEntity.keys
+                + viewPageByEntity.keys
+                + createPageByEntity.keys
+                + editPageByEntity.keys
+                + historyOnlyEntities
+                + timelineBlotterByEntity.keys
+                ).toSet()
 
         allEntities.forEach { entityDef ->
             EntityCrudRoutesRenderer(

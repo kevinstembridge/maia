@@ -12,6 +12,9 @@ import {historySampleRoutes} from '@app/gen-components/org/maiaframework/showcas
 import {
     leftToRightComplexRoutes
 } from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-complex-routes';
+import {
+    leftToRightSimpleRoutes
+} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-simple-routes';
 
 export const routes: Routes = [
     {
@@ -28,6 +31,7 @@ export const routes: Routes = [
     ...historySampleRoutes,
     ...leftManyRoutes,
     ...leftToRightComplexRoutes,
+    ...leftToRightSimpleRoutes,
     ...rightManyRoutes,
     ...simpleRoutes,
     ...someVersionedRoutes,
