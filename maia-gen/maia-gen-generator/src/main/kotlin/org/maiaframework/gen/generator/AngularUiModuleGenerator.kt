@@ -330,7 +330,7 @@ class AngularUiModuleGenerator(
         when (def.angularFormSystem) {
 
             AngularFormSystem.REACTIVE ->
-                AngularReactiveFormComponentRenderer_old(
+                AngularReactiveFormComponentRenderer(
                     def,
                     angularComponentNames,
                     providerServices,

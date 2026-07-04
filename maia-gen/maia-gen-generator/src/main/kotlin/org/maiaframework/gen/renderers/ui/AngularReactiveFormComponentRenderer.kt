@@ -790,12 +790,10 @@ class AngularReactiveFormComponentRenderer(
                 val typeaheadDef = classFieldDef.typeaheadDef
 
                 if (typeaheadDef != null) {
-                    val formControlName = typeaheadDef.typeaheadName.firstToLower()
                     appendLine("                    ${formFieldName}: dto.${formFieldName},")
                 } else if (classFieldDef.fieldType is ForeignKeyFieldType) {
                     // Skip non-typeahead FK fields — DTO uses a PkAndName object shape
                 } else {
-                    val fieldName = classFieldDef.classFieldName
                     appendLine("                    ${formFieldName}: dto.${formFieldName},")
                 }
             }
@@ -1285,7 +1283,6 @@ class AngularReactiveFormComponentRenderer(
 
         if (timestampedFields.isNotEmpty()) {
             `add imports for date and time pickers`()
-//            addImport("@angular/common", "DatePipe", isModule = true)
             addImport("@angular/material/icon", "MatIconModule", isModule = true)
             addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
             addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
@@ -1308,7 +1305,7 @@ class AngularReactiveFormComponentRenderer(
                 is DoubleFieldType -> {}
                 is EnumFieldType -> `add imports for Material Select component`(fieldType)
                 is EsDocFieldType -> {}
-                is ForeignKeyFieldType -> `add imports for Material Autocomplete`(fieldType)
+                is ForeignKeyFieldType -> `add imports for Material Autocomplete`()
                 is FqcnFieldType -> {}
                 is JoinFetchDtoFieldType -> TODO("YAGNI?")
                 is InstantFieldType -> `add imports for date and time pickers`()
@@ -1381,7 +1378,7 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `add imports for Material Autocomplete`(fieldType: ForeignKeyFieldType) {
+    private fun `add imports for Material Autocomplete`() {
 
         addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
         addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
