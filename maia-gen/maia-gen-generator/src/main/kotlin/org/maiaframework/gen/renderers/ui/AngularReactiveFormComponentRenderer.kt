@@ -1248,7 +1248,6 @@ class AngularReactiveFormComponentRenderer(
             }
             FormPurpose.edit -> {}
             FormPurpose.submit -> {}
-            null -> {}
         }
 
         addImport(TypescriptImports.problemDetail)
@@ -1286,7 +1285,7 @@ class AngularReactiveFormComponentRenderer(
 
         if (timestampedFields.isNotEmpty()) {
             `add imports for date and time pickers`()
-            addImport("@angular/common", "DatePipe", isModule = true)
+//            addImport("@angular/common", "DatePipe", isModule = true)
             addImport("@angular/material/icon", "MatIconModule", isModule = true)
             addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
             addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
