@@ -2,7 +2,7 @@
 TODO * MTM scenarios:
     TODO * If an MtM entity has extra fields on it and they are modifiable, when the entity is modified we must
         create a new record and close the effective range of the old record.
-        e.g. PartyEmailAddress or something with an approval status.
+        e.g. LeftToRightComplexEntity with a someIntOnComplex field
     TODO * An effective-dated MTM association can allow multiple effective records or only one. => no overlapping dates.
         TODO * Ensure that effective date ranges don't overlap if the relationship only allows one effective record.
     TODO * When we display the MTM associations for a given entity, it should ignore those outside effective range.

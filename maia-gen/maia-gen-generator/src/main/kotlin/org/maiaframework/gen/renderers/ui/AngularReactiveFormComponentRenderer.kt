@@ -1294,7 +1294,10 @@ class AngularReactiveFormComponentRenderer(
 
     private fun addImportsForFieldTypes(formGroupFields: List<AngularFormFieldDef>) {
 
-        formGroupFields.filter { it.isCreatable }.forEach { angularFormFieldDef ->
+        formGroupFields
+            .filter { it.isCreatable }
+            .filter { angularFormDef.formPurpose != FormPurpose.edit || it.isEditable }
+            .forEach { angularFormFieldDef ->
 
             when (val fieldType = angularFormFieldDef.fieldType) {
                 is BooleanFieldType -> `add import for Material Checkbox`()

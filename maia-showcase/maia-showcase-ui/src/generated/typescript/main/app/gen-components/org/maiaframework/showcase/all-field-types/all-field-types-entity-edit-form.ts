@@ -4,14 +4,11 @@
 import {Component, OnInit, inject, input, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatOption, MatSelect} from '@angular/material/select';
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
-import {MatTooltip} from '@angular/material/tooltip';
 import {Router} from '@angular/router';
 import {AllFieldTypesFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesFetchForEditDto';
 import {AllFieldTypesSomeIntTypeAsyncValidator} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeIntTypeAsyncValidator';
@@ -31,19 +28,15 @@ import {ProblemDetail} from '@maia/maia-ui';
     imports: [
         FormsModule,
         MatButtonModule,
-        MatCheckbox,
         MatDatepicker,
         MatDatepickerInput,
         MatDatepickerToggle,
         MatFormFieldModule,
         MatInputModule,
-        MatOption,
         MatProgressSpinnerModule,
-        MatSelect,
         MatTimepicker,
         MatTimepickerInput,
         MatTimepickerToggle,
-        MatTooltip,
         ReactiveFormsModule,
     ],
     selector: 'app-all-field-types-entity-edit-form',
