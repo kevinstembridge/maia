@@ -1,4 +1,4 @@
-package org.maiaframework.gen.spec.definition
+package org.maiaframework.gen.spec.definition.flags
 
 enum class DataSourceType {
 

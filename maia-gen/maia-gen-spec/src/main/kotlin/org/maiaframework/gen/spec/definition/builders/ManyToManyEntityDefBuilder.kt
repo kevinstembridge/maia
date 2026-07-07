@@ -1,6 +1,6 @@
 package org.maiaframework.gen.spec.definition.builders
 
-import org.maiaframework.gen.spec.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EffectiveRangeDef

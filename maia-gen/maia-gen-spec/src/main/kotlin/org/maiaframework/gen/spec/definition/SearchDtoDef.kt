@@ -2,7 +2,9 @@ package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
 import org.maiaframework.gen.spec.definition.builders.DtoDefBuilder
+import org.maiaframework.gen.spec.definition.flags.DataSourceType
 import org.maiaframework.gen.spec.definition.flags.GenerateFindById
+import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedTypescriptService

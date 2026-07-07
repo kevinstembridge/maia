@@ -1,5 +1,6 @@
 package org.maiaframework.gen.spec.definition
 
+import org.maiaframework.gen.spec.definition.flags.DataSourceType
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef

@@ -45,7 +45,7 @@ import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.ResponseDtoDef
 import org.maiaframework.gen.spec.definition.RowMapperDef
-import org.maiaframework.gen.spec.definition.SearchModelType
+import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SimpleResponseDtoDef
 import org.maiaframework.gen.spec.definition.StringTypeDef

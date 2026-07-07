@@ -1,4 +1,4 @@
-package org.maiaframework.gen.spec
+package org.maiaframework.gen.spec.definition
 
 enum class EffectiveRangeManagedBy {
 

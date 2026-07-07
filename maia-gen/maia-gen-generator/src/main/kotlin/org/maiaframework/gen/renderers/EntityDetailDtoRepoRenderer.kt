@@ -1,6 +1,6 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.Fqcns

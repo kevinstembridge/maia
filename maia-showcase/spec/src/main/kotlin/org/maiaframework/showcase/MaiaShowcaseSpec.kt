@@ -1,13 +1,13 @@
 package org.maiaframework.showcase
 
 import org.maiaframework.gen.spec.AbstractSpec
-import org.maiaframework.gen.spec.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.EsDocMappingTypes
 import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.JoinType
-import org.maiaframework.gen.spec.definition.SearchModelType
+import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.AllowFindAll
 import org.maiaframework.gen.spec.definition.flags.Deletable

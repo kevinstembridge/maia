@@ -3,7 +3,7 @@ package org.maiaframework.gen.renderers
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.Fqcns
-import org.maiaframework.gen.spec.definition.SearchModelType
+import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SimpleSearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef

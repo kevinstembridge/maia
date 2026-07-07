@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.gen.spec.definition.*
+import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction

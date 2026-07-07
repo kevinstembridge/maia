@@ -2,6 +2,7 @@ package org.maiaframework.gen.spec.definition
 
 
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
+import org.maiaframework.gen.spec.definition.flags.DataSourceType
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField

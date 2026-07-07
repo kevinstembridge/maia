@@ -1,7 +1,7 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.Fqcns
-import org.maiaframework.gen.spec.definition.SearchModelType
+import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 

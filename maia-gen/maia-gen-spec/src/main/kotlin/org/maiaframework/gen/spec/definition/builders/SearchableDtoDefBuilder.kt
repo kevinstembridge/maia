@@ -11,7 +11,7 @@ import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.ManyToManySearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.ResponseDtoFieldDef
-import org.maiaframework.gen.spec.definition.SearchModelType
+import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SearchableDtoFieldDef
 import org.maiaframework.gen.spec.definition.flags.CaseSensitive

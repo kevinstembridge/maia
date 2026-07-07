@@ -2,10 +2,10 @@ package org.maiaframework.gen.renderers
 
 import org.maiaframework.domain.search.AgGridSearchModel
 import org.maiaframework.domain.search.SearchModel
-import org.maiaframework.gen.spec.definition.DataSourceType
+import org.maiaframework.gen.spec.definition.flags.DataSourceType
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.SearchDtoDef
-import org.maiaframework.gen.spec.definition.SearchModelType
+import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 

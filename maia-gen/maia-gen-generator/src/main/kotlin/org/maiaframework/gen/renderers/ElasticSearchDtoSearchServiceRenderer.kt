@@ -3,7 +3,7 @@ package org.maiaframework.gen.renderers
 import org.maiaframework.gen.spec.definition.EsDocDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.SearchDtoDef
-import org.maiaframework.gen.spec.definition.SearchModelType
+import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 
 class ElasticSearchDtoSearchServiceRenderer(
