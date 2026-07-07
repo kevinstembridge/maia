@@ -12,6 +12,7 @@ class AuthApiServiceRenderer(private val authoritiesDef: AuthoritiesDef) : Abstr
         addImport(from = "@angular/core", name = "inject")
         addImport(from = "@angular/core", name = "Injectable")
         addImport(from = "rxjs", name = "Observable")
+        addImport(from = "rxjs/operators", name = "switchMap")
         addImport(authoritiesDef.loginRequestDtoTypescriptImport)
         addImport(authoritiesDef.userSummaryDtoTypescriptImport)
 
@@ -52,10 +53,13 @@ class AuthApiServiceRenderer(private val authoritiesDef: AuthoritiesDef) : Abstr
             |    }
             |
             |
-            |    logout() {
+            |    logout(): Observable<any> {
             |
             |        console.log('logging out current user');
-            |        this.http.post<any>('/logout', {}, {withCredentials: true}).subscribe();
+            |        return this.http.post<any>('/logout', {}, {withCredentials: true})
+            |            .pipe(
+            |                switchMap(() => this.http.get<any>('/csrf', {withCredentials: true}))
+            |            );
             |
             |    }
             |

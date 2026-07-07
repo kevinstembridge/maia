@@ -72,7 +72,16 @@ export class AuthService {
 
     logout() {
 
-        this.apiService.logout();
+        this.apiService.logout().subscribe({
+            next: () => this.finishLogout(),
+            error: () => this.finishLogout()
+        });
+
+    }
+
+
+    private finishLogout() {
+
         this.currentUserStore.setCurrentUser(null);
         this.router.navigate(['/']);
 

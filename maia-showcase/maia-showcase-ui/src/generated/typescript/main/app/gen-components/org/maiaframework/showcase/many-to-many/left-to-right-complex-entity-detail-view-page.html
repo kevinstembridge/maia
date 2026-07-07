@@ -1,0 +1,15 @@
+<app-page-layout pageTitle="Left To Right Complex" dataPageId="left_to_right_complex_view">
+    @if (entityId(); as id) {
+        <app-left-to-right-complex-entity-detail-view [entityId]="id" />
+    }
+    <button matButton aria-label="Blotter" (click)="onBlotterClicked()">
+        <mat-icon>list</mat-icon>
+        Go to Blotter
+    </button>
+    @if (canEdit && entityId()) {
+        <button matButton aria-label="Edit" (click)="onEditClicked()">
+            <mat-icon>edit</mat-icon>
+            Edit
+        </button>
+    }
+</app-page-layout>

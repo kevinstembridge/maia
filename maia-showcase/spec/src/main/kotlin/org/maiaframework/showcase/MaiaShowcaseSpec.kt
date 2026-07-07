@@ -1428,7 +1428,25 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             editableByUser()
         }
         field_lastModifiedTimestampUtc()
+        crud {
+            authority(partySpec.writeAuthority)
+            create {
+                api {  }
+            }
+            update {
+                api {  }
+            }
+            delete {
+                api {  }
+            }
+        }
     }
+
+
+    val leftToRightComplexEntityDetailViewDef = entityDetailView(leftToRightComplexEntityDef.entityDef)
+
+
+    val leftToRightComplexEntityEditPageDef = entityEditPage(leftToRightComplexEntityDef.entityDef)
 
 
     val leftManyTimelineBlotterDef = timelineBlotter(
@@ -1575,7 +1593,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val leftToRightComplexBlotterDef = blotter(
-        leftToRightComplexSearchableDtoDef
+        leftToRightComplexSearchableDtoDef,
+        entityDetailViewPageDef = leftToRightComplexEntityDetailViewDef,
+        entityEditPageDef = leftToRightComplexEntityEditPageDef
     ) {
         columnFromDto("someIntOnComplex")
         columnFromDto("leftSomeString")

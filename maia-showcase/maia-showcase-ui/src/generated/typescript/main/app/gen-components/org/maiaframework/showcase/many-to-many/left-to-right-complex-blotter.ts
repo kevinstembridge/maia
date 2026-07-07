@@ -6,6 +6,7 @@ import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@an
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import {Router} from '@angular/router';
 import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth-service';
 import {LeftToRightComplexBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftToRightComplexBlotterAgGridDatasource';
@@ -102,6 +103,9 @@ export class LeftToRightComplexBlotter {
 
 
     private readonly injector = inject(EnvironmentInjector);
+
+
+    private readonly router = inject(Router);
 
 
     onGridReady(params: GridReadyEvent<LeftToRightComplexBlotterRowDto>) {

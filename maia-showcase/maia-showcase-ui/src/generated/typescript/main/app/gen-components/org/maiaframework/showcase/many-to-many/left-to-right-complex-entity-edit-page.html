@@ -1,0 +1,11 @@
+<app-page-layout pageTitle="Edit Left To Right Complex" dataPageId="left_to_right_complex_edit">
+    @if (entityId(); as id) {
+        <div class="edit-form-container">
+            <app-left-to-right-complex-entity-edit-form
+                [entityId]="id"
+                (onSave)="onSaveClicked()"
+                (onCancel)="onCancelClicked()"
+            />
+        </div>
+    }
+</app-page-layout>

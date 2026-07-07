@@ -6,6 +6,7 @@ import {Injectable, inject} from '@angular/core';
 import {LoginRequestDto} from '@app/gen-components/org/maiaframework/showcase/LoginRequestDto';
 import {UserSummaryDto} from '@app/gen-components/org/maiaframework/showcase/UserSummaryDto';
 import {Observable} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 
 
 
@@ -30,10 +31,13 @@ export class AuthApiService {
     }
 
 
-    logout() {
+    logout(): Observable<any> {
 
         console.log('logging out current user');
-        this.http.post<any>('/logout', {}, {withCredentials: true}).subscribe();
+        return this.http.post<any>('/logout', {}, {withCredentials: true})
+            .pipe(
+                switchMap(() => this.http.get<any>('/csrf', {withCredentials: true}))
+            );
 
     }
 

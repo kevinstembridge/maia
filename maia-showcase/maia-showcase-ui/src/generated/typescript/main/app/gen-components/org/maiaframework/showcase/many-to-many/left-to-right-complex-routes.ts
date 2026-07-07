@@ -10,5 +10,15 @@ export const leftToRightComplexRoutes: Routes = [
         loadComponent: () =>
             import('./left-to-right-complex-blotter-page').then(m => m.LeftToRightComplexBlotterPage),
     },
+    {
+        path: 'left-to-right-complex/view/:id',
+        loadComponent: () =>
+            import('./left-to-right-complex-entity-detail-view-page').then(m => m.LeftToRightComplexEntityDetailViewPage),
+    },
+    {
+        path: 'left-to-right-complex/edit/:id',
+        loadComponent: () =>
+            import('./left-to-right-complex-entity-edit-page').then(m => m.LeftToRightComplexEntityEditPage),
+    },
 ];
 

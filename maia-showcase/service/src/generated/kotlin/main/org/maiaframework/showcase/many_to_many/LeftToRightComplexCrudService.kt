@@ -5,14 +5,18 @@ package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 
 @Component
 class LeftToRightComplexCrudService(
     private val entityRepo: LeftToRightComplexRepo,
+    private val leftToRightComplexCrudNotifier: LeftToRightComplexCrudNotifier,
     private val maiaProblems: MaiaProblems
 ) {
 
@@ -21,10 +25,128 @@ class LeftToRightComplexCrudService(
 
 
     @Transactional
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun create(createDto: LeftToRightComplexCreateRequestDto): LeftToRightComplexEntity {
+
+        logger.info("BEGIN: create LeftToRightComplex. dto=$createDto")
+
+        val entity: LeftToRightComplexEntity = buildEntity(createDto)
+
+        return create(entity)
+
+    }
+
+
+    private fun buildEntity(createDto: LeftToRightComplexCreateRequestDto): LeftToRightComplexEntity {
+
+        val effectiveFrom: Instant? = createDto.effectiveFrom
+        val effectiveTo: Instant? = createDto.effectiveTo
+        val left: DomainId = createDto.left
+        val right: DomainId = createDto.right
+        val someIntOnComplex: Int = createDto.someIntOnComplex
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+        val lastModifiedTimestampUtc = createdTimestampUtc
+
+        return LeftToRightComplexEntity(
+            createdTimestampUtc,
+            effectiveFrom,
+            effectiveTo,
+            id,
+            lastModifiedTimestampUtc,
+            left,
+            right,
+            someIntOnComplex
+        )
+
+    }
+
+
+    @Transactional
     fun create(entity: LeftToRightComplexEntity): LeftToRightComplexEntity {
 
         this.entityRepo.insert(entity)
+        this.leftToRightComplexCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    @Transactional(readOnly = true)
+    fun fetchForEdit(id: DomainId): LeftToRightComplexFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
+    @Transactional
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun update(editDto: LeftToRightComplexUpdateRequestDto) {
+
+        val id = editDto.id
+        val updater = LeftToRightComplexEntityUpdater.forPrimaryKey(id) {
+            left(editDto.left)
+            right(editDto.right)
+            someIntOnComplex(editDto.someIntOnComplex)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @Transactional
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateSomeIntOnComplex(editDto: LeftToRightComplexUpdate_someIntOnComplexRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeIntOnComplex. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = LeftToRightComplexEntityUpdater.forPrimaryKey(editDto.id) {
+            someIntOnComplex(editDto.someIntOnComplex)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @Transactional
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateLeft(editDto: LeftToRightComplexUpdate_leftRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateLeft. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = LeftToRightComplexEntityUpdater.forPrimaryKey(editDto.id) {
+            left(editDto.left)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @Transactional
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateRight(editDto: LeftToRightComplexUpdate_rightRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateRight. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = LeftToRightComplexEntityUpdater.forPrimaryKey(editDto.id) {
+            right(editDto.right)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
 
     }
 
@@ -33,15 +155,21 @@ class LeftToRightComplexCrudService(
     fun setFields(updater: LeftToRightComplexEntityUpdater): Int {
 
         val count = this.entityRepo.setFields(updater)
+        this.leftToRightComplexCrudNotifier.onEntityUpdated(updater.id)
         return count
         
     }
 
 
     @Transactional
+    @PreAuthorize("hasAuthority('WRITE')")
     fun delete(id: DomainId) {
 
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
+                ?: return
+
         this.entityRepo.deleteByPrimaryKey(id)
+        this.leftToRightComplexCrudNotifier.onEntityDeleted(entityToDelete)
 
     }
 

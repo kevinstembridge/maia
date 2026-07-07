@@ -330,13 +330,13 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
 
     protected fun `logout current user`() {
 
-        val locateButtonByAriaLabel = locateButtonByAriaLabel("My profile")
+        val locateButtonByAriaLabel = locateButtonByAriaLabel("User menu")
 
         Thread.sleep(200)
 
         if (locateButtonByAriaLabel.isVisible) {
             locateButtonByAriaLabel.click()
-            this.page.getByText("Logout").click()
+            this.page.getByRole(AriaRole.MENUITEM, Page.GetByRoleOptions().setName("Logout")).click()
         }
 
     }

@@ -108,6 +108,13 @@ class LeftToRightComplexRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): LeftToRightComplexFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: LeftToRightComplexEntity) {
 
         logger.debug("insert {}", entity)

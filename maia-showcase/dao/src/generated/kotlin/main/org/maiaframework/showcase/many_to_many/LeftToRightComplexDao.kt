@@ -28,6 +28,9 @@ class LeftToRightComplexDao(
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
+    private val fetchForEditDtoRowMapper = LeftToRightComplexFetchForEditDtoRowMapper()
+
+
     fun insert(entity: LeftToRightComplexEntity) {
 
         jdbcOps.update(
@@ -400,6 +403,38 @@ class LeftToRightComplexDao(
         )
 
         return count > 0
+
+    }
+
+
+    fun fetchForEdit(id: DomainId): LeftToRightComplexFetchForEditDto {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                maia.left_to_right_complex.created_timestamp_utc as createdTimestampUtc,
+                maia.left_to_right_complex.effective_from as effectiveFrom,
+                maia.left_to_right_complex.effective_to as effectiveTo,
+                maia.left_to_right_complex.id as id,
+                maia.left_to_right_complex.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.left_many.id as leftId,
+                maia.left_many.some_string as leftName,
+                maia.right_many.id as rightId,
+                maia.right_many.some_string as rightName,
+                maia.left_to_right_complex.some_int_on_complex as someIntOnComplex
+            from maia.left_to_right_complex
+            join maia.left_many
+                on maia.left_many.id = maia.left_to_right_complex.left_id
+            join maia.right_many
+                on maia.right_many.id = maia.left_to_right_complex.right_id
+            where maia.left_to_right_complex.id = :id
+            """,
+            SqlParams().apply {
+                addValue("id", id)
+            },
+            this.fetchForEditDtoRowMapper
+        ).firstOrNull()
+            ?: throw EntityNotFoundException(EntityClassAndPk(LeftToRightComplexEntity::class.java, mapOf("id" to id)), LeftToRightComplexEntityMeta.TABLE_NAME)
 
     }
 

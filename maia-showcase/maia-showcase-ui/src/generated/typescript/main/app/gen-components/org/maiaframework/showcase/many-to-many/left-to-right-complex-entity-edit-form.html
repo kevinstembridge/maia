@@ -1,0 +1,55 @@
+<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+    <div>
+        @if (problemDetail()) {
+            <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
+        }
+        <div class="detail-row">
+            <span class="detail-label">Effective From</span>
+            <span class="detail-value">{{ formGroup.getRawValue().effectiveFrom }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Effective To</span>
+            <span class="detail-value">{{ formGroup.getRawValue().effectiveTo }}</span>
+        </div>
+        <mat-form-field appearance="outline">
+            <mat-label>Some Int On Complex</mat-label>
+            <input
+                formControlName="someIntOnComplex"
+                name="someIntOnComplex"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['someIntOnComplex'].hasError('required')) {
+                <mat-error>Some Int On Complex is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Left</mat-label>
+            <input
+                formControlName="left"
+                name="left"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['left'].hasError('required')) {
+                <mat-error>Left is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Right</mat-label>
+            <input
+                formControlName="right"
+                name="right"
+                type="text"
+                matInput
+            />
+            @if (formGroup.controls['right'].hasError('required')) {
+                <mat-error>Right is required.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div>
+        <button mat-flat-button type="submit" color="primary">Submit</button>
+        <button mat-flat-button type="button" (click)="onCancelClicked()">Cancel</button>
+    </div>
+</form>
