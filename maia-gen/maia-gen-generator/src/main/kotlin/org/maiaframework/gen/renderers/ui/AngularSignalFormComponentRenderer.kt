@@ -4,6 +4,7 @@ import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
+import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
@@ -81,6 +82,11 @@ class AngularSignalFormComponentRenderer(
         addImport("@angular/material/autocomplete", "MatAutocompleteModule", isModule = true)
         addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
+
+        if (this.angularFormDef.htmlFormFields.any { it.htmlInputType == HtmlInputType.password }) {
+            addImport("@angular/material/icon", "MatIconModule", isModule = true)
+        }
+
         addImport("@app/gen-components/common/model/ProblemDetail", "ProblemDetail")
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
@@ -147,6 +153,8 @@ class AngularSignalFormComponentRenderer(
         `render class field dialogFormModel`()
         `render class field dialogForm`()
         `render class field problemDetail`()
+
+        `render class fields for password visibility toggle`()
 
         if (this.angularFormDef.delegateFormSubmission.value) {
 
@@ -229,6 +237,21 @@ class AngularSignalFormComponentRenderer(
         )
     }
 
+    private fun `render class fields for password visibility toggle`() {
+
+        this.angularFormDef.htmlFormFields
+            .filter { it.htmlInputType == HtmlInputType.password }
+            .forEach { field ->
+
+            append("""
+                |
+                |
+                |    ${field.fieldName}PasswordVisible = signal(false);
+                |""".trimMargin())
+
+        }
+
+    }
 
     private fun `render class field dialogFormModel`() {
 
