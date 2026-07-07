@@ -5,6 +5,7 @@ import {Component, OnInit, inject, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {LoginRequestDto} from '@app/gen-components/org/maiaframework/showcase/login/LoginRequestDto';
 import {LoginFormApiService} from '@app/gen-components/org/maiaframework/showcase/login/login-form-api-service';
@@ -17,6 +18,7 @@ import {ProblemDetail} from '@maia/maia-ui';
         FormsModule,
         MatButtonModule,
         MatFormFieldModule,
+        MatIconModule,
         MatInputModule,
         ReactiveFormsModule,
     ],
@@ -37,6 +39,9 @@ export class LoginForm implements OnInit {
 
 
     problemDetail = signal<ProblemDetail | null>(null);
+
+
+    passwordPasswordVisible = signal(false);
 
 
     formGroup: FormGroup;

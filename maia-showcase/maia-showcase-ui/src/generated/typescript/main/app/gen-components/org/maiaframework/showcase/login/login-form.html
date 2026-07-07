@@ -20,10 +20,13 @@
                 formControlName="password"
                 name="password"
                 placeholder="Password..."
-                type="password"
+                [type]="passwordPasswordVisible() ? 'text' : 'password'"
                 autocomplete="current-password"
                 matInput
             />
+            <button mat-icon-button matSuffix type="button" (click)="passwordPasswordVisible.set(!passwordPasswordVisible())" [attr.aria-label]="passwordPasswordVisible() ? 'Hide password' : 'Show password'">
+                <mat-icon>{{ passwordPasswordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
             @if (formGroup.controls['password'].hasError('required')) {
                 <mat-error>Password is required.</mat-error>
             }
