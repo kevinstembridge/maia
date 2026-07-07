@@ -20,6 +20,11 @@ class EntityCreateFormScssRenderer(private val entityCreatePageDef: EntityCreate
         appendLine("  width: 100%;")
         appendLine("}")
 
+        blankLine()
+        appendLine("button + button {")
+        appendLine("  margin-left: 8px;")
+        appendLine("}")
+
     }
 
 
