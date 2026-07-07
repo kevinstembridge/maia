@@ -2,6 +2,7 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceRenderer
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
+import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
@@ -135,7 +136,11 @@ object MatFormFieldRenderer {
             r.appendLine("$indent        $it")
         }
 
-        r.appendLine("$indent        type=\"${htmlFormField.htmlInputType}\"")
+        if (htmlFormField.htmlInputType == HtmlInputType.password) {
+            r.appendLine("$indent        [type]=\"${classFieldName}PasswordVisible() ? 'text' : 'password'\"")
+        } else {
+            r.appendLine("$indent        type=\"${htmlFormField.htmlInputType}\"")
+        }
 
         htmlFormField.autocomplete?.let {
             r.appendLine("$indent        autocomplete=\"$it\"")
@@ -148,6 +153,12 @@ object MatFormFieldRenderer {
         r.appendLine("$indent        matInput")
 
         r.appendLine("$indent    />")
+
+        if (htmlFormField.htmlInputType == HtmlInputType.password) {
+            r.appendLine("$indent    <button mat-icon-button matSuffix type=\"button\" (click)=\"${classFieldName}PasswordVisible.set(!${classFieldName}PasswordVisible())\" [attr.aria-label]=\"${classFieldName}PasswordVisible() ? 'Hide password' : 'Show password'\">")
+            r.appendLine("$indent        <mat-icon>{{ ${classFieldName}PasswordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>")
+            r.appendLine("$indent    </button>")
+        }
 
         if (classFieldDef.hasAnyValidationConstraints() || classFieldDef.isUnique) {
 
@@ -198,7 +209,11 @@ object MatFormFieldRenderer {
             r.appendLine("$indent        $it")
         }
 
-        r.appendLine("$indent        type=\"${htmlFormField.htmlInputType}\"")
+        if (htmlFormField.htmlInputType == HtmlInputType.password) {
+            r.appendLine("$indent        [type]=\"${classFieldName}PasswordVisible() ? 'text' : 'password'\"")
+        } else {
+            r.appendLine("$indent        type=\"${htmlFormField.htmlInputType}\"")
+        }
 
         htmlFormField.autocomplete?.let {
             r.appendLine("$indent        autocomplete=\"$it\"")
@@ -211,6 +226,12 @@ object MatFormFieldRenderer {
         r.appendLine("$indent        matInput")
 
         r.appendLine("$indent    />")
+
+        if (htmlFormField.htmlInputType == HtmlInputType.password) {
+            r.appendLine("$indent    <button mat-icon-button matSuffix type=\"button\" (click)=\"${classFieldName}PasswordVisible.set(!${classFieldName}PasswordVisible())\" [attr.aria-label]=\"${classFieldName}PasswordVisible() ? 'Hide password' : 'Show password'\">")
+            r.appendLine("$indent        <mat-icon>{{ ${classFieldName}PasswordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>")
+            r.appendLine("$indent    </button>")
+        }
 
         if (classFieldDef.hasAnyValidationConstraints() || classFieldDef.isUnique) {
 
