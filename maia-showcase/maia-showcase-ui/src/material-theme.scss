@@ -16,6 +16,16 @@ html {
     typography: Roboto,
     density: 0,
   ));
+
+  // Buttons default to a fully-rounded (pill) shape under M3. Override to a
+  // smaller, flatter corner radius.
+  @include mat.button-overrides((
+    filled-container-shape: 6px,
+    outlined-container-shape: 6px,
+    protected-container-shape: 6px,
+    text-container-shape: 6px,
+    tonal-container-shape: 6px,
+  ));
 }
 
 body {
