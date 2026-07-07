@@ -4,6 +4,7 @@ import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
+import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
@@ -130,6 +131,8 @@ class AngularReactiveFormComponentRenderer(
         `render class fields for chip fields`()
 
         `render class fields for timestamped fields`()
+
+        `render class fields for password visibility toggle`()
 
         `render class field for formGroup `()
 
@@ -467,6 +470,23 @@ class AngularReactiveFormComponentRenderer(
                     |    ${field.serviceFieldName} = inject(${field.serviceClassName});
                     |""".trimMargin())
             }
+
+        }
+
+    }
+
+
+    private fun `render class fields for password visibility toggle`() {
+
+        angularFormDef.htmlFormFields
+            .filter { it.htmlInputType == HtmlInputType.password }
+            .forEach { field ->
+
+            append("""
+                |
+                |
+                |    ${field.fieldName}PasswordVisible = signal(false);
+                |""".trimMargin())
 
         }
 
@@ -1235,6 +1255,10 @@ class AngularReactiveFormComponentRenderer(
         addImport("@angular/material/button", "MatButtonModule", isModule = true)
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
         addImport("@angular/material/input", "MatInputModule", isModule = true)
+
+        if (angularFormDef.htmlFormFields.any { it.htmlInputType == HtmlInputType.password }) {
+            addImport("@angular/material/icon", "MatIconModule", isModule = true)
+        }
 
         if (this.angularFormDef.fetchForEditDtoDef != null) {
             addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
