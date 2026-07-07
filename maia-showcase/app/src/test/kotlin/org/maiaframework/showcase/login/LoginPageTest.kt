@@ -37,4 +37,24 @@ class LoginPageTest : AbstractPlaywrightTest() {
     }
 
 
+    @Test
+    fun `password field visibility can be toggled`() {
+
+        loginPage.navigateToMe()
+
+        Thread.sleep(300)
+
+        loginPage.assertPasswordFieldType("password")
+
+        loginPage.togglePasswordVisibility()
+
+        loginPage.assertPasswordFieldType("text")
+
+        loginPage.togglePasswordVisibility()
+
+        loginPage.assertPasswordFieldType("password")
+
+    }
+
+
 }
