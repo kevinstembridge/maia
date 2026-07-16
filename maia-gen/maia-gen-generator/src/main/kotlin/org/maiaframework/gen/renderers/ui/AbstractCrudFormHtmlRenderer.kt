@@ -60,7 +60,7 @@ abstract class AbstractCrudFormHtmlRenderer(
         }
 
         appendLine("    </div>")
-        appendLine("    <div$matDialogActionsText>")
+        appendLine("    <div class=\"form-actions\"$matDialogActionsText>")
         appendLine("        <button mat-flat-button type=\"submit\" color=\"primary\">Submit</button>")
 
         if (inlineFormOrDialog == InlineFormOrDialog.DIALOG) {

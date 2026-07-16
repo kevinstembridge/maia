@@ -20,11 +20,6 @@ class EntityCreateDialogScssRenderer(private val apiDef: EntityCreateApiDef) : A
         appendLine("  width: 100%;")
         appendLine("}")
 
-        blankLine()
-        appendLine("button + button {")
-        appendLine("  margin-left: 8px;")
-        appendLine("}")
-
     }
 
 
