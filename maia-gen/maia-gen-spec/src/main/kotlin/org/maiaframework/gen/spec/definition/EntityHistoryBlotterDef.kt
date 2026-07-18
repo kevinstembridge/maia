@@ -8,6 +8,7 @@ import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
+import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
 
 
 class EntityHistoryBlotterDef(val entityDef: EntityDef) {
@@ -46,8 +47,10 @@ class EntityHistoryBlotterDef(val entityDef: EntityDef) {
 
     val requiresJsonMapper = blotterColumns.any { col ->
         val ft = col.classFieldDef.fieldType
-        ft is DataClassFieldType || ft is MapFieldType ||
-        (ft is ListFieldType && ft.parameterFieldType is DataClassFieldType)
+        ft is DataClassFieldType
+        || ft is MapFieldType
+        || (ft is ListFieldType && ft.parameterFieldType is DataClassFieldType)
+        || (ft is SimpleResponseDtoFieldType)
     }
 
 
