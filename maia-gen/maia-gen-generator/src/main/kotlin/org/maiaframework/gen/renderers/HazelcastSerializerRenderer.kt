@@ -54,15 +54,15 @@ class HazelcastSerializerRenderer(
 
     override fun renderFunctions() {
 
-        `render function getTypeName`()
-        `render function getCompactClass`()
-        `render function read`()
-        `render function write`()
+        `render the getTypeName function`()
+        `render the getCompactClass function`()
+        `render the read function`()
+        `render the write function`()
 
     }
 
 
-    private fun `render function getTypeName`() {
+    private fun `render the getTypeName function`() {
 
         append("""
             |
@@ -78,7 +78,7 @@ class HazelcastSerializerRenderer(
     }
 
 
-    private fun `render function getCompactClass`() {
+    private fun `render the getCompactClass function`() {
 
         append("""
             |
@@ -94,7 +94,7 @@ class HazelcastSerializerRenderer(
     }
 
 
-    private fun `render function read`() {
+    private fun `render the read function`() {
 
         addImportFor(Fqcns.HAZELCAST_COMPACT_READER)
 
@@ -123,9 +123,7 @@ class HazelcastSerializerRenderer(
 
     private fun renderReadForField(field: ClassFieldDef) {
 
-        val fieldType = field.fieldType
-
-        when (fieldType) {
+        when (val fieldType = field.fieldType) {
             is BooleanFieldType -> `render read for Boolean`(field)
             is BooleanTypeFieldType -> TODO()
             is BooleanValueClassFieldType -> TODO()
@@ -249,7 +247,7 @@ class HazelcastSerializerRenderer(
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
             is StringFieldType -> `render read for Set of Strings`(keyFieldName)
             is StringTypeFieldType -> TODO()
-            is StringValueClassFieldType -> TODO()
+            is StringValueClassFieldType -> `render read for Set of StringTypes`(keyFieldName, setElementFieldType)
             is UrlFieldType -> TODO()
         }
 
@@ -339,6 +337,19 @@ class HazelcastSerializerRenderer(
         addImportFor(Fqcns.STRING)
 
         appendLine("        val $fieldName = reader.readSetOfStrings(\"$fieldName\")")
+
+    }
+
+
+    private fun `render read for Set of StringTypes`(
+        fieldName: String,
+        setElementFieldType: StringValueClassFieldType
+    ) {
+
+        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_SET_FROM_STRINGS)
+        addImportFor(setElementFieldType.fqcn)
+
+        appendLine("        val $fieldName = reader.readSetFromStrings(\"$fieldName\", { ${setElementFieldType.uqcn}(it) })")
 
     }
 
@@ -475,7 +486,10 @@ class HazelcastSerializerRenderer(
                     is SimpleResponseDtoFieldType -> TODO("YAGNI?")
                     is StringFieldType -> TODO()
                     is StringTypeFieldType -> TODO()
-                    is StringValueClassFieldType -> TODO()
+                    is StringValueClassFieldType -> {
+                        addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_LIST_OF_SETS_FROM_CSV_STRINGS)
+                        appendLine("        val ${field.classFieldName}Values = reader.readListOfSetsFromCsvStrings(\"${field.classFieldName}Values\") { ${setElementFieldType.unqualifiedToString}(it) }")
+                    }
                     is UrlFieldType -> TODO()
                 }
 
@@ -634,34 +648,38 @@ class HazelcastSerializerRenderer(
     }
 
 
-    private fun `render function write`() {
+    private fun `render the write function`() {
 
         addImportFor(Fqcns.HAZELCAST_COMPACT_WRITER)
 
-        blankLine()
-        blankLine()
-        appendLine("    override fun write(writer: CompactWriter, dto: $serializedClassUqcn) {")
-        blankLine()
-        appendLine("        writer.apply {")
-        blankLine()
+        append("""
+            |
+            |
+            |    override fun write(writer: CompactWriter, dto: $serializedClassUqcn) {
+            |
+            |        writer.apply {
+            |
+            |""".trimMargin()
+        )
 
         serializedClassDef.allFieldsSorted.forEach { field ->
             renderWriteForField(field)
         }
 
-        blankLine()
-        appendLine("        }")
-        blankLine()
-        appendLine("    }")
+        append("""
+            |
+            |        }
+            |
+            |    }
+            |""".trimMargin()
+        )
 
     }
 
 
     private fun renderWriteForField(field: ClassFieldDef) {
 
-        val fieldType = field.fieldType
-
-        when (fieldType) {
+        when (val fieldType = field.fieldType) {
             is BooleanFieldType -> `render write for`(field)
             is BooleanTypeFieldType -> `render write for BooleanType`(field)
             is BooleanValueClassFieldType -> `render write for Boolean Value class`(field)
@@ -991,7 +1009,10 @@ class HazelcastSerializerRenderer(
     }
 
 
-    private fun `render adding the value to the temp holder`(valueFieldName: String, mapEntryValueType: FieldType) {
+    private fun `render adding the value to the temp holder`(
+        valueFieldName: String,
+        mapEntryValueType: FieldType
+    ) {
 
         when (mapEntryValueType) {
             is BooleanFieldType -> TODO()
@@ -1065,12 +1086,9 @@ class HazelcastSerializerRenderer(
             is SimpleResponseDtoFieldType -> TODO()
             is StringFieldType -> appendLine("                $valueFieldName.add(value)")
             is StringTypeFieldType -> TODO()
-            is StringValueClassFieldType -> TODO()
+            is StringValueClassFieldType -> appendLine("                $valueFieldName.add(value.map { it.value }.toList())")
             is UrlFieldType -> TODO()
         }
-
-
-
 
     }
 
@@ -1283,7 +1301,7 @@ class HazelcastSerializerRenderer(
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
             is StringFieldType -> TODO()
             is StringTypeFieldType -> TODO()
-            is StringValueClassFieldType -> TODO()
+            is StringValueClassFieldType -> `render write for Set of StringValueClasses`(field.classFieldName.value)
             is UrlFieldType -> TODO()
         }
 
@@ -1294,6 +1312,14 @@ class HazelcastSerializerRenderer(
 
         addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
         appendLine("            writeSetOfStrings(\"$fieldName\", dto.${fieldName}.map { it.name }.toSet())")
+
+    }
+
+
+    private fun `render write for Set of StringValueClasses`(fieldName: String) {
+
+        addImportFor(Fqcns.MAIA_COMPACT_WRITER_EXTENSION_WRITE_SET_OF_STRINGS)
+        appendLine("            writeSetOfStrings(\"$fieldName\", dto.${fieldName}.map { it.value }.toSet())")
 
     }
 
