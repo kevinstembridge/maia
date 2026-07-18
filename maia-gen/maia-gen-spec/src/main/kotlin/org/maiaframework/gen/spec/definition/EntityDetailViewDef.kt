@@ -64,7 +64,7 @@ class EntityDetailViewDef(
 
     val editPermission by lazy {
         this.entityDef.crudDef.crudOperationDefs.updateOperationDef?.authorityDef
-            ?: throw RuntimeException("No edit permission defined for entity ${entityDef.entityBaseName}")
+            ?: throw RuntimeException("No edit permission defined for entity '${entityDef.entityBaseName}'")
     }
 
 
@@ -89,6 +89,7 @@ class EntityDetailViewDef(
                 val newFieldType = FieldTypes.pkAndName(fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef)
                 val builder = aClassField(classFieldDef.classFieldName, newFieldType)
                 classFieldDef.displayName?.let { builder.displayName(it.value) }
+                builder.nullability(classFieldDef.nullability)
                 return builder.build()
 
             }
