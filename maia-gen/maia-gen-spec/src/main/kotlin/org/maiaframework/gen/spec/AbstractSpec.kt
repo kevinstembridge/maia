@@ -1014,7 +1014,7 @@ abstract class AbstractSpec protected constructor(
     protected fun blotter(
         searchableDtoDef: SearchableDtoDef,
         entityCreatePageDef: EntityCreatePageDef? = null,
-        entityDetailViewPageDef: EntityDetailViewDef? = null,
+        entityViewPageDef: EntityDetailViewDef? = null,
         entityEditPageDef: EntityEditPageDef? = null,
         disableRendering: Boolean = false,
         withPreAuthorize: WithPreAuthorize? = null,
@@ -1039,7 +1039,7 @@ abstract class AbstractSpec protected constructor(
             blotterSourceDef = BlotterSearchableDtoSourceDef(searchableDtoDef),
             entityCreatePageDef = entityCreatePageDef,
             entityEditPageDef = entityEditPageDef,
-            entityDetailViewDef = entityDetailViewPageDef,
+            entityDetailViewDef = entityViewPageDef,
             disableRendering = disableRendering,
             withGeneratedDto = withGeneratedDto,
             withGeneratedFindAllFunction = withGeneratedFindAllFunction,
@@ -1098,7 +1098,7 @@ abstract class AbstractSpec protected constructor(
     }
 
 
-    protected fun entityDetailView(
+    protected fun entityViewPage(
         entityDef: EntityDef,
         init: (EntityDetailViewDefBuilder.() -> Unit)? = null
     ): EntityDetailViewDef {
