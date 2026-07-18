@@ -54,6 +54,13 @@ class EntityHistoryBlotterRowMapperRenderer(
 
     override fun renderFunctions() {
 
+        `render the mapRow function`()
+
+    }
+
+
+    private fun `render the mapRow function`() {
+
         addImportFor(Fqcns.MAIA_RESULT_SET_ADAPTER)
         addImportFor(def.rowDtoFqcn)
 
@@ -62,7 +69,8 @@ class EntityHistoryBlotterRowMapperRenderer(
             |
             |    override fun mapRow(rsa: ResultSetAdapter): ${def.rowDtoUqcn} {
             |
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
         val sortedColumns = def.blotterColumns.sortedBy { it.classFieldDef.classFieldName.value }
 
@@ -81,7 +89,8 @@ class EntityHistoryBlotterRowMapperRenderer(
             |        )
             |
             |    }
-            |""".trimMargin())
+            |""".trimMargin()
+        )
 
     }
 
@@ -90,9 +99,8 @@ class EntityHistoryBlotterRowMapperRenderer(
 
         val fieldName = col.classFieldDef.classFieldName.value
         val columnName = fieldName
-        val fieldType = col.classFieldDef.fieldType
 
-        when (fieldType) {
+        when (val fieldType = col.classFieldDef.fieldType) {
             is EnumFieldType -> {
                 addImportFor(fieldType.fqcn)
                 appendLine("        val $fieldName = rsa.readEnum(\"$columnName\", ${fieldType.fqcn.uqcn}::class.java)")
@@ -132,8 +140,7 @@ class EntityHistoryBlotterRowMapperRenderer(
                 appendLine("        val $fieldName = rsa.readInt(\"$columnName\") { ${fieldType.uqcn}(it) }")
             }
             is ListFieldType -> {
-                val listElementFieldType = fieldType.parameterFieldType
-                when (listElementFieldType) {
+                when (val listElementFieldType = fieldType.parameterFieldType) {
                     is DataClassFieldType -> {
                         addImportFor(Fqcns.JACKSON_TYPE_REFERENCE)
                         addImportFor(listElementFieldType.fqcn)
@@ -173,7 +180,10 @@ class EntityHistoryBlotterRowMapperRenderer(
             is PeriodFieldType -> appendLine("        val $fieldName = rsa.readPeriod(\"$columnName\")")
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
-            is SimpleResponseDtoFieldType -> TODO()
+            is SimpleResponseDtoFieldType -> {
+                addImportFor(fieldType)
+                appendLine("        val $fieldName = rsa.readString(\"$columnName\") { jsonMapper.readValue(it, ${fieldType.uqcn}::class.java) }")
+            }
             is StringFieldType -> appendLine("        val $fieldName = rsa.readString(\"$columnName\")")
             is StringTypeFieldType -> {
                 addImportFor(fieldType.fqcn)
