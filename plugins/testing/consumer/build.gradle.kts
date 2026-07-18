@@ -6,7 +6,7 @@ plugins {
 
 maia {
 
-    specificationClassNames.set(listOf("org.maiaframework.gen.sample.SampleJdbcSpec"))
+    specificationClassName.set(listOf("org.maiaframework.gen.sample.SampleJdbcSpec"))
     moduleGeneratorClassName.set("org.maiaframework.gen.generator.ModelGenerator")
 
     dependencies {
