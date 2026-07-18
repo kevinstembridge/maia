@@ -145,7 +145,11 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
 
             } else if (fieldType is PkAndNameFieldType) {
 
-                appendLine("            $classFieldName = ${fieldType.pkAndNameDef.dtoUqcn.firstToLower()}For(entity.$classFieldName),")
+                if (classFieldDef.nullable) {
+                    appendLine("            $classFieldName = entity.$classFieldName?.let { ${fieldType.pkAndNameDef.dtoUqcn.firstToLower()}For(it) },")
+                } else {
+                    appendLine("            $classFieldName = ${fieldType.pkAndNameDef.dtoUqcn.firstToLower()}For(entity.$classFieldName),")
+                }
 
             } else if (manyToManyRowMapperFieldDefs.any { it.classFieldName == classFieldName }) {
 
@@ -221,6 +225,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
                 addImportFor(pkAndNameDef.pkAndNameDtoFqcn)
 
                 append("""
+                    |
                     |
                     |    private fun ${pkAndNameDef.dtoUqcn.firstToLower()}For(id: DomainId): ${pkAndNameDef.dtoUqcn} {
                     |
