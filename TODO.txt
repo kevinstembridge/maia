@@ -1,4 +1,8 @@
 
+TODO * Single Effective Record
+    TODO * Define a many-to-many entity that is specified to have only one single effective record
+
+
 TODO * MTM scenarios:
     TODO * If an MtM entity has extra fields on it and they are modifiable, when the entity is modified we must
         create a new record and close the effective range of the old record.
