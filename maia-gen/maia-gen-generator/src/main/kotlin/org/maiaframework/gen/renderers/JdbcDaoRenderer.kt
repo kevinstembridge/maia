@@ -4,8 +4,8 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.gen.renderers.SqlParamFunctions.renderSqlParamAddValueFor
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamMapperFunction
-import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
+import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
@@ -29,12 +29,11 @@ import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
-import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.LocalDateFieldType
 import org.maiaframework.gen.spec.definition.lang.LongFieldType
@@ -42,6 +41,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
+import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -59,9 +59,6 @@ class JdbcDaoRenderer(
 
 
     private val entityDef = entityHierarchy.entityDef
-
-
-    private val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(entityDef.primaryKeyClassFields)
 
 
     private val primaryKeyFieldNames = if (entityDef.hasCompositePrimaryKey) {
@@ -210,84 +207,102 @@ class JdbcDaoRenderer(
 
     override fun renderFunctions() {
 
-        `render function insert`()
-        `render function bulkInsert`()
-        `render function bulkInsertOfCsvRecords`()
-        `render function insertHistory`()
-        `render function bulkInsertHistory`()
-        `render function history`()
-        `render function count`()
-        `render function countWithFilter`()
-        `render function findByPrimaryKey`()
-        `render function findByPrimaryKeyOrNull`()
-        `render function existsByPrimaryKey`()
+        `render the insert function`()
+        `render the bulkInsert function`()
+        `render the bulkInsertOfCsvRecords function`()
+        `render the insertHistory function`()
+        `render the bulkInsertHistory function`()
+        `render the history function`()
+        `render the count function`()
+        `render the countWithFilter function`()
+        `render the findByPrimaryKey function`()
+        `render the findByPrimaryKeyOrNull function`()
+        `render the existsByPrimaryKey function`()
         `render finders for indexes`()
         `render findAll`()
         `render findAllEffective`()
-        `render function findAllByFilter`()
-        `render function findAllByFilterAsSequence`()
-        `render function findPrimaryKeysAsSequence`()
-        `render function findAllPrimaryKeysAsSequence`()
-        `render function findAllByFilterAndPageRequest`()
-        `render function findAllAsSequence`()
-        `render existsBy functions`()
-        `render function fetchForEdit`()
+        `render the findAllByFilter function`()
+        `render the findAllByFilterAsSequence function`()
+        `render the findPrimaryKeysAsSequence function`()
+        `render the findAllPrimaryKeysAsSequence function`()
+        `render the findAllByFilterAndPageRequest function`()
+        `render the findAllAsSequence function`()
+        `render the existsBy functions`()
+        `render the fetchForEdit function`()
         `render upsert for primary key`()
         `render upserts for indexes`()
-        `render function setFields`()
-        `render function closeEffectiveRange`()
-        `render function deleteByPrimaryKey`()
-        `render function deleteAll`()
+        `render the setFields function`()
+        `render the closeEffectiveRange function`()
+        `render the deleteByPrimaryKey function`()
+        `render the deleteAll function`()
         `render deleteBy for indexes`()
 
     }
 
 
-    private fun `render function insert`() {
+    private fun `render the insert function`() {
 
         addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
         if (entityHierarchy.hasSubclasses()) {
 
-            append("""
-                |
-                |
-                |    fun insert(entity: ${entityDef.entityUqcn}) {
-                |
-                |        when (entity) {
-                |""".trimMargin())
-
-            entityHierarchy.concreteEntityDefs.forEach { entityDef ->
-                addImportFor(entityDef.entityClassDef.fqcn)
-                appendLine("            is ${entityDef.entityUqcn} -> insert${entityDef.entityUqcn}(entity)")
-            }
-
-            append("""
-                |        }
-                |
-                |    }
-                |""".trimMargin())
-
-            entityHierarchy.concreteEntityDefs.forEach { entityDef ->
-                `render function insertSubclass`(entityDef)
-            }
+            `render the insert function classes with subclasses`()
 
         } else {
 
-            append("""
-                |
-                |
-                |    fun insert(entity: ${entityDef.entityUqcn}) {
-                |""".trimMargin())
-
-            renderFunctionInsertFor(entityDef)
-
-            append("""
-                |
-                |    }
-                |""".trimMargin())
+            `render the insert function for leaf classes`()
 
         }
+
+    }
+
+
+    private fun `render the insert function classes with subclasses`() {
+
+        append("""
+            |
+            |
+            |    fun insert(entity: ${entityDef.entityUqcn}) {
+            |
+            |        when (entity) {
+            |""".trimMargin()
+        )
+
+        entityHierarchy.concreteEntityDefs.forEach { entityDef ->
+            addImportFor(entityDef.entityClassDef.fqcn)
+            appendLine("            is ${entityDef.entityUqcn} -> insert${entityDef.entityUqcn}(entity)")
+        }
+
+        append("""
+            |        }
+            |
+            |    }
+            |""".trimMargin()
+        )
+
+        entityHierarchy.concreteEntityDefs.forEach { entityDef ->
+            `render function insertSubclass`(entityDef)
+        }
+
+    }
+
+
+    private fun `render the insert function for leaf classes`() {
+
+        append("""
+            |
+            |
+            |    fun insert(entity: ${entityDef.entityUqcn}) {
+            |""".trimMargin()
+        )
+
+        renderFunctionInsertFor(entityDef)
+
+        append("""
+            |
+            |    }
+            |""".trimMargin()
+        )
 
     }
 
@@ -354,7 +369,7 @@ class JdbcDaoRenderer(
         }
     }
 
-    private fun `render function bulkInsert`() {
+    private fun `render the bulkInsert function`() {
 
         addImportFor(Fqcns.MAIA_SQL_PARAMS)
 
@@ -408,7 +423,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function bulkInsertOfCsvRecords`() {
+    private fun `render the bulkInsertOfCsvRecords function`() {
 
         if (this.entityDef.isStagingEntity == false) {
             return
@@ -478,7 +493,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function insertHistory`() {
+    private fun `render the insertHistory function`() {
 
         if (entityDef.historyEntityDef == null) {
             return
@@ -533,7 +548,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function bulkInsertHistory`() {
+    private fun `render the bulkInsertHistory function`() {
 
         if (entityDef.historyEntityDef == null) {
             return
@@ -586,7 +601,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function history`() {
+    private fun `render the history function`() {
 
         val historyEntityDef = this.entityDef.historyEntityDef
             ?: return
@@ -666,14 +681,14 @@ class JdbcDaoRenderer(
             appendLine("$indent    addValue(\"typeDiscriminator\", ${entityDef.metaClassDef.uqcn}.TYPE_DISCRIMINATOR)")
         }
 
-        renderSqlParamsAddValueLinesFor("entity", entityDef, indentSize + 4)
+        `render SqlParams addValue lines for`("entity", entityDef, indentSize + 4)
 
         appendLine("$indent}")
 
     }
 
 
-    private fun `render function findByPrimaryKey`() {
+    private fun `render the findByPrimaryKey function`() {
 
         this.entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType) }
         addImportFor(Fqcns.MAIA_ENTITY_NOT_FOUND_EXCEPTION)
@@ -714,7 +729,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findByPrimaryKeyOrNull`() {
+    private fun `render the findByPrimaryKeyOrNull function`() {
 
         val fieldNamesAndTypesCsv = this.entityDef.primaryKeyFields.joinToString(", ") {
             "${it.classFieldName}: ${it.fieldType.unqualifiedToString}"
@@ -762,7 +777,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function count`() {
+    private fun `render the count function`() {
 
         blankLine()
         blankLine()
@@ -778,7 +793,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function countWithFilter`() {
+    private fun `render the countWithFilter function`() {
 
         blankLine()
         blankLine()
@@ -854,7 +869,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findAllByFilter`() {
+    private fun `render the findAllByFilter function`() {
 
         blankLine()
         blankLine()
@@ -887,7 +902,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findAllByFilterAsSequence`() {
+    private fun `render the findAllByFilterAsSequence function`() {
 
         if (this.entityDef.allowFindAll.value == false) {
             return
@@ -913,7 +928,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findPrimaryKeysAsSequence`() {
+    private fun `render the findPrimaryKeysAsSequence function`() {
 
         val fieldNamesCsv = fieldNamesCsv(this.entityDef.primaryKeyClassFields)
 
@@ -946,7 +961,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findAllByFilterAndPageRequest`() {
+    private fun `render the findAllByFilterAndPageRequest function`() {
 
         addImportFor(Fqcns.SPRING_PAGEABLE)
 
@@ -1010,7 +1025,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findAllAsSequence`() {
+    private fun `render the findAllAsSequence function`() {
 
         blankLine()
         blankLine()
@@ -1037,7 +1052,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function findAllPrimaryKeysAsSequence`() {
+    private fun `render the findAllPrimaryKeysAsSequence function`() {
 
         val primaryKeyColumnsCsv = entityDef.primaryKeyFields.map { it.tableColumnName }.joinToString(", ")
 
@@ -1062,7 +1077,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function deleteByPrimaryKey`() {
+    private fun `render the deleteByPrimaryKey function`() {
 
         if (this.entityDef.isNotDeletable) {
             return
@@ -1192,7 +1207,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function deleteAll`() {
+    private fun `render the deleteAll function`() {
 
         if (entityDef.isNotDeletable || entityDef.allowDeleteAll.value == false) {
             return
@@ -1302,7 +1317,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function existsByPrimaryKey`() {
+    private fun `render the existsByPrimaryKey function`() {
 
         val fieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
         val whereClause = this.entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }
@@ -1548,7 +1563,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render existsBy functions`() {
+    private fun `render the existsBy functions`() {
 
         val uniqueIndexFields: List<List<EntityFieldDef>> = this.entityDef.databaseIndexDefs.filter { it.isUnique }.map { it.indexDef.entityFieldDefs }
         val foreignKeyFields: List<List<EntityFieldDef>> = this.entityDef.allForeignKeyEntityFieldDefs.map { listOf(it) }
@@ -1723,7 +1738,7 @@ class JdbcDaoRenderer(
             appendLine("                addValue(\"typeDiscriminator\", \"${entityDef.typeDiscriminator}\")")
         }
 
-        renderSqlParamsAddValueLinesFor("upsertEntity", entityDef, indentSize)
+        `render SqlParams addValue lines for`("upsertEntity", entityDef, indentSize)
 
         appendLine("            },")
         appendLine("            { ps: PreparedStatement ->")
@@ -1822,7 +1837,7 @@ class JdbcDaoRenderer(
 
         val indentSize = 12
 
-        renderSqlParamsAddValueLinesFor("upsertEntity", entityDef, indentSize)
+        `render SqlParams addValue lines for`("upsertEntity", entityDef, indentSize)
 
         appendLine("            },")
         appendLine("            { ps: PreparedStatement ->")
@@ -1837,7 +1852,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function fetchForEdit`() {
+    private fun `render the fetchForEdit function`() {
 
         if (this.entityDef.isConcrete == false || this.entityDef.crudDef.crudOperationDefs.updateOperationDef == null) {
             return
@@ -1966,7 +1981,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function setFields`() {
+    private fun `render the setFields function`() {
 
         if (this.entityDef.hasNoModifiableFields()) {
             return
@@ -2287,7 +2302,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun renderSqlParamsAddValueLinesFor(
+    private fun `render SqlParams addValue lines for`(
         entityParameterName: String,
         entityDef: EntityDef,
         indentSize: Int
@@ -2304,7 +2319,7 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun `render function closeEffectiveRange`() {
+    private fun `render the closeEffectiveRange function`() {
 
         if (!entityDef.isManyToManyJoinEntity) return
         if (entityDef.effectiveRangeDef?.managedBy != EffectiveRangeManagedBy.SYSTEM) return

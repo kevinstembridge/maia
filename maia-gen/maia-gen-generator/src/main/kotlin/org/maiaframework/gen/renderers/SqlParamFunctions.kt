@@ -197,6 +197,7 @@ object SqlParamFunctions {
         indentSize: Int,
         lineAppender: (String) -> Unit
     ) {
+
         val fieldType = entityFieldDef.classFieldDef.fieldType
         val fieldName = entityFieldDef.classFieldName
 

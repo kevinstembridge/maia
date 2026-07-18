@@ -31,14 +31,15 @@ class BlotterDef(
 ) {
 
 
-    val angularDeleteDialogComponentNames = blotterSourceDef.deleteDialogComponentNames
+    val angularDeleteDialogComponentNames
+        get() = blotterSourceDef.deleteDialogComponentNames
 
 
-    val checkForeignKeyReferencesDialogComponentNames = blotterSourceDef.checkForeignKeyReferencesDialogComponentNames
+    val checkForeignKeyReferencesDialogComponentNames
+        get() = blotterSourceDef.checkForeignKeyReferencesDialogComponentNames
 
 
     val blotterColumnDefs = initBlotterColumnDefs(providedBlotterColumnDefs)
-
 
 
     private fun initBlotterColumnDefs(provided: List<AbstractBlotterColumnDef>): List<AbstractBlotterColumnDef> {
@@ -46,7 +47,9 @@ class BlotterDef(
         val fields = mutableListOf<AbstractBlotterColumnDef>()
 
         when (blotterSourceDef) {
-            is BlotterEsDocSourceDef -> TODO()
+            is BlotterEsDocSourceDef -> {
+                // TODO
+            }
             is BlotterSearchableDtoSourceDef -> {
 
                 if (blotterSourceDef.searchableDtoDef.dtoRootEntityDef.hasCompositePrimaryKey) {
@@ -59,22 +62,7 @@ class BlotterDef(
 
                     if (provided.none { it.colId == pkField.classFieldName.value }) {
 
-                        val fieldPath = FieldPath.of(pkField.classFieldName.value)
-
-                        val blotterColumnDef = BlotterColumnDef(
-                            fieldPathInSourceData = fieldPath,
-                            dtoFieldName = pkField.classFieldName.value,
-                            columnHeader = "ID",
-                            isSortable = false,
-                            isFilterable = false,
-                            fieldType = pkField.fieldType,
-                            nullability = Nullability.NOT_NULLABLE,
-                            hide = true,
-                            providedAgGridCellDataType = null,
-                            cellRenderer = null,
-                            pipes = emptyList()
-                        )
-
+                        val blotterColumnDef = idBlotterColumnDefFor(pkField)
                         fields.add(blotterColumnDef)
 
                     }
@@ -85,6 +73,29 @@ class BlotterDef(
         }
 
         return fields + provided
+
+    }
+
+
+    private fun idBlotterColumnDefFor(pkField: EntityFieldDef): BlotterColumnDef {
+
+        val fieldPath = FieldPath.of(pkField.classFieldName.value)
+
+        val blotterColumnDef = BlotterColumnDef(
+            fieldPathInSourceData = fieldPath,
+            dtoFieldName = pkField.classFieldName.value,
+            columnHeader = "ID",
+            isSortable = false,
+            isFilterable = false,
+            fieldType = pkField.fieldType,
+            nullability = Nullability.NOT_NULLABLE,
+            hide = true,
+            providedAgGridCellDataType = null,
+            cellRenderer = null,
+            pipes = emptyList()
+        )
+
+        return blotterColumnDef
 
     }
 

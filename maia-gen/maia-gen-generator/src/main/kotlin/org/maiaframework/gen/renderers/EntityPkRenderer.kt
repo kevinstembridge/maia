@@ -132,7 +132,7 @@ class EntityPkRenderer(
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")
             is StringFieldType -> decoded
-            is StringTypeFieldType -> TODO("YAGNI?")
+            is StringTypeFieldType -> "${fieldType.uqcn}($decoded)"
             is StringValueClassFieldType -> "${fieldType.uqcn}($decoded)"
             is UrlFieldType -> TODO("YAGNI?")
         }

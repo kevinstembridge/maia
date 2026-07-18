@@ -23,12 +23,14 @@ sealed class BlotterSourceDef(
     abstract val rowIdField: ClassFieldDef
 
 
-    val deleteDialogComponentNames = this.rootEntityDef?.deleteDialogComponentNames
-        ?: throw IllegalStateException("BlotterSourceDef does not have a root Entity")
+    val deleteDialogComponentNames
+        get() = this.rootEntityDef?.deleteDialogComponentNames
+            ?: throw IllegalStateException("BlotterSourceDef does not have a root Entity")
 
 
-    val checkForeignKeyReferencesDialogComponentNames = this.rootEntityDef?.checkForeignKeyReferencesDialogComponentNames
-        ?: throw IllegalStateException("BlotterSourceDef does not have a root Entity")
+    val checkForeignKeyReferencesDialogComponentNames
+        get() = this.rootEntityDef?.checkForeignKeyReferencesDialogComponentNames
+            ?: throw IllegalStateException("BlotterSourceDef does not have a root Entity")
 
 
     abstract fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef
