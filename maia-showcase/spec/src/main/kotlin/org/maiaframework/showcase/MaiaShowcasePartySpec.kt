@@ -4,7 +4,6 @@ import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.AppKey
-import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.ValueClassDefs
 import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
@@ -14,7 +13,6 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedFindAllFunction
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
-import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
@@ -240,7 +238,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
-    val userEntityDetailViewPageDef = entityDetailView(userEntityDef)
+    val userEntityDetailViewPageDef = entityViewPage(userEntityDef)
 
 
     val userEntityCreatePageDef = entityCreatePage(userEntityDef)
@@ -269,7 +267,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userBlotterDef = blotter(
         userSearchableDtoDef,
         entityCreatePageDef = userEntityCreatePageDef,
-        entityDetailViewPageDef = userEntityDetailViewPageDef,
+        entityViewPageDef = userEntityDetailViewPageDef,
         entityEditPageDef = userEntityEditPageDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,

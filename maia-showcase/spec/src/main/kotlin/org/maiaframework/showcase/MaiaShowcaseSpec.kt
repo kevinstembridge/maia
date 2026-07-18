@@ -330,13 +330,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val allFieldTypesEntityDetailViewDef = entityDetailView(allFieldTypesEntityDef)
+    val allFieldTypesViewPageDef = entityViewPage(allFieldTypesEntityDef)
 
 
-    val allFieldTypesEntityEditPageDef = entityEditPage(allFieldTypesEntityDef)
+    val allFieldTypesEditPageDef = entityEditPage(allFieldTypesEntityDef)
 
 
-    val allFieldTypesEntityCreatePageDef = entityCreatePage(allFieldTypesEntityDef)
+    val allFieldTypesCreatePageDef = entityCreatePage(allFieldTypesEntityDef)
 
 
     val allFieldTypesSearchableDtoDef = searchableDto(
@@ -400,9 +400,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val allFieldTypesBlotterDef = blotter(
         allFieldTypesSearchableDtoDef,
-        entityCreatePageDef = allFieldTypesEntityCreatePageDef,
-        entityDetailViewPageDef = allFieldTypesEntityDetailViewDef,
-        entityEditPageDef = allFieldTypesEntityEditPageDef,
+        entityCreatePageDef = allFieldTypesCreatePageDef,
+        entityViewPageDef = allFieldTypesViewPageDef,
+        entityEditPageDef = allFieldTypesEditPageDef,
     ) {
         editActionColumn()
         columnFromDto("someBoolean")
@@ -504,24 +504,24 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val simpleEntityDetailViewDef = entityDetailView(simpleEntityDef)
+    val simpleEntityViewPageDef = entityViewPage(simpleEntityDef)
 
 
-    val simpleEntityEditPageDef = entityEditPage(simpleEntityDef) {
+    val simpleEditPageDef = entityEditPage(simpleEntityDef) {
         authority = partySpec.writeAuthority
     }
 
 
-    val simpleEntityCreatePageDef = entityCreatePage(simpleEntityDef) {
+    val simpleCreatePageDef = entityCreatePage(simpleEntityDef) {
         authority = partySpec.writeAuthority
     }
 
 
     val simpleBlotterDef = blotter(
         simpleSearchableDtoDef,
-        entityCreatePageDef = simpleEntityCreatePageDef,
-        entityDetailViewPageDef = simpleEntityDetailViewDef,
-        entityEditPageDef = simpleEntityEditPageDef,
+        entityCreatePageDef = simpleCreatePageDef,
+        entityViewPageDef = simpleEntityViewPageDef,
+        entityEditPageDef = simpleEditPageDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
@@ -587,24 +587,24 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val historySampleEntityDetailViewDef = entityDetailView(historySampleEntityDef)
+    val historySampleViewPageDef = entityViewPage(historySampleEntityDef)
 
 
-    val historySampleEntityEditPageDef = entityEditPage(historySampleEntityDef) {
+    val historySampleEditPageDef = entityEditPage(historySampleEntityDef) {
         authority = partySpec.writeAuthority
     }
 
 
-    val historySampleEntityCreatePageDef = entityCreatePage(historySampleEntityDef) {
+    val historySampleCreatePageDef = entityCreatePage(historySampleEntityDef) {
         authority = partySpec.writeAuthority
     }
 
 
     val historySampleBlotterDef = blotter(
         historySampleSearchableDtoDef,
-        entityCreatePageDef = historySampleEntityCreatePageDef,
-        entityDetailViewPageDef = historySampleEntityDetailViewDef,
-        entityEditPageDef = historySampleEntityEditPageDef,
+        entityCreatePageDef = historySampleCreatePageDef,
+        entityViewPageDef = historySampleViewPageDef,
+        entityEditPageDef = historySampleEditPageDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
@@ -806,7 +806,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val someVersionedEntityCreateDef = entityCreatePage(someVersionedEntityDef)
 
 
-    val someVersionedEntityDetailViewDef = entityDetailView(someVersionedEntityDef)
+    val someVersionedViewPageDef = entityViewPage(someVersionedEntityDef)
 
 
     val someVersionedEditPageDef = entityEditPage(someVersionedEntityDef)
@@ -937,13 +937,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val alphaEntityCreatePageDef = entityCreatePage(alphaEntityDef)
+    val alphaCreatePageDef = entityCreatePage(alphaEntityDef)
 
 
-    val alphaEntityDetailViewPageDef = entityDetailView(alphaEntityDef)
+    val alphaEntityDetailViewPageDef = entityViewPage(alphaEntityDef)
 
 
-    val alphaEntityEditPageDef = entityEditPage(alphaEntityDef)
+    val alphaEditPageDef = entityEditPage(alphaEntityDef)
 
 
     val alphaTypeaheadDef = typeahead(
@@ -983,9 +983,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val alphaBlotterDef = blotter(
         alphaSearchableDtoDef,
-        entityDetailViewPageDef = alphaEntityDetailViewPageDef,
-        entityCreatePageDef = alphaEntityCreatePageDef,
-        entityEditPageDef = alphaEntityEditPageDef,
+        entityViewPageDef = alphaEntityDetailViewPageDef,
+        entityCreatePageDef = alphaCreatePageDef,
+        entityEditPageDef = alphaEditPageDef,
     ) {
         viewActionColumn()
         editActionColumn()
@@ -1066,13 +1066,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val bravoEntityCreatePageDef = entityCreatePage(bravoEntityDef)
+    val bravoCreatePageDef = entityCreatePage(bravoEntityDef)
 
 
-    val bravoEntityDetailViewPageDef = entityDetailView(bravoEntityDef)
+    val bravoEntityDetailViewPageDef = entityViewPage(bravoEntityDef)
 
 
-    val bravoEntityEditPageDef = entityEditPage(bravoEntityDef)
+    val bravoEditPageDef = entityEditPage(bravoEntityDef)
 
 
     val bravoSearchableDtoDef = searchableDto(
@@ -1093,9 +1093,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val bravoBlotterDef = blotter(
         bravoSearchableDtoDef,
-        entityDetailViewPageDef = bravoEntityDetailViewPageDef,
-        entityCreatePageDef = bravoEntityCreatePageDef,
-        entityEditPageDef = bravoEntityEditPageDef,
+        entityViewPageDef = bravoEntityDetailViewPageDef,
+        entityCreatePageDef = bravoCreatePageDef,
+        entityEditPageDef = bravoEditPageDef,
     ) {
         viewActionColumn()
         editActionColumn()
@@ -1443,10 +1443,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val leftToRightComplexEntityDetailViewDef = entityDetailView(leftToRightComplexEntityDef.entityDef)
+    val leftToRightComplexViewPageDef = entityViewPage(leftToRightComplexEntityDef.entityDef)
 
 
-    val leftToRightComplexEntityEditPageDef = entityEditPage(leftToRightComplexEntityDef.entityDef)
+    val leftToRightComplexEditPageDef = entityEditPage(leftToRightComplexEntityDef.entityDef)
 
 
     val leftManyTimelineBlotterDef = timelineBlotter(
@@ -1487,13 +1487,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val rightManyEntityDetailViewPageDef = entityDetailView(rightManyEntityDef)
+    val rightManyEntityDetailViewPageDef = entityViewPage(rightManyEntityDef)
 
 
-    val rightManyEntityCreatePageDef = entityCreatePage(rightManyEntityDef)
+    val rightManyCreatePageDef = entityCreatePage(rightManyEntityDef)
 
 
-    val rightManyEntityEditPageDef = entityEditPage(rightManyEntityDef)
+    val rightManyEditPageDef = entityEditPage(rightManyEntityDef)
 
 
     val rightManySearchableDtoDef = searchableDto(
@@ -1513,9 +1513,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val rightManyBlotterDef = blotter(
         rightManySearchableDtoDef,
-        entityCreatePageDef = rightManyEntityCreatePageDef,
-        entityDetailViewPageDef = rightManyEntityDetailViewPageDef,
-        entityEditPageDef = rightManyEntityEditPageDef,
+        entityCreatePageDef = rightManyCreatePageDef,
+        entityViewPageDef = rightManyEntityDetailViewPageDef,
+        entityEditPageDef = rightManyEditPageDef,
     ) {
         viewActionColumn()
         editActionColumn()
@@ -1529,16 +1529,16 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val rightManyBlotterPageDef = blotterPage(rightManyBlotterDef)
 
 
-    val leftManyEntityDetailViewPageDef = entityDetailView(leftManyEntityDef) {
+    val leftManyEntityDetailViewPageDef = entityViewPage(leftManyEntityDef) {
         manyToManyField("rightSimpleEntities", leftToRightSimpleEntityDef)
         manyToManyField("rightEntities", leftToRightComplexEntityDef)
     }
 
 
-    val leftManyEntityCreatePageDef = entityCreatePage(leftManyEntityDef)
+    val leftManyCreatePageDef = entityCreatePage(leftManyEntityDef)
 
 
-    val leftManyEntityEditPageDef = entityEditPage(leftManyEntityDef)
+    val leftManyEditPageDef = entityEditPage(leftManyEntityDef)
 
 
     val leftManySearchableDtoDef = searchableDto(
@@ -1559,9 +1559,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val leftManyBlotterDef = blotter(
         leftManySearchableDtoDef,
-        entityCreatePageDef = leftManyEntityCreatePageDef,
-        entityDetailViewPageDef = leftManyEntityDetailViewPageDef,
-        entityEditPageDef = leftManyEntityEditPageDef,
+        entityCreatePageDef = leftManyCreatePageDef,
+        entityViewPageDef = leftManyEntityDetailViewPageDef,
+        entityEditPageDef = leftManyEditPageDef,
     ) {
         viewActionColumn()
         editActionColumn()
@@ -1594,8 +1594,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val leftToRightComplexBlotterDef = blotter(
         leftToRightComplexSearchableDtoDef,
-        entityDetailViewPageDef = leftToRightComplexEntityDetailViewDef,
-        entityEditPageDef = leftToRightComplexEntityEditPageDef
+        entityViewPageDef = leftToRightComplexViewPageDef,
+        entityEditPageDef = leftToRightComplexEditPageDef
     ) {
         columnFromDto("someIntOnComplex")
         columnFromDto("leftSomeString")
@@ -1671,13 +1671,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val compositePrimaryKeyEntityCreatePageDef = entityCreatePage(compositePrimaryKeyEntityDef)
+    val compositePrimaryKeyCreatePageDef = entityCreatePage(compositePrimaryKeyEntityDef)
 
 
-    val compositePrimaryKeyEntityDetailViewDef = entityDetailView(compositePrimaryKeyEntityDef)
+    val compositePrimaryKeyViewPageDef = entityViewPage(compositePrimaryKeyEntityDef)
 
 
-    val compositePrimaryKeyEntityEditPageDef = entityEditPage(compositePrimaryKeyEntityDef)
+    val compositePrimaryKeyEditPageDef = entityEditPage(compositePrimaryKeyEntityDef)
 
 
     val compositePrimaryKeySearchableDtoDef = searchableDto(
@@ -1697,9 +1697,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val compositePrimaryKeyBlotterDef = blotter(
         compositePrimaryKeySearchableDtoDef,
-        entityCreatePageDef = compositePrimaryKeyEntityCreatePageDef,
-        entityDetailViewPageDef = compositePrimaryKeyEntityDetailViewDef,
-        entityEditPageDef = compositePrimaryKeyEntityEditPageDef,
+        entityCreatePageDef = compositePrimaryKeyCreatePageDef,
+        entityViewPageDef = compositePrimaryKeyViewPageDef,
+        entityEditPageDef = compositePrimaryKeyEditPageDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
