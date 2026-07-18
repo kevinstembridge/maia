@@ -101,7 +101,7 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
 
             createTablesSqlScriptPrefix.set(extension.createTablesSqlScriptPrefix)
             moduleGeneratorClassName.set(extension.moduleGeneratorClassName)
-            specificationClassNames.set(extension.specificationClassNames)
+            specificationClassNames.set(extension.specificationClassName)
             sqlCreateScriptsDir.set(extension.sqlCreateScriptsDir)
             srcMainKotlinDir.set(extension.srcMainKotlinOutputDir)
             srcMainResourcesDir.set(extension.srcMainResourcesOutputDir)

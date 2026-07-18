@@ -8,7 +8,7 @@ import javax.inject.Inject
 abstract class MaiaGenerationExtension @Inject constructor(objects: ObjectFactory) {
 
 
-    val specificationClassNames = objects.listProperty(String::class.java)
+    val specificationClassName = objects.listProperty(String::class.java)
 
 
     val moduleGeneratorClassName = objects.property(String::class.java)
