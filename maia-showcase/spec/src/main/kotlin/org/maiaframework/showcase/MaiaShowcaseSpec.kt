@@ -12,6 +12,7 @@ import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.AllowFindAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.FormPurpose
+import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedDto
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
@@ -1400,7 +1401,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         )
     ) {
         description("A simple many-to-many join between two entities, with a system-managed effective date range.")
-        effectiveRange(managedBy = EffectiveRangeManagedBy.SYSTEM)
+        effectiveRange(managedBy = EffectiveRangeManagedBy.SYSTEM, hasSingleEffectiveRecord = HasSingleEffectiveRecord.TRUE)
     }
 
 

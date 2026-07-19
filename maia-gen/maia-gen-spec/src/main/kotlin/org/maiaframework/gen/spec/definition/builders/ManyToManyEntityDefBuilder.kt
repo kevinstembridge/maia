@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EffectiveRangeDef
 import org.maiaframework.gen.spec.definition.ModuleName
+import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 
 
 @MaiaDslMarker
@@ -22,10 +23,11 @@ class ManyToManyEntityDefBuilder {
 
     fun effectiveRange(
         managedBy: EffectiveRangeManagedBy = EffectiveRangeManagedBy.SYSTEM,
-        dateType: EffectiveRangeDateType = EffectiveRangeDateType.TIMESTAMP
+        dateType: EffectiveRangeDateType = EffectiveRangeDateType.TIMESTAMP,
+        hasSingleEffectiveRecord: HasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
     ) {
 
-        this.effectiveRangeDef = EffectiveRangeDef(managedBy, dateType)
+        this.effectiveRangeDef = EffectiveRangeDef(managedBy, dateType, hasSingleEffectiveRecord)
 
     }
 
