@@ -75,7 +75,6 @@ class EntityDef(
     private val nameFieldForPkAndNameDto: String? = null,
     val stagingEntityFieldDefs: List<DataRowStagingEntityFieldDef> = emptyList(),
     val effectiveRangeDef: EffectiveRangeDef?,
-    val hasSingleEffectiveRecord: HasSingleEffectiveRecord,
     val cacheableDef: CacheableDef?,
     val angularFormSystem: AngularFormSystem,
     val isManyToManyJoinEntity: Boolean = false
@@ -398,6 +397,9 @@ class EntityDef(
     val hasEffectiveTimestamps: Boolean = this.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
 
 
+    val hasSingleEffectiveRecord: HasSingleEffectiveRecord = this.effectiveRangeDef?.hasSingleEffectiveRecord ?: HasSingleEffectiveRecord.FALSE
+
+
     val allTypeaheadFields: List<EntityFieldDef>
         get() = allEntityFields.filter { it.typeaheadDef != null }
 
@@ -517,8 +519,7 @@ class EntityDef(
             entityBaseName = historyEntityBaseName,
             entityDaoHasSpringAnnotation = this.entityDaoHasSpringAnnotation,
             entityFieldsNotInherited = historyFieldDefs,
-            effectiveRangeDef = this.effectiveRangeDef,
-            hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
+            effectiveRangeDef = this.effectiveRangeDef?.copy(hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE),
             isAbstract = this.isAbstract,
             isDeltaEntity = IsDeltaEntity.FALSE,
             isHistoryEntity = true,

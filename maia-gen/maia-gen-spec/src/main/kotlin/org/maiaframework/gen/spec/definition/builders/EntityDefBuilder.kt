@@ -117,9 +117,6 @@ class EntityDefBuilder(
     private var effectiveRangeDef: EffectiveRangeDef? = null
 
 
-    private var hasSingleEffectiveRecord: Boolean = true
-
-
     fun build(): EntityDef {
 
         val entityFieldDefs = buildEntityFieldDefs()
@@ -160,7 +157,6 @@ class EntityDefBuilder(
             this.nameFieldForPkAndNameDto,
             stagingEntityFieldDefs = emptyList(),
             this.effectiveRangeDef,
-            HasSingleEffectiveRecord(this.hasSingleEffectiveRecord),
             this.cacheableDef,
             this.angularFormSystem,
             isManyToManyJoinEntity = this.isManyToManyJoinEntity
@@ -305,8 +301,7 @@ class EntityDefBuilder(
         }
 
         validateEffectiveTimeFields()
-        this.effectiveRangeDef = EffectiveRangeDef(managedBy, EffectiveRangeDateType.TIMESTAMP)
-        this.hasSingleEffectiveRecord = hasSingleEffectiveRecord
+        this.effectiveRangeDef = EffectiveRangeDef(managedBy, EffectiveRangeDateType.TIMESTAMP, HasSingleEffectiveRecord(hasSingleEffectiveRecord))
 
     }
 
@@ -339,8 +334,7 @@ class EntityDefBuilder(
         }
 
         validateEffectiveTimeFields()
-        this.effectiveRangeDef = EffectiveRangeDef(managedBy, EffectiveRangeDateType.LOCAL_DATE)
-        this.hasSingleEffectiveRecord = hasSingleEffectiveRecord
+        this.effectiveRangeDef = EffectiveRangeDef(managedBy, EffectiveRangeDateType.LOCAL_DATE, HasSingleEffectiveRecord(hasSingleEffectiveRecord))
 
     }
 

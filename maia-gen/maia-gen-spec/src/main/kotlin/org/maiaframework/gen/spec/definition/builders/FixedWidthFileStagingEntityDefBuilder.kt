@@ -16,7 +16,6 @@ import org.maiaframework.gen.spec.definition.flags.AllowFindAll
 import org.maiaframework.gen.spec.definition.flags.DaoHasSpringAnnotation
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.EntityDaoHasSpringAnnotation
-import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 import org.maiaframework.gen.spec.definition.flags.IsDeltaEntity
 import org.maiaframework.gen.spec.definition.flags.Versioned
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedDao
@@ -101,7 +100,6 @@ class FixedWidthFileStagingEntityDefBuilder(
             isHistoryEntity = false,
             stagingEntityFieldDefs = stagingEntityFieldDefs,
             effectiveRangeDef = null,
-            hasSingleEffectiveRecord = HasSingleEffectiveRecord.FALSE,
             cacheableDef = null,
             crudDef = CrudDef.EMPTY,
             angularFormSystem = AngularFormSystem.SIGNAL

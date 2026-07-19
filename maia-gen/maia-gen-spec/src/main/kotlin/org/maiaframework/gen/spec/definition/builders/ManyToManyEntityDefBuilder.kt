@@ -25,7 +25,7 @@ class ManyToManyEntityDefBuilder {
         dateType: EffectiveRangeDateType = EffectiveRangeDateType.TIMESTAMP
     ) {
 
-        effectiveRangeDef = EffectiveRangeDef(managedBy, dateType)
+        this.effectiveRangeDef = EffectiveRangeDef(managedBy, dateType)
 
     }
 
