@@ -107,7 +107,7 @@ class JdbcDaoRenderer(
             val schemaNameClassFieldDef = aClassField("schemaName", Fqcns.STRING).privat().build()
 
             val annotationDefs = if (entityDef.daoHasSpringAnnotation.value) {
-                listOf(AnnotationDef(Fqcns.SPRING_VALUE_ANNOTATION, value = { "\"\\\${$propertyName}\"" }))
+                listOf(AnnotationDef(Fqcns.SPRING_VALUE_ANNOTATION, value = { $$"\"\\${$$propertyName}\"" }))
             } else {
                 emptyList()
             }
@@ -807,7 +807,7 @@ class JdbcDaoRenderer(
         appendLine("        return jdbcOps.queryForLong(")
         appendLine("            \"\"\"")
         appendLine("            select count(*) from ${entityDef.schemaAndTableName}")
-        appendLine("            where \$whereClause")
+        appendLine($$"            where $whereClause")
         appendLine("            \"\"\".trimIndent(),")
         appendLine("            sqlParams")
         appendLine("        )")
@@ -888,10 +888,10 @@ class JdbcDaoRenderer(
             appendLine("                lower(effective_range) as effective_from,")
             appendLine("                upper(effective_range) as effective_to")
             appendLine("            from ${entityDef.schemaAndTableName}")
-            appendLine("            where \$whereClause")
+            appendLine($$"            where $whereClause")
             appendLine("            \"\"\".trimIndent(),")
         } else {
-            appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName} where \$whereClause\",")
+            appendLine($$"            \"$${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from $${entityDef.schemaAndTableName} where $whereClause\",")
         }
         appendLine("            sqlParams,")
         appendLine("            this.entityRowMapper")
@@ -918,7 +918,7 @@ class JdbcDaoRenderer(
         appendLine("        filter.populateSqlParams(sqlParams)")
         blankLine()
         appendLine("        return this.jdbcOps.queryForSequence(")
-        appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName} where \$whereClause\",")
+        appendLine($$"            \"$${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from $${entityDef.schemaAndTableName} where $whereClause\",")
         appendLine("            sqlParams,")
         appendLine("            this.entityRowMapper")
         appendLine("        )")
@@ -929,8 +929,6 @@ class JdbcDaoRenderer(
 
 
     private fun `render the findPrimaryKeysAsSequence function`() {
-
-        val fieldNamesCsv = fieldNamesCsv(this.entityDef.primaryKeyClassFields)
 
         val primaryKeyTableColumnNames = this.entityDef.primaryKeyFields.map { it.tableColumnName }.joinToString(", ")
         val primaryKeyTypeUqcn = this.entityDef.primaryKeyType
@@ -945,7 +943,7 @@ class JdbcDaoRenderer(
         appendLine("        filter.populateSqlParams(sqlParams)")
         blankLine()
         appendLine("        return this.jdbcOps.queryForSequence(")
-        appendLine("            \"select $primaryKeyTableColumnNames from ${entityDef.schemaAndTableName} where \$whereClause\",")
+        appendLine($$"            \"select $$primaryKeyTableColumnNames from $${entityDef.schemaAndTableName} where $whereClause\",")
         appendLine("            sqlParams,")
 
         if (entityDef.hasSurrogatePrimaryKey) {
@@ -986,13 +984,13 @@ class JdbcDaoRenderer(
             appendLine("                lower(effective_range) as effective_from,")
             appendLine("                upper(effective_range) as effective_to")
             appendLine("            from ${entityDef.schemaAndTableName}")
-            appendLine("            where \$whereClause")
-            appendLine("            \$orderByClause")
-            appendLine("            \$limitClause")
-            appendLine("            \$offsetClause")
+            appendLine($$"            where $whereClause")
+            appendLine($$"            $orderByClause")
+            appendLine($$"            $limitClause")
+            appendLine($$"            $offsetClause")
             appendLine("            \"\"\".trimIndent(),")
         } else {
-            appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName} where \$whereClause \$orderByClause \$limitClause \$offsetClause\",")
+            appendLine($$"            \"$${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from $${entityDef.schemaAndTableName} where $whereClause $orderByClause $limitClause $offsetClause\",")
         }
         appendLine("            sqlParams,")
         appendLine("            this.entityRowMapper")
@@ -1003,22 +1001,22 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("    private fun orderByClauseFor(pageable: Pageable): String {")
         blankLine()
-        appendLine("        val properties = pageable.sort.map { \"\${it.property} \${it.direction}\" }.joinToString(\", \")")
-        appendLine("        return \"ORDER BY \$properties\"")
+        appendLine($$"        val properties = pageable.sort.map { \"${it.property} ${it.direction}\" }.joinToString(\", \")")
+        appendLine($$"        return \"ORDER BY $properties\"")
         blankLine()
         appendLine("    }")
         blankLine()
         blankLine()
         appendLine("    private fun limitClauseFor(pageable: Pageable): String {")
         blankLine()
-        appendLine("        return \"LIMIT \${pageable.pageSize}\"")
+        appendLine($$"        return \"LIMIT ${pageable.pageSize}\"")
         blankLine()
         appendLine("    }")
         blankLine()
         blankLine()
         appendLine("    private fun offsetClauseFor(pageable: Pageable): String {")
         blankLine()
-        appendLine("        return \"OFFSET \${pageable.offset}\"")
+        appendLine($$"        return \"OFFSET ${pageable.offset}\"")
         blankLine()
         appendLine("    }")
 
@@ -1439,7 +1437,7 @@ class JdbcDaoRenderer(
 
     private fun buildColumnClauses(entityFieldDefs: List<EntityFieldDef>): List<String> {
 
-        return entityFieldDefs.map { "${it.tableColumnName} = \$${it.classFieldName}" }
+        return entityFieldDefs.map { $$"$${it.tableColumnName} = $$${it.classFieldName}" }
 
     }
 
@@ -2178,17 +2176,6 @@ class JdbcDaoRenderer(
                 val classFieldName = entityFieldDef.classFieldName
                 val sqlParamsAddFunc = sqlParamAddFunctionName(fieldType)
                 val sqlParamsMapperFunc = sqlParamMapperFunction(fieldType)
-
-                val fieldValueAs = "field.value as ${classFieldDef.unqualifiedToString}"
-
-                val fieldValueParameter = if (classFieldDef.isMap || classFieldDef.isListSetOrMap) {
-                    "this.jsonMapper.writeValueAsString($fieldValueAs)"
-                } else if (classFieldDef.isValueClass) {
-                    "($fieldValueAs)?.value"
-                } else {
-                    fieldValueAs
-                }
-
                 val fieldValueAsClause = fieldValueAsClauseFor(classFieldDef)
 
                 appendLine("            \"${classFieldName}\" -> sqlParams.$sqlParamsAddFunc(\"$classFieldName\", $fieldValueAsClause)$sqlParamsMapperFunc")
