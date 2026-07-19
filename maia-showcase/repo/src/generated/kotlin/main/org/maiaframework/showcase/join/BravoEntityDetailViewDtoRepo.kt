@@ -28,6 +28,7 @@ class BravoEntityDetailViewDtoRepo(
 
     }
 
+
     private fun alphaPkAndNameDtoFor(id: DomainId): AlphaPkAndNameDto {
 
         return this.alphaRepo.pkAndNameFor(id)

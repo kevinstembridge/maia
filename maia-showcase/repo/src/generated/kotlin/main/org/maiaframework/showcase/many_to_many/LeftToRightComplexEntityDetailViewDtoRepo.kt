@@ -32,11 +32,13 @@ class LeftToRightComplexEntityDetailViewDtoRepo(
 
     }
 
+
     private fun leftManyPkAndNameDtoFor(id: DomainId): LeftManyPkAndNameDto {
 
         return this.leftManyRepo.pkAndNameFor(id)
 
     }
+
 
     private fun rightManyPkAndNameDtoFor(id: DomainId): RightManyPkAndNameDto {
 

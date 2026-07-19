@@ -33,6 +33,7 @@ class HistorySampleEntityDetailViewDtoRepo(
 
     }
 
+
     private fun partyPkAndNameDtoFor(id: DomainId): PartyPkAndNameDto {
 
         return this.partyRepo.pkAndNameFor(id)
