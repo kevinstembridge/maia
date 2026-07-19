@@ -4,6 +4,7 @@
 import {LeftJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftJoinFetchDto';
 import {LeftManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyPkAndNameDto';
 import {LeftSystemEffectiveJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftSystemEffectiveJoinFetchDto';
+import {LeftSystemSingleEffectiveJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftSystemSingleEffectiveJoinFetchDto';
 import {LeftUserEffectiveJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftUserEffectiveJoinFetchDto';
 
 
@@ -13,6 +14,7 @@ export interface RightManyFetchForEditDto {
     leftEntities: ReadonlyArray<LeftJoinFetchDto>;
     leftSimpleEntities: ReadonlyArray<LeftManyPkAndNameDto>;
     leftSystemEffectiveEntities: ReadonlyArray<LeftSystemEffectiveJoinFetchDto>;
+    leftSystemSingleEffectiveEntities: ReadonlyArray<LeftSystemSingleEffectiveJoinFetchDto>;
     leftUserEffectiveEntities: ReadonlyArray<LeftUserEffectiveJoinFetchDto>;
     someInt: number;
     someString: string;

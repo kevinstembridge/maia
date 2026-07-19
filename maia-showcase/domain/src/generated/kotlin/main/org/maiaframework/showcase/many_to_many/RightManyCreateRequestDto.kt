@@ -22,6 +22,8 @@ class RightManyCreateRequestDto
     private val leftSimpleEntityIds_raw: List<DomainId>?,
     @param:JsonProperty("leftSystemEffectiveEntities", access = JsonProperty.Access.READ_WRITE) 
     private val leftSystemEffectiveEntities_raw: List<LeftSystemEffectiveJoinRequestDto>?,
+    @param:JsonProperty("leftSystemSingleEffectiveEntities", access = JsonProperty.Access.READ_WRITE) 
+    private val leftSystemSingleEffectiveEntities_raw: List<LeftSystemSingleEffectiveJoinRequestDto>?,
     @param:JsonProperty("leftUserEffectiveEntities", access = JsonProperty.Access.READ_WRITE) 
     private val leftUserEffectiveEntities_raw: List<LeftUserEffectiveJoinRequestDto>?,
     @field:NotNull
@@ -55,6 +57,10 @@ class RightManyCreateRequestDto
 
 
     @get:JsonIgnore
+    val leftSystemSingleEffectiveEntities: List<LeftSystemSingleEffectiveJoinRequestDto> by lazy { leftSystemSingleEffectiveEntities_raw ?: emptyList() }
+
+
+    @get:JsonIgnore
     val leftUserEffectiveEntities: List<LeftUserEffectiveJoinRequestDto> by lazy { leftUserEffectiveEntities_raw ?: emptyList() }
 
 
@@ -66,6 +72,7 @@ class RightManyCreateRequestDto
                 "leftEntities = '" + this.leftEntities + '\'' + ", " + 
                 "leftSimpleEntityIds = '" + this.leftSimpleEntityIds + '\'' + ", " + 
                 "leftSystemEffectiveEntities = '" + this.leftSystemEffectiveEntities + '\'' + ", " + 
+                "leftSystemSingleEffectiveEntities = '" + this.leftSystemSingleEffectiveEntities + '\'' + ", " + 
                 "leftUserEffectiveEntities = '" + this.leftUserEffectiveEntities + '\'' +
                 "}"
 

@@ -28,6 +28,8 @@ class RightManyFetchForEditDtoRowMapper(
 
         val leftSystemEffectiveEntitiesJoinFetchDtoList = fetchLeftSystemEffectiveEntitiesJoinFetchDtos(entityId)
 
+        val leftSystemSingleEffectiveEntitiesJoinFetchDtoList = fetchLeftSystemSingleEffectiveEntitiesJoinFetchDtos(entityId)
+
         val leftUserEffectiveEntitiesJoinFetchDtoList = fetchLeftUserEffectiveEntitiesJoinFetchDtos(entityId)
 
         val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
@@ -42,6 +44,7 @@ class RightManyFetchForEditDtoRowMapper(
             leftEntitiesJoinFetchDtoList,
             leftSimpleEntitiesPkAndNameDtoList,
             leftSystemEffectiveEntitiesJoinFetchDtoList,
+            leftSystemSingleEffectiveEntitiesJoinFetchDtoList,
             leftUserEffectiveEntitiesJoinFetchDtoList,
             someInt,
             someString,
@@ -130,6 +133,39 @@ class RightManyFetchForEditDtoRowMapper(
             },
         ) { rsa ->
             LeftSystemEffectiveJoinFetchDto(
+                id = rsa.readDomainId("id"),
+                entityId = rsa.readDomainId("entity_id"),
+                name = rsa.readString("some_string"),
+                effectiveFrom = rsa.readInstantOrNull("effective_from"),
+                effectiveTo = rsa.readInstantOrNull("effective_to"),
+            )
+        }
+
+    }
+
+
+    private fun fetchLeftSystemSingleEffectiveEntitiesJoinFetchDtos(entityId: DomainId): List<LeftSystemSingleEffectiveJoinFetchDto> {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                mtm.id,
+                other.id as entity_id,
+                other.some_string,
+                lower(mtm.effective_range) as effective_from,
+                upper(mtm.effective_range) as effective_to
+            from maia.left_many other
+            join maia.left_to_right_system_single_effective mtm
+                on other.id = mtm.left_system_single_effective_id
+            where mtm.right_system_single_effective_id = :entityId
+            and mtm.effective_range @> current_timestamp
+            order by other.some_string
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("entityId", entityId)
+            },
+        ) { rsa ->
+            LeftSystemSingleEffectiveJoinFetchDto(
                 id = rsa.readDomainId("id"),
                 entityId = rsa.readDomainId("entity_id"),
                 name = rsa.readString("some_string"),

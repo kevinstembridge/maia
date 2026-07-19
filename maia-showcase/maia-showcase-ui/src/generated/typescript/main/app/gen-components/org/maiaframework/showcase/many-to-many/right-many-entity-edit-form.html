@@ -93,6 +93,42 @@
             </div>
         }
         <div class="join-entries">
+            @for (join of leftSystemSingleEffectiveJoins; track join.entityId) {
+                <div class="join-entry">
+                    <span>{{ join.entityName }}</span>
+                    <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftSystemSingleEffectiveJoin($index)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            }
+        </div>
+        <button mat-stroked-button type="button" (click)="showLeftSystemSingleEffectiveJoinForm.set(true)">
+            <mat-icon>add</mat-icon> Add Left System Single Effective Entities
+        </button>
+        @if (showLeftSystemSingleEffectiveJoinForm()) {
+            <div class="join-mini-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Left System Single Effective Entities</mat-label>
+                    <input
+                        matInput
+                        [formControl]="addLeftSystemSingleEffectiveJoinEntityControl"
+                        [matAutocomplete]="leftSystemSingleEffectiveJoinEntityAuto"
+                        placeholder="Search Left System Single Effective Entities..."
+                    />
+                    <mat-autocomplete #leftSystemSingleEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftSystemSingleEffectiveEntity">
+                        @if (filteredLeftSystemSingleEffectiveEntitiesIsLoading()) {
+                            <mat-option disabled>Loading...</mat-option>
+                        }
+                        @for (option of filteredLeftSystemSingleEffectiveEntities; track option.id) {
+                            <mat-option [value]="option">{{ option.someString }}</mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+                <button mat-flat-button type="button" (click)="confirmAddLeftSystemSingleEffectiveJoin()">Add</button>
+                <button mat-flat-button type="button" (click)="cancelAddLeftSystemSingleEffectiveJoin()">Cancel</button>
+            </div>
+        }
+        <div class="join-entries">
             @for (join of leftUserEffectiveJoins; track join.entityId) {
                 <div class="join-entry">
                     <span>{{ join.entityName }}</span>

@@ -14,6 +14,7 @@ class LeftManyForeignKeyReferencesService(
     private val leftToRightComplexRepo: LeftToRightComplexRepo,
     private val leftToRightSimpleRepo: LeftToRightSimpleRepo,
     private val leftToRightSystemEffectiveRepo: LeftToRightSystemEffectiveRepo,
+    private val leftToRightSystemSingleEffectiveRepo: LeftToRightSystemSingleEffectiveRepo,
     private val leftToRightUserEffectiveRepo: LeftToRightUserEffectiveRepo
 ) {
 
@@ -29,6 +30,10 @@ class LeftManyForeignKeyReferencesService(
 
         if (this.leftToRightSystemEffectiveRepo.findEffectiveByLeftSystemEffective(id).isNotEmpty()) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSystemEffective")
+        }
+
+        if (this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id).isNotEmpty()) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSystemSingleEffective")
         }
 
         if (this.leftToRightUserEffectiveRepo.existsByLeftUserEffective(id)) {

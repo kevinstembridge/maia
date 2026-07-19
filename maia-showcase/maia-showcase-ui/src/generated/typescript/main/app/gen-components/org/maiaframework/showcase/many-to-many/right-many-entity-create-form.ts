@@ -15,6 +15,7 @@ import {Router} from '@angular/router';
 import {LeftJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftJoinRequestDto';
 import {LeftManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyTypeaheadV1EsDoc';
 import {LeftSystemEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftSystemEffectiveJoinRequestDto';
+import {LeftSystemSingleEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftSystemSingleEffectiveJoinRequestDto';
 import {LeftUserEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftUserEffectiveJoinRequestDto';
 import {RightManyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyCreateRequestDto';
 import {LeftManyTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-typeahead-api.service';
@@ -100,6 +101,27 @@ export class RightManyEntityCreateForm implements OnInit {
 
 
     filteredLeftSystemEffectiveEntitiesIsLoading = signal(false);
+
+
+    leftSystemSingleEffectiveJoins: {
+        id: string | null;
+        entityId: string;
+        entityName: string;
+        effectiveFrom: Date | null;
+        effectiveTo: Date | null;
+    }[] = [];
+
+
+    showLeftSystemSingleEffectiveJoinForm = signal(false);
+
+
+    addLeftSystemSingleEffectiveJoinEntityControl = new FormControl<LeftManyTypeaheadV1EsDoc | null>(null);
+
+
+    filteredLeftSystemSingleEffectiveEntities: LeftManyTypeaheadV1EsDoc[] = [];
+
+
+    filteredLeftSystemSingleEffectiveEntitiesIsLoading = signal(false);
 
 
     leftUserEffectiveJoins: {
@@ -214,6 +236,26 @@ export class RightManyEntityCreateForm implements OnInit {
             this.filteredLeftSystemEffectiveEntities = res;
         });
 
+        this.addLeftSystemSingleEffectiveJoinEntityControl.valueChanges.pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            filter(value => typeof value === 'string'),
+            tap(() => {
+                this.filteredLeftSystemSingleEffectiveEntities = [];
+                this.filteredLeftSystemSingleEffectiveEntitiesIsLoading.set(true);
+            }),
+            switchMap(value => this.leftManyTypeaheadApiService.search(value ?? '').pipe(
+                catchError(err => {
+                    this.filteredLeftSystemSingleEffectiveEntitiesIsLoading.set(false);
+                    console.error(err);
+                    return of([]);
+                })
+            )),
+            tap(() => this.filteredLeftSystemSingleEffectiveEntitiesIsLoading.set(false))
+        ).subscribe(res => {
+            this.filteredLeftSystemSingleEffectiveEntities = res;
+        });
+
         this.addLeftUserEffectiveJoinEntityControl.valueChanges.pipe(
             debounceTime(300),
             distinctUntilChanged(),
@@ -312,6 +354,46 @@ export class RightManyEntityCreateForm implements OnInit {
 
 
     displayLeftSystemEffectiveEntity = (entity: LeftManyTypeaheadV1EsDoc | null): string => {
+        return entity ? entity.someString : '';
+    };
+
+
+    confirmAddLeftSystemSingleEffectiveJoin(): void {
+
+        const entity = this.addLeftSystemSingleEffectiveJoinEntityControl.value;
+        if (!entity) return;
+        if (this.leftSystemSingleEffectiveJoins.some(j => j.entityId === entity.id)) return;
+        this.leftSystemSingleEffectiveJoins.push({
+            id: null,
+            entityId: entity.id,
+            entityName: entity.someString,
+            effectiveFrom: null,
+            effectiveTo: null,
+        });
+        this.addLeftSystemSingleEffectiveJoinEntityControl.reset();
+        this.filteredLeftSystemSingleEffectiveEntities = [];
+        this.showLeftSystemSingleEffectiveJoinForm.set(false);
+
+    }
+
+
+    removeLeftSystemSingleEffectiveJoin(index: number): void {
+
+        this.leftSystemSingleEffectiveJoins.splice(index, 1);
+
+    }
+
+
+    cancelAddLeftSystemSingleEffectiveJoin(): void {
+
+        this.addLeftSystemSingleEffectiveJoinEntityControl.reset();
+        this.filteredLeftSystemSingleEffectiveEntities = [];
+        this.showLeftSystemSingleEffectiveJoinForm.set(false);
+
+    }
+
+
+    displayLeftSystemSingleEffectiveEntity = (entity: LeftManyTypeaheadV1EsDoc | null): string => {
         return entity ? entity.someString : '';
     };
 
@@ -418,6 +500,12 @@ export class RightManyEntityCreateForm implements OnInit {
             leftSystemEffectiveEntities: this.leftSystemEffectiveJoins.map(j => ({
                 id: j.id,
                 leftSystemEffectiveEntityId: j.entityId,
+                effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
+                effectiveTo: j.effectiveTo?.toISOString() ?? null,
+            })),
+            leftSystemSingleEffectiveEntities: this.leftSystemSingleEffectiveJoins.map(j => ({
+                id: j.id,
+                leftSystemSingleEffectiveEntityId: j.entityId,
                 effectiveFrom: j.effectiveFrom?.toISOString() ?? null,
                 effectiveTo: j.effectiveTo?.toISOString() ?? null,
             })),

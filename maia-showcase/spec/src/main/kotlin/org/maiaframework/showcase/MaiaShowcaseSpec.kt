@@ -1383,6 +1383,27 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val leftToRightSystemManagedSingleEffectiveRangeEntityDef = simpleManyToManyEntity(
+        "org.maiaframework.showcase.many_to_many",
+        "LeftToRightSystemSingleEffective",
+        leftEntity = ReferencedEntity(
+            fieldName = "leftSystemSingleEffective",
+            displayName = "Left System Single Effective",
+            leftManyEntityDef,
+            IsEditableByUser.TRUE
+        ),
+        rightEntity = ReferencedEntity(
+            fieldName = "rightSystemSingleEffective",
+            displayName = "Right System Single Effective",
+            rightManyEntityDef,
+            IsEditableByUser.TRUE
+        )
+    ) {
+        description("A simple many-to-many join between two entities, with a system-managed effective date range.")
+        effectiveRange(managedBy = EffectiveRangeManagedBy.SYSTEM)
+    }
+
+
     val leftToRightUserManagedEffectiveRangeEntityDef = simpleManyToManyEntity(
         "org.maiaframework.showcase.many_to_many",
         "LeftToRightUserEffective",

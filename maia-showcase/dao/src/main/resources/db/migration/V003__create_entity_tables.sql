@@ -454,6 +454,18 @@ CREATE INDEX left_to_right_system_effective_left_system_effective_id_idx ON maia
 CREATE INDEX left_to_right_system_effective_right_system_effective_id_idx ON maia.left_to_right_system_effective(right_system_effective_id);
 
 
+CREATE TABLE maia.left_to_right_system_single_effective (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    left_system_single_effective_id uuid NOT NULL REFERENCES maia.left_many(id),
+    right_system_single_effective_id uuid NOT NULL REFERENCES maia.right_many(id),
+    effective_range tstzrange not null default tstzrange(now(), null),
+    PRIMARY KEY(id)
+);
+CREATE INDEX left_to_right_system_single_effective_left_system_single_effective_id_idx ON maia.left_to_right_system_single_effective(left_system_single_effective_id);
+CREATE INDEX left_to_right_system_single_effective_right_system_single_effective_id_idx ON maia.left_to_right_system_single_effective(right_system_single_effective_id);
+
+
 CREATE TABLE maia.left_to_right_user_effective (
     created_timestamp_utc timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,

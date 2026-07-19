@@ -19,6 +19,7 @@ class RightManyCrudService(
     private val leftToRightComplexRepo: LeftToRightComplexRepo,
     private val leftToRightSimpleRepo: LeftToRightSimpleRepo,
     private val leftToRightSystemEffectiveRepo: LeftToRightSystemEffectiveRepo,
+    private val leftToRightSystemSingleEffectiveRepo: LeftToRightSystemSingleEffectiveRepo,
     private val leftToRightUserEffectiveRepo: LeftToRightUserEffectiveRepo,
     private val maiaProblems: MaiaProblems,
     private val rightManyCrudNotifier: RightManyCrudNotifier
@@ -41,6 +42,8 @@ class RightManyCrudService(
         `create leftSimple joins`(createDto, entity)
 
         `create leftSystemEffective joins`(createDto, entity)
+
+        `create leftSystemSingleEffective joins`(createDto, entity)
 
         `create leftUserEffective joins`(createDto, entity)
 
@@ -116,6 +119,25 @@ class RightManyCrudService(
     }
 
 
+    private fun `create leftSystemSingleEffective joins`(
+        createDto: RightManyCreateRequestDto,
+        entity: RightManyEntity
+    ) {
+
+        createDto.leftSystemSingleEffectiveEntities.forEach { joinDto ->
+            this.leftToRightSystemSingleEffectiveRepo.insert(
+                LeftToRightSystemSingleEffectiveEntity.newInstance(
+                    effectiveFrom = Instant.now(),
+                    effectiveTo = null,
+                    leftSystemSingleEffective = joinDto.leftSystemSingleEffectiveEntityId,
+                    rightSystemSingleEffective = entity.id
+                )
+            )
+        }
+
+    }
+
+
     private fun `create leftUserEffective joins`(
         createDto: RightManyCreateRequestDto,
         entity: RightManyEntity
@@ -179,6 +201,8 @@ class RightManyCrudService(
         `reconcile leftToRightSimple joins`(id, editDto.leftSimpleEntityIds)
 
         `reconcile leftToRightSystemEffective joins`(id, editDto.leftSystemEffectiveEntities)
+
+        `reconcile leftToRightSystemSingleEffective joins`(id, editDto.leftSystemSingleEffectiveEntities)
 
         `reconcile leftToRightUserEffective joins`(id, editDto.leftUserEffectiveEntities)
 
@@ -251,6 +275,52 @@ class RightManyCrudService(
         }
 
         this.leftToRightSystemEffectiveRepo.bulkInsert(newJoins)
+
+    }
+
+
+    private fun `reconcile leftToRightSystemSingleEffective joins`(
+        id: DomainId,
+        submitted: List<LeftSystemSingleEffectiveJoinRequestDto>
+    ) {
+
+        `close effectiveRange on removed leftToRightSystemSingleEffective entities`(id, submitted)
+
+        `insert added leftToRightSystemSingleEffective entities`(id, submitted)
+
+    }
+
+
+    private fun `close effectiveRange on removed leftToRightSystemSingleEffective entities`(
+        id: DomainId,
+        submitted: List<LeftSystemSingleEffectiveJoinRequestDto>
+    ) {
+
+        val existingById = this.leftToRightSystemSingleEffectiveRepo.findEffectiveByRightSystemSingleEffective(id).associateBy { it.id }
+        val submittedIds = submitted.mapNotNull { it.id }.toSet()
+
+        existingById.keys.filterNot { it in submittedIds }.forEach {
+            this.leftToRightSystemSingleEffectiveRepo.closeEffectiveRange(it)
+        }
+
+    }
+
+
+    private fun `insert added leftToRightSystemSingleEffective entities`(
+        id: DomainId,
+        submitted: List<LeftSystemSingleEffectiveJoinRequestDto>
+    ) {
+
+        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
+            LeftToRightSystemSingleEffectiveEntity.newInstance(
+                effectiveFrom = Instant.now(),
+                effectiveTo = null,
+                leftSystemSingleEffective = joinDto.leftSystemSingleEffectiveEntityId,
+                rightSystemSingleEffective = id
+            )
+        }
+
+        this.leftToRightSystemSingleEffectiveRepo.bulkInsert(newJoins)
 
     }
 
@@ -424,6 +494,14 @@ class RightManyCrudService(
 
         this.leftToRightSystemEffectiveRepo.findByRightSystemEffective(id).forEach {
             this.leftToRightSystemEffectiveRepo.deleteByPrimaryKey(it.id)
+        }
+
+        if (this.leftToRightSystemSingleEffectiveRepo.findEffectiveByRightSystemSingleEffective(id).isNotEmpty()) {
+            throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSystemSingleEffective")
+        }
+
+        this.leftToRightSystemSingleEffectiveRepo.findByRightSystemSingleEffective(id).forEach {
+            this.leftToRightSystemSingleEffectiveRepo.deleteByPrimaryKey(it.id)
         }
 
         if (this.leftToRightUserEffectiveRepo.existsByRightUserEffective(id)) {

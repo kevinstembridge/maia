@@ -34,6 +34,7 @@ class LeftManyTransactionBlackBoxTest : AbstractBlackBoxTest() {
             rightEntities_raw = emptyList(),
             rightSimpleEntityIds_raw = listOf(nonExistentRightId),
             rightSystemEffectiveEntities_raw = emptyList(),
+            rightSystemSingleEffectiveEntities_raw = emptyList(),
             rightUserEffectiveEntities_raw = emptyList(),
             someInt_raw = 1,
             someString_raw = "test-rollback"

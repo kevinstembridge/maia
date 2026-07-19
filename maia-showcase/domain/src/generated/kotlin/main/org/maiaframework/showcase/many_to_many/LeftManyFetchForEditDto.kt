@@ -14,6 +14,7 @@ data class LeftManyFetchForEditDto(
     val rightEntities: List<RightJoinFetchDto>,
     val rightSimpleEntities: List<RightManyPkAndNameDto>,
     val rightSystemEffectiveEntities: List<RightSystemEffectiveJoinFetchDto>,
+    val rightSystemSingleEffectiveEntities: List<RightSystemSingleEffectiveJoinFetchDto>,
     val rightUserEffectiveEntities: List<RightUserEffectiveJoinFetchDto>,
     val someInt: Int,
     val someString: String,
