@@ -80,14 +80,14 @@ class LeftToRightSystemSingleEffectiveRepo(
     }
 
 
-    fun findEffectiveByLeftSystemSingleEffective(leftSystemSingleEffective: DomainId): List<LeftToRightSystemSingleEffectiveEntity> {
+    fun findEffectiveByLeftSystemSingleEffective(leftSystemSingleEffective: DomainId): LeftToRightSystemSingleEffectiveEntity? {
 
         return dao.findEffectiveByLeftSystemSingleEffective(leftSystemSingleEffective)
 
     }
 
 
-    fun findEffectiveByRightSystemSingleEffective(rightSystemSingleEffective: DomainId): List<LeftToRightSystemSingleEffectiveEntity> {
+    fun findEffectiveByRightSystemSingleEffective(rightSystemSingleEffective: DomainId): LeftToRightSystemSingleEffectiveEntity? {
 
         return dao.findEffectiveByRightSystemSingleEffective(rightSystemSingleEffective)
 

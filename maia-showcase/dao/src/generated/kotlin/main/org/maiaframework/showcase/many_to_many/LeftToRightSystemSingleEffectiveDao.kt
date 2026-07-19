@@ -195,9 +195,9 @@ class LeftToRightSystemSingleEffectiveDao(
     }
 
 
-    fun findEffectiveByLeftSystemSingleEffective(leftSystemSingleEffective: DomainId): List<LeftToRightSystemSingleEffectiveEntity> {
+    fun findEffectiveByLeftSystemSingleEffective(leftSystemSingleEffective: DomainId): LeftToRightSystemSingleEffectiveEntity? {
 
-        return jdbcOps.queryForList(
+        return jdbcOps.queryForObjectOrNull(
             """
             select 
                 *,
@@ -216,9 +216,9 @@ class LeftToRightSystemSingleEffectiveDao(
     }
 
 
-    fun findEffectiveByRightSystemSingleEffective(rightSystemSingleEffective: DomainId): List<LeftToRightSystemSingleEffectiveEntity> {
+    fun findEffectiveByRightSystemSingleEffective(rightSystemSingleEffective: DomainId): LeftToRightSystemSingleEffectiveEntity? {
 
-        return jdbcOps.queryForList(
+        return jdbcOps.queryForObjectOrNull(
             """
             select 
                 *,

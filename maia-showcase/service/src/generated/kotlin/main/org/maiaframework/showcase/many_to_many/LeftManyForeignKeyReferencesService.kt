@@ -32,7 +32,7 @@ class LeftManyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSystemEffective")
         }
 
-        if (this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id).isNotEmpty()) {
+        if (this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id) != null) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSystemSingleEffective")
         }
 

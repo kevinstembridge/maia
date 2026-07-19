@@ -8,7 +8,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.IncorrectResultSizeDataAccessException
+import org.springframework.dao.DataIntegrityViolationException
 import java.time.Period
 import java.time.temporal.ChronoUnit
 
@@ -50,17 +50,15 @@ class EffectiveTimestampTest: AbstractBlackBoxTest() {
 
 
     @Test
-    fun `should blow up if multiple effective records`() {
+    fun `should not allow a second overlapping effective record for the same key`() {
 
         val entity1 = `insert a sample entity that is effective now`()
 
-        // Create another sample instance that is effective now and has the same someString value
-        `insert a sample entity that is effective now`(entity1.someString)
-
+        // Attempting to insert another instance that is effective now with the same someString value
+        // violates the single-effective-record exclusion constraint on the table.
         assertThatThrownBy {
-            this.effectiveTimestampDao.findEffectiveBySomeString(entity1.someString)
-        }.isInstanceOf(IncorrectResultSizeDataAccessException::class.java)
-            .hasMessageContaining("Incorrect result size: expected 1, actual 2")
+            `insert a sample entity that is effective now`(entity1.someString)
+        }.isInstanceOf(DataIntegrityViolationException::class.java)
 
     }
 

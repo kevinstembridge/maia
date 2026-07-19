@@ -506,9 +506,9 @@ abstract class AbstractSpec protected constructor(
 
             manyToManyBuilder.effectiveRangeDef?.let { rangeDef ->
                 if (rangeDef.dateType == EffectiveRangeDateType.TIMESTAMP)
-                    withEffectiveTimestamps(managedBy = rangeDef.managedBy)
+                    withEffectiveTimestamps(managedBy = rangeDef.managedBy, hasSingleEffectiveRecord = rangeDef.hasSingleEffectiveRecord.value)
                 else
-                    withEffectiveLocalDates(managedBy = rangeDef.managedBy)
+                    withEffectiveLocalDates(managedBy = rangeDef.managedBy, hasSingleEffectiveRecord = rangeDef.hasSingleEffectiveRecord.value)
             }
 
         }
@@ -572,10 +572,12 @@ abstract class AbstractSpec protected constructor(
 
         builder.index {
             withFieldAscending(leftEntity.fieldName)
+            leftEntity.indexName?.let { indexName(it) }
         }
 
         builder.index {
             withFieldAscending(rightEntity.fieldName)
+            rightEntity.indexName?.let { indexName(it) }
         }
 
         init?.invoke(builder)

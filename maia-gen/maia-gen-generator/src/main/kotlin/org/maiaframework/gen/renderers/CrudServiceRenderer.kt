@@ -605,6 +605,13 @@ class CrudServiceRenderer(
                 val effectiveFromValue = if (isSystemManaged) "Instant.now()" else "joinDto.effectiveFrom"
                 val effectiveToValue = if (isSystemManaged) "null" else "joinDto.effectiveTo"
 
+                // findEffectiveBy returns a single nullable entity (not a List) when hasSingleEffectiveRecord is set.
+                val existingByIdExpression = if (isSystemManaged && manyToManyEntityDef.entityDef.hasSingleEffectiveRecord.value) {
+                    "this.${joinRepoFieldName}.${findByMethodName}(id)?.let { mapOf(it.id to it) } ?: emptyMap()"
+                } else {
+                    "this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }"
+                }
+
                 val joinDtoDef = apiDef.timestampedJoinRequestDtosByAssociation[manyToManyEntityDef]!!
                 addImportFor(joinDtoDef.fqcn)
                 addImportFor(Fqcns.MAIA_DOMAIN_ID)
@@ -678,7 +685,7 @@ class CrudServiceRenderer(
                         |        submitted: List<${joinDtoDef.uqcn}>
                         |    ) {
                         |
-                        |        val existingById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
+                        |        val existingById = $existingByIdExpression
                         |        val submittedIds = submitted.mapNotNull { it.id }.toSet()
                         |
                         |        existingById.keys.filterNot { it in submittedIds }.forEach {
@@ -698,7 +705,7 @@ class CrudServiceRenderer(
                             |        submitted: List<${joinDtoDef.uqcn}>
                             |    ): List<${joinDtoDef.uqcn}> {
                             |
-                            |        val existingById = this.${joinRepoFieldName}.${findByMethodName}(id).associateBy { it.id }
+                            |        val existingById = $existingByIdExpression
                             |
                             |        return submitted.filter { it.id != null }.filter { joinDto ->
                             |            val existing = existingById[joinDto.id!!]
@@ -972,7 +979,10 @@ class CrudServiceRenderer(
                 && referencingEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
 
             blankLine()
-            if (isSystemManagedRef) {
+
+            if (isSystemManagedRef && referencingEntityDef.hasSingleEffectiveRecord.value) {
+                appendLine("        if (this.${daoName}.findEffectiveBy$fieldName($primaryKeyFieldNamesCsv) != null) {")
+            } else if (isSystemManagedRef) {
                 appendLine("        if (this.${daoName}.findEffectiveBy$fieldName($primaryKeyFieldNamesCsv).isNotEmpty()) {")
             } else {
                 appendLine("        if (this.${daoName}.existsBy$fieldName($primaryKeyFieldNamesCsv)) {")

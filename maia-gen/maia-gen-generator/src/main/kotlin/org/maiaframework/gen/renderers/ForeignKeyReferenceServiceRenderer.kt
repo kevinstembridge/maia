@@ -61,7 +61,10 @@ class ForeignKeyReferenceServiceRenderer(
                 && referencingEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
 
             blankLine()
-            if (isSystemManagedMtmJoin) {
+
+            if (isSystemManagedMtmJoin && referencingEntityDef.hasSingleEffectiveRecord.value) {
+                appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.findEffectiveBy${fieldName.firstToUpper()}(id) != null) {")
+            } else if (isSystemManagedMtmJoin) {
                 appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.findEffectiveBy${fieldName.firstToUpper()}(id).isNotEmpty()) {")
             } else {
                 appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.existsBy${fieldName.firstToUpper()}(id)) {")

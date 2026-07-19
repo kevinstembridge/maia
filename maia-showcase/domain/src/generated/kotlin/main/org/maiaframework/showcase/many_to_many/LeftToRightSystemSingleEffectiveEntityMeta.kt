@@ -37,9 +37,9 @@ object LeftToRightSystemSingleEffectiveEntityMeta {
 
     object IndexName {
 
-        const val left_to_right_system_single_effective_left_system_single_effective_id_idx = "left_to_right_system_single_effective_left_system_single_effective_id_idx"
+        const val l2r_sys_single_effective_left_idx = "l2r_sys_single_effective_left_idx"
 
-        const val left_to_right_system_single_effective_right_system_single_effective_id_idx = "left_to_right_system_single_effective_right_system_single_effective_id_idx"
+        const val l2r_sys_single_effective_right_idx = "l2r_sys_single_effective_right_idx"
 
     }
 

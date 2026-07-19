@@ -299,7 +299,7 @@ class LeftManyCrudService(
         submitted: List<RightSystemSingleEffectiveJoinRequestDto>
     ) {
 
-        val existingById = this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id).associateBy { it.id }
+        val existingById = this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id)?.let { mapOf(it.id to it) } ?: emptyMap()
         val submittedIds = submitted.mapNotNull { it.id }.toSet()
 
         existingById.keys.filterNot { it in submittedIds }.forEach {
@@ -501,7 +501,7 @@ class LeftManyCrudService(
             this.leftToRightSystemEffectiveRepo.deleteByPrimaryKey(it.id)
         }
 
-        if (this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id).isNotEmpty()) {
+        if (this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id) != null) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSystemSingleEffective")
         }
 

@@ -1391,13 +1391,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             fieldName = "leftSystemSingleEffective",
             displayName = "Left System Single Effective",
             leftManyEntityDef,
-            IsEditableByUser.TRUE
+            IsEditableByUser.TRUE,
+            indexName = "l2r_sys_single_effective_left_idx"
         ),
         rightEntity = ReferencedEntity(
             fieldName = "rightSystemSingleEffective",
             displayName = "Right System Single Effective",
             rightManyEntityDef,
-            IsEditableByUser.TRUE
+            IsEditableByUser.TRUE,
+            indexName = "l2r_sys_single_effective_right_idx"
         )
     ) {
         description("A simple many-to-many join between two entities, with a system-managed effective date range.")
