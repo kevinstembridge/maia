@@ -1,4 +1,7 @@
 
+TODO * Set claude code status line
+    https://www.aihero.dev/creating-the-perfect-claude-code-status-line
+
 TODO * Single Effective Record
     TODO * Define a many-to-many entity that is specified to have only one single effective record
 
