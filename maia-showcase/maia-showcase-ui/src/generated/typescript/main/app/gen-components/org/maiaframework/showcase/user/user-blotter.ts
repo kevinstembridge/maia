@@ -167,7 +167,7 @@ export class UserBlotter {
     }
 
 
-    private reapplyFilters() {
+    reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();

@@ -215,7 +215,7 @@ export class AlphaBlotter {
     }
 
 
-    private reapplyFilters() {
+    reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();

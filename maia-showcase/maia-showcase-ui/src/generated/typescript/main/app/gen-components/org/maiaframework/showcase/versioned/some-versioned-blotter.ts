@@ -180,7 +180,7 @@ export class SomeVersionedBlotter {
     }
 
 
-    private reapplyFilters() {
+    reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();

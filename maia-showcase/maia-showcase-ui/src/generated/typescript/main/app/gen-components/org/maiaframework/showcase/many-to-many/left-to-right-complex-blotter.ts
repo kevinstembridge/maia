@@ -116,7 +116,7 @@ export class LeftToRightComplexBlotter {
     }
 
 
-    private reapplyFilters() {
+    reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();

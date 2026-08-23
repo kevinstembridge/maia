@@ -109,7 +109,7 @@ export class CharlieBlotter {
     }
 
 
-    private reapplyFilters() {
+    reapplyFilters() {
 
         runInInjectionContext(this.injector, () => {
             this.gridApi.onFilterChanged();
