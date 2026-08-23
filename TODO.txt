@@ -5,6 +5,7 @@ TODO * Set claude code status line
 TODO * Single Effective Record
     TODO * Define a many-to-many entity that is specified to have only one single effective record
 
+TODO * Hide the Edit column in the blotter if user is not authorised
 
 TODO * MTM scenarios:
     TODO * If an MtM entity has extra fields on it and they are modifiable, when the entity is modified we must
