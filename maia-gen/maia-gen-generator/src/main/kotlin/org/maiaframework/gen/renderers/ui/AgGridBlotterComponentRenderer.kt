@@ -181,23 +181,11 @@ class AgGridBlotterComponentRenderer(
 
         `render onCellClicked function for clickable row`()
 
+        `render reapplyFilters function`()
+
+        `render getFilterModel function`()
+
         append("""
-            |
-            |
-            |    private reapplyFilters() {
-            |
-            |        runInInjectionContext(this.injector, () => {
-            |            this.gridApi.onFilterChanged();
-            |        });
-            |
-            |    }
-            |
-            |
-            |    getFilterModel(): FilterModel {
-            |
-            |        return this.gridApi.getFilterModel();
-            |
-            |    }
             |
             |
             |}
@@ -244,6 +232,38 @@ class AgGridBlotterComponentRenderer(
 
             appendLine("    }")
         }
+
+    }
+
+
+    private fun `render reapplyFilters function`() {
+
+        append("""
+            |
+            |
+            |    reapplyFilters() {
+            |
+            |        runInInjectionContext(this.injector, () => {
+            |            this.gridApi.onFilterChanged();
+            |        });
+            |
+            |    }
+            |""".trimMargin())
+
+    }
+
+
+    private fun `render getFilterModel function`() {
+
+        append("""
+            |
+            |
+            |    getFilterModel(): FilterModel {
+            |
+            |        return this.gridApi.getFilterModel();
+            |
+            |    }
+            |""".trimMargin())
 
     }
 
