@@ -83,14 +83,14 @@ Mirrors `EntityDetailViewComponentRenderer` structure but generates edit form lo
 
 ## Blotter Edit Action Column Navigation
 
-`CrudBlotterComponentRenderer` already has two branches for `onEdit`: navigate to the edit page URL (router) vs. open the edit dialog (`MatDialog`). Today the branch is selected via `blotterDef.hasEditEntityPage`, which traces back through `BlotterSourceDef` → `EntityDef.hasEditEntityPage` → `CrudDef.hasEditEntityPage` → the obsolete `HasEditEntityPage` flag.
+`BlotterRenderer` already has two branches for `onEdit`: navigate to the edit page URL (router) vs. open the edit dialog (`MatDialog`). Today the branch is selected via `blotterDef.hasEditEntityPage`, which traces back through `BlotterSourceDef` → `EntityDef.hasEditEntityPage` → `CrudDef.hasEditEntityPage` → the obsolete `HasEditEntityPage` flag.
 
-With `HasEditEntityPage` removed, the branch must be driven by the presence of an `EntityEditPageDef` in the model. The cleanest approach mirrors how `entityIsReferencedByForeignKeys` is handled: compute the flag in the generator and pass it as a constructor parameter to `CrudBlotterComponentRenderer`.
+With `HasEditEntityPage` removed, the branch must be driven by the presence of an `EntityEditPageDef` in the model. The cleanest approach mirrors how `entityIsReferencedByForeignKeys` is handled: compute the flag in the generator and pass it as a constructor parameter to `BlotterRenderer`.
 
 Changes:
 - Remove `hasEditEntityPage` from `BlotterDef`, `BlotterSourceDef`, `EntityDef` (all derived from the now-deleted `HasEditEntityPage`)
-- In `AngularUiModuleGenerator.renderCrudBlotters()`, compute `hasEditEntityPage = modelDef.entityEditPageDefs.any { it.entityDef == crudBlotterDef.entityCrudApiDef.entityDef }` and pass it to `CrudBlotterComponentRenderer`
-- `CrudBlotterComponentRenderer` uses the passed parameter instead of `blotterDef.hasEditEntityPage`
+- In `AngularUiModuleGenerator.renderCrudBlotters()`, compute `hasEditEntityPage = modelDef.entityEditPageDefs.any { it.entityDef == crudBlotterDef.entityCrudApiDef.entityDef }` and pass it to `BlotterRenderer`
+- `BlotterRenderer` uses the passed parameter instead of `blotterDef.hasEditEntityPage`
 
 ## Out of Scope
 

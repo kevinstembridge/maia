@@ -40,7 +40,7 @@
 - Create: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/CrudBlotterPageDefBuilder.kt`
 
 **Acceptance Criteria:**
-- [ ] `CrudBlotterPageDef` takes `BlotterDef` + `pageTitle` and exposes `dataPageId`, `pageAngularComponentNames`, `crudBlotterSelector`, `crudBlotterComponentClassName`, `crudBlotterComponentTypescriptImport`
+- [ ] `CrudBlotterPageDef` takes `BlotterDef` + `pageTitle` and exposes `dataPageId`, `pageAngularComponentNames`, `crudBlotterSelector`, `BlotterClassName`, `BlotterTypescriptImport`
 - [ ] `CrudBlotterPageDefBuilder` defaults `pageTitle` to `blotterDef.dtoBaseName.toTitleCase()`
 - [ ] Code compiles
 
@@ -69,13 +69,13 @@ class CrudBlotterPageDef(
         "${blotterDef.dtoBaseName}BlotterPage"
     )
 
-    val crudBlotterSelector = "app-${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter"
+    val crudBlotterSelector = "app-${blotterDef.dtoBaseName.toKebabCase()}-blotter"
 
-    val crudBlotterComponentClassName = "${blotterDef.dtoBaseName}CrudBlotterComponent"
+    val BlotterClassName = "${blotterDef.dtoBaseName}Blotter"
 
-    val crudBlotterComponentTypescriptImport = TypescriptImport(
-        name = crudBlotterComponentClassName,
-        from = "@$genDir/${blotterDef.dtoBaseName.toKebabCase()}-crud-blotter"
+    val BlotterTypescriptImport = TypescriptImport(
+        name = BlotterClassName,
+        from = "@$genDir/${blotterDef.dtoBaseName.toKebabCase()}-blotter"
     )
 
 }
@@ -239,7 +239,7 @@ class CrudBlotterPageComponentRenderer(
         addImport("@angular/core", "ChangeDetectionStrategy")
         addImport("@angular/core", "Component")
         addImport("@app/components/page-layout/page-layout", "PageLayout")
-        addImport(crudBlotterPageDef.crudBlotterComponentTypescriptImport)
+        addImport(crudBlotterPageDef.BlotterTypescriptImport)
     }
 
     override fun renderedFilePath(): String {
@@ -253,7 +253,7 @@ class CrudBlotterPageComponentRenderer(
             |    changeDetection: ChangeDetectionStrategy.OnPush,
             |    imports: [
             |        PageLayout,
-            |        ${crudBlotterPageDef.crudBlotterComponentClassName}
+            |        ${crudBlotterPageDef.BlotterClassName}
             |    ],
             |    selector: '${crudBlotterPageDef.pageAngularComponentNames.componentSelector}',
             |    templateUrl: './${crudBlotterPageDef.pageAngularComponentNames.htmlFileName}'
@@ -307,7 +307,7 @@ private fun renderCrudBlotters() {
         val entityIsReferencedByForeignKeys = this.modelDef.entityIsReferencedByForeignKeys(crudBlotterDef.entityCrudApiDef.entityDef)
         val hasEditEntityPage = this.modelDef.hasEditEntityPage(crudBlotterDef.entityCrudApiDef.entityDef)
         CrudBlotterHtmlRenderer(crudBlotterDef).renderToDir(this.typescriptOutputDir)
-        CrudBlotterComponentRenderer(crudBlotterDef, entityIsReferencedByForeignKeys, hasEditEntityPage).renderToDir(this.typescriptOutputDir)
+        BlotterRenderer(crudBlotterDef, entityIsReferencedByForeignKeys, hasEditEntityPage).renderToDir(this.typescriptOutputDir)
 
     }
 
@@ -352,7 +352,7 @@ git commit -m "feat(gen): add CrudBlotterPage renderers"
 **Acceptance Criteria:**
 - [ ] `simpleCrudDef` calls `withBlotterPage { pageTitle = "Simple" }`
 - [ ] `maiaGeneration` produces `simple-blotter-page.ts` and `simple-blotter-page.html` in the generated dir
-- [ ] Generated `.ts` has `ChangeDetectionStrategy.OnPush`, class `SimpleBlotterPage`, selector `app-simple-blotter-page`, imports `SimpleCrudBlotterComponent` and `PageLayout`
+- [ ] Generated `.ts` has `ChangeDetectionStrategy.OnPush`, class `SimpleBlotterPage`, selector `app-simple-blotter-page`, imports `SimpleBlotter` and `PageLayout`
 - [ ] Generated `.html` has `pageTitle="Simple"` and `dataPageId="simple_blotter"` and uses `<app-simple-crud-blotter>`
 - [ ] `app.routes.ts` `simple-blotter` path imports from `../generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-blotter-page`
 - [ ] Handcoded files deleted
@@ -393,7 +393,7 @@ Check `.ts`:
 ```bash
 cat maia-showcase/maia-showcase-ui/src/generated/typescript/main/app/gen-components/org/maiaframework/showcase/simple/simple-blotter-page.ts
 ```
-Expected: Contains `SimpleBlotterPage`, `SimpleCrudBlotterComponent`, `ChangeDetectionStrategy.OnPush`, `app-simple-blotter-page`.
+Expected: Contains `SimpleBlotterPage`, `SimpleBlotter`, `ChangeDetectionStrategy.OnPush`, `app-simple-blotter-page`.
 
 Check `.html`:
 ```bash
