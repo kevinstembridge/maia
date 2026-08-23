@@ -233,8 +233,7 @@ class CreateTableSqlRenderer(
 
         entityHierarchy.entityDefs
             .reversed()
-            .map { it.databaseIndexDefs }
-            .flatten()
+            .flatMap { it.databaseIndexDefs }
             .distinctBy { databaseIndexDef -> databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName } }
             .forEach { databaseIndexDef ->
 
