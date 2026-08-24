@@ -29,6 +29,7 @@ class AgGridBlotterComponentRenderer(
     val requiresRouter = (entityDetailViewDef != null && blotterDef.hasViewActionColumn)
             || entityEditPageDef != null
             || entityCreatePageDef != null
+            || blotterDef.clickableBlotterRowDef?.routerNavigationArgs != null
 
 
     val requiresDialog = blotterDef.hasDeleteActionColumn
