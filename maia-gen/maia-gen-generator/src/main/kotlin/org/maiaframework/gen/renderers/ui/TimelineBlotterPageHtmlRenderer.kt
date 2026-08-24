@@ -23,11 +23,11 @@ class TimelineBlotterPageHtmlRenderer(
     override fun renderSource(): String {
 
         append("""
-            |<app-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
+            |<maia-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
             |    @if (entityId(); as id) {
             |        <${blotterSelector} [entityId]="id" />
             |    }
-            |</app-page-layout>
+            |</maia-page-layout>
             |""".trimMargin())
 
         return sourceCode.toString()

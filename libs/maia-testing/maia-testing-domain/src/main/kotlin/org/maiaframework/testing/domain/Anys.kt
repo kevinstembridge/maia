@@ -457,6 +457,13 @@ object Anys {
     }
 
 
+    fun anyUniqueString(): String {
+
+        return UUID.randomUUID().toString()
+
+    }
+
+
     fun anyAlphaNumeric(length: Int = anyIntPositiveBound(10)): String {
 
         return sequenceFrom { randomAlphanumeric() }.take(length).joinToString("")

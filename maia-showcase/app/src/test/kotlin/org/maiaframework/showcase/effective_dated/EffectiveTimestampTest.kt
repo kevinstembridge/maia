@@ -2,7 +2,7 @@ package org.maiaframework.showcase.effective_dated
 
 import org.maiaframework.testing.domain.Anys.anyFutureInstantWithin
 import org.maiaframework.testing.domain.Anys.anyPastInstantWithin
-import org.maiaframework.testing.domain.Anys.anyString
+import org.maiaframework.testing.domain.Anys.anyUniqueString
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
@@ -139,7 +139,7 @@ class EffectiveTimestampTest: AbstractBlackBoxTest() {
     }
 
 
-    private fun `insert a sample entity that is effective now`(someString: String = anyString()): EffectiveTimestampEntity {
+    private fun `insert a sample entity that is effective now`(someString: String = anyUniqueString()): EffectiveTimestampEntity {
 
         val entity = EffectiveTimestampEntityTestBuilder(
             effectiveFrom = anyPastInstantWithin(Period.ofDays(5)).minus(1, ChronoUnit.DAYS),

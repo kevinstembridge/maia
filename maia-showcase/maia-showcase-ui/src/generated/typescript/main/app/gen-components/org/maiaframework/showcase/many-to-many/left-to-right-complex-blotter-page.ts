@@ -2,8 +2,8 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.BlotterPageComponentRenderer
 
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayout} from '@app/components/page-layout/page-layout';
 import {LeftToRightComplexBlotter} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-complex-blotter';
+import {PageLayout} from '@maia/maia-ui';
 
 
 @Component({

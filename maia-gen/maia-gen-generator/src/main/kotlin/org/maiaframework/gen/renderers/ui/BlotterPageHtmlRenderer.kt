@@ -19,9 +19,9 @@ class BlotterPageHtmlRenderer(
     override fun renderSource(): String {
 
         append("""
-            |<app-page-layout pageTitle="${blotterPageDef.pageTitle}" dataPageId="${blotterPageDef.dataPageId}">
+            |<maia-page-layout pageTitle="${blotterPageDef.pageTitle}" dataPageId="${blotterPageDef.dataPageId}">
             |    <${blotterPageDef.blotterComponentSelector}></${blotterPageDef.blotterComponentSelector}>
-            |</app-page-layout>
+            |</maia-page-layout>
             |""".trimMargin())
 
         return sourceCode.toString()

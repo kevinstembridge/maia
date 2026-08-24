@@ -12,7 +12,7 @@ data class EffectiveTimestampEntityTestBuilder(
     val effectiveFrom: Instant? = Anys.anyPastInstantWithin(Period.ofDays(5)),
     val effectiveTo: Instant? = Anys.anyFutureInstantWithin(Period.ofDays(5)),
     val id: DomainId = DomainId.newId(),
-    val someString: String = Anys.anyString()
+    val someString: String = Anys.anyUniqueString()
 ) {
 
 

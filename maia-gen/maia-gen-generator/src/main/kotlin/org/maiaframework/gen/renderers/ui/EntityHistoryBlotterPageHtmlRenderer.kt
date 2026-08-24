@@ -29,15 +29,15 @@ class EntityHistoryBlotterPageHtmlRenderer(
         if (def.isJoinEntityHistory) {
 
             append("""
-                |<app-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
+                |<maia-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
                 |    <${blotterSelector} />
-                |</app-page-layout>
+                |</maia-page-layout>
                 |""".trimMargin())
 
         } else if (showsViewButton) {
 
             append("""
-                |<app-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
+                |<maia-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
                 |    @if (entityId(); as id) {
                 |        <${blotterSelector} [entityId]="id" />
                 |    }
@@ -45,17 +45,17 @@ class EntityHistoryBlotterPageHtmlRenderer(
                 |        <mat-icon>visibility</mat-icon>
                 |        View
                 |    </button>
-                |</app-page-layout>
+                |</maia-page-layout>
                 |""".trimMargin())
 
         } else {
 
             append("""
-                |<app-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
+                |<maia-page-layout pageTitle="${def.pageTitle}" dataPageId="${dataPageId}">
                 |    @if (entityId(); as id) {
                 |        <${blotterSelector} [entityId]="id" />
                 |    }
-                |</app-page-layout>
+                |</maia-page-layout>
                 |""".trimMargin())
 
         }

@@ -3,8 +3,8 @@
 
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {Router} from '@angular/router';
-import {PageLayout} from '@app/components/page-layout/page-layout';
 import {BravoEntityCreateForm} from '@app/gen-components/org/maiaframework/showcase/join/bravo-entity-create-form';
+import {PageLayout} from '@maia/maia-ui';
 
 
 

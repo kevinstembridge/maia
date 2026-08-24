@@ -6,8 +6,8 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ActivatedRoute, Router} from '@angular/router';
-import {PageLayout} from '@app/components/page-layout/page-layout';
 import {LeftManyHistoryBlotter} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-history-blotter';
+import {PageLayout} from '@maia/maia-ui';
 import {map} from 'rxjs';
 
 

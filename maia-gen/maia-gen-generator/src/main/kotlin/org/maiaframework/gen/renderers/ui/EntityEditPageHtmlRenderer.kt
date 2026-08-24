@@ -19,7 +19,7 @@ class EntityEditPageHtmlRenderer(
     override fun renderSource(): String {
 
         append("""
-            |<app-page-layout pageTitle="${entityEditPageDef.pageTitle}" dataPageId="${entityEditPageDef.dataPageId}">
+            |<maia-page-layout pageTitle="${entityEditPageDef.pageTitle}" dataPageId="${entityEditPageDef.dataPageId}">
             |    @if (entityId(); as id) {
             |        <div class="edit-form-container">
             |            <${entityEditPageDef.editFormAngularComponentNames.componentSelector}
@@ -29,7 +29,7 @@ class EntityEditPageHtmlRenderer(
             |            />
             |        </div>
             |    }
-            |</app-page-layout>
+            |</maia-page-layout>
             |""".trimMargin())
 
         return sourceCode.toString()

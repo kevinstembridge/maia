@@ -17,7 +17,7 @@ class EntityEditFormPageComponentRenderer(
         addImport("@angular/router", "ActivatedRoute")
         addImport("@angular/router", "Router")
         addImport("rxjs", "map")
-        addImport("@app/components/page-layout/page-layout", "PageLayout")
+        addImport("@maia/maia-ui", "PageLayout")
         addImport(entityEditPageDef.editFormAngularComponentNames.componentTypescriptImport)
 
     }

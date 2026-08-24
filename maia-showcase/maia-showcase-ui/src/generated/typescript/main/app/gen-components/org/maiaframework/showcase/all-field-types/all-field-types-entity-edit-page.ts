@@ -4,8 +4,8 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, Router} from '@angular/router';
-import {PageLayout} from '@app/components/page-layout/page-layout';
 import {AllFieldTypesEntityEditForm} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-entity-edit-form';
+import {PageLayout} from '@maia/maia-ui';
 import {map} from 'rxjs';
 
 

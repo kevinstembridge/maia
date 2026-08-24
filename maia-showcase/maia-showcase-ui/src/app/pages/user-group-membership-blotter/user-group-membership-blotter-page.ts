@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayout} from '@app/components/page-layout/page-layout';
+import {PageLayout} from '@maia/maia-ui';
 import {UserGroupMembershipBlotter} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-blotter';
 
 @Component({

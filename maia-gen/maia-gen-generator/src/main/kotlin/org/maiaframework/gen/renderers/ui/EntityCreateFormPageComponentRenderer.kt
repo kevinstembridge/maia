@@ -16,7 +16,7 @@ class EntityCreateFormPageComponentRenderer(
         addImport("@angular/core", "Component")
         addImport("@angular/core", "inject")
         addImport("@angular/router", "Router")
-        addImport("@app/components/page-layout/page-layout", "PageLayout")
+        addImport("@maia/maia-ui", "PageLayout")
         addImport(entityCreatePageDef.createFormAngularComponentNames.componentTypescriptImport)
 
     }

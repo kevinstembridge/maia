@@ -1,14 +1,14 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayout} from '@app/components/page-layout/page-layout';
+import {PageLayout} from '@maia/maia-ui';
 import {JobsDashboardPageComponent as MaiaJobsDashboardPageComponent} from '@maia/maia-jobs';
 
 @Component({
     imports: [PageLayout, MaiaJobsDashboardPageComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-        <app-page-layout pageTitle="Jobs">
+        <maia-page-layout pageTitle="Jobs">
             <maia-jobs-dashboard-page />
-        </app-page-layout>
+        </maia-page-layout>
     `
 })
 export class JobsDashboardPage {}

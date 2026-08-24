@@ -2,8 +2,8 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.BlotterPageComponentRenderer
 
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {PageLayout} from '@app/components/page-layout/page-layout';
 import {BravoBlotter} from '@app/gen-components/org/maiaframework/showcase/join/bravo-blotter';
+import {PageLayout} from '@maia/maia-ui';
 
 
 @Component({

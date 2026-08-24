@@ -4,8 +4,8 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute} from '@angular/router';
-import {PageLayout} from '@app/components/page-layout/page-layout';
 import {NonSurrogateIdPrimaryKeyHistoryBlotter} from '@app/gen-components/org/maiaframework/showcase/non-surrogate-pk/non-surrogate-id-primary-key-history-blotter';
+import {PageLayout} from '@maia/maia-ui';
 import {map} from 'rxjs';
 
 

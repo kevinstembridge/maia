@@ -3,8 +3,8 @@
 
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {Router} from '@angular/router';
-import {PageLayout} from '@app/components/page-layout/page-layout';
 import {CompositePrimaryKeyEntityCreateForm} from '@app/gen-components/org/maiaframework/showcase/composite-pk/composite-primary-key-entity-create-form';
+import {PageLayout} from '@maia/maia-ui';
 
 
 

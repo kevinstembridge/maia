@@ -21,7 +21,7 @@ class EntityHistoryBlotterPageComponentRenderer(
     init {
         addImport("@angular/core", "ChangeDetectionStrategy")
         addImport("@angular/core", "Component")
-        addImport("@app/components/page-layout/page-layout", "PageLayout")
+        addImport("@maia/maia-ui", "PageLayout")
         addImport(TypescriptImport(
             def.blotterComponentNames.componentName,
             "@$genDir/${def.blotterComponentNames.componentNameKebab}"

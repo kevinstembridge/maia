@@ -20,7 +20,7 @@ class TimelineBlotterPageComponentRenderer(
         addImport("@angular/core/rxjs-interop", "toSignal")
         addImport("@angular/router", "ActivatedRoute")
         addImport("rxjs", "map")
-        addImport("@app/components/page-layout/page-layout", "PageLayout")
+        addImport("@maia/maia-ui", "PageLayout")
         addImport(TypescriptImport(
             def.blotterComponentNames.componentName,
             "@$genDir/${def.blotterComponentNames.componentNameKebab}"

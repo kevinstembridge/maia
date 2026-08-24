@@ -76,7 +76,7 @@ class AgGridBlotterComponentRenderer(
         }
         addImport("ag-grid-community", "ColDef")
         if (blotterDef.hasDateTimeStringColumn) {
-            addImport("ag-grid-community", "DataTypeDefinition")
+            addImport("ag-grid-community", "DataTypeDefinitions")
             addImport("luxon", "DateTime")
         }
         addImport("ag-grid-community", "FilterModel")
@@ -310,7 +310,7 @@ class AgGridBlotterComponentRenderer(
                 |                return DateTime.fromISO(params.value).toFormat('$${Pipes.INSTANT_DATE_FORMAT}');
                 |            },
                 |        }
-                |    } satisfies DataTypeDefinition;
+                |    } satisfies DataTypeDefinitions;
                 |""".trimMargin()
         )
 

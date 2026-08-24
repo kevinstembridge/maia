@@ -22,7 +22,7 @@ class EntityDetailViewPageHtmlRenderer(
     override fun renderSource(): String {
 
         append("""
-            |<app-page-layout pageTitle="${entityDetailViewDef.pageTitle}" dataPageId="${entityDetailViewDef.dataPageId}">
+            |<maia-page-layout pageTitle="${entityDetailViewDef.pageTitle}" dataPageId="${entityDetailViewDef.dataPageId}">
             |    @if (entityId(); as id) {
             |        <${entityDetailViewDef.viewContentAngularComponentNames.componentSelector} [entityId]="id" />
             |    }
@@ -62,7 +62,7 @@ class EntityDetailViewPageHtmlRenderer(
             |            Edit
             |        </button>
             |    }
-            |</app-page-layout>
+            |</maia-page-layout>
             |""".trimMargin())
 
         return sourceCode.toString()
