@@ -60,7 +60,8 @@ class EntityFieldDef(
     val isDerived: IsDerived = IsDerived.FALSE,
     val isHardcoded: IsHardcoded = IsHardcoded.FALSE,
     val fieldReaderParameterizedType: ParameterizedType? = null,
-    val fieldWriterParameterizedType: ParameterizedType? = null
+    val fieldWriterParameterizedType: ParameterizedType? = null,
+    val joinCreationDefaultValueExpression: String? = null
 ) : Comparable<EntityFieldDef> {
 
 

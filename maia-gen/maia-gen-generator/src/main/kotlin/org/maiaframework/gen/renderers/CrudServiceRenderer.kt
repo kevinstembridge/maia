@@ -10,6 +10,8 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.InlineEditDtoDef
+import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
+import org.maiaframework.gen.spec.definition.ModelDefinitionException
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
@@ -258,7 +260,7 @@ class CrudServiceRenderer(
                         "effectiveTo" to effectiveToValue,
                         thisSideEntityIdFieldName to "entity.id",
                         otherSideFieldName to "joinDto.${otherSideFieldName}EntityId"
-                    ) + extraArgs
+                    ) + extraArgs + auditCreatedByArgs(manyToManyEntityDef.entityDef)
                 )
                 appendLine("                )")
                 appendLine("            )")
@@ -272,8 +274,11 @@ class CrudServiceRenderer(
                 appendLine("            this.${joinRepoFieldName}.insert(")
                 appendLine("                ${joinEntityClass}.newInstance(")
                 renderNewInstanceArgsMultiLine(
-                    thisSideEntityIdFieldName to "entity.id",
-                    otherSideFieldName to otherSideFieldName
+                    indentSize = 20,
+                    listOf(
+                        thisSideEntityIdFieldName to "entity.id",
+                        otherSideFieldName to otherSideFieldName
+                    ) + simpleJoinExtraArgs(manyToManyEntityDef, thisSideEntityIdFieldName, otherSideFieldName) + auditCreatedByArgs(manyToManyEntityDef.entityDef)
                 )
                 appendLine("                )")
                 appendLine("            )")
@@ -633,7 +638,7 @@ class CrudServiceRenderer(
                     "effectiveTo" to effectiveToValue,
                     thisSideFieldName to "id",
                     otherSideFieldName to "joinDto.${otherSideFieldName}EntityId"
-                ) + extraReconcileArgs
+                ) + extraReconcileArgs + auditCreatedByArgs(manyToManyEntityDef.entityDef)
 
                 if (isSystemManaged) {
 
@@ -818,6 +823,12 @@ class CrudServiceRenderer(
                 addImportFor(Fqcns.MAIA_DOMAIN_ID)
                 addImportFor(manyToManyEntityDef.entityDef.entityFqcn)
 
+                val simpleReconcileNewInstanceArgs = (
+                    listOf(thisSideFieldName to "id", otherSideFieldName to otherSideFieldName) +
+                        simpleJoinExtraArgs(manyToManyEntityDef, thisSideFieldName, otherSideFieldName) +
+                        auditCreatedByArgs(manyToManyEntityDef.entityDef)
+                    ).toTypedArray()
+
                 append("""
                     |
                     |
@@ -835,7 +846,7 @@ class CrudServiceRenderer(
                     |        }
                     |
                     |        val newJoins = (desiredIds - existingIds).map { $otherSideFieldName ->
-                    |            ${joinEntityClass}.newInstance(${newInstanceArgsSingleLine(thisSideFieldName to "id", otherSideFieldName to otherSideFieldName)})
+                    |            ${joinEntityClass}.newInstance(${newInstanceArgsSingleLine(*simpleReconcileNewInstanceArgs)})
                     |        }
                     |
                     |        this.${joinRepoFieldName}.bulkInsert(newJoins)
@@ -1067,6 +1078,54 @@ class CrudServiceRenderer(
     private fun newInstanceArgsSingleLine(vararg args: Pair<String, String>): String {
 
         return args.sortedBy { it.first }.joinToString(", ") { (name, value) -> "$name = $value" }
+
+    }
+
+
+    // allFieldsRequiredInCreateRequest excludes createdBy/createdByUsername since they come from the back end, not the caller.
+    private fun auditCreatedByArgs(joinEntityDef: EntityDef): List<Pair<String, String>> {
+
+        val args = mutableListOf<Pair<String, String>>()
+
+        if (joinEntityDef.hasCreatedByIdField) {
+            addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
+            args.add("createdBy" to "CurrentUserHolder.userId")
+        }
+
+        if (joinEntityDef.hasCreatedByUsernameField) {
+            addImportFor(Fqcns.MAIA_CURRENT_USER_HOLDER)
+            args.add("createdByUsername" to "CurrentUserHolder.currentUsername")
+        }
+
+        return args
+
+    }
+
+
+    // Fields the join entity requires beyond the two FK sides, for the simple (non-timestamp) path where there's no per-item join DTO to source a value from.
+    private fun simpleJoinExtraArgs(
+        manyToManyEntityDef: ManyToManyEntityDef,
+        thisSideFieldName: String,
+        otherSideFieldName: String
+    ): List<Pair<String, String>> {
+
+        return manyToManyEntityDef.entityDef.allFieldsRequiredInCreateRequest
+            .asSequence()
+            .filterNot { it.classFieldDef.classFieldName.value == thisSideFieldName }
+            .filterNot { it.classFieldDef.classFieldName.value == otherSideFieldName }
+            .onEach { addImportFor(it.classFieldDef.fieldType) }
+            .map { field ->
+                val value = field.joinCreationDefaultValueExpression
+                    ?: if (field.nullable) {
+                        "null"
+                    } else {
+                        throw ModelDefinitionException(
+                            "Field '${field.classFieldName}' on join entity '${manyToManyEntityDef.entityDef.entityBaseName}' is required but has no per-item source and no defaultValueForJoinCreation() configured in the spec."
+                        )
+                    }
+                field.classFieldDef.classFieldName.value to value
+            }
+            .toList()
 
     }
 

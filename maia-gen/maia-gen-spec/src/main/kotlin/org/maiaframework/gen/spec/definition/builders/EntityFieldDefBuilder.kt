@@ -79,6 +79,9 @@ class EntityFieldDefBuilder(
     private var isDeltaField: IsDeltaField = IsDeltaField.TRUE
 
 
+    private var joinCreationDefaultValueExpression: String? = null
+
+
     private val fieldReaderClassName: ParameterizedType?
         get() = if (this.fieldReaderParameterizedType != null) {
             this.fieldReaderParameterizedType
@@ -172,8 +175,17 @@ class EntityFieldDefBuilder(
             this.derived,
             this.hardcoded,
             fieldReaderClassName,
-            fieldWriterClassName
+            fieldWriterClassName,
+            this.joinCreationDefaultValueExpression
         )
+
+    }
+
+
+    // Value to use in the simple (non-timestamp) join-creation newInstance() call, where there's no per-item DTO to source a value from.
+    fun defaultValueForJoinCreation(expression: String) {
+
+        this.joinCreationDefaultValueExpression = expression
 
     }
 
