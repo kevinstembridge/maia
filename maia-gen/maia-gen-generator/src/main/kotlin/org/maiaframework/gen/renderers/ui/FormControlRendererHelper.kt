@@ -1,11 +1,13 @@
-package org.maiaframework.gen.renderers
+package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.AsyncValidatorDef
+import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isBooleanBased
+import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
@@ -18,7 +20,8 @@ object FormControlRendererHelper {
         formPurpose: FormPurpose?,
         indentSize: Int = 8,
         appendLine: (String) -> Unit,
-        addImportFor: (FieldType) -> Unit
+        addImportFor: (FieldType) -> Unit,
+        addTypescriptImport: (TypescriptImport) -> Unit,
     ) {
 
         val indent = "".padStart(indentSize, ' ')
@@ -34,8 +37,9 @@ object FormControlRendererHelper {
         val validators = if (angularFormFieldDef.typeaheadRequiredValidatorFunctionName != null) {
             if (classFieldDef.nullable) emptyList() else listOf("${angularFormFieldDef.typeaheadRequiredValidatorFunctionName}()")
         } else {
-            determineValidatorsFor(classFieldDef)
+            determineValidatorsFor(classFieldDef, addTypescriptImport)
         }
+
         val asyncValidators = determineAsyncValidatorsFor(angularFormFieldDef.asyncValidatorDef)
 
         val optionFields = mutableMapOf<String, String>()
@@ -65,48 +69,7 @@ object FormControlRendererHelper {
     }
 
 
-    fun renderFormControlFor_old(
-        angularFormFieldDef: AngularFormFieldDef,
-        formPurpose: FormPurpose?
-    ): String {
-
-        val classFieldDef = angularFormFieldDef.classFieldDef
-
-        if (formPurpose == FormPurpose.edit && classFieldDef.isEditableByUser.value == false) {
-            return "new FormControl({value: ${classFieldDef.defaultFormFieldValue}, disabled: true})"
-        }
-
-        val validators = determineValidatorsFor(classFieldDef)
-        val asyncValidators = determineAsyncValidatorsFor(angularFormFieldDef.asyncValidatorDef)
-
-        val optionFields = mutableMapOf<String, String>()
-        optionFields["updateOn"] = "'change'"
-
-        if (validators.isNotEmpty()) {
-            optionFields["validators"] = "[${validators.joinToString(", ")}]"
-        }
-
-        if (asyncValidators.isNotEmpty()) {
-            optionFields["asyncValidators"] = "[${asyncValidators.joinToString(", ")}]"
-            // TODO This should probably be 'blur' but that results in a new value not being submitted
-            //  to the back end if you edit the field and hit enter without first tabbing out of the field (blurring)
-            optionFields["updateOn"] = "'change'"
-        }
-
-        if (classFieldDef.fieldType.isBooleanBased() && classFieldDef.nullable == false) {
-            optionFields["nonNullable"] = "true"
-        }
-
-        val controlOptions = optionFields.entries.map { entry -> "${entry.key}: ${entry.value}" }.joinToString(prefix = "{ ", separator = ", ", postfix = " }")
-
-        val initialValue = classFieldDef.defaultFormFieldValue
-
-        return "new FormControl($initialValue, $controlOptions)"
-
-    }
-
-
-    private fun determineValidatorsFor(classFieldDef: ClassFieldDef): List<String> {
+    private fun determineValidatorsFor(classFieldDef: ClassFieldDef, addImport: (TypescriptImport) -> Unit): List<String> {
 
         val validators = mutableListOf<String>()
 
@@ -119,6 +82,7 @@ object FormControlRendererHelper {
         }
 
         if (classFieldDef.hasValidationConstraint(UrlConstraintDef::class.java)) {
+            addImport(TypescriptImports.customValidators)
             validators.add("CustomValidators.url")
         }
 

@@ -2,6 +2,7 @@ package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 
+
 object TypescriptImports {
 
 
@@ -9,6 +10,9 @@ object TypescriptImports {
 
 
     val problemDetail = TypescriptImport("ProblemDetail", "@maia/maia-ui")
+
+
+    val customValidators = TypescriptImport("CustomValidators", "@app/validators/CustomValidators")
 
 
 }

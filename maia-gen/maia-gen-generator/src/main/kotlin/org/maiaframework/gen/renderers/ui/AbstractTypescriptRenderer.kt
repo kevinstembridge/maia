@@ -36,9 +36,7 @@ abstract class AbstractTypescriptRenderer: AbstractSourceFileRenderer() {
     }
 
 
-    protected fun addImportsFor(
-        fieldType: FieldType
-    ) {
+    protected fun addImportsFor(fieldType: FieldType) {
 
         if (fieldType is EnumFieldType) {
             addImport(fieldType.enumDef.typescriptImport)

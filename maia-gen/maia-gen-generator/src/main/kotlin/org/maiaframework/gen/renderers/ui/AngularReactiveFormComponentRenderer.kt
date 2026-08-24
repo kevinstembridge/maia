@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
@@ -66,7 +65,9 @@ class AngularReactiveFormComponentRenderer(
 
     private val typeaheadDefs = this.angularFormDef.allTypeaheadDefs
 
+
     private val renderedServiceFieldNames = mutableSetOf<String>()
+
 
     init {
 
@@ -633,7 +634,8 @@ class AngularReactiveFormComponentRenderer(
                 angularFormDef.formPurpose,
                 indentSize = 16,
                 { line -> appendLine(line) },
-                { fieldType -> addImportsFor(fieldType) }
+                { fieldType -> addImportsFor(fieldType) },
+                { typescriptImport -> addImport(typescriptImport) },
             )
         }
 
@@ -1270,6 +1272,18 @@ class AngularReactiveFormComponentRenderer(
             }
             FormPurpose.edit -> {}
             FormPurpose.submit -> {}
+        }
+
+        when (this.angularFormDef.inlineFormOrDialog) {
+            InlineFormOrDialog.INLINE_FORM -> {}
+            InlineFormOrDialog.DIALOG -> {
+                addImport("@angular/material/dialog", "MatDialogRef")
+                addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
+            }
+        }
+
+        this.angularFormDef.context?.let { context ->
+            addImport(context.typescriptImport)
         }
 
         addImport(TypescriptImports.problemDetail)

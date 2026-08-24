@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.renderers.FormControlRendererHelper
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
@@ -479,7 +478,8 @@ class AngularSignalFormComponentRenderer(
                     angularFormDef.formPurpose,
                     indentSize = 16,
                     { line -> appendLine(line) },
-                    { fieldType -> addImportsFor(fieldType) }
+                    { fieldType -> addImportsFor(fieldType) },
+                    { typescriptImport -> addImport(typescriptImport) },
                 )
 
 //                appendLine("                ${classFieldDef.classFieldName}: $newFormControl,")
