@@ -13,7 +13,7 @@ import {CharlieBlotterRowDto} from '@app/gen-components/org/maiaframework/showca
 import {CharlieBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, DataTypeDefinitions, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
 
 
@@ -36,7 +36,7 @@ export class CharlieBlotter {
                 return DateTime.fromISO(params.value).toFormat('EEE MMM dd yyyy HH:mm');
             },
         }
-    } satisfies DataTypeDefinitions;
+    } satisfies {[cellDataType: string]: DataTypeDefinition};
 
 
     public columnDefs: ColDef[] = [

@@ -14,7 +14,7 @@ import {LeftToRightComplexBlotterRowDto} from '@app/gen-components/org/maiaframe
 import {LeftToRightComplexBlotterService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-complex-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, DataTypeDefinitions, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
 
 
@@ -37,7 +37,7 @@ export class LeftToRightComplexBlotter {
                 return DateTime.fromISO(params.value).toFormat('EEE MMM dd yyyy HH:mm');
             },
         }
-    } satisfies DataTypeDefinitions;
+    } satisfies {[cellDataType: string]: DataTypeDefinition};
 
 
     public columnDefs: ColDef[] = [

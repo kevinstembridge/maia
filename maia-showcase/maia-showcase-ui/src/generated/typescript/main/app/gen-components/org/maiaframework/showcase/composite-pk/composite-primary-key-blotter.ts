@@ -17,7 +17,7 @@ import {CompositePrimaryKeyEntityDeleteDialog} from '@app/gen-components/org/mai
 import {agGridTheme} from '@app/themes/ag-grid-theme';
 import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColDef, DataTypeDefinitions, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
+import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
 
 
@@ -40,7 +40,7 @@ export class CompositePrimaryKeyBlotter {
                 return DateTime.fromISO(params.value).toFormat('EEE MMM dd yyyy HH:mm');
             },
         }
-    } satisfies DataTypeDefinitions;
+    } satisfies {[cellDataType: string]: DataTypeDefinition};
 
 
     public columnDefs: ColDef[] = [
