@@ -32,6 +32,9 @@ class OrganizationDao(
     private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
+    private val fetchForEditDtoRowMapper = OrganizationFetchForEditDtoRowMapper(this.jdbcOps)
+
+
     fun insert(entity: OrganizationEntity) {
 
         jdbcOps.update(
@@ -337,6 +340,33 @@ class OrganizationDao(
             SqlParams(),
             this.entityRowMapper,
         )
+
+    }
+
+
+    fun fetchForEdit(id: DomainId): OrganizationFetchForEditDto {
+
+        return this.jdbcOps.queryForList(
+            """
+            select
+                maia.v_party.created_by_id as createdBy,
+                maia.v_party.created_timestamp_utc as createdTimestampUtc,
+                maia.v_party.display_name as displayName,
+                maia.v_party.id as id,
+                maia.v_party.last_modified_by_id as lastModifiedBy,
+                maia.v_party.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.v_party.lifecycle_state as lifecycleState,
+                maia.v_party.org_name as orgName,
+                maia.v_party.version as version
+            from maia.v_party
+            where maia.v_party.id = :id
+            """,
+            SqlParams().apply {
+                addValue("id", id)
+            },
+            this.fetchForEditDtoRowMapper
+        ).firstOrNull()
+            ?: throw EntityNotFoundException(EntityClassAndPk(OrganizationEntity::class.java, mapOf("id" to id)), OrganizationEntityMeta.TABLE_NAME)
 
     }
 

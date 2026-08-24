@@ -49,6 +49,45 @@ CREATE TABLE maia.party_history (
 );
 
 
+CREATE TABLE maia.org_role (
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    description text NOT NULL,
+    display_name text NOT NULL,
+    key text NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(key)
+);
+
+
+CREATE TABLE maia.org_role_history (
+    change_type text NOT NULL,
+    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    description text NOT NULL,
+    display_name text NOT NULL,
+    key text NOT NULL,
+    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(key, version)
+);
+
+
+CREATE TABLE maia.org_to_org_role (
+    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    org_id uuid NOT NULL REFERENCES maia.party(id),
+    role text NOT NULL REFERENCES maia.org_role(key),
+    effective_range tstzrange not null default tstzrange(now(), null),
+    PRIMARY KEY(id)
+);
+CREATE INDEX org_to_org_role_org_id_idx ON maia.org_to_org_role(org_id);
+CREATE INDEX org_to_org_role_role_idx ON maia.org_to_org_role(role);
+
+
 -- Type Discriminators:
 --    OrgUserGroup -> OUG
 --    UserGroup -> UG

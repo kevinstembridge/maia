@@ -21,6 +21,26 @@ export class ForeignKeyReferenceService {
     private readonly http = inject(HttpClient);
 
 
+    public checkOrganizationForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
+
+        return this.http.get<ForeignKeyReferencesExistResponseDto>(
+            '/api/organization/check_foreign_references/' + id,
+            this.httpOptions
+        );
+
+    }
+
+
+    public checkOrgRoleForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
+
+        return this.http.get<ForeignKeyReferencesExistResponseDto>(
+            '/api/org-role/check_foreign_references/' + id,
+            this.httpOptions
+        );
+
+    }
+
+
     public checkPartyForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
 
         return this.http.get<ForeignKeyReferencesExistResponseDto>(

@@ -45,7 +45,10 @@ class EntityCreateApiDef(
                             null
                         ),
                         RequestDtoFieldDef(
-                            ClassFieldDef.aClassField("${otherSide.fieldName}EntityId", FieldTypes.domainId).build(),
+                            ClassFieldDef.aClassField(
+                                "${otherSide.fieldName}EntityId",
+                                otherSide.entityDef.primaryKeyFields.first().classFieldDef.fieldType
+                            ).build(),
                             null
                         ),
                         RequestDtoFieldDef(
@@ -149,7 +152,7 @@ class EntityCreateApiDef(
                 } else {
                     val classFieldDef = ClassFieldDef.aClassField(
                         "${otherSide.fieldName}EntityIds",
-                        FieldTypes.list(FieldTypes.domainId)
+                        FieldTypes.list(otherSide.entityDef.primaryKeyFields.first().classFieldDef.fieldType)
                     ).nullable().build()
                     RequestDtoFieldDef(classFieldDef, null)
                 }

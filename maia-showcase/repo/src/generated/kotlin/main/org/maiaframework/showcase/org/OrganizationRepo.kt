@@ -66,6 +66,13 @@ class OrganizationRepo(
     }
 
 
+    fun fetchForEdit(id: DomainId): OrganizationFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
+
+    }
+
+
     fun insert(entity: OrganizationEntity) {
 
         logger.debug("insert {}", entity)
@@ -96,6 +103,17 @@ class OrganizationRepo(
         logger.debug("setFields {}", updater)
 
         return this.dao.setFields(updater)
+
+    }
+
+
+    fun pkAndNameFor(id: DomainId): OrganizationPkAndNameDto {
+
+        val entity = findByPrimaryKey(id)
+        return OrganizationPkAndNameDto(
+            entity.id,
+            entity.orgName
+        )
 
     }
 

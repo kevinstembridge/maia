@@ -35,15 +35,17 @@ class ForeignKeyReferencesEndpointRenderer(private val entityDef: EntityDef) : A
     private fun `render function checkForeignKeyReferences`() {
 
         addImportFor(Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO)
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
         addImportFor(Fqcns.SPRING_GET_MAPPING)
         addImportFor(Fqcns.SPRING_MEDIA_TYPE)
         addImportFor(Fqcns.SPRING_PATH_VARIABLE)
 
+        val idFieldType = this.entityDef.primaryKeyClassFields.first().fieldType
+        addImportFor(idFieldType)
+
         blankLine()
         blankLine()
         appendLine("    @GetMapping(\"${this.entityDef.checkForeignKeyReferencesEndpointUrl}/{id}\", produces = [MediaType.APPLICATION_JSON_VALUE])")
-        appendLine("    fun checkForeignKeyReferences(@PathVariable(\"id\") id: DomainId): ${Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO.uqcn} {")
+        appendLine("    fun checkForeignKeyReferences(@PathVariable(\"id\") id: ${idFieldType.unqualifiedToString}): ${Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO.uqcn} {")
         blankLine()
         appendLine("        return this.service.checkForeignKeyReferences(id)")
         blankLine()

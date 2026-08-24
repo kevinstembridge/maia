@@ -823,6 +823,9 @@ class CrudServiceRenderer(
                 addImportFor(Fqcns.MAIA_DOMAIN_ID)
                 addImportFor(manyToManyEntityDef.entityDef.entityFqcn)
 
+                val otherSidePkFieldType = otherSide.entityDef.primaryKeyFields.first().classFieldDef.fieldType
+                addImportFor(otherSidePkFieldType)
+
                 val simpleReconcileNewInstanceArgs = (
                     listOf(thisSideFieldName to "id", otherSideFieldName to otherSideFieldName) +
                         simpleJoinExtraArgs(manyToManyEntityDef, thisSideFieldName, otherSideFieldName) +
@@ -834,7 +837,7 @@ class CrudServiceRenderer(
                     |
                     |    private fun `reconcile $joinNamePrefix joins`(
                     |        id: DomainId,
-                    |        submittedIds: List<DomainId>
+                    |        submittedIds: List<${otherSidePkFieldType.unqualifiedToString}>
                     |    ) {
                     |
                     |        val existing = this.${joinRepoFieldName}.findBy${thisSideFieldNameCapitalized}(id)

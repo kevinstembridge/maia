@@ -18,6 +18,8 @@ import org.maiaframework.showcase.history.HistorySubTwoHistoryRepo
 import org.maiaframework.showcase.history.HistorySubTwoRepo
 import org.maiaframework.showcase.history.HistorySuperHistoryRepo
 import org.maiaframework.showcase.history.HistorySuperRepo
+import org.maiaframework.showcase.org.OrgRoleHistoryRepo
+import org.maiaframework.showcase.org.OrgRoleRepo
 import org.maiaframework.showcase.party.contact.EmailAddressVerificationRepo
 import org.maiaframework.showcase.party.contact.PartyEmailAddressRepo
 import org.maiaframework.webapp.domain.ForeignKeyReferencesExistResponseDto
@@ -40,6 +42,8 @@ class PartyForeignKeyReferencesService(
     private val historySubTwoRepo: HistorySubTwoRepo,
     private val historySuperHistoryRepo: HistorySuperHistoryRepo,
     private val historySuperRepo: HistorySuperRepo,
+    private val orgRoleHistoryRepo: OrgRoleHistoryRepo,
+    private val orgRoleRepo: OrgRoleRepo,
     private val parentOneRepo: ParentOneRepo,
     private val parentTwoRepo: ParentTwoRepo,
     private val partyEmailAddressRepo: PartyEmailAddressRepo
@@ -50,6 +54,14 @@ class PartyForeignKeyReferencesService(
 
 
     fun checkForeignKeyReferences(id: DomainId): ForeignKeyReferencesExistResponseDto {
+
+        if (this.orgRoleRepo.existsByCreatedBy(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "OrgRole")
+        }
+
+        if (this.orgRoleHistoryRepo.existsByCreatedBy(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "OrgRoleHistory")
+        }
 
         if (this.emailAddressRepo.existsByCreatedBy(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "EmailAddress")

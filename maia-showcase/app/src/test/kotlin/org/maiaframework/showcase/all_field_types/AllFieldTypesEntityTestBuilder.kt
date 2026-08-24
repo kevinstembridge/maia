@@ -26,6 +26,7 @@ import org.maiaframework.testing.domain.Anys.anyLongOrNull
 import org.maiaframework.testing.domain.Anys.anyPeriod
 import org.maiaframework.testing.domain.Anys.anyString
 import org.maiaframework.testing.domain.Anys.anyStringOrNull
+import org.maiaframework.testing.domain.Anys.anyUniqueString
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -75,10 +76,10 @@ data class AllFieldTypesEntityTestBuilder(
     val someMapOfStringTypeToStringType: Map<SomeStringType, SomeStringType> = mapOf(SomeStringType("one") to SomeStringType("two")),
     val somePeriodModifiable: Period = anyPeriod(),
     val somePeriodNullable: Period? = anyBooleanOrNull()?.let { anyPeriod() },
-    val someString: String = anyAlphaNumeric(),
+    val someString: String = anyUniqueString(),
     val someStringModifiable: String = anyAlphaNumeric(),
     val someStringNullable: String? = null,
-    val someStringType: SomeStringType = SomeStringType(anyAlphaNumeric()),
+    val someStringType: SomeStringType = SomeStringType(anyUniqueString()),
     val someStringTypeNullable: SomeStringType? = anyStringOrNull()?.let { SomeStringType(it) },
     val someProvidedStringType: SomeProvidedStringType = SomeProvidedStringType(anyString()),
     val someProvidedStringTypeNullable: SomeProvidedStringType? = anyStringOrNull()?.let { SomeProvidedStringType(it) }

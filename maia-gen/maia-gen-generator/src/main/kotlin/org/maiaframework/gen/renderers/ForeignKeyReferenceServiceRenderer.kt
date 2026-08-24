@@ -44,11 +44,13 @@ class ForeignKeyReferenceServiceRenderer(
     private fun renderFunction_checkForeignKeyReferences() {
 
         addImportFor(Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO)
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+
+        val idFieldType = this.entityDef.primaryKeyClassFields.first().fieldType
+        addImportFor(idFieldType)
 
         blankLine()
         blankLine()
-        appendLine("    fun checkForeignKeyReferences(id: DomainId): ${Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO.uqcn} {")
+        appendLine("    fun checkForeignKeyReferences(id: ${idFieldType.unqualifiedToString}): ${Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO.uqcn} {")
 
         this.referencingEntityDefs.forEach { referencingEntityDef ->
 

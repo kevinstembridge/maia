@@ -4,18 +4,24 @@
 package org.maiaframework.showcase.org
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.LifecycleState
 import org.maiaframework.problem.MaiaProblems
+import org.maiaframework.webapp.domain.auth.CurrentUserHolder
+import org.maiaframework.webapp.domain.auth.MaiaUserDetails
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 
 @Component
 class OrganizationCrudService(
     private val entityRepo: OrganizationRepo,
     private val maiaProblems: MaiaProblems,
+    private val orgToOrgRoleRepo: OrgToOrgRoleRepo,
     private val orgUserGroupHistoryRepo: OrgUserGroupHistoryRepo,
-    private val orgUserGroupRepo: OrgUserGroupRepo
+    private val orgUserGroupRepo: OrgUserGroupRepo,
+    private val organizationCrudNotifier: OrganizationCrudNotifier
 ) {
 
 
@@ -23,10 +29,170 @@ class OrganizationCrudService(
 
 
     @Transactional
+    fun create(createDto: OrganizationCreateRequestDto): OrganizationEntity {
+
+        val currentUser = CurrentUserHolder.currentUser
+
+        logger.info("BEGIN: create Organization. createdBy=${currentUser.username}, dto=$createDto")
+
+        val entity: OrganizationEntity = buildEntity(createDto, currentUser)
+
+        create(entity)
+
+        `create role joins`(createDto, entity)
+
+        return entity
+
+    }
+
+
+    private fun buildEntity(
+        createDto: OrganizationCreateRequestDto,
+        currentUser: MaiaUserDetails
+    ): OrganizationEntity {
+
+        val displayName: String = "DERIVED"
+        val orgName: String = createDto.orgName
+        val createdBy = currentUser.userId
+        val id = DomainId.newId()
+        val createdTimestampUtc = Instant.now()
+        val lastModifiedBy = currentUser.userId
+        val lastModifiedTimestampUtc = createdTimestampUtc
+        val lifecycleState = LifecycleState.ACTIVE
+        val version = 1L
+
+        return OrganizationEntity(
+            createdBy,
+            createdTimestampUtc,
+            displayName,
+            id,
+            lastModifiedBy,
+            lastModifiedTimestampUtc,
+            lifecycleState,
+            orgName,
+            version
+        )
+
+    }
+
+
+    @Transactional
     fun create(entity: OrganizationEntity): OrganizationEntity {
 
         this.entityRepo.insert(entity)
+        this.organizationCrudNotifier.onEntityCreated(entity)
         return entity
+
+    }
+
+
+    private fun `create role joins`(
+        createDto: OrganizationCreateRequestDto,
+        entity: OrganizationEntity
+    ) {
+
+        createDto.roleEntities.forEach { joinDto ->
+            this.orgToOrgRoleRepo.insert(
+                OrgToOrgRoleEntity.newInstance(
+                    effectiveFrom = Instant.now(),
+                    effectiveTo = null,
+                    org = entity.id,
+                    role = joinDto.roleEntityId
+                )
+            )
+        }
+
+    }
+
+
+    @Transactional(readOnly = true)
+    fun fetchForEdit(id: DomainId): OrganizationFetchForEditDto {
+
+        return this.entityRepo.fetchForEdit(id)
+
+    }
+
+
+    @Transactional
+    fun update(editDto: OrganizationUpdateRequestDto) {
+
+        val id = editDto.id
+        val version = editDto.version
+        val updater = OrganizationEntityUpdater.forPrimaryKey(id, version) {
+            orgName(editDto.orgName)
+            lastModifiedBy(CurrentUserHolder.userId)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
+
+        `reconcile orgToOrgRole joins`(id, editDto.roleEntities)
+
+    }
+
+
+    private fun `reconcile orgToOrgRole joins`(
+        id: DomainId,
+        submitted: List<RoleJoinRequestDto>
+    ) {
+
+        `close effectiveRange on removed orgToOrgRole entities`(id, submitted)
+
+        `insert added orgToOrgRole entities`(id, submitted)
+
+    }
+
+
+    private fun `close effectiveRange on removed orgToOrgRole entities`(
+        id: DomainId,
+        submitted: List<RoleJoinRequestDto>
+    ) {
+
+        val existingById = this.orgToOrgRoleRepo.findEffectiveByOrg(id).associateBy { it.id }
+        val submittedIds = submitted.mapNotNull { it.id }.toSet()
+
+        existingById.keys.filterNot { it in submittedIds }.forEach {
+            this.orgToOrgRoleRepo.closeEffectiveRange(it)
+        }
+
+    }
+
+
+    private fun `insert added orgToOrgRole entities`(
+        id: DomainId,
+        submitted: List<RoleJoinRequestDto>
+    ) {
+
+        val newJoins = submitted.filter { it.id == null }.map { joinDto ->
+            OrgToOrgRoleEntity.newInstance(
+                effectiveFrom = Instant.now(),
+                effectiveTo = null,
+                org = id,
+                role = joinDto.roleEntityId
+            )
+        }
+
+        this.orgToOrgRoleRepo.bulkInsert(newJoins)
+
+    }
+
+
+    @Transactional
+    fun updateOrgName(editDto: OrganizationUpdate_orgNameRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateOrgName. currentUsername=${currentUsername}, dto=$editDto")
+
+        val version = editDto.version
+
+        val updater = OrganizationEntityUpdater.forPrimaryKey(editDto.id, version) {
+            orgName(editDto.orgName)
+            lastModifiedBy(CurrentUserHolder.userId)
+            lastModifiedTimestampUtc(Instant.now())
+        }
+
+        setFields(updater)
 
     }
 
@@ -35,6 +201,7 @@ class OrganizationCrudService(
     fun setFields(updater: OrganizationEntityUpdater): Int {
 
         val count = this.entityRepo.setFields(updater)
+        this.organizationCrudNotifier.onEntityUpdated(updater.id)
         return count
         
     }

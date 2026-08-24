@@ -4,6 +4,7 @@ import org.maiaframework.domain.persist.SchemaName
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.AppKey
+import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.ValueClassDefs
 import org.maiaframework.gen.spec.definition.flags.AllowDeleteAll
 import org.maiaframework.gen.spec.definition.flags.Deletable
@@ -64,6 +65,9 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val ipAddressStringType = stringType("org.maiaframework.domain.net", "IpAddress") {
         provided()
     }
+
+
+    val orgRoleKeyStringType = stringType("la.org", "OrgRoleKey")
 
 
     val someIntTypeDef = intType("org.maiaframework.showcase.types", "SomeIntType")
@@ -145,9 +149,30 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     }
 
 
+    val orgRoleEntityDef = entity(
+        "org.maiaframework.showcase.org", "OrgRole",
+        recordVersionHistory = true,
+        nameFieldForPkAndNameDto = "displayName"
+    ) {
+        field("key", orgRoleKeyStringType) {
+            primaryKey()
+        }
+        field("displayName", FieldTypes.string) {
+            fieldDisplayName("Display Name")
+        }
+        field("description", FieldTypes.string) {
+            fieldDisplayName("Description")
+        }
+        field_createdById(partyEntityDef)
+        field_lastModifiedById(partyEntityDef)
+        field_lastModifiedTimestampUtc()
+    }
+
+
     val orgEntityDef = entity(
         "org.maiaframework.showcase.org",
-        "Organization"
+        "Organization",
+        nameFieldForPkAndNameDto = "orgName",
     ) {
         superclass(partyEntityDef)
         typeDiscriminator("ORG")
@@ -155,6 +180,14 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
             editableByUser()
             fieldDisplayName("Organization Name")
             lengthConstraint(max = 300)
+        }
+        crud {
+            create {
+                api { }
+            }
+            update {
+                api {  }
+            }
         }
     }
 
@@ -170,6 +203,27 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field("displayName", "displayName")
         field("id", "id")
         field("createdTimestampUtc")
+    }
+
+
+    val orgToOrgRoleEntityDef = simpleManyToManyEntity(
+        "org.maiaframework.showcase.org",
+        "OrgToOrgRole",
+        leftEntity = ReferencedEntity(
+            fieldName = "org",
+            displayName = "Organization",
+            orgEntityDef,
+            IsEditableByUser.TRUE
+        ),
+        rightEntity = ReferencedEntity(
+            fieldName = "role",
+            displayName = "Role",
+            orgRoleEntityDef,
+            IsEditableByUser.TRUE
+        )
+    ) {
+        description("A many-to-many join between Organizations and the roles that they may have.")
+        effectiveRange(managedBy = EffectiveRangeManagedBy.SYSTEM)
     }
 
 

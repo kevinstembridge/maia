@@ -166,7 +166,7 @@ class EntityUpdateApiDef(
                     RequestDtoFieldDef(
                         ClassFieldDef.aClassField(
                             "${otherSide.fieldName}EntityIds",
-                            FieldTypes.list(FieldTypes.domainId)
+                            FieldTypes.list(otherSide.entityDef.primaryKeyFields.first().classFieldDef.fieldType)
                         ).nullable().build(), null
                     )
                 }
