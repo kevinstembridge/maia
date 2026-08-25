@@ -13,6 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.LongFieldType
 import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
 
 
 /**
@@ -44,11 +45,26 @@ class EntityHistoryBlotterRowDtoTypescriptRenderer(
             val fieldName = fieldDef.classFieldName.value
             val nullableClause = if (fieldDef.nullable) "?" else ""
             val tsType = toTypescriptType(fieldDef.fieldType)
+            registerImportsFor(fieldDef.fieldType)
             appendLine("    $fieldName$nullableClause: $tsType;")
         }
 
         appendLine("}")
 
+    }
+
+
+    /**
+     * Enum types are deliberately excluded from import registration: they are rendered
+     * as `string` (see class doc) because the shared enums they reference have no
+     * generated TypeScript counterpart to import.
+     */
+    private fun registerImportsFor(fieldType: FieldType) {
+        when (fieldType) {
+            is SimpleResponseDtoFieldType -> addImport(fieldType.responseDtoDef.dtoDef.typescriptDtoImport)
+            is ListFieldType -> registerImportsFor(fieldType.parameterFieldType)
+            else -> {}
+        }
     }
 
 

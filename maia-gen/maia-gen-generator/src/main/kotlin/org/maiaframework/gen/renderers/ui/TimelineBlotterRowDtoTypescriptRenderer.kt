@@ -9,8 +9,10 @@ import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.LongFieldType
 import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
 
 
 class TimelineBlotterRowDtoTypescriptRenderer(
@@ -38,6 +40,7 @@ class TimelineBlotterRowDtoTypescriptRenderer(
         def.entityHistoryColumns.forEach { col ->
             val fieldName = col.classFieldDef.classFieldName.value
             val tsType = toTypescriptType(col.classFieldDef.fieldType)
+            registerImportsFor(col.classFieldDef.fieldType)
             appendLine("    $fieldName?: $tsType;")
         }
 
@@ -48,6 +51,20 @@ class TimelineBlotterRowDtoTypescriptRenderer(
 
         appendLine("}")
 
+    }
+
+
+    /**
+     * Enum types are deliberately excluded from import registration: they are rendered
+     * as `string` because the shared enums they reference have no generated TypeScript
+     * counterpart to import.
+     */
+    private fun registerImportsFor(fieldType: FieldType) {
+        when (fieldType) {
+            is SimpleResponseDtoFieldType -> addImport(fieldType.responseDtoDef.dtoDef.typescriptDtoImport)
+            is ListFieldType -> registerImportsFor(fieldType.parameterFieldType)
+            else -> {}
+        }
     }
 
 
