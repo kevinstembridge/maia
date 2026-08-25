@@ -285,9 +285,7 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
         appendLine("    <div class=\"form-actions\"$matDialogActionsText>")
         appendLine("        <button mat-flat-button type=\"submit\" color=\"primary\">Submit</button>")
 
-        if (inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
-            appendLine("        <button mat-flat-button type=\"button\" (click)=\"onCancel()\">Cancel</button>")
-        } else if (withCancelButton) {
+        if (inlineFormOrDialog == InlineFormOrDialog.DIALOG || withCancelButton) {
             appendLine("        <button mat-flat-button type=\"button\" (click)=\"onCancelClicked()\">Cancel</button>")
         }
 
