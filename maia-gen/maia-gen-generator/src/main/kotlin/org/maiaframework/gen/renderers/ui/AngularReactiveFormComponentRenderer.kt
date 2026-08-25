@@ -1207,7 +1207,7 @@ class AngularReactiveFormComponentRenderer(
 
             append("""
                 |            error: err => {
-                |                this.onError.emit(err);
+                |                this.onErrorEvent.emit(err);
                 |            }
                 |""".trimMargin())
 
@@ -1225,10 +1225,6 @@ class AngularReactiveFormComponentRenderer(
 
 
     private fun `render function onCancel`() {
-
-//        if (this.angularFormDef.inlineFormOrDialog != InlineFormOrDialog.DIALOG) {
-//            return
-//        }
 
         append("""
             |

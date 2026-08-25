@@ -86,7 +86,7 @@ class FormHtmlRenderer(private val angularFormDef: AngularFormDef) : AbstractSou
                     |    </div>
                     |    <div class="form-actions" mat-dialog-actions>
                     |        <button mat-flat-button color="primary" type="submit" name="submit${this.angularFormDef.htmlFormName}Btn">${this.angularFormDef.submitButtonText ?: "Submit"}</button>
-                    |        <button mat-flat-button type="button" (click)="onCancel()">Cancel</button>
+                    |        <button mat-flat-button type="button" (click)="onCancelClicked()">Cancel</button>
                     |    </div>
                     |""".trimMargin())
 

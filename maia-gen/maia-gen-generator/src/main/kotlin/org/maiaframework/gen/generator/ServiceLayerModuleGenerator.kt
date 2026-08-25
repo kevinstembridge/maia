@@ -93,7 +93,7 @@ class ServiceLayerModuleGenerator(
 
     private fun `render foreign key services`() {
 
-        this.applicationModelDef.entitiesReferencedByForeignKey.forEach { entityDef ->
+        this.applicationModelDef.entitiesReferencedByForeignKey.filter { it.isDeletable }.forEach { entityDef ->
 
             val referencingEntityDefs = this.applicationModelDef.entitiesThatReference(entityDef)
             ForeignKeyReferenceServiceRenderer(entityDef, referencingEntityDefs).renderToDir(this.kotlinOutputDir)
