@@ -504,6 +504,10 @@ abstract class AbstractSpec protected constructor(
 
             manyToManyBuilder.description?.let { description(it.value) }
 
+            manyToManyBuilder.createdByEntityDef?.let { createdByEntityDef ->
+                field_createdById(createdByEntityDef, nullable = manyToManyBuilder.createdByNullable)
+            }
+
             manyToManyBuilder.effectiveRangeDef?.let { rangeDef ->
                 if (rangeDef.dateType == EffectiveRangeDateType.TIMESTAMP)
                     withEffectiveTimestamps(managedBy = rangeDef.managedBy, hasSingleEffectiveRecord = rangeDef.hasSingleEffectiveRecord.value)

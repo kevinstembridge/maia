@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EffectiveRangeDef
+import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.ModuleName
 import org.maiaframework.gen.spec.definition.flags.HasSingleEffectiveRecord
 
@@ -19,6 +20,12 @@ class ManyToManyEntityDefBuilder {
 
 
     internal var moduleName: ModuleName? = null
+
+
+    internal var createdByEntityDef: EntityDef? = null
+
+
+    internal var createdByNullable: Boolean = false
 
 
     fun effectiveRange(
@@ -42,6 +49,14 @@ class ManyToManyEntityDefBuilder {
     fun moduleName(moduleName: String) {
 
         this.moduleName = ModuleName.of(moduleName)
+
+    }
+
+
+    fun field_createdById(entityDef: EntityDef, nullable: Boolean = false) {
+
+        this.createdByEntityDef = entityDef
+        this.createdByNullable = nullable
 
     }
 

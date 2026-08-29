@@ -143,8 +143,8 @@ class ServiceLayerModuleGenerator(
 
         this.applicationModelDef.blotterDefs.forEach {
 
-            when (it.blotterSourceDef) {
-                is BlotterEsDocSourceDef -> ElasticSearchDtoSearchServiceRenderer(it.searchDtoDef, (it.blotterSourceDef as BlotterEsDocSourceDef).esDocDef)
+            when (val blotterSourceDef = it.blotterSourceDef) {
+                is BlotterEsDocSourceDef -> ElasticSearchDtoSearchServiceRenderer(it.searchDtoDef, (blotterSourceDef).esDocDef).renderToDir(this.kotlinOutputDir)
                 is BlotterSearchableDtoSourceDef -> SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)
             }
 

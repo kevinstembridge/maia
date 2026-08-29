@@ -1007,7 +1007,7 @@ class CrudServiceRenderer(
             if (isSystemManagedRef) {
                 blankLine()
                 appendLine("        this.${daoName}.findBy${fieldName}($primaryKeyFieldNamesCsv).forEach {")
-                appendLine("            this.${daoName}.deleteByPrimaryKey(it.id)")
+                appendLine("            this.${daoName}.closeEffectiveRange(it.id)")
                 appendLine("        }")
             }
 
