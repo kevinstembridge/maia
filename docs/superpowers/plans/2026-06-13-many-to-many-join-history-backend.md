@@ -183,7 +183,7 @@ In `EntityHistoryBlotterDef.kt`, add a property and rewrite `blotterColumns` (cu
     }
 ```
 
-(`changeType` and `createdBy`/`createdById` are not filtered out by either branch, so they remain in `blotterColumns` for join history — same as they already do for regular entity history.)
+(`changeType` and `createdBy`/`createdBy` are not filtered out by either branch, so they remain in `blotterColumns` for join history — same as they already do for regular entity history.)
 
 - [ ] **Step 2: Global endpoint/route paths for join history**
 
