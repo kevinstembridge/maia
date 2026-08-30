@@ -97,6 +97,30 @@ class LeftManyBlotterPage(
     }
 
 
+    fun assertForeignKeyCheckDialogShowsError() {
+
+        page.locator("mat-dialog-container").waitFor()
+        page.waitForFunction(
+            "() => {" +
+            "  const container = document.querySelector('mat-dialog-container');" +
+            "  if (!container) return false;" +
+            "  return container.innerText.includes('Foreign key references');" +
+            "}"
+        )
+
+    }
+
+
+    fun dismissForeignKeyCheckDialog() {
+
+        page.getByRole(AriaRole.BUTTON, Page.GetByRoleOptions().setName("Cancel")).click()
+        page.locator("mat-dialog-container").waitFor(
+            Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
+        )
+
+    }
+
+
     fun assertTableDoesNotContainValue(value: String) {
 
         page.waitForFunction(

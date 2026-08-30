@@ -28,11 +28,11 @@ class LeftManyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSimple")
         }
 
-        if (this.leftToRightSystemEffectiveRepo.findEffectiveByLeftSystemEffective(id).isNotEmpty()) {
+        if (this.leftToRightSystemEffectiveRepo.existsByLeftSystemEffective(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSystemEffective")
         }
 
-        if (this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id) != null) {
+        if (this.leftToRightSystemSingleEffectiveRepo.existsByLeftSystemSingleEffective(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightSystemSingleEffective")
         }
 
@@ -40,7 +40,7 @@ class LeftManyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightUserEffective")
         }
 
-        if (this.leftToRightComplexRepo.findEffectiveByLeft(id).isNotEmpty()) {
+        if (this.leftToRightComplexRepo.existsByLeft(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "LeftToRightComplex")
         }
 

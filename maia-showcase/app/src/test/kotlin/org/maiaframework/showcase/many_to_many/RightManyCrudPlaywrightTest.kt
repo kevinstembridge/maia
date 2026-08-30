@@ -226,19 +226,13 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
             `assert the table contains value`("testright_edited3")
 
-            // Cancel delete: FK check passes (no join records), delete dialog appears, cancel
+            // Delete is blocked: the removed left-1/left-2 joins are closed, not deleted,
+            // so they still hold a physical FK reference to this entity - it can never be
+            // hard deleted once it has had any LeftEntity join, even a historical one.
             `click to delete the first row`()
-            `wait for the Delete dialog`()
-            `click the Cancel button`()
-            `assert the Delete dialog closed`()
+            `assert the FK Check dialog shows an error`()
+            `dismiss the FK Check dialog`()
             `assert the table contains value`("testright_edited3")
-
-            // Confirm delete
-            `click to delete the first row`()
-            `wait for the Delete dialog`()
-            `click the Yes button`()
-            `assert the Delete dialog closed`()
-            `assert the table does not contain value`("testright_edited3")
 
         }
 
@@ -253,7 +247,6 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
             `assert the table contains a row with`(changeType = "UPDATE", someInt = "42", someString = "testright_edited", version = "2")
             `assert the table contains a row with`(changeType = "UPDATE", someInt = "42", someString = "testright_edited2", version = "3")
             `assert the table contains a row with`(changeType = "UPDATE", someInt = "42", someString = "testright_edited3", version = "4")
-            `assert the table contains a row with`(changeType = "DELETE", someInt = "42", someString = "testright_edited3", version = "5")
 
         }
 

@@ -115,9 +115,13 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
 
         leftManyBlotterPage.apply {
             assertTableContainsValue("testleft_edited")
+
+            // Delete is blocked: the removed right-gamma join is closed, not deleted,
+            // so it still holds a physical FK reference to this entity.
             clickDeleteButtonForFirstRow()
-            clickYesButton()
-            assertTableDoesNotContainValue("testleft_edited")
+            assertForeignKeyCheckDialogShowsError()
+            dismissForeignKeyCheckDialog()
+            assertTableContainsValue("testleft_edited")
         }
 
     }

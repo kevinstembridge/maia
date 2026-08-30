@@ -989,27 +989,14 @@ class CrudServiceRenderer(
 
             val fieldName = field!!.classFieldName.firstToUpper()
 
-            val isSystemManagedRef = referencingEntityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
-                && referencingEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
-
             blankLine()
 
-            if (isSystemManagedRef && referencingEntityDef.hasSingleEffectiveRecord.value) {
-                appendLine("        if (this.${daoName}.findEffectiveBy$fieldName($primaryKeyFieldNamesCsv) != null) {")
-            } else if (isSystemManagedRef) {
-                appendLine("        if (this.${daoName}.findEffectiveBy$fieldName($primaryKeyFieldNamesCsv).isNotEmpty()) {")
-            } else {
-                appendLine("        if (this.${daoName}.existsBy$fieldName($primaryKeyFieldNamesCsv)) {")
-            }
+            // Block delete whenever ANY referencing row exists - active or historical/closed.
+            // A closed effective-dated join row still holds a physical FK to this entity, so
+            // hard-deleting the entity while such a row exists would violate that FK constraint.
+            appendLine("        if (this.${daoName}.existsBy$fieldName($primaryKeyFieldNamesCsv)) {")
             appendLine("            throw this.maiaProblems.foreignKeyRecordsExist(\"${referencingEntityDef.entityBaseName}\")")
             appendLine("        }")
-
-            if (isSystemManagedRef) {
-                blankLine()
-                appendLine("        this.${daoName}.findBy${fieldName}($primaryKeyFieldNamesCsv).forEach {")
-                appendLine("            this.${daoName}.closeEffectiveRange(it.id)")
-                appendLine("        }")
-            }
 
         }
 

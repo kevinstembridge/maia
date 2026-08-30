@@ -493,32 +493,20 @@ class LeftManyCrudService(
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSimple")
         }
 
-        if (this.leftToRightSystemEffectiveRepo.findEffectiveByLeftSystemEffective(id).isNotEmpty()) {
+        if (this.leftToRightSystemEffectiveRepo.existsByLeftSystemEffective(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSystemEffective")
         }
 
-        this.leftToRightSystemEffectiveRepo.findByLeftSystemEffective(id).forEach {
-            this.leftToRightSystemEffectiveRepo.closeEffectiveRange(it.id)
-        }
-
-        if (this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id) != null) {
+        if (this.leftToRightSystemSingleEffectiveRepo.existsByLeftSystemSingleEffective(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightSystemSingleEffective")
-        }
-
-        this.leftToRightSystemSingleEffectiveRepo.findByLeftSystemSingleEffective(id).forEach {
-            this.leftToRightSystemSingleEffectiveRepo.closeEffectiveRange(it.id)
         }
 
         if (this.leftToRightUserEffectiveRepo.existsByLeftUserEffective(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightUserEffective")
         }
 
-        if (this.leftToRightComplexRepo.findEffectiveByLeft(id).isNotEmpty()) {
+        if (this.leftToRightComplexRepo.existsByLeft(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("LeftToRightComplex")
-        }
-
-        this.leftToRightComplexRepo.findByLeft(id).forEach {
-            this.leftToRightComplexRepo.closeEffectiveRange(it.id)
         }
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

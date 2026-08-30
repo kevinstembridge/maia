@@ -1,7 +1,5 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
-import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
@@ -58,19 +56,12 @@ class ForeignKeyReferenceServiceRenderer(
 
             val fieldName = field!!.classFieldName
 
-            val isSystemManagedMtmJoin = referencingEntityDef.isManyToManyJoinEntity
-                && referencingEntityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
-                && referencingEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
-
             blankLine()
 
-            if (isSystemManagedMtmJoin && referencingEntityDef.hasSingleEffectiveRecord.value) {
-                appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.findEffectiveBy${fieldName.firstToUpper()}(id) != null) {")
-            } else if (isSystemManagedMtmJoin) {
-                appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.findEffectiveBy${fieldName.firstToUpper()}(id).isNotEmpty()) {")
-            } else {
-                appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.existsBy${fieldName.firstToUpper()}(id)) {")
-            }
+            // Block whenever ANY referencing row exists - active or historical/closed.
+            // A closed effective-dated join row still holds a physical FK to this entity, so
+            // deleting the entity while such a row exists would violate that FK constraint.
+            appendLine("        if (this.${referencingEntityDef.entityRepoFqcn.uqcn.firstToLower()}.existsBy${fieldName.firstToUpper()}(id)) {")
             appendLine("            return ${Fqcns.FOREIGN_KEY_REFERENCES_EXIST_RESPONSE_DTO.uqcn}(id, true, \"${referencingEntityDef.entityBaseName}\")")
             appendLine("        }")
 

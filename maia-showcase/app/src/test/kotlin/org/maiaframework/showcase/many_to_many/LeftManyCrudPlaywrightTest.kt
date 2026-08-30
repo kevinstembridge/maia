@@ -107,11 +107,12 @@ class LeftManyCrudPlaywrightTest : AbstractPlaywrightTest() {
             assertDeleteDialogClosed()
             assertTableContainsValue("testleft_edited")
 
-            // Confirm delete path
+            // Delete is blocked: the removed right-alpha/right-beta joins are closed,
+            // not deleted, so they still hold a physical FK reference to this entity.
             clickDeleteButtonForFirstRow()
-            clickYesButton()
-            assertDeleteDialogClosed()
-            assertTableDoesNotContainValue("testleft_edited")
+            assertForeignKeyCheckDialogShowsError()
+            dismissForeignKeyCheckDialog()
+            assertTableContainsValue("testleft_edited")
         }
 
     }

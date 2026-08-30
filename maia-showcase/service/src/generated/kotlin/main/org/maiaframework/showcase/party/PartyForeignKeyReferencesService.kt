@@ -67,7 +67,7 @@ class PartyForeignKeyReferencesService(
             return ForeignKeyReferencesExistResponseDto(id, true, "EmailAddress")
         }
 
-        if (this.partyEmailAddressRepo.findEffectiveByParty(id).isNotEmpty()) {
+        if (this.partyEmailAddressRepo.existsByParty(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "PartyEmailAddress")
         }
 
