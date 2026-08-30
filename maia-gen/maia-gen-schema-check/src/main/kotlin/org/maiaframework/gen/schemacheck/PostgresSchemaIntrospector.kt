@@ -2,6 +2,14 @@ package org.maiaframework.gen.schemacheck
 
 import java.sql.Connection
 
+/**
+ * Introspects the real tables in a given set of Postgres schemas — columns (with types
+ * normalized via [PostgresActualTypeNormalizer]), primary key columns, foreign keys, and
+ * non-primary-key indexes — via plain JDBC queries against `information_schema`/`pg_catalog`.
+ *
+ * Does NOT own the lifecycle of the [Connection] passed in: the caller is responsible for
+ * opening and closing it.
+ */
 class PostgresSchemaIntrospector(private val connection: Connection) {
 
     fun introspectSchemas(schemas: Set<String>): List<ActualTableDef> {
@@ -27,6 +35,7 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
             select table_schema, table_name
             from information_schema.tables
             where table_schema in ($placeholders)
+            and table_type = 'BASE TABLE'
             order by table_schema, table_name
         """.trimIndent()
 
@@ -138,6 +147,15 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
 
     private fun indexesFor(schema: String, table: String): List<ActualIndexDef> {
 
+        // `pg_index.indkey` is an int2vector holding the index's column attnums in the index's
+        // *declared* column order (which is what we need to compare against ExpectedIndexDef's
+        // column order) — but joining it to pg_attribute via `a.attnum = any(ix.indkey)` loses that
+        // order entirely; without any ORDER BY, array_agg would return rows in whatever order
+        // pg_attribute happens to produce them (typically attnum order, not declared index order).
+        // `array_position(ix.indkey::int2[], a.attnum)` looks up each column's position within the
+        // declared indkey list, and array_agg orders by that, restoring the original column order.
+        // The explicit `::int2[]` cast is required because indkey's int2vector type isn't accepted
+        // directly by array_position, which expects a normal array.
         val sql = """
             select
                 ic.relname as index_name,

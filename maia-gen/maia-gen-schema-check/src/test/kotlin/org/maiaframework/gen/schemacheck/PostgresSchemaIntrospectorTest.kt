@@ -52,6 +52,11 @@ class PostgresSchemaIntrospectorTest {
                 statement.execute("create unique index parent_name_idx on introspector_test.parent(name)")
                 statement.execute("create index child_title_idx on introspector_test.child(title)")
                 statement.execute("create index child_title_count_idx on introspector_test.child(title, count)")
+
+                // A view has no place on the expected side (ExpectedSchemaExtractor only derives
+                // tables from spec entities), so it must never be reported by the introspector —
+                // otherwise it would surface as a permanent, spurious "extra table" diff.
+                statement.execute("create view introspector_test.parent_view as select id, name from introspector_test.parent")
             }
 
         }
@@ -73,8 +78,11 @@ class PostgresSchemaIntrospectorTest {
 
         val tables = PostgresSchemaIntrospector(connection).introspectSchemas(setOf("introspector_test"))
 
+        // containsExactlyInAnyOrder here already implicitly excludes the view created in setUp(),
+        // but assert it explicitly too since that's the specific behavior under test.
         assertThat(tables.map { it.schemaAndTableName })
             .containsExactlyInAnyOrder("introspector_test.parent", "introspector_test.child")
+        assertThat(tables.map { it.schemaAndTableName }).doesNotContain("introspector_test.parent_view")
 
         val parent = tables.single { it.schemaAndTableName == "introspector_test.parent" }
         assertThat(parent.primaryKeyColumns).containsExactly("id")
