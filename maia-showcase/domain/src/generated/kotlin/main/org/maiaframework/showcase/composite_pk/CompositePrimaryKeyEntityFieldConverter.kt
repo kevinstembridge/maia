@@ -16,7 +16,7 @@ class CompositePrimaryKeyEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "some_int" -> // someInt
                 return inputValue

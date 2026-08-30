@@ -31,7 +31,7 @@ export class OrgRoleHistoryBlotter implements OnInit {
         { field: 'description', headerName: 'Description', cellDataType: 'text' },
         { field: 'displayName', headerName: 'Display Name', cellDataType: 'text' },
         { field: 'key', headerName: 'key', cellDataType: 'text' },
-        { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text' },
+        { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text' },
         { field: 'version', headerName: 'Version', cellDataType: 'number' },
     ];
 

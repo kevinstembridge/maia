@@ -33,19 +33,19 @@ class EffectiveTimestampDao(
         jdbcOps.update(
             """
             insert into maia.effective_timestamp (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :someString
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
                 addValue("id", entity.id)
@@ -61,12 +61,12 @@ class EffectiveTimestampDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.effective_timestamp (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :someString
@@ -74,7 +74,7 @@ class EffectiveTimestampDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
                     addValue("id", entity.id)

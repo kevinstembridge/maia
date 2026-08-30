@@ -94,7 +94,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
             modifiableBySystem()
         }
         field_lastModifiedByUsername()
-        field_lastModifiedTimestampUtc()
+        field_lastModifiedTimestamp()
         field("comment", FieldTypes.string) {
             nullable()
             lengthConstraint(max = 200)
@@ -124,8 +124,8 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
         field("comment", FieldTypes.string) { nullable() }
         field("activationStrategies", fieldListOf(activationStrategyDescriptorDef))
         field("lastModifiedBy", FieldTypes.string)
-        field("lastModifiedTimestampUtc", FieldTypes.instant)
-        field("createdTimestampUtc", FieldTypes.instant)
+        field("lastModifiedTimestamp", FieldTypes.instant)
+        field("createdTimestamp", FieldTypes.instant)
     }
 
 

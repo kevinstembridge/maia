@@ -32,19 +32,19 @@ class LeftToRightSimpleDao(
         jdbcOps.update(
             """
             insert into maia.left_to_right_simple (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 left_simple_id,
                 right_simple_id
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :leftSimple,
                 :rightSimple
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("leftSimple", entity.leftSimple)
                 addValue("rightSimple", entity.rightSimple)
@@ -59,12 +59,12 @@ class LeftToRightSimpleDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.left_to_right_simple (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 left_simple_id,
                 right_simple_id
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :leftSimple,
                 :rightSimple
@@ -72,7 +72,7 @@ class LeftToRightSimpleDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("leftSimple", entity.leftSimple)
                     addValue("rightSimple", entity.rightSimple)

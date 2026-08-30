@@ -14,7 +14,7 @@ object FileStorageEntryEntityMeta {
 
     const val contentType = "content_type"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val description = "description"
 
@@ -43,7 +43,7 @@ object FileStorageEntryEntityMeta {
 
         return when(classFieldName) {
             "contentType" -> "content_type"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "description" -> "description"
             "fileName" -> "file_name"
             "fileTimestampUtc" -> "file_timestamp_utc"

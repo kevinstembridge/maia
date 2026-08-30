@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class RightManyEntityTestBuilder(
-    val createdTimestampUtc: Instant = anyInstant(),
+    val createdTimestamp: Instant = anyInstant(),
     val id: DomainId = DomainId.newId(),
     val someInt: Int = anyInt(),
     val someString: String = anyString(),
@@ -19,7 +19,7 @@ data class RightManyEntityTestBuilder(
     fun build(): RightManyEntity {
 
         return RightManyEntity(
-            this.createdTimestampUtc,
+            this.createdTimestamp,
             this.id,
             this.someInt,
             this.someString,

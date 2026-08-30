@@ -43,7 +43,7 @@ class BravoAgGridDtoDao(
 
         val sqlForPage = """
             select
-                maia.bravo_ag_grid.created_timestamp_utc as createdTimestampUtc,
+                maia.bravo_ag_grid.created_timestamp as createdTimestamp,
                 maia.alpha_ag_grid.some_int as dtoIntFromAlpha,
                 maia.bravo_ag_grid.some_int as dtoIntFromBravo,
                 maia.alpha_ag_grid.some_string as dtoStringFromAlpha,

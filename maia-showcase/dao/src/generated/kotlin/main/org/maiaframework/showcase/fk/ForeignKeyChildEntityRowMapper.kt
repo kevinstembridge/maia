@@ -12,13 +12,13 @@ class ForeignKeyChildEntityRowMapper : MaiaRowMapper<ForeignKeyChildEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): ForeignKeyChildEntity {
 
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val parentId = rsa.readDomainId("parent_id")
         val someString = rsa.readString("some_string")
 
         return ForeignKeyChildEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 parentId,
                 someString

@@ -20,7 +20,7 @@ class UserGroupEntityFieldConverter : EntityFieldConverter {
 
             "authorities" -> // authorities
                 return inputValue
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "description" -> // description
                 return inputValue

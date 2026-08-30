@@ -18,12 +18,12 @@ import java.time.Instant
 data class UserEntityTestBuilder(
     val authorities: List<Authority> = emptyList(),
     val createdById: DomainId = Anys.defaultCreatedById,
-    val createdTimestampUtc: Instant = Anys.anyInstant(),
+    val createdTimestamp: Instant = Anys.anyInstant(),
     val firstName: FirstName = anyFirstName(),
     val id: DomainId = anyDomainId(),
     val encryptedPassword: EncryptedPassword = anyEncryptedPassword(),
     val lastModifiedById: DomainId = createdById,
-    val lastModifiedTimestampUtc: Instant = createdTimestampUtc,
+    val lastModifiedTimestamp: Instant = createdTimestamp,
     val lastName: LastName = anyLastName(),
     val lifecycleState: LifecycleState = LifecycleState.ACTIVE,
     val version: Long = 1L
@@ -37,13 +37,13 @@ data class UserEntityTestBuilder(
         return UserEntity(
             authorities,
             createdById,
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             encryptedPassword.value,
             firstName,
             id,
             lastModifiedById,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lastName,
             lifecycleState,
             version

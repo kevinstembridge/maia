@@ -36,25 +36,25 @@ class PartyEmailAddressDao(
             """
             insert into maia.party_email_address (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 email_address,
                 id,
                 is_primary_contact,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 party_id,
                 purposes,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :emailAddress,
                 :id,
                 :isPrimaryContact,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :party,
                 :purposes,
                 :version
@@ -62,14 +62,14 @@ class PartyEmailAddressDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
                 addValue("emailAddress", entity.emailAddress)
                 addValue("id", entity.id)
                 addValue("isPrimaryContact", entity.isPrimaryContact)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("party", entity.party)
                 addListOfStrings("purposes", entity.purposes.map { it.name })
                 addValue("version", entity.version)
@@ -85,25 +85,25 @@ class PartyEmailAddressDao(
             """
             insert into maia.party_email_address (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 email_address,
                 id,
                 is_primary_contact,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 party_id,
                 purposes,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :emailAddress,
                 :id,
                 :isPrimaryContact,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :party,
                 :purposes,
                 :version
@@ -112,14 +112,14 @@ class PartyEmailAddressDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
                     addValue("emailAddress", entity.emailAddress)
                     addValue("id", entity.id)
                     addValue("isPrimaryContact", entity.isPrimaryContact)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("party", entity.party)
                     addListOfStrings("purposes", entity.purposes.map { it.name })
                     addValue("version", entity.version)
@@ -532,7 +532,7 @@ class PartyEmailAddressDao(
             "emailAddress" -> sqlParams.addValue("emailAddress", (field.value as EmailAddress).value)
             "isPrimaryContact" -> sqlParams.addValue("isPrimaryContact", field.value as Boolean)
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "party" -> sqlParams.addValue("party", field.value as DomainId)
             "purposes" -> sqlParams.addListOfStrings("purposes", field.value as List<EmailAddressPurpose>) { it.name }
         }

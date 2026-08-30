@@ -11,14 +11,14 @@ import java.time.Instant
 
 class PartyEmailAddressEntity(
     val createdBy: DomainId,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val emailAddress: EmailAddress,
     val id: DomainId,
     val isPrimaryContact: Boolean,
     val lastModifiedBy: DomainId,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val party: DomainId,
     val purposes: List<EmailAddressPurpose>,
     val version: Long
@@ -29,14 +29,14 @@ class PartyEmailAddressEntity(
 
         return "PartyEmailAddressEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "isPrimaryContact = '" + this.isPrimaryContact + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "party = '" + this.party + '\'' + ", " + 
                 "purposes = '" + this.purposes + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
@@ -64,22 +64,22 @@ class PartyEmailAddressEntity(
             purposes: List<EmailAddressPurpose>
         ): PartyEmailAddressEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
             val version = 1L
 
             return PartyEmailAddressEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 emailAddress,
                 id,
                 isPrimaryContact,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 party,
                 purposes,
                 version

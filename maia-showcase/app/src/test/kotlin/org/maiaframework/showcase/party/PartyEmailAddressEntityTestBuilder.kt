@@ -11,14 +11,14 @@ import java.time.Instant
 
 data class PartyEmailAddressEntityTestBuilder(
     val createdById: DomainId = defaultCreatedById,
-    val createdTimestampUtc: Instant = Instant.now(),
+    val createdTimestamp: Instant = Instant.now(),
     val effectiveFrom: Instant = Instant.now(),
     val effectiveTo: Instant? = null,
     val emailAddress: EmailAddress = EmailAddress("default@example.com"),
     val id: DomainId = PartyEmailAddressEntity.newId(),
     val isPrimaryContact: Boolean = true,
     val lastModifiedById: DomainId = defaultCreatedById,
-    val lastModifiedTimestampUtc: Instant = Instant.now(),
+    val lastModifiedTimestamp: Instant = Instant.now(),
     val partyId: DomainId = PartyEmailAddressEntity.newId(),
     val purposes: List<EmailAddressPurpose> = emptyList(),
     val version: Long = 1
@@ -29,14 +29,14 @@ data class PartyEmailAddressEntityTestBuilder(
 
         return PartyEmailAddressEntity(
             createdById,
-            createdTimestampUtc,
+            createdTimestamp,
             effectiveFrom,
             effectiveTo,
             emailAddress,
             id,
             isPrimaryContact,
             lastModifiedById,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             partyId,
             purposes.toList(),
             version

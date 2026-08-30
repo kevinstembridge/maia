@@ -3,7 +3,7 @@
 
 
 export interface LeftNotMappedToRightDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someIntFromLeft: number;
     someStringFromLeft: string;

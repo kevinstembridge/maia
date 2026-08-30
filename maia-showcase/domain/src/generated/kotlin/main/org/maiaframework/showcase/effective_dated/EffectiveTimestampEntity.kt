@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class EffectiveTimestampEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,
@@ -19,7 +19,7 @@ class EffectiveTimestampEntity(
     override fun toString(): String {
 
         return "EffectiveTimestampEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
@@ -44,11 +44,11 @@ class EffectiveTimestampEntity(
             someString: String
         ): EffectiveTimestampEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return EffectiveTimestampEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 id,

@@ -12,7 +12,7 @@ import java.time.Instant
 
 class FileStorageEntryEntity(
     val contentType: ContentType,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val description: String?,
     val fileName: FileName,
     val fileTimestampUtc: Instant,
@@ -26,7 +26,7 @@ class FileStorageEntryEntity(
 
         return "FileStorageEntryEntity{" +
                 "contentType = '" + this.contentType + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "fileName = '" + this.fileName + '\'' + ", " + 
                 "fileTimestampUtc = '" + this.fileTimestampUtc + '\'' + ", " + 
@@ -56,12 +56,12 @@ class FileStorageEntryEntity(
             md5: Md5Checksum
         ): FileStorageEntryEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return FileStorageEntryEntity(
                 contentType,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 fileName,
                 fileTimestampUtc,

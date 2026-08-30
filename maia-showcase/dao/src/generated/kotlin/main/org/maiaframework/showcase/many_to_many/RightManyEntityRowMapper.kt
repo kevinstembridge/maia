@@ -12,14 +12,14 @@ class RightManyEntityRowMapper : MaiaRowMapper<RightManyEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): RightManyEntity {
 
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
         val version = rsa.readLong("version")
 
         return RightManyEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someInt,
                 someString,

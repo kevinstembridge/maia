@@ -34,13 +34,13 @@ class OrgToOrgRoleDao(
         jdbcOps.update(
             """
             insert into maia.org_to_org_role (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
                 org_id,
                 role
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :org,
@@ -48,7 +48,7 @@ class OrgToOrgRoleDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
                 addValue("id", entity.id)
@@ -65,13 +65,13 @@ class OrgToOrgRoleDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.org_to_org_role (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
                 org_id,
                 role
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :org,
@@ -80,7 +80,7 @@ class OrgToOrgRoleDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
                     addValue("id", entity.id)

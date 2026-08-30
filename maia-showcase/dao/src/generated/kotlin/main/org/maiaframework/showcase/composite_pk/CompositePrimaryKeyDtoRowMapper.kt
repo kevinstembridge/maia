@@ -13,7 +13,7 @@ class CompositePrimaryKeyDtoRowMapper : MaiaRowMapper<CompositePrimaryKeyDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): CompositePrimaryKeyDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val someInt = rsa.readInt("someInt")
         val someModifiableString = rsa.readString("someModifiableString")
         val someString = rsa.readString("someString")
@@ -22,7 +22,7 @@ class CompositePrimaryKeyDtoRowMapper : MaiaRowMapper<CompositePrimaryKeyDto> {
         val id = listOf(someInt, someString).joinToString(":") { encode(it.toString(), "UTF-8") }
 
         return CompositePrimaryKeyDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someModifiableString,

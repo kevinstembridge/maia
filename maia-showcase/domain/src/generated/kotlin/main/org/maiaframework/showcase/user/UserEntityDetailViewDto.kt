@@ -14,13 +14,13 @@ import java.time.Instant
 data class UserEntityDetailViewDto(
     val authorities: List<Authority>,
     val createdBy: DomainId?,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val displayName: String,
     val encryptedPassword: String,
     val firstName: FirstName?,
     val id: DomainId,
     val lastModifiedBy: DomainId?,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val lastName: LastName,
     val lifecycleState: LifecycleState,
     val version: Long
@@ -32,13 +32,13 @@ data class UserEntityDetailViewDto(
         return "UserEntityDetailViewDto{" +
                 "authorities = '" + this.authorities + '\'' + ", " + 
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

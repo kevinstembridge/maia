@@ -18,7 +18,7 @@ class AlphaEntityDetailViewDtoRepo(
         val entity = this.entityRepo.findByPrimaryKey(id)
 
         return AlphaEntityDetailViewDto(
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             id = entity.id,
             someInt = entity.someInt,
             someString = entity.someString,

@@ -17,7 +17,7 @@ data class PersonHistoryBlotterRowDto(
     val displayName: String,
     val firstName: FirstName?,
     val lastModifiedBy: DomainId?,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val lastName: LastName,
     val lifecycleState: LifecycleState,
     val version: Long

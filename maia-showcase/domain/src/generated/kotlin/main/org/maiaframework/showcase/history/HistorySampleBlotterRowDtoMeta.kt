@@ -12,11 +12,11 @@ object HistorySampleBlotterRowDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.history_sample.created_timestamp_utc"
+            "createdTimestamp" -> "maia.history_sample.created_timestamp"
             "id" -> "maia.history_sample.id"
             "someInt" -> "maia.history_sample.some_int"
             "someString" -> "maia.history_sample.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someString]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someInt, someString]")
         }
 
     }
@@ -25,11 +25,11 @@ object HistorySampleBlotterRowDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "id" -> JdbcCompatibleType.uuid
             "someInt" -> JdbcCompatibleType.integer
             "someString" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someString]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someInt, someString]")
         }
 
     }

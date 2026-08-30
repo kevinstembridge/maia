@@ -18,11 +18,11 @@ class PropsEntityFieldConverter : EntityFieldConverter {
 
             "comment" -> // comment
                 return inputValue
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue
-            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
             "property_name" -> // propertyName
                 return inputValue

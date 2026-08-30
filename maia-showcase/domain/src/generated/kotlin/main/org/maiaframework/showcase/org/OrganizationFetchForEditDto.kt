@@ -10,11 +10,11 @@ import java.time.Instant
 
 data class OrganizationFetchForEditDto(
     val createdBy: DomainId?,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val displayName: String,
     val id: DomainId,
     val lastModifiedBy: DomainId?,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val lifecycleState: LifecycleState,
     val orgName: String,
     val roleEntities: List<RoleJoinFetchDto>,

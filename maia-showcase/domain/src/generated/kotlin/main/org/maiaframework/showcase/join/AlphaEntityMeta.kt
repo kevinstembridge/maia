@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object AlphaEntityMeta {
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val id = "id"
 
@@ -34,7 +34,7 @@ object AlphaEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "someInt" -> "some_int"
             "someString" -> "some_string"

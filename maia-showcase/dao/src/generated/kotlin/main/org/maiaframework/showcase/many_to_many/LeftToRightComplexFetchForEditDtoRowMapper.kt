@@ -12,11 +12,11 @@ class LeftToRightComplexFetchForEditDtoRowMapper : MaiaRowMapper<LeftToRightComp
 
     override fun mapRow(rsa: ResultSetAdapter): LeftToRightComplexFetchForEditDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val effectiveFrom = rsa.readInstantOrNull("effectiveFrom")
         val effectiveTo = rsa.readInstantOrNull("effectiveTo")
         val id = rsa.readDomainId("id")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val left = LeftManyPkAndNameDto(
             rsa.readDomainId("leftId"),
             rsa.readString("leftName"),
@@ -28,11 +28,11 @@ class LeftToRightComplexFetchForEditDtoRowMapper : MaiaRowMapper<LeftToRightComp
         val someIntOnComplex = rsa.readInt("someIntOnComplex")
 
         return LeftToRightComplexFetchForEditDto(
-            createdTimestampUtc,
+            createdTimestamp,
             effectiveFrom,
             effectiveTo,
             id,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             left,
             right,
             someIntOnComplex,

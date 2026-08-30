@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class LeftToRightSystemEffectiveEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,
@@ -20,7 +20,7 @@ class LeftToRightSystemEffectiveEntity(
     override fun toString(): String {
 
         return "LeftToRightSystemEffectiveEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
@@ -47,11 +47,11 @@ class LeftToRightSystemEffectiveEntity(
             rightSystemEffective: DomainId
         ): LeftToRightSystemEffectiveEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return LeftToRightSystemEffectiveEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 id,

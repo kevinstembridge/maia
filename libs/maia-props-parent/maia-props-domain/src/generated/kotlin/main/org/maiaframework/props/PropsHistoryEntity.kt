@@ -10,9 +10,9 @@ import java.time.Instant
 class PropsHistoryEntity(
     val changeType: ChangeType,
     val comment: String?,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val lastModifiedByUsername: String,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val propertyName: String,
     val propertyValue: String,
     val version: Long
@@ -27,9 +27,9 @@ class PropsHistoryEntity(
         return "PropsHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "comment = '" + this.comment + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "propertyName = '" + this.propertyName + '\'' + ", " + 
                 "propertyValue = '" + this.propertyValue + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

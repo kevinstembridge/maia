@@ -30,7 +30,7 @@ class FeatureToggleEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "contact_person" -> // contactPerson
                 return (inputValue as ContactPerson).value
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "description" -> // description
                 return (inputValue as Description).value
@@ -42,7 +42,7 @@ class FeatureToggleEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as InfoLink).value
             "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue
-            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
             "review_date" -> // reviewDate
                 return inputValue

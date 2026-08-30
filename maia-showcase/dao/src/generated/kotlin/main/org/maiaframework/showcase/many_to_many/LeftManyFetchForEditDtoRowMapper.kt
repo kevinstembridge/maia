@@ -32,17 +32,17 @@ class LeftManyFetchForEditDtoRowMapper(
 
         val rightUserEffectiveEntitiesJoinFetchDtoList = fetchRightUserEffectiveEntitiesJoinFetchDtos(entityId)
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
         val version = rsa.readLong("version")
 
         return LeftManyFetchForEditDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             rightEntitiesJoinFetchDtoList,
             rightSimpleEntitiesPkAndNameDtoList,
             rightSystemEffectiveEntitiesJoinFetchDtoList,

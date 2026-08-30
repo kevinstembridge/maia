@@ -12,12 +12,12 @@ object SomeVersionedDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.some_versioned.created_timestamp_utc"
+            "createdTimestamp" -> "maia.some_versioned.created_timestamp"
             "id" -> "maia.some_versioned.id"
             "someInt" -> "maia.some_versioned.some_int"
             "someString" -> "maia.some_versioned.some_string"
             "version" -> "maia.some_versioned.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someInt, someString, version]")
         }
 
     }
@@ -26,12 +26,12 @@ object SomeVersionedDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "id" -> JdbcCompatibleType.uuid
             "someInt" -> JdbcCompatibleType.integer
             "someString" -> JdbcCompatibleType.text
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someInt, someString, version]")
         }
 
     }

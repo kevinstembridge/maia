@@ -24,7 +24,7 @@ class AllFieldTypesBlotterRowDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue
-            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
             "some_boolean" -> // someBoolean
                 return inputValue

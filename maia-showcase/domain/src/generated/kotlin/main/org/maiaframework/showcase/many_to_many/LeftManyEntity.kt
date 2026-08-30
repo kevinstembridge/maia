@@ -8,9 +8,9 @@ import java.time.Instant
 
 
 class LeftManyEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val someInt: Int,
     val someString: String,
     val version: Long
@@ -20,9 +20,9 @@ class LeftManyEntity(
     override fun toString(): String {
 
         return "LeftManyEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
@@ -45,15 +45,15 @@ class LeftManyEntity(
             someString: String
         ): LeftManyEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
             val version = 1L
 
             return LeftManyEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 someString,
                 version

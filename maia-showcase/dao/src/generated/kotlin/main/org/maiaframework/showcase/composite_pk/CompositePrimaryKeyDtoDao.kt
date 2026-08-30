@@ -41,7 +41,7 @@ class CompositePrimaryKeyDtoDao(
 
         val sqlForPage = """
             select
-                maia.composite_primary_key.created_timestamp_utc as createdTimestampUtc,
+                maia.composite_primary_key.created_timestamp as createdTimestamp,
                 maia.composite_primary_key.some_int as someInt,
                 maia.composite_primary_key.some_modifiable_string as someModifiableString,
                 maia.composite_primary_key.some_string as someString,

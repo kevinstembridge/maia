@@ -5,9 +5,9 @@ import {RightManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showc
 
 
 export interface LeftManyEntityDetailViewDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     rightEntities: ReadonlyArray<RightManyPkAndNameDto>;
     rightSimpleEntities: ReadonlyArray<RightManyPkAndNameDto>;
     someInt: number;

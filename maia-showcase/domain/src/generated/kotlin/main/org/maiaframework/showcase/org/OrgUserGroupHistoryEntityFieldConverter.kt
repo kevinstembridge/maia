@@ -23,7 +23,7 @@ class OrgUserGroupHistoryEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "change_type" -> // changeType
                 return (inputValue as ChangeType).name
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "description" -> // description
                 return inputValue

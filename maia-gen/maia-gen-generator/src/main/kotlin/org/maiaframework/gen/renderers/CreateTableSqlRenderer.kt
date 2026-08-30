@@ -184,8 +184,8 @@ class CreateTableSqlRenderer(
     private fun notNullByFramework(entityFieldDef: EntityFieldDef): Boolean {
 
         return (entityFieldDef.classFieldName == ClassFieldName.id
-                || entityFieldDef.classFieldName == ClassFieldName.createdTimestampUtc
-                || entityFieldDef.classFieldName == ClassFieldName.lastModifiedTimestampUtc
+                || entityFieldDef.classFieldName == ClassFieldName.createdTimestamp
+                || entityFieldDef.classFieldName == ClassFieldName.lastModifiedTimestamp
                 || entityFieldDef.classFieldName == ClassFieldName.version)
 
     }

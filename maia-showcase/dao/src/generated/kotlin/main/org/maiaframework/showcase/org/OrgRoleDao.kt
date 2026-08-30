@@ -40,32 +40,32 @@ class OrgRoleDao(
             """
             insert into maia.org_role (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 display_name,
                 key,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :displayName,
                 :key,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :version
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("displayName", entity.displayName)
                 addValue("key", entity.key)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("version", entity.version)
             }
         )
@@ -81,33 +81,33 @@ class OrgRoleDao(
             """
             insert into maia.org_role (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 display_name,
                 key,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :displayName,
                 :key,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :version
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description)
                     addValue("displayName", entity.displayName)
                     addValue("key", entity.key)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("version", entity.version)
                 }
             }
@@ -147,22 +147,22 @@ class OrgRoleDao(
     ): OrgRoleHistoryEntity {
 
         val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val description = entity.description
         val displayName = entity.displayName
         val key = entity.key
         val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
 
         return OrgRoleHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 displayName,
                 key,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 version)
 
     }
@@ -377,38 +377,38 @@ class OrgRoleDao(
             """
             insert into maia.org_role (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 display_name,
                 key,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :displayName,
                 :key,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :version
             )
             on conflict (key)
             do update set
                 last_modified_by_id = :lastModifiedBy,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 version = maia.org_role.version + 1
             returning *;
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", upsertEntity.createdBy)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("description", upsertEntity.description)
                 addValue("displayName", upsertEntity.displayName)
                 addValue("key", upsertEntity.key)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
@@ -480,7 +480,7 @@ class OrgRoleDao(
 
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
         }
 
     }

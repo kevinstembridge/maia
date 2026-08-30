@@ -22,11 +22,11 @@ object FeatureToggleHistoryBlotterRowDtoMeta {
             "featureName" -> "toggles.feature_toggle_history.feature_name"
             "infoLink" -> "toggles.feature_toggle_history.info_link"
             "lastModifiedByUsername" -> "toggles.feature_toggle_history.last_modified_by_name"
-            "lastModifiedTimestampUtc" -> "toggles.feature_toggle_history.last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "toggles.feature_toggle_history.last_modified_timestamp"
             "reviewDate" -> "toggles.feature_toggle_history.review_date"
             "ticketKey" -> "toggles.feature_toggle_history.ticket_key"
             "version" -> "toggles.feature_toggle_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [activationStrategies, attributes, changeType, comment, contactPerson, description, enabled, featureName, infoLink, lastModifiedByUsername, lastModifiedTimestampUtc, reviewDate, ticketKey, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [activationStrategies, attributes, changeType, comment, contactPerson, description, enabled, featureName, infoLink, lastModifiedByUsername, lastModifiedTimestamp, reviewDate, ticketKey, version]")
         }
 
     }
@@ -45,11 +45,11 @@ object FeatureToggleHistoryBlotterRowDtoMeta {
             "featureName" -> JdbcCompatibleType.text
             "infoLink" -> JdbcCompatibleType.text
             "lastModifiedByUsername" -> JdbcCompatibleType.text
-            "lastModifiedTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "lastModifiedTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "reviewDate" -> JdbcCompatibleType.date
             "ticketKey" -> JdbcCompatibleType.text
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [activationStrategies, attributes, changeType, comment, contactPerson, description, enabled, featureName, infoLink, lastModifiedByUsername, lastModifiedTimestampUtc, reviewDate, ticketKey, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [activationStrategies, attributes, changeType, comment, contactPerson, description, enabled, featureName, infoLink, lastModifiedByUsername, lastModifiedTimestamp, reviewDate, ticketKey, version]")
         }
 
     }

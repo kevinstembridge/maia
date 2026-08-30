@@ -127,11 +127,11 @@ class EntityCreateApiDef(
                 classFieldName != ClassFieldName.id
                 && classFieldName != ClassFieldName.createdById
                 && classFieldName != ClassFieldName.createdByUsername
-                && classFieldName != ClassFieldName.createdTimestampUtc
+                && classFieldName != ClassFieldName.createdTimestamp
                 && classFieldName != ClassFieldName.version
                 && classFieldName != ClassFieldName.lastModifiedById
                 && classFieldName != ClassFieldName.lastModifiedByUsername
-                && classFieldName != ClassFieldName.lastModifiedTimestampUtc
+                && classFieldName != ClassFieldName.lastModifiedTimestamp
                 && classFieldName != ClassFieldName.lifecycleState
             )
         }.map { RequestDtoFieldDef(

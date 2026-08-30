@@ -7,7 +7,7 @@ import java.time.Instant
 
 
 data class CompositePrimaryKeyFetchForEditDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val someInt: Int,
     val someModifiableString: String,
     val someString: String,

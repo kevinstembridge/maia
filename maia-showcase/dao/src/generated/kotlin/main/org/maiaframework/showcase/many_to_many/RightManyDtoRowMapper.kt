@@ -24,13 +24,13 @@ class RightManyDtoRowMapper(
 
         val leftEntitiesPkAndNameDtoList = fetchLeftEntitiesPkAndNameDtos(entityId)
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someIntFromLeft = rsa.readInt("someIntFromLeft")
         val someStringFromLeft = rsa.readString("someStringFromLeft")
 
         return RightManyDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             leftEntitiesPkAndNameDtoList,
             someIntFromLeft,

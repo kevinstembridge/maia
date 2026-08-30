@@ -50,13 +50,13 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
         val attributes = attributesKeys.zip(attributesValues).toMap()
         val comment = reader.readNullableString("comment")
         val contactPerson = reader.readNullableString("contactPerson")?.let { ContactPerson(it) }
-        val createdTimestampUtc = reader.readInstantNonNull("createdTimestampUtc")
+        val createdTimestamp = reader.readInstantNonNull("createdTimestamp")
         val description = reader.readNullableString("description")?.let { Description(it) }
         val enabled = reader.readBoolean("enabled")
         val featureName = FeatureName(reader.readStringNonNull("featureName"))
         val infoLink = reader.readNullableString("infoLink")?.let { InfoLink(it) }
         val lastModifiedByUsername = reader.readStringNonNull("lastModifiedByUsername")
-        val lastModifiedTimestampUtc = reader.readInstantNonNull("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = reader.readInstantNonNull("lastModifiedTimestamp")
         val reviewDate = reader.readNullableLocalDate("reviewDate")
         val ticketKey = reader.readNullableString("ticketKey")?.let { TicketKey(it) }
         val version = reader.readInt64NonNull("version")
@@ -66,13 +66,13 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
             attributes,
             comment,
             contactPerson,
-            createdTimestampUtc,
+            createdTimestamp,
             description,
             enabled,
             featureName,
             infoLink,
             lastModifiedByUsername,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             reviewDate,
             ticketKey,
             version,
@@ -96,13 +96,13 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
             writeListOfStrings("attributesValues", attributesValues)
             writeString("comment", dto.comment)
             writeString("contactPerson", dto.contactPerson?.value)
-            writeTimestampWithTimezone("createdTimestampUtc", dto.createdTimestampUtc.atOffset(ZoneOffset.UTC))
+            writeTimestampWithTimezone("createdTimestamp", dto.createdTimestamp.atOffset(ZoneOffset.UTC))
             writeString("description", dto.description?.value)
             writeBoolean("enabled", dto.enabled)
             writeString("featureName", dto.featureName.value)
             writeString("infoLink", dto.infoLink?.value)
             writeString("lastModifiedByUsername", dto.lastModifiedByUsername)
-            writeTimestampWithTimezone("lastModifiedTimestampUtc", dto.lastModifiedTimestampUtc.atOffset(ZoneOffset.UTC))
+            writeTimestampWithTimezone("lastModifiedTimestamp", dto.lastModifiedTimestamp.atOffset(ZoneOffset.UTC))
             writeNullableDate("reviewDate", dto.reviewDate)
             writeString("ticketKey", dto.ticketKey?.value)
             writeInt64("version", dto.version)

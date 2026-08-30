@@ -37,17 +37,17 @@ class SimpleDao(
         jdbcOps.update(
             """
             insert into maia.simple (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someString
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someString", entity.someString)
             }
@@ -61,18 +61,18 @@ class SimpleDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.simple (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someString
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someString", entity.someString)
                 }
@@ -297,7 +297,7 @@ class SimpleDao(
         return this.jdbcOps.queryForList(
             """
             select
-                maia.simple.created_timestamp_utc as createdTimestampUtc,
+                maia.simple.created_timestamp as createdTimestamp,
                 maia.simple.id as id,
                 maia.simple.some_string as someString
             from maia.simple
@@ -318,11 +318,11 @@ class SimpleDao(
         val persistedEntity = jdbcOps.execute(
             """
             insert into maia.simple (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someString
             )
@@ -332,7 +332,7 @@ class SimpleDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("someString", upsertEntity.someString)
             },

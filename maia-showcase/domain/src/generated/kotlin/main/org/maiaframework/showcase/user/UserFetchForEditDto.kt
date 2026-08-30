@@ -14,13 +14,13 @@ import java.time.Instant
 data class UserFetchForEditDto(
     val authorities: List<Authority>,
     val createdBy: DomainId?,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val displayName: String,
     val encryptedPassword: String,
     val firstName: FirstName?,
     val id: DomainId,
     val lastModifiedBy: DomainId?,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val lastName: LastName,
     val lifecycleState: LifecycleState,
     val userGroupEntities: List<UserGroupJoinFetchDto>,
@@ -33,13 +33,13 @@ data class UserFetchForEditDto(
         return "UserFetchForEditDto{" +
                 "authorities = '" + this.authorities + '\'' + ", " + 
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "userGroupEntities = '" + this.userGroupEntities + '\'' + ", " + 

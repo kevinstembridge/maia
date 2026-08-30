@@ -106,8 +106,8 @@ class HistorySuperDaoTest: AbstractBlackBoxTest() {
         expectedChangeType: ChangeType
     ) {
 
-        assertThat(historyEntity.createdTimestampUtc).`as`("createdTimestampUtc").isEqualTo(entity.createdTimestampUtc)
-        assertThat(historyEntity.lastModifiedTimestampUtc).`as`("lastModifiedTimestampUtc").isEqualTo(entity.lastModifiedTimestampUtc)
+        assertThat(historyEntity.createdTimestamp).`as`("createdTimestamp").isEqualTo(entity.createdTimestamp)
+        assertThat(historyEntity.lastModifiedTimestamp).`as`("lastModifiedTimestamp").isEqualTo(entity.lastModifiedTimestamp)
         assertThat(historyEntity.someString).`as`("someString").isEqualTo(entity.someString)
         assertThat(historyEntity.version).`as`("v").isEqualTo(expectedVersion)
         assertThat(historyEntity.id).`as`("entityId").isEqualTo(entity.id)
@@ -123,8 +123,8 @@ class HistorySuperDaoTest: AbstractBlackBoxTest() {
         expectedChangeType: ChangeType
     ) {
 
-        assertThat(historyEntity.createdTimestampUtc).`as`("createdTimestampUtc").isEqualTo(entity.createdTimestampUtc)
-        assertThat(historyEntity.lastModifiedTimestampUtc).`as`("lastModifiedTimestampUtc").isEqualTo(entity.lastModifiedTimestampUtc)
+        assertThat(historyEntity.createdTimestamp).`as`("createdTimestamp").isEqualTo(entity.createdTimestamp)
+        assertThat(historyEntity.lastModifiedTimestamp).`as`("lastModifiedTimestamp").isEqualTo(entity.lastModifiedTimestamp)
         assertThat(historyEntity.someInt).`as`("someInt").isEqualTo(entity.someInt)
         assertThat(historyEntity.version).`as`("v").isEqualTo(expectedVersion)
         assertThat(historyEntity.id).`as`("entityId").isEqualTo(entity.id)

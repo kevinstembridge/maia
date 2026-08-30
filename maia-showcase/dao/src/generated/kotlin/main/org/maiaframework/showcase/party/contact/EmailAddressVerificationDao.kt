@@ -35,36 +35,36 @@ class EmailAddressVerificationDao(
             """
             insert into maia.email_address_verification (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 email_address,
                 id,
                 ip_address,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :emailAddress,
                 :id,
                 :ipAddress,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :version
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
                 addValue("emailAddress", entity.emailAddress)
                 addValue("id", entity.id)
                 addValue("ipAddress", entity.ipAddress)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("version", entity.version)
             }
         )
@@ -78,37 +78,37 @@ class EmailAddressVerificationDao(
             """
             insert into maia.email_address_verification (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 email_address,
                 id,
                 ip_address,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :emailAddress,
                 :id,
                 :ipAddress,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :version
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
                     addValue("emailAddress", entity.emailAddress)
                     addValue("id", entity.id)
                     addValue("ipAddress", entity.ipAddress)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("version", entity.version)
                 }
             }
@@ -425,7 +425,7 @@ class EmailAddressVerificationDao(
 
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
         }
 
     }

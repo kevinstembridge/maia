@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class UserGroupMembershipEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,
@@ -20,7 +20,7 @@ class UserGroupMembershipEntity(
     override fun toString(): String {
 
         return "UserGroupMembershipEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
@@ -47,11 +47,11 @@ class UserGroupMembershipEntity(
             userGroup: DomainId
         ): UserGroupMembershipEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return UserGroupMembershipEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 id,

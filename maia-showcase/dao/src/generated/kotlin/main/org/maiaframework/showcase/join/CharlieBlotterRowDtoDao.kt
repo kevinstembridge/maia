@@ -45,7 +45,7 @@ class CharlieBlotterRowDtoDao(
 
         val sqlForPage = """
             select
-                maia.charlie.created_timestamp_utc as createdTimestampUtc,
+                maia.charlie.created_timestamp as createdTimestamp,
                 maia.charlie.id as id,
                 maia.alpha.some_string as tableStringFromAlpha,
                 maia.bravo.some_string as tableStringFromBravo,

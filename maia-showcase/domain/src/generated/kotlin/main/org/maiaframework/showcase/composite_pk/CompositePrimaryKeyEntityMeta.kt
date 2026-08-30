@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object CompositePrimaryKeyEntityMeta {
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val someInt = "some_int"
 
@@ -36,7 +36,7 @@ object CompositePrimaryKeyEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "someInt" -> "some_int"
             "someModifiableString" -> "some_modifiable_string"
             "someString" -> "some_string"

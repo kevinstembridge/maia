@@ -12,13 +12,13 @@ class AlphaFetchForEditDtoRowMapper : MaiaRowMapper<AlphaFetchForEditDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): AlphaFetchForEditDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
 
         return AlphaFetchForEditDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString,

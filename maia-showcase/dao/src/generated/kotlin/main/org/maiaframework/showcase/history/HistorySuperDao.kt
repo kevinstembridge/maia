@@ -50,19 +50,19 @@ class HistorySuperDao(
             insert into maia.history_super (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_string,
                 version
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someString,
                 :version
             )
@@ -70,10 +70,10 @@ class HistorySuperDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", HistorySubOneEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
             }
@@ -91,19 +91,19 @@ class HistorySuperDao(
             insert into maia.history_super (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 version
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :version
             )
@@ -111,10 +111,10 @@ class HistorySuperDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", HistorySubTwoEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("version", entity.version)
             }
@@ -131,27 +131,27 @@ class HistorySuperDao(
             """
             insert into maia.history_super (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :version
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("version", entity.version)
                 }
             }
@@ -219,18 +219,18 @@ class HistorySuperDao(
 
         val id = entity.id
         val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val someString = entity.someString
 
         return HistorySubOneHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someString,
                 version)
 
@@ -245,18 +245,18 @@ class HistorySuperDao(
 
         val id = entity.id
         val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val someInt = entity.someInt
 
         return HistorySubTwoHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 version)
 
@@ -524,7 +524,7 @@ class HistorySuperDao(
 
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
         }
 
     }

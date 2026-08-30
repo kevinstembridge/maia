@@ -3,7 +3,7 @@
 
 
 export interface SimpleDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someString: string;
 }

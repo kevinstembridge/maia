@@ -33,12 +33,12 @@ class SimpleSerializer : CompactSerializer<SimpleEntity> {
 
     override fun read(reader: CompactReader): SimpleEntity {
 
-        val createdTimestampUtc = reader.readInstantNonNull("createdTimestampUtc")
+        val createdTimestamp = reader.readInstantNonNull("createdTimestamp")
         val id = DomainId(reader.readStringNonNull("id"))
         val someString = reader.readStringNonNull("someString")
 
         return SimpleEntity(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someString,
         )
@@ -50,7 +50,7 @@ class SimpleSerializer : CompactSerializer<SimpleEntity> {
 
         writer.apply {
 
-            writeTimestampWithTimezone("createdTimestampUtc", dto.createdTimestampUtc.atOffset(ZoneOffset.UTC))
+            writeTimestampWithTimezone("createdTimestamp", dto.createdTimestamp.atOffset(ZoneOffset.UTC))
             writeString("id", dto.id.value)
             writeString("someString", dto.someString)
 

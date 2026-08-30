@@ -7,7 +7,7 @@ import java.time.Instant
 
 
 class CompositePrimaryKeyEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val someInt: Int,
     val someModifiableString: String,
     val someString: String,
@@ -21,7 +21,7 @@ class CompositePrimaryKeyEntity(
     override fun toString(): String {
 
         return "CompositePrimaryKeyEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someModifiableString = '" + this.someModifiableString + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
@@ -43,11 +43,11 @@ class CompositePrimaryKeyEntity(
             someString: String
         ): CompositePrimaryKeyEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val version = 1L
 
             return CompositePrimaryKeyEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 someInt,
                 someModifiableString,
                 someString,

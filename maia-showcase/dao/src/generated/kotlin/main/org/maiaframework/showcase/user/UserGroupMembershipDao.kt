@@ -36,13 +36,13 @@ class UserGroupMembershipDao(
         jdbcOps.update(
             """
             insert into maia.user_group_membership (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
                 user_id,
                 user_group_id
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :user,
@@ -50,7 +50,7 @@ class UserGroupMembershipDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
                 addValue("id", entity.id)
@@ -67,13 +67,13 @@ class UserGroupMembershipDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.user_group_membership (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
                 user_id,
                 user_group_id
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :user,
@@ -82,7 +82,7 @@ class UserGroupMembershipDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
                     addValue("id", entity.id)
@@ -400,7 +400,7 @@ class UserGroupMembershipDao(
         return this.jdbcOps.queryForList(
             """
             select
-                maia.user_group_membership.created_timestamp_utc as createdTimestampUtc,
+                maia.user_group_membership.created_timestamp as createdTimestamp,
                 maia.user_group_membership.effective_from as effectiveFrom,
                 maia.user_group_membership.effective_to as effectiveTo,
                 maia.user_group_membership.id as id,

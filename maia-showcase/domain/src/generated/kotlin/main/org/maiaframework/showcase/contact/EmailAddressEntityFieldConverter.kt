@@ -20,7 +20,7 @@ class EmailAddressEntityFieldConverter : EntityFieldConverter {
 
             "created_by_id" -> // createdBy
                 return (inputValue as DomainId).value
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "email_address" -> // emailAddress
                 return (inputValue as EmailAddress).value

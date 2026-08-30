@@ -32,7 +32,7 @@ class FeatureToggleHistoryBlotterRowDtoRowMapper(
         val featureName = rsa.readString("featureName") { FeatureName(it) }
         val infoLink = rsa.readString("infoLink") { InfoLink(it) }
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val reviewDate = rsa.readLocalDate("reviewDate")
         val ticketKey = rsa.readString("ticketKey") { TicketKey(it) }
         val version = rsa.readLong("version")
@@ -48,7 +48,7 @@ class FeatureToggleHistoryBlotterRowDtoRowMapper(
             featureName,
             infoLink,
             lastModifiedByUsername,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             reviewDate,
             ticketKey,
             version,

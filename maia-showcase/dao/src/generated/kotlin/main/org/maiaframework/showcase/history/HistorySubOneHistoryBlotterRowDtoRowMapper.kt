@@ -14,13 +14,13 @@ class HistorySubOneHistoryBlotterRowDtoRowMapper : MaiaRowMapper<HistorySubOneHi
     override fun mapRow(rsa: ResultSetAdapter): HistorySubOneHistoryBlotterRowDto {
 
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val someString = rsa.readString("someString")
         val version = rsa.readLong("version")
 
         return HistorySubOneHistoryBlotterRowDto(
             changeType,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             someString,
             version,
         )

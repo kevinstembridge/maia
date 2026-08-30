@@ -9,10 +9,10 @@ import java.time.Instant
 
 data class ParentOneEntityTestBuilder(
     val createdById: DomainId = Anys.defaultCreatedById,
-    val createdTimestampUtc: Instant = anyInstant(),
+    val createdTimestamp: Instant = anyInstant(),
     val id: DomainId = DomainId.newId(),
     val lastModifiedById: DomainId = createdById,
-    val lastModifiedTimestampUtc: Instant = anyInstant(),
+    val lastModifiedTimestamp: Instant = anyInstant(),
     val someString: String = anyAlphaNumeric(),
     val someUniqueString: String = anyAlphaNumeric(),
 ) {
@@ -22,10 +22,10 @@ data class ParentOneEntityTestBuilder(
 
         return ParentOneEntity(
             this.createdById,
-            this.createdTimestampUtc,
+            this.createdTimestamp,
             this.id,
             this.lastModifiedById,
-            this.lastModifiedTimestampUtc,
+            this.lastModifiedTimestamp,
             this.someString,
             this.someUniqueString
         )

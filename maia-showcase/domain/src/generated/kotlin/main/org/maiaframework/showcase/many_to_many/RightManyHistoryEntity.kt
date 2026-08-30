@@ -10,7 +10,7 @@ import java.time.Instant
 
 class RightManyHistoryEntity(
     val changeType: ChangeType,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someInt: Int,
     val someString: String,
@@ -25,7 +25,7 @@ class RightManyHistoryEntity(
 
         return "RightManyHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 

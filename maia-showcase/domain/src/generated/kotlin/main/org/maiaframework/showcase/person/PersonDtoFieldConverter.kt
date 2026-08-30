@@ -14,7 +14,7 @@ class PersonDtoFieldConverter : SearchFieldConverter {
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
 
         when(tableColumnPath) {
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "display_name" -> // displayName
                 return inputValue

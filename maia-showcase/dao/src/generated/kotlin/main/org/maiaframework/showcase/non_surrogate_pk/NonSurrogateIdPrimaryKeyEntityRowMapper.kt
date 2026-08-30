@@ -13,13 +13,13 @@ class NonSurrogateIdPrimaryKeyEntityRowMapper : MaiaRowMapper<NonSurrogateIdPrim
 
     override fun mapRow(rsa: ResultSetAdapter): NonSurrogateIdPrimaryKeyEntity {
 
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readString("id") { SomeStringValueClass(it) }
         val someModifiableString = rsa.readString("some_modifiable_string")
         val version = rsa.readLong("version")
 
         return NonSurrogateIdPrimaryKeyEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someModifiableString,
                 version

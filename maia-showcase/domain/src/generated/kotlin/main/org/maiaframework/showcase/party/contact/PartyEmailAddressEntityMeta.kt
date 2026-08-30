@@ -14,7 +14,7 @@ object PartyEmailAddressEntityMeta {
 
     const val createdBy = "created_by_id"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val effectiveFrom = "effective_from"
 
@@ -28,7 +28,7 @@ object PartyEmailAddressEntityMeta {
 
     const val lastModifiedBy = "last_modified_by_id"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val party = "party_id"
 
@@ -60,14 +60,14 @@ object PartyEmailAddressEntityMeta {
 
         return when(classFieldName) {
             "createdBy" -> "created_by_id"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "effectiveFrom" -> "effective_from"
             "effectiveTo" -> "effective_to"
             "emailAddress" -> "email_address"
             "id" -> "id"
             "isPrimaryContact" -> "is_primary_contact"
             "lastModifiedBy" -> "last_modified_by_id"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "party" -> "party_id"
             "purposes" -> "purposes"
             "version" -> "version"

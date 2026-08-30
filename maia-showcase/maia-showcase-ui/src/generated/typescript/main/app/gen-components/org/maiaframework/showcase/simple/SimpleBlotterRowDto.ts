@@ -3,7 +3,7 @@
 
 
 export interface SimpleBlotterRowDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someString: string;
 }

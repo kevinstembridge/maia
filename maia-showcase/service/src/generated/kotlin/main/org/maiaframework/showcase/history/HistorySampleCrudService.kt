@@ -49,17 +49,17 @@ class HistorySampleCrudService(
         val someString: String = createDto.someString
         val createdBy = currentUser.userId
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
         val lastModifiedBy = currentUser.userId
-        val lastModifiedTimestampUtc = createdTimestampUtc
+        val lastModifiedTimestamp = createdTimestamp
         val version = 1L
 
         return HistorySampleEntity(
             createdBy,
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             someInt,
             someString,
             version
@@ -96,7 +96,7 @@ class HistorySampleCrudService(
             someInt(editDto.someInt)
             someString(editDto.someString)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -117,7 +117,7 @@ class HistorySampleCrudService(
         val updater = HistorySampleEntityUpdater.forPrimaryKey(editDto.id, version) {
             someString(editDto.someString)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -138,7 +138,7 @@ class HistorySampleCrudService(
         val updater = HistorySampleEntityUpdater.forPrimaryKey(editDto.id, version) {
             someInt(editDto.someInt)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)

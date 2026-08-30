@@ -36,13 +36,13 @@ class BravoDao(
             """
             insert into maia.bravo (
                 alpha_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
                 :alpha,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
@@ -50,7 +50,7 @@ class BravoDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("alpha", entity.alpha)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -66,13 +66,13 @@ class BravoDao(
             """
             insert into maia.bravo (
                 alpha_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
                 :alpha,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
@@ -81,7 +81,7 @@ class BravoDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("alpha", entity.alpha)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
@@ -284,7 +284,7 @@ class BravoDao(
             select
                 maia.alpha.id as alphaId,
                 maia.alpha.some_string as alphaName,
-                maia.bravo.created_timestamp_utc as createdTimestampUtc,
+                maia.bravo.created_timestamp as createdTimestamp,
                 maia.bravo.id as id,
                 maia.bravo.some_int as someInt,
                 maia.bravo.some_string as someString

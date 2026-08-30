@@ -14,7 +14,7 @@ object EmailAddressEntityMeta {
 
     const val createdBy = "created_by_id"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val emailAddress = "email_address"
 
@@ -33,7 +33,7 @@ object EmailAddressEntityMeta {
 
         return when(classFieldName) {
             "createdBy" -> "created_by_id"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "emailAddress" -> "email_address"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")

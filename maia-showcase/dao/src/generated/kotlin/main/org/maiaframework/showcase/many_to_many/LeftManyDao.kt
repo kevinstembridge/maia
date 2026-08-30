@@ -39,25 +39,25 @@ class LeftManyDao(
         jdbcOps.update(
             """
             insert into maia.left_many (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :version
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
@@ -74,16 +74,16 @@ class LeftManyDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.left_many (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :version
@@ -91,9 +91,9 @@ class LeftManyDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
                     addValue("version", entity.version)
@@ -135,16 +135,16 @@ class LeftManyDao(
     ): LeftManyHistoryEntity {
 
         val id = entity.id
-        val createdTimestampUtc = entity.createdTimestampUtc
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val someInt = entity.someInt
         val someString = entity.someString
 
         return LeftManyHistoryEntity(
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 someString,
                 version)
@@ -324,9 +324,9 @@ class LeftManyDao(
         return this.jdbcOps.queryForList(
             """
             select
-                maia.left_many.created_timestamp_utc as createdTimestampUtc,
+                maia.left_many.created_timestamp as createdTimestamp,
                 maia.left_many.id as id,
-                maia.left_many.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.left_many.last_modified_timestamp as lastModifiedTimestamp,
                 maia.left_many.some_int as someInt,
                 maia.left_many.some_string as someString,
                 maia.left_many.version as version
@@ -396,7 +396,7 @@ class LeftManyDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "someInt" -> sqlParams.addValue("someInt", field.value as Int)
             "someString" -> sqlParams.addValue("someString", field.value as String)
         }

@@ -44,7 +44,7 @@ class UserDtoDao(
         val sqlForPage = """
             select
                 maia.v_party.authorities as authorities,
-                maia.v_party.created_timestamp_utc as createdTimestampUtc,
+                maia.v_party.created_timestamp as createdTimestamp,
                 maia.v_party.display_name as displayName,
                 maia.v_party.encrypted_password as encryptedPassword,
                 maia.v_party.first_name as firstName,

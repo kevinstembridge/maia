@@ -16,9 +16,9 @@ object OrgRoleHistoryBlotterRowDtoMeta {
             "description" -> "maia.org_role_history.description"
             "displayName" -> "maia.org_role_history.display_name"
             "key" -> "maia.org_role_history.key"
-            "lastModifiedTimestampUtc" -> "maia.org_role_history.last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "maia.org_role_history.last_modified_timestamp"
             "version" -> "maia.org_role_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, description, displayName, key, lastModifiedTimestampUtc, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, description, displayName, key, lastModifiedTimestamp, version]")
         }
 
     }
@@ -31,9 +31,9 @@ object OrgRoleHistoryBlotterRowDtoMeta {
             "description" -> JdbcCompatibleType.text
             "displayName" -> JdbcCompatibleType.text
             "key" -> JdbcCompatibleType.text
-            "lastModifiedTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "lastModifiedTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, description, displayName, key, lastModifiedTimestampUtc, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, description, displayName, key, lastModifiedTimestamp, version]")
         }
 
     }

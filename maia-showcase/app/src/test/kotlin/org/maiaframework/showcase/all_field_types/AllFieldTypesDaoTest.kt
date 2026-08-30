@@ -43,7 +43,7 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
     @Test
     fun `test insert and findById`() {
 
-        val AllFieldTypesEntity = AllFieldTypesEntityTestBuilder(lastModifiedTimestampUtc = Instant.now().truncatedTo(ChronoUnit.MILLIS)).build()
+        val AllFieldTypesEntity = AllFieldTypesEntityTestBuilder(lastModifiedTimestamp = Instant.now().truncatedTo(ChronoUnit.MILLIS)).build()
 
         this.allFieldTypesDao.insert(AllFieldTypesEntity)
 
@@ -52,8 +52,8 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
         assertThat(actual).isNotNull()
 
         assertThat(actual.id).isEqualTo(AllFieldTypesEntity.id)
-        assertThat(actual.createdTimestampUtc).isEqualTo(AllFieldTypesEntity.createdTimestampUtc)
-        assertThat(actual.lastModifiedTimestampUtc).isEqualTo(AllFieldTypesEntity.lastModifiedTimestampUtc)
+        assertThat(actual.createdTimestamp).isEqualTo(AllFieldTypesEntity.createdTimestamp)
+        assertThat(actual.lastModifiedTimestamp).isEqualTo(AllFieldTypesEntity.lastModifiedTimestamp)
 
         assertEntityFields(actual, AllFieldTypesEntity)
 
@@ -321,7 +321,7 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
 
         val expectedUpdatedEntity = allFieldTypesEntityTestBuilder1.copy(
                 id = DomainId.newId(),
-                createdTimestampUtc = actualOriginal.createdTimestampUtc.plusSeconds(1),
+                createdTimestamp = actualOriginal.createdTimestamp.plusSeconds(1),
                 someIntModifiable = actualOriginal.someIntModifiable + 1,
                 someBoolean = actualOriginal.someBoolean == false
         ).build()
@@ -329,7 +329,7 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
         val actualUpdated = this.allFieldTypesDao.upsertBySomeString(expectedUpdatedEntity)
         assertThat(actualUpdated.id).isEqualTo(AllFieldTypesEntityOriginal.id)
         assertThat(actualUpdated.id).isNotEqualTo(expectedUpdatedEntity.id)
-        assertThat(actualUpdated.createdTimestampUtc).isNotEqualTo(expectedUpdatedEntity.createdTimestampUtc)
+        assertThat(actualUpdated.createdTimestamp).isNotEqualTo(expectedUpdatedEntity.createdTimestamp)
         assertThat(actualUpdated.someIntModifiable).isEqualTo(expectedUpdatedEntity.someIntModifiable)
         assertThat(actualUpdated.someBoolean).isEqualTo(actualOriginal.someBoolean)
 
@@ -351,7 +351,7 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
 
         val expectedUpdatedEntity = allFieldTypesEntityTestBuilder.copy(
                 id = DomainId.newId(),
-                createdTimestampUtc =  actualOriginal.createdTimestampUtc.plusSeconds(1),
+                createdTimestamp =  actualOriginal.createdTimestamp.plusSeconds(1),
                 someIntModifiable =  actualOriginal.someIntModifiable + 1,
                 someBoolean = actualOriginal.someBoolean == false)
                 .build()
@@ -359,7 +359,7 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
         val actualUpdated = this.allFieldTypesDao.upsertBySomeStringType(expectedUpdatedEntity)
         assertThat(actualUpdated.id).isEqualTo(AllFieldTypesEntityOriginal.id)
         assertThat(actualUpdated.id).isNotEqualTo(expectedUpdatedEntity.id)
-        assertThat(actualUpdated.createdTimestampUtc).isNotEqualTo(expectedUpdatedEntity.createdTimestampUtc)
+        assertThat(actualUpdated.createdTimestamp).isNotEqualTo(expectedUpdatedEntity.createdTimestamp)
         assertThat(actualUpdated.someIntModifiable).isEqualTo(expectedUpdatedEntity.someIntModifiable)
         assertThat(actualUpdated.someBoolean).isEqualTo(actualOriginal.someBoolean)
 

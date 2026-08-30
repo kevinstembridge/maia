@@ -6,10 +6,10 @@ import {PartyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/
 
 export interface HistorySampleEntityDetailViewDto {
     createdBy: PartyPkAndNameDto;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     lastModifiedBy: PartyPkAndNameDto;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     someInt: number;
     someString: string;
     version: number;

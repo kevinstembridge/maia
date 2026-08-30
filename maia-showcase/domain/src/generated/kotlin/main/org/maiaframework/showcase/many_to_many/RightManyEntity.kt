@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class RightManyEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someInt: Int,
     val someString: String,
@@ -19,7 +19,7 @@ class RightManyEntity(
     override fun toString(): String {
 
         return "RightManyEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
@@ -43,12 +43,12 @@ class RightManyEntity(
             someString: String
         ): RightManyEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
             val version = 1L
 
             return RightManyEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someInt,
                 someString,

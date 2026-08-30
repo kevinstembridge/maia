@@ -6,11 +6,11 @@ import {RightManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showc
 
 
 export interface LeftToRightComplexFetchForEditDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     effectiveFrom?: string;
     effectiveTo?: string;
     id: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     left: LeftManyPkAndNameDto;
     right: RightManyPkAndNameDto;
     someIntOnComplex: number;

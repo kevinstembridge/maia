@@ -46,20 +46,20 @@ class GrandparentDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 some_unique_string
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :someUniqueString
@@ -68,10 +68,10 @@ class GrandparentDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", ChildOneEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
                 addValue("someUniqueString", entity.someUniqueString)
@@ -88,19 +88,19 @@ class GrandparentDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_string,
                 some_unique_string
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someString,
                 :someUniqueString
             )
@@ -108,10 +108,10 @@ class GrandparentDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", ParentOneEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someString", entity.someString)
                 addValue("someUniqueString", entity.someUniqueString)
             }
@@ -127,19 +127,19 @@ class GrandparentDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_unique_string
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someUniqueString
             )
@@ -147,10 +147,10 @@ class GrandparentDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", ParentTwoEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someUniqueString", entity.someUniqueString)
             }
@@ -165,25 +165,25 @@ class GrandparentDao(
             """
             insert into maia.grandparent (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc
+                last_modified_timestamp
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc
+                :lastModifiedTimestamp
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 }
             }
         )
@@ -430,7 +430,7 @@ class GrandparentDao(
 
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
         }
 
     }

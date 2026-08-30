@@ -9,7 +9,7 @@ import java.time.Instant
 
 class CompositePrimaryKeyHistoryEntity(
     val changeType: ChangeType,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val someInt: Int,
     val someModifiableString: String,
     val someString: String,
@@ -24,7 +24,7 @@ class CompositePrimaryKeyHistoryEntity(
 
         return "CompositePrimaryKeyHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someModifiableString = '" + this.someModifiableString + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 

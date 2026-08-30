@@ -18,7 +18,7 @@ class PartyHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PartyHistoryBlotterRowD
         val createdBy = rsa.readDomainId("createdBy")
         val displayName = rsa.readString("displayName")
         val lastModifiedBy = rsa.readDomainId("lastModifiedBy")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val lifecycleState = rsa.readEnum("lifecycleState", LifecycleState::class.java)
         val version = rsa.readLong("version")
 
@@ -27,7 +27,7 @@ class PartyHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PartyHistoryBlotterRowD
             createdBy,
             displayName,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lifecycleState,
             version,
         )

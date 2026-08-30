@@ -23,11 +23,11 @@ class AllFieldTypesEntityDetailViewDtoRepo(
         return AllFieldTypesEntityDetailViewDto(
             createdBy = partyPkAndNameDtoFor(entity.createdBy),
             createdByUsername = entity.createdByUsername,
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             id = entity.id,
             lastModifiedBy = partyPkAndNameDtoFor(entity.lastModifiedBy),
             lastModifiedByUsername = entity.lastModifiedByUsername,
-            lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc,
+            lastModifiedTimestamp = entity.lastModifiedTimestamp,
             someBoolean = entity.someBoolean,
             someBooleanNullable = entity.someBooleanNullable,
             someBooleanType = entity.someBooleanType,

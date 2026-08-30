@@ -43,11 +43,11 @@ class CharlieAgGridCrudService(
         val someInt: Int = createDto.someInt
         val someString: String = createDto.someString
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
 
         return CharlieAgGridEntity(
             bravo,
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString

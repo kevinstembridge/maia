@@ -13,10 +13,10 @@ object HistorySubOneHistoryBlotterRowDtoMeta {
 
         return when(dtoFieldName) {
             "changeType" -> "maia.history_super_history.change_type"
-            "lastModifiedTimestampUtc" -> "maia.history_super_history.last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "maia.history_super_history.last_modified_timestamp"
             "someString" -> "maia.history_super_history.some_string"
             "version" -> "maia.history_super_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, lastModifiedTimestampUtc, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, lastModifiedTimestamp, someString, version]")
         }
 
     }
@@ -26,10 +26,10 @@ object HistorySubOneHistoryBlotterRowDtoMeta {
 
         return when(dtoFieldName) {
             "changeType" -> JdbcCompatibleType.text
-            "lastModifiedTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "lastModifiedTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "someString" -> JdbcCompatibleType.text
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, lastModifiedTimestampUtc, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, lastModifiedTimestamp, someString, version]")
         }
 
     }

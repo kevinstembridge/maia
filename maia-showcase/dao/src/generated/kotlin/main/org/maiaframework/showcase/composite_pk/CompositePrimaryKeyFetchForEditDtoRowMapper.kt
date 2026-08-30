@@ -12,14 +12,14 @@ class CompositePrimaryKeyFetchForEditDtoRowMapper : MaiaRowMapper<CompositePrima
 
     override fun mapRow(rsa: ResultSetAdapter): CompositePrimaryKeyFetchForEditDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val someInt = rsa.readInt("someInt")
         val someModifiableString = rsa.readString("someModifiableString")
         val someString = rsa.readString("someString")
         val version = rsa.readLong("version")
 
         return CompositePrimaryKeyFetchForEditDto(
-            createdTimestampUtc,
+            createdTimestamp,
             someInt,
             someModifiableString,
             someString,

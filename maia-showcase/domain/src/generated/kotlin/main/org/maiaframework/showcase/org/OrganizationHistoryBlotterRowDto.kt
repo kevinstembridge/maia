@@ -14,7 +14,7 @@ data class OrganizationHistoryBlotterRowDto(
     val createdBy: DomainId?,
     val displayName: String,
     val lastModifiedBy: DomainId?,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val lifecycleState: LifecycleState,
     val orgName: String,
     val version: Long

@@ -13,14 +13,14 @@ class WithOptionalIndexFieldEntityRowMapper : MaiaRowMapper<WithOptionalIndexFie
 
     override fun mapRow(rsa: ResultSetAdapter): WithOptionalIndexFieldEntity {
 
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val someOptionalString1 = rsa.readStringOrNull("some_optional_string1") { SomeStringType(it) }
         val someOptionalString2 = rsa.readStringOrNull("some_optional_string2") { SomeStringType(it) }
         val someString = rsa.readString("some_string") { SomeStringType(it) }
 
         return WithOptionalIndexFieldEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someOptionalString1,
                 someOptionalString2,

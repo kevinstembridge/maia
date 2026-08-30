@@ -12,7 +12,7 @@ class LeftToRightSystemSingleEffectiveEntityRowMapper : MaiaRowMapper<LeftToRigh
 
     override fun mapRow(rsa: ResultSetAdapter): LeftToRightSystemSingleEffectiveEntity {
 
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val effectiveFrom = rsa.readInstantOrNull("effective_from")
         val effectiveTo = rsa.readInstantOrNull("effective_to")
         val id = rsa.readDomainId("id")
@@ -20,7 +20,7 @@ class LeftToRightSystemSingleEffectiveEntityRowMapper : MaiaRowMapper<LeftToRigh
         val rightSystemSingleEffective = rsa.readDomainId("right_system_single_effective_id")
 
         return LeftToRightSystemSingleEffectiveEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 id,

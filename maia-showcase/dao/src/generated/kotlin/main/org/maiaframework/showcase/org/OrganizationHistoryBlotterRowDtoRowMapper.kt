@@ -18,7 +18,7 @@ class OrganizationHistoryBlotterRowDtoRowMapper : MaiaRowMapper<OrganizationHist
         val createdBy = rsa.readDomainId("createdBy")
         val displayName = rsa.readString("displayName")
         val lastModifiedBy = rsa.readDomainId("lastModifiedBy")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val lifecycleState = rsa.readEnum("lifecycleState", LifecycleState::class.java)
         val orgName = rsa.readString("orgName")
         val version = rsa.readLong("version")
@@ -28,7 +28,7 @@ class OrganizationHistoryBlotterRowDtoRowMapper : MaiaRowMapper<OrganizationHist
             createdBy,
             displayName,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lifecycleState,
             orgName,
             version,

@@ -60,28 +60,28 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
 
 
     private val bravoEntity1 = BravoAgGridEntityTestBuilder(
-        createdTimestampUtc = timestamp1,
+        createdTimestamp = timestamp1,
         alphaId = alphaEntity1.id,
         someString = "aSomeValue1"
     ).build()
 
 
     private val bravoEntity2 = BravoAgGridEntityTestBuilder(
-        createdTimestampUtc = timestamp2,
+        createdTimestamp = timestamp2,
         alphaId = alphaEntity1.id,
         someString = "aSomeValue2"
     ).build()
 
 
     private val bravoEntity3 = BravoAgGridEntityTestBuilder(
-        createdTimestampUtc = timestamp2,
+        createdTimestamp = timestamp2,
         alphaId = alphaEntity2.id,
         someString = "bSomeValue3"
     ).build()
 
 
     private val bravoEntity4 = BravoAgGridEntityTestBuilder(
-        createdTimestampUtc = timestamp3,
+        createdTimestamp = timestamp3,
         alphaId = alphaEntity2.id,
         someString = "bSomeValue4"
     ).build()
@@ -450,7 +450,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             startRow = 0,
             endRow = 3,
             filterModel = mapOf(
-                "createdTimestampUtc" to mapOf(
+                "createdTimestamp" to mapOf(
                     "filterType" to "date",
                     "type" to "equals",
                     "dateFrom" to today
@@ -489,7 +489,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             startRow = 0,
             endRow = 3,
             filterModel = mapOf(
-                "createdTimestampUtc" to mapOf(
+                "createdTimestamp" to mapOf(
                     "operator" to "OR",
                     "condition1" to mapOf(
                         "filterType" to "date",
@@ -548,7 +548,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             startRow = 0,
             endRow = 3,
             filterModel = mapOf(
-                "createdTimestampUtc" to mapOf(
+                "createdTimestamp" to mapOf(
                     "filterType" to "date",
                     "type" to "greaterThan",
                     "dateFrom" to today
@@ -584,7 +584,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             startRow = 0,
             endRow = 3,
             filterModel = mapOf(
-                "createdTimestampUtc" to mapOf(
+                "createdTimestamp" to mapOf(
                     "filterType" to "date",
                     "type" to "lessThan",
                     "dateFrom" to today,
@@ -630,7 +630,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             startRow = 0,
             endRow = 3,
             filterModel = mapOf(
-                "createdTimestampUtc" to mapOf(
+                "createdTimestamp" to mapOf(
                     "filterType" to "date",
                     "type" to "notEqual",
                     "dateFrom" to today,
@@ -658,7 +658,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             startRow = 0,
             endRow = 3,
             filterModel = mapOf(
-                "createdTimestampUtc" to mapOf(
+                "createdTimestamp" to mapOf(
                     "filterType" to "date",
                     "type" to "inRange",
                     "dateFrom" to today,
@@ -1076,7 +1076,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
                         ),
                     )
                 ),
-                "createdTimestampUtc" to mapOf(
+                "createdTimestamp" to mapOf(
                     "operator" to "OR",
                     "condition1" to mapOf(
                         "filterType" to "date",
@@ -1125,7 +1125,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
                     "type" to "equals",
                     "filter" to 2 // => AlphaAgGridEntity2
                 ),
-                "createdTimestampUtc" to mapOf(
+                "createdTimestamp" to mapOf(
                     "filterType" to "date",
                     "type" to "equals",
                     "dateFrom" to today, // => BravoAgGridEntity2, BravoAgGridEntity3
@@ -1363,7 +1363,7 @@ class AgGridDataSourceTest : AbstractBlackBoxTest() {
             "dtoStringFromBravo" to bravoEntity.someString,
             "dtoIntFromAlpha" to alphaEntity.someInt,
             "dtoIntFromBravo" to bravoEntity.someInt,
-            "createdTimestampUtc" to bravoEntity.createdTimestampUtc.truncatedTo(ChronoUnit.MILLIS).toString()
+            "createdTimestamp" to bravoEntity.createdTimestamp.truncatedTo(ChronoUnit.MILLIS).toString()
         )
 
     }

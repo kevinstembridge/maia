@@ -14,22 +14,22 @@ class OrgRoleEntityRowMapper : MaiaRowMapper<OrgRoleEntity> {
     override fun mapRow(rsa: ResultSetAdapter): OrgRoleEntity {
 
         val createdBy = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readString("description")
         val displayName = rsa.readString("display_name")
         val key = rsa.readString("key") { OrgRoleKey(it) }
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val version = rsa.readLong("version")
 
         return OrgRoleEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 displayName,
                 key,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 version
         )
 

@@ -3,7 +3,7 @@
 
 
 export interface AlphaBlotterRowDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someInt: number;
     someString: string;

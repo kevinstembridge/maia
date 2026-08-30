@@ -14,7 +14,7 @@ class CharlieAgGridDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "dtoIntFromAlpha" -> "some_int"
             "dtoIntFromBravo" -> "some_int"
             "dtoIntFromCharlie" -> "some_int"

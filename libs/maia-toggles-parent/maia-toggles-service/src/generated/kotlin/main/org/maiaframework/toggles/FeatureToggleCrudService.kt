@@ -47,7 +47,7 @@ class FeatureToggleCrudService(
         val version = editDto.version
         val updater = FeatureToggleEntityUpdater.forPrimaryKey(featureName, version) {
             activationStrategies(editDto.activationStrategies)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -67,7 +67,7 @@ class FeatureToggleCrudService(
         val updater = FeatureToggleEntityUpdater.forPrimaryKey(editDto.featureName, version) {
             activationStrategies(editDto.activationStrategies)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)

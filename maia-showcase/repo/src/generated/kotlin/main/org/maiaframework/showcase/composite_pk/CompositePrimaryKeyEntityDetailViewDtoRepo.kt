@@ -17,7 +17,7 @@ class CompositePrimaryKeyEntityDetailViewDtoRepo(
         val entity = this.entityRepo.findByPrimaryKey(primaryKey)
 
         return CompositePrimaryKeyEntityDetailViewDto(
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             someInt = entity.someInt,
             someModifiableString = entity.someModifiableString,
             someString = entity.someString,

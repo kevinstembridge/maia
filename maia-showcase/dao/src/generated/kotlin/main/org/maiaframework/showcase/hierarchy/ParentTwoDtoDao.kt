@@ -43,7 +43,7 @@ class ParentTwoDtoDao(
 
         val sqlForPage = """
             select
-                maia.grandparent.created_timestamp_utc as createdTimestampUtc,
+                maia.grandparent.created_timestamp as createdTimestamp,
                 maia.grandparent.id as id,
                 maia.grandparent.some_int as someInt,
                 maia.grandparent.some_unique_string as someUniqueString,

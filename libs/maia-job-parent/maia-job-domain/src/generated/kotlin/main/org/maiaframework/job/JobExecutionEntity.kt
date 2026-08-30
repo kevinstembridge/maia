@@ -9,13 +9,13 @@ import java.time.Instant
 
 class JobExecutionEntity(
     val completionStatus: JobCompletionStatus?,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val endTimestampUtc: Instant?,
     val errorMessage: String?,
     val id: DomainId,
     val invokedBy: String,
     val jobName: JobName,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val metrics: Map<String, Any>,
     val stackTrace: String?,
     val startTimestampUtc: Instant
@@ -26,13 +26,13 @@ class JobExecutionEntity(
 
         return "JobExecutionEntity{" +
                 "completionStatus = '" + this.completionStatus + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "endTimestampUtc = '" + this.endTimestampUtc + '\'' + ", " + 
                 "errorMessage = '" + this.errorMessage + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "invokedBy = '" + this.invokedBy + '\'' + ", " + 
                 "jobName = '" + this.jobName + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "metrics = '" + this.metrics + '\'' + ", " + 
                 "stackTrace = '" + this.stackTrace + '\'' + ", " + 
                 "startTimestampUtc = '" + this.startTimestampUtc + '\'' +
@@ -61,19 +61,19 @@ class JobExecutionEntity(
             startTimestampUtc: Instant
         ): JobExecutionEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
 
             return JobExecutionEntity(
                 completionStatus,
-                createdTimestampUtc,
+                createdTimestamp,
                 endTimestampUtc,
                 errorMessage,
                 id,
                 invokedBy,
                 jobName,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 metrics,
                 stackTrace,
                 startTimestampUtc

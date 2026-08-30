@@ -15,28 +15,28 @@ class PartyEmailAddressEntityRowMapper : MaiaRowMapper<PartyEmailAddressEntity> 
     override fun mapRow(rsa: ResultSetAdapter): PartyEmailAddressEntity {
 
         val createdBy = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val effectiveFrom = rsa.readInstantOrNull("effective_from")
         val effectiveTo = rsa.readInstantOrNull("effective_to")
         val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val id = rsa.readDomainId("id")
         val isPrimaryContact = rsa.readBoolean("is_primary_contact")
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val party = rsa.readDomainId("party_id")
         val purposes = rsa.readListOfStrings("purposes") { EmailAddressPurpose.valueOf(it) }
         val version = rsa.readLong("version")
 
         return PartyEmailAddressEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 emailAddress,
                 id,
                 isPrimaryContact,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 party,
                 purposes,
                 version

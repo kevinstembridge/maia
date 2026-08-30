@@ -14,11 +14,11 @@ object LeftManyHistoryEntityMeta {
 
     const val changeType = "change_type"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val id = "id"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val someInt = "some_int"
 
@@ -41,9 +41,9 @@ object LeftManyHistoryEntityMeta {
 
         return when(classFieldName) {
             "changeType" -> "change_type"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "someInt" -> "some_int"
             "someString" -> "some_string"
             "version" -> "version"

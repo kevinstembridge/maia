@@ -24,13 +24,13 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
     private val ignoreValueMatcher = ValueMatcher<Any> { _, _ -> true }
 
 
-    private val createdTimestampUtcCustomization = Customization.customization("**.createdTimestampUtc", ignoreValueMatcher)
+    private val createdTimestampCustomization = Customization.customization("**.createdTimestamp", ignoreValueMatcher)
 
 
-    private val lastModifiedTimestampUtcCustomization = Customization.customization("**.lastModifiedTimestampUtc", ignoreValueMatcher)
+    private val lastModifiedTimestampCustomization = Customization.customization("**.lastModifiedTimestamp", ignoreValueMatcher)
 
 
-    private val jsonComparator = CustomComparator(JSONCompareMode.STRICT, createdTimestampUtcCustomization, lastModifiedTimestampUtcCustomization)
+    private val jsonComparator = CustomComparator(JSONCompareMode.STRICT, createdTimestampCustomization, lastModifiedTimestampCustomization)
 
 
     private val jsonAssertComparator = JsonAssert.comparator(jsonComparator)
@@ -84,13 +84,13 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
                             "attributes" to null,
                             "comment" to "Initial creation by system",
                             "contactPerson" to "Muriel",
-                            "createdTimestampUtc" to "ignored",
+                            "createdTimestamp" to "ignored",
                             "description" to null,
                             "enabled" to false,
                             "featureName" to "SampleFeatureOne",
                             "infoLink" to null,
                             "lastModifiedBy" to "SYSTEM",
-                            "lastModifiedTimestampUtc" to "ignored",
+                            "lastModifiedTimestamp" to "ignored",
                             "reviewDate" to null,
                             "ticketKey" to null,
                         ),
@@ -99,13 +99,13 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
                             "attributes" to null,
                             "comment" to "Initial creation by system",
                             "contactPerson" to "Muriel",
-                            "createdTimestampUtc" to "ignored",
+                            "createdTimestamp" to "ignored",
                             "description" to null,
                             "enabled" to true,
                             "featureName" to "SampleFeatureTwo",
                             "infoLink" to null,
                             "lastModifiedBy" to "SYSTEM",
-                            "lastModifiedTimestampUtc" to "ignored",
+                            "lastModifiedTimestamp" to "ignored",
                             "reviewDate" to null,
                             "ticketKey" to null,
                         ),

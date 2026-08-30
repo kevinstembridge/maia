@@ -57,7 +57,7 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
             modifiableBySystem()
             lengthConstraint(max = 10_000)
         }
-        field_lastModifiedTimestampUtc()
+        field_lastModifiedTimestamp()
         index {
             indexName("jobName_idx")
             withFieldAscending("jobName")

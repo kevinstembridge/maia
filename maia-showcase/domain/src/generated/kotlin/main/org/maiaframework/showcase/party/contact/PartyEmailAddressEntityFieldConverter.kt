@@ -21,7 +21,7 @@ class PartyEmailAddressEntityFieldConverter : EntityFieldConverter {
 
             "created_by_id" -> // createdBy
                 return (inputValue as DomainId).value
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "effective_from" -> // effectiveFrom
                 return inputValue
@@ -35,7 +35,7 @@ class PartyEmailAddressEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "last_modified_by_id" -> // lastModifiedBy
                 return (inputValue as DomainId).value
-            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
             "party_id" -> // party
                 return (inputValue as DomainId).value

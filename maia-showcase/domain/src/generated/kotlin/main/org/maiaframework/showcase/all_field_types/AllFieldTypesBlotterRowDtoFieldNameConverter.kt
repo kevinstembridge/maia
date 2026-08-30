@@ -19,7 +19,7 @@ class AllFieldTypesBlotterRowDtoFieldNameConverter : SearchFieldNameConverter {
             "id" -> "id"
             "lastModifiedBy" -> "id"
             "lastModifiedByUsername" -> "last_modified_by_name"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "someBoolean" -> "some_boolean"
             "someBooleanNullable" -> "some_boolean_nullable"
             "someBooleanType" -> "some_boolean_type"

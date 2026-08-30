@@ -12,13 +12,13 @@ class LeftToRightSimpleEntityRowMapper : MaiaRowMapper<LeftToRightSimpleEntity> 
 
     override fun mapRow(rsa: ResultSetAdapter): LeftToRightSimpleEntity {
 
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val leftSimple = rsa.readDomainId("left_simple_id")
         val rightSimple = rsa.readDomainId("right_simple_id")
 
         return LeftToRightSimpleEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 leftSimple,
                 rightSimple

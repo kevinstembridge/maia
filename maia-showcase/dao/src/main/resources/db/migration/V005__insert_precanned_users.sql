@@ -3,12 +3,12 @@ insert into maia.party (
     type_discriminator,
     authorities,
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     encrypted_password,
     first_name,
     id,
     last_modified_by_id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     last_name,
     lifecycle_state,
     version
@@ -29,7 +29,7 @@ insert into maia.party (
 
 
 insert into maia.email_address (
-    created_timestamp_utc,
+    created_timestamp,
     created_by_id,
     email_address
 ) values (
@@ -41,13 +41,13 @@ insert into maia.email_address (
 
 INSERT INTO maia.email_address_verification(
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     effective_range,
     email_address,
     id,
     ip_address,
     last_modified_by_id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     version
 ) VALUES (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
@@ -64,13 +64,13 @@ INSERT INTO maia.email_address_verification(
 
 INSERT INTO maia.party_email_address(
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     effective_range,
     email_address,
     id,
     is_primary_contact,
     last_modified_by_id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     party_id,
     purposes,
     version
@@ -93,12 +93,12 @@ insert into maia.party (
     type_discriminator,
     authorities,
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     encrypted_password,
     first_name,
     id,
     last_modified_by_id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     last_name,
     lifecycle_state,
     version
@@ -121,9 +121,9 @@ insert into maia.party (
 insert into maia.party (
     type_discriminator,
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     version,
     org_name,
     authorities,
@@ -148,7 +148,7 @@ insert into maia.party (
 
 
 insert into maia.email_address (
-    created_timestamp_utc,
+    created_timestamp,
     created_by_id,
     email_address
 ) values (
@@ -160,13 +160,13 @@ insert into maia.email_address (
 
 INSERT INTO maia.email_address_verification(
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     effective_range,
     email_address,
     id,
     ip_address,
     last_modified_by_id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     version
 ) VALUES (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
@@ -183,13 +183,13 @@ INSERT INTO maia.email_address_verification(
 
 INSERT INTO maia.party_email_address(
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     effective_range,
     email_address,
     id,
     is_primary_contact,
     last_modified_by_id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     party_id,
     purposes,
     version
@@ -211,9 +211,9 @@ INSERT INTO maia.party_email_address(
 insert into maia.party (
     type_discriminator,
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     version,
     org_name,
     authorities,
@@ -238,7 +238,7 @@ insert into maia.party (
 
 
 insert into maia.email_address (
-    created_timestamp_utc,
+    created_timestamp,
     created_by_id,
     email_address
 ) values (
@@ -250,13 +250,13 @@ insert into maia.email_address (
 
 INSERT INTO maia.email_address_verification(
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     effective_range,
     email_address,
     id,
     ip_address,
     last_modified_by_id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     version
 ) VALUES (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
@@ -273,13 +273,13 @@ INSERT INTO maia.email_address_verification(
 
 INSERT INTO maia.party_email_address(
     created_by_id,
-    created_timestamp_utc,
+    created_timestamp,
     effective_range,
     email_address,
     id,
     is_primary_contact,
     last_modified_by_id,
-    last_modified_timestamp_utc,
+    last_modified_timestamp,
     party_id,
     purposes,
     version
@@ -299,7 +299,7 @@ INSERT INTO maia.party_email_address(
 
 
 insert into maia.user_group_membership (
-    created_timestamp_utc,
+    created_timestamp,
     id,
     user_group_id,
     user_id
@@ -312,7 +312,7 @@ insert into maia.user_group_membership (
 
 
 insert into maia.user_group_membership (
-    created_timestamp_utc,
+    created_timestamp,
     id,
     user_group_id,
     user_id

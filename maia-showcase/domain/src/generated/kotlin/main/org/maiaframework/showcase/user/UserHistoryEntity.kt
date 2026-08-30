@@ -17,25 +17,25 @@ class UserHistoryEntity(
     val authorities: List<Authority>,
     changeType: ChangeType,
     createdBy: DomainId?,
-    createdTimestampUtc: Instant,
+    createdTimestamp: Instant,
     displayName: String,
     val encryptedPassword: String,
     firstName: FirstName?,
     id: DomainId,
     lastModifiedBy: DomainId?,
-    lastModifiedTimestampUtc: Instant,
+    lastModifiedTimestamp: Instant,
     lastName: LastName,
     lifecycleState: LifecycleState,
     version: Long
 ) : PersonHistoryEntity(
     changeType,
     createdBy,
-    createdTimestampUtc,
+    createdTimestamp,
     displayName,
     firstName,
     id,
     lastModifiedBy,
-    lastModifiedTimestampUtc,
+    lastModifiedTimestamp,
     lastName,
     lifecycleState,
     version
@@ -48,13 +48,13 @@ class UserHistoryEntity(
                 "authorities = '" + this.authorities + '\'' + ", " + 
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

@@ -33,10 +33,10 @@ class OrganizationHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 lifecycle_state,
                 org_name,
                 version
@@ -44,10 +44,10 @@ class OrganizationHistoryDao(
                 'ORG',
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lifecycleState,
                 :orgName,
                 :version
@@ -56,11 +56,11 @@ class OrganizationHistoryDao(
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("displayName", entity.displayName)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("orgName", entity.orgName)
                 addValue("version", entity.version)
@@ -78,10 +78,10 @@ class OrganizationHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 lifecycle_state,
                 org_name,
                 version
@@ -89,10 +89,10 @@ class OrganizationHistoryDao(
                 'ORG',
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lifecycleState,
                 :orgName,
                 :version
@@ -102,11 +102,11 @@ class OrganizationHistoryDao(
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("displayName", entity.displayName)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("orgName", entity.orgName)
                     addValue("version", entity.version)

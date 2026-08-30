@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object NonSurrogatePrimaryKeyEntityMeta {
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val someModifiableString = "some_modifiable_string"
 
@@ -34,7 +34,7 @@ object NonSurrogatePrimaryKeyEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "someModifiableString" -> "some_modifiable_string"
             "someString" -> "some_string"
             "version" -> "version"

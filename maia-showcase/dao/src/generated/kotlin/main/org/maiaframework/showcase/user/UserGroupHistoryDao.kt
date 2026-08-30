@@ -45,7 +45,7 @@ class UserGroupHistoryDao(
                 type_discriminator,
                 authorities,
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 id,
                 name,
@@ -56,7 +56,7 @@ class UserGroupHistoryDao(
                 :typeDiscriminator,
                 :authorities,
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :id,
                 :name,
@@ -69,7 +69,7 @@ class UserGroupHistoryDao(
                 addValue("typeDiscriminator", OrgUserGroupHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("changeType", entity.changeType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("id", entity.id)
                 addValue("name", entity.name)
@@ -90,7 +90,7 @@ class UserGroupHistoryDao(
                 type_discriminator,
                 authorities,
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 id,
                 name,
@@ -100,7 +100,7 @@ class UserGroupHistoryDao(
                 :typeDiscriminator,
                 :authorities,
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :id,
                 :name,
@@ -112,7 +112,7 @@ class UserGroupHistoryDao(
                 addValue("typeDiscriminator", UserGroupHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("changeType", entity.changeType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("id", entity.id)
                 addValue("name", entity.name)
@@ -132,7 +132,7 @@ class UserGroupHistoryDao(
                 type_discriminator,
                 authorities,
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 id,
                 name,
@@ -142,7 +142,7 @@ class UserGroupHistoryDao(
                 :typeDiscriminator,
                 :authorities,
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :id,
                 :name,
@@ -155,7 +155,7 @@ class UserGroupHistoryDao(
                     addValue("typeDiscriminator", UserGroupHistoryEntityMeta.TYPE_DISCRIMINATOR)
                     addListOfStrings("authorities", entity.authorities.map { it.value })
                     addValue("changeType", entity.changeType)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description)
                     addValue("id", entity.id)
                     addValue("name", entity.name)

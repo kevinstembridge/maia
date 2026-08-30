@@ -13,7 +13,7 @@ class CompositePrimaryKeyBlotterRowDtoRowMapper : MaiaRowMapper<CompositePrimary
 
     override fun mapRow(rsa: ResultSetAdapter): CompositePrimaryKeyBlotterRowDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val someInt = rsa.readInt("someInt")
         val someModifiableString = rsa.readString("someModifiableString")
         val someString = rsa.readString("someString")
@@ -22,7 +22,7 @@ class CompositePrimaryKeyBlotterRowDtoRowMapper : MaiaRowMapper<CompositePrimary
         val id = listOf(someInt, someString).joinToString(":") { encode(it.toString(), "UTF-8") }
 
         return CompositePrimaryKeyBlotterRowDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someModifiableString,

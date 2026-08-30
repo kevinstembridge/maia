@@ -6,7 +6,7 @@ import {AlphaPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/
 
 export interface BravoEntityDetailViewDto {
     alpha: AlphaPkAndNameDto;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someInt: number;
     someString: string;

@@ -12,13 +12,13 @@ class HistorySampleBlotterRowDtoRowMapper : MaiaRowMapper<HistorySampleBlotterRo
 
     override fun mapRow(rsa: ResultSetAdapter): HistorySampleBlotterRowDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
 
         return HistorySampleBlotterRowDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString,

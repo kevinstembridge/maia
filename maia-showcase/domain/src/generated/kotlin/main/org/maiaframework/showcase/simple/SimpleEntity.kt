@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class SimpleEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someString: String
 ) {
@@ -17,7 +17,7 @@ class SimpleEntity(
     override fun toString(): String {
 
         return "SimpleEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' +
                 "}"
@@ -38,11 +38,11 @@ class SimpleEntity(
             someString: String
         ): SimpleEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return SimpleEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someString
             )

@@ -10,10 +10,10 @@ import java.time.Instant
 
 data class HistorySampleFetchForEditDto(
     val createdBy: PartyPkAndNameDto,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val lastModifiedBy: PartyPkAndNameDto,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val someInt: Int,
     val someString: String,
     val version: Long

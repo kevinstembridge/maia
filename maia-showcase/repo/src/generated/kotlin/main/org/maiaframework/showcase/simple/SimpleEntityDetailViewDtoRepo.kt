@@ -18,7 +18,7 @@ class SimpleEntityDetailViewDtoRepo(
         val entity = this.entityRepo.findByPrimaryKey(id)
 
         return SimpleEntityDetailViewDto(
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             id = entity.id,
             someString = entity.someString,
         )

@@ -106,7 +106,7 @@ class LeftCrudRightSimpleJoinTest : AbstractBlackBoxTest() {
         // The join row for rightEntity1 must be the SAME row (not recreated)
         val preservedJoin = joinsAfterSecondUpdate.first { it.rightSimple == rightEntity1.id }
         assertThat(preservedJoin.id).isEqualTo(unchangedJoin.id)
-        assertThat(preservedJoin.createdTimestampUtc).isEqualTo(unchangedJoin.createdTimestampUtc)
+        assertThat(preservedJoin.createdTimestamp).isEqualTo(unchangedJoin.createdTimestamp)
 
         // The join row for rightEntity2 must have been deleted
         assertThat(leftToRightSimpleDao.existsByPrimaryKey(removedJoin.id)).isFalse()

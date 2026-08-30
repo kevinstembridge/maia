@@ -12,11 +12,11 @@ object AlphaBlotterRowDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.alpha.created_timestamp_utc"
+            "createdTimestamp" -> "maia.alpha.created_timestamp"
             "id" -> "maia.alpha.id"
             "someInt" -> "maia.alpha.some_int"
             "someString" -> "maia.alpha.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someString]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someInt, someString]")
         }
 
     }
@@ -25,11 +25,11 @@ object AlphaBlotterRowDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "id" -> JdbcCompatibleType.uuid
             "someInt" -> JdbcCompatibleType.integer
             "someString" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someString]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someInt, someString]")
         }
 
     }

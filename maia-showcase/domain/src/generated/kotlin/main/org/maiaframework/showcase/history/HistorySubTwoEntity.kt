@@ -9,18 +9,18 @@ import java.time.Instant
 
 class HistorySubTwoEntity(
     createdBy: DomainId,
-    createdTimestampUtc: Instant,
+    createdTimestamp: Instant,
     id: DomainId,
     lastModifiedBy: DomainId,
-    lastModifiedTimestampUtc: Instant,
+    lastModifiedTimestamp: Instant,
     val someInt: Int,
     version: Long
 ) : HistorySuperEntity(
     createdBy,
-    createdTimestampUtc,
+    createdTimestamp,
     id,
     lastModifiedBy,
-    lastModifiedTimestampUtc,
+    lastModifiedTimestamp,
     version
 ) {
 
@@ -29,10 +29,10 @@ class HistorySubTwoEntity(
 
         return "HistorySubTwoEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
@@ -54,18 +54,18 @@ class HistorySubTwoEntity(
             someInt: Int
         ): HistorySubTwoEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
             val version = 1L
 
             return HistorySubTwoEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 version
             )

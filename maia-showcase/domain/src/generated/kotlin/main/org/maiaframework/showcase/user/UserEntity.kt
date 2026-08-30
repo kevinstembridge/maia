@@ -15,24 +15,24 @@ import java.time.Instant
 class UserEntity(
     val authorities: List<Authority>,
     createdBy: DomainId?,
-    createdTimestampUtc: Instant,
+    createdTimestamp: Instant,
     displayName: String,
     val encryptedPassword: String,
     firstName: FirstName?,
     id: DomainId,
     lastModifiedBy: DomainId?,
-    lastModifiedTimestampUtc: Instant,
+    lastModifiedTimestamp: Instant,
     lastName: LastName,
     lifecycleState: LifecycleState,
     version: Long
 ) : PersonEntity(
     createdBy,
-    createdTimestampUtc,
+    createdTimestamp,
     displayName,
     firstName,
     id,
     lastModifiedBy,
-    lastModifiedTimestampUtc,
+    lastModifiedTimestamp,
     lastName,
     lifecycleState,
     version
@@ -44,13 +44,13 @@ class UserEntity(
         return "UserEntity{" +
                 "authorities = '" + this.authorities + '\'' + ", " + 
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
@@ -77,9 +77,9 @@ class UserEntity(
             lastName: LastName
         ): UserEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
             val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
@@ -87,13 +87,13 @@ class UserEntity(
             return UserEntity(
                 authorities,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 encryptedPassword,
                 firstName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lastName,
                 lifecycleState,
                 version

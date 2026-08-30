@@ -14,7 +14,7 @@ object OrgRoleEntityMeta {
 
     const val createdBy = "created_by_id"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val description = "description"
 
@@ -24,7 +24,7 @@ object OrgRoleEntityMeta {
 
     const val lastModifiedBy = "last_modified_by_id"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val version = "version"
 
@@ -43,12 +43,12 @@ object OrgRoleEntityMeta {
 
         return when(classFieldName) {
             "createdBy" -> "created_by_id"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "description" -> "description"
             "displayName" -> "display_name"
             "key" -> "key"
             "lastModifiedBy" -> "last_modified_by_id"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")

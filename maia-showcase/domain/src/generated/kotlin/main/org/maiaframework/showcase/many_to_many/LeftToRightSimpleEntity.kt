@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class LeftToRightSimpleEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val leftSimple: DomainId,
     val rightSimple: DomainId
@@ -18,7 +18,7 @@ class LeftToRightSimpleEntity(
     override fun toString(): String {
 
         return "LeftToRightSimpleEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "leftSimple = '" + this.leftSimple + '\'' + ", " + 
                 "rightSimple = '" + this.rightSimple + '\'' +
@@ -41,11 +41,11 @@ class LeftToRightSimpleEntity(
             rightSimple: DomainId
         ): LeftToRightSimpleEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return LeftToRightSimpleEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 leftSimple,
                 rightSimple

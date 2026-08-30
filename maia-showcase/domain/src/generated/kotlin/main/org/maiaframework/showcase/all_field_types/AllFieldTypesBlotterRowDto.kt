@@ -24,7 +24,7 @@ data class AllFieldTypesBlotterRowDto(
     val id: DomainId,
     val lastModifiedBy: DomainId,
     val lastModifiedByUsername: String,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val someBoolean: Boolean,
     val someBooleanNullable: Boolean?,
     val someBooleanType: SomeBooleanType,

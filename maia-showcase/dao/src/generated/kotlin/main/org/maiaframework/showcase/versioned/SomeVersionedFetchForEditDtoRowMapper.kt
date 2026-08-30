@@ -12,14 +12,14 @@ class SomeVersionedFetchForEditDtoRowMapper : MaiaRowMapper<SomeVersionedFetchFo
 
     override fun mapRow(rsa: ResultSetAdapter): SomeVersionedFetchForEditDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
         val version = rsa.readLong("version")
 
         return SomeVersionedFetchForEditDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString,

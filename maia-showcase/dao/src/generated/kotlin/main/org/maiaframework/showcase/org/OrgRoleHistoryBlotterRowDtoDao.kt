@@ -48,7 +48,7 @@ class OrgRoleHistoryBlotterRowDtoDao(
                 maia.org_role_history.description as description,
                 maia.org_role_history.display_name as displayName,
                 maia.org_role_history.key as key,
-                maia.org_role_history.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.org_role_history.last_modified_timestamp as lastModifiedTimestamp,
                 maia.org_role_history.version as version
             from maia.org_role_history
             $whereClause

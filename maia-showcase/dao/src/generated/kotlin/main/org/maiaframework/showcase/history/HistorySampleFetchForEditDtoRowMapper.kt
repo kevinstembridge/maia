@@ -17,23 +17,23 @@ class HistorySampleFetchForEditDtoRowMapper : MaiaRowMapper<HistorySampleFetchFo
             rsa.readDomainId("createdById"),
             rsa.readString("createdByName"),
         )
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = PartyPkAndNameDto(
             rsa.readDomainId("lastModifiedById"),
             rsa.readString("lastModifiedByName"),
         )
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
         val version = rsa.readLong("version")
 
         return HistorySampleFetchForEditDto(
             createdBy,
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             someInt,
             someString,
             version,

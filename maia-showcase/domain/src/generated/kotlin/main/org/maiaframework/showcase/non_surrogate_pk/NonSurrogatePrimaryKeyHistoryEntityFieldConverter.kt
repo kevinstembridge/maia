@@ -20,7 +20,7 @@ class NonSurrogatePrimaryKeyHistoryEntityFieldConverter : EntityFieldConverter {
 
             "change_type" -> // changeType
                 return (inputValue as ChangeType).name
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "some_modifiable_string" -> // someModifiableString
                 return inputValue

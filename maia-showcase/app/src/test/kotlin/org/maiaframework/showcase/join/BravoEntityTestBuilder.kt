@@ -9,7 +9,7 @@ import java.time.Instant
 
 data class BravoEntityTestBuilder(
     val alphaId: DomainId = DomainId.newId(),
-    val createdTimestampUtc: Instant = anyInstant(),
+    val createdTimestamp: Instant = anyInstant(),
     val id: DomainId = DomainId.newId(),
     val someInt: Int = anyInt(),
     val someString: String = anyString()
@@ -20,7 +20,7 @@ data class BravoEntityTestBuilder(
 
         return BravoEntity(
             this.alphaId,
-            this.createdTimestampUtc,
+            this.createdTimestamp,
             this.id,
             this.someInt,
             this.someString

@@ -95,7 +95,7 @@ export class AllFieldTypesBlotter {
         { field: 'createdByUsername', headerName: 'Created By', cellDataType: 'text', filter: true },
         { field: 'lastModifiedBy', headerName: 'Last Modified By ID', cellDataType: 'text', filter: true },
         { field: 'lastModifiedByUsername', headerName: 'Last Modified By', cellDataType: 'text', filter: true },
-        { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'dateTimeString', filter: true },
+        { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'dateTimeString', filter: true },
         {
             field: 'delete',
             headerName: '',

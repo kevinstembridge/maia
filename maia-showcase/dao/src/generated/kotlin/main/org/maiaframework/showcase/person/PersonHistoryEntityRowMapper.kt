@@ -38,13 +38,13 @@ class PersonHistoryEntityRowMapper : MaiaRowMapper<PersonHistoryEntity> {
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdBy = rsa.readDomainIdOrNull("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val displayName = rsa.readString("display_name")
         val encryptedPassword = rsa.readString("encrypted_password")
         val firstName = rsa.readStringOrNull("first_name") { FirstName(it) }
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val version = rsa.readLong("version")
@@ -53,13 +53,13 @@ class PersonHistoryEntityRowMapper : MaiaRowMapper<PersonHistoryEntity> {
                 authorities,
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 encryptedPassword,
                 firstName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lastName,
                 lifecycleState,
                 version
@@ -72,12 +72,12 @@ class PersonHistoryEntityRowMapper : MaiaRowMapper<PersonHistoryEntity> {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdBy = rsa.readDomainIdOrNull("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val displayName = rsa.readString("display_name")
         val firstName = rsa.readStringOrNull("first_name") { FirstName(it) }
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val version = rsa.readLong("version")
@@ -85,12 +85,12 @@ class PersonHistoryEntityRowMapper : MaiaRowMapper<PersonHistoryEntity> {
         return PersonHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 firstName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lastName,
                 lifecycleState,
                 version

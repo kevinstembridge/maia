@@ -12,12 +12,12 @@ object ChildOneDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.grandparent.created_timestamp_utc"
+            "createdTimestamp" -> "maia.grandparent.created_timestamp"
             "id" -> "maia.grandparent.id"
             "someInt" -> "maia.grandparent.some_int"
             "someString" -> "maia.grandparent.some_string"
             "someUniqueString" -> "maia.grandparent.some_unique_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someString, someUniqueString]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someInt, someString, someUniqueString]")
         }
 
     }
@@ -26,12 +26,12 @@ object ChildOneDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "id" -> JdbcCompatibleType.uuid
             "someInt" -> JdbcCompatibleType.integer
             "someString" -> JdbcCompatibleType.text
             "someUniqueString" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someInt, someString, someUniqueString]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someInt, someString, someUniqueString]")
         }
 
     }

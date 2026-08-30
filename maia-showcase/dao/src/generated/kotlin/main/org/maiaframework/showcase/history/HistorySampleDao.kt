@@ -42,19 +42,19 @@ class HistorySampleDao(
             """
             insert into maia.history_sample (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :version
@@ -62,10 +62,10 @@ class HistorySampleDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
@@ -83,19 +83,19 @@ class HistorySampleDao(
             """
             insert into maia.history_sample (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :version
@@ -104,10 +104,10 @@ class HistorySampleDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
                     addValue("version", entity.version)
@@ -150,19 +150,19 @@ class HistorySampleDao(
 
         val id = entity.id
         val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val someInt = entity.someInt
         val someString = entity.someString
 
         return HistorySampleHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 someString,
                 version)
@@ -423,11 +423,11 @@ class HistorySampleDao(
             select
                 created_by_v_party.id as createdById,
                 created_by_v_party.display_name as createdByName,
-                maia.history_sample.created_timestamp_utc as createdTimestampUtc,
+                maia.history_sample.created_timestamp as createdTimestamp,
                 maia.history_sample.id as id,
                 last_modified_by_v_party.id as lastModifiedById,
                 last_modified_by_v_party.display_name as lastModifiedByName,
-                maia.history_sample.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.history_sample.last_modified_timestamp as lastModifiedTimestamp,
                 maia.history_sample.some_int as someInt,
                 maia.history_sample.some_string as someString,
                 maia.history_sample.version as version
@@ -454,19 +454,19 @@ class HistorySampleDao(
             """
             insert into maia.history_sample (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 version
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :version
@@ -474,7 +474,7 @@ class HistorySampleDao(
             on conflict (some_string)
             do update set
                 last_modified_by_id = :lastModifiedBy,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 some_int = :someInt,
                 some_string = :someString,
                 version = maia.history_sample.version + 1
@@ -482,10 +482,10 @@ class HistorySampleDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", upsertEntity.createdBy)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("someInt", upsertEntity.someInt)
                 addValue("someString", upsertEntity.someString)
                 addValue("version", upsertEntity.version)
@@ -559,7 +559,7 @@ class HistorySampleDao(
 
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "someInt" -> sqlParams.addValue("someInt", field.value as Int)
             "someString" -> sqlParams.addValue("someString", field.value as String)
         }

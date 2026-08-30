@@ -9,7 +9,7 @@ import java.time.Instant
 
 class CharlieAgGridEntity(
     val bravo: DomainId,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someInt: Int,
     val someString: String
@@ -20,7 +20,7 @@ class CharlieAgGridEntity(
 
         return "CharlieAgGridEntity{" +
                 "bravo = '" + this.bravo + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' +
@@ -44,12 +44,12 @@ class CharlieAgGridEntity(
             someString: String
         ): CharlieAgGridEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return CharlieAgGridEntity(
                 bravo,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someInt,
                 someString

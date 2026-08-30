@@ -14,7 +14,7 @@ class SimpleBlotterRowDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "someString" -> "some_string"
             else -> throw IllegalArgumentException("Unknown dtoFieldName [$fieldName]")

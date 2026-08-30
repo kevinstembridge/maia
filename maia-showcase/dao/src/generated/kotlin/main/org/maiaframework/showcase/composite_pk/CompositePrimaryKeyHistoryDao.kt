@@ -30,14 +30,14 @@ class CompositePrimaryKeyHistoryDao(
             """
             insert into maia.composite_primary_key_history (
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 some_int,
                 some_modifiable_string,
                 some_string,
                 version
             ) values (
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :someInt,
                 :someModifiableString,
                 :someString,
@@ -46,7 +46,7 @@ class CompositePrimaryKeyHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someModifiableString", entity.someModifiableString)
                 addValue("someString", entity.someString)
@@ -63,14 +63,14 @@ class CompositePrimaryKeyHistoryDao(
             """
             insert into maia.composite_primary_key_history (
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 some_int,
                 some_modifiable_string,
                 some_string,
                 version
             ) values (
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :someInt,
                 :someModifiableString,
                 :someString,
@@ -80,7 +80,7 @@ class CompositePrimaryKeyHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("someInt", entity.someInt)
                     addValue("someModifiableString", entity.someModifiableString)
                     addValue("someString", entity.someString)

@@ -14,7 +14,7 @@ class CompositePrimaryKeyBlotterRowDtoFieldNameConverter : SearchFieldNameConver
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "someInt" -> "some_int"
             "someModifiableString" -> "some_modifiable_string"
             "someString" -> "some_string"

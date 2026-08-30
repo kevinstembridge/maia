@@ -38,29 +38,29 @@ class HistorySubOneDao(
             insert into maia.history_super (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_string,
                 version
             ) values (
                 'SUB1',
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someString,
                 :version
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
             }
@@ -78,19 +78,19 @@ class HistorySubOneDao(
             insert into maia.history_super (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_string,
                 version
             ) values (
                 'SUB1',
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someString,
                 :version
             )
@@ -98,10 +98,10 @@ class HistorySubOneDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("someString", entity.someString)
                     addValue("version", entity.version)
                 }
@@ -143,18 +143,18 @@ class HistorySubOneDao(
 
         val id = entity.id
         val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val someString = entity.someString
 
         return HistorySubOneHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someString,
                 version)
 
@@ -418,7 +418,7 @@ class HistorySubOneDao(
 
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "someString" -> sqlParams.addValue("someString", field.value as String)
         }
 

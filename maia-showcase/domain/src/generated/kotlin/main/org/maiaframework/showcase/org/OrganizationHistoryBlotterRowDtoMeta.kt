@@ -16,11 +16,11 @@ object OrganizationHistoryBlotterRowDtoMeta {
             "createdBy" -> "maia.v_party_history.created_by_id"
             "displayName" -> "maia.v_party_history.display_name"
             "lastModifiedBy" -> "maia.v_party_history.last_modified_by_id"
-            "lastModifiedTimestampUtc" -> "maia.v_party_history.last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "maia.v_party_history.last_modified_timestamp"
             "lifecycleState" -> "maia.v_party_history.lifecycle_state"
             "orgName" -> "maia.v_party_history.org_name"
             "version" -> "maia.v_party_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, createdBy, displayName, lastModifiedBy, lastModifiedTimestampUtc, lifecycleState, orgName, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, createdBy, displayName, lastModifiedBy, lastModifiedTimestamp, lifecycleState, orgName, version]")
         }
 
     }
@@ -33,11 +33,11 @@ object OrganizationHistoryBlotterRowDtoMeta {
             "createdBy" -> JdbcCompatibleType.uuid
             "displayName" -> JdbcCompatibleType.text
             "lastModifiedBy" -> JdbcCompatibleType.uuid
-            "lastModifiedTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "lastModifiedTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "lifecycleState" -> JdbcCompatibleType.text
             "orgName" -> JdbcCompatibleType.text
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, createdBy, displayName, lastModifiedBy, lastModifiedTimestampUtc, lifecycleState, orgName, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, createdBy, displayName, lastModifiedBy, lastModifiedTimestamp, lifecycleState, orgName, version]")
         }
 
     }

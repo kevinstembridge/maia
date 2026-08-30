@@ -35,19 +35,19 @@ class AlphaDao(
         jdbcOps.update(
             """
             insert into maia.alpha (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -62,12 +62,12 @@ class AlphaDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.alpha (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
@@ -75,7 +75,7 @@ class AlphaDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
@@ -258,7 +258,7 @@ class AlphaDao(
         return this.jdbcOps.queryForList(
             """
             select
-                maia.alpha.created_timestamp_utc as createdTimestampUtc,
+                maia.alpha.created_timestamp as createdTimestamp,
                 maia.alpha.id as id,
                 maia.alpha.some_int as someInt,
                 maia.alpha.some_string as someString

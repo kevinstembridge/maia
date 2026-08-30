@@ -14,7 +14,7 @@ object NonSurrogateIdPrimaryKeyHistoryEntityMeta {
 
     const val changeType = "change_type"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val id = "id"
 
@@ -37,7 +37,7 @@ object NonSurrogateIdPrimaryKeyHistoryEntityMeta {
 
         return when(classFieldName) {
             "changeType" -> "change_type"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "someModifiableString" -> "some_modifiable_string"
             "version" -> "version"

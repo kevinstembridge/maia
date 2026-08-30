@@ -23,7 +23,7 @@ class UnmodifiableDaoTest : AbstractBlackBoxTest() {
         assertThat(actualOriginalId).isEqualTo(unmodifiableEntityOriginal.id)
 
         val updatedEntity = entityTestBuilder.copy(
-            createdTimestampUtc = Instant.now(),
+            createdTimestamp = Instant.now(),
         ).build()
 
         val actualUpdatedId = this.unmodifiableDao.upsertBySomeUniqueInt(updatedEntity)

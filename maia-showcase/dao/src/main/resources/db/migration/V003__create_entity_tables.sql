@@ -12,12 +12,12 @@ CREATE TABLE maia.party (
     type_discriminator text not null,
     authorities text[] NULL,
     created_by_id uuid NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     encrypted_password text NULL,
     first_name text NULL,
     id uuid NOT NULL,
     last_modified_by_id uuid NULL,
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     last_name text NULL,
     lifecycle_state text NOT NULL,
     org_name text NULL,
@@ -35,12 +35,12 @@ CREATE TABLE maia.party_history (
     authorities text[] NULL,
     change_type text NOT NULL,
     created_by_id uuid NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     encrypted_password text NULL,
     first_name text NULL,
     id uuid NOT NULL,
     last_modified_by_id uuid NULL,
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     last_name text NULL,
     lifecycle_state text NOT NULL,
     org_name text NULL,
@@ -55,7 +55,7 @@ CREATE TABLE maia.party_history (
 CREATE TABLE maia.user_group (
     type_discriminator text not null,
     authorities text[] NOT NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     description text NOT NULL,
     id uuid NOT NULL,
     name text NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE maia.user_group_history (
     type_discriminator text not null,
     authorities text[] NOT NULL,
     change_type text NOT NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     description text NOT NULL,
     id uuid NOT NULL,
     name text NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE maia.user_group_history (
 
 
 CREATE TABLE maia.user_group_membership (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     user_id uuid NOT NULL REFERENCES maia.party(id),
     user_group_id uuid NOT NULL REFERENCES maia.user_group(id),
@@ -98,7 +98,7 @@ CREATE INDEX user_group_membership_user_id_idx ON maia.user_group_membership(use
 
 CREATE TABLE maia.email_address (
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     email_address text NOT NULL,
     PRIMARY KEY(email_address)
 );
@@ -106,12 +106,12 @@ CREATE TABLE maia.email_address (
 
 CREATE TABLE maia.party_email_address (
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     email_address text NOT NULL REFERENCES maia.email_address(email_address),
     id uuid NOT NULL,
     is_primary_contact boolean NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     party_id uuid NOT NULL REFERENCES maia.party(id),
     purposes text[] NOT NULL,
     version bigint NOT NULL,
@@ -124,12 +124,12 @@ CREATE INDEX party_email_address_email_address_idx ON maia.party_email_address(e
 
 CREATE TABLE maia.email_address_verification (
     created_by_id uuid NULL REFERENCES maia.party(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     email_address text NOT NULL REFERENCES maia.email_address(email_address),
     id uuid NOT NULL,
     ip_address text NULL,
     last_modified_by_id uuid NULL REFERENCES maia.party(id),
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     version bigint NOT NULL,
     effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
@@ -137,7 +137,7 @@ CREATE TABLE maia.email_address_verification (
 
 
 CREATE TABLE maia.effective_timestamp (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_string text NOT NULL,
     effective_range tstzrange not null default tstzrange(now(), null),
@@ -150,11 +150,11 @@ ALTER TABLE maia.effective_timestamp ADD CONSTRAINT effective_timestamp_some_str
 CREATE TABLE maia.all_field_types (
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
     created_by_name text NOT NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
     last_modified_by_name text NOT NULL,
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_boolean boolean NOT NULL,
     some_boolean_nullable boolean NULL,
     some_boolean_type boolean NOT NULL,
@@ -200,7 +200,7 @@ CREATE INDEX all_field_types_some_boolean_some_string_modifiable_idx ON maia.all
 
 
 CREATE TABLE maia.simple (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_string text NOT NULL,
     PRIMARY KEY(id)
@@ -210,10 +210,10 @@ CREATE UNIQUE INDEX simple_some_string_uidx ON maia.simple(some_string);
 
 CREATE TABLE maia.history_sample (
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
     version bigint NOT NULL,
@@ -225,10 +225,10 @@ CREATE UNIQUE INDEX history_sample_some_string_uidx ON maia.history_sample(some_
 CREATE TABLE maia.history_sample_history (
     change_type text NOT NULL,
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
     version bigint NOT NULL,
@@ -244,10 +244,10 @@ CREATE INDEX hist_history_sample_some_string_idx ON maia.history_sample_history(
 CREATE TABLE maia.grandparent (
     type_discriminator text not null,
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NULL,
     some_string text NULL,
     some_unique_string text NULL,
@@ -262,10 +262,10 @@ CREATE UNIQUE INDEX parent_two_some_unique_string_uidx ON maia.grandparent(some_
 CREATE TABLE maia.history_super (
     type_discriminator text not null,
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NULL,
     some_string text NULL,
     version bigint NOT NULL,
@@ -280,10 +280,10 @@ CREATE TABLE maia.history_super_history (
     type_discriminator text not null,
     change_type text NOT NULL,
     created_by_id uuid NOT NULL REFERENCES maia.party(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NULL,
     some_string text NULL,
     version bigint NOT NULL,
@@ -292,7 +292,7 @@ CREATE TABLE maia.history_super_history (
 
 
 CREATE TABLE maia.some_versioned (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -303,7 +303,7 @@ CREATE UNIQUE INDEX some_versioned_some_int_uidx ON maia.some_versioned(some_int
 
 
 CREATE TABLE maia.with_optional_index_field (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_optional_string1 text NULL,
     some_optional_string2 text NULL,
@@ -315,7 +315,7 @@ CREATE INDEX with_optional_index_field_some_optional_string2_some_string_idx ON 
 
 
 CREATE TABLE maia.foreign_key_parent (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -324,7 +324,7 @@ CREATE TABLE maia.foreign_key_parent (
 
 
 CREATE TABLE maia.foreign_key_child (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     parent_id uuid NOT NULL,
     some_string text NOT NULL,
@@ -333,7 +333,7 @@ CREATE TABLE maia.foreign_key_child (
 
 
 CREATE TABLE maia.alpha (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -343,7 +343,7 @@ CREATE TABLE maia.alpha (
 
 CREATE TABLE maia.bravo (
     alpha_id uuid NOT NULL REFERENCES maia.alpha(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -353,7 +353,7 @@ CREATE TABLE maia.bravo (
 
 CREATE TABLE maia.charlie (
     bravo_id uuid NOT NULL REFERENCES maia.bravo(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -362,7 +362,7 @@ CREATE TABLE maia.charlie (
 
 
 CREATE TABLE maia.alpha_ag_grid (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -372,7 +372,7 @@ CREATE TABLE maia.alpha_ag_grid (
 
 CREATE TABLE maia.bravo_ag_grid (
     alpha_id uuid NOT NULL REFERENCES maia.alpha_ag_grid(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -382,7 +382,7 @@ CREATE TABLE maia.bravo_ag_grid (
 
 CREATE TABLE maia.charlie_ag_grid (
     bravo_id uuid NOT NULL REFERENCES maia.bravo_ag_grid(id),
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -391,9 +391,9 @@ CREATE TABLE maia.charlie_ag_grid (
 
 
 CREATE TABLE maia.left_many (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
     version bigint NOT NULL,
@@ -403,9 +403,9 @@ CREATE TABLE maia.left_many (
 
 CREATE TABLE maia.left_many_history (
     change_type text NOT NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
     version bigint NOT NULL,
@@ -414,7 +414,7 @@ CREATE TABLE maia.left_many_history (
 
 
 CREATE TABLE maia.right_many (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -425,7 +425,7 @@ CREATE TABLE maia.right_many (
 
 CREATE TABLE maia.right_many_history (
     change_type text NOT NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -435,7 +435,7 @@ CREATE TABLE maia.right_many_history (
 
 
 CREATE TABLE maia.left_to_right_simple (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     left_simple_id uuid NOT NULL REFERENCES maia.left_many(id),
     right_simple_id uuid NOT NULL REFERENCES maia.right_many(id),
@@ -446,7 +446,7 @@ CREATE INDEX left_to_right_simple_right_simple_id_idx ON maia.left_to_right_simp
 
 
 CREATE TABLE maia.left_to_right_system_effective (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     left_system_effective_id uuid NOT NULL REFERENCES maia.left_many(id),
     right_system_effective_id uuid NOT NULL REFERENCES maia.right_many(id),
@@ -458,7 +458,7 @@ CREATE INDEX left_to_right_system_effective_right_system_effective_id_idx ON mai
 
 
 CREATE TABLE maia.left_to_right_system_single_effective (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     left_system_single_effective_id uuid NOT NULL REFERENCES maia.left_many(id),
     right_system_single_effective_id uuid NOT NULL REFERENCES maia.right_many(id),
@@ -472,7 +472,7 @@ ALTER TABLE maia.left_to_right_system_single_effective ADD CONSTRAINT l2r_sys_si
 
 
 CREATE TABLE maia.left_to_right_user_effective (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     left_user_effective_id uuid NOT NULL REFERENCES maia.left_many(id),
     right_user_effective_id uuid NOT NULL REFERENCES maia.right_many(id),
@@ -484,9 +484,9 @@ CREATE INDEX left_to_right_user_effective_right_user_effective_id_idx ON maia.le
 
 
 CREATE TABLE maia.left_to_right_complex (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    last_modified_timestamp_utc timestamp(3) with time zone NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
     left_id uuid NOT NULL REFERENCES maia.left_many(id),
     right_id uuid NOT NULL REFERENCES maia.right_many(id),
     some_int_on_complex integer NOT NULL,
@@ -498,7 +498,7 @@ CREATE INDEX left_to_right_complex_right_id_idx ON maia.left_to_right_complex(ri
 
 
 CREATE TABLE maia.unmodifiable (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     some_unique_int integer NOT NULL,
     PRIMARY KEY(id)
@@ -507,7 +507,7 @@ CREATE UNIQUE INDEX unmodifiable_some_unique_int_uidx ON maia.unmodifiable(some_
 
 
 CREATE TABLE maia.composite_primary_key (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_modifiable_string text NOT NULL,
     some_string text NOT NULL,
@@ -518,7 +518,7 @@ CREATE TABLE maia.composite_primary_key (
 
 CREATE TABLE maia.composite_primary_key_history (
     change_type text NOT NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_modifiable_string text NOT NULL,
     some_string text NOT NULL,
@@ -528,7 +528,7 @@ CREATE TABLE maia.composite_primary_key_history (
 
 
 CREATE TABLE maia.non_surrogate_primary_key (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     some_modifiable_string text NOT NULL,
     some_string text NOT NULL,
     version bigint NOT NULL,
@@ -538,7 +538,7 @@ CREATE TABLE maia.non_surrogate_primary_key (
 
 CREATE TABLE maia.non_surrogate_primary_key_history (
     change_type text NOT NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     some_modifiable_string text NOT NULL,
     some_string text NOT NULL,
     version bigint NOT NULL,
@@ -547,7 +547,7 @@ CREATE TABLE maia.non_surrogate_primary_key_history (
 
 
 CREATE TABLE maia.non_surrogate_id_primary_key (
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id text NOT NULL,
     some_modifiable_string text NOT NULL,
     version bigint NOT NULL,
@@ -557,7 +557,7 @@ CREATE TABLE maia.non_surrogate_id_primary_key (
 
 CREATE TABLE maia.non_surrogate_id_primary_key_history (
     change_type text NOT NULL,
-    created_timestamp_utc timestamp(3) with time zone NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
     id text NOT NULL,
     some_modifiable_string text NOT NULL,
     version bigint NOT NULL,

@@ -17,13 +17,13 @@ data class FeatureToggleResponseDto(
     val attributes: Map<String, String>?,
     val comment: String?,
     val contactPerson: ContactPerson?,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val description: Description?,
     val enabled: Boolean,
     val featureName: FeatureName,
     val infoLink: InfoLink?,
     val lastModifiedBy: String,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val reviewDate: LocalDate?,
     val ticketKey: TicketKey?
 ) {

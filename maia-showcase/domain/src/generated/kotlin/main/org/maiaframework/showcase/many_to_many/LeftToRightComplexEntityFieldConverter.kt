@@ -17,7 +17,7 @@ class LeftToRightComplexEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "effective_from" -> // effectiveFrom
                 return inputValue
@@ -25,7 +25,7 @@ class LeftToRightComplexEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
-            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
             "left_id" -> // left
                 return (inputValue as DomainId).value

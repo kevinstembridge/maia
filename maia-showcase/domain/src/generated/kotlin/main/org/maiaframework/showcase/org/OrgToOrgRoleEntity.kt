@@ -9,7 +9,7 @@ import java.time.Instant
 
 
 class OrgToOrgRoleEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,
@@ -21,7 +21,7 @@ class OrgToOrgRoleEntity(
     override fun toString(): String {
 
         return "OrgToOrgRoleEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
@@ -48,11 +48,11 @@ class OrgToOrgRoleEntity(
             role: OrgRoleKey
         ): OrgToOrgRoleEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return OrgToOrgRoleEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 id,

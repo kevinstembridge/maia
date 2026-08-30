@@ -42,9 +42,9 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
     private val someInt2 = 2
     private val someInt3 = 3
 
-    private val leftEntity1 = LeftManyEntityTestBuilder(someInt = someInt1, someString = "aSomeLeftValue1", createdTimestampUtc = timestamp1).build()
-    private val leftEntity2 = LeftManyEntityTestBuilder(someInt = someInt2, someString = "bSomeLeftValue1", createdTimestampUtc = timestamp2).build()
-    private val leftEntity3 = LeftManyEntityTestBuilder(someInt = someInt3, someString = "bSomeLeftValue2", createdTimestampUtc = timestamp3).build()
+    private val leftEntity1 = LeftManyEntityTestBuilder(someInt = someInt1, someString = "aSomeLeftValue1", createdTimestamp = timestamp1).build()
+    private val leftEntity2 = LeftManyEntityTestBuilder(someInt = someInt2, someString = "bSomeLeftValue1", createdTimestamp = timestamp2).build()
+    private val leftEntity3 = LeftManyEntityTestBuilder(someInt = someInt3, someString = "bSomeLeftValue2", createdTimestamp = timestamp3).build()
 
     private val rightEntity1 = RightManyEntityTestBuilder(someInt = someInt1, someString = "aSomeRightValue1").build()
     private val rightEntity2 = RightManyEntityTestBuilder(someInt = someInt2, someString = "aSomeRightValue2").build()
@@ -126,7 +126,7 @@ class LeftSearchableDtoTest : AbstractBlackBoxTest() {
                 {
                     "results": [
                         {
-                            "createdTimestampUtc": "${leftEntity1.createdTimestampUtc}",
+                            "createdTimestamp": "${leftEntity1.createdTimestamp}",
                             "id": "${leftEntity1.id}",
                             "rightEntities": [
                                 {

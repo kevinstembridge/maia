@@ -3,7 +3,7 @@
 
 
 export interface PersonDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     displayName: string;
     firstName?: string;
     id: string;

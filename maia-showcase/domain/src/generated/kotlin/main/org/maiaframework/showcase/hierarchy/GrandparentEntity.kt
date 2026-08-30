@@ -9,10 +9,10 @@ import java.time.Instant
 
 abstract class GrandparentEntity(
     val createdBy: DomainId,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val lastModifiedBy: DomainId,
-    val lastModifiedTimestampUtc: Instant
+    val lastModifiedTimestamp: Instant
 ) {
 
 
@@ -20,10 +20,10 @@ abstract class GrandparentEntity(
 
         return "GrandparentEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' +
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' +
                 "}"
 
     }

@@ -12,7 +12,7 @@ import java.time.Instant
 open class UserGroupHistoryEntity(
     val authorities: List<Authority>,
     val changeType: ChangeType,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val description: String,
     val id: DomainId,
     val name: String,
@@ -29,7 +29,7 @@ open class UserGroupHistoryEntity(
         return "UserGroupHistoryEntity{" +
                 "authorities = '" + this.authorities + '\'' + ", " + 
                 "changeType = '" + this.changeType + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "name = '" + this.name + '\'' + ", " + 

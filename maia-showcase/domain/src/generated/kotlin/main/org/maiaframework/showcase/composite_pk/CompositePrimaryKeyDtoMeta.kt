@@ -12,12 +12,12 @@ object CompositePrimaryKeyDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.composite_primary_key.created_timestamp_utc"
+            "createdTimestamp" -> "maia.composite_primary_key.created_timestamp"
             "someInt" -> "maia.composite_primary_key.some_int"
             "someModifiableString" -> "maia.composite_primary_key.some_modifiable_string"
             "someString" -> "maia.composite_primary_key.some_string"
             "version" -> "maia.composite_primary_key.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, someInt, someModifiableString, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, someInt, someModifiableString, someString, version]")
         }
 
     }
@@ -26,12 +26,12 @@ object CompositePrimaryKeyDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "someInt" -> JdbcCompatibleType.integer
             "someModifiableString" -> JdbcCompatibleType.text
             "someString" -> JdbcCompatibleType.text
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, someInt, someModifiableString, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, someInt, someModifiableString, someString, version]")
         }
 
     }

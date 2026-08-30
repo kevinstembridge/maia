@@ -8,9 +8,9 @@ import java.time.Instant
 
 class PropsEntity(
     val comment: String?,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val lastModifiedByUsername: String,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val propertyName: String,
     val propertyValue: String,
     val version: Long
@@ -24,9 +24,9 @@ class PropsEntity(
 
         return "PropsEntity{" +
                 "comment = '" + this.comment + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "propertyName = '" + this.propertyName + '\'' + ", " + 
                 "propertyValue = '" + this.propertyValue + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
@@ -48,15 +48,15 @@ class PropsEntity(
             propertyValue: String
         ): PropsEntity {
 
-            val createdTimestampUtc = Instant.now()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val createdTimestamp = Instant.now()
+            val lastModifiedTimestamp = createdTimestamp
             val version = 1L
 
             return PropsEntity(
                 comment,
-                createdTimestampUtc,
+                createdTimestamp,
                 lastModifiedByUsername,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 propertyName,
                 propertyValue,
                 version

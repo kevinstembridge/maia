@@ -8,13 +8,13 @@ import {UserGroupJoinFetchDto} from '@app/gen-components/org/maiaframework/showc
 export interface UserFetchForEditDto {
     authorities: ReadonlyArray<string>;
     createdBy?: string;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     displayName: string;
     encryptedPassword: string;
     firstName?: string;
     id: string;
     lastModifiedBy?: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     lastName: string;
     lifecycleState: LifecycleState;
     userGroupEntities: ReadonlyArray<UserGroupJoinFetchDto>;

@@ -14,7 +14,7 @@ class OrgDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "displayName" -> "display_name"
             "id" -> "id"
             "orgName" -> "org_name"

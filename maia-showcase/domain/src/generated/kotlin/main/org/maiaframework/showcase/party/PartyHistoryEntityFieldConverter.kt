@@ -23,7 +23,7 @@ class PartyHistoryEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as ChangeType).name
             "created_by_id" -> // createdBy
                 return (inputValue as DomainId).value
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "display_name" -> // displayName
                 return inputValue
@@ -31,7 +31,7 @@ class PartyHistoryEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "last_modified_by_id" -> // lastModifiedBy
                 return (inputValue as DomainId).value
-            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
             "lifecycle_state" -> // lifecycleState
                 return (inputValue as LifecycleState).name

@@ -37,10 +37,10 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
     private val alphaEntity1 = AlphaEntityTestBuilder(someInt = someInt1, someString = "someAlphaValue1").build()
     private val alphaEntity2 = AlphaEntityTestBuilder(someInt = someInt2, someString = "someAlphaValue2").build()
 
-    private val bravoEntity1 = BravoEntityTestBuilder(createdTimestampUtc = timestamp1, alphaId = alphaEntity1.id, someString = "aSomeValue1").build()
-    private val bravoEntity2 = BravoEntityTestBuilder(createdTimestampUtc = timestamp2, alphaId = alphaEntity1.id, someString = "aSomeValue2").build()
-    private val bravoEntity3 = BravoEntityTestBuilder(createdTimestampUtc = timestamp2, alphaId = alphaEntity2.id, someString = "bSomeValue3").build()
-    private val bravoEntity4 = BravoEntityTestBuilder(createdTimestampUtc = timestamp3, alphaId = alphaEntity2.id, someString = "bSomeValue4").build()
+    private val bravoEntity1 = BravoEntityTestBuilder(createdTimestamp = timestamp1, alphaId = alphaEntity1.id, someString = "aSomeValue1").build()
+    private val bravoEntity2 = BravoEntityTestBuilder(createdTimestamp = timestamp2, alphaId = alphaEntity1.id, someString = "aSomeValue2").build()
+    private val bravoEntity3 = BravoEntityTestBuilder(createdTimestamp = timestamp2, alphaId = alphaEntity2.id, someString = "bSomeValue3").build()
+    private val bravoEntity4 = BravoEntityTestBuilder(createdTimestamp = timestamp3, alphaId = alphaEntity2.id, someString = "bSomeValue4").build()
 
 
     @BeforeEach
@@ -413,7 +413,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
             endRow = 3,
             filterModel = listOf(
                 mapOf(
-                    "fieldPath" to "createdTimestampUtc",
+                    "fieldPath" to "createdTimestamp",
                     "fieldType" to "date",
                     "filterType" to "equals",
                     "dateFrom" to today,
@@ -455,7 +455,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
             endRow = 3,
             filterModel = listOf(
                 mapOf(
-                    "fieldPath" to "createdTimestampUtc",
+                    "fieldPath" to "createdTimestamp",
                     "condition1" to mapOf(
                         "fieldType" to "date",
                         "filterType" to "equals",
@@ -507,7 +507,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
             endRow = 3,
             filterModel = listOf(
                 mapOf(
-                    "fieldPath" to "createdTimestampUtc",
+                    "fieldPath" to "createdTimestamp",
                     "fieldType" to "date",
                     "filterType" to "greaterThan",
                     "dateFrom" to today,
@@ -545,7 +545,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
             endRow = 3,
             filterModel = listOf(
                 mapOf(
-                    "fieldPath" to "createdTimestampUtc",
+                    "fieldPath" to "createdTimestamp",
                     "fieldType" to "date",
                     "filterType" to "lessThan",
                     "dateFrom" to today,
@@ -593,7 +593,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
             endRow = 3,
             filterModel = listOf(
                 mapOf(
-                    "fieldPath" to "createdTimestampUtc",
+                    "fieldPath" to "createdTimestamp",
                     "fieldType" to "date",
                     "filterType" to "notEqual",
                     "dateFrom" to today,
@@ -622,7 +622,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
             endRow = 3,
             filterModel = listOf(
                 mapOf(
-                    "fieldPath" to "createdTimestampUtc",
+                    "fieldPath" to "createdTimestamp",
                     "fieldType" to "date",
                     "filterType" to "inRange",
                     "dateFrom" to today,
@@ -1040,7 +1040,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
                     "operator" to "OR"
                 ),
                 mapOf(
-                    "fieldPath" to "createdTimestampUtc",
+                    "fieldPath" to "createdTimestamp",
                     "condition1" to mapOf(
                         "fieldType" to "date",
                         "filterType" to "equals",
@@ -1077,7 +1077,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
                     "filter" to 2 // => AlphaEntity2
                 ),
                 mapOf(
-                    "fieldPath" to "createdTimestampUtc",
+                    "fieldPath" to "createdTimestamp",
                     "fieldType" to "date",
                     "filterType" to "equals",
                     "dateFrom" to today, // => BravoEntity2, BravoEntity3
@@ -1159,7 +1159,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
             "dtoStringFromBravo" to bravoEntity.someString,
             "dtoIntFromAlpha" to alphaEntity.someInt,
             "dtoIntFromBravo" to bravoEntity.someInt,
-            "createdTimestampUtc" to bravoEntity.createdTimestampUtc.truncatedTo(ChronoUnit.MILLIS).toString()
+            "createdTimestamp" to bravoEntity.createdTimestamp.truncatedTo(ChronoUnit.MILLIS).toString()
         )
 
     }

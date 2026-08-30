@@ -41,11 +41,11 @@ class CompositePrimaryKeyCrudService(
         val someInt: Int = createDto.someInt
         val someModifiableString: String = createDto.someModifiableString
         val someString: String = createDto.someString
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
         val version = 1L
 
         return CompositePrimaryKeyEntity(
-            createdTimestampUtc,
+            createdTimestamp,
             someInt,
             someModifiableString,
             someString,

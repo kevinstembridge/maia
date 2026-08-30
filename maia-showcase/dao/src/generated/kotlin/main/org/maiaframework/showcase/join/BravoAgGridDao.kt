@@ -32,13 +32,13 @@ class BravoAgGridDao(
             """
             insert into maia.bravo_ag_grid (
                 alpha_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
                 :alpha,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
@@ -46,7 +46,7 @@ class BravoAgGridDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("alpha", entity.alpha)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -62,13 +62,13 @@ class BravoAgGridDao(
             """
             insert into maia.bravo_ag_grid (
                 alpha_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
                 :alpha,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
@@ -77,7 +77,7 @@ class BravoAgGridDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("alpha", entity.alpha)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)

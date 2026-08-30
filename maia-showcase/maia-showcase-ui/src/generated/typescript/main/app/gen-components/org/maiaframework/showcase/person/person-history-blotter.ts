@@ -32,7 +32,7 @@ export class PersonHistoryBlotter implements OnInit {
         { field: 'displayName', headerName: 'displayName', cellDataType: 'text' },
         { field: 'firstName', headerName: 'First Name', cellDataType: 'text' },
         { field: 'lastModifiedBy', headerName: 'Last Modified By', cellDataType: 'text' },
-        { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text' },
+        { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text' },
         { field: 'lastName', headerName: 'Last Name', cellDataType: 'text' },
         { field: 'lifecycleState', headerName: 'Lifecycle State', cellDataType: 'text' },
         { field: 'version', headerName: 'Version', cellDataType: 'number' },

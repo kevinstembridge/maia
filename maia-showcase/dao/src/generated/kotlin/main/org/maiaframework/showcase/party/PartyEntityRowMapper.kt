@@ -39,22 +39,22 @@ class PartyEntityRowMapper : MaiaRowMapper<PartyEntity> {
     private fun organizationEntityFrom(rsa: ResultSetAdapter): OrganizationEntity {
 
         val createdBy = rsa.readDomainIdOrNull("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val displayName = rsa.readString("display_name")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val orgName = rsa.readString("org_name")
         val version = rsa.readLong("version")
 
         return OrganizationEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lifecycleState,
                 orgName,
                 version
@@ -67,13 +67,13 @@ class PartyEntityRowMapper : MaiaRowMapper<PartyEntity> {
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val createdBy = rsa.readDomainIdOrNull("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val displayName = rsa.readString("display_name")
         val encryptedPassword = rsa.readString("encrypted_password")
         val firstName = rsa.readStringOrNull("first_name") { FirstName(it) }
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val version = rsa.readLong("version")
@@ -81,13 +81,13 @@ class PartyEntityRowMapper : MaiaRowMapper<PartyEntity> {
         return UserEntity(
                 authorities,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 encryptedPassword,
                 firstName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lastName,
                 lifecycleState,
                 version
@@ -99,24 +99,24 @@ class PartyEntityRowMapper : MaiaRowMapper<PartyEntity> {
     private fun personEntityFrom(rsa: ResultSetAdapter): PersonEntity {
 
         val createdBy = rsa.readDomainIdOrNull("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val displayName = rsa.readString("display_name")
         val firstName = rsa.readStringOrNull("first_name") { FirstName(it) }
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val lastName = rsa.readString("last_name") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val version = rsa.readLong("version")
 
         return PersonEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 firstName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lastName,
                 lifecycleState,
                 version

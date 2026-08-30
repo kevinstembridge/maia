@@ -40,7 +40,7 @@ class AlphaDtoDao(
 
         val sqlForPage = """
             select
-                maia.alpha.created_timestamp_utc as createdTimestampUtc,
+                maia.alpha.created_timestamp as createdTimestamp,
                 maia.alpha.id as id,
                 maia.alpha.some_int as someInt,
                 maia.alpha.some_string as someString

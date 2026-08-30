@@ -8,11 +8,11 @@ import java.time.Instant
 
 
 data class LeftToRightComplexFetchForEditDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val left: LeftManyPkAndNameDto,
     val right: RightManyPkAndNameDto,
     val someIntOnComplex: Int

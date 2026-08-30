@@ -31,7 +31,7 @@ export class OrganizationHistoryBlotter implements OnInit {
         { field: 'createdBy', headerName: 'Created By', cellDataType: 'text' },
         { field: 'displayName', headerName: 'displayName', cellDataType: 'text' },
         { field: 'lastModifiedBy', headerName: 'Last Modified By', cellDataType: 'text' },
-        { field: 'lastModifiedTimestampUtc', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text' },
+        { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text' },
         { field: 'lifecycleState', headerName: 'Lifecycle State', cellDataType: 'text' },
         { field: 'orgName', headerName: 'Organization Name', cellDataType: 'text' },
         { field: 'version', headerName: 'Version', cellDataType: 'number' },

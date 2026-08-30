@@ -35,17 +35,17 @@ class EmailAddressDao(
             """
             insert into maia.email_address (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 email_address
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :emailAddress
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("emailAddress", entity.emailAddress)
             }
         )
@@ -59,18 +59,18 @@ class EmailAddressDao(
             """
             insert into maia.email_address (
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 email_address
             ) values (
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :emailAddress
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("emailAddress", entity.emailAddress)
                 }
             }
@@ -270,19 +270,19 @@ class EmailAddressDao(
             """
             with input_rows(
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 email_address
             ) as (
                 values (
                     cast(:createdBy as uuid),
-                    cast(:createdTimestampUtc as timestamp(3) with time zone),
+                    cast(:createdTimestamp as timestamp(3) with time zone),
                     cast(:emailAddress as text)
                 )
             )
             , ins as (
                 insert into maia.email_address (
                     created_by_id,
-                    created_timestamp_utc,
+                    created_timestamp,
                     email_address
                 )
                 select * from input_rows
@@ -298,7 +298,7 @@ class EmailAddressDao(
             """.trimIndent(),
             SqlParams().apply {
             addValue("createdBy", upsertEntity.createdBy)
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("createdTimestamp", upsertEntity.createdTimestamp)
             addValue("emailAddress", upsertEntity.emailAddress)
             },
             { ps: PreparedStatement ->

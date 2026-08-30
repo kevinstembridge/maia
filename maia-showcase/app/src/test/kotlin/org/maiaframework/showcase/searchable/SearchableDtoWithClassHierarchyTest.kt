@@ -180,7 +180,7 @@ class SearchableDtoWithClassHierarchyTest : AbstractBlackBoxTest() {
 
         return mapOf(
             "id" to entity.id.value,
-            "createdTimestampUtc" to entity.createdTimestampUtc.truncatedTo(ChronoUnit.MILLIS).toString()
+            "createdTimestamp" to entity.createdTimestamp.truncatedTo(ChronoUnit.MILLIS).toString()
         )
 
     }

@@ -25,13 +25,13 @@ class FeatureToggleFetchForEditDtoRowMapper(
         val attributes = rsa.readString("attributes") { jsonMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) }
         val comment = rsa.readStringOrNull("comment")
         val contactPerson = rsa.readStringOrNull("contactPerson") { ContactPerson(it) }
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val description = rsa.readStringOrNull("description") { Description(it) }
         val enabled = rsa.readBoolean("enabled")
         val featureName = rsa.readString("featureName") { FeatureName(it) }
         val infoLink = rsa.readStringOrNull("infoLink") { InfoLink(it) }
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val reviewDate = rsa.readLocalDateOrNull("reviewDate")
         val ticketKey = rsa.readStringOrNull("ticketKey") { TicketKey(it) }
         val version = rsa.readLong("version")
@@ -41,13 +41,13 @@ class FeatureToggleFetchForEditDtoRowMapper(
             attributes,
             comment,
             contactPerson,
-            createdTimestampUtc,
+            createdTimestamp,
             description,
             enabled,
             featureName,
             infoLink,
             lastModifiedByUsername,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             reviewDate,
             ticketKey,
             version,

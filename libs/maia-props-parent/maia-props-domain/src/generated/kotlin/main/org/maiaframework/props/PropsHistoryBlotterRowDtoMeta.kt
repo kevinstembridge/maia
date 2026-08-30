@@ -15,11 +15,11 @@ object PropsHistoryBlotterRowDtoMeta {
             "changeType" -> "props.props_history.change_type"
             "comment" -> "props.props_history.comment"
             "lastModifiedByUsername" -> "props.props_history.last_modified_by_name"
-            "lastModifiedTimestampUtc" -> "props.props_history.last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "props.props_history.last_modified_timestamp"
             "propertyName" -> "props.props_history.property_name"
             "propertyValue" -> "props.props_history.property_value"
             "version" -> "props.props_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, comment, lastModifiedByUsername, lastModifiedTimestampUtc, propertyName, propertyValue, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, comment, lastModifiedByUsername, lastModifiedTimestamp, propertyName, propertyValue, version]")
         }
 
     }
@@ -31,11 +31,11 @@ object PropsHistoryBlotterRowDtoMeta {
             "changeType" -> JdbcCompatibleType.text
             "comment" -> JdbcCompatibleType.text
             "lastModifiedByUsername" -> JdbcCompatibleType.text
-            "lastModifiedTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "lastModifiedTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "propertyName" -> JdbcCompatibleType.text
             "propertyValue" -> JdbcCompatibleType.text
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, comment, lastModifiedByUsername, lastModifiedTimestampUtc, propertyName, propertyValue, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, comment, lastModifiedByUsername, lastModifiedTimestamp, propertyName, propertyValue, version]")
         }
 
     }

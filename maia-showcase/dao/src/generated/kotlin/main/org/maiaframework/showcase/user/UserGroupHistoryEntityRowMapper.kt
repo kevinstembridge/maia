@@ -34,7 +34,7 @@ class UserGroupHistoryEntityRowMapper : MaiaRowMapper<UserGroupHistoryEntity> {
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")
         val name = rsa.readString("name")
@@ -45,7 +45,7 @@ class UserGroupHistoryEntityRowMapper : MaiaRowMapper<UserGroupHistoryEntity> {
         return OrgUserGroupHistoryEntity(
                 authorities,
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 id,
                 name,
@@ -61,7 +61,7 @@ class UserGroupHistoryEntityRowMapper : MaiaRowMapper<UserGroupHistoryEntity> {
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")
         val name = rsa.readString("name")
@@ -71,7 +71,7 @@ class UserGroupHistoryEntityRowMapper : MaiaRowMapper<UserGroupHistoryEntity> {
         return UserGroupHistoryEntity(
                 authorities,
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 id,
                 name,

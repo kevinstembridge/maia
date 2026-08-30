@@ -14,12 +14,12 @@ class EmailAddressEntityRowMapper : MaiaRowMapper<EmailAddressEntity> {
     override fun mapRow(rsa: ResultSetAdapter): EmailAddressEntity {
 
         val createdBy = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
 
         return EmailAddressEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 emailAddress
         )
 

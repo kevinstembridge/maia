@@ -13,18 +13,18 @@ class PropsEntityRowMapper : MaiaRowMapper<PropsEntity> {
     override fun mapRow(rsa: ResultSetAdapter): PropsEntity {
 
         val comment = rsa.readStringOrNull("comment")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val lastModifiedByUsername = rsa.readString("last_modified_by_name")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val propertyName = rsa.readString("property_name")
         val propertyValue = rsa.readString("property_value")
         val version = rsa.readLong("version")
 
         return PropsEntity(
                 comment,
-                createdTimestampUtc,
+                createdTimestamp,
                 lastModifiedByUsername,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 propertyName,
                 propertyValue,
                 version

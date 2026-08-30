@@ -12,13 +12,13 @@ object BravoDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.bravo.created_timestamp_utc"
+            "createdTimestamp" -> "maia.bravo.created_timestamp"
             "dtoIntFromAlpha" -> "maia.alpha.some_int"
             "dtoIntFromBravo" -> "maia.bravo.some_int"
             "dtoStringFromAlpha" -> "maia.alpha.some_string"
             "dtoStringFromBravo" -> "maia.bravo.some_string"
             "id" -> "maia.bravo.id"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoStringFromAlpha, dtoStringFromBravo, id]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, dtoIntFromAlpha, dtoIntFromBravo, dtoStringFromAlpha, dtoStringFromBravo, id]")
         }
 
     }
@@ -27,13 +27,13 @@ object BravoDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "dtoIntFromAlpha" -> JdbcCompatibleType.integer
             "dtoIntFromBravo" -> JdbcCompatibleType.integer
             "dtoStringFromAlpha" -> JdbcCompatibleType.text
             "dtoStringFromBravo" -> JdbcCompatibleType.text
             "id" -> JdbcCompatibleType.uuid
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoStringFromAlpha, dtoStringFromBravo, id]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, dtoIntFromAlpha, dtoIntFromBravo, dtoStringFromAlpha, dtoStringFromBravo, id]")
         }
 
     }

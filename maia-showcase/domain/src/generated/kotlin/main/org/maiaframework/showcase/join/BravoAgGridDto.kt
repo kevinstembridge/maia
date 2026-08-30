@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class BravoAgGridDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val dtoIntFromAlpha: Int,
     val dtoIntFromBravo: Int,
     val dtoStringFromAlpha: String,

@@ -16,7 +16,7 @@ class PropsHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PropsHistoryBlotterRowD
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
         val comment = rsa.readString("comment")
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val propertyName = rsa.readString("propertyName")
         val propertyValue = rsa.readString("propertyValue")
         val version = rsa.readLong("version")
@@ -25,7 +25,7 @@ class PropsHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PropsHistoryBlotterRowD
             changeType,
             comment,
             lastModifiedByUsername,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             propertyName,
             propertyValue,
             version,

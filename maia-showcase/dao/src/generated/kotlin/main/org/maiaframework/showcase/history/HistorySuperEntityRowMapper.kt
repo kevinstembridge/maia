@@ -30,19 +30,19 @@ class HistorySuperEntityRowMapper : MaiaRowMapper<HistorySuperEntity> {
     private fun historySubOneEntityFrom(rsa: ResultSetAdapter): HistorySubOneEntity {
 
         val createdBy = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val someString = rsa.readString("some_string")
         val version = rsa.readLong("version")
 
         return HistorySubOneEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someString,
                 version
         )
@@ -53,19 +53,19 @@ class HistorySuperEntityRowMapper : MaiaRowMapper<HistorySuperEntity> {
     private fun historySubTwoEntityFrom(rsa: ResultSetAdapter): HistorySubTwoEntity {
 
         val createdBy = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val someInt = rsa.readInt("some_int")
         val version = rsa.readLong("version")
 
         return HistorySubTwoEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 version
         )

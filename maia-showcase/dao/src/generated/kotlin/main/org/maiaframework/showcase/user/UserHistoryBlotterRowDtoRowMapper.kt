@@ -24,7 +24,7 @@ class UserHistoryBlotterRowDtoRowMapper : MaiaRowMapper<UserHistoryBlotterRowDto
         val encryptedPassword = rsa.readString("encryptedPassword")
         val firstName = rsa.readString("firstName") { FirstName(it) }
         val lastModifiedBy = rsa.readDomainId("lastModifiedBy")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val lastName = rsa.readString("lastName") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycleState", LifecycleState::class.java)
         val version = rsa.readLong("version")
@@ -37,7 +37,7 @@ class UserHistoryBlotterRowDtoRowMapper : MaiaRowMapper<UserHistoryBlotterRowDto
             encryptedPassword,
             firstName,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lastName,
             lifecycleState,
             version,

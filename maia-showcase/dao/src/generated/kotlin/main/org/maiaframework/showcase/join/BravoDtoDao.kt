@@ -42,7 +42,7 @@ class BravoDtoDao(
 
         val sqlForPage = """
             select
-                maia.bravo.created_timestamp_utc as createdTimestampUtc,
+                maia.bravo.created_timestamp as createdTimestamp,
                 maia.alpha.some_int as dtoIntFromAlpha,
                 maia.bravo.some_int as dtoIntFromBravo,
                 maia.alpha.some_string as dtoStringFromAlpha,

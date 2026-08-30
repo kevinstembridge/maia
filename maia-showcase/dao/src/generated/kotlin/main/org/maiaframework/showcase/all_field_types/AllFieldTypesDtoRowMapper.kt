@@ -26,7 +26,7 @@ class AllFieldTypesDtoRowMapper : MaiaRowMapper<AllFieldTypesDto> {
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainId("lastModifiedBy")
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val someBoolean = rsa.readBoolean("someBoolean")
         val someBooleanNullable = rsa.readBooleanOrNull("someBooleanNullable")
         val someBooleanType = rsa.readBoolean("someBooleanType") { SomeBooleanType(it) }
@@ -68,7 +68,7 @@ class AllFieldTypesDtoRowMapper : MaiaRowMapper<AllFieldTypesDto> {
             id,
             lastModifiedBy,
             lastModifiedByUsername,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             someBoolean,
             someBooleanNullable,
             someBooleanType,

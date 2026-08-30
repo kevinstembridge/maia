@@ -71,7 +71,7 @@ class FixedWidthFileStagingEntityDefBuilder(
             .map { it.entityFieldDef }
             .plus(fileStorageIdField())
             .plus(EntityDef.idFieldDef(entityBaseName, packageName))
-            .plus(EntityDef.createdTimestampUtcFieldDef(entityBaseName, packageName))
+            .plus(EntityDef.createdTimestampFieldDef(entityBaseName, packageName))
             .plus(lineNumberField())
 
         return EntityDef(

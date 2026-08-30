@@ -4,7 +4,7 @@
 
 export interface HistorySubOneHistoryBlotterRowDto {
     changeType: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     someString: string;
     version: number;
 }

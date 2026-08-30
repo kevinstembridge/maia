@@ -14,13 +14,13 @@ object ParentOneEntityMeta {
 
     const val createdBy = "created_by_id"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val id = "id"
 
     const val lastModifiedBy = "last_modified_by_id"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val someString = "some_string"
 
@@ -61,10 +61,10 @@ object ParentOneEntityMeta {
 
         return when(classFieldName) {
             "createdBy" -> "created_by_id"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "lastModifiedBy" -> "last_modified_by_id"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "someString" -> "some_string"
             "someUniqueString" -> "some_unique_string"
             else ->

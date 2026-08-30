@@ -7,11 +7,11 @@ import {RoleJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/o
 
 export interface OrganizationFetchForEditDto {
     createdBy?: string;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     displayName: string;
     id: string;
     lastModifiedBy?: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     lifecycleState: LifecycleState;
     orgName: string;
     roleEntities: ReadonlyArray<RoleJoinFetchDto>;

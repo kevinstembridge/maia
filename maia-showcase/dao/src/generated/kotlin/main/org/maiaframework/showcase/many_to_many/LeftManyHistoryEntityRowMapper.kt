@@ -14,18 +14,18 @@ class LeftManyHistoryEntityRowMapper : MaiaRowMapper<LeftManyHistoryEntity> {
     override fun mapRow(rsa: ResultSetAdapter): LeftManyHistoryEntity {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
         val version = rsa.readLong("version")
 
         return LeftManyHistoryEntity(
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 someString,
                 version

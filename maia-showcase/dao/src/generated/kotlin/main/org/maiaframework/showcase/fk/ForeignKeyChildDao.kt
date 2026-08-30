@@ -31,19 +31,19 @@ class ForeignKeyChildDao(
         jdbcOps.update(
             """
             insert into maia.foreign_key_child (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 parent_id,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :parentId,
                 :someString
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("parentId", entity.parentId)
                 addValue("someString", entity.someString)
@@ -58,12 +58,12 @@ class ForeignKeyChildDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.foreign_key_child (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 parent_id,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :parentId,
                 :someString
@@ -71,7 +71,7 @@ class ForeignKeyChildDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("parentId", entity.parentId)
                     addValue("someString", entity.someString)

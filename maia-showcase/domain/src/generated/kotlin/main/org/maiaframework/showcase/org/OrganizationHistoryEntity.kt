@@ -13,22 +13,22 @@ import java.time.Instant
 class OrganizationHistoryEntity(
     changeType: ChangeType,
     createdBy: DomainId?,
-    createdTimestampUtc: Instant,
+    createdTimestamp: Instant,
     displayName: String,
     id: DomainId,
     lastModifiedBy: DomainId?,
-    lastModifiedTimestampUtc: Instant,
+    lastModifiedTimestamp: Instant,
     lifecycleState: LifecycleState,
     val orgName: String,
     version: Long
 ) : PartyHistoryEntity(
     changeType,
     createdBy,
-    createdTimestampUtc,
+    createdTimestamp,
     displayName,
     id,
     lastModifiedBy,
-    lastModifiedTimestampUtc,
+    lastModifiedTimestamp,
     lifecycleState,
     version
 ) {
@@ -39,11 +39,11 @@ class OrganizationHistoryEntity(
         return "OrganizationHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "orgName = '" + this.orgName + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

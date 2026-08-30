@@ -17,11 +17,11 @@ class LeftManyEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
-            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
             "some_int" -> // someInt
                 return inputValue

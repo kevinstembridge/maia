@@ -9,18 +9,18 @@ import java.time.Instant
 
 class HistorySubOneEntity(
     createdBy: DomainId,
-    createdTimestampUtc: Instant,
+    createdTimestamp: Instant,
     id: DomainId,
     lastModifiedBy: DomainId,
-    lastModifiedTimestampUtc: Instant,
+    lastModifiedTimestamp: Instant,
     val someString: String,
     version: Long
 ) : HistorySuperEntity(
     createdBy,
-    createdTimestampUtc,
+    createdTimestamp,
     id,
     lastModifiedBy,
-    lastModifiedTimestampUtc,
+    lastModifiedTimestamp,
     version
 ) {
 
@@ -29,10 +29,10 @@ class HistorySubOneEntity(
 
         return "HistorySubOneEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
@@ -54,18 +54,18 @@ class HistorySubOneEntity(
             someString: String
         ): HistorySubOneEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
             val version = 1L
 
             return HistorySubOneEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someString,
                 version
             )

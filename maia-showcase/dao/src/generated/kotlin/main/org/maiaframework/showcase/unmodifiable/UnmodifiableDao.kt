@@ -36,17 +36,17 @@ class UnmodifiableDao(
         jdbcOps.update(
             """
             insert into maia.unmodifiable (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_unique_int
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someUniqueInt
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someUniqueInt", entity.someUniqueInt)
             }
@@ -60,18 +60,18 @@ class UnmodifiableDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.unmodifiable (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_unique_int
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someUniqueInt
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someUniqueInt", entity.someUniqueInt)
                 }
@@ -296,19 +296,19 @@ class UnmodifiableDao(
         return jdbcOps.execute(
             """
             with input_rows(
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_unique_int
             ) as (
                 values (
-                    cast(:createdTimestampUtc as timestamp(3) with time zone),
+                    cast(:createdTimestamp as timestamp(3) with time zone),
                     cast(:id as uuid),
                     cast(:someUniqueInt as integer)
                 )
             )
             , ins as (
                 insert into maia.unmodifiable (
-                    created_timestamp_utc,
+                    created_timestamp,
                     id,
                     some_unique_int
                 )
@@ -324,7 +324,7 @@ class UnmodifiableDao(
             join maia.unmodifiable c using (some_unique_int);
             """.trimIndent(),
             SqlParams().apply {
-            addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+            addValue("createdTimestamp", upsertEntity.createdTimestamp)
             addValue("id", upsertEntity.id)
             addValue("someUniqueInt", upsertEntity.someUniqueInt)
             },

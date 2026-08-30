@@ -45,11 +45,11 @@ class AllFieldTypesDao(
             insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -87,11 +87,11 @@ class AllFieldTypesDao(
             ) values (
                 :createdBy,
                 :createdByUsername,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -131,11 +131,11 @@ class AllFieldTypesDao(
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
                 addValue("createdByUsername", entity.createdByUsername)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someBoolean", entity.someBoolean)
                 addValue("someBooleanNullable", entity.someBooleanNullable)
                 addValue("someBooleanType", entity.someBooleanType)
@@ -183,11 +183,11 @@ class AllFieldTypesDao(
             insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -225,11 +225,11 @@ class AllFieldTypesDao(
             ) values (
                 :createdBy,
                 :createdByUsername,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -270,11 +270,11 @@ class AllFieldTypesDao(
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
                     addValue("createdByUsername", entity.createdByUsername)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("someBoolean", entity.someBoolean)
                     addValue("someBooleanNullable", entity.someBooleanNullable)
                     addValue("someBooleanType", entity.someBooleanType)
@@ -790,12 +790,12 @@ class AllFieldTypesDao(
                 created_by_v_party.id as createdById,
                 created_by_v_party.display_name as createdByName,
                 maia.all_field_types.created_by_name as createdByUsername,
-                maia.all_field_types.created_timestamp_utc as createdTimestampUtc,
+                maia.all_field_types.created_timestamp as createdTimestamp,
                 maia.all_field_types.id as id,
                 last_modified_by_v_party.id as lastModifiedById,
                 last_modified_by_v_party.display_name as lastModifiedByName,
                 maia.all_field_types.last_modified_by_name as lastModifiedByUsername,
-                maia.all_field_types.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.all_field_types.last_modified_timestamp as lastModifiedTimestamp,
                 maia.all_field_types.some_boolean as someBoolean,
                 maia.all_field_types.some_boolean_nullable as someBooleanNullable,
                 maia.all_field_types.some_boolean_type as someBooleanType,
@@ -854,11 +854,11 @@ class AllFieldTypesDao(
             insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -896,11 +896,11 @@ class AllFieldTypesDao(
             ) values (
                 :createdBy,
                 :createdByUsername,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -940,7 +940,7 @@ class AllFieldTypesDao(
             do update set
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -954,11 +954,11 @@ class AllFieldTypesDao(
             SqlParams().apply {
                 addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1013,11 +1013,11 @@ class AllFieldTypesDao(
             insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1055,11 +1055,11 @@ class AllFieldTypesDao(
             ) values (
                 :createdBy,
                 :createdByUsername,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -1099,7 +1099,7 @@ class AllFieldTypesDao(
             do update set
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1113,11 +1113,11 @@ class AllFieldTypesDao(
             SqlParams().apply {
                 addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1172,11 +1172,11 @@ class AllFieldTypesDao(
             insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1214,11 +1214,11 @@ class AllFieldTypesDao(
             ) values (
                 :createdBy,
                 :createdByUsername,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -1258,7 +1258,7 @@ class AllFieldTypesDao(
             do update set
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1272,11 +1272,11 @@ class AllFieldTypesDao(
             SqlParams().apply {
                 addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1331,11 +1331,11 @@ class AllFieldTypesDao(
             insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1373,11 +1373,11 @@ class AllFieldTypesDao(
             ) values (
                 :createdBy,
                 :createdByUsername,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -1417,7 +1417,7 @@ class AllFieldTypesDao(
             do update set
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1431,11 +1431,11 @@ class AllFieldTypesDao(
             SqlParams().apply {
                 addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1490,11 +1490,11 @@ class AllFieldTypesDao(
             insert into maia.all_field_types (
                 created_by_id,
                 created_by_name,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1532,11 +1532,11 @@ class AllFieldTypesDao(
             ) values (
                 :createdBy,
                 :createdByUsername,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -1576,7 +1576,7 @@ class AllFieldTypesDao(
             do update set
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1590,11 +1590,11 @@ class AllFieldTypesDao(
             SqlParams().apply {
                 addValue("createdBy", upsertEntity.createdBy)
                 addValue("createdByUsername", upsertEntity.createdByUsername)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1679,7 +1679,7 @@ class AllFieldTypesDao(
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
             "lastModifiedByUsername" -> sqlParams.addValue("lastModifiedByUsername", field.value as String)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "someInstantModifiable" -> sqlParams.addValue("someInstantModifiable", field.value as Instant)
             "someInstantModifiableNullable" -> sqlParams.addValue("someInstantModifiableNullable", field.value as Instant?)
             "someIntModifiable" -> sqlParams.addValue("someIntModifiable", field.value as Int)

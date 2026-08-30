@@ -17,7 +17,7 @@ object AllFieldTypesDtoMeta {
             "id" -> "maia.all_field_types.id"
             "lastModifiedBy" -> "maia.v_party.id"
             "lastModifiedByUsername" -> "maia.all_field_types.last_modified_by_name"
-            "lastModifiedTimestampUtc" -> "maia.all_field_types.last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "maia.all_field_types.last_modified_timestamp"
             "someBoolean" -> "maia.all_field_types.some_boolean"
             "someBooleanNullable" -> "maia.all_field_types.some_boolean_nullable"
             "someBooleanType" -> "maia.all_field_types.some_boolean_type"
@@ -52,7 +52,7 @@ object AllFieldTypesDtoMeta {
             "someStringNullable" -> "maia.all_field_types.some_string_nullable"
             "someStringType" -> "maia.all_field_types.some_string_type"
             "someStringTypeNullable" -> "maia.all_field_types.some_string_type_nullable"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdBy, createdByUsername, id, lastModifiedBy, lastModifiedByUsername, lastModifiedTimestampUtc, someBoolean, someBooleanNullable, someBooleanType, someBooleanTypeNullable, someBooleanTypeProvided, someBooleanTypeProvidedNullable, someEnum, someEnumNullable, someInstant, someInstantModifiable, someInstantModifiableNullable, someInstantNullable, someInt, someIntModifiable, someIntNullable, someIntType, someIntTypeNullable, someIntTypeProvided, someIntTypeProvidedNullable, someListOfStrings, someLocalDateModifiable, someLongType, someLongTypeNullable, someLongTypeProvided, someLongTypeProvidedNullable, somePeriodModifiable, somePeriodNullable, someProvidedStringType, someProvidedStringTypeNullable, someString, someStringModifiable, someStringNullable, someStringType, someStringTypeNullable]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdBy, createdByUsername, id, lastModifiedBy, lastModifiedByUsername, lastModifiedTimestamp, someBoolean, someBooleanNullable, someBooleanType, someBooleanTypeNullable, someBooleanTypeProvided, someBooleanTypeProvidedNullable, someEnum, someEnumNullable, someInstant, someInstantModifiable, someInstantModifiableNullable, someInstantNullable, someInt, someIntModifiable, someIntNullable, someIntType, someIntTypeNullable, someIntTypeProvided, someIntTypeProvidedNullable, someListOfStrings, someLocalDateModifiable, someLongType, someLongTypeNullable, someLongTypeProvided, someLongTypeProvidedNullable, somePeriodModifiable, somePeriodNullable, someProvidedStringType, someProvidedStringTypeNullable, someString, someStringModifiable, someStringNullable, someStringType, someStringTypeNullable]")
         }
 
     }
@@ -66,7 +66,7 @@ object AllFieldTypesDtoMeta {
             "id" -> JdbcCompatibleType.uuid
             "lastModifiedBy" -> JdbcCompatibleType.uuid
             "lastModifiedByUsername" -> JdbcCompatibleType.text
-            "lastModifiedTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "lastModifiedTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "someBoolean" -> JdbcCompatibleType.boolean
             "someBooleanNullable" -> JdbcCompatibleType.boolean
             "someBooleanType" -> JdbcCompatibleType.boolean
@@ -101,7 +101,7 @@ object AllFieldTypesDtoMeta {
             "someStringNullable" -> JdbcCompatibleType.text
             "someStringType" -> JdbcCompatibleType.text
             "someStringTypeNullable" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdBy, createdByUsername, id, lastModifiedBy, lastModifiedByUsername, lastModifiedTimestampUtc, someBoolean, someBooleanNullable, someBooleanType, someBooleanTypeNullable, someBooleanTypeProvided, someBooleanTypeProvidedNullable, someEnum, someEnumNullable, someInstant, someInstantModifiable, someInstantModifiableNullable, someInstantNullable, someInt, someIntModifiable, someIntNullable, someIntType, someIntTypeNullable, someIntTypeProvided, someIntTypeProvidedNullable, someListOfStrings, someLocalDateModifiable, someLongType, someLongTypeNullable, someLongTypeProvided, someLongTypeProvidedNullable, somePeriodModifiable, somePeriodNullable, someProvidedStringType, someProvidedStringTypeNullable, someString, someStringModifiable, someStringNullable, someStringType, someStringTypeNullable]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdBy, createdByUsername, id, lastModifiedBy, lastModifiedByUsername, lastModifiedTimestamp, someBoolean, someBooleanNullable, someBooleanType, someBooleanTypeNullable, someBooleanTypeProvided, someBooleanTypeProvidedNullable, someEnum, someEnumNullable, someInstant, someInstantModifiable, someInstantModifiableNullable, someInstantNullable, someInt, someIntModifiable, someIntNullable, someIntType, someIntTypeNullable, someIntTypeProvided, someIntTypeProvidedNullable, someListOfStrings, someLocalDateModifiable, someLongType, someLongTypeNullable, someLongTypeProvided, someLongTypeProvidedNullable, somePeriodModifiable, somePeriodNullable, someProvidedStringType, someProvidedStringTypeNullable, someString, someStringModifiable, someStringNullable, someStringType, someStringTypeNullable]")
         }
 
     }

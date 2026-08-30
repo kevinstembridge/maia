@@ -32,7 +32,7 @@ class UserGroupEntityRowMapper : MaiaRowMapper<UserGroupEntity> {
     private fun orgUserGroupEntityFrom(rsa: ResultSetAdapter): OrgUserGroupEntity {
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")
         val name = rsa.readString("name")
@@ -42,7 +42,7 @@ class UserGroupEntityRowMapper : MaiaRowMapper<UserGroupEntity> {
 
         return OrgUserGroupEntity(
                 authorities,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 id,
                 name,
@@ -57,7 +57,7 @@ class UserGroupEntityRowMapper : MaiaRowMapper<UserGroupEntity> {
     private fun userGroupEntityFrom(rsa: ResultSetAdapter): UserGroupEntity {
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")
         val name = rsa.readString("name")
@@ -66,7 +66,7 @@ class UserGroupEntityRowMapper : MaiaRowMapper<UserGroupEntity> {
 
         return UserGroupEntity(
                 authorities,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 id,
                 name,

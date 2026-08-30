@@ -16,14 +16,14 @@ class CharlieAgGridFetchForEditDtoRowMapper : MaiaRowMapper<CharlieAgGridFetchFo
             rsa.readDomainId("bravoId"),
             rsa.readString("bravoName"),
         )
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
 
         return CharlieAgGridFetchForEditDto(
             bravo,
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString,

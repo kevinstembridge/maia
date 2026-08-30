@@ -46,12 +46,12 @@ class UserDao(
                 type_discriminator,
                 authorities,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 encrypted_password,
                 first_name,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 last_name,
                 lifecycle_state,
                 version
@@ -59,12 +59,12 @@ class UserDao(
                 'USR',
                 :authorities,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :encryptedPassword,
                 :firstName,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lastName,
                 :lifecycleState,
                 :version
@@ -73,13 +73,13 @@ class UserDao(
             SqlParams().apply {
                 addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("displayName", entity.displayName)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("version", entity.version)
@@ -99,12 +99,12 @@ class UserDao(
                 type_discriminator,
                 authorities,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 encrypted_password,
                 first_name,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 last_name,
                 lifecycle_state,
                 version
@@ -112,12 +112,12 @@ class UserDao(
                 'USR',
                 :authorities,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :encryptedPassword,
                 :firstName,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lastName,
                 :lifecycleState,
                 :version
@@ -127,13 +127,13 @@ class UserDao(
                 SqlParams().apply {
                     addListOfStrings("authorities", entity.authorities.map { it.value })
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("displayName", entity.displayName)
                     addValue("encryptedPassword", entity.encryptedPassword)
                     addValue("firstName", entity.firstName)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("version", entity.version)
@@ -177,12 +177,12 @@ class UserDao(
         val id = entity.id
         val authorities = entity.authorities
         val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val displayName = entity.displayName
         val encryptedPassword = entity.encryptedPassword
         val firstName = entity.firstName
         val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
 
@@ -190,13 +190,13 @@ class UserDao(
                 authorities,
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 encryptedPassword,
                 firstName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lastName,
                 lifecycleState,
                 version)
@@ -378,13 +378,13 @@ class UserDao(
             select
                 maia.v_party.authorities as authorities,
                 maia.v_party.created_by_id as createdBy,
-                maia.v_party.created_timestamp_utc as createdTimestampUtc,
+                maia.v_party.created_timestamp as createdTimestamp,
                 maia.v_party.display_name as displayName,
                 maia.v_party.encrypted_password as encryptedPassword,
                 maia.v_party.first_name as firstName,
                 maia.v_party.id as id,
                 maia.v_party.last_modified_by_id as lastModifiedBy,
-                maia.v_party.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.v_party.last_modified_timestamp as lastModifiedTimestamp,
                 maia.v_party.last_name as lastName,
                 maia.v_party.lifecycle_state as lifecycleState,
                 maia.v_party.version as version
@@ -459,7 +459,7 @@ class UserDao(
             "encryptedPassword" -> sqlParams.addValue("encryptedPassword", field.value as String)
             "firstName" -> sqlParams.addValue("firstName", field.value as FirstName?)
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "lastName" -> sqlParams.addValue("lastName", field.value as LastName)
             "lifecycleState" -> sqlParams.addValue("lifecycleState", field.value as LifecycleState)
         }

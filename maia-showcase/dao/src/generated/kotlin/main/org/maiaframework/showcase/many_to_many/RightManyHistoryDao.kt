@@ -31,14 +31,14 @@ class RightManyHistoryDao(
             """
             insert into maia.right_many_history (
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string,
                 version
             ) values (
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString,
@@ -47,7 +47,7 @@ class RightManyHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -64,14 +64,14 @@ class RightManyHistoryDao(
             """
             insert into maia.right_many_history (
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string,
                 version
             ) values (
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString,
@@ -81,7 +81,7 @@ class RightManyHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)

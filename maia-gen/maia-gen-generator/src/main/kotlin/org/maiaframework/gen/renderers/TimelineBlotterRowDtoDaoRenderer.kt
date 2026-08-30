@@ -184,7 +184,7 @@ class TimelineBlotterRowDtoDaoRenderer(
             |
             |        return $tripleQ
             |            SELECT
-            |                lmh.last_modified_timestamp_utc AS event_timestamp,
+            |                lmh.last_modified_timestamp AS event_timestamp,
             |                'ENTITY_CHANGE' AS event_type,
             |                lmh.change_type,
             |                lmh.version$entityFieldSelectClause${buildJoinNullsForEntityArm()}

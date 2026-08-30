@@ -61,22 +61,22 @@ class UserCrudService(
         val lastName: LastName = createDto.lastName
         val createdBy = currentUser.userId
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
         val lastModifiedBy = currentUser.userId
-        val lastModifiedTimestampUtc = createdTimestampUtc
+        val lastModifiedTimestamp = createdTimestamp
         val lifecycleState = LifecycleState.ACTIVE
         val version = 1L
 
         return UserEntity(
             authorities,
             createdBy,
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             encryptedPassword,
             firstName,
             id,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lastName,
             lifecycleState,
             version
@@ -133,7 +133,7 @@ class UserCrudService(
             lastName(editDto.lastName)
             firstName(editDto.firstName)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -162,7 +162,7 @@ class UserCrudService(
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id, version) {
             authorities(editDto.authorities)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -183,7 +183,7 @@ class UserCrudService(
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id, version) {
             firstName(editDto.firstName)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -204,7 +204,7 @@ class UserCrudService(
         val updater = UserEntityUpdater.forPrimaryKey(editDto.id, version) {
             lastName(editDto.lastName)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)

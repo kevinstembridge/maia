@@ -36,17 +36,17 @@ class PropsDao(
             """
             insert into props.props (
                 comment,
-                created_timestamp_utc,
+                created_timestamp,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 property_name,
                 property_value,
                 version
             ) values (
                 :comment,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
                 :version
@@ -54,9 +54,9 @@ class PropsDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("comment", entity.comment)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("propertyName", entity.propertyName)
                 addValue("propertyValue", entity.propertyValue)
                 addValue("version", entity.version)
@@ -74,17 +74,17 @@ class PropsDao(
             """
             insert into props.props (
                 comment,
-                created_timestamp_utc,
+                created_timestamp,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 property_name,
                 property_value,
                 version
             ) values (
                 :comment,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
                 :version
@@ -93,9 +93,9 @@ class PropsDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("comment", entity.comment)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("propertyName", entity.propertyName)
                     addValue("propertyValue", entity.propertyValue)
                     addValue("version", entity.version)
@@ -137,18 +137,18 @@ class PropsDao(
     ): PropsHistoryEntity {
 
         val comment = entity.comment
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val lastModifiedByUsername = entity.lastModifiedByUsername
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val propertyName = entity.propertyName
         val propertyValue = entity.propertyValue
 
         return PropsHistoryEntity(
                 changeType,
                 comment,
-                createdTimestampUtc,
+                createdTimestamp,
                 lastModifiedByUsername,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 propertyName,
                 propertyValue,
                 version)
@@ -356,17 +356,17 @@ class PropsDao(
             """
             insert into props.props (
                 comment,
-                created_timestamp_utc,
+                created_timestamp,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 property_name,
                 property_value,
                 version
             ) values (
                 :comment,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
                 :version
@@ -374,16 +374,16 @@ class PropsDao(
             on conflict (property_name)
             do update set
                 last_modified_by_name = :lastModifiedByUsername,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 property_value = :propertyValue,
                 version = props.props.version + 1
             returning *;
             """.trimIndent(),
             SqlParams().apply {
                 addValue("comment", upsertEntity.comment)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("propertyName", upsertEntity.propertyName)
                 addValue("propertyValue", upsertEntity.propertyValue)
                 addValue("version", upsertEntity.version)
@@ -457,7 +457,7 @@ class PropsDao(
 
         when (field.classFieldName) {
             "lastModifiedByUsername" -> sqlParams.addValue("lastModifiedByUsername", field.value as String)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "propertyValue" -> sqlParams.addValue("propertyValue", field.value as String)
         }
 

@@ -23,22 +23,22 @@ class OrganizationFetchForEditDtoRowMapper(
         val roleEntitiesJoinFetchDtoList = fetchRoleEntitiesJoinFetchDtos(entityId)
 
         val createdBy = rsa.readDomainIdOrNull("createdBy")
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val displayName = rsa.readString("displayName")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainIdOrNull("lastModifiedBy")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val lifecycleState = rsa.readEnum("lifecycleState", LifecycleState::class.java)
         val orgName = rsa.readString("orgName")
         val version = rsa.readLong("version")
 
         return OrganizationFetchForEditDto(
             createdBy,
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             id,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lifecycleState,
             orgName,
             roleEntitiesJoinFetchDtoList,

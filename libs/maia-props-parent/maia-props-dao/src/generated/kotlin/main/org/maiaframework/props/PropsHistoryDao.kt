@@ -29,18 +29,18 @@ class PropsHistoryDao(
             insert into props.props_history (
                 change_type,
                 comment,
-                created_timestamp_utc,
+                created_timestamp,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 property_name,
                 property_value,
                 version
             ) values (
                 :changeType,
                 :comment,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
                 :version
@@ -49,9 +49,9 @@ class PropsHistoryDao(
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
                 addValue("comment", entity.comment)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("propertyName", entity.propertyName)
                 addValue("propertyValue", entity.propertyValue)
                 addValue("version", entity.version)
@@ -68,18 +68,18 @@ class PropsHistoryDao(
             insert into props.props_history (
                 change_type,
                 comment,
-                created_timestamp_utc,
+                created_timestamp,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 property_name,
                 property_value,
                 version
             ) values (
                 :changeType,
                 :comment,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
                 :version
@@ -89,9 +89,9 @@ class PropsHistoryDao(
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
                     addValue("comment", entity.comment)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("propertyName", entity.propertyName)
                     addValue("propertyValue", entity.propertyValue)
                     addValue("version", entity.version)

@@ -6,7 +6,7 @@ import {BravoAgGridPkAndNameDto} from '@app/gen-components/org/maiaframework/sho
 
 export interface CharlieAgGridFetchForEditDto {
     bravo: BravoAgGridPkAndNameDto;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someInt: number;
     someString: string;

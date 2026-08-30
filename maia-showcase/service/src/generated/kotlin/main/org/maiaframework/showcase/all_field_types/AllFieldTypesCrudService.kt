@@ -93,19 +93,19 @@ class AllFieldTypesCrudService(
         val createdBy = currentUser.userId
         val createdByUsername = currentUser.username
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
         val lastModifiedBy = currentUser.userId
         val lastModifiedByUsername = currentUser.username
-        val lastModifiedTimestampUtc = createdTimestampUtc
+        val lastModifiedTimestamp = createdTimestamp
 
         return AllFieldTypesEntity(
             createdBy,
             createdByUsername,
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             lastModifiedBy,
             lastModifiedByUsername,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             someBoolean,
             someBooleanNullable,
             someBooleanType,
@@ -218,7 +218,7 @@ class AllFieldTypesCrudService(
             someInstantModifiableNullable(editDto.someInstantModifiableNullable)
             someIntNullable(editDto.someIntNullable)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -238,7 +238,7 @@ class AllFieldTypesCrudService(
             someInstantModifiable(editDto.someInstantModifiable)
             lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -258,7 +258,7 @@ class AllFieldTypesCrudService(
             someInstantModifiableNullable(editDto.someInstantModifiableNullable)
             lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -278,7 +278,7 @@ class AllFieldTypesCrudService(
             someIntModifiable(editDto.someIntModifiable)
             lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -298,7 +298,7 @@ class AllFieldTypesCrudService(
             someIntNullable(editDto.someIntNullable)
             lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -318,7 +318,7 @@ class AllFieldTypesCrudService(
             someLocalDateModifiable(editDto.someLocalDateModifiable)
             lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -338,7 +338,7 @@ class AllFieldTypesCrudService(
             somePeriodModifiable(editDto.somePeriodModifiable)
             lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -358,7 +358,7 @@ class AllFieldTypesCrudService(
             someStringModifiable(editDto.someStringModifiable)
             lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -378,7 +378,7 @@ class AllFieldTypesCrudService(
             someListOfStrings(editDto.someListOfStrings)
             lastModifiedBy(CurrentUserHolder.userId)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)

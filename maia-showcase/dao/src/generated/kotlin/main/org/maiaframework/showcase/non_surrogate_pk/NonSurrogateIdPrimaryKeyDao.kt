@@ -37,19 +37,19 @@ class NonSurrogateIdPrimaryKeyDao(
         jdbcOps.update(
             """
             insert into maia.non_surrogate_id_primary_key (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_modifiable_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someModifiableString,
                 :version
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id.value)
                 addValue("someModifiableString", entity.someModifiableString)
                 addValue("version", entity.version)
@@ -66,12 +66,12 @@ class NonSurrogateIdPrimaryKeyDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.non_surrogate_id_primary_key (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_modifiable_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someModifiableString,
                 :version
@@ -79,7 +79,7 @@ class NonSurrogateIdPrimaryKeyDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id.value)
                     addValue("someModifiableString", entity.someModifiableString)
                     addValue("version", entity.version)
@@ -120,13 +120,13 @@ class NonSurrogateIdPrimaryKeyDao(
         changeType: ChangeType
     ): NonSurrogateIdPrimaryKeyHistoryEntity {
 
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val id = entity.id
         val someModifiableString = entity.someModifiableString
 
         return NonSurrogateIdPrimaryKeyHistoryEntity(
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someModifiableString,
                 version)
@@ -306,12 +306,12 @@ class NonSurrogateIdPrimaryKeyDao(
         val persistedEntity = jdbcOps.execute(
             """
             insert into maia.non_surrogate_id_primary_key (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_modifiable_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someModifiableString,
                 :version
@@ -323,7 +323,7 @@ class NonSurrogateIdPrimaryKeyDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id.value)
                 addValue("someModifiableString", upsertEntity.someModifiableString)
                 addValue("version", upsertEntity.version)

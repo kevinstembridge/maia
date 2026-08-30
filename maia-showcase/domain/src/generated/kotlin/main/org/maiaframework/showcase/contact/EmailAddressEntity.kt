@@ -10,7 +10,7 @@ import java.time.Instant
 
 class EmailAddressEntity(
     val createdBy: DomainId,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val emailAddress: EmailAddress
 ) {
 
@@ -22,7 +22,7 @@ class EmailAddressEntity(
 
         return "EmailAddressEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "emailAddress = '" + this.emailAddress + '\'' +
                 "}"
 
@@ -40,11 +40,11 @@ class EmailAddressEntity(
             emailAddress: EmailAddress
         ): EmailAddressEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
 
             return EmailAddressEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 emailAddress
             )
 

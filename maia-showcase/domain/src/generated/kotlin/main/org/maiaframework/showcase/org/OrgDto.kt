@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class OrgDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val displayName: String,
     val id: DomainId,
     val orgName: String

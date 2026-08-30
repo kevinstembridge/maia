@@ -13,7 +13,7 @@ class OrgToOrgRoleEntityRowMapper : MaiaRowMapper<OrgToOrgRoleEntity> {
 
     override fun mapRow(rsa: ResultSetAdapter): OrgToOrgRoleEntity {
 
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val effectiveFrom = rsa.readInstantOrNull("effective_from")
         val effectiveTo = rsa.readInstantOrNull("effective_to")
         val id = rsa.readDomainId("id")
@@ -21,7 +21,7 @@ class OrgToOrgRoleEntityRowMapper : MaiaRowMapper<OrgToOrgRoleEntity> {
         val role = rsa.readString("role") { OrgRoleKey(it) }
 
         return OrgToOrgRoleEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 id,

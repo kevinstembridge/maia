@@ -47,20 +47,20 @@ class ParentOneDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 some_unique_string
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :someUniqueString
@@ -69,10 +69,10 @@ class ParentOneDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", ChildOneEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
                 addValue("someUniqueString", entity.someUniqueString)
@@ -89,19 +89,19 @@ class ParentOneDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_string,
                 some_unique_string
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someString,
                 :someUniqueString
             )
@@ -109,10 +109,10 @@ class ParentOneDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", ParentOneEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someString", entity.someString)
                 addValue("someUniqueString", entity.someUniqueString)
             }
@@ -128,19 +128,19 @@ class ParentOneDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_string,
                 some_unique_string
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someString,
                 :someUniqueString
             )
@@ -149,10 +149,10 @@ class ParentOneDao(
                 SqlParams().apply {
                     addValue("typeDiscriminator", ParentOneEntityMeta.TYPE_DISCRIMINATOR)
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("someString", entity.someString)
                     addValue("someUniqueString", entity.someUniqueString)
                 }
@@ -416,26 +416,26 @@ class ParentOneDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_string,
                 some_unique_string
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someString,
                 :someUniqueString
             )
             on conflict (some_unique_string, type_discriminator)
             do update set
                 last_modified_by_id = :lastModifiedBy,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 some_string = :someString,
                 some_unique_string = :someUniqueString
             returning *;
@@ -443,10 +443,10 @@ class ParentOneDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", "SUB1")
                 addValue("createdBy", upsertEntity.createdBy)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("someString", upsertEntity.someString)
                 addValue("someUniqueString", upsertEntity.someUniqueString)
             },
@@ -498,7 +498,7 @@ class ParentOneDao(
 
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "someString" -> sqlParams.addValue("someString", field.value as String)
             "someUniqueString" -> sqlParams.addValue("someUniqueString", field.value as String)
         }

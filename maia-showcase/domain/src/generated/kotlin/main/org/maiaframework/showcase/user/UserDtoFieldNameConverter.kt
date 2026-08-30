@@ -15,7 +15,7 @@ class UserDtoFieldNameConverter : SearchFieldNameConverter {
 
         return when(fieldName) {
             "authorities" -> "authorities"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "displayName" -> "display_name"
             "encryptedPassword" -> "encrypted_password"
             "firstName" -> "first_name"

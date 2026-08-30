@@ -9,18 +9,18 @@ import java.time.Instant
 
 class ParentTwoEntity(
     createdBy: DomainId,
-    createdTimestampUtc: Instant,
+    createdTimestamp: Instant,
     id: DomainId,
     lastModifiedBy: DomainId,
-    lastModifiedTimestampUtc: Instant,
+    lastModifiedTimestamp: Instant,
     val someInt: Int,
     val someUniqueString: String
 ) : GrandparentEntity(
     createdBy,
-    createdTimestampUtc,
+    createdTimestamp,
     id,
     lastModifiedBy,
-    lastModifiedTimestampUtc
+    lastModifiedTimestamp
 ) {
 
 
@@ -28,10 +28,10 @@ class ParentTwoEntity(
 
         return "ParentTwoEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someUniqueString = '" + this.someUniqueString + '\'' +
                 "}"
@@ -54,17 +54,17 @@ class ParentTwoEntity(
             someUniqueString: String
         ): ParentTwoEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
 
             return ParentTwoEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 someUniqueString
             )

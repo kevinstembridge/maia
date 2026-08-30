@@ -16,7 +16,7 @@ class OrgUserGroupHistoryEntityRowMapper : MaiaRowMapper<OrgUserGroupHistoryEnti
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")
         val name = rsa.readString("name")
@@ -27,7 +27,7 @@ class OrgUserGroupHistoryEntityRowMapper : MaiaRowMapper<OrgUserGroupHistoryEnti
         return OrgUserGroupHistoryEntity(
                 authorities,
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 id,
                 name,

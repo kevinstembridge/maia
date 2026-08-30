@@ -14,7 +14,7 @@ class RightManyHistoryEntityRowMapper : MaiaRowMapper<RightManyHistoryEntity> {
     override fun mapRow(rsa: ResultSetAdapter): RightManyHistoryEntity {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
@@ -22,7 +22,7 @@ class RightManyHistoryEntityRowMapper : MaiaRowMapper<RightManyHistoryEntity> {
 
         return RightManyHistoryEntity(
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someInt,
                 someString,

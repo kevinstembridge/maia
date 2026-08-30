@@ -6,11 +6,11 @@ import java.time.Instant
 
 
 data class LeftToRightComplexEntityTestBuilder(
-    val createdTimestampUtc: Instant = anyInstant(),
+    val createdTimestamp: Instant = anyInstant(),
     val effectiveFrom: Instant = anyInstant(),
     val effectiveTo: Instant? = null,
     val id: DomainId = DomainId.newId(),
-    val lastModifiedTimestampUtc: Instant = anyInstant(),
+    val lastModifiedTimestamp: Instant = anyInstant(),
     val leftId: DomainId,
     val rightId: DomainId,
     val someInt: Int = 0
@@ -20,11 +20,11 @@ data class LeftToRightComplexEntityTestBuilder(
     fun build(): LeftToRightComplexEntity {
 
         return LeftToRightComplexEntity(
-            this.createdTimestampUtc,
+            this.createdTimestamp,
             this.effectiveFrom,
             this.effectiveTo,
             this.id,
-            this.lastModifiedTimestampUtc,
+            this.lastModifiedTimestamp,
             this.leftId,
             this.rightId,
             this.someInt

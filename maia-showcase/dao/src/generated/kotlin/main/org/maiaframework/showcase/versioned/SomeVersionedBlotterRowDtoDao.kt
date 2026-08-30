@@ -41,7 +41,7 @@ class SomeVersionedBlotterRowDtoDao(
 
         val sqlForPage = """
             select
-                maia.some_versioned.created_timestamp_utc as createdTimestampUtc,
+                maia.some_versioned.created_timestamp as createdTimestamp,
                 maia.some_versioned.id as id,
                 maia.some_versioned.some_int as someInt,
                 maia.some_versioned.some_string as someString,

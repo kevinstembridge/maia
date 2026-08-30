@@ -9,7 +9,7 @@ import java.time.Instant
 
 
 class WithOptionalIndexFieldEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someOptionalString1: SomeStringType?,
     val someOptionalString2: SomeStringType?,
@@ -20,7 +20,7 @@ class WithOptionalIndexFieldEntity(
     override fun toString(): String {
 
         return "WithOptionalIndexFieldEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someOptionalString1 = '" + this.someOptionalString1 + '\'' + ", " + 
                 "someOptionalString2 = '" + this.someOptionalString2 + '\'' + ", " + 
@@ -45,11 +45,11 @@ class WithOptionalIndexFieldEntity(
             someString: SomeStringType
         ): WithOptionalIndexFieldEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return WithOptionalIndexFieldEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someOptionalString1,
                 someOptionalString2,

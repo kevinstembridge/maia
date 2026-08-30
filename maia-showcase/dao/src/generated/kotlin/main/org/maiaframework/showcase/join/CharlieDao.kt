@@ -36,13 +36,13 @@ class CharlieDao(
             """
             insert into maia.charlie (
                 bravo_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
                 :bravo,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
@@ -50,7 +50,7 @@ class CharlieDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("bravo", entity.bravo)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -66,13 +66,13 @@ class CharlieDao(
             """
             insert into maia.charlie (
                 bravo_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
                 :bravo,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
@@ -81,7 +81,7 @@ class CharlieDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("bravo", entity.bravo)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
@@ -284,7 +284,7 @@ class CharlieDao(
             select
                 maia.bravo.id as bravoId,
                 maia.bravo.some_string as bravoName,
-                maia.charlie.created_timestamp_utc as createdTimestampUtc,
+                maia.charlie.created_timestamp as createdTimestamp,
                 maia.charlie.id as id,
                 maia.charlie.some_int as someInt,
                 maia.charlie.some_string as someString

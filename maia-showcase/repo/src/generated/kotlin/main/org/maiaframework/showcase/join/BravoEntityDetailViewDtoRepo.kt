@@ -20,7 +20,7 @@ class BravoEntityDetailViewDtoRepo(
 
         return BravoEntityDetailViewDto(
             alpha = alphaPkAndNameDtoFor(entity.alpha),
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             id = entity.id,
             someInt = entity.someInt,
             someString = entity.someString,

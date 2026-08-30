@@ -50,10 +50,10 @@ class PartyHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 lifecycle_state,
                 org_name,
                 version
@@ -61,10 +61,10 @@ class PartyHistoryDao(
                 :typeDiscriminator,
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lifecycleState,
                 :orgName,
                 :version
@@ -74,11 +74,11 @@ class PartyHistoryDao(
                 addValue("typeDiscriminator", OrganizationHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("displayName", entity.displayName)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("orgName", entity.orgName)
                 addValue("version", entity.version)
@@ -97,12 +97,12 @@ class PartyHistoryDao(
                 authorities,
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 encrypted_password,
                 first_name,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 last_name,
                 lifecycle_state,
                 version
@@ -111,12 +111,12 @@ class PartyHistoryDao(
                 :authorities,
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :encryptedPassword,
                 :firstName,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lastName,
                 :lifecycleState,
                 :version
@@ -127,13 +127,13 @@ class PartyHistoryDao(
                 addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("displayName", entity.displayName)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("version", entity.version)
@@ -151,11 +151,11 @@ class PartyHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 first_name,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 last_name,
                 lifecycle_state,
                 version
@@ -163,11 +163,11 @@ class PartyHistoryDao(
                 :typeDiscriminator,
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :firstName,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lastName,
                 :lifecycleState,
                 :version
@@ -177,12 +177,12 @@ class PartyHistoryDao(
                 addValue("typeDiscriminator", PersonHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("displayName", entity.displayName)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("version", entity.version)
@@ -199,19 +199,19 @@ class PartyHistoryDao(
             insert into maia.v_party_history (
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 lifecycle_state,
                 version
             ) values (
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lifecycleState,
                 :version
             )
@@ -220,11 +220,11 @@ class PartyHistoryDao(
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("displayName", entity.displayName)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("version", entity.version)
                 }

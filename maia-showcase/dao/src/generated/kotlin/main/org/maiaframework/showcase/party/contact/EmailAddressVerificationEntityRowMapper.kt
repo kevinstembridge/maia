@@ -15,26 +15,26 @@ class EmailAddressVerificationEntityRowMapper : MaiaRowMapper<EmailAddressVerifi
     override fun mapRow(rsa: ResultSetAdapter): EmailAddressVerificationEntity {
 
         val createdBy = rsa.readDomainIdOrNull("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val effectiveFrom = rsa.readInstantOrNull("effective_from")
         val effectiveTo = rsa.readInstantOrNull("effective_to")
         val emailAddress = rsa.readString("email_address") { EmailAddress(it) }
         val id = rsa.readDomainId("id")
         val ipAddress = rsa.readStringOrNull("ip_address") { IpAddress(it) }
         val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val version = rsa.readLong("version")
 
         return EmailAddressVerificationEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 emailAddress,
                 id,
                 ipAddress,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 version
         )
 

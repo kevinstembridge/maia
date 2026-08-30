@@ -36,25 +36,25 @@ class JobExecutionDao(
             """
             insert into jobs.job_execution (
                 completion_status,
-                created_timestamp_utc,
+                created_timestamp,
                 end_timestamp_utc,
                 error_message,
                 id,
                 invoked_by,
                 job_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 metrics,
                 stack_trace,
                 start_timestamp_utc
             ) values (
                 :completionStatus,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :endTimestampUtc,
                 :errorMessage,
                 :id,
                 :invokedBy,
                 :jobName,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :metrics,
                 :stackTrace,
                 :startTimestampUtc
@@ -62,13 +62,13 @@ class JobExecutionDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("completionStatus", entity.completionStatus)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("endTimestampUtc", entity.endTimestampUtc)
                 addValue("errorMessage", entity.errorMessage)
                 addValue("id", entity.id)
                 addValue("invokedBy", entity.invokedBy)
                 addValue("jobName", entity.jobName)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addJsonValue("metrics", jsonMapper.writeValueAsString(entity.metrics))
                 addValue("stackTrace", entity.stackTrace)
                 addValue("startTimestampUtc", entity.startTimestampUtc)
@@ -84,25 +84,25 @@ class JobExecutionDao(
             """
             insert into jobs.job_execution (
                 completion_status,
-                created_timestamp_utc,
+                created_timestamp,
                 end_timestamp_utc,
                 error_message,
                 id,
                 invoked_by,
                 job_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 metrics,
                 stack_trace,
                 start_timestamp_utc
             ) values (
                 :completionStatus,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :endTimestampUtc,
                 :errorMessage,
                 :id,
                 :invokedBy,
                 :jobName,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :metrics,
                 :stackTrace,
                 :startTimestampUtc
@@ -111,13 +111,13 @@ class JobExecutionDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("completionStatus", entity.completionStatus)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("endTimestampUtc", entity.endTimestampUtc)
                     addValue("errorMessage", entity.errorMessage)
                     addValue("id", entity.id)
                     addValue("invokedBy", entity.invokedBy)
                     addValue("jobName", entity.jobName)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addJsonValue("metrics", jsonMapper.writeValueAsString(entity.metrics))
                     addValue("stackTrace", entity.stackTrace)
                     addValue("startTimestampUtc", entity.startTimestampUtc)
@@ -349,7 +349,7 @@ class JobExecutionDao(
             "completionStatus" -> sqlParams.addValue("completionStatus", field.value as JobCompletionStatus)
             "endTimestampUtc" -> sqlParams.addValue("endTimestampUtc", field.value as Instant?)
             "errorMessage" -> sqlParams.addValue("errorMessage", field.value as String?)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "metrics" -> sqlParams.addJsonValue("metrics", this.jsonMapper.writeValueAsString(field.value as Map<*, *>))
             "stackTrace" -> sqlParams.addValue("stackTrace", field.value as String?)
         }

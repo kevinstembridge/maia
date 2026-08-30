@@ -41,7 +41,7 @@ class HistorySampleBlotterRowDtoDao(
 
         val sqlForPage = """
             select
-                maia.history_sample.created_timestamp_utc as createdTimestampUtc,
+                maia.history_sample.created_timestamp as createdTimestamp,
                 maia.history_sample.id as id,
                 maia.history_sample.some_int as someInt,
                 maia.history_sample.some_string as someString

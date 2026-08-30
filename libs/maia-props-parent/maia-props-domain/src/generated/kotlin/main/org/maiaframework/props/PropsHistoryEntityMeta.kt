@@ -16,11 +16,11 @@ object PropsHistoryEntityMeta {
 
     const val comment = "comment"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val lastModifiedByUsername = "last_modified_by_name"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val propertyName = "property_name"
 
@@ -44,9 +44,9 @@ object PropsHistoryEntityMeta {
         return when(classFieldName) {
             "changeType" -> "change_type"
             "comment" -> "comment"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "lastModifiedByUsername" -> "last_modified_by_name"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "propertyName" -> "property_name"
             "propertyValue" -> "property_value"
             "version" -> "version"

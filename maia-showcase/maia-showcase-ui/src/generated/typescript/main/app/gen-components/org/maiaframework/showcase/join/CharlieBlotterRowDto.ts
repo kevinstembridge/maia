@@ -3,7 +3,7 @@
 
 
 export interface CharlieBlotterRowDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     tableStringFromAlpha: string;
     tableStringFromBravo: string;

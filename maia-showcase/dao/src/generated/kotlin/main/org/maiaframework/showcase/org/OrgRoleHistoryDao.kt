@@ -33,34 +33,34 @@ class OrgRoleHistoryDao(
             insert into maia.org_role_history (
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 display_name,
                 key,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 version
             ) values (
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :displayName,
                 :key,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :version
             )
             """.trimIndent(),
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("displayName", entity.displayName)
                 addValue("key", entity.key)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("version", entity.version)
             }
         )
@@ -75,22 +75,22 @@ class OrgRoleHistoryDao(
             insert into maia.org_role_history (
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 display_name,
                 key,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 version
             ) values (
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :displayName,
                 :key,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :version
             )
             """.trimIndent(),
@@ -98,12 +98,12 @@ class OrgRoleHistoryDao(
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description)
                     addValue("displayName", entity.displayName)
                     addValue("key", entity.key)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("version", entity.version)
                 }
             }

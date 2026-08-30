@@ -43,7 +43,7 @@ class BravoBlotterRowDtoDao(
 
         val sqlForPage = """
             select
-                maia.bravo.created_timestamp_utc as createdTimestampUtc,
+                maia.bravo.created_timestamp as createdTimestamp,
                 maia.bravo.id as id,
                 maia.alpha.some_string as tableStringFromAlpha,
                 maia.bravo.some_string as tableStringFromBravo

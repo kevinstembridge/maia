@@ -41,7 +41,7 @@ class RightManyDtoDao(
 
         val sqlForPage = """
             select
-                maia.right_many.created_timestamp_utc as createdTimestampUtc,
+                maia.right_many.created_timestamp as createdTimestamp,
                 maia.right_many.id as id,
                 maia.right_many.some_int as someIntFromLeft,
                 maia.right_many.some_string as someStringFromLeft

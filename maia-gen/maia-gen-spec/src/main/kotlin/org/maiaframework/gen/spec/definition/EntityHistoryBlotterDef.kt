@@ -34,7 +34,7 @@ class EntityHistoryBlotterDef(val entityDef: EntityDef) {
         val isFK = fieldDef.classFieldDef.fieldType is ForeignKeyFieldType
         val isEntityId = name == "id"
         val isVersion = name == "version"
-        val isCreatedTimestamp = name == "createdTimestampUtc"
+        val isCreatedTimestamp = name == "createdTimestamp"
 
         if (isJoinEntityHistory) {
             !isEntityId && !isVersion

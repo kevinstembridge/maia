@@ -24,7 +24,7 @@ data class FeatureToggleHistoryBlotterRowDto(
     val featureName: FeatureName,
     val infoLink: InfoLink?,
     val lastModifiedByUsername: String,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val reviewDate: LocalDate?,
     val ticketKey: TicketKey?,
     val version: Long

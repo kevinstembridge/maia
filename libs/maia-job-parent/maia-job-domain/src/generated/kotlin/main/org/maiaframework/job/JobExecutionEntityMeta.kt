@@ -14,7 +14,7 @@ object JobExecutionEntityMeta {
 
     const val completionStatus = "completion_status"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val endTimestampUtc = "end_timestamp_utc"
 
@@ -26,7 +26,7 @@ object JobExecutionEntityMeta {
 
     const val jobName = "job_name"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val metrics = "metrics"
 
@@ -56,13 +56,13 @@ object JobExecutionEntityMeta {
 
         return when(classFieldName) {
             "completionStatus" -> "completion_status"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "endTimestampUtc" -> "end_timestamp_utc"
             "errorMessage" -> "error_message"
             "id" -> "id"
             "invokedBy" -> "invoked_by"
             "jobName" -> "job_name"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "metrics" -> "metrics"
             "stackTrace" -> "stack_trace"
             "startTimestampUtc" -> "start_timestamp_utc"

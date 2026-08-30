@@ -38,7 +38,7 @@ class OrgUserGroupDao(
             insert into maia.user_group (
                 type_discriminator,
                 authorities,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 id,
                 name,
@@ -48,7 +48,7 @@ class OrgUserGroupDao(
             ) values (
                 'OUG',
                 :authorities,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :id,
                 :name,
@@ -59,7 +59,7 @@ class OrgUserGroupDao(
             """.trimIndent(),
             SqlParams().apply {
                 addListOfStrings("authorities", entity.authorities.map { it.value })
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("id", entity.id)
                 addValue("name", entity.name)
@@ -81,7 +81,7 @@ class OrgUserGroupDao(
             insert into maia.user_group (
                 type_discriminator,
                 authorities,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 id,
                 name,
@@ -91,7 +91,7 @@ class OrgUserGroupDao(
             ) values (
                 'OUG',
                 :authorities,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :id,
                 :name,
@@ -103,7 +103,7 @@ class OrgUserGroupDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addListOfStrings("authorities", entity.authorities.map { it.value })
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description)
                     addValue("id", entity.id)
                     addValue("name", entity.name)
@@ -149,7 +149,7 @@ class OrgUserGroupDao(
 
         val id = entity.id
         val authorities = entity.authorities
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val description = entity.description
         val name = entity.name
         val org = entity.org
@@ -158,7 +158,7 @@ class OrgUserGroupDao(
         return OrgUserGroupHistoryEntity(
                 authorities,
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 id,
                 name,

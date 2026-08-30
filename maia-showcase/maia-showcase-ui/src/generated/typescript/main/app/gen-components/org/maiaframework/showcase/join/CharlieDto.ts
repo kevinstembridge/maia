@@ -3,7 +3,7 @@
 
 
 export interface CharlieDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     dtoIntFromAlpha: number;
     dtoIntFromBravo: number;
     dtoIntFromCharlie: number;

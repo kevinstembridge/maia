@@ -44,7 +44,7 @@ export class CharlieBlotter {
         { field: 'tableStringFromCharlie', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
+        { field: 'createdTimestamp', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
     ];
 
     public defaultColDef: ColDef = {

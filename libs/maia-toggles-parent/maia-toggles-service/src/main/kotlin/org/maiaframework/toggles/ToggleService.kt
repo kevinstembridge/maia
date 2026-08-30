@@ -16,13 +16,13 @@ class ToggleService(
                 it.attributes,
                 it.comment,
                 it.contactPerson,
-                it.createdTimestampUtc,
+                it.createdTimestamp,
                 it.description,
                 it.enabled,
                 it.featureName,
                 it.infoLink,
                 it.lastModifiedByUsername,
-                it.lastModifiedTimestampUtc,
+                it.lastModifiedTimestamp,
                 it.reviewDate,
                 it.ticketKey
             )

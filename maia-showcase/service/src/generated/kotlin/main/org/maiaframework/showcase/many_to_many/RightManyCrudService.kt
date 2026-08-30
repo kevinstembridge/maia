@@ -59,11 +59,11 @@ class RightManyCrudService(
         val someInt: Int = createDto.someInt
         val someString: String = createDto.someString
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
         val version = 1L
 
         return RightManyEntity(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString,

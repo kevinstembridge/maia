@@ -32,7 +32,7 @@ class AllFieldTypesEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "created_by_name" -> // createdByUsername
                 return inputValue
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value
@@ -40,7 +40,7 @@ class AllFieldTypesEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue
-            "last_modified_timestamp_utc" -> // lastModifiedTimestampUtc
+            "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
             "some_boolean" -> // someBoolean
                 return inputValue

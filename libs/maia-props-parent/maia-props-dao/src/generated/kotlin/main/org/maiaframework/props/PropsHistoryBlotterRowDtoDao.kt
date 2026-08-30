@@ -47,7 +47,7 @@ class PropsHistoryBlotterRowDtoDao(
                 props.props_history.change_type as changeType,
                 props.props_history.comment as comment,
                 props.props_history.last_modified_by_name as lastModifiedByUsername,
-                props.props_history.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                props.props_history.last_modified_timestamp as lastModifiedTimestamp,
                 props.props_history.property_name as propertyName,
                 props.props_history.property_value as propertyValue,
                 props.props_history.version as version

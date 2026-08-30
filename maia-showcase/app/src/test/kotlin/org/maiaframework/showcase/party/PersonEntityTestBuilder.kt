@@ -15,11 +15,11 @@ import java.time.Instant
 
 data class PersonEntityTestBuilder(
     val createdById: DomainId = Anys.defaultCreatedById,
-    val createdTimestampUtc: Instant = anyInstant(),
+    val createdTimestamp: Instant = anyInstant(),
     val firstName: FirstName = anyFirstName(),
     val id: DomainId = anyDomainId(),
     val lastModifiedById: DomainId = createdById,
-    val lastModifiedTimestampUtc: Instant = createdTimestampUtc,
+    val lastModifiedTimestamp: Instant = createdTimestamp,
     val lastName: LastName = anyLastName(),
     val lifecycleState: LifecycleState = LifecycleState.ACTIVE,
     val version: Long = 1L
@@ -32,12 +32,12 @@ data class PersonEntityTestBuilder(
 
         return PersonEntity(
             createdById,
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             firstName,
             id,
             lastModifiedById,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lastName,
             lifecycleState,
             version

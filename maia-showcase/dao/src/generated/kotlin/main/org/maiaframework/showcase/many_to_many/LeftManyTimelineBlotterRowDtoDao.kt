@@ -95,7 +95,7 @@ class LeftManyTimelineBlotterRowDtoDao(
 
         return """
             SELECT
-                lmh.last_modified_timestamp_utc AS event_timestamp,
+                lmh.last_modified_timestamp AS event_timestamp,
                 'ENTITY_CHANGE' AS event_type,
                 lmh.change_type,
                 lmh.version, lmh.some_int, lmh.some_string,

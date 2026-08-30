@@ -12,11 +12,11 @@ object OrgDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.v_party.created_timestamp_utc"
+            "createdTimestamp" -> "maia.v_party.created_timestamp"
             "displayName" -> "maia.v_party.display_name"
             "id" -> "maia.v_party.id"
             "orgName" -> "maia.v_party.org_name"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, displayName, id, orgName]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, displayName, id, orgName]")
         }
 
     }
@@ -25,11 +25,11 @@ object OrgDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "displayName" -> JdbcCompatibleType.text
             "id" -> JdbcCompatibleType.uuid
             "orgName" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, displayName, id, orgName]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, displayName, id, orgName]")
         }
 
     }

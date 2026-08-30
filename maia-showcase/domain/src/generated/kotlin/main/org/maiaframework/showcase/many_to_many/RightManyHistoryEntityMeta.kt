@@ -14,7 +14,7 @@ object RightManyHistoryEntityMeta {
 
     const val changeType = "change_type"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val id = "id"
 
@@ -39,7 +39,7 @@ object RightManyHistoryEntityMeta {
 
         return when(classFieldName) {
             "changeType" -> "change_type"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "someInt" -> "some_int"
             "someString" -> "some_string"

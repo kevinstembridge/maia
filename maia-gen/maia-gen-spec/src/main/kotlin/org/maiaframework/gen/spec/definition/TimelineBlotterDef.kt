@@ -28,7 +28,7 @@ class TimelineBlotterDef(
 
     val entityHistoryColumns: List<EntityFieldDef> = historyEntityDef.allEntityFieldsSorted.filter { fieldDef ->
         val name = fieldDef.classFieldDef.classFieldName.value
-        name !in setOf("id", "version", "createdTimestampUtc", "changeType", "lastModifiedTimestampUtc") &&
+        name !in setOf("id", "version", "createdTimestamp", "changeType", "lastModifiedTimestamp") &&
             fieldDef.classFieldDef.fieldType !is ForeignKeyFieldType
     }
 

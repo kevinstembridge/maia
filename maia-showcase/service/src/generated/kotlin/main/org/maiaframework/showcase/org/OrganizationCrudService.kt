@@ -55,19 +55,19 @@ class OrganizationCrudService(
         val orgName: String = createDto.orgName
         val createdBy = currentUser.userId
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
         val lastModifiedBy = currentUser.userId
-        val lastModifiedTimestampUtc = createdTimestampUtc
+        val lastModifiedTimestamp = createdTimestamp
         val lifecycleState = LifecycleState.ACTIVE
         val version = 1L
 
         return OrganizationEntity(
             createdBy,
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             id,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lifecycleState,
             orgName,
             version
@@ -121,7 +121,7 @@ class OrganizationCrudService(
         val updater = OrganizationEntityUpdater.forPrimaryKey(id, version) {
             orgName(editDto.orgName)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -189,7 +189,7 @@ class OrganizationCrudService(
         val updater = OrganizationEntityUpdater.forPrimaryKey(editDto.id, version) {
             orgName(editDto.orgName)
             lastModifiedBy(CurrentUserHolder.userId)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)

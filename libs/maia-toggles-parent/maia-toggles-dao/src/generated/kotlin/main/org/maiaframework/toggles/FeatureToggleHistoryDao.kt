@@ -36,13 +36,13 @@ class FeatureToggleHistoryDao(
                 change_type,
                 comment,
                 contact_person,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 enabled,
                 feature_name,
                 info_link,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 review_date,
                 ticket_key,
                 version
@@ -52,13 +52,13 @@ class FeatureToggleHistoryDao(
                 :changeType,
                 :comment,
                 :contactPerson,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :enabled,
                 :featureName,
                 :infoLink,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :reviewDate,
                 :ticketKey,
                 :version
@@ -70,13 +70,13 @@ class FeatureToggleHistoryDao(
                 addValue("changeType", entity.changeType)
                 addValue("comment", entity.comment)
                 addValue("contactPerson", entity.contactPerson?.value)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description?.value)
                 addValue("enabled", entity.enabled)
                 addValue("featureName", entity.featureName.value)
                 addValue("infoLink", entity.infoLink?.value)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("reviewDate", entity.reviewDate)
                 addValue("ticketKey", entity.ticketKey?.value)
                 addValue("version", entity.version)
@@ -96,13 +96,13 @@ class FeatureToggleHistoryDao(
                 change_type,
                 comment,
                 contact_person,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 enabled,
                 feature_name,
                 info_link,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 review_date,
                 ticket_key,
                 version
@@ -112,13 +112,13 @@ class FeatureToggleHistoryDao(
                 :changeType,
                 :comment,
                 :contactPerson,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :enabled,
                 :featureName,
                 :infoLink,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :reviewDate,
                 :ticketKey,
                 :version
@@ -131,13 +131,13 @@ class FeatureToggleHistoryDao(
                     addValue("changeType", entity.changeType)
                     addValue("comment", entity.comment)
                     addValue("contactPerson", entity.contactPerson?.value)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description?.value)
                     addValue("enabled", entity.enabled)
                     addValue("featureName", entity.featureName.value)
                     addValue("infoLink", entity.infoLink?.value)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("reviewDate", entity.reviewDate)
                     addValue("ticketKey", entity.ticketKey?.value)
                     addValue("version", entity.version)

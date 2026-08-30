@@ -12,14 +12,14 @@ class ChildOneDtoRowMapper : MaiaRowMapper<ChildOneDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): ChildOneDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
         val someUniqueString = rsa.readString("someUniqueString")
 
         return ChildOneDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString,

@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class ForeignKeyParentEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someInt: Int,
     val someString: String
@@ -18,7 +18,7 @@ class ForeignKeyParentEntity(
     override fun toString(): String {
 
         return "ForeignKeyParentEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' +
@@ -41,11 +41,11 @@ class ForeignKeyParentEntity(
             someString: String
         ): ForeignKeyParentEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return ForeignKeyParentEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someInt,
                 someString

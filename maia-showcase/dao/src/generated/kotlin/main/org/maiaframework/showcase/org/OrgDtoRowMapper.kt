@@ -12,13 +12,13 @@ class OrgDtoRowMapper : MaiaRowMapper<OrgDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): OrgDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val displayName = rsa.readString("displayName")
         val id = rsa.readDomainId("id")
         val orgName = rsa.readString("orgName")
 
         return OrgDto(
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             id,
             orgName,

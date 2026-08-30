@@ -144,7 +144,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
             modifiableBySystem()
             notCreatableByUser()
         }
-        field_lastModifiedTimestampUtc()
+        field_lastModifiedTimestamp()
         field_lifecycleState()
     }
 
@@ -165,7 +165,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         }
         field_createdById(partyEntityDef)
         field_lastModifiedById(partyEntityDef)
-        field_lastModifiedTimestampUtc()
+        field_lastModifiedTimestamp()
     }
 
 
@@ -202,7 +202,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field("orgName", "orgName")
         field("displayName", "displayName")
         field("id", "id")
-        field("createdTimestampUtc")
+        field("createdTimestamp")
     }
 
 
@@ -258,7 +258,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field("lastName", "lastName")
         field("displayName", "displayName")
         field("id", "id")
-        field("createdTimestampUtc")
+        field("createdTimestamp")
     }
 
 
@@ -314,7 +314,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field("lastName")
         field("displayName")
         field("id")
-        field("createdTimestampUtc")
+        field("createdTimestamp")
     }
 
 
@@ -333,7 +333,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         columnFromDto("firstName") { header("First Name") }
         columnFromDto("lastName") { header("Last Name") }
         columnFromDto("authorities") { header("Authorities") }
-        columnFromDto("createdTimestampUtc") { header("Created") }
+        columnFromDto("createdTimestamp") { header("Created") }
         columnFromDto("id") { header("ID") }
     }
 
@@ -445,7 +445,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         field("id", caseSensitive = true)
         field("firstName", caseSensitive = true)
         field("lastName", caseSensitive = true)
-        field("createdTimestampUtc", caseSensitive = true)
+        field("createdTimestamp", caseSensitive = true)
     }
 
 
@@ -480,7 +480,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         }
         field_createdById(partyEntityDef)
         field_lastModifiedById(partyEntityDef)
-        field_lastModifiedTimestampUtc()
+        field_lastModifiedTimestamp()
     }
 
 
@@ -497,7 +497,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         }
         field_createdById(partyEntityDef, nullable = true)
         field_lastModifiedById(partyEntityDef, nullable = true)
-        field_lastModifiedTimestampUtc()
+        field_lastModifiedTimestamp()
         withEffectiveTimestamps()
     }
 

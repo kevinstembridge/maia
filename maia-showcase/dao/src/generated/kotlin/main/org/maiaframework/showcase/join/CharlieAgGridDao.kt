@@ -36,13 +36,13 @@ class CharlieAgGridDao(
             """
             insert into maia.charlie_ag_grid (
                 bravo_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
                 :bravo,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
@@ -50,7 +50,7 @@ class CharlieAgGridDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("bravo", entity.bravo)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -66,13 +66,13 @@ class CharlieAgGridDao(
             """
             insert into maia.charlie_ag_grid (
                 bravo_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string
             ) values (
                 :bravo,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString
@@ -81,7 +81,7 @@ class CharlieAgGridDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("bravo", entity.bravo)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
@@ -284,7 +284,7 @@ class CharlieAgGridDao(
             select
                 maia.bravo_ag_grid.id as bravoId,
                 maia.bravo_ag_grid.some_string as bravoName,
-                maia.charlie_ag_grid.created_timestamp_utc as createdTimestampUtc,
+                maia.charlie_ag_grid.created_timestamp as createdTimestamp,
                 maia.charlie_ag_grid.id as id,
                 maia.charlie_ag_grid.some_int as someInt,
                 maia.charlie_ag_grid.some_string as someString

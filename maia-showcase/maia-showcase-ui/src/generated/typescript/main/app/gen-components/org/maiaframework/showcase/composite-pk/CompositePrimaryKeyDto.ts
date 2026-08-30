@@ -3,7 +3,7 @@
 
 
 export interface CompositePrimaryKeyDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someInt: number;
     someModifiableString: string;

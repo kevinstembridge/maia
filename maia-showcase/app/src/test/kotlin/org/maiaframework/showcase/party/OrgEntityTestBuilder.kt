@@ -12,10 +12,10 @@ import java.time.Instant
 
 data class OrgEntityTestBuilder(
     val createdById: DomainId = Anys.defaultCreatedById,
-    val createdTimestampUtc: Instant = anyInstant(),
+    val createdTimestamp: Instant = anyInstant(),
     val id: DomainId = anyDomainId(),
     val lastModifiedById: DomainId = createdById,
-    val lastModifiedTimestampUtc: Instant = createdTimestampUtc,
+    val lastModifiedTimestamp: Instant = createdTimestamp,
     val lifecycleState: LifecycleState = LifecycleState.ACTIVE,
     val name: String = anyOrgName(),
     val version: Long = 1L
@@ -28,11 +28,11 @@ data class OrgEntityTestBuilder(
 
         return OrganizationEntity(
             createdById,
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             id,
             lastModifiedById,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lifecycleState,
             name,
             version

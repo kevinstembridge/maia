@@ -16,7 +16,7 @@ class UserBlotterRowDtoRowMapper : MaiaRowMapper<UserBlotterRowDto> {
     override fun mapRow(rsa: ResultSetAdapter): UserBlotterRowDto {
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val displayName = rsa.readString("displayName")
         val firstName = rsa.readStringOrNull("firstName") { FirstName(it) }
         val id = rsa.readDomainId("id")
@@ -24,7 +24,7 @@ class UserBlotterRowDtoRowMapper : MaiaRowMapper<UserBlotterRowDto> {
 
         return UserBlotterRowDto(
             authorities,
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             firstName,
             id,

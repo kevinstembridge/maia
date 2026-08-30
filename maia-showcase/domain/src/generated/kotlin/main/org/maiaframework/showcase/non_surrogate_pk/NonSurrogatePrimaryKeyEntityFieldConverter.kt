@@ -17,7 +17,7 @@ class NonSurrogatePrimaryKeyEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "some_modifiable_string" -> // someModifiableString
                 return inputValue

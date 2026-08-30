@@ -14,7 +14,7 @@ class ParentTwoDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "someInt" -> "some_int"
             "someUniqueString" -> "some_unique_string"

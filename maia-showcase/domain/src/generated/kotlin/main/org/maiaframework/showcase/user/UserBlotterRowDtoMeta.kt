@@ -13,12 +13,12 @@ object UserBlotterRowDtoMeta {
 
         return when(dtoFieldName) {
             "authorities" -> "maia.v_party.authorities"
-            "createdTimestampUtc" -> "maia.v_party.created_timestamp_utc"
+            "createdTimestamp" -> "maia.v_party.created_timestamp"
             "displayName" -> "maia.v_party.display_name"
             "firstName" -> "maia.v_party.first_name"
             "id" -> "maia.v_party.id"
             "lastName" -> "maia.v_party.last_name"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, createdTimestampUtc, displayName, firstName, id, lastName]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, createdTimestamp, displayName, firstName, id, lastName]")
         }
 
     }
@@ -28,12 +28,12 @@ object UserBlotterRowDtoMeta {
 
         return when(dtoFieldName) {
             "authorities" -> JdbcCompatibleType.text_array
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "displayName" -> JdbcCompatibleType.text
             "firstName" -> JdbcCompatibleType.text
             "id" -> JdbcCompatibleType.uuid
             "lastName" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, createdTimestampUtc, displayName, firstName, id, lastName]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, createdTimestamp, displayName, firstName, id, lastName]")
         }
 
     }

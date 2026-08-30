@@ -31,17 +31,17 @@ class LeftManyHistoryDao(
             """
             insert into maia.left_many_history (
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 version
             ) values (
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :version
@@ -49,9 +49,9 @@ class LeftManyHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
@@ -67,17 +67,17 @@ class LeftManyHistoryDao(
             """
             insert into maia.left_many_history (
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 version
             ) values (
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :version
@@ -86,9 +86,9 @@ class LeftManyHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
                     addValue("version", entity.version)

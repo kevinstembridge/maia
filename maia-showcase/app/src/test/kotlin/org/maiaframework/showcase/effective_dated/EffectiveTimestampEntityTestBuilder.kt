@@ -8,7 +8,7 @@ import java.time.temporal.ChronoUnit
 
 
 data class EffectiveTimestampEntityTestBuilder(
-    val createdTimestampUtc: Instant = Instant.now().truncatedTo(ChronoUnit.MILLIS),
+    val createdTimestamp: Instant = Instant.now().truncatedTo(ChronoUnit.MILLIS),
     val effectiveFrom: Instant? = Anys.anyPastInstantWithin(Period.ofDays(5)),
     val effectiveTo: Instant? = Anys.anyFutureInstantWithin(Period.ofDays(5)),
     val id: DomainId = DomainId.newId(),
@@ -19,7 +19,7 @@ data class EffectiveTimestampEntityTestBuilder(
     fun build(): EffectiveTimestampEntity {
 
         return EffectiveTimestampEntity(
-            this.createdTimestampUtc,
+            this.createdTimestamp,
             this.effectiveFrom,
             this.effectiveTo,
             this.id,

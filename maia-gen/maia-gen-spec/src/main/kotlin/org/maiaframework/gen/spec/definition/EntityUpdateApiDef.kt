@@ -35,7 +35,7 @@ class EntityUpdateApiDef(
         .filter { entityFieldDef ->
             val classFieldDef = entityFieldDef.classFieldDef
             val classFieldName = classFieldDef.classFieldName
-            (classFieldName != ClassFieldName.createdTimestampUtc && classFieldName != ClassFieldName.lastModifiedTimestampUtc)
+            (classFieldName != ClassFieldName.createdTimestamp && classFieldName != ClassFieldName.lastModifiedTimestamp)
         }.map {
 
             val classFieldDef = it.classFieldDef
@@ -74,8 +74,8 @@ class EntityUpdateApiDef(
             val classFieldName = classFieldDef.classFieldName
             !entityFieldDef.isPrimaryKey.value
                 && !entityFieldDef.isVersionField
-                && classFieldName != ClassFieldName.createdTimestampUtc
-                && classFieldName != ClassFieldName.lastModifiedTimestampUtc
+                && classFieldName != ClassFieldName.createdTimestamp
+                && classFieldName != ClassFieldName.lastModifiedTimestamp
                 && classFieldDef.displayName != null
         }
         .map {

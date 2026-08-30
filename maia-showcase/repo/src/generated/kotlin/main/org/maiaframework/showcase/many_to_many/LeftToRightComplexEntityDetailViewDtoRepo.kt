@@ -20,11 +20,11 @@ class LeftToRightComplexEntityDetailViewDtoRepo(
         val entity = this.entityRepo.findByPrimaryKey(id)
 
         return LeftToRightComplexEntityDetailViewDto(
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             effectiveFrom = entity.effectiveFrom,
             effectiveTo = entity.effectiveTo,
             id = entity.id,
-            lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc,
+            lastModifiedTimestamp = entity.lastModifiedTimestamp,
             left = leftManyPkAndNameDtoFor(entity.left),
             right = rightManyPkAndNameDtoFor(entity.right),
             someIntOnComplex = entity.someIntOnComplex,

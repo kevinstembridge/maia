@@ -448,10 +448,10 @@ class EntityDef(
             .filterNot(byName(ClassFieldName.id))
             .filterNot(byName(ClassFieldName.createdById))
             .filterNot(byName(ClassFieldName.createdByUsername))
-            .filterNot(byName(ClassFieldName.createdTimestampUtc))
+            .filterNot(byName(ClassFieldName.createdTimestamp))
             .filterNot(byName(ClassFieldName.lastModifiedById))
             .filterNot(byName(ClassFieldName.lastModifiedByUsername))
-            .filterNot(byName(ClassFieldName.lastModifiedTimestampUtc))
+            .filterNot(byName(ClassFieldName.lastModifiedTimestamp))
             .filterNot(byName(ClassFieldName.lifecycleState))
             .filterNot(byName(ClassFieldName.version))
             .toList()
@@ -1004,7 +1004,7 @@ class EntityDef(
 
 
     val hasLastModifiedTimestampUtcField: Boolean
-        get() = hasFieldNamed(ClassFieldName.lastModifiedTimestampUtc)
+        get() = hasFieldNamed(ClassFieldName.lastModifiedTimestamp)
 
 
     val hasLifecycleStateField: Boolean
@@ -1060,7 +1060,7 @@ class EntityDef(
         }
 
 
-        fun createdTimestampUtcFieldDef(
+        fun createdTimestampFieldDef(
             entityBaseName: EntityBaseName,
             packageName: PackageName
         ): EntityFieldDef {
@@ -1069,13 +1069,13 @@ class EntityDef(
                 entityBaseName,
                 packageName,
                 aClassField(
-                    ClassFieldName.createdTimestampUtc,
+                    ClassFieldName.createdTimestamp,
                     fieldType = FieldTypes.instant
                 ) {
                     displayName("Created At")
                     notCreatableByUser()
                 }.build(),
-                TableColumnName.createdTimestampUtc,
+                TableColumnName.createdTimestamp,
             )
 
         }

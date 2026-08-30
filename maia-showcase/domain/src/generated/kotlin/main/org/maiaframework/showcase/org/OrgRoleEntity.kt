@@ -10,12 +10,12 @@ import java.time.Instant
 
 class OrgRoleEntity(
     val createdBy: DomainId,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val description: String,
     val displayName: String,
     val key: OrgRoleKey,
     val lastModifiedBy: DomainId,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val version: Long
 ) {
 
@@ -27,12 +27,12 @@ class OrgRoleEntity(
 
         return "OrgRoleEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "key = '" + this.key + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
 
@@ -52,19 +52,19 @@ class OrgRoleEntity(
             key: OrgRoleKey
         ): OrgRoleEntity {
 
-            val createdTimestampUtc = Instant.now()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val createdTimestamp = Instant.now()
+            val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
             val version = 1L
 
             return OrgRoleEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 displayName,
                 key,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 version
             )
 

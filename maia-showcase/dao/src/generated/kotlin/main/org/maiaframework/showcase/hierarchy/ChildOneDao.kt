@@ -37,20 +37,20 @@ class ChildOneDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 some_unique_string
             ) values (
                 'CHILD1',
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :someUniqueString
@@ -58,10 +58,10 @@ class ChildOneDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
                 addValue("someUniqueString", entity.someUniqueString)
@@ -78,20 +78,20 @@ class ChildOneDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 some_unique_string
             ) values (
                 'CHILD1',
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :someUniqueString
@@ -100,10 +100,10 @@ class ChildOneDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
                     addValue("someUniqueString", entity.someUniqueString)
@@ -368,20 +368,20 @@ class ChildOneDao(
             insert into maia.grandparent (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 some_int,
                 some_string,
                 some_unique_string
             ) values (
                 'CHILD1',
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :someInt,
                 :someString,
                 :someUniqueString
@@ -389,7 +389,7 @@ class ChildOneDao(
             on conflict (some_unique_string, type_discriminator)
             do update set
                 last_modified_by_id = :lastModifiedBy,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 some_int = :someInt,
                 some_string = :someString,
                 some_unique_string = :someUniqueString
@@ -397,10 +397,10 @@ class ChildOneDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", upsertEntity.createdBy)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("someInt", upsertEntity.someInt)
                 addValue("someString", upsertEntity.someString)
                 addValue("someUniqueString", upsertEntity.someUniqueString)
@@ -453,7 +453,7 @@ class ChildOneDao(
 
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "someInt" -> sqlParams.addValue("someInt", field.value as Int)
             "someString" -> sqlParams.addValue("someString", field.value as String)
             "someUniqueString" -> sqlParams.addValue("someUniqueString", field.value as String)

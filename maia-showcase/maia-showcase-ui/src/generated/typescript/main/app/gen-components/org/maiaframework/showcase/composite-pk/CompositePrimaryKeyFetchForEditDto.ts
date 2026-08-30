@@ -3,7 +3,7 @@
 
 
 export interface CompositePrimaryKeyFetchForEditDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     someInt: number;
     someModifiableString: string;
     someString: string;

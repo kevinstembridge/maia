@@ -58,12 +58,12 @@ class PersonDao(
                 type_discriminator,
                 authorities,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 encrypted_password,
                 first_name,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 last_name,
                 lifecycle_state,
                 version
@@ -71,12 +71,12 @@ class PersonDao(
                 :typeDiscriminator,
                 :authorities,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :encryptedPassword,
                 :firstName,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lastName,
                 :lifecycleState,
                 :version
@@ -86,13 +86,13 @@ class PersonDao(
                 addValue("typeDiscriminator", UserEntityMeta.TYPE_DISCRIMINATOR)
                 addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("displayName", entity.displayName)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("version", entity.version)
@@ -111,22 +111,22 @@ class PersonDao(
             insert into maia.v_party (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 first_name,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 last_name,
                 lifecycle_state,
                 version
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :firstName,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lastName,
                 :lifecycleState,
                 :version
@@ -135,12 +135,12 @@ class PersonDao(
             SqlParams().apply {
                 addValue("typeDiscriminator", PersonEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("displayName", entity.displayName)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("version", entity.version)
@@ -159,22 +159,22 @@ class PersonDao(
             insert into maia.v_party (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 first_name,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 last_name,
                 lifecycle_state,
                 version
             ) values (
                 :typeDiscriminator,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :firstName,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lastName,
                 :lifecycleState,
                 :version
@@ -184,12 +184,12 @@ class PersonDao(
                 SqlParams().apply {
                     addValue("typeDiscriminator", PersonEntityMeta.TYPE_DISCRIMINATOR)
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("displayName", entity.displayName)
                     addValue("firstName", entity.firstName)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("version", entity.version)
@@ -260,12 +260,12 @@ class PersonDao(
         val id = entity.id
         val authorities = entity.authorities
         val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val displayName = entity.displayName
         val encryptedPassword = entity.encryptedPassword
         val firstName = entity.firstName
         val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
 
@@ -273,13 +273,13 @@ class PersonDao(
                 authorities,
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 encryptedPassword,
                 firstName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lastName,
                 lifecycleState,
                 version)
@@ -295,23 +295,23 @@ class PersonDao(
 
         val id = entity.id
         val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val displayName = entity.displayName
         val firstName = entity.firstName
         val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val lastName = entity.lastName
         val lifecycleState = entity.lifecycleState
 
         return PersonHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 firstName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lastName,
                 lifecycleState,
                 version)
@@ -546,7 +546,7 @@ class PersonDao(
             "createdBy" -> sqlParams.addValue("createdBy", field.value as DomainId?)
             "firstName" -> sqlParams.addValue("firstName", field.value as FirstName?)
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "lastName" -> sqlParams.addValue("lastName", field.value as LastName)
             "lifecycleState" -> sqlParams.addValue("lifecycleState", field.value as LifecycleState)
         }

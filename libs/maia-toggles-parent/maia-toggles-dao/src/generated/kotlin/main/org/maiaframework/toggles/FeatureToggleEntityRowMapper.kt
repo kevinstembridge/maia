@@ -25,13 +25,13 @@ class FeatureToggleEntityRowMapper(
         val attributes = rsa.readStringOrNull("attributes") { jsonMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) }
         val comment = rsa.readStringOrNull("comment")
         val contactPerson = rsa.readStringOrNull("contact_person") { ContactPerson(it) }
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readStringOrNull("description") { Description(it) }
         val enabled = rsa.readBoolean("enabled")
         val featureName = rsa.readString("feature_name") { FeatureName(it) }
         val infoLink = rsa.readStringOrNull("info_link") { InfoLink(it) }
         val lastModifiedByUsername = rsa.readString("last_modified_by_name")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val reviewDate = rsa.readLocalDateOrNull("review_date")
         val ticketKey = rsa.readStringOrNull("ticket_key") { TicketKey(it) }
         val version = rsa.readLong("version")
@@ -41,13 +41,13 @@ class FeatureToggleEntityRowMapper(
                 attributes,
                 comment,
                 contactPerson,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 enabled,
                 featureName,
                 infoLink,
                 lastModifiedByUsername,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 reviewDate,
                 ticketKey,
                 version

@@ -32,9 +32,9 @@ class LeftManyEntityDetailViewDtoRepo(
 
 
         return LeftManyEntityDetailViewDto(
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             id = entity.id,
-            lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc,
+            lastModifiedTimestamp = entity.lastModifiedTimestamp,
             rightEntities = rightEntitiesPkAndNameDtoList,
             rightSimpleEntities = rightSimpleEntitiesPkAndNameDtoList,
             someInt = entity.someInt,

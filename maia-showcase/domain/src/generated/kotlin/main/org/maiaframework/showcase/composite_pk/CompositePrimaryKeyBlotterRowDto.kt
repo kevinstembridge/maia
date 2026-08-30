@@ -7,7 +7,7 @@ import java.time.Instant
 
 
 data class CompositePrimaryKeyBlotterRowDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: String,
     val someInt: Int,
     val someModifiableString: String,

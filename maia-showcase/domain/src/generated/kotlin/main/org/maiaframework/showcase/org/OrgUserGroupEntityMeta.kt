@@ -14,7 +14,7 @@ object OrgUserGroupEntityMeta {
 
     const val authorities = "authorities"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val description = "description"
 
@@ -45,7 +45,7 @@ object OrgUserGroupEntityMeta {
 
         return when(classFieldName) {
             "authorities" -> "authorities"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "description" -> "description"
             "id" -> "id"
             "name" -> "name"

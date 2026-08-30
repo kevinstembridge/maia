@@ -17,7 +17,7 @@ class AlphaAgGridEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value

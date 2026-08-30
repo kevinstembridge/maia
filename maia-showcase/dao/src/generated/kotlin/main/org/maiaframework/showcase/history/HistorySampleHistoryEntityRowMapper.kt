@@ -15,10 +15,10 @@ class HistorySampleHistoryEntityRowMapper : MaiaRowMapper<HistorySampleHistoryEn
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdBy = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
         val version = rsa.readLong("version")
@@ -26,10 +26,10 @@ class HistorySampleHistoryEntityRowMapper : MaiaRowMapper<HistorySampleHistoryEn
         return HistorySampleHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 someString,
                 version

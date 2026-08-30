@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class SimpleEntityDetailViewDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someString: String
 ) {

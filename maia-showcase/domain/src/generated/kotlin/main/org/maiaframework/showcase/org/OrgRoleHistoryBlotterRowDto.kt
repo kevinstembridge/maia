@@ -13,7 +13,7 @@ data class OrgRoleHistoryBlotterRowDto(
     val description: String,
     val displayName: String,
     val key: OrgRoleKey,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val version: Long
 ) {
 

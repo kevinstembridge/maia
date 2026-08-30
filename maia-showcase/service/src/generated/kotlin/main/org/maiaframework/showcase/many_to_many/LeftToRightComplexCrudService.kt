@@ -45,15 +45,15 @@ class LeftToRightComplexCrudService(
         val right: DomainId = createDto.right
         val someIntOnComplex: Int = createDto.someIntOnComplex
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
-        val lastModifiedTimestampUtc = createdTimestampUtc
+        val createdTimestamp = Instant.now()
+        val lastModifiedTimestamp = createdTimestamp
 
         return LeftToRightComplexEntity(
-            createdTimestampUtc,
+            createdTimestamp,
             effectiveFrom,
             effectiveTo,
             id,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             left,
             right,
             someIntOnComplex
@@ -89,7 +89,7 @@ class LeftToRightComplexCrudService(
             left(editDto.left)
             right(editDto.right)
             someIntOnComplex(editDto.someIntOnComplex)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -107,7 +107,7 @@ class LeftToRightComplexCrudService(
 
         val updater = LeftToRightComplexEntityUpdater.forPrimaryKey(editDto.id) {
             someIntOnComplex(editDto.someIntOnComplex)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -125,7 +125,7 @@ class LeftToRightComplexCrudService(
 
         val updater = LeftToRightComplexEntityUpdater.forPrimaryKey(editDto.id) {
             left(editDto.left)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)
@@ -143,7 +143,7 @@ class LeftToRightComplexCrudService(
 
         val updater = LeftToRightComplexEntityUpdater.forPrimaryKey(editDto.id) {
             right(editDto.right)
-            lastModifiedTimestampUtc(Instant.now())
+            lastModifiedTimestamp(Instant.now())
         }
 
         setFields(updater)

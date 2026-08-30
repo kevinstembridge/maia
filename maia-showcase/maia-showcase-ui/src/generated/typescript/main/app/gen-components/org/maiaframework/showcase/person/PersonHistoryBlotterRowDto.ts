@@ -8,7 +8,7 @@ export interface PersonHistoryBlotterRowDto {
     displayName: string;
     firstName?: string;
     lastModifiedBy?: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     lastName: string;
     lifecycleState: string;
     version: number;

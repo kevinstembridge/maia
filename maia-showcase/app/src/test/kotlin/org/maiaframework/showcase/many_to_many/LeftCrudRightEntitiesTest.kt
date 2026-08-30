@@ -147,7 +147,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `update with unchanged effectiveFrom and effectiveTo preserves join id and createdTimestampUtc`() {
+    fun `update with unchanged effectiveFrom and effectiveTo preserves join id and createdTimestamp`() {
 
         post(
             "/api/left-many/create",
@@ -164,7 +164,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         val joinAfter = leftRightComplexDao.findByLeft(leftId).single()
         assertThat(joinAfter.id).isEqualTo(joinBefore.id)
-        assertThat(joinAfter.createdTimestampUtc).isEqualTo(joinBefore.createdTimestampUtc)
+        assertThat(joinAfter.createdTimestamp).isEqualTo(joinBefore.createdTimestamp)
         assertThat(joinAfter.effectiveFrom).isEqualTo(joinBefore.effectiveFrom)
         assertThat(joinAfter.effectiveTo).isEqualTo(joinBefore.effectiveTo)
 
@@ -189,7 +189,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         val joinAfter = leftRightComplexDao.findByLeft(leftId).single()
         assertThat(joinAfter.id).isEqualTo(joinBefore.id)
-        assertThat(joinAfter.createdTimestampUtc).isEqualTo(joinBefore.createdTimestampUtc)
+        assertThat(joinAfter.createdTimestamp).isEqualTo(joinBefore.createdTimestamp)
         assertThat(joinAfter.effectiveFrom).isEqualTo(joinBefore.effectiveFrom)
 
     }
@@ -221,7 +221,7 @@ class LeftCrudRightEntitiesTest : AbstractBlackBoxTest() {
 
         val join1After = joinsAfter.single { it.right == rightEntity1.id }
         assertThat(join1After.id).isEqualTo(join1.id)
-        assertThat(join1After.createdTimestampUtc).isEqualTo(join1.createdTimestampUtc)
+        assertThat(join1After.createdTimestamp).isEqualTo(join1.createdTimestamp)
         assertThat(join1After.effectiveFrom).isEqualTo(join1.effectiveFrom)
 
     }

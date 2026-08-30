@@ -28,10 +28,10 @@ class EntityRenderer(
                     val classFieldName = it.classFieldDef.classFieldName
                     (
                         (classFieldName != ClassFieldName.id || entityDef.hasSurrogatePrimaryKey == false)
-                        && classFieldName != ClassFieldName.createdTimestampUtc
+                        && classFieldName != ClassFieldName.createdTimestamp
                         && classFieldName != ClassFieldName.version
                         && classFieldName != ClassFieldName.lastModifiedById
-                        && classFieldName != ClassFieldName.lastModifiedTimestampUtc
+                        && classFieldName != ClassFieldName.lastModifiedTimestamp
                         && classFieldName != ClassFieldName.lifecycleState
                     )
                 }
@@ -157,7 +157,7 @@ class EntityRenderer(
 
     private fun `render function newInstance`() {
 
-        val fieldNamesNotProvidedAsArguments = mutableListOf("createdTimestampUtc")
+        val fieldNamesNotProvidedAsArguments = mutableListOf("createdTimestamp")
 
         blankLine()
         blankLine()
@@ -167,7 +167,7 @@ class EntityRenderer(
         newLine()
         appendLine("        ): ${classDef.uqcn} {")
         blankLine()
-        appendLine("            val createdTimestampUtc = Instant.now()")
+        appendLine("            val createdTimestamp = Instant.now()")
 
         if (this.entityDef.hasSurrogatePrimaryKey) {
             appendLine("            val id = newId()")
@@ -176,14 +176,14 @@ class EntityRenderer(
 
         if (this.entityDef.hasLastModifiedTimestampUtcField) {
 
-            appendLine("            val lastModifiedTimestampUtc = createdTimestampUtc")
+            appendLine("            val lastModifiedTimestamp = createdTimestamp")
 
             if (this.entityDef.hasLastModifiedByIdField) {
                 appendLine("            val lastModifiedBy = createdBy")
                 fieldNamesNotProvidedAsArguments.add("lastModifiedBy")
             }
 
-            fieldNamesNotProvidedAsArguments.add("lastModifiedTimestampUtc")
+            fieldNamesNotProvidedAsArguments.add("lastModifiedTimestamp")
 
         }
 

@@ -22,7 +22,7 @@ object FeatureToggleHistoryEntityMeta {
 
     const val contactPerson = "contact_person"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val description = "description"
 
@@ -34,7 +34,7 @@ object FeatureToggleHistoryEntityMeta {
 
     const val lastModifiedByUsername = "last_modified_by_name"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val reviewDate = "review_date"
 
@@ -61,13 +61,13 @@ object FeatureToggleHistoryEntityMeta {
             "changeType" -> "change_type"
             "comment" -> "comment"
             "contactPerson" -> "contact_person"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "description" -> "description"
             "enabled" -> "enabled"
             "featureName" -> "feature_name"
             "infoLink" -> "info_link"
             "lastModifiedByUsername" -> "last_modified_by_name"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "reviewDate" -> "review_date"
             "ticketKey" -> "ticket_key"
             "version" -> "version"

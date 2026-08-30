@@ -38,13 +38,13 @@ class CompositePrimaryKeyDao(
         jdbcOps.update(
             """
             insert into maia.composite_primary_key (
-                created_timestamp_utc,
+                created_timestamp,
                 some_int,
                 some_modifiable_string,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :someInt,
                 :someModifiableString,
                 :someString,
@@ -52,7 +52,7 @@ class CompositePrimaryKeyDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someModifiableString", entity.someModifiableString)
                 addValue("someString", entity.someString)
@@ -70,13 +70,13 @@ class CompositePrimaryKeyDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.composite_primary_key (
-                created_timestamp_utc,
+                created_timestamp,
                 some_int,
                 some_modifiable_string,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :someInt,
                 :someModifiableString,
                 :someString,
@@ -85,7 +85,7 @@ class CompositePrimaryKeyDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("someInt", entity.someInt)
                     addValue("someModifiableString", entity.someModifiableString)
                     addValue("someString", entity.someString)
@@ -127,14 +127,14 @@ class CompositePrimaryKeyDao(
         changeType: ChangeType
     ): CompositePrimaryKeyHistoryEntity {
 
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val someInt = entity.someInt
         val someModifiableString = entity.someModifiableString
         val someString = entity.someString
 
         return CompositePrimaryKeyHistoryEntity(
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 someInt,
                 someModifiableString,
                 someString,
@@ -318,7 +318,7 @@ class CompositePrimaryKeyDao(
         return this.jdbcOps.queryForList(
             """
             select
-                maia.composite_primary_key.created_timestamp_utc as createdTimestampUtc,
+                maia.composite_primary_key.created_timestamp as createdTimestamp,
                 maia.composite_primary_key.some_int as someInt,
                 maia.composite_primary_key.some_modifiable_string as someModifiableString,
                 maia.composite_primary_key.some_string as someString,
@@ -342,13 +342,13 @@ class CompositePrimaryKeyDao(
         val persistedEntity = jdbcOps.execute(
             """
             insert into maia.composite_primary_key (
-                created_timestamp_utc,
+                created_timestamp,
                 some_int,
                 some_modifiable_string,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :someInt,
                 :someModifiableString,
                 :someString,
@@ -361,7 +361,7 @@ class CompositePrimaryKeyDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("someInt", upsertEntity.someInt)
                 addValue("someModifiableString", upsertEntity.someModifiableString)
                 addValue("someString", upsertEntity.someString)

@@ -17,13 +17,13 @@ class FeatureToggleEntity(
     val attributes: Map<String, String>?,
     val comment: String?,
     val contactPerson: ContactPerson?,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val description: Description?,
     val enabled: Boolean,
     val featureName: FeatureName,
     val infoLink: InfoLink?,
     val lastModifiedByUsername: String,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val reviewDate: LocalDate?,
     val ticketKey: TicketKey?,
     val version: Long
@@ -40,13 +40,13 @@ class FeatureToggleEntity(
                 "attributes = '" + this.attributes + '\'' + ", " + 
                 "comment = '" + this.comment + '\'' + ", " + 
                 "contactPerson = '" + this.contactPerson + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "enabled = '" + this.enabled + '\'' + ", " + 
                 "featureName = '" + this.featureName + '\'' + ", " + 
                 "infoLink = '" + this.infoLink + '\'' + ", " + 
                 "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "reviewDate = '" + this.reviewDate + '\'' + ", " + 
                 "ticketKey = '" + this.ticketKey + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
@@ -75,8 +75,8 @@ class FeatureToggleEntity(
             ticketKey: TicketKey?
         ): FeatureToggleEntity {
 
-            val createdTimestampUtc = Instant.now()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val createdTimestamp = Instant.now()
+            val lastModifiedTimestamp = createdTimestamp
             val version = 1L
 
             return FeatureToggleEntity(
@@ -84,13 +84,13 @@ class FeatureToggleEntity(
                 attributes,
                 comment,
                 contactPerson,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 enabled,
                 featureName,
                 infoLink,
                 lastModifiedByUsername,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 reviewDate,
                 ticketKey,
                 version

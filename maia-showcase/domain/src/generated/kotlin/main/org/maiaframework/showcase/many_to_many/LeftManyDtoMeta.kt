@@ -12,11 +12,11 @@ object LeftManyDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.left_many.created_timestamp_utc"
+            "createdTimestamp" -> "maia.left_many.created_timestamp"
             "id" -> "maia.left_many.id"
             "someIntFromLeft" -> "maia.left_many.some_int"
             "someStringFromLeft" -> "maia.left_many.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someIntFromLeft, someStringFromLeft]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someIntFromLeft, someStringFromLeft]")
         }
 
     }
@@ -25,11 +25,11 @@ object LeftManyDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "id" -> JdbcCompatibleType.uuid
             "someIntFromLeft" -> JdbcCompatibleType.integer
             "someStringFromLeft" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, someIntFromLeft, someStringFromLeft]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, someIntFromLeft, someStringFromLeft]")
         }
 
     }

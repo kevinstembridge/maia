@@ -24,7 +24,7 @@ class ClassFieldName(value: String) : StringType<ClassFieldName>(value) {
 
         val createdByUsername = ClassFieldName("createdByUsername")
 
-        val createdTimestampUtc = ClassFieldName("createdTimestampUtc")
+        val createdTimestamp = ClassFieldName("createdTimestamp")
 
         val effectiveFrom = ClassFieldName("effectiveFrom")
 
@@ -36,7 +36,7 @@ class ClassFieldName(value: String) : StringType<ClassFieldName>(value) {
 
         val lastModifiedById = ClassFieldName("lastModifiedBy")
 
-        val lastModifiedTimestampUtc = ClassFieldName("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = ClassFieldName("lastModifiedTimestamp")
 
         val lifecycleState = ClassFieldName("lifecycleState")
 

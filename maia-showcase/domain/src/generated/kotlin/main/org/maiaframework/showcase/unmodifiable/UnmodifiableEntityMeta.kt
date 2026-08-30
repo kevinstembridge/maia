@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object UnmodifiableEntityMeta {
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val id = "id"
 
@@ -39,7 +39,7 @@ object UnmodifiableEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "someUniqueInt" -> "some_unique_int"
             else ->

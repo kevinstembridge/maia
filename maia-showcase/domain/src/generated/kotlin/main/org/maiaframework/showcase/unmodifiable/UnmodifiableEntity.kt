@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class UnmodifiableEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someUniqueInt: Int
 ) {
@@ -17,7 +17,7 @@ class UnmodifiableEntity(
     override fun toString(): String {
 
         return "UnmodifiableEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someUniqueInt = '" + this.someUniqueInt + '\'' +
                 "}"
@@ -38,11 +38,11 @@ class UnmodifiableEntity(
             someUniqueInt: Int
         ): UnmodifiableEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
 
             return UnmodifiableEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someUniqueInt
             )

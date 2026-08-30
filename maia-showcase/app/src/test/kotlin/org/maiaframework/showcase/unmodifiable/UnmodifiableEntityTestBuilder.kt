@@ -6,7 +6,7 @@ import java.time.Instant
 
 
 data class UnmodifiableEntityTestBuilder(
-    val createdTimestampUtc: Instant = Instant.now(),
+    val createdTimestamp: Instant = Instant.now(),
     val id: DomainId = DomainId.newId(),
     val someUniqueInt: Int = anyInt()
 ) {
@@ -15,7 +15,7 @@ data class UnmodifiableEntityTestBuilder(
     fun build(): UnmodifiableEntity {
 
         return UnmodifiableEntity(
-            this.createdTimestampUtc,
+            this.createdTimestamp,
             this.id,
             this.someUniqueInt
         )

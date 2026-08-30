@@ -33,7 +33,7 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
             lengthConstraint(max = 2000)
         }
         field_lastModifiedByUsername()
-        field_lastModifiedTimestampUtc()
+        field_lastModifiedTimestamp()
         field("comment", FieldTypes.string) {
             nullable()
             lengthConstraint(max = 200)

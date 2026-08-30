@@ -14,7 +14,7 @@ class OrgUserGroupEntityRowMapper : MaiaRowMapper<OrgUserGroupEntity> {
     override fun mapRow(rsa: ResultSetAdapter): OrgUserGroupEntity {
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readString("description")
         val id = rsa.readDomainId("id")
         val name = rsa.readString("name")
@@ -24,7 +24,7 @@ class OrgUserGroupEntityRowMapper : MaiaRowMapper<OrgUserGroupEntity> {
 
         return OrgUserGroupEntity(
                 authorities,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 id,
                 name,

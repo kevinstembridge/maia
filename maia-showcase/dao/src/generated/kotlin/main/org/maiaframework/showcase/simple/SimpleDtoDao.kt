@@ -41,7 +41,7 @@ class SimpleDtoDao(
 
         val sqlForPage = """
             select
-                maia.simple.created_timestamp_utc as createdTimestampUtc,
+                maia.simple.created_timestamp as createdTimestamp,
                 maia.simple.id as id,
                 maia.simple.some_string as someString
             from maia.simple

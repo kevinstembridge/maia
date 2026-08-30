@@ -8,11 +8,11 @@ import java.time.Instant
 
 
 class LeftToRightComplexEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val left: DomainId,
     val right: DomainId,
     val someIntOnComplex: Int
@@ -22,11 +22,11 @@ class LeftToRightComplexEntity(
     override fun toString(): String {
 
         return "LeftToRightComplexEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "left = '" + this.left + '\'' + ", " + 
                 "right = '" + this.right + '\'' + ", " + 
                 "someIntOnComplex = '" + this.someIntOnComplex + '\'' +
@@ -52,16 +52,16 @@ class LeftToRightComplexEntity(
             someIntOnComplex: Int
         ): LeftToRightComplexEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
 
             return LeftToRightComplexEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 id,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 left,
                 right,
                 someIntOnComplex

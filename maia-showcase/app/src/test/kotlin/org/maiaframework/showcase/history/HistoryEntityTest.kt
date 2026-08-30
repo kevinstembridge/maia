@@ -162,7 +162,7 @@ class HistoryEntityTest: AbstractBlackBoxTest() {
 //        assertThat(entityResultOfUpsert.version).isEqualTo(incrementedVersion)
 //        assertThat(entityResultOfUpsert.someInt).isEqualTo(entityToUpsert.someInt)
 //        assertThat(entityResultOfUpsert.someString).isEqualTo(entityToUpsert.someString)
-//        assertThat(entityResultOfUpsert.lastModifiedTimestampUtc).isEqualTo(entityToUpsert.lastModifiedTimestampUtc)
+//        assertThat(entityResultOfUpsert.lastModifiedTimestamp).isEqualTo(entityToUpsert.lastModifiedTimestamp)
 
         // THEN we can no longer find the initial version of the entity
         val historySampleEntityFilters = HistorySampleEntityFilters()
@@ -204,8 +204,8 @@ class HistoryEntityTest: AbstractBlackBoxTest() {
         expectedChangeType: ChangeType
     ) {
 
-        assertThat(historyEntity.createdTimestampUtc).`as`("createdTimestampUtc").isEqualTo(entity.createdTimestampUtc)
-        assertThat(historyEntity.lastModifiedTimestampUtc).`as`("lastModifiedTimestampUtc").isEqualTo(entity.lastModifiedTimestampUtc)
+        assertThat(historyEntity.createdTimestamp).`as`("createdTimestamp").isEqualTo(entity.createdTimestamp)
+        assertThat(historyEntity.lastModifiedTimestamp).`as`("lastModifiedTimestamp").isEqualTo(entity.lastModifiedTimestamp)
         assertThat(historyEntity.someInt).`as`("someInt").isEqualTo(entity.someInt)
         assertThat(historyEntity.someString).`as`("someString").isEqualTo(entity.someString)
         assertThat(historyEntity.version).`as`("v").isEqualTo(expectedVersion)

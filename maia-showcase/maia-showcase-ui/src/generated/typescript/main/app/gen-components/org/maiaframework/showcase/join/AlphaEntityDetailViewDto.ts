@@ -3,7 +3,7 @@
 
 
 export interface AlphaEntityDetailViewDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someInt: number;
     someString: string;

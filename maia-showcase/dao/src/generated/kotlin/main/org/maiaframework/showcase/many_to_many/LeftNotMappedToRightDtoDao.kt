@@ -41,7 +41,7 @@ class LeftNotMappedToRightDtoDao(
 
         val sqlForPage = """
             select
-                maia.left_many.created_timestamp_utc as createdTimestampUtc,
+                maia.left_many.created_timestamp as createdTimestamp,
                 maia.left_many.id as id,
                 maia.left_many.some_int as someIntFromLeft,
                 maia.left_many.some_string as someStringFromLeft

@@ -12,13 +12,13 @@ class AlphaDtoRowMapper : MaiaRowMapper<AlphaDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): AlphaDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
 
         return AlphaDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString,

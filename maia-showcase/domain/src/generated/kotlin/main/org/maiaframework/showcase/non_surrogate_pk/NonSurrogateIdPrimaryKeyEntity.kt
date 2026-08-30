@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 class NonSurrogateIdPrimaryKeyEntity(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: SomeStringValueClass,
     val someModifiableString: String,
     val version: Long
@@ -21,7 +21,7 @@ class NonSurrogateIdPrimaryKeyEntity(
     override fun toString(): String {
 
         return "NonSurrogateIdPrimaryKeyEntity{" +
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "someModifiableString = '" + this.someModifiableString + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
@@ -41,11 +41,11 @@ class NonSurrogateIdPrimaryKeyEntity(
             someModifiableString: String
         ): NonSurrogateIdPrimaryKeyEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val version = 1L
 
             return NonSurrogateIdPrimaryKeyEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someModifiableString,
                 version

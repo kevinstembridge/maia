@@ -12,7 +12,7 @@ object CharlieAgGridDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.charlie_ag_grid.created_timestamp_utc"
+            "createdTimestamp" -> "maia.charlie_ag_grid.created_timestamp"
             "dtoIntFromAlpha" -> "maia.alpha_ag_grid.some_int"
             "dtoIntFromBravo" -> "maia.bravo_ag_grid.some_int"
             "dtoIntFromCharlie" -> "maia.charlie_ag_grid.some_int"
@@ -20,7 +20,7 @@ object CharlieAgGridDtoMeta {
             "dtoStringFromBravo" -> "maia.bravo_ag_grid.some_string"
             "dtoStringFromCharlie" -> "maia.charlie_ag_grid.some_string"
             "id" -> "maia.charlie_ag_grid.id"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoIntFromCharlie, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie, id]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, dtoIntFromAlpha, dtoIntFromBravo, dtoIntFromCharlie, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie, id]")
         }
 
     }
@@ -29,7 +29,7 @@ object CharlieAgGridDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "dtoIntFromAlpha" -> JdbcCompatibleType.integer
             "dtoIntFromBravo" -> JdbcCompatibleType.integer
             "dtoIntFromCharlie" -> JdbcCompatibleType.integer
@@ -37,7 +37,7 @@ object CharlieAgGridDtoMeta {
             "dtoStringFromBravo" -> JdbcCompatibleType.text
             "dtoStringFromCharlie" -> JdbcCompatibleType.text
             "id" -> JdbcCompatibleType.uuid
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoIntFromCharlie, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie, id]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, dtoIntFromAlpha, dtoIntFromBravo, dtoIntFromCharlie, dtoStringFromAlpha, dtoStringFromBravo, dtoStringFromCharlie, id]")
         }
 
     }

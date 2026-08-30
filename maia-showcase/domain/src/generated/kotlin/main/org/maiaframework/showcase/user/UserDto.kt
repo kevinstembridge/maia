@@ -12,7 +12,7 @@ import java.time.Instant
 
 data class UserDto(
     val authorities: List<Authority>,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val displayName: String,
     val encryptedPassword: String,
     val firstName: FirstName?,

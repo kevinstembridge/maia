@@ -33,13 +33,13 @@ class LeftToRightSystemSingleEffectiveDao(
         jdbcOps.update(
             """
             insert into maia.left_to_right_system_single_effective (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
                 left_system_single_effective_id,
                 right_system_single_effective_id
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :leftSystemSingleEffective,
@@ -47,7 +47,7 @@ class LeftToRightSystemSingleEffectiveDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
                 addValue("id", entity.id)
@@ -64,13 +64,13 @@ class LeftToRightSystemSingleEffectiveDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.left_to_right_system_single_effective (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
                 left_system_single_effective_id,
                 right_system_single_effective_id
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
                 :leftSystemSingleEffective,
@@ -79,7 +79,7 @@ class LeftToRightSystemSingleEffectiveDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
                     addValue("id", entity.id)

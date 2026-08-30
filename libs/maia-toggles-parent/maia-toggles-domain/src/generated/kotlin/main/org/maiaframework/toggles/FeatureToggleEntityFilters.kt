@@ -70,10 +70,10 @@ class FeatureToggleEntityFilters {
         }
 
 
-    val createdTimestampUtc: FieldFilter<Instant> 
+    val createdTimestamp: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("created_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("created_timestamp", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
@@ -118,10 +118,10 @@ class FeatureToggleEntityFilters {
         }
 
 
-    val lastModifiedTimestampUtc: FieldFilter<Instant> 
+    val lastModifiedTimestamp: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("last_modified_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("last_modified_timestamp", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 

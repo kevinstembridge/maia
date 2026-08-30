@@ -12,7 +12,7 @@ class UserGroupMembershipFetchForEditDtoRowMapper : MaiaRowMapper<UserGroupMembe
 
     override fun mapRow(rsa: ResultSetAdapter): UserGroupMembershipFetchForEditDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val effectiveFrom = rsa.readInstantOrNull("effectiveFrom")
         val effectiveTo = rsa.readInstantOrNull("effectiveTo")
         val id = rsa.readDomainId("id")
@@ -26,7 +26,7 @@ class UserGroupMembershipFetchForEditDtoRowMapper : MaiaRowMapper<UserGroupMembe
         )
 
         return UserGroupMembershipFetchForEditDto(
-            createdTimestampUtc,
+            createdTimestamp,
             effectiveFrom,
             effectiveTo,
             id,

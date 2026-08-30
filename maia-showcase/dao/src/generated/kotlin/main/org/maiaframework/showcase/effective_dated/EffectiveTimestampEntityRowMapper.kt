@@ -12,14 +12,14 @@ class EffectiveTimestampEntityRowMapper : MaiaRowMapper<EffectiveTimestampEntity
 
     override fun mapRow(rsa: ResultSetAdapter): EffectiveTimestampEntity {
 
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val effectiveFrom = rsa.readInstantOrNull("effective_from")
         val effectiveTo = rsa.readInstantOrNull("effective_to")
         val id = rsa.readDomainId("id")
         val someString = rsa.readString("some_string")
 
         return EffectiveTimestampEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 id,

@@ -27,14 +27,14 @@ class AllFieldTypesFetchForEditDtoRowMapper : MaiaRowMapper<AllFieldTypesFetchFo
             rsa.readString("createdByName"),
         )
         val createdByUsername = rsa.readString("createdByUsername")
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = PartyPkAndNameDto(
             rsa.readDomainId("lastModifiedById"),
             rsa.readString("lastModifiedByName"),
         )
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val someBoolean = rsa.readBoolean("someBoolean")
         val someBooleanNullable = rsa.readBooleanOrNull("someBooleanNullable")
         val someBooleanType = rsa.readBoolean("someBooleanType") { SomeBooleanType(it) }
@@ -73,11 +73,11 @@ class AllFieldTypesFetchForEditDtoRowMapper : MaiaRowMapper<AllFieldTypesFetchFo
         return AllFieldTypesFetchForEditDto(
             createdBy,
             createdByUsername,
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             lastModifiedBy,
             lastModifiedByUsername,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             someBoolean,
             someBooleanNullable,
             someBooleanType,

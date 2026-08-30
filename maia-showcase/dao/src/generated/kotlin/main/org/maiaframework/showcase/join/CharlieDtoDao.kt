@@ -44,7 +44,7 @@ class CharlieDtoDao(
 
         val sqlForPage = """
             select
-                maia.charlie.created_timestamp_utc as createdTimestampUtc,
+                maia.charlie.created_timestamp as createdTimestamp,
                 maia.alpha.some_int as dtoIntFromAlpha,
                 maia.bravo.some_int as dtoIntFromBravo,
                 maia.charlie.some_int as dtoIntFromCharlie,

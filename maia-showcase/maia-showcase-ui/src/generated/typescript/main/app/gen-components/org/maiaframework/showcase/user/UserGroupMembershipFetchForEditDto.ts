@@ -6,7 +6,7 @@ import {UserPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/u
 
 
 export interface UserGroupMembershipFetchForEditDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     effectiveFrom?: string;
     effectiveTo?: string;
     id: string;

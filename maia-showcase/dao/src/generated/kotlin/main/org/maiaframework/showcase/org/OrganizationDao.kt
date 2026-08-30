@@ -42,20 +42,20 @@ class OrganizationDao(
             insert into maia.v_party (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 lifecycle_state,
                 org_name,
                 version
             ) values (
                 'ORG',
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lifecycleState,
                 :orgName,
                 :version
@@ -63,11 +63,11 @@ class OrganizationDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("displayName", entity.displayName)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("orgName", entity.orgName)
                 addValue("version", entity.version)
@@ -86,20 +86,20 @@ class OrganizationDao(
             insert into maia.v_party (
                 type_discriminator,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 lifecycle_state,
                 org_name,
                 version
             ) values (
                 'ORG',
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lifecycleState,
                 :orgName,
                 :version
@@ -108,11 +108,11 @@ class OrganizationDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("displayName", entity.displayName)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("orgName", entity.orgName)
                     addValue("version", entity.version)
@@ -155,21 +155,21 @@ class OrganizationDao(
 
         val id = entity.id
         val createdBy = entity.createdBy
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val displayName = entity.displayName
         val lastModifiedBy = entity.lastModifiedBy
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val lifecycleState = entity.lifecycleState
         val orgName = entity.orgName
 
         return OrganizationHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lifecycleState,
                 orgName,
                 version)
@@ -350,11 +350,11 @@ class OrganizationDao(
             """
             select
                 maia.v_party.created_by_id as createdBy,
-                maia.v_party.created_timestamp_utc as createdTimestampUtc,
+                maia.v_party.created_timestamp as createdTimestamp,
                 maia.v_party.display_name as displayName,
                 maia.v_party.id as id,
                 maia.v_party.last_modified_by_id as lastModifiedBy,
-                maia.v_party.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.v_party.last_modified_timestamp as lastModifiedTimestamp,
                 maia.v_party.lifecycle_state as lifecycleState,
                 maia.v_party.org_name as orgName,
                 maia.v_party.version as version
@@ -426,7 +426,7 @@ class OrganizationDao(
         when (field.classFieldName) {
             "createdBy" -> sqlParams.addValue("createdBy", field.value as DomainId?)
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "lifecycleState" -> sqlParams.addValue("lifecycleState", field.value as LifecycleState)
             "orgName" -> sqlParams.addValue("orgName", field.value as String)
         }

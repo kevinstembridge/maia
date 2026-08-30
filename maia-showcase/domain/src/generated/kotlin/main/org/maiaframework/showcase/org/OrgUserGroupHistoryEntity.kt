@@ -13,7 +13,7 @@ import java.time.Instant
 class OrgUserGroupHistoryEntity(
     authorities: List<Authority>,
     changeType: ChangeType,
-    createdTimestampUtc: Instant,
+    createdTimestamp: Instant,
     description: String,
     id: DomainId,
     name: String,
@@ -23,7 +23,7 @@ class OrgUserGroupHistoryEntity(
 ) : UserGroupHistoryEntity(
     authorities,
     changeType,
-    createdTimestampUtc,
+    createdTimestamp,
     description,
     id,
     name,
@@ -37,7 +37,7 @@ class OrgUserGroupHistoryEntity(
         return "OrgUserGroupHistoryEntity{" +
                 "authorities = '" + this.authorities + '\'' + ", " + 
                 "changeType = '" + this.changeType + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "name = '" + this.name + '\'' + ", " + 

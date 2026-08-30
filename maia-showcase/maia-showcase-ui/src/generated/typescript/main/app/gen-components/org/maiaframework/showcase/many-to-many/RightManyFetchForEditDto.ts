@@ -9,7 +9,7 @@ import {LeftUserEffectiveJoinFetchDto} from '@app/gen-components/org/maiaframewo
 
 
 export interface RightManyFetchForEditDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     leftEntities: ReadonlyArray<LeftJoinFetchDto>;
     leftSimpleEntities: ReadonlyArray<LeftManyPkAndNameDto>;

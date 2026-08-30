@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object LeftToRightSimpleEntityMeta {
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val id = "id"
 
@@ -43,7 +43,7 @@ object LeftToRightSimpleEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "leftSimple" -> "left_simple_id"
             "rightSimple" -> "right_simple_id"

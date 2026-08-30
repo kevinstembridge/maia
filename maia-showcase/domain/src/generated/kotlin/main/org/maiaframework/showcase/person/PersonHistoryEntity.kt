@@ -15,23 +15,23 @@ import java.time.Instant
 open class PersonHistoryEntity(
     changeType: ChangeType,
     createdBy: DomainId?,
-    createdTimestampUtc: Instant,
+    createdTimestamp: Instant,
     displayName: String,
     val firstName: FirstName?,
     id: DomainId,
     lastModifiedBy: DomainId?,
-    lastModifiedTimestampUtc: Instant,
+    lastModifiedTimestamp: Instant,
     val lastName: LastName,
     lifecycleState: LifecycleState,
     version: Long
 ) : PartyHistoryEntity(
     changeType,
     createdBy,
-    createdTimestampUtc,
+    createdTimestamp,
     displayName,
     id,
     lastModifiedBy,
-    lastModifiedTimestampUtc,
+    lastModifiedTimestamp,
     lifecycleState,
     version
 ) {
@@ -42,12 +42,12 @@ open class PersonHistoryEntity(
         return "PersonHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

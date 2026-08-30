@@ -21,11 +21,11 @@ import java.time.Period
 class AllFieldTypesEntity(
     val createdBy: DomainId,
     val createdByUsername: String,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val lastModifiedBy: DomainId,
     val lastModifiedByUsername: String,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val someBoolean: Boolean,
     val someBooleanNullable: Boolean?,
     val someBooleanType: SomeBooleanType,
@@ -68,11 +68,11 @@ class AllFieldTypesEntity(
         return "AllFieldTypesEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
                 "createdByUsername = '" + this.createdByUsername + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "someBoolean = '" + this.someBoolean + '\'' + ", " + 
                 "someBooleanNullable = '" + this.someBooleanNullable + '\'' + ", " + 
                 "someBooleanType = '" + this.someBooleanType + '\'' + ", " + 
@@ -161,19 +161,19 @@ class AllFieldTypesEntity(
             someStringTypeNullable: SomeStringType?
         ): AllFieldTypesEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
 
             return AllFieldTypesEntity(
                 createdBy,
                 createdByUsername,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
                 lastModifiedByUsername,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someBoolean,
                 someBooleanNullable,
                 someBooleanType,

@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class AlphaEntityTestBuilder(
-    val createdTimestampUtc: Instant = anyInstant(),
+    val createdTimestamp: Instant = anyInstant(),
     val id: DomainId = DomainId.newId(),
     val someInt: Int = anyInt(),
     val someString: String = anyString()
@@ -18,7 +18,7 @@ data class AlphaEntityTestBuilder(
     fun build(): AlphaEntity {
 
         return AlphaEntity(
-            this.createdTimestampUtc,
+            this.createdTimestamp,
             this.id,
             this.someInt,
             this.someString

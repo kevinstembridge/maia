@@ -11,14 +11,14 @@ import java.time.Instant
 
 class EmailAddressVerificationEntity(
     val createdBy: DomainId?,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val emailAddress: EmailAddress,
     val id: DomainId,
     val ipAddress: IpAddress?,
     val lastModifiedBy: DomainId?,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val version: Long
 ) {
 
@@ -27,14 +27,14 @@ class EmailAddressVerificationEntity(
 
         return "EmailAddressVerificationEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "effectiveFrom = '" + this.effectiveFrom + '\'' + ", " + 
                 "effectiveTo = '" + this.effectiveTo + '\'' + ", " + 
                 "emailAddress = '" + this.emailAddress + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "ipAddress = '" + this.ipAddress + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
 
@@ -58,22 +58,22 @@ class EmailAddressVerificationEntity(
             ipAddress: IpAddress?
         ): EmailAddressVerificationEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
             val version = 1L
 
             return EmailAddressVerificationEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 emailAddress,
                 id,
                 ipAddress,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 version
             )
 

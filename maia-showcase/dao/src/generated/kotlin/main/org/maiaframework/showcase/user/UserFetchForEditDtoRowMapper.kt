@@ -27,13 +27,13 @@ class UserFetchForEditDtoRowMapper(
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
         val createdBy = rsa.readDomainIdOrNull("createdBy")
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val displayName = rsa.readString("displayName")
         val encryptedPassword = rsa.readString("encryptedPassword")
         val firstName = rsa.readStringOrNull("firstName") { FirstName(it) }
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainIdOrNull("lastModifiedBy")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val lastName = rsa.readString("lastName") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycleState", LifecycleState::class.java)
         val version = rsa.readLong("version")
@@ -41,13 +41,13 @@ class UserFetchForEditDtoRowMapper(
         return UserFetchForEditDto(
             authorities,
             createdBy,
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             encryptedPassword,
             firstName,
             id,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lastName,
             lifecycleState,
             userGroupEntitiesJoinFetchDtoList,

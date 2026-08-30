@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class CharlieDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val dtoIntFromAlpha: Int,
     val dtoIntFromBravo: Int,
     val dtoIntFromCharlie: Int,

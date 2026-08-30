@@ -20,7 +20,7 @@ data class UserHistoryBlotterRowDto(
     val encryptedPassword: String,
     val firstName: FirstName?,
     val lastModifiedBy: DomainId?,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val lastName: LastName,
     val lifecycleState: LifecycleState,
     val version: Long
@@ -37,7 +37,7 @@ data class UserHistoryBlotterRowDto(
                 "encryptedPassword = 'MASKED'" + ", " + 
                 "firstName = '" + this.firstName + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "lastName = '" + this.lastName + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

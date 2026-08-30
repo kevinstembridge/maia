@@ -12,12 +12,12 @@ class SimpleBlotterRowDtoRowMapper : MaiaRowMapper<SimpleBlotterRowDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): SimpleBlotterRowDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someString = rsa.readString("someString")
 
         return SimpleBlotterRowDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someString,
         )

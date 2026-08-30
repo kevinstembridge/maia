@@ -4,7 +4,7 @@
 
 export interface UserDto {
     authorities: ReadonlyArray<string>;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     displayName: string;
     encryptedPassword: string;
     firstName?: string;

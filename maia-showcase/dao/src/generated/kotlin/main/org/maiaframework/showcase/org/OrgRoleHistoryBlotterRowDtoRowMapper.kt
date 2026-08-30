@@ -18,7 +18,7 @@ class OrgRoleHistoryBlotterRowDtoRowMapper : MaiaRowMapper<OrgRoleHistoryBlotter
         val description = rsa.readString("description")
         val displayName = rsa.readString("displayName")
         val key = rsa.readString("key") { OrgRoleKey(it) }
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val version = rsa.readLong("version")
 
         return OrgRoleHistoryBlotterRowDto(
@@ -26,7 +26,7 @@ class OrgRoleHistoryBlotterRowDtoRowMapper : MaiaRowMapper<OrgRoleHistoryBlotter
             description,
             displayName,
             key,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             version,
         )
 

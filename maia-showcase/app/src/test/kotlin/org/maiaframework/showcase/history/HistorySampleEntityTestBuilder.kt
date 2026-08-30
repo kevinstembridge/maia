@@ -10,10 +10,10 @@ import java.time.Instant
 
 data class HistorySampleEntityTestBuilder(
     val createdById: DomainId = Anys.defaultCreatedById,
-    val createdTimestampUtc: Instant = anyInstant(),
+    val createdTimestamp: Instant = anyInstant(),
     val id: DomainId = DomainId.newId(),
     val lastModifiedById: DomainId = createdById,
-    val lastModifiedTimestampUtc: Instant = anyInstant(),
+    val lastModifiedTimestamp: Instant = anyInstant(),
     val someInt: Int = anyIntOfLength(5),
     val someString: String = anyAlphaNumeric(5),
     val version: Long = 1L
@@ -24,10 +24,10 @@ data class HistorySampleEntityTestBuilder(
 
         return HistorySampleEntity(
             this.createdById,
-            this.createdTimestampUtc,
+            this.createdTimestamp,
             this.id,
             this.lastModifiedById,
-            this.lastModifiedTimestampUtc,
+            this.lastModifiedTimestamp,
             this.someInt,
             this.someString,
             this.version

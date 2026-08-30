@@ -12,14 +12,14 @@ class CharlieBlotterRowDtoRowMapper : MaiaRowMapper<CharlieBlotterRowDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): CharlieBlotterRowDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val tableStringFromAlpha = rsa.readString("tableStringFromAlpha")
         val tableStringFromBravo = rsa.readString("tableStringFromBravo")
         val tableStringFromCharlie = rsa.readString("tableStringFromCharlie")
 
         return CharlieBlotterRowDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             tableStringFromAlpha,
             tableStringFromBravo,

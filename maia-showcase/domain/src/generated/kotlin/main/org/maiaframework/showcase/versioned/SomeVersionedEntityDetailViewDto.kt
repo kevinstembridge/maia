@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class SomeVersionedEntityDetailViewDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someInt: Int,
     val someString: String,

@@ -11,21 +11,21 @@ import java.time.Instant
 
 class OrganizationEntity(
     createdBy: DomainId?,
-    createdTimestampUtc: Instant,
+    createdTimestamp: Instant,
     displayName: String,
     id: DomainId,
     lastModifiedBy: DomainId?,
-    lastModifiedTimestampUtc: Instant,
+    lastModifiedTimestamp: Instant,
     lifecycleState: LifecycleState,
     val orgName: String,
     version: Long
 ) : PartyEntity(
     createdBy,
-    createdTimestampUtc,
+    createdTimestamp,
     displayName,
     id,
     lastModifiedBy,
-    lastModifiedTimestampUtc,
+    lastModifiedTimestamp,
     lifecycleState,
     version
 ) {
@@ -35,11 +35,11 @@ class OrganizationEntity(
 
         return "OrganizationEntity{" +
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
-                "lastModifiedTimestampUtc = '" + this.lastModifiedTimestampUtc + '\'' + ", " + 
+                "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "lifecycleState = '" + this.lifecycleState + '\'' + ", " + 
                 "orgName = '" + this.orgName + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
@@ -63,20 +63,20 @@ class OrganizationEntity(
             orgName: String
         ): OrganizationEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
-            val lastModifiedTimestampUtc = createdTimestampUtc
+            val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
             val lifecycleState = LifecycleState.ACTIVE
             val version = 1L
 
             return OrganizationEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lifecycleState,
                 orgName,
                 version

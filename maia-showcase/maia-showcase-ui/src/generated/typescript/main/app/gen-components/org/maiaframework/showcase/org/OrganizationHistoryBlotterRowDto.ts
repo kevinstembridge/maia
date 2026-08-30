@@ -7,7 +7,7 @@ export interface OrganizationHistoryBlotterRowDto {
     createdBy?: string;
     displayName: string;
     lastModifiedBy?: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     lifecycleState: string;
     orgName: string;
     version: number;

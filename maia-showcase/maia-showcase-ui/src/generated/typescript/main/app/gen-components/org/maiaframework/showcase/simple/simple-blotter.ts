@@ -70,7 +70,7 @@ export class SimpleBlotter {
             }
         },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
+        { field: 'createdTimestamp', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
         {
             field: 'delete',
             headerName: '',

@@ -16,14 +16,14 @@ class BravoFetchForEditDtoRowMapper : MaiaRowMapper<BravoFetchForEditDto> {
             rsa.readDomainId("alphaId"),
             rsa.readString("alphaName"),
         )
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
 
         return BravoFetchForEditDto(
             alpha,
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString,

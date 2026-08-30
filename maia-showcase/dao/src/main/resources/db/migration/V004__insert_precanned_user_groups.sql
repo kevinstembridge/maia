@@ -1,7 +1,7 @@
 
 insert into maia.user_group (
     authorities,
-    created_timestamp_utc,
+    created_timestamp,
     description,
     id,
     name,
@@ -22,7 +22,7 @@ insert into maia.user_group (
 
 insert into maia.user_group (
     authorities,
-    created_timestamp_utc,
+    created_timestamp,
     description,
     id,
     name,

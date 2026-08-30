@@ -41,10 +41,10 @@ class SimpleCrudService(
 
         val someString: String = createDto.someString
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
 
         return SimpleEntity(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someString
         )

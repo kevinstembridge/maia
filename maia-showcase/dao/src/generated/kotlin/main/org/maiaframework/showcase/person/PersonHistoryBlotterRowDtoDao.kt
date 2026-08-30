@@ -49,7 +49,7 @@ class PersonHistoryBlotterRowDtoDao(
                 maia.v_party_history.display_name as displayName,
                 maia.v_party_history.first_name as firstName,
                 maia.v_party_history.last_modified_by_id as lastModifiedBy,
-                maia.v_party_history.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.v_party_history.last_modified_timestamp as lastModifiedTimestamp,
                 maia.v_party_history.last_name as lastName,
                 maia.v_party_history.lifecycle_state as lifecycleState,
                 maia.v_party_history.version as version

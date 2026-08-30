@@ -22,11 +22,11 @@ import java.time.Period
 data class AllFieldTypesFetchForEditDto(
     val createdBy: PartyPkAndNameDto,
     val createdByUsername: String,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val lastModifiedBy: PartyPkAndNameDto,
     val lastModifiedByUsername: String,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val someBoolean: Boolean,
     val someBooleanNullable: Boolean?,
     val someBooleanType: SomeBooleanType,

@@ -22,7 +22,7 @@ class FileStorageEntryEntityFieldConverter : EntityFieldConverter {
 
             "content_type" -> // contentType
                 return (inputValue as ContentType).value
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "description" -> // description
                 return inputValue

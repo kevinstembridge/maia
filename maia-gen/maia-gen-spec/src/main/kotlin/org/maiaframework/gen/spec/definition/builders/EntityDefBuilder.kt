@@ -181,9 +181,9 @@ class EntityDefBuilder(
 
         }
 
-        val createdTimestampUtcField = if (this.superclassEntityDef == null) {
+        val createdTimestampField = if (this.superclassEntityDef == null) {
 
-            EntityDef.createdTimestampUtcFieldDef(entityBaseName, packageName)
+            EntityDef.createdTimestampFieldDef(entityBaseName, packageName)
 
         } else {
 
@@ -206,7 +206,7 @@ class EntityDefBuilder(
         return entityFieldDefs
             .plus(idField)
             .plus(foreignKeyFieldDefs)
-            .plus(createdTimestampUtcField)
+            .plus(createdTimestampField)
             .plus(versionField)
             .filterNotNull()
 
@@ -630,11 +630,11 @@ class EntityDefBuilder(
     }
 
 
-    fun field_lastModifiedTimestampUtc() {
+    fun field_lastModifiedTimestamp() {
 
-        field(ClassFieldName.lastModifiedTimestampUtc.value, FieldTypes.instant) {
+        field(ClassFieldName.lastModifiedTimestamp.value, FieldTypes.instant) {
             fieldDisplayName("Last Modified Timestamp (UTC)")
-            tableColumnName(TableColumnName.lastModifiedTimestampUtc.value)
+            tableColumnName(TableColumnName.lastModifiedTimestamp.value)
             notCreatableByUser()
             modifiableBySystem()
         }

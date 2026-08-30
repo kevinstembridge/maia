@@ -12,12 +12,12 @@ object CharlieBlotterRowDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.charlie.created_timestamp_utc"
+            "createdTimestamp" -> "maia.charlie.created_timestamp"
             "id" -> "maia.charlie.id"
             "tableStringFromAlpha" -> "maia.alpha.some_string"
             "tableStringFromBravo" -> "maia.bravo.some_string"
             "tableStringFromCharlie" -> "maia.charlie.some_string"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
         }
 
     }
@@ -26,12 +26,12 @@ object CharlieBlotterRowDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "id" -> JdbcCompatibleType.uuid
             "tableStringFromAlpha" -> JdbcCompatibleType.text
             "tableStringFromBravo" -> JdbcCompatibleType.text
             "tableStringFromCharlie" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, id, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, id, tableStringFromAlpha, tableStringFromBravo, tableStringFromCharlie]")
         }
 
     }

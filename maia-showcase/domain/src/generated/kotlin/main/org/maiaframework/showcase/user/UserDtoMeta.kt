@@ -13,13 +13,13 @@ object UserDtoMeta {
 
         return when(dtoFieldName) {
             "authorities" -> "maia.v_party.authorities"
-            "createdTimestampUtc" -> "maia.v_party.created_timestamp_utc"
+            "createdTimestamp" -> "maia.v_party.created_timestamp"
             "displayName" -> "maia.v_party.display_name"
             "encryptedPassword" -> "maia.v_party.encrypted_password"
             "firstName" -> "maia.v_party.first_name"
             "id" -> "maia.v_party.id"
             "lastName" -> "maia.v_party.last_name"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, createdTimestampUtc, displayName, encryptedPassword, firstName, id, lastName]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, createdTimestamp, displayName, encryptedPassword, firstName, id, lastName]")
         }
 
     }
@@ -29,13 +29,13 @@ object UserDtoMeta {
 
         return when(dtoFieldName) {
             "authorities" -> JdbcCompatibleType.text_array
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "displayName" -> JdbcCompatibleType.text
             "encryptedPassword" -> JdbcCompatibleType.text
             "firstName" -> JdbcCompatibleType.text
             "id" -> JdbcCompatibleType.uuid
             "lastName" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, createdTimestampUtc, displayName, encryptedPassword, firstName, id, lastName]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, createdTimestamp, displayName, encryptedPassword, firstName, id, lastName]")
         }
 
     }

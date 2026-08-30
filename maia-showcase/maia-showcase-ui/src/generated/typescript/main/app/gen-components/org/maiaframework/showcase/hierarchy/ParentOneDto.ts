@@ -3,7 +3,7 @@
 
 
 export interface ParentOneDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someString: string;
     someUniqueString: string;

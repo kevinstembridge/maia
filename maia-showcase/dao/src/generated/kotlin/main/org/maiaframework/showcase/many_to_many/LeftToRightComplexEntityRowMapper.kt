@@ -12,21 +12,21 @@ class LeftToRightComplexEntityRowMapper : MaiaRowMapper<LeftToRightComplexEntity
 
     override fun mapRow(rsa: ResultSetAdapter): LeftToRightComplexEntity {
 
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val effectiveFrom = rsa.readInstantOrNull("effective_from")
         val effectiveTo = rsa.readInstantOrNull("effective_to")
         val id = rsa.readDomainId("id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val left = rsa.readDomainId("left_id")
         val right = rsa.readDomainId("right_id")
         val someIntOnComplex = rsa.readInt("some_int_on_complex")
 
         return LeftToRightComplexEntity(
-                createdTimestampUtc,
+                createdTimestamp,
                 effectiveFrom,
                 effectiveTo,
                 id,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 left,
                 right,
                 someIntOnComplex

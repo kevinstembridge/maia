@@ -44,11 +44,11 @@ class BravoCrudService(
         val someInt: Int = createDto.someInt
         val someString: String = createDto.someString
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
 
         return BravoEntity(
             alpha,
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString

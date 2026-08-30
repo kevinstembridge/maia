@@ -12,13 +12,13 @@ class ParentTwoDtoRowMapper : MaiaRowMapper<ParentTwoDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): ParentTwoDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someUniqueString = rsa.readString("someUniqueString")
 
         return ParentTwoDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someUniqueString,

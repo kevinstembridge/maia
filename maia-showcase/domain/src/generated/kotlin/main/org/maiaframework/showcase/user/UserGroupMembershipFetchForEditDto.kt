@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class UserGroupMembershipFetchForEditDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,

@@ -16,7 +16,7 @@ class UserDtoRowMapper : MaiaRowMapper<UserDto> {
     override fun mapRow(rsa: ResultSetAdapter): UserDto {
 
         val authorities = rsa.readListOfStrings("authorities") { Authority(it) }
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val displayName = rsa.readString("displayName")
         val encryptedPassword = rsa.readString("encryptedPassword")
         val firstName = rsa.readStringOrNull("firstName") { FirstName(it) }
@@ -25,7 +25,7 @@ class UserDtoRowMapper : MaiaRowMapper<UserDto> {
 
         return UserDto(
             authorities,
-            createdTimestampUtc,
+            createdTimestamp,
             displayName,
             encryptedPassword,
             firstName,

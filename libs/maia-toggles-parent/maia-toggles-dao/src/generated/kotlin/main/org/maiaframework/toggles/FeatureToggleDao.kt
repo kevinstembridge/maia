@@ -52,13 +52,13 @@ class FeatureToggleDao(
                 attributes,
                 comment,
                 contact_person,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 enabled,
                 feature_name,
                 info_link,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 review_date,
                 ticket_key,
                 version
@@ -67,13 +67,13 @@ class FeatureToggleDao(
                 :attributes,
                 :comment,
                 :contactPerson,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :enabled,
                 :featureName,
                 :infoLink,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :reviewDate,
                 :ticketKey,
                 :version
@@ -84,13 +84,13 @@ class FeatureToggleDao(
                 addJsonValue("attributes", entity.attributes?.let { jsonMapper.writeValueAsString(it) })
                 addValue("comment", entity.comment)
                 addValue("contactPerson", entity.contactPerson?.value)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description?.value)
                 addValue("enabled", entity.enabled)
                 addValue("featureName", entity.featureName.value)
                 addValue("infoLink", entity.infoLink?.value)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("reviewDate", entity.reviewDate)
                 addValue("ticketKey", entity.ticketKey?.value)
                 addValue("version", entity.version)
@@ -111,13 +111,13 @@ class FeatureToggleDao(
                 attributes,
                 comment,
                 contact_person,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 enabled,
                 feature_name,
                 info_link,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 review_date,
                 ticket_key,
                 version
@@ -126,13 +126,13 @@ class FeatureToggleDao(
                 :attributes,
                 :comment,
                 :contactPerson,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :enabled,
                 :featureName,
                 :infoLink,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :reviewDate,
                 :ticketKey,
                 :version
@@ -144,13 +144,13 @@ class FeatureToggleDao(
                     addJsonValue("attributes", entity.attributes?.let { jsonMapper.writeValueAsString(it) })
                     addValue("comment", entity.comment)
                     addValue("contactPerson", entity.contactPerson?.value)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description?.value)
                     addValue("enabled", entity.enabled)
                     addValue("featureName", entity.featureName.value)
                     addValue("infoLink", entity.infoLink?.value)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("reviewDate", entity.reviewDate)
                     addValue("ticketKey", entity.ticketKey?.value)
                     addValue("version", entity.version)
@@ -195,13 +195,13 @@ class FeatureToggleDao(
         val attributes = entity.attributes
         val comment = entity.comment
         val contactPerson = entity.contactPerson
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val description = entity.description
         val enabled = entity.enabled
         val featureName = entity.featureName
         val infoLink = entity.infoLink
         val lastModifiedByUsername = entity.lastModifiedByUsername
-        val lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc
+        val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val reviewDate = entity.reviewDate
         val ticketKey = entity.ticketKey
 
@@ -211,13 +211,13 @@ class FeatureToggleDao(
                 changeType,
                 comment,
                 contactPerson,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 enabled,
                 featureName,
                 infoLink,
                 lastModifiedByUsername,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 reviewDate,
                 ticketKey,
                 version)
@@ -428,13 +428,13 @@ class FeatureToggleDao(
                 toggles.feature_toggle.attributes as attributes,
                 toggles.feature_toggle.comment as comment,
                 toggles.feature_toggle.contact_person as contactPerson,
-                toggles.feature_toggle.created_timestamp_utc as createdTimestampUtc,
+                toggles.feature_toggle.created_timestamp as createdTimestamp,
                 toggles.feature_toggle.description as description,
                 toggles.feature_toggle.enabled as enabled,
                 toggles.feature_toggle.feature_name as featureName,
                 toggles.feature_toggle.info_link as infoLink,
                 toggles.feature_toggle.last_modified_by_name as lastModifiedByUsername,
-                toggles.feature_toggle.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                toggles.feature_toggle.last_modified_timestamp as lastModifiedTimestamp,
                 toggles.feature_toggle.review_date as reviewDate,
                 toggles.feature_toggle.ticket_key as ticketKey,
                 toggles.feature_toggle.version as version
@@ -460,13 +460,13 @@ class FeatureToggleDao(
                 attributes,
                 comment,
                 contact_person,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 enabled,
                 feature_name,
                 info_link,
                 last_modified_by_name,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 review_date,
                 ticket_key,
                 version
@@ -475,13 +475,13 @@ class FeatureToggleDao(
                 :attributes,
                 :comment,
                 :contactPerson,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :enabled,
                 :featureName,
                 :infoLink,
                 :lastModifiedByUsername,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :reviewDate,
                 :ticketKey,
                 :version
@@ -496,7 +496,7 @@ class FeatureToggleDao(
                 enabled = :enabled,
                 info_link = :infoLink,
                 last_modified_by_name = :lastModifiedByUsername,
-                last_modified_timestamp_utc = :lastModifiedTimestampUtc,
+                last_modified_timestamp = :lastModifiedTimestamp,
                 review_date = :reviewDate,
                 ticket_key = :ticketKey,
                 version = toggles.feature_toggle.version + 1
@@ -507,13 +507,13 @@ class FeatureToggleDao(
                 addJsonValue("attributes", upsertEntity.attributes?.let { jsonMapper.writeValueAsString(it) })
                 addValue("comment", upsertEntity.comment)
                 addValue("contactPerson", upsertEntity.contactPerson?.value)
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("description", upsertEntity.description?.value)
                 addValue("enabled", upsertEntity.enabled)
                 addValue("featureName", upsertEntity.featureName.value)
                 addValue("infoLink", upsertEntity.infoLink?.value)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
-                addValue("lastModifiedTimestampUtc", upsertEntity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("reviewDate", upsertEntity.reviewDate)
                 addValue("ticketKey", upsertEntity.ticketKey?.value)
                 addValue("version", upsertEntity.version)
@@ -594,7 +594,7 @@ class FeatureToggleDao(
             "enabled" -> sqlParams.addValue("enabled", field.value as Boolean)
             "infoLink" -> sqlParams.addValue("infoLink", (field.value as InfoLink?)?.value)
             "lastModifiedByUsername" -> sqlParams.addValue("lastModifiedByUsername", field.value as String)
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "reviewDate" -> sqlParams.addValue("reviewDate", field.value as LocalDate?)
             "ticketKey" -> sqlParams.addValue("ticketKey", (field.value as TicketKey?)?.value)
         }

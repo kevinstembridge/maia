@@ -45,7 +45,7 @@ class HistorySuperHistoryBlotterRowDtoDao(
         val sqlForPage = """
             select
                 maia.history_super_history.change_type as changeType,
-                maia.history_super_history.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.history_super_history.last_modified_timestamp as lastModifiedTimestamp,
                 maia.history_super_history.version as version
             from maia.history_super_history
             $whereClause

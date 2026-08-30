@@ -10,7 +10,7 @@ import java.time.Instant
 
 open class UserGroupEntity(
     val authorities: List<Authority>,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val description: String,
     val id: DomainId,
     val name: String,
@@ -23,7 +23,7 @@ open class UserGroupEntity(
 
         return "UserGroupEntity{" +
                 "authorities = '" + this.authorities + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "name = '" + this.name + '\'' + ", " + 
@@ -50,13 +50,13 @@ open class UserGroupEntity(
             systemManaged: Boolean
         ): UserGroupEntity {
 
-            val createdTimestampUtc = Instant.now()
+            val createdTimestamp = Instant.now()
             val id = newId()
             val version = 1L
 
             return UserGroupEntity(
                 authorities,
-                createdTimestampUtc,
+                createdTimestamp,
                 description,
                 id,
                 name,

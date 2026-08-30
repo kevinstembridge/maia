@@ -7,13 +7,13 @@ import {LifecycleState} from '@app/gen-components/org/maiaframework/domain/Lifec
 export interface UserEntityDetailViewDto {
     authorities: ReadonlyArray<string>;
     createdBy?: string;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     displayName: string;
     encryptedPassword: string;
     firstName?: string;
     id: string;
     lastModifiedBy?: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     lastName: string;
     lifecycleState: LifecycleState;
     version: number;

@@ -17,7 +17,7 @@ object PartyEntityMeta {
 
     const val createdBy = "created_by_id"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val displayName = "display_name"
 
@@ -25,7 +25,7 @@ object PartyEntityMeta {
 
     const val lastModifiedBy = "last_modified_by_id"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val lifecycleState = "lifecycle_state"
 
@@ -58,11 +58,11 @@ object PartyEntityMeta {
 
         return when(classFieldName) {
             "createdBy" -> "created_by_id"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "displayName" -> "display_name"
             "id" -> "id"
             "lastModifiedBy" -> "last_modified_by_id"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "lifecycleState" -> "lifecycle_state"
             "version" -> "version"
             else ->

@@ -17,7 +17,7 @@ class UserGroupMembershipEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "effective_from" -> // effectiveFrom
                 return inputValue

@@ -21,7 +21,7 @@ class PersonHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PersonHistoryBlotterRo
         val displayName = rsa.readString("displayName")
         val firstName = rsa.readString("firstName") { FirstName(it) }
         val lastModifiedBy = rsa.readDomainId("lastModifiedBy")
-        val lastModifiedTimestampUtc = rsa.readInstant("lastModifiedTimestampUtc")
+        val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val lastName = rsa.readString("lastName") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycleState", LifecycleState::class.java)
         val version = rsa.readLong("version")
@@ -32,7 +32,7 @@ class PersonHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PersonHistoryBlotterRo
             displayName,
             firstName,
             lastModifiedBy,
-            lastModifiedTimestampUtc,
+            lastModifiedTimestamp,
             lastName,
             lifecycleState,
             version,

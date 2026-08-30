@@ -277,7 +277,7 @@ class CrudNotifierRenderer(
         }
 
         appendLine("        val id = DomainId.newId()")
-        appendLine("        val createdTimestampUtc = Instant.now()")
+        appendLine("        val createdTimestamp = Instant.now()")
 
         if (this.entityDef.hasLastModifiedByIdField) {
             appendLine("        val lastModifiedById = currentUser.userId")
@@ -288,7 +288,7 @@ class CrudNotifierRenderer(
         }
 
         if (this.entityDef.hasLastModifiedTimestampUtcField) {
-            appendLine("        val lastModifiedTimestampUtc = createdTimestampUtc")
+            appendLine("        val lastModifiedTimestamp = createdTimestamp")
         }
 
         if (this.entityDef.hasVersionField) {
@@ -380,7 +380,7 @@ class CrudNotifierRenderer(
 
             if (this.entityDef.hasLastModifiedTimestampUtcField) {
                 addImportFor<Instant>()
-                appendLine("            lastModifiedTimestampUtc(Instant.now())")
+                appendLine("            lastModifiedTimestamp(Instant.now())")
             }
 
             appendLine("        }.build()")

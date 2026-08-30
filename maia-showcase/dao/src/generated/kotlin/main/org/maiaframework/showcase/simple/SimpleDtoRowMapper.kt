@@ -12,12 +12,12 @@ class SimpleDtoRowMapper : MaiaRowMapper<SimpleDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): SimpleDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someString = rsa.readString("someString")
 
         return SimpleDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someString,
         )

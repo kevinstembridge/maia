@@ -18,7 +18,7 @@ class SomeVersionedEntityDetailViewDtoRepo(
         val entity = this.entityRepo.findByPrimaryKey(id)
 
         return SomeVersionedEntityDetailViewDto(
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             id = entity.id,
             someInt = entity.someInt,
             someString = entity.someString,

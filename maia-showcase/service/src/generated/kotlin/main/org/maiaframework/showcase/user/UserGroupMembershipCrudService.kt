@@ -44,10 +44,10 @@ class UserGroupMembershipCrudService(
         val user: DomainId = createDto.user
         val userGroup: DomainId = createDto.userGroup
         val id = DomainId.newId()
-        val createdTimestampUtc = Instant.now()
+        val createdTimestamp = Instant.now()
 
         return UserGroupMembershipEntity(
-            createdTimestampUtc,
+            createdTimestamp,
             effectiveFrom,
             effectiveTo,
             id,

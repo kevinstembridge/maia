@@ -11,7 +11,7 @@ data class PropsHistoryBlotterRowDto(
     val changeType: ChangeType,
     val comment: String?,
     val lastModifiedByUsername: String,
-    val lastModifiedTimestampUtc: Instant,
+    val lastModifiedTimestamp: Instant,
     val propertyName: String,
     val propertyValue: String,
     val version: Long

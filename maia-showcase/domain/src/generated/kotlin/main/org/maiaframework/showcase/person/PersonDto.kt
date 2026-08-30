@@ -10,7 +10,7 @@ import java.time.Instant
 
 
 data class PersonDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val displayName: String,
     val firstName: FirstName?,
     val id: DomainId,

@@ -32,13 +32,13 @@ class WithOptionalIndexFieldDao(
         jdbcOps.update(
             """
             insert into maia.with_optional_index_field (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_optional_string1,
                 some_optional_string2,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someOptionalString1,
                 :someOptionalString2,
@@ -46,7 +46,7 @@ class WithOptionalIndexFieldDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someOptionalString1", entity.someOptionalString1)
                 addValue("someOptionalString2", entity.someOptionalString2)
@@ -62,13 +62,13 @@ class WithOptionalIndexFieldDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.with_optional_index_field (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_optional_string1,
                 some_optional_string2,
                 some_string
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someOptionalString1,
                 :someOptionalString2,
@@ -77,7 +77,7 @@ class WithOptionalIndexFieldDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someOptionalString1", entity.someOptionalString1)
                     addValue("someOptionalString2", entity.someOptionalString2)

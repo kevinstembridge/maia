@@ -34,14 +34,14 @@ class CompositePrimaryKeySerializer : CompactSerializer<CompositePrimaryKeyEntit
 
     override fun read(reader: CompactReader): CompositePrimaryKeyEntity {
 
-        val createdTimestampUtc = reader.readInstantNonNull("createdTimestampUtc")
+        val createdTimestamp = reader.readInstantNonNull("createdTimestamp")
         val someInt = reader.readInt32NonNull("someInt")
         val someModifiableString = reader.readStringNonNull("someModifiableString")
         val someString = reader.readStringNonNull("someString")
         val version = reader.readInt64NonNull("version")
 
         return CompositePrimaryKeyEntity(
-            createdTimestampUtc,
+            createdTimestamp,
             someInt,
             someModifiableString,
             someString,
@@ -55,7 +55,7 @@ class CompositePrimaryKeySerializer : CompactSerializer<CompositePrimaryKeyEntit
 
         writer.apply {
 
-            writeTimestampWithTimezone("createdTimestampUtc", dto.createdTimestampUtc.atOffset(ZoneOffset.UTC))
+            writeTimestampWithTimezone("createdTimestamp", dto.createdTimestamp.atOffset(ZoneOffset.UTC))
             writeInt32("someInt", dto.someInt)
             writeString("someModifiableString", dto.someModifiableString)
             writeString("someString", dto.someString)

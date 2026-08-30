@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object LeftToRightComplexEntityMeta {
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val effectiveFrom = "effective_from"
 
@@ -20,7 +20,7 @@ object LeftToRightComplexEntityMeta {
 
     const val id = "id"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val left = "left_id"
 
@@ -51,11 +51,11 @@ object LeftToRightComplexEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "effectiveFrom" -> "effective_from"
             "effectiveTo" -> "effective_to"
             "id" -> "id"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "left" -> "left_id"
             "right" -> "right_id"
             "someIntOnComplex" -> "some_int_on_complex"

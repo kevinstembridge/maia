@@ -3,7 +3,7 @@
 
 
 export interface OrgDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     displayName: string;
     id: string;
     orgName: string;

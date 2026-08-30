@@ -36,29 +36,29 @@ class LeftToRightComplexDao(
         jdbcOps.update(
             """
             insert into maia.left_to_right_complex (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 left_id,
                 right_id,
                 some_int_on_complex
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :left,
                 :right,
                 :someIntOnComplex
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("effectiveFrom", entity.effectiveFrom)
                 addValue("effectiveTo", entity.effectiveTo)
                 addValue("id", entity.id)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("left", entity.left)
                 addValue("right", entity.right)
                 addValue("someIntOnComplex", entity.someIntOnComplex)
@@ -73,18 +73,18 @@ class LeftToRightComplexDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.left_to_right_complex (
-                created_timestamp_utc,
+                created_timestamp,
                 effective_range,
                 id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 left_id,
                 right_id,
                 some_int_on_complex
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
                 :id,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :left,
                 :right,
                 :someIntOnComplex
@@ -92,11 +92,11 @@ class LeftToRightComplexDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("effectiveFrom", entity.effectiveFrom)
                     addValue("effectiveTo", entity.effectiveTo)
                     addValue("id", entity.id)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("left", entity.left)
                     addValue("right", entity.right)
                     addValue("someIntOnComplex", entity.someIntOnComplex)
@@ -412,11 +412,11 @@ class LeftToRightComplexDao(
         return this.jdbcOps.queryForList(
             """
             select
-                maia.left_to_right_complex.created_timestamp_utc as createdTimestampUtc,
+                maia.left_to_right_complex.created_timestamp as createdTimestamp,
                 maia.left_to_right_complex.effective_from as effectiveFrom,
                 maia.left_to_right_complex.effective_to as effectiveTo,
                 maia.left_to_right_complex.id as id,
-                maia.left_to_right_complex.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.left_to_right_complex.last_modified_timestamp as lastModifiedTimestamp,
                 maia.left_many.id as leftId,
                 maia.left_many.some_string as leftName,
                 maia.right_many.id as rightId,
@@ -497,7 +497,7 @@ class LeftToRightComplexDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "lastModifiedTimestampUtc" -> sqlParams.addValue("lastModifiedTimestampUtc", field.value as Instant)
+            "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "left" -> sqlParams.addValue("left", field.value as DomainId)
             "right" -> sqlParams.addValue("right", field.value as DomainId)
             "someIntOnComplex" -> sqlParams.addValue("someIntOnComplex", field.value as Int)

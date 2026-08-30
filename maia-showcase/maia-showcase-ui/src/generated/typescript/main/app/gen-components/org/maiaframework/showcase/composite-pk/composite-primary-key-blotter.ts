@@ -73,7 +73,7 @@ export class CompositePrimaryKeyBlotter {
         { field: 'someInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
         { field: 'someModifiableString', headerName: 'Some Modifiable String', cellDataType: 'text', filter: true },
         { field: 'version', headerName: 'Version', cellDataType: 'number', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
+        { field: 'createdTimestamp', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
         {
             field: 'delete',
             headerName: '',

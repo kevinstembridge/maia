@@ -32,7 +32,7 @@ class FileStorageEntryDao(
             """
             insert into storage.file_storage_entry (
                 content_type,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 file_name,
                 file_timestamp_utc,
@@ -41,7 +41,7 @@ class FileStorageEntryDao(
                 md5
             ) values (
                 :contentType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :fileName,
                 :fileTimestampUtc,
@@ -52,7 +52,7 @@ class FileStorageEntryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("contentType", entity.contentType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("fileName", entity.fileName)
                 addValue("fileTimestampUtc", entity.fileTimestampUtc)
@@ -71,7 +71,7 @@ class FileStorageEntryDao(
             """
             insert into storage.file_storage_entry (
                 content_type,
-                created_timestamp_utc,
+                created_timestamp,
                 description,
                 file_name,
                 file_timestamp_utc,
@@ -80,7 +80,7 @@ class FileStorageEntryDao(
                 md5
             ) values (
                 :contentType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :description,
                 :fileName,
                 :fileTimestampUtc,
@@ -92,7 +92,7 @@ class FileStorageEntryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("contentType", entity.contentType)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description)
                     addValue("fileName", entity.fileName)
                     addValue("fileTimestampUtc", entity.fileTimestampUtc)

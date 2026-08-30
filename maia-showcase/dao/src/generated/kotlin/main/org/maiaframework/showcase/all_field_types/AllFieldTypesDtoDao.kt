@@ -50,7 +50,7 @@ class AllFieldTypesDtoDao(
                 maia.all_field_types.id as id,
                 lastModifiedBy.id as lastModifiedBy,
                 maia.all_field_types.last_modified_by_name as lastModifiedByUsername,
-                maia.all_field_types.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                maia.all_field_types.last_modified_timestamp as lastModifiedTimestamp,
                 maia.all_field_types.some_boolean as someBoolean,
                 maia.all_field_types.some_boolean_nullable as someBooleanNullable,
                 maia.all_field_types.some_boolean_type as someBooleanType,

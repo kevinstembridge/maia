@@ -37,13 +37,13 @@ class SomeVersionedDao(
         jdbcOps.update(
             """
             insert into maia.some_versioned (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString,
@@ -51,7 +51,7 @@ class SomeVersionedDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -67,13 +67,13 @@ class SomeVersionedDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.some_versioned (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString,
@@ -82,7 +82,7 @@ class SomeVersionedDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
@@ -309,7 +309,7 @@ class SomeVersionedDao(
         return this.jdbcOps.queryForList(
             """
             select
-                maia.some_versioned.created_timestamp_utc as createdTimestampUtc,
+                maia.some_versioned.created_timestamp as createdTimestamp,
                 maia.some_versioned.id as id,
                 maia.some_versioned.some_int as someInt,
                 maia.some_versioned.some_string as someString,
@@ -332,13 +332,13 @@ class SomeVersionedDao(
         val persistedEntity = jdbcOps.execute(
             """
             insert into maia.some_versioned (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString,
@@ -352,7 +352,7 @@ class SomeVersionedDao(
             returning *;
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", upsertEntity.createdTimestampUtc)
+                addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("id", upsertEntity.id)
                 addValue("someInt", upsertEntity.someInt)
                 addValue("someString", upsertEntity.someString)

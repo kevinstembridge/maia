@@ -10,7 +10,7 @@ import java.time.Instant
 
 class NonSurrogatePrimaryKeyHistoryEntity(
     val changeType: ChangeType,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val someModifiableString: String,
     val someString: SomeStringValueClass,
     val version: Long
@@ -24,7 +24,7 @@ class NonSurrogatePrimaryKeyHistoryEntity(
 
         return "NonSurrogatePrimaryKeyHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
-                "createdTimestampUtc = '" + this.createdTimestampUtc + '\'' + ", " + 
+                "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "someModifiableString = '" + this.someModifiableString + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

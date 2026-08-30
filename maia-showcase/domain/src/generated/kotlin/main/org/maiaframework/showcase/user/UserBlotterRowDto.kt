@@ -12,7 +12,7 @@ import java.time.Instant
 
 data class UserBlotterRowDto(
     val authorities: List<Authority>,
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val displayName: String,
     val firstName: FirstName?,
     val id: DomainId,

@@ -72,7 +72,7 @@ export class BravoBlotter {
         },
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
-        { field: 'createdTimestampUtc', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
+        { field: 'createdTimestamp', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },
         {
             field: 'delete',
             headerName: '',

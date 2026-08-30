@@ -12,7 +12,7 @@ class CharlieDtoRowMapper : MaiaRowMapper<CharlieDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): CharlieDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val dtoIntFromAlpha = rsa.readInt("dtoIntFromAlpha")
         val dtoIntFromBravo = rsa.readInt("dtoIntFromBravo")
         val dtoIntFromCharlie = rsa.readInt("dtoIntFromCharlie")
@@ -22,7 +22,7 @@ class CharlieDtoRowMapper : MaiaRowMapper<CharlieDto> {
         val id = rsa.readDomainId("id")
 
         return CharlieDto(
-            createdTimestampUtc,
+            createdTimestamp,
             dtoIntFromAlpha,
             dtoIntFromBravo,
             dtoIntFromCharlie,

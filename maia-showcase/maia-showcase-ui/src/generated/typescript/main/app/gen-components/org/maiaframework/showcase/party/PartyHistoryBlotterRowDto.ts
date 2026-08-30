@@ -7,7 +7,7 @@ export interface PartyHistoryBlotterRowDto {
     createdBy?: string;
     displayName: string;
     lastModifiedBy?: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     lifecycleState: string;
     version: number;
 }

@@ -38,13 +38,13 @@ class RightManyDao(
         jdbcOps.update(
             """
             insert into maia.right_many (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString,
@@ -52,7 +52,7 @@ class RightManyDao(
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -70,13 +70,13 @@ class RightManyDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.right_many (
-                created_timestamp_utc,
+                created_timestamp,
                 id,
                 some_int,
                 some_string,
                 version
             ) values (
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :id,
                 :someInt,
                 :someString,
@@ -85,7 +85,7 @@ class RightManyDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)
@@ -128,13 +128,13 @@ class RightManyDao(
     ): RightManyHistoryEntity {
 
         val id = entity.id
-        val createdTimestampUtc = entity.createdTimestampUtc
+        val createdTimestamp = entity.createdTimestamp
         val someInt = entity.someInt
         val someString = entity.someString
 
         return RightManyHistoryEntity(
                 changeType,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 someInt,
                 someString,
@@ -315,7 +315,7 @@ class RightManyDao(
         return this.jdbcOps.queryForList(
             """
             select
-                maia.right_many.created_timestamp_utc as createdTimestampUtc,
+                maia.right_many.created_timestamp as createdTimestamp,
                 maia.right_many.id as id,
                 maia.right_many.some_int as someInt,
                 maia.right_many.some_string as someString,

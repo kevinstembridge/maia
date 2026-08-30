@@ -34,12 +34,12 @@ class UserHistoryDao(
                 authorities,
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 encrypted_password,
                 first_name,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 last_name,
                 lifecycle_state,
                 version
@@ -48,12 +48,12 @@ class UserHistoryDao(
                 :authorities,
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :encryptedPassword,
                 :firstName,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lastName,
                 :lifecycleState,
                 :version
@@ -63,13 +63,13 @@ class UserHistoryDao(
                 addListOfStrings("authorities", entity.authorities.map { it.value })
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("displayName", entity.displayName)
                 addValue("encryptedPassword", entity.encryptedPassword)
                 addValue("firstName", entity.firstName)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
-                addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("lastName", entity.lastName)
                 addValue("lifecycleState", entity.lifecycleState)
                 addValue("version", entity.version)
@@ -88,12 +88,12 @@ class UserHistoryDao(
                 authorities,
                 change_type,
                 created_by_id,
-                created_timestamp_utc,
+                created_timestamp,
                 encrypted_password,
                 first_name,
                 id,
                 last_modified_by_id,
-                last_modified_timestamp_utc,
+                last_modified_timestamp,
                 last_name,
                 lifecycle_state,
                 version
@@ -102,12 +102,12 @@ class UserHistoryDao(
                 :authorities,
                 :changeType,
                 :createdBy,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :encryptedPassword,
                 :firstName,
                 :id,
                 :lastModifiedBy,
-                :lastModifiedTimestampUtc,
+                :lastModifiedTimestamp,
                 :lastName,
                 :lifecycleState,
                 :version
@@ -118,13 +118,13 @@ class UserHistoryDao(
                     addListOfStrings("authorities", entity.authorities.map { it.value })
                     addValue("changeType", entity.changeType)
                     addValue("createdBy", entity.createdBy)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("displayName", entity.displayName)
                     addValue("encryptedPassword", entity.encryptedPassword)
                     addValue("firstName", entity.firstName)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
-                    addValue("lastModifiedTimestampUtc", entity.lastModifiedTimestampUtc)
+                    addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("lastName", entity.lastName)
                     addValue("lifecycleState", entity.lifecycleState)
                     addValue("version", entity.version)

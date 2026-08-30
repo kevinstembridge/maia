@@ -7,6 +7,6 @@ export interface OrgRoleHistoryBlotterRowDto {
     description: string;
     displayName: string;
     key: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     version: number;
 }

@@ -22,7 +22,7 @@ class SimpleBlotterPage(
 
 
     fun clickViewButtonForFirstRow() {
-        // Simple blotter has few columns (view, edit, someString, createdTimestampUtc, delete)
+        // Simple blotter has few columns (view, edit, someString, createdTimestamp, delete)
         // — all fit in the viewport so no horizontal scrolling needed.
         page.waitForFunction(
             "() => { const c = document.querySelector('.ag-cell[col-id=\"someString\"]'); " +

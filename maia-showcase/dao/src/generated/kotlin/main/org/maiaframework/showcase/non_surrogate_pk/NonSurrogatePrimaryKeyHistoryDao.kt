@@ -31,13 +31,13 @@ class NonSurrogatePrimaryKeyHistoryDao(
             """
             insert into maia.non_surrogate_primary_key_history (
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 some_modifiable_string,
                 some_string,
                 version
             ) values (
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :someModifiableString,
                 :someString,
                 :version
@@ -45,7 +45,7 @@ class NonSurrogatePrimaryKeyHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
-                addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("someModifiableString", entity.someModifiableString)
                 addValue("someString", entity.someString.value)
                 addValue("version", entity.version)
@@ -61,13 +61,13 @@ class NonSurrogatePrimaryKeyHistoryDao(
             """
             insert into maia.non_surrogate_primary_key_history (
                 change_type,
-                created_timestamp_utc,
+                created_timestamp,
                 some_modifiable_string,
                 some_string,
                 version
             ) values (
                 :changeType,
-                :createdTimestampUtc,
+                :createdTimestamp,
                 :someModifiableString,
                 :someString,
                 :version
@@ -76,7 +76,7 @@ class NonSurrogatePrimaryKeyHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
-                    addValue("createdTimestampUtc", entity.createdTimestampUtc)
+                    addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("someModifiableString", entity.someModifiableString)
                     addValue("someString", entity.someString.value)
                     addValue("version", entity.version)

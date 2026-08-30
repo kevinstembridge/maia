@@ -16,11 +16,11 @@ class OrganizationHistoryEntityRowMapper : MaiaRowMapper<OrganizationHistoryEnti
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdBy = rsa.readDomainIdOrNull("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val displayName = rsa.readString("display_name")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainIdOrNull("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val lifecycleState = rsa.readEnum("lifecycle_state", LifecycleState::class.java)
         val orgName = rsa.readString("org_name")
         val version = rsa.readLong("version")
@@ -28,11 +28,11 @@ class OrganizationHistoryEntityRowMapper : MaiaRowMapper<OrganizationHistoryEnti
         return OrganizationHistoryEntity(
                 changeType,
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 displayName,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 lifecycleState,
                 orgName,
                 version

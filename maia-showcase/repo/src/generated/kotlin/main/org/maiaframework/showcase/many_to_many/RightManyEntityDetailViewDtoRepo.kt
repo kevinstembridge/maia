@@ -18,7 +18,7 @@ class RightManyEntityDetailViewDtoRepo(
         val entity = this.entityRepo.findByPrimaryKey(id)
 
         return RightManyEntityDetailViewDto(
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             id = entity.id,
             someInt = entity.someInt,
             someString = entity.someString,

@@ -12,7 +12,7 @@ import org.maiaframework.jdbc.TableName
 
 object EffectiveTimestampEntityMeta {
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val effectiveFrom = "effective_from"
 
@@ -43,7 +43,7 @@ object EffectiveTimestampEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "effectiveFrom" -> "effective_from"
             "effectiveTo" -> "effective_to"
             "id" -> "id"

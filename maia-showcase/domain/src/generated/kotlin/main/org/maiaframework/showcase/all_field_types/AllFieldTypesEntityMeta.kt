@@ -16,7 +16,7 @@ object AllFieldTypesEntityMeta {
 
     const val createdByUsername = "created_by_name"
 
-    const val createdTimestampUtc = "created_timestamp_utc"
+    const val createdTimestamp = "created_timestamp"
 
     const val id = "id"
 
@@ -24,7 +24,7 @@ object AllFieldTypesEntityMeta {
 
     const val lastModifiedByUsername = "last_modified_by_name"
 
-    const val lastModifiedTimestampUtc = "last_modified_timestamp_utc"
+    const val lastModifiedTimestamp = "last_modified_timestamp"
 
     const val someBoolean = "some_boolean"
 
@@ -127,11 +127,11 @@ object AllFieldTypesEntityMeta {
         return when(classFieldName) {
             "createdBy" -> "created_by_id"
             "createdByUsername" -> "created_by_name"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "lastModifiedBy" -> "last_modified_by_id"
             "lastModifiedByUsername" -> "last_modified_by_name"
-            "lastModifiedTimestampUtc" -> "last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "last_modified_timestamp"
             "someBoolean" -> "some_boolean"
             "someBooleanNullable" -> "some_boolean_nullable"
             "someBooleanType" -> "some_boolean_type"

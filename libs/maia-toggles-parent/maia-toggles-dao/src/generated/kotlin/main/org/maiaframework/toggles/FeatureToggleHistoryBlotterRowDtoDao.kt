@@ -56,7 +56,7 @@ class FeatureToggleHistoryBlotterRowDtoDao(
                 toggles.feature_toggle_history.feature_name as featureName,
                 toggles.feature_toggle_history.info_link as infoLink,
                 toggles.feature_toggle_history.last_modified_by_name as lastModifiedByUsername,
-                toggles.feature_toggle_history.last_modified_timestamp_utc as lastModifiedTimestampUtc,
+                toggles.feature_toggle_history.last_modified_timestamp as lastModifiedTimestamp,
                 toggles.feature_toggle_history.review_date as reviewDate,
                 toggles.feature_toggle_history.ticket_key as ticketKey,
                 toggles.feature_toggle_history.version as version

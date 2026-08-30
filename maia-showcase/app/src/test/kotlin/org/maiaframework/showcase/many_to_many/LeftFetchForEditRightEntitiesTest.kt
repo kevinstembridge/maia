@@ -73,7 +73,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
          .bodyJson()
          .isLenientlyEqualTo("""
             {
-                "createdTimestampUtc": "${leftEntity.createdTimestampUtc}",
+                "createdTimestamp": "${leftEntity.createdTimestamp}",
                 "id": "${leftEntity.id}",
                 "rightEntities": [
                     {"id": "${join1.id}", "entityId": "${rightEntity1.id}", "name": "${rightEntity1.someString}"},
@@ -101,7 +101,7 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
          .bodyJson()
          .isLenientlyEqualTo("""
             {
-                "createdTimestampUtc": "${leftEntity.createdTimestampUtc}",
+                "createdTimestamp": "${leftEntity.createdTimestamp}",
                 "id": "${leftEntity.id}",
                 "rightEntities": [],
                 "rightSimpleEntities": [],

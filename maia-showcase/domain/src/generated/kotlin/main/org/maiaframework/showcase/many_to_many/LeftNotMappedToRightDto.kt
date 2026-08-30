@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class LeftNotMappedToRightDto(
-    val createdTimestampUtc: Instant,
+    val createdTimestamp: Instant,
     val id: DomainId,
     val someIntFromLeft: Int,
     val someStringFromLeft: String

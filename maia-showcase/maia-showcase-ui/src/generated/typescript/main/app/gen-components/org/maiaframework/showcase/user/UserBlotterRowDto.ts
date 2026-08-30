@@ -4,7 +4,7 @@
 
 export interface UserBlotterRowDto {
     authorities: ReadonlyArray<string>;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     displayName: string;
     firstName?: string;
     id: string;

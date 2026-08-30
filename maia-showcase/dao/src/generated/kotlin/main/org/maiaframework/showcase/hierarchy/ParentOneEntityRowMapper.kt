@@ -30,20 +30,20 @@ class ParentOneEntityRowMapper : MaiaRowMapper<ParentOneEntity> {
     private fun childOneEntityFrom(rsa: ResultSetAdapter): ChildOneEntity {
 
         val createdBy = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val someInt = rsa.readInt("some_int")
         val someString = rsa.readString("some_string")
         val someUniqueString = rsa.readString("some_unique_string")
 
         return ChildOneEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someInt,
                 someString,
                 someUniqueString
@@ -55,19 +55,19 @@ class ParentOneEntityRowMapper : MaiaRowMapper<ParentOneEntity> {
     private fun parentOneEntityFrom(rsa: ResultSetAdapter): ParentOneEntity {
 
         val createdBy = rsa.readDomainId("created_by_id")
-        val createdTimestampUtc = rsa.readInstant("created_timestamp_utc")
+        val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
-        val lastModifiedTimestampUtc = rsa.readInstant("last_modified_timestamp_utc")
+        val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val someString = rsa.readString("some_string")
         val someUniqueString = rsa.readString("some_unique_string")
 
         return ParentOneEntity(
                 createdBy,
-                createdTimestampUtc,
+                createdTimestamp,
                 id,
                 lastModifiedBy,
-                lastModifiedTimestampUtc,
+                lastModifiedTimestamp,
                 someString,
                 someUniqueString
         )

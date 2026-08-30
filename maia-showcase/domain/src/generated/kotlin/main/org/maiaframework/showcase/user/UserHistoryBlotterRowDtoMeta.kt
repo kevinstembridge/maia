@@ -19,11 +19,11 @@ object UserHistoryBlotterRowDtoMeta {
             "encryptedPassword" -> "maia.v_party_history.encrypted_password"
             "firstName" -> "maia.v_party_history.first_name"
             "lastModifiedBy" -> "maia.v_party_history.last_modified_by_id"
-            "lastModifiedTimestampUtc" -> "maia.v_party_history.last_modified_timestamp_utc"
+            "lastModifiedTimestamp" -> "maia.v_party_history.last_modified_timestamp"
             "lastName" -> "maia.v_party_history.last_name"
             "lifecycleState" -> "maia.v_party_history.lifecycle_state"
             "version" -> "maia.v_party_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, changeType, createdBy, displayName, encryptedPassword, firstName, lastModifiedBy, lastModifiedTimestampUtc, lastName, lifecycleState, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, changeType, createdBy, displayName, encryptedPassword, firstName, lastModifiedBy, lastModifiedTimestamp, lastName, lifecycleState, version]")
         }
 
     }
@@ -39,11 +39,11 @@ object UserHistoryBlotterRowDtoMeta {
             "encryptedPassword" -> JdbcCompatibleType.text
             "firstName" -> JdbcCompatibleType.text
             "lastModifiedBy" -> JdbcCompatibleType.uuid
-            "lastModifiedTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "lastModifiedTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "lastName" -> JdbcCompatibleType.text
             "lifecycleState" -> JdbcCompatibleType.text
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, changeType, createdBy, displayName, encryptedPassword, firstName, lastModifiedBy, lastModifiedTimestampUtc, lastName, lifecycleState, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, changeType, createdBy, displayName, encryptedPassword, firstName, lastModifiedBy, lastModifiedTimestamp, lastName, lifecycleState, version]")
         }
 
     }

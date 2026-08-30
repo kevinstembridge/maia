@@ -12,13 +12,13 @@ object BravoAgGridDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> "maia.bravo_ag_grid.created_timestamp_utc"
+            "createdTimestamp" -> "maia.bravo_ag_grid.created_timestamp"
             "dtoIntFromAlpha" -> "maia.alpha_ag_grid.some_int"
             "dtoIntFromBravo" -> "maia.bravo_ag_grid.some_int"
             "dtoStringFromAlpha" -> "maia.alpha_ag_grid.some_string"
             "dtoStringFromBravo" -> "maia.bravo_ag_grid.some_string"
             "id" -> "maia.bravo_ag_grid.id"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoStringFromAlpha, dtoStringFromBravo, id]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, dtoIntFromAlpha, dtoIntFromBravo, dtoStringFromAlpha, dtoStringFromBravo, id]")
         }
 
     }
@@ -27,13 +27,13 @@ object BravoAgGridDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
-            "createdTimestampUtc" -> JdbcCompatibleType.timestamp_with_time_zone
+            "createdTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "dtoIntFromAlpha" -> JdbcCompatibleType.integer
             "dtoIntFromBravo" -> JdbcCompatibleType.integer
             "dtoStringFromAlpha" -> JdbcCompatibleType.text
             "dtoStringFromBravo" -> JdbcCompatibleType.text
             "id" -> JdbcCompatibleType.uuid
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestampUtc, dtoIntFromAlpha, dtoIntFromBravo, dtoStringFromAlpha, dtoStringFromBravo, id]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [createdTimestamp, dtoIntFromAlpha, dtoIntFromBravo, dtoStringFromAlpha, dtoStringFromBravo, id]")
         }
 
     }

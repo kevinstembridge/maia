@@ -8,11 +8,11 @@ import {PartyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/
 export interface AllFieldTypesEntityDetailViewDto {
     createdBy: PartyPkAndNameDto;
     createdByUsername: string;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     lastModifiedBy: PartyPkAndNameDto;
     lastModifiedByUsername: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     someBoolean: boolean;
     someBooleanNullable?: boolean;
     someBooleanType: boolean;

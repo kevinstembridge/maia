@@ -15,7 +15,7 @@ class UserBlotterRowDtoFieldNameConverter : SearchFieldNameConverter {
 
         return when(fieldName) {
             "authorities" -> "authorities"
-            "createdTimestampUtc" -> "created_timestamp_utc"
+            "createdTimestamp" -> "created_timestamp"
             "displayName" -> "display_name"
             "firstName" -> "first_name"
             "id" -> "id"

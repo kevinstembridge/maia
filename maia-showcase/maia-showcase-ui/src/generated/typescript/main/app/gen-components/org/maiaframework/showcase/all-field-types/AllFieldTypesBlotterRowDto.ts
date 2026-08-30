@@ -10,7 +10,7 @@ export interface AllFieldTypesBlotterRowDto {
     id: string;
     lastModifiedBy: string;
     lastModifiedByUsername: string;
-    lastModifiedTimestampUtc: string;
+    lastModifiedTimestamp: string;
     someBoolean: boolean;
     someBooleanNullable?: boolean;
     someBooleanType: boolean;

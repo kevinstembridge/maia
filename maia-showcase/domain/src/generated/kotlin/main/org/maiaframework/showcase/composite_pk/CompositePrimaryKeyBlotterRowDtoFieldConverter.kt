@@ -14,7 +14,7 @@ class CompositePrimaryKeyBlotterRowDtoFieldConverter : SearchFieldConverter {
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
 
         when(tableColumnPath) {
-            "created_timestamp_utc" -> // createdTimestampUtc
+            "created_timestamp" -> // createdTimestamp
                 return inputValue
             "some_int" -> // someInt
                 return inputValue

@@ -12,13 +12,13 @@ class HistorySampleDtoRowMapper : MaiaRowMapper<HistorySampleDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): HistorySampleDto {
 
-        val createdTimestampUtc = rsa.readInstant("createdTimestampUtc")
+        val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
 
         return HistorySampleDto(
-            createdTimestampUtc,
+            createdTimestamp,
             id,
             someInt,
             someString,

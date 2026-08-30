@@ -3,7 +3,7 @@
 
 
 export interface SimpleFetchForEditDto {
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someString: string;
 }

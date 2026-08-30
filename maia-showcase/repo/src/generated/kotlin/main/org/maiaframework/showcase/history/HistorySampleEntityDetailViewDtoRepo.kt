@@ -22,10 +22,10 @@ class HistorySampleEntityDetailViewDtoRepo(
 
         return HistorySampleEntityDetailViewDto(
             createdBy = partyPkAndNameDtoFor(entity.createdBy),
-            createdTimestampUtc = entity.createdTimestampUtc,
+            createdTimestamp = entity.createdTimestamp,
             id = entity.id,
             lastModifiedBy = partyPkAndNameDtoFor(entity.lastModifiedBy),
-            lastModifiedTimestampUtc = entity.lastModifiedTimestampUtc,
+            lastModifiedTimestamp = entity.lastModifiedTimestamp,
             someInt = entity.someInt,
             someString = entity.someString,
             version = entity.version,

@@ -86,9 +86,9 @@ data class UserEntityUpdater(
         }
 
 
-        fun lastModifiedTimestampUtc(lastModifiedTimestampUtc: Instant) {
+        fun lastModifiedTimestamp(lastModifiedTimestamp: Instant) {
 
-            this.fields.add(FieldUpdate("lastModifiedTimestampUtc", "last_modified_timestamp_utc", lastModifiedTimestampUtc))
+            this.fields.add(FieldUpdate("lastModifiedTimestamp", "last_modified_timestamp", lastModifiedTimestamp))
 
         }
 

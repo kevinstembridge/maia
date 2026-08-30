@@ -6,7 +6,7 @@ import {BravoPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/
 
 export interface CharlieFetchForEditDto {
     bravo: BravoPkAndNameDto;
-    createdTimestampUtc: string;
+    createdTimestamp: string;
     id: string;
     someInt: number;
     someString: string;
