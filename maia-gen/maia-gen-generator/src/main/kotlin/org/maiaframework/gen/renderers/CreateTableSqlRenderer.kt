@@ -1,21 +1,21 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.schema.ExpectedSchemaExtractor
+import org.maiaframework.gen.schema.ExpectedTableDef
 import org.maiaframework.gen.spec.definition.DatabaseIndexDef
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDef
-import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.jdbc.PostgresIdentifiers
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
-import org.maiaframework.gen.spec.definition.lang.ClassFieldName
-import org.maiaframework.gen.spec.definition.lang.FieldType
-import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
-import org.maiaframework.jdbc.JdbcCompatibleType
 
 class CreateTableSqlRenderer(
     private val entityHierarchies: List<EntityHierarchy>,
     private val renderedFilePath: String
 ): AbstractSourceFileRenderer() {
+
+
+    private val expectedTableDefs: List<ExpectedTableDef> = ExpectedSchemaExtractor().extract(entityHierarchies)
 
 
     override fun renderedFilePath(): String {
@@ -30,7 +30,9 @@ class CreateTableSqlRenderer(
         `render header comment`()
         `render btree_gist extension if needed`()
 
-        this.entityHierarchies.forEach { `render CREATE TABLE statement for`(it) }
+        this.entityHierarchies.zip(this.expectedTableDefs).forEach { (entityHierarchy, expectedTableDef) ->
+            `render CREATE TABLE statement for`(entityHierarchy, expectedTableDef)
+        }
 
         return sourceCode.toString()
 
@@ -57,7 +59,7 @@ class CreateTableSqlRenderer(
     }
 
 
-    private fun `render CREATE TABLE statement for`(entityHierarchy: EntityHierarchy) {
+    private fun `render CREATE TABLE statement for`(entityHierarchy: EntityHierarchy, expectedTableDef: ExpectedTableDef) {
 
         val baseEntityDef = entityHierarchy.entityDef
 
@@ -73,44 +75,16 @@ class CreateTableSqlRenderer(
 
         }
 
-        appendLine("CREATE TABLE ${schemaAndTableNameFor(baseEntityDef)} (")
+        appendLine("CREATE TABLE ${expectedTableDef.schemaAndTableName} (")
 
+        // The type_discriminator and effective_range columns are synthetic (no backing
+        // EntityFieldDef) and have always been rendered as fixed literal SQL text — including
+        // their (inconsistent, but preexisting) lowercase "not null" — rather than through the
+        // generic per-column formatting used for real fields below.
         val typeDiscriminatorLineOrNull = if (entityHierarchy.hasSubclasses()) {
             "type_discriminator text not null"
         } else {
             null
-        }
-
-        val nonDerivedSqlFields: List<SqlFieldDef> = entityHierarchy.allFieldDefsSorted
-            .filterNot { it.isDerived.value }
-            .groupBy { it.tableColumnName}
-            .mapValues { toSqlFieldDef(it, entityHierarchy) }
-            .values
-            .toList()
-
-        val effectiveTimestampColumnNames = setOf("effective_from", "effective_to")
-
-        val sqlFieldsForColumns = if (baseEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
-            nonDerivedSqlFields.filterNot { it.tableColumnName.value in effectiveTimestampColumnNames }
-        } else {
-            nonDerivedSqlFields
-        }
-
-        val lines = sqlFieldsForColumns.map { sqlFieldDef ->
-
-            val fieldType = sqlFieldDef.fieldType
-
-            val nullSuffix = if (sqlFieldDef.nullable) "NULL" else "NOT NULL"
-            val postgresDataType = FieldTypeRendererHelper.determineSqlDataType(fieldType)
-            val sizeConstraint = sqlFieldDef.sizeConstraint
-            val foreignKey = if (fieldType is ForeignKeyFieldType) {
-                val foreignEntityDef = fieldType.foreignKeyFieldDef.foreignEntityDef
-                val pkColumnName = foreignEntityDef.primaryKeyFields.first().tableColumnName.value
-                " REFERENCES ${schemaAndTableNameFor(foreignEntityDef)}($pkColumnName)"
-            } else ""
-
-            "${sqlFieldDef.tableColumnName} $postgresDataType$sizeConstraint $nullSuffix$foreignKey"
-
         }
 
         val effectiveRangeLineOrNull = if (baseEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
@@ -119,150 +93,70 @@ class CreateTableSqlRenderer(
             null
         }
 
+        val syntheticColumnNames = setOf("type_discriminator", "effective_range")
+        val foreignKeysByColumnName = expectedTableDef.foreignKeys.associateBy { it.columnName }
+
+        val lines = expectedTableDef.columns
+            .filterNot { it.name in syntheticColumnNames }
+            .map { columnDef ->
+
+                val nullSuffix = if (columnDef.nullable) "NULL" else "NOT NULL"
+                val foreignKey = foreignKeysByColumnName[columnDef.name]?.let {
+                    " REFERENCES ${it.referencedSchemaAndTable}(${it.referencedColumn})"
+                } ?: ""
+
+                "${columnDef.name} ${columnDef.postgresType} $nullSuffix$foreignKey"
+
+            }
+
         val allLines = listOfNotNull(typeDiscriminatorLineOrNull).plus(lines).plus(listOfNotNull(effectiveRangeLineOrNull))
         allLines.forEach { appendLine("    $it,") }
 
-        val primaryKeyFieldCsv = nonDerivedSqlFields.filter { it.isPrimaryKey }.map { it.tableColumnName }.joinToString(", ")
+        val primaryKeyFieldCsv = expectedTableDef.primaryKeyColumns.joinToString(", ")
         appendLine("    PRIMARY KEY($primaryKeyFieldCsv)")
 
         appendLine(");")
 
-        renderIndexes(entityHierarchy)
+        renderIndexes(entityHierarchy, expectedTableDef)
 
     }
 
 
-    private fun toSqlFieldDef(
-        entityFieldDefs: Map.Entry<TableColumnName, List<EntityFieldDef>>,
-        entityHierarchy: EntityHierarchy
-    ): SqlFieldDef {
-
-        val tableColumnName = entityFieldDefs.key
-        val fieldTypes = entityFieldDefs.value.map { it.fieldType }.toSet()
-
-        if (fieldTypes.size > 1) {
-            throw IllegalStateException("Expecting all fields with database column name of $tableColumnName in entity hierarchy ${entityHierarchy.entityDef.entityBaseName} to have the same type. Found: $fieldTypes")
-        }
-
-        val sizeConstraint = maxSizeConstraintFor(entityFieldDefs)
-
-        return SqlFieldDef(
-           fieldType = fieldTypes.first(),
-           tableColumnName = tableColumnName,
-           sizeConstraint = sizeConstraint,
-           nullable = entityFieldDefs.value.any { shouldBeNullable(it, entityHierarchy.entityDef) },
-           isPrimaryKey = entityFieldDefs.value.any { it.isPrimaryKey.value },
-       )
-
-    }
-
-
-    private fun maxSizeConstraintFor(entityFieldDefs: Map.Entry<TableColumnName, List<EntityFieldDef>>): String {
-
-        val maxSizeConstraint = determineMaxSizeConstraintFor(entityFieldDefs.value)
-        return determineSizeConstraintFor(maxSizeConstraint)
-
-    }
-
-
-    private fun shouldBeNullable(
-        entityFieldDef: EntityFieldDef,
-        baseEntityDef: EntityDef
-    ): Boolean {
-
-        return entityFieldDef.nullable
-                || (entityFieldDef.isNotFromBaseEntity(baseEntityDef) && !notNullByFramework(entityFieldDef))
-
-    }
-
-
-    private fun EntityFieldDef.isNotFromBaseEntity(baseEntityDef: EntityDef): Boolean {
-        return entityBaseName != baseEntityDef.entityBaseName
-    }
-
-
-    private fun notNullByFramework(entityFieldDef: EntityFieldDef): Boolean {
-
-        return (entityFieldDef.classFieldName == ClassFieldName.id
-                || entityFieldDef.classFieldName == ClassFieldName.createdTimestamp
-                || entityFieldDef.classFieldName == ClassFieldName.lastModifiedTimestamp
-                || entityFieldDef.classFieldName == ClassFieldName.version)
-
-    }
-
-
-    private fun determineMaxSizeConstraintFor(entityFieldDefs: List<EntityFieldDef>): EntityFieldDef? {
-
-        if (entityFieldDefs.any { it.classFieldDef.lengthConstraint == null }) {
-            return null
-        }
-
-        return entityFieldDefs
-            .maxBy { it.classFieldDef.lengthConstraint?.max ?: 0 }
-
-    }
-
-
-    private fun determineSizeConstraintFor(entityFieldDef: EntityFieldDef?): String {
-
-        if (entityFieldDef == null) {
-            return ""
-        }
-
-        return when (entityFieldDef.fieldType.jdbcCompatibleType) {
-            JdbcCompatibleType.varchar -> "(${maxLengthOf(entityFieldDef)})"
-            else -> ""
-        }
-
-    }
-
-
-    private fun maxLengthOf(entityFieldDef: EntityFieldDef): Long {
-
-        return entityFieldDef.classFieldDef.lengthConstraint?.max
-            ?: throw IllegalArgumentException("Expecting entity field '${entityFieldDef.classFieldName}' on entity '${entityFieldDef.entityBaseName}' to have a max length constraint.")
-
-    }
-
-
-    private fun renderIndexes(entityHierarchy: EntityHierarchy) {
+    private fun renderIndexes(entityHierarchy: EntityHierarchy, expectedTableDef: ExpectedTableDef) {
 
         val baseEntityDef = entityHierarchy.entityDef
 
-        val nonUniqueIndexDefs = mutableListOf<DatabaseIndexDef>()
+        expectedTableDef.indexes.forEach { indexDef ->
 
-        entityHierarchy.entityDefs
-            .reversed()
-            .flatMap { it.databaseIndexDefs }
-            .distinctBy { databaseIndexDef -> databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName } }
-            .forEach { databaseIndexDef ->
+            val unique = if (indexDef.unique) " UNIQUE" else ""
+            val fields = indexDef.columns.joinToString(", ")
 
-                val unique = if (databaseIndexDef.isUnique) " UNIQUE" else ""
-                val indexName = databaseIndexDef.indexDef.indexName
-                val typeDiscriminatorField = if (entityHierarchy.hasSubclasses()) listOf(TableColumnName("type_discriminator")) else emptyList()
-                val fields = databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName }.plus(typeDiscriminatorField).joinToString(", ")
+            appendLine("CREATE$unique INDEX ${indexDef.name} ON ${expectedTableDef.schemaAndTableName}($fields);")
 
-                appendLine("CREATE$unique INDEX $indexName ON ${schemaAndTableNameFor(baseEntityDef)}($fields);")
-
-                if (databaseIndexDef.isUnique == false) {
-                    nonUniqueIndexDefs.add(databaseIndexDef)
-                }
-
-            }
+        }
 
         if (baseEntityDef.hasSingleEffectiveRecord.value && baseEntityDef.hasEffectiveTimestamps) {
-            nonUniqueIndexDefs.forEach { `render single effective record exclusion constraint`(baseEntityDef, entityHierarchy, it) }
+
+            val nonUniqueIndexDefs = entityHierarchy.entityDefs
+                .reversed()
+                .flatMap { it.databaseIndexDefs }
+                .distinctBy { databaseIndexDef -> databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName } }
+                .filter { it.isUnique == false }
+
+            nonUniqueIndexDefs.forEach { `render single effective record exclusion constraint`(entityHierarchy, expectedTableDef, it) }
+
         }
 
     }
 
 
     private fun `render single effective record exclusion constraint`(
-        baseEntityDef: EntityDef,
         entityHierarchy: EntityHierarchy,
+        expectedTableDef: ExpectedTableDef,
         databaseIndexDef: DatabaseIndexDef
     ) {
 
+        val baseEntityDef = entityHierarchy.entityDef
         val typeDiscriminatorField = if (entityHierarchy.hasSubclasses()) listOf(TableColumnName("type_discriminator")) else emptyList()
         val keyColumns = databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName }.plus(typeDiscriminatorField)
         val exclusionElements = keyColumns.map { "$it WITH =" }.plus("effective_range WITH &&").joinToString(", ")
@@ -274,21 +168,9 @@ class CreateTableSqlRenderer(
             "Shorten the underlying index name on entity '${baseEntityDef.entityBaseName}' via index { indexName(\"...\") }."
         )
 
-        appendLine("ALTER TABLE ${schemaAndTableNameFor(baseEntityDef)} ADD CONSTRAINT $constraintName EXCLUDE USING gist ($exclusionElements);")
+        appendLine("ALTER TABLE ${expectedTableDef.schemaAndTableName} ADD CONSTRAINT $constraintName EXCLUDE USING gist ($exclusionElements);")
 
     }
-
-
-    private fun schemaAndTableNameFor(entityDef: EntityDef) = "${entityDef.schemaName}.${entityDef.tableName.rawTableName}"
-
-
-    private data class SqlFieldDef(
-        val fieldType: FieldType,
-        val tableColumnName: TableColumnName,
-        val sizeConstraint: String,
-        val nullable: Boolean,
-        val isPrimaryKey: Boolean,
-    )
 
 
 }
