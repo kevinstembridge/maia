@@ -1,13 +1,11 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.schema.ExpectedIndexDef
 import org.maiaframework.gen.schema.ExpectedSchemaExtractor
 import org.maiaframework.gen.schema.ExpectedTableDef
-import org.maiaframework.gen.spec.definition.DatabaseIndexDef
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
-import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.jdbc.PostgresIdentifiers
-import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 
 class CreateTableSqlRenderer(
     private val entityHierarchies: List<EntityHierarchy>,
@@ -137,13 +135,9 @@ class CreateTableSqlRenderer(
 
         if (baseEntityDef.hasSingleEffectiveRecord.value && baseEntityDef.hasEffectiveTimestamps) {
 
-            val nonUniqueIndexDefs = entityHierarchy.entityDefs
-                .reversed()
-                .flatMap { it.databaseIndexDefs }
-                .distinctBy { databaseIndexDef -> databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName } }
-                .filter { it.isUnique == false }
-
-            nonUniqueIndexDefs.forEach { `render single effective record exclusion constraint`(entityHierarchy, expectedTableDef, it) }
+            expectedTableDef.indexes
+                .filterNot { it.unique }
+                .forEach { `render single effective record exclusion constraint`(entityHierarchy, expectedTableDef, it) }
 
         }
 
@@ -153,19 +147,16 @@ class CreateTableSqlRenderer(
     private fun `render single effective record exclusion constraint`(
         entityHierarchy: EntityHierarchy,
         expectedTableDef: ExpectedTableDef,
-        databaseIndexDef: DatabaseIndexDef
+        indexDef: ExpectedIndexDef
     ) {
 
-        val baseEntityDef = entityHierarchy.entityDef
-        val typeDiscriminatorField = if (entityHierarchy.hasSubclasses()) listOf(TableColumnName("type_discriminator")) else emptyList()
-        val keyColumns = databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName }.plus(typeDiscriminatorField)
-        val exclusionElements = keyColumns.map { "$it WITH =" }.plus("effective_range WITH &&").joinToString(", ")
-        val constraintName = "${databaseIndexDef.indexDef.indexName}_excl"
+        val exclusionElements = indexDef.columns.map { "$it WITH =" }.plus("effective_range WITH &&").joinToString(", ")
+        val constraintName = "${indexDef.name}_excl"
 
         PostgresIdentifiers.requireValidLength(
             constraintName,
             "exclusion constraint name",
-            "Shorten the underlying index name on entity '${baseEntityDef.entityBaseName}' via index { indexName(\"...\") }."
+            "Shorten the underlying index name on entity '${entityHierarchy.entityDef.entityBaseName}' via index { indexName(\"...\") }."
         )
 
         appendLine("ALTER TABLE ${expectedTableDef.schemaAndTableName} ADD CONSTRAINT $constraintName EXCLUDE USING gist ($exclusionElements);")
