@@ -9,15 +9,15 @@ import java.time.Instant
 import java.util.*
 
 data class EmailAsserter(
-        val recipientEmailAddresses: List<EmailAddress>,
-        private val fromAddress: EmailAddress,
-        private val ccAddress: List<EmailAddress>,
-        private val bccAddress: List<EmailAddress>,
-        private val subject: String?,
-        private val contentType: String?,
-        private val body: String?,
-        val timestampUtc: Instant,
-        private val templateEngine: TemplateEngine
+    val recipientEmailAddresses: List<EmailAddress>,
+    private val fromAddress: EmailAddress,
+    private val ccAddress: List<EmailAddress>,
+    private val bccAddress: List<EmailAddress>,
+    private val subject: String?,
+    private val contentType: String?,
+    private val body: String?,
+    val timestamp: Instant,
+    private val templateEngine: TemplateEngine
 ) {
 
 

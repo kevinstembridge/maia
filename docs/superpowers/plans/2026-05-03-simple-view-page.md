@@ -33,7 +33,7 @@
 
 **Acceptance Criteria:**
 - [ ] Component compiles with no TypeScript errors
-- [ ] Route `/simple/view/:id` renders the page with labels and values for `someString`, `createdTimestampUtc`, and `id`
+- [ ] Route `/simple/view/:id` renders the page with labels and values for `someString`, `createdTimestamp`, and `id`
 - [ ] Template is blank (no field content) while the signal is `undefined` (before fetch resolves)
 - [ ] All tests pass
 
@@ -58,7 +58,7 @@ describe('CompositePrimaryKeyViewPage', () => {
     const mockDto: SimpleDto = {
         id: 'test-id-123',
         someString: 'Hello World',
-        createdTimestampUtc: '2026-01-01T00:00:00Z',
+        createdTimestamp: '2026-01-01T00:00:00Z',
     };
 
     beforeEach(async () => {
@@ -157,7 +157,7 @@ Replace `maia-showcase/maia-showcase-ui/src/app/pages/simple-view/simple-view-pa
             </div>
             <div class="simple-view-field">
                 <dt>Created</dt>
-                <dd>{{ dto()!.createdTimestampUtc }}</dd>
+                <dd>{{ dto()!.createdTimestamp }}</dd>
             </div>
             <div class="simple-view-field">
                 <dt>ID</dt>

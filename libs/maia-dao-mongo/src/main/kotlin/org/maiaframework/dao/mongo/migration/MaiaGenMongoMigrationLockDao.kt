@@ -92,10 +92,10 @@ class MaiaGenMongoMigrationLockDao(mongoClientFacade: MongoClientFacade) {
     private fun throwLockNotAvailableException() {
 
         val existingDocument = this.mongoCollectionFacade.findOne(Document(UNIQUE_FIELD_NAME, UNIQUE_FIELD_VALUE))
-        val lockCreatedTimestampUtc = existingDocument.getDate(CREATED_TIMESTAMP_FIELD_NAME).toInstant()
+        val lockCreatedTimestamp = existingDocument.getDate(CREATED_TIMESTAMP_FIELD_NAME).toInstant()
         val hostname = existingDocument.getString(HOSTNAME_FIELD_NAME)
         val processName = existingDocument.getString(PROCESS_NAME_FIELD_NAME)
-        throw MaiaGenMongoMigrationLockNotAvailableException(lockCreatedTimestampUtc, hostname, processName)
+        throw MaiaGenMongoMigrationLockNotAvailableException(lockCreatedTimestamp, hostname, processName)
 
     }
 

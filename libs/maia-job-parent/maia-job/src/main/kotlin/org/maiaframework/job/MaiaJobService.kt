@@ -62,14 +62,14 @@ class MaiaJobService(
     fun runJob(jobName: JobName, username: String): JobExecutionSummaryResponseDto {
 
         val jobInstanceId = DomainId.newId()
-        val startTimestampUtc = Instant.now()
-        runJobAsync(jobName, jobInstanceId, username, startTimestampUtc)
+        val startTimestamp = Instant.now()
+        runJobAsync(jobName, jobInstanceId, username, startTimestamp)
         return JobExecutionSummaryResponseDto(
                 null,
                 null,
                 jobInstanceId,
                 jobName,
-                startTimestampUtc,
+                startTimestamp,
         )
 
     }
@@ -79,7 +79,7 @@ class MaiaJobService(
             jobName: JobName,
             jobInstanceId: DomainId,
             username: String,
-            startTimestampUtc: Instant
+            startTimestamp: Instant
     ) {
 
         this.executor.execute {
@@ -88,7 +88,7 @@ class MaiaJobService(
 
             val jobMetrics = JobMetrics(jobName.value)
 
-            initRunningJob(jobName, username, jobMetrics, jobInstanceId, startTimestampUtc)
+            initRunningJob(jobName, username, jobMetrics, jobInstanceId, startTimestamp)
 
             try {
 
@@ -127,10 +127,10 @@ class MaiaJobService(
         username: String,
         jobMetrics: JobMetrics,
         jobExecutionId: DomainId,
-        startTimestampUtc: Instant
+        startTimestamp: Instant
     ) {
 
-        val runningJob = RunningJob(jobExecutionId, jobName, startTimestampUtc, username, jobMetrics)
+        val runningJob = RunningJob(jobExecutionId, jobName, startTimestamp, username, jobMetrics)
         this.runningJobs[jobName] = runningJob
         this.jobExecutionRepo.newJobExecution(jobExecutionId, jobName, username)
 

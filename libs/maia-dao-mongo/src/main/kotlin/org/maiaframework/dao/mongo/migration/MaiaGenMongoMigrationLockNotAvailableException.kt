@@ -4,7 +4,7 @@ import java.time.Duration
 import java.time.Instant
 
 class MaiaGenMongoMigrationLockNotAvailableException(
-    val lockCreatedTimestampUtc: Instant,
+    val lockCreatedTimestamp: Instant,
     val hostname: String,
     val processName: String
 ) : Exception(
@@ -13,6 +13,6 @@ class MaiaGenMongoMigrationLockNotAvailableException(
         + "] on host ["
         + hostname
         + "] since "
-        + lockCreatedTimestampUtc
-        + " (" + Duration.between(lockCreatedTimestampUtc, Instant.now()) + ")"
+        + lockCreatedTimestamp
+        + " (" + Duration.between(lockCreatedTimestamp, Instant.now()) + ")"
 )

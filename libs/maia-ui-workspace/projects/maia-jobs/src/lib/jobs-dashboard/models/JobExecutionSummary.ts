@@ -1,7 +1,7 @@
 export class JobExecutionSummary {
     jobExecutionId!: string;
     jobName!: string;
-    startTimestampUtc!: string;
-    endTimestampUtc!: string;
+    startTimestamp!: string;
+    endTimestamp!: string;
     errorMessage!: string;
 }

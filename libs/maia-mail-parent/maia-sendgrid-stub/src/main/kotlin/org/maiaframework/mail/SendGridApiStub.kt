@@ -125,8 +125,8 @@ class SendGridApiStub(private val jsonFacade: JsonFacade, private val templateEn
 
     fun getEmailsSince(fromInstant: Instant): List<EmailAsserter> {
 
-        return this.emails.filter { it.timestampUtc.isAfter(fromInstant) }
-                .sortedBy { it.timestampUtc }
+        return this.emails.filter { it.timestamp.isAfter(fromInstant) }
+                .sortedBy { it.timestamp }
 
     }
 
