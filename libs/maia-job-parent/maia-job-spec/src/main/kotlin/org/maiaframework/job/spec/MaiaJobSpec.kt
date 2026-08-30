@@ -34,8 +34,8 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
         field("invokedBy", FieldTypes.string) {
             lengthConstraint(max = 100)
         }
-        field("startTimestampUtc", FieldTypes.instant)
-        field("endTimestampUtc", FieldTypes.instant) {
+        field("startTimestamp", FieldTypes.instant)
+        field("endTimestamp", FieldTypes.instant) {
             nullable()
             modifiableBySystem()
         }
@@ -69,7 +69,7 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
         field("id", FieldTypes.domainId)
         field("jobName", jobNameStringType)
         field("invokedBy", FieldTypes.string)
-        field("startTimestampUtc", FieldTypes.instant)
+        field("startTimestamp", FieldTypes.instant)
         field("metrics", FieldTypes.mapOfStringToAny())
     }
 
@@ -86,8 +86,8 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
     val jobExecutionDetailDtoDef = simpleResponseDto("org.maiaframework.job", "JobExecutionDetail") {
         field("jobExecutionId", FieldTypes.domainId)
         field("jobName", jobNameStringType)
-        field("startTimestampUtc", FieldTypes.instant)
-        field("endTimestampUtc", FieldTypes.instant) {
+        field("startTimestamp", FieldTypes.instant)
+        field("endTimestamp", FieldTypes.instant) {
             nullable()
         }
         field("errorMessage", FieldTypes.string) {
@@ -102,8 +102,8 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
     val jobExecutionSummaryDtoDef = simpleResponseDto("org.maiaframework.job", "JobExecutionSummary") {
         field("jobExecutionId", FieldTypes.domainId)
         field("jobName", jobNameStringType)
-        field("startTimestampUtc", FieldTypes.instant)
-        field("endTimestampUtc", FieldTypes.instant) {
+        field("startTimestamp", FieldTypes.instant)
+        field("endTimestamp", FieldTypes.instant) {
             nullable()
         }
         field("errorMessage", FieldTypes.string) {

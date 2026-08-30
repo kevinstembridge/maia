@@ -5,7 +5,7 @@
 CREATE TABLE jobs.job_execution (
     completion_status text NULL,
     created_timestamp timestamp(3) with time zone NOT NULL,
-    end_timestamp_utc timestamp(3) with time zone NULL,
+    end_timestamp timestamp(3) with time zone NULL,
     error_message text NULL,
     id uuid NOT NULL,
     invoked_by text NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE jobs.job_execution (
     last_modified_timestamp timestamp(3) with time zone NOT NULL,
     metrics jsonb NOT NULL,
     stack_trace text NULL,
-    start_timestamp_utc timestamp(3) with time zone NOT NULL,
+    start_timestamp timestamp(3) with time zone NOT NULL,
     PRIMARY KEY(id)
 );
 CREATE INDEX jobName_idx ON jobs.job_execution(job_name);

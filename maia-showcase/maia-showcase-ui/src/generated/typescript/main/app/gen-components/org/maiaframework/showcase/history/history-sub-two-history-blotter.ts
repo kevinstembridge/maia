@@ -28,7 +28,7 @@ export class HistorySubTwoHistoryBlotter implements OnInit {
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         { field: 'changeType', headerName: 'Change Type', cellDataType: 'text' },
-        { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text' },
+        { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp', cellDataType: 'text' },
         { field: 'someInt', headerName: 'someInt', cellDataType: 'number' },
         { field: 'version', headerName: 'Version', cellDataType: 'number' },
     ];

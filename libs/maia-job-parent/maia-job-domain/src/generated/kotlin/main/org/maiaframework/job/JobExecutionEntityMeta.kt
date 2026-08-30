@@ -16,7 +16,7 @@ object JobExecutionEntityMeta {
 
     const val createdTimestamp = "created_timestamp"
 
-    const val endTimestampUtc = "end_timestamp_utc"
+    const val endTimestamp = "end_timestamp"
 
     const val errorMessage = "error_message"
 
@@ -32,7 +32,7 @@ object JobExecutionEntityMeta {
 
     const val stackTrace = "stack_trace"
 
-    const val startTimestampUtc = "start_timestamp_utc"
+    const val startTimestamp = "start_timestamp"
 
     val ENTITY_KEY = EntityKey("JobExecution")
 
@@ -57,7 +57,7 @@ object JobExecutionEntityMeta {
         return when(classFieldName) {
             "completionStatus" -> "completion_status"
             "createdTimestamp" -> "created_timestamp"
-            "endTimestampUtc" -> "end_timestamp_utc"
+            "endTimestamp" -> "end_timestamp"
             "errorMessage" -> "error_message"
             "id" -> "id"
             "invokedBy" -> "invoked_by"
@@ -65,7 +65,7 @@ object JobExecutionEntityMeta {
             "lastModifiedTimestamp" -> "last_modified_timestamp"
             "metrics" -> "metrics"
             "stackTrace" -> "stack_trace"
-            "startTimestampUtc" -> "start_timestamp_utc"
+            "startTimestamp" -> "start_timestamp"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

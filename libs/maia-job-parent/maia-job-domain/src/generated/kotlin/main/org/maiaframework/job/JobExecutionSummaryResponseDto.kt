@@ -8,11 +8,11 @@ import java.time.Instant
 
 
 data class JobExecutionSummaryResponseDto(
-    val endTimestampUtc: Instant?,
+    val endTimestamp: Instant?,
     val errorMessage: String?,
     val jobExecutionId: DomainId,
     val jobName: JobName,
-    val startTimestampUtc: Instant
+    val startTimestamp: Instant
 ) {
 
 

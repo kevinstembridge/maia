@@ -633,7 +633,7 @@ class EntityDefBuilder(
     fun field_lastModifiedTimestamp() {
 
         field(ClassFieldName.lastModifiedTimestamp.value, FieldTypes.instant) {
-            fieldDisplayName("Last Modified Timestamp (UTC)")
+            fieldDisplayName("Last Modified Timestamp")
             tableColumnName(TableColumnName.lastModifiedTimestamp.value)
             notCreatableByUser()
             modifiableBySystem()

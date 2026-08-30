@@ -287,7 +287,7 @@ class CrudNotifierRenderer(
             appendLine("        val lastModifiedByUsername = currentUser.username")
         }
 
-        if (this.entityDef.hasLastModifiedTimestampUtcField) {
+        if (this.entityDef.hasLastModifiedTimestampField) {
             appendLine("        val lastModifiedTimestamp = createdTimestamp")
         }
 
@@ -378,7 +378,7 @@ class CrudNotifierRenderer(
                 appendLine("            lastModifiedById(CurrentUserHolder.userId)")
             }
 
-            if (this.entityDef.hasLastModifiedTimestampUtcField) {
+            if (this.entityDef.hasLastModifiedTimestampField) {
                 addImportFor<Instant>()
                 appendLine("            lastModifiedTimestamp(Instant.now())")
             }

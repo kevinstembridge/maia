@@ -1003,7 +1003,7 @@ class EntityDef(
         get() = hasFieldNamed(ClassFieldName.version)
 
 
-    val hasLastModifiedTimestampUtcField: Boolean
+    val hasLastModifiedTimestampField: Boolean
         get() = hasFieldNamed(ClassFieldName.lastModifiedTimestamp)
 
 

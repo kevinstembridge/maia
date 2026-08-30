@@ -59,7 +59,7 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
 
         val updater = JobExecutionEntityUpdater.forPrimaryKey(jobInstanceId) {
             completionStatus(completionStatus)
-            endTimestampUtc(Instant.now())
+            endTimestamp(Instant.now())
             metrics(jobMetrics.metricsReport())
 
             if (e != null) {
@@ -82,7 +82,7 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
                 filters.completionStatus eq JobCompletionStatus.FAILED
         )
 
-        val sort = Sort.by(Sort.Order.desc(JobExecutionEntityMeta.endTimestampUtc))
+        val sort = Sort.by(Sort.Order.desc(JobExecutionEntityMeta.endTimestamp))
         val pageRequest = PageRequest.of(0, 10, sort)
         return this.jobExecutionDao.findAllBy(filter, pageRequest).toList()
 

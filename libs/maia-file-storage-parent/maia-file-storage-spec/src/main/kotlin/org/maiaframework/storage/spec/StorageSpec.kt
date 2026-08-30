@@ -29,7 +29,7 @@ class StorageSpec : AbstractSpec(appKey = AppKey("storage"), defaultSchemaName =
             lengthConstraint(max = 100)
         }
         field("lengthInBytes", FieldTypes.long)
-        field("fileTimestampUtc", FieldTypes.instant)
+        field("fileTimestamp", FieldTypes.instant)
         field("description", FieldTypes.string) {
             nullable()
             lengthConstraint(max = 500)

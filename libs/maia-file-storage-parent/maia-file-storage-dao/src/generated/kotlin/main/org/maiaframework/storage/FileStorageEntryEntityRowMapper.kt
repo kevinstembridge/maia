@@ -19,7 +19,7 @@ class FileStorageEntryEntityRowMapper : MaiaRowMapper<FileStorageEntryEntity> {
         val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readStringOrNull("description")
         val fileName = rsa.readString("file_name") { FileName(it) }
-        val fileTimestampUtc = rsa.readInstant("file_timestamp_utc")
+        val fileTimestamp = rsa.readInstant("file_timestamp")
         val id = rsa.readDomainId("id")
         val lengthInBytes = rsa.readLong("length_in_bytes")
         val md5 = rsa.readString("md5") { Md5Checksum(it) }
@@ -29,7 +29,7 @@ class FileStorageEntryEntityRowMapper : MaiaRowMapper<FileStorageEntryEntity> {
                 createdTimestamp,
                 description,
                 fileName,
-                fileTimestampUtc,
+                fileTimestamp,
                 id,
                 lengthInBytes,
                 md5

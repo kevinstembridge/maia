@@ -52,7 +52,7 @@ class MaiaJobService(
                     it.invokedBy,
                     it.jobName,
                     it.jobMetrics.metricsReport(),
-                    it.startTimestampUtc
+                    it.startTimestamp
             )
         }
 
@@ -142,11 +142,11 @@ class MaiaJobService(
         return jobExecutionRepo.recentFailedExecutions(jobName).map { entity ->
 
             JobExecutionSummaryResponseDto(
-                    entity.endTimestampUtc,
+                    entity.endTimestamp,
                     entity.errorMessage,
                     entity.id,
                     jobName,
-                    entity.startTimestampUtc)
+                    entity.startTimestamp)
 
         }
 
@@ -157,12 +157,12 @@ class MaiaJobService(
 
         return getJobExecutionEntity(jobExecutionId)?.let {
             JobExecutionDetailResponseDto(
-                    it.endTimestampUtc,
+                    it.endTimestamp,
                     it.errorMessage,
                     it.id,
                     it.jobName,
                     it.stackTrace,
-                    it.startTimestampUtc)
+                    it.startTimestamp)
         }
 
     }

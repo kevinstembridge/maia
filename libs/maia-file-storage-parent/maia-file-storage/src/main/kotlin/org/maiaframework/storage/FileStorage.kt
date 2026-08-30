@@ -14,7 +14,7 @@ interface FileStorage {
         contentType: ContentType,
         inputStream: InputStream,
         description: String?,
-        fileTimestampUtc: Instant = Instant.now()
+        fileTimestamp: Instant = Instant.now()
     ): FileStorageEntryEntity
 
 

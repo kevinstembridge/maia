@@ -28,7 +28,7 @@ class FileStorageEntryEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "file_name" -> // fileName
                 return (inputValue as FileName).value
-            "file_timestamp_utc" -> // fileTimestampUtc
+            "file_timestamp" -> // fileTimestamp
                 return inputValue
             "id" -> // id
                 return (inputValue as DomainId).value

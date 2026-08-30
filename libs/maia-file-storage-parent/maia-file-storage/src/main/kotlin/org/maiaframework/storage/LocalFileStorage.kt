@@ -16,9 +16,9 @@ import java.security.MessageDigest
 import java.time.Instant
 
 class LocalFileStorage(
-        private val baseDir: File,
-        private val fileStorageEntryDao: FileStorageEntryDao
-): FileStorage {
+    private val baseDir: File,
+    private val fileStorageEntryDao: FileStorageEntryDao
+) : FileStorage {
 
 
     private val logger = LoggerFactory.getLogger(LocalFileStorage::class.java)
@@ -29,7 +29,7 @@ class LocalFileStorage(
         contentType: ContentType,
         inputStream: InputStream,
         description: String?,
-        fileTimestampUtc: Instant
+        fileTimestamp: Instant
     ): FileStorageEntryEntity {
 
         val messageDigest = createMessageDigest()
@@ -45,14 +45,14 @@ class LocalFileStorage(
         val md5String = DatatypeConverter.printHexBinary(messageDigest.digest())
 
         val entryEntity = FileStorageEntryEntity(
-                contentType,
-                Instant.now(),
-                description,
-                fileName,
-                fileTimestampUtc,
-                storageEntryId,
-                length,
-                Md5Checksum(md5String)
+            contentType,
+            Instant.now(),
+            description,
+            fileName,
+            fileTimestamp,
+            storageEntryId,
+            length,
+            Md5Checksum(md5String)
         )
 
         logger.info("Recording file storage entry with id $storageEntryId for file named $fileName")

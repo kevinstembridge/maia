@@ -35,7 +35,7 @@ class FileStorageEntryDao(
                 created_timestamp,
                 description,
                 file_name,
-                file_timestamp_utc,
+                file_timestamp,
                 id,
                 length_in_bytes,
                 md5
@@ -44,7 +44,7 @@ class FileStorageEntryDao(
                 :createdTimestamp,
                 :description,
                 :fileName,
-                :fileTimestampUtc,
+                :fileTimestamp,
                 :id,
                 :lengthInBytes,
                 :md5
@@ -55,7 +55,7 @@ class FileStorageEntryDao(
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("fileName", entity.fileName)
-                addValue("fileTimestampUtc", entity.fileTimestampUtc)
+                addValue("fileTimestamp", entity.fileTimestamp)
                 addValue("id", entity.id)
                 addValue("lengthInBytes", entity.lengthInBytes)
                 addValue("md5", entity.md5)
@@ -74,7 +74,7 @@ class FileStorageEntryDao(
                 created_timestamp,
                 description,
                 file_name,
-                file_timestamp_utc,
+                file_timestamp,
                 id,
                 length_in_bytes,
                 md5
@@ -83,7 +83,7 @@ class FileStorageEntryDao(
                 :createdTimestamp,
                 :description,
                 :fileName,
-                :fileTimestampUtc,
+                :fileTimestamp,
                 :id,
                 :lengthInBytes,
                 :md5
@@ -95,7 +95,7 @@ class FileStorageEntryDao(
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description)
                     addValue("fileName", entity.fileName)
-                    addValue("fileTimestampUtc", entity.fileTimestampUtc)
+                    addValue("fileTimestamp", entity.fileTimestamp)
                     addValue("id", entity.id)
                     addValue("lengthInBytes", entity.lengthInBytes)
                     addValue("md5", entity.md5)

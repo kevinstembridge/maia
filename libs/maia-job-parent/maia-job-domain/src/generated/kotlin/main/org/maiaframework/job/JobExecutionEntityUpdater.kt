@@ -34,9 +34,9 @@ data class JobExecutionEntityUpdater(
         }
 
 
-        fun endTimestampUtc(endTimestampUtc: Instant?) {
+        fun endTimestamp(endTimestamp: Instant?) {
 
-            this.fields.add(FieldUpdate("endTimestampUtc", "end_timestamp_utc", endTimestampUtc))
+            this.fields.add(FieldUpdate("endTimestamp", "end_timestamp", endTimestamp))
 
         }
 

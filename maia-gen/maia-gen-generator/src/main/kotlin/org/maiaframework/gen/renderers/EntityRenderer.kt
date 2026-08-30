@@ -174,7 +174,7 @@ class EntityRenderer(
             fieldNamesNotProvidedAsArguments.add("id")
         }
 
-        if (this.entityDef.hasLastModifiedTimestampUtcField) {
+        if (this.entityDef.hasLastModifiedTimestampField) {
 
             appendLine("            val lastModifiedTimestamp = createdTimestamp")
 

@@ -20,7 +20,7 @@ object FileStorageEntryEntityMeta {
 
     const val fileName = "file_name"
 
-    const val fileTimestampUtc = "file_timestamp_utc"
+    const val fileTimestamp = "file_timestamp"
 
     const val id = "id"
 
@@ -46,7 +46,7 @@ object FileStorageEntryEntityMeta {
             "createdTimestamp" -> "created_timestamp"
             "description" -> "description"
             "fileName" -> "file_name"
-            "fileTimestampUtc" -> "file_timestamp_utc"
+            "fileTimestamp" -> "file_timestamp"
             "id" -> "id"
             "lengthInBytes" -> "length_in_bytes"
             "md5" -> "md5"

@@ -57,10 +57,10 @@ class JobExecutionEntityFilters {
         }
 
 
-    val endTimestampUtc: FieldFilter<Instant?> 
+    val endTimestamp: FieldFilter<Instant?> 
         get() {
 
-            return FieldFilter("end_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("end_timestamp", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 
@@ -113,10 +113,10 @@ class JobExecutionEntityFilters {
         }
 
 
-    val startTimestampUtc: FieldFilter<Instant> 
+    val startTimestamp: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("start_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("start_timestamp", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 

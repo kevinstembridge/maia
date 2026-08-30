@@ -7,7 +7,7 @@ CREATE TABLE storage.file_storage_entry (
     created_timestamp timestamp(3) with time zone NOT NULL,
     description text NULL,
     file_name text NOT NULL,
-    file_timestamp_utc timestamp(3) with time zone NOT NULL,
+    file_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     length_in_bytes bigint NOT NULL,
     md5 text NOT NULL,

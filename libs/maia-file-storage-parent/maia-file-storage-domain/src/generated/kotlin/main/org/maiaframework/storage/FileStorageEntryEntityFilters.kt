@@ -76,10 +76,10 @@ class FileStorageEntryEntityFilters {
         }
 
 
-    val fileTimestampUtc: FieldFilter<Instant> 
+    val fileTimestamp: FieldFilter<Instant> 
         get() {
 
-            return FieldFilter("file_timestamp_utc", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+            return FieldFilter("file_timestamp", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
 
         }
 

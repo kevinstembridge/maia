@@ -21,7 +21,7 @@ class JobExecutionEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as JobCompletionStatus).name
             "created_timestamp" -> // createdTimestamp
                 return inputValue
-            "end_timestamp_utc" -> // endTimestampUtc
+            "end_timestamp" -> // endTimestamp
                 return inputValue
             "error_message" -> // errorMessage
                 return inputValue
@@ -37,7 +37,7 @@ class JobExecutionEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "stack_trace" -> // stackTrace
                 return inputValue
-            "start_timestamp_utc" -> // startTimestampUtc
+            "start_timestamp" -> // startTimestamp
                 return inputValue
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }

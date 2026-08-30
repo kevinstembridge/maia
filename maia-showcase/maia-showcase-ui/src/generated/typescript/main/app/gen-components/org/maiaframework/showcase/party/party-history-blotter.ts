@@ -31,7 +31,7 @@ export class PartyHistoryBlotter implements OnInit {
         { field: 'createdBy', headerName: 'Created By', cellDataType: 'text' },
         { field: 'displayName', headerName: 'displayName', cellDataType: 'text' },
         { field: 'lastModifiedBy', headerName: 'Last Modified By', cellDataType: 'text' },
-        { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp (UTC)', cellDataType: 'text' },
+        { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp', cellDataType: 'text' },
         { field: 'lifecycleState', headerName: 'Lifecycle State', cellDataType: 'text' },
         { field: 'version', headerName: 'Version', cellDataType: 'number' },
     ];

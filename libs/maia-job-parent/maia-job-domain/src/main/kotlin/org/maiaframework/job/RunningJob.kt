@@ -7,7 +7,7 @@ import java.time.Instant
 data class RunningJob(
     val id: DomainId,
     val jobName: JobName,
-    val startTimestampUtc: Instant,
+    val startTimestamp: Instant,
     val invokedBy: String,
     val jobMetrics: JobMetrics
 )

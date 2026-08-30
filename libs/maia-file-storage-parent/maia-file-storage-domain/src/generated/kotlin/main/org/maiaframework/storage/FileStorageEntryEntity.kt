@@ -15,7 +15,7 @@ class FileStorageEntryEntity(
     val createdTimestamp: Instant,
     val description: String?,
     val fileName: FileName,
-    val fileTimestampUtc: Instant,
+    val fileTimestamp: Instant,
     val id: DomainId,
     val lengthInBytes: Long,
     val md5: Md5Checksum
@@ -29,7 +29,7 @@ class FileStorageEntryEntity(
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "fileName = '" + this.fileName + '\'' + ", " + 
-                "fileTimestampUtc = '" + this.fileTimestampUtc + '\'' + ", " + 
+                "fileTimestamp = '" + this.fileTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lengthInBytes = '" + this.lengthInBytes + '\'' + ", " + 
                 "md5 = '" + this.md5 + '\'' +
@@ -51,7 +51,7 @@ class FileStorageEntryEntity(
             contentType: ContentType,
             description: String?,
             fileName: FileName,
-            fileTimestampUtc: Instant,
+            fileTimestamp: Instant,
             lengthInBytes: Long,
             md5: Md5Checksum
         ): FileStorageEntryEntity {
@@ -64,7 +64,7 @@ class FileStorageEntryEntity(
                 createdTimestamp,
                 description,
                 fileName,
-                fileTimestampUtc,
+                fileTimestamp,
                 id,
                 lengthInBytes,
                 md5

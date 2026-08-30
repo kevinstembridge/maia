@@ -371,7 +371,7 @@ class CrudServiceRenderer(
             appendLine("        val lastModifiedByUsername = currentUser.username")
         }
 
-        if (this.entityDef.hasLastModifiedTimestampUtcField) {
+        if (this.entityDef.hasLastModifiedTimestampField) {
             appendLine("        val lastModifiedTimestamp = createdTimestamp")
         }
 
@@ -531,7 +531,7 @@ class CrudServiceRenderer(
                 appendLine("            lastModifiedBy(CurrentUserHolder.userId)")
             }
 
-            if (this.entityDef.hasLastModifiedTimestampUtcField) {
+            if (this.entityDef.hasLastModifiedTimestampField) {
                 addImportFor<Instant>()
                 appendLine("            lastModifiedTimestamp(Instant.now())")
             }
@@ -917,7 +917,7 @@ class CrudServiceRenderer(
             appendLine("            lastModifiedByUsername(CurrentUserHolder.currentUsername)")
         }
 
-        if (entityDef.hasLastModifiedTimestampUtcField) {
+        if (entityDef.hasLastModifiedTimestampField) {
             addImportFor(FieldTypes.instant)
             appendLine("            lastModifiedTimestamp(Instant.now())")
         }

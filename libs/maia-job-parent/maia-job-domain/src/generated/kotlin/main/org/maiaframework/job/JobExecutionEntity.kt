@@ -10,7 +10,7 @@ import java.time.Instant
 class JobExecutionEntity(
     val completionStatus: JobCompletionStatus?,
     val createdTimestamp: Instant,
-    val endTimestampUtc: Instant?,
+    val endTimestamp: Instant?,
     val errorMessage: String?,
     val id: DomainId,
     val invokedBy: String,
@@ -18,7 +18,7 @@ class JobExecutionEntity(
     val lastModifiedTimestamp: Instant,
     val metrics: Map<String, Any>,
     val stackTrace: String?,
-    val startTimestampUtc: Instant
+    val startTimestamp: Instant
 ) {
 
 
@@ -27,7 +27,7 @@ class JobExecutionEntity(
         return "JobExecutionEntity{" +
                 "completionStatus = '" + this.completionStatus + '\'' + ", " + 
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
-                "endTimestampUtc = '" + this.endTimestampUtc + '\'' + ", " + 
+                "endTimestamp = '" + this.endTimestamp + '\'' + ", " + 
                 "errorMessage = '" + this.errorMessage + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "invokedBy = '" + this.invokedBy + '\'' + ", " + 
@@ -35,7 +35,7 @@ class JobExecutionEntity(
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "metrics = '" + this.metrics + '\'' + ", " + 
                 "stackTrace = '" + this.stackTrace + '\'' + ", " + 
-                "startTimestampUtc = '" + this.startTimestampUtc + '\'' +
+                "startTimestamp = '" + this.startTimestamp + '\'' +
                 "}"
 
     }
@@ -52,13 +52,13 @@ class JobExecutionEntity(
         @JvmStatic
         fun newInstance(
             completionStatus: JobCompletionStatus?,
-            endTimestampUtc: Instant?,
+            endTimestamp: Instant?,
             errorMessage: String?,
             invokedBy: String,
             jobName: JobName,
             metrics: Map<String, Any>,
             stackTrace: String?,
-            startTimestampUtc: Instant
+            startTimestamp: Instant
         ): JobExecutionEntity {
 
             val createdTimestamp = Instant.now()
@@ -68,7 +68,7 @@ class JobExecutionEntity(
             return JobExecutionEntity(
                 completionStatus,
                 createdTimestamp,
-                endTimestampUtc,
+                endTimestamp,
                 errorMessage,
                 id,
                 invokedBy,
@@ -76,7 +76,7 @@ class JobExecutionEntity(
                 lastModifiedTimestamp,
                 metrics,
                 stackTrace,
-                startTimestampUtc
+                startTimestamp
             )
 
         }

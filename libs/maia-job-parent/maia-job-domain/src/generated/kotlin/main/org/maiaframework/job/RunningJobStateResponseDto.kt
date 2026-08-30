@@ -12,7 +12,7 @@ data class RunningJobStateResponseDto(
     val invokedBy: String,
     val jobName: JobName,
     val metrics: Map<String, Any>,
-    val startTimestampUtc: Instant
+    val startTimestamp: Instant
 ) {
 
 
