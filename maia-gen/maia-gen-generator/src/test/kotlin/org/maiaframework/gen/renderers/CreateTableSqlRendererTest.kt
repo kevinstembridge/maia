@@ -116,4 +116,56 @@ class CreateTableSqlRendererTest {
 
     }
 
+    @Test
+    fun `renders an exclusion constraint for a hasSingleEffectiveRecord entity with effective timestamps`(@TempDir tempDir: File) {
+
+        val spec = object : AbstractSpec(AppKey("Test")) {
+
+            val widget = entity("com.example", "Widget") {
+                withEffectiveTimestamps(hasSingleEffectiveRecord = true)
+                field("category", FieldTypes.string) { lengthConstraint(max = 50) }
+                index { withFieldAscending("category") }
+            }
+
+            val vehicle = entity("com.example", "Vehicle") {
+                typeDiscriminator("VEHICLE")
+                withEffectiveTimestamps(hasSingleEffectiveRecord = true)
+                field("category", FieldTypes.string) { lengthConstraint(max = 50) }
+                index { withFieldAscending("category") }
+            }
+
+            val car = entity("com.example", "Car") {
+                superclass(vehicle)
+                typeDiscriminator("CAR")
+                field("doors", FieldTypes.int)
+            }
+
+        }
+
+        val renderer = CreateTableSqlRenderer(spec.modelDef.rootEntityHierarchies, "create_tables.sql")
+        renderer.renderToDir(tempDir)
+
+        val sql = tempDir.resolve("create_tables.sql").readText()
+
+        // A hasSingleEffectiveRecord entity needs the btree_gist extension for its exclusion constraint.
+        assertThat(sql).contains("CREATE EXTENSION IF NOT EXISTS btree_gist;")
+
+        assertThat(sql).contains("CREATE TABLE test.widget (")
+        assertThat(sql).contains("effective_range tstzrange not null default tstzrange(now(), null)")
+        assertThat(sql).containsPattern("CREATE INDEX \\w+ ON test\\.widget\\(category\\);")
+        // The exclusion constraint prevents overlapping effective ranges for the same key columns.
+        assertThat(sql).containsPattern(
+            "ALTER TABLE test\\.widget ADD CONSTRAINT \\w+_excl EXCLUDE USING gist \\(category WITH =, effective_range WITH &&\\);"
+        )
+
+        // For a subclass hierarchy, the exclusion constraint's key columns must also include
+        // type_discriminator, since rows for different subclasses don't conflict with each other.
+        assertThat(sql).contains("CREATE TABLE test.vehicle (")
+        assertThat(sql).containsPattern("CREATE INDEX \\w+ ON test\\.vehicle\\(category, type_discriminator\\);")
+        assertThat(sql).containsPattern(
+            "ALTER TABLE test\\.vehicle ADD CONSTRAINT \\w+_excl EXCLUDE USING gist \\(category WITH =, type_discriminator WITH =, effective_range WITH &&\\);"
+        )
+
+    }
+
 }
