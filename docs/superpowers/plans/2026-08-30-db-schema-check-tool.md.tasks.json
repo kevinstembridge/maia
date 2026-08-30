@@ -1,0 +1,85 @@
+{
+  "planPath": "docs/superpowers/plans/2026-08-30-db-schema-check-tool.md",
+  "tasks": [
+    {
+      "id": 0,
+      "subject": "Task 1: Characterization test for CreateTableSqlRenderer",
+      "status": "completed",
+      "description": "**Goal:** Lock down CreateTableSqlRenderer's current SQL output with a test before refactoring it in Task 2.\n\n**Files:**\n- Create: maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRendererTest.kt\n\n**Acceptance Criteria:**\n- [ ] Test builds a spec (plain entity with nullable/non-nullable/varchar-length fields, an index, a foreign key, a subclass hierarchy, a recordVersionHistory entity) and asserts the rendered SQL contains the expected lines.\n\n**Verify:** ./gradlew :maia-gen:maia-gen-generator:test --tests \"*CreateTableSqlRendererTest*\" -> PASS\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRendererTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:test --tests \\\"*CreateTableSqlRendererTest*\\\"\", \"acceptanceCriteria\": [\"Test passes against current CreateTableSqlRenderer behavior, documenting it before refactor\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 1,
+      "subject": "Task 2: Extract ExpectedSchemaExtractor from CreateTableSqlRenderer",
+      "status": "pending",
+      "blockedBy": [
+        0
+      ],
+      "description": "**Goal:** Move CreateTableSqlRenderer's column/type/nullable/PK/FK/index derivation into a structured, reusable ExpectedSchemaExtractor; CreateTableSqlRenderer delegates to it with no behavior change.\n\n**Files:**\n- Create: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractor.kt\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRenderer.kt\n- Create: maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractorTest.kt\n\n**Acceptance Criteria:**\n- [ ] ExpectedSchemaExtractor.extract(rootEntityHierarchies) returns correct ExpectedTableDef per hierarchy (columns/types/nullable/PK/FK/indexes, including history tables and many-to-many join tables as separate tables).\n- [ ] Task 1's CreateTableSqlRendererTest still passes unchanged after the refactor.\n\n**Verify:** ./gradlew :maia-gen:maia-gen-generator:test --tests \\\"*ExpectedSchemaExtractorTest*\\\" --tests \\\"*CreateTableSqlRendererTest*\\\" -> PASS\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractor.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRenderer.kt\", \"maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractorTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:test --tests '*ExpectedSchemaExtractorTest*' --tests '*CreateTableSqlRendererTest*'\", \"acceptanceCriteria\": [\"ExpectedSchemaExtractor correctly derives columns/PK/FK/indexes\", \"CreateTableSqlRenderer output unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 3: New module skeleton + actual-schema data model + type normalizer",
+      "status": "pending",
+      "description": "**Goal:** Stand up the maia-gen-schema-check module; build the actual-side data model and the Postgres type-string normalizer, no DB connection yet.\n\n**Files:**\n- Modify: settings.gradle.kts\n- Create: maia-gen/maia-gen-schema-check/build.gradle.kts\n- Create: maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/ActualSchemaModel.kt\n- Create: maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/PostgresActualTypeNormalizer.kt\n- Create: maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/PostgresActualTypeNormalizerTest.kt\n\n**Acceptance Criteria:**\n- [ ] New module compiles and its test task runs.\n- [ ] PostgresActualTypeNormalizer maps every information_schema type representation used by JdbcCompatibleType to the matching expected-side postgresType string, including varchar length suffix and array types.\n\n**Verify:** ./gradlew :maia-gen:maia-gen-schema-check:test --tests \\\"*PostgresActualTypeNormalizerTest*\\\" -> PASS\n\n```json:metadata\n{\"files\": [\"settings.gradle.kts\", \"maia-gen/maia-gen-schema-check/build.gradle.kts\", \"maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/ActualSchemaModel.kt\", \"maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/PostgresActualTypeNormalizer.kt\", \"maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/PostgresActualTypeNormalizerTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-schema-check:test --tests '*PostgresActualTypeNormalizerTest*'\", \"acceptanceCriteria\": [\"Module compiles\", \"Normalizer covers every JdbcCompatibleType value\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 4: PostgresSchemaIntrospector",
+      "status": "pending",
+      "blockedBy": [
+        2
+      ],
+      "description": "**Goal:** Introspect real tables/columns/PKs/FKs/indexes in given Postgres schemas via JDBC, producing List<ActualTableDef>.\n\n**Files:**\n- Create: maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/PostgresSchemaIntrospector.kt\n- Create: maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/PostgresSchemaIntrospectorTest.kt\n\n**Acceptance Criteria:**\n- [ ] introspectSchemas(schemas) returns one ActualTableDef per table found, with correct normalized columns, PK columns, FKs, and indexes, verified against a real Testcontainers Postgres.\n\n**Verify:** ./gradlew :maia-gen:maia-gen-schema-check:test --tests \\\"*PostgresSchemaIntrospectorTest*\\\" -> PASS (requires Docker)\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/PostgresSchemaIntrospector.kt\", \"maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/PostgresSchemaIntrospectorTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-schema-check:test --tests '*PostgresSchemaIntrospectorTest*'\", \"acceptanceCriteria\": [\"Introspector returns correct columns/PK/FK/indexes against a real Postgres instance\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 5: SchemaComparator diff engine",
+      "status": "pending",
+      "blockedBy": [
+        1,
+        2
+      ],
+      "description": "**Goal:** Diff List<ExpectedTableDef> against List<ActualTableDef>, producing a SchemaDiffReport with missing=error / extra=warning classification.\n\n**Files:**\n- Create: maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaComparator.kt\n- Create: maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaComparatorTest.kt\n\n**Acceptance Criteria:**\n- [ ] Missing table/column/PK-mismatch/missing-FK/missing-index all set hasErrors=true.\n- [ ] Extra table/column/FK/index reported but don't set hasErrors.\n- [ ] Column type/nullability mismatch reported as ColumnMismatch (error).\n\n**Verify:** ./gradlew :maia-gen:maia-gen-schema-check:test --tests \\\"*SchemaComparatorTest*\\\" -> PASS\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaComparator.kt\", \"maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaComparatorTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-schema-check:test --tests '*SchemaComparatorTest*'\", \"acceptanceCriteria\": [\"All diff categories covered: missing/extra table, column, PK, FK, index\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 5,
+      "subject": "Task 6: Console + JSON reporters",
+      "status": "pending",
+      "blockedBy": [
+        4
+      ],
+      "description": "**Goal:** Render a SchemaDiffReport as human-readable console output and as JSON, from the same report object.\n\n**Files:**\n- Create: maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckReporter.kt\n- Create: maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckReporterTest.kt\n\n**Acceptance Criteria:**\n- [ ] Console output lists every table with a check/cross marker and a summary count line.\n- [ ] JSON output round-trips correctly (uses tools.jackson.module:jackson-module-kotlin + KotlinModule.Builder().build(), not the mistyped jackson-kotlin-module coordinate).\n\n**Verify:** ./gradlew :maia-gen:maia-gen-schema-check:test --tests \\\"*SchemaCheckReporterTest*\\\" -> PASS\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckReporter.kt\", \"maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckReporterTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-schema-check:test --tests '*SchemaCheckReporterTest*'\", \"acceptanceCriteria\": [\"Console output correct\", \"JSON round-trips\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 6,
+      "subject": "Task 7: SchemaCheckMain CLI entry point",
+      "status": "pending",
+      "blockedBy": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "description": "**Goal:** Wire instantiation + extraction + introspection + comparison + reporting into one entry point: main(args) parsing key=value args, plus a library function runSchemaCheck(args: SchemaCheckArgs): Int for the Gradle task to call directly.\n\n**Files:**\n- Create: maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckArgs.kt\n- Create: maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckMain.kt\n- Create: maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckMainTest.kt\n\n**Acceptance Criteria:**\n- [ ] Exit code 0 when DB matches spec, 1 when diff has errors, 2 when spec class can't be instantiated or DB connection fails.\n- [ ] format=json produces JSON output; default is console text.\n- [ ] Test fixture correctly implements ApplicationModelDefProvider via an ApplicationSpec subclass wrapping an AbstractSpec (not AbstractSpec alone).\n\n**Verify:** ./gradlew :maia-gen:maia-gen-schema-check:test --tests \\\"*SchemaCheckMainTest*\\\" -> PASS (requires Docker)\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckArgs.kt\", \"maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckMain.kt\", \"maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaCheckMainTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-schema-check:test --tests '*SchemaCheckMainTest*'\", \"acceptanceCriteria\": [\"Exit codes 0/1/2 all correct\", \"json and text formats both work\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 7,
+      "subject": "Task 8: Gradle task in maia-gradle-plugin",
+      "status": "pending",
+      "blockedBy": [
+        6
+      ],
+      "description": "**Goal:** Add a maiaSchemaCheck Gradle task wrapping runSchemaCheck(SchemaCheckArgs) via WorkerExecutor, following the existing MaiaGenerationTask pattern, with new properties on the shared maia extension.\n\n**Files:**\n- Modify: plugins/maia-gradle-plugin/build.gradle.kts\n- Modify: plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaGenerationExtension.kt\n- Modify: plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaGenerationPlugin.kt\n- Create: plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaSchemaCheckTask.kt\n- Create: plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaSchemaCheckWorkAction.kt\n- Create: plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaSchemaCheckWorkParameters.kt\n- Create: plugins/maia-gradle-plugin/src/test/kotlin/org/maiaframework/gen/plugin/MaiaSchemaCheckTaskFunctionalTest.kt\n\n**Acceptance Criteria:**\n- [ ] maiaSchemaCheck task registered, reads maia { schemaCheckApplicationSpecClassName/schemaCheckJdbcUrl/schemaCheckUsername/schemaCheckPassword/schemaCheckOutputFormat/schemaCheckIgnoreErrors }.\n- [ ] Task fails the build on diff errors unless schemaCheckIgnoreErrors=true; always fails on exit code 2.\n- [ ] Wiring verified via a ProjectBuilder-based test (not a GradleRunner functional test, which would need unresolvable Maven coordinates in an isolated build).\n\n**Verify:** ./gradlew :plugins:maia-gradle-plugin:test --tests \\\"*MaiaSchemaCheckTaskFunctionalTest*\\\" -> PASS (no Docker required)\n\n```json:metadata\n{\"files\": [\"plugins/maia-gradle-plugin/build.gradle.kts\", \"plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaGenerationExtension.kt\", \"plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaGenerationPlugin.kt\", \"plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaSchemaCheckTask.kt\", \"plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaSchemaCheckWorkAction.kt\", \"plugins/maia-gradle-plugin/src/main/kotlin/org/maiaframework/gen/plugin/MaiaSchemaCheckWorkParameters.kt\", \"plugins/maia-gradle-plugin/src/test/kotlin/org/maiaframework/gen/plugin/MaiaSchemaCheckTaskFunctionalTest.kt\"], \"verifyCommand\": \"./gradlew :plugins:maia-gradle-plugin:test --tests '*MaiaSchemaCheckTaskFunctionalTest*'\", \"acceptanceCriteria\": [\"Task registered and wired to extension\", \"maiaSchemaCheckImplementation configuration carries base dependency\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 8,
+      "subject": "Task 9: End-to-end integration test against maia-showcase",
+      "status": "pending",
+      "blockedBy": [
+        6
+      ],
+      "description": "**Goal:** Validate the whole tool against the one real spec + real hand-written Flyway migrations in this repo.\n\n**Files:**\n- Create: maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/ShowcaseSchemaCheckIntegrationTest.kt\n- Modify: maia-gen/maia-gen-schema-check/build.gradle.kts\n\n**Acceptance Criteria:**\n- [ ] Running against maia-showcase's real spec + Testcontainers Postgres migrated with maia-showcase/dao's real Flyway migrations reports no errors, OR documents genuine pre-existing drift as a finding (not hidden by weakening the assertion).\n- [ ] A deliberately dropped column is correctly reported as an error.\n\n**Verify:** ./gradlew :maia-gen:maia-gen-schema-check:test --tests \\\"*ShowcaseSchemaCheckIntegrationTest*\\\" -> PASS (requires Docker)\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/ShowcaseSchemaCheckIntegrationTest.kt\", \"maia-gen/maia-gen-schema-check/build.gradle.kts\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-schema-check:test --tests '*ShowcaseSchemaCheckIntegrationTest*'\", \"acceptanceCriteria\": [\"Clean run against real showcase spec+migrations (or documented genuine drift)\", \"Seeded drift correctly detected\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-08-30T23:10:34.899437Z"
+}
