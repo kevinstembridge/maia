@@ -34,7 +34,7 @@
     {
       "id": 4,
       "subject": "Task 5: SchemaComparator diff engine",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         1,
         2
