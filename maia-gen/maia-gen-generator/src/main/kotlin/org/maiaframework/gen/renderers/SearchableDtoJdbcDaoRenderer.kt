@@ -322,9 +322,9 @@ class SearchableDtoJdbcDaoRenderer(
                 val referencedEntityField = searchableDtoFieldDef.entityAndField.referencedEntityField!!
                 val tableIsReferencedCount = foreignKeyTableCount[searchableDtoFieldDef.schemaAndTableName] ?: 0
                 val referencedTableAlias =
-                    if (tableIsReferencedCount > 1) referencedEntityField.classFieldName else searchableDtoFieldDef.schemaAndTableName
+                    if (tableIsReferencedCount > 1) quotedSqlIdentifier(referencedEntityField.classFieldName) else searchableDtoFieldDef.schemaAndTableName
 
-                """inner join ${searchableDtoFieldDef.schemaAndTableName}${if (tableIsReferencedCount > 1) " ${referencedEntityField.classFieldName}" else ""}
+                """inner join ${searchableDtoFieldDef.schemaAndTableName}${if (tableIsReferencedCount > 1) " ${quotedSqlIdentifier(referencedEntityField.classFieldName)}" else ""}
                     on ${referencedEntityField.schemaAndTableName}.${referencedEntityField.databaseColumnName} = ${referencedTableAlias}.id""".trimIndent()
 
             }
@@ -341,7 +341,7 @@ class SearchableDtoJdbcDaoRenderer(
                 val foreignTableIsReferencedMoreThanOnce = numberOfTimesTheForeignTableIsReferenced > 1
 
                 val tableOrAlias = if (searchableDtoFieldDef.isForeignKeyRef && foreignTableIsReferencedMoreThanOnce) {
-                    searchableDtoFieldDef.entityAndField.referencedEntityFieldNotNull.classFieldName
+                    quotedSqlIdentifier(searchableDtoFieldDef.entityAndField.referencedEntityFieldNotNull.classFieldName)
                 } else {
                     searchableDtoFieldDef.schemaAndTableName
                 }
@@ -360,6 +360,15 @@ class SearchableDtoJdbcDaoRenderer(
 
             }.plus(selectTypeDiscriminatorColumn())
             .filterNotNull()
+
+    }
+
+
+    // Field-derived table aliases (e.g. "user", "order", "group") can collide with SQL reserved
+    // words, so they must always be quoted when used as an identifier in generated SQL.
+    private fun quotedSqlIdentifier(classFieldName: ClassFieldName): String {
+
+        return "\"$classFieldName\""
 
     }
 
