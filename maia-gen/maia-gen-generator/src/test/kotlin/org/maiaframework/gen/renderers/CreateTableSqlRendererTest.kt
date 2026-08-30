@@ -102,6 +102,18 @@ class CreateTableSqlRendererTest {
         assertThat(sql).contains("CREATE TABLE test.base (")
         assertThat(sql).contains("CREATE TABLE test.base_history (")
 
+        // Scope these assertions to the base_history table's own CREATE TABLE block, not just
+        // anywhere in the file, so they can't accidentally pass by matching the base table instead.
+        val historyTableBlock = sql.substringAfter("CREATE TABLE test.base_history (").substringBefore(");")
+
+        // The history table adds a change_type column (recording insert/update/delete) that the
+        // base table does not have.
+        assertThat(historyTableBlock).contains("change_type text NOT NULL")
+        // The history table's PK is composite (id, version) — one row per version — unlike the
+        // base table's single-column PRIMARY KEY(id).
+        assertThat(historyTableBlock).contains("PRIMARY KEY(id, version)")
+        assertThat(sql.substringAfter("CREATE TABLE test.base (").substringBefore(");")).doesNotContain("change_type")
+
     }
 
 }
