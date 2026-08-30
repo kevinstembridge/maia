@@ -57,7 +57,7 @@ class WebLayerModuleGenerator(
 
     private fun processForeignKeyEntityDefs() {
 
-        this.applicationModelDef.entitiesReferencedByForeignKey.forEach { renderCheckForeignKeyReferencesEndpoint(it) }
+        this.applicationModelDef.entitiesReferencedByForeignKey.filter { it.isDeletable }.forEach { renderCheckForeignKeyReferencesEndpoint(it) }
 
     }
 

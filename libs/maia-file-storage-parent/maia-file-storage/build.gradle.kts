@@ -13,6 +13,5 @@ dependencies {
 
     implementation("commons-io:commons-io")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api")
-    implementation("org.springframework:spring-context")
 
 }

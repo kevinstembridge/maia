@@ -498,7 +498,7 @@ class LeftManyCrudService(
         }
 
         this.leftToRightSystemEffectiveRepo.findByLeftSystemEffective(id).forEach {
-            this.leftToRightSystemEffectiveRepo.deleteByPrimaryKey(it.id)
+            this.leftToRightSystemEffectiveRepo.closeEffectiveRange(it.id)
         }
 
         if (this.leftToRightSystemSingleEffectiveRepo.findEffectiveByLeftSystemSingleEffective(id) != null) {
@@ -506,7 +506,7 @@ class LeftManyCrudService(
         }
 
         this.leftToRightSystemSingleEffectiveRepo.findByLeftSystemSingleEffective(id).forEach {
-            this.leftToRightSystemSingleEffectiveRepo.deleteByPrimaryKey(it.id)
+            this.leftToRightSystemSingleEffectiveRepo.closeEffectiveRange(it.id)
         }
 
         if (this.leftToRightUserEffectiveRepo.existsByLeftUserEffective(id)) {
@@ -518,7 +518,7 @@ class LeftManyCrudService(
         }
 
         this.leftToRightComplexRepo.findByLeft(id).forEach {
-            this.leftToRightComplexRepo.deleteByPrimaryKey(it.id)
+            this.leftToRightComplexRepo.closeEffectiveRange(it.id)
         }
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

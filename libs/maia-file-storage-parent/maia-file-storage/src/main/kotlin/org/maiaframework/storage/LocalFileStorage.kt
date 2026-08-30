@@ -8,9 +8,6 @@ import org.maiaframework.domain.types.Md5Checksum
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.input.BoundedInputStream
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Profile
-import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -18,10 +15,8 @@ import java.security.DigestInputStream
 import java.security.MessageDigest
 import java.time.Instant
 
-@Component
-@Profile("fileStorage_local")
 class LocalFileStorage(
-        @Value("\${maia.file-storage.local.base-dir}") private val baseDir: File,
+        private val baseDir: File,
         private val fileStorageEntryDao: FileStorageEntryDao
 ): FileStorage {
 

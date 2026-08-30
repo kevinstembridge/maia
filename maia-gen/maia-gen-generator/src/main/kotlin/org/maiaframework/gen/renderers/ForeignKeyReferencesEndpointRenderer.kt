@@ -4,7 +4,11 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 
-class ForeignKeyReferencesEndpointRenderer(private val entityDef: EntityDef) : AbstractKotlinRenderer(entityDef.foreignKeyReferencesEndpointClassDef) {
+class ForeignKeyReferencesEndpointRenderer(
+    private val entityDef: EntityDef
+) : AbstractKotlinRenderer(
+    entityDef.foreignKeyReferencesEndpointClassDef
+) {
 
 
     init {
