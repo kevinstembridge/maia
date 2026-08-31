@@ -71,6 +71,16 @@ class PostgresActualTypeNormalizerTest {
     }
 
     @Test
+    fun `normalizes tstzrange, the synthetic type ExpectedSchemaExtractor emits for effective_range columns`() {
+
+        // tstzrange has no JdbcCompatibleType — it's added directly by ExpectedSchemaExtractor
+        // for effective-range entities (see the "Note on the effective_range column" in the
+        // schema check design), so it's covered here rather than in the table-driven cases above.
+        assertThat(PostgresActualTypeNormalizer.normalize("tstzrange", "tstzrange", null)).isEqualTo("tstzrange")
+
+    }
+
+    @Test
     fun `throws on an unrecognized data_type`() {
 
         assertThatThrownBy { PostgresActualTypeNormalizer.normalize("money", "money", null) }

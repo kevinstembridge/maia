@@ -25,6 +25,7 @@ object PostgresActualTypeNormalizer {
             "uuid" -> "uuid"
             "timestamp without time zone" -> "timestamp"
             "timestamp with time zone" -> "timestamp(3) with time zone"
+            "tstzrange" -> "tstzrange"
             else -> throw IllegalArgumentException("Unrecognized Postgres data_type '$dataType' (udt_name '$udtName') — add a mapping in PostgresActualTypeNormalizer.")
         }
 
