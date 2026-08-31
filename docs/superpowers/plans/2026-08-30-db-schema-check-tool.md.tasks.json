@@ -74,12 +74,12 @@
     {
       "id": 8,
       "subject": "Task 9: End-to-end integration test against maia-showcase",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         6
       ],
       "description": "**Goal:** Validate the whole tool against the one real spec + real hand-written Flyway migrations in this repo.\n\n**Files:**\n- Create: maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/ShowcaseSchemaCheckIntegrationTest.kt\n- Modify: maia-gen/maia-gen-schema-check/build.gradle.kts\n\n**Acceptance Criteria:**\n- [ ] Running against maia-showcase's real spec + Testcontainers Postgres migrated with maia-showcase/dao's real Flyway migrations reports no errors, OR documents genuine pre-existing drift as a finding (not hidden by weakening the assertion).\n- [ ] A deliberately dropped column is correctly reported as an error.\n\n**Verify:** ./gradlew :maia-gen:maia-gen-schema-check:test --tests \\\"*ShowcaseSchemaCheckIntegrationTest*\\\" -> PASS (requires Docker)\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/ShowcaseSchemaCheckIntegrationTest.kt\", \"maia-gen/maia-gen-schema-check/build.gradle.kts\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-schema-check:test --tests '*ShowcaseSchemaCheckIntegrationTest*'\", \"acceptanceCriteria\": [\"Clean run against real showcase spec+migrations (or documented genuine drift)\", \"Seeded drift correctly detected\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-08-31T11:15:00.000000+00:00"
+  "lastUpdated": "2026-08-31T11:30:00.000000+00:00"
 }
