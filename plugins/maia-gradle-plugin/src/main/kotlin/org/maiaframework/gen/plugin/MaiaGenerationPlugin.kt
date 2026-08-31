@@ -159,6 +159,7 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
             outputFormat.set(extension.schemaCheckOutputFormat)
             outputFile.set(extension.schemaCheckOutputFile)
             ignoreErrors.set(extension.schemaCheckIgnoreErrors)
+            fixSqlOutputFile.set(extension.schemaCheckFixSqlOutputFile)
 
         }
 

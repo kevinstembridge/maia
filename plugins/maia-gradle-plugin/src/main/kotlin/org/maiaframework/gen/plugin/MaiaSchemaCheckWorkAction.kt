@@ -19,6 +19,7 @@ abstract class MaiaSchemaCheckWorkAction : WorkAction<MaiaSchemaCheckWorkParamet
                 password = password,
                 format = parameters.outputFormat.getOrElse("text"),
                 outputFile = parameters.outputFile.orNull?.asFile,
+                fixSqlOutputFile = parameters.fixSqlOutputFile.orNull?.asFile,
             )
         )
 

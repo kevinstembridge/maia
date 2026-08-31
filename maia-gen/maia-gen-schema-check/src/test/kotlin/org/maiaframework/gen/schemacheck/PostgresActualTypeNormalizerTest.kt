@@ -81,6 +81,13 @@ class PostgresActualTypeNormalizerTest {
     }
 
     @Test
+    fun `normalizes bytea, which has no JdbcCompatibleType since no model field type maps to it yet`() {
+
+        assertThat(PostgresActualTypeNormalizer.normalize("bytea", "bytea", null)).isEqualTo("bytea")
+
+    }
+
+    @Test
     fun `throws on an unrecognized data_type`() {
 
         assertThatThrownBy { PostgresActualTypeNormalizer.normalize("money", "money", null) }

@@ -15,12 +15,14 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
     fun introspectSchemas(schemas: Set<String>): List<ActualTableDef> {
 
         return listTables(schemas).map { (schema, table) ->
+            val primaryKey = primaryKeyFor(schema, table)
             ActualTableDef(
                 schemaAndTableName = "$schema.$table",
                 columns = columnsFor(schema, table),
-                primaryKeyColumns = primaryKeyColumnsFor(schema, table),
+                primaryKeyColumns = primaryKey.columns,
                 foreignKeys = foreignKeysFor(schema, table),
                 indexes = indexesFor(schema, table),
+                primaryKeyConstraintName = primaryKey.constraintName,
             )
         }
 
@@ -86,10 +88,12 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
 
     }
 
-    private fun primaryKeyColumnsFor(schema: String, table: String): List<String> {
+    private data class PrimaryKeyInfo(val columns: List<String>, val constraintName: String?)
+
+    private fun primaryKeyFor(schema: String, table: String): PrimaryKeyInfo {
 
         val sql = """
-            select kcu.column_name
+            select kcu.column_name, tc.constraint_name
             from information_schema.table_constraints tc
             join information_schema.key_column_usage kcu
                 on tc.constraint_name = kcu.constraint_name and tc.table_schema = kcu.table_schema
@@ -102,8 +106,12 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
             statement.setString(2, table)
             statement.executeQuery().use { rs ->
                 val columns = mutableListOf<String>()
-                while (rs.next()) columns.add(rs.getString("column_name"))
-                return columns
+                var constraintName: String? = null
+                while (rs.next()) {
+                    columns.add(rs.getString("column_name"))
+                    constraintName = rs.getString("constraint_name")
+                }
+                return PrimaryKeyInfo(columns, constraintName)
             }
         }
 
@@ -111,18 +119,29 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
 
     private fun foreignKeysFor(schema: String, table: String): List<ActualForeignKeyDef> {
 
+        // information_schema.key_column_usage/constraint_column_usage have no join key that pairs
+        // a referencing column with its corresponding referenced column -- joining them on
+        // constraint_name alone produces every combination of local and referenced columns (a
+        // cross product) once a foreign key spans more than one column, not just the correct
+        // pairs. pg_constraint's conkey/confkey are parallel int2[] arrays already in the correct
+        // per-column correspondence for that one constraint, so zipping them with a two-array
+        // unnest() (which pairs elements positionally) sidesteps the ambiguity entirely, for both
+        // single- and multi-column foreign keys.
         val sql = """
             select
-                kcu.column_name,
-                ccu.table_schema as referenced_schema,
-                ccu.table_name as referenced_table,
-                ccu.column_name as referenced_column
-            from information_schema.table_constraints tc
-            join information_schema.key_column_usage kcu
-                on tc.constraint_name = kcu.constraint_name and tc.table_schema = kcu.table_schema
-            join information_schema.constraint_column_usage ccu
-                on tc.constraint_name = ccu.constraint_name and tc.table_schema = ccu.table_schema
-            where tc.constraint_type = 'FOREIGN KEY' and tc.table_schema = ? and tc.table_name = ?
+                local_att.attname as column_name,
+                fn.nspname as referenced_schema,
+                fc.relname as referenced_table,
+                ref_att.attname as referenced_column
+            from pg_constraint con
+            join pg_class c on c.oid = con.conrelid
+            join pg_namespace n on n.oid = c.relnamespace
+            join pg_class fc on fc.oid = con.confrelid
+            join pg_namespace fn on fn.oid = fc.relnamespace
+            join unnest(con.conkey, con.confkey) as cols(local_attnum, ref_attnum) on true
+            join pg_attribute local_att on local_att.attrelid = con.conrelid and local_att.attnum = cols.local_attnum
+            join pg_attribute ref_att on ref_att.attrelid = con.confrelid and ref_att.attnum = cols.ref_attnum
+            where con.contype = 'f' and n.nspname = ? and c.relname = ?
         """.trimIndent()
 
         connection.prepareStatement(sql).use { statement ->

@@ -71,8 +71,10 @@ class IndexDefBuilder(
                     )
                 }.toList()
 
-        if (indexFieldDefs.isEmpty()) {
-            throw IllegalStateException("An index definition for entity '$entityBaseName' declares fields named ${sortDirectionByFieldName.keys} but the entity only has fields name ${entityFieldDefs.map { it.classFieldName }}.")
+        val resolvedFieldNames = indexFieldDefs.map { it.entityFieldDef.classFieldDef.classFieldName.value }.toSet()
+        val unresolvedFieldNames = sortDirectionByFieldName.keys - resolvedFieldNames
+        if (unresolvedFieldNames.isNotEmpty()) {
+            throw IllegalStateException("An index definition for entity '$entityBaseName' declares fields named $unresolvedFieldNames that do not exist on the entity. The entity's fields are named ${entityFieldDefs.map { it.classFieldName }}.")
         }
 
         return IndexDef(

@@ -28,6 +28,12 @@ class ManyToManyEntityDefBuilder {
     internal var createdByNullable: Boolean = false
 
 
+    internal var lastModifiedByEntityDef: EntityDef? = null
+
+
+    internal var lastModifiedByNullable: Boolean = false
+
+
     fun effectiveRange(
         managedBy: EffectiveRangeManagedBy = EffectiveRangeManagedBy.SYSTEM,
         dateType: EffectiveRangeDateType = EffectiveRangeDateType.TIMESTAMP,
@@ -57,6 +63,14 @@ class ManyToManyEntityDefBuilder {
 
         this.createdByEntityDef = entityDef
         this.createdByNullable = nullable
+
+    }
+
+
+    fun field_lastModifiedById(entityDef: EntityDef, nullable: Boolean = false) {
+
+        this.lastModifiedByEntityDef = entityDef
+        this.lastModifiedByNullable = nullable
 
     }
 

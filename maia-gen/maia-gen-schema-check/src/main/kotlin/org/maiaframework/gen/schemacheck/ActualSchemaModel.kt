@@ -24,4 +24,5 @@ data class ActualTableDef(
     val primaryKeyColumns: List<String>,
     val foreignKeys: List<ActualForeignKeyDef>,
     val indexes: List<ActualIndexDef>,
+    val primaryKeyConstraintName: String? = null,
 )

@@ -20,4 +20,6 @@ interface MaiaSchemaCheckWorkParameters : WorkParameters {
 
     val ignoreErrors: Property<Boolean>
 
+    val fixSqlOutputFile: RegularFileProperty
+
 }

@@ -508,6 +508,10 @@ abstract class AbstractSpec protected constructor(
                 field_createdById(createdByEntityDef, nullable = manyToManyBuilder.createdByNullable)
             }
 
+            manyToManyBuilder.lastModifiedByEntityDef?.let { lastModifiedByEntityDef ->
+                field_lastModifiedById(lastModifiedByEntityDef, nullable = manyToManyBuilder.lastModifiedByNullable)
+            }
+
             manyToManyBuilder.effectiveRangeDef?.let { rangeDef ->
                 if (rangeDef.dateType == EffectiveRangeDateType.TIMESTAMP)
                     withEffectiveTimestamps(managedBy = rangeDef.managedBy, hasSingleEffectiveRecord = rangeDef.hasSingleEffectiveRecord.value)

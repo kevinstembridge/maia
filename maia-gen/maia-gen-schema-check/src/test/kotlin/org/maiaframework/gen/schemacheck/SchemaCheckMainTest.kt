@@ -4,12 +4,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.ApplicationSpec
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.testing.postgresql.SingletonPostgresqlContainer
+import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
 
@@ -104,6 +106,27 @@ class SchemaCheckMainTest {
         )
 
         assertThat(exitCode).isEqualTo(1)
+
+    }
+
+    @Test
+    fun `writes a fix SQL file when fixSqlOutputFile is set`(@TempDir tempDir: File) {
+
+        val fixSqlFile = tempDir.resolve("fix.sql")
+
+        val exitCode = runSchemaCheck(
+            SchemaCheckArgs(
+                applicationSpecClassName = MatchingApplicationSpec::class.java.name,
+                jdbcUrl = jdbcUrl,
+                username = username,
+                password = password,
+                fixSqlOutputFile = fixSqlFile,
+            )
+        )
+
+        assertThat(exitCode).isEqualTo(1)
+        assertThat(fixSqlFile).exists()
+        assertThat(fixSqlFile.readText()).contains("schemacheckmaintest.widget")
 
     }
 

@@ -15,7 +15,7 @@ data class ColumnMismatch(
     val actualNullable: Boolean,
 )
 
-data class PrimaryKeyMismatch(val expected: List<String>, val actual: List<String>)
+data class PrimaryKeyMismatch(val expected: List<String>, val actual: List<String>, val actualConstraintName: String? = null)
 
 data class TableDiff(
     val schemaAndTableName: String,
@@ -37,6 +37,12 @@ data class TableDiff(
                 || primaryKeyMismatch != null
                 || missingForeignKeys.isNotEmpty()
                 || missingIndexes.isNotEmpty()
+
+    val hasWarnings: Boolean
+        get() = status == TableStatus.EXTRA
+                || extraColumns.isNotEmpty()
+                || extraForeignKeys.isNotEmpty()
+                || extraIndexes.isNotEmpty()
 
 }
 
@@ -94,7 +100,7 @@ class SchemaComparator {
         }
 
         val primaryKeyMismatch = if (expected.primaryKeyColumns != actual.primaryKeyColumns) {
-            PrimaryKeyMismatch(expected.primaryKeyColumns, actual.primaryKeyColumns)
+            PrimaryKeyMismatch(expected.primaryKeyColumns, actual.primaryKeyColumns, actual.primaryKeyConstraintName)
         } else {
             null
         }

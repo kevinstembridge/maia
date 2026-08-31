@@ -23,6 +23,7 @@ object PostgresActualTypeNormalizer {
             "date" -> "date"
             "jsonb" -> "jsonb"
             "uuid" -> "uuid"
+            "bytea" -> "bytea"
             "timestamp without time zone" -> "timestamp"
             "timestamp with time zone" -> "timestamp(3) with time zone"
             "tstzrange" -> "tstzrange"

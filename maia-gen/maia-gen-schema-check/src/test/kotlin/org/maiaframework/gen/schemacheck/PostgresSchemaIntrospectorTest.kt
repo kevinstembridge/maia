@@ -24,6 +24,7 @@ class PostgresSchemaIntrospectorTest {
             connection.createStatement().use { statement ->
                 statement.execute("create schema if not exists introspector_test")
                 statement.execute("create schema if not exists introspector_empty_test")
+                statement.execute("create schema if not exists introspector_composite_fk_test")
 
                 statement.execute(
                     """
@@ -57,6 +58,32 @@ class PostgresSchemaIntrospectorTest {
                 // tables from spec entities), so it must never be reported by the introspector —
                 // otherwise it would surface as a permanent, spurious "extra table" diff.
                 statement.execute("create view introspector_test.parent_view as select id, name from introspector_test.parent")
+
+                // A composite foreign key: (parent_id, parent_version) -> composite_parent(id, version).
+                // Deliberately not a simple id->id pairing, and deliberately not alphabetically or
+                // attnum-order self-consistent, so a positional mix-up between the two columns would
+                // show up as a wrong referenced_column rather than accidentally still being correct.
+                statement.execute(
+                    """
+                    create table introspector_composite_fk_test.composite_parent (
+                        version integer not null,
+                        id bigint not null,
+                        primary key (id, version)
+                    )
+                    """.trimIndent()
+                )
+                statement.execute(
+                    """
+                    create table introspector_composite_fk_test.composite_child (
+                        id bigint not null,
+                        parent_version integer not null,
+                        parent_id bigint not null,
+                        primary key (id),
+                        foreign key (parent_id, parent_version)
+                            references introspector_composite_fk_test.composite_parent(id, version)
+                    )
+                    """.trimIndent()
+                )
             }
 
         }
@@ -67,6 +94,7 @@ class PostgresSchemaIntrospectorTest {
             connection.createStatement().use { statement ->
                 statement.execute("drop schema introspector_test cascade")
                 statement.execute("drop schema introspector_empty_test cascade")
+                statement.execute("drop schema introspector_composite_fk_test cascade")
             }
             connection.close()
         }
@@ -86,6 +114,7 @@ class PostgresSchemaIntrospectorTest {
 
         val parent = tables.single { it.schemaAndTableName == "introspector_test.parent" }
         assertThat(parent.primaryKeyColumns).containsExactly("id")
+        assertThat(parent.primaryKeyConstraintName).isEqualTo("parent_pkey")
         assertThat(parent.columns).contains(
             ActualColumnDef("id", "bigint", nullable = false),
             ActualColumnDef("name", "varchar(50)", nullable = false),
@@ -115,6 +144,22 @@ class PostgresSchemaIntrospectorTest {
         val compositeIndex = child.indexes.single { it.name == "child_title_count_idx" }
         assertThat(compositeIndex.columns).containsExactly("title", "count")
         assertThat(compositeIndex.unique).isFalse()
+
+    }
+
+    @Test
+    fun `pairs each local column of a composite foreign key with its correct referenced column`() {
+
+        val tables = PostgresSchemaIntrospector(connection).introspectSchemas(setOf("introspector_composite_fk_test"))
+
+        val child = tables.single { it.schemaAndTableName == "introspector_composite_fk_test.composite_child" }
+
+        // A naive join of key_column_usage to constraint_column_usage on constraint_name alone
+        // would produce all 4 local-x-referenced combinations here, not just the 2 correct pairs.
+        assertThat(child.foreignKeys).containsExactlyInAnyOrder(
+            ActualForeignKeyDef("parent_id", "introspector_composite_fk_test.composite_parent", "id"),
+            ActualForeignKeyDef("parent_version", "introspector_composite_fk_test.composite_parent", "version"),
+        )
 
     }
 

@@ -9,6 +9,7 @@ data class SchemaCheckArgs(
     val password: String,
     val format: String = "text",
     val outputFile: File? = null,
+    val fixSqlOutputFile: File? = null,
 ) {
 
     companion object {
@@ -28,6 +29,7 @@ data class SchemaCheckArgs(
                     ?: throw IllegalArgumentException("Expecting either a password=<...> argument or a MAIA_SCHEMA_CHECK_DB_PASSWORD environment variable"),
                 format = argsMap["format"] ?: "text",
                 outputFile = argsMap["outputFile"]?.let { File(it) },
+                fixSqlOutputFile = argsMap["fixSqlOutputFile"]?.let { File(it) },
             )
 
         }

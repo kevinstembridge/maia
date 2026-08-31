@@ -17,6 +17,7 @@ class MaiaSchemaCheckTaskFunctionalTest {
         extension.schemaCheckJdbcUrl.set("jdbc:postgresql://localhost:5432/example")
         extension.schemaCheckUsername.set("example_user")
         extension.schemaCheckPassword.set("example_password")
+        extension.schemaCheckFixSqlOutputFile.set(project.layout.buildDirectory.file("reports/schema-check-fix.sql"))
 
         // Extension properties are wired at task-registration time (not lazily re-read), so
         // force configuration to run now rather than waiting for Gradle's normal task-graph
@@ -30,6 +31,7 @@ class MaiaSchemaCheckTaskFunctionalTest {
         assertThat(task.username.get()).isEqualTo("example_user")
         assertThat(task.outputFormat.get()).isEqualTo("text") // convention default
         assertThat(task.ignoreErrors.get()).isFalse() // convention default
+        assertThat(task.fixSqlOutputFile.get().asFile.name).isEqualTo("schema-check-fix.sql")
 
         val configuration = project.configurations.getByName("maiaSchemaCheckImplementation")
         assertThat(configuration.dependencies.map { "${it.group}:${it.name}" }).contains("org.maiaframework:maia-gen-schema-check")

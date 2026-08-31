@@ -56,6 +56,9 @@ abstract class MaiaGenerationExtension @Inject constructor(objects: ObjectFactor
     val schemaCheckIgnoreErrors = objects.property(Boolean::class.java)
 
 
+    val schemaCheckFixSqlOutputFile = objects.fileProperty()
+
+
     @Nested
     abstract fun getDependencies(): MaiaGenerationDependencies // = objects.newInstance(MaiaGenerationDependencies::class.java)
 

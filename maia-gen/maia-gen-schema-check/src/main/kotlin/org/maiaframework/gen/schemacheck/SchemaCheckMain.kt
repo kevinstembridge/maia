@@ -31,6 +31,13 @@ fun runSchemaCheck(args: SchemaCheckArgs): Int {
     val schemas = expectedTables.map { it.schemaAndTableName.substringBefore(".") }.toSet()
 
     val report = try {
+        // DriverManager only auto-registers drivers via ServiceLoader once per JVM, the first time
+        // its class is initialized. When this code runs inside a Gradle worker with classloader
+        // isolation, each work item gets its own classloader instance, and DriverManager rejects
+        // drivers it can't associate with the *current* caller's classloader. Explicitly loading
+        // the driver class here (using this class's own classloader) re-registers it every time,
+        // so it's always visible to the DriverManager.getConnection() call below.
+        Class.forName("org.postgresql.Driver")
         DriverManager.getConnection(args.jdbcUrl, args.username, args.password).use { connection ->
             val actualTables = PostgresSchemaIntrospector(connection).introspectSchemas(schemas)
             SchemaComparator().compare(expectedTables, actualTables)
@@ -46,6 +53,10 @@ fun runSchemaCheck(args: SchemaCheckArgs): Int {
         args.outputFile.writeText(output)
     } else {
         println(output)
+    }
+
+    if (args.fixSqlOutputFile != null) {
+        args.fixSqlOutputFile.writeText(SchemaFixSqlGenerator.generate(report))
     }
 
     return if (report.hasErrors) 1 else 0

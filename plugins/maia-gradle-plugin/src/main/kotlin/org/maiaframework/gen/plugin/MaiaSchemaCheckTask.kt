@@ -36,6 +36,10 @@ abstract class MaiaSchemaCheckTask : DefaultTask() {
     @get:Input
     abstract val ignoreErrors: Property<Boolean>
 
+    @get:OutputFile
+    @get:Optional
+    abstract val fixSqlOutputFile: RegularFileProperty
+
     @get:Inject
     abstract val workerExecutor: org.gradle.workers.WorkerExecutor
 
@@ -56,6 +60,7 @@ abstract class MaiaSchemaCheckTask : DefaultTask() {
                 parameters.outputFormat.set(outputFormat)
                 parameters.outputFile.set(outputFile)
                 parameters.ignoreErrors.set(ignoreErrors)
+                parameters.fixSqlOutputFile.set(fixSqlOutputFile)
             }
         })
 
