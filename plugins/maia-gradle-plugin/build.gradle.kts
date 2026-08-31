@@ -25,6 +25,7 @@ dependencies {
 
     implementation(project(":maia-gen:maia-gen-generator"))
     implementation(project(":maia-gen:maia-gen-spec"))
+    implementation(project(":maia-gen:maia-gen-schema-check"))
 
     implementation("org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:2.3.0")
 

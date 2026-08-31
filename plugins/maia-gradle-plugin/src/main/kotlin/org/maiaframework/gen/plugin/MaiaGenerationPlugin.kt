@@ -28,6 +28,12 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
 
         `register the generateMaiaModel task`(project, extension)
 
+        `add schema-check conventions to the MaiaGenExtension`(extension)
+
+        `register the maiaSchemaCheckImplementation configuration`(project, extension)
+
+        `register the maiaSchemaCheck task`(project, extension)
+
         `configure the IdeaPlugin for generated output dirs`(project, extension)
 
         `add the generated output dirs as SourceSets`(project, extension)
@@ -110,6 +116,52 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
             typescriptOutputDir.set(extension.typescriptOutputDir)
 
         }
+    }
+
+
+    private fun `add schema-check conventions to the MaiaGenExtension`(extension: MaiaGenerationExtension) {
+
+        extension.schemaCheckOutputFormat.convention("text")
+        extension.schemaCheckIgnoreErrors.convention(false)
+
+    }
+
+
+    private fun `register the maiaSchemaCheckImplementation configuration`(
+        project: Project,
+        extension: MaiaGenerationExtension
+    ) {
+
+        project.configurations.register("maiaSchemaCheckImplementation") {
+            fromDependencyCollector(extension.getDependencies().getImplementation())
+        }
+
+        project.dependencies.add("maiaSchemaCheckImplementation", "org.maiaframework:maia-gen-schema-check")
+
+    }
+
+
+    private fun `register the maiaSchemaCheck task`(
+        project: Project,
+        extension: MaiaGenerationExtension
+    ) {
+
+        project.tasks.register("maiaSchemaCheck", MaiaSchemaCheckTask::class.java) {
+
+            description = "Compares the actual database schema against the schema implied by the application's ModelDef."
+            group = "verification"
+
+            schemaCheckClasspath.from(project.configurations.getByName("maiaSchemaCheckImplementation"))
+            applicationSpecClassName.set(extension.schemaCheckApplicationSpecClassName)
+            jdbcUrl.set(extension.schemaCheckJdbcUrl)
+            username.set(extension.schemaCheckUsername)
+            password.set(extension.schemaCheckPassword)
+            outputFormat.set(extension.schemaCheckOutputFormat)
+            outputFile.set(extension.schemaCheckOutputFile)
+            ignoreErrors.set(extension.schemaCheckIgnoreErrors)
+
+        }
+
     }
 
 

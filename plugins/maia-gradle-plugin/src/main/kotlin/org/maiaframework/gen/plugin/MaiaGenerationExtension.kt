@@ -35,6 +35,27 @@ abstract class MaiaGenerationExtension @Inject constructor(objects: ObjectFactor
     val createTablesSqlScriptPrefix = objects.property(String::class.java)
 
 
+    val schemaCheckApplicationSpecClassName = objects.property(String::class.java)
+
+
+    val schemaCheckJdbcUrl = objects.property(String::class.java)
+
+
+    val schemaCheckUsername = objects.property(String::class.java)
+
+
+    val schemaCheckPassword = objects.property(String::class.java)
+
+
+    val schemaCheckOutputFormat = objects.property(String::class.java)
+
+
+    val schemaCheckOutputFile = objects.fileProperty()
+
+
+    val schemaCheckIgnoreErrors = objects.property(Boolean::class.java)
+
+
     @Nested
     abstract fun getDependencies(): MaiaGenerationDependencies // = objects.newInstance(MaiaGenerationDependencies::class.java)
 
