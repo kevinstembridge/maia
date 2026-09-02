@@ -941,7 +941,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val alphaCreatePageDef = entityCreatePage(alphaEntityDef)
 
 
-    val alphaEntityDetailViewPageDef = entityViewPage(alphaEntityDef)
+    val alphaViewPageDef = entityViewPage(alphaEntityDef)
 
 
     val alphaEditPageDef = entityEditPage(alphaEntityDef)
@@ -984,7 +984,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val alphaBlotterDef = blotter(
         alphaSearchableDtoDef,
-        entityViewPageDef = alphaEntityDetailViewPageDef,
+        entityViewPageDef = alphaViewPageDef,
         entityCreatePageDef = alphaCreatePageDef,
         entityEditPageDef = alphaEditPageDef,
     ) {
@@ -1070,7 +1070,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoCreatePageDef = entityCreatePage(bravoEntityDef)
 
 
-    val bravoEntityDetailViewPageDef = entityViewPage(bravoEntityDef)
+    val bravoViewPageDef = entityViewPage(bravoEntityDef)
 
 
     val bravoEditPageDef = entityEditPage(bravoEntityDef)
@@ -1094,7 +1094,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val bravoBlotterDef = blotter(
         bravoSearchableDtoDef,
-        entityViewPageDef = bravoEntityDetailViewPageDef,
+        entityViewPageDef = bravoViewPageDef,
         entityCreatePageDef = bravoCreatePageDef,
         entityEditPageDef = bravoEditPageDef,
     ) {
@@ -1229,6 +1229,172 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
         columnFromDto(dtoFieldName = "createdTimestamp", fieldPathInSourceData = "createdTimestamp")
     }
+
+
+    val alphaWithHistoryEntityDef = entity(
+        "org.maiaframework.showcase.join",
+        "AlphaWithHistory",
+        nameFieldForPkAndNameDto = "someString",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = true,
+    ) {
+        field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
+            editableByUser()
+        }
+        field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
+            lengthConstraint(max = 100)
+            editableByUser()
+        }
+        crud {
+            authority(partySpec.writeAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
+            }
+        }
+    }
+
+
+    val alphaWithHistoryTypeaheadDef = typeahead(
+        "org.maiaframework.showcase.join",
+        "AlphaWithHistory",
+        alphaEntityDef,
+        sortFieldName = "someString",
+        searchTermFieldName = "someString",
+        indexVersion = 1
+    ) {
+        idFieldFromEntity(
+            dtoFieldName = "id",
+            entityFieldName = "id",
+            esDocMappingType = EsDocMappingTypes.keyword
+        )
+        fieldFromEntity(
+            dtoFieldName = "someString",
+            entityFieldName = "someString",
+            esDocMappingType = EsDocMappingTypes.searchAsYouType
+        )
+    }
+
+
+    val alphaWithHistoryViewPageDef = entityViewPage(alphaWithHistoryEntityDef)
+
+
+    val alphaWithHistoryEditPageDef = entityEditPage(alphaWithHistoryEntityDef)
+
+
+    val alphaWithHistorySearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "AlphaWithHistory",
+        entityDef = alphaWithHistoryEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        searchModelType = SearchModelType.MAIA
+    ) {
+        field("someString")
+        field("someInt")
+        field("createdTimestamp")
+    }
+
+
+    val alphaWithHistoryBlotterDef = blotter(
+        alphaWithHistorySearchableDtoDef,
+        entityViewPageDef = alphaWithHistoryViewPageDef,
+        entityEditPageDef = alphaWithHistoryEditPageDef,
+    ) {
+        viewActionColumn()
+        editActionColumn()
+        columnFromDto(fieldPathInSourceData = "someString")
+        columnFromDto(fieldPathInSourceData = "someInt")
+        columnFromDto(fieldPathInSourceData = "createdTimestamp")
+        deleteActionColumn()
+    }
+
+
+    val alphaWithHistoryBlotterPageDef = blotterPage(alphaWithHistoryBlotterDef)
+
+
+    val bravoWithHistoryEntityDef = entity(
+        "org.maiaframework.showcase.join",
+        "BravoWithHistory",
+        nameFieldForPkAndNameDto = "someString",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = true,
+    ) {
+        foreignKey("alpha", alphaWithHistoryEntityDef) {
+            fieldDisplayName("Alpha")
+            editableByUser()
+            typeaheadField(alphaWithHistoryTypeaheadDef)
+        }
+        field("someInt", FieldTypes.int) {
+            fieldDisplayName("Some Int")
+            editableByUser()
+        }
+        field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
+            lengthConstraint(max = 100)
+            editableByUser()
+        }
+        crud {
+            authority(partySpec.writeAuthority)
+            create {
+                api {}
+            }
+            update {
+                api {}
+            }
+            delete {
+                api {}
+            }
+        }
+    }
+
+
+    val bravoWithHistoryViewPageDef = entityViewPage(bravoWithHistoryEntityDef)
+
+
+    val bravoWithHistoryEditPageDef = entityEditPage(bravoWithHistoryEntityDef)
+
+
+    val bravoWithHistorySearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "BravoWithHistory",
+        entityDef = bravoWithHistoryEntityDef,
+        withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        searchModelType = SearchModelType.MAIA
+    ) {
+        field("dtoStringFromAlpha", "alpha.someString")
+        field("dtoIntFromAlpha", "alpha.someInt")
+        field("dtoStringFromBravo", "someString")
+        field("dtoIntFromBravo", "someInt")
+        field("createdTimestamp")
+    }
+
+
+    val bravoWithHistoryBlotterDef = blotter(
+        bravoWithHistorySearchableDtoDef,
+        entityViewPageDef = bravoWithHistoryViewPageDef,
+        entityEditPageDef = bravoWithHistoryEditPageDef,
+    ) {
+        viewActionColumn()
+        editActionColumn()
+        columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
+        columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
+        columnFromDto(dtoFieldName = "createdTimestamp", fieldPathInSourceData = "createdTimestamp")
+        deleteActionColumn()
+    }
+
+
+    val bravoWithHistoryBlotterPageDef = blotterPage(bravoWithHistoryBlotterDef)
 
 
     val leftManyEntityDef = entity(
@@ -1511,7 +1677,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
-    val rightManyEntityDetailViewPageDef = entityViewPage(rightManyEntityDef)
+    val rightManyViewPageDef = entityViewPage(rightManyEntityDef)
 
 
     val rightManyCreatePageDef = entityCreatePage(rightManyEntityDef)
@@ -1538,7 +1704,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val rightManyBlotterDef = blotter(
         rightManySearchableDtoDef,
         entityCreatePageDef = rightManyCreatePageDef,
-        entityViewPageDef = rightManyEntityDetailViewPageDef,
+        entityViewPageDef = rightManyViewPageDef,
         entityEditPageDef = rightManyEditPageDef,
     ) {
         viewActionColumn()
@@ -1553,7 +1719,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val rightManyBlotterPageDef = blotterPage(rightManyBlotterDef)
 
 
-    val leftManyEntityDetailViewPageDef = entityViewPage(leftManyEntityDef) {
+    val leftManyViewPageDef = entityViewPage(leftManyEntityDef) {
         manyToManyField("rightSimpleEntities", leftToRightSimpleEntityDef)
         manyToManyField("rightEntities", leftToRightComplexEntityDef)
     }
@@ -1584,7 +1750,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val leftManyBlotterDef = blotter(
         leftManySearchableDtoDef,
         entityCreatePageDef = leftManyCreatePageDef,
-        entityViewPageDef = leftManyEntityDetailViewPageDef,
+        entityViewPageDef = leftManyViewPageDef,
         entityEditPageDef = leftManyEditPageDef,
     ) {
         viewActionColumn()

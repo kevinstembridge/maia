@@ -91,6 +91,16 @@ export class ForeignKeyReferenceService {
     }
 
 
+    public checkAlphaWithHistoryForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
+
+        return this.http.get<ForeignKeyReferencesExistResponseDto>(
+            '/api/alpha-with-history/check_foreign_references/' + id,
+            this.httpOptions
+        );
+
+    }
+
+
     public checkLeftManyForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
 
         return this.http.get<ForeignKeyReferencesExistResponseDto>(

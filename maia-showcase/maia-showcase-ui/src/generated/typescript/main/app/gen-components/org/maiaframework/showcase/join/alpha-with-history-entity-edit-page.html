@@ -1,0 +1,11 @@
+<maia-page-layout pageTitle="Edit Alpha With History" dataPageId="alpha_with_history_edit">
+    @if (entityId(); as id) {
+        <div class="edit-form-container">
+            <app-alpha-with-history-entity-edit-form
+                [entityId]="id"
+                (onSave)="onSaveClicked()"
+                (onCancel)="onCancelClicked()"
+            />
+        </div>
+    }
+</maia-page-layout>

@@ -1,0 +1,19 @@
+<maia-page-layout pageTitle="Alpha With History" dataPageId="alpha_with_history_view">
+    @if (entityId(); as id) {
+        <app-alpha-with-history-entity-detail-view [entityId]="id" />
+    }
+    <button matButton aria-label="Blotter" (click)="onBlotterClicked()">
+        <mat-icon>list</mat-icon>
+        Go to Blotter
+    </button>
+    <button matButton aria-label="History" (click)="onHistoryClicked()">
+        <mat-icon>history</mat-icon>
+        History
+    </button>
+    @if (canEdit && entityId()) {
+        <button matButton aria-label="Edit" (click)="onEditClicked()">
+            <mat-icon>edit</mat-icon>
+            Edit
+        </button>
+    }
+</maia-page-layout>

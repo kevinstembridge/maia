@@ -429,6 +429,50 @@ CREATE TABLE maia.charlie_ag_grid (
 );
 
 
+CREATE TABLE maia.alpha_with_history (
+    created_timestamp timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.alpha_with_history_history (
+    change_type text NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
+);
+
+
+CREATE TABLE maia.bravo_with_history (
+    alpha_id uuid NOT NULL REFERENCES maia.alpha_with_history(id),
+    created_timestamp timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE maia.bravo_with_history_history (
+    alpha_id uuid NOT NULL REFERENCES maia.alpha_with_history(id),
+    change_type text NOT NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_int integer NOT NULL,
+    some_string text NOT NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
+);
+
+
 CREATE TABLE maia.left_many (
     created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,

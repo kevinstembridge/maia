@@ -1,0 +1,9 @@
+<maia-page-layout pageTitle="AlphaWithHistory History" dataPageId="alpha_with_history_history_blotter">
+    @if (entityId(); as id) {
+        <app-alpha-with-history-history-blotter [entityId]="id" />
+    }
+    <button matButton aria-label="View" (click)="onViewClicked()">
+        <mat-icon>visibility</mat-icon>
+        View
+    </button>
+</maia-page-layout>
