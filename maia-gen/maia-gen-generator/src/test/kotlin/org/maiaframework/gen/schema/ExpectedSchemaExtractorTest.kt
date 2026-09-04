@@ -2,6 +2,9 @@ package org.maiaframework.gen.schema
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.maiaframework.gen.schema.expected.ExpectedColumnDef
+import org.maiaframework.gen.schema.expected.ExpectedCompositeForeignKeyDef
+import org.maiaframework.gen.schema.expected.ExpectedForeignKeyDef
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.ReferencedEntity

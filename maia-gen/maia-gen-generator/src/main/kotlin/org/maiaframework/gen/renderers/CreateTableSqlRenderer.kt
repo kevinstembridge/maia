@@ -1,8 +1,8 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.schema.ExpectedIndexDef
+import org.maiaframework.gen.schema.expected.ExpectedIndexDef
 import org.maiaframework.gen.schema.ExpectedSchemaExtractor
-import org.maiaframework.gen.schema.ExpectedTableDef
+import org.maiaframework.gen.schema.expected.ExpectedTableDef
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.jdbc.PostgresIdentifiers

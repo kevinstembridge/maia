@@ -1,9 +1,9 @@
 package org.maiaframework.gen.schemacheck
 
-import org.maiaframework.gen.schema.ExpectedColumnDef
-import org.maiaframework.gen.schema.ExpectedCompositeForeignKeyDef
-import org.maiaframework.gen.schema.ExpectedForeignKeyDef
-import org.maiaframework.gen.schema.ExpectedIndexDef
+import org.maiaframework.gen.schema.expected.ExpectedColumnDef
+import org.maiaframework.gen.schema.expected.ExpectedCompositeForeignKeyDef
+import org.maiaframework.gen.schema.expected.ExpectedForeignKeyDef
+import org.maiaframework.gen.schema.expected.ExpectedIndexDef
 
 /**
  * Renders a [SchemaDiffReport] as a draft SQL script that would bring the actual database

@@ -1,5 +1,10 @@
-package org.maiaframework.gen.schema
+package org.maiaframework.gen.schema.expected
 
+import org.maiaframework.gen.schema.expected.ExpectedColumnDef
+import org.maiaframework.gen.schema.expected.ExpectedCompositeForeignKeyDef
+import org.maiaframework.gen.schema.expected.ExpectedForeignKeyDef
+import org.maiaframework.gen.schema.expected.ExpectedIndexDef
+import org.maiaframework.gen.schema.expected.ExpectedTableDef
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
@@ -9,44 +14,6 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.jdbc.JdbcCompatibleType
-
-
-data class ExpectedColumnDef(
-    val name: String,
-    val postgresType: String,
-    val nullable: Boolean,
-)
-
-
-data class ExpectedForeignKeyDef(
-    val columnName: String,
-    val referencedSchemaAndTable: String,
-    val referencedColumn: String,
-)
-
-
-data class ExpectedCompositeForeignKeyDef(
-    val columnNames: List<String>,
-    val referencedSchemaAndTable: String,
-    val referencedColumns: List<String>,
-)
-
-
-data class ExpectedIndexDef(
-    val name: String,
-    val columns: List<String>,
-    val unique: Boolean,
-)
-
-
-data class ExpectedTableDef(
-    val schemaAndTableName: String,
-    val columns: List<ExpectedColumnDef>,
-    val primaryKeyColumns: List<String>,
-    val foreignKeys: List<ExpectedForeignKeyDef>,
-    val indexes: List<ExpectedIndexDef>,
-    val compositeForeignKeys: List<ExpectedCompositeForeignKeyDef> = emptyList(),
-)
 
 
 class ExpectedSchemaExtractor {
@@ -141,7 +108,8 @@ class ExpectedSchemaExtractor {
                 val typeDiscriminatorField = if (entityHierarchy.hasSubclasses()) listOf("type_discriminator") else emptyList()
                 ExpectedIndexDef(
                     name = databaseIndexDef.indexDef.indexName.value,
-                    columns = databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName.value }.plus(typeDiscriminatorField),
+                    columns = databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName.value }
+                        .plus(typeDiscriminatorField),
                     unique = databaseIndexDef.isUnique,
                 )
             }
