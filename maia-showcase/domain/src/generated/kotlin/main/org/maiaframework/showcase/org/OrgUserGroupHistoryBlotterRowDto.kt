@@ -12,6 +12,7 @@ data class OrgUserGroupHistoryBlotterRowDto(
     val changeType: ChangeType,
     val description: String,
     val name: String,
+    val orgVersion: Long,
     val systemManaged: Boolean,
     val version: Long
 ) {

@@ -31,6 +31,7 @@ class BravoWithHistoryHistoryDao(
             """
             insert into maia.bravo_with_history_history (
                 alpha_id,
+                alpha_version,
                 change_type,
                 created_timestamp,
                 id,
@@ -39,6 +40,7 @@ class BravoWithHistoryHistoryDao(
                 version
             ) values (
                 :alpha,
+                :alphaVersion,
                 :changeType,
                 :createdTimestamp,
                 :id,
@@ -49,6 +51,7 @@ class BravoWithHistoryHistoryDao(
             """.trimIndent(),
             SqlParams().apply {
                 addValue("alpha", entity.alpha)
+                addValue("alphaVersion", entity.alphaVersion)
                 addValue("changeType", entity.changeType)
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
@@ -67,6 +70,7 @@ class BravoWithHistoryHistoryDao(
             """
             insert into maia.bravo_with_history_history (
                 alpha_id,
+                alpha_version,
                 change_type,
                 created_timestamp,
                 id,
@@ -75,6 +79,7 @@ class BravoWithHistoryHistoryDao(
                 version
             ) values (
                 :alpha,
+                :alphaVersion,
                 :changeType,
                 :createdTimestamp,
                 :id,
@@ -86,6 +91,7 @@ class BravoWithHistoryHistoryDao(
             entities.map { entity ->
                 SqlParams().apply {
                     addValue("alpha", entity.alpha)
+                    addValue("alphaVersion", entity.alphaVersion)
                     addValue("changeType", entity.changeType)
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)

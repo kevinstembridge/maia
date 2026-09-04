@@ -16,22 +16,26 @@ class OrgRoleHistoryEntityRowMapper : MaiaRowMapper<OrgRoleHistoryEntity> {
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdBy = rsa.readDomainId("created_by_id")
+        val createdByVersion = rsa.readLong("created_by_version")
         val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readString("description")
         val displayName = rsa.readString("display_name")
         val key = rsa.readString("key") { OrgRoleKey(it) }
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedByVersion = rsa.readLong("last_modified_by_version")
         val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val version = rsa.readLong("version")
 
         return OrgRoleHistoryEntity(
                 changeType,
                 createdBy,
+                createdByVersion,
                 createdTimestamp,
                 description,
                 displayName,
                 key,
                 lastModifiedBy,
+                lastModifiedByVersion,
                 lastModifiedTimestamp,
                 version
         )

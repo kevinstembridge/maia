@@ -15,17 +15,21 @@ class OrgRoleHistoryBlotterRowDtoRowMapper : MaiaRowMapper<OrgRoleHistoryBlotter
     override fun mapRow(rsa: ResultSetAdapter): OrgRoleHistoryBlotterRowDto {
 
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
+        val createdByVersion = rsa.readLong("createdByVersion")
         val description = rsa.readString("description")
         val displayName = rsa.readString("displayName")
         val key = rsa.readString("key") { OrgRoleKey(it) }
+        val lastModifiedByVersion = rsa.readLong("lastModifiedByVersion")
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val version = rsa.readLong("version")
 
         return OrgRoleHistoryBlotterRowDto(
             changeType,
+            createdByVersion,
             description,
             displayName,
             key,
+            lastModifiedByVersion,
             lastModifiedTimestamp,
             version,
         )

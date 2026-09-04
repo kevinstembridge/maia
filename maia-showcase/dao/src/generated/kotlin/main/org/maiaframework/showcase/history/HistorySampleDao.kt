@@ -13,6 +13,7 @@ import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
+import org.maiaframework.showcase.party.PartyDao
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
@@ -23,7 +24,8 @@ import java.time.Instant
 class HistorySampleDao(
     private val fieldConverter: HistorySampleEntityFieldConverter,
     private val historyDao: HistorySampleHistoryDao,
-    private val jdbcOps: JdbcOps
+    private val jdbcOps: JdbcOps,
+    private val partyDao: PartyDao
 ) {
 
 
@@ -129,14 +131,17 @@ class HistorySampleDao(
 
     private fun insertHistory(entity: HistorySampleEntity, version: Long, changeType: ChangeType) {
 
-        this.historyDao.insert(history(entity, version, changeType))
+        val createdByVersion = this.partyDao.findVersionByPrimaryKey(entity.createdBy)
+        val lastModifiedByVersion = this.partyDao.findVersionByPrimaryKey(entity.lastModifiedBy)
+
+        this.historyDao.insert(history(entity, version, changeType, createdByVersion, lastModifiedByVersion))
 
     }
 
 
     private fun bulkInsertHistory(entities: List<HistorySampleEntity>, changeType: ChangeType) {
 
-        val historyEntities = entities.map { history(it, it.version, changeType) }
+        val historyEntities = entities.map { history(it, it.version, changeType, this.partyDao.findVersionByPrimaryKey(it.createdBy), this.partyDao.findVersionByPrimaryKey(it.lastModifiedBy)) }
         this.historyDao.bulkInsert(historyEntities)
 
     }
@@ -145,7 +150,9 @@ class HistorySampleDao(
     private fun history(
         entity: HistorySampleEntity,
         version: Long,
-        changeType: ChangeType
+        changeType: ChangeType,
+        createdByVersion: Long,
+        lastModifiedByVersion: Long
     ): HistorySampleHistoryEntity {
 
         val id = entity.id
@@ -159,9 +166,11 @@ class HistorySampleDao(
         return HistorySampleHistoryEntity(
                 changeType,
                 createdBy,
+                createdByVersion,
                 createdTimestamp,
                 id,
                 lastModifiedBy,
+                lastModifiedByVersion,
                 lastModifiedTimestamp,
                 someInt,
                 someString,
@@ -224,6 +233,18 @@ class HistorySampleDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findVersionByPrimaryKey(id: DomainId): Long {
+
+        return jdbcOps.queryForLong(
+            "select version from maia.history_sample where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
 
     }
 
@@ -580,7 +601,7 @@ class HistorySampleDao(
 
         if (deletedCount > 0) {
 
-            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))
+            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
         }
 
         return deletedCount > 0
@@ -614,7 +635,7 @@ class HistorySampleDao(
 
         if (deletedCount > 0) {
 
-            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))
+            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
         }
 
         return deletedCount > 0

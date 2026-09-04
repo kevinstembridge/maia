@@ -39,6 +39,7 @@ class UserGroupHistoryEntityRowMapper : MaiaRowMapper<UserGroupHistoryEntity> {
         val id = rsa.readDomainId("id")
         val name = rsa.readString("name")
         val org = rsa.readDomainId("org_id")
+        val orgVersion = rsa.readLong("org_version")
         val systemManaged = rsa.readBoolean("system_managed")
         val version = rsa.readLong("version")
 
@@ -50,6 +51,7 @@ class UserGroupHistoryEntityRowMapper : MaiaRowMapper<UserGroupHistoryEntity> {
                 id,
                 name,
                 org,
+                orgVersion,
                 systemManaged,
                 version
         )

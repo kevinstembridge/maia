@@ -499,7 +499,21 @@ class EntityDef(
                     fd.dbColumnFieldDef.fieldWriterParameterizedType
                 )
 
-            }.plus(if (isRootEntity) changeTypeFieldDef(historyEntityBaseName, packageName) else null)
+            }
+            .plus(
+                entityFieldsNotInherited
+                    .asSequence()
+                    .filter { it.foreignKeyFieldDef?.foreignEntityDef?.withVersionHistory?.value == true }
+                    .map { fd ->
+                        foreignKeyVersionFieldDef(
+                            foreignKeyFieldName = fd.classFieldName,
+                            fkNullability = fd.nullability,
+                            entityBaseName = historyEntityBaseName,
+                            packageName = packageName
+                        )
+                    }
+            )
+            .plus(if (isRootEntity) changeTypeFieldDef(historyEntityBaseName, packageName) else null)
             .filterNotNull()
             .toList()
 
@@ -1116,6 +1130,33 @@ class EntityDef(
                     notCreatableByUser()
                 }.build(),
                 TableColumnName.changeType,
+            )
+
+        }
+
+
+        fun foreignKeyVersionFieldDef(
+            foreignKeyFieldName: ClassFieldName,
+            fkNullability: Nullability,
+            entityBaseName: EntityBaseName,
+            packageName: PackageName
+        ): EntityFieldDef {
+
+            val fieldName = foreignKeyFieldName.withSuffix("Version")
+
+            return EntityFieldDef(
+                entityBaseName,
+                packageName,
+                aClassField(
+                    fieldName,
+                    fieldType = FieldTypes.long
+                ) {
+                    displayName("${foreignKeyFieldName.toTitleCase()} Version")
+                    notCreatableByUser()
+                    nullability(fkNullability)
+                }.build(),
+                TableColumnName(fieldName.toSnakeCase()),
+                isDeltaField = IsDeltaField.TRUE,
             )
 
         }

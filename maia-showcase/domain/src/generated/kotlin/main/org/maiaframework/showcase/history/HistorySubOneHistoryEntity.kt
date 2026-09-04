@@ -11,18 +11,22 @@ import java.time.Instant
 class HistorySubOneHistoryEntity(
     changeType: ChangeType,
     createdBy: DomainId,
+    createdByVersion: Long,
     createdTimestamp: Instant,
     id: DomainId,
     lastModifiedBy: DomainId,
+    lastModifiedByVersion: Long,
     lastModifiedTimestamp: Instant,
     val someString: String,
     version: Long
 ) : HistorySuperHistoryEntity(
     changeType,
     createdBy,
+    createdByVersion,
     createdTimestamp,
     id,
     lastModifiedBy,
+    lastModifiedByVersion,
     lastModifiedTimestamp,
     version
 ) {
@@ -33,9 +37,11 @@ class HistorySubOneHistoryEntity(
         return "HistorySubOneHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
+                "createdByVersion = '" + this.createdByVersion + '\'' + ", " + 
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
+                "lastModifiedByVersion = '" + this.lastModifiedByVersion + '\'' + ", " + 
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 
                 "version = '" + this.version + '\'' +

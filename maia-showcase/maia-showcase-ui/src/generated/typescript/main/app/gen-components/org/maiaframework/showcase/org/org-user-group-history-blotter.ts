@@ -31,6 +31,7 @@ export class OrgUserGroupHistoryBlotter implements OnInit {
         { field: 'changeType', headerName: 'Change Type', cellDataType: 'text' },
         { field: 'description', headerName: 'description', cellDataType: 'text' },
         { field: 'name', headerName: 'name', cellDataType: 'text' },
+        { field: 'orgVersion', headerName: 'Org Version', cellDataType: 'number' },
         { field: 'systemManaged', headerName: 'systemManaged', cellDataType: 'text' },
         { field: 'version', headerName: 'Version', cellDataType: 'number' },
     ];

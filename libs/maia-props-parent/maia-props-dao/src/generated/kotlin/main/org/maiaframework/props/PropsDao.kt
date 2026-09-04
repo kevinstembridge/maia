@@ -477,7 +477,7 @@ class PropsDao(
 
         if (deletedCount > 0) {
 
-            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))
+            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
         }
 
         return deletedCount > 0

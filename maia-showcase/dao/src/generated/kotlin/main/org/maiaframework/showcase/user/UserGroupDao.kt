@@ -17,6 +17,7 @@ import org.maiaframework.showcase.org.OrgUserGroupEntity
 import org.maiaframework.showcase.org.OrgUserGroupEntityMeta
 import org.maiaframework.showcase.org.OrgUserGroupHistoryDao
 import org.maiaframework.showcase.org.OrgUserGroupHistoryEntity
+import org.maiaframework.showcase.org.OrganizationDao
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
@@ -27,6 +28,7 @@ class UserGroupDao(
     private val historyDao: UserGroupHistoryDao,
     private val jdbcOps: JdbcOps,
     private val orgUserGroupHistoryDao: OrgUserGroupHistoryDao,
+    private val organizationDao: OrganizationDao,
     private val userGroupHistoryDao: UserGroupHistoryDao
 ) {
 
@@ -184,7 +186,9 @@ class UserGroupDao(
 
     private fun insertHistory(entity: OrgUserGroupEntity, version: Long, changeType: ChangeType) {
 
-        this.historyDao.insert(history(entity, version, changeType))
+        val orgVersion = this.organizationDao.findVersionByPrimaryKey(entity.org)
+
+        this.historyDao.insert(history(entity, version, changeType, orgVersion))
 
     }
 
@@ -214,7 +218,7 @@ class UserGroupDao(
         }
 
         val entitiesOUG: List<OrgUserGroupEntity> = entitiesByType["OUG"] as? List<OrgUserGroupEntity> ?: emptyList()
-        val orgUserGroupHistoryEntityList = entitiesOUG.map { history(it, it.version + 1, changeType) }
+        val orgUserGroupHistoryEntityList = entitiesOUG.map { history(it, it.version + 1, changeType, this.organizationDao.findVersionByPrimaryKey(it.org)) }
         this.orgUserGroupHistoryDao.bulkInsert(orgUserGroupHistoryEntityList)
 
         val entitiesUG: List<UserGroupEntity> = entitiesByType["UG"] as? List<UserGroupEntity> ?: emptyList()
@@ -227,7 +231,8 @@ class UserGroupDao(
     private fun history(
         entity: OrgUserGroupEntity,
         version: Long,
-        changeType: ChangeType
+        changeType: ChangeType,
+        orgVersion: Long
     ): OrgUserGroupHistoryEntity {
 
         val id = entity.id
@@ -246,6 +251,7 @@ class UserGroupDao(
                 id,
                 name,
                 org,
+                orgVersion,
                 systemManaged,
                 version)
 
@@ -332,6 +338,18 @@ class UserGroupDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findVersionByPrimaryKey(id: DomainId): Long {
+
+        return jdbcOps.queryForLong(
+            "select version from maia.user_group where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
 
     }
 

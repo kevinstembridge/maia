@@ -23,6 +23,8 @@ class OrgRoleHistoryEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as ChangeType).name
             "created_by_id" -> // createdBy
                 return (inputValue as DomainId).value
+            "created_by_version" -> // createdByVersion
+                return inputValue
             "created_timestamp" -> // createdTimestamp
                 return inputValue
             "description" -> // description
@@ -33,6 +35,8 @@ class OrgRoleHistoryEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as OrgRoleKey).value
             "last_modified_by_id" -> // lastModifiedBy
                 return (inputValue as DomainId).value
+            "last_modified_by_version" -> // lastModifiedByVersion
+                return inputValue
             "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
             "version" -> // version

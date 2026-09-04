@@ -45,9 +45,11 @@ class OrgRoleHistoryBlotterRowDtoDao(
         val sqlForPage = """
             select
                 maia.org_role_history.change_type as changeType,
+                maia.org_role_history.created_by_version as createdByVersion,
                 maia.org_role_history.description as description,
                 maia.org_role_history.display_name as displayName,
                 maia.org_role_history.key as key,
+                maia.org_role_history.last_modified_by_version as lastModifiedByVersion,
                 maia.org_role_history.last_modified_timestamp as lastModifiedTimestamp,
                 maia.org_role_history.version as version
             from maia.org_role_history

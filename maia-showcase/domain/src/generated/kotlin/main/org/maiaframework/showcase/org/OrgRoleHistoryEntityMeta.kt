@@ -16,6 +16,8 @@ object OrgRoleHistoryEntityMeta {
 
     const val createdBy = "created_by_id"
 
+    const val createdByVersion = "created_by_version"
+
     const val createdTimestamp = "created_timestamp"
 
     const val description = "description"
@@ -25,6 +27,8 @@ object OrgRoleHistoryEntityMeta {
     const val key = "key"
 
     const val lastModifiedBy = "last_modified_by_id"
+
+    const val lastModifiedByVersion = "last_modified_by_version"
 
     const val lastModifiedTimestamp = "last_modified_timestamp"
 
@@ -46,11 +50,13 @@ object OrgRoleHistoryEntityMeta {
         return when(classFieldName) {
             "changeType" -> "change_type"
             "createdBy" -> "created_by_id"
+            "createdByVersion" -> "created_by_version"
             "createdTimestamp" -> "created_timestamp"
             "description" -> "description"
             "displayName" -> "display_name"
             "key" -> "key"
             "lastModifiedBy" -> "last_modified_by_id"
+            "lastModifiedByVersion" -> "last_modified_by_version"
             "lastModifiedTimestamp" -> "last_modified_timestamp"
             "version" -> "version"
             else ->

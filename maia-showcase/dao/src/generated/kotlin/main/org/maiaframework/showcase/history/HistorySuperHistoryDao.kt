@@ -43,9 +43,11 @@ class HistorySuperHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
+                created_by_version,
                 created_timestamp,
                 id,
                 last_modified_by_id,
+                last_modified_by_version,
                 last_modified_timestamp,
                 some_string,
                 version
@@ -53,9 +55,11 @@ class HistorySuperHistoryDao(
                 :typeDiscriminator,
                 :changeType,
                 :createdBy,
+                :createdByVersion,
                 :createdTimestamp,
                 :id,
                 :lastModifiedBy,
+                :lastModifiedByVersion,
                 :lastModifiedTimestamp,
                 :someString,
                 :version
@@ -65,9 +69,11 @@ class HistorySuperHistoryDao(
                 addValue("typeDiscriminator", HistorySubOneHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
+                addValue("createdByVersion", entity.createdByVersion)
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
+                addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
@@ -85,9 +91,11 @@ class HistorySuperHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
+                created_by_version,
                 created_timestamp,
                 id,
                 last_modified_by_id,
+                last_modified_by_version,
                 last_modified_timestamp,
                 some_int,
                 version
@@ -95,9 +103,11 @@ class HistorySuperHistoryDao(
                 :typeDiscriminator,
                 :changeType,
                 :createdBy,
+                :createdByVersion,
                 :createdTimestamp,
                 :id,
                 :lastModifiedBy,
+                :lastModifiedByVersion,
                 :lastModifiedTimestamp,
                 :someInt,
                 :version
@@ -107,9 +117,11 @@ class HistorySuperHistoryDao(
                 addValue("typeDiscriminator", HistorySubTwoHistoryEntityMeta.TYPE_DISCRIMINATOR)
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
+                addValue("createdByVersion", entity.createdByVersion)
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
+                addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("version", entity.version)
@@ -126,17 +138,21 @@ class HistorySuperHistoryDao(
             insert into maia.history_super_history (
                 change_type,
                 created_by_id,
+                created_by_version,
                 created_timestamp,
                 id,
                 last_modified_by_id,
+                last_modified_by_version,
                 last_modified_timestamp,
                 version
             ) values (
                 :changeType,
                 :createdBy,
+                :createdByVersion,
                 :createdTimestamp,
                 :id,
                 :lastModifiedBy,
+                :lastModifiedByVersion,
                 :lastModifiedTimestamp,
                 :version
             )
@@ -145,9 +161,11 @@ class HistorySuperHistoryDao(
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
                     addValue("createdBy", entity.createdBy)
+                    addValue("createdByVersion", entity.createdByVersion)
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
+                    addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("version", entity.version)
                 }

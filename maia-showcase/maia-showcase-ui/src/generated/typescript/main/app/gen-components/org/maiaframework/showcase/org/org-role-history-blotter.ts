@@ -28,9 +28,11 @@ export class OrgRoleHistoryBlotter implements OnInit {
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         { field: 'changeType', headerName: 'Change Type', cellDataType: 'text' },
+        { field: 'createdByVersion', headerName: 'Created By Version', cellDataType: 'number' },
         { field: 'description', headerName: 'Description', cellDataType: 'text' },
         { field: 'displayName', headerName: 'Display Name', cellDataType: 'text' },
         { field: 'key', headerName: 'key', cellDataType: 'text' },
+        { field: 'lastModifiedByVersion', headerName: 'Last Modified By Version', cellDataType: 'number' },
         { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp', cellDataType: 'text' },
         { field: 'version', headerName: 'Version', cellDataType: 'number' },
     ];

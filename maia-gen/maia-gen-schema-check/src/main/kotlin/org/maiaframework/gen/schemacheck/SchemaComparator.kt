@@ -1,6 +1,7 @@
 package org.maiaframework.gen.schemacheck
 
 import org.maiaframework.gen.schema.ExpectedColumnDef
+import org.maiaframework.gen.schema.ExpectedCompositeForeignKeyDef
 import org.maiaframework.gen.schema.ExpectedForeignKeyDef
 import org.maiaframework.gen.schema.ExpectedIndexDef
 import org.maiaframework.gen.schema.ExpectedTableDef
@@ -26,6 +27,7 @@ data class TableDiff(
     val primaryKeyMismatch: PrimaryKeyMismatch? = null,
     val missingForeignKeys: List<ExpectedForeignKeyDef> = emptyList(),
     val extraForeignKeys: List<String> = emptyList(),
+    val missingCompositeForeignKeys: List<ExpectedCompositeForeignKeyDef> = emptyList(),
     val missingIndexes: List<ExpectedIndexDef> = emptyList(),
     val extraIndexes: List<String> = emptyList(),
 ) {
@@ -36,6 +38,7 @@ data class TableDiff(
                 || mismatchedColumns.isNotEmpty()
                 || primaryKeyMismatch != null
                 || missingForeignKeys.isNotEmpty()
+                || missingCompositeForeignKeys.isNotEmpty()
                 || missingIndexes.isNotEmpty()
 
     val hasWarnings: Boolean
@@ -106,8 +109,15 @@ class SchemaComparator {
         }
 
         val actualForeignKeyColumns = actual.foreignKeys.map { it.columnName }.toSet()
+
         val missingForeignKeys = expected.foreignKeys.filter { it.columnName !in actualForeignKeyColumns }
-        val expectedForeignKeyColumns = expected.foreignKeys.map { it.columnName }.toSet()
+        val missingCompositeForeignKeys = expected.compositeForeignKeys.filter { composite ->
+            composite.columnNames.any { it !in actualForeignKeyColumns }
+        }
+
+        val expectedForeignKeyColumns = expected.foreignKeys.map { it.columnName }
+            .plus(expected.compositeForeignKeys.flatMap { it.columnNames })
+            .toSet()
         val extraForeignKeys = actual.foreignKeys.map { it.columnName }.filter { it !in expectedForeignKeyColumns }
 
         val actualIndexColumnSets = actual.indexes.map { it.columns.toSet() }.toSet()
@@ -116,7 +126,7 @@ class SchemaComparator {
         val extraIndexes = actual.indexes.filter { it.columns.toSet() !in expectedIndexColumnSets }.map { it.name }
 
         val status = if (missingColumns.isEmpty() && mismatchedColumns.isEmpty() && primaryKeyMismatch == null
-            && missingForeignKeys.isEmpty() && missingIndexes.isEmpty()
+            && missingForeignKeys.isEmpty() && missingCompositeForeignKeys.isEmpty() && missingIndexes.isEmpty()
             && extraColumns.isEmpty() && extraForeignKeys.isEmpty() && extraIndexes.isEmpty()
         ) {
             TableStatus.OK
@@ -133,6 +143,7 @@ class SchemaComparator {
             primaryKeyMismatch = primaryKeyMismatch,
             missingForeignKeys = missingForeignKeys,
             extraForeignKeys = extraForeignKeys,
+            missingCompositeForeignKeys = missingCompositeForeignKeys,
             missingIndexes = missingIndexes,
             extraIndexes = extraIndexes,
         )

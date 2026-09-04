@@ -14,6 +14,7 @@ import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
+import org.maiaframework.showcase.party.PartyDao
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
@@ -24,7 +25,8 @@ import java.time.Instant
 class OrgRoleDao(
     private val fieldConverter: OrgRoleEntityFieldConverter,
     private val historyDao: OrgRoleHistoryDao,
-    private val jdbcOps: JdbcOps
+    private val jdbcOps: JdbcOps,
+    private val partyDao: PartyDao
 ) {
 
 
@@ -127,14 +129,17 @@ class OrgRoleDao(
 
     private fun insertHistory(entity: OrgRoleEntity, version: Long, changeType: ChangeType) {
 
-        this.historyDao.insert(history(entity, version, changeType))
+        val createdByVersion = this.partyDao.findVersionByPrimaryKey(entity.createdBy)
+        val lastModifiedByVersion = this.partyDao.findVersionByPrimaryKey(entity.lastModifiedBy)
+
+        this.historyDao.insert(history(entity, version, changeType, createdByVersion, lastModifiedByVersion))
 
     }
 
 
     private fun bulkInsertHistory(entities: List<OrgRoleEntity>, changeType: ChangeType) {
 
-        val historyEntities = entities.map { history(it, it.version, changeType) }
+        val historyEntities = entities.map { history(it, it.version, changeType, this.partyDao.findVersionByPrimaryKey(it.createdBy), this.partyDao.findVersionByPrimaryKey(it.lastModifiedBy)) }
         this.historyDao.bulkInsert(historyEntities)
 
     }
@@ -143,7 +148,9 @@ class OrgRoleDao(
     private fun history(
         entity: OrgRoleEntity,
         version: Long,
-        changeType: ChangeType
+        changeType: ChangeType,
+        createdByVersion: Long,
+        lastModifiedByVersion: Long
     ): OrgRoleHistoryEntity {
 
         val createdBy = entity.createdBy
@@ -157,11 +164,13 @@ class OrgRoleDao(
         return OrgRoleHistoryEntity(
                 changeType,
                 createdBy,
+                createdByVersion,
                 createdTimestamp,
                 description,
                 displayName,
                 key,
                 lastModifiedBy,
+                lastModifiedByVersion,
                 lastModifiedTimestamp,
                 version)
 

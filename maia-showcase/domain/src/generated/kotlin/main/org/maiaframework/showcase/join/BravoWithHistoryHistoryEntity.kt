@@ -10,6 +10,7 @@ import java.time.Instant
 
 class BravoWithHistoryHistoryEntity(
     val alpha: DomainId,
+    val alphaVersion: Long,
     val changeType: ChangeType,
     val createdTimestamp: Instant,
     val id: DomainId,
@@ -26,6 +27,7 @@ class BravoWithHistoryHistoryEntity(
 
         return "BravoWithHistoryHistoryEntity{" +
                 "alpha = '" + this.alpha + '\'' + ", " + 
+                "alphaVersion = '" + this.alphaVersion + '\'' + ", " + 
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 

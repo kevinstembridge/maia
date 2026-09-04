@@ -14,6 +14,8 @@ object BravoWithHistoryHistoryEntityMeta {
 
     const val alpha = "alpha_id"
 
+    const val alphaVersion = "alpha_version"
+
     const val changeType = "change_type"
 
     const val createdTimestamp = "created_timestamp"
@@ -41,6 +43,7 @@ object BravoWithHistoryHistoryEntityMeta {
 
         return when(classFieldName) {
             "alpha" -> "alpha_id"
+            "alphaVersion" -> "alpha_version"
             "changeType" -> "change_type"
             "createdTimestamp" -> "created_timestamp"
             "id" -> "id"

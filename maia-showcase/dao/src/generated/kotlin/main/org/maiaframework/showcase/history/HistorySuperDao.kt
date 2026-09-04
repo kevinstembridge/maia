@@ -12,6 +12,7 @@ import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
+import org.maiaframework.showcase.party.PartyDao
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.time.Instant
@@ -23,7 +24,8 @@ class HistorySuperDao(
     private val historyDao: HistorySuperHistoryDao,
     private val historySubOneHistoryDao: HistorySubOneHistoryDao,
     private val historySubTwoHistoryDao: HistorySubTwoHistoryDao,
-    private val jdbcOps: JdbcOps
+    private val jdbcOps: JdbcOps,
+    private val partyDao: PartyDao
 ) {
 
 
@@ -171,7 +173,10 @@ class HistorySuperDao(
 
     private fun insertHistory(entity: HistorySubOneEntity, version: Long, changeType: ChangeType) {
 
-        this.historyDao.insert(history(entity, version, changeType))
+        val createdByVersion = this.partyDao.findVersionByPrimaryKey(entity.createdBy)
+        val lastModifiedByVersion = this.partyDao.findVersionByPrimaryKey(entity.lastModifiedBy)
+
+        this.historyDao.insert(history(entity, version, changeType, createdByVersion, lastModifiedByVersion))
 
     }
 
@@ -185,7 +190,10 @@ class HistorySuperDao(
 
     private fun insertHistory(entity: HistorySubTwoEntity, version: Long, changeType: ChangeType) {
 
-        this.historyDao.insert(history(entity, version, changeType))
+        val createdByVersion = this.partyDao.findVersionByPrimaryKey(entity.createdBy)
+        val lastModifiedByVersion = this.partyDao.findVersionByPrimaryKey(entity.lastModifiedBy)
+
+        this.historyDao.insert(history(entity, version, changeType, createdByVersion, lastModifiedByVersion))
 
     }
 
@@ -201,11 +209,11 @@ class HistorySuperDao(
         }
 
         val entitiesSUB1: List<HistorySubOneEntity> = entitiesByType["SUB1"] as? List<HistorySubOneEntity> ?: emptyList()
-        val historySubOneHistoryEntityList = entitiesSUB1.map { history(it, it.version + 1, changeType) }
+        val historySubOneHistoryEntityList = entitiesSUB1.map { history(it, it.version + 1, changeType, this.partyDao.findVersionByPrimaryKey(it.createdBy), this.partyDao.findVersionByPrimaryKey(it.lastModifiedBy)) }
         this.historySubOneHistoryDao.bulkInsert(historySubOneHistoryEntityList)
 
         val entitiesSUB2: List<HistorySubTwoEntity> = entitiesByType["SUB2"] as? List<HistorySubTwoEntity> ?: emptyList()
-        val historySubTwoHistoryEntityList = entitiesSUB2.map { history(it, it.version + 1, changeType) }
+        val historySubTwoHistoryEntityList = entitiesSUB2.map { history(it, it.version + 1, changeType, this.partyDao.findVersionByPrimaryKey(it.createdBy), this.partyDao.findVersionByPrimaryKey(it.lastModifiedBy)) }
         this.historySubTwoHistoryDao.bulkInsert(historySubTwoHistoryEntityList)
 
     }
@@ -214,7 +222,9 @@ class HistorySuperDao(
     private fun history(
         entity: HistorySubOneEntity,
         version: Long,
-        changeType: ChangeType
+        changeType: ChangeType,
+        createdByVersion: Long,
+        lastModifiedByVersion: Long
     ): HistorySubOneHistoryEntity {
 
         val id = entity.id
@@ -227,9 +237,11 @@ class HistorySuperDao(
         return HistorySubOneHistoryEntity(
                 changeType,
                 createdBy,
+                createdByVersion,
                 createdTimestamp,
                 id,
                 lastModifiedBy,
+                lastModifiedByVersion,
                 lastModifiedTimestamp,
                 someString,
                 version)
@@ -240,7 +252,9 @@ class HistorySuperDao(
     private fun history(
         entity: HistorySubTwoEntity,
         version: Long,
-        changeType: ChangeType
+        changeType: ChangeType,
+        createdByVersion: Long,
+        lastModifiedByVersion: Long
     ): HistorySubTwoHistoryEntity {
 
         val id = entity.id
@@ -253,9 +267,11 @@ class HistorySuperDao(
         return HistorySubTwoHistoryEntity(
                 changeType,
                 createdBy,
+                createdByVersion,
                 createdTimestamp,
                 id,
                 lastModifiedBy,
+                lastModifiedByVersion,
                 lastModifiedTimestamp,
                 someInt,
                 version)
@@ -317,6 +333,18 @@ class HistorySuperDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findVersionByPrimaryKey(id: DomainId): Long {
+
+        return jdbcOps.queryForLong(
+            "select version from maia.history_super where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
 
     }
 

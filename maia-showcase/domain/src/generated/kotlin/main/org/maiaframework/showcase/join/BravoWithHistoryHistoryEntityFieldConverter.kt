@@ -20,6 +20,8 @@ class BravoWithHistoryHistoryEntityFieldConverter : EntityFieldConverter {
 
             "alpha_id" -> // alpha
                 return (inputValue as DomainId).value
+            "alpha_version" -> // alphaVersion
+                return inputValue
             "change_type" -> // changeType
                 return (inputValue as ChangeType).name
             "created_timestamp" -> // createdTimestamp

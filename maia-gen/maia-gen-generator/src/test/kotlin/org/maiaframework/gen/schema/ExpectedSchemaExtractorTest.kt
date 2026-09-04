@@ -113,4 +113,36 @@ class ExpectedSchemaExtractorTest {
 
     }
 
+    @Test
+    fun `extracts a composite foreign key when a history entity FKs another history entity`() {
+
+        val spec = object : AbstractSpec(AppKey("Test")) {
+            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+                field("name", FieldTypes.string) { lengthConstraint(max = 50) }
+            }
+            val child = entity("com.example", "Child", recordVersionHistory = true) {
+                foreignKey("parent", parent)
+            }
+        }
+
+        val tables = ExpectedSchemaExtractor().extract(spec.modelDef.rootEntityHierarchies)
+        val childHistoryTable = tables.single { it.schemaAndTableName == "test.child_history" }
+
+        assertThat(childHistoryTable.foreignKeys).isEmpty()
+        assertThat(childHistoryTable.columns.map { it.name }).contains("parent_version")
+        assertThat(childHistoryTable.compositeForeignKeys).containsExactly(
+            ExpectedCompositeForeignKeyDef(
+                columnNames = listOf("parent_id", "parent_version"),
+                referencedSchemaAndTable = "test.parent_history",
+                referencedColumns = listOf("id", "version"),
+            )
+        )
+
+        val childTable = tables.single { it.schemaAndTableName == "test.child" }
+        assertThat(childTable.foreignKeys).containsExactly(
+            ExpectedForeignKeyDef("parent_id", "test.parent", "id")
+        )
+
+    }
+
 }

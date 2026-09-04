@@ -4,6 +4,8 @@
 
 export interface HistorySuperHistoryBlotterRowDto {
     changeType: string;
+    createdByVersion: number;
+    lastModifiedByVersion: number;
     lastModifiedTimestamp: string;
     version: number;
 }

@@ -32,9 +32,11 @@ class HistorySampleHistoryDao(
             insert into maia.history_sample_history (
                 change_type,
                 created_by_id,
+                created_by_version,
                 created_timestamp,
                 id,
                 last_modified_by_id,
+                last_modified_by_version,
                 last_modified_timestamp,
                 some_int,
                 some_string,
@@ -42,9 +44,11 @@ class HistorySampleHistoryDao(
             ) values (
                 :changeType,
                 :createdBy,
+                :createdByVersion,
                 :createdTimestamp,
                 :id,
                 :lastModifiedBy,
+                :lastModifiedByVersion,
                 :lastModifiedTimestamp,
                 :someInt,
                 :someString,
@@ -54,9 +58,11 @@ class HistorySampleHistoryDao(
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
+                addValue("createdByVersion", entity.createdByVersion)
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
+                addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someInt", entity.someInt)
                 addValue("someString", entity.someString)
@@ -74,9 +80,11 @@ class HistorySampleHistoryDao(
             insert into maia.history_sample_history (
                 change_type,
                 created_by_id,
+                created_by_version,
                 created_timestamp,
                 id,
                 last_modified_by_id,
+                last_modified_by_version,
                 last_modified_timestamp,
                 some_int,
                 some_string,
@@ -84,9 +92,11 @@ class HistorySampleHistoryDao(
             ) values (
                 :changeType,
                 :createdBy,
+                :createdByVersion,
                 :createdTimestamp,
                 :id,
                 :lastModifiedBy,
+                :lastModifiedByVersion,
                 :lastModifiedTimestamp,
                 :someInt,
                 :someString,
@@ -97,9 +107,11 @@ class HistorySampleHistoryDao(
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
                     addValue("createdBy", entity.createdBy)
+                    addValue("createdByVersion", entity.createdByVersion)
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
+                    addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("someInt", entity.someInt)
                     addValue("someString", entity.someString)

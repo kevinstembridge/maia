@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class BravoWithHistoryDao(
+    private val alphaWithHistoryDao: AlphaWithHistoryDao,
     private val fieldConverter: BravoWithHistoryEntityFieldConverter,
     private val historyDao: BravoWithHistoryHistoryDao,
     private val jdbcOps: JdbcOps
@@ -114,14 +115,16 @@ class BravoWithHistoryDao(
 
     private fun insertHistory(entity: BravoWithHistoryEntity, version: Long, changeType: ChangeType) {
 
-        this.historyDao.insert(history(entity, version, changeType))
+        val alphaVersion = this.alphaWithHistoryDao.findVersionByPrimaryKey(entity.alpha)
+
+        this.historyDao.insert(history(entity, version, changeType, alphaVersion))
 
     }
 
 
     private fun bulkInsertHistory(entities: List<BravoWithHistoryEntity>, changeType: ChangeType) {
 
-        val historyEntities = entities.map { history(it, it.version, changeType) }
+        val historyEntities = entities.map { history(it, it.version, changeType, this.alphaWithHistoryDao.findVersionByPrimaryKey(it.alpha)) }
         this.historyDao.bulkInsert(historyEntities)
 
     }
@@ -130,7 +133,8 @@ class BravoWithHistoryDao(
     private fun history(
         entity: BravoWithHistoryEntity,
         version: Long,
-        changeType: ChangeType
+        changeType: ChangeType,
+        alphaVersion: Long
     ): BravoWithHistoryHistoryEntity {
 
         val id = entity.id
@@ -141,6 +145,7 @@ class BravoWithHistoryDao(
 
         return BravoWithHistoryHistoryEntity(
                 alpha,
+                alphaVersion,
                 changeType,
                 createdTimestamp,
                 id,
@@ -205,6 +210,18 @@ class BravoWithHistoryDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findVersionByPrimaryKey(id: DomainId): Long {
+
+        return jdbcOps.queryForLong(
+            "select version from maia.bravo_with_history where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
 
     }
 
@@ -437,7 +454,7 @@ class BravoWithHistoryDao(
 
         if (deletedCount > 0) {
 
-            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))
+            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
         }
 
         return deletedCount > 0

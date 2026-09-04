@@ -12,6 +12,7 @@ import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
+import org.maiaframework.showcase.party.PartyDao
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.time.Instant
@@ -21,7 +22,8 @@ import java.time.Instant
 class HistorySubTwoDao(
     private val fieldConverter: HistorySubTwoEntityFieldConverter,
     private val historyDao: HistorySubTwoHistoryDao,
-    private val jdbcOps: JdbcOps
+    private val jdbcOps: JdbcOps,
+    private val partyDao: PartyDao
 ) {
 
 
@@ -122,14 +124,17 @@ class HistorySubTwoDao(
 
     private fun insertHistory(entity: HistorySubTwoEntity, version: Long, changeType: ChangeType) {
 
-        this.historyDao.insert(history(entity, version, changeType))
+        val createdByVersion = this.partyDao.findVersionByPrimaryKey(entity.createdBy)
+        val lastModifiedByVersion = this.partyDao.findVersionByPrimaryKey(entity.lastModifiedBy)
+
+        this.historyDao.insert(history(entity, version, changeType, createdByVersion, lastModifiedByVersion))
 
     }
 
 
     private fun bulkInsertHistory(entities: List<HistorySubTwoEntity>, changeType: ChangeType) {
 
-        val historyEntities = entities.map { history(it, it.version, changeType) }
+        val historyEntities = entities.map { history(it, it.version, changeType, this.partyDao.findVersionByPrimaryKey(it.createdBy), this.partyDao.findVersionByPrimaryKey(it.lastModifiedBy)) }
         this.historyDao.bulkInsert(historyEntities)
 
     }
@@ -138,7 +143,9 @@ class HistorySubTwoDao(
     private fun history(
         entity: HistorySubTwoEntity,
         version: Long,
-        changeType: ChangeType
+        changeType: ChangeType,
+        createdByVersion: Long,
+        lastModifiedByVersion: Long
     ): HistorySubTwoHistoryEntity {
 
         val id = entity.id
@@ -151,9 +158,11 @@ class HistorySubTwoDao(
         return HistorySubTwoHistoryEntity(
                 changeType,
                 createdBy,
+                createdByVersion,
                 createdTimestamp,
                 id,
                 lastModifiedBy,
+                lastModifiedByVersion,
                 lastModifiedTimestamp,
                 someInt,
                 version)
@@ -215,6 +224,18 @@ class HistorySubTwoDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findVersionByPrimaryKey(id: DomainId): Long {
+
+        return jdbcOps.queryForLong(
+            "select version from maia.history_super where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
 
     }
 
@@ -438,7 +459,7 @@ class HistorySubTwoDao(
 
         if (deletedCount > 0) {
 
-            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))
+            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
         }
 
         return deletedCount > 0

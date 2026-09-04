@@ -16,11 +16,15 @@ object HistorySampleHistoryEntityMeta {
 
     const val createdBy = "created_by_id"
 
+    const val createdByVersion = "created_by_version"
+
     const val createdTimestamp = "created_timestamp"
 
     const val id = "id"
 
     const val lastModifiedBy = "last_modified_by_id"
+
+    const val lastModifiedByVersion = "last_modified_by_version"
 
     const val lastModifiedTimestamp = "last_modified_timestamp"
 
@@ -53,9 +57,11 @@ object HistorySampleHistoryEntityMeta {
         return when(classFieldName) {
             "changeType" -> "change_type"
             "createdBy" -> "created_by_id"
+            "createdByVersion" -> "created_by_version"
             "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "lastModifiedBy" -> "last_modified_by_id"
+            "lastModifiedByVersion" -> "last_modified_by_version"
             "lastModifiedTimestamp" -> "last_modified_timestamp"
             "someInt" -> "some_int"
             "someString" -> "some_string"

@@ -4,9 +4,11 @@
 
 export interface OrgRoleHistoryBlotterRowDto {
     changeType: string;
+    createdByVersion: number;
     description: string;
     displayName: string;
     key: string;
+    lastModifiedByVersion: number;
     lastModifiedTimestamp: string;
     version: number;
 }

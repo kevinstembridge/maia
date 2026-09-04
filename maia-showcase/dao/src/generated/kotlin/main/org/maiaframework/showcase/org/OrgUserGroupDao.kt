@@ -21,7 +21,8 @@ import org.springframework.stereotype.Repository
 class OrgUserGroupDao(
     private val fieldConverter: OrgUserGroupEntityFieldConverter,
     private val historyDao: OrgUserGroupHistoryDao,
-    private val jdbcOps: JdbcOps
+    private val jdbcOps: JdbcOps,
+    private val organizationDao: OrganizationDao
 ) {
 
 
@@ -128,14 +129,16 @@ class OrgUserGroupDao(
 
     private fun insertHistory(entity: OrgUserGroupEntity, version: Long, changeType: ChangeType) {
 
-        this.historyDao.insert(history(entity, version, changeType))
+        val orgVersion = this.organizationDao.findVersionByPrimaryKey(entity.org)
+
+        this.historyDao.insert(history(entity, version, changeType, orgVersion))
 
     }
 
 
     private fun bulkInsertHistory(entities: List<OrgUserGroupEntity>, changeType: ChangeType) {
 
-        val historyEntities = entities.map { history(it, it.version, changeType) }
+        val historyEntities = entities.map { history(it, it.version, changeType, this.organizationDao.findVersionByPrimaryKey(it.org)) }
         this.historyDao.bulkInsert(historyEntities)
 
     }
@@ -144,7 +147,8 @@ class OrgUserGroupDao(
     private fun history(
         entity: OrgUserGroupEntity,
         version: Long,
-        changeType: ChangeType
+        changeType: ChangeType,
+        orgVersion: Long
     ): OrgUserGroupHistoryEntity {
 
         val id = entity.id
@@ -163,6 +167,7 @@ class OrgUserGroupDao(
                 id,
                 name,
                 org,
+                orgVersion,
                 systemManaged,
                 version)
 
@@ -223,6 +228,18 @@ class OrgUserGroupDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findVersionByPrimaryKey(id: DomainId): Long {
+
+        return jdbcOps.queryForLong(
+            "select version from maia.user_group where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
 
     }
 

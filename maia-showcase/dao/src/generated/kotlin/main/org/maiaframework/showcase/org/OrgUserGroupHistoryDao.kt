@@ -38,6 +38,7 @@ class OrgUserGroupHistoryDao(
                 id,
                 name,
                 org_id,
+                org_version,
                 system_managed,
                 version
             ) values (
@@ -49,6 +50,7 @@ class OrgUserGroupHistoryDao(
                 :id,
                 :name,
                 :org,
+                :orgVersion,
                 :systemManaged,
                 :version
             )
@@ -61,6 +63,7 @@ class OrgUserGroupHistoryDao(
                 addValue("id", entity.id)
                 addValue("name", entity.name)
                 addValue("org", entity.org)
+                addValue("orgVersion", entity.orgVersion)
                 addValue("systemManaged", entity.systemManaged)
                 addValue("version", entity.version)
             }
@@ -82,6 +85,7 @@ class OrgUserGroupHistoryDao(
                 id,
                 name,
                 org_id,
+                org_version,
                 system_managed,
                 version
             ) values (
@@ -93,6 +97,7 @@ class OrgUserGroupHistoryDao(
                 :id,
                 :name,
                 :org,
+                :orgVersion,
                 :systemManaged,
                 :version
             )
@@ -106,6 +111,7 @@ class OrgUserGroupHistoryDao(
                     addValue("id", entity.id)
                     addValue("name", entity.name)
                     addValue("org", entity.org)
+                    addValue("orgVersion", entity.orgVersion)
                     addValue("systemManaged", entity.systemManaged)
                     addValue("version", entity.version)
                 }

@@ -3,6 +3,7 @@ package org.maiaframework.gen.schemacheck
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.maiaframework.gen.schema.ExpectedColumnDef
+import org.maiaframework.gen.schema.ExpectedCompositeForeignKeyDef
 import org.maiaframework.gen.schema.ExpectedForeignKeyDef
 import org.maiaframework.gen.schema.ExpectedIndexDef
 
@@ -135,6 +136,25 @@ class SchemaFixSqlGeneratorTest {
 
         assertThat(sql).contains(
             "ALTER TABLE app.child ADD CONSTRAINT child_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES app.parent(id);"
+        )
+
+    }
+
+    @Test
+    fun `adds a missing composite foreign key with a Postgres-style default constraint name`() {
+
+        val table = TableDiff(
+            "app.child_history", TableStatus.MISMATCHED,
+            missingCompositeForeignKeys = listOf(
+                ExpectedCompositeForeignKeyDef(listOf("parent_id", "parent_version"), "app.parent_history", listOf("id", "version"))
+            ),
+        )
+
+        val sql = SchemaFixSqlGenerator.generate(SchemaDiffReport(listOf(table)))
+
+        assertThat(sql).contains(
+            "ALTER TABLE app.child_history ADD CONSTRAINT child_history_parent_id_fkey " +
+                "FOREIGN KEY (parent_id, parent_version) REFERENCES app.parent_history(id, version);"
         )
 
     }

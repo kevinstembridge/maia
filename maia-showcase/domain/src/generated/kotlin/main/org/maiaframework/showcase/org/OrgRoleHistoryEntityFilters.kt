@@ -59,6 +59,14 @@ class OrgRoleHistoryEntityFilters {
         }
 
 
+    val createdByVersion: FieldFilter<Long> 
+        get() {
+
+            return FieldFilter("created_by_version", Types.BIGINT, this.sqlParamCounter) { value -> value }
+
+        }
+
+
     val createdTimestamp: FieldFilter<Instant> 
         get() {
 
@@ -95,6 +103,14 @@ class OrgRoleHistoryEntityFilters {
         get() {
 
             return FieldFilter("last_modified_by_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+
+        }
+
+
+    val lastModifiedByVersion: FieldFilter<Long> 
+        get() {
+
+            return FieldFilter("last_modified_by_version", Types.BIGINT, this.sqlParamCounter) { value -> value }
 
         }
 

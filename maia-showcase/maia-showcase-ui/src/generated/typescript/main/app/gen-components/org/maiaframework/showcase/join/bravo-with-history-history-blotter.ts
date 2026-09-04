@@ -27,6 +27,7 @@ export class BravoWithHistoryHistoryBlotter implements OnInit {
 
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'alphaVersion', headerName: 'Alpha Version', cellDataType: 'number' },
         { field: 'changeType', headerName: 'Change Type', cellDataType: 'text' },
         { field: 'someInt', headerName: 'Some Int', cellDataType: 'number' },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text' },

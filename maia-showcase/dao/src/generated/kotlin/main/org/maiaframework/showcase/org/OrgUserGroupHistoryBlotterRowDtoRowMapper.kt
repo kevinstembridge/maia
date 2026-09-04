@@ -18,6 +18,7 @@ class OrgUserGroupHistoryBlotterRowDtoRowMapper : MaiaRowMapper<OrgUserGroupHist
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
         val description = rsa.readString("description")
         val name = rsa.readString("name")
+        val orgVersion = rsa.readLong("orgVersion")
         val systemManaged = rsa.readBoolean("systemManaged")
         val version = rsa.readLong("version")
 
@@ -26,6 +27,7 @@ class OrgUserGroupHistoryBlotterRowDtoRowMapper : MaiaRowMapper<OrgUserGroupHist
             changeType,
             description,
             name,
+            orgVersion,
             systemManaged,
             version,
         )

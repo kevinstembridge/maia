@@ -12,11 +12,13 @@ import java.time.Instant
 class OrgRoleHistoryEntity(
     val changeType: ChangeType,
     val createdBy: DomainId,
+    val createdByVersion: Long,
     val createdTimestamp: Instant,
     val description: String,
     val displayName: String,
     val key: OrgRoleKey,
     val lastModifiedBy: DomainId,
+    val lastModifiedByVersion: Long,
     val lastModifiedTimestamp: Instant,
     val version: Long
 ) {
@@ -30,11 +32,13 @@ class OrgRoleHistoryEntity(
         return "OrgRoleHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
+                "createdByVersion = '" + this.createdByVersion + '\'' + ", " + 
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
                 "key = '" + this.key + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
+                "lastModifiedByVersion = '" + this.lastModifiedByVersion + '\'' + ", " + 
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"

@@ -44,6 +44,7 @@ class BravoWithHistoryHistoryBlotterRowDtoDao(
 
         val sqlForPage = """
             select
+                maia.bravo_with_history_history.alpha_version as alphaVersion,
                 maia.bravo_with_history_history.change_type as changeType,
                 maia.bravo_with_history_history.some_int as someInt,
                 maia.bravo_with_history_history.some_string as someString,

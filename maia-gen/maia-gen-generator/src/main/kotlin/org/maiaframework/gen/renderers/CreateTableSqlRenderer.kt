@@ -116,6 +116,7 @@ class CreateTableSqlRenderer(
         appendLine(");")
 
         renderIndexes(entityHierarchy, expectedTableDef)
+        `render composite foreign key constraints`(expectedTableDef)
 
     }
 
@@ -160,6 +161,35 @@ class CreateTableSqlRenderer(
         )
 
         appendLine("ALTER TABLE ${expectedTableDef.schemaAndTableName} ADD CONSTRAINT $constraintName EXCLUDE USING gist ($exclusionElements);")
+
+    }
+
+
+    private fun `render composite foreign key constraints`(expectedTableDef: ExpectedTableDef) {
+
+        expectedTableDef.compositeForeignKeys.forEach { compositeForeignKey ->
+
+            val bareTableName = expectedTableDef.schemaAndTableName.substringAfterLast(".")
+            // Naming the constraint after only the FK's id column (not both composite columns) keeps
+            // it well within Postgres's identifier length limit while staying unique per table, since
+            // column names are already unique within a table.
+            val constraintName = "${bareTableName}_${compositeForeignKey.columnNames.first()}_fkey"
+
+            PostgresIdentifiers.requireValidLength(
+                constraintName,
+                "foreign key constraint name",
+                "Shorten the referencing field name on the entity that declares this foreign key."
+            )
+
+            val localColumns = compositeForeignKey.columnNames.joinToString(", ")
+            val referencedColumns = compositeForeignKey.referencedColumns.joinToString(", ")
+
+            appendLine(
+                "ALTER TABLE ${expectedTableDef.schemaAndTableName} ADD CONSTRAINT $constraintName " +
+                    "FOREIGN KEY ($localColumns) REFERENCES ${compositeForeignKey.referencedSchemaAndTable}($referencedColumns);"
+            )
+
+        }
 
     }
 

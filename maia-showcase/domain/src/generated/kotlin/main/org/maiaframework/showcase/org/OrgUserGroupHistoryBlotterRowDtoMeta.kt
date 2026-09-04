@@ -16,9 +16,10 @@ object OrgUserGroupHistoryBlotterRowDtoMeta {
             "changeType" -> "maia.user_group_history.change_type"
             "description" -> "maia.user_group_history.description"
             "name" -> "maia.user_group_history.name"
+            "orgVersion" -> "maia.user_group_history.org_version"
             "systemManaged" -> "maia.user_group_history.system_managed"
             "version" -> "maia.user_group_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, changeType, description, name, systemManaged, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, changeType, description, name, orgVersion, systemManaged, version]")
         }
 
     }
@@ -31,9 +32,10 @@ object OrgUserGroupHistoryBlotterRowDtoMeta {
             "changeType" -> JdbcCompatibleType.text
             "description" -> JdbcCompatibleType.text
             "name" -> JdbcCompatibleType.text
+            "orgVersion" -> JdbcCompatibleType.bigint
             "systemManaged" -> JdbcCompatibleType.boolean
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, changeType, description, name, systemManaged, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [authorities, changeType, description, name, orgVersion, systemManaged, version]")
         }
 
     }

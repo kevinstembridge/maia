@@ -7,6 +7,7 @@ import org.maiaframework.domain.ChangeType
 
 
 data class BravoWithHistoryHistoryBlotterRowDto(
+    val alphaVersion: Long,
     val changeType: ChangeType,
     val someInt: Int,
     val someString: String,

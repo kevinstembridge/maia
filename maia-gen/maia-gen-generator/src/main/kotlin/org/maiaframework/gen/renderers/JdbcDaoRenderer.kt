@@ -91,6 +91,55 @@ class JdbcDaoRenderer(
     }
 
 
+    private fun historizedForeignKeyFieldDefsFor(entityDef: EntityDef): List<EntityFieldDef> = entityDef.allForeignKeyEntityFieldDefs
+        .filter { it.foreignKeyFieldDef!!.foreignEntityDef.withVersionHistory.value }
+
+
+    private val historizedForeignKeyFieldDefs: List<EntityFieldDef> = historizedForeignKeyFieldDefsFor(entityDef)
+
+
+    private val historizedForeignEntityDefs: List<EntityDef> = (
+        if (entityHierarchy.hasSubclasses()) {
+            entityHierarchy.concreteEntityDefs.flatMap { historizedForeignKeyFieldDefsFor(it) }
+        } else {
+            historizedForeignKeyFieldDefs
+        }
+    ).map { it.foreignKeyFieldDef!!.foreignEntityDef }.distinct()
+
+
+    private fun versionLookupLinesFor(fkFieldDefs: List<EntityFieldDef>): String = fkFieldDefs.joinToString("\n") { fk ->
+        val foreignEntityDef = fk.foreignKeyFieldDef!!.foreignEntityDef
+        val daoRef = "this.${foreignEntityDef.entityBaseName.firstToLower()}Dao"
+        val versionValName = "${fk.classFieldName}Version"
+        if (fk.nullable) {
+            "        val $versionValName = entity.${fk.classFieldName}?.let { $daoRef.findVersionByPrimaryKey(it) }"
+        } else {
+            "        val $versionValName = $daoRef.findVersionByPrimaryKey(entity.${fk.classFieldName})"
+        }
+    }
+
+
+    private fun versionArgsSuffixFor(fkFieldDefs: List<EntityFieldDef>): String = fkFieldDefs.joinToString("") { ", ${it.classFieldName}Version" }
+
+
+    private fun versionArgsCsvSuffixFor(fkFieldDefs: List<EntityFieldDef>): String = fkFieldDefs.joinToString("") { fk ->
+        val foreignEntityDef = fk.foreignKeyFieldDef!!.foreignEntityDef
+        val daoRef = "this.${foreignEntityDef.entityBaseName.firstToLower()}Dao"
+        val lookup = if (fk.nullable) {
+            "it.${fk.classFieldName}?.let { id -> $daoRef.findVersionByPrimaryKey(id) }"
+        } else {
+            "$daoRef.findVersionByPrimaryKey(it.${fk.classFieldName})"
+        }
+        ", $lookup"
+    }
+
+
+    private fun versionParamsFor(fkFieldDefs: List<EntityFieldDef>): String = fkFieldDefs.joinToString("") { fk ->
+        val type = if (fk.nullable) "Long?" else "Long"
+        ",\n        ${fk.classFieldName}Version: $type"
+    }
+
+
     init {
 
         addConstructorArg(aClassField("fieldConverter", entityDef.entityFieldConverterClassDef.fqcn).privat().build())
@@ -118,6 +167,14 @@ class JdbcDaoRenderer(
 
         entityDef.historyEntityDef?.let {
             addConstructorArg(aClassField("historyDao", it.daoFqcn).privat().build())
+        }
+
+        if (entityDef.historyEntityDef != null) {
+            historizedForeignEntityDefs.forEach { foreignEntityDef ->
+                addConstructorArg(
+                    aClassField("${foreignEntityDef.entityBaseName.firstToLower()}Dao", foreignEntityDef.daoFqcn).privat().build()
+                )
+            }
         }
 
         if (this.entityHierarchy.hasSubclasses()) {
@@ -217,6 +274,7 @@ class JdbcDaoRenderer(
         `render the countWithFilter function`()
         `render the findByPrimaryKey function`()
         `render the findByPrimaryKeyOrNull function`()
+        `render the findVersionByPrimaryKey function`()
         `render the existsByPrimaryKey function`()
         `render finders for indexes`()
         `render findAll`()
@@ -505,6 +563,10 @@ class JdbcDaoRenderer(
 
             entityHierarchy.concreteEntityDefs.forEach { entityDef ->
 
+                val fkFieldDefs = historizedForeignKeyFieldDefsFor(entityDef)
+                val versionLookupLines = versionLookupLinesFor(fkFieldDefs)
+                val versionArgsSuffix = versionArgsSuffixFor(fkFieldDefs)
+
                 append("""
                     |
                     |
@@ -517,7 +579,15 @@ class JdbcDaoRenderer(
                     |
                     |    private fun insertHistory(entity: ${entityDef.entityUqcn}, version: Long, changeType: ChangeType) {
                     |
-                    |        this.historyDao.insert(history(entity, version, changeType))
+                    |""".trimMargin())
+
+                if (versionLookupLines.isNotEmpty()) {
+                    appendLine(versionLookupLines)
+                    blankLine()
+                }
+
+                append("""
+                    |        this.historyDao.insert(history(entity, version, changeType$versionArgsSuffix))
                     |
                     |    }
                     |""".trimMargin())
@@ -525,6 +595,9 @@ class JdbcDaoRenderer(
             }
 
         } else {
+
+            val versionLookupLines = versionLookupLinesFor(historizedForeignKeyFieldDefs)
+            val versionArgsSuffix = versionArgsSuffixFor(historizedForeignKeyFieldDefs)
 
             append("""
                 |
@@ -538,7 +611,15 @@ class JdbcDaoRenderer(
                 |
                 |    private fun insertHistory(entity: ${entityDef.entityUqcn}, version: Long, changeType: ChangeType) {
                 |
-                |        this.historyDao.insert(history(entity, version, changeType))
+                |""".trimMargin())
+
+            if (versionLookupLines.isNotEmpty()) {
+                appendLine(versionLookupLines)
+                blankLine()
+            }
+
+            append("""
+                |        this.historyDao.insert(history(entity, version, changeType$versionArgsSuffix))
                 |
                 |    }
                 |""".trimMargin())
@@ -574,10 +655,29 @@ class JdbcDaoRenderer(
             appendLine("        }")
 
             entityHierarchy.concreteEntityDefs.forEach { entityDef ->
+
+                val fkFieldDefs = historizedForeignKeyFieldDefsFor(entityDef)
+
                 blankLine()
                 appendLine("        val entities${entityDef.typeDiscriminator}: List<${entityDef.entityUqcn}> = entitiesByType[\"${entityDef.typeDiscriminator}\"] as? List<${entityDef.entityUqcn}> ?: emptyList()")
-                appendLine("        val ${entityDef.historyEntityDef!!.entityUqcn.firstToLower()}List = entities${entityDef.typeDiscriminator}.map { history(it, it.version + 1, changeType) }")
+
+                if (fkFieldDefs.isEmpty()) {
+                    appendLine("        val ${entityDef.historyEntityDef!!.entityUqcn.firstToLower()}List = entities${entityDef.typeDiscriminator}.map { history(it, it.version + 1, changeType) }")
+                } else {
+                    val versionLookupsCsv = fkFieldDefs.joinToString(", ") { fk ->
+                        val foreignEntityDef = fk.foreignKeyFieldDef!!.foreignEntityDef
+                        val daoRef = "this.${foreignEntityDef.entityBaseName.firstToLower()}Dao"
+                        if (fk.nullable) {
+                            "it.${fk.classFieldName}?.let { id -> $daoRef.findVersionByPrimaryKey(id) }"
+                        } else {
+                            "$daoRef.findVersionByPrimaryKey(it.${fk.classFieldName})"
+                        }
+                    }
+                    appendLine("        val ${entityDef.historyEntityDef!!.entityUqcn.firstToLower()}List = entities${entityDef.typeDiscriminator}.map { history(it, it.version + 1, changeType, $versionLookupsCsv) }")
+                }
+
                 appendLine("        this.${entityDef.historyEntityDef!!.daoFqcn.uqcn.firstToLower()}.bulkInsert(${entityDef.historyEntityDef!!.entityUqcn.firstToLower()}List)")
+
             }
 
             blankLine()
@@ -585,12 +685,14 @@ class JdbcDaoRenderer(
 
         } else {
 
+            val versionArgsSuffix = versionArgsCsvSuffixFor(historizedForeignKeyFieldDefs)
+
             append("""
                 |
                 |
                 |    private fun bulkInsertHistory(entities: List<${entityDef.entityUqcn}>, changeType: ChangeType) {
                 |
-                |        val historyEntities = entities.map { history(it, it.version, changeType) }
+                |        val historyEntities = entities.map { history(it, it.version, changeType$versionArgsSuffix) }
                 |        this.historyDao.bulkInsert(historyEntities)
                 |
                 |    }
@@ -614,12 +716,14 @@ class JdbcDaoRenderer(
 
                 addImportFor(entityDef.historyEntityDef!!.entityFqcn)
 
+                val versionParams = versionParamsFor(historizedForeignKeyFieldDefsFor(entityDef))
+
                 blankLine()
                 blankLine()
                 appendLine("    private fun history(")
                 appendLine("        entity: ${entityDef.entityUqcn},")
                 appendLine("        version: Long,")
-                appendLine("        changeType: ChangeType")
+                appendLine("        changeType: ChangeType$versionParams")
                 appendLine("    ): ${entityDef.historyEntityDef!!.entityUqcn} {")
                 blankLine()
 
@@ -640,12 +744,14 @@ class JdbcDaoRenderer(
 
         } else {
 
+            val versionParams = versionParamsFor(historizedForeignKeyFieldDefs)
+
             blankLine()
             blankLine()
             appendLine("    private fun history(")
             appendLine("        entity: ${this.entityDef.entityUqcn},")
             appendLine("        version: Long,")
-            appendLine("        changeType: ChangeType")
+            appendLine("        changeType: ChangeType$versionParams")
             appendLine("    ): ${historyEntityDef.entityUqcn} {")
             blankLine()
 
@@ -773,6 +879,32 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("    }")
 
+
+    }
+
+
+    private fun `render the findVersionByPrimaryKey function`() {
+
+        if (entityDef.withVersionHistory.value == false || entityDef.hasSurrogatePrimaryKey == false) {
+            return
+        }
+
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+
+        append("""
+            |
+            |
+            |    fun findVersionByPrimaryKey(id: DomainId): Long {
+            |
+            |        return jdbcOps.queryForLong(
+            |            "select version from ${entityDef.schemaAndTableName} where id = :id",
+            |            SqlParams().apply {
+            |                addValue("id", id)
+            |            }
+            |        )
+            |
+            |    }
+            |""".trimMargin())
 
     }
 
@@ -1154,7 +1286,7 @@ class JdbcDaoRenderer(
 
             } else {
 
-                appendLine("            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))")
+                appendLine("            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)")
                 appendLine("        }")
                 blankLine()
                 appendLine("        return deletedCount > 0")
@@ -1295,7 +1427,7 @@ class JdbcDaoRenderer(
 
             } else {
 
-                appendLine("            this.historyDao.insert(history(existingEntity, existingEntity.version + 1, ChangeType.DELETE))")
+                appendLine("            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)")
                 appendLine("        }")
                 blankLine()
                 appendLine("        return deletedCount > 0")

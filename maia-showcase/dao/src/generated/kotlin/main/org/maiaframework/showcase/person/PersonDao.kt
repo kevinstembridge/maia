@@ -377,6 +377,18 @@ class PersonDao(
     }
 
 
+    fun findVersionByPrimaryKey(id: DomainId): Long {
+
+        return jdbcOps.queryForLong(
+            "select version from maia.v_party where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(

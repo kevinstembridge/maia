@@ -50,6 +50,14 @@ class BravoWithHistoryHistoryEntityFilters {
         }
 
 
+    val alphaVersion: FieldFilter<Long> 
+        get() {
+
+            return FieldFilter("alpha_version", Types.BIGINT, this.sqlParamCounter) { value -> value }
+
+        }
+
+
     val changeType: FieldFilter<ChangeType> 
         get() {
 

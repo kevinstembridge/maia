@@ -1,0 +1,59 @@
+{
+  "planPath": "docs/superpowers/plans/2026-09-03-history-fk-version-stamping.md",
+  "tasks": [
+    {
+      "id": 0,
+      "subject": "Task 1: Synthesize the <fk>Version history field",
+      "status": "completed",
+      "description": "**Goal:** EntityDef.historyEntityDef gains a synthetic <fk>Version: Long field for every FK field whose target entity has recordVersionHistory = true, including FK fields declared directly on a concrete subclass.\n\n**Files:**\n- Modify: maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityDef.kt:469-542, :1035-1124\n- Test: maia-gen/maia-gen-spec/src/test/kotlin/org/maiaframework/gen/spec/HistoryFkValidationTest.kt\n\n**Verify:** ./gradlew :maia-gen:maia-gen-spec:test --tests \"org.maiaframework.gen.spec.HistoryFkValidationTest\"\n\nSee plan file Task 1 for full step-by-step code. NOTE: original guardrail approach (rejecting subclassed hierarchies via ModelDefinitionException in AbstractSpec.kt) was reverted after discovering the real maia-showcase spec already has this case (OrgUserGroup.org -> Organization) -- see plan header's \"Scope correction\" note. Task 2 now supports hierarchies instead.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EntityDef.kt\", \"maia-gen/maia-gen-spec/src/test/kotlin/org/maiaframework/gen/spec/HistoryFkValidationTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:test --tests \\\"org.maiaframework.gen.spec.HistoryFkValidationTest\\\"\", \"acceptanceCriteria\": [\"synthesized <fk>Version field appears with correct name/type/nullability when FK target is historized\", \"field absent when FK target is not historized\", \"FK field declared on a concrete subclass gets the same treatment on its own historyEntityDef, no hierarchy-specific code needed\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 1,
+      "subject": "Task 2: Wire the live version lookup into the generated DAO",
+      "status": "completed",
+      "blockedBy": [
+        0
+      ],
+      "description": "**Goal:** The generated <Entity>Dao for a history-tracked entity with FK field(s) to other history-tracked entities gets the referenced entity's Dao injected, a findVersionByPrimaryKey lookup added to that referenced Dao, and the lookup wired into history()/insertHistory()/bulkInsertHistory() -- covering BOTH the non-hierarchy and hasSubclasses() code paths, since the real maia-showcase spec already has a historized FK declared on a concrete subclass (OrgUserGroup.org).\n\n**Files:**\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt\n\n**Verify:** ./gradlew :maia-gen:maia-gen-generator:build\n\nSee plan file Task 2 for full step-by-step code (helper functions, DI injection, findVersionByPrimaryKey render fn, insertHistory rewrite (both branches), bulkInsertHistory rewrite (both branches), history() signature rewrite (both branches), build).\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:build\", \"acceptanceCriteria\": [\"findVersionByPrimaryKey generated on historized entities\", \"referenced Dao injected and deduped across whole hierarchy\", \"history() gains extra params in both hasSubclasses() and non-hierarchy branches\", \"insertHistory/bulkInsertHistory look up and pass through version in both branches\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 3: Model the composite FK in the expected-schema extractor",
+      "status": "completed",
+      "blockedBy": [
+        0
+      ],
+      "description": "**Goal:** ExpectedSchemaExtractor recognizes a historized-FK-to-historized-target on a history entity and represents it as a composite FK.\n\n**Files:**\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractor.kt\n- Test: maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractorTest.kt\n\n**Verify:** ./gradlew :maia-gen:maia-gen-generator:test --tests \"org.maiaframework.gen.schema.ExpectedSchemaExtractorTest\"\n\nSee plan file Task 3 for full step-by-step code (new ExpectedCompositeForeignKeyDef data class, extractTable() rewrite, test). No hierarchy-specific work needed here -- already driven by entityHierarchy.allFieldDefsSorted which spans the whole hierarchy generically.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractor.kt\", \"maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractorTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:test --tests \\\"org.maiaframework.gen.schema.ExpectedSchemaExtractorTest\\\"\", \"acceptanceCriteria\": [\"ExpectedTableDef gains compositeForeignKeys with default emptyList\", \"historized FK id column excluded from flat foreignKeys, composite entry added\", \"live entity's FK column unaffected\", \"history entity's FK to non-historized target unaffected\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 4: Render the composite FK constraint in the generated DDL",
+      "status": "completed",
+      "blockedBy": [
+        2
+      ],
+      "description": "**Goal:** CreateTableSqlRenderer emits a table-level FOREIGN KEY (...) REFERENCES ...(...) constraint for each ExpectedTableDef.compositeForeignKeys entry.\n\n**Files:**\n- Modify: maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRenderer.kt\n- Test: maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRendererTest.kt\n\n**Verify:** ./gradlew :maia-gen:maia-gen-generator:test --tests \"org.maiaframework.gen.renderers.CreateTableSqlRendererTest\"\n\nSee plan file Task 4 for full step-by-step code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRenderer.kt\", \"maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRendererTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:test --tests \\\"org.maiaframework.gen.renderers.CreateTableSqlRendererTest\\\"\", \"acceptanceCriteria\": [\"ALTER TABLE composite FK statement emitted after indexes\", \"inline single-column REFERENCES suppressed automatically for covered column\", \"constraint name length validated via PostgresIdentifiers\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 5: Teach the schema-check tool about composite FKs",
+      "status": "completed",
+      "blockedBy": [
+        2
+      ],
+      "description": "**Goal:** SchemaComparator doesn't false-flag a real composite FK constraint's columns as missing/extra, and SchemaFixSqlGenerator can generate correct composite ALTER TABLE fix-SQL.\n\n**Files:**\n- Modify: maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaComparator.kt\n- Modify: maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaFixSqlGenerator.kt\n- Test: maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaComparatorTest.kt\n- Test: maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaFixSqlGeneratorTest.kt\n\nNo changes needed to PostgresSchemaIntrospector/ActualSchemaModel -- the introspection query already flattens multi-column FK constraints correctly.\n\n**Verify:** ./gradlew :maia-gen:maia-gen-schema-check:test --tests \"org.maiaframework.gen.schemacheck.SchemaComparatorTest\" --tests \"org.maiaframework.gen.schemacheck.SchemaFixSqlGeneratorTest\"\n\nSee plan file Task 5 for full step-by-step code.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaComparator.kt\", \"maia-gen/maia-gen-schema-check/src/main/kotlin/org/maiaframework/gen/schemacheck/SchemaFixSqlGenerator.kt\", \"maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaComparatorTest.kt\", \"maia-gen/maia-gen-schema-check/src/test/kotlin/org/maiaframework/gen/schemacheck/SchemaFixSqlGeneratorTest.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-schema-check:test --tests \\\"org.maiaframework.gen.schemacheck.SchemaComparatorTest\\\" --tests \\\"org.maiaframework.gen.schemacheck.SchemaFixSqlGeneratorTest\\\"\", \"acceptanceCriteria\": [\"real composite FK columns not flagged extra\", \"missing composite FK reported and counts as error\", \"fix-sql generator emits correct composite ALTER TABLE statement\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 5,
+      "subject": "Task 6: Regenerate maia-showcase as the proof-of-concept and verify end-to-end",
+      "status": "completed",
+      "blockedBy": [
+        1,
+        3,
+        4
+      ],
+      "description": "**Goal:** Regenerate the showcase (touches many *_history tables, not just bravo_with_history -- see plan header's \"Blast radius\" note, since createdBy/lastModifiedBy fields are themselves FKs to Party) and confirm the whole pipeline works against a real Postgres schema.\n\n**Files:**\n- Regenerate: maia-showcase/{domain,dao,repo,service,web}/src/generated/\n- Possibly modify: maia-showcase/dao/src/main/resources/db/migration/V003__create_entity_tables.sql (or a new migration file)\n\n**Verify:** ./gradlew :maia-gen:maia-gen-schema-check:test --tests \"org.maiaframework.gen.schemacheck.ShowcaseSchemaCheckIntegrationTest\" (Docker confirmed available in this environment)\n\nSee plan file Task 6 for full step-by-step instructions (regenerate, spot-check, promote DDL to migration per git history convention, compile, integration test, full build).\n\n```json:metadata\n{\"files\": [], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-schema-check:test --tests \\\"org.maiaframework.gen.schemacheck.ShowcaseSchemaCheckIntegrationTest\\\"\", \"acceptanceCriteria\": [\"BravoWithHistoryHistoryEntity.kt has alphaVersion field\", \"BravoWithHistoryDao.kt has alphaWithHistoryDao injected and wired\", \"AlphaWithHistoryDao.kt has findVersionByPrimaryKey\", \"regenerated DDL has composite FK constraints and no more single-column REFERENCES on history tables' fk id columns where target is historized\", \"everything compiles\", \"ShowcaseSchemaCheckIntegrationTest passes with no drift\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-09-04T08:00:00Z"
+}

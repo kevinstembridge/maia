@@ -33,9 +33,11 @@ class HistorySubOneHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
+                created_by_version,
                 created_timestamp,
                 id,
                 last_modified_by_id,
+                last_modified_by_version,
                 last_modified_timestamp,
                 some_string,
                 version
@@ -43,9 +45,11 @@ class HistorySubOneHistoryDao(
                 'SUB1',
                 :changeType,
                 :createdBy,
+                :createdByVersion,
                 :createdTimestamp,
                 :id,
                 :lastModifiedBy,
+                :lastModifiedByVersion,
                 :lastModifiedTimestamp,
                 :someString,
                 :version
@@ -54,9 +58,11 @@ class HistorySubOneHistoryDao(
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
+                addValue("createdByVersion", entity.createdByVersion)
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("id", entity.id)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
+                addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("someString", entity.someString)
                 addValue("version", entity.version)
@@ -74,9 +80,11 @@ class HistorySubOneHistoryDao(
                 type_discriminator,
                 change_type,
                 created_by_id,
+                created_by_version,
                 created_timestamp,
                 id,
                 last_modified_by_id,
+                last_modified_by_version,
                 last_modified_timestamp,
                 some_string,
                 version
@@ -84,9 +92,11 @@ class HistorySubOneHistoryDao(
                 'SUB1',
                 :changeType,
                 :createdBy,
+                :createdByVersion,
                 :createdTimestamp,
                 :id,
                 :lastModifiedBy,
+                :lastModifiedByVersion,
                 :lastModifiedTimestamp,
                 :someString,
                 :version
@@ -96,9 +106,11 @@ class HistorySubOneHistoryDao(
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
                     addValue("createdBy", entity.createdBy)
+                    addValue("createdByVersion", entity.createdByVersion)
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("id", entity.id)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
+                    addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("someString", entity.someString)
                     addValue("version", entity.version)

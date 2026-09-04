@@ -13,12 +13,14 @@ object OrgRoleHistoryBlotterRowDtoMeta {
 
         return when(dtoFieldName) {
             "changeType" -> "maia.org_role_history.change_type"
+            "createdByVersion" -> "maia.org_role_history.created_by_version"
             "description" -> "maia.org_role_history.description"
             "displayName" -> "maia.org_role_history.display_name"
             "key" -> "maia.org_role_history.key"
+            "lastModifiedByVersion" -> "maia.org_role_history.last_modified_by_version"
             "lastModifiedTimestamp" -> "maia.org_role_history.last_modified_timestamp"
             "version" -> "maia.org_role_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, description, displayName, key, lastModifiedTimestamp, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, createdByVersion, description, displayName, key, lastModifiedByVersion, lastModifiedTimestamp, version]")
         }
 
     }
@@ -28,12 +30,14 @@ object OrgRoleHistoryBlotterRowDtoMeta {
 
         return when(dtoFieldName) {
             "changeType" -> JdbcCompatibleType.text
+            "createdByVersion" -> JdbcCompatibleType.bigint
             "description" -> JdbcCompatibleType.text
             "displayName" -> JdbcCompatibleType.text
             "key" -> JdbcCompatibleType.text
+            "lastModifiedByVersion" -> JdbcCompatibleType.bigint
             "lastModifiedTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, description, displayName, key, lastModifiedTimestamp, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, createdByVersion, description, displayName, key, lastModifiedByVersion, lastModifiedTimestamp, version]")
         }
 
     }

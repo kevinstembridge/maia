@@ -48,6 +48,7 @@ class OrgUserGroupHistoryBlotterRowDtoDao(
                 maia.user_group_history.change_type as changeType,
                 maia.user_group_history.description as description,
                 maia.user_group_history.name as name,
+                maia.user_group_history.org_version as orgVersion,
                 maia.user_group_history.system_managed as systemManaged,
                 maia.user_group_history.version as version
             from maia.user_group_history

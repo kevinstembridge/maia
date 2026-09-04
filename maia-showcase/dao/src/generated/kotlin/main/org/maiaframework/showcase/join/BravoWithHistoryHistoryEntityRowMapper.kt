@@ -14,6 +14,7 @@ class BravoWithHistoryHistoryEntityRowMapper : MaiaRowMapper<BravoWithHistoryHis
     override fun mapRow(rsa: ResultSetAdapter): BravoWithHistoryHistoryEntity {
 
         val alpha = rsa.readDomainId("alpha_id")
+        val alphaVersion = rsa.readLong("alpha_version")
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
@@ -23,6 +24,7 @@ class BravoWithHistoryHistoryEntityRowMapper : MaiaRowMapper<BravoWithHistoryHis
 
         return BravoWithHistoryHistoryEntity(
                 alpha,
+                alphaVersion,
                 changeType,
                 createdTimestamp,
                 id,

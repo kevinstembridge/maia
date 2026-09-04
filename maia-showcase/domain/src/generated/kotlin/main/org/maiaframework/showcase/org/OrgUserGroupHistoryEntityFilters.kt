@@ -99,6 +99,14 @@ class OrgUserGroupHistoryEntityFilters {
         }
 
 
+    val orgVersion: FieldFilter<Long> 
+        get() {
+
+            return FieldFilter("org_version", Types.BIGINT, this.sqlParamCounter) { value -> value }
+
+        }
+
+
     val systemManaged: FieldFilter<Boolean> 
         get() {
 

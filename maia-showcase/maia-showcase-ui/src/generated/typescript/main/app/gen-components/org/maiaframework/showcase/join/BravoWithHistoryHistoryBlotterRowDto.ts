@@ -3,6 +3,7 @@
 
 
 export interface BravoWithHistoryHistoryBlotterRowDto {
+    alphaVersion: number;
     changeType: string;
     someInt: number;
     someString: string;

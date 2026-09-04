@@ -28,6 +28,8 @@ export class HistorySampleHistoryBlotter implements OnInit {
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
         { field: 'changeType', headerName: 'Change Type', cellDataType: 'text' },
+        { field: 'createdByVersion', headerName: 'Created By Version', cellDataType: 'number' },
+        { field: 'lastModifiedByVersion', headerName: 'Last Modified By Version', cellDataType: 'number' },
         { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp', cellDataType: 'text' },
         { field: 'someInt', headerName: 'Some Int', cellDataType: 'number' },
         { field: 'someString', headerName: 'Some String', cellDataType: 'text' },

@@ -13,12 +13,14 @@ class BravoWithHistoryHistoryBlotterRowDtoRowMapper : MaiaRowMapper<BravoWithHis
 
     override fun mapRow(rsa: ResultSetAdapter): BravoWithHistoryHistoryBlotterRowDto {
 
+        val alphaVersion = rsa.readLong("alphaVersion")
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
         val someInt = rsa.readInt("someInt")
         val someString = rsa.readString("someString")
         val version = rsa.readLong("version")
 
         return BravoWithHistoryHistoryBlotterRowDto(
+            alphaVersion,
             changeType,
             someInt,
             someString,

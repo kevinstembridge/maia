@@ -33,6 +33,8 @@ class OrgUserGroupHistoryEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "org_id" -> // org
                 return (inputValue as DomainId).value
+            "org_version" -> // orgVersion
+                return inputValue
             "system_managed" -> // systemManaged
                 return inputValue
             "version" -> // version

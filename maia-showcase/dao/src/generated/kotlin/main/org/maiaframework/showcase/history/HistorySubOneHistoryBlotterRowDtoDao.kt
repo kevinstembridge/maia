@@ -45,6 +45,8 @@ class HistorySubOneHistoryBlotterRowDtoDao(
         val sqlForPage = """
             select
                 maia.history_super_history.change_type as changeType,
+                maia.history_super_history.created_by_version as createdByVersion,
+                maia.history_super_history.last_modified_by_version as lastModifiedByVersion,
                 maia.history_super_history.last_modified_timestamp as lastModifiedTimestamp,
                 maia.history_super_history.some_string as someString,
                 maia.history_super_history.version as version

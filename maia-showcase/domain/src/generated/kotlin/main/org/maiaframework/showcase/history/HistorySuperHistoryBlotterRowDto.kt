@@ -9,6 +9,8 @@ import java.time.Instant
 
 data class HistorySuperHistoryBlotterRowDto(
     val changeType: ChangeType,
+    val createdByVersion: Long,
+    val lastModifiedByVersion: Long,
     val lastModifiedTimestamp: Instant,
     val version: Long
 ) {

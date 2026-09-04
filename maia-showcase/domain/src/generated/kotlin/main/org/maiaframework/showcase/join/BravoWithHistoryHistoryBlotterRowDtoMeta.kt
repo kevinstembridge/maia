@@ -12,11 +12,12 @@ object BravoWithHistoryHistoryBlotterRowDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
+            "alphaVersion" -> "maia.bravo_with_history_history.alpha_version"
             "changeType" -> "maia.bravo_with_history_history.change_type"
             "someInt" -> "maia.bravo_with_history_history.some_int"
             "someString" -> "maia.bravo_with_history_history.some_string"
             "version" -> "maia.bravo_with_history_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, someInt, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [alphaVersion, changeType, someInt, someString, version]")
         }
 
     }
@@ -25,11 +26,12 @@ object BravoWithHistoryHistoryBlotterRowDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
+            "alphaVersion" -> JdbcCompatibleType.bigint
             "changeType" -> JdbcCompatibleType.text
             "someInt" -> JdbcCompatibleType.integer
             "someString" -> JdbcCompatibleType.text
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, someInt, someString, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [alphaVersion, changeType, someInt, someString, version]")
         }
 
     }

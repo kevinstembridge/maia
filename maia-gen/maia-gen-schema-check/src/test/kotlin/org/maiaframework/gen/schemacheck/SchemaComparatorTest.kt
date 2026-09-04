@@ -3,6 +3,7 @@ package org.maiaframework.gen.schemacheck
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.maiaframework.gen.schema.ExpectedColumnDef
+import org.maiaframework.gen.schema.ExpectedCompositeForeignKeyDef
 import org.maiaframework.gen.schema.ExpectedForeignKeyDef
 import org.maiaframework.gen.schema.ExpectedIndexDef
 import org.maiaframework.gen.schema.ExpectedTableDef
@@ -157,6 +158,89 @@ class SchemaComparatorTest {
         val diff = report.tables.single()
         assertThat(diff.missingIndexes).containsExactly(ExpectedIndexDef("widget_name_idx", listOf("name"), false))
         assertThat(diff.extraIndexes).containsExactly("widget_extra_idx")
+
+    }
+
+    @Test
+    fun `does not flag a real composite foreign key's columns as extra`() {
+
+        val expected = listOf(
+            ExpectedTableDef(
+                "app.child_history", emptyList(), listOf("id", "version"), emptyList(), emptyList(),
+                compositeForeignKeys = listOf(
+                    ExpectedCompositeForeignKeyDef(listOf("parent_id", "parent_version"), "app.parent_history", listOf("id", "version"))
+                ),
+            )
+        )
+        val actual = listOf(
+            ActualTableDef(
+                "app.child_history",
+                emptyList(),
+                listOf("id", "version"),
+                foreignKeys = listOf(
+                    ActualForeignKeyDef("parent_id", "app.parent_history", "id"),
+                    ActualForeignKeyDef("parent_version", "app.parent_history", "version"),
+                ),
+                indexes = emptyList(),
+            )
+        )
+
+        val report = comparator.compare(expected, actual)
+
+        assertThat(report.hasErrors).isFalse()
+        assertThat(report.tables.single().extraForeignKeys).isEmpty()
+        assertThat(report.tables.single().missingCompositeForeignKeys).isEmpty()
+
+    }
+
+    @Test
+    fun `reports a missing composite foreign key as an error`() {
+
+        val expected = listOf(
+            ExpectedTableDef(
+                "app.child_history", emptyList(), listOf("id", "version"), emptyList(), emptyList(),
+                compositeForeignKeys = listOf(
+                    ExpectedCompositeForeignKeyDef(listOf("parent_id", "parent_version"), "app.parent_history", listOf("id", "version"))
+                ),
+            )
+        )
+        val actual = listOf(ActualTableDef("app.child_history", emptyList(), listOf("id", "version"), emptyList(), emptyList()))
+
+        val report = comparator.compare(expected, actual)
+
+        assertThat(report.hasErrors).isTrue()
+        assertThat(report.tables.single().missingCompositeForeignKeys).hasSize(1)
+
+    }
+
+    @Test
+    fun `reports a composite foreign key as missing when only one of its columns is present`() {
+
+        val expected = listOf(
+            ExpectedTableDef(
+                "app.child_history", emptyList(), listOf("id", "version"), emptyList(), emptyList(),
+                compositeForeignKeys = listOf(
+                    ExpectedCompositeForeignKeyDef(listOf("parent_id", "parent_version"), "app.parent_history", listOf("id", "version"))
+                ),
+            )
+        )
+        val actual = listOf(
+            ActualTableDef(
+                "app.child_history",
+                emptyList(),
+                listOf("id", "version"),
+                foreignKeys = listOf(
+                    ActualForeignKeyDef("parent_id", "app.parent_history", "id"),
+                ),
+                indexes = emptyList(),
+            )
+        )
+
+        val report = comparator.compare(expected, actual)
+
+        assertThat(report.hasErrors).isTrue()
+        assertThat(report.tables.single().missingCompositeForeignKeys).hasSize(1)
+        assertThat(report.tables.single().extraForeignKeys).isEmpty()
 
     }
 

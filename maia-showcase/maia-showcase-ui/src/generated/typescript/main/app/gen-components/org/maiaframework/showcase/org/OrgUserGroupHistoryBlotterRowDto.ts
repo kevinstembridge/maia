@@ -7,6 +7,7 @@ export interface OrgUserGroupHistoryBlotterRowDto {
     changeType: string;
     description: string;
     name: string;
+    orgVersion: number;
     systemManaged: boolean;
     version: number;
 }

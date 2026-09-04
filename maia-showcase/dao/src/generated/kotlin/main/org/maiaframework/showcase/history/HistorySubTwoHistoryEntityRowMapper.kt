@@ -15,9 +15,11 @@ class HistorySubTwoHistoryEntityRowMapper : MaiaRowMapper<HistorySubTwoHistoryEn
 
         val changeType = rsa.readEnum("change_type", ChangeType::class.java)
         val createdBy = rsa.readDomainId("created_by_id")
+        val createdByVersion = rsa.readLong("created_by_version")
         val createdTimestamp = rsa.readInstant("created_timestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
+        val lastModifiedByVersion = rsa.readLong("last_modified_by_version")
         val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val someInt = rsa.readInt("some_int")
         val version = rsa.readLong("version")
@@ -25,9 +27,11 @@ class HistorySubTwoHistoryEntityRowMapper : MaiaRowMapper<HistorySubTwoHistoryEn
         return HistorySubTwoHistoryEntity(
                 changeType,
                 createdBy,
+                createdByVersion,
                 createdTimestamp,
                 id,
                 lastModifiedBy,
+                lastModifiedByVersion,
                 lastModifiedTimestamp,
                 someInt,
                 version

@@ -22,6 +22,12 @@ data class ExpectedForeignKeyDef(
     val referencedColumn: String,
 )
 
+data class ExpectedCompositeForeignKeyDef(
+    val columnNames: List<String>,
+    val referencedSchemaAndTable: String,
+    val referencedColumns: List<String>,
+)
+
 data class ExpectedIndexDef(
     val name: String,
     val columns: List<String>,
@@ -34,6 +40,7 @@ data class ExpectedTableDef(
     val primaryKeyColumns: List<String>,
     val foreignKeys: List<ExpectedForeignKeyDef>,
     val indexes: List<ExpectedIndexDef>,
+    val compositeForeignKeys: List<ExpectedCompositeForeignKeyDef> = emptyList(),
 )
 
 class ExpectedSchemaExtractor {
@@ -85,18 +92,39 @@ class ExpectedSchemaExtractor {
             withDiscriminator
         }
 
-        val foreignKeys = sqlFieldsForColumns.mapNotNull { sqlFieldDef ->
-            val fieldType = sqlFieldDef.fieldType
-            if (fieldType is ForeignKeyFieldType) {
-                val foreignEntityDef = fieldType.foreignKeyFieldDef.foreignEntityDef
-                ExpectedForeignKeyDef(
-                    columnName = sqlFieldDef.tableColumnName.value,
-                    referencedSchemaAndTable = schemaAndTableNameFor(foreignEntityDef),
-                    referencedColumn = foreignEntityDef.primaryKeyFields.first().tableColumnName.value,
-                )
-            } else {
-                null
+        val (historizedFkSqlFields, plainFkSqlFields) = sqlFieldsForColumns
+            .filter { it.fieldType is ForeignKeyFieldType }
+            .partition {
+                baseEntityDef.isHistoryEntity &&
+                    (it.fieldType as ForeignKeyFieldType).foreignKeyFieldDef.foreignEntityDef.withVersionHistory.value
             }
+
+        val foreignKeys = plainFkSqlFields.map { sqlFieldDef ->
+            val foreignEntityDef = (sqlFieldDef.fieldType as ForeignKeyFieldType).foreignKeyFieldDef.foreignEntityDef
+            ExpectedForeignKeyDef(
+                columnName = sqlFieldDef.tableColumnName.value,
+                referencedSchemaAndTable = schemaAndTableNameFor(foreignEntityDef),
+                referencedColumn = foreignEntityDef.primaryKeyFields.first().tableColumnName.value,
+            )
+        }
+
+        val compositeForeignKeys = historizedFkSqlFields.map { sqlFieldDef ->
+            val fieldType = sqlFieldDef.fieldType as ForeignKeyFieldType
+            val foreignEntityDef = fieldType.foreignKeyFieldDef.foreignEntityDef
+            val foreignHistoryEntityDef = foreignEntityDef.historyEntityDef!!
+
+            val versionColumnName = entityHierarchy.allFieldDefsSorted
+                .first { it.classFieldName == fieldType.foreignKeyFieldDef.foreignKeyFieldName.withSuffix("Version") }
+                .tableColumnName.value
+            val foreignIdColumn = foreignEntityDef.primaryKeyFields.first().tableColumnName.value
+            val foreignVersionColumn = foreignHistoryEntityDef.allEntityFieldsSorted
+                .first { it.classFieldName == ClassFieldName.version }.tableColumnName.value
+
+            ExpectedCompositeForeignKeyDef(
+                columnNames = listOf(sqlFieldDef.tableColumnName.value, versionColumnName),
+                referencedSchemaAndTable = schemaAndTableNameFor(foreignHistoryEntityDef),
+                referencedColumns = listOf(foreignIdColumn, foreignVersionColumn),
+            )
         }
 
         val indexes = entityHierarchy.entityDefs
@@ -120,6 +148,7 @@ class ExpectedSchemaExtractor {
             primaryKeyColumns = primaryKeyColumns,
             foreignKeys = foreignKeys,
             indexes = indexes,
+            compositeForeignKeys = compositeForeignKeys,
         )
 
     }

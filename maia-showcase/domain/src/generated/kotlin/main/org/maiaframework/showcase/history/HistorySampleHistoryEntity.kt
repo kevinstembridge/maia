@@ -11,9 +11,11 @@ import java.time.Instant
 class HistorySampleHistoryEntity(
     val changeType: ChangeType,
     val createdBy: DomainId,
+    val createdByVersion: Long,
     val createdTimestamp: Instant,
     val id: DomainId,
     val lastModifiedBy: DomainId,
+    val lastModifiedByVersion: Long,
     val lastModifiedTimestamp: Instant,
     val someInt: Int,
     val someString: String,
@@ -29,9 +31,11 @@ class HistorySampleHistoryEntity(
         return "HistorySampleHistoryEntity{" +
                 "changeType = '" + this.changeType + '\'' + ", " + 
                 "createdBy = '" + this.createdBy + '\'' + ", " + 
+                "createdByVersion = '" + this.createdByVersion + '\'' + ", " + 
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "id = '" + this.id + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
+                "lastModifiedByVersion = '" + this.lastModifiedByVersion + '\'' + ", " + 
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "someInt = '" + this.someInt + '\'' + ", " + 
                 "someString = '" + this.someString + '\'' + ", " + 

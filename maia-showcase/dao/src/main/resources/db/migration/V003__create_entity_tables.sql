@@ -64,16 +64,20 @@ CREATE TABLE maia.org_role (
 
 CREATE TABLE maia.org_role_history (
     change_type text NOT NULL,
-    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_by_id uuid NOT NULL,
+    created_by_version bigint NOT NULL,
     created_timestamp timestamp(3) with time zone NOT NULL,
     description text NOT NULL,
     display_name text NOT NULL,
     key text NOT NULL,
-    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_by_id uuid NOT NULL,
+    last_modified_by_version bigint NOT NULL,
     last_modified_timestamp timestamp(3) with time zone NOT NULL,
     version bigint NOT NULL,
     PRIMARY KEY(key, version)
 );
+ALTER TABLE maia.org_role_history ADD CONSTRAINT org_role_history_created_by_id_fkey FOREIGN KEY (created_by_id, created_by_version) REFERENCES maia.party_history(id, version);
+ALTER TABLE maia.org_role_history ADD CONSTRAINT org_role_history_last_modified_by_id_fkey FOREIGN KEY (last_modified_by_id, last_modified_by_version) REFERENCES maia.party_history(id, version);
 
 
 CREATE TABLE maia.org_to_org_role (
@@ -116,11 +120,13 @@ CREATE TABLE maia.user_group_history (
     description text NOT NULL,
     id uuid NOT NULL,
     name text NOT NULL,
-    org_id uuid NULL REFERENCES maia.party(id),
+    org_id uuid NULL,
+    org_version bigint NULL,
     system_managed boolean NOT NULL,
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );
+ALTER TABLE maia.user_group_history ADD CONSTRAINT user_group_history_org_id_fkey FOREIGN KEY (org_id, org_version) REFERENCES maia.party_history(id, version);
 
 
 CREATE TABLE maia.user_group_membership (
@@ -263,10 +269,12 @@ CREATE UNIQUE INDEX history_sample_some_string_uidx ON maia.history_sample(some_
 
 CREATE TABLE maia.history_sample_history (
     change_type text NOT NULL,
-    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_by_id uuid NOT NULL,
+    created_by_version bigint NOT NULL,
     created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_by_id uuid NOT NULL,
+    last_modified_by_version bigint NOT NULL,
     last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NOT NULL,
     some_string text NOT NULL,
@@ -274,6 +282,8 @@ CREATE TABLE maia.history_sample_history (
     PRIMARY KEY(id, version)
 );
 CREATE INDEX hist_history_sample_some_string_idx ON maia.history_sample_history(some_string);
+ALTER TABLE maia.history_sample_history ADD CONSTRAINT history_sample_history_created_by_id_fkey FOREIGN KEY (created_by_id, created_by_version) REFERENCES maia.party_history(id, version);
+ALTER TABLE maia.history_sample_history ADD CONSTRAINT history_sample_history_last_modified_by_id_fkey FOREIGN KEY (last_modified_by_id, last_modified_by_version) REFERENCES maia.party_history(id, version);
 
 
 -- Type Discriminators:
@@ -318,16 +328,20 @@ CREATE TABLE maia.history_super (
 CREATE TABLE maia.history_super_history (
     type_discriminator text not null,
     change_type text NOT NULL,
-    created_by_id uuid NOT NULL REFERENCES maia.party(id),
+    created_by_id uuid NOT NULL,
+    created_by_version bigint NOT NULL,
     created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
+    last_modified_by_id uuid NOT NULL,
+    last_modified_by_version bigint NOT NULL,
     last_modified_timestamp timestamp(3) with time zone NOT NULL,
     some_int integer NULL,
     some_string text NULL,
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );
+ALTER TABLE maia.history_super_history ADD CONSTRAINT history_super_history_created_by_id_fkey FOREIGN KEY (created_by_id, created_by_version) REFERENCES maia.party_history(id, version);
+ALTER TABLE maia.history_super_history ADD CONSTRAINT history_super_history_last_modified_by_id_fkey FOREIGN KEY (last_modified_by_id, last_modified_by_version) REFERENCES maia.party_history(id, version);
 
 
 CREATE TABLE maia.some_versioned (
@@ -462,7 +476,8 @@ CREATE TABLE maia.bravo_with_history (
 
 
 CREATE TABLE maia.bravo_with_history_history (
-    alpha_id uuid NOT NULL REFERENCES maia.alpha_with_history(id),
+    alpha_id uuid NOT NULL,
+    alpha_version bigint NOT NULL,
     change_type text NOT NULL,
     created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
@@ -471,6 +486,7 @@ CREATE TABLE maia.bravo_with_history_history (
     version bigint NOT NULL,
     PRIMARY KEY(id, version)
 );
+ALTER TABLE maia.bravo_with_history_history ADD CONSTRAINT bravo_with_history_history_alpha_id_fkey FOREIGN KEY (alpha_id, alpha_version) REFERENCES maia.alpha_with_history_history(id, version);
 
 
 CREATE TABLE maia.left_many (

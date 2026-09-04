@@ -1,6 +1,7 @@
 package org.maiaframework.gen.schemacheck
 
 import org.maiaframework.gen.schema.ExpectedColumnDef
+import org.maiaframework.gen.schema.ExpectedCompositeForeignKeyDef
 import org.maiaframework.gen.schema.ExpectedForeignKeyDef
 import org.maiaframework.gen.schema.ExpectedIndexDef
 
@@ -63,6 +64,7 @@ object SchemaFixSqlGenerator {
         table.mismatchedColumns.forEach { statements.addAll(fixColumnStatements(table.schemaAndTableName, it)) }
         table.primaryKeyMismatch?.let { statements.addAll(fixPrimaryKeyStatements(table.schemaAndTableName, it)) }
         table.missingForeignKeys.forEach { statements.add(addForeignKeyStatement(table.schemaAndTableName, it)) }
+        table.missingCompositeForeignKeys.forEach { statements.add(addCompositeForeignKeyStatement(table.schemaAndTableName, it)) }
         table.missingIndexes.forEach { statements.add(createIndexStatement(table.schemaAndTableName, it)) }
 
         if (table.status == TableStatus.EXTRA) {
@@ -135,6 +137,19 @@ object SchemaFixSqlGenerator {
 
         return "ALTER TABLE $schemaAndTableName ADD CONSTRAINT $constraintName FOREIGN KEY (${foreignKey.columnName}) " +
                 "REFERENCES ${foreignKey.referencedSchemaAndTable}(${foreignKey.referencedColumn});"
+
+    }
+
+    private fun addCompositeForeignKeyStatement(schemaAndTableName: String, foreignKey: ExpectedCompositeForeignKeyDef): String {
+
+        // Must match CreateTableSqlRenderer's composite FK constraint naming exactly, or generated
+        // fix-SQL would create a constraint whose name the generator itself would never recognize.
+        val constraintName = "${bareTableName(schemaAndTableName)}_${foreignKey.columnNames.first()}_fkey"
+        val localColumns = foreignKey.columnNames.joinToString(", ")
+        val referencedColumns = foreignKey.referencedColumns.joinToString(", ")
+
+        return "ALTER TABLE $schemaAndTableName ADD CONSTRAINT $constraintName FOREIGN KEY ($localColumns) " +
+                "REFERENCES ${foreignKey.referencedSchemaAndTable}($referencedColumns);"
 
     }
 

@@ -33,21 +33,25 @@ class OrgRoleHistoryDao(
             insert into maia.org_role_history (
                 change_type,
                 created_by_id,
+                created_by_version,
                 created_timestamp,
                 description,
                 display_name,
                 key,
                 last_modified_by_id,
+                last_modified_by_version,
                 last_modified_timestamp,
                 version
             ) values (
                 :changeType,
                 :createdBy,
+                :createdByVersion,
                 :createdTimestamp,
                 :description,
                 :displayName,
                 :key,
                 :lastModifiedBy,
+                :lastModifiedByVersion,
                 :lastModifiedTimestamp,
                 :version
             )
@@ -55,11 +59,13 @@ class OrgRoleHistoryDao(
             SqlParams().apply {
                 addValue("changeType", entity.changeType)
                 addValue("createdBy", entity.createdBy)
+                addValue("createdByVersion", entity.createdByVersion)
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("displayName", entity.displayName)
                 addValue("key", entity.key)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
+                addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("version", entity.version)
             }
@@ -75,21 +81,25 @@ class OrgRoleHistoryDao(
             insert into maia.org_role_history (
                 change_type,
                 created_by_id,
+                created_by_version,
                 created_timestamp,
                 description,
                 display_name,
                 key,
                 last_modified_by_id,
+                last_modified_by_version,
                 last_modified_timestamp,
                 version
             ) values (
                 :changeType,
                 :createdBy,
+                :createdByVersion,
                 :createdTimestamp,
                 :description,
                 :displayName,
                 :key,
                 :lastModifiedBy,
+                :lastModifiedByVersion,
                 :lastModifiedTimestamp,
                 :version
             )
@@ -98,11 +108,13 @@ class OrgRoleHistoryDao(
                 SqlParams().apply {
                     addValue("changeType", entity.changeType)
                     addValue("createdBy", entity.createdBy)
+                    addValue("createdByVersion", entity.createdByVersion)
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description)
                     addValue("displayName", entity.displayName)
                     addValue("key", entity.key)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
+                    addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("version", entity.version)
                 }

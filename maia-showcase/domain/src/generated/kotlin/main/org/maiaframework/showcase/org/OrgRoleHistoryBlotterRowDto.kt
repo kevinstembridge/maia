@@ -10,9 +10,11 @@ import java.time.Instant
 
 data class OrgRoleHistoryBlotterRowDto(
     val changeType: ChangeType,
+    val createdByVersion: Long,
     val description: String,
     val displayName: String,
     val key: OrgRoleKey,
+    val lastModifiedByVersion: Long,
     val lastModifiedTimestamp: Instant,
     val version: Long
 ) {
