@@ -10,11 +10,13 @@ import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.jdbc.JdbcCompatibleType
 
+
 data class ExpectedColumnDef(
     val name: String,
     val postgresType: String,
     val nullable: Boolean,
 )
+
 
 data class ExpectedForeignKeyDef(
     val columnName: String,
@@ -22,17 +24,20 @@ data class ExpectedForeignKeyDef(
     val referencedColumn: String,
 )
 
+
 data class ExpectedCompositeForeignKeyDef(
     val columnNames: List<String>,
     val referencedSchemaAndTable: String,
     val referencedColumns: List<String>,
 )
 
+
 data class ExpectedIndexDef(
     val name: String,
     val columns: List<String>,
     val unique: Boolean,
 )
+
 
 data class ExpectedTableDef(
     val schemaAndTableName: String,
@@ -42,6 +47,7 @@ data class ExpectedTableDef(
     val indexes: List<ExpectedIndexDef>,
     val compositeForeignKeys: List<ExpectedCompositeForeignKeyDef> = emptyList(),
 )
+
 
 class ExpectedSchemaExtractor {
 
