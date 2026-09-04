@@ -1,10 +1,5 @@
 package org.maiaframework.gen.schema.expected
 
-import org.maiaframework.gen.schema.expected.ExpectedColumnDef
-import org.maiaframework.gen.schema.expected.ExpectedCompositeForeignKeyDef
-import org.maiaframework.gen.schema.expected.ExpectedForeignKeyDef
-import org.maiaframework.gen.schema.expected.ExpectedIndexDef
-import org.maiaframework.gen.schema.expected.ExpectedTableDef
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef

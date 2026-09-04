@@ -1,7 +1,7 @@
 package org.maiaframework.gen.schemacheck
 
 import org.maiaframework.gen.generator.ApplicationModelDefInstantiator
-import org.maiaframework.gen.schema.ExpectedSchemaExtractor
+import org.maiaframework.gen.schema.expected.ExpectedSchemaExtractor
 import java.sql.DriverManager
 import kotlin.system.exitProcess
 

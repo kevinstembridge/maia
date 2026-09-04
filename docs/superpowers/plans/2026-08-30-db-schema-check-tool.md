@@ -178,7 +178,7 @@ git commit -m "test: characterize CreateTableSqlRenderer output before extractin
 **Goal:** Move `CreateTableSqlRenderer`'s column/type/nullable/PK/FK/index derivation into a structured, reusable `ExpectedSchemaExtractor`, with `CreateTableSqlRenderer` refactored to consume it — no behavior change.
 
 **Files:**
-- Create: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractor.kt`
+- Create: `../../../maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/schema/expected/ExpectedSchemaExtractor.kt`
 - Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRenderer.kt`
 - Create: `maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractorTest.kt`
 - Test: `maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/renderers/CreateTableSqlRendererTest.kt` (from Task 1, must still pass)

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import org.maiaframework.gen.generator.ApplicationModelDefInstantiator
-import org.maiaframework.gen.schema.ExpectedSchemaExtractor
+import org.maiaframework.gen.schema.expected.ExpectedSchemaExtractor
 import org.maiaframework.testing.postgresql.SingletonPostgresqlContainer
 import java.sql.DriverManager
 

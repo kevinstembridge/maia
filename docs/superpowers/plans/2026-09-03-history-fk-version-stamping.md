@@ -536,7 +536,7 @@ Expected: BUILD SUCCESSFUL
 **Goal:** `ExpectedSchemaExtractor` recognizes a historized-FK-to-historized-target on a history entity and represents it as a composite FK (both id and version columns together), instead of the old single-column FK to the live table.
 
 **Files:**
-- Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractor.kt`
+- Modify: `../../../maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/schema/expected/ExpectedSchemaExtractor.kt`
 - Test: `maia-gen/maia-gen-generator/src/test/kotlin/org/maiaframework/gen/schema/ExpectedSchemaExtractorTest.kt`
 
 **Acceptance Criteria:**
