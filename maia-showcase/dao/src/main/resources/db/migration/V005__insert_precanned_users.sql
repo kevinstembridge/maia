@@ -27,6 +27,23 @@ insert into maia.party (
     1
 );
 
+-- Every party row inserted above must have a matching party_history row: PartyDao's
+-- generated insert() always writes both, and other history-tracked entities now have a
+-- composite FK from their own history table to party_history(id, version) on
+-- created_by/last_modified_by, so a party with no history row would leave those inserts
+-- unable to satisfy that constraint.
+insert into maia.party_history (
+    type_discriminator, authorities, change_type, created_by_id, created_timestamp,
+    encrypted_password, first_name, id, last_modified_by_id, last_modified_timestamp,
+    last_name, lifecycle_state, org_name, version
+)
+select
+    type_discriminator, authorities, 'CREATE', created_by_id, created_timestamp,
+    encrypted_password, first_name, id, last_modified_by_id, last_modified_timestamp,
+    last_name, lifecycle_state, org_name, version
+from maia.party
+where first_name = 'Fyrst' and last_name = 'Naime';
+
 
 insert into maia.email_address (
     created_timestamp,
@@ -117,6 +134,18 @@ insert into maia.party (
     1
 );
 
+insert into maia.party_history (
+    type_discriminator, authorities, change_type, created_by_id, created_timestamp,
+    encrypted_password, first_name, id, last_modified_by_id, last_modified_timestamp,
+    last_name, lifecycle_state, org_name, version
+)
+select
+    type_discriminator, authorities, 'CREATE', created_by_id, created_timestamp,
+    encrypted_password, first_name, id, last_modified_by_id, last_modified_timestamp,
+    last_name, lifecycle_state, org_name, version
+from maia.party
+where first_name = 'Job' and last_name = 'Runna';
+
 
 insert into maia.party (
     type_discriminator,
@@ -145,6 +174,18 @@ insert into maia.party (
     'ACTIVE',
     '{bcrypt}$2a$10$zI.pQy.gVMVRzsuuBxjc/.7/ZvtXzSWqGw6p4srdJi0FQ6YSn6E1S' -- d0uglas
 );
+
+insert into maia.party_history (
+    type_discriminator, authorities, change_type, created_by_id, created_timestamp,
+    encrypted_password, first_name, id, last_modified_by_id, last_modified_timestamp,
+    last_name, lifecycle_state, org_name, version
+)
+select
+    type_discriminator, authorities, 'CREATE', created_by_id, created_timestamp,
+    encrypted_password, first_name, id, last_modified_by_id, last_modified_timestamp,
+    last_name, lifecycle_state, org_name, version
+from maia.party
+where first_name = 'Admin' and last_name = 'System';
 
 
 insert into maia.email_address (
@@ -235,6 +276,18 @@ insert into maia.party (
     'ACTIVE',
     '{bcrypt}$2a$10$zI.pQy.gVMVRzsuuBxjc/.7/ZvtXzSWqGw6p4srdJi0FQ6YSn6E1S' -- d0uglas
 );
+
+insert into maia.party_history (
+    type_discriminator, authorities, change_type, created_by_id, created_timestamp,
+    encrypted_password, first_name, id, last_modified_by_id, last_modified_timestamp,
+    last_name, lifecycle_state, org_name, version
+)
+select
+    type_discriminator, authorities, 'CREATE', created_by_id, created_timestamp,
+    encrypted_password, first_name, id, last_modified_by_id, last_modified_timestamp,
+    last_name, lifecycle_state, org_name, version
+from maia.party
+where first_name = 'Sysops' and last_name = 'System';
 
 
 insert into maia.email_address (
