@@ -23,51 +23,101 @@ class ExpectedSchemaExtractor {
 
     private fun extractTable(entityHierarchy: EntityHierarchy): ExpectedTableDef {
 
-        val baseEntityDef = entityHierarchy.entityDef
+        val rootEntityDef = entityHierarchy.entityDef
 
-        val nonDerivedSqlFields = entityHierarchy.allFieldDefsSorted
+        val sqlFieldsForColumns = `build sqlFieldDefs`(entityHierarchy)
+
+        val (historizedFkSqlFields, plainFkSqlFields) = sqlFieldsForColumns
+            .filter { it.fieldType is ForeignKeyFieldType }
+            .partition {
+                rootEntityDef.isHistoryEntity &&
+                    (it.fieldType as ForeignKeyFieldType).foreignKeyFieldDef.foreignEntityDef.withVersionHistory.value
+            }
+
+        return ExpectedTableDef(
+            schemaAndTableName = schemaAndTableNameFor(rootEntityDef),
+            columns = `determine expected columns`(entityHierarchy, sqlFieldsForColumns),
+            foreignKeys = `determine foreign keys`(plainFkSqlFields),
+            indexes = `determine expected indexes`(entityHierarchy),
+            compositeForeignKeys = `determine expected composite foreign keys`(historizedFkSqlFields, entityHierarchy),
+        )
+
+    }
+
+
+    private fun `build sqlFieldDefs`(entityHierarchy: EntityHierarchy): List<SqlFieldDef> {
+
+        val rootEntityDef = entityHierarchy.entityDef
+        val nonDerivedSqlFields = `get non-derived sql fields from`(entityHierarchy)
+        return `remove effective timestamp columns from`(rootEntityDef, nonDerivedSqlFields)
+
+    }
+
+
+    private fun `remove effective timestamp columns from`(
+        rootEntityDef: EntityDef,
+        nonDerivedSqlFields: List<SqlFieldDef>
+    ): List<SqlFieldDef> {
+
+        val effectiveTimestampColumnNames = setOf("effective_from", "effective_to")
+
+        val sqlFieldsForColumns = if (rootEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
+            nonDerivedSqlFields.filterNot { it.tableColumnName.value in effectiveTimestampColumnNames }
+        } else {
+            nonDerivedSqlFields
+        }
+
+        return sqlFieldsForColumns
+
+    }
+
+
+    private fun `get non-derived sql fields from`(entityHierarchy: EntityHierarchy): List<SqlFieldDef> {
+
+        return entityHierarchy.allFieldDefsSorted
             .filterNot { it.isDerived.value }
             .groupBy { it.tableColumnName }
             .mapValues { toSqlFieldDef(it, entityHierarchy) }
             .values
             .toList()
 
-        val effectiveTimestampColumnNames = setOf("effective_from", "effective_to")
+    }
 
-        val sqlFieldsForColumns = if (baseEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
-            nonDerivedSqlFields.filterNot { it.tableColumnName.value in effectiveTimestampColumnNames }
-        } else {
-            nonDerivedSqlFields
-        }
+
+    private fun `determine expected columns`(
+        entityHierarchy: EntityHierarchy,
+        sqlFieldsForColumns: List<SqlFieldDef>
+    ): List<ExpectedColumnDef> {
+
+        val columns = mutableListOf<ExpectedColumnDef>()
 
         val baseColumns = sqlFieldsForColumns.map { sqlFieldDef ->
             ExpectedColumnDef(
-                name = sqlFieldDef.tableColumnName.value,
+                name = sqlFieldDef.tableColumnName,
                 postgresType = "${sqlFieldDef.fieldType.jdbcCompatibleType.postgresDataType}${sqlFieldDef.sizeConstraint}",
                 nullable = sqlFieldDef.nullable,
+                isPrimaryKey = sqlFieldDef.isPrimaryKey
             )
         }
 
-        val withDiscriminator = if (entityHierarchy.hasSubclasses()) {
-            baseColumns.plus(ExpectedColumnDef("type_discriminator", "text", nullable = false))
-        } else {
-            baseColumns
+        columns.addAll(baseColumns)
+
+        if (entityHierarchy.hasSubclasses()) {
+            columns.plus(ExpectedColumnDef(TableColumnName.typeDiscriminator, "text", nullable = false, isPrimaryKey = false))
         }
 
-        val columns = if (baseEntityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
-            withDiscriminator.plus(ExpectedColumnDef("effective_range", "tstzrange", nullable = false))
-        } else {
-            withDiscriminator
+        if (entityHierarchy.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
+            columns.plus(ExpectedColumnDef(TableColumnName.effectiveRange, "tstzrange", nullable = false, isPrimaryKey = false))
         }
 
-        val (historizedFkSqlFields, plainFkSqlFields) = sqlFieldsForColumns
-            .filter { it.fieldType is ForeignKeyFieldType }
-            .partition {
-                baseEntityDef.isHistoryEntity &&
-                    (it.fieldType as ForeignKeyFieldType).foreignKeyFieldDef.foreignEntityDef.withVersionHistory.value
-            }
+        return columns
 
-        val foreignKeys = plainFkSqlFields.map { sqlFieldDef ->
+    }
+
+
+    private fun `determine foreign keys`(plainFkSqlFields: List<SqlFieldDef>): List<ExpectedForeignKeyDef> {
+
+        return plainFkSqlFields.map { sqlFieldDef ->
             val foreignEntityDef = (sqlFieldDef.fieldType as ForeignKeyFieldType).foreignKeyFieldDef.foreignEntityDef
             ExpectedForeignKeyDef(
                 columnName = sqlFieldDef.tableColumnName.value,
@@ -76,7 +126,15 @@ class ExpectedSchemaExtractor {
             )
         }
 
-        val compositeForeignKeys = historizedFkSqlFields.map { sqlFieldDef ->
+    }
+
+
+    private fun `determine expected composite foreign keys`(
+        historizedFkSqlFields: List<SqlFieldDef>,
+        entityHierarchy: EntityHierarchy
+    ): List<ExpectedCompositeForeignKeyDef> {
+
+        return historizedFkSqlFields.map { sqlFieldDef ->
             val fieldType = sqlFieldDef.fieldType as ForeignKeyFieldType
             val foreignEntityDef = fieldType.foreignKeyFieldDef.foreignEntityDef
             val foreignHistoryEntityDef = foreignEntityDef.historyEntityDef!!
@@ -85,40 +143,46 @@ class ExpectedSchemaExtractor {
                 .first { it.classFieldName == fieldType.foreignKeyFieldDef.foreignKeyFieldName.withSuffix("Version") }
                 .tableColumnName.value
             val foreignIdColumn = foreignEntityDef.primaryKeyFields.first().tableColumnName.value
-            val foreignVersionColumn = foreignHistoryEntityDef.allEntityFieldsSorted
-                .first { it.classFieldName == ClassFieldName.version }.tableColumnName.value
+            val foreignVersionColumn = foreignHistoryEntityDef.`tableColumnName of version field`()
 
             ExpectedCompositeForeignKeyDef(
                 columnNames = listOf(sqlFieldDef.tableColumnName.value, versionColumnName),
                 referencedSchemaAndTable = schemaAndTableNameFor(foreignHistoryEntityDef),
                 referencedColumns = listOf(foreignIdColumn, foreignVersionColumn),
             )
+
         }
 
-        val indexes = entityHierarchy.entityDefs
+    }
+
+
+    private fun EntityDef.`tableColumnName of version field`(): String = allEntityFieldsSorted
+        .first { it.classFieldName == ClassFieldName.version }.tableColumnName.value
+
+
+    private fun `determine expected indexes`(entityHierarchy: EntityHierarchy): List<ExpectedIndexDef> {
+
+        return entityHierarchy.entityDefs
             .reversed()
             .flatMap { it.databaseIndexDefs }
             .distinctBy { databaseIndexDef -> databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName } }
             .map { databaseIndexDef ->
-                val typeDiscriminatorField = if (entityHierarchy.hasSubclasses()) listOf("type_discriminator") else emptyList()
+
+                val indexColumnNames = databaseIndexDef.indexDef.indexFieldDefs
+                    .map { it.databaseColumnName.value }
+                    .toMutableList()
+
+                if (entityHierarchy.hasSubclasses()) {
+                    indexColumnNames.add("type_discriminator")
+                }
+
                 ExpectedIndexDef(
                     name = databaseIndexDef.indexDef.indexName.value,
-                    columns = databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName.value }
-                        .plus(typeDiscriminatorField),
+                    columns = indexColumnNames,
                     unique = databaseIndexDef.isUnique,
                 )
+
             }
-
-        val primaryKeyColumns = nonDerivedSqlFields.filter { it.isPrimaryKey }.map { it.tableColumnName.value }
-
-        return ExpectedTableDef(
-            schemaAndTableName = schemaAndTableNameFor(baseEntityDef),
-            columns = columns,
-            primaryKeyColumns = primaryKeyColumns,
-            foreignKeys = foreignKeys,
-            indexes = indexes,
-            compositeForeignKeys = compositeForeignKeys,
-        )
 
     }
 
@@ -148,7 +212,9 @@ class ExpectedSchemaExtractor {
     }
 
 
-    private fun maxSizeConstraintFor(entityFieldDefs: Map.Entry<TableColumnName, List<EntityFieldDef>>): String {
+    private fun maxSizeConstraintFor(
+        entityFieldDefs: Map.Entry<TableColumnName, List<EntityFieldDef>>
+    ): String {
 
         val maxSizeConstraint = determineMaxSizeConstraintFor(entityFieldDefs.value)
         return determineSizeConstraintFor(maxSizeConstraint)
