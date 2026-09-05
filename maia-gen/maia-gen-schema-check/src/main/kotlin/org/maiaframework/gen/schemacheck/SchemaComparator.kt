@@ -1,59 +1,8 @@
 package org.maiaframework.gen.schemacheck
 
-import org.maiaframework.gen.schema.expected.ExpectedColumnDef
-import org.maiaframework.gen.schema.expected.ExpectedCompositeForeignKeyDef
-import org.maiaframework.gen.schema.expected.ExpectedForeignKeyDef
-import org.maiaframework.gen.schema.expected.ExpectedIndexDef
 import org.maiaframework.gen.schema.expected.ExpectedTableDef
+import org.maiaframework.gen.schemacheck.actual.ActualTableDef
 
-enum class TableStatus { OK, MISSING, EXTRA, MISMATCHED }
-
-data class ColumnMismatch(
-    val name: String,
-    val expectedType: String,
-    val actualType: String,
-    val expectedNullable: Boolean,
-    val actualNullable: Boolean,
-)
-
-data class PrimaryKeyMismatch(val expected: List<String>, val actual: List<String>, val actualConstraintName: String? = null)
-
-data class TableDiff(
-    val schemaAndTableName: String,
-    val status: TableStatus,
-    val missingColumns: List<ExpectedColumnDef> = emptyList(),
-    val extraColumns: List<String> = emptyList(),
-    val mismatchedColumns: List<ColumnMismatch> = emptyList(),
-    val primaryKeyMismatch: PrimaryKeyMismatch? = null,
-    val missingForeignKeys: List<ExpectedForeignKeyDef> = emptyList(),
-    val extraForeignKeys: List<String> = emptyList(),
-    val missingCompositeForeignKeys: List<ExpectedCompositeForeignKeyDef> = emptyList(),
-    val missingIndexes: List<ExpectedIndexDef> = emptyList(),
-    val extraIndexes: List<String> = emptyList(),
-) {
-
-    val hasErrors: Boolean
-        get() = status == TableStatus.MISSING
-                || missingColumns.isNotEmpty()
-                || mismatchedColumns.isNotEmpty()
-                || primaryKeyMismatch != null
-                || missingForeignKeys.isNotEmpty()
-                || missingCompositeForeignKeys.isNotEmpty()
-                || missingIndexes.isNotEmpty()
-
-    val hasWarnings: Boolean
-        get() = status == TableStatus.EXTRA
-                || extraColumns.isNotEmpty()
-                || extraForeignKeys.isNotEmpty()
-                || extraIndexes.isNotEmpty()
-
-}
-
-data class SchemaDiffReport(val tables: List<TableDiff>) {
-
-    val hasErrors: Boolean get() = tables.any { it.hasErrors }
-
-}
 
 class SchemaComparator {
 
@@ -82,16 +31,16 @@ class SchemaComparator {
     private fun diffTable(expected: ExpectedTableDef, actual: ActualTableDef): TableDiff {
 
         val expectedColumnsByName = expected.columns.associateBy { it.name }
-        val actualColumnsByName = actual.columns.associateBy { it.name }
+        val actualColumnsByName = actual.columnDefs.associateBy { it.name }
 
         val missingColumns = expected.columns.filter { !actualColumnsByName.containsKey(it.name) }
-        val extraColumns = actual.columns.map { it.name }.filter { !expectedColumnsByName.containsKey(it) }
+        val extraColumns = actual.columnDefs.map { it.name }.filter { !expectedColumnsByName.containsKey(it) }
 
         val mismatchedColumns = expected.columns.mapNotNull { expectedColumn ->
             val actualColumn = actualColumnsByName[expectedColumn.name] ?: return@mapNotNull null
             if (actualColumn.postgresType != expectedColumn.postgresType || actualColumn.nullable != expectedColumn.nullable) {
                 ColumnMismatch(
-                    name = expectedColumn.name,
+                    name = expectedColumn.name.value,
                     expectedType = expectedColumn.postgresType,
                     actualType = actualColumn.postgresType,
                     expectedNullable = expectedColumn.nullable,
@@ -102,8 +51,8 @@ class SchemaComparator {
             }
         }
 
-        val primaryKeyMismatch = if (expected.primaryKeyColumnNames() != actual.primaryKeyColumns) {
-            PrimaryKeyMismatch(expected.primaryKeyColumnNames(), actual.primaryKeyColumns, actual.primaryKeyConstraintName)
+        val primaryKeyMismatch = if (expected.primaryKeyColumnNames() != actual.primaryKeyColumnNames) {
+            PrimaryKeyMismatch(expected.primaryKeyColumnNames(), actual.primaryKeyColumnNames, actual.primaryKeyConstraintName)
         } else {
             null
         }

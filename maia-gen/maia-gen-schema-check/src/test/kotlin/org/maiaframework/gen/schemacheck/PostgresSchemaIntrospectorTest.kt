@@ -113,9 +113,9 @@ class PostgresSchemaIntrospectorTest {
         assertThat(tables.map { it.schemaAndTableName }).doesNotContain("introspector_test.parent_view")
 
         val parent = tables.single { it.schemaAndTableName == "introspector_test.parent" }
-        assertThat(parent.primaryKeyColumns).containsExactly("id")
+        assertThat(parent.primaryKeyColumnNames).containsExactly("id")
         assertThat(parent.primaryKeyConstraintName).isEqualTo("parent_pkey")
-        assertThat(parent.columns).contains(
+        assertThat(parent.columnDefs).contains(
             ActualColumnDef("id", "bigint", nullable = false),
             ActualColumnDef("name", "varchar(50)", nullable = false),
         )
@@ -125,8 +125,8 @@ class PostgresSchemaIntrospectorTest {
         assertThat(parentNameIndex.unique).isTrue()
 
         val child = tables.single { it.schemaAndTableName == "introspector_test.child" }
-        assertThat(child.primaryKeyColumns).containsExactly("id")
-        assertThat(child.columns).contains(
+        assertThat(child.primaryKeyColumnNames).containsExactly("id")
+        assertThat(child.columnDefs).contains(
             ActualColumnDef("count", "integer", nullable = false),
             ActualColumnDef("title", "varchar(100)", nullable = true),
         )

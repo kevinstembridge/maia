@@ -1,9 +1,9 @@
-package org.maiaframework.gen.schema.expected
+package org.maiaframework.gen.schemacheck.actual
 
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 
-data class ExpectedForeignKeyDef(
+data class ActualForeignKeyDef(
     val columnName: TableColumnName,
     val referencedSchemaAndTable: String,
-    val referencedColumn: TableColumnName,
+    val referencedColumn: String,
 )

@@ -1,5 +1,10 @@
 package org.maiaframework.gen.schemacheck
 
+import org.maiaframework.gen.schemacheck.actual.ActualColumnDef
+import org.maiaframework.gen.schemacheck.actual.ActualForeignKeyDef
+import org.maiaframework.gen.schemacheck.actual.ActualIndexDef
+import org.maiaframework.gen.schemacheck.actual.ActualTableDef
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import java.sql.Connection
 
 /**
@@ -18,8 +23,8 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
             val primaryKey = primaryKeyFor(schema, table)
             ActualTableDef(
                 schemaAndTableName = "$schema.$table",
-                columns = columnsFor(schema, table),
-                primaryKeyColumns = primaryKey.columns,
+                columnDefs = columnsFor(schema, table),
+                primaryKeyColumnNames = primaryKey.columns,
                 foreignKeys = foreignKeysFor(schema, table),
                 indexes = indexesFor(schema, table),
                 primaryKeyConstraintName = primaryKey.constraintName,
@@ -72,7 +77,7 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
                     val characterMaximumLength = rs.getInt("character_maximum_length").takeUnless { rs.wasNull() }
                     columns.add(
                         ActualColumnDef(
-                            name = rs.getString("column_name"),
+                            name = TableColumnName(rs.getString("column_name")),
                             postgresType = PostgresActualTypeNormalizer.normalize(
                                 rs.getString("data_type"),
                                 rs.getString("udt_name"),
@@ -88,7 +93,7 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
 
     }
 
-    private data class PrimaryKeyInfo(val columns: List<String>, val constraintName: String?)
+    private data class PrimaryKeyInfo(val columns: List<TableColumnName>, val constraintName: String?)
 
     private fun primaryKeyFor(schema: String, table: String): PrimaryKeyInfo {
 
@@ -105,10 +110,10 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
             statement.setString(1, schema)
             statement.setString(2, table)
             statement.executeQuery().use { rs ->
-                val columns = mutableListOf<String>()
+                val columns = mutableListOf<TableColumnName>()
                 var constraintName: String? = null
                 while (rs.next()) {
-                    columns.add(rs.getString("column_name"))
+                    columns.add(TableColumnName(rs.getString("column_name")))
                     constraintName = rs.getString("constraint_name")
                 }
                 return PrimaryKeyInfo(columns, constraintName)
@@ -152,7 +157,7 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
                 while (rs.next()) {
                     foreignKeys.add(
                         ActualForeignKeyDef(
-                            columnName = rs.getString("column_name"),
+                            columnName = TableColumnName(rs.getString("column_name")),
                             referencedSchemaAndTable = "${rs.getString("referenced_schema")}.${rs.getString("referenced_table")}",
                             referencedColumn = rs.getString("referenced_column"),
                         )
@@ -196,7 +201,7 @@ class PostgresSchemaIntrospector(private val connection: Connection) {
                 val indexes = mutableListOf<ActualIndexDef>()
                 while (rs.next()) {
                     @Suppress("UNCHECKED_CAST")
-                    val columnNames = (rs.getArray("column_names").array as Array<String>).toList()
+                    val columnNames = (rs.getArray("column_names").array as Array<String>).map { TableColumnName(it) }
                     indexes.add(
                         ActualIndexDef(
                             name = rs.getString("index_name"),

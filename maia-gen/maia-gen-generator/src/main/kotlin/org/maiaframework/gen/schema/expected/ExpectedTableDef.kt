@@ -1,5 +1,7 @@
 package org.maiaframework.gen.schema.expected
 
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
+
 data class ExpectedTableDef(
     val schemaAndTableName: String,
     val columns: List<ExpectedColumnDef>,
@@ -9,9 +11,9 @@ data class ExpectedTableDef(
 ) {
 
 
-    fun primaryKeyColumnNames(): List<String> {
+    fun primaryKeyColumnNames(): List<TableColumnName> {
 
-        return columns.filter { it.isPrimaryKey }.map { it.name.value }
+        return columns.filter { it.isPrimaryKey }.map { it.name }
 
     }
 

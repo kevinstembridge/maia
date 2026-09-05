@@ -120,9 +120,9 @@ class ExpectedSchemaExtractor {
         return plainFkSqlFields.map { sqlFieldDef ->
             val foreignEntityDef = (sqlFieldDef.fieldType as ForeignKeyFieldType).foreignKeyFieldDef.foreignEntityDef
             ExpectedForeignKeyDef(
-                columnName = sqlFieldDef.tableColumnName.value,
+                columnName = sqlFieldDef.tableColumnName,
                 referencedSchemaAndTable = schemaAndTableNameFor(foreignEntityDef),
-                referencedColumn = foreignEntityDef.primaryKeyFields.first().tableColumnName.value,
+                referencedColumn = foreignEntityDef.primaryKeyFields.first().tableColumnName,
             )
         }
 
@@ -141,12 +141,12 @@ class ExpectedSchemaExtractor {
 
             val versionColumnName = entityHierarchy.allFieldDefsSorted
                 .first { it.classFieldName == fieldType.foreignKeyFieldDef.foreignKeyFieldName.withSuffix("Version") }
-                .tableColumnName.value
-            val foreignIdColumn = foreignEntityDef.primaryKeyFields.first().tableColumnName.value
+                .tableColumnName
+            val foreignIdColumn = foreignEntityDef.primaryKeyFields.first().tableColumnName
             val foreignVersionColumn = foreignHistoryEntityDef.`tableColumnName of version field`()
 
             ExpectedCompositeForeignKeyDef(
-                columnNames = listOf(sqlFieldDef.tableColumnName.value, versionColumnName),
+                columnNames = listOf(sqlFieldDef.tableColumnName, versionColumnName),
                 referencedSchemaAndTable = schemaAndTableNameFor(foreignHistoryEntityDef),
                 referencedColumns = listOf(foreignIdColumn, foreignVersionColumn),
             )
@@ -156,8 +156,13 @@ class ExpectedSchemaExtractor {
     }
 
 
-    private fun EntityDef.`tableColumnName of version field`(): String = allEntityFieldsSorted
-        .first { it.classFieldName == ClassFieldName.version }.tableColumnName.value
+    private fun EntityDef.`tableColumnName of version field`(): TableColumnName {
+
+        return allEntityFieldsSorted
+            .first { it.classFieldName == ClassFieldName.version }
+            .tableColumnName
+
+    }
 
 
     private fun `determine expected indexes`(entityHierarchy: EntityHierarchy): List<ExpectedIndexDef> {
@@ -169,11 +174,11 @@ class ExpectedSchemaExtractor {
             .map { databaseIndexDef ->
 
                 val indexColumnNames = databaseIndexDef.indexDef.indexFieldDefs
-                    .map { it.databaseColumnName.value }
+                    .map { it.databaseColumnName }
                     .toMutableList()
 
                 if (entityHierarchy.hasSubclasses()) {
-                    indexColumnNames.add("type_discriminator")
+                    indexColumnNames.add(TableColumnName.typeDiscriminator)
                 }
 
                 ExpectedIndexDef(

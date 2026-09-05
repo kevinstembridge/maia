@@ -99,7 +99,7 @@ class CreateTableSqlRenderer(
             .map { columnDef ->
 
                 val nullSuffix = if (columnDef.nullable) "NULL" else "NOT NULL"
-                val foreignKey = foreignKeysByColumnName[columnDef.name.value]?.let {
+                val foreignKey = foreignKeysByColumnName[columnDef.name]?.let {
                     " REFERENCES ${it.referencedSchemaAndTable}(${it.referencedColumn})"
                 } ?: ""
 

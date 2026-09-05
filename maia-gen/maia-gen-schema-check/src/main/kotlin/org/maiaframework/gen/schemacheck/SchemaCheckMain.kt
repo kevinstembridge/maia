@@ -55,9 +55,7 @@ fun runSchemaCheck(args: SchemaCheckArgs): Int {
         println(output)
     }
 
-    if (args.fixSqlOutputFile != null) {
-        args.fixSqlOutputFile.writeText(SchemaFixSqlGenerator.generate(report))
-    }
+    args.fixSqlOutputFile?.writeText(SchemaFixSqlGenerator.generate(report))
 
     return if (report.hasErrors) 1 else 0
 

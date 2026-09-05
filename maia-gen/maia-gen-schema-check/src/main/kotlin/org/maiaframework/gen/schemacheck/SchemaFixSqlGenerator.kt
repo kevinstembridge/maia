@@ -4,6 +4,7 @@ import org.maiaframework.gen.schema.expected.ExpectedColumnDef
 import org.maiaframework.gen.schema.expected.ExpectedCompositeForeignKeyDef
 import org.maiaframework.gen.schema.expected.ExpectedForeignKeyDef
 import org.maiaframework.gen.schema.expected.ExpectedIndexDef
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 
 /**
  * Renders a [SchemaDiffReport] as a draft SQL script that would bring the actual database
@@ -160,7 +161,7 @@ object SchemaFixSqlGenerator {
 
     }
 
-    private fun dropExtraColumnStatements(schemaAndTableName: String, columnName: String): List<String> {
+    private fun dropExtraColumnStatements(schemaAndTableName: String, columnName: TableColumnName): List<String> {
 
         return listOf(
             "-- WARNING: extra column '$columnName' not in spec. Review before dropping:",
@@ -169,7 +170,7 @@ object SchemaFixSqlGenerator {
 
     }
 
-    private fun extraForeignKeyNote(schemaAndTableName: String, columnName: String): List<String> {
+    private fun extraForeignKeyNote(schemaAndTableName: String, columnName: TableColumnName): List<String> {
 
         return listOf(
             "-- WARNING: extra foreign key on column '$columnName' not in spec. Find its constraint name" +
