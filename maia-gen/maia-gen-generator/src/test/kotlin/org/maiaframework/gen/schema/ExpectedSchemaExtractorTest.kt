@@ -13,6 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 class ExpectedSchemaExtractorTest {
 
+
     @Test
     fun `extracts columns, types, nullability and PK for a plain entity`() {
 
@@ -26,16 +27,17 @@ class ExpectedSchemaExtractorTest {
         val tables = ExpectedSchemaExtractor().extract(spec.modelDef.rootEntityHierarchies)
         val widgetTable = tables.single { it.schemaAndTableName == "test.widget" }
 
-        assertThat(widgetTable.primaryKeyColumns).containsExactly("id")
+        assertThat(widgetTable.primaryKeyColumnNames()).containsExactly("id")
         assertThat(widgetTable.columns).contains(
-            ExpectedColumnDef("id", "uuid", nullable = false),
+            ExpectedColumnDef("id", "uuid", nullable = false, isPrimaryKey = true),
             // FieldTypes.string always maps to JdbcCompatibleType.text (never .varchar), so a
             // lengthConstraint currently has no effect on the emitted column type.
-            ExpectedColumnDef("name", "text", nullable = false),
-            ExpectedColumnDef("description", "text", nullable = true),
+            ExpectedColumnDef("name", "text", nullable = false, isPrimaryKey = false),
+            ExpectedColumnDef("description", "text", nullable = true, isPrimaryKey = false),
         )
 
     }
+
 
     @Test
     fun `extracts a foreign key column`() {
@@ -56,6 +58,7 @@ class ExpectedSchemaExtractorTest {
 
     }
 
+
     @Test
     fun `extracts an index`() {
 
@@ -75,6 +78,7 @@ class ExpectedSchemaExtractorTest {
 
     }
 
+
     @Test
     fun `extracts a separate table for a history entity`() {
 
@@ -89,6 +93,7 @@ class ExpectedSchemaExtractorTest {
         assertThat(tables.map { it.schemaAndTableName }).contains("test.widget", "test.widget_history")
 
     }
+
 
     @Test
     fun `extracts a separate table for a many-to-many join entity`() {
@@ -116,6 +121,7 @@ class ExpectedSchemaExtractorTest {
         assertThat(tables.map { it.schemaAndTableName }).contains("test.left_right")
 
     }
+
 
     @Test
     fun `extracts a composite foreign key when a history entity FKs another history entity`() {
@@ -148,5 +154,6 @@ class ExpectedSchemaExtractorTest {
         )
 
     }
+
 
 }

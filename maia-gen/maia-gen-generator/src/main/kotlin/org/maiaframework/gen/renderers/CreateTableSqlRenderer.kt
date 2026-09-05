@@ -95,11 +95,11 @@ class CreateTableSqlRenderer(
         val foreignKeysByColumnName = expectedTableDef.foreignKeys.associateBy { it.columnName }
 
         val lines = expectedTableDef.columns
-            .filterNot { it.name in syntheticColumnNames }
+            .filterNot { it.name.value in syntheticColumnNames }
             .map { columnDef ->
 
                 val nullSuffix = if (columnDef.nullable) "NULL" else "NOT NULL"
-                val foreignKey = foreignKeysByColumnName[columnDef.name]?.let {
+                val foreignKey = foreignKeysByColumnName[columnDef.name.value]?.let {
                     " REFERENCES ${it.referencedSchemaAndTable}(${it.referencedColumn})"
                 } ?: ""
 
@@ -110,7 +110,7 @@ class CreateTableSqlRenderer(
         val allLines = listOfNotNull(typeDiscriminatorLineOrNull).plus(lines).plus(listOfNotNull(effectiveRangeLineOrNull))
         allLines.forEach { appendLine("    $it,") }
 
-        val primaryKeyFieldCsv = expectedTableDef.primaryKeyColumns.joinToString(", ")
+        val primaryKeyFieldCsv = expectedTableDef.primaryKeyColumnNames().joinToString(", ")
         appendLine("    PRIMARY KEY($primaryKeyFieldCsv)")
 
         appendLine(");")

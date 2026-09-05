@@ -44,6 +44,9 @@ class TableColumnName(value: String) : StringType<TableColumnName>(value) {
         val createdTimestamp = TableColumnName("created_timestamp")
 
 
+        val effectiveRange = TableColumnName("effective_range")
+
+
         val id = TableColumnName("id")
 
 
@@ -57,6 +60,9 @@ class TableColumnName(value: String) : StringType<TableColumnName>(value) {
 
 
         val lifecycleState = TableColumnName("lifecycle_state")
+
+
+        val typeDiscriminator = TableColumnName("type_discriminator")
 
 
         val version = TableColumnName("version")

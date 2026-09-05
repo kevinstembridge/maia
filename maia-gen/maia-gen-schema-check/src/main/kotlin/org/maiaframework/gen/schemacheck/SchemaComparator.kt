@@ -102,8 +102,8 @@ class SchemaComparator {
             }
         }
 
-        val primaryKeyMismatch = if (expected.primaryKeyColumns != actual.primaryKeyColumns) {
-            PrimaryKeyMismatch(expected.primaryKeyColumns, actual.primaryKeyColumns, actual.primaryKeyConstraintName)
+        val primaryKeyMismatch = if (expected.primaryKeyColumnNames() != actual.primaryKeyColumns) {
+            PrimaryKeyMismatch(expected.primaryKeyColumnNames(), actual.primaryKeyColumns, actual.primaryKeyConstraintName)
         } else {
             null
         }
