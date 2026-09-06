@@ -16,4 +16,11 @@ data class ReferencedEntity(
      * explicitly here when that happens.
      */
     val indexName: String? = null,
+    /**
+     * Overrides the auto-generated name of the foreign key constraint created for this side of a
+     * many-to-many join. The auto-generated name is derived from the join entity's (history) table
+     * name and this field's column name, which can exceed PostgreSQL's identifier length limit;
+     * provide a shorter name explicitly here when that happens.
+     */
+    val constraintName: String? = null,
 )

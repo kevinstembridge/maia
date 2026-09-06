@@ -570,6 +570,7 @@ abstract class AbstractSpec protected constructor(
             if (leftEntity.creatableByUser.value == false) {
                 notCreatableByUser()
             }
+            leftEntity.constraintName?.let { constraintName(it) }
         }
 
         builder.foreignKey(rightEntity.fieldName, rightEntity.entityDef) {
@@ -580,6 +581,7 @@ abstract class AbstractSpec protected constructor(
             if (rightEntity.creatableByUser.value == false) {
                 notCreatableByUser()
             }
+            rightEntity.constraintName?.let { constraintName(it) }
         }
 
         builder.index {
