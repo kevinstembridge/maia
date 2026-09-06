@@ -59,6 +59,9 @@ class ForeignKeyFieldDefBuilder(
     )
 
 
+    private var constraintName: String? = null
+
+
     private var isCreatableByUser: IsCreatableByUser = IsCreatableByUser.TRUE
 
 
@@ -75,7 +78,8 @@ class ForeignKeyFieldDefBuilder(
             foreignKeyEntityDef,
             typeaheadDef,
             searchableDtoDef,
-            searchTermFieldName
+            searchTermFieldName,
+            constraintName
         )
 
         val classFieldDef = ClassFieldDef(
@@ -153,6 +157,13 @@ class ForeignKeyFieldDefBuilder(
     fun tableColumnName(name: String) {
 
         this.tableColumnName = TableColumnName(name)
+
+    }
+
+
+    fun constraintName(name: String) {
+
+        this.constraintName = name
 
     }
 

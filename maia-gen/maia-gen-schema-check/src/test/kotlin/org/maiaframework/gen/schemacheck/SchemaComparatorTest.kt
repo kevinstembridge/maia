@@ -7,6 +7,11 @@ import org.maiaframework.gen.schema.expected.ExpectedCompositeForeignKeyDef
 import org.maiaframework.gen.schema.expected.ExpectedForeignKeyDef
 import org.maiaframework.gen.schema.expected.ExpectedIndexDef
 import org.maiaframework.gen.schema.expected.ExpectedTableDef
+import org.maiaframework.gen.schemacheck.actual.ActualColumnDef
+import org.maiaframework.gen.schemacheck.actual.ActualForeignKeyDef
+import org.maiaframework.gen.schemacheck.actual.ActualIndexDef
+import org.maiaframework.gen.schemacheck.actual.ActualTableDef
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 
 class SchemaComparatorTest {
 
@@ -15,7 +20,7 @@ class SchemaComparatorTest {
     @Test
     fun `reports a missing table as an error`() {
 
-        val expected = listOf(ExpectedTableDef("app.widget", emptyList(), listOf("id"), emptyList(), emptyList()))
+        val expected = listOf(ExpectedTableDef("app.widget", emptyList(), emptyList(), emptyList()))
 
         val report = comparator.compare(expected, actual = emptyList())
 
@@ -27,7 +32,7 @@ class SchemaComparatorTest {
     @Test
     fun `reports an extra table as a warning, not an error`() {
 
-        val actual = listOf(ActualTableDef("app.leftover", emptyList(), listOf("id"), emptyList(), emptyList()))
+        val actual = listOf(ActualTableDef("app.leftover", emptyList(), listOf(TableColumnName.id), emptyList(), emptyList()))
 
         val report = comparator.compare(expected = emptyList(), actual)
 
@@ -40,29 +45,39 @@ class SchemaComparatorTest {
     fun `reports a missing column as an error`() {
 
         val expected = listOf(
-            ExpectedTableDef("app.widget", listOf(ExpectedColumnDef("name", "text", false)), listOf("id"), emptyList(), emptyList())
+            ExpectedTableDef(
+                "app.widget",
+                listOf(ExpectedColumnDef(TableColumnName("name"), "text", nullable = false, isPrimaryKey = false)),
+                emptyList(), emptyList()
+            )
         )
-        val actual = listOf(ActualTableDef("app.widget", emptyList(), listOf("id"), emptyList(), emptyList()))
+        val actual = listOf(ActualTableDef("app.widget", emptyList(), listOf(TableColumnName.id), emptyList(), emptyList()))
 
         val report = comparator.compare(expected, actual)
 
         assertThat(report.hasErrors).isTrue()
-        assertThat(report.tables.single().missingColumns).containsExactly(ExpectedColumnDef("name", "text", false))
+        assertThat(report.tables.single().missingColumns).containsExactly(
+            ExpectedColumnDef(TableColumnName("name"), "text", nullable = false, isPrimaryKey = false)
+        )
 
     }
 
     @Test
     fun `reports an extra column as a warning`() {
 
-        val expected = listOf(ExpectedTableDef("app.widget", emptyList(), listOf("id"), emptyList(), emptyList()))
+        val expected = listOf(ExpectedTableDef("app.widget", emptyList(), emptyList(), emptyList()))
         val actual = listOf(
-            ActualTableDef("app.widget", listOf(ActualColumnDef("leftover", "text", false)), listOf("id"), emptyList(), emptyList())
+            ActualTableDef(
+                "app.widget",
+                listOf(ActualColumnDef(TableColumnName("leftover"), "text", nullable = false)),
+                emptyList(), emptyList(), emptyList()
+            )
         )
 
         val report = comparator.compare(expected, actual)
 
         assertThat(report.hasErrors).isFalse()
-        assertThat(report.tables.single().extraColumns).containsExactly("leftover")
+        assertThat(report.tables.single().extraColumns).containsExactly(TableColumnName("leftover"))
 
     }
 
@@ -70,10 +85,18 @@ class SchemaComparatorTest {
     fun `reports a column type mismatch as an error`() {
 
         val expected = listOf(
-            ExpectedTableDef("app.widget", listOf(ExpectedColumnDef("count", "integer", false)), listOf("id"), emptyList(), emptyList())
+            ExpectedTableDef(
+                "app.widget",
+                listOf(ExpectedColumnDef(TableColumnName("count"), "integer", nullable = false, isPrimaryKey = false)),
+                emptyList(), emptyList()
+            )
         )
         val actual = listOf(
-            ActualTableDef("app.widget", listOf(ActualColumnDef("count", "bigint", false)), listOf("id"), emptyList(), emptyList())
+            ActualTableDef(
+                "app.widget",
+                listOf(ActualColumnDef(TableColumnName("count"), "bigint", nullable = false)),
+                listOf(TableColumnName.id), emptyList(), emptyList()
+            )
         )
 
         val report = comparator.compare(expected, actual)
@@ -89,10 +112,18 @@ class SchemaComparatorTest {
     fun `reports a nullable mismatch as an error`() {
 
         val expected = listOf(
-            ExpectedTableDef("app.widget", listOf(ExpectedColumnDef("name", "text", false)), listOf("id"), emptyList(), emptyList())
+            ExpectedTableDef(
+                "app.widget",
+                listOf(ExpectedColumnDef(TableColumnName("name"), "text", nullable = false, isPrimaryKey = false)),
+                emptyList(), emptyList()
+            )
         )
         val actual = listOf(
-            ActualTableDef("app.widget", listOf(ActualColumnDef("name", "text", true)), listOf("id"), emptyList(), emptyList())
+            ActualTableDef(
+                "app.widget",
+                listOf(ActualColumnDef(TableColumnName("name"), "text", nullable = true)),
+                listOf(TableColumnName.id), emptyList(), emptyList()
+            )
         )
 
         val report = comparator.compare(expected, actual)
@@ -107,13 +138,23 @@ class SchemaComparatorTest {
     @Test
     fun `reports a primary key mismatch as an error`() {
 
-        val expected = listOf(ExpectedTableDef("app.widget", emptyList(), listOf("id"), emptyList(), emptyList()))
-        val actual = listOf(ActualTableDef("app.widget", emptyList(), listOf("id", "version"), emptyList(), emptyList()))
+        val expected = listOf(
+            ExpectedTableDef(
+                "app.widget",
+                listOf(ExpectedColumnDef(TableColumnName.id, "uuid", nullable = false, isPrimaryKey = true)),
+                emptyList(), emptyList()
+            )
+        )
+        val actual = listOf(
+            ActualTableDef("app.widget", emptyList(), listOf(TableColumnName.id, TableColumnName("version")), emptyList(), emptyList())
+        )
 
         val report = comparator.compare(expected, actual)
 
         assertThat(report.hasErrors).isTrue()
-        assertThat(report.tables.single().primaryKeyMismatch).isEqualTo(PrimaryKeyMismatch(listOf("id"), listOf("id", "version")))
+        assertThat(report.tables.single().primaryKeyMismatch).isEqualTo(
+            PrimaryKeyMismatch(listOf(TableColumnName.id), listOf(TableColumnName.id, TableColumnName("version")))
+        )
 
     }
 
@@ -122,14 +163,15 @@ class SchemaComparatorTest {
 
         val expected = listOf(
             ExpectedTableDef(
-                "app.child", emptyList(), listOf("id"),
-                listOf(ExpectedForeignKeyDef("parent_id", "app.parent", "id")), emptyList()
+                "app.child", emptyList(),
+                listOf(ExpectedForeignKeyDef(TableColumnName("parent_id"), "app.parent", TableColumnName.id)),
+                emptyList()
             )
         )
         val actual = listOf(
             ActualTableDef(
-                "app.child", emptyList(), listOf("id"),
-                listOf(ActualForeignKeyDef("other_id", "app.other", "id")), emptyList()
+                "app.child", emptyList(), listOf(TableColumnName.id),
+                listOf(ActualForeignKeyDef(TableColumnName("other_id"), "app.other", "id")), emptyList()
             )
         )
 
@@ -137,8 +179,10 @@ class SchemaComparatorTest {
 
         assertThat(report.hasErrors).isTrue()
         val diff = report.tables.single()
-        assertThat(diff.missingForeignKeys).containsExactly(ExpectedForeignKeyDef("parent_id", "app.parent", "id"))
-        assertThat(diff.extraForeignKeys).containsExactly("other_id")
+        assertThat(diff.missingForeignKeys).containsExactly(
+            ExpectedForeignKeyDef(TableColumnName("parent_id"), "app.parent", TableColumnName.id)
+        )
+        assertThat(diff.extraForeignKeys).containsExactly(TableColumnName("other_id"))
 
     }
 
@@ -146,17 +190,23 @@ class SchemaComparatorTest {
     fun `reports a missing index as an error and an extra one as a warning`() {
 
         val expected = listOf(
-            ExpectedTableDef("app.widget", emptyList(), listOf("id"), emptyList(), listOf(ExpectedIndexDef("widget_name_idx", listOf("name"), false)))
+            ExpectedTableDef(
+                "app.widget", emptyList(), emptyList(),
+                listOf(ExpectedIndexDef("widget_name_idx", listOf(TableColumnName("name")), false))
+            )
         )
         val actual = listOf(
-            ActualTableDef("app.widget", emptyList(), listOf("id"), emptyList(), listOf(ActualIndexDef("widget_extra_idx", listOf("other"), false)))
+            ActualTableDef(
+                "app.widget", emptyList(), listOf(TableColumnName.id), emptyList(),
+                listOf(ActualIndexDef("widget_extra_idx", listOf(TableColumnName("other")), false))
+            )
         )
 
         val report = comparator.compare(expected, actual)
 
         assertThat(report.hasErrors).isTrue()
         val diff = report.tables.single()
-        assertThat(diff.missingIndexes).containsExactly(ExpectedIndexDef("widget_name_idx", listOf("name"), false))
+        assertThat(diff.missingIndexes).containsExactly(ExpectedIndexDef("widget_name_idx", listOf(TableColumnName("name")), false))
         assertThat(diff.extraIndexes).containsExactly("widget_extra_idx")
 
     }
@@ -166,9 +216,13 @@ class SchemaComparatorTest {
 
         val expected = listOf(
             ExpectedTableDef(
-                "app.child_history", emptyList(), listOf("id", "version"), emptyList(), emptyList(),
+                "app.child_history", emptyList(), emptyList(), emptyList(),
                 compositeForeignKeys = listOf(
-                    ExpectedCompositeForeignKeyDef(listOf("parent_id", "parent_version"), "app.parent_history", listOf("id", "version"))
+                    ExpectedCompositeForeignKeyDef(
+                        listOf(TableColumnName("parent_id"), TableColumnName("parent_version")),
+                        "app.parent_history",
+                        listOf(TableColumnName.id, TableColumnName("version"))
+                    )
                 ),
             )
         )
@@ -176,10 +230,10 @@ class SchemaComparatorTest {
             ActualTableDef(
                 "app.child_history",
                 emptyList(),
-                listOf("id", "version"),
+                emptyList(),
                 foreignKeys = listOf(
-                    ActualForeignKeyDef("parent_id", "app.parent_history", "id"),
-                    ActualForeignKeyDef("parent_version", "app.parent_history", "version"),
+                    ActualForeignKeyDef(TableColumnName("parent_id"), "app.parent_history", "id"),
+                    ActualForeignKeyDef(TableColumnName("parent_version"), "app.parent_history", "version"),
                 ),
                 indexes = emptyList(),
             )
@@ -198,13 +252,19 @@ class SchemaComparatorTest {
 
         val expected = listOf(
             ExpectedTableDef(
-                "app.child_history", emptyList(), listOf("id", "version"), emptyList(), emptyList(),
+                "app.child_history", emptyList(), emptyList(), emptyList(),
                 compositeForeignKeys = listOf(
-                    ExpectedCompositeForeignKeyDef(listOf("parent_id", "parent_version"), "app.parent_history", listOf("id", "version"))
+                    ExpectedCompositeForeignKeyDef(
+                        listOf(TableColumnName("parent_id"), TableColumnName("parent_version")),
+                        "app.parent_history",
+                        listOf(TableColumnName.id, TableColumnName("version"))
+                    )
                 ),
             )
         )
-        val actual = listOf(ActualTableDef("app.child_history", emptyList(), listOf("id", "version"), emptyList(), emptyList()))
+        val actual = listOf(
+            ActualTableDef("app.child_history", emptyList(), listOf(TableColumnName.id, TableColumnName("version")), emptyList(), emptyList())
+        )
 
         val report = comparator.compare(expected, actual)
 
@@ -218,9 +278,13 @@ class SchemaComparatorTest {
 
         val expected = listOf(
             ExpectedTableDef(
-                "app.child_history", emptyList(), listOf("id", "version"), emptyList(), emptyList(),
+                "app.child_history", emptyList(), emptyList(), emptyList(),
                 compositeForeignKeys = listOf(
-                    ExpectedCompositeForeignKeyDef(listOf("parent_id", "parent_version"), "app.parent_history", listOf("id", "version"))
+                    ExpectedCompositeForeignKeyDef(
+                        listOf(TableColumnName("parent_id"), TableColumnName("parent_version")),
+                        "app.parent_history",
+                        listOf(TableColumnName.id, TableColumnName("version"))
+                    )
                 ),
             )
         )
@@ -228,9 +292,9 @@ class SchemaComparatorTest {
             ActualTableDef(
                 "app.child_history",
                 emptyList(),
-                listOf("id", "version"),
+                listOf(TableColumnName.id, TableColumnName("version")),
                 foreignKeys = listOf(
-                    ActualForeignKeyDef("parent_id", "app.parent_history", "id"),
+                    ActualForeignKeyDef(TableColumnName("parent_id"), "app.parent_history", "id"),
                 ),
                 indexes = emptyList(),
             )
@@ -247,8 +311,16 @@ class SchemaComparatorTest {
     @Test
     fun `a table matching exactly has no errors and OK status`() {
 
-        val table = ExpectedTableDef("app.widget", listOf(ExpectedColumnDef("name", "text", false)), listOf("id"), emptyList(), emptyList())
-        val actualTable = ActualTableDef("app.widget", listOf(ActualColumnDef("name", "text", false)), listOf("id"), emptyList(), emptyList())
+        val table = ExpectedTableDef(
+            "app.widget",
+            listOf(ExpectedColumnDef(TableColumnName("name"), "text", nullable = false, isPrimaryKey = false)),
+            emptyList(), emptyList()
+        )
+        val actualTable = ActualTableDef(
+            "app.widget",
+            listOf(ActualColumnDef(TableColumnName("name"), "text", nullable = false)),
+            emptyList(), emptyList(), emptyList()
+        )
 
         val report = comparator.compare(listOf(table), listOf(actualTable))
 

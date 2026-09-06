@@ -4,6 +4,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.maiaframework.gen.schemacheck.actual.ActualColumnDef
+import org.maiaframework.gen.schemacheck.actual.ActualForeignKeyDef
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.testing.postgresql.SingletonPostgresqlContainer
 import java.sql.Connection
 import java.sql.DriverManager
@@ -113,36 +116,36 @@ class PostgresSchemaIntrospectorTest {
         assertThat(tables.map { it.schemaAndTableName }).doesNotContain("introspector_test.parent_view")
 
         val parent = tables.single { it.schemaAndTableName == "introspector_test.parent" }
-        assertThat(parent.primaryKeyColumnNames).containsExactly("id")
+        assertThat(parent.primaryKeyColumnNames).containsExactly(TableColumnName.id)
         assertThat(parent.primaryKeyConstraintName).isEqualTo("parent_pkey")
         assertThat(parent.columnDefs).contains(
-            ActualColumnDef("id", "bigint", nullable = false),
-            ActualColumnDef("name", "varchar(50)", nullable = false),
+            ActualColumnDef(TableColumnName.id, "bigint", nullable = false),
+            ActualColumnDef(TableColumnName("name"), "varchar(50)", nullable = false),
         )
         assertThat(parent.foreignKeys).isEmpty()
         val parentNameIndex = parent.indexes.single { it.name == "parent_name_idx" }
-        assertThat(parentNameIndex.columns).containsExactly("name")
+        assertThat(parentNameIndex.columns).containsExactly(TableColumnName("name"))
         assertThat(parentNameIndex.unique).isTrue()
 
         val child = tables.single { it.schemaAndTableName == "introspector_test.child" }
-        assertThat(child.primaryKeyColumnNames).containsExactly("id")
+        assertThat(child.primaryKeyColumnNames).containsExactly(TableColumnName.id)
         assertThat(child.columnDefs).contains(
-            ActualColumnDef("count", "integer", nullable = false),
-            ActualColumnDef("title", "varchar(100)", nullable = true),
+            ActualColumnDef(TableColumnName("count"), "integer", nullable = false),
+            ActualColumnDef(TableColumnName("title"), "varchar(100)", nullable = true),
         )
         assertThat(child.foreignKeys).containsExactly(
-            ActualForeignKeyDef("parent_id", "introspector_test.parent", "id")
+            ActualForeignKeyDef(TableColumnName("parent_id"), "introspector_test.parent", "id")
         )
 
         val singleColumnIndex = child.indexes.single { it.name == "child_title_idx" }
-        assertThat(singleColumnIndex.columns).containsExactly("title")
+        assertThat(singleColumnIndex.columns).containsExactly(TableColumnName("title"))
         assertThat(singleColumnIndex.unique).isFalse()
 
         // The specific risk under test: array_position(ix.indkey::int2[], a.attnum) must preserve the
         // declared column order (title, count), not attnum order (count, title) or alphabetical order
         // (count, title) — both of which coincide with each other but differ from the declared order.
         val compositeIndex = child.indexes.single { it.name == "child_title_count_idx" }
-        assertThat(compositeIndex.columns).containsExactly("title", "count")
+        assertThat(compositeIndex.columns).containsExactly(TableColumnName("title"), TableColumnName("count"))
         assertThat(compositeIndex.unique).isFalse()
 
     }
@@ -157,8 +160,8 @@ class PostgresSchemaIntrospectorTest {
         // A naive join of key_column_usage to constraint_column_usage on constraint_name alone
         // would produce all 4 local-x-referenced combinations here, not just the 2 correct pairs.
         assertThat(child.foreignKeys).containsExactlyInAnyOrder(
-            ActualForeignKeyDef("parent_id", "introspector_composite_fk_test.composite_parent", "id"),
-            ActualForeignKeyDef("parent_version", "introspector_composite_fk_test.composite_parent", "version"),
+            ActualForeignKeyDef(TableColumnName("parent_id"), "introspector_composite_fk_test.composite_parent", "id"),
+            ActualForeignKeyDef(TableColumnName("parent_version"), "introspector_composite_fk_test.composite_parent", "version"),
         )
 
     }

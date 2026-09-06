@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import org.maiaframework.gen.generator.ApplicationModelDefInstantiator
 import org.maiaframework.gen.schema.expected.ExpectedSchemaExtractor
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.testing.postgresql.SingletonPostgresqlContainer
 import java.sql.DriverManager
 
@@ -68,7 +69,7 @@ class ShowcaseSchemaCheckIntegrationTest {
 
         // Pick any expected table/column pair and drop that column to simulate drift.
         val tableWithColumns = expectedTables.first { it.columns.isNotEmpty() }
-        val columnToDrop = tableWithColumns.columns.first { it.name != "id" }
+        val columnToDrop = tableWithColumns.columns.first { it.name != TableColumnName.id }
 
         // cascade: some showcase columns (e.g. maia.party.authorities) have dependent views
         // (v_party), which a plain DROP COLUMN would refuse.

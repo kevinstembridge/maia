@@ -8,7 +8,8 @@ class ForeignKeyFieldDef(
     val foreignEntityDef: EntityDef,
     val typeaheadDef: TypeaheadDef?,
     val searchableDtoDef: SearchableDtoDef?,
-    searchTermFieldName: String?
+    searchTermFieldName: String?,
+    val constraintName: String? = null
 ) {
 
 

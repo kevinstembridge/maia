@@ -9,6 +9,7 @@ import org.maiaframework.gen.schema.expected.ExpectedSchemaExtractor
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.ReferencedEntity
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 class ExpectedSchemaExtractorTest {
@@ -27,13 +28,13 @@ class ExpectedSchemaExtractorTest {
         val tables = ExpectedSchemaExtractor().extract(spec.modelDef.rootEntityHierarchies)
         val widgetTable = tables.single { it.schemaAndTableName == "test.widget" }
 
-        assertThat(widgetTable.primaryKeyColumnNames()).containsExactly("id")
+        assertThat(widgetTable.primaryKeyColumnNames()).containsExactly(TableColumnName("id"))
         assertThat(widgetTable.columns).contains(
-            ExpectedColumnDef("id", "uuid", nullable = false, isPrimaryKey = true),
+            ExpectedColumnDef(TableColumnName("id"), "uuid", nullable = false, isPrimaryKey = true),
             // FieldTypes.string always maps to JdbcCompatibleType.text (never .varchar), so a
             // lengthConstraint currently has no effect on the emitted column type.
-            ExpectedColumnDef("name", "text", nullable = false, isPrimaryKey = false),
-            ExpectedColumnDef("description", "text", nullable = true, isPrimaryKey = false),
+            ExpectedColumnDef(TableColumnName("name"), "text", nullable = false, isPrimaryKey = false),
+            ExpectedColumnDef(TableColumnName("description"), "text", nullable = true, isPrimaryKey = false),
         )
 
     }
@@ -53,7 +54,7 @@ class ExpectedSchemaExtractorTest {
         val childTable = tables.single { it.schemaAndTableName == "test.child" }
 
         assertThat(childTable.foreignKeys).containsExactly(
-            ExpectedForeignKeyDef("parent_id", "test.parent", "id")
+            ExpectedForeignKeyDef(TableColumnName("parent_id"), "test.parent", TableColumnName("id"))
         )
 
     }
@@ -73,7 +74,7 @@ class ExpectedSchemaExtractorTest {
         val widgetTable = tables.single { it.schemaAndTableName == "test.widget" }
 
         assertThat(widgetTable.indexes).hasSize(1)
-        assertThat(widgetTable.indexes.single().columns).containsExactly("name")
+        assertThat(widgetTable.indexes.single().columns).containsExactly(TableColumnName("name"))
         assertThat(widgetTable.indexes.single().unique).isFalse()
 
     }
@@ -139,18 +140,18 @@ class ExpectedSchemaExtractorTest {
         val childHistoryTable = tables.single { it.schemaAndTableName == "test.child_history" }
 
         assertThat(childHistoryTable.foreignKeys).isEmpty()
-        assertThat(childHistoryTable.columns.map { it.name }).contains("parent_version")
+        assertThat(childHistoryTable.columns.map { it.name }).contains(TableColumnName("parent_version"))
         assertThat(childHistoryTable.compositeForeignKeys).containsExactly(
             ExpectedCompositeForeignKeyDef(
-                columnNames = listOf("parent_id", "parent_version"),
+                columnNames = listOf(TableColumnName("parent_id"), TableColumnName("parent_version")),
                 referencedSchemaAndTable = "test.parent_history",
-                referencedColumns = listOf("id", "version"),
+                referencedColumns = listOf(TableColumnName("id"), TableColumnName("version")),
             )
         )
 
         val childTable = tables.single { it.schemaAndTableName == "test.child" }
         assertThat(childTable.foreignKeys).containsExactly(
-            ExpectedForeignKeyDef("parent_id", "test.parent", "id")
+            ExpectedForeignKeyDef(TableColumnName("parent_id"), "test.parent", TableColumnName("id"))
         )
 
     }

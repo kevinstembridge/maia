@@ -6,4 +6,5 @@ data class ExpectedCompositeForeignKeyDef(
     val columnNames: List<TableColumnName>,
     val referencedSchemaAndTable: String,
     val referencedColumns: List<TableColumnName>,
+    val constraintName: String? = null,
 )

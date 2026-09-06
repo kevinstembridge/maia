@@ -149,6 +149,7 @@ class ExpectedSchemaExtractor {
                 columnNames = listOf(sqlFieldDef.tableColumnName, versionColumnName),
                 referencedSchemaAndTable = schemaAndTableNameFor(foreignHistoryEntityDef),
                 referencedColumns = listOf(foreignIdColumn, foreignVersionColumn),
+                constraintName = fieldType.foreignKeyFieldDef.constraintName,
             )
 
         }

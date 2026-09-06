@@ -195,4 +195,28 @@ class CreateTableSqlRendererTest {
 
     }
 
+    @Test
+    fun `renders a composite foreign key constraint with an explicit constraint name`(@TempDir tempDir: File) {
+
+        val spec = object : AbstractSpec(AppKey("Test")) {
+            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+                field("name", FieldTypes.string) { lengthConstraint(max = 50) }
+            }
+            val child = entity("com.example", "Child", recordVersionHistory = true) {
+                foreignKey("parent", parent) { constraintName("child_parent_fkey") }
+            }
+        }
+
+        val renderer = CreateTableSqlRenderer(spec.modelDef.rootEntityHierarchies, "create_tables.sql")
+        renderer.renderToDir(tempDir)
+
+        val sql = tempDir.resolve("create_tables.sql").readText()
+
+        assertThat(sql).contains(
+            "ALTER TABLE test.child_history ADD CONSTRAINT child_parent_fkey " +
+                "FOREIGN KEY (parent_id, parent_version) REFERENCES test.parent_history(id, version);"
+        )
+
+    }
+
 }

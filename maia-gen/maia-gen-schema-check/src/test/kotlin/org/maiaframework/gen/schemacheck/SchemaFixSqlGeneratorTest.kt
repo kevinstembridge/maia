@@ -6,6 +6,7 @@ import org.maiaframework.gen.schema.expected.ExpectedColumnDef
 import org.maiaframework.gen.schema.expected.ExpectedCompositeForeignKeyDef
 import org.maiaframework.gen.schema.expected.ExpectedForeignKeyDef
 import org.maiaframework.gen.schema.expected.ExpectedIndexDef
+import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
 
 class SchemaFixSqlGeneratorTest {
 
@@ -26,7 +27,7 @@ class SchemaFixSqlGeneratorTest {
 
         val table = TableDiff(
             "app.widget", TableStatus.MISMATCHED,
-            missingColumns = listOf(ExpectedColumnDef("notes", "text", nullable = true)),
+            missingColumns = listOf(ExpectedColumnDef(TableColumnName("notes"), "text", nullable = true, isPrimaryKey = false)),
         )
 
         val sql = SchemaFixSqlGenerator.generate(SchemaDiffReport(listOf(table)))
@@ -41,7 +42,7 @@ class SchemaFixSqlGeneratorTest {
 
         val table = TableDiff(
             "app.widget", TableStatus.MISMATCHED,
-            missingColumns = listOf(ExpectedColumnDef("archived_at", "timestamptz", nullable = false)),
+            missingColumns = listOf(ExpectedColumnDef(TableColumnName("archived_at"), "timestamptz", nullable = false, isPrimaryKey = false)),
         )
 
         val sql = SchemaFixSqlGenerator.generate(SchemaDiffReport(listOf(table)))
@@ -100,7 +101,11 @@ class SchemaFixSqlGeneratorTest {
 
         val table = TableDiff(
             "app.widget", TableStatus.MISMATCHED,
-            primaryKeyMismatch = PrimaryKeyMismatch(listOf("id"), listOf("id", "version"), actualConstraintName = "widget_id_version_pkey"),
+            primaryKeyMismatch = PrimaryKeyMismatch(
+                listOf(TableColumnName.id),
+                listOf(TableColumnName.id, TableColumnName("version")),
+                actualConstraintName = "widget_id_version_pkey"
+            ),
         )
 
         val sql = SchemaFixSqlGenerator.generate(SchemaDiffReport(listOf(table)))
@@ -115,7 +120,7 @@ class SchemaFixSqlGeneratorTest {
 
         val table = TableDiff(
             "app.widget", TableStatus.MISMATCHED,
-            primaryKeyMismatch = PrimaryKeyMismatch(listOf("id"), listOf("id", "version")),
+            primaryKeyMismatch = PrimaryKeyMismatch(listOf(TableColumnName.id), listOf(TableColumnName.id, TableColumnName("version"))),
         )
 
         val sql = SchemaFixSqlGenerator.generate(SchemaDiffReport(listOf(table)))
@@ -129,7 +134,7 @@ class SchemaFixSqlGeneratorTest {
 
         val table = TableDiff(
             "app.child", TableStatus.MISMATCHED,
-            missingForeignKeys = listOf(ExpectedForeignKeyDef("parent_id", "app.parent", "id")),
+            missingForeignKeys = listOf(ExpectedForeignKeyDef(TableColumnName("parent_id"), "app.parent", TableColumnName.id)),
         )
 
         val sql = SchemaFixSqlGenerator.generate(SchemaDiffReport(listOf(table)))
@@ -146,7 +151,11 @@ class SchemaFixSqlGeneratorTest {
         val table = TableDiff(
             "app.child_history", TableStatus.MISMATCHED,
             missingCompositeForeignKeys = listOf(
-                ExpectedCompositeForeignKeyDef(listOf("parent_id", "parent_version"), "app.parent_history", listOf("id", "version"))
+                ExpectedCompositeForeignKeyDef(
+                    listOf(TableColumnName("parent_id"), TableColumnName("parent_version")),
+                    "app.parent_history",
+                    listOf(TableColumnName.id, TableColumnName("version"))
+                )
             ),
         )
 
@@ -164,7 +173,7 @@ class SchemaFixSqlGeneratorTest {
 
         val table = TableDiff(
             "app.widget", TableStatus.MISMATCHED,
-            missingIndexes = listOf(ExpectedIndexDef("widget_name_idx", listOf("name"), unique = true)),
+            missingIndexes = listOf(ExpectedIndexDef("widget_name_idx", listOf(TableColumnName("name")), unique = true)),
         )
 
         val sql = SchemaFixSqlGenerator.generate(SchemaDiffReport(listOf(table)))
@@ -190,9 +199,9 @@ class SchemaFixSqlGeneratorTest {
     fun `comments out drops for warnings-only drift instead of applying them directly`() {
 
         val extraTable = TableDiff("app.leftover", TableStatus.EXTRA)
-        val extraColumn = TableDiff("app.widget", TableStatus.MISMATCHED, extraColumns = listOf("legacy_flag"))
+        val extraColumn = TableDiff("app.widget", TableStatus.MISMATCHED, extraColumns = listOf(TableColumnName("legacy_flag")))
         val extraIndex = TableDiff("app.widget2", TableStatus.MISMATCHED, extraIndexes = listOf("widget2_extra_idx"))
-        val extraForeignKey = TableDiff("app.widget3", TableStatus.MISMATCHED, extraForeignKeys = listOf("other_id"))
+        val extraForeignKey = TableDiff("app.widget3", TableStatus.MISMATCHED, extraForeignKeys = listOf(TableColumnName("other_id")))
 
         val sql = SchemaFixSqlGenerator.generate(SchemaDiffReport(listOf(extraTable, extraColumn, extraIndex, extraForeignKey)))
 
