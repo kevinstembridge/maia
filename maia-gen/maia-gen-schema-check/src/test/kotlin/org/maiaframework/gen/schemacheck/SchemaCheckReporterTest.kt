@@ -24,6 +24,24 @@ class SchemaCheckReporterTest {
     }
 
     @Test
+    fun `console output explains why a missing or extra table counts as an error or warning`() {
+
+        val report = SchemaDiffReport(
+            listOf(
+                TableDiff("app.gone_table", TableStatus.MISSING),
+                TableDiff("app.unexpected_table", TableStatus.EXTRA),
+            )
+        )
+
+        val output = SchemaCheckReporter.renderConsole(report)
+
+        assertThat(output).contains("ERROR: table is missing from the database")
+        assertThat(output).contains("WARNING: table exists in database but not in expected schema")
+        assertThat(output).contains("2 tables checked, 1 errors, 1 warnings")
+
+    }
+
+    @Test
     fun `json output round-trips a report`() {
 
         val report = SchemaDiffReport(listOf(TableDiff("app.widget", TableStatus.OK)))

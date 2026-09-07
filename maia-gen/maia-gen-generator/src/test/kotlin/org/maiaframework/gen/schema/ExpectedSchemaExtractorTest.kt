@@ -125,6 +125,50 @@ class ExpectedSchemaExtractorTest {
 
 
     @Test
+    fun `extracts an effective_range column for an entity with effective timestamps`() {
+
+        val spec = object : AbstractSpec(AppKey("Test")) {
+            val widget = entity("com.example", "Widget") {
+                field("name", FieldTypes.string) { lengthConstraint(max = 50) }
+                withEffectiveTimestamps()
+            }
+        }
+
+        val tables = ExpectedSchemaExtractor().extract(spec.modelDef.rootEntityHierarchies)
+        val widgetTable = tables.single { it.schemaAndTableName == "test.widget" }
+
+        assertThat(widgetTable.columns).contains(
+            ExpectedColumnDef(TableColumnName.effectiveRange, "tstzrange", nullable = false, isPrimaryKey = false)
+        )
+
+    }
+
+
+    @Test
+    fun `extracts an exclusion constraint index for a single-effective-record entity`() {
+
+        val spec = object : AbstractSpec(AppKey("Test")) {
+            val widget = entity("com.example", "Widget") {
+                field("name", FieldTypes.string) { lengthConstraint(max = 50) }
+                index { withFieldAscending("name") }
+                withEffectiveTimestamps(hasSingleEffectiveRecord = true)
+            }
+        }
+
+        val tables = ExpectedSchemaExtractor().extract(spec.modelDef.rootEntityHierarchies)
+        val widgetTable = tables.single { it.schemaAndTableName == "test.widget" }
+
+        assertThat(widgetTable.indexes).hasSize(2)
+        val baseIndex = widgetTable.indexes.single { !it.name.endsWith("_excl") }
+        val exclusionIndex = widgetTable.indexes.single { it.name == "${baseIndex.name}_excl" }
+
+        assertThat(exclusionIndex.columns).containsExactly(*baseIndex.columns.toTypedArray(), TableColumnName.effectiveRange)
+        assertThat(exclusionIndex.unique).isFalse()
+
+    }
+
+
+    @Test
     fun `extracts a composite foreign key when a history entity FKs another history entity`() {
 
         val spec = object : AbstractSpec(AppKey("Test")) {

@@ -103,11 +103,11 @@ class ExpectedSchemaExtractor {
         columns.addAll(baseColumns)
 
         if (entityHierarchy.hasSubclasses()) {
-            columns.plus(ExpectedColumnDef(TableColumnName.typeDiscriminator, "text", nullable = false, isPrimaryKey = false))
+            columns.add(ExpectedColumnDef(TableColumnName.typeDiscriminator, "text", nullable = false, isPrimaryKey = false))
         }
 
         if (entityHierarchy.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP) {
-            columns.plus(ExpectedColumnDef(TableColumnName.effectiveRange, "tstzrange", nullable = false, isPrimaryKey = false))
+            columns.add(ExpectedColumnDef(TableColumnName.effectiveRange, "tstzrange", nullable = false, isPrimaryKey = false))
         }
 
         return columns
@@ -168,7 +168,7 @@ class ExpectedSchemaExtractor {
 
     private fun `determine expected indexes`(entityHierarchy: EntityHierarchy): List<ExpectedIndexDef> {
 
-        return entityHierarchy.entityDefs
+        val baseIndexes = entityHierarchy.entityDefs
             .reversed()
             .flatMap { it.databaseIndexDefs }
             .distinctBy { databaseIndexDef -> databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName } }
@@ -189,6 +189,24 @@ class ExpectedSchemaExtractor {
                 )
 
             }
+
+        // Mirrors CreateTableSqlRenderer.`render single effective record exclusion constraint`,
+        // which backs each non-unique index with a GIST exclusion constraint (and its supporting
+        // index) over that index's columns plus effective_range, named "<index name>_excl".
+        val baseEntityDef = entityHierarchy.entityDef
+        val exclusionIndexes = if (baseEntityDef.hasSingleEffectiveRecord.value && baseEntityDef.hasEffectiveTimestamps) {
+            baseIndexes.filterNot { it.unique }.map { indexDef ->
+                ExpectedIndexDef(
+                    name = "${indexDef.name}_excl",
+                    columns = indexDef.columns.plus(TableColumnName.effectiveRange),
+                    unique = false,
+                )
+            }
+        } else {
+            emptyList()
+        }
+
+        return baseIndexes.plus(exclusionIndexes)
 
     }
 

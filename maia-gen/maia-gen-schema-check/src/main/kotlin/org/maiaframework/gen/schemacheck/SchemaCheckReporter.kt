@@ -15,6 +15,9 @@ object SchemaCheckReporter {
             val marker = if (table.hasErrors) "✗" else "✓"
             lines.add("$marker ${table.schemaAndTableName} [${table.status}]")
 
+            if (table.status == TableStatus.MISSING) lines.add("    ERROR: table is missing from the database")
+            if (table.status == TableStatus.EXTRA) lines.add("    WARNING: table exists in database but not in expected schema")
+
             table.missingColumns.forEach { lines.add("    ERROR: missing column '${it.name}' (${it.postgresType}, nullable=${it.nullable})") }
             table.mismatchedColumns.forEach {
                 lines.add("    ERROR: column '${it.name}' expected ${it.expectedType}/nullable=${it.expectedNullable}, actual ${it.actualType}/nullable=${it.actualNullable}")
