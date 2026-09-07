@@ -123,6 +123,7 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
 
         extension.schemaCheckOutputFormat.convention("text")
         extension.schemaCheckIgnoreErrors.convention(false)
+        extension.schemaCheckIgnoreTables.convention(emptyList())
 
     }
 
@@ -160,6 +161,7 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
             outputFile.set(extension.schemaCheckOutputFile)
             ignoreErrors.set(extension.schemaCheckIgnoreErrors)
             fixSqlOutputFile.set(extension.schemaCheckFixSqlOutputFile)
+            ignoreTables.set(extension.schemaCheckIgnoreTables)
 
         }
 

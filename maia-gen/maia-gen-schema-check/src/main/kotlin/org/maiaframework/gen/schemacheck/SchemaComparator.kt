@@ -6,12 +6,19 @@ import org.maiaframework.gen.schemacheck.actual.ActualTableDef
 
 class SchemaComparator {
 
-    fun compare(expected: List<ExpectedTableDef>, actual: List<ActualTableDef>): SchemaDiffReport {
+    fun compare(
+        expected: List<ExpectedTableDef>,
+        actual: List<ActualTableDef>,
+        ignoreTablePatterns: List<String> = emptyList()
+    ): SchemaDiffReport {
 
-        val actualByName = actual.associateBy { it.schemaAndTableName }
-        val expectedNames = expected.map { it.schemaAndTableName }.toSet()
+        val filteredExpected = expected.filterNot { `matches an ignore pattern`(it.schemaAndTableName, ignoreTablePatterns) }
+        val filteredActual = actual.filterNot { `matches an ignore pattern`(it.schemaAndTableName, ignoreTablePatterns) }
 
-        val matchedDiffs = expected.map { expectedTable ->
+        val actualByName = filteredActual.associateBy { it.schemaAndTableName }
+        val expectedNames = filteredExpected.map { it.schemaAndTableName }.toSet()
+
+        val matchedDiffs = filteredExpected.map { expectedTable ->
             val actualTable = actualByName[expectedTable.schemaAndTableName]
             if (actualTable == null) {
                 TableDiff(expectedTable.schemaAndTableName, TableStatus.MISSING)
@@ -20,11 +27,35 @@ class SchemaComparator {
             }
         }
 
-        val extraTableDiffs = actual
+        val extraTableDiffs = filteredActual
             .filterNot { expectedNames.contains(it.schemaAndTableName) }
             .map { TableDiff(it.schemaAndTableName, TableStatus.EXTRA) }
 
         return SchemaDiffReport(matchedDiffs.plus(extraTableDiffs))
+
+    }
+
+
+    // A pattern matches either the fully-qualified "schema.table" name or the bare table name,
+    // so callers can write either "qrtz_*" or "la.qrtz_*" to ignore the Quartz scheduler tables.
+    private fun `matches an ignore pattern`(schemaAndTableName: String, patterns: List<String>): Boolean {
+
+        if (patterns.isEmpty()) return false
+
+        val bareTableName = schemaAndTableName.substringAfter(".")
+
+        return patterns.any { pattern ->
+            val regex = `glob pattern to regex`(pattern)
+            regex.matches(schemaAndTableName) || regex.matches(bareTableName)
+        }
+
+    }
+
+
+    private fun `glob pattern to regex`(pattern: String): Regex {
+
+        val regexBody = pattern.split("*").joinToString(".*") { Regex.escape(it) }
+        return Regex("^$regexBody$")
 
     }
 

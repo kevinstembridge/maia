@@ -40,7 +40,7 @@ fun runSchemaCheck(args: SchemaCheckArgs): Int {
         Class.forName("org.postgresql.Driver")
         DriverManager.getConnection(args.jdbcUrl, args.username, args.password).use { connection ->
             val actualTables = PostgresSchemaIntrospector(connection).introspectSchemas(schemas)
-            SchemaComparator().compare(expectedTables, actualTables)
+            SchemaComparator().compare(expectedTables, actualTables, args.ignoreTables)
         }
     } catch (t: Throwable) {
         System.err.println("Could not connect to database at '${args.jdbcUrl}': ${t.message}")

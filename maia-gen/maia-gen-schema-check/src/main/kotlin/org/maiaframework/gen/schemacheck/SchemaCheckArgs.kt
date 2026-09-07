@@ -10,6 +10,7 @@ data class SchemaCheckArgs(
     val format: String = "text",
     val outputFile: File? = null,
     val fixSqlOutputFile: File? = null,
+    val ignoreTables: List<String> = emptyList(),
 ) {
 
     companion object {
@@ -30,6 +31,11 @@ data class SchemaCheckArgs(
                 format = argsMap["format"] ?: "text",
                 outputFile = argsMap["outputFile"]?.let { File(it) },
                 fixSqlOutputFile = argsMap["fixSqlOutputFile"]?.let { File(it) },
+                ignoreTables = argsMap["ignoreTables"]
+                    ?.split(",")
+                    ?.map { it.trim() }
+                    ?.filter { it.isNotEmpty() }
+                    ?: emptyList(),
             )
 
         }

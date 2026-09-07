@@ -34,12 +34,15 @@ class ExpectedSchemaExtractor {
                     (it.fieldType as ForeignKeyFieldType).foreignKeyFieldDef.foreignEntityDef.withVersionHistory.value
             }
 
+        val indexes = `determine expected indexes`(entityHierarchy)
+
         return ExpectedTableDef(
             schemaAndTableName = schemaAndTableNameFor(rootEntityDef),
             columns = `determine expected columns`(entityHierarchy, sqlFieldsForColumns),
             foreignKeys = `determine foreign keys`(plainFkSqlFields),
-            indexes = `determine expected indexes`(entityHierarchy),
+            indexes = indexes,
             compositeForeignKeys = `determine expected composite foreign keys`(historizedFkSqlFields, entityHierarchy),
+            exclusionIndexes = `determine expected exclusion indexes`(entityHierarchy, indexes),
         )
 
     }
@@ -168,7 +171,7 @@ class ExpectedSchemaExtractor {
 
     private fun `determine expected indexes`(entityHierarchy: EntityHierarchy): List<ExpectedIndexDef> {
 
-        val baseIndexes = entityHierarchy.entityDefs
+        return entityHierarchy.entityDefs
             .reversed()
             .flatMap { it.databaseIndexDefs }
             .distinctBy { databaseIndexDef -> databaseIndexDef.indexDef.indexFieldDefs.map { it.databaseColumnName } }
@@ -190,23 +193,35 @@ class ExpectedSchemaExtractor {
 
             }
 
-        // Mirrors CreateTableSqlRenderer.`render single effective record exclusion constraint`,
-        // which backs each non-unique index with a GIST exclusion constraint (and its supporting
-        // index) over that index's columns plus effective_range, named "<index name>_excl".
+    }
+
+
+    // CreateTableSqlRenderer.`render single effective record exclusion constraint` backs each
+    // non-unique index with a GIST exclusion constraint over that index's columns plus
+    // effective_range, named "<index name>_excl" — Postgres creates a supporting index of the
+    // same name as a side effect. This is tracked separately from `indexes` (rather than folded
+    // into it) because CreateTableSqlRenderer reuses `indexes` both to render plain CREATE INDEX
+    // statements and to decide which indexes need an exclusion constraint; mixing the synthetic
+    // entries in caused it to render CREATE INDEX statements for them and exclusion constraints
+    // *for* them, producing invalid double-"_excl" SQL.
+    private fun `determine expected exclusion indexes`(
+        entityHierarchy: EntityHierarchy,
+        indexes: List<ExpectedIndexDef>
+    ): List<ExpectedIndexDef> {
+
         val baseEntityDef = entityHierarchy.entityDef
-        val exclusionIndexes = if (baseEntityDef.hasSingleEffectiveRecord.value && baseEntityDef.hasEffectiveTimestamps) {
-            baseIndexes.filterNot { it.unique }.map { indexDef ->
-                ExpectedIndexDef(
-                    name = "${indexDef.name}_excl",
-                    columns = indexDef.columns.plus(TableColumnName.effectiveRange),
-                    unique = false,
-                )
-            }
-        } else {
-            emptyList()
+
+        if (!baseEntityDef.hasSingleEffectiveRecord.value || !baseEntityDef.hasEffectiveTimestamps) {
+            return emptyList()
         }
 
-        return baseIndexes.plus(exclusionIndexes)
+        return indexes.filterNot { it.unique }.map { indexDef ->
+            ExpectedIndexDef(
+                name = "${indexDef.name}_excl",
+                columns = indexDef.columns.plus(TableColumnName.effectiveRange),
+                unique = false,
+            )
+        }
 
     }
 

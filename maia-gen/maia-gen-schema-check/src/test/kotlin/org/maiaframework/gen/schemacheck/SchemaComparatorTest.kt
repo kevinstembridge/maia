@@ -42,6 +42,39 @@ class SchemaComparatorTest {
     }
 
     @Test
+    fun `does not report an extra table matching an ignore pattern`() {
+
+        val actual = listOf(ActualTableDef("app.qrtz_locks", emptyList(), listOf(TableColumnName.id), emptyList(), emptyList()))
+
+        val report = comparator.compare(expected = emptyList(), actual, ignoreTablePatterns = listOf("qrtz_*"))
+
+        assertThat(report.tables).isEmpty()
+
+    }
+
+    @Test
+    fun `matches an ignore pattern against the fully-qualified schema and table name`() {
+
+        val actual = listOf(ActualTableDef("app.qrtz_locks", emptyList(), listOf(TableColumnName.id), emptyList(), emptyList()))
+
+        val report = comparator.compare(expected = emptyList(), actual, ignoreTablePatterns = listOf("app.qrtz_*"))
+
+        assertThat(report.tables).isEmpty()
+
+    }
+
+    @Test
+    fun `still reports an extra table that does not match any ignore pattern`() {
+
+        val actual = listOf(ActualTableDef("app.leftover", emptyList(), listOf(TableColumnName.id), emptyList(), emptyList()))
+
+        val report = comparator.compare(expected = emptyList(), actual, ignoreTablePatterns = listOf("qrtz_*"))
+
+        assertThat(report.tables.single().status).isEqualTo(TableStatus.EXTRA)
+
+    }
+
+    @Test
     fun `reports a missing column as an error`() {
 
         val expected = listOf(

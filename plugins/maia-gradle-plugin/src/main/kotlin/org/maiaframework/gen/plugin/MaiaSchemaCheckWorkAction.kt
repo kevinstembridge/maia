@@ -20,6 +20,7 @@ abstract class MaiaSchemaCheckWorkAction : WorkAction<MaiaSchemaCheckWorkParamet
                 format = parameters.outputFormat.getOrElse("text"),
                 outputFile = parameters.outputFile.orNull?.asFile,
                 fixSqlOutputFile = parameters.fixSqlOutputFile.orNull?.asFile,
+                ignoreTables = parameters.ignoreTables.getOrElse(emptyList()),
             )
         )
 

@@ -1,6 +1,7 @@
 package org.maiaframework.gen.plugin
 
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.workers.WorkParameters
 
@@ -21,5 +22,7 @@ interface MaiaSchemaCheckWorkParameters : WorkParameters {
     val ignoreErrors: Property<Boolean>
 
     val fixSqlOutputFile: RegularFileProperty
+
+    val ignoreTables: ListProperty<String>
 
 }

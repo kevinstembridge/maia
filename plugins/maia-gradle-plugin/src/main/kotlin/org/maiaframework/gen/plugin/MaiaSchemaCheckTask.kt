@@ -4,6 +4,7 @@ import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
 import javax.inject.Inject
@@ -40,6 +41,9 @@ abstract class MaiaSchemaCheckTask : DefaultTask() {
     @get:Optional
     abstract val fixSqlOutputFile: RegularFileProperty
 
+    @get:Input
+    abstract val ignoreTables: ListProperty<String>
+
     @get:Inject
     abstract val workerExecutor: org.gradle.workers.WorkerExecutor
 
@@ -61,6 +65,7 @@ abstract class MaiaSchemaCheckTask : DefaultTask() {
                 parameters.outputFile.set(outputFile)
                 parameters.ignoreErrors.set(ignoreErrors)
                 parameters.fixSqlOutputFile.set(fixSqlOutputFile)
+                parameters.ignoreTables.set(ignoreTables)
             }
         })
 
