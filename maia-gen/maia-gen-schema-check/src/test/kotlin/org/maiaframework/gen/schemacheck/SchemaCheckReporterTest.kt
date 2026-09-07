@@ -24,6 +24,24 @@ class SchemaCheckReporterTest {
     }
 
     @Test
+    fun `console output repeats the summary line at the top and the bottom`() {
+
+        val report = SchemaDiffReport(
+            listOf(
+                TableDiff("app.ok_table", TableStatus.OK),
+                TableDiff("app.bad_table", TableStatus.MISSING),
+            )
+        )
+
+        val output = SchemaCheckReporter.renderConsole(report)
+        val summaryLine = "2 tables checked, 1 errors, 0 warnings"
+
+        assertThat(output.lines().first()).isEqualTo(summaryLine)
+        assertThat(output.lines().last()).isEqualTo(summaryLine)
+
+    }
+
+    @Test
     fun `console output explains why a missing or extra table counts as an error or warning`() {
 
         val report = SchemaDiffReport(

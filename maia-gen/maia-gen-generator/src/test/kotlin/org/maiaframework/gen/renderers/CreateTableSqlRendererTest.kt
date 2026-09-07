@@ -166,6 +166,14 @@ class CreateTableSqlRendererTest {
             "ALTER TABLE test\\.vehicle ADD CONSTRAINT \\w+_excl EXCLUDE USING gist \\(category WITH =, type_discriminator WITH =, effective_range WITH &&\\);"
         )
 
+        // Regression guard: ExpectedSchemaExtractor tracks the exclusion constraint's supporting
+        // index separately from the plain `indexes` list precisely so CreateTableSqlRenderer (which
+        // reuses that list both to render CREATE INDEX statements and to decide what needs an
+        // exclusion constraint) doesn't double up — rendering a spurious CREATE INDEX for the "_excl"
+        // index itself, and then a second, malformed "_excl_excl" exclusion constraint over it.
+        assertThat(sql).doesNotContain("_excl_excl")
+        assertThat(sql.split("CREATE INDEX")).hasSize(3) // one per widget/vehicle index, plus the split's leading segment
+
     }
 
     @Test

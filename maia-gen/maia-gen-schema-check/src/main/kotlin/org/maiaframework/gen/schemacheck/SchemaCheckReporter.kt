@@ -11,6 +11,13 @@ object SchemaCheckReporter {
 
         val lines = mutableListOf<String>()
 
+        val errorCount = `count errors`(report)
+        val warningCount = `count warnings`(report)
+        val summaryLine = "${report.tables.size} tables checked, $errorCount errors, $warningCount warnings"
+
+        lines.add(summaryLine)
+        lines.add("")
+
         report.tables.sortedBy { it.schemaAndTableName }.forEach { table ->
             val marker = if (table.hasErrors) "✗" else "✓"
             lines.add("$marker ${table.schemaAndTableName} [${table.status}]")
@@ -31,14 +38,8 @@ object SchemaCheckReporter {
             table.extraIndexes.forEach { lines.add("    WARNING: extra index '$it'") }
         }
 
-        val errorCount = report.tables.sumOf {
-            it.missingColumns.size + it.mismatchedColumns.size + (if (it.primaryKeyMismatch != null) 1 else 0) +
-                    it.missingForeignKeys.size + it.missingIndexes.size + (if (it.status == TableStatus.MISSING) 1 else 0)
-        }
-        val warningCount = report.tables.sumOf { it.extraColumns.size + it.extraForeignKeys.size + it.extraIndexes.size + (if (it.status == TableStatus.EXTRA) 1 else 0) }
-
         lines.add("")
-        lines.add("${report.tables.size} tables checked, $errorCount errors, $warningCount warnings")
+        lines.add(summaryLine)
 
         return lines.joinToString("\n")
 
@@ -47,6 +48,25 @@ object SchemaCheckReporter {
     fun renderJson(report: SchemaDiffReport): String {
 
         return jsonMapper.writeValueAsString(report)
+
+    }
+
+
+    private fun `count errors`(report: SchemaDiffReport): Int {
+
+        return report.tables.sumOf {
+            it.missingColumns.size + it.mismatchedColumns.size + (if (it.primaryKeyMismatch != null) 1 else 0) +
+                    it.missingForeignKeys.size + it.missingIndexes.size + (if (it.status == TableStatus.MISSING) 1 else 0)
+        }
+
+    }
+
+
+    private fun `count warnings`(report: SchemaDiffReport): Int {
+
+        return report.tables.sumOf {
+            it.extraColumns.size + it.extraForeignKeys.size + it.extraIndexes.size + (if (it.status == TableStatus.EXTRA) 1 else 0)
+        }
 
     }
 

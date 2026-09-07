@@ -102,7 +102,11 @@ class SchemaComparator {
 
         val actualIndexColumnSets = actual.indexes.map { it.columns.toSet() }.toSet()
         val missingIndexes = expected.indexes.filter { it.columns.toSet() !in actualIndexColumnSets }
-        val expectedIndexColumnSets = expected.indexes.map { it.columns.toSet() }.toSet()
+
+        // exclusionIndexes (the GIST index Postgres creates as a side effect of a single-effective-
+        // record exclusion constraint) count as expected here even though CreateTableSqlRenderer
+        // never emits a plain CREATE INDEX for them — otherwise they'd be reported as extra.
+        val expectedIndexColumnSets = expected.indexes.plus(expected.exclusionIndexes).map { it.columns.toSet() }.toSet()
         val extraIndexes = actual.indexes.filter { it.columns.toSet() !in expectedIndexColumnSets }.map { it.name }
 
         val status = if (missingColumns.isEmpty() && mismatchedColumns.isEmpty() && primaryKeyMismatch == null

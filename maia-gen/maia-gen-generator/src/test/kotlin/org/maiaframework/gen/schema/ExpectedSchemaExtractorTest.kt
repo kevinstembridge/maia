@@ -158,10 +158,15 @@ class ExpectedSchemaExtractorTest {
         val tables = ExpectedSchemaExtractor().extract(spec.modelDef.rootEntityHierarchies)
         val widgetTable = tables.single { it.schemaAndTableName == "test.widget" }
 
-        assertThat(widgetTable.indexes).hasSize(2)
-        val baseIndex = widgetTable.indexes.single { !it.name.endsWith("_excl") }
-        val exclusionIndex = widgetTable.indexes.single { it.name == "${baseIndex.name}_excl" }
+        // Tracked separately from `indexes`, not merged into it: CreateTableSqlRenderer reuses
+        // `indexes` both to render plain CREATE INDEX statements and to decide which indexes need
+        // an exclusion constraint, so a synthetic "_excl" entry there would get a CREATE INDEX of
+        // its own and a second, invalid exclusion constraint generated for it.
+        assertThat(widgetTable.indexes).hasSize(1)
+        val baseIndex = widgetTable.indexes.single()
+        val exclusionIndex = widgetTable.exclusionIndexes.single()
 
+        assertThat(exclusionIndex.name).isEqualTo("${baseIndex.name}_excl")
         assertThat(exclusionIndex.columns).containsExactly(*baseIndex.columns.toTypedArray(), TableColumnName.effectiveRange)
         assertThat(exclusionIndex.unique).isFalse()
 
