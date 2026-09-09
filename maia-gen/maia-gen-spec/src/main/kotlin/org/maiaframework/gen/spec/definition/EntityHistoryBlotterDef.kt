@@ -134,10 +134,13 @@ class EntityHistoryBlotterDef(val entityDef: EntityDef) {
     val pageTitle = "${entityDef.entityBaseName.value} History"
 
 
+    private val modulePath = if (entityDef.moduleName == null) "" else "${entityDef.moduleName.value}/"
+
+
     val routePath = if (isJoinEntityHistory) {
-        "${entityKebab}-history"
+        "$modulePath${entityKebab}-history"
     } else {
-        "${entityKebab}/history"
+        "$modulePath${entityKebab}/history"
     }
 
 

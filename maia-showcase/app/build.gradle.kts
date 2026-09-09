@@ -37,6 +37,7 @@ dependencies {
     testImplementation(project(":libs:maia-domain"))
     testImplementation(project(":libs:maia-jdbc"))
     testImplementation(project(":libs:maia-testing:maia-testing-domain"))
+    testImplementation(project(":libs:maia-testing:maia-testing-elasticsearch"))
     testImplementation(project(":libs:maia-testing:maia-testing-postgresql"))
     testImplementation(project(":libs:maia-web-testing"))
     testImplementation(project(":maia-showcase:dao"))
@@ -50,7 +51,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation("org.testcontainers:elasticsearch")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation("org.testcontainers:testcontainers-postgresql")
 

@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers.ui
 
+import org.maiaframework.gen.spec.definition.AuthoritiesDef
 import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
@@ -12,6 +13,7 @@ import org.maiaframework.gen.spec.definition.TimelineBlotterDef
 
 class EntityCrudRoutesRenderer(
     private val entityDef: EntityDef,
+    private val authoritiesDef: AuthoritiesDef? = null,
     private val blotterPageDef: BlotterPageDef? = null,
     private val entityDetailViewDef: EntityDetailViewDef? = null,
     private val entityCreatePageDef: EntityCreatePageDef? = null,
@@ -29,8 +31,23 @@ class EntityCrudRoutesRenderer(
     private val constName = "${entityBaseName.firstToLower()}Routes"
 
 
+    private val routeAuthority = entityDef.crudDef.authority
+
+
+    // Empty when there's no authority to require: an empty `data.authorities` array denies
+    // everyone (including logged-in users), so it must never be rendered as `authorities: []`.
+    private val dataLine = if (routeAuthority != null && authoritiesDef != null) {
+        "\n        data: {authorities: [${authoritiesDef.enumDef.uqcn}.${routeAuthority.name}]},"
+    } else {
+        ""
+    }
+
+
     init {
         addImport("@angular/router", "Routes")
+        if (routeAuthority != null) {
+            authoritiesDef?.let { addImport(it.enumDef.typescriptImport) }
+        }
     }
 
 
@@ -60,7 +77,7 @@ class EntityCrudRoutesRenderer(
 
         append("""
             |    {
-            |        path: '${def.routePath}',
+            |        path: '${def.routePath}',$dataLine
             |        loadComponent: () =>
             |            import('./${def.pageAngularComponentNames.componentNameKebab}').then(m => m.${def.pageAngularComponentNames.componentName}),
             |    },
@@ -75,7 +92,7 @@ class EntityCrudRoutesRenderer(
 
         append("""
             |    {
-            |        path: '$path',
+            |        path: '$path',$dataLine
             |        loadComponent: () =>
             |            import('./${def.viewPageAngularComponentNames.componentNameKebab}').then(m => m.${def.viewPageAngularComponentNames.componentName}),
             |    },
@@ -90,7 +107,7 @@ class EntityCrudRoutesRenderer(
 
         append("""
             |    {
-            |        path: '$path',
+            |        path: '$path',$dataLine
             |        loadComponent: () =>
             |            import('./${def.createPageAngularComponentNames.componentNameKebab}').then(m => m.${def.createPageAngularComponentNames.componentName}),
             |    },
@@ -105,7 +122,7 @@ class EntityCrudRoutesRenderer(
 
         append("""
             |    {
-            |        path: '$path',
+            |        path: '$path',$dataLine
             |        loadComponent: () =>
             |            import('./${def.editPageAngularComponentNames.componentNameKebab}').then(m => m.${def.editPageAngularComponentNames.componentName}),
             |    },
@@ -120,7 +137,7 @@ class EntityCrudRoutesRenderer(
 
         append("""
             |    {
-            |        path: '$path',
+            |        path: '$path',$dataLine
             |        loadComponent: () =>
             |            import('./${def.blotterPageComponentNames.componentNameKebab}').then(m => m.${def.blotterPageComponentNames.componentName}),
             |    },
@@ -135,7 +152,7 @@ class EntityCrudRoutesRenderer(
 
         append("""
             |    {
-            |        path: '$path',
+            |        path: '$path',$dataLine
             |        loadComponent: () =>
             |            import('./${def.blotterPageComponentNames.componentNameKebab}').then(m => m.${def.blotterPageComponentNames.componentName}),
             |    },

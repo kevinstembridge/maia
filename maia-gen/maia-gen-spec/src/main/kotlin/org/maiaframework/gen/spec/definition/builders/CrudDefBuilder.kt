@@ -48,7 +48,8 @@ class CrudDefBuilder {
 
         return CrudDef(
             this.withCrudListener,
-            crudOperationDefs
+            crudOperationDefs,
+            this.authority
         )
 
     }

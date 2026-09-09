@@ -4,7 +4,8 @@ import org.maiaframework.gen.spec.definition.flags.WithCrudListener
 
 data class CrudDef(
     val withCrudListener: WithCrudListener,
-    val crudOperationDefs: CrudOperationDefs
+    val crudOperationDefs: CrudOperationDefs,
+    val authority: AuthorityDef? = null
 ) {
 
 

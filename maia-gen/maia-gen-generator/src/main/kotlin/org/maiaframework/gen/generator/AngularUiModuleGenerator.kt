@@ -666,6 +666,7 @@ class AngularUiModuleGenerator(
         allEntities.forEach { entityDef ->
             EntityCrudRoutesRenderer(
                 entityDef = entityDef,
+                authoritiesDef = this.applicationModelDef.authoritiesDef,
                 blotterPageDef = blotterPageByEntity[entityDef],
                 entityDetailViewDef = viewPageByEntity[entityDef],
                 entityCreatePageDef = createPageByEntity[entityDef],

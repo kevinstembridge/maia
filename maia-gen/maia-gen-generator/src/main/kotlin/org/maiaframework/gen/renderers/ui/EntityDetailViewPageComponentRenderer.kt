@@ -82,7 +82,7 @@ class EntityDetailViewPageComponentRenderer(
                 |
                 |
                 |    protected get canEdit(): boolean {
-                |        return this.authService.currentUserHasThisAuthority(${it.enumDef.uqcn}.${entityDetailViewDef.editPermission!!.name});
+                |        return this.authService.currentUserHasThisAuthority(${it.enumDef.uqcn}.${entityDetailViewDef.editPermission.name});
                 |    }
                 |
                 |

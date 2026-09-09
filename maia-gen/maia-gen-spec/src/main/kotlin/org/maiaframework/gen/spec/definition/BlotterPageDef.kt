@@ -24,7 +24,10 @@ class BlotterPageDef(
     val blotterComponentSelector = "app-${blotterDef.dtoBaseName.toKebabCase()}-blotter"
 
 
-    val routePath = "${blotterDef.dtoBaseName.toKebabCase()}-blotter"
+    private val modulePath = if (blotterDef.moduleName == null) "" else "${blotterDef.moduleName.value}/"
+
+
+    val routePath = "$modulePath${blotterDef.dtoBaseName.toKebabCase()}-blotter"
 
 
     val blotterComponentClassName = "${blotterDef.dtoBaseName}Blotter"
