@@ -17,7 +17,7 @@
     {
       "id": 2,
       "subject": "Task 3: Card status dot and active-version badge",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** Replace plain-text health status and 'Is Active Version' line in ElasticIndex with a colored status dot and conditional 'Active version' badge.\n\n**Files:**\n- Modify: libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/components/elastic-index/elastic-index.ts\n- Modify: libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/components/elastic-index/elastic-index.html\n\n**Acceptance Criteria:**\n- [ ] Colored dot shown only when indexExists and health.status present; green/yellow/red/gray-fallback mapping (case-insensitive)\n- [ ] Dot carries title attribute with raw status string, no visible text label\n- [ ] 'Active version' badge shown only when indexExists && summary.isActiveVersion\n- [ ] Existing buttons/handlers unchanged in behavior\n\n**Verify:** `npx ng build maia-elasticsearch` (from libs/maia-ui-workspace/) — builds with no errors\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/components/elastic-index/elastic-index.ts\", \"libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/components/elastic-index/elastic-index.html\"], \"verifyCommand\": \"npx ng build maia-elasticsearch\", \"acceptanceCriteria\": [\"status dot color mapping and visibility rule correct\", \"title attribute carries raw status\", \"active-version badge condition correct\", \"buttons unchanged\"], \"requiresUserVerification\": false}\n```"
     },
     {
@@ -35,5 +35,5 @@
       "description": "**Goal:** Confirm the redesigned dashboard behaves correctly end-to-end in the running showcase app.\n\n**Files:** None (verification only).\n\n**Acceptance Criteria:**\n- [ ] /elastic-indices route loads without console errors\n- [ ] Grid reflows responsively\n- [ ] Filter narrows grid and switches count summary to 'X of Y' form; clearing reverts it\n- [ ] Hide-system-indices toggle updates grid and denominator\n- [ ] Status dot colors and tooltip correct\n- [ ] Active-version badge appears only on the correct card\n- [ ] Error banner + Retry appears when backend unreachable, filter row stays usable\n\n**Verify:** Manual browser check — no automated test; exercises Tasks 1-4 together\n\n```json:metadata\n{\"files\": [], \"verifyCommand\": \"\", \"acceptanceCriteria\": [\"route loads cleanly\", \"grid responsive\", \"filter and count summary interplay correct\", \"toggle updates denominator\", \"status dot/tooltip correct\", \"active badge correct\", \"error/retry path works with filter row usable\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-13T12:25:00Z"
+  "lastUpdated": "2026-09-13T12:30:00Z"
 }
