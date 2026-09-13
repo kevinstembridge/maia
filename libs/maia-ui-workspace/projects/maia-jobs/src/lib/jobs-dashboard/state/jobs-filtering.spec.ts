@@ -37,7 +37,7 @@ function failedExecution(overrides: Partial<JobExecutionSummary> = {}): JobExecu
 
 function jobState(overrides: Partial<JobState> & {jobName: string}): JobState {
     return {
-        jobDescription: '',
+        description: '',
         runningJobs: [],
         recentlyFailedExecutions: [],
         ...overrides

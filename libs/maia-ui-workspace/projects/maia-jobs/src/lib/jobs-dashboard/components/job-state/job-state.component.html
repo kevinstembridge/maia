@@ -9,8 +9,8 @@
         </span>
     </div>
 
-    @if (jobState().jobDescription) {
-        <p class="text-sm text-gray-500">{{ jobState().jobDescription }}</p>
+    @if (jobState().description) {
+        <p class="text-sm text-gray-500">{{ jobState().description }}</p>
     }
 
     @if (runningRows().length > 0) {
