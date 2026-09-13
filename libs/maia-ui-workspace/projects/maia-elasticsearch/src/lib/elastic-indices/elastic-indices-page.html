@@ -5,6 +5,7 @@
 
 <div class="mt-2 flex items-center gap-4 border-b border-gray-300 pb-2.5">
     <mat-form-field subscriptSizing="dynamic" class="max-w-[240px] flex-1">
+        <mat-label>Filter indices</mat-label>
         <input matInput placeholder="Filter indices..." (input)="onFilterInput($event)">
     </mat-form-field>
     <mat-slide-toggle
@@ -19,7 +20,7 @@
         <mat-spinner diameter="40"></mat-spinner>
     </div>
 } @else if (store.error(); as error) {
-    <div class="mt-5 flex items-center justify-between rounded border border-red-300 bg-red-50 p-3.5 text-red-800">
+    <div class="mt-5 flex items-center justify-between rounded border border-red-300 bg-red-50 p-3.5 text-red-800" role="alert">
         <span>{{ error }}</span>
         <button mat-flat-button color="primary" (click)="store.retryFetch()">Retry</button>
     </div>
