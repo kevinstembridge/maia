@@ -1,11 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {AsyncPipe} from '@angular/common';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {Component, inject, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {Observable} from 'rxjs';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatButtonModule} from '@angular/material/button';
 import {JobState} from './models/JobState';
 import {JobExecutionState} from './models/JobExecutionState';
 import {JobsApiService} from './services/jobs-api.service';
+import {JobsDashboardStore} from './state/jobs-dashboard-store';
 import {JobStateComponent} from './components/job-state/job-state.component';
 import {JobMetricsDialogComponent} from './dialogs/job-metrics-dialog/job-metrics-dialog.component';
 import {RunJobDialogComponent} from './dialogs/run-job-dialog/run-job-dialog.component';
@@ -13,15 +15,15 @@ import {StacktraceDialogComponent} from './dialogs/stacktrace-dialog/stacktrace-
 
 
 @Component({
-    imports: [JobStateComponent, MatProgressSpinner, AsyncPipe],
-    providers: [JobsApiService],
+    imports: [JobStateComponent, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule],
+    providers: [JobsApiService, JobsDashboardStore],
     selector: 'maia-jobs-dashboard-page',
     templateUrl: './jobs-dashboard-page.component.html'
 })
 export class JobsDashboardPageComponent implements OnInit {
 
 
-    jobs$!: Observable<JobState[]>;
+    readonly store = inject(JobsDashboardStore);
 
 
     constructor(
@@ -31,9 +33,12 @@ export class JobsDashboardPageComponent implements OnInit {
 
 
     ngOnInit() {
+        this.store.startPolling();
+    }
 
-        this.jobs$ = this.jobsService.getJobsState();
 
+    onFilterInput(event: Event) {
+        this.store.onNameFilterChanged((event.target as HTMLInputElement).value);
     }
 
 

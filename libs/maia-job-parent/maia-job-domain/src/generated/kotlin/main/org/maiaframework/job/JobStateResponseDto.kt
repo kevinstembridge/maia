@@ -8,6 +8,7 @@ package org.maiaframework.job
 data class JobStateResponseDto(
     val description: String?,
     val jobName: JobName,
+    val recentlyFailedExecutions: List<JobExecutionSummaryResponseDto>,
     val runningJobs: List<RunningJobStateResponseDto>
 ) {
 

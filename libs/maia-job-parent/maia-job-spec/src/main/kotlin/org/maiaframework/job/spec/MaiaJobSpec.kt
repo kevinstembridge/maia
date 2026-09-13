@@ -74,12 +74,26 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
     }
 
 
+    val jobExecutionSummaryDtoDef = simpleResponseDto("org.maiaframework.job", "JobExecutionSummary") {
+        field("jobExecutionId", FieldTypes.domainId)
+        field("jobName", jobNameStringType)
+        field("startTimestamp", FieldTypes.instant)
+        field("endTimestamp", FieldTypes.instant) {
+            nullable()
+        }
+        field("errorMessage", FieldTypes.string) {
+            nullable()
+        }
+    }
+
+
     val jobStateDtoDef = simpleResponseDto("org.maiaframework.job", "JobState") {
         field("jobName", jobNameStringType)
         field("description", FieldTypes.string) {
             nullable()
         }
         field("runningJobs", fieldListOf(runningJobStateDtoDef))
+        field("recentlyFailedExecutions", fieldListOf(jobExecutionSummaryDtoDef))
     }
 
 
@@ -94,19 +108,6 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
             nullable()
         }
         field("stackTrace", FieldTypes.string) {
-            nullable()
-        }
-    }
-
-
-    val jobExecutionSummaryDtoDef = simpleResponseDto("org.maiaframework.job", "JobExecutionSummary") {
-        field("jobExecutionId", FieldTypes.domainId)
-        field("jobName", jobNameStringType)
-        field("startTimestamp", FieldTypes.instant)
-        field("endTimestamp", FieldTypes.instant) {
-            nullable()
-        }
-        field("errorMessage", FieldTypes.string) {
             nullable()
         }
     }

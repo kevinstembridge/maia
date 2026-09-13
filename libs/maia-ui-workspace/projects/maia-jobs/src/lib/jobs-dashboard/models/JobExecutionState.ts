@@ -1,9 +1,7 @@
 export class JobExecutionState {
     id!: string;
-    startTime!: string;
-    endTime!: string;
-    status!: string;
-    exitCode!: string;
-    exitDescription!: string;
+    jobName!: string;
+    invokedBy!: string;
+    startTimestamp!: string;
     metrics!: any;
 }

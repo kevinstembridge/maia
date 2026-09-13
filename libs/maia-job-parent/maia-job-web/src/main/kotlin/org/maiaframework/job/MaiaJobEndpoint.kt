@@ -25,17 +25,6 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
     }
 
 
-    @GetMapping("/job/recently_failed/{jobName}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasAuthority('MAIA_JOB_READ')")
-    fun getRecentlyFailedExecutions(
-        @PathVariable jobName: String
-    ): List<JobExecutionSummaryResponseDto> {
-
-        return this.jobService.getRecentFailures(JobName(jobName))
-
-    }
-
-
     @GetMapping("/job/execution_detail/{jobExecutionId}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('MAIA_JOB_READ')")
     fun getExecutionDetail(
