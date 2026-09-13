@@ -3,7 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {JobState} from '../models/JobState';
-import {JobExecutionSummary} from '../models/JobExecutionSummary';
 import {JobExecutionDetail} from '../models/JobExecutionDetail';
 import {JOBS_API_BASE_URL} from './jobs-api-base-url.token';
 
@@ -22,15 +21,6 @@ export class JobsApiService {
 
         return this.http.get<JobState[]>(`${this.baseUrl}/jobs/current_state`).pipe(
             catchError(this.handleError<JobState[]>('getJobsState', []))
-        );
-
-    }
-
-
-    getRecentlyFailedJobExecutions(jobName: string): Observable<JobExecutionSummary[]> {
-
-        return this.http.get<JobExecutionSummary[]>(`${this.baseUrl}/job/recently_failed/${jobName}`).pipe(
-            catchError(this.handleError<JobExecutionSummary[]>('getRecentlyFailedJobExecutions', []))
         );
 
     }
