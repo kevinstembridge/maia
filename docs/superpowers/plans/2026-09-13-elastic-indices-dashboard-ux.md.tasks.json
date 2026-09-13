@@ -30,10 +30,10 @@
     {
       "id": 4,
       "subject": "Task 5: Manual verification in the showcase app",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [3],
       "description": "**Goal:** Confirm the redesigned dashboard behaves correctly end-to-end in the running showcase app.\n\n**Files:** None (verification only).\n\n**Acceptance Criteria:**\n- [ ] /elastic-indices route loads without console errors\n- [ ] Grid reflows responsively\n- [ ] Filter narrows grid and switches count summary to 'X of Y' form; clearing reverts it\n- [ ] Hide-system-indices toggle updates grid and denominator\n- [ ] Status dot colors and tooltip correct\n- [ ] Active-version badge appears only on the correct card\n- [ ] Error banner + Retry appears when backend unreachable, filter row stays usable\n\n**Verify:** Manual browser check — no automated test; exercises Tasks 1-4 together\n\n```json:metadata\n{\"files\": [], \"verifyCommand\": \"\", \"acceptanceCriteria\": [\"route loads cleanly\", \"grid responsive\", \"filter and count summary interplay correct\", \"toggle updates denominator\", \"status dot/tooltip correct\", \"active badge correct\", \"error/retry path works with filter row usable\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-13T12:35:00Z"
+  "lastUpdated": "2026-09-13T12:40:00Z"
 }
