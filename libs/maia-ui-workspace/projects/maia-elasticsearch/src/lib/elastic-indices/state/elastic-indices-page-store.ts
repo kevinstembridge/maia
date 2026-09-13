@@ -2,7 +2,7 @@ import {patchState, signalStore, withComputed, withMethods, withState} from '@ng
 import {computed, inject} from '@angular/core';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {pipe, tap} from 'rxjs';
-import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import {debounceTime, switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
 import {EsIndexStateDto} from '../models/EsIndexStateDto';
 import {ElasticIndicesApiService} from '../services/elastic-indices-api-service';
@@ -54,7 +54,6 @@ export const ElasticIndicesPageStore = signalStore(
         fetchAllIndices: rxMethod<void>(
             pipe(
                 debounceTime(300),
-                distinctUntilChanged(),
                 tap(() => patchState(store, {isLoading: true})),
                 switchMap(() =>
                     pageService.getIndexDefinitions().pipe(
