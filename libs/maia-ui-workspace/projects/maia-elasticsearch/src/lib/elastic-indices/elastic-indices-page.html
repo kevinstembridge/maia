@@ -1,4 +1,12 @@
-<div>
+<div class="flex items-center justify-between">
+    <h2 class="text-lg font-medium">Elasticsearch Indices</h2>
+    <span class="text-sm text-gray-500">{{ store.countSummary() }}</span>
+</div>
+
+<div class="mt-2 flex items-center gap-4 border-b border-gray-300 pb-2.5">
+    <mat-form-field subscriptSizing="dynamic" class="max-w-[240px] flex-1">
+        <input matInput placeholder="Filter indices..." (input)="onFilterInput($event)">
+    </mat-form-field>
     <mat-slide-toggle
         [checked]="store.hideSystemIndices()"
         (change)="store.onHideSystemIndicesChanged($event)">
@@ -6,10 +14,25 @@
     </mat-slide-toggle>
 </div>
 
-@for (index of store.visibleIndexStateDtos(); track index.indexName) {
-    <maia-elastic-index
-        [index]="index"
-        (createIndex)="onCreateIndex($event)"
-        (setIndexVersionActive)="onSetIndexVersionActive($event)">
-    </maia-elastic-index>
+@if (store.isLoading()) {
+    <div class="flex justify-center py-10">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+} @else if (store.error(); as error) {
+    <div class="mt-5 flex items-center justify-between rounded border border-red-300 bg-red-50 p-3.5 text-red-800">
+        <span>{{ error }}</span>
+        <button mat-flat-button color="primary" (click)="store.retryFetch()">Retry</button>
+    </div>
+} @else if (store.visibleIndexStateDtos().length === 0) {
+    <p class="mt-5 text-gray-500">No indices match your filter.</p>
+} @else {
+    <div class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-3">
+        @for (index of store.visibleIndexStateDtos(); track index.indexName) {
+            <maia-elastic-index
+                [index]="index"
+                (createIndex)="onCreateIndex($event)"
+                (setIndexVersionActive)="onSetIndexVersionActive($event)">
+            </maia-elastic-index>
+        }
+    </div>
 }
