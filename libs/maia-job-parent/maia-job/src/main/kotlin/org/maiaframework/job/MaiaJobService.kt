@@ -9,6 +9,8 @@ import org.springframework.util.MultiValueMap
 import java.time.Instant
 import java.util.concurrent.Executors
 
+private const val MAX_RECENT_FAILURES_PER_JOB = 10
+
 
 class MaiaJobService(
     private val maiaJobRegistry: MaiaJobRegistry,
@@ -28,13 +30,21 @@ class MaiaJobService(
     fun getAllJobsCurrentState(): List<JobStateResponseDto> {
 
         val allJobDescriptions = this.maiaJobRegistry.getAllJobDescriptions()
+        val jobNames = allJobDescriptions.map { it.jobName }
+        val recentFailuresByJobName = this.jobExecutionRepo.recentFailedExecutions(jobNames)
+                .groupBy { it.jobName }
 
         return allJobDescriptions.map { jobDescription ->
 
             val runningJobStateDtos = getRunningJobsState(jobDescription.jobName)
+            val recentFailureDtos = (recentFailuresByJobName[jobDescription.jobName] ?: emptyList())
+                    .take(MAX_RECENT_FAILURES_PER_JOB)
+                    .map { toJobExecutionSummaryDto(it) }
+
             JobStateResponseDto(
                     jobDescription.description,
                     jobDescription.jobName,
+                    recentFailureDtos,
                     runningJobStateDtos)
 
         }
@@ -137,18 +147,14 @@ class MaiaJobService(
     }
 
 
-    fun getRecentFailures(jobName: JobName): List<JobExecutionSummaryResponseDto> {
+    private fun toJobExecutionSummaryDto(entity: JobExecutionEntity): JobExecutionSummaryResponseDto {
 
-        return jobExecutionRepo.recentFailedExecutions(jobName).map { entity ->
-
-            JobExecutionSummaryResponseDto(
-                    entity.endTimestamp,
-                    entity.errorMessage,
-                    entity.id,
-                    jobName,
-                    entity.startTimestamp)
-
-        }
+        return JobExecutionSummaryResponseDto(
+                entity.endTimestamp,
+                entity.errorMessage,
+                entity.id,
+                entity.jobName,
+                entity.startTimestamp)
 
     }
 

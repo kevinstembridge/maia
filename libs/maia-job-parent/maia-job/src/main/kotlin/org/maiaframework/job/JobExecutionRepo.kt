@@ -7,6 +7,8 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import java.time.Instant
 
+private const val RECENT_FAILURES_QUERY_LIMIT = 200
+
 class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
 
 
@@ -74,16 +76,22 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
     }
 
 
-    fun recentFailedExecutions(jobName: JobName): List<JobExecutionEntity> {
+    fun recentFailedExecutions(jobNames: Iterable<JobName>): List<JobExecutionEntity> {
+
+        val jobNameList = jobNames.toList()
+
+        if (jobNameList.isEmpty()) {
+            return emptyList()
+        }
 
         val filters = JobExecutionEntityFilters()
         val filter = filters.and(
-                filters.jobName eq jobName,
+                filters.jobName `in` jobNameList,
                 filters.completionStatus eq JobCompletionStatus.FAILED
         )
 
         val sort = Sort.by(Sort.Order.desc(JobExecutionEntityMeta.endTimestamp))
-        val pageRequest = PageRequest.of(0, 10, sort)
+        val pageRequest = PageRequest.of(0, RECENT_FAILURES_QUERY_LIMIT, sort)
         return this.jobExecutionDao.findAllBy(filter, pageRequest).toList()
 
     }
