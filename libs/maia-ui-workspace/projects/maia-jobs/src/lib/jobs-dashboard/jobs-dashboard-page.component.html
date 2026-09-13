@@ -1,22 +1,36 @@
-@if (jobs$ | async; as jobStates) {
+<div class="flex items-center justify-between">
+    <h2 class="text-lg font-medium">Jobs</h2>
+    <span class="text-sm text-gray-500">{{ store.countSummary() }}</span>
+</div>
 
-    @for (jobState of jobStates; track jobState.jobName) {
+<div class="mt-2 flex items-center gap-4 border-b border-gray-300 pb-2.5">
+    <mat-form-field subscriptSizing="dynamic" class="max-w-[240px] flex-1">
+        <mat-label>Filter jobs</mat-label>
+        <input matInput placeholder="Filter jobs..." (input)="onFilterInput($event)">
+    </mat-form-field>
+</div>
 
-        <maia-job-state
-            [jobState]="jobState"
-            (runJob)="onRunJob($event)"
-            (displayStackTrace)="onDisplayStackTrace($event)"
-            (displayJobMetrics)="onDisplayJobMetricsDialog($event)">
-        </maia-job-state>
-
-    } @empty {
-
-        <p>No jobs</p>
-
-    }
-
+@if (store.isLoading() && store.jobStates().length === 0) {
+    <div class="flex justify-center py-10">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+} @else if (store.error() && store.jobStates().length === 0) {
+    <div class="mt-5 flex items-center justify-between rounded border border-red-300 bg-red-50 p-3.5 text-red-800" role="alert">
+        <span>{{ store.error() }}</span>
+        <button mat-flat-button color="primary" (click)="store.retryFetch()">Retry</button>
+    </div>
+} @else if (store.visibleJobStates().length === 0) {
+    <p class="mt-5 text-gray-500">No jobs match your filter.</p>
 } @else {
-
-    <mat-spinner></mat-spinner>
-
+    <div class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-3">
+        @for (jobState of store.visibleJobStates(); track jobState.jobName) {
+            <maia-job-state
+                [jobState]="jobState"
+                [now]="store.now()"
+                (runJob)="onRunJob($event)"
+                (displayStackTrace)="onDisplayStackTrace($event)"
+                (displayJobMetrics)="onDisplayJobMetricsDialog($event)">
+            </maia-job-state>
+        }
+    </div>
 }
