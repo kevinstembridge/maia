@@ -5,7 +5,9 @@
             <span
                 class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
                 [style.background-color]="color"
-                [title]="index().health?.status">
+                [title]="index().health?.status"
+                role="img"
+                [attr.aria-label]="index().health?.status">
             </span>
         }
     </div>
