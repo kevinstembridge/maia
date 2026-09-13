@@ -23,7 +23,7 @@
     {
       "id": 3,
       "subject": "Task 4: Card component redesign",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [1],
       "description": "**Goal:** Replace JobStateComponent's per-card API call and unstyled markup with a pure presentational card: status dot, inline running rows with elapsed time, collapsed-by-default failures disclosure.\n\n**Files:**\n- Modify: libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/components/job-state/job-state.component.ts\n- Modify: libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/components/job-state/job-state.component.html\n\n**Acceptance Criteria:**\n- [ ] No OnInit/DestroyRef/JobsApiService dependency\n- [ ] Status dot color running=blue/failed=red/idle=green with aria-label\n- [ ] Running rows show elapsed time via formatElapsed(execution.startTimestamp, now())\n- [ ] Not-running shows 'Not currently running'\n- [ ] Failures collapsed by default behind toggle with singular/plural label\n- [ ] Run button unchanged\n\n**Verify:** `npx ng build maia-jobs` (from libs/maia-ui-workspace/) - builds with no errors\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/components/job-state/job-state.component.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/components/job-state/job-state.component.html\"], \"verifyCommand\": \"npx ng build maia-jobs\", \"acceptanceCriteria\": [\"pure presentational component\", \"status dot correct\", \"elapsed time correct\", \"collapsed failures toggle correct\"], \"requiresUserVerification\": false}\n```"
     },
@@ -42,5 +42,5 @@
       "description": "**Goal:** Confirm the redesigned dashboard and batched backend endpoint behave correctly end-to-end.\n\n**Files:** None (verification only).\n\n**Acceptance Criteria:**\n- [ ] current_state returns recentlyFailedExecutions per job, old endpoint gone\n- [ ] route loads without console errors\n- [ ] grid responsive\n- [ ] filter narrows grid and count summary\n- [ ] running job elapsed time increases over polling\n- [ ] running+failed job shows blue dot\n- [ ] page auto-refreshes without blanking\n- [ ] first-load error shows banner+retry\n- [ ] post-load backend outage does not blank grid, self-heals\n\n**Verify:** Manual browser check - no automated test; exercises Tasks 1-5 together\n\n```json:metadata\n{\"files\": [], \"verifyCommand\": \"\", \"acceptanceCriteria\": [\"backend batching verified\", \"route loads cleanly\", \"grid responsive\", \"filter/count summary correct\", \"elapsed time updates\", \"running-wins dot correct\", \"stale-while-revalidate behavior correct\", \"first-load error path correct\", \"post-load outage self-heals\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-13T17:20:00Z"
+  "lastUpdated": "2026-09-13T17:30:00Z"
 }
