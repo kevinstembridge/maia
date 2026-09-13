@@ -37,6 +37,7 @@ class MaiaJobService(
         return allJobDescriptions.map { jobDescription ->
 
             val runningJobStateDtos = getRunningJobsState(jobDescription.jobName)
+            // Relies on recentFailedExecutions() returning rows pre-sorted desc by endTimestamp (groupBy preserves per-key order)
             val recentFailureDtos = (recentFailuresByJobName[jobDescription.jobName] ?: emptyList())
                     .take(MAX_RECENT_FAILURES_PER_JOB)
                     .map { toJobExecutionSummaryDto(it) }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import java.time.Instant
 
+// Bounds a single query across ALL jobs (not per-job) to avoid N+1; MaiaJobService truncates to 10 per job after grouping
 private const val RECENT_FAILURES_QUERY_LIMIT = 200
 
 class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
