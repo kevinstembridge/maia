@@ -1,6 +1,10 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatButtonModule} from '@angular/material/button';
 import {EsIndexStateDto} from './models/EsIndexStateDto';
 import {ElasticIndicesApiService} from './services/elastic-indices-api-service';
 import {ElasticIndicesPageStore} from './state/elastic-indices-page-store';
@@ -10,7 +14,7 @@ import {SetIndexVersionActiveDialog} from './dialogs/set-index-version-active-di
 
 
 @Component({
-    imports: [ElasticIndex, MatSlideToggle],
+    imports: [ElasticIndex, MatSlideToggle, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule],
     providers: [ElasticIndicesApiService, ElasticIndicesPageStore],
     selector: 'maia-elastic-indices-page',
     templateUrl: './elastic-indices-page.html'
@@ -29,6 +33,11 @@ export class ElasticIndicesPage implements OnInit {
 
     ngOnInit() {
         this.store.fetchAllIndices();
+    }
+
+
+    onFilterInput(event: Event) {
+        this.store.onNameFilterChanged((event.target as HTMLInputElement).value);
     }
 
 
