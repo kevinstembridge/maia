@@ -25,8 +25,8 @@
     }
 
     @if (jobState().recentlyFailedExecutions.length > 0) {
-        <button type="button" class="text-left text-xs text-red-700" (click)="onToggleFailures()">
-            {{ failuresExpanded() ? '▾' : '▸' }}
+        <button type="button" class="text-left text-xs text-red-700" (click)="onToggleFailures()" [attr.aria-expanded]="failuresExpanded()">
+            <span aria-hidden="true">{{ failuresExpanded() ? '▾' : '▸' }}</span>
             {{ jobState().recentlyFailedExecutions.length === 1 ? '1 recent failure' : jobState().recentlyFailedExecutions.length + ' recent failures' }}
         </button>
         @if (failuresExpanded()) {
