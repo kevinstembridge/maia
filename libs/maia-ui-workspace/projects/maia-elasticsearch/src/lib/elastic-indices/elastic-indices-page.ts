@@ -11,6 +11,14 @@ import {ElasticIndicesPageStore} from './state/elastic-indices-page-store';
 import {ElasticIndex} from './components/elastic-index/elastic-index';
 import {CreateIndexDialog} from './dialogs/create-index-dialog/create-index-dialog';
 import {SetIndexVersionActiveDialog} from './dialogs/set-index-version-active-dialog/set-index-version-active-dialog';
+import {DisplayStatus, STATUS_COLORS, STATUS_TILE_ORDER} from './state/elastic-indices-filtering';
+
+const STATUS_LABELS: Record<DisplayStatus, string> = {
+    green: 'Green',
+    yellow: 'Yellow',
+    red: 'Red',
+    'not-created': 'Not created',
+};
 
 
 @Component({
@@ -24,6 +32,10 @@ export class ElasticIndicesPage implements OnInit {
 
 
     readonly store = inject(ElasticIndicesPageStore);
+
+    readonly statusTileOrder = STATUS_TILE_ORDER;
+    readonly statusColors = STATUS_COLORS;
+    readonly statusLabels = STATUS_LABELS;
 
 
     constructor(

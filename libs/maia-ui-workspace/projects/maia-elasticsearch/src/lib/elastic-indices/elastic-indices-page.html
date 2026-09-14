@@ -1,5 +1,16 @@
-<div class="toolbar">
-    <span class="count">{{ store.countSummary() }}</span>
+<div class="status-tiles">
+    @for (status of statusTileOrder; track status) {
+        <button
+            type="button"
+            class="status-tile"
+            [class.active]="store.statusFilter() === status"
+            [attr.aria-pressed]="store.statusFilter() === status"
+            (click)="store.onStatusFilterToggled(status)">
+            <span class="status-tile-dot" [style.background-color]="statusColors[status]"></span>
+            <span class="status-tile-count">{{ store.statusCounts()[status] }}</span>
+            <span class="status-tile-label">{{ statusLabels[status] }}</span>
+        </button>
+    }
 </div>
 
 <div class="filter-bar">

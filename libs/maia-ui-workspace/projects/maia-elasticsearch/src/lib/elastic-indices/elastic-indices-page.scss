@@ -1,11 +1,42 @@
-.toolbar {
+.status-tiles {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
-.count {
-    font-size: 0.875rem;
+.status-tile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 8rem;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 0.5rem;
+    background: none;
+    padding: 0.5rem 0.75rem;
+    font: inherit;
+    cursor: pointer;
+
+    &.active {
+        border-color: var(--mat-sys-primary);
+        background-color: var(--mat-sys-primary-container);
+    }
+}
+
+.status-tile-dot {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+}
+
+.status-tile-count {
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+.status-tile-label {
+    font-size: 0.8125rem;
     color: var(--mat-sys-on-surface-variant);
 }
 
