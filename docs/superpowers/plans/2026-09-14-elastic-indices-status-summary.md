@@ -227,7 +227,7 @@ export function filterByStatus(indices: EsIndexStateDto[], status: DisplayStatus
 - [ ] **Step 4: Run tests to verify they pass**
 
 Run: `cd libs/maia-ui-workspace && ng test maia-elasticsearch --watch=false`
-Expected: `Tests  17 passed (17)`
+Expected: `Tests  14 passed (14)`
 
 - [ ] **Step 5: Commit**
 
@@ -660,7 +660,7 @@ The rest of the file (`.filter-bar`, `.filter-field`, `.loading`, `.error-banner
 - [ ] **Step 4: Run the maia-elasticsearch unit tests**
 
 Run: `cd libs/maia-ui-workspace && ng test maia-elasticsearch --watch=false`
-Expected: `Tests  17 passed (17)`
+Expected: `Tests  14 passed (14)`
 
 - [ ] **Step 5: Build the library**
 
