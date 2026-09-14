@@ -1,9 +1,9 @@
-<div class="flex flex-col gap-2 rounded-lg border border-gray-300 p-3.5">
-    <div class="flex items-center justify-between gap-2">
-        <span class="font-medium">{{ index().indexName }}</span>
+<div class="card">
+    <div class="header">
+        <span class="name">{{ index().indexName }}</span>
         @if (statusColor(); as color) {
             <span
-                class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+                class="status-dot"
                 [style.background-color]="color"
                 [title]="index().health?.status"
                 role="img"
@@ -12,18 +12,18 @@
         }
     </div>
     @if (index().summary?.description) {
-        <p class="text-sm text-gray-500">{{ index().summary?.description }}</p>
+        <p class="description">{{ index().summary?.description }}</p>
     }
     @if (index().indexExists && index().summary?.isActiveVersion) {
-        <span class="self-start rounded-full bg-gray-200 px-2 py-0.5 text-xs text-blue-700">Active version</span>
+        <span class="badge">Active version</span>
     }
     @if (!index().indexExists) {
-        <div class="flex justify-end">
+        <div class="actions">
             <button mat-flat-button (click)="onCreateIndex()" color="primary">Create...</button>
         </div>
     }
     @if (index().indexExists && !index().summary?.isActiveVersion) {
-        <div class="flex justify-end">
+        <div class="actions">
             <button mat-flat-button (click)="onSetIndexVersionActive()" color="primary">Set as Active Version...</button>
         </div>
     }

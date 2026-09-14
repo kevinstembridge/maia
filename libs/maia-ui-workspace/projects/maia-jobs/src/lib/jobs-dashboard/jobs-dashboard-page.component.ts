@@ -18,7 +18,8 @@ import {StacktraceDialogComponent} from './dialogs/stacktrace-dialog/stacktrace-
     imports: [JobStateComponent, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule],
     providers: [JobsApiService, JobsDashboardStore],
     selector: 'maia-jobs-dashboard-page',
-    templateUrl: './jobs-dashboard-page.component.html'
+    templateUrl: './jobs-dashboard-page.component.html',
+    styleUrl: './jobs-dashboard-page.component.scss'
 })
 export class JobsDashboardPageComponent implements OnInit {
 

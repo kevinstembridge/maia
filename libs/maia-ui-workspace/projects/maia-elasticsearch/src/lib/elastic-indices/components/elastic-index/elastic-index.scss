@@ -1,0 +1,46 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--mat-sys-outline-variant);
+    padding: 0.875rem;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.name {
+    font-weight: 500;
+}
+
+.status-dot {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+}
+
+.description {
+    font-size: 0.875rem;
+    color: var(--mat-sys-on-surface-variant);
+}
+
+.badge {
+    align-self: flex-start;
+    border-radius: 9999px;
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+}

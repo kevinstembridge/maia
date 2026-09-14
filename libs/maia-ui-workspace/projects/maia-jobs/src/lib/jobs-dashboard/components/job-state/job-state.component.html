@@ -1,8 +1,8 @@
-<div class="flex flex-col gap-2 rounded-lg border border-gray-300 p-3.5">
-    <div class="flex items-center justify-between gap-2">
-        <span class="font-medium">{{ jobState().jobName }}</span>
+<div class="card">
+    <div class="header">
+        <span class="name">{{ jobState().jobName }}</span>
         <span
-            class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+            class="status-dot"
             [style.background-color]="statusColor()"
             role="img"
             [attr.aria-label]="statusLabel()">
@@ -10,29 +10,29 @@
     </div>
 
     @if (jobState().description) {
-        <p class="text-sm text-gray-500">{{ jobState().description }}</p>
+        <p class="description">{{ jobState().description }}</p>
     }
 
     @if (runningRows().length > 0) {
         @for (row of runningRows(); track row.execution.id) {
-            <div class="flex items-center justify-between rounded bg-blue-50 px-2.5 py-1.5 text-xs text-blue-800">
+            <div class="running-row">
                 <span>Running for {{ row.elapsedLabel }}</span>
                 <button mat-flat-button (click)="onDisplayJobMetrics(row.execution)">Metrics</button>
             </div>
         }
     } @else {
-        <p class="text-xs text-gray-400">Not currently running</p>
+        <p class="idle-text">Not currently running</p>
     }
 
     @if (jobState().recentlyFailedExecutions.length > 0) {
-        <button type="button" class="text-left text-xs text-red-700" (click)="onToggleFailures()" [attr.aria-expanded]="failuresExpanded()">
+        <button type="button" class="failures-toggle" (click)="onToggleFailures()" [attr.aria-expanded]="failuresExpanded()">
             <span aria-hidden="true">{{ failuresExpanded() ? '▾' : '▸' }}</span>
             {{ jobState().recentlyFailedExecutions.length === 1 ? '1 recent failure' : jobState().recentlyFailedExecutions.length + ' recent failures' }}
         </button>
         @if (failuresExpanded()) {
-            <ul class="flex flex-col gap-1">
+            <ul class="failures-list">
                 @for (execution of jobState().recentlyFailedExecutions; track execution.jobExecutionId) {
-                    <li class="flex items-center justify-between gap-2 text-xs">
+                    <li class="failure-row">
                         <span>{{ execution.errorMessage }}</span>
                         <button mat-flat-button type="button" (click)="onDisplayStackTrace(execution.jobExecutionId)">
                             stacktrace
@@ -43,7 +43,7 @@
         }
     }
 
-    <div class="flex justify-end">
+    <div class="actions">
         <button mat-flat-button (click)="onRun()" color="primary">Run...</button>
     </div>
 </div>

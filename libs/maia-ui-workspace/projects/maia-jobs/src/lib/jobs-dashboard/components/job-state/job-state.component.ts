@@ -19,6 +19,7 @@ const STATUS_LABELS: Record<JobStatus, string> = {
 @Component({
     selector: 'maia-job-state',
     templateUrl: './job-state.component.html',
+    styleUrl: './job-state.component.scss',
     imports: [MatButtonModule]
 })
 export class JobStateComponent {

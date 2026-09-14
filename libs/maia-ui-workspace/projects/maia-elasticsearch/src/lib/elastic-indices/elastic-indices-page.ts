@@ -17,7 +17,8 @@ import {SetIndexVersionActiveDialog} from './dialogs/set-index-version-active-di
     imports: [ElasticIndex, MatSlideToggle, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule],
     providers: [ElasticIndicesApiService, ElasticIndicesPageStore],
     selector: 'maia-elastic-indices-page',
-    templateUrl: './elastic-indices-page.html'
+    templateUrl: './elastic-indices-page.html',
+    styleUrl: './elastic-indices-page.scss'
 })
 export class ElasticIndicesPage implements OnInit {
 
