@@ -1,0 +1,33 @@
+{
+  "planPath": "docs/superpowers/plans/2026-09-14-elastic-indices-status-summary.md",
+  "tasks": [
+    {
+      "id": 0,
+      "subject": "Task 1: Add DisplayStatus helpers to elastic-indices-filtering.ts",
+      "status": "pending",
+      "description": "**Goal:** Replace `countByStatus`/`buildIndexCountSummary` with `deriveDisplayStatus`, `countByDisplayStatus`, and `filterByStatus`, covering the \"not created\" case.\n\n**Files:**\n- Modify: `libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/state/elastic-indices-filtering.ts`\n- Modify: `libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/state/elastic-indices-filtering.spec.ts`\n\nSee plan file Task 1 for full code (test file replacement, then implementation replacement).\n\n**Verify:** `cd libs/maia-ui-workspace && ng test maia-elasticsearch --watch=false`\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/state/elastic-indices-filtering.ts\", \"libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/state/elastic-indices-filtering.spec.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && ng test maia-elasticsearch --watch=false\", \"acceptanceCriteria\": [\"deriveDisplayStatus handles not-created\", \"countByDisplayStatus returns full record with zeros\", \"filterByStatus filters or passes through\", \"old countByStatus/buildIndexCountSummary removed\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 1,
+      "subject": "Task 2: Reuse shared STATUS_COLORS in the card component",
+      "status": "pending",
+      "blockedBy": [0],
+      "description": "**Goal:** Remove the duplicate color map from `elastic-index.ts` and derive its status dot color via `deriveDisplayStatus`/`STATUS_COLORS`, with no visual change to the card.\n\n**Files:**\n- Modify: `libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/components/elastic-index/elastic-index.ts`\n\nSee plan file Task 2 for full replacement code.\n\n**Verify:** `cd libs/maia-ui-workspace && ng build maia-elasticsearch`\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/components/elastic-index/elastic-index.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && ng build maia-elasticsearch\", \"acceptanceCriteria\": [\"no duplicate STATUS_COLORS in elastic-index.ts\", \"statusColor behavior unchanged for existing/missing indices\", \"build passes\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 3: Add statusFilter to ElasticIndicesPageStore",
+      "status": "pending",
+      "blockedBy": [0],
+      "description": "**Goal:** Wire `statusFilter` state and `statusCounts`/`visibleIndexStateDtos` computeds through the store so tile counts and the grid reflect it correctly.\n\n**Files:**\n- Modify: `libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/state/elastic-indices-page-store.ts`\n\nSee plan file Task 3 for full replacement code. Note: the page template still references the removed `countSummary` at this point in the sequence — that's expected and fixed in Task 4.\n\n**Verify:** `cd libs/maia-ui-workspace && ng build maia-elasticsearch`\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/state/elastic-indices-page-store.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && ng build maia-elasticsearch\", \"acceptanceCriteria\": [\"statusFilter state added\", \"statusCounts computed before status filter applied\", \"visibleIndexStateDtos applies status filter\", \"onStatusFilterToggled toggles correctly\", \"countSummary removed\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 4: Render status tiles in the page template",
+      "status": "pending",
+      "blockedBy": [1, 2],
+      "description": "**Goal:** Replace the toolbar text summary with a row of clickable status tiles, styled consistently with the rest of the page.\n\n**Files:**\n- Modify: `libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/elastic-indices-page.ts`\n- Modify: `libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/elastic-indices-page.html`\n- Modify: `libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/elastic-indices-page.scss`\n\nSee plan file Task 4 for full code and exact diffs.\n\n**Verify:** `cd maia-showcase/maia-showcase-ui && npx ng build`\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/elastic-indices-page.ts\", \"libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/elastic-indices-page.html\", \"libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/elastic-indices-page.scss\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && npx ng build\", \"acceptanceCriteria\": [\"4 tiles render in order\", \"clicking a tile calls onStatusFilterToggled\", \"active tile has aria-pressed and .active class\", \"full showcase build passes\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-09-14T22:15:00Z"
+}
