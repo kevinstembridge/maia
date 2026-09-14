@@ -6,7 +6,7 @@ import {Routes} from '@angular/router';
 
 export const userGroupRoutes: Routes = [
     {
-        path: 'user-group/history/:id',
+        path: 'ops/user-group/history/:id',
         loadComponent: () =>
             import('./user-group-history-blotter-page').then(m => m.UserGroupHistoryBlotterPage),
     },

@@ -1,7 +1,6 @@
 package org.maiaframework.showcase.config
 
 import jakarta.servlet.DispatcherType
-import org.maiaframework.showcase.security.UserDetailsServiceImpl
 import org.maiaframework.webapp.security.ReportingAccessDeniedHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

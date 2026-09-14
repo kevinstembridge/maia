@@ -2,36 +2,43 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 
 import {Routes} from '@angular/router';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
 
 
 export const leftManyRoutes: Routes = [
     {
         path: 'left-many-blotter',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./left-many-blotter-page').then(m => m.LeftManyBlotterPage),
     },
     {
         path: 'left-many/view/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./left-many-entity-detail-view-page').then(m => m.LeftManyEntityDetailViewPage),
     },
     {
         path: 'left-many/history/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./left-many-history-blotter-page').then(m => m.LeftManyHistoryBlotterPage),
     },
     {
         path: 'left-many/timeline/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./left-many-timeline-blotter-page').then(m => m.LeftManyTimelineBlotterPage),
     },
     {
         path: 'left-many/create',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./left-many-entity-create-page').then(m => m.LeftManyEntityCreatePage),
     },
     {
         path: 'left-many/edit/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./left-many-entity-edit-page').then(m => m.LeftManyEntityEditPage),
     },

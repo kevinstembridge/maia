@@ -2,26 +2,31 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 
 import {Routes} from '@angular/router';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
 
 
 export const someVersionedRoutes: Routes = [
     {
         path: 'some-versioned-blotter',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./some-versioned-blotter-page').then(m => m.SomeVersionedBlotterPage),
     },
     {
         path: 'some-versioned/view/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./some-versioned-entity-detail-view-page').then(m => m.SomeVersionedEntityDetailViewPage),
     },
     {
         path: 'some-versioned/create',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./some-versioned-entity-create-page').then(m => m.SomeVersionedEntityCreatePage),
     },
     {
         path: 'some-versioned/edit/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./some-versioned-entity-edit-page').then(m => m.SomeVersionedEntityEditPage),
     },

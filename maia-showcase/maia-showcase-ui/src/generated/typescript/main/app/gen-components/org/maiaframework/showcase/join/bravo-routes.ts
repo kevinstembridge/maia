@@ -2,26 +2,31 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 
 import {Routes} from '@angular/router';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
 
 
 export const bravoRoutes: Routes = [
     {
         path: 'bravo-blotter',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./bravo-blotter-page').then(m => m.BravoBlotterPage),
     },
     {
         path: 'bravo/view/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./bravo-entity-detail-view-page').then(m => m.BravoEntityDetailViewPage),
     },
     {
         path: 'bravo/create',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./bravo-entity-create-page').then(m => m.BravoEntityCreatePage),
     },
     {
         path: 'bravo/edit/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./bravo-entity-edit-page').then(m => m.BravoEntityEditPage),
     },

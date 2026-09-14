@@ -2,31 +2,37 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 
 import {Routes} from '@angular/router';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
 
 
 export const rightManyRoutes: Routes = [
     {
         path: 'right-many-blotter',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./right-many-blotter-page').then(m => m.RightManyBlotterPage),
     },
     {
         path: 'right-many/view/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./right-many-entity-detail-view-page').then(m => m.RightManyEntityDetailViewPage),
     },
     {
         path: 'right-many/history/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./right-many-history-blotter-page').then(m => m.RightManyHistoryBlotterPage),
     },
     {
         path: 'right-many/create',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./right-many-entity-create-page').then(m => m.RightManyEntityCreatePage),
     },
     {
         path: 'right-many/edit/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./right-many-entity-edit-page').then(m => m.RightManyEntityEditPage),
     },

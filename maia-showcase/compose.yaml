@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17
+    image: postgres:18
     restart: always
     ports:
       - "5433:5432"
@@ -9,7 +9,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: huh_db
   pgadmin:
     image: dpage/pgadmin4
     restart: always

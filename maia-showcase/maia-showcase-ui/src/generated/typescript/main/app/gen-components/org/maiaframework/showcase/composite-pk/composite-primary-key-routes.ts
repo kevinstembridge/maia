@@ -2,31 +2,37 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 
 import {Routes} from '@angular/router';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
 
 
 export const compositePrimaryKeyRoutes: Routes = [
     {
         path: 'composite-primary-key-blotter',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./composite-primary-key-blotter-page').then(m => m.CompositePrimaryKeyBlotterPage),
     },
     {
         path: 'composite-primary-key/view/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./composite-primary-key-entity-detail-view-page').then(m => m.CompositePrimaryKeyEntityDetailViewPage),
     },
     {
         path: 'composite-primary-key/history/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./composite-primary-key-history-blotter-page').then(m => m.CompositePrimaryKeyHistoryBlotterPage),
     },
     {
         path: 'composite-primary-key/create',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./composite-primary-key-entity-create-page').then(m => m.CompositePrimaryKeyEntityCreatePage),
     },
     {
         path: 'composite-primary-key/edit/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./composite-primary-key-entity-edit-page').then(m => m.CompositePrimaryKeyEntityEditPage),
     },

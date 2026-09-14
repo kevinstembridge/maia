@@ -2,31 +2,37 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 
 import {Routes} from '@angular/router';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
 
 
 export const userRoutes: Routes = [
     {
         path: 'user-blotter',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./user-blotter-page').then(m => m.UserBlotterPage),
     },
     {
         path: 'user/view/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./user-entity-detail-view-page').then(m => m.UserEntityDetailViewPage),
     },
     {
         path: 'user/history/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./user-history-blotter-page').then(m => m.UserHistoryBlotterPage),
     },
     {
         path: 'user/create',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./user-entity-create-page').then(m => m.UserEntityCreatePage),
     },
     {
         path: 'user/edit/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./user-entity-edit-page').then(m => m.UserEntityEditPage),
     },

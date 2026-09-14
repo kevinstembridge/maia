@@ -2,21 +2,25 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 
 import {Routes} from '@angular/router';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
 
 
 export const leftToRightComplexRoutes: Routes = [
     {
         path: 'left-to-right-complex-blotter',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./left-to-right-complex-blotter-page').then(m => m.LeftToRightComplexBlotterPage),
     },
     {
         path: 'left-to-right-complex/view/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./left-to-right-complex-entity-detail-view-page').then(m => m.LeftToRightComplexEntityDetailViewPage),
     },
     {
         path: 'left-to-right-complex/edit/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./left-to-right-complex-entity-edit-page').then(m => m.LeftToRightComplexEntityEditPage),
     },

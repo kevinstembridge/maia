@@ -2,26 +2,31 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.EntityCrudRoutesRenderer
 
 import {Routes} from '@angular/router';
+import {Authority} from '@app/gen-components/org/maiaframework/showcase/Authority';
 
 
 export const allFieldTypesRoutes: Routes = [
     {
         path: 'all-field-types-blotter',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./all-field-types-blotter-page').then(m => m.AllFieldTypesBlotterPage),
     },
     {
         path: 'all-field-types/view/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./all-field-types-entity-detail-view-page').then(m => m.AllFieldTypesEntityDetailViewPage),
     },
     {
         path: 'all-field-types/create',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./all-field-types-entity-create-page').then(m => m.AllFieldTypesEntityCreatePage),
     },
     {
         path: 'all-field-types/edit/:id',
+        data: {authorities: [Authority.WRITE]},
         loadComponent: () =>
             import('./all-field-types-entity-edit-page').then(m => m.AllFieldTypesEntityEditPage),
     },
