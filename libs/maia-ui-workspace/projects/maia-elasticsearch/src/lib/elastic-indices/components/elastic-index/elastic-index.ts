@@ -1,18 +1,13 @@
 import {Component, computed, input, output} from '@angular/core';
 import {EsIndexStateDto} from '../../models/EsIndexStateDto';
 import {MatButtonModule} from '@angular/material/button';
-
-const STATUS_COLORS: Record<string, string> = {
-    green: '#4caf50',
-    yellow: '#fbc02d',
-    red: '#d32f2f',
-};
-const UNKNOWN_STATUS_COLOR = '#9e9e9e';
+import {deriveDisplayStatus, STATUS_COLORS} from '../../state/elastic-indices-filtering';
 
 @Component({
     imports: [MatButtonModule],
     selector: 'maia-elastic-index',
-    templateUrl: './elastic-index.html'
+    templateUrl: './elastic-index.html',
+    styleUrl: './elastic-index.scss'
 })
 export class ElasticIndex {
 
@@ -22,11 +17,8 @@ export class ElasticIndex {
     setIndexVersionActive = output<EsIndexStateDto>();
 
     statusColor = computed<string | undefined>(() => {
-        if (!this.index().indexExists) {
-            return undefined;
-        }
-        const status = this.index().health?.status?.toLowerCase();
-        return status ? (STATUS_COLORS[status] ?? UNKNOWN_STATUS_COLOR) : undefined;
+        const status = deriveDisplayStatus(this.index());
+        return status && status !== 'not-created' ? STATUS_COLORS[status] : undefined;
     });
 
     onCreateIndex() {
