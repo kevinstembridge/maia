@@ -7,13 +7,14 @@ import {tapResponse} from '@ngrx/operators';
 import {EsIndexStateDto} from '../models/EsIndexStateDto';
 import {ElasticIndicesApiService} from '../services/elastic-indices-api-service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
-import {buildIndexCountSummary, countByStatus, filterAndSortByName, filterBySystemIndices} from './elastic-indices-filtering';
+import {countByDisplayStatus, DisplayStatus, filterAndSortByName, filterBySystemIndices, filterByStatus} from './elastic-indices-filtering';
 
 type ElasticIndicesPageState = {
     hideSystemIndices: boolean;
     indexStateDtos: EsIndexStateDto[];
     isLoading: boolean;
     nameFilter: string;
+    statusFilter: DisplayStatus | null;
     error: string | null;
 };
 
@@ -22,6 +23,7 @@ const initialState: ElasticIndicesPageState = {
     indexStateDtos: [],
     isLoading: false,
     nameFilter: '',
+    statusFilter: null,
     error: null,
 };
 
@@ -29,24 +31,20 @@ export const ElasticIndicesPageStore = signalStore(
 
     withState(initialState),
 
-    withComputed(({indexStateDtos, hideSystemIndices, nameFilter}) => {
+    withComputed(({indexStateDtos, hideSystemIndices, nameFilter, statusFilter}) => {
         const toggleFilteredIndexStateDtos = computed<EsIndexStateDto[]>(() =>
             filterBySystemIndices(indexStateDtos(), hideSystemIndices())
         );
-        const visibleIndexStateDtos = computed<EsIndexStateDto[]>(() =>
+        const nameFilteredIndexStateDtos = computed<EsIndexStateDto[]>(() =>
             filterAndSortByName(toggleFilteredIndexStateDtos(), nameFilter())
         );
-        const statusCounts = computed<Record<string, number>>(() =>
-            countByStatus(visibleIndexStateDtos())
+        const statusCounts = computed<Record<DisplayStatus, number>>(() =>
+            countByDisplayStatus(nameFilteredIndexStateDtos())
         );
-        const countSummary = computed<string>(() =>
-            buildIndexCountSummary(
-                visibleIndexStateDtos().length,
-                toggleFilteredIndexStateDtos().length,
-                statusCounts()
-            )
+        const visibleIndexStateDtos = computed<EsIndexStateDto[]>(() =>
+            filterByStatus(nameFilteredIndexStateDtos(), statusFilter())
         );
-        return {toggleFilteredIndexStateDtos, visibleIndexStateDtos, statusCounts, countSummary};
+        return {toggleFilteredIndexStateDtos, nameFilteredIndexStateDtos, statusCounts, visibleIndexStateDtos};
     }),
 
     withMethods((store, pageService = inject(ElasticIndicesApiService)) => ({
@@ -79,6 +77,10 @@ export const ElasticIndicesPageStore = signalStore(
 
         onNameFilterChanged(value: string): void {
             patchState(store, {nameFilter: value});
+        },
+
+        onStatusFilterToggled(status: DisplayStatus): void {
+            patchState(store, {statusFilter: store.statusFilter() === status ? null : status});
         },
 
     }))
