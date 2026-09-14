@@ -19,6 +19,11 @@
     &.active {
         border-color: var(--mat-sys-primary);
         background-color: var(--mat-sys-primary-container);
+        color: var(--mat-sys-on-primary-container);
+    }
+
+    &.active .status-tile-label {
+        color: inherit;
     }
 }
 
