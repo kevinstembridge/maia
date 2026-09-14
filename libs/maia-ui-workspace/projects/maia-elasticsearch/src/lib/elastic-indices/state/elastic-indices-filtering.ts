@@ -1,6 +1,15 @@
 import {EsIndexStateDto} from '../models/EsIndexStateDto';
 
-const STATUS_DISPLAY_ORDER = ['green', 'yellow', 'red'];
+export type DisplayStatus = 'green' | 'yellow' | 'red' | 'not-created';
+
+export const STATUS_TILE_ORDER: DisplayStatus[] = ['green', 'yellow', 'red', 'not-created'];
+
+export const STATUS_COLORS: Record<DisplayStatus, string> = {
+    green: '#4caf50',
+    yellow: '#fbc02d',
+    red: '#d32f2f',
+    'not-created': '#9e9e9e',
+};
 
 
 export function filterBySystemIndices(indices: EsIndexStateDto[], hideSystemIndices: boolean): EsIndexStateDto[] {
@@ -16,39 +25,27 @@ export function filterAndSortByName(indices: EsIndexStateDto[], nameFilter: stri
 }
 
 
-export function countByStatus(indices: EsIndexStateDto[]): Record<string, number> {
-    const counts: Record<string, number> = {};
+export function deriveDisplayStatus(index: EsIndexStateDto): DisplayStatus | undefined {
+    if (!index.indexExists) {
+        return 'not-created';
+    }
+    const status = index.health?.status?.toLowerCase();
+    return status === 'green' || status === 'yellow' || status === 'red' ? status : undefined;
+}
+
+
+export function countByDisplayStatus(indices: EsIndexStateDto[]): Record<DisplayStatus, number> {
+    const counts: Record<DisplayStatus, number> = {green: 0, yellow: 0, red: 0, 'not-created': 0};
     for (const index of indices) {
-        const status = index.health?.status?.toLowerCase();
-        if (!status) {
-            continue;
+        const status = deriveDisplayStatus(index);
+        if (status) {
+            counts[status]++;
         }
-        counts[status] = (counts[status] ?? 0) + 1;
     }
     return counts;
 }
 
 
-export function buildIndexCountSummary(
-    visibleCount: number,
-    totalCount: number,
-    statusCounts: Record<string, number>
-): string {
-    const indexWord = totalCount === 1 ? 'index' : 'indices';
-    const countLabel = visibleCount === totalCount
-        ? `${totalCount} ${indexWord}`
-        : `${visibleCount} of ${totalCount} ${indexWord}`;
-
-    const orderedStatuses = [
-        ...STATUS_DISPLAY_ORDER,
-        ...Object.keys(statusCounts).filter((status) => !STATUS_DISPLAY_ORDER.includes(status)).sort()
-    ];
-
-    const statusSegments = orderedStatuses
-        .filter((status) => (statusCounts[status] ?? 0) > 0)
-        .map((status) => `${statusCounts[status]} ${status}`);
-
-    return statusSegments.length === 0
-        ? countLabel
-        : `${countLabel} · ${statusSegments.join(' · ')}`;
+export function filterByStatus(indices: EsIndexStateDto[], status: DisplayStatus | null): EsIndexStateDto[] {
+    return status === null ? indices : indices.filter((it) => deriveDisplayStatus(it) === status);
 }

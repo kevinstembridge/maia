@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {buildIndexCountSummary, countByStatus, filterAndSortByName, filterBySystemIndices} from './elastic-indices-filtering';
+import {countByDisplayStatus, deriveDisplayStatus, filterAndSortByName, filterBySystemIndices, filterByStatus} from './elastic-indices-filtering';
 import {EsIndexStateDto} from '../models/EsIndexStateDto';
 
 
@@ -52,53 +52,67 @@ describe('elastic-indices-filtering', () => {
     });
 
 
-    describe('countByStatus()', () => {
+    describe('deriveDisplayStatus()', () => {
 
-        it('groups indices by lowercased health status', () => {
-            const indices = [
-                indexDto({indexName: 'a', health: {indexName: 'a', status: 'GREEN'}}),
-                indexDto({indexName: 'b', health: {indexName: 'b', status: 'green'}}),
-                indexDto({indexName: 'c', health: {indexName: 'c', status: 'red'}})
-            ];
-            expect(countByStatus(indices)).toEqual({green: 2, red: 1});
+        it('returns "not-created" when the index does not exist, even if health data is present', () => {
+            const index = indexDto({indexName: 'a', indexExists: false, health: {indexName: 'a', status: 'green'}});
+            expect(deriveDisplayStatus(index)).toEqual('not-created');
         });
 
-        it('ignores indices with no health status', () => {
-            const indices = [indexDto({indexName: 'a', health: undefined as unknown as EsIndexStateDto['health']})];
-            expect(countByStatus(indices)).toEqual({});
+        it('returns the lowercased health status for an existing index', () => {
+            const index = indexDto({indexName: 'a', indexExists: true, health: {indexName: 'a', status: 'YELLOW'}});
+            expect(deriveDisplayStatus(index)).toEqual('yellow');
+        });
+
+        it('returns undefined for an existing index with no health status', () => {
+            const index = indexDto({indexName: 'a', indexExists: true, health: undefined as unknown as EsIndexStateDto['health']});
+            expect(deriveDisplayStatus(index)).toBeUndefined();
+        });
+
+        it('returns undefined for an existing index with an unrecognized health status', () => {
+            const index = indexDto({indexName: 'a', indexExists: true, health: {indexName: 'a', status: 'purple'}});
+            expect(deriveDisplayStatus(index)).toBeUndefined();
         });
 
     });
 
 
-    describe('buildIndexCountSummary()', () => {
+    describe('countByDisplayStatus()', () => {
 
-        it('shows a plain count with ordered status segments when the filter does not narrow the set', () => {
-            expect(buildIndexCountSummary(12, 12, {yellow: 3, green: 8, red: 1}))
-                .toEqual('12 indices · 8 green · 3 yellow · 1 red');
+        it('counts every display status, including zeros for statuses with no matches', () => {
+            const indices = [
+                indexDto({indexName: 'a', health: {indexName: 'a', status: 'GREEN'}}),
+                indexDto({indexName: 'b', health: {indexName: 'b', status: 'green'}}),
+                indexDto({indexName: 'c', health: {indexName: 'c', status: 'red'}}),
+                indexDto({indexName: 'd', indexExists: false})
+            ];
+            expect(countByDisplayStatus(indices)).toEqual({green: 2, yellow: 0, red: 1, 'not-created': 1});
         });
 
-        it('shows "X of Y" when the filter narrows the set', () => {
-            expect(buildIndexCountSummary(3, 12, {green: 2, red: 1}))
-                .toEqual('3 of 12 indices · 2 green · 1 red');
+        it('returns all zeros for an empty list', () => {
+            expect(countByDisplayStatus([])).toEqual({green: 0, yellow: 0, red: 0, 'not-created': 0});
         });
 
-        it('omits status segments with a zero count', () => {
-            expect(buildIndexCountSummary(5, 5, {green: 5, yellow: 0}))
-                .toEqual('5 indices · 5 green');
+    });
+
+
+    describe('filterByStatus()', () => {
+
+        it('returns all indices unchanged when status is null', () => {
+            const indices = [indexDto({indexName: 'a'}), indexDto({indexName: 'b', indexExists: false})];
+            expect(filterByStatus(indices, null)).toEqual(indices);
         });
 
-        it('orders unknown statuses alphabetically after green/yellow/red', () => {
-            expect(buildIndexCountSummary(3, 3, {red: 1, unknown: 1, aqua: 1}))
-                .toEqual('3 indices · 1 red · 1 aqua · 1 unknown');
+        it('returns only indices matching the given status', () => {
+            const green = indexDto({indexName: 'a', health: {indexName: 'a', status: 'green'}});
+            const red = indexDto({indexName: 'b', health: {indexName: 'b', status: 'red'}});
+            expect(filterByStatus([green, red], 'red')).toEqual([red]);
         });
 
-        it('uses singular "index" when the total is 1', () => {
-            expect(buildIndexCountSummary(1, 1, {green: 1})).toEqual('1 index · 1 green');
-        });
-
-        it('shows just the count label when there are no status counts', () => {
-            expect(buildIndexCountSummary(0, 0, {})).toEqual('0 indices');
+        it('matches "not-created" against indices that do not exist', () => {
+            const missing = indexDto({indexName: 'a', indexExists: false});
+            const existing = indexDto({indexName: 'b'});
+            expect(filterByStatus([missing, existing], 'not-created')).toEqual([missing]);
         });
 
     });
