@@ -17,7 +17,7 @@ insert into maia.party (
     '{}', -- authorities
     null, -- created_by_id
     current_timestamp,
-    '{bcrypt}$2a$10$zI.pQy.gVMVRzsuuBxjc/.7/ZvtXzSWqGw6p4srdJi0FQ6YSn6E1S', -- d0uglas
+    '{bcrypt}$2a$10$FWvZTJhDZP9JGzJb/Ziff.N1CHKTftJNdteLYFIDaJ4fS6Gb6wzp6', -- maia_framework
     'Fyrst',
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     null, -- last_modified_by_id
@@ -124,7 +124,7 @@ insert into maia.party (
     '{}', --authorities
     null, -- created_by_id
     current_timestamp,
-    '{bcrypt}$2a$10$zI.pQy.gVMVRzsuuBxjc/.7/ZvtXzSWqGw6p4srdJi0FQ6YSn6E1S', -- d0uglas
+    '{bcrypt}$2a$10$FWvZTJhDZP9JGzJb/Ziff.N1CHKTftJNdteLYFIDaJ4fS6Gb6wzp6', -- maia_framework
     'Job',
     'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
     null, -- last_modified_by_id
@@ -172,7 +172,7 @@ insert into maia.party (
     'Admin',
     'System',
     'ACTIVE',
-    '{bcrypt}$2a$10$zI.pQy.gVMVRzsuuBxjc/.7/ZvtXzSWqGw6p4srdJi0FQ6YSn6E1S' -- d0uglas
+    '{bcrypt}$2a$10$FWvZTJhDZP9JGzJb/Ziff.N1CHKTftJNdteLYFIDaJ4fS6Gb6wzp6' -- maia_framework
 );
 
 insert into maia.party_history (
@@ -274,7 +274,7 @@ insert into maia.party (
     'Sysops',
     'System',
     'ACTIVE',
-    '{bcrypt}$2a$10$zI.pQy.gVMVRzsuuBxjc/.7/ZvtXzSWqGw6p4srdJi0FQ6YSn6E1S' -- d0uglas
+    '{bcrypt}$2a$10$FWvZTJhDZP9JGzJb/Ziff.N1CHKTftJNdteLYFIDaJ4fS6Gb6wzp6' -- maia_framework
 );
 
 insert into maia.party_history (
