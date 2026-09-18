@@ -3,92 +3,117 @@
   "tasks": [
     {
       "id": 0,
-      "subject": "Task 0: Backend — add JobExecutionHistoryItem DTO to the spec and regenerate",
-      "status": "pending",
+      "subject": "Task 0: Backend \u2014 add JobExecutionHistoryItem DTO to the spec and regenerate",
+      "status": "completed",
       "description": "**Goal:** Generate JobExecutionHistoryItemResponseDto via the spec DSL.\n\n**Files:**\n- Modify: libs/maia-job-parent/maia-job-spec/src/main/kotlin/org/maiaframework/job/spec/MaiaJobSpec.kt\n- Generated: libs/maia-job-parent/maia-job-domain/src/generated/kotlin/main/org/maiaframework/job/JobExecutionHistoryItemResponseDto.kt\n\n**Acceptance Criteria:**\n- [ ] jobExecutionHistoryItemDtoDef declared with fields jobExecutionId, jobName, invokedBy, startTimestamp, endTimestamp(nullable), completionStatus(nullable), errorMessage(nullable), metrics\n- [ ] maiaGeneration produces JobExecutionHistoryItemResponseDto.kt with alphabetical constructor param order\n- [ ] compileKotlin succeeds\n\n**Verify:** ./gradlew :libs:maia-job-parent:maia-job-domain:maiaGeneration :libs:maia-job-parent:maia-job-domain:compileKotlin\n\nSee plan file Task 0 for full step-by-step code.\n\n```json:metadata\n{\"files\": [\"libs/maia-job-parent/maia-job-spec/src/main/kotlin/org/maiaframework/job/spec/MaiaJobSpec.kt\", \"libs/maia-job-parent/maia-job-domain/src/generated/kotlin/main/org/maiaframework/job/JobExecutionHistoryItemResponseDto.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-job-parent:maia-job-domain:maiaGeneration :libs:maia-job-parent:maia-job-domain:compileKotlin\", \"acceptanceCriteria\": [\"jobExecutionHistoryItemDtoDef declared with all 8 fields\", \"generated DTO compiles\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 1,
-      "subject": "Task 1: Backend — JobExecutionRepo.searchExecutionHistory",
-      "status": "pending",
+      "subject": "Task 1: Backend \u2014 JobExecutionRepo.searchExecutionHistory",
+      "status": "completed",
       "description": "**Goal:** Repository method returning a filtered, paginated SearchResultPage<JobExecutionEntity>.\n\n**Files:**\n- Modify: libs/maia-job-parent/maia-job/src/main/kotlin/org/maiaframework/job/JobExecutionRepo.kt\n\n**Acceptance Criteria:**\n- [ ] searchExecutionHistory(jobName, status, from, to, offset, limit) returns SearchResultPage<JobExecutionEntity> sorted startTimestamp desc\n- [ ] status=RUNNING maps to completionStatus is null; SUCCESS/FAILED map to eq\n- [ ] compileKotlin succeeds\n\n**Verify:** ./gradlew :libs:maia-job-parent:maia-job:compileKotlin\n\nSee plan file Task 1 for full code.\n\n```json:metadata\n{\"files\": [\"libs/maia-job-parent/maia-job/src/main/kotlin/org/maiaframework/job/JobExecutionRepo.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-job-parent:maia-job:compileKotlin\", \"acceptanceCriteria\": [\"dynamic filter builder handles all 4 optional filters\", \"NoopFilter used when no filters given\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 2,
-      "subject": "Task 2: Backend — MaiaJobService.searchJobExecutionHistory",
-      "status": "pending",
-      "blockedBy": [0, 1],
+      "subject": "Task 2: Backend \u2014 MaiaJobService.searchJobExecutionHistory",
+      "status": "completed",
+      "blockedBy": [
+        0,
+        1
+      ],
       "description": "**Goal:** Service method mapping SearchResultPage<JobExecutionEntity> to SearchResultPage<JobExecutionHistoryItemResponseDto>.\n\n**Files:**\n- Modify: libs/maia-job-parent/maia-job/src/main/kotlin/org/maiaframework/job/MaiaJobService.kt\n\n**Acceptance Criteria:**\n- [ ] searchJobExecutionHistory delegates to repo and maps entities to the new DTO, preserving paging fields\n- [ ] compileKotlin succeeds\n\n**Verify:** ./gradlew :libs:maia-job-parent:maia-job:compileKotlin\n\nSee plan file Task 2 for full code. IMPORTANT: verify constructor arg order against the actually-generated DTO from Task 0 Step 3 before writing the mapper call.\n\n```json:metadata\n{\"files\": [\"libs/maia-job-parent/maia-job/src/main/kotlin/org/maiaframework/job/MaiaJobService.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-job-parent:maia-job:compileKotlin\", \"acceptanceCriteria\": [\"mapper produces correct DTO\", \"paging fields preserved\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 3,
-      "subject": "Task 3: Backend — GET /job/execution_history endpoint",
-      "status": "pending",
-      "blockedBy": [2],
+      "subject": "Task 3: Backend \u2014 GET /job/execution_history endpoint",
+      "status": "completed",
+      "blockedBy": [
+        2
+      ],
       "description": "**Goal:** REST endpoint exposing the search with query-param filters and offset/limit paging.\n\n**Files:**\n- Modify: libs/maia-job-parent/maia-job-web/src/main/kotlin/org/maiaframework/job/MaiaJobEndpoint.kt\n\n**Acceptance Criteria:**\n- [ ] GET /api/ops/job/execution_history returns SearchResultPage<JobExecutionHistoryItemResponseDto>\n- [ ] jobName/status/from/to optional; offset default 0, limit default 20\n- [ ] requires MAIA_JOB_READ\n- [ ] compileKotlin succeeds\n\n**Verify:** ./gradlew :libs:maia-job-parent:maia-job-web:compileKotlin\n\nSee plan file Task 3 for full code.\n\n```json:metadata\n{\"files\": [\"libs/maia-job-parent/maia-job-web/src/main/kotlin/org/maiaframework/job/MaiaJobEndpoint.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-job-parent:maia-job-web:compileKotlin\", \"acceptanceCriteria\": [\"endpoint compiles and maps query params correctly\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 4,
-      "subject": "Task 4: Frontend — history models",
-      "status": "pending",
+      "subject": "Task 4: Frontend \u2014 history models",
+      "status": "completed",
       "description": "**Goal:** JobExecutionHistoryItem and generic SearchResultPage<T> TypeScript models.\n\n**Files:**\n- Create: libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/models/JobExecutionHistoryItem.ts\n- Create: libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/models/SearchResultPage.ts\n\n**Acceptance Criteria:**\n- [ ] JobExecutionHistoryItem matches backend DTO's 8 fields\n- [ ] SearchResultPage<T> mirrors results/totalResultCount/offset/limit\n- [ ] ng build maia-jobs succeeds\n\n**Verify:** npx ng build maia-jobs (from libs/maia-ui-workspace)\n\nSee plan file Task 4 for full code.\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/models/JobExecutionHistoryItem.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/models/SearchResultPage.ts\"], \"verifyCommand\": \"npx ng build maia-jobs\", \"acceptanceCriteria\": [\"models match backend DTO shape\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 5,
-      "subject": "Task 5: Frontend — JobsApiService.searchJobExecutionHistory",
-      "status": "pending",
-      "blockedBy": [4],
+      "subject": "Task 5: Frontend \u2014 JobsApiService.searchJobExecutionHistory",
+      "status": "completed",
+      "blockedBy": [
+        4
+      ],
       "description": "**Goal:** New API method calling GET /job/execution_history with HttpParams built from criteria.\n\n**Files:**\n- Modify: libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/services/jobs-api.service.ts\n\n**Acceptance Criteria:**\n- [ ] Builds HttpParams from non-null criteria fields\n- [ ] Falls back to empty page on error, preserving offset/limit\n- [ ] ng build maia-jobs succeeds\n\n**Verify:** npx ng build maia-jobs (from libs/maia-ui-workspace)\n\nSee plan file Task 5 for full code.\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/services/jobs-api.service.ts\"], \"verifyCommand\": \"npx ng build maia-jobs\", \"acceptanceCriteria\": [\"searchJobExecutionHistory method added with correct error fallback\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 6,
-      "subject": "Task 6: Frontend — job-history-filtering.ts pure functions (TDD)",
-      "status": "pending",
-      "blockedBy": [4],
-      "description": "**Goal:** deriveHistoryStatus and formatDuration pure functions with unit tests, written test-first.\n\n**Files:**\n- Create: libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.ts\n- Create: libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.spec.ts\n\n**Acceptance Criteria:**\n- [ ] deriveHistoryStatus: null->running, SUCCESS->success, FAILED->failed\n- [ ] formatDuration: null end -> 'Running…'; else Ns / Mm Ss / Hh MMm formatting\n- [ ] ng test maia-jobs passes\n\n**Verify:** npx ng test maia-jobs --watch=false (from libs/maia-ui-workspace)\n\nSee plan file Task 6 for full test code and implementation (write test first, confirm it fails, then implement).\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.spec.ts\"], \"verifyCommand\": \"npx ng test maia-jobs --watch=false\", \"acceptanceCriteria\": [\"all 7 test cases pass\"], \"requiresUserVerification\": false}\n```"
+      "subject": "Task 6: Frontend \u2014 job-history-filtering.ts pure functions (TDD)",
+      "status": "completed",
+      "blockedBy": [
+        4
+      ],
+      "description": "**Goal:** deriveHistoryStatus and formatDuration pure functions with unit tests, written test-first.\n\n**Files:**\n- Create: libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.ts\n- Create: libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.spec.ts\n\n**Acceptance Criteria:**\n- [ ] deriveHistoryStatus: null->running, SUCCESS->success, FAILED->failed\n- [ ] formatDuration: null end -> 'Running\u2026'; else Ns / Mm Ss / Hh MMm formatting\n- [ ] ng test maia-jobs passes\n\n**Verify:** npx ng test maia-jobs --watch=false (from libs/maia-ui-workspace)\n\nSee plan file Task 6 for full test code and implementation (write test first, confirm it fails, then implement).\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.spec.ts\"], \"verifyCommand\": \"npx ng test maia-jobs --watch=false\", \"acceptanceCriteria\": [\"all 7 test cases pass\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 7,
-      "subject": "Task 7: Frontend — JobHistoryStore",
-      "status": "pending",
-      "blockedBy": [4, 5, 6],
+      "subject": "Task 7: Frontend \u2014 JobHistoryStore",
+      "status": "completed",
+      "blockedBy": [
+        4,
+        5,
+        6
+      ],
       "description": "**Goal:** ngrx signal store holding filters/pagination/results, refetching on filter or page change.\n\n**Files:**\n- Create: libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-store.ts\n\n**Acceptance Criteria:**\n- [ ] State includes items, totalCount, isLoading, error, jobNameFilter, statusFilter, fromDate, toDate, pageIndex, pageSize, availableJobNames\n- [ ] init() loads availableJobNames and triggers first search\n- [ ] filter setters reset pageIndex to 0 and refetch; onPageChanged does not reset\n- [ ] ng build maia-jobs succeeds\n\n**Verify:** npx ng build maia-jobs (from libs/maia-ui-workspace)\n\nSee plan file Task 7 for full code.\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-store.ts\"], \"verifyCommand\": \"npx ng build maia-jobs\", \"acceptanceCriteria\": [\"store methods correctly reset pageIndex where specified\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 8,
-      "subject": "Task 8: Frontend — JobExecutionHistoryCardComponent",
-      "status": "pending",
-      "blockedBy": [6],
+      "subject": "Task 8: Frontend \u2014 JobExecutionHistoryCardComponent",
+      "status": "completed",
+      "blockedBy": [
+        6
+      ],
       "description": "**Goal:** Presentational card for one execution history record.\n\n**Files:**\n- Create: libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/components/job-execution-history-card/job-execution-history-card.component.ts\n- Create: .../job-execution-history-card.component.html\n- Create: .../job-execution-history-card.component.scss\n\n**Acceptance Criteria:**\n- [ ] Renders job name, status dot+label, invoked-by, start timestamp, duration\n- [ ] Shows error message + stacktrace button only when status is failed\n- [ ] Metrics button emits displayJobMetrics with item.metrics directly\n- [ ] ng build maia-jobs succeeds\n\n**Verify:** npx ng build maia-jobs (from libs/maia-ui-workspace)\n\nSee plan file Task 8 for full code.\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/components/job-execution-history-card/job-execution-history-card.component.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/components/job-execution-history-card/job-execution-history-card.component.html\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/components/job-execution-history-card/job-execution-history-card.component.scss\"], \"verifyCommand\": \"npx ng build maia-jobs\", \"acceptanceCriteria\": [\"card renders all required fields\", \"failure-only elements conditionally shown\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 9,
-      "subject": "Task 9: Frontend — JobHistoryPageComponent",
-      "status": "pending",
-      "blockedBy": [7, 8],
+      "subject": "Task 9: Frontend \u2014 JobHistoryPageComponent",
+      "status": "completed",
+      "blockedBy": [
+        7,
+        8
+      ],
       "description": "**Goal:** Page component with filter bar, paginator, and single-column card stack.\n\n**Files:**\n- Create: libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/job-history-page.component.ts\n- Create: .../job-history-page.component.html\n- Create: .../job-history-page.component.scss\n\n**Acceptance Criteria:**\n- [ ] Job name/status selects + From/To datepickers wired to store\n- [ ] mat-paginator bound to totalCount/pageIndex/pageSize, options [10,20,50]\n- [ ] Cards render one per row, not a grid\n- [ ] Loading/error states only shown when items().length === 0\n- [ ] ng build maia-jobs succeeds\n\n**Verify:** npx ng build maia-jobs (from libs/maia-ui-workspace)\n\nSee plan file Task 9 for full code.\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/job-history-page.component.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/job-history-page.component.html\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/job-history-page.component.scss\"], \"verifyCommand\": \"npx ng build maia-jobs\", \"acceptanceCriteria\": [\"filters and paginator wired correctly\", \"one-card-per-row layout\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 10,
-      "subject": "Task 10: Frontend — export new page, add View History link on dashboard",
-      "status": "pending",
-      "blockedBy": [9],
+      "subject": "Task 10: Frontend \u2014 export new page, add View History link on dashboard",
+      "status": "completed",
+      "blockedBy": [
+        9
+      ],
       "description": "**Goal:** Export the new page from public-api.ts and add dashboard navigation to it.\n\n**Files:**\n- Modify: libs/maia-ui-workspace/projects/maia-jobs/src/public-api.ts\n- Modify: libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/jobs-dashboard-page.component.ts\n- Modify: .../jobs-dashboard-page.component.html\n- Modify: .../jobs-dashboard-page.component.scss\n\n**Acceptance Criteria:**\n- [ ] public-api.ts exports new models + components\n- [ ] Dashboard toolbar has 'View History' link to /jobs-history\n- [ ] ng build maia-jobs succeeds\n\n**Verify:** npx ng build maia-jobs (from libs/maia-ui-workspace)\n\nSee plan file Task 10 for full code.\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/public-api.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/jobs-dashboard-page.component.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/jobs-dashboard-page.component.html\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/jobs-dashboard-page.component.scss\"], \"verifyCommand\": \"npx ng build maia-jobs\", \"acceptanceCriteria\": [\"exports present\", \"View History link routes correctly\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 11,
-      "subject": "Task 11: Showcase app — route, page wrapper, nav menu link",
-      "status": "pending",
-      "blockedBy": [10],
-      "description": "**Goal:** Wire the new library page into the showcase app's routing and nav menu.\n\n**Files:**\n- Create: maia-showcase/maia-showcase-ui/src/app/pages/job-history/job-history-page.ts\n- Modify: maia-showcase/maia-showcase-ui/src/app/app.routes.ts\n- Modify: maia-showcase/maia-showcase-ui/src/app/app.html\n\n**Acceptance Criteria:**\n- [ ] /jobs-history route renders maia-job-history-page inside maia-page-layout\n- [ ] Nav menu has 'Job History' item next to 'Jobs Dashboard'\n- [ ] ng build maia-showcase-ui succeeds\n\n**Verify:** npx ng build (from maia-showcase/maia-showcase-ui — its own separate Angular workspace)\n\nSee plan file Task 11 for full code. IMPORTANT: this workspace resolves @maia/maia-jobs to libs/maia-ui-workspace/dist/maia-jobs (built output) via tsconfig paths — Task 10 must have rebuilt that dist first. Nav item is gated behind the existing (currently unused) `hasMaiaJobReadAuthority()` computed in app.ts, not `hasMaiaJobWriteAuthority()` (which gates the dashboard link, since running jobs needs write access but viewing history only needs read).\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/pages/job-history/job-history-page.ts\", \"maia-showcase/maia-showcase-ui/src/app/app.routes.ts\", \"maia-showcase/maia-showcase-ui/src/app/app.html\"], \"verifyCommand\": \"npx ng build (from maia-showcase/maia-showcase-ui)\", \"acceptanceCriteria\": [\"route and nav link both work\", \"nav item gated on hasMaiaJobReadAuthority\"], \"requiresUserVerification\": false}\n```"
+      "subject": "Task 11: Showcase app \u2014 route, page wrapper, nav menu link",
+      "status": "completed",
+      "blockedBy": [
+        10
+      ],
+      "description": "**Goal:** Wire the new library page into the showcase app's routing and nav menu.\n\n**Files:**\n- Create: maia-showcase/maia-showcase-ui/src/app/pages/job-history/job-history-page.ts\n- Modify: maia-showcase/maia-showcase-ui/src/app/app.routes.ts\n- Modify: maia-showcase/maia-showcase-ui/src/app/app.html\n\n**Acceptance Criteria:**\n- [ ] /jobs-history route renders maia-job-history-page inside maia-page-layout\n- [ ] Nav menu has 'Job History' item next to 'Jobs Dashboard'\n- [ ] ng build maia-showcase-ui succeeds\n\n**Verify:** npx ng build (from maia-showcase/maia-showcase-ui \u2014 its own separate Angular workspace)\n\nSee plan file Task 11 for full code. IMPORTANT: this workspace resolves @maia/maia-jobs to libs/maia-ui-workspace/dist/maia-jobs (built output) via tsconfig paths \u2014 Task 10 must have rebuilt that dist first. Nav item is gated behind the existing (currently unused) `hasMaiaJobReadAuthority()` computed in app.ts, not `hasMaiaJobWriteAuthority()` (which gates the dashboard link, since running jobs needs write access but viewing history only needs read).\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/pages/job-history/job-history-page.ts\", \"maia-showcase/maia-showcase-ui/src/app/app.routes.ts\", \"maia-showcase/maia-showcase-ui/src/app/app.html\"], \"verifyCommand\": \"npx ng build (from maia-showcase/maia-showcase-ui)\", \"acceptanceCriteria\": [\"route and nav link both work\", \"nav item gated on hasMaiaJobReadAuthority\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 12,
       "subject": "Task 12: End-to-end manual verification",
-      "status": "pending",
-      "blockedBy": [3, 11],
-      "description": "**Goal:** Confirm the full feature works against a real running backend + frontend.\n\n**Files:** None (verification only).\n\n**Acceptance Criteria:**\n- [ ] Backend endpoint returns correct data for no-filter, jobName, each status value, and date range queries\n- [ ] Job History reachable from nav menu and dashboard button\n- [ ] Cards render one per row with all fields\n- [ ] Filters/paginator work correctly, including pageIndex reset behavior\n- [ ] Stacktrace and Metrics dialogs open with correct content\n- [ ] Empty-match and error-with-retry states both render correctly\n\n**Verify:** Manual — see plan file Task 12 steps.\n\n```json:metadata\n{\"files\": [], \"verifyCommand\": \"\", \"acceptanceCriteria\": [\"all acceptance criteria manually confirmed in a real browser session\"], \"requiresUserVerification\": false}\n```"
+      "status": "completed",
+      "blockedBy": [
+        3,
+        11
+      ],
+      "description": "**Goal:** Confirm the full feature works against a real running backend + frontend.\n\n**Files:** None (verification only).\n\n**Acceptance Criteria:**\n- [ ] Backend endpoint returns correct data for no-filter, jobName, each status value, and date range queries\n- [ ] Job History reachable from nav menu and dashboard button\n- [ ] Cards render one per row with all fields\n- [ ] Filters/paginator work correctly, including pageIndex reset behavior\n- [ ] Stacktrace and Metrics dialogs open with correct content\n- [ ] Empty-match and error-with-retry states both render correctly\n\n**Verify:** Manual \u2014 see plan file Task 12 steps.\n\n```json:metadata\n{\"files\": [], \"verifyCommand\": \"\", \"acceptanceCriteria\": [\"all acceptance criteria manually confirmed in a real browser session\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-18T00:00:00Z"
+  "lastUpdated": "2026-09-18T13:30:00Z"
 }
