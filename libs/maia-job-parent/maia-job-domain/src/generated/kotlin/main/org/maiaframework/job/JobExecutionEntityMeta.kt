@@ -12,8 +12,6 @@ import org.maiaframework.jdbc.TableName
 
 object JobExecutionEntityMeta {
 
-    const val completionStatus = "completion_status"
-
     const val createdTimestamp = "created_timestamp"
 
     const val endTimestamp = "end_timestamp"
@@ -33,6 +31,8 @@ object JobExecutionEntityMeta {
     const val stackTrace = "stack_trace"
 
     const val startTimestamp = "start_timestamp"
+
+    const val status = "status"
 
     val ENTITY_KEY = EntityKey("JobExecution")
 
@@ -55,7 +55,6 @@ object JobExecutionEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
-            "completionStatus" -> "completion_status"
             "createdTimestamp" -> "created_timestamp"
             "endTimestamp" -> "end_timestamp"
             "errorMessage" -> "error_message"
@@ -66,6 +65,7 @@ object JobExecutionEntityMeta {
             "metrics" -> "metrics"
             "stackTrace" -> "stack_trace"
             "startTimestamp" -> "start_timestamp"
+            "status" -> "status"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

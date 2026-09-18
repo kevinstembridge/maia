@@ -8,14 +8,14 @@ import java.time.Instant
 
 
 data class JobExecutionHistoryItemResponseDto(
-    val completionStatus: JobCompletionStatus?,
     val endTimestamp: Instant?,
     val errorMessage: String?,
     val invokedBy: String,
     val jobExecutionId: DomainId,
     val jobName: JobName,
     val metrics: Map<String, Any>,
-    val startTimestamp: Instant
+    val startTimestamp: Instant,
+    val status: JobExecutionStatus
 ) {
 
 

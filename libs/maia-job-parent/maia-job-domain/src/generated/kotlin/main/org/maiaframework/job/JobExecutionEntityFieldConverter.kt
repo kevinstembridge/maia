@@ -17,8 +17,6 @@ class JobExecutionEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
-            "completion_status" -> // completionStatus
-                return (inputValue as JobCompletionStatus).name
             "created_timestamp" -> // createdTimestamp
                 return inputValue
             "end_timestamp" -> // endTimestamp
@@ -39,6 +37,8 @@ class JobExecutionEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "start_timestamp" -> // startTimestamp
                 return inputValue
+            "status" -> // status
+                return (inputValue as JobExecutionStatus).name
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }
 

@@ -41,9 +41,9 @@ data class JobExecutionEntityUpdater(
         }
 
 
-        fun completionStatus(completionStatus: JobCompletionStatus?) {
+        fun status(status: JobExecutionStatus) {
 
-            this.fields.add(FieldUpdate("completionStatus", "completion_status", completionStatus))
+            this.fields.add(FieldUpdate("status", "status", status))
 
         }
 

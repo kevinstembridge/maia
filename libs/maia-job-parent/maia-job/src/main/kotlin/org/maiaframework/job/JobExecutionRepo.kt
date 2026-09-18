@@ -23,7 +23,6 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
         val now = Instant.now()
 
         val entity = JobExecutionEntity(
-                null,
                 now,
                 null,
                 null,
@@ -33,7 +32,8 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
                 now,
                 emptyMap(),
                 null,
-                now)
+                now,
+                JobExecutionStatus.RUNNING)
 
         this.jobExecutionDao.insert(entity)
 
@@ -42,27 +42,27 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
 
     fun jobFailed(jobInstanceId: DomainId, jobMetrics: JobMetrics, e: Exception) {
 
-        updateJobExecution(jobInstanceId, JobCompletionStatus.FAILED, jobMetrics, e)
+        updateJobExecution(jobInstanceId, JobExecutionStatus.FAILED, jobMetrics, e)
 
     }
 
 
     fun jobCompleted(jobInstanceId: DomainId, jobMetrics: JobMetrics) {
 
-        updateJobExecution(jobInstanceId, JobCompletionStatus.SUCCESS, jobMetrics)
+        updateJobExecution(jobInstanceId, JobExecutionStatus.SUCCESS, jobMetrics)
 
     }
 
 
     private fun updateJobExecution(
         jobInstanceId: DomainId,
-        completionStatus: JobCompletionStatus,
+        status: JobExecutionStatus,
         jobMetrics: JobMetrics,
         e: Exception? = null
     ) {
 
         val updater = JobExecutionEntityUpdater.forPrimaryKey(jobInstanceId) {
-            completionStatus(completionStatus)
+            status(status)
             endTimestamp(Instant.now())
             metrics(jobMetrics.metricsReport())
 
@@ -89,7 +89,7 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
         val filters = JobExecutionEntityFilters()
         val filter = filters.and(
                 filters.jobName `in` jobNameList,
-                filters.completionStatus eq JobCompletionStatus.FAILED
+                filters.status eq JobExecutionStatus.FAILED
         )
 
         val sort = Sort.by(Sort.Order.desc(JobExecutionEntityMeta.endTimestamp))
@@ -101,7 +101,7 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
 
     fun searchExecutionHistory(
         jobName: JobName?,
-        status: String?,
+        status: JobExecutionStatus?,
         from: Instant?,
         to: Instant?,
         offset: Int,
@@ -113,11 +113,7 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
 
         jobName?.let { conditions.add(filters.jobName eq it) }
 
-        when (status) {
-            "RUNNING" -> conditions.add(filters.completionStatus.isNull())
-            "SUCCESS" -> conditions.add(filters.completionStatus eq JobCompletionStatus.SUCCESS)
-            "FAILED" -> conditions.add(filters.completionStatus eq JobCompletionStatus.FAILED)
-        }
+        status?.let { conditions.add(filters.status eq it) }
 
         from?.let { conditions.add(filters.startTimestamp gte it) }
         to?.let { conditions.add(filters.startTimestamp lte it) }

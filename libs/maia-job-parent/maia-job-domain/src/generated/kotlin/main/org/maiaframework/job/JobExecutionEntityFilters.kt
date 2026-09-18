@@ -41,14 +41,6 @@ class JobExecutionEntityFilters {
     }
 
 
-    val completionStatus: FieldFilter<JobCompletionStatus?> 
-        get() {
-
-            return FieldFilter("completion_status", Types.VARCHAR, this.sqlParamCounter) { value -> value?.name }
-
-        }
-
-
     val createdTimestamp: FieldFilter<Instant> 
         get() {
 
@@ -117,6 +109,14 @@ class JobExecutionEntityFilters {
         get() {
 
             return FieldFilter("start_timestamp", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+
+        }
+
+
+    val status: FieldFilter<JobExecutionStatus> 
+        get() {
+
+            return FieldFilter("status", Types.VARCHAR, this.sqlParamCounter) { value -> value?.name }
 
         }
 

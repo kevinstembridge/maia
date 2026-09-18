@@ -22,7 +22,7 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
         provided()
     }
 
-    val jobCompletionStatusEnumDef = enumDef("org.maiaframework.job.JobCompletionStatus") {
+    val jobExecutionStatusEnumDef = enumDef("org.maiaframework.job.JobExecutionStatus") {
         provided()
     }
 
@@ -39,8 +39,7 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
             nullable()
             modifiableBySystem()
         }
-        field("completionStatus", jobCompletionStatusEnumDef) {
-            nullable()
+        field("status", jobExecutionStatusEnumDef) {
             modifiableBySystem()
             lengthConstraint(max = 50)
         }
@@ -95,9 +94,7 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
         field("endTimestamp", FieldTypes.instant) {
             nullable()
         }
-        field("completionStatus", jobCompletionStatusEnumDef) {
-            nullable()
-        }
+        field("status", jobExecutionStatusEnumDef)
         field("errorMessage", FieldTypes.string) {
             nullable()
         }

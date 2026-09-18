@@ -35,7 +35,6 @@ class JobExecutionDao(
         jdbcOps.update(
             """
             insert into jobs.job_execution (
-                completion_status,
                 created_timestamp,
                 end_timestamp,
                 error_message,
@@ -45,9 +44,9 @@ class JobExecutionDao(
                 last_modified_timestamp,
                 metrics,
                 stack_trace,
-                start_timestamp
+                start_timestamp,
+                status
             ) values (
-                :completionStatus,
                 :createdTimestamp,
                 :endTimestamp,
                 :errorMessage,
@@ -57,11 +56,11 @@ class JobExecutionDao(
                 :lastModifiedTimestamp,
                 :metrics,
                 :stackTrace,
-                :startTimestamp
+                :startTimestamp,
+                :status
             )
             """.trimIndent(),
             SqlParams().apply {
-                addValue("completionStatus", entity.completionStatus)
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("endTimestamp", entity.endTimestamp)
                 addValue("errorMessage", entity.errorMessage)
@@ -72,6 +71,7 @@ class JobExecutionDao(
                 addJsonValue("metrics", jsonMapper.writeValueAsString(entity.metrics))
                 addValue("stackTrace", entity.stackTrace)
                 addValue("startTimestamp", entity.startTimestamp)
+                addValue("status", entity.status)
             }
         )
 
@@ -83,7 +83,6 @@ class JobExecutionDao(
         jdbcOps.batchUpdate(
             """
             insert into jobs.job_execution (
-                completion_status,
                 created_timestamp,
                 end_timestamp,
                 error_message,
@@ -93,9 +92,9 @@ class JobExecutionDao(
                 last_modified_timestamp,
                 metrics,
                 stack_trace,
-                start_timestamp
+                start_timestamp,
+                status
             ) values (
-                :completionStatus,
                 :createdTimestamp,
                 :endTimestamp,
                 :errorMessage,
@@ -105,12 +104,12 @@ class JobExecutionDao(
                 :lastModifiedTimestamp,
                 :metrics,
                 :stackTrace,
-                :startTimestamp
+                :startTimestamp,
+                :status
             )
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
-                    addValue("completionStatus", entity.completionStatus)
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("endTimestamp", entity.endTimestamp)
                     addValue("errorMessage", entity.errorMessage)
@@ -121,6 +120,7 @@ class JobExecutionDao(
                     addJsonValue("metrics", jsonMapper.writeValueAsString(entity.metrics))
                     addValue("stackTrace", entity.stackTrace)
                     addValue("startTimestamp", entity.startTimestamp)
+                    addValue("status", entity.status)
                 }
             }
         )
@@ -346,12 +346,12 @@ class JobExecutionDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
-            "completionStatus" -> sqlParams.addValue("completionStatus", field.value as JobCompletionStatus)
             "endTimestamp" -> sqlParams.addValue("endTimestamp", field.value as Instant?)
             "errorMessage" -> sqlParams.addValue("errorMessage", field.value as String?)
             "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "metrics" -> sqlParams.addJsonValue("metrics", this.jsonMapper.writeValueAsString(field.value as Map<*, *>))
             "stackTrace" -> sqlParams.addValue("stackTrace", field.value as String?)
+            "status" -> sqlParams.addValue("status", field.value as JobExecutionStatus)
         }
 
     }

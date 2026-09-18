@@ -1,7 +1,8 @@
 package org.maiaframework.job
 
-enum class JobCompletionStatus {
+enum class JobExecutionStatus {
 
+    RUNNING,
     SUCCESS,
     FAILED
 

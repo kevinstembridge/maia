@@ -16,7 +16,6 @@ class JobExecutionEntityRowMapper(
 
     override fun mapRow(rsa: ResultSetAdapter): JobExecutionEntity {
 
-        val completionStatus = rsa.readEnumOrNull("completion_status", JobCompletionStatus::class.java)
         val createdTimestamp = rsa.readInstant("created_timestamp")
         val endTimestamp = rsa.readInstantOrNull("end_timestamp")
         val errorMessage = rsa.readStringOrNull("error_message")
@@ -27,9 +26,9 @@ class JobExecutionEntityRowMapper(
         val metrics = rsa.readString("metrics") { jsonMapper.readValue(it, object : TypeReference<Map<String, Any>>() {}) }
         val stackTrace = rsa.readStringOrNull("stack_trace")
         val startTimestamp = rsa.readInstant("start_timestamp")
+        val status = rsa.readEnum("status", JobExecutionStatus::class.java)
 
         return JobExecutionEntity(
-                completionStatus,
                 createdTimestamp,
                 endTimestamp,
                 errorMessage,
@@ -39,7 +38,8 @@ class JobExecutionEntityRowMapper(
                 lastModifiedTimestamp,
                 metrics,
                 stackTrace,
-                startTimestamp
+                startTimestamp,
+                status
         )
 
     }

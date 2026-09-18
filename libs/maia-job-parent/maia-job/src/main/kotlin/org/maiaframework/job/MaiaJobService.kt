@@ -178,7 +178,7 @@ class MaiaJobService(
 
     fun searchJobExecutionHistory(
         jobName: JobName?,
-        status: String?,
+        status: JobExecutionStatus?,
         from: Instant?,
         to: Instant?,
         offset: Int,
@@ -199,14 +199,14 @@ class MaiaJobService(
     private fun toJobExecutionHistoryItemDto(entity: JobExecutionEntity): JobExecutionHistoryItemResponseDto {
 
         return JobExecutionHistoryItemResponseDto(
-                entity.completionStatus,
                 entity.endTimestamp,
                 entity.errorMessage,
                 entity.invokedBy,
                 entity.id,
                 entity.jobName,
                 entity.metrics,
-                entity.startTimestamp)
+                entity.startTimestamp,
+                entity.status)
 
     }
 

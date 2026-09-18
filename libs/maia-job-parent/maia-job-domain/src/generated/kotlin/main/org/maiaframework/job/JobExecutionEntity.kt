@@ -8,7 +8,6 @@ import java.time.Instant
 
 
 class JobExecutionEntity(
-    val completionStatus: JobCompletionStatus?,
     val createdTimestamp: Instant,
     val endTimestamp: Instant?,
     val errorMessage: String?,
@@ -18,14 +17,14 @@ class JobExecutionEntity(
     val lastModifiedTimestamp: Instant,
     val metrics: Map<String, Any>,
     val stackTrace: String?,
-    val startTimestamp: Instant
+    val startTimestamp: Instant,
+    val status: JobExecutionStatus
 ) {
 
 
     override fun toString(): String {
 
         return "JobExecutionEntity{" +
-                "completionStatus = '" + this.completionStatus + '\'' + ", " + 
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "endTimestamp = '" + this.endTimestamp + '\'' + ", " + 
                 "errorMessage = '" + this.errorMessage + '\'' + ", " + 
@@ -35,7 +34,8 @@ class JobExecutionEntity(
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "metrics = '" + this.metrics + '\'' + ", " + 
                 "stackTrace = '" + this.stackTrace + '\'' + ", " + 
-                "startTimestamp = '" + this.startTimestamp + '\'' +
+                "startTimestamp = '" + this.startTimestamp + '\'' + ", " + 
+                "status = '" + this.status + '\'' +
                 "}"
 
     }
@@ -51,14 +51,14 @@ class JobExecutionEntity(
 
         @JvmStatic
         fun newInstance(
-            completionStatus: JobCompletionStatus?,
             endTimestamp: Instant?,
             errorMessage: String?,
             invokedBy: String,
             jobName: JobName,
             metrics: Map<String, Any>,
             stackTrace: String?,
-            startTimestamp: Instant
+            startTimestamp: Instant,
+            status: JobExecutionStatus
         ): JobExecutionEntity {
 
             val createdTimestamp = Instant.now()
@@ -66,7 +66,6 @@ class JobExecutionEntity(
             val lastModifiedTimestamp = createdTimestamp
 
             return JobExecutionEntity(
-                completionStatus,
                 createdTimestamp,
                 endTimestamp,
                 errorMessage,
@@ -76,7 +75,8 @@ class JobExecutionEntity(
                 lastModifiedTimestamp,
                 metrics,
                 stackTrace,
-                startTimestamp
+                startTimestamp,
+                status
             )
 
         }

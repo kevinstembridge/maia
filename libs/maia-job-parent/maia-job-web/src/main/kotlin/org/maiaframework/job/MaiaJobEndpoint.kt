@@ -44,7 +44,7 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
     @PreAuthorize("hasAuthority('MAIA_JOB_READ')")
     fun searchExecutionHistory(
         @RequestParam(required = false) jobName: String?,
-        @RequestParam(required = false) status: String?,
+        @RequestParam(required = false) status: JobExecutionStatus?,
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) from: Instant?,
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) to: Instant?,
         @RequestParam(defaultValue = "0") offset: Int,
