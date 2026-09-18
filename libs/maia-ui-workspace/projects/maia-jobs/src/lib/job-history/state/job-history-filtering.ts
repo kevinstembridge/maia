@@ -5,11 +5,14 @@ export type HistoryStatus = 'running' | 'success' | 'failed';
 export type HistoryStatusFilter = 'RUNNING' | 'SUCCESS' | 'FAILED' | null;
 
 
+const STATUS_MAP: Record<JobExecutionHistoryItem['status'], HistoryStatus> = {
+    RUNNING: 'running',
+    SUCCESS: 'success',
+    FAILED: 'failed',
+};
+
 export function deriveHistoryStatus(item: JobExecutionHistoryItem): HistoryStatus {
-    if (item.completionStatus === null) {
-        return 'running';
-    }
-    return item.completionStatus === 'SUCCESS' ? 'success' : 'failed';
+    return STATUS_MAP[item.status];
 }
 
 

@@ -4,7 +4,7 @@ export class JobExecutionHistoryItem {
     invokedBy!: string;
     startTimestamp!: string;
     endTimestamp!: string | null;
-    completionStatus!: 'SUCCESS' | 'FAILED' | null;
+    status!: 'RUNNING' | 'SUCCESS' | 'FAILED';
     errorMessage!: string | null;
     metrics!: any;
 }

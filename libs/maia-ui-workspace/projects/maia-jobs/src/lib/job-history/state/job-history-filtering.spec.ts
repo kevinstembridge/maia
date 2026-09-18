@@ -9,7 +9,7 @@ function makeItem(overrides: Partial<JobExecutionHistoryItem>): JobExecutionHist
         invokedBy: 'someone',
         startTimestamp: '2026-01-01T00:00:00Z',
         endTimestamp: '2026-01-01T00:00:10Z',
-        completionStatus: 'SUCCESS',
+        status: 'SUCCESS',
         errorMessage: null,
         metrics: {},
     }, overrides);
@@ -17,16 +17,16 @@ function makeItem(overrides: Partial<JobExecutionHistoryItem>): JobExecutionHist
 
 describe('deriveHistoryStatus', () => {
 
-    it('returns running when completionStatus is null', () => {
-        expect(deriveHistoryStatus(makeItem({completionStatus: null}))).toBe('running');
+    it('returns running when status is RUNNING', () => {
+        expect(deriveHistoryStatus(makeItem({status: 'RUNNING'}))).toBe('running');
     });
 
-    it('returns success when completionStatus is SUCCESS', () => {
-        expect(deriveHistoryStatus(makeItem({completionStatus: 'SUCCESS'}))).toBe('success');
+    it('returns success when status is SUCCESS', () => {
+        expect(deriveHistoryStatus(makeItem({status: 'SUCCESS'}))).toBe('success');
     });
 
-    it('returns failed when completionStatus is FAILED', () => {
-        expect(deriveHistoryStatus(makeItem({completionStatus: 'FAILED'}))).toBe('failed');
+    it('returns failed when status is FAILED', () => {
+        expect(deriveHistoryStatus(makeItem({status: 'FAILED'}))).toBe('failed');
     });
 
 });
