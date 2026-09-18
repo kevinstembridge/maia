@@ -1,0 +1,66 @@
+<div class="filter-bar">
+    <mat-form-field subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Job name</mat-label>
+        <mat-select [value]="store.jobNameFilter()" (selectionChange)="onJobNameFilterChanged($event.value)">
+            <mat-option [value]="null">All jobs</mat-option>
+            @for (jobName of store.availableJobNames(); track jobName) {
+                <mat-option [value]="jobName">{{ jobName }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Status</mat-label>
+        <mat-select [value]="store.statusFilter()" (selectionChange)="onStatusFilterChanged($event.value)">
+            <mat-option [value]="null">All statuses</mat-option>
+            <mat-option value="RUNNING">Running</mat-option>
+            <mat-option value="SUCCESS">Success</mat-option>
+            <mat-option value="FAILED">Failed</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field subscriptSizing="dynamic" class="filter-field">
+        <mat-label>From</mat-label>
+        <input matInput [matDatepicker]="fromPicker" (dateChange)="onFromDateChanged($event.value)">
+        <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field subscriptSizing="dynamic" class="filter-field">
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="toPicker" (dateChange)="onToDateChanged($event.value)">
+        <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker></mat-datepicker>
+    </mat-form-field>
+</div>
+
+@if (store.isLoading() && store.items().length === 0) {
+    <div class="loading">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+} @else if (store.error() && store.items().length === 0) {
+    <div class="error-banner" role="alert">
+        <span>{{ store.error() }}</span>
+        <button mat-flat-button color="primary" (click)="store.retryFetch()">Retry</button>
+    </div>
+} @else if (store.items().length === 0) {
+    <p class="empty-message">No executions match your filters.</p>
+} @else {
+    <div class="history-list">
+        @for (item of store.items(); track item.jobExecutionId) {
+            <maia-job-execution-history-card
+                [historyItem]="item"
+                (displayStackTrace)="onDisplayStackTrace($event)"
+                (displayJobMetrics)="onDisplayJobMetrics($event)">
+            </maia-job-execution-history-card>
+        }
+    </div>
+
+    <mat-paginator
+        [length]="store.totalCount()"
+        [pageIndex]="store.pageIndex()"
+        [pageSize]="store.pageSize()"
+        [pageSizeOptions]="[10, 20, 50]"
+        (page)="onPageChanged($event)">
+    </mat-paginator>
+}

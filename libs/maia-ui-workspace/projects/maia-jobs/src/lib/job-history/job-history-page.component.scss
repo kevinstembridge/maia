@@ -1,0 +1,43 @@
+.filter-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.filter-field {
+    flex: 1;
+    max-width: 220px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: 2.5rem 0;
+}
+
+.error-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--mat-sys-error);
+    background-color: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+    padding: 0.875rem;
+}
+
+.empty-message {
+    margin-top: 1.25rem;
+    color: var(--mat-sys-on-surface-variant);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
