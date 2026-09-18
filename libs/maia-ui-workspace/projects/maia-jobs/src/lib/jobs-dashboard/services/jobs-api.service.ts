@@ -63,16 +63,7 @@ export class JobsApiService {
             params = params.set('to', criteria.to);
         }
 
-        return this.http.get<SearchResultPage<JobExecutionHistoryItem>>(`${this.baseUrl}/job/execution_history`, {params}).pipe(
-            catchError(this.handleError<SearchResultPage<JobExecutionHistoryItem>>('searchJobExecutionHistory', {
-                results: [],
-                totalResultCount: 0,
-                offset: criteria.offset,
-                limit: criteria.limit,
-                firstResultIndex: criteria.offset + 1,
-                lastResultIndex: criteria.offset,
-            }))
-        );
+        return this.http.get<SearchResultPage<JobExecutionHistoryItem>>(`${this.baseUrl}/job/execution_history`, {params});
 
     }
 
