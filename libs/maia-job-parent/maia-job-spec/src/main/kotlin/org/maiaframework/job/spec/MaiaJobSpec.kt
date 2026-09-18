@@ -87,6 +87,24 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
     }
 
 
+    val jobExecutionHistoryItemDtoDef = simpleResponseDto("org.maiaframework.job", "JobExecutionHistoryItem") {
+        field("jobExecutionId", FieldTypes.domainId)
+        field("jobName", jobNameStringType)
+        field("invokedBy", FieldTypes.string)
+        field("startTimestamp", FieldTypes.instant)
+        field("endTimestamp", FieldTypes.instant) {
+            nullable()
+        }
+        field("completionStatus", jobCompletionStatusEnumDef) {
+            nullable()
+        }
+        field("errorMessage", FieldTypes.string) {
+            nullable()
+        }
+        field("metrics", FieldTypes.mapOfStringToAny())
+    }
+
+
     val jobStateDtoDef = simpleResponseDto("org.maiaframework.job", "JobState") {
         field("jobName", jobNameStringType)
         field("description", FieldTypes.string) {
