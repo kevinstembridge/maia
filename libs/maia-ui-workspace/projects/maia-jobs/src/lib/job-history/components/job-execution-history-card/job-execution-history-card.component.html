@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="header">
+        <span class="name">{{ historyItem().jobName }}</span>
+        <span
+            class="status-dot"
+            [style.background-color]="statusColor()"
+            role="img"
+            [attr.aria-label]="statusLabel()">
+        </span>
+    </div>
+
+    <div class="meta-row">
+        <span>Invoked by {{ historyItem().invokedBy }}</span>
+        <span>Started {{ historyItem().startTimestamp | date:'medium' }}</span>
+        <span>{{ durationLabel() }}</span>
+    </div>
+
+    @if (status() === 'failed') {
+        <div class="failure-row">
+            <span>{{ historyItem().errorMessage }}</span>
+            <button mat-flat-button type="button" (click)="onDisplayStackTrace()">stacktrace</button>
+        </div>
+    }
+
+    <div class="actions">
+        <button mat-flat-button (click)="onDisplayJobMetrics()">Metrics</button>
+    </div>
+</div>
