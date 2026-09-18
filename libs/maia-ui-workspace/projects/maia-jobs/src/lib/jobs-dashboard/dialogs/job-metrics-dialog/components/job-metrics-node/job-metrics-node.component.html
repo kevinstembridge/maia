@@ -1,0 +1,65 @@
+<div class="node">
+    <div class="header">
+        @if (hasChildJobs()) {
+            <button
+                mat-icon-button
+                type="button"
+                class="toggle"
+                (click)="onToggleExpanded()"
+                [attr.aria-label]="expanded() ? 'Collapse' : 'Expand'">
+                <mat-icon>{{ expanded() ? 'expand_more' : 'chevron_right' }}</mat-icon>
+            </button>
+        }
+        <span class="name">{{ report().jobName }}</span>
+        <span class="count">{{ report().jobCount }} run{{ report().jobCount === 1 ? '' : 's' }}</span>
+    </div>
+
+    <div class="stat-row">
+        <span class="stat"><span class="stat-label">Elapsed</span> {{ report().totalElapsedTime.formatted }}</span>
+    </div>
+
+    @if (hasTimingStats()) {
+        <div class="stat-row">
+            <span class="stat"><span class="stat-label">Min</span> {{ formatSeconds(report().min) }}</span>
+            <span class="stat"><span class="stat-label">Median</span> {{ formatSeconds(report().median) }}</span>
+            <span class="stat"><span class="stat-label">95th</span> {{ formatSeconds(report()['95th']) }}</span>
+            <span class="stat"><span class="stat-label">Max</span> {{ formatSeconds(report().max) }}</span>
+            <span class="stat"><span class="stat-label">Mean</span> {{ formatSeconds(report().mean) }}</span>
+        </div>
+    }
+
+    @if (hasContext()) {
+        <div class="kv-row">
+            <span class="kv-heading">Context</span>
+            @for (entry of report().context | keyvalue; track entry.key) {
+                <span class="kv">{{ entry.key }}: {{ entry.value }}</span>
+            }
+        </div>
+    }
+
+    @if (hasCounters()) {
+        <div class="kv-row">
+            <span class="kv-heading">Counters</span>
+            @for (entry of report().counters | keyvalue; track entry.key) {
+                <span class="kv">{{ entry.key }}: {{ entry.value }}</span>
+            }
+        </div>
+    }
+
+    @if (hasRatios()) {
+        <div class="kv-row">
+            <span class="kv-heading">Ratios</span>
+            @for (entry of report().ratios | keyvalue; track entry.key) {
+                <span class="kv">{{ entry.key }}: {{ entry.value.toString }} ({{ entry.value.value }})</span>
+            }
+        </div>
+    }
+
+    @if (hasChildJobs() && expanded()) {
+        <div class="children">
+            @for (child of report().childJobs; track child.jobName) {
+                <maia-job-metrics-node [report]="child" />
+            }
+        </div>
+    }
+</div>
