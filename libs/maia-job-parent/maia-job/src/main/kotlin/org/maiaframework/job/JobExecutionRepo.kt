@@ -2,6 +2,7 @@ package org.maiaframework.job
 
 import org.maiaframework.common.ExceptionUtil
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.search.SearchResultPage
 import org.maiaframework.metrics.JobMetrics
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -94,6 +95,46 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
         val sort = Sort.by(Sort.Order.desc(JobExecutionEntityMeta.endTimestamp))
         val pageRequest = PageRequest.of(0, RECENT_FAILURES_QUERY_LIMIT, sort)
         return this.jobExecutionDao.findAllBy(filter, pageRequest).toList()
+
+    }
+
+
+    fun searchExecutionHistory(
+        jobName: JobName?,
+        status: String?,
+        from: Instant?,
+        to: Instant?,
+        offset: Int,
+        limit: Int
+    ): SearchResultPage<JobExecutionEntity> {
+
+        val filters = JobExecutionEntityFilters()
+        val conditions = mutableListOf<JobExecutionEntityFilter>()
+
+        jobName?.let { conditions.add(filters.jobName eq it) }
+
+        when (status) {
+            "RUNNING" -> conditions.add(filters.completionStatus.isNull())
+            "SUCCESS" -> conditions.add(filters.completionStatus eq JobCompletionStatus.SUCCESS)
+            "FAILED" -> conditions.add(filters.completionStatus eq JobCompletionStatus.FAILED)
+        }
+
+        from?.let { conditions.add(filters.startTimestamp gte it) }
+        to?.let { conditions.add(filters.startTimestamp lte it) }
+
+        val filter = if (conditions.isEmpty()) {
+            JobExecutionEntityFilters.NoopFilter()
+        } else {
+            filters.and(*conditions.toTypedArray())
+        }
+
+        val sort = Sort.by(Sort.Order.desc(JobExecutionEntityMeta.startTimestamp))
+        val pageRequest = PageRequest.of(offset / limit, limit, sort)
+
+        val results = this.jobExecutionDao.findAllBy(filter, pageRequest)
+        val totalCount = this.jobExecutionDao.count(filter)
+
+        return SearchResultPage(results, totalCount, offset, limit)
 
     }
 
