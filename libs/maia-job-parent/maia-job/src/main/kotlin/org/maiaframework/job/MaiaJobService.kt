@@ -3,6 +3,7 @@ package org.maiaframework.job
 import org.maiaframework.common.util.NamedThreadFactory
 import org.maiaframework.metrics.JobMetrics
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.search.SearchResultPage
 import org.slf4j.LoggerFactory
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
@@ -171,6 +172,41 @@ class MaiaJobService(
                     it.stackTrace,
                     it.startTimestamp)
         }
+
+    }
+
+
+    fun searchJobExecutionHistory(
+        jobName: JobName?,
+        status: String?,
+        from: Instant?,
+        to: Instant?,
+        offset: Int,
+        limit: Int
+    ): SearchResultPage<JobExecutionHistoryItemResponseDto> {
+
+        val page = this.jobExecutionRepo.searchExecutionHistory(jobName, status, from, to, offset, limit)
+
+        return SearchResultPage(
+                page.results.map { toJobExecutionHistoryItemDto(it) },
+                page.totalResultCount,
+                page.offset,
+                page.limit)
+
+    }
+
+
+    private fun toJobExecutionHistoryItemDto(entity: JobExecutionEntity): JobExecutionHistoryItemResponseDto {
+
+        return JobExecutionHistoryItemResponseDto(
+                entity.completionStatus,
+                entity.endTimestamp,
+                entity.errorMessage,
+                entity.invokedBy,
+                entity.id,
+                entity.jobName,
+                entity.metrics,
+                entity.startTimestamp)
 
     }
 
