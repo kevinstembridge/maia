@@ -1,9 +1,11 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {JobState} from '../models/JobState';
 import {JobExecutionDetail} from '../models/JobExecutionDetail';
+import {JobExecutionHistoryItem} from '../models/JobExecutionHistoryItem';
+import {SearchResultPage} from '../models/SearchResultPage';
 import {JOBS_API_BASE_URL} from './jobs-api-base-url.token';
 
 
@@ -30,6 +32,46 @@ export class JobsApiService {
 
         return this.http.get<JobExecutionDetail>(`${this.baseUrl}/job/execution_detail/${jobExecutionId}`).pipe(
             catchError(this.handleError<JobExecutionDetail>('getJobExecutionDetail'))
+        );
+
+    }
+
+
+    searchJobExecutionHistory(criteria: {
+        jobName: string | null;
+        status: string | null;
+        from: string | null;
+        to: string | null;
+        offset: number;
+        limit: number;
+    }): Observable<SearchResultPage<JobExecutionHistoryItem>> {
+
+        let params = new HttpParams()
+            .set('offset', criteria.offset)
+            .set('limit', criteria.limit);
+
+        if (criteria.jobName) {
+            params = params.set('jobName', criteria.jobName);
+        }
+        if (criteria.status) {
+            params = params.set('status', criteria.status);
+        }
+        if (criteria.from) {
+            params = params.set('from', criteria.from);
+        }
+        if (criteria.to) {
+            params = params.set('to', criteria.to);
+        }
+
+        return this.http.get<SearchResultPage<JobExecutionHistoryItem>>(`${this.baseUrl}/job/execution_history`, {params}).pipe(
+            catchError(this.handleError<SearchResultPage<JobExecutionHistoryItem>>('searchJobExecutionHistory', {
+                results: [],
+                totalResultCount: 0,
+                offset: criteria.offset,
+                limit: criteria.limit,
+                firstResultIndex: criteria.offset + 1,
+                lastResultIndex: criteria.offset,
+            }))
         );
 
     }
