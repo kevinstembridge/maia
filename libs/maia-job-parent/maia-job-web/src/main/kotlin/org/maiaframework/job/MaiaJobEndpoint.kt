@@ -2,13 +2,17 @@ package org.maiaframework.job
 
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.search.SearchResultPage
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.Instant
 
 
 @RestController
@@ -32,6 +36,28 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
     ): JobExecutionDetailResponseDto? {
 
         return this.jobService.getJobExecutionDetailDto(DomainId(jobExecutionId))
+
+    }
+
+
+    @GetMapping("/job/execution_history", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('MAIA_JOB_READ')")
+    fun searchExecutionHistory(
+        @RequestParam(required = false) jobName: String?,
+        @RequestParam(required = false) status: String?,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) from: Instant?,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) to: Instant?,
+        @RequestParam(defaultValue = "0") offset: Int,
+        @RequestParam(defaultValue = "20") limit: Int
+    ): SearchResultPage<JobExecutionHistoryItemResponseDto> {
+
+        return this.jobService.searchJobExecutionHistory(
+                jobName?.let { JobName(it) },
+                status,
+                from,
+                to,
+                offset,
+                limit.coerceAtLeast(1))
 
     }
 
