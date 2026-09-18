@@ -64,4 +64,11 @@ export const routes: Routes = [
                 (m) => m.JobsDashboardPage,
             ),
     },
+    {
+        path: 'jobs-history',
+        loadComponent: () =>
+            import('./pages/job-history/job-history-page').then(
+                (m) => m.JobHistoryPage,
+            ),
+    },
 ];

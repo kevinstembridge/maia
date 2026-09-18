@@ -45,6 +45,12 @@
                 <span>Jobs Dashboard</span>
             </button>
         }
+        @if (hasMaiaJobReadAuthority()) {
+            <button mat-menu-item routerLink="/jobs-history">
+                <mat-icon>storage</mat-icon>
+                <span>Job History</span>
+            </button>
+        }
         @if (hasReadAuthority()) {
             <button mat-menu-item routerLink="/left-many-blotter">
                 <mat-icon>dialpad</mat-icon>
