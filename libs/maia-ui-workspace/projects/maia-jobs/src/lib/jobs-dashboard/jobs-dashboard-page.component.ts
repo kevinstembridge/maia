@@ -4,6 +4,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
+import {RouterLink} from '@angular/router';
 import {JobState} from './models/JobState';
 import {JobExecutionState} from './models/JobExecutionState';
 import {JobsApiService} from './services/jobs-api.service';
@@ -15,7 +16,7 @@ import {StacktraceDialogComponent} from './dialogs/stacktrace-dialog/stacktrace-
 
 
 @Component({
-    imports: [JobStateComponent, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule],
+    imports: [JobStateComponent, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule, RouterLink],
     providers: [JobsApiService, JobsDashboardStore],
     selector: 'maia-jobs-dashboard-page',
     templateUrl: './jobs-dashboard-page.component.html',
