@@ -76,7 +76,7 @@ export class JobHistoryPageComponent implements OnInit {
 
     onDisplayJobMetrics(metrics: any) {
 
-        this.dialog.open(JobMetricsDialogComponent, {data: metrics});
+        this.dialog.open(JobMetricsDialogComponent, {data: metrics, width: '90vw', maxWidth: '90vw'});
 
     }
 

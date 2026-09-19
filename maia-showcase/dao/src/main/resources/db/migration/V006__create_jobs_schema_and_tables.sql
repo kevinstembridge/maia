@@ -1,7 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS jobs;
 
 CREATE TABLE jobs.job_execution (
-    completion_status text NULL,
+    status text NOT NULL,
     created_timestamp timestamp(3) with time zone NOT NULL,
     end_timestamp timestamp(3) with time zone NULL,
     error_message text NULL,

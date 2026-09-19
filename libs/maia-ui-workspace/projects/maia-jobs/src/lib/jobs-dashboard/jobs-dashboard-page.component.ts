@@ -67,7 +67,7 @@ export class JobsDashboardPageComponent implements OnInit {
 
     onDisplayJobMetricsDialog(jobExecutionState: JobExecutionState) {
 
-        this.dialog.open(JobMetricsDialogComponent, {data: jobExecutionState.metrics});
+        this.dialog.open(JobMetricsDialogComponent, {data: jobExecutionState.metrics, width: '90vw', maxWidth: '90vw'});
 
     }
 
