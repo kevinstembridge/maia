@@ -37,7 +37,6 @@
 .failure-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 0.5rem;
     border-radius: 0.25rem;
     background-color: var(--mat-sys-error-container);
@@ -49,4 +48,5 @@
 .actions {
     display: flex;
     justify-content: flex-end;
+    gap: 0.5rem;
 }

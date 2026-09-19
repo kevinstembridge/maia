@@ -1,6 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
+import {DateTime} from 'luxon';
 import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatButtonModule} from '@angular/material/button';
@@ -15,7 +17,7 @@ import {HistoryStatusFilter} from './state/job-history-filtering';
 
 @Component({
     imports: [
-        JobExecutionHistoryCardComponent, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
+        JobExecutionHistoryCardComponent, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule,
         MatButtonModule, MatPaginatorModule, MatProgressSpinnerModule
     ],
     providers: [JobsApiService, JobHistoryStore],
@@ -48,12 +50,12 @@ export class JobHistoryPageComponent implements OnInit {
     }
 
 
-    onFromDateChanged(date: Date | null) {
+    onFromDateChanged(date: DateTime | null) {
         this.store.onDateRangeChanged(this.toStartOfDayIso(date), this.store.toDate());
     }
 
 
-    onToDateChanged(date: Date | null) {
+    onToDateChanged(date: DateTime | null) {
         this.store.onDateRangeChanged(this.store.fromDate(), this.toEndOfDayIso(date));
     }
 
@@ -79,28 +81,24 @@ export class JobHistoryPageComponent implements OnInit {
     }
 
 
-    private toStartOfDayIso(date: Date | null): string | null {
+    private toStartOfDayIso(date: DateTime | null): string | null {
 
         if (!date) {
             return null;
         }
 
-        const startOfDay = new Date(date);
-        startOfDay.setHours(0, 0, 0, 0);
-        return startOfDay.toISOString();
+        return date.startOf('day').toUTC().toISO();
 
     }
 
 
-    private toEndOfDayIso(date: Date | null): string | null {
+    private toEndOfDayIso(date: DateTime | null): string | null {
 
         if (!date) {
             return null;
         }
 
-        const endOfDay = new Date(date);
-        endOfDay.setHours(23, 59, 59, 999);
-        return endOfDay.toISOString();
+        return date.endOf('day').toUTC().toISO();
 
     }
 

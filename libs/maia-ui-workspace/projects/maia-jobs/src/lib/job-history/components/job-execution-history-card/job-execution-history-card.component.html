@@ -18,11 +18,13 @@
     @if (status() === 'failed') {
         <div class="failure-row">
             <span>{{ historyItem().errorMessage }}</span>
-            <button mat-flat-button type="button" (click)="onDisplayStackTrace()">stacktrace</button>
         </div>
     }
 
     <div class="actions">
+        @if (status() === 'failed') {
+            <button mat-flat-button type="button" (click)="onDisplayStackTrace()">stacktrace</button>
+        }
         <button mat-flat-button (click)="onDisplayJobMetrics()">Metrics</button>
     </div>
 </div>

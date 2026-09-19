@@ -4,7 +4,7 @@ import {
     provideBrowserGlobalErrorListeners,
     provideZonelessChangeDetection
 } from '@angular/core';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import {provideLuxonDateAdapter} from '@angular/material-luxon-adapter';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {provideRouter} from '@angular/router';
 
@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     providers: [
         provideBrowserGlobalErrorListeners(),
         provideHttpClient(withXsrfConfiguration({})),
-        provideNativeDateAdapter(),
+        provideLuxonDateAdapter(),
         provideZonelessChangeDetection(),
         provideRouter(routes),
         {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
