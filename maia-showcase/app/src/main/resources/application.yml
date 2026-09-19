@@ -22,7 +22,7 @@ spring:
     password: maia_app_password
     username: maia_app
   elasticsearch:
-    uris: [ 'http://localhost:9200' ]
+    uris: [ 'http://localhost:9300' ]
     username: elastic
     password: maia_elastic_password
   flyway:
