@@ -1,5 +1,10 @@
+:host {
+    display: flex;
+}
+
 .card {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 0.5rem;
     border-radius: 0.5rem;
@@ -15,6 +20,8 @@
 }
 
 .name {
+    min-width: 0;
+    overflow-wrap: anywhere;
     font-weight: 500;
 }
 
@@ -33,6 +40,7 @@
 
 .badge {
     align-self: flex-start;
+    margin-top: auto;
     border-radius: 9999px;
     background-color: var(--mat-sys-secondary-container);
     color: var(--mat-sys-on-secondary-container);
@@ -43,4 +51,5 @@
 .actions {
     display: flex;
     justify-content: flex-end;
+    margin-top: auto;
 }
