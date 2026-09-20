@@ -58,7 +58,7 @@
     {
       "id": 8,
       "subject": "Task 9: Dialogs",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [7],
       "description": "**Goal:** EditPropertyDialog (add+edit), RemoveOverrideDialog, PropertyHistoryDialog.\n\n**Files:**\n- Create: .../dialogs/edit-property-dialog/*, .../dialogs/remove-override-dialog/*, .../dialogs/property-history-dialog/*\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/dialogs/edit-property-dialog/edit-property-dialog.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/dialogs/remove-override-dialog/remove-override-dialog.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/dialogs/property-history-dialog/property-history-dialog.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng build maia-props\", \"acceptanceCriteria\": [\"EditPropertyDialog supports add (editable name) and edit (readonly name) flows\", \"RemoveOverrideDialog confirms with optional comment\", \"PropertyHistoryDialog renders history rows\"], \"requiresUserVerification\": false}\n```"
     },
