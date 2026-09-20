@@ -27,6 +27,14 @@ export const AuthoritySelectOptions = [
         displayName: 'MAIA_JOB_READ',
     },
     {
+        name: Authority.MAIA_PROPS_WRITE,
+        displayName: 'MAIA_PROPS_WRITE',
+    },
+    {
+        name: Authority.MAIA_PROPS_READ,
+        displayName: 'MAIA_PROPS_READ',
+    },
+    {
         name: Authority.WRITE,
         displayName: 'WRITE',
         description: 'Grants write access.'
