@@ -8,6 +8,7 @@ dependencies {
 
     api(project(":libs:maia-props-parent:maia-props-api"))
     api(project(":libs:maia-props-parent:maia-props-repo"))
+    api(project(":libs:maia-props-parent:maia-props-service"))
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
 

@@ -12,6 +12,7 @@ dependencies {
     api(project(":libs:maia-lang"))
     api(project(":libs:maia-metrics"))
     api(project(":libs:maia-props-parent:maia-props-api"))
+    api(project(":libs:maia-props-parent:maia-props-service"))
 
     api("co.elastic.clients:elasticsearch-java")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm")
