@@ -32,6 +32,10 @@ export class RemoveOverrideDialog {
 
     onConfirm() {
 
+        if (this.form.invalid) {
+            return;
+        }
+
         const result: RemoveOverrideDialogResult = {
             comment: this.form.getRawValue().comment || null,
         };
