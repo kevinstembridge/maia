@@ -11,11 +11,10 @@
             </button>
         }
         <span class="name">{{ report().jobName }}</span>
-        <span class="count">{{ report().jobCount }} run{{ report().jobCount === 1 ? '' : 's' }}</span>
-    </div>
-
-    <div class="stat-row">
-        <span class="stat"><span class="stat-label">Elapsed</span> {{ report().totalElapsedTime.formatted }}</span>
+        <div class="meta">
+            <span class="elapsed">{{ formatElapsedTime(report().totalElapsedTime.seconds) }}</span>
+            <span class="count">{{ report().jobCount }} run{{ report().jobCount === 1 ? '' : 's' }}</span>
+        </div>
     </div>
 
     @if (hasTimingStats()) {

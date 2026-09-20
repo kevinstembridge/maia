@@ -1,5 +1,10 @@
+:host {
+    display: flex;
+}
+
 .card {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 0.5rem;
     border-radius: 0.5rem;
@@ -16,6 +21,8 @@
 
 .name {
     font-weight: 500;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .status-dot {
