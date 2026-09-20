@@ -24,6 +24,11 @@ class PropsManager(
     }
 
 
+    // Only walks EnumerablePropertySources, so name discovery and sourceName attribution are incomplete: a
+    // property supplied solely by a non-enumerable PropertySource (with no DB override) won't appear here at
+    // all, and if a non-enumerable higher-priority source supplies a different value, sourceName could name the
+    // wrong source. effectiveValue/environmentValue are unaffected — they come from environment.getProperty(),
+    // which resolves across all sources.
     private fun enumerateEnvironmentPropertyNames(): Map<String, String> {
 
         val sourceNameByPropertyName = mutableMapOf<String, String>()
@@ -32,6 +37,8 @@ class PropsManager(
             .filterIsInstance<EnumerablePropertySource<*>>()
             .forEach { propertySource ->
                 propertySource.propertyNames.forEach { propertyName ->
+                    // putIfAbsent (not put): first property source wins, matching Spring's own
+                    // property-source precedence order. Do not simplify to put.
                     sourceNameByPropertyName.putIfAbsent(propertyName, propertySource.name)
                 }
             }
@@ -107,6 +114,9 @@ class PropsManager(
                 comment
         )
 
+        // Both PropsRepo implementations refresh synchronously before setPropertyOverride returns, so this is
+        // not normally reachable — but a concurrent removeProperty racing in the window between the write and
+        // this re-read can trigger it. Not dead defensive code.
         val override = this.propsRepo.getPropertyOrNull(propertyName)
             ?: throw IllegalStateException("Expected a property override to exist for '$propertyName' immediately after setting it.")
 
