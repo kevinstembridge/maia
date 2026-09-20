@@ -17,7 +17,7 @@
     {
       "id": 2,
       "subject": "Task 3: PropsManager — env/override merge logic",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [1],
       "description": "**Goal:** Add getAllProperties() merge logic, getPropertyHistory(), and change setProperty() to return PropertyResponseDto, in the relocated PropsManager. Update autoconfigure bean to inject Environment.\n\n**Files:**\n- Modify: libs/maia-props-parent/maia-props-service/src/main/kotlin/org/maiaframework/props/PropsManager.kt\n- Modify: libs/maia-props-parent/maia-props-autoconfigure/src/main/kotlin/org/maiaframework/props/MaiaPropsAutoConfiguration.kt\n\n```json:metadata\n{\"files\": [\"libs/maia-props-parent/maia-props-service/src/main/kotlin/org/maiaframework/props/PropsManager.kt\", \"libs/maia-props-parent/maia-props-autoconfigure/src/main/kotlin/org/maiaframework/props/MaiaPropsAutoConfiguration.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-props-parent:maia-props-service:compileKotlin :libs:maia-props-parent:maia-props-autoconfigure:compileKotlin\", \"acceptanceCriteria\": [\"DB override always wins over environment value\", \"getAllProperties unions env + override property names\", \"setProperty returns PropertyResponseDto\"], \"requiresUserVerification\": false}\n```"
     },
