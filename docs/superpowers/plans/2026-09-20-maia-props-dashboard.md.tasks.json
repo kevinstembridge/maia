@@ -44,7 +44,7 @@
     {
       "id": 6,
       "subject": "Task 7: Models and API service",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [5],
       "description": "**Goal:** TypeScript DTOs matching backend response shapes, and PropsApiService calling the four MaiaPropsEndpoint routes.\n\n**Files:**\n- Create: .../models/PropertyResponseDto.ts, .../models/PropertyHistoryItemResponseDto.ts, .../services/props-api-base-url.token.ts, .../services/props-api.service.ts\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/models/PropertyResponseDto.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/services/props-api.service.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng build maia-props\", \"acceptanceCriteria\": [\"DTO field names/types match backend exactly\", \"service covers all four endpoint routes\"], \"requiresUserVerification\": false}\n```"
     },
