@@ -1,18 +1,23 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val maiagen by configurations.creating
 
 plugins {
     id("maia.kotlin-library-spring-conventions")
-    idea
 }
-
-
-val maiagen by configurations.creating
 
 
 dependencies {
 
-    api(project(":libs:maia-props-parent:maia-props-dao"))
+    implementation(kotlin("reflect"))
+
+    api(project(":libs:maia-common"))
+    api(project(":libs:maia-props-parent:maia-props-service"))
+    api(project(":libs:maia-props-parent:maia-props-domain"))
+    api(project(":libs:maia-webapp:maia-webapp-domain"))
+
+    api("org.springframework.boot:spring-boot-starter-security")
+    api("org.springframework.boot:spring-boot-starter-web")
 
     maiagen(project(":libs:maia-props-parent:maia-props-spec"))
     maiagen(project(":maia-gen:maia-gen-generator"))
@@ -20,30 +25,14 @@ dependencies {
 }
 
 
-val generatedKotlinMain = file("src/generated/kotlin/main")
-val generatedKotlinTest = file("src/generated/kotlin/test")
-val generatedResourcesMain = file("src/generated/resources/main")
-val generatedResourcesTest = file("src/generated/resources/test")
-
-
-idea {
-    module {
-        generatedSourceDirs.add(generatedKotlinMain)
-        generatedSourceDirs.add(generatedKotlinTest)
-        generatedSourceDirs.add(generatedResourcesMain)
-        generatedSourceDirs.add(generatedResourcesTest)
-    }
-}
-
-
 sourceSets {
     main {
-        java.srcDir(generatedKotlinMain)
-        resources.srcDir(generatedResourcesMain)
+        java.srcDir("src/generated/kotlin/main")
+        resources.srcDir("src/generated/resources/main")
     }
     test {
-        java.srcDir(generatedKotlinTest)
-        resources.srcDir(generatedResourcesTest)
+        java.srcDir("src/generated/kotlin/test")
+        java.srcDir("src/generated/resources/test")
     }
 }
 
@@ -65,7 +54,7 @@ tasks.register<JavaExec>("maiaGeneration") {
     outputs.dir("src/generated/resources/test")
 
     classpath = configurations["maiagen"].asFileTree
-    mainClass.set("org.maiaframework.gen.generator.RepoLayerModuleGeneratorKt")
+    mainClass.set("org.maiaframework.gen.generator.WebLayerModuleGeneratorKt")
     args("applicationSpecClassName=org.maiaframework.props.spec.PropsApplicationSpec")
 
 }
