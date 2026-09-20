@@ -71,4 +71,11 @@ export const routes: Routes = [
                 (m) => m.JobHistoryPage,
             ),
     },
+    {
+        path: 'props-dashboard',
+        loadComponent: () =>
+            import('./pages/props-dashboard/props-dashboard-page').then(
+                (m) => m.PropsDashboardPage,
+            ),
+    },
 ];

@@ -25,6 +25,9 @@
         "@maia/maia-elasticsearch": [
             "../../libs/maia-ui-workspace/dist/maia-elasticsearch"
         ],
+        "@maia/maia-props": [
+            "../../libs/maia-ui-workspace/dist/maia-props"
+        ],
         "@maia/maia-jobs": [
             "../../libs/maia-ui-workspace/dist/maia-jobs"
         ],

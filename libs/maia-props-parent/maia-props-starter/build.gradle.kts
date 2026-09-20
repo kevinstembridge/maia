@@ -8,6 +8,7 @@ dependencies {
 
     api(project(":libs:maia-props-parent:maia-props-autoconfigure"))
     api(project(":libs:maia-props-parent:maia-props-api"))
+    api(project(":libs:maia-props-parent:maia-props-web"))
     implementation("org.springframework.boot:spring-boot-starter")
 
 }

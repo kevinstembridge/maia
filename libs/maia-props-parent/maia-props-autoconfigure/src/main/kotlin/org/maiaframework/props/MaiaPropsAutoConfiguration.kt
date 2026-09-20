@@ -15,6 +15,7 @@ import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
 import org.springframework.boot.jdbc.autoconfigure.JdbcTemplateAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.Environment
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import javax.sql.DataSource
@@ -43,9 +44,9 @@ class MaiaPropsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun propsManager(propsRepo: PropsRepo): PropsManager {
+    fun propsManager(propsRepo: PropsRepo, environment: ConfigurableEnvironment): PropsManager {
 
-        return PropsManager(propsRepo)
+        return PropsManager(propsRepo, environment)
 
     }
 

@@ -37,6 +37,12 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val jobReadAuthority = authority("MAIA_JOB_READ")
 
 
+    val propsWriteAuthority = authority("MAIA_PROPS_WRITE")
+
+
+    val propsReadAuthority = authority("MAIA_PROPS_READ")
+
+
     val writeAuthority = authority("WRITE") {
         description = "Grants write access."
     }

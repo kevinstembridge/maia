@@ -4,85 +4,85 @@
     {
       "id": 0,
       "subject": "Task 1: PropsSpec.kt — authorities and response DTOs",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** Add MAIA_PROPS_READ/WRITE authorities and Property/PropertyHistoryItem simpleResponseDto defs to PropsSpec.kt so the generator produces PropertyResponseDto/PropertyHistoryItemResponseDto into maia-props-domain.\n\n**Files:**\n- Modify: libs/maia-props-parent/maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsSpec.kt\n\n```json:metadata\n{\"files\": [\"libs/maia-props-parent/maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsSpec.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-props-parent:maia-props-domain:maiaGeneration :libs:maia-props-parent:maia-props-domain:compileKotlin\", \"acceptanceCriteria\": [\"MAIA_PROPS_READ and MAIA_PROPS_WRITE authorities declared\", \"PropertyResponseDto and PropertyHistoryItemResponseDto generated into maia-props-domain\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 1,
       "subject": "Task 2: New maia-props-service module — move PropsManager (behavior unchanged)",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [0],
       "description": "**Goal:** Physically relocate PropsManager from maia-props-api into new maia-props-service module; update settings.gradle.kts, maia-props-autoconfigure, maia-elasticsearch dependencies. No behavior change yet.\n\n**Files:**\n- Create: libs/maia-props-parent/maia-props-service/build.gradle.kts\n- Create: libs/maia-props-parent/maia-props-service/src/main/kotlin/org/maiaframework/props/PropsManager.kt\n- Delete: libs/maia-props-parent/maia-props-api/src/main/kotlin/org/maiaframework/props/PropsManager.kt\n- Modify: settings.gradle.kts, maia-props-autoconfigure/build.gradle.kts, maia-props-autoconfigure MaiaPropsAutoConfiguration.kt, maia-elasticsearch/build.gradle.kts\n\n```json:metadata\n{\"files\": [\"settings.gradle.kts\", \"libs/maia-props-parent/maia-props-service/build.gradle.kts\", \"libs/maia-props-parent/maia-props-autoconfigure/build.gradle.kts\", \"libs/maia-elasticsearch-parent/maia-elasticsearch/build.gradle.kts\"], \"verifyCommand\": \"./gradlew :libs:maia-props-parent:maia-props-service:compileKotlin :libs:maia-props-parent:maia-props-autoconfigure:compileKotlin :libs:maia-elasticsearch-parent:maia-elasticsearch:compileKotlin :libs:maia-props-parent:maia-props-starter:compileKotlin\", \"acceptanceCriteria\": [\"maia-props-api contains only Props.kt\", \"maia-props-service compiles standalone\", \"dependent modules still compile\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 2,
       "subject": "Task 3: PropsManager — env/override merge logic",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [1],
       "description": "**Goal:** Add getAllProperties() merge logic, getPropertyHistory(), and change setProperty() to return PropertyResponseDto, in the relocated PropsManager. Update autoconfigure bean to inject Environment.\n\n**Files:**\n- Modify: libs/maia-props-parent/maia-props-service/src/main/kotlin/org/maiaframework/props/PropsManager.kt\n- Modify: libs/maia-props-parent/maia-props-autoconfigure/src/main/kotlin/org/maiaframework/props/MaiaPropsAutoConfiguration.kt\n\n```json:metadata\n{\"files\": [\"libs/maia-props-parent/maia-props-service/src/main/kotlin/org/maiaframework/props/PropsManager.kt\", \"libs/maia-props-parent/maia-props-autoconfigure/src/main/kotlin/org/maiaframework/props/MaiaPropsAutoConfiguration.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-props-parent:maia-props-service:compileKotlin :libs:maia-props-parent:maia-props-autoconfigure:compileKotlin\", \"acceptanceCriteria\": [\"DB override always wins over environment value\", \"getAllProperties unions env + override property names\", \"setProperty returns PropertyResponseDto\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 3,
       "subject": "Task 4: New maia-props-web module and MaiaPropsEndpoint",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [2],
       "description": "**Goal:** Expose PropsManager over REST via a new maia-props-web module mirroring maia-job-web, and aggregate it into maia-props-starter.\n\n**Files:**\n- Create: libs/maia-props-parent/maia-props-web/build.gradle.kts\n- Create: libs/maia-props-parent/maia-props-web/src/main/kotlin/org/maiaframework/props/MaiaPropsEndpoint.kt\n- Create: libs/maia-props-parent/maia-props-web/src/main/kotlin/org/maiaframework/props/SetPropertyRequestDto.kt\n- Modify: libs/maia-props-parent/maia-props-starter/build.gradle.kts\n\n```json:metadata\n{\"files\": [\"libs/maia-props-parent/maia-props-web/build.gradle.kts\", \"libs/maia-props-parent/maia-props-web/src/main/kotlin/org/maiaframework/props/MaiaPropsEndpoint.kt\", \"libs/maia-props-parent/maia-props-starter/build.gradle.kts\"], \"verifyCommand\": \"./gradlew :libs:maia-props-parent:maia-props-web:compileKotlin :libs:maia-props-parent:maia-props-starter:compileKotlin\", \"acceptanceCriteria\": [\"MaiaPropsEndpoint is in package org.maiaframework.props\", \"four REST routes present with correct @PreAuthorize authorities\", \"maia-props-starter aggregates the web module\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 4,
       "subject": "Task 5: Register showcase-side authorities, full build, confirm props endpoint is live",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [3],
       "description": "**Goal:** Add MAIA_PROPS_READ/WRITE to MaiaShowcasePartySpec.kt (showcase's own generated Authority enum needs them redeclared, same as job/elasticsearch authorities already are), run a full build, confirm the endpoint is live and component-scanned.\n\n**Files:**\n- Modify: maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcasePartySpec.kt\n\n```json:metadata\n{\"files\": [\"maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcasePartySpec.kt\"], \"verifyCommand\": \"./gradlew build -x test\", \"acceptanceCriteria\": [\"full backend build succeeds\", \"generated showcase Authority enum contains MAIA_PROPS_READ and MAIA_PROPS_WRITE\", \"org.maiaframework.props remains in MaiaShowcaseAppConfiguration's ComponentScan\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 5,
       "subject": "Task 6: Scaffold the maia-props Angular library project",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** Create the @maia/maia-props ng-packagr project shell, registered in libs/maia-ui-workspace (angular.json + tsconfig.json), mirroring maia-elasticsearch.\n\n**Files:**\n- Create: libs/maia-ui-workspace/projects/maia-props/{package.json,ng-package.json,tsconfig.lib.json,tsconfig.lib.prod.json,tsconfig.spec.json,src/public-api.ts}\n- Modify: libs/maia-ui-workspace/angular.json, libs/maia-ui-workspace/tsconfig.json\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/package.json\", \"libs/maia-ui-workspace/angular.json\", \"libs/maia-ui-workspace/tsconfig.json\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng build maia-props\", \"acceptanceCriteria\": [\"ng build maia-props succeeds\", \"project registered same way as maia-elasticsearch\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 6,
       "subject": "Task 7: Models and API service",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [5],
       "description": "**Goal:** TypeScript DTOs matching backend response shapes, and PropsApiService calling the four MaiaPropsEndpoint routes.\n\n**Files:**\n- Create: .../models/PropertyResponseDto.ts, .../models/PropertyHistoryItemResponseDto.ts, .../services/props-api-base-url.token.ts, .../services/props-api.service.ts\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/models/PropertyResponseDto.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/services/props-api.service.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng build maia-props\", \"acceptanceCriteria\": [\"DTO field names/types match backend exactly\", \"service covers all four endpoint routes\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 7,
       "subject": "Task 8: Signal store and filtering helpers",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [6],
       "description": "**Goal:** PropsDashboardStore (state + fetch/filter/mutate) and pure filtering helpers with unit tests (TDD).\n\n**Files:**\n- Create: .../state/props-dashboard-filtering.ts (+.spec.ts), .../state/props-dashboard-store.ts\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-store.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng test maia-props --watch=false\", \"acceptanceCriteria\": [\"filterProperties filters by name substring and overriddenOnly\", \"store fetches, exposes visibleProperties, patches state on write/remove\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 8,
       "subject": "Task 9: Dialogs",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [7],
       "description": "**Goal:** EditPropertyDialog (add+edit), RemoveOverrideDialog, PropertyHistoryDialog.\n\n**Files:**\n- Create: .../dialogs/edit-property-dialog/*, .../dialogs/remove-override-dialog/*, .../dialogs/property-history-dialog/*\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/dialogs/edit-property-dialog/edit-property-dialog.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/dialogs/remove-override-dialog/remove-override-dialog.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/dialogs/property-history-dialog/property-history-dialog.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng build maia-props\", \"acceptanceCriteria\": [\"EditPropertyDialog supports add (editable name) and edit (readonly name) flows\", \"RemoveOverrideDialog confirms with optional comment\", \"PropertyHistoryDialog renders history rows\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 9,
       "subject": "Task 10: Dashboard page and public-api.ts",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [8],
       "description": "**Goal:** PropsDashboardPage wiring store/table/filters/dialogs together, with stable Playwright hooks (data-testid, aria-label). Finalize public-api.ts.\n\n**Files:**\n- Create: props-dashboard-page.ts/.html/.scss\n- Modify: src/public-api.ts\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/public-api.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng build maia-props\", \"acceptanceCriteria\": [\"page fetches on init, filterable/toggleable table\", \"row data-testid, Edit/Remove/History aria-labels, Add override aria-label present\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 10,
       "subject": "Task 11: Showcase wiring",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [4, 9],
       "description": "**Goal:** Route + page wrapper in maia-showcase-ui with dataPageId set for Playwright assertOnPage().\n\n**Files:**\n- Create: maia-showcase/maia-showcase-ui/src/app/pages/props-dashboard/props-dashboard-page.ts\n- Modify: app.routes.ts, tsconfig.json\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/pages/props-dashboard/props-dashboard-page.ts\", \"maia-showcase/maia-showcase-ui/src/app/app.routes.ts\", \"maia-showcase/maia-showcase-ui/tsconfig.json\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && npx ng build\", \"acceptanceCriteria\": [\"/props-dashboard route renders the dashboard\", \"data-page-id=props_dashboard present\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 11,
       "subject": "Task 12: Playwright CRUD journey test",
-      "status": "pending",
+      "status": "blocked",
       "blockedBy": [10],
-      "description": "**Goal:** Black-box E2E test covering add/edit/history/remove including env/override merge precedence, using maia.problems.type_prefix as a real environment-backed property.\n\n**Files:**\n- Create: testing/pages/PropsDashboardPage.kt, EditPropertyDialogPage.kt, RemoveOverrideDialogPage.kt, PropertyHistoryDialogPage.kt\n- Create: props/PropsCrudPlaywrightTest.kt\n- Modify: AbstractPlaywrightTest.kt\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/props/PropsCrudPlaywrightTest.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/AbstractPlaywrightTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests \\\"org.maiaframework.showcase.props.PropsCrudPlaywrightTest\\\"\", \"acceptanceCriteria\": [\"admin user granted MAIA_PROPS_READ/WRITE\", \"add/edit/history/remove journey passes\", \"remove reverts to original environment value\"], \"requiresUserVerification\": false}\n```"
+      "description": "**Goal:** Black-box E2E test covering add/edit/history/remove including env/override merge precedence, using maia.problems.type_prefix as a real environment-backed property.\n\n**Files (written, uncommitted):**\n- Create: testing/pages/PropsDashboardPage.kt, EditPropertyDialogPage.kt, RemoveOverrideDialogPage.kt, PropertyHistoryDialogPage.kt\n- Create: props/PropsCrudPlaywrightTest.kt\n- Modify: AbstractPlaywrightTest.kt\n\n**BLOCKED:** Test code is written and verified correct against the live DOM and backend, but cannot pass. Navigating to any lazy-loaded route (`/props-dashboard`, `/elastic-indices`, `/jobs-dashboard`, `/jobs-history`) throws NG0203 (`_HttpHandler` injection failure) during initial navigation in the production build. Root cause confirmed as open upstream Angular bug angular/angular#70719 — a race condition between `provideZonelessChangeDetection()`'s scheduler and the Router's lazy-route injector creation, reproducing only in production builds (not `ng serve`), on initial navigation. No clean application-level fix exists; the only confirmed fix is removing `provideZonelessChangeDetection()` app-wide in `maia-showcase-ui/src/app/app.config.ts`, which the user has deferred as a separate decision (2026-09-20) rather than bundling into this branch. See memory `project_ng0203_lazy_route_bug.md` for full details.\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/props/PropsCrudPlaywrightTest.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/AbstractPlaywrightTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests \\\"org.maiaframework.showcase.props.PropsCrudPlaywrightTest\\\"\", \"acceptanceCriteria\": [\"admin user granted MAIA_PROPS_READ/WRITE\", \"add/edit/history/remove journey passes\", \"remove reverts to original environment value\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-20T00:00:00Z"
+  "lastUpdated": "2026-09-20T01:00:00Z"
 }

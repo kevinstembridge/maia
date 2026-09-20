@@ -17,6 +17,12 @@ export enum Authority {
     MAIA_JOB_WRITE = 'MAIA_JOB_WRITE',
 
 
+    MAIA_PROPS_READ = 'MAIA_PROPS_READ',
+
+
+    MAIA_PROPS_WRITE = 'MAIA_PROPS_WRITE',
+
+
     // Grants read access.
     READ = 'READ',
 

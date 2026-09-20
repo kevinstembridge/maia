@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>History for {{data.propertyName}}</h2>
+<mat-dialog-content>
+    <table data-testid="property-history-table">
+        <thead>
+        <tr>
+            <th>Change</th>
+            <th>Value</th>
+            <th>By</th>
+            <th>When</th>
+            <th>Comment</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (item of data.historyItems; track item.version) {
+            <tr [attr.data-testid]="'property-history-row-' + item.version">
+                <td>{{item.changeType}}</td>
+                <td>{{item.propertyValue}}</td>
+                <td>{{item.lastModifiedByUsername}}</td>
+                <td>{{item.lastModifiedTimestamp}}</td>
+                <td>{{item.comment}}</td>
+            </tr>
+        } @empty {
+            <tr>
+                <td colspan="5">No history yet.</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onClose()">Close</button>
+</mat-dialog-actions>
