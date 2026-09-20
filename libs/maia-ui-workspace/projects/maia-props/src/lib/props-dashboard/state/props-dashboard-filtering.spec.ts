@@ -1,4 +1,4 @@
-import {filterProperties} from './props-dashboard-filtering';
+import {countOverridden, filterProperties} from './props-dashboard-filtering';
 import {PropertyResponseDto} from '../models/PropertyResponseDto';
 
 function aProperty(overrides: Partial<PropertyResponseDto> = {}): PropertyResponseDto {
@@ -43,6 +43,42 @@ describe('filterProperties', () => {
         const properties = [aProperty({propertyName: 'zebra'}), aProperty({propertyName: 'alpha'})];
         const result = filterProperties(properties, '', false);
         expect(result.map(p => p.propertyName)).toEqual(['alpha', 'zebra']);
+    });
+
+    it('combines name filter and overriddenOnly filter, keeping only the intersection', () => {
+        const properties = [
+            aProperty({propertyName: 'maia.props.web.base-url', isOverridden: true}),
+            aProperty({propertyName: 'maia.props.web.timeout', isOverridden: false}),
+            aProperty({propertyName: 'server.port', isOverridden: true}),
+        ];
+        const result = filterProperties(properties, 'props', true);
+        expect(result.length).toBe(1);
+        expect(result[0].propertyName).toBe('maia.props.web.base-url');
+    });
+
+    it('returns an empty array when given an empty array', () => {
+        expect(filterProperties([], '', false)).toEqual([]);
+    });
+
+});
+
+describe('countOverridden', () => {
+
+    it('counts only overridden properties in a mixed set', () => {
+        const properties = [
+            aProperty({propertyName: 'a', isOverridden: true}),
+            aProperty({propertyName: 'b', isOverridden: false}),
+            aProperty({propertyName: 'c', isOverridden: true}),
+        ];
+        expect(countOverridden(properties)).toBe(2);
+    });
+
+    it('returns 0 when no properties are overridden', () => {
+        const properties = [
+            aProperty({propertyName: 'a', isOverridden: false}),
+            aProperty({propertyName: 'b', isOverridden: false}),
+        ];
+        expect(countOverridden(properties)).toBe(0);
     });
 
 });
