@@ -31,7 +31,7 @@
     {
       "id": 4,
       "subject": "Task 5: Register showcase-side authorities, full build, confirm props endpoint is live",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [3],
       "description": "**Goal:** Add MAIA_PROPS_READ/WRITE to MaiaShowcasePartySpec.kt (showcase's own generated Authority enum needs them redeclared, same as job/elasticsearch authorities already are), run a full build, confirm the endpoint is live and component-scanned.\n\n**Files:**\n- Modify: maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcasePartySpec.kt\n\n```json:metadata\n{\"files\": [\"maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcasePartySpec.kt\"], \"verifyCommand\": \"./gradlew build -x test\", \"acceptanceCriteria\": [\"full backend build succeeds\", \"generated showcase Authority enum contains MAIA_PROPS_READ and MAIA_PROPS_WRITE\", \"org.maiaframework.props remains in MaiaShowcaseAppConfiguration's ComponentScan\"], \"requiresUserVerification\": false}\n```"
     },
