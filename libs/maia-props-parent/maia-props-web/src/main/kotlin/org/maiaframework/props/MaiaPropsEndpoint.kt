@@ -1,5 +1,6 @@
 package org.maiaframework.props
 
+import jakarta.validation.Valid
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -44,7 +45,7 @@ class MaiaPropsEndpoint(private val propsManager: PropsManager) {
     @PreAuthorize("hasAuthority('MAIA_PROPS_WRITE')")
     fun setProperty(
         @PathVariable propertyName: String,
-        @RequestBody request: SetPropertyRequestDto
+        @Valid @RequestBody request: SetPropertyRequestDto
     ): PropertyResponseDto {
 
         val username = CurrentUserHolder.currentUsernameOrNull ?: "unknown"
