@@ -14,6 +14,17 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName = SchemaName("props")) {
 
 
+    val readAuthority = authority("MAIA_PROPS_READ")
+
+
+    val writeAuthority = authority("MAIA_PROPS_WRITE")
+
+
+    val changeTypeEnumDef = enumDef("org.maiaframework.domain.ChangeType") {
+        provided()
+    }
+
+
     val propertyEntityDef = entity(
         "org.maiaframework.props", "Props",
         versioned = true,
@@ -38,6 +49,43 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
             nullable()
             lengthConstraint(max = 200)
         }
+    }
+
+
+    val propertyDtoDef = simpleResponseDto("org.maiaframework.props", "Property") {
+        field("propertyName", FieldTypes.string)
+        field("effectiveValue", FieldTypes.string) {
+            nullable()
+        }
+        field("isOverridden", FieldTypes.boolean)
+        field("environmentValue", FieldTypes.string) {
+            nullable()
+        }
+        field("sourceName", FieldTypes.string) {
+            nullable()
+        }
+        field("lastModifiedByUsername", FieldTypes.string) {
+            nullable()
+        }
+        field("lastModifiedTimestamp", FieldTypes.instant) {
+            nullable()
+        }
+        field("comment", FieldTypes.string) {
+            nullable()
+        }
+    }
+
+
+    val propertyHistoryItemDtoDef = simpleResponseDto("org.maiaframework.props", "PropertyHistoryItem") {
+        field("propertyName", FieldTypes.string)
+        field("propertyValue", FieldTypes.string)
+        field("changeType", changeTypeEnumDef)
+        field("lastModifiedByUsername", FieldTypes.string)
+        field("lastModifiedTimestamp", FieldTypes.instant)
+        field("comment", FieldTypes.string) {
+            nullable()
+        }
+        field("version", FieldTypes.long)
     }
 
 
