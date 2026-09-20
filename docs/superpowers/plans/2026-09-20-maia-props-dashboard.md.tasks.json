@@ -4,13 +4,13 @@
     {
       "id": 0,
       "subject": "Task 1: PropsSpec.kt — authorities and response DTOs",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** Add MAIA_PROPS_READ/WRITE authorities and Property/PropertyHistoryItem simpleResponseDto defs to PropsSpec.kt so the generator produces PropertyResponseDto/PropertyHistoryItemResponseDto into maia-props-domain.\n\n**Files:**\n- Modify: libs/maia-props-parent/maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsSpec.kt\n\n```json:metadata\n{\"files\": [\"libs/maia-props-parent/maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsSpec.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-props-parent:maia-props-domain:maiaGeneration :libs:maia-props-parent:maia-props-domain:compileKotlin\", \"acceptanceCriteria\": [\"MAIA_PROPS_READ and MAIA_PROPS_WRITE authorities declared\", \"PropertyResponseDto and PropertyHistoryItemResponseDto generated into maia-props-domain\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 1,
       "subject": "Task 2: New maia-props-service module — move PropsManager (behavior unchanged)",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [0],
       "description": "**Goal:** Physically relocate PropsManager from maia-props-api into new maia-props-service module; update settings.gradle.kts, maia-props-autoconfigure, maia-elasticsearch dependencies. No behavior change yet.\n\n**Files:**\n- Create: libs/maia-props-parent/maia-props-service/build.gradle.kts\n- Create: libs/maia-props-parent/maia-props-service/src/main/kotlin/org/maiaframework/props/PropsManager.kt\n- Delete: libs/maia-props-parent/maia-props-api/src/main/kotlin/org/maiaframework/props/PropsManager.kt\n- Modify: settings.gradle.kts, maia-props-autoconfigure/build.gradle.kts, maia-props-autoconfigure MaiaPropsAutoConfiguration.kt, maia-elasticsearch/build.gradle.kts\n\n```json:metadata\n{\"files\": [\"settings.gradle.kts\", \"libs/maia-props-parent/maia-props-service/build.gradle.kts\", \"libs/maia-props-parent/maia-props-autoconfigure/build.gradle.kts\", \"libs/maia-elasticsearch-parent/maia-elasticsearch/build.gradle.kts\"], \"verifyCommand\": \"./gradlew :libs:maia-props-parent:maia-props-service:compileKotlin :libs:maia-props-parent:maia-props-autoconfigure:compileKotlin :libs:maia-elasticsearch-parent:maia-elasticsearch:compileKotlin :libs:maia-props-parent:maia-props-starter:compileKotlin\", \"acceptanceCriteria\": [\"maia-props-api contains only Props.kt\", \"maia-props-service compiles standalone\", \"dependent modules still compile\"], \"requiresUserVerification\": false}\n```"
     },
@@ -84,5 +84,5 @@
       "description": "**Goal:** Black-box E2E test covering add/edit/history/remove including env/override merge precedence, using maia.problems.type_prefix as a real environment-backed property.\n\n**Files:**\n- Create: testing/pages/PropsDashboardPage.kt, EditPropertyDialogPage.kt, RemoveOverrideDialogPage.kt, PropertyHistoryDialogPage.kt\n- Create: props/PropsCrudPlaywrightTest.kt\n- Modify: AbstractPlaywrightTest.kt\n\n```json:metadata\n{\"files\": [\"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/props/PropsCrudPlaywrightTest.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/AbstractPlaywrightTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests \\\"org.maiaframework.showcase.props.PropsCrudPlaywrightTest\\\"\", \"acceptanceCriteria\": [\"admin user granted MAIA_PROPS_READ/WRITE\", \"add/edit/history/remove journey passes\", \"remove reverts to original environment value\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-20T00:00:00Z"
+  "lastUpdated": "2026-09-20T01:00:00Z"
 }

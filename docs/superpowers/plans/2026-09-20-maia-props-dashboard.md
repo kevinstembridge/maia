@@ -189,10 +189,9 @@ include("libs:maia-props-parent:maia-props-repo")
 include("libs:maia-props-parent:maia-props-service")
 include("libs:maia-props-parent:maia-props-spec")
 include("libs:maia-props-parent:maia-props-starter")
-include("libs:maia-props-parent:maia-props-web")
 ```
 
-(`maia-props-web` is registered now even though Task 4 creates it, so this edit only happens once.)
+**CORRECTION (found during execution):** do NOT add `include("libs:maia-props-parent:maia-props-web")` here — Gradle 9.6.1 refuses to configure an `include()` whose project directory doesn't exist yet ("Configuring project ':libs:maia-props-parent:maia-props-web' without an existing directory is not allowed"), and this was verified empirically. Leave `maia-props-web` out of `settings.gradle.kts` in this task; Task 4 adds that one `include(...)` line itself when it creates the module's directory.
 
 - [ ] **Step 2: Create `libs/maia-props-parent/maia-props-service/build.gradle.kts`**
 
@@ -553,6 +552,7 @@ git commit -m "Add Environment/override merge logic to PropsManager"
 - Create: `libs/maia-props-parent/maia-props-web/src/main/kotlin/org/maiaframework/props/MaiaPropsEndpoint.kt`
 - Create: `libs/maia-props-parent/maia-props-web/src/main/kotlin/org/maiaframework/props/SetPropertyRequestDto.kt`
 - Modify: `libs/maia-props-parent/maia-props-starter/build.gradle.kts`
+- Modify: `settings.gradle.kts` (add `include("libs:maia-props-parent:maia-props-web")` — Task 2 deliberately deferred this to here, since Gradle 9.6.1 refuses `include()` for a directory that doesn't exist yet; add this line as the FIRST step, before creating the module's files)
 
 **Acceptance Criteria:**
 - [ ] `maia-props-web` compiles and runs its own `maiaGeneration` task against `PropsApplicationSpec` using `WebLayerModuleGeneratorKt`
