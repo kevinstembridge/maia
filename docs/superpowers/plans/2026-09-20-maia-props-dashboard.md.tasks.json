@@ -51,7 +51,7 @@
     {
       "id": 7,
       "subject": "Task 8: Signal store and filtering helpers",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [6],
       "description": "**Goal:** PropsDashboardStore (state + fetch/filter/mutate) and pure filtering helpers with unit tests (TDD).\n\n**Files:**\n- Create: .../state/props-dashboard-filtering.ts (+.spec.ts), .../state/props-dashboard-store.ts\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-store.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng test maia-props --watch=false\", \"acceptanceCriteria\": [\"filterProperties filters by name substring and overriddenOnly\", \"store fetches, exposes visibleProperties, patches state on write/remove\"], \"requiresUserVerification\": false}\n```"
     },
