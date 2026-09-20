@@ -38,7 +38,7 @@
     {
       "id": 5,
       "subject": "Task 6: Scaffold the maia-props Angular library project",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** Create the @maia/maia-props ng-packagr project shell, registered in libs/maia-ui-workspace (angular.json + tsconfig.json), mirroring maia-elasticsearch.\n\n**Files:**\n- Create: libs/maia-ui-workspace/projects/maia-props/{package.json,ng-package.json,tsconfig.lib.json,tsconfig.lib.prod.json,tsconfig.spec.json,src/public-api.ts}\n- Modify: libs/maia-ui-workspace/angular.json, libs/maia-ui-workspace/tsconfig.json\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/package.json\", \"libs/maia-ui-workspace/angular.json\", \"libs/maia-ui-workspace/tsconfig.json\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng build maia-props\", \"acceptanceCriteria\": [\"ng build maia-props succeeds\", \"project registered same way as maia-elasticsearch\"], \"requiresUserVerification\": false}\n```"
     },
     {
