@@ -74,10 +74,6 @@ export const PropsDashboardStore = signalStore(
             patchState(store, {properties: [...properties, updated]});
         },
 
-        applyPropertyRemoval(propertyName: string): void {
-            patchState(store, {properties: store.properties().filter(p => p.propertyName !== propertyName)});
-        },
-
     }))
 
 );

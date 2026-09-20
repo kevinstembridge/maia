@@ -53,23 +53,20 @@ export class PropsDashboardPage implements OnInit {
 
     onAddOverride() {
 
-        const data: EditPropertyDialogData = {propertyName: null, currentValue: null};
-        const dialogRef = this.dialog.open(EditPropertyDialog, {width: '480px', data});
-
-        dialogRef.afterClosed().subscribe((result: EditPropertyDialogResult | undefined) => {
-            if (result) {
-                this.propsService.setProperty(result.propertyName, result.propertyValue, result.comment).subscribe(updated => {
-                    this.store.applyPropertyUpdate(updated);
-                });
-            }
-        });
+        this.openEditDialog({propertyName: null, currentValue: null});
 
     }
 
 
     onEdit(row: PropertyResponseDto) {
 
-        const data: EditPropertyDialogData = {propertyName: row.propertyName, currentValue: row.effectiveValue};
+        this.openEditDialog({propertyName: row.propertyName, currentValue: row.effectiveValue});
+
+    }
+
+
+    private openEditDialog(data: EditPropertyDialogData) {
+
         const dialogRef = this.dialog.open(EditPropertyDialog, {width: '480px', data});
 
         dialogRef.afterClosed().subscribe((result: EditPropertyDialogResult | undefined) => {
@@ -90,6 +87,10 @@ export class PropsDashboardPage implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: RemoveOverrideDialogResult | undefined) => {
             if (result) {
+                // Deliberately refetches rather than using store.applyPropertyRemoval(): removing an
+                // override doesn't necessarily remove the row — if the property also has a real
+                // Environment value (the common case), the row must revert to showing that value,
+                // not disappear. Only a refetch can know which outcome applies.
                 this.propsService.removeProperty(row.propertyName, result.comment).subscribe(() => {
                     this.store.retryFetch();
                 });
