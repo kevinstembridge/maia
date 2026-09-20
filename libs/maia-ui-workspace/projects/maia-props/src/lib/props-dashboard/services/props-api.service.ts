@@ -42,7 +42,7 @@ export class PropsApiService {
 
     removeProperty(propertyName: string, comment: string | null): Observable<void> {
 
-        const params = comment ? {comment} : {};
+        const params: Record<string, string> = comment ? {comment} : {};
         return this.http.delete<void>(`${this.baseUrl}/props/${encodeURIComponent(propertyName)}`, {params});
 
     }

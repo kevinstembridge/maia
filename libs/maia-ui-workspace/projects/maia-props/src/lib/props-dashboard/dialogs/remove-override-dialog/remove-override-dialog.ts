@@ -20,15 +20,19 @@ export interface RemoveOverrideDialogResult {
 })
 export class RemoveOverrideDialog {
 
-    readonly form = this.formBuilder.group({
-        comment: this.formBuilder.control(''),
-    });
+    readonly form;
 
     constructor(
         public dialogRef: MatDialogRef<RemoveOverrideDialog>,
         @Inject(MAT_DIALOG_DATA) public data: RemoveOverrideDialogData,
         private formBuilder: FormBuilder
-    ) {}
+    ) {
+
+        this.form = this.formBuilder.group({
+            comment: this.formBuilder.control(''),
+        });
+
+    }
 
     onConfirm() {
 

@@ -23,19 +23,24 @@ export interface EditPropertyDialogResult {
 })
 export class EditPropertyDialog {
 
-    readonly isAdding = this.data.propertyName === null;
-
-    readonly form = this.formBuilder.group({
-        propertyName: this.formBuilder.control(this.data.propertyName ?? '', Validators.required),
-        propertyValue: this.formBuilder.control(this.data.currentValue ?? '', Validators.required),
-        comment: this.formBuilder.control(''),
-    });
+    readonly isAdding: boolean;
+    readonly form;
 
     constructor(
         public dialogRef: MatDialogRef<EditPropertyDialog>,
         @Inject(MAT_DIALOG_DATA) public data: EditPropertyDialogData,
         private formBuilder: FormBuilder
-    ) {}
+    ) {
+
+        this.isAdding = this.data.propertyName === null;
+
+        this.form = this.formBuilder.group({
+            propertyName: this.formBuilder.control(this.data.propertyName ?? '', Validators.required),
+            propertyValue: this.formBuilder.control(this.data.currentValue ?? '', Validators.required),
+            comment: this.formBuilder.control(''),
+        });
+
+    }
 
     onSubmit() {
 
