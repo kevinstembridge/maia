@@ -65,7 +65,7 @@
     {
       "id": 9,
       "subject": "Task 10: Dashboard page and public-api.ts",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [8],
       "description": "**Goal:** PropsDashboardPage wiring store/table/filters/dialogs together, with stable Playwright hooks (data-testid, aria-label). Finalize public-api.ts.\n\n**Files:**\n- Create: props-dashboard-page.ts/.html/.scss\n- Modify: src/public-api.ts\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/public-api.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng build maia-props\", \"acceptanceCriteria\": [\"page fetches on init, filterable/toggleable table\", \"row data-testid, Edit/Remove/History aria-labels, Add override aria-label present\"], \"requiresUserVerification\": false}\n```"
     },
