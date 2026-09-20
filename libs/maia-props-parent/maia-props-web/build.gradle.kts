@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-val maiagen by configurations.creating
 
 plugins {
     id("maia.kotlin-library-spring-conventions")
@@ -8,8 +5,6 @@ plugins {
 
 
 dependencies {
-
-    implementation(kotlin("reflect"))
 
     api(project(":libs:maia-common"))
     api(project(":libs:maia-props-parent:maia-props-service"))
@@ -19,52 +14,4 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-security")
     api("org.springframework.boot:spring-boot-starter-web")
 
-    maiagen(project(":libs:maia-props-parent:maia-props-spec"))
-    maiagen(project(":maia-gen:maia-gen-generator"))
-
-}
-
-
-sourceSets {
-    main {
-        java.srcDir("src/generated/kotlin/main")
-        resources.srcDir("src/generated/resources/main")
-    }
-    test {
-        java.srcDir("src/generated/kotlin/test")
-        java.srcDir("src/generated/resources/test")
-    }
-}
-
-
-tasks {
-    clean {
-        delete("src/generated")
-    }
-}
-
-
-tasks.register<JavaExec>("maiaGeneration") {
-
-    group = BasePlugin.BUILD_GROUP
-    inputs.files(file("../maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsApplicationSpec"), file("../maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsSpec"))
-    outputs.dir("src/generated/kotlin/main")
-    outputs.dir("src/generated/resources/main")
-    outputs.dir("src/generated/kotlin/test")
-    outputs.dir("src/generated/resources/test")
-
-    classpath = configurations["maiagen"].asFileTree
-    mainClass.set("org.maiaframework.gen.generator.WebLayerModuleGeneratorKt")
-    args("applicationSpecClassName=org.maiaframework.props.spec.PropsApplicationSpec")
-
-}
-
-
-tasks.withType<KotlinCompile>() {
-    dependsOn("maiaGeneration")
-}
-
-
-tasks.withType<ProcessResources>() {
-    dependsOn("maiaGeneration")
 }
