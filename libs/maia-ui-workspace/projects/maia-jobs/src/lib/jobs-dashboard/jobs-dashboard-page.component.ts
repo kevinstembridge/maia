@@ -59,7 +59,7 @@ export class JobsDashboardPageComponent implements OnInit {
     onDisplayStackTrace(jobExecutionId: string) {
 
         this.jobsService.getStacktrace(jobExecutionId).subscribe(res => {
-            this.dialog.open(StacktraceDialogComponent, {data: res.stacktrace});
+            this.dialog.open(StacktraceDialogComponent, {data: res.stacktrace, width: '90vw', maxWidth: '90vw'});
         });
 
     }
