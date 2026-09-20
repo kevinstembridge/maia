@@ -24,7 +24,7 @@
     {
       "id": 3,
       "subject": "Task 4: New maia-props-web module and MaiaPropsEndpoint",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [2],
       "description": "**Goal:** Expose PropsManager over REST via a new maia-props-web module mirroring maia-job-web, and aggregate it into maia-props-starter.\n\n**Files:**\n- Create: libs/maia-props-parent/maia-props-web/build.gradle.kts\n- Create: libs/maia-props-parent/maia-props-web/src/main/kotlin/org/maiaframework/props/MaiaPropsEndpoint.kt\n- Create: libs/maia-props-parent/maia-props-web/src/main/kotlin/org/maiaframework/props/SetPropertyRequestDto.kt\n- Modify: libs/maia-props-parent/maia-props-starter/build.gradle.kts\n\n```json:metadata\n{\"files\": [\"libs/maia-props-parent/maia-props-web/build.gradle.kts\", \"libs/maia-props-parent/maia-props-web/src/main/kotlin/org/maiaframework/props/MaiaPropsEndpoint.kt\", \"libs/maia-props-parent/maia-props-starter/build.gradle.kts\"], \"verifyCommand\": \"./gradlew :libs:maia-props-parent:maia-props-web:compileKotlin :libs:maia-props-parent:maia-props-starter:compileKotlin\", \"acceptanceCriteria\": [\"MaiaPropsEndpoint is in package org.maiaframework.props\", \"four REST routes present with correct @PreAuthorize authorities\", \"maia-props-starter aggregates the web module\"], \"requiresUserVerification\": false}\n```"
     },
