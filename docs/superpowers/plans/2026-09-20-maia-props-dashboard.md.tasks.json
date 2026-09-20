@@ -72,7 +72,7 @@
     {
       "id": 10,
       "subject": "Task 11: Showcase wiring",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [4, 9],
       "description": "**Goal:** Route + page wrapper in maia-showcase-ui with dataPageId set for Playwright assertOnPage().\n\n**Files:**\n- Create: maia-showcase/maia-showcase-ui/src/app/pages/props-dashboard/props-dashboard-page.ts\n- Modify: app.routes.ts, tsconfig.json\n\n```json:metadata\n{\"files\": [\"maia-showcase/maia-showcase-ui/src/app/pages/props-dashboard/props-dashboard-page.ts\", \"maia-showcase/maia-showcase-ui/src/app/app.routes.ts\", \"maia-showcase/maia-showcase-ui/tsconfig.json\"], \"verifyCommand\": \"cd maia-showcase/maia-showcase-ui && npx ng build\", \"acceptanceCriteria\": [\"/props-dashboard route renders the dashboard\", \"data-page-id=props_dashboard present\"], \"requiresUserVerification\": false}\n```"
     },
