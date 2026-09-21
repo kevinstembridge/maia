@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import {Component, computed, effect, inject, OnInit} from '@angular/core';
 import {DateTime} from 'luxon';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
@@ -44,6 +44,16 @@ export class JobHistoryPageComponent implements OnInit {
     private route = inject(ActivatedRoute);
 
     private router = inject(Router);
+
+    readonly fromDateValue = computed<DateTime | null>(() => {
+        const fromDate = this.store.fromDate();
+        return fromDate ? DateTime.fromISO(fromDate) : null;
+    });
+
+    readonly toDateValue = computed<DateTime | null>(() => {
+        const toDate = this.store.toDate();
+        return toDate ? DateTime.fromISO(toDate) : null;
+    });
 
 
     constructor() {

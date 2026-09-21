@@ -6,7 +6,7 @@
 <div class="filter-bar">
     <mat-form-field subscriptSizing="dynamic" class="filter-field">
         <mat-label>Filter jobs</mat-label>
-        <input matInput placeholder="Filter jobs..." (input)="onFilterInput($event)">
+        <input matInput placeholder="Filter jobs..." [value]="store.nameFilter()" (input)="onFilterInput($event)">
     </mat-form-field>
 </div>
 
