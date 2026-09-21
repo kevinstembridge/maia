@@ -1,3 +1,4 @@
+import {ParamMap, Params} from '@angular/router';
 import {JobState} from '../models/JobState';
 
 export type JobStatus = 'running' | 'failed' | 'idle';
@@ -71,4 +72,14 @@ export function formatElapsed(startTimestamp: string, now: number): string {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     return `${hours}h ${String(minutes).padStart(2, '0')}m`;
+}
+
+
+export function parseNameFilterFromParams(params: ParamMap): string {
+    return params.get('jobName') ?? '';
+}
+
+
+export function buildNameFilterQueryParams(nameFilter: string): Params {
+    return {jobName: nameFilter.length > 0 ? nameFilter : null};
 }

@@ -21,14 +21,14 @@
 
     <mat-form-field subscriptSizing="dynamic" class="filter-field">
         <mat-label>From</mat-label>
-        <input matInput [matDatepicker]="fromPicker" (dateChange)="onFromDateChanged($event.value)">
+        <input matInput [matDatepicker]="fromPicker" [value]="fromDateValue()" (dateChange)="onFromDateChanged($event.value)">
         <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
         <mat-datepicker #fromPicker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field subscriptSizing="dynamic" class="filter-field">
         <mat-label>To</mat-label>
-        <input matInput [matDatepicker]="toPicker" (dateChange)="onToDateChanged($event.value)">
+        <input matInput [matDatepicker]="toPicker" [value]="toDateValue()" (dateChange)="onToDateChanged($event.value)">
         <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
         <mat-datepicker #toPicker></mat-datepicker>
     </mat-form-field>

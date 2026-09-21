@@ -1,14 +1,15 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {JobState} from './models/JobState';
 import {JobExecutionState} from './models/JobExecutionState';
 import {JobsApiService} from './services/jobs-api.service';
 import {JobsDashboardStore} from './state/jobs-dashboard-store';
+import {buildNameFilterQueryParams, parseNameFilterFromParams} from './state/jobs-filtering';
 import {JobStateComponent} from './components/job-state/job-state.component';
 import {JobMetricsDialogComponent} from './dialogs/job-metrics-dialog/job-metrics-dialog.component';
 import {RunJobDialogComponent} from './dialogs/run-job-dialog/run-job-dialog.component';
@@ -27,11 +28,26 @@ export class JobsDashboardPageComponent implements OnInit {
 
     readonly store = inject(JobsDashboardStore);
 
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+
 
     constructor(
         private jobsService: JobsApiService,
         private dialog: MatDialog
-    ) {}
+    ) {
+
+        this.store.onNameFilterChanged(parseNameFilterFromParams(this.route.snapshot.queryParamMap));
+
+        effect(() => {
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: buildNameFilterQueryParams(this.store.nameFilter()),
+                replaceUrl: true,
+            });
+        });
+
+    }
 
 
     ngOnInit() {
