@@ -88,6 +88,9 @@ export const JobHistoryStore = signalStore(
 
         return {
 
+            // Seeds filter state from the URL without triggering a search — the
+            // subsequent init() call performs the one initial search, unlike the
+            // onXChanged methods below which each patch state and search immediately.
             applyInitialFilters(filters: HistoryFilters): void {
                 patchState(store, {...filters, pageIndex: 0});
             },
