@@ -1,9 +1,9 @@
 <div class="props-dashboard-toolbar">
     <mat-form-field appearance="fill">
         <mat-label>Filter by name</mat-label>
-        <input matInput (input)="onNameFilterInput($event)">
+        <input matInput [value]="store.nameFilter()" (input)="onNameFilterInput($event)">
     </mat-form-field>
-    <mat-slide-toggle (change)="onOverriddenOnlyToggled($event)">Overridden only</mat-slide-toggle>
+    <mat-slide-toggle [checked]="store.overriddenOnly()" (change)="onOverriddenOnlyToggled($event)">Overridden only</mat-slide-toggle>
     <button mat-flat-button aria-label="Add override" (click)="onAddOverride()">Add override</button>
 </div>
 

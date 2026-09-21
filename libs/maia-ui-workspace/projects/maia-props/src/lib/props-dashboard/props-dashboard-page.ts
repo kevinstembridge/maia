@@ -1,4 +1,5 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -9,6 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {PropsApiService} from './services/props-api.service';
 import {PropsDashboardStore} from './state/props-dashboard-store';
+import {buildPropsQueryParams, parsePropsFiltersFromParams} from './state/props-dashboard-filtering';
 import {PropertyResponseDto} from './models/PropertyResponseDto';
 import {EditPropertyDialog, EditPropertyDialogData, EditPropertyDialogResult} from './dialogs/edit-property-dialog/edit-property-dialog';
 import {RemoveOverrideDialog, RemoveOverrideDialogData, RemoveOverrideDialogResult} from './dialogs/remove-override-dialog/remove-override-dialog';
@@ -29,11 +31,31 @@ export class PropsDashboardPage implements OnInit {
 
     readonly displayedColumns = ['propertyName', 'effectiveValue', 'isOverridden', 'sourceName', 'lastModifiedByUsername', 'lastModifiedTimestamp', 'actions'];
 
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+
 
     constructor(
         private propsService: PropsApiService,
         private dialog: MatDialog
-    ) {}
+    ) {
+
+        const initialFilters = parsePropsFiltersFromParams(this.route.snapshot.queryParamMap);
+        this.store.onNameFilterChanged(initialFilters.nameFilter);
+        this.store.onOverriddenOnlyToggled(initialFilters.overriddenOnly);
+
+        effect(() => {
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: buildPropsQueryParams({
+                    nameFilter: this.store.nameFilter(),
+                    overriddenOnly: this.store.overriddenOnly(),
+                }),
+                replaceUrl: true,
+            });
+        });
+
+    }
 
 
     ngOnInit() {

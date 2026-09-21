@@ -1,4 +1,5 @@
-import {countOverridden, filterProperties} from './props-dashboard-filtering';
+import {convertToParamMap} from '@angular/router';
+import {buildPropsQueryParams, countOverridden, filterProperties, parsePropsFiltersFromParams} from './props-dashboard-filtering';
 import {PropertyResponseDto} from '../models/PropertyResponseDto';
 
 function aProperty(overrides: Partial<PropertyResponseDto> = {}): PropertyResponseDto {
@@ -79,6 +80,33 @@ describe('countOverridden', () => {
             aProperty({propertyName: 'b', isOverridden: false}),
         ];
         expect(countOverridden(properties)).toBe(0);
+    });
+
+});
+
+describe('parsePropsFiltersFromParams', () => {
+
+    it('parses both filters when both params are present', () => {
+        const params = convertToParamMap({propertyName: 'server.port', overriddenOnly: 'true'});
+        expect(parsePropsFiltersFromParams(params)).toEqual({nameFilter: 'server.port', overriddenOnly: true});
+    });
+
+    it('defaults overriddenOnly to false and nameFilter to empty string when no params are present', () => {
+        expect(parsePropsFiltersFromParams(convertToParamMap({}))).toEqual({nameFilter: '', overriddenOnly: false});
+    });
+
+});
+
+describe('buildPropsQueryParams', () => {
+
+    it('includes both params when they differ from their defaults', () => {
+        expect(buildPropsQueryParams({nameFilter: 'server.port', overriddenOnly: true}))
+            .toEqual({propertyName: 'server.port', overriddenOnly: 'true'});
+    });
+
+    it('omits both params when filters are at their defaults', () => {
+        expect(buildPropsQueryParams({nameFilter: '', overriddenOnly: false}))
+            .toEqual({propertyName: null, overriddenOnly: null});
     });
 
 });
