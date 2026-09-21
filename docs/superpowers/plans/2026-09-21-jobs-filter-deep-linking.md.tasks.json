@@ -1,0 +1,19 @@
+{
+  "planPath": "docs/superpowers/plans/2026-09-21-jobs-filter-deep-linking.md",
+  "tasks": [
+    {
+      "id": 0,
+      "subject": "Task 1: Deep link jobs-dashboard-page's nameFilter",
+      "status": "pending",
+      "description": "**Goal:** jobs-dashboard-page reads ?jobName= from the URL on load and keeps the URL in sync as the user types in the filter box.\n\n**Files:**\n- Modify: projects/maia-jobs/src/lib/jobs-dashboard/state/jobs-filtering.ts\n- Modify: projects/maia-jobs/src/lib/jobs-dashboard/state/jobs-filtering.spec.ts\n- Modify: projects/maia-jobs/src/lib/jobs-dashboard/jobs-dashboard-page.component.ts\n\n**Acceptance Criteria:**\n- parseNameFilterFromParams and buildNameFilterQueryParams exist in jobs-filtering.ts, unit-tested\n- Loading /jobs-dashboard?jobName=nightly seeds store.nameFilter() with 'nightly'\n- Typing in the filter box updates the URL's jobName query param; clearing it removes the param\n- npx ng build maia-jobs compiles cleanly\n\n**Verify:** npx ng test maia-jobs --watch=false (from libs/maia-ui-workspace) -> all tests pass\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/state/jobs-filtering.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/state/jobs-filtering.spec.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/jobs-dashboard/jobs-dashboard-page.component.ts\"], \"verifyCommand\": \"npx ng test maia-jobs --watch=false\", \"acceptanceCriteria\": [\"parseNameFilterFromParams and buildNameFilterQueryParams exist and are unit-tested\", \"URL seeds nameFilter on load\", \"typing updates the URL\", \"ng build maia-jobs compiles cleanly\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 1,
+      "subject": "Task 2: Deep link job-history-page's filters",
+      "status": "pending",
+      "blockedBy": [0],
+      "description": "**Goal:** job-history-page reads ?jobName=&status=&from=&to= from the URL on load (seeding the store with exactly one resulting search) and keeps the URL in sync as filters change.\n\n**Files:**\n- Modify: projects/maia-jobs/src/lib/job-history/state/job-history-filtering.ts\n- Modify: projects/maia-jobs/src/lib/job-history/state/job-history-filtering.spec.ts\n- Modify: projects/maia-jobs/src/lib/job-history/state/job-history-store.ts\n- Modify: projects/maia-jobs/src/lib/job-history/job-history-page.component.ts\n\n**Acceptance Criteria:**\n- toStartOfDayIso/toEndOfDayIso moved from the component into job-history-filtering.ts (exported, unit-tested)\n- parseHistoryFiltersFromParams/buildHistoryFilterQueryParams exist, unit-tested, and round-trip correctly (UTC-safe)\n- JobHistoryStore.applyInitialFilters patches filter state without triggering a search()\n- Loading the page with all four params set seeds all four filters and triggers exactly one search\n- Changing/clearing any filter updates/removes its URL query param\n- npx ng build maia-jobs compiles cleanly\n\n**Verify:** npx ng test maia-jobs --watch=false (from libs/maia-ui-workspace) -> all tests pass\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-filtering.spec.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/state/job-history-store.ts\", \"libs/maia-ui-workspace/projects/maia-jobs/src/lib/job-history/job-history-page.component.ts\"], \"verifyCommand\": \"npx ng test maia-jobs --watch=false\", \"acceptanceCriteria\": [\"date helpers moved and unit-tested\", \"parse/build functions round-trip correctly (UTC-safe)\", \"applyInitialFilters patches without extra search\", \"single search on initial load with URL filters\", \"ng build maia-jobs compiles cleanly\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-09-21T00:00:00Z"
+}
