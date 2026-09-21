@@ -60,6 +60,11 @@ export class App {
     );
 
 
+    protected readonly hasMaiaPropsWriteAuthority = computed(() =>
+        this.currentUserAuthStore.hasMaiaPropsWriteAuthority()
+    );
+
+
     protected toggleMenu(): void {
 
         this.menuOpen.update((open) => !open);

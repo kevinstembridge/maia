@@ -69,6 +69,12 @@
                 <span>Left-Right Complex</span>
             </button>
         }
+        @if (hasMaiaPropsWriteAuthority()) {
+            <button mat-menu-item routerLink="/props-dashboard">
+                <mat-icon>storage</mat-icon>
+                <span>Props Dashboard</span>
+            </button>
+        }
         @if (hasReadAuthority()) {
             <button mat-menu-item routerLink="/right-many-blotter">
                 <mat-icon>dialpad</mat-icon>
