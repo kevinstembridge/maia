@@ -1,10 +1,13 @@
 import {describe, expect, it} from 'vitest';
+import {convertToParamMap} from '@angular/router';
 import {
     buildJobCountSummary,
+    buildNameFilterQueryParams,
     countByStatus,
     deriveJobStatus,
     filterAndSortByName,
-    formatElapsed
+    formatElapsed,
+    parseNameFilterFromParams
 } from './jobs-filtering';
 import {JobState} from '../models/JobState';
 import {JobExecutionState} from '../models/JobExecutionState';
@@ -155,6 +158,32 @@ describe('jobs-filtering', () => {
             const start = '2026-01-01T00:00:00.000Z';
             const now = new Date('2026-01-01T01:03:00.000Z').getTime();
             expect(formatElapsed(start, now)).toEqual('1h 03m');
+        });
+
+    });
+
+
+    describe('parseNameFilterFromParams()', () => {
+
+        it('returns the jobName param value when present', () => {
+            expect(parseNameFilterFromParams(convertToParamMap({jobName: 'nightly'}))).toEqual('nightly');
+        });
+
+        it('returns an empty string when the jobName param is absent', () => {
+            expect(parseNameFilterFromParams(convertToParamMap({}))).toEqual('');
+        });
+
+    });
+
+
+    describe('buildNameFilterQueryParams()', () => {
+
+        it('includes the jobName param when the filter is non-empty', () => {
+            expect(buildNameFilterQueryParams('nightly')).toEqual({jobName: 'nightly'});
+        });
+
+        it('sets the jobName param to null (omitting it from the URL) when the filter is empty', () => {
+            expect(buildNameFilterQueryParams('')).toEqual({jobName: null});
         });
 
     });
