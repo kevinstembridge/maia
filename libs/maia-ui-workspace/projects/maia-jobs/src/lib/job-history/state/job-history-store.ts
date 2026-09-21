@@ -6,7 +6,7 @@ import {switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
 import {JobExecutionHistoryItem} from '../../jobs-dashboard/models/JobExecutionHistoryItem';
 import {JobsApiService} from '../../jobs-dashboard/services/jobs-api.service';
-import {HistoryStatusFilter} from './job-history-filtering';
+import {HistoryFilters, HistoryStatusFilter} from './job-history-filtering';
 
 type JobHistoryState = {
     items: JobExecutionHistoryItem[];
@@ -87,6 +87,10 @@ export const JobHistoryStore = signalStore(
         );
 
         return {
+
+            applyInitialFilters(filters: HistoryFilters): void {
+                patchState(store, {...filters, pageIndex: 0});
+            },
 
             init(): void {
                 loadAvailableJobNames();

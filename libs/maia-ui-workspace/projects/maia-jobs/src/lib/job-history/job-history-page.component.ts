@@ -1,5 +1,6 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {DateTime} from 'luxon';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -13,7 +14,13 @@ import {JobsApiService} from '../jobs-dashboard/services/jobs-api.service';
 import {StacktraceDialogComponent} from '../jobs-dashboard/dialogs/stacktrace-dialog/stacktrace-dialog.component';
 import {JobMetricsDialogComponent} from '../jobs-dashboard/dialogs/job-metrics-dialog/job-metrics-dialog.component';
 import {JobHistoryStore} from './state/job-history-store';
-import {HistoryStatusFilter} from './state/job-history-filtering';
+import {
+    buildHistoryFilterQueryParams,
+    HistoryStatusFilter,
+    parseHistoryFiltersFromParams,
+    toEndOfDayIso,
+    toStartOfDayIso
+} from './state/job-history-filtering';
 
 @Component({
     imports: [
@@ -34,6 +41,30 @@ export class JobHistoryPageComponent implements OnInit {
 
     private jobsService = inject(JobsApiService);
 
+    private route = inject(ActivatedRoute);
+
+    private router = inject(Router);
+
+
+    constructor() {
+
+        this.store.applyInitialFilters(parseHistoryFiltersFromParams(this.route.snapshot.queryParamMap));
+
+        effect(() => {
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: buildHistoryFilterQueryParams({
+                    jobNameFilter: this.store.jobNameFilter(),
+                    statusFilter: this.store.statusFilter(),
+                    fromDate: this.store.fromDate(),
+                    toDate: this.store.toDate(),
+                }),
+                replaceUrl: true,
+            });
+        });
+
+    }
+
 
     ngOnInit() {
         this.store.init();
@@ -51,12 +82,12 @@ export class JobHistoryPageComponent implements OnInit {
 
 
     onFromDateChanged(date: DateTime | null) {
-        this.store.onDateRangeChanged(this.toStartOfDayIso(date), this.store.toDate());
+        this.store.onDateRangeChanged(toStartOfDayIso(date), this.store.toDate());
     }
 
 
     onToDateChanged(date: DateTime | null) {
-        this.store.onDateRangeChanged(this.store.fromDate(), this.toEndOfDayIso(date));
+        this.store.onDateRangeChanged(this.store.fromDate(), toEndOfDayIso(date));
     }
 
 
@@ -77,28 +108,6 @@ export class JobHistoryPageComponent implements OnInit {
     onDisplayJobMetrics(metrics: any) {
 
         this.dialog.open(JobMetricsDialogComponent, {data: metrics, width: '90vw', maxWidth: '90vw'});
-
-    }
-
-
-    private toStartOfDayIso(date: DateTime | null): string | null {
-
-        if (!date) {
-            return null;
-        }
-
-        return date.startOf('day').toUTC().toISO();
-
-    }
-
-
-    private toEndOfDayIso(date: DateTime | null): string | null {
-
-        if (!date) {
-            return null;
-        }
-
-        return date.endOf('day').toUTC().toISO();
 
     }
 
