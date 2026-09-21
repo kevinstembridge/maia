@@ -1,4 +1,5 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -11,7 +12,13 @@ import {ElasticIndicesPageStore} from './state/elastic-indices-page-store';
 import {ElasticIndex} from './components/elastic-index/elastic-index';
 import {CreateIndexDialog} from './dialogs/create-index-dialog/create-index-dialog';
 import {SetIndexVersionActiveDialog} from './dialogs/set-index-version-active-dialog/set-index-version-active-dialog';
-import {DisplayStatus, STATUS_COLORS, STATUS_TILE_ORDER} from './state/elastic-indices-filtering';
+import {
+    buildElasticIndicesQueryParams,
+    DisplayStatus,
+    parseElasticIndicesFiltersFromParams,
+    STATUS_COLORS,
+    STATUS_TILE_ORDER
+} from './state/elastic-indices-filtering';
 
 const STATUS_LABELS: Record<DisplayStatus, string> = {
     green: 'Green',
@@ -37,11 +44,30 @@ export class ElasticIndicesPage implements OnInit {
     readonly statusColors = STATUS_COLORS;
     readonly statusLabels = STATUS_LABELS;
 
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+
 
     constructor(
         private elasticIndicesService: ElasticIndicesApiService,
         private dialog: MatDialog
-    ) {}
+    ) {
+
+        this.store.applyInitialFilters(parseElasticIndicesFiltersFromParams(this.route.snapshot.queryParamMap));
+
+        effect(() => {
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: buildElasticIndicesQueryParams({
+                    nameFilter: this.store.nameFilter(),
+                    statusFilter: this.store.statusFilter(),
+                    hideSystemIndices: this.store.hideSystemIndices(),
+                }),
+                replaceUrl: true,
+            });
+        });
+
+    }
 
 
     ngOnInit() {
