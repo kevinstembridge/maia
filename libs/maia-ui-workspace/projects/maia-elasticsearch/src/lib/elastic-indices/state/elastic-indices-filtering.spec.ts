@@ -1,5 +1,14 @@
 import {describe, expect, it} from 'vitest';
-import {countByDisplayStatus, deriveDisplayStatus, filterAndSortByName, filterBySystemIndices, filterByStatus} from './elastic-indices-filtering';
+import {convertToParamMap} from '@angular/router';
+import {
+    buildElasticIndicesQueryParams,
+    countByDisplayStatus,
+    deriveDisplayStatus,
+    filterAndSortByName,
+    filterBySystemIndices,
+    filterByStatus,
+    parseElasticIndicesFiltersFromParams
+} from './elastic-indices-filtering';
 import {EsIndexStateDto} from '../models/EsIndexStateDto';
 
 
@@ -113,6 +122,48 @@ describe('elastic-indices-filtering', () => {
             const missing = indexDto({indexName: 'a', indexExists: false});
             const existing = indexDto({indexName: 'b'});
             expect(filterByStatus([missing, existing], 'not-created')).toEqual([missing]);
+        });
+
+    });
+
+
+    describe('parseElasticIndicesFiltersFromParams()', () => {
+
+        it('parses all three filters when all params are present', () => {
+            const params = convertToParamMap({indexName: 'audit', status: 'red', hideSystemIndices: 'false'});
+            expect(parseElasticIndicesFiltersFromParams(params)).toEqual({
+                nameFilter: 'audit',
+                statusFilter: 'red',
+                hideSystemIndices: false,
+            });
+        });
+
+        it('defaults hideSystemIndices to true and the rest to empty/null when no params are present', () => {
+            expect(parseElasticIndicesFiltersFromParams(convertToParamMap({}))).toEqual({
+                nameFilter: '',
+                statusFilter: null,
+                hideSystemIndices: true,
+            });
+        });
+
+        it('falls back to a null statusFilter for an invalid status value', () => {
+            const params = convertToParamMap({status: 'purple'});
+            expect(parseElasticIndicesFiltersFromParams(params).statusFilter).toBeNull();
+        });
+
+    });
+
+
+    describe('buildElasticIndicesQueryParams()', () => {
+
+        it('includes all params when they differ from their defaults', () => {
+            expect(buildElasticIndicesQueryParams({nameFilter: 'audit', statusFilter: 'red', hideSystemIndices: false}))
+                .toEqual({indexName: 'audit', status: 'red', hideSystemIndices: 'false'});
+        });
+
+        it('omits indexName, status, and hideSystemIndices when all filters are at their defaults', () => {
+            expect(buildElasticIndicesQueryParams({nameFilter: '', statusFilter: null, hideSystemIndices: true}))
+                .toEqual({indexName: null, status: null, hideSystemIndices: null});
         });
 
     });

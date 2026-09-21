@@ -1,3 +1,4 @@
+import {ParamMap, Params} from '@angular/router';
 import {EsIndexStateDto} from '../models/EsIndexStateDto';
 
 export type DisplayStatus = 'green' | 'yellow' | 'red' | 'not-created';
@@ -10,6 +11,14 @@ export const STATUS_COLORS: Record<DisplayStatus, string> = {
     red: '#d32f2f',
     'not-created': '#9e9e9e',
 };
+
+export interface ElasticIndicesFilters {
+    nameFilter: string;
+    statusFilter: DisplayStatus | null;
+    hideSystemIndices: boolean;
+}
+
+const VALID_STATUS_FILTERS: string[] = ['green', 'yellow', 'red', 'not-created'];
 
 
 export function filterBySystemIndices(indices: EsIndexStateDto[], hideSystemIndices: boolean): EsIndexStateDto[] {
@@ -48,4 +57,32 @@ export function countByDisplayStatus(indices: EsIndexStateDto[]): Record<Display
 
 export function filterByStatus(indices: EsIndexStateDto[], status: DisplayStatus | null): EsIndexStateDto[] {
     return status === null ? indices : indices.filter((it) => deriveDisplayStatus(it) === status);
+}
+
+
+export function parseElasticIndicesFiltersFromParams(params: ParamMap): ElasticIndicesFilters {
+
+    const rawStatus = params.get('status');
+    const statusFilter = rawStatus !== null && VALID_STATUS_FILTERS.includes(rawStatus)
+        ? rawStatus as DisplayStatus
+        : null;
+
+    const rawHideSystemIndices = params.get('hideSystemIndices');
+    const hideSystemIndices = rawHideSystemIndices === null ? true : rawHideSystemIndices === 'true';
+
+    return {
+        nameFilter: params.get('indexName') ?? '',
+        statusFilter,
+        hideSystemIndices,
+    };
+
+}
+
+
+export function buildElasticIndicesQueryParams(filters: ElasticIndicesFilters): Params {
+    return {
+        indexName: filters.nameFilter.length > 0 ? filters.nameFilter : null,
+        status: filters.statusFilter,
+        hideSystemIndices: filters.hideSystemIndices === true ? null : 'false',
+    };
 }

@@ -7,7 +7,14 @@ import {tapResponse} from '@ngrx/operators';
 import {EsIndexStateDto} from '../models/EsIndexStateDto';
 import {ElasticIndicesApiService} from '../services/elastic-indices-api-service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
-import {countByDisplayStatus, DisplayStatus, filterAndSortByName, filterBySystemIndices, filterByStatus} from './elastic-indices-filtering';
+import {
+    countByDisplayStatus,
+    DisplayStatus,
+    ElasticIndicesFilters,
+    filterAndSortByName,
+    filterBySystemIndices,
+    filterByStatus
+} from './elastic-indices-filtering';
 
 type ElasticIndicesPageState = {
     hideSystemIndices: boolean;
@@ -48,6 +55,10 @@ export const ElasticIndicesPageStore = signalStore(
     }),
 
     withMethods((store, pageService = inject(ElasticIndicesApiService)) => ({
+
+        applyInitialFilters(filters: ElasticIndicesFilters): void {
+            patchState(store, filters);
+        },
 
         fetchAllIndices: rxMethod<void>(
             pipe(

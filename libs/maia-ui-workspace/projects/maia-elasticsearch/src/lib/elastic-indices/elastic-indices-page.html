@@ -16,7 +16,7 @@
 <div class="filter-bar">
     <mat-form-field subscriptSizing="dynamic" class="filter-field">
         <mat-label>Filter indices</mat-label>
-        <input matInput placeholder="Filter indices..." (input)="onFilterInput($event)">
+        <input matInput placeholder="Filter indices..." [value]="store.nameFilter()" (input)="onFilterInput($event)">
     </mat-form-field>
     <mat-slide-toggle
         [checked]="store.hideSystemIndices()"
