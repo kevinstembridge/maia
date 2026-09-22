@@ -1,4 +1,5 @@
 import {Component, computed, input, output, signal} from '@angular/core';
+import {RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {JobState} from '../../models/JobState';
 import {JobExecutionState} from '../../models/JobExecutionState';
@@ -20,7 +21,7 @@ const STATUS_LABELS: Record<JobStatus, string> = {
     selector: 'maia-job-state',
     templateUrl: './job-state.component.html',
     styleUrl: './job-state.component.scss',
-    imports: [MatButtonModule]
+    imports: [MatButtonModule, RouterLink]
 })
 export class JobStateComponent {
 

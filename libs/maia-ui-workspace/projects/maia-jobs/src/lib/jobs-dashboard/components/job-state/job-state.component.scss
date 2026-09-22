@@ -1,11 +1,13 @@
 :host {
     display: flex;
+    min-width: 0;
 }
 
 .card {
     display: flex;
     flex: 1;
     flex-direction: column;
+    min-width: 0;
     gap: 0.5rem;
     border-radius: 0.5rem;
     border: 1px solid var(--mat-sys-outline-variant);
@@ -85,5 +87,8 @@
 
 .actions {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: auto;
 }
