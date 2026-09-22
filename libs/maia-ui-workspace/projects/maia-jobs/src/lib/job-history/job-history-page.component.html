@@ -1,3 +1,10 @@
+<div class="page-header">
+    <a mat-stroked-button routerLink="/jobs-dashboard">
+        <mat-icon>arrow_back</mat-icon>
+        Dashboard
+    </a>
+</div>
+
 <div class="filter-bar">
     <mat-form-field subscriptSizing="dynamic" class="filter-field">
         <mat-label>Job name</mat-label>
@@ -44,7 +51,10 @@
         <button mat-flat-button color="primary" (click)="store.retryFetch()">Retry</button>
     </div>
 } @else if (store.items().length === 0) {
-    <p class="empty-message">No executions match your filters.</p>
+    <div class="empty-state">
+        <p class="empty-message">No executions match your filters.</p>
+        <button mat-stroked-button (click)="store.clearFilters()">Clear Filters</button>
+    </div>
 } @else {
     <div class="history-list">
         @for (item of store.items(); track item.jobExecutionId) {

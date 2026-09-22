@@ -44,7 +44,13 @@
     }
 
     <div class="actions">
-        <a mat-stroked-button routerLink="/jobs-history" [queryParams]="{jobName: jobState().jobName}">View History</a>
-        <button mat-flat-button (click)="onRun()" color="primary">Run...</button>
+        <a mat-stroked-button routerLink="/jobs-history" [queryParams]="{jobName: jobState().jobName}">
+            <mat-icon>history</mat-icon>
+            History
+        </a>
+        <button mat-flat-button (click)="onRun()" color="primary">
+            <mat-icon>play_arrow</mat-icon>
+            Run...
+        </button>
     </div>
 </div>

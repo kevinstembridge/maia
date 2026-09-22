@@ -6,7 +6,7 @@ import {switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
 import {JobState} from '../models/JobState';
 import {JobsApiService} from '../services/jobs-api.service';
-import {buildJobCountSummary, countByStatus, filterAndSortByName} from './jobs-filtering';
+import {countByStatus, deriveJobStatus, filterAndSortByName, JobStatus} from './jobs-filtering';
 
 const POLL_INTERVAL_MS = 15_000;
 
@@ -15,6 +15,7 @@ type JobsDashboardState = {
     isLoading: boolean;
     error: string | null;
     nameFilter: string;
+    statusFilter: JobStatus | null;
     now: number;
 };
 
@@ -23,6 +24,7 @@ const initialState: JobsDashboardState = {
     isLoading: false,
     error: null,
     nameFilter: '',
+    statusFilter: null,
     now: Date.now(),
 };
 
@@ -30,17 +32,21 @@ export const JobsDashboardStore = signalStore(
 
     withState(initialState),
 
-    withComputed(({jobStates, nameFilter}) => {
-        const visibleJobStates = computed<JobState[]>(() =>
+    withComputed(({jobStates, nameFilter, statusFilter}) => {
+        const nameFilteredJobStates = computed<JobState[]>(() =>
             filterAndSortByName(jobStates(), nameFilter())
         );
         const statusCounts = computed<Record<string, number>>(() =>
-            countByStatus(visibleJobStates())
+            countByStatus(nameFilteredJobStates())
         );
-        const countSummary = computed<string>(() =>
-            buildJobCountSummary(visibleJobStates().length, jobStates().length, statusCounts())
-        );
-        return {visibleJobStates, statusCounts, countSummary};
+        const totalCount = computed<number>(() => nameFilteredJobStates().length);
+        const visibleJobStates = computed<JobState[]>(() => {
+            const status = statusFilter();
+            return status === null
+                ? nameFilteredJobStates()
+                : nameFilteredJobStates().filter((it) => deriveJobStatus(it) === status);
+        });
+        return {visibleJobStates, statusCounts, totalCount};
     }),
 
     withMethods((store, jobsService = inject(JobsApiService)) => {
@@ -76,6 +82,10 @@ export const JobsDashboardStore = signalStore(
 
             onNameFilterChanged(value: string): void {
                 patchState(store, {nameFilter: value});
+            },
+
+            onStatusFilterChanged(value: JobStatus | null): void {
+                patchState(store, {statusFilter: value});
             },
 
         };

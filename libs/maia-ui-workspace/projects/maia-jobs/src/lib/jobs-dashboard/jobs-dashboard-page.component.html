@@ -1,6 +1,23 @@
 <div class="toolbar">
-    <span class="count">{{ store.countSummary() }}</span>
-    <a mat-stroked-button routerLink="/jobs-history">View History</a>
+    <div class="status-summary">
+        <button type="button" class="status-chip" [class.active]="store.statusFilter() === null"
+                (click)="store.onStatusFilterChanged(null)">
+            {{ store.totalCount() }} {{ store.totalCount() === 1 ? 'job' : 'jobs' }}
+        </button>
+        @for (status of statusOrder; track status) {
+            @if ((store.statusCounts()[status] ?? 0) > 0) {
+                <button type="button" class="status-chip" [class.active]="store.statusFilter() === status"
+                        [attr.aria-pressed]="store.statusFilter() === status"
+                        (click)="onStatusFilterToggled(status)">
+                    {{ store.statusCounts()[status] }} {{ status }}
+                </button>
+            }
+        }
+    </div>
+    <a mat-stroked-button routerLink="/jobs-history">
+        <mat-icon>history</mat-icon>
+        History
+    </a>
 </div>
 
 <div class="filter-bar">

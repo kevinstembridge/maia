@@ -3,7 +3,7 @@ import {JobState} from '../models/JobState';
 
 export type JobStatus = 'running' | 'failed' | 'idle';
 
-const STATUS_DISPLAY_ORDER: JobStatus[] = ['running', 'failed', 'idle'];
+export const STATUS_DISPLAY_ORDER: JobStatus[] = ['running', 'failed', 'idle'];
 
 
 export function filterAndSortByName(jobs: JobState[], nameFilter: string): JobState[] {
@@ -35,26 +35,6 @@ export function countByStatus(jobs: JobState[]): Record<string, number> {
 }
 
 
-export function buildJobCountSummary(
-    visibleCount: number,
-    totalCount: number,
-    statusCounts: Record<string, number>
-): string {
-    const jobWord = totalCount === 1 ? 'job' : 'jobs';
-    const countLabel = visibleCount === totalCount
-        ? `${totalCount} ${jobWord}`
-        : `${visibleCount} of ${totalCount} ${jobWord}`;
-
-    const statusSegments = STATUS_DISPLAY_ORDER
-        .filter((status) => (statusCounts[status] ?? 0) > 0)
-        .map((status) => `${statusCounts[status]} ${status}`);
-
-    return statusSegments.length === 0
-        ? countLabel
-        : `${countLabel} · ${statusSegments.join(' · ')}`;
-}
-
-
 export function formatElapsed(startTimestamp: string, now: number): string {
     const elapsedMs = Math.max(0, now - new Date(startTimestamp).getTime());
     const totalSeconds = Math.floor(elapsedMs / 1000);
@@ -82,4 +62,15 @@ export function parseNameFilterFromParams(params: ParamMap): string {
 
 export function buildNameFilterQueryParams(nameFilter: string): Params {
     return {jobName: nameFilter.length > 0 ? nameFilter : null};
+}
+
+
+export function parseStatusFilterFromParams(params: ParamMap): JobStatus | null {
+    const status = params.get('status');
+    return STATUS_DISPLAY_ORDER.includes(status as JobStatus) ? (status as JobStatus) : null;
+}
+
+
+export function buildStatusFilterQueryParams(statusFilter: JobStatus | null): Params {
+    return {status: statusFilter};
 }

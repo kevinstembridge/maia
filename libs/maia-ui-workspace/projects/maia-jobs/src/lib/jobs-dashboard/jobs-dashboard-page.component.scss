@@ -4,9 +4,29 @@
     justify-content: space-between;
 }
 
-.count {
-    font-size: 0.875rem;
+.status-summary {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.status-chip {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 9999px;
+    background: none;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8125rem;
     color: var(--mat-sys-on-surface-variant);
+    cursor: pointer;
+}
+
+.status-chip.active {
+    border-color: var(--mat-sys-primary);
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
 }
 
 .filter-bar {

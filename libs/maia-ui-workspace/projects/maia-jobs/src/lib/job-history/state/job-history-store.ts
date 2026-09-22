@@ -124,6 +124,17 @@ export const JobHistoryStore = signalStore(
                 search();
             },
 
+            clearFilters(): void {
+                patchState(store, {
+                    jobNameFilter: null,
+                    statusFilter: null,
+                    fromDate: null,
+                    toDate: null,
+                    pageIndex: 0,
+                });
+                search();
+            },
+
         };
 
     })

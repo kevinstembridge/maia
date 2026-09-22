@@ -1,13 +1,14 @@
 import {describe, expect, it} from 'vitest';
 import {convertToParamMap} from '@angular/router';
 import {
-    buildJobCountSummary,
     buildNameFilterQueryParams,
+    buildStatusFilterQueryParams,
     countByStatus,
     deriveJobStatus,
     filterAndSortByName,
     formatElapsed,
-    parseNameFilterFromParams
+    parseNameFilterFromParams,
+    parseStatusFilterFromParams
 } from './jobs-filtering';
 import {JobState} from '../models/JobState';
 import {JobExecutionState} from '../models/JobExecutionState';
@@ -112,29 +113,31 @@ describe('jobs-filtering', () => {
     });
 
 
-    describe('buildJobCountSummary()', () => {
+    describe('parseStatusFilterFromParams()', () => {
 
-        it('shows a plain count with ordered status segments when the filter does not narrow the set', () => {
-            expect(buildJobCountSummary(8, 8, {running: 2, failed: 1, idle: 5}))
-                .toEqual('8 jobs · 2 running · 1 failed · 5 idle');
+        it('returns the status param value when it is a known status', () => {
+            expect(parseStatusFilterFromParams(convertToParamMap({status: 'failed'}))).toEqual('failed');
         });
 
-        it('shows "X of Y" when the filter narrows the set', () => {
-            expect(buildJobCountSummary(3, 8, {running: 2, idle: 1}))
-                .toEqual('3 of 8 jobs · 2 running · 1 idle');
+        it('returns null when the status param is absent', () => {
+            expect(parseStatusFilterFromParams(convertToParamMap({}))).toEqual(null);
         });
 
-        it('omits status segments with a zero count', () => {
-            expect(buildJobCountSummary(5, 5, {idle: 5, running: 0}))
-                .toEqual('5 jobs · 5 idle');
+        it('returns null when the status param is not a known status', () => {
+            expect(parseStatusFilterFromParams(convertToParamMap({status: 'bogus'}))).toEqual(null);
         });
 
-        it('uses singular "job" when the total is 1', () => {
-            expect(buildJobCountSummary(1, 1, {idle: 1})).toEqual('1 job · 1 idle');
+    });
+
+
+    describe('buildStatusFilterQueryParams()', () => {
+
+        it('includes the status param when a status filter is set', () => {
+            expect(buildStatusFilterQueryParams('idle')).toEqual({status: 'idle'});
         });
 
-        it('shows just the count label when there are no status counts', () => {
-            expect(buildJobCountSummary(0, 0, {})).toEqual('0 jobs');
+        it('sets the status param to null (omitting it from the URL) when there is no status filter', () => {
+            expect(buildStatusFilterQueryParams(null)).toEqual({status: null});
         });
 
     });

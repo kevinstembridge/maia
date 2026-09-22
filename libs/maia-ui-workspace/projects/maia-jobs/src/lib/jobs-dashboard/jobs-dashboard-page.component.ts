@@ -4,12 +4,20 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {JobState} from './models/JobState';
 import {JobExecutionState} from './models/JobExecutionState';
 import {JobsApiService} from './services/jobs-api.service';
 import {JobsDashboardStore} from './state/jobs-dashboard-store';
-import {buildNameFilterQueryParams, parseNameFilterFromParams} from './state/jobs-filtering';
+import {
+    buildNameFilterQueryParams,
+    buildStatusFilterQueryParams,
+    JobStatus,
+    parseNameFilterFromParams,
+    parseStatusFilterFromParams,
+    STATUS_DISPLAY_ORDER
+} from './state/jobs-filtering';
 import {JobStateComponent} from './components/job-state/job-state.component';
 import {JobMetricsDialogComponent} from './dialogs/job-metrics-dialog/job-metrics-dialog.component';
 import {RunJobDialogComponent} from './dialogs/run-job-dialog/run-job-dialog.component';
@@ -17,7 +25,7 @@ import {StacktraceDialogComponent} from './dialogs/stacktrace-dialog/stacktrace-
 
 
 @Component({
-    imports: [JobStateComponent, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule, RouterLink],
+    imports: [JobStateComponent, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule, MatIconModule, RouterLink],
     providers: [JobsApiService, JobsDashboardStore],
     selector: 'maia-jobs-dashboard-page',
     templateUrl: './jobs-dashboard-page.component.html',
@@ -27,6 +35,8 @@ export class JobsDashboardPageComponent implements OnInit {
 
 
     readonly store = inject(JobsDashboardStore);
+
+    readonly statusOrder = STATUS_DISPLAY_ORDER;
 
     private route = inject(ActivatedRoute);
     private router = inject(Router);
@@ -38,11 +48,15 @@ export class JobsDashboardPageComponent implements OnInit {
     ) {
 
         this.store.onNameFilterChanged(parseNameFilterFromParams(this.route.snapshot.queryParamMap));
+        this.store.onStatusFilterChanged(parseStatusFilterFromParams(this.route.snapshot.queryParamMap));
 
         effect(() => {
             this.router.navigate([], {
                 relativeTo: this.route,
-                queryParams: buildNameFilterQueryParams(this.store.nameFilter()),
+                queryParams: {
+                    ...buildNameFilterQueryParams(this.store.nameFilter()),
+                    ...buildStatusFilterQueryParams(this.store.statusFilter()),
+                },
                 replaceUrl: true,
             });
         });
@@ -57,6 +71,11 @@ export class JobsDashboardPageComponent implements OnInit {
 
     onFilterInput(event: Event) {
         this.store.onNameFilterChanged((event.target as HTMLInputElement).value);
+    }
+
+
+    onStatusFilterToggled(status: JobStatus) {
+        this.store.onStatusFilterChanged(this.store.statusFilter() === status ? null : status);
     }
 
 

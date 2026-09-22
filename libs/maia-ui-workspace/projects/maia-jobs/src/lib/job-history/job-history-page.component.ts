@@ -1,12 +1,13 @@
 import {Component, computed, effect, inject, OnInit} from '@angular/core';
 import {DateTime} from 'luxon';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {JobExecutionHistoryCardComponent} from './components/job-execution-history-card/job-execution-history-card.component';
@@ -25,7 +26,7 @@ import {
 @Component({
     imports: [
         JobExecutionHistoryCardComponent, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule,
-        MatButtonModule, MatPaginatorModule, MatProgressSpinnerModule
+        MatButtonModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, RouterLink
     ],
     providers: [JobsApiService, JobHistoryStore],
     selector: 'maia-job-history-page',
