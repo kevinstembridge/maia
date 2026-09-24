@@ -1,11 +1,11 @@
 package org.maiaframework.elasticsearch.index
 
-import org.maiaframework.elasticsearch.EsDocHolder
+import org.maiaframework.domain.DomainId
 import org.maiaframework.metrics.JobMetrics
 import org.maiaframework.props.Props
-import org.maiaframework.domain.DomainId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
 
 abstract class AbstractEsIndexService<ESDOC>(
     private val esIndexOps: org.maiaframework.elasticsearch.index.EsIndexOps,
