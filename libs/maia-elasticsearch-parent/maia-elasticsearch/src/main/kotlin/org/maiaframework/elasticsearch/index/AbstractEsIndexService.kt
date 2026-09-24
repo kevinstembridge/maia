@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 
 
 abstract class AbstractEsIndexService<ESDOC>(
-    private val esIndexOps: org.maiaframework.elasticsearch.index.EsIndexOps,
+    private val esIndexOps: EsIndexOps,
     private val props: Props
 ) {
 
