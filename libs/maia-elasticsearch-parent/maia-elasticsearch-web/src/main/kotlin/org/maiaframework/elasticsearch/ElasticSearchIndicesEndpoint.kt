@@ -2,7 +2,7 @@ package org.maiaframework.elasticsearch
 
 import org.maiaframework.elasticsearch.index.ElasticIndexService
 import org.maiaframework.elasticsearch.index.EsIndexNameFactory
-import org.maiaframework.elasticsearch.index.EsIndexStateDto
+import org.maiaframework.elasticsearch.index.model.EsIndexStateDto
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

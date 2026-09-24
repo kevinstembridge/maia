@@ -3,7 +3,10 @@ package org.maiaframework.elasticsearch.index
 import co.elastic.clients.elasticsearch.ElasticsearchClient
 import co.elastic.clients.elasticsearch._types.Level
 import org.maiaframework.common.logging.getLogger
+import org.maiaframework.elasticsearch.index.model.EsIndexHealthDto
+import org.maiaframework.elasticsearch.index.model.EsIndexStateDto
 import java.security.Principal
+
 
 class ElasticIndexService(
     private val client: ElasticsearchClient,
@@ -49,7 +52,7 @@ class ElasticIndexService(
             val indexName = this.esIndexNameFactory.indexNameFrom(entry.key)
             Pair(
                 indexName,
-                EsIndexHealthDto(indexName, entry.value.status().name)
+                EsIndexHealthDto(entry.value.status().name)
             )
         }.toMap()
 

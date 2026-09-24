@@ -1,5 +1,6 @@
 package org.maiaframework.elasticsearch.index
 
+import org.maiaframework.elasticsearch.index.model.ManagedEsIndexSummaryDto
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -42,9 +43,15 @@ class EsIndexControlRegistry: ApplicationContextAware, InitializingBean {
     }
 
 
-    fun getAllIndexSummaries(): List<EsIndexSummaryDto> {
+    fun getAllIndexSummaries(): List<ManagedEsIndexSummaryDto> {
 
-        return this.controlsByName.map { EsIndexSummaryDto(it.key, it.value.indexDescription, it.value.isActiveVersion) }
+        return this.controlsByName.map {
+            ManagedEsIndexSummaryDto(
+                it.key,
+                it.value.indexDescription,
+                it.value.isActiveVersion
+            )
+        }
 
     }
 
