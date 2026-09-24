@@ -22,7 +22,7 @@ class EsSearchRequestFactory {
         val size = searchModel.endRow?.minus(searchModel.startRow) ?: 10
 
         return SearchRequest.of { r ->
-            r.index(indexName.asString)
+            r.index(indexName.resolvedName)
                 .query { q ->
                     q.bool { b ->
                         buildQuery(searchModel, fieldNameMapper, b)
@@ -50,7 +50,7 @@ class EsSearchRequestFactory {
     ): CountRequest {
 
         return CountRequest.of { r ->
-            r.index(indexName.asString)
+            r.index(indexName.resolvedName)
                 .query { q ->
                     q.bool { b ->
                         buildQuery(searchModel, fieldNameMapper, b)

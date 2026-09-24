@@ -23,7 +23,7 @@ internal class EsIndexNameTest {
 
         val esIndexBaseName = EsIndexBaseName(baseName)
         val esIndexVersion = EsIndexVersion(version)
-        val actual = EsIndexName(esIndexBaseName, esIndexVersion).asString
+        val actual = EsIndexName(esIndexBaseName, esIndexVersion).resolvedName
         assertThat(actual).isEqualTo(expected)
 
     }

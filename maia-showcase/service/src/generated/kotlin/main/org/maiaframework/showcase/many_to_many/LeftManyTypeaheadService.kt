@@ -33,7 +33,7 @@ class LeftManyTypeaheadService(
     private fun searchRequest(searchTerm: SearchTerm): SearchRequest {
 
         return SearchRequest.of { r ->
-            r.index(this.esIndex.indexName().asString)
+            r.index(this.esIndex.indexName().resolvedName)
                 .query { q ->
                     q.multiMatch { m ->
                         m.query(searchTerm.value)

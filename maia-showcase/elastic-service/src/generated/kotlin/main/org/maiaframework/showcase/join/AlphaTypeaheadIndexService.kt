@@ -36,7 +36,7 @@ class AlphaTypeaheadIndexService(
         val (id, doc, indexName) = buildEsDocHolder(esDoc)
 
         val indexResponse = this.elasticClient.index { i ->
-            i.index(indexName.asString)
+            i.index(indexName.resolvedName)
                 .id(id)
                 .document(doc)
         }

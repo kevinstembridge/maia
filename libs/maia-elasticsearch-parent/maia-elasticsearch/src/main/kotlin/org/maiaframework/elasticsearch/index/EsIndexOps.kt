@@ -5,7 +5,6 @@ import co.elastic.clients.elasticsearch._types.SortOrder
 import co.elastic.clients.elasticsearch.core.BulkRequest
 import co.elastic.clients.elasticsearch.core.DeleteResponse
 import co.elastic.clients.elasticsearch.core.GetResponse
-import co.elastic.clients.elasticsearch.core.IndexRequest
 import co.elastic.clients.elasticsearch.core.SearchRequest
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.elasticsearch.EsDocHolder
@@ -25,7 +24,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
         clazz: Class<T>
     ): GetResponse<T> {
 
-        return this.client.get({ r -> r.index(indexName.asString).id(id) }, clazz)
+        return this.client.get({ r -> r.index(indexName.resolvedName).id(id) }, clazz)
 
     }
 
@@ -35,7 +34,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
         indexName: EsIndexName
     ): DeleteResponse {
 
-        return this.client.delete { r -> r.index(indexName.asString).id(id) }
+        return this.client.delete { r -> r.index(indexName.resolvedName).id(id) }
 
     }
 
@@ -50,7 +49,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
         ids.forEach { id ->
             builder.operations { op ->
                 op.delete { d ->
-                    d.index(indexName.asString).id(id)
+                    d.index(indexName.resolvedName).id(id)
                 }
             }
         }
@@ -71,7 +70,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
         items.forEach { item ->
             bulk.operations { op ->
                 op.index { idx ->
-                    idx.index(item.indexName.asString).id(item.id).document(item.doc)
+                    idx.index(item.indexName.resolvedName).id(item.id).document(item.doc)
                 }
             }
         }
@@ -136,7 +135,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
         return { searchRequestBuilder ->
 
             searchRequestBuilder
-                .index(indexName.asString)
+                .index(indexName.resolvedName)
                 .query { q ->
                     q.matchAll { m ->
                         m
@@ -154,7 +153,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
     fun upsert(esDoc: EsDocHolder<*>) {
 
         this.client.index { builder ->
-            builder.index(esDoc.indexName.asString)
+            builder.index(esDoc.indexName.resolvedName)
                 .id(esDoc.id)
                 .document(esDoc.doc)
         }

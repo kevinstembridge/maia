@@ -7,8 +7,9 @@ data class EsIndexName(
     val indexVersion: EsIndexVersion
 ) : Comparable<EsIndexName> {
 
+
     @get:JsonValue
-    val asString = "${esIndexBaseName}${indexVersion}"
+    val resolvedName = "${esIndexBaseName}${indexVersion}"
 
 
     override fun compareTo(other: EsIndexName): Int {
@@ -18,15 +19,8 @@ data class EsIndexName(
     }
 
 
-    fun withSuffix(suffix: String): EsIndexName {
-
-        return EsIndexName(this.esIndexBaseName.withSuffix(suffix), this.indexVersion)
-
-    }
-
-
     override fun toString(): String {
-        return asString
+        return resolvedName
     }
 
 
