@@ -30,11 +30,12 @@ export class PropsApiService {
     }
 
 
-    setProperty(propertyName: string, propertyValue: string, comment: string | null): Observable<PropertyResponseDto> {
+    setProperty(propertyName: string, propertyValue: string, comment: string | null, reviewDate: string | null): Observable<PropertyResponseDto> {
 
         return this.http.post<PropertyResponseDto>(`${this.baseUrl}/props/${encodeURIComponent(propertyName)}`, {
             propertyValue,
             comment,
+            reviewDate,
         });
 
     }

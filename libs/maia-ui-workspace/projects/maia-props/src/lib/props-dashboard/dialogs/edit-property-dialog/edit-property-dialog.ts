@@ -4,23 +4,27 @@ import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDi
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {DateTime} from 'luxon';
 
 export interface EditPropertyDialogData {
     propertyName: string | null;
     currentValue: string | null;
+    currentReviewDate: string | null;
 }
 
 export interface EditPropertyDialogResult {
     propertyName: string;
     propertyValue: string;
     comment: string | null;
+    reviewDate: string | null;
 }
 
 @Component({
     selector: 'maia-edit-property-dialog',
     templateUrl: './edit-property-dialog.html',
     styleUrl: './edit-property-dialog.scss',
-    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule]
+    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepickerModule]
 })
 export class EditPropertyDialog {
 
@@ -39,6 +43,7 @@ export class EditPropertyDialog {
             propertyName: this.formBuilder.control(this.data.propertyName ?? '', Validators.required),
             propertyValue: this.formBuilder.control(this.data.currentValue ?? '', Validators.required),
             comment: this.formBuilder.control(''),
+            reviewDate: this.formBuilder.control<DateTime | null>(this.data.currentReviewDate ? DateTime.fromISO(this.data.currentReviewDate) : null),
         });
 
     }
@@ -55,6 +60,7 @@ export class EditPropertyDialog {
             propertyName: value.propertyName!,
             propertyValue: value.propertyValue!,
             comment: value.comment || null,
+            reviewDate: value.reviewDate?.toISODate() ?? null,
         };
 
         this.dialogRef.close(result);

@@ -8,4 +8,5 @@ export interface PropertyResponseDto {
     lastModifiedByUsername: string | null;
     lastModifiedTimestamp: string | null;
     comment: string | null;
+    reviewDate: string | null;
 }

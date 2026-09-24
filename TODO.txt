@@ -5,6 +5,14 @@ TODO * Jobs
     TODO * Jobs Dashboard
 
 
+
+TODO * Props Dashboard
+    TODO *
+
+TODO * Elastic Indices Dashboard
+    TODO * Remove IndexNameOverrider
+    TODO * Segregate managed and non-managed indices.
+
 TODO * Single Effective Record
     TODO * Define a many-to-many entity that is specified to have only one single effective record
 

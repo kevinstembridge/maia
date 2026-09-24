@@ -13,6 +13,7 @@ function aProperty(overrides: Partial<PropertyResponseDto> = {}): PropertyRespon
         lastModifiedByUsername: null,
         lastModifiedTimestamp: null,
         comment: null,
+        reviewDate: null,
         ...overrides,
     };
 }

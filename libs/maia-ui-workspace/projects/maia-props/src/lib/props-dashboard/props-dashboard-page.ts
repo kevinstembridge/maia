@@ -29,7 +29,7 @@ export class PropsDashboardPage implements OnInit {
 
     readonly store = inject(PropsDashboardStore);
 
-    readonly displayedColumns = ['propertyName', 'effectiveValue', 'isOverridden', 'isRedundant', 'sourceName', 'lastModifiedByUsername', 'lastModifiedTimestamp', 'actions'];
+    readonly displayedColumns = ['propertyName', 'effectiveValue', 'isOverridden', 'isRedundant', 'sourceName', 'lastModifiedByUsername', 'lastModifiedTimestamp', 'reviewDate', 'actions'];
 
     private route = inject(ActivatedRoute);
     private router = inject(Router);
@@ -82,14 +82,14 @@ export class PropsDashboardPage implements OnInit {
 
     onAddOverride() {
 
-        this.openEditDialog({propertyName: null, currentValue: null});
+        this.openEditDialog({propertyName: null, currentValue: null, currentReviewDate: null});
 
     }
 
 
     onEdit(row: PropertyResponseDto) {
 
-        this.openEditDialog({propertyName: row.propertyName, currentValue: row.effectiveValue});
+        this.openEditDialog({propertyName: row.propertyName, currentValue: row.effectiveValue, currentReviewDate: row.reviewDate});
 
     }
 
@@ -100,7 +100,7 @@ export class PropsDashboardPage implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: EditPropertyDialogResult | undefined) => {
             if (result) {
-                this.propsService.setProperty(result.propertyName, result.propertyValue, result.comment).subscribe(updated => {
+                this.propsService.setProperty(result.propertyName, result.propertyValue, result.comment, result.reviewDate).subscribe(updated => {
                     this.store.applyPropertyUpdate(updated);
                 });
             }

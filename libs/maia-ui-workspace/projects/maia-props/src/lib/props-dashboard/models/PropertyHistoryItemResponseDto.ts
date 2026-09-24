@@ -7,5 +7,6 @@ export interface PropertyHistoryItemResponseDto {
     lastModifiedByUsername: string;
     lastModifiedTimestamp: string;
     comment: string | null;
+    reviewDate: string | null;
     version: number;
 }
