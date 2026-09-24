@@ -19,7 +19,7 @@ abstract class AbstractEsIndexService<ESDOC>(
     protected abstract val bulkDeleteChunkSizePropertyName: String
 
 
-    protected abstract fun indexName(): org.maiaframework.elasticsearch.index.EsIndexName
+    protected abstract fun indexName(): EsIndexName
 
 
     fun refreshIndex(jm: JobMetrics) {
