@@ -7,6 +7,7 @@ function aProperty(overrides: Partial<PropertyResponseDto> = {}): PropertyRespon
         propertyName: 'server.port',
         effectiveValue: '3200',
         isOverridden: false,
+        isRedundant: false,
         environmentValue: '3200',
         sourceName: 'applicationConfig',
         lastModifiedByUsername: null,

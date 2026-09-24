@@ -29,7 +29,7 @@ export class PropsDashboardPage implements OnInit {
 
     readonly store = inject(PropsDashboardStore);
 
-    readonly displayedColumns = ['propertyName', 'effectiveValue', 'isOverridden', 'sourceName', 'lastModifiedByUsername', 'lastModifiedTimestamp', 'actions'];
+    readonly displayedColumns = ['propertyName', 'effectiveValue', 'isOverridden', 'isRedundant', 'sourceName', 'lastModifiedByUsername', 'lastModifiedTimestamp', 'actions'];
 
     private route = inject(ActivatedRoute);
     private router = inject(Router);
@@ -89,7 +89,7 @@ export class PropsDashboardPage implements OnInit {
 
     private openEditDialog(data: EditPropertyDialogData) {
 
-        const dialogRef = this.dialog.open(EditPropertyDialog, {width: '480px', data});
+        const dialogRef = this.dialog.open(EditPropertyDialog, {width: '600px', data});
 
         dialogRef.afterClosed().subscribe((result: EditPropertyDialogResult | undefined) => {
             if (result) {

@@ -1,5 +1,5 @@
 <div class="props-dashboard-toolbar">
-    <mat-form-field appearance="fill">
+    <mat-form-field class="name-filter">
         <mat-label>Filter by name</mat-label>
         <input matInput [value]="store.nameFilter()" (input)="onNameFilterInput($event)">
     </mat-form-field>
@@ -27,6 +27,11 @@
         <ng-container matColumnDef="isOverridden">
             <th mat-header-cell *matHeaderCellDef>Overridden</th>
             <td mat-cell *matCellDef="let row" class="property-overridden-badge">{{row.isOverridden ? 'Overridden' : 'Default'}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="isRedundant">
+            <th mat-header-cell *matHeaderCellDef>Redundant</th>
+            <td mat-cell *matCellDef="let row">{{row.isRedundant ? 'Redundant' : ''}}</td>
         </ng-container>
 
         <ng-container matColumnDef="sourceName">

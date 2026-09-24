@@ -2,6 +2,7 @@ export interface PropertyResponseDto {
     propertyName: string;
     effectiveValue: string | null;
     isOverridden: boolean;
+    isRedundant: boolean;
     environmentValue: string | null;
     sourceName: string | null;
     lastModifiedByUsername: string | null;
