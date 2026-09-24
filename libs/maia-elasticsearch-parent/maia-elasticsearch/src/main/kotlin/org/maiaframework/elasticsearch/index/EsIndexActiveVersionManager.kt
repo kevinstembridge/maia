@@ -30,7 +30,8 @@ class EsIndexActiveVersionManager(private val props: Props, private val propsMan
                 propertyKey(indexName.esIndexBaseName),
                 indexName.indexVersion.value.toString(),
                 principal.name,
-                comment = null)
+                comment = null,
+                reviewDate = null)
 
     }
 

@@ -4,6 +4,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.props.PropsEntity
 import org.maiaframework.props.PropsHistoryEntity
 import java.time.Instant
+import java.time.LocalDate
 
 class InMemoryPropsRepo: PropsRepo {
 
@@ -21,14 +22,16 @@ class InMemoryPropsRepo: PropsRepo {
         propertyName: String,
         propertyValue: String,
         modifiedBy: String,
-        comment: String?
+        comment: String?,
+        reviewDate: LocalDate?
     ) {
 
         val propsEntity = PropsEntity.newInstance(
                 comment,
                 modifiedBy,
                 propertyName,
-                propertyValue
+                propertyValue,
+                reviewDate
         )
 
         this.properties[propertyName] = propsEntity

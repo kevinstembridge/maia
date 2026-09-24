@@ -6,6 +6,7 @@ package org.maiaframework.props
 import org.maiaframework.domain.EntityFieldConverter
 import org.springframework.stereotype.Component
 import java.time.Instant
+import java.time.LocalDate
 
 
 @Component
@@ -27,6 +28,8 @@ class PropsEntityFieldConverter : EntityFieldConverter {
             "property_name" -> // propertyName
                 return inputValue
             "property_value" -> // propertyValue
+                return inputValue
+            "review_date" -> // reviewDate
                 return inputValue
             "version" -> // version
                 return inputValue

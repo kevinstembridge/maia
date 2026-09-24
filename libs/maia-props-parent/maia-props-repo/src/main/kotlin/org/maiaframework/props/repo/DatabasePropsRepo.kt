@@ -3,6 +3,7 @@ package org.maiaframework.props.repo
 import org.maiaframework.props.*
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
+import java.time.LocalDate
 import java.util.*
 
 
@@ -31,14 +32,16 @@ class DatabasePropsRepo(
         propertyName: String,
         propertyValue: String,
         modifiedBy: String,
-        comment: String?
+        comment: String?,
+        reviewDate: LocalDate?
     ) {
 
         val propsEntity = PropsEntity.newInstance(
             comment,
             modifiedBy,
             propertyName,
-            propertyValue
+            propertyValue,
+            reviewDate
         )
 
         this.propsDao.upsertByPropertyName(propsEntity)

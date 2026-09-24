@@ -49,7 +49,7 @@ class MaiaPropsEndpoint(private val propsManager: PropsManager) {
     ): PropertyResponseDto {
 
         val username = CurrentUserHolder.currentUsernameOrNull ?: "unknown"
-        return this.propsManager.setProperty(propertyName, request.propertyValue, username, request.comment)
+        return this.propsManager.setProperty(propertyName, request.propertyValue, username, request.comment, request.reviewDate)
 
     }
 

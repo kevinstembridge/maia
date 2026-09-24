@@ -18,8 +18,9 @@ object PropsHistoryBlotterRowDtoMeta {
             "lastModifiedTimestamp" -> "props.props_history.last_modified_timestamp"
             "propertyName" -> "props.props_history.property_name"
             "propertyValue" -> "props.props_history.property_value"
+            "reviewDate" -> "props.props_history.review_date"
             "version" -> "props.props_history.version"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, comment, lastModifiedByUsername, lastModifiedTimestamp, propertyName, propertyValue, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, comment, lastModifiedByUsername, lastModifiedTimestamp, propertyName, propertyValue, reviewDate, version]")
         }
 
     }
@@ -34,8 +35,9 @@ object PropsHistoryBlotterRowDtoMeta {
             "lastModifiedTimestamp" -> JdbcCompatibleType.timestamp_with_time_zone
             "propertyName" -> JdbcCompatibleType.text
             "propertyValue" -> JdbcCompatibleType.text
+            "reviewDate" -> JdbcCompatibleType.date
             "version" -> JdbcCompatibleType.bigint
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, comment, lastModifiedByUsername, lastModifiedTimestamp, propertyName, propertyValue, version]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [changeType, comment, lastModifiedByUsername, lastModifiedTimestamp, propertyName, propertyValue, reviewDate, version]")
         }
 
     }

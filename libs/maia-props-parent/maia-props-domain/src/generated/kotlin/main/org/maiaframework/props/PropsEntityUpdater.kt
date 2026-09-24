@@ -5,6 +5,7 @@ package org.maiaframework.props
 
 import org.maiaframework.domain.persist.FieldUpdate
 import java.time.Instant
+import java.time.LocalDate
 
 
 data class PropsEntityUpdater(
@@ -56,6 +57,20 @@ data class PropsEntityUpdater(
         fun lastModifiedTimestamp(lastModifiedTimestamp: Instant) {
 
             this.fields.add(FieldUpdate("lastModifiedTimestamp", "last_modified_timestamp", lastModifiedTimestamp))
+
+        }
+
+
+        fun comment(comment: String?) {
+
+            this.fields.add(FieldUpdate("comment", "comment", comment))
+
+        }
+
+
+        fun reviewDate(reviewDate: LocalDate?) {
+
+            this.fields.add(FieldUpdate("reviewDate", "review_date", reviewDate))
 
         }
 

@@ -47,7 +47,12 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
         field_lastModifiedTimestamp()
         field("comment", FieldTypes.string) {
             nullable()
+            modifiableBySystem()
             lengthConstraint(max = 200)
+        }
+        field("reviewDate", FieldTypes.localDate) {
+            nullable()
+            modifiableBySystem()
         }
     }
 
@@ -74,6 +79,9 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
         field("comment", FieldTypes.string) {
             nullable()
         }
+        field("reviewDate", FieldTypes.localDate) {
+            nullable()
+        }
     }
 
 
@@ -84,6 +92,9 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
         field("lastModifiedByUsername", FieldTypes.string)
         field("lastModifiedTimestamp", FieldTypes.instant)
         field("comment", FieldTypes.string) {
+            nullable()
+        }
+        field("reviewDate", FieldTypes.localDate) {
             nullable()
         }
         field("version", FieldTypes.long)

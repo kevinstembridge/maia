@@ -5,6 +5,7 @@ package org.maiaframework.props
 
 import org.maiaframework.domain.ChangeType
 import java.time.Instant
+import java.time.LocalDate
 
 
 class PropsHistoryEntity(
@@ -15,6 +16,7 @@ class PropsHistoryEntity(
     val lastModifiedTimestamp: Instant,
     val propertyName: String,
     val propertyValue: String,
+    val reviewDate: LocalDate?,
     val version: Long
 ) {
 
@@ -32,6 +34,7 @@ class PropsHistoryEntity(
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "propertyName = '" + this.propertyName + '\'' + ", " + 
                 "propertyValue = '" + this.propertyValue + '\'' + ", " + 
+                "reviewDate = '" + this.reviewDate + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
 

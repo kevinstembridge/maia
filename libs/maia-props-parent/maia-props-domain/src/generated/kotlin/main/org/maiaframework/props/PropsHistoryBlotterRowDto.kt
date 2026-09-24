@@ -5,6 +5,7 @@ package org.maiaframework.props
 
 import org.maiaframework.domain.ChangeType
 import java.time.Instant
+import java.time.LocalDate
 
 
 data class PropsHistoryBlotterRowDto(
@@ -14,6 +15,7 @@ data class PropsHistoryBlotterRowDto(
     val lastModifiedTimestamp: Instant,
     val propertyName: String,
     val propertyValue: String,
+    val reviewDate: LocalDate?,
     val version: Long
 ) {
 

@@ -4,6 +4,7 @@
 package org.maiaframework.props
 
 import java.time.Instant
+import java.time.LocalDate
 
 
 class PropsEntity(
@@ -13,6 +14,7 @@ class PropsEntity(
     val lastModifiedTimestamp: Instant,
     val propertyName: String,
     val propertyValue: String,
+    val reviewDate: LocalDate?,
     val version: Long
 ) {
 
@@ -29,6 +31,7 @@ class PropsEntity(
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
                 "propertyName = '" + this.propertyName + '\'' + ", " + 
                 "propertyValue = '" + this.propertyValue + '\'' + ", " + 
+                "reviewDate = '" + this.reviewDate + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
 
@@ -45,7 +48,8 @@ class PropsEntity(
             comment: String?,
             lastModifiedByUsername: String,
             propertyName: String,
-            propertyValue: String
+            propertyValue: String,
+            reviewDate: LocalDate?
         ): PropsEntity {
 
             val createdTimestamp = Instant.now()
@@ -59,6 +63,7 @@ class PropsEntity(
                 lastModifiedTimestamp,
                 propertyName,
                 propertyValue,
+                reviewDate,
                 version
             )
 

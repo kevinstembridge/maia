@@ -50,6 +50,7 @@ class PropsHistoryBlotterRowDtoDao(
                 props.props_history.last_modified_timestamp as lastModifiedTimestamp,
                 props.props_history.property_name as propertyName,
                 props.props_history.property_value as propertyValue,
+                props.props_history.review_date as reviewDate,
                 props.props_history.version as version
             from props.props_history
             $whereClause

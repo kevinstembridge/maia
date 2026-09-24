@@ -11,6 +11,7 @@ import org.maiaframework.jdbc.sql.conditions.SqlConditionOperator
 import java.sql.Timestamp
 import java.sql.Types
 import java.time.Instant
+import java.time.LocalDate
 import java.util.concurrent.atomic.AtomicInteger
 
 
@@ -93,6 +94,14 @@ class PropsHistoryEntityFilters {
         get() {
 
             return FieldFilter("property_value", Types.VARCHAR, this.sqlParamCounter) { value -> value }
+
+        }
+
+
+    val reviewDate: FieldFilter<LocalDate?> 
+        get() {
+
+            return FieldFilter("review_date", Types.DATE, this.sqlParamCounter) { value -> value?.toString() }
 
         }
 

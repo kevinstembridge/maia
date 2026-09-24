@@ -4,6 +4,7 @@
 package org.maiaframework.props
 
 import java.time.Instant
+import java.time.LocalDate
 
 
 data class PropertyResponseDto(
@@ -15,6 +16,7 @@ data class PropertyResponseDto(
     val lastModifiedByUsername: String?,
     val lastModifiedTimestamp: Instant?,
     val propertyName: String,
+    val reviewDate: LocalDate?,
     val sourceName: String?
 ) {
 

@@ -18,6 +18,7 @@ class PropsEntityRowMapper : MaiaRowMapper<PropsEntity> {
         val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
         val propertyName = rsa.readString("property_name")
         val propertyValue = rsa.readString("property_value")
+        val reviewDate = rsa.readLocalDateOrNull("review_date")
         val version = rsa.readLong("version")
 
         return PropsEntity(
@@ -27,6 +28,7 @@ class PropsEntityRowMapper : MaiaRowMapper<PropsEntity> {
                 lastModifiedTimestamp,
                 propertyName,
                 propertyValue,
+                reviewDate,
                 version
         )
 

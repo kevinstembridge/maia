@@ -19,6 +19,7 @@ class PropsHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PropsHistoryBlotterRowD
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val propertyName = rsa.readString("propertyName")
         val propertyValue = rsa.readString("propertyValue")
+        val reviewDate = rsa.readLocalDate("reviewDate")
         val version = rsa.readLong("version")
 
         return PropsHistoryBlotterRowDto(
@@ -28,6 +29,7 @@ class PropsHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PropsHistoryBlotterRowD
             lastModifiedTimestamp,
             propertyName,
             propertyValue,
+            reviewDate,
             version,
         )
 

@@ -24,6 +24,8 @@ object PropsEntityMeta {
 
     const val propertyValue = "property_value"
 
+    const val reviewDate = "review_date"
+
     const val version = "version"
 
     val ENTITY_KEY = EntityKey("Props")
@@ -46,6 +48,7 @@ object PropsEntityMeta {
             "lastModifiedTimestamp" -> "last_modified_timestamp"
             "propertyName" -> "property_name"
             "propertyValue" -> "property_value"
+            "reviewDate" -> "review_date"
             "version" -> "version"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")

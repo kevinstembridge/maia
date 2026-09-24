@@ -3,6 +3,7 @@ package org.maiaframework.props
 import org.maiaframework.props.repo.PropsRepo
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.EnumerablePropertySource
+import java.time.LocalDate
 
 class PropsManager(
     private val propsRepo: PropsRepo,
@@ -66,6 +67,7 @@ class PropsManager(
                 lastModifiedByUsername = override.lastModifiedByUsername,
                 lastModifiedTimestamp = override.lastModifiedTimestamp,
                 propertyName = propertyName,
+                reviewDate = override.reviewDate,
                 sourceName = "DB override",
             )
         } else {
@@ -78,6 +80,7 @@ class PropsManager(
                 lastModifiedByUsername = null,
                 lastModifiedTimestamp = null,
                 propertyName = propertyName,
+                reviewDate = null,
                 sourceName = environmentSourceName,
             )
         }
@@ -95,6 +98,7 @@ class PropsManager(
                 lastModifiedTimestamp = it.lastModifiedTimestamp,
                 propertyName = it.propertyName,
                 propertyValue = it.propertyValue,
+                reviewDate = it.reviewDate,
                 version = it.version,
             )
         }
@@ -106,14 +110,16 @@ class PropsManager(
         propertyName: String,
         propertyValue: String,
         username: String,
-        comment: String?
+        comment: String?,
+        reviewDate: LocalDate?
     ): PropertyResponseDto {
 
         this.propsRepo.setPropertyOverride(
                 propertyName,
                 propertyValue,
                 username,
-                comment
+                comment,
+                reviewDate
         )
 
         // Both PropsRepo implementations refresh synchronously before setPropertyOverride returns, so this is

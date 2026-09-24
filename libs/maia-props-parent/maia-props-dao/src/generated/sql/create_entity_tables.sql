@@ -9,6 +9,7 @@ CREATE TABLE props.props (
     last_modified_timestamp timestamp(3) with time zone NOT NULL,
     property_name text NOT NULL,
     property_value text NOT NULL,
+    review_date date NULL,
     version bigint NOT NULL,
     PRIMARY KEY(property_name)
 );
@@ -22,6 +23,7 @@ CREATE TABLE props.props_history (
     last_modified_timestamp timestamp(3) with time zone NOT NULL,
     property_name text NOT NULL,
     property_value text NOT NULL,
+    review_date date NULL,
     version bigint NOT NULL,
     PRIMARY KEY(property_name, version)
 );

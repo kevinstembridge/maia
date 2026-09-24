@@ -15,6 +15,7 @@ import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import java.sql.PreparedStatement
 import java.time.Instant
+import java.time.LocalDate
 
 
 class PropsDao(
@@ -41,6 +42,7 @@ class PropsDao(
                 last_modified_timestamp,
                 property_name,
                 property_value,
+                review_date,
                 version
             ) values (
                 :comment,
@@ -49,6 +51,7 @@ class PropsDao(
                 :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
+                :reviewDate,
                 :version
             )
             """.trimIndent(),
@@ -59,6 +62,7 @@ class PropsDao(
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("propertyName", entity.propertyName)
                 addValue("propertyValue", entity.propertyValue)
+                addValue("reviewDate", entity.reviewDate)
                 addValue("version", entity.version)
             }
         )
@@ -79,6 +83,7 @@ class PropsDao(
                 last_modified_timestamp,
                 property_name,
                 property_value,
+                review_date,
                 version
             ) values (
                 :comment,
@@ -87,6 +92,7 @@ class PropsDao(
                 :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
+                :reviewDate,
                 :version
             )
             """.trimIndent(),
@@ -98,6 +104,7 @@ class PropsDao(
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("propertyName", entity.propertyName)
                     addValue("propertyValue", entity.propertyValue)
+                    addValue("reviewDate", entity.reviewDate)
                     addValue("version", entity.version)
                 }
             }
@@ -142,6 +149,7 @@ class PropsDao(
         val lastModifiedTimestamp = entity.lastModifiedTimestamp
         val propertyName = entity.propertyName
         val propertyValue = entity.propertyValue
+        val reviewDate = entity.reviewDate
 
         return PropsHistoryEntity(
                 changeType,
@@ -151,6 +159,7 @@ class PropsDao(
                 lastModifiedTimestamp,
                 propertyName,
                 propertyValue,
+                reviewDate,
                 version)
 
     }
@@ -361,6 +370,7 @@ class PropsDao(
                 last_modified_timestamp,
                 property_name,
                 property_value,
+                review_date,
                 version
             ) values (
                 :comment,
@@ -369,13 +379,16 @@ class PropsDao(
                 :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
+                :reviewDate,
                 :version
             )
             on conflict (property_name)
             do update set
+                comment = :comment,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp = :lastModifiedTimestamp,
                 property_value = :propertyValue,
+                review_date = :reviewDate,
                 version = props.props.version + 1
             returning *;
             """.trimIndent(),
@@ -386,6 +399,7 @@ class PropsDao(
                 addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("propertyName", upsertEntity.propertyName)
                 addValue("propertyValue", upsertEntity.propertyValue)
+                addValue("reviewDate", upsertEntity.reviewDate)
                 addValue("version", upsertEntity.version)
             },
             { ps: PreparedStatement ->
@@ -456,9 +470,11 @@ class PropsDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "comment" -> sqlParams.addValue("comment", field.value as String?)
             "lastModifiedByUsername" -> sqlParams.addValue("lastModifiedByUsername", field.value as String)
             "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "propertyValue" -> sqlParams.addValue("propertyValue", field.value as String)
+            "reviewDate" -> sqlParams.addValue("reviewDate", field.value as LocalDate?)
         }
 
     }

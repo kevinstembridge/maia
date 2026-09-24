@@ -34,6 +34,7 @@ class PropsHistoryDao(
                 last_modified_timestamp,
                 property_name,
                 property_value,
+                review_date,
                 version
             ) values (
                 :changeType,
@@ -43,6 +44,7 @@ class PropsHistoryDao(
                 :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
+                :reviewDate,
                 :version
             )
             """.trimIndent(),
@@ -54,6 +56,7 @@ class PropsHistoryDao(
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("propertyName", entity.propertyName)
                 addValue("propertyValue", entity.propertyValue)
+                addValue("reviewDate", entity.reviewDate)
                 addValue("version", entity.version)
             }
         )
@@ -73,6 +76,7 @@ class PropsHistoryDao(
                 last_modified_timestamp,
                 property_name,
                 property_value,
+                review_date,
                 version
             ) values (
                 :changeType,
@@ -82,6 +86,7 @@ class PropsHistoryDao(
                 :lastModifiedTimestamp,
                 :propertyName,
                 :propertyValue,
+                :reviewDate,
                 :version
             )
             """.trimIndent(),
@@ -94,6 +99,7 @@ class PropsHistoryDao(
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("propertyName", entity.propertyName)
                     addValue("propertyValue", entity.propertyValue)
+                    addValue("reviewDate", entity.reviewDate)
                     addValue("version", entity.version)
                 }
             }
