@@ -6,7 +6,7 @@ data class EsIndexStateDto(
     val health: EsIndexHealthDto?
 ) {
 
-    
+
     val indexExists = this.health != null
 
 
