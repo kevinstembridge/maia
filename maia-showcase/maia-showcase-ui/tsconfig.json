@@ -20,16 +20,16 @@
             "./src/generated/typescript/main/app/*"
         ],
         "@maia/maia-ui": [
-            "../../libs/maia-ui-workspace/dist/maia-ui"
+            "../../libs/maia-ui-workspace/projects/maia-ui/src/public-api.ts"
         ],
         "@maia/maia-elasticsearch": [
-            "../../libs/maia-ui-workspace/dist/maia-elasticsearch"
+            "../../libs/maia-ui-workspace/projects/maia-elasticsearch/src/public-api.ts"
         ],
         "@maia/maia-props": [
-            "../../libs/maia-ui-workspace/dist/maia-props"
+            "../../libs/maia-ui-workspace/projects/maia-props/src/public-api.ts"
         ],
         "@maia/maia-jobs": [
-            "../../libs/maia-ui-workspace/dist/maia-jobs"
+            "../../libs/maia-ui-workspace/projects/maia-jobs/src/public-api.ts"
         ],
         "@angular/core": ["./node_modules/@angular/core"],
         "@angular/common": ["./node_modules/@angular/common"]

@@ -5,7 +5,7 @@
             {{ store.totalCount() }} {{ store.totalCount() === 1 ? 'job' : 'jobs' }}
         </button>
         @for (status of statusOrder; track status) {
-            @if ((store.statusCounts()[status] ?? 0) > 0) {
+            @if ((store.statusCounts()[status]) > 0) {
                 <button type="button" class="status-chip" [class.active]="store.statusFilter() === status"
                         [attr.aria-pressed]="store.statusFilter() === status"
                         (click)="onStatusFilterToggled(status)">

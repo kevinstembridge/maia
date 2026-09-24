@@ -2,7 +2,7 @@
 <form [formGroup]="form" (ngSubmit)="onConfirm()">
     <mat-dialog-content>
         <p>Remove the override for <strong>{{data.propertyName}}</strong>? It will revert to its environment-resolved value, if any.</p>
-        <mat-form-field appearance="fill">
+        <mat-form-field>
             <mat-label>Comment (optional)</mat-label>
             <input matInput name="comment" formControlName="comment">
         </mat-form-field>

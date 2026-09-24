@@ -5,16 +5,16 @@
             <span
                 class="status-dot"
                 [style.background-color]="color"
-                [title]="index().health?.status"
+                [title]="index().health.status"
                 role="img"
-                [attr.aria-label]="index().health?.status">
+                [attr.aria-label]="index().health.status">
             </span>
         }
     </div>
-    @if (index().summary?.description) {
-        <p class="description">{{ index().summary?.description }}</p>
+    @if (index().summary.description) {
+        <p class="description">{{ index().summary.description }}</p>
     }
-    @if (index().indexExists && index().summary?.isActiveVersion) {
+    @if (index().indexExists && index().summary.isActiveVersion) {
         <span class="badge">Active version</span>
     }
     @if (!index().indexExists) {
@@ -22,7 +22,7 @@
             <button mat-flat-button (click)="onCreateIndex()" color="primary">Create...</button>
         </div>
     }
-    @if (index().indexExists && !index().summary?.isActiveVersion) {
+    @if (index().indexExists && !index().summary.isActiveVersion) {
         <div class="actions">
             <button mat-flat-button (click)="onSetIndexVersionActive()" color="primary">Set as Active Version...</button>
         </div>

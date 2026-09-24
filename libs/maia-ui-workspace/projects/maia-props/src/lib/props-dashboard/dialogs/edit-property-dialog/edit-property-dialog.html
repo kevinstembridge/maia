@@ -1,15 +1,15 @@
 <h2 mat-dialog-title>{{isAdding ? 'Add Property Override' : 'Edit Property Override'}}</h2>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-dialog-content>
-        <mat-form-field appearance="fill">
+        <mat-form-field>
             <mat-label>Property name</mat-label>
             <input matInput name="propertyName" formControlName="propertyName" [readonly]="!isAdding">
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field>
             <mat-label>Value</mat-label>
             <input matInput name="propertyValue" formControlName="propertyValue">
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field>
             <mat-label>Comment (optional)</mat-label>
             <input matInput name="comment" formControlName="comment">
         </mat-form-field>

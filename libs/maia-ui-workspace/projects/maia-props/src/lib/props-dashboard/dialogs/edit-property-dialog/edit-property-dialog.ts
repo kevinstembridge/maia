@@ -19,6 +19,7 @@ export interface EditPropertyDialogResult {
 @Component({
     selector: 'maia-edit-property-dialog',
     templateUrl: './edit-property-dialog.html',
+    styleUrl: './edit-property-dialog.scss',
     imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule]
 })
 export class EditPropertyDialog {
