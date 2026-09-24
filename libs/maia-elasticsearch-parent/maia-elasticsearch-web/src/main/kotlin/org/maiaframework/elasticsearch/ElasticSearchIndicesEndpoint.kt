@@ -13,7 +13,7 @@ import java.security.Principal
 
 
 @RestController
-@RequestMapping($$"${maia.elastic.web.base-url:/api/ops}")
+@RequestMapping($$"${maia.elasticsearch.web.base-url:/api/ops}")
 class ElasticSearchIndicesEndpoint(
     private val elasticIndexService: ElasticIndexService,
     private val esIndexNameFactory: EsIndexNameFactory
