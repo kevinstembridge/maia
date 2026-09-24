@@ -2,6 +2,7 @@ package org.maiaframework.elasticsearch.index
 
 import com.fasterxml.jackson.annotation.JsonValue
 
+
 data class EsIndexName(
     val esIndexBaseName: EsIndexBaseName,
     val indexVersion: EsIndexVersion

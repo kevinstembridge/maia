@@ -34,11 +34,11 @@ export function filterAndSortByName(indices: EsIndexStateDto[], nameFilter: stri
 }
 
 
-export function deriveDisplayStatus(index: EsIndexStateDto): DisplayStatus | undefined {
-    if (!index.indexExists) {
+export function deriveDisplayStatus(indexStateDto: EsIndexStateDto): DisplayStatus | undefined {
+    if (!indexStateDto.exists) {
         return 'not-created';
     }
-    const status = index.health?.status?.toLowerCase();
+    const status = indexStateDto.health?.status?.toLowerCase();
     return status === 'green' || status === 'yellow' || status === 'red' ? status : undefined;
 }
 

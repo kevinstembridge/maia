@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 
+
 @AutoConfiguration
 @ConditionalOnClass(ElasticIndexService::class)
 class MaiaElasticsearchAutoConfiguration {
@@ -63,11 +64,10 @@ class MaiaElasticsearchAutoConfiguration {
     fun elasticIndexService(
         client: ElasticsearchClient,
         controlRegistry: EsIndexControlRegistry,
-        esIndexNameFactory: EsIndexNameFactory,
         esIndexActiveVersionManager: EsIndexActiveVersionManager
     ): ElasticIndexService {
 
-        return ElasticIndexService(client, controlRegistry, esIndexNameFactory, esIndexActiveVersionManager)
+        return ElasticIndexService(client, controlRegistry, esIndexActiveVersionManager)
 
     }
 

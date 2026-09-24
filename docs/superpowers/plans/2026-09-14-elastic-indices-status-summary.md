@@ -21,7 +21,7 @@
 - Modify: `libs/maia-ui-workspace/projects/maia-elasticsearch/src/lib/elastic-indices/state/elastic-indices-filtering.spec.ts`
 
 **Acceptance Criteria:**
-- [ ] `deriveDisplayStatus` returns `'not-created'` when `indexExists` is `false`, regardless of any health data
+- [ ] `deriveDisplayStatus` returns `'not-created'` when `exists` is `false`, regardless of any health data
 - [ ] `deriveDisplayStatus` returns the lowercased health status (`'green'`/`'yellow'`/`'red'`) for existing indices
 - [ ] `deriveDisplayStatus` returns `undefined` for an existing index with no/unrecognized health status
 - [ ] `countByDisplayStatus` returns a full `{green, yellow, red, 'not-created'}` record (zeros included) for any input

@@ -1,6 +1,6 @@
 // Public API Surface of maia-elasticsearch
 export * from './lib/elastic-indices/models/EsIndexHealthDto';
-export * from './lib/elastic-indices/models/EsIndexSummaryDto';
+export * from './lib/elastic-indices/models/ManagedEsIndexInfoDto';
 export * from './lib/elastic-indices/models/EsIndexStateDto';
 export * from './lib/elastic-indices/services/elastic-indices-api-base-url-token';
 export * from './lib/elastic-indices/services/elastic-indices-api-service';
