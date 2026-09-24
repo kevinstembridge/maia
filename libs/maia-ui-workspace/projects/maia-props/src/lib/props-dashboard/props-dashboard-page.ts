@@ -43,6 +43,7 @@ export class PropsDashboardPage implements OnInit {
         const initialFilters = parsePropsFiltersFromParams(this.route.snapshot.queryParamMap);
         this.store.onNameFilterChanged(initialFilters.nameFilter);
         this.store.onOverriddenOnlyToggled(initialFilters.overriddenOnly);
+        this.store.onRedundantOnlyToggled(initialFilters.redundantOnly);
 
         effect(() => {
             this.router.navigate([], {
@@ -50,6 +51,7 @@ export class PropsDashboardPage implements OnInit {
                 queryParams: buildPropsQueryParams({
                     nameFilter: this.store.nameFilter(),
                     overriddenOnly: this.store.overriddenOnly(),
+                    redundantOnly: this.store.redundantOnly(),
                 }),
                 replaceUrl: true,
             });
@@ -70,6 +72,11 @@ export class PropsDashboardPage implements OnInit {
 
     onOverriddenOnlyToggled(change: MatSlideToggleChange) {
         this.store.onOverriddenOnlyToggled(change.checked);
+    }
+
+
+    onRedundantOnlyToggled(change: MatSlideToggleChange) {
+        this.store.onRedundantOnlyToggled(change.checked);
     }
 
 
