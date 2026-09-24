@@ -11,6 +11,7 @@ data class PropertyResponseDto(
     val effectiveValue: String?,
     val environmentValue: String?,
     val isOverridden: Boolean,
+    val isRedundant: Boolean,
     val lastModifiedByUsername: String?,
     val lastModifiedTimestamp: Instant?,
     val propertyName: String,
