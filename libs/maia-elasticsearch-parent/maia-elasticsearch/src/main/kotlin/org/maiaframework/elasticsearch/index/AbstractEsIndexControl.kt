@@ -6,8 +6,7 @@ import org.slf4j.LoggerFactory
 
 abstract class AbstractEsIndexControl(
     private val client: ElasticsearchClient,
-    private val esIndexActiveVersionManager: EsIndexActiveVersionManager,
-    private val esIndexNameProvider: EsIndexNameOverrider
+    private val esIndexActiveVersionManager: EsIndexActiveVersionManager
 ): EsIndexControl {
 
 
@@ -23,11 +22,9 @@ abstract class AbstractEsIndexControl(
 
     override fun createIndex() {
 
-        val indexName = this.esIndexNameProvider.indexName(this.indexName).asString
+        logger.info("BEGIN: createIndex() for ${this.indexName}")
 
-        logger.info("BEGIN: createIndex() for $indexName")
-
-        val createIndexResponse = client.indices().create { r -> r.index(indexName).mappings(this.typeMapping) }
+        val createIndexResponse = client.indices().create { r -> r.index(this.indexName.asString).mappings(this.typeMapping) }
 
         // TODO should I be doing something with the response?
 

@@ -1,14 +1,13 @@
 package org.maiaframework.elasticsearch
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient
+import org.maiaframework.elasticsearch.index.ElasticIndexHelper
+import org.maiaframework.elasticsearch.index.ElasticIndexService
 import org.maiaframework.elasticsearch.index.EsIndexActiveVersionManager
 import org.maiaframework.elasticsearch.index.EsIndexControlRegistry
 import org.maiaframework.elasticsearch.index.EsIndexNameFactory
 import org.maiaframework.elasticsearch.index.EsIndexNameLookup
-import org.maiaframework.elasticsearch.index.EsIndexNameOverrider
 import org.maiaframework.elasticsearch.index.EsIndexOps
-import org.maiaframework.elasticsearch.index.ElasticIndexHelper
-import org.maiaframework.elasticsearch.index.ElasticIndexService
 import org.maiaframework.elasticsearch.search.EsSearchExecutor
 import org.maiaframework.elasticsearch.search.EsSearchRequestFactory
 import org.maiaframework.props.Props
@@ -37,15 +36,6 @@ class MaiaElasticsearchAutoConfiguration {
     fun esIndexActiveVersionManager(props: Props, propsManager: PropsManager): EsIndexActiveVersionManager {
 
         return EsIndexActiveVersionManager(props, propsManager)
-
-    }
-
-
-    @Bean
-    @ConditionalOnMissingBean
-    fun esIndexNameOverrider(props: Props, esIndexNameFactory: EsIndexNameFactory): EsIndexNameOverrider {
-
-        return EsIndexNameOverrider(props, esIndexNameFactory)
 
     }
 
@@ -124,11 +114,10 @@ class MaiaElasticsearchAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     fun esIndexNameLookup(
-        esIndexActiveVersionManager: EsIndexActiveVersionManager,
-        esIndexNameOverrider: EsIndexNameOverrider
+        esIndexActiveVersionManager: EsIndexActiveVersionManager
     ): EsIndexNameLookup {
 
-        return EsIndexNameLookup(esIndexActiveVersionManager, esIndexNameOverrider)
+        return EsIndexNameLookup(esIndexActiveVersionManager)
 
     }
 

@@ -211,7 +211,8 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     fun initPlaywrightPage() {
 
         playwright = Playwright.create()
-        val browser = playwright.chromium().launch(BrowserType.LaunchOptions().setHeadless(false))
+        val headless = System.getProperty("playwright.headless", "false").toBoolean()
+        val browser = playwright.chromium().launch(BrowserType.LaunchOptions().setHeadless(headless))
         browserContext = browser.newContext()
         browserContext.tracing().start(Tracing.StartOptions().setSnapshots(true).setScreenshots(true))
         page = browserContext.newPage()

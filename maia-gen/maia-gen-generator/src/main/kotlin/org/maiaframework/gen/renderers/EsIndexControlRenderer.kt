@@ -9,7 +9,6 @@ class EsIndexControlRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRen
 
     init {
 
-        addConstructorArg(ClassFieldDef.aClassField("esIndexNameProvider", Fqcns.ES_INDEX_NAME_OVERRIDER).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("esIndexActiveVersionManager", Fqcns.ES_INDEX_ACTIVE_VERSION_MANAGER).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("client", Fqcns.ELASTIC_CLIENT).privat().build())
 
@@ -18,7 +17,6 @@ class EsIndexControlRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRen
 
     override fun renderPreClassFields() {
 
-        addImportFor(Fqcns.ES_INDEX_BASE_NAME)
         addImportFor(Fqcns.ES_TYPE_MAPPING)
 
         append("""

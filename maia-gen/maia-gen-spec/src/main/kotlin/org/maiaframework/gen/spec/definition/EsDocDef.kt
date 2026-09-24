@@ -69,7 +69,6 @@ class EsDocDef(
             aClassDef(ParameterizedType(Fqcns.ABSTRACT_ES_INDEX_CONTROL))
                 .withFieldDefsNotInherited(
                     listOf(
-                        aClassField("esIndexNameProvider", FieldTypes.byFqcn(Fqcns.ES_INDEX_NAME_OVERRIDER)).build(),
                         aClassField("esIndexActiveVersionManager", FieldTypes.byFqcn(Fqcns.ES_INDEX_ACTIVE_VERSION_MANAGER)).build(),
                         aClassField("client", FieldTypes.byFqcn(Fqcns.ELASTIC_CLIENT)).build()
                     )
