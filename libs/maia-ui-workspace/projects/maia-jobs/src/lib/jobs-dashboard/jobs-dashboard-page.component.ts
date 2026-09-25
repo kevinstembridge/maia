@@ -16,8 +16,15 @@ import {
     JobStatus,
     parseNameFilterFromParams,
     parseStatusFilterFromParams,
+    STATUS_COLORS,
     STATUS_DISPLAY_ORDER
 } from './state/jobs-filtering';
+
+const STATUS_LABELS: Record<JobStatus, string> = {
+    running: 'Running',
+    failed: 'Failed',
+    idle: 'Idle',
+};
 import {JobStateComponent} from './components/job-state/job-state.component';
 import {JobMetricsDialogComponent} from './dialogs/job-metrics-dialog/job-metrics-dialog.component';
 import {RunJobDialogComponent} from './dialogs/run-job-dialog/run-job-dialog.component';
@@ -37,6 +44,8 @@ export class JobsDashboardPageComponent implements OnInit {
     readonly store = inject(JobsDashboardStore);
 
     readonly statusOrder = STATUS_DISPLAY_ORDER;
+    readonly statusColors = STATUS_COLORS;
+    readonly statusLabels = STATUS_LABELS;
 
     private route = inject(ActivatedRoute);
     private router = inject(Router);

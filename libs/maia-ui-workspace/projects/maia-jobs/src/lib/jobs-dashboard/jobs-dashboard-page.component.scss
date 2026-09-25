@@ -11,22 +11,45 @@
     gap: 0.5rem;
 }
 
-.status-chip {
-    display: inline-flex;
+.status-tile {
+    display: flex;
     align-items: center;
+    gap: 0.5rem;
+    min-width: 8rem;
     border: 1px solid var(--mat-sys-outline-variant);
-    border-radius: 9999px;
+    border-radius: 0.5rem;
     background: none;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.8125rem;
-    color: var(--mat-sys-on-surface-variant);
+    padding: 0.5rem 0.75rem;
+    font: inherit;
     cursor: pointer;
+
+    &.active {
+        border-color: var(--mat-sys-primary);
+        background-color: var(--mat-sys-primary-container);
+        color: var(--mat-sys-on-primary-container);
+    }
+
+    &.active .status-tile-label {
+        color: inherit;
+    }
 }
 
-.status-chip.active {
-    border-color: var(--mat-sys-primary);
-    background-color: var(--mat-sys-primary-container);
-    color: var(--mat-sys-on-primary-container);
+.status-tile-dot {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+}
+
+.status-tile-count {
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+.status-tile-label {
+    font-size: 0.8125rem;
+    color: var(--mat-sys-on-surface-variant);
 }
 
 .filter-bar {

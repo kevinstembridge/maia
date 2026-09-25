@@ -5,6 +5,12 @@ export type JobStatus = 'running' | 'failed' | 'idle';
 
 export const STATUS_DISPLAY_ORDER: JobStatus[] = ['running', 'failed', 'idle'];
 
+export const STATUS_COLORS: Record<JobStatus, string> = {
+    running: '#1976d2',
+    failed: '#d32f2f',
+    idle: '#9e9e9e',
+};
+
 
 export function filterAndSortByName(jobs: JobState[], nameFilter: string): JobState[] {
     const normalizedFilter = nameFilter.toLowerCase();
@@ -25,11 +31,10 @@ export function deriveJobStatus(jobState: JobState): JobStatus {
 }
 
 
-export function countByStatus(jobs: JobState[]): Record<string, number> {
-    const counts: Record<string, number> = {};
+export function countByStatus(jobs: JobState[]): Record<JobStatus, number> {
+    const counts: Record<JobStatus, number> = {running: 0, failed: 0, idle: 0};
     for (const job of jobs) {
-        const status = deriveJobStatus(job);
-        counts[status] = (counts[status] ?? 0) + 1;
+        counts[deriveJobStatus(job)]++;
     }
     return counts;
 }

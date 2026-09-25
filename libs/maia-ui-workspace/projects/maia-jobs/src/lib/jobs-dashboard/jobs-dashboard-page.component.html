@@ -1,15 +1,18 @@
 <div class="toolbar">
     <div class="status-summary">
-        <button type="button" class="status-chip" [class.active]="store.statusFilter() === null"
+        <button type="button" class="status-tile status-tile-total" [class.active]="store.statusFilter() === null"
                 (click)="store.onStatusFilterChanged(null)">
-            {{ store.totalCount() }} {{ store.totalCount() === 1 ? 'job' : 'jobs' }}
+            <span class="status-tile-count">{{ store.totalCount() }} of {{ store.totalCountAll() }}</span>
+            <span class="status-tile-label">{{ store.totalCountAll() === 1 ? 'job' : 'jobs' }}</span>
         </button>
         @for (status of statusOrder; track status) {
-            @if ((store.statusCounts()[status]) > 0) {
-                <button type="button" class="status-chip" [class.active]="store.statusFilter() === status"
+            @if ((store.statusCountsAll()[status]) > 0) {
+                <button type="button" class="status-tile" [class.active]="store.statusFilter() === status"
                         [attr.aria-pressed]="store.statusFilter() === status"
                         (click)="onStatusFilterToggled(status)">
-                    {{ store.statusCounts()[status] }} {{ status }}
+                    <span class="status-tile-dot" [style.background-color]="statusColors[status]"></span>
+                    <span class="status-tile-count">{{ store.statusCounts()[status] }} of {{ store.statusCountsAll()[status] }}</span>
+                    <span class="status-tile-label">{{ statusLabels[status] }}</span>
                 </button>
             }
         }

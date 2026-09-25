@@ -36,17 +36,21 @@ export const JobsDashboardStore = signalStore(
         const nameFilteredJobStates = computed<JobState[]>(() =>
             filterAndSortByName(jobStates(), nameFilter())
         );
-        const statusCounts = computed<Record<string, number>>(() =>
+        const statusCounts = computed<Record<JobStatus, number>>(() =>
             countByStatus(nameFilteredJobStates())
         );
+        const statusCountsAll = computed<Record<JobStatus, number>>(() =>
+            countByStatus(jobStates())
+        );
         const totalCount = computed<number>(() => nameFilteredJobStates().length);
+        const totalCountAll = computed<number>(() => jobStates().length);
         const visibleJobStates = computed<JobState[]>(() => {
             const status = statusFilter();
             return status === null
                 ? nameFilteredJobStates()
                 : nameFilteredJobStates().filter((it) => deriveJobStatus(it) === status);
         });
-        return {visibleJobStates, statusCounts, totalCount};
+        return {visibleJobStates, statusCounts, statusCountsAll, totalCount, totalCountAll};
     }),
 
     withMethods((store, jobsService = inject(JobsApiService)) => {

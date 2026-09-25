@@ -1,4 +1,8 @@
 <div class="status-tiles">
+    <div class="status-tile status-tile-total">
+        <span class="status-tile-count">{{ store.filteredIndexCount() }} of {{ store.totalIndexCount() }}</span>
+        <span class="status-tile-label">Total</span>
+    </div>
     @for (status of statusTileOrder; track status) {
         <button
             type="button"

@@ -51,7 +51,16 @@ export const ElasticIndicesPageStore = signalStore(
         const visibleIndexStateDtos = computed<EsIndexStateDto[]>(() =>
             filterByStatus(nameFilteredIndexStateDtos(), statusFilter())
         );
-        return {toggleFilteredIndexStateDtos, nameFilteredIndexStateDtos, statusCounts, visibleIndexStateDtos};
+        const totalIndexCount = computed<number>(() => indexStateDtos().length);
+        const filteredIndexCount = computed<number>(() => nameFilteredIndexStateDtos().length);
+        return {
+            toggleFilteredIndexStateDtos,
+            nameFilteredIndexStateDtos,
+            statusCounts,
+            visibleIndexStateDtos,
+            totalIndexCount,
+            filteredIndexCount
+        };
     }),
 
     withMethods((store, pageService = inject(ElasticIndicesApiService)) => ({
