@@ -40,9 +40,40 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
     }
 
 
-    fun jobFailed(jobInstanceId: DomainId, jobMetrics: JobMetrics, e: Exception) {
+    fun jobFailed(
+        jobInstanceId: DomainId,
+        jobName: JobName,
+        invokedBy: String,
+        startTimestamp: Instant,
+        jobMetrics: JobMetrics,
+        e: Exception
+    ) {
 
-        updateJobExecution(jobInstanceId, JobExecutionStatus.FAILED, jobMetrics, e)
+        val updatedRowCount = updateJobExecution(jobInstanceId, JobExecutionStatus.FAILED, jobMetrics, e)
+
+        if (updatedRowCount == 0) {
+
+            // No existing row to update - most likely newJobExecution()'s insert never succeeded.
+            // Insert the failure directly so it isn't lost silently.
+            val now = Instant.now()
+
+            this.jobExecutionDao.insert(
+                JobExecutionEntity(
+                    startTimestamp,
+                    now,
+                    e.message?.take(10_000),
+                    jobInstanceId,
+                    invokedBy,
+                    jobName,
+                    now,
+                    jobMetrics.metricsReport(),
+                    ExceptionUtil.stackTrace(e).take(10_000),
+                    startTimestamp,
+                    JobExecutionStatus.FAILED
+                )
+            )
+
+        }
 
     }
 
@@ -59,7 +90,7 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
         status: JobExecutionStatus,
         jobMetrics: JobMetrics,
         e: Exception? = null
-    ) {
+    ): Int {
 
         val updater = JobExecutionEntityUpdater.forPrimaryKey(jobInstanceId) {
             status(status)
@@ -73,7 +104,7 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
 
         }
 
-        this.jobExecutionDao.setFields(updater)
+        return this.jobExecutionDao.setFields(updater)
 
     }
 

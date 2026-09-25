@@ -100,9 +100,9 @@ class MaiaJobService(
 
             val jobMetrics = JobMetrics(jobName.value)
 
-            initRunningJob(jobName, username, jobMetrics, jobInstanceId, startTimestamp)
-
             try {
+
+                initRunningJob(jobName, username, jobMetrics, jobInstanceId, startTimestamp)
 
                 jobMetrics.timeInstanceOfJob {
 
@@ -118,7 +118,7 @@ class MaiaJobService(
             } catch (e: Exception) {
 
                 logger.error("Job $jobName with instanceId $jobInstanceId failed.", e)
-                jobExecutionRepo.jobFailed(jobInstanceId, jobMetrics, e)
+                jobExecutionRepo.jobFailed(jobInstanceId, jobName, username, startTimestamp, jobMetrics, e)
 
             } finally {
 
