@@ -683,9 +683,66 @@ git commit -m "Add Overdue only toggle to props dashboard page"
 
 ---
 
+### Task 4: Display filtered/total record count in the toolbar
+
+**Goal:** The toolbar shows a "12 of 23 properties" style count, where the first number is the currently-visible (filtered) row count and the second is the total loaded row count.
+
+**Files:**
+- Modify: `projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html`
+
+**Acceptance Criteria:**
+- [ ] Toolbar displays `{{store.visibleProperties().length}} of {{store.properties().length}} properties` (or equivalent), placed after the "Overdue only" toggle and before the "Add override" button
+- [ ] "Total" (the second number) is the unfiltered count — `store.properties().length` — unaffected by any of the three toggles or the name filter
+- [ ] "Visible" (the first number) is `store.visibleProperties().length`, which already reflects all active filters (name filter + all three toggles) via the existing computed
+- [ ] No store or `page.ts` changes needed — both `properties` and `visibleProperties` are already exposed signals on `PropsDashboardStore`
+- [ ] Count updates live as filters/toggles change (this falls out of Angular signals reactivity automatically — no extra wiring)
+- [ ] Manually verified in a running browser: count matches the number of visible rows and total loaded rows, and updates when toggling a filter
+
+**Verify:** `npx ng build maia-props` (from `libs/maia-ui-workspace`) → build succeeds with no errors; then the manual browser check below
+
+**Steps:**
+
+- [ ] **Step 1: Add the count to the template**
+
+In `projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html`, replace:
+
+```html
+    <mat-slide-toggle [checked]="store.overdueOnly()" (change)="onOverdueOnlyToggled($event)">Overdue only</mat-slide-toggle>
+    <button mat-flat-button aria-label="Add override" (click)="onAddOverride()">Add override</button>
+```
+
+with:
+
+```html
+    <mat-slide-toggle [checked]="store.overdueOnly()" (change)="onOverdueOnlyToggled($event)">Overdue only</mat-slide-toggle>
+    <span class="props-dashboard-count">{{store.visibleProperties().length}} of {{store.properties().length}} properties</span>
+    <button mat-flat-button aria-label="Add override" (click)="onAddOverride()">Add override</button>
+```
+
+- [ ] **Step 2: Manually verify in the browser**
+
+With the showcase app running and at least one property overridden and one not, navigate to `/props-dashboard` and confirm:
+- The toolbar shows e.g. "23 of 23 properties" with no filters active
+- Toggling "Overridden only" (or any other toggle, or typing a name filter) narrows the first number while the second stays at the total loaded count
+- Clearing the filter restores the first number to match the second
+
+- [ ] **Step 3: Run the build**
+
+Run: `npx ng build maia-props` (from `libs/maia-ui-workspace`)
+Expected: `Application bundle generation complete` with no TypeScript errors
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html
+git commit -m "Display filtered/total record count in props dashboard toolbar"
+```
+
+---
+
 ## Self-Review Notes
 
-- **Spec coverage:** All four spec bullets (filtering logic, URL sync, store, page/template, tests) map to Tasks 1-3. Out-of-scope backend note confirmed — no task touches `maia-props-web` or `maia-props-service`.
+- **Spec coverage:** All four original spec bullets (filtering logic, URL sync, store, page/template, tests) map to Tasks 1-3. Out-of-scope backend note confirmed — no task touches `maia-props-web` or `maia-props-service`. Task 4 was added mid-execution per a follow-up user request (filtered/total count display) and needs no backend or store changes since both counts are already derivable from existing store signals.
 - **Placeholder scan:** none found — all steps contain complete code.
-- **Type consistency:** `overdueOnly: boolean` and `onOverdueOnlyToggled(value: boolean)` names are identical across Tasks 1, 2, and 3.
-- **User verification requirement scan:** Original request ("add a quick filter") does not ask for human sign-off — answer is NO. No dedicated verification task created; Task 3 includes a manual browser check as a step per this project's standing frontend-change convention, not as a formal gate.
+- **Type consistency:** `overdueOnly: boolean` and `onOverdueOnlyToggled(value: boolean)` names are identical across Tasks 1, 2, and 3. Task 4 introduces no new types/methods, only template expressions over existing signals.
+- **User verification requirement scan:** Original request ("add a quick filter") does not ask for human sign-off — answer is NO. The follow-up count request likewise doesn't ask for sign-off. No dedicated verification task created; Tasks 3 and 4 each include a manual browser check as a step per this project's standing frontend-change convention, not as a formal gate.
