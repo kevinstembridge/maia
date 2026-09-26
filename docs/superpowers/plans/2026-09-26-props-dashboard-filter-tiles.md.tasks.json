@@ -17,10 +17,10 @@
     {
       "id": 2,
       "subject": "Task 3: Replace the slide-toggles with filter tiles on the page",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [1],
       "description": "**Goal:** props dashboard page shows a row of 4 tiles (Total, Overridden, Redundant, Overdue) above the name-filter/Add-override toolbar, styled like maia-elasticsearch's status tiles. 3 filter tiles are clickable buttons showing count + active state; old mat-slide-toggle controls/imports removed.\n\n**Files:**\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.scss\n\n**Acceptance Criteria:**\n- MatSlideToggleModule/MatSlideToggleChange no longer imported/referenced\n- 3 parameterless click handlers flip store booleans via !store.xOnly()\n- template has .props-filter-tiles row: non-clickable Total tile (X of Y, aria-live) + 3 clickable button tiles with count/active/aria-pressed\n- .props-dashboard-toolbar row now has only name filter + Add override button\n- .props-filter-tile* scss copied from elastic-indices-page.scss's .status-tile* rules (no color dot)\n- old .props-dashboard-count rule removed\n- manually verified or thoroughly self-reviewed\n\n**Verify:** npx ng build maia-props (from libs/maia-ui-workspace) -> build succeeds; npx ng test maia-props -> 31/31 pass; then manual/self-review check\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.scss\"], \"verifyCommand\": \"npx ng build maia-props\", \"acceptanceCriteria\": [\"slide-toggle imports removed\", \"click handlers flip booleans\", \"tiles row with total+3 filter tiles\", \"toolbar row reduced to name filter+add button\", \"tile scss copied from elasticsearch\", \"old count rule removed\", \"manual/self-review passes\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-26T03:35:00Z"
+  "lastUpdated": "2026-09-26T04:00:00Z"
 }
