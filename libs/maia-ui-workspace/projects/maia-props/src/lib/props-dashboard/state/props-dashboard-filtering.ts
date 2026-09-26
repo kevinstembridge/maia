@@ -1,4 +1,5 @@
 import {ParamMap, Params} from '@angular/router';
+import {DateTime} from 'luxon';
 import {PropertyResponseDto} from '../models/PropertyResponseDto';
 
 
@@ -11,7 +12,7 @@ export interface PropsFilters {
 
 
 function todayIsoString(): string {
-    return new Date().toISOString().slice(0, 10);
+    return DateTime.local().toISODate()!;
 }
 
 

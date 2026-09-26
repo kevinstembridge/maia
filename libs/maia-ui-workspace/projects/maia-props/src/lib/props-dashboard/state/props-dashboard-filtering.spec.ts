@@ -131,6 +131,15 @@ describe('filterProperties', () => {
             expect(result.map(p => p.propertyName)).toEqual(['maia.props.web.base-url']);
         });
 
+        it('uses the local calendar date rather than the UTC date when they differ near midnight UTC', () => {
+            vi.setSystemTime(new Date('2026-09-26T23:30:00Z'));
+            const properties = [
+                aProperty({propertyName: 'a', reviewDate: '2026-09-26'}),
+            ];
+            const result = filterProperties(properties, '', false, false, true);
+            expect(result.map(p => p.propertyName)).toEqual(['a']);
+        });
+
     });
 
 });
