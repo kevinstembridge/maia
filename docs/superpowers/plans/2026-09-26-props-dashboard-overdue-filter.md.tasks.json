@@ -17,7 +17,7 @@
     {
       "id": 2,
       "subject": "Task 3: Add the Overdue only toggle to the page",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [1],
       "description": "**Goal:** props dashboard page has a third slide-toggle, Overdue only, reading/writing store.overdueOnly() and participating in URL query-param sync.\n\n**Files:**\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\n\n**Acceptance Criteria:**\n- constructor parses overdueOnly from initial query params\n- query-param sync effect includes overdueOnly\n- onOverdueOnlyToggled handler delegates to store\n- template has third mat-slide-toggle labeled Overdue only, after Redundant only\n- manually verified in running browser: toggle filters table and survives page reload via URL query param\n\n**Verify:** npx ng build maia-props (from libs/maia-ui-workspace) -> build succeeds; then manual browser check\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\"], \"verifyCommand\": \"npx ng build maia-props\", \"acceptanceCriteria\": [\"constructor parses overdueOnly\", \"effect includes overdueOnly\", \"handler delegates to store\", \"template has third toggle\", \"manual browser check passes\"], \"requiresUserVerification\": false}\n```"
     },
@@ -29,5 +29,5 @@
       "description": "**Goal:** toolbar shows '<visible> of <total> properties' text (e.g. '12 of 23 properties'), where visible = store.visibleProperties().length (after all filters incl. name filter) and total = store.properties().length (everything loaded, unfiltered).\n\n**Files:**\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\n\n**Acceptance Criteria:**\n- toolbar displays '{{store.visibleProperties().length}} of {{store.properties().length}} properties' (or equivalent), placed after the Overdue only toggle and before the Add override button\n- no store or page.ts changes needed (both signals already exist on PropsDashboardStore)\n- updates live as filters/toggles change (signals are reactive, no extra wiring required)\n- manually verified in running browser: count matches visible rows and total loaded rows, updates when toggling a filter\n\n**Verify:** npx ng build maia-props (from libs/maia-ui-workspace) -> build succeeds; then manual browser check\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\"], \"verifyCommand\": \"npx ng build maia-props\", \"acceptanceCriteria\": [\"toolbar shows visible of total properties text\", \"uses existing store signals, no new state\", \"reactive to filter changes\", \"manual browser check passes\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-26T01:50:00Z"
+  "lastUpdated": "2026-09-26T02:10:00Z"
 }
