@@ -35,7 +35,7 @@ class ElasticIndexService(
         getIndexHealthsFromCluster().forEach { (indexName, indexHealthDto) ->
 
             stateDtosByName.compute(indexName) { name: String, existingStateDto: EsIndexStateDto? ->
-                existingStateDto?.copy(health = indexHealthDto) ?: EsIndexStateDto(name, null, indexHealthDto)
+                existingStateDto?.copy(health = indexHealthDto) ?: EsIndexStateDto(name, null, indexHealthDto, exists = true)
             }
 
         }
@@ -64,7 +64,7 @@ class ElasticIndexService(
 
             stateDtosByName.compute(indexSummary.indexName.resolvedName) { indexName: String, existingStateDto: EsIndexStateDto? ->
                 existingStateDto?.copy(managedIndexInfo = indexSummary)
-                    ?: EsIndexStateDto(indexName, indexSummary, null)
+                    ?: EsIndexStateDto(indexName, indexSummary, null, exists = false)
             }
 
         }
