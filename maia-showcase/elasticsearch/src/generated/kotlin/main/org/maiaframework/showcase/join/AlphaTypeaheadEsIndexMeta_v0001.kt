@@ -8,15 +8,26 @@ import co.elastic.clients.elasticsearch._types.mapping.TypeMapping
 import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
 import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.elasticsearch.index.model.EsIndexVersion
+import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
 
 
 object AlphaTypeaheadEsIndexMeta_v0001 {
 
+
     val indexBaseName = EsIndexBaseName("alpha-typeahead")
+
+
+    val indexVersion = EsIndexVersion(1)
+
+
+    val indexBaseNameAndVersion = IndexBaseNameAndVersion(indexBaseName, indexVersion)
+
 
     val indexName = EsIndexName(indexBaseName, EsIndexVersion(1))
 
+
     const val indexDescription = "A typeahead index for the someString field of Alpha records."
+
 
     val typeMapping = TypeMapping.of { m ->
             m.properties("id", Property.of { p -> p.keyword { it } })

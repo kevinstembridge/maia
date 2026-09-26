@@ -20,8 +20,8 @@ class AlphaTypeaheadEsIndexControl_v0001(
 ) {
 
 
-    override val baseNameAndVersion = AlphaTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion
-
+    override val indexBaseNameAndVersion = AlphaTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion
+    
 
     override val indexName = AlphaTypeaheadEsIndexMeta_v0001.indexName
 
