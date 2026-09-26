@@ -10,7 +10,7 @@ class EsIndexControlRegistry: ApplicationContextAware, InitializingBean {
 
     private lateinit var applicationContext: ApplicationContext
 
-    
+
     private val controlsByName = mutableMapOf<EsIndexName, EsIndexControl>()
 
 

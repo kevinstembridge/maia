@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.DtoSuffix
 import org.maiaframework.gen.spec.definition.EnumDef
 import org.maiaframework.gen.spec.definition.EsDocDef
+import org.maiaframework.gen.spec.definition.IntTypeDef
 import org.maiaframework.gen.spec.definition.SimpleResponseDtoDef
 import org.maiaframework.gen.spec.definition.SimpleResponseDtoFieldDef
 import org.maiaframework.gen.spec.definition.StringTypeDef
@@ -142,6 +143,18 @@ class SimpleResponseDtoDefBuilder(
 
     fun field(
         fieldName: String,
+        intTypeDef: IntTypeDef,
+        init: (SimpleResponseDtoFieldDefBuilder.() -> Unit)? = null
+    ) {
+
+        val builder = newFieldDefBuilder(ClassFieldName(fieldName), intTypeDef)
+        init?.invoke(builder)
+
+    }
+
+
+    fun field(
+        fieldName: String,
         listFieldType: ListFieldType,
         caseSensitive: Boolean = true,
         init: (SimpleResponseDtoFieldDefBuilder.() -> Unit)? = null
@@ -204,6 +217,24 @@ class SimpleResponseDtoDefBuilder(
             SimpleResponseDtoFieldDefBuilder(
                 classFieldName,
                 FieldTypes.stringType(stringTypeDef),
+                this,
+                CaseSensitive(caseSensitive)
+            )
+        )
+
+    }
+
+
+    private fun newFieldDefBuilder(
+        classFieldName: ClassFieldName,
+        intTypeDef: IntTypeDef,
+        caseSensitive: Boolean = true
+    ): SimpleResponseDtoFieldDefBuilder {
+
+        return add(
+            SimpleResponseDtoFieldDefBuilder(
+                classFieldName,
+                FieldTypes.intType(intTypeDef),
                 this,
                 CaseSensitive(caseSensitive)
             )

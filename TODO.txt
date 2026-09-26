@@ -9,10 +9,8 @@ TODO * Jobs
 
 TODO * Props Dashboard
     TODO * Mask sensitive fields.
-    TODO * Display coloured dots on the quick filter buttons.
 
 TODO * Elastic Indices Dashboard
-    TODO * Segregate managed and non-managed indices.
     TODO * Operations such as create and setActiveVersion should use the baseName and version rather than the resolved name.
 
 TODO * Single Effective Record
