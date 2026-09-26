@@ -1,4 +1,5 @@
 import {Component, Inject} from '@angular/core';
+import {DatePipe} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {PropertyHistoryItemResponseDto} from '../../models/PropertyHistoryItemResponseDto';
@@ -11,7 +12,7 @@ export interface PropertyHistoryDialogData {
 @Component({
     selector: 'maia-property-history-dialog',
     templateUrl: './property-history-dialog.html',
-    imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule]
+    imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, DatePipe]
 })
 export class PropertyHistoryDialog {
 

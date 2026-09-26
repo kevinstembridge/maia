@@ -1,4 +1,5 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
+import {DatePipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
@@ -21,7 +22,7 @@ import {PropertyHistoryDialog, PropertyHistoryDialogData} from './dialogs/proper
     selector: 'maia-props-dashboard-page',
     templateUrl: './props-dashboard-page.html',
     styleUrl: './props-dashboard-page.scss',
-    imports: [MatTableModule, MatFormFieldModule, MatInputModule, MatSlideToggleModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
+    imports: [MatTableModule, MatFormFieldModule, MatInputModule, MatSlideToggleModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, DatePipe],
     providers: [PropsApiService, PropsDashboardStore]
 })
 export class PropsDashboardPage implements OnInit {

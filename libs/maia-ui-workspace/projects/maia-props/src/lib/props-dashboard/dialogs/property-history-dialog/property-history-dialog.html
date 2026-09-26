@@ -17,9 +17,9 @@
                 <td>{{item.changeType}}</td>
                 <td>{{item.propertyValue}}</td>
                 <td>{{item.lastModifiedByUsername}}</td>
-                <td>{{item.lastModifiedTimestamp}}</td>
+                <td>{{item.lastModifiedTimestamp | date: 'EEE dd MMM yyyy, HH:mm:ss'}}</td>
                 <td>{{item.comment}}</td>
-                <td>{{item.reviewDate}}</td>
+                <td>{{item.reviewDate | date: 'EEE dd MMM yyyy'}}</td>
             </tr>
         } @empty {
             <tr>
