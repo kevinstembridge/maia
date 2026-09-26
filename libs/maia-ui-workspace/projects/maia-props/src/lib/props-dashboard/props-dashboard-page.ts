@@ -44,6 +44,7 @@ export class PropsDashboardPage implements OnInit {
         this.store.onNameFilterChanged(initialFilters.nameFilter);
         this.store.onOverriddenOnlyToggled(initialFilters.overriddenOnly);
         this.store.onRedundantOnlyToggled(initialFilters.redundantOnly);
+        this.store.onOverdueOnlyToggled(initialFilters.overdueOnly);
 
         effect(() => {
             this.router.navigate([], {
@@ -52,6 +53,7 @@ export class PropsDashboardPage implements OnInit {
                     nameFilter: this.store.nameFilter(),
                     overriddenOnly: this.store.overriddenOnly(),
                     redundantOnly: this.store.redundantOnly(),
+                    overdueOnly: this.store.overdueOnly(),
                 }),
                 replaceUrl: true,
             });
@@ -77,6 +79,11 @@ export class PropsDashboardPage implements OnInit {
 
     onRedundantOnlyToggled(change: MatSlideToggleChange) {
         this.store.onRedundantOnlyToggled(change.checked);
+    }
+
+
+    onOverdueOnlyToggled(change: MatSlideToggleChange) {
+        this.store.onOverdueOnlyToggled(change.checked);
     }
 
 
