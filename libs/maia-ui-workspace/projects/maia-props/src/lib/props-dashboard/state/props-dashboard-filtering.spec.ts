@@ -9,6 +9,7 @@ function aProperty(overrides: Partial<PropertyResponseDto> = {}): PropertyRespon
         effectiveValue: '3200',
         isOverridden: false,
         isRedundant: false,
+        isSensitive: false,
         environmentValue: '3200',
         sourceName: 'applicationConfig',
         lastModifiedByUsername: null,

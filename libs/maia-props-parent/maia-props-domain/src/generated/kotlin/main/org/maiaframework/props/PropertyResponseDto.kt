@@ -13,6 +13,7 @@ data class PropertyResponseDto(
     val environmentValue: String?,
     val isOverridden: Boolean,
     val isRedundant: Boolean,
+    val isSensitive: Boolean,
     val lastModifiedByUsername: String?,
     val lastModifiedTimestamp: Instant?,
     val propertyName: String,

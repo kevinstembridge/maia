@@ -4,7 +4,12 @@
         <div class="tier-top">
             <div class="identity">
                 <span class="prop-name">{{property().propertyName}}</span>
-                <span class="prop-value">{{property().effectiveValue}}</span>
+                <span class="prop-value-row">
+                    @if (property().isSensitive) {
+                        <mat-icon class="sensitive-icon" aria-hidden="false" [attr.aria-label]="'Masked value for ' + property().propertyName">lock</mat-icon>
+                    }
+                    <span class="prop-value">{{property().effectiveValue}}</span>
+                </span>
                 @if (property().isOverridden) {
                     <span class="environment-value">Environment value: {{property().environmentValue ?? '—'}}</span>
                 }

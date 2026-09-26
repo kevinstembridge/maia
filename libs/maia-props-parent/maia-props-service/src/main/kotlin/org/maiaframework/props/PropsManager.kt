@@ -16,6 +16,14 @@ class PropsManager(
     private val logger = getLogger<PropsManager>()
 
 
+    private fun isSensitivePropertyName(propertyName: String): Boolean =
+        SENSITIVE_NAME_FRAGMENTS.any { propertyName.contains(it, ignoreCase = true) }
+
+
+    private fun maskIfSensitive(value: String?, isSensitive: Boolean): String? =
+        if (isSensitive && value != null) MASKED_VALUE else value
+
+
     fun getAllProperties(): List<PropertyResponseDto> {
 
         val overridesByName = this.propsRepo.getAllProperties().associateBy { it.propertyName }
@@ -61,14 +69,16 @@ class PropsManager(
     ): PropertyResponseDto {
 
         val environmentValue = `get property value from Spring Environment`(propertyName)
+        val isSensitive = isSensitivePropertyName(propertyName)
 
         return if (override != null) {
             PropertyResponseDto(
                 comment = override.comment,
-                effectiveValue = override.propertyValue,
-                environmentValue = environmentValue,
+                effectiveValue = maskIfSensitive(override.propertyValue, isSensitive),
+                environmentValue = maskIfSensitive(environmentValue, isSensitive),
                 isOverridden = true,
                 isRedundant = override.propertyValue == environmentValue,
+                isSensitive = isSensitive,
                 lastModifiedByUsername = override.lastModifiedByUsername,
                 lastModifiedTimestamp = override.lastModifiedTimestamp,
                 propertyName = propertyName,
@@ -78,10 +88,11 @@ class PropsManager(
         } else {
             PropertyResponseDto(
                 comment = null,
-                effectiveValue = environmentValue,
-                environmentValue = environmentValue,
+                effectiveValue = maskIfSensitive(environmentValue, isSensitive),
+                environmentValue = maskIfSensitive(environmentValue, isSensitive),
                 isOverridden = false,
                 isRedundant = false,
+                isSensitive = isSensitive,
                 lastModifiedByUsername = null,
                 lastModifiedTimestamp = null,
                 propertyName = propertyName,
@@ -107,6 +118,8 @@ class PropsManager(
 
     fun getPropertyHistory(propertyName: String): List<PropertyHistoryItemResponseDto> {
 
+        val isSensitive = isSensitivePropertyName(propertyName)
+
         return this.propsRepo.getPropertyHistory(propertyName).map {
             PropertyHistoryItemResponseDto(
                 changeType = it.changeType,
@@ -114,7 +127,7 @@ class PropsManager(
                 lastModifiedByUsername = it.lastModifiedByUsername,
                 lastModifiedTimestamp = it.lastModifiedTimestamp,
                 propertyName = it.propertyName,
-                propertyValue = it.propertyValue,
+                propertyValue = if (isSensitive) MASKED_VALUE else it.propertyValue,
                 reviewDate = it.reviewDate,
                 version = it.version,
             )
@@ -158,6 +171,16 @@ class PropsManager(
                 comment
         )
 
+    }
+
+
+    companion object {
+        private const val MASKED_VALUE = "******"
+
+        // Broad substring match, not a precise identifier match — deliberately errs toward over-masking
+        // (e.g. "hotkey.enabled" gets caught too) rather than ever under-masking a real secret. Same
+        // tradeoff Spring Boot Actuator's own Sanitizer makes with its default key list.
+        private val SENSITIVE_NAME_FRAGMENTS = listOf("password", "secret", "key", "token", "credential")
     }
 
 

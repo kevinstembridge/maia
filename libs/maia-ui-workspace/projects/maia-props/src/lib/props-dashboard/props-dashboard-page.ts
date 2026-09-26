@@ -88,14 +88,19 @@ export class PropsDashboardPage implements OnInit {
 
     onAddOverride() {
 
-        this.openEditDialog({propertyName: null, currentValue: null, currentReviewDate: null});
+        this.openEditDialog({propertyName: null, currentValue: null, currentReviewDate: null, isSensitive: false});
 
     }
 
 
     onEdit(row: PropertyResponseDto) {
 
-        this.openEditDialog({propertyName: row.propertyName, currentValue: row.effectiveValue, currentReviewDate: row.reviewDate});
+        this.openEditDialog({
+            propertyName: row.propertyName,
+            currentValue: row.isSensitive ? null : row.effectiveValue,
+            currentReviewDate: row.reviewDate,
+            isSensitive: row.isSensitive,
+        });
 
     }
 

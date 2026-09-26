@@ -64,6 +64,7 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
         }
         field("isOverridden", FieldTypes.boolean)
         field("isRedundant", FieldTypes.boolean)
+        field("isSensitive", FieldTypes.boolean)
         field("environmentValue", FieldTypes.string) {
             nullable()
         }
