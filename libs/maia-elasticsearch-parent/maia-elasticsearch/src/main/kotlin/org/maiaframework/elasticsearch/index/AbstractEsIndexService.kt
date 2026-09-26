@@ -1,7 +1,9 @@
 package org.maiaframework.elasticsearch.index
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.index.model.EsIndexName
+import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 import org.maiaframework.metrics.JobMetrics
 import org.maiaframework.props.Props
 import org.slf4j.Logger
@@ -20,7 +22,7 @@ abstract class AbstractEsIndexService<ESDOC>(
     protected abstract val bulkDeleteChunkSizePropertyName: String
 
 
-    protected abstract fun indexName(): EsIndexName
+    protected abstract fun indexName(): IndexResolvedName
 
 
     fun refreshIndex(jm: JobMetrics) {
@@ -54,14 +56,14 @@ abstract class AbstractEsIndexService<ESDOC>(
     }
 
 
-    protected fun bulkUpsert(esDocs: List<org.maiaframework.elasticsearch.EsDocHolder<ESDOC>>) {
+    protected fun bulkUpsert(esDocs: List<EsDocHolder<ESDOC>>) {
 
         this.esIndexOps.bulkUpsert(esDocs)
 
     }
 
 
-    protected abstract fun getEsDocBatches(jm: JobMetrics): Sequence<List<org.maiaframework.elasticsearch.EsDocHolder<ESDOC>>>
+    protected abstract fun getEsDocBatches(jm: JobMetrics): Sequence<List<EsDocHolder<ESDOC>>>
 
 
     open fun deleteById(id: DomainId) {

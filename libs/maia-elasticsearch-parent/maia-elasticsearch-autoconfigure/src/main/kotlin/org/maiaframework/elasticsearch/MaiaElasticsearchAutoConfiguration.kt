@@ -27,7 +27,7 @@ class MaiaElasticsearchAutoConfiguration {
     @ConditionalOnMissingBean
     fun esIndexNameFactory(): EsIndexNameFactory {
 
-        return EsIndexNameFactory()
+        return EsIndexNameFactory
 
     }
 

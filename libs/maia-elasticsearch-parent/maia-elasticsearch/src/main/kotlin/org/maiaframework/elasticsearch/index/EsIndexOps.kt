@@ -10,10 +10,14 @@ import org.maiaframework.common.logging.getLogger
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.EsPaginationHelper
 import org.maiaframework.elasticsearch.index.model.EsIndexName
+import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 import org.maiaframework.metrics.JobMetrics
 
 
-class EsIndexOps(private val client: ElasticsearchClient, private val paginationHelper: EsPaginationHelper) {
+class EsIndexOps(
+    private val client: ElasticsearchClient,
+    private val paginationHelper: EsPaginationHelper
+) {
 
 
     private val logger = getLogger<EsIndexOps>()
@@ -21,28 +25,28 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
 
     fun <T> findById(
         id: String,
-        indexName: EsIndexName,
+        indexName: IndexResolvedName,
         clazz: Class<T>
     ): GetResponse<T> {
 
-        return this.client.get({ r -> r.index(indexName.resolvedName).id(id) }, clazz)
+        return this.client.get({ r -> r.index(indexName.value).id(id) }, clazz)
 
     }
 
 
     fun deleteById(
         id: String,
-        indexName: EsIndexName
+        indexName: IndexResolvedName
     ): DeleteResponse {
 
-        return this.client.delete { r -> r.index(indexName.resolvedName).id(id) }
+        return this.client.delete { r -> r.index(indexName.value).id(id) }
 
     }
 
 
     fun deleteByIds(
         ids: Collection<String>,
-        indexName: EsIndexName
+        indexName: IndexResolvedName
     ) {
 
         val builder = BulkRequest.Builder()
@@ -50,7 +54,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
         ids.forEach { id ->
             builder.operations { op ->
                 op.delete { d ->
-                    d.index(indexName.resolvedName).id(id)
+                    d.index(indexName.value).id(id)
                 }
             }
         }
@@ -71,7 +75,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
         items.forEach { item ->
             bulk.operations { op ->
                 op.index { idx ->
-                    idx.index(item.indexName.resolvedName).id(item.id).document(item.doc)
+                    idx.index(item.indexName.value).id(item.id).document(item.doc)
                 }
             }
         }
@@ -93,7 +97,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
 
     fun removeDeletedRecordsFromIndex(
         currentIds: Set<String>,
-        indexName: EsIndexName,
+        indexName: IndexResolvedName,
         chunkSize: Int,
         jm: JobMetrics
     ) {
@@ -130,13 +134,13 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
 
 
     private fun buildSearchRequestFunction(
-        indexName: EsIndexName
+        indexName: IndexResolvedName
     ): (SearchRequest.Builder) -> Unit {
 
         return { searchRequestBuilder ->
 
             searchRequestBuilder
-                .index(indexName.resolvedName)
+                .index(indexName.value)
                 .query { q ->
                     q.matchAll { m ->
                         m
@@ -154,7 +158,7 @@ class EsIndexOps(private val client: ElasticsearchClient, private val pagination
     fun upsert(esDoc: EsDocHolder<*>) {
 
         this.client.index { builder ->
-            builder.index(esDoc.indexName.resolvedName)
+            builder.index(esDoc.indexName.value)
                 .id(esDoc.id)
                 .document(esDoc.doc)
         }

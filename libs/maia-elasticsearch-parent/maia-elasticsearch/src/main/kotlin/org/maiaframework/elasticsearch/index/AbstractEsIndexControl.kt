@@ -24,7 +24,8 @@ abstract class AbstractEsIndexControl(
 
         logger.info("BEGIN: createIndex() for ${this.indexName}")
 
-        val createIndexResponse = client.indices().create { r -> r.index(this.indexName.resolvedName).mappings(this.typeMapping) }
+        val resolvedName = EsIndexNameFactory.indexNameFrom(this.indexBaseNameAndVersion)
+        val createIndexResponse = client.indices().create { r -> r.index(resolvedName.value).mappings(this.typeMapping) }
 
         // TODO should I be doing something with the response?
 
