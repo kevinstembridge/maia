@@ -4,7 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient
 import co.elastic.clients.elasticsearch._types.Level
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexHealthDto
+import org.maiaframework.elasticsearch.index.model.EsIndexHealthResponseDto
 import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.elasticsearch.index.model.EsIndexStateDto
 import org.maiaframework.elasticsearch.index.model.EsIndexVersion
@@ -48,14 +48,14 @@ class ElasticIndexService(
     }
 
 
-    private fun getIndexHealthsFromCluster(): Map<IndexResolvedName, EsIndexHealthDto> {
+    private fun getIndexHealthsFromCluster(): Map<IndexResolvedName, EsIndexHealthResponseDto> {
 
         val clusterHealthResponse = this.client.cluster().health { h -> h.level(Level.Indices) }
 
         return clusterHealthResponse.indices().map { entry ->
             Pair(
                 IndexResolvedName(entry.key),
-                EsIndexHealthDto(entry.value.status().name)
+                EsIndexHealthResponseDto(entry.value.status().name)
             )
         }.toMap()
 

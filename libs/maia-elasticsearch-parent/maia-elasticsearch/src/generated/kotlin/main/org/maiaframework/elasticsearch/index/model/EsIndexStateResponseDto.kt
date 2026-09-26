@@ -7,7 +7,7 @@ package org.maiaframework.elasticsearch.index.model
 
 data class EsIndexStateResponseDto(
     val exists: Boolean,
-    val health: EsIndexHealthDto?,
+    val health: EsIndexHealthResponseDto?,
     val indexName: String,
     val managedIndexInfo: ManagedEsIndexInfoResponseDto?
 ) {

@@ -1,7 +1,7 @@
 package org.maiaframework.elasticsearch.index
 
 import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
-import org.maiaframework.elasticsearch.index.model.ManagedEsIndexInfoDto
+import org.maiaframework.elasticsearch.index.model.ManagedEsIndexInfoResponseDto
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -45,7 +45,7 @@ class EsIndexControlRegistry: ApplicationContextAware, InitializingBean {
     }
 
 
-    fun getAllIndexSummaries(): List<ManagedEsIndexInfoDto> {
+    fun getAllIndexSummaries(): List<ManagedEsIndexInfoResponseDto> {
 
         return this.controlsByName.map {
 
@@ -53,11 +53,11 @@ class EsIndexControlRegistry: ApplicationContextAware, InitializingBean {
             val indexVersion = it.key.version
             val indexResolvedName = EsIndexNameFactory.indexNameFrom(indexBaseName, indexVersion)
 
-            ManagedEsIndexInfoDto(
-                indexBaseName,
-                indexVersion,
-                indexResolvedName,
+            ManagedEsIndexInfoResponseDto(
                 it.value.indexDescription,
+                indexBaseName,
+                indexResolvedName,
+                indexVersion,
                 it.value.isActiveVersion
             )
 

@@ -23,6 +23,11 @@ class MaiaElasticsearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
     }
 
 
+    val indexResolvedNameStringType = stringType("org.maiaframework.elasticsearch.index.model.IndexResolvedName") {
+        alwaysLowerCase()
+    }
+
+
     val indexVersionIntType = intType("org.maiaframework.elasticsearch.index.model.EsIndexVersion") {
         provided()
     }
@@ -34,13 +39,15 @@ class MaiaElasticsearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
     }
 
 
-    val indexHealthDtoDef = dataClass("org.maiaframework.elasticsearch.index.model", "EsIndexHealthDto") {
+    val indexHealthDtoDef = simpleResponseDto("org.maiaframework.elasticsearch.index.model", "EsIndexHealth") {
         field("status", FieldTypes.string)
     }
 
 
     val managedIndexInfoDtoDef = simpleResponseDto("org.maiaframework.elasticsearch.index.model", "ManagedEsIndexInfo") {
-        field("indexName", indexBaseNameAndVersionDtoDef)
+        field("indexBaseName", indexBaseNameStringType)
+        field("indexVersion", indexVersionIntType)
+        field("indexResolvedName", indexResolvedNameStringType)
         field("description", FieldTypes.string)
         field("isActiveVersion", FieldTypes.boolean)
     }
