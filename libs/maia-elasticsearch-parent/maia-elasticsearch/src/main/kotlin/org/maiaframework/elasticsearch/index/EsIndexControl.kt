@@ -17,5 +17,5 @@ interface EsIndexControl {
 
     fun createIndex()
 
-    
+
 }
