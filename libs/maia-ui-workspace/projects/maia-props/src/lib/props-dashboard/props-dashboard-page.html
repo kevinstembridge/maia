@@ -5,6 +5,8 @@
     </mat-form-field>
     <mat-slide-toggle [checked]="store.overriddenOnly()" (change)="onOverriddenOnlyToggled($event)">Overridden only</mat-slide-toggle>
     <mat-slide-toggle [checked]="store.redundantOnly()" (change)="onRedundantOnlyToggled($event)">Redundant only</mat-slide-toggle>
+    <mat-slide-toggle [checked]="store.overdueOnly()" (change)="onOverdueOnlyToggled($event)">Overdue only</mat-slide-toggle>
+    <span class="props-dashboard-count" aria-live="polite">{{store.visibleProperties().length}} of {{store.properties().length}} properties</span>
     <button mat-flat-button class="add-override-button" aria-label="Add override" (click)="onAddOverride()">
         <mat-icon>add</mat-icon>
         Add override
