@@ -1,4 +1,5 @@
 import {convertToParamMap} from '@angular/router';
+import {Settings} from 'luxon';
 import {buildPropsQueryParams, countOverridden, filterProperties, parsePropsFiltersFromParams} from './props-dashboard-filtering';
 import {PropertyResponseDto} from '../models/PropertyResponseDto';
 
@@ -132,12 +133,18 @@ describe('filterProperties', () => {
         });
 
         it('uses the local calendar date rather than the UTC date when they differ near midnight UTC', () => {
-            vi.setSystemTime(new Date('2026-09-26T23:30:00Z'));
-            const properties = [
-                aProperty({propertyName: 'a', reviewDate: '2026-09-26'}),
-            ];
-            const result = filterProperties(properties, '', false, false, true);
-            expect(result.map(p => p.propertyName)).toEqual(['a']);
+            const originalZone = Settings.defaultZone;
+            Settings.defaultZone = 'Europe/London';
+            try {
+                vi.setSystemTime(new Date('2026-09-26T23:30:00Z'));
+                const properties = [
+                    aProperty({propertyName: 'a', reviewDate: '2026-09-26'}),
+                ];
+                const result = filterProperties(properties, '', false, false, true);
+                expect(result.map(p => p.propertyName)).toEqual(['a']);
+            } finally {
+                Settings.defaultZone = originalZone;
+            }
         });
 
     });
