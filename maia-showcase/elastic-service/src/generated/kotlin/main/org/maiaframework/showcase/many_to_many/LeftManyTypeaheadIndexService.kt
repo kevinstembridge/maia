@@ -36,7 +36,7 @@ class LeftManyTypeaheadIndexService(
         val (id, doc, indexName) = buildEsDocHolder(esDoc)
 
         val indexResponse = this.elasticClient.index { i ->
-            i.index(indexName.resolvedName)
+            i.index(indexName.value)
                 .id(id)
                 .document(doc)
         }
