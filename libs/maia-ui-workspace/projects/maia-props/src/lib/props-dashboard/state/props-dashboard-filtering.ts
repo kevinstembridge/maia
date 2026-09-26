@@ -6,6 +6,12 @@ export interface PropsFilters {
     nameFilter: string;
     overriddenOnly: boolean;
     redundantOnly: boolean;
+    overdueOnly: boolean;
+}
+
+
+function todayIsoString(): string {
+    return new Date().toISOString().slice(0, 10);
 }
 
 
@@ -13,14 +19,17 @@ export function filterProperties(
     properties: PropertyResponseDto[],
     nameFilter: string,
     overriddenOnly: boolean,
-    redundantOnly: boolean
+    redundantOnly: boolean,
+    overdueOnly: boolean
 ): PropertyResponseDto[] {
 
     const normalizedFilter = nameFilter.trim().toLowerCase();
+    const today = todayIsoString();
 
     return properties
         .filter(p => !overriddenOnly || p.isOverridden)
         .filter(p => !redundantOnly || p.isRedundant)
+        .filter(p => !overdueOnly || (p.reviewDate !== null && p.reviewDate < today))
         .filter(p => normalizedFilter === '' || p.propertyName.toLowerCase().includes(normalizedFilter))
         .sort((a, b) => a.propertyName.localeCompare(b.propertyName));
 
@@ -38,11 +47,13 @@ export function parsePropsFiltersFromParams(params: ParamMap): PropsFilters {
 
     const rawOverriddenOnly = params.get('overriddenOnly');
     const rawRedundantOnly = params.get('redundantOnly');
+    const rawOverdueOnly = params.get('overdueOnly');
 
     return {
         nameFilter: params.get('propertyName') ?? '',
         overriddenOnly: rawOverriddenOnly === null ? false : rawOverriddenOnly === 'true',
         redundantOnly: rawRedundantOnly === null ? false : rawRedundantOnly === 'true',
+        overdueOnly: rawOverdueOnly === null ? false : rawOverdueOnly === 'true',
     };
 
 }
@@ -53,5 +64,6 @@ export function buildPropsQueryParams(filters: PropsFilters): Params {
         propertyName: filters.nameFilter.length > 0 ? filters.nameFilter : null,
         overriddenOnly: filters.overriddenOnly === false ? null : 'true',
         redundantOnly: filters.redundantOnly === false ? null : 'true',
+        overdueOnly: filters.overdueOnly === false ? null : 'true',
     };
 }
