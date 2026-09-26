@@ -5,7 +5,7 @@ package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.elasticsearch.index.EsIndexNameLookup
 import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexName
+import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 import org.springframework.stereotype.Component
 
 
@@ -18,9 +18,9 @@ class LeftManyTypeaheadEsIndex(
     private val indexBaseName = EsIndexBaseName("left-many-typeahead")
 
 
-    fun indexName(): EsIndexName {
+    fun indexName(): IndexResolvedName {
 
-        return this.esIndexNameLookup.indexName(indexBaseName)
+        return this.esIndexNameLookup.activeVersionIndexName(indexBaseName)
 
     }
 

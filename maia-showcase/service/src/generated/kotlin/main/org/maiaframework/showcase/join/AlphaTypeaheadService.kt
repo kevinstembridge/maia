@@ -33,7 +33,7 @@ class AlphaTypeaheadService(
     private fun searchRequest(searchTerm: SearchTerm): SearchRequest {
 
         return SearchRequest.of { r ->
-            r.index(this.esIndex.indexName().resolvedName)
+            r.index(this.esIndex.indexName().value)
                 .query { q ->
                     q.multiMatch { m ->
                         m.query(searchTerm.value)
