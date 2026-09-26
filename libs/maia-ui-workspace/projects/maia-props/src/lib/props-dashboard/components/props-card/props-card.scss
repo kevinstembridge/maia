@@ -63,6 +63,13 @@
     overflow-wrap: anywhere;
 }
 
+.environment-value {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--mat-sys-outline);
+    overflow-wrap: anywhere;
+}
+
 .badges {
     display: flex;
     gap: 0.375rem;
