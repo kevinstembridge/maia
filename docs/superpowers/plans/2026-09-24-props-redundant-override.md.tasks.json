@@ -1,0 +1,21 @@
+{
+  "planPath": "docs/superpowers/plans/2026-09-24-props-redundant-override.md",
+  "tasks": [
+    {
+      "id": 0,
+      "subject": "Task 1: Backend isRedundant flag",
+      "status": "completed",
+      "description": "**Goal:** PropertyResponseDto.isRedundant true iff override exists and equals environment value.\n\n```json:metadata\n{\"files\": [\"libs/maia-props-parent/maia-props-spec/src/main/kotlin/org/maiaframework/props/spec/PropsSpec.kt\", \"libs/maia-props-parent/maia-props-domain/src/generated/kotlin/main/org/maiaframework/props/PropertyResponseDto.kt\", \"libs/maia-props-parent/maia-props-service/build.gradle.kts\", \"libs/maia-props-parent/maia-props-service/src/main/kotlin/org/maiaframework/props/PropsManager.kt\", \"libs/maia-props-parent/maia-props-service/src/test/kotlin/org/maiaframework/props/PropsManagerTest.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-props-parent:maia-props-service:test\", \"acceptanceCriteria\": [\"override == env -> true\", \"override != env -> false\", \"no env value -> false\", \"no override -> false\", \"setProperty response carries flag\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 1,
+      "subject": "Task 2: Dashboard Redundant column",
+      "status": "completed",
+      "blockedBy": [
+        0
+      ],
+      "description": "**Goal:** Props dashboard shows Redundant column after Overridden.\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/models/PropertyResponseDto.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.spec.ts\"], \"verifyCommand\": \"cd libs/maia-ui-workspace && npx ng test maia-props --watch=false && npx ng build maia-props\", \"acceptanceCriteria\": [\"TS DTO has isRedundant\", \"Redundant column after Overridden\", \"specs pass, lib builds\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-09-24T07:34:36.282880"
+}
