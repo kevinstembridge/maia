@@ -5,7 +5,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {MatSlideToggleModule, MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -22,7 +21,7 @@ import {PropertyHistoryDialog, PropertyHistoryDialogData} from './dialogs/proper
     selector: 'maia-props-dashboard-page',
     templateUrl: './props-dashboard-page.html',
     styleUrl: './props-dashboard-page.scss',
-    imports: [MatTableModule, MatFormFieldModule, MatInputModule, MatSlideToggleModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, DatePipe],
+    imports: [MatTableModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, DatePipe],
     providers: [PropsApiService, PropsDashboardStore]
 })
 export class PropsDashboardPage implements OnInit {
@@ -73,18 +72,18 @@ export class PropsDashboardPage implements OnInit {
     }
 
 
-    onOverriddenOnlyToggled(change: MatSlideToggleChange) {
-        this.store.onOverriddenOnlyToggled(change.checked);
+    onOverriddenOnlyToggled(): void {
+        this.store.onOverriddenOnlyToggled(!this.store.overriddenOnly());
     }
 
 
-    onRedundantOnlyToggled(change: MatSlideToggleChange) {
-        this.store.onRedundantOnlyToggled(change.checked);
+    onRedundantOnlyToggled(): void {
+        this.store.onRedundantOnlyToggled(!this.store.redundantOnly());
     }
 
 
-    onOverdueOnlyToggled(change: MatSlideToggleChange) {
-        this.store.onOverdueOnlyToggled(change.checked);
+    onOverdueOnlyToggled(): void {
+        this.store.onOverdueOnlyToggled(!this.store.overdueOnly());
     }
 
 

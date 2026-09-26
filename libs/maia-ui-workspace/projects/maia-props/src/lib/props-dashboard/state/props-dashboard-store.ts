@@ -6,7 +6,7 @@ import {switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
 import {PropertyResponseDto} from '../models/PropertyResponseDto';
 import {PropsApiService} from '../services/props-api.service';
-import {countOverridden, filterProperties} from './props-dashboard-filtering';
+import {countOverdue, countOverridden, countRedundant, filterProperties} from './props-dashboard-filtering';
 
 type PropsDashboardState = {
     properties: PropertyResponseDto[];
@@ -39,7 +39,13 @@ export const PropsDashboardStore = signalStore(
         const overriddenCount = computed<number>(() =>
             countOverridden(properties())
         );
-        return {visibleProperties, overriddenCount};
+        const redundantCount = computed<number>(() =>
+            countRedundant(properties())
+        );
+        const overdueCount = computed<number>(() =>
+            countOverdue(properties())
+        );
+        return {visibleProperties, overriddenCount, redundantCount, overdueCount};
     }),
 
     withMethods((store, propsService = inject(PropsApiService)) => ({

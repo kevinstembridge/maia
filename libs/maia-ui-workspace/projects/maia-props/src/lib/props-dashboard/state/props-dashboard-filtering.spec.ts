@@ -1,6 +1,6 @@
 import {convertToParamMap} from '@angular/router';
 import {Settings} from 'luxon';
-import {buildPropsQueryParams, countOverridden, filterProperties, parsePropsFiltersFromParams} from './props-dashboard-filtering';
+import {buildPropsQueryParams, countOverdue, countOverridden, countRedundant, filterProperties, parsePropsFiltersFromParams} from './props-dashboard-filtering';
 import {PropertyResponseDto} from '../models/PropertyResponseDto';
 
 function aProperty(overrides: Partial<PropertyResponseDto> = {}): PropertyResponseDto {
@@ -168,6 +168,71 @@ describe('countOverridden', () => {
             aProperty({propertyName: 'b', isOverridden: false}),
         ];
         expect(countOverridden(properties)).toBe(0);
+    });
+
+});
+
+describe('countRedundant', () => {
+
+    it('counts only redundant properties in a mixed set', () => {
+        const properties = [
+            aProperty({propertyName: 'a', isRedundant: true}),
+            aProperty({propertyName: 'b', isRedundant: false}),
+            aProperty({propertyName: 'c', isRedundant: true}),
+        ];
+        expect(countRedundant(properties)).toBe(2);
+    });
+
+    it('returns 0 when no properties are redundant', () => {
+        const properties = [
+            aProperty({propertyName: 'a', isRedundant: false}),
+            aProperty({propertyName: 'b', isRedundant: false}),
+        ];
+        expect(countRedundant(properties)).toBe(0);
+    });
+
+});
+
+describe('countOverdue', () => {
+
+    beforeEach(() => {
+        vi.useFakeTimers();
+        vi.setSystemTime(new Date('2026-09-26T12:00:00Z'));
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    it('counts only properties with a reviewDate in the past', () => {
+        const properties = [
+            aProperty({propertyName: 'a', reviewDate: '2026-09-01'}),
+            aProperty({propertyName: 'b', reviewDate: '2026-10-01'}),
+            aProperty({propertyName: 'c', reviewDate: '2026-09-15'}),
+        ];
+        expect(countOverdue(properties)).toBe(2);
+    });
+
+    it('excludes properties with a null reviewDate', () => {
+        const properties = [
+            aProperty({propertyName: 'a', reviewDate: '2026-09-01'}),
+            aProperty({propertyName: 'b', reviewDate: null}),
+        ];
+        expect(countOverdue(properties)).toBe(1);
+    });
+
+    it('excludes a property whose reviewDate is today', () => {
+        const properties = [
+            aProperty({propertyName: 'a', reviewDate: '2026-09-26'}),
+        ];
+        expect(countOverdue(properties)).toBe(0);
+    });
+
+    it('returns 0 when no properties are overdue', () => {
+        const properties = [
+            aProperty({propertyName: 'a', reviewDate: '2026-10-01'}),
+        ];
+        expect(countOverdue(properties)).toBe(0);
     });
 
 });

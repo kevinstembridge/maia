@@ -44,6 +44,21 @@ export function countOverridden(properties: PropertyResponseDto[]): number {
 }
 
 
+export function countRedundant(properties: PropertyResponseDto[]): number {
+
+    return properties.filter(p => p.isRedundant).length;
+
+}
+
+
+export function countOverdue(properties: PropertyResponseDto[]): number {
+
+    const today = todayIsoString();
+    return properties.filter(p => p.reviewDate !== null && p.reviewDate < today).length;
+
+}
+
+
 export function parsePropsFiltersFromParams(params: ParamMap): PropsFilters {
 
     const rawOverriddenOnly = params.get('overriddenOnly');

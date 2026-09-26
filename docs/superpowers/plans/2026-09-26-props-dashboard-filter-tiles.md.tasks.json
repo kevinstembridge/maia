@@ -4,23 +4,23 @@
     {
       "id": 0,
       "subject": "Task 1: Add countRedundant/countOverdue to the filtering module",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** props-dashboard-filtering.ts exports countRedundant and countOverdue, mirroring countOverridden.\n\n**Files:**\n- Modify: projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.ts\n- Modify: projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.spec.ts\n\n**Acceptance Criteria:**\n- countRedundant(properties) counts isRedundant===true\n- countOverdue(properties) counts reviewDate !== null && reviewDate < todayIsoString, reusing existing private todayIsoString()\n- both ignore all filter state, count over full input array\n- existing tests still pass\n\n**Verify:** npx ng test maia-props (from libs/maia-ui-workspace) -> 31 tests pass\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.spec.ts\"], \"verifyCommand\": \"npx ng test maia-props\", \"acceptanceCriteria\": [\"countRedundant counts isRedundant\", \"countOverdue counts past reviewDate, strict, reuses todayIsoString\", \"both ignore filter state\", \"existing tests pass\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 1,
       "subject": "Task 2: Wire redundantCount/overdueCount into the signal store",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [0],
       "description": "**Goal:** PropsDashboardStore exposes redundantCount and overdueCount computed signals alongside existing overriddenCount.\n\n**Files:**\n- Modify: projects/maia-props/src/lib/props-dashboard/state/props-dashboard-store.ts\n\n**Acceptance Criteria:**\n- redundantCount computed returns countRedundant(properties())\n- overdueCount computed returns countOverdue(properties())\n- both exposed from store alongside visibleProperties/overriddenCount\n- project compiles\n\n**Verify:** npx ng build maia-props (from libs/maia-ui-workspace) -> build succeeds; npx ng test maia-props -> 31/31 pass\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-store.ts\"], \"verifyCommand\": \"npx ng build maia-props\", \"acceptanceCriteria\": [\"redundantCount computed added\", \"overdueCount computed added\", \"exposed from store\", \"build succeeds\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 2,
       "subject": "Task 3: Replace the slide-toggles with filter tiles on the page",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [1],
       "description": "**Goal:** props dashboard page shows a row of 4 tiles (Total, Overridden, Redundant, Overdue) above the name-filter/Add-override toolbar, styled like maia-elasticsearch's status tiles. 3 filter tiles are clickable buttons showing count + active state; old mat-slide-toggle controls/imports removed.\n\n**Files:**\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.scss\n\n**Acceptance Criteria:**\n- MatSlideToggleModule/MatSlideToggleChange no longer imported/referenced\n- 3 parameterless click handlers flip store booleans via !store.xOnly()\n- template has .props-filter-tiles row: non-clickable Total tile (X of Y, aria-live) + 3 clickable button tiles with count/active/aria-pressed\n- .props-dashboard-toolbar row now has only name filter + Add override button\n- .props-filter-tile* scss copied from elastic-indices-page.scss's .status-tile* rules (no color dot)\n- old .props-dashboard-count rule removed\n- manually verified or thoroughly self-reviewed\n\n**Verify:** npx ng build maia-props (from libs/maia-ui-workspace) -> build succeeds; npx ng test maia-props -> 31/31 pass; then manual/self-review check\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.scss\"], \"verifyCommand\": \"npx ng build maia-props\", \"acceptanceCriteria\": [\"slide-toggle imports removed\", \"click handlers flip booleans\", \"tiles row with total+3 filter tiles\", \"toolbar row reduced to name filter+add button\", \"tile scss copied from elasticsearch\", \"old count rule removed\", \"manual/self-review passes\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-26T03:00:00Z"
+  "lastUpdated": "2026-09-26T04:00:00Z"
 }

@@ -1,12 +1,42 @@
+<div class="props-filter-tiles">
+    <div class="props-filter-tile props-filter-tile-total">
+        <span class="props-filter-tile-count" aria-live="polite">{{store.visibleProperties().length}} of {{store.properties().length}}</span>
+        <span class="props-filter-tile-label">Total</span>
+    </div>
+    <button
+        type="button"
+        class="props-filter-tile"
+        [class.active]="store.overriddenOnly()"
+        [attr.aria-pressed]="store.overriddenOnly()"
+        (click)="onOverriddenOnlyToggled()">
+        <span class="props-filter-tile-count">{{store.overriddenCount()}}</span>
+        <span class="props-filter-tile-label">Overridden</span>
+    </button>
+    <button
+        type="button"
+        class="props-filter-tile"
+        [class.active]="store.redundantOnly()"
+        [attr.aria-pressed]="store.redundantOnly()"
+        (click)="onRedundantOnlyToggled()">
+        <span class="props-filter-tile-count">{{store.redundantCount()}}</span>
+        <span class="props-filter-tile-label">Redundant</span>
+    </button>
+    <button
+        type="button"
+        class="props-filter-tile"
+        [class.active]="store.overdueOnly()"
+        [attr.aria-pressed]="store.overdueOnly()"
+        (click)="onOverdueOnlyToggled()">
+        <span class="props-filter-tile-count">{{store.overdueCount()}}</span>
+        <span class="props-filter-tile-label">Overdue</span>
+    </button>
+</div>
+
 <div class="props-dashboard-toolbar">
     <mat-form-field class="name-filter">
         <mat-label>Filter by name</mat-label>
         <input matInput [value]="store.nameFilter()" (input)="onNameFilterInput($event)">
     </mat-form-field>
-    <mat-slide-toggle [checked]="store.overriddenOnly()" (change)="onOverriddenOnlyToggled($event)">Overridden only</mat-slide-toggle>
-    <mat-slide-toggle [checked]="store.redundantOnly()" (change)="onRedundantOnlyToggled($event)">Redundant only</mat-slide-toggle>
-    <mat-slide-toggle [checked]="store.overdueOnly()" (change)="onOverdueOnlyToggled($event)">Overdue only</mat-slide-toggle>
-    <span class="props-dashboard-count" aria-live="polite">{{store.visibleProperties().length}} of {{store.properties().length}} properties</span>
     <button mat-flat-button class="add-override-button" aria-label="Add override" (click)="onAddOverride()">
         <mat-icon>add</mat-icon>
         Add override
