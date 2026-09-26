@@ -1,14 +1,19 @@
 package org.maiaframework.props
 
+import org.maiaframework.common.logging.getLogger
 import org.maiaframework.props.repo.PropsRepo
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.EnumerablePropertySource
 import java.time.LocalDate
 
+
 class PropsManager(
     private val propsRepo: PropsRepo,
     private val environment: ConfigurableEnvironment
 ) {
+
+
+    private val logger = getLogger<PropsManager>()
 
 
     fun getAllProperties(): List<PropertyResponseDto> {
@@ -55,7 +60,7 @@ class PropsManager(
         environmentSourceName: String?
     ): PropertyResponseDto {
 
-        val environmentValue = this.environment.getProperty(propertyName)
+        val environmentValue = `get property value from Spring Environment`(propertyName)
 
         return if (override != null) {
             PropertyResponseDto(
@@ -83,6 +88,18 @@ class PropsManager(
                 reviewDate = null,
                 sourceName = environmentSourceName,
             )
+        }
+
+    }
+
+
+    private fun `get property value from Spring Environment`(propertyName: String): String? {
+
+        try {
+            return this.environment.getProperty(propertyName)
+        } catch (e: Exception) {
+            logger.warn("Failed to get property value from Spring Environment: $propertyName", e)
+            return null
         }
 
     }
