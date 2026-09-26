@@ -7,7 +7,11 @@ TODO * Jobs
 
 
 TODO * Props Dashboard
-    TODO *
+    TODO * Add a quick filter for 'Overdue'
+    TODO * Display count, including filtered count.
+    TODO * If something is overridden, display the overridden value.
+    TODO * Use a card list rather than a table.
+    TODO * Mask sensitive fields.
 
 TODO * Elastic Indices Dashboard
     TODO * Segregate managed and non-managed indices.

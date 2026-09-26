@@ -5,7 +5,10 @@
     </mat-form-field>
     <mat-slide-toggle [checked]="store.overriddenOnly()" (change)="onOverriddenOnlyToggled($event)">Overridden only</mat-slide-toggle>
     <mat-slide-toggle [checked]="store.redundantOnly()" (change)="onRedundantOnlyToggled($event)">Redundant only</mat-slide-toggle>
-    <button mat-flat-button aria-label="Add override" (click)="onAddOverride()">Add override</button>
+    <button mat-flat-button class="add-override-button" aria-label="Add override" (click)="onAddOverride()">
+        <mat-icon>add</mat-icon>
+        Add override
+    </button>
 </div>
 
 @if (store.isLoading()) {
