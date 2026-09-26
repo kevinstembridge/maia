@@ -9,7 +9,7 @@ import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 @Suppress("unused")
-class MaiaElasticSearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defaultSchemaName = SchemaName("elasticsearch")) {
+class MaiaElasticsearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defaultSchemaName = SchemaName("elasticsearch")) {
 
 
     val readAuthority = authority("MAIA_ELASTICSEARCH_READ")
@@ -46,10 +46,14 @@ class MaiaElasticSearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
     }
 
 
-    val indexStateDtoDef = simpleResponseDto("org.maiaframework.elasticsearch.index.model", "ManagedEsIndexInfo") {
+    val indexStateDtoDef = simpleResponseDto("org.maiaframework.elasticsearch.index.model", "EsIndexState") {
         field("indexName", FieldTypes.string)
-        field("managedIndexInfo", managedIndexInfoDtoDef)
-        field("health", indexHealthDtoDef)
+        field("managedIndexInfo", managedIndexInfoDtoDef) {
+            nullable()
+        }
+        field("health", indexHealthDtoDef) {
+            nullable()
+        }
         field("exists", FieldTypes.boolean)
     }
 
