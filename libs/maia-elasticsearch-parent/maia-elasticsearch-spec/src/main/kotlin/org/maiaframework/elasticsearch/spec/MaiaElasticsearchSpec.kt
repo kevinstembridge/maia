@@ -28,13 +28,13 @@ class MaiaElasticsearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
     }
 
 
-    val indexBaseNameAndVersionDtoDef = simpleResponseDto("org.maiaframework.elasticsearch.index.model", "IndexBaseNameAndVersion") {
+    val indexBaseNameAndVersionDtoDef = dataClass("org.maiaframework.elasticsearch.index.model", "IndexBaseNameAndVersion") {
         field("baseName", indexBaseNameStringType)
         field("version", indexVersionIntType)
     }
 
 
-    val indexHealthDtoDef = simpleResponseDto("org.maiaframework.elasticsearch.index.model", "EsIndexHealth") {
+    val indexHealthDtoDef = dataClass("org.maiaframework.elasticsearch.index.model", "EsIndexHealthDto") {
         field("status", FieldTypes.string)
     }
 
