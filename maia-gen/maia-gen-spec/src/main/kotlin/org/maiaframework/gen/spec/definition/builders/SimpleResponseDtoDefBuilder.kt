@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
+import org.maiaframework.gen.spec.definition.DataClassDef
 import org.maiaframework.gen.spec.definition.DtoBaseName
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.DtoSuffix
@@ -112,6 +113,18 @@ class SimpleResponseDtoDefBuilder(
     ) {
 
         val builder = newFieldDefBuilder(ClassFieldName(fieldName), responseDtoDef)
+        init?.invoke(builder)
+
+    }
+
+
+    fun field(
+        fieldName: String,
+        dataClassDef: DataClassDef,
+        init: (SimpleResponseDtoFieldDefBuilder.() -> Unit)? = null
+    ) {
+
+        val builder = newFieldDefBuilder(ClassFieldName(fieldName), dataClassDef)
         init?.invoke(builder)
 
     }
@@ -272,6 +285,25 @@ class SimpleResponseDtoDefBuilder(
             SimpleResponseDtoFieldDefBuilder(
                 classFieldName,
                 FieldTypes.responseDto(responseDtoDef),
+                this,
+                CaseSensitive(caseSensitive)
+            )
+        )
+
+
+    }
+
+
+    private fun newFieldDefBuilder(
+        classFieldName: ClassFieldName,
+        dataClassDef: DataClassDef,
+        caseSensitive: Boolean = true
+    ): SimpleResponseDtoFieldDefBuilder {
+
+        return add(
+            SimpleResponseDtoFieldDefBuilder(
+                classFieldName,
+                FieldTypes.dataClass(dataClassDef),
                 this,
                 CaseSensitive(caseSensitive)
             )

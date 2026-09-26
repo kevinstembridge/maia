@@ -6,6 +6,8 @@ import org.maiaframework.gen.spec.definition.DataClassDef
 import org.maiaframework.gen.spec.definition.DataClassKey
 import org.maiaframework.gen.spec.definition.DataClassName
 import org.maiaframework.gen.spec.definition.EnumDef
+import org.maiaframework.gen.spec.definition.IntTypeDef
+import org.maiaframework.gen.spec.definition.StringTypeDef
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedSubclass
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.DataClassFieldDef
@@ -83,6 +85,20 @@ class DataClassDefBuilder(
     fun field(fieldName: String, enumDef: EnumDef): DataClassFieldDefBuilder {
 
         return newFieldDefBuilder(ClassFieldName(fieldName), enumDef)
+
+    }
+
+
+    fun field(fieldName: String, stringTypeDef: StringTypeDef): DataClassFieldDefBuilder {
+
+        return newFieldDefBuilder(ClassFieldName(fieldName), stringTypeDef.simpleTypeUnderlyingFieldType)
+
+    }
+
+
+    fun field(fieldName: String, intTypeDef: IntTypeDef): DataClassFieldDefBuilder {
+
+        return newFieldDefBuilder(ClassFieldName(fieldName), intTypeDef.simpleTypeUnderlyingFieldType)
 
     }
 
