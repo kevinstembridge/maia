@@ -20,6 +20,9 @@ class LeftManyTypeaheadEsIndexControl_v0001(
 ) {
 
 
+    override val indexBaseNameAndVersion = LeftManyTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion
+    
+
     override val indexName = LeftManyTypeaheadEsIndexMeta_v0001.indexName
 
 
