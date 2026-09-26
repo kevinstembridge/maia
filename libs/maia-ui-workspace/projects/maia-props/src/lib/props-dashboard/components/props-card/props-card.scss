@@ -57,10 +57,24 @@
     overflow-wrap: anywhere;
 }
 
+.prop-value-row {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
 .prop-value {
     font-size: 0.8125rem;
     color: var(--mat-sys-on-surface-variant);
     overflow-wrap: anywhere;
+}
+
+.sensitive-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    color: var(--mat-sys-outline);
 }
 
 .environment-value {
