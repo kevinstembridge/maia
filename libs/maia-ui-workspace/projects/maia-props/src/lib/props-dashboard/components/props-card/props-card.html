@@ -6,7 +6,7 @@
                 <span class="prop-name">{{property().propertyName}}</span>
                 <span class="prop-value-row">
                     @if (property().isSensitive) {
-                        <mat-icon class="sensitive-icon" [attr.aria-label]="'Masked value for ' + property().propertyName">lock</mat-icon>
+                        <mat-icon class="sensitive-icon" aria-hidden="false" [attr.aria-label]="'Masked value for ' + property().propertyName">lock</mat-icon>
                     }
                     <span class="prop-value">{{property().effectiveValue}}</span>
                 </span>
