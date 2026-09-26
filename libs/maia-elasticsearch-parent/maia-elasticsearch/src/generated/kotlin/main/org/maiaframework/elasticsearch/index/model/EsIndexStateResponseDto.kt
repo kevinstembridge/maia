@@ -5,10 +5,11 @@ package org.maiaframework.elasticsearch.index.model
 
 
 
-data class ManagedEsIndexInfoResponseDto(
-    val description: String,
-    val indexName: IndexBaseNameAndVersionResponseDto,
-    val isActiveVersion: Boolean
+data class EsIndexStateResponseDto(
+    val exists: Boolean,
+    val health: EsIndexHealthResponseDto?,
+    val indexName: String,
+    val managedIndexInfo: ManagedEsIndexInfoResponseDto?
 ) {
 
 
