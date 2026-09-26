@@ -15,6 +15,7 @@ type PropsDashboardState = {
     nameFilter: string;
     overriddenOnly: boolean;
     redundantOnly: boolean;
+    overdueOnly: boolean;
 };
 
 const initialState: PropsDashboardState = {
@@ -24,15 +25,16 @@ const initialState: PropsDashboardState = {
     nameFilter: '',
     overriddenOnly: false,
     redundantOnly: false,
+    overdueOnly: false,
 };
 
 export const PropsDashboardStore = signalStore(
 
     withState(initialState),
 
-    withComputed(({properties, nameFilter, overriddenOnly, redundantOnly}) => {
+    withComputed(({properties, nameFilter, overriddenOnly, redundantOnly, overdueOnly}) => {
         const visibleProperties = computed<PropertyResponseDto[]>(() =>
-            filterProperties(properties(), nameFilter(), overriddenOnly(), redundantOnly())
+            filterProperties(properties(), nameFilter(), overriddenOnly(), redundantOnly(), overdueOnly())
         );
         const overriddenCount = computed<number>(() =>
             countOverridden(properties())
@@ -73,6 +75,10 @@ export const PropsDashboardStore = signalStore(
 
         onRedundantOnlyToggled(value: boolean): void {
             patchState(store, {redundantOnly: value});
+        },
+
+        onOverdueOnlyToggled(value: boolean): void {
+            patchState(store, {overdueOnly: value});
         },
 
         applyPropertyUpdate(updated: PropertyResponseDto): void {
