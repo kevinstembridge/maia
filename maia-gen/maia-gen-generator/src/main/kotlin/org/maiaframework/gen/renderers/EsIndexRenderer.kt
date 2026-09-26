@@ -35,13 +35,13 @@ class EsIndexRenderer(esIndexClassDef: ClassDef, private val elasticIndexBaseNam
 
     private fun renderFunction_indexName() {
 
-        addImportFor(Fqcns.ES_INDEX_NAME)
+        addImportFor(Fqcns.ES_INDEX_RESOLVED_NAME)
 
         blankLine()
         blankLine()
-        appendLine("    fun indexName(): EsIndexName {")
+        appendLine("    fun indexName(): IndexResolvedName {")
         blankLine()
-        appendLine("        return this.esIndexNameLookup.indexName(indexBaseName)")
+        appendLine("        return this.esIndexNameLookup.activeVersionIndexName(indexBaseName)")
         blankLine()
         appendLine("    }")
 

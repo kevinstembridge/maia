@@ -48,23 +48,23 @@ class TypeaheadIndexServiceRenderer(
 
     private fun `render function refreshById`() {
 
-        append("""
+        append($$"""
             |
             |
             |    fun refreshById(id: DomainId) {
             |
-            |        logger.debug("BEGIN: Refreshing typeahead index ${"$"}{this.esIndex.indexName()} for id ${"$"}id")
+            |        logger.debug("BEGIN: Refreshing typeahead index ${this.esIndex.indexName()} for id $id")
             |
             |        val esDoc = this.esDocRepo.findByPrimaryKey(id)
             |        val (id, doc, indexName) = buildEsDocHolder(esDoc)
             |
             |        val indexResponse = this.elasticClient.index { i ->
-            |            i.index(indexName.resolvedName)
+            |            i.index(indexName.value)
             |                .id(id)
             |                .document(doc)
             |        }
             |
-            |        logger.debug("END: Refreshing typeahead index ${"$"}{this.esIndex.indexName()} for id ${"$"}id with result ${"$"}{indexResponse.result()}")
+            |        logger.debug("END: Refreshing typeahead index ${this.esIndex.indexName()} for id $id with result ${indexResponse.result()}")
             |
             |    }
             |""".trimMargin())
@@ -76,16 +76,16 @@ class TypeaheadIndexServiceRenderer(
 
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
 
-        append("""
+        append($$"""
             |
             |
             |    fun deleteById(id: DomainId) {
             |
-            |        logger.debug("BEGIN: Deleting from typeahead index ${"$"}{this.esIndex.indexName()} for id ${"$"}id")
+            |        logger.debug("BEGIN: Deleting from typeahead index ${this.esIndex.indexName()} for id $id")
             |
             |        val deleteResponse = this.esIndexOps.deleteById(id.value, this.esIndex.indexName())
             |
-            |        logger.debug("END: Deleting from typeahead index ${"$"}{this.esIndex.indexName()} for id ${"$"}id with result ${"$"}{deleteResponse.result()}")
+            |        logger.debug("END: Deleting from typeahead index ${this.esIndex.indexName()} for id $id with result ${deleteResponse.result()}")
             |
             |    }
             |""".trimMargin())
@@ -97,17 +97,17 @@ class TypeaheadIndexServiceRenderer(
 
         addImportFor(Fqcns.MAIA_JOB_METRICS)
 
-        append("""
+        append($$"""
             |
             |
             |    suspend fun refreshIndex(jm: JobMetrics) {
             |
-            |        logger.info("BEGIN: Refresh index ${"$"}{this.esIndex.indexName()}")
+            |        logger.info("BEGIN: Refresh index ${this.esIndex.indexName()}")
             |
             |        val currentIds = upsertAllCurrentRecords(jm)
             |        removeDeletedRecordsFromIndex(currentIds, jm)
             |
-            |        logger.info("END: Refresh index ${"$"}{this.esIndex.indexName()}")
+            |        logger.info("END: Refresh index ${this.esIndex.indexName()}")
             |
             |    }
             |""".trimMargin())
