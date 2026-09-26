@@ -13,7 +13,21 @@ class PropsManager(
 ) {
 
 
+    companion object {
+        private const val MASKED_VALUE = "******"
+        private val SENSITIVE_NAME_FRAGMENTS = listOf("password", "secret", "key", "token", "credential")
+    }
+
+
     private val logger = getLogger<PropsManager>()
+
+
+    private fun isSensitivePropertyName(propertyName: String): Boolean =
+        SENSITIVE_NAME_FRAGMENTS.any { propertyName.contains(it, ignoreCase = true) }
+
+
+    private fun maskIfSensitive(value: String?, isSensitive: Boolean): String? =
+        if (isSensitive && value != null) MASKED_VALUE else value
 
 
     fun getAllProperties(): List<PropertyResponseDto> {
@@ -61,14 +75,16 @@ class PropsManager(
     ): PropertyResponseDto {
 
         val environmentValue = `get property value from Spring Environment`(propertyName)
+        val isSensitive = isSensitivePropertyName(propertyName)
 
         return if (override != null) {
             PropertyResponseDto(
                 comment = override.comment,
-                effectiveValue = override.propertyValue,
-                environmentValue = environmentValue,
+                effectiveValue = maskIfSensitive(override.propertyValue, isSensitive),
+                environmentValue = maskIfSensitive(environmentValue, isSensitive),
                 isOverridden = true,
                 isRedundant = override.propertyValue == environmentValue,
+                isSensitive = isSensitive,
                 lastModifiedByUsername = override.lastModifiedByUsername,
                 lastModifiedTimestamp = override.lastModifiedTimestamp,
                 propertyName = propertyName,
@@ -78,10 +94,11 @@ class PropsManager(
         } else {
             PropertyResponseDto(
                 comment = null,
-                effectiveValue = environmentValue,
-                environmentValue = environmentValue,
+                effectiveValue = maskIfSensitive(environmentValue, isSensitive),
+                environmentValue = maskIfSensitive(environmentValue, isSensitive),
                 isOverridden = false,
                 isRedundant = false,
+                isSensitive = isSensitive,
                 lastModifiedByUsername = null,
                 lastModifiedTimestamp = null,
                 propertyName = propertyName,
@@ -107,6 +124,8 @@ class PropsManager(
 
     fun getPropertyHistory(propertyName: String): List<PropertyHistoryItemResponseDto> {
 
+        val isSensitive = isSensitivePropertyName(propertyName)
+
         return this.propsRepo.getPropertyHistory(propertyName).map {
             PropertyHistoryItemResponseDto(
                 changeType = it.changeType,
@@ -114,7 +133,7 @@ class PropsManager(
                 lastModifiedByUsername = it.lastModifiedByUsername,
                 lastModifiedTimestamp = it.lastModifiedTimestamp,
                 propertyName = it.propertyName,
-                propertyValue = it.propertyValue,
+                propertyValue = if (isSensitive) MASKED_VALUE else it.propertyValue,
                 reviewDate = it.reviewDate,
                 version = it.version,
             )
