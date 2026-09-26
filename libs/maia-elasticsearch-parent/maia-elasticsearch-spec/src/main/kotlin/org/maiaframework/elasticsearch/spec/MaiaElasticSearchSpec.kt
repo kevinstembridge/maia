@@ -18,21 +18,12 @@ class MaiaElasticSearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
     val writeAuthority = authority("MAIA_ELASTICSEARCH_WRITE")
 
 
-    val jobNameStringType = stringType("org.maiaframework.elasticsearch.JobName") {
-        provided()
-    }
-
-
     val indexBaseNameStringType = stringType("org.maiaframework.elasticsearch.index.model.EsIndexBaseName") {
         provided()
     }
 
 
     val indexVersionIntType = intType("org.maiaframework.elasticsearch.index.model.EsIndexVersion") {
-        provided()
-    }
-
-    val jobExecutionStatusEnumDef = enumDef("org.maiaframework.elasticsearch.JobExecutionStatus") {
         provided()
     }
 
@@ -60,70 +51,6 @@ class MaiaElasticSearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
         field("managedIndexInfo", managedIndexInfoDtoDef)
         field("health", indexHealthDtoDef)
         field("exists", FieldTypes.boolean)
-    }
-
-
-    val runningJobStateDtoDef = simpleResponseDto("org.maiaframework.elasticsearch", "RunningJobState") {
-        field("id", FieldTypes.domainId)
-        field("jobName", jobNameStringType)
-        field("invokedBy", FieldTypes.string)
-        field("startTimestamp", FieldTypes.instant)
-        field("metrics", FieldTypes.mapOfStringToAny())
-    }
-
-
-    val jobExecutionSummaryDtoDef = simpleResponseDto("org.maiaframework.elasticsearch", "JobExecutionSummary") {
-        field("jobExecutionId", FieldTypes.domainId)
-        field("jobName", jobNameStringType)
-        field("startTimestamp", FieldTypes.instant)
-        field("endTimestamp", FieldTypes.instant) {
-            nullable()
-        }
-        field("errorMessage", FieldTypes.string) {
-            nullable()
-        }
-    }
-
-
-    val jobExecutionHistoryItemDtoDef = simpleResponseDto("org.maiaframework.elasticsearch", "JobExecutionHistoryItem") {
-        field("jobExecutionId", FieldTypes.domainId)
-        field("jobName", jobNameStringType)
-        field("invokedBy", FieldTypes.string)
-        field("startTimestamp", FieldTypes.instant)
-        field("endTimestamp", FieldTypes.instant) {
-            nullable()
-        }
-        field("status", jobExecutionStatusEnumDef)
-        field("errorMessage", FieldTypes.string) {
-            nullable()
-        }
-        field("metrics", FieldTypes.mapOfStringToAny())
-    }
-
-
-    val jobStateDtoDef = simpleResponseDto("org.maiaframework.elasticsearch", "JobState") {
-        field("jobName", jobNameStringType)
-        field("description", FieldTypes.string) {
-            nullable()
-        }
-        field("runningJobs", fieldListOf(runningJobStateDtoDef))
-        field("recentlyFailedExecutions", fieldListOf(jobExecutionSummaryDtoDef))
-    }
-
-
-    val jobExecutionDetailDtoDef = simpleResponseDto("org.maiaframework.elasticsearch", "JobExecutionDetail") {
-        field("jobExecutionId", FieldTypes.domainId)
-        field("jobName", jobNameStringType)
-        field("startTimestamp", FieldTypes.instant)
-        field("endTimestamp", FieldTypes.instant) {
-            nullable()
-        }
-        field("errorMessage", FieldTypes.string) {
-            nullable()
-        }
-        field("stackTrace", FieldTypes.string) {
-            nullable()
-        }
     }
 
 

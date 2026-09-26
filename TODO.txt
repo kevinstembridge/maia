@@ -1,4 +1,6 @@
 
+TODO * Use the generator in the maia-ui-workspace projects to generate the DTOs.
+
 
 TODO * Jobs
     TODO * Introduce a new JobExecutionStatus.ABANDONED. Then add a feature that allows an Ops user to mark a job execution as abandoned.
