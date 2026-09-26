@@ -19,7 +19,7 @@ class MaiaElasticsearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
 
 
     val indexBaseNameStringType = stringType("org.maiaframework.elasticsearch.index.model.EsIndexBaseName") {
-        provided()
+        alwaysLowerCase()
     }
 
 
