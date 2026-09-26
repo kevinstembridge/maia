@@ -13,12 +13,6 @@ class PropsManager(
 ) {
 
 
-    companion object {
-        private const val MASKED_VALUE = "******"
-        private val SENSITIVE_NAME_FRAGMENTS = listOf("password", "secret", "key", "token", "credential")
-    }
-
-
     private val logger = getLogger<PropsManager>()
 
 
@@ -177,6 +171,16 @@ class PropsManager(
                 comment
         )
 
+    }
+
+
+    companion object {
+        private const val MASKED_VALUE = "******"
+
+        // Broad substring match, not a precise identifier match — deliberately errs toward over-masking
+        // (e.g. "hotkey.enabled" gets caught too) rather than ever under-masking a real secret. Same
+        // tradeoff Spring Boot Actuator's own Sanitizer makes with its default key list.
+        private val SENSITIVE_NAME_FRAGMENTS = listOf("password", "secret", "key", "token", "credential")
     }
 
 
