@@ -4,6 +4,7 @@ import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
 import org.maiaframework.elasticsearch.index.model.EsIndexVersion
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 
+
 class EsIndexNameLookup(
     private val esIndexActiveVersionManager: EsIndexActiveVersionManager
 ) {

@@ -8,6 +8,7 @@ import co.elastic.clients.elasticsearch.core.SearchRequest
 import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.json.JsonNodeExtensions.getStringOrNull
 import org.maiaframework.domain.search.AgGridSearchModel
+import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 
 class EsSearchRequestFactory {
 
@@ -15,14 +16,14 @@ class EsSearchRequestFactory {
     fun buildSearchRequest(
         searchModel: AgGridSearchModel,
         fieldNameMapper: (String) -> String,
-        indexName: EsIndexName
+        indexName: IndexResolvedName
     ): SearchRequest {
 
         val from = searchModel.startRow
         val size = searchModel.endRow?.minus(searchModel.startRow) ?: 10
 
         return SearchRequest.of { r ->
-            r.index(indexName.resolvedName)
+            r.index(indexName.value)
                 .query { q ->
                     q.bool { b ->
                         buildQuery(searchModel, fieldNameMapper, b)
@@ -46,11 +47,11 @@ class EsSearchRequestFactory {
     fun buildCountRequest(
         searchModel: AgGridSearchModel,
         fieldNameMapper: (String) -> String,
-        indexName: EsIndexName
+        indexName: IndexResolvedName
     ): CountRequest {
 
         return CountRequest.of { r ->
-            r.index(indexName.resolvedName)
+            r.index(indexName.value)
                 .query { q ->
                     q.bool { b ->
                         buildQuery(searchModel, fieldNameMapper, b)

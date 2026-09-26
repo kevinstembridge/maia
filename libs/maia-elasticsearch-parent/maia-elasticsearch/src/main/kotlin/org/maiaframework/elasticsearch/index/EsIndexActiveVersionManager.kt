@@ -27,11 +27,15 @@ class EsIndexActiveVersionManager(private val props: Props, private val propsMan
     }
 
 
-    fun setActiveVersion(indexName: EsIndexName, principal: Principal) {
+    fun setActiveVersion(
+        indexBaseName: EsIndexBaseName,
+        indexVersion: EsIndexVersion,
+        principal: Principal
+    ) {
 
         this.propsManager.setProperty(
-                propertyKey(indexName.esIndexBaseName),
-                indexName.indexVersion.value.toString(),
+                propertyKey(indexBaseName),
+                indexVersion.value.toString(),
                 principal.name,
                 comment = null,
                 reviewDate = null)

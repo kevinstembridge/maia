@@ -1,7 +1,6 @@
 package org.maiaframework.elasticsearch
 
 import org.maiaframework.elasticsearch.index.ElasticIndexService
-import org.maiaframework.elasticsearch.index.EsIndexNameFactory
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -15,11 +14,10 @@ class MaiaElasticsearchWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     fun elasticSearchIndicesEndpoint(
-        elasticIndexService: ElasticIndexService,
-        esIndexNameFactory: EsIndexNameFactory
+        elasticIndexService: ElasticIndexService
     ): ElasticSearchIndicesEndpoint {
 
-        return ElasticSearchIndicesEndpoint(elasticIndexService, esIndexNameFactory)
+        return ElasticSearchIndicesEndpoint(elasticIndexService)
 
     }
 

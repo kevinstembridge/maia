@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient
 import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.elasticsearch.results.IndexSearchResults
 import org.maiaframework.domain.search.AgGridSearchModel
+import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 
 class EsSearchExecutor(
     private val esSearchRequestFactory: EsSearchRequestFactory,
@@ -13,7 +14,7 @@ class EsSearchExecutor(
 
     fun <T> search(
         searchModel: AgGridSearchModel,
-        indexName: EsIndexName,
+        indexName: IndexResolvedName,
         fieldNameMapper: (String) -> String,
         documentClass: Class<T>
     ): IndexSearchResults<T> {
@@ -29,7 +30,7 @@ class EsSearchExecutor(
 
     fun <ESDOC, SEARCH_RESULT> search(
         searchModel: AgGridSearchModel,
-        indexName: EsIndexName,
+        indexName: IndexResolvedName,
         fieldNameMapper: (String) -> String,
         documentClass: Class<ESDOC>,
         docMapper: (ESDOC) -> SEARCH_RESULT
@@ -50,7 +51,7 @@ class EsSearchExecutor(
 
     fun count(
         searchModel: AgGridSearchModel,
-        indexName: EsIndexName,
+        indexName: IndexResolvedName,
         fieldNameMapper: (String) -> String
     ): Long {
 

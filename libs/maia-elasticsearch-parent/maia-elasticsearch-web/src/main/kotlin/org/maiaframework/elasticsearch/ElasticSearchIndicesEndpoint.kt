@@ -1,8 +1,10 @@
 package org.maiaframework.elasticsearch
 
 import org.maiaframework.elasticsearch.index.ElasticIndexService
-import org.maiaframework.elasticsearch.index.EsIndexNameFactory
+import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
 import org.maiaframework.elasticsearch.index.model.EsIndexStateDto
+import org.maiaframework.elasticsearch.index.model.EsIndexVersion
+import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,8 +17,7 @@ import java.security.Principal
 @RestController
 @RequestMapping($$"${maia.elasticsearch.web.base-url:/api/ops}")
 class ElasticSearchIndicesEndpoint(
-    private val elasticIndexService: ElasticIndexService,
-    private val esIndexNameFactory: EsIndexNameFactory
+    private val elasticIndexService: ElasticIndexService
 ) {
 
 
@@ -29,22 +30,33 @@ class ElasticSearchIndicesEndpoint(
     }
 
 
-    @PostMapping("/elastic_index/create/{indexName}")
+    @PostMapping("/elastic_index/create/{indexBaseName}/{indexVersion}")
     @PreAuthorize("hasAuthority('${EsConstants.Authority.MAIA_ELASTICSEARCH_SYS_OPS_WRITE}')")
-    fun createIndex(@PathVariable("indexName") indexNameRaw: String, principal: Principal) {
+    fun createIndex(
+        @PathVariable indexBaseName: String,
+        @PathVariable indexVersion: Int,
+        principal: Principal
+    ) {
 
-        val indexName = this.esIndexNameFactory.indexNameFrom(indexNameRaw)
-        this.elasticIndexService.createIndex(indexName, principal)
+        val indexBaseNameAndVersion = IndexBaseNameAndVersion(EsIndexBaseName(indexBaseName), EsIndexVersion(indexVersion))
+        this.elasticIndexService.createIndex(indexBaseNameAndVersion, principal)
 
     }
 
 
-    @PostMapping("/elastic_index/set_active/{indexName}")
+    @PostMapping("/elastic_index/set_active/{indexName}/{indexVersion}")
     @PreAuthorize("hasAuthority('${EsConstants.Authority.MAIA_ELASTICSEARCH_SYS_OPS_WRITE}')")
-    fun setIndexActiveVersion(@PathVariable indexName: String, principal: Principal) {
+    fun setIndexActiveVersion(
+        @PathVariable indexName: String,
+        @PathVariable indexVersion: Int,
+        principal: Principal
+    ) {
 
-        val esIndexName = this.esIndexNameFactory.indexNameFrom(indexName)
-        this.elasticIndexService.setIndexActiveVersion(esIndexName, principal)
+        this.elasticIndexService.setIndexActiveVersion(
+            EsIndexBaseName(indexName),
+            EsIndexVersion(indexVersion),
+            principal
+        )
 
     }
 
