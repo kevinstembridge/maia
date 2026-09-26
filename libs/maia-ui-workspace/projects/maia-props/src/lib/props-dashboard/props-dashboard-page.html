@@ -48,65 +48,13 @@
 } @else if (store.error()) {
     <p>{{store.error()}} <button mat-button (click)="store.retryFetch()">Retry</button></p>
 } @else {
-    <table mat-table [dataSource]="store.visibleProperties()" data-testid="props-dashboard-table">
-
-        <ng-container matColumnDef="propertyName">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let row">{{row.propertyName}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="effectiveValue">
-            <th mat-header-cell *matHeaderCellDef>Effective Value</th>
-            <td mat-cell *matCellDef="let row" class="property-value-cell">{{row.effectiveValue}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="isOverridden">
-            <th mat-header-cell *matHeaderCellDef>Overridden</th>
-            <td mat-cell *matCellDef="let row" class="property-overridden-badge">{{row.isOverridden ? 'Overridden' : 'Default'}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="isRedundant">
-            <th mat-header-cell *matHeaderCellDef>Redundant</th>
-            <td mat-cell *matCellDef="let row">{{row.isRedundant ? 'Redundant' : ''}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="sourceName">
-            <th mat-header-cell *matHeaderCellDef>Source</th>
-            <td mat-cell *matCellDef="let row">{{row.sourceName}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="lastModifiedByUsername">
-            <th mat-header-cell *matHeaderCellDef>Last Modified By</th>
-            <td mat-cell *matCellDef="let row">{{row.lastModifiedByUsername}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="lastModifiedTimestamp">
-            <th mat-header-cell *matHeaderCellDef>Last Modified</th>
-            <td mat-cell *matCellDef="let row">{{row.lastModifiedTimestamp | date: 'EEE dd MMM yyyy, HH:mm:ss'}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="reviewDate">
-            <th mat-header-cell *matHeaderCellDef>Review Date</th>
-            <td mat-cell *matCellDef="let row">{{row.reviewDate | date: 'EEE dd MMM yyyy'}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Actions</th>
-            <td mat-cell *matCellDef="let row">
-                <button mat-icon-button [attr.aria-label]="'Edit ' + row.propertyName" (click)="onEdit(row)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button [attr.aria-label]="'Remove ' + row.propertyName" [disabled]="!row.isOverridden" (click)="onRemove(row)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button [attr.aria-label]="'History ' + row.propertyName" (click)="onHistory(row)">
-                    <mat-icon>history</mat-icon>
-                </button>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [attr.data-testid]="'property-row-' + row.propertyName"></tr>
-
-    </table>
+    <div class="props-card-list" data-testid="props-dashboard-card-list">
+        @for (property of store.visibleProperties(); track property.propertyName) {
+            <maia-props-card
+                [property]="property"
+                (edit)="onEdit($event)"
+                (remove)="onRemove($event)"
+                (history)="onHistory($event)" />
+        }
+    </div>
 }

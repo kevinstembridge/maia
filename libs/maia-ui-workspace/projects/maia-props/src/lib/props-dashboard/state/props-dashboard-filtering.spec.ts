@@ -1,6 +1,6 @@
 import {convertToParamMap} from '@angular/router';
 import {Settings} from 'luxon';
-import {buildPropsQueryParams, countOverdue, countOverridden, countRedundant, filterProperties, parsePropsFiltersFromParams} from './props-dashboard-filtering';
+import {buildPropsQueryParams, countOverdue, countOverridden, countRedundant, filterProperties, isOverdue, parsePropsFiltersFromParams} from './props-dashboard-filtering';
 import {PropertyResponseDto} from '../models/PropertyResponseDto';
 
 function aProperty(overrides: Partial<PropertyResponseDto> = {}): PropertyResponseDto {
@@ -147,6 +147,35 @@ describe('filterProperties', () => {
             }
         });
 
+    });
+
+});
+
+describe('isOverdue', () => {
+
+    beforeEach(() => {
+        vi.useFakeTimers();
+        vi.setSystemTime(new Date('2026-09-26T12:00:00Z'));
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    it('returns true for a reviewDate in the past', () => {
+        expect(isOverdue('2026-09-01')).toBe(true);
+    });
+
+    it('returns false for a null reviewDate', () => {
+        expect(isOverdue(null)).toBe(false);
+    });
+
+    it('returns false for a reviewDate of today', () => {
+        expect(isOverdue('2026-09-26')).toBe(false);
+    });
+
+    it('returns false for a reviewDate in the future', () => {
+        expect(isOverdue('2026-10-01')).toBe(false);
     });
 
 });

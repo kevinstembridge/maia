@@ -1,0 +1,53 @@
+<div class="card" [attr.data-testid]="'property-card-' + property().propertyName">
+    <div class="accent" [class]="'accent-' + accentStatus()"></div>
+    <div class="card-inner">
+        <div class="tier-top">
+            <div class="identity">
+                <span class="prop-name">{{property().propertyName}}</span>
+                <span class="prop-value">{{property().effectiveValue}}</span>
+            </div>
+            <div class="badges">
+                @if (property().isOverridden) {
+                    <span class="badge badge-overridden">Overridden</span>
+                } @else {
+                    <span class="badge badge-default">Default</span>
+                }
+                @if (property().isRedundant) {
+                    <span class="badge badge-redundant">Redundant</span>
+                }
+                @if (overdue()) {
+                    <span class="badge badge-overdue">Overdue</span>
+                }
+            </div>
+            <div class="actions">
+                <button mat-icon-button [attr.aria-label]="'Edit ' + property().propertyName" (click)="onEdit()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button [attr.aria-label]="'Remove ' + property().propertyName" [disabled]="!property().isOverridden" (click)="onRemove()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-icon-button [attr.aria-label]="'History ' + property().propertyName" (click)="onHistory()">
+                    <mat-icon>history</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="tier-bottom">
+            <div class="meta-item">
+                <div class="meta-label">Source</div>
+                <div class="meta-value">{{property().sourceName}}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Modified by</div>
+                <div class="meta-value">{{property().lastModifiedByUsername ?? '—'}}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Modified</div>
+                <div class="meta-value">{{property().lastModifiedTimestamp ? (property().lastModifiedTimestamp | date: 'EEE dd MMM yyyy, HH:mm:ss') : '—'}}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Review date</div>
+                <div class="meta-value">{{property().reviewDate ? (property().reviewDate | date: 'EEE dd MMM yyyy') : '—'}}</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,6 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
-import {DatePipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
@@ -15,21 +13,20 @@ import {PropertyResponseDto} from './models/PropertyResponseDto';
 import {EditPropertyDialog, EditPropertyDialogData, EditPropertyDialogResult} from './dialogs/edit-property-dialog/edit-property-dialog';
 import {RemoveOverrideDialog, RemoveOverrideDialogData, RemoveOverrideDialogResult} from './dialogs/remove-override-dialog/remove-override-dialog';
 import {PropertyHistoryDialog, PropertyHistoryDialogData} from './dialogs/property-history-dialog/property-history-dialog';
+import {PropsCard} from './components/props-card/props-card';
 
 
 @Component({
     selector: 'maia-props-dashboard-page',
     templateUrl: './props-dashboard-page.html',
     styleUrl: './props-dashboard-page.scss',
-    imports: [MatTableModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, DatePipe],
+    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, PropsCard],
     providers: [PropsApiService, PropsDashboardStore]
 })
 export class PropsDashboardPage implements OnInit {
 
 
     readonly store = inject(PropsDashboardStore);
-
-    readonly displayedColumns = ['propertyName', 'effectiveValue', 'isOverridden', 'isRedundant', 'sourceName', 'lastModifiedByUsername', 'lastModifiedTimestamp', 'reviewDate', 'actions'];
 
     private route = inject(ActivatedRoute);
     private router = inject(Router);

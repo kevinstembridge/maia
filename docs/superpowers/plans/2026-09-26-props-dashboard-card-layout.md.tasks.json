@@ -4,23 +4,23 @@
     {
       "id": 0,
       "subject": "Task 1: Extract isOverdue in the filtering module",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** props-dashboard-filtering.ts exports isOverdue(reviewDate); filterProperties and countOverdue both use it instead of duplicating the predicate.\n\n**Files:**\n- Modify: projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.ts\n- Modify: projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.spec.ts\n\n**Acceptance Criteria:**\n- isOverdue(reviewDate) exported, returns reviewDate !== null && reviewDate < todayIsoString()\n- filterProperties overdueOnly branch calls isOverdue\n- countOverdue calls isOverdue\n- behavior unchanged, existing tests pass\n- new direct isOverdue tests added\n\n**Verify:** npx ng test maia-props (from libs/maia-ui-workspace) -> 33 tests pass\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/state/props-dashboard-filtering.spec.ts\"], \"verifyCommand\": \"npx ng test maia-props\", \"acceptanceCriteria\": [\"isOverdue exported and correct\", \"filterProperties uses isOverdue\", \"countOverdue uses isOverdue\", \"existing tests pass\", \"new isOverdue tests added\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 1,
       "subject": "Task 2: Create the PropsCard component",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [0],
       "description": "**Goal:** new standalone PropsCard component renders one property as a two-tier card with badges, actions, meta strip, and a left accent stripe by most-severe status.\n\n**Files:**\n- Create: projects/maia-props/src/lib/props-dashboard/components/props-card/props-card.ts\n- Create: projects/maia-props/src/lib/props-dashboard/components/props-card/props-card.html\n- Create: projects/maia-props/src/lib/props-dashboard/components/props-card/props-card.scss\n\n**Acceptance Criteria:**\n- property = input.required<PropertyResponseDto>(); edit/remove/history outputs\n- selector maia-props-card\n- top tier: name, value (wrap not truncate), badges, 3 action buttons matching old aria-labels/disabled logic\n- badges: exactly one Overridden/Default, plus Redundant/Overdue when true\n- bottom tier: Source/Modified by/Modified/Review date strip, same DatePipe formats, em-dash for null (not Source)\n- accent stripe: overdue>redundant>overridden>default using --mat-sys-* tokens\n- host has data-testid property-card-<name>\n- compiles\n\n**Verify:** npx ng build maia-props (from libs/maia-ui-workspace) -> build succeeds; npx ng test maia-props -> 33/33 pass\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/components/props-card/props-card.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/components/props-card/props-card.html\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/components/props-card/props-card.scss\"], \"verifyCommand\": \"npx ng build maia-props\", \"acceptanceCriteria\": [\"input/output signature correct\", \"top tier renders name/value/badges/actions\", \"badge conditions correct\", \"bottom tier renders meta with correct formats/fallbacks\", \"accent stripe logic correct\", \"data-testid present\", \"build succeeds\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 2,
       "subject": "Task 3: Replace the table with PropsCard on the page",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [1],
       "description": "**Goal:** props-dashboard-page renders a @for loop of <maia-props-card> instead of a mat-table, same edit/remove/history wiring.\n\n**Files:**\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\n- Modify: projects/maia-props/src/lib/props-dashboard/props-dashboard-page.scss\n\n**Acceptance Criteria:**\n- MatTableModule/DatePipe no longer imported/referenced; displayedColumns removed\n- PropsCard imported and added to imports array\n- template renders one maia-props-card per visible property in .props-card-list container, data-testid props-dashboard-card-list\n- onEdit/onRemove/onHistory unchanged signature, wired via card outputs\n- .property-value-cell/.mat-column-actions removed; .props-card-list rule added\n- compiles\n- manually verified or thoroughly self-reviewed\n\n**Verify:** npx ng build maia-props (from libs/maia-ui-workspace) -> build succeeds; npx ng test maia-props -> 33/33 pass; then manual/self-review check\n\n```json:metadata\n{\"files\": [\"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.ts\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.html\", \"libs/maia-ui-workspace/projects/maia-props/src/lib/props-dashboard/props-dashboard-page.scss\"], \"verifyCommand\": \"npx ng build maia-props\", \"acceptanceCriteria\": [\"table/DatePipe/displayedColumns removed\", \"PropsCard wired into imports\", \"card list template correct\", \"handler signatures unchanged\", \"scss cleanup done\", \"build succeeds\", \"manual/self-review passes\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-26T04:30:00Z"
+  "lastUpdated": "2026-09-26T05:45:00Z"
 }

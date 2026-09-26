@@ -16,6 +16,13 @@ function todayIsoString(): string {
 }
 
 
+export function isOverdue(reviewDate: string | null): boolean {
+
+    return reviewDate !== null && reviewDate < todayIsoString();
+
+}
+
+
 export function filterProperties(
     properties: PropertyResponseDto[],
     nameFilter: string,
@@ -25,12 +32,11 @@ export function filterProperties(
 ): PropertyResponseDto[] {
 
     const normalizedFilter = nameFilter.trim().toLowerCase();
-    const today = todayIsoString();
 
     return properties
         .filter(p => !overriddenOnly || p.isOverridden)
         .filter(p => !redundantOnly || p.isRedundant)
-        .filter(p => !overdueOnly || (p.reviewDate !== null && p.reviewDate < today))
+        .filter(p => !overdueOnly || isOverdue(p.reviewDate))
         .filter(p => normalizedFilter === '' || p.propertyName.toLowerCase().includes(normalizedFilter))
         .sort((a, b) => a.propertyName.localeCompare(b.propertyName));
 
@@ -53,8 +59,7 @@ export function countRedundant(properties: PropertyResponseDto[]): number {
 
 export function countOverdue(properties: PropertyResponseDto[]): number {
 
-    const today = todayIsoString();
-    return properties.filter(p => p.reviewDate !== null && p.reviewDate < today).length;
+    return properties.filter(p => isOverdue(p.reviewDate)).length;
 
 }
 
