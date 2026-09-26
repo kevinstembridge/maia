@@ -12,6 +12,7 @@ import org.maiaframework.gen.spec.definition.flags.WithHandCodedSubclass
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.DataClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.FieldType
+import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
@@ -91,14 +92,14 @@ class DataClassDefBuilder(
 
     fun field(fieldName: String, stringTypeDef: StringTypeDef): DataClassFieldDefBuilder {
 
-        return newFieldDefBuilder(ClassFieldName(fieldName), stringTypeDef.simpleTypeUnderlyingFieldType)
+        return newFieldDefBuilder(ClassFieldName(fieldName), FieldTypes.stringType(stringTypeDef))
 
     }
 
 
     fun field(fieldName: String, intTypeDef: IntTypeDef): DataClassFieldDefBuilder {
 
-        return newFieldDefBuilder(ClassFieldName(fieldName), intTypeDef.simpleTypeUnderlyingFieldType)
+        return newFieldDefBuilder(ClassFieldName(fieldName), FieldTypes.intType(intTypeDef))
 
     }
 
@@ -133,7 +134,10 @@ class DataClassDefBuilder(
 //    }
 
 
-    private fun newFieldDefBuilder(classFieldName: ClassFieldName, enumDef: EnumDef): DataClassFieldDefBuilder {
+    private fun newFieldDefBuilder(
+        classFieldName: ClassFieldName,
+        enumDef: EnumDef
+    ): DataClassFieldDefBuilder {
 
         return add(
             DataClassFieldDefBuilder(
