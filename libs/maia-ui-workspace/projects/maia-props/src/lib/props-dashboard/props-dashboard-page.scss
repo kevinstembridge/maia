@@ -32,6 +32,14 @@
     cursor: default;
 }
 
+.props-filter-tile-dot {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+}
+
 .props-filter-tile-count {
     font-size: 1.125rem;
     font-weight: 500;

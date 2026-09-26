@@ -8,7 +8,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {PropsApiService} from './services/props-api.service';
 import {PropsDashboardStore} from './state/props-dashboard-store';
-import {buildPropsQueryParams, parsePropsFiltersFromParams} from './state/props-dashboard-filtering';
+import {buildPropsQueryParams, parsePropsFiltersFromParams, PROPS_TILE_COLORS} from './state/props-dashboard-filtering';
 import {PropertyResponseDto} from './models/PropertyResponseDto';
 import {EditPropertyDialog, EditPropertyDialogData, EditPropertyDialogResult} from './dialogs/edit-property-dialog/edit-property-dialog';
 import {RemoveOverrideDialog, RemoveOverrideDialogData, RemoveOverrideDialogResult} from './dialogs/remove-override-dialog/remove-override-dialog';
@@ -27,6 +27,8 @@ export class PropsDashboardPage implements OnInit {
 
 
     readonly store = inject(PropsDashboardStore);
+
+    readonly tileColors = PROPS_TILE_COLORS;
 
     private route = inject(ActivatedRoute);
     private router = inject(Router);

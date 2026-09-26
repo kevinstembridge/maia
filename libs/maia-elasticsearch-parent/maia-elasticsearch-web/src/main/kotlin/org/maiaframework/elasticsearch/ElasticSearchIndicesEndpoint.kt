@@ -22,7 +22,7 @@ class ElasticSearchIndicesEndpoint(
 
     @GetMapping("/elastic_indices_state")
     @PreAuthorize("hasAuthority('${EsConstants.Authority.MAIA_ELASTICSEARCH_SYS_OPS_READ}')")
-    fun getElasticIndicesDefinitions(): List<EsIndexStateDto> {
+    fun getElasticIndicesState(): List<EsIndexStateDto> {
 
         return this.elasticIndexService.getIndicesState()
 

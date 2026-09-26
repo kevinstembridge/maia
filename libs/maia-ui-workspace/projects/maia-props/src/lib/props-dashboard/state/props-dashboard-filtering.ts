@@ -11,6 +11,14 @@ export interface PropsFilters {
 }
 
 
+export const PROPS_TILE_COLORS = {
+    total: '#9e9e9e',
+    overridden: '#1976d2',
+    redundant: '#fbc02d',
+    overdue: '#d32f2f',
+} as const;
+
+
 function todayIsoString(): string {
     return DateTime.local().toISODate()!;
 }

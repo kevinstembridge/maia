@@ -1,5 +1,6 @@
 <div class="props-filter-tiles">
     <div class="props-filter-tile props-filter-tile-total">
+        <span class="props-filter-tile-dot" [style.background-color]="tileColors.total"></span>
         <span class="props-filter-tile-count" aria-live="polite">{{store.visibleProperties().length}} of {{store.properties().length}}</span>
         <span class="props-filter-tile-label">Total</span>
     </div>
@@ -9,6 +10,7 @@
         [class.active]="store.overriddenOnly()"
         [attr.aria-pressed]="store.overriddenOnly()"
         (click)="onOverriddenOnlyToggled()">
+        <span class="props-filter-tile-dot" [style.background-color]="tileColors.overridden"></span>
         <span class="props-filter-tile-count">{{store.overriddenCount()}}</span>
         <span class="props-filter-tile-label">Overridden</span>
     </button>
@@ -18,6 +20,7 @@
         [class.active]="store.redundantOnly()"
         [attr.aria-pressed]="store.redundantOnly()"
         (click)="onRedundantOnlyToggled()">
+        <span class="props-filter-tile-dot" [style.background-color]="tileColors.redundant"></span>
         <span class="props-filter-tile-count">{{store.redundantCount()}}</span>
         <span class="props-filter-tile-label">Redundant</span>
     </button>
@@ -27,6 +30,7 @@
         [class.active]="store.overdueOnly()"
         [attr.aria-pressed]="store.overdueOnly()"
         (click)="onOverdueOnlyToggled()">
+        <span class="props-filter-tile-dot" [style.background-color]="tileColors.overdue"></span>
         <span class="props-filter-tile-count">{{store.overdueCount()}}</span>
         <span class="props-filter-tile-label">Overdue</span>
     </button>

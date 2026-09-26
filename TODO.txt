@@ -6,16 +6,14 @@ TODO * Jobs
 
 
 
+
 TODO * Props Dashboard
-    TODO * Add a quick filter for 'Overdue'
-    TODO * Display count, including filtered count.
-    TODO * If something is overridden, display the overridden value.
-    TODO * Use a card list rather than a table.
     TODO * Mask sensitive fields.
+    TODO * Display coloured dots on the quick filter buttons.
 
 TODO * Elastic Indices Dashboard
     TODO * Segregate managed and non-managed indices.
-    TODO * When setting active version or creating an index, use baseName and version.
+    TODO * Operations such as create and setActiveVersion should use the baseName and version rather than the resolved name.
 
 TODO * Single Effective Record
     TODO * Define a many-to-many entity that is specified to have only one single effective record
