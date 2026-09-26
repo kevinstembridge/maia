@@ -7,7 +7,7 @@ import org.maiaframework.gen.spec.ApplicationSpec
 class MaiaElasticsearchApplicationSpec: ApplicationSpec("org.maiaframework.elasticsearch", hazelcastConfigRequiresSpringComponentAnnotation = false) {
 
 
-    override val modelDefs = listOf(MaiaElasticSearchSpec().modelDef)
+    override val modelDefs = listOf(MaiaElasticsearchSpec().modelDef)
 
 
 }
