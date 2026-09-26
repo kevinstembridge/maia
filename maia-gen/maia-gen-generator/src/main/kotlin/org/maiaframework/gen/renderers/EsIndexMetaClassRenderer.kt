@@ -21,6 +21,7 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
     override fun renderPreClassFields() {
 
         addImportFor(Fqcns.ES_INDEX_BASE_NAME)
+        addImportFor(Fqcns.ES_INDEX_BASE_NAME_AND_VERSION)
         addImportFor(Fqcns.ES_INDEX_NAME)
         addImportFor(Fqcns.ES_INDEX_VERSION)
         addImportFor(Fqcns.ES_TYPE_MAPPING)
@@ -28,11 +29,21 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
 
         append("""
             |
+            |
             |    val indexBaseName = EsIndexBaseName("${this.esDocDef.elasticIndexBaseName}")
+            |
+            |
+            |    val indexVersion = EsIndexVersion(${this.esDocDef.esDocVersion})
+            |
+            |
+            |    val indexBaseNameAndVersion = IndexBaseNameAndVersion(indexBaseName, indexVersion)
+            |
             |
             |    val indexName = EsIndexName(indexBaseName, EsIndexVersion(${this.esDocDef.esDocVersion}))
             |
+            |
             |    const val indexDescription = "${this.esDocDef.indexDescription}"
+            |
             |
             |    val typeMapping = TypeMapping.of { m ->
             |""".trimMargin())
