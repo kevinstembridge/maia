@@ -5,7 +5,7 @@ import co.elastic.clients.elasticsearch._types.SortOrder
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery
 import co.elastic.clients.elasticsearch.core.CountRequest
 import co.elastic.clients.elasticsearch.core.SearchRequest
-import org.maiaframework.elasticsearch.index.EsIndexName
+import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.json.JsonNodeExtensions.getStringOrNull
 import org.maiaframework.domain.search.AgGridSearchModel
 

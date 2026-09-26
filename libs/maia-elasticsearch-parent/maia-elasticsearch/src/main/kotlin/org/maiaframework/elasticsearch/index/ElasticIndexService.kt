@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient
 import co.elastic.clients.elasticsearch._types.Level
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.elasticsearch.index.model.EsIndexHealthDto
+import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.elasticsearch.index.model.EsIndexStateDto
 import java.security.Principal
 

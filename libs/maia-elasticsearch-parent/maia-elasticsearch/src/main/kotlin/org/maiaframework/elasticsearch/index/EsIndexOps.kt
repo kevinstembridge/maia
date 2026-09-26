@@ -9,6 +9,7 @@ import co.elastic.clients.elasticsearch.core.SearchRequest
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.EsPaginationHelper
+import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.metrics.JobMetrics
 
 

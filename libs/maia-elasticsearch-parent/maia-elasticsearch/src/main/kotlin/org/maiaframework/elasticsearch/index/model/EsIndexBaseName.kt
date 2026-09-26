@@ -1,4 +1,4 @@
-package org.maiaframework.elasticsearch.index
+package org.maiaframework.elasticsearch.index.model
 
 import org.maiaframework.types.StringType
 import java.util.*

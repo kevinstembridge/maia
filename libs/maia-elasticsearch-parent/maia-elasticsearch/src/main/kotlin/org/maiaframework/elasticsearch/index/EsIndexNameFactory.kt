@@ -1,5 +1,8 @@
 package org.maiaframework.elasticsearch.index
 
+import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
+import org.maiaframework.elasticsearch.index.model.EsIndexName
+import org.maiaframework.elasticsearch.index.model.EsIndexVersion
 import java.util.regex.Pattern
 
 class EsIndexNameFactory {

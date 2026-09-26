@@ -1,5 +1,8 @@
 package org.maiaframework.elasticsearch.index
 
+import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
+import org.maiaframework.elasticsearch.index.model.EsIndexName
+import org.maiaframework.elasticsearch.index.model.EsIndexVersion
 import org.maiaframework.props.Props
 import org.maiaframework.props.PropsManager
 import java.security.Principal

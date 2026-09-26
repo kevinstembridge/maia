@@ -1,5 +1,9 @@
 package org.maiaframework.elasticsearch.index
 
+import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
+import org.maiaframework.elasticsearch.index.model.EsIndexName
+import org.maiaframework.elasticsearch.index.model.EsIndexVersion
+
 class EsIndexNameLookup(
     private val esIndexActiveVersionManager: EsIndexActiveVersionManager
 ) {

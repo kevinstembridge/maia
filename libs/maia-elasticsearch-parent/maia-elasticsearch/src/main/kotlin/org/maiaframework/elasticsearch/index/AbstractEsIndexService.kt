@@ -1,6 +1,7 @@
 package org.maiaframework.elasticsearch.index
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.metrics.JobMetrics
 import org.maiaframework.props.Props
 import org.slf4j.Logger

@@ -1,7 +1,7 @@
 package org.maiaframework.elasticsearch.search
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient
-import org.maiaframework.elasticsearch.index.EsIndexName
+import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.elasticsearch.results.IndexSearchResults
 import org.maiaframework.domain.search.AgGridSearchModel
 

@@ -1,5 +1,6 @@
 package org.maiaframework.elasticsearch.index
 
+import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.elasticsearch.index.model.ManagedEsIndexInfoDto
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
