@@ -11,6 +11,7 @@ export interface EditPropertyDialogData {
     propertyName: string | null;
     currentValue: string | null;
     currentReviewDate: string | null;
+    isSensitive: boolean;
 }
 
 export interface EditPropertyDialogResult {

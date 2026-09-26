@@ -3,6 +3,7 @@ export interface PropertyResponseDto {
     effectiveValue: string | null;
     isOverridden: boolean;
     isRedundant: boolean;
+    isSensitive: boolean;
     environmentValue: string | null;
     sourceName: string | null;
     lastModifiedByUsername: string | null;
