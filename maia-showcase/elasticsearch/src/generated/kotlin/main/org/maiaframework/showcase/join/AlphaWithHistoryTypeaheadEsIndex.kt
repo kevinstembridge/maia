@@ -3,9 +3,9 @@
 
 package org.maiaframework.showcase.join
 
-import org.maiaframework.elasticsearch.index.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.EsIndexName
 import org.maiaframework.elasticsearch.index.EsIndexNameLookup
+import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
+import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.springframework.stereotype.Component
 
 

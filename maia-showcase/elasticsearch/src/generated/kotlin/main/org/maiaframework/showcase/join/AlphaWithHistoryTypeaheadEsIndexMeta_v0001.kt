@@ -5,9 +5,9 @@ package org.maiaframework.showcase.join
 
 import co.elastic.clients.elasticsearch._types.mapping.Property
 import co.elastic.clients.elasticsearch._types.mapping.TypeMapping
-import org.maiaframework.elasticsearch.index.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.EsIndexName
-import org.maiaframework.elasticsearch.index.EsIndexVersion
+import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
+import org.maiaframework.elasticsearch.index.model.EsIndexName
+import org.maiaframework.elasticsearch.index.model.EsIndexVersion
 
 
 object AlphaWithHistoryTypeaheadEsIndexMeta_v0001 {
