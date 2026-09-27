@@ -2,7 +2,6 @@ package org.maiaframework.elasticsearch.index
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.elasticsearch.EsDocHolder
-import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 import org.maiaframework.metrics.JobMetrics
 import org.maiaframework.props.Props

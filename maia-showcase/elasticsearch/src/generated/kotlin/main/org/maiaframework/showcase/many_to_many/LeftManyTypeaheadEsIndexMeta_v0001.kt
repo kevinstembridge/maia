@@ -6,7 +6,6 @@ package org.maiaframework.showcase.many_to_many
 import co.elastic.clients.elasticsearch._types.mapping.Property
 import co.elastic.clients.elasticsearch._types.mapping.TypeMapping
 import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.elasticsearch.index.model.EsIndexVersion
 import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
 

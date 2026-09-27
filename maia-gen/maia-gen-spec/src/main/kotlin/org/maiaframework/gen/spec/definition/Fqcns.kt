@@ -26,7 +26,6 @@ object Fqcns {
     val ES_INDEX_ACTIVE_VERSION_MANAGER = Fqcn.valueOf("org.maiaframework.elasticsearch.index.EsIndexActiveVersionManager")
     val ES_INDEX_BASE_NAME = Fqcn.valueOf("org.maiaframework.elasticsearch.index.model.EsIndexBaseName")
     val ES_INDEX_BASE_NAME_AND_VERSION = Fqcn.valueOf("org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion")
-    val ES_INDEX_NAME = Fqcn.valueOf("org.maiaframework.elasticsearch.index.model.EsIndexName")
     val ES_INDEX_RESOLVED_NAME = Fqcn.valueOf("org.maiaframework.elasticsearch.index.model.IndexResolvedName")
     val ES_INDEX_NAME_LOOKUP = Fqcn.valueOf("org.maiaframework.elasticsearch.index.EsIndexNameLookup")
     val ES_INDEX_NAME_OVERRIDER = Fqcn.valueOf("org.maiaframework.elasticsearch.index.EsIndexNameOverrider")

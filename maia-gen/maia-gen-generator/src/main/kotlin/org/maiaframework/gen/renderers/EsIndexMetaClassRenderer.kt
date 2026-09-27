@@ -22,7 +22,6 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
 
         addImportFor(Fqcns.ES_INDEX_BASE_NAME)
         addImportFor(Fqcns.ES_INDEX_BASE_NAME_AND_VERSION)
-        addImportFor(Fqcns.ES_INDEX_NAME)
         addImportFor(Fqcns.ES_INDEX_VERSION)
         addImportFor(Fqcns.ES_TYPE_MAPPING)
         addImportFor(Fqcns.ES_PROPERTY)

@@ -5,10 +5,9 @@ import co.elastic.clients.elasticsearch._types.SortOrder
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery
 import co.elastic.clients.elasticsearch.core.CountRequest
 import co.elastic.clients.elasticsearch.core.SearchRequest
-import org.maiaframework.elasticsearch.index.model.EsIndexName
-import org.maiaframework.json.JsonNodeExtensions.getStringOrNull
 import org.maiaframework.domain.search.AgGridSearchModel
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
+import org.maiaframework.json.JsonNodeExtensions.getStringOrNull
 
 class EsSearchRequestFactory {
 

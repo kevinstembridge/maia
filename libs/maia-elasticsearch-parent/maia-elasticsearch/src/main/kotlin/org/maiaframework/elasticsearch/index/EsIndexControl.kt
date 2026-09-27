@@ -1,6 +1,5 @@
 package org.maiaframework.elasticsearch.index
 
-import org.maiaframework.elasticsearch.index.model.EsIndexName
 import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
 
 
