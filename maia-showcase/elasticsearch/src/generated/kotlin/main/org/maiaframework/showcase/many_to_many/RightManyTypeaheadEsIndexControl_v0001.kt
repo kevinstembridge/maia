@@ -17,9 +17,6 @@ class RightManyTypeaheadEsIndexControl_v0001(client: ElasticsearchClient) : Abst
     override val indexBaseNameAndVersion = RightManyTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion
     
 
-    override val indexName = RightManyTypeaheadEsIndexMeta_v0001.indexName
-
-
     override val indexDescription = RightManyTypeaheadEsIndexMeta_v0001.indexDescription
 
 

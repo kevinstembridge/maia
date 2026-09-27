@@ -17,9 +17,6 @@ class AlphaWithHistoryTypeaheadEsIndexControl_v0001(client: ElasticsearchClient)
     override val indexBaseNameAndVersion = AlphaWithHistoryTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion
     
 
-    override val indexName = AlphaWithHistoryTypeaheadEsIndexMeta_v0001.indexName
-
-
     override val indexDescription = AlphaWithHistoryTypeaheadEsIndexMeta_v0001.indexDescription
 
 

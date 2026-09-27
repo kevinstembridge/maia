@@ -23,9 +23,6 @@ object LeftManyTypeaheadEsIndexMeta_v0001 {
     val indexBaseNameAndVersion = IndexBaseNameAndVersion(indexBaseName, indexVersion)
 
 
-    val indexName = EsIndexName(indexBaseName, EsIndexVersion(1))
-
-
     const val indexDescription = "A typeahead index for the someString field of LeftMany records."
 
 

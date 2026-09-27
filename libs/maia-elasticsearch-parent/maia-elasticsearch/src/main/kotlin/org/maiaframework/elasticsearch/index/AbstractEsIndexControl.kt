@@ -17,7 +17,7 @@ abstract class AbstractEsIndexControl(
 
     override fun createIndex() {
 
-        logger.info("BEGIN: createIndex() for ${this.indexName}")
+        logger.info("BEGIN: createIndex() for ${this.indexBaseNameAndVersion}")
 
         val resolvedName = EsIndexNameFactory.indexNameFrom(this.indexBaseNameAndVersion)
         val createIndexResponse = client.indices().create { r -> r.index(resolvedName.value).mappings(this.typeMapping) }

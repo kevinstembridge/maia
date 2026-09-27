@@ -10,9 +10,6 @@ interface EsIndexControl {
     val indexBaseNameAndVersion: IndexBaseNameAndVersion
 
 
-    val indexName: EsIndexName
-
-
     val indexDescription: String
 
 

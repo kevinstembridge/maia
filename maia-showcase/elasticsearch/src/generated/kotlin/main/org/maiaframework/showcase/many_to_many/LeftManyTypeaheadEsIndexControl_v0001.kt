@@ -17,9 +17,6 @@ class LeftManyTypeaheadEsIndexControl_v0001(client: ElasticsearchClient) : Abstr
     override val indexBaseNameAndVersion = LeftManyTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion
     
 
-    override val indexName = LeftManyTypeaheadEsIndexMeta_v0001.indexName
-
-
     override val indexDescription = LeftManyTypeaheadEsIndexMeta_v0001.indexDescription
 
 

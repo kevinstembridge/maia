@@ -24,9 +24,6 @@ class EsIndexControlRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRen
             |    override val indexBaseNameAndVersion = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexBaseNameAndVersion
             |    
             |
-            |    override val indexName = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexName
-            |
-            |
             |    override val indexDescription = ${this.esDocDef.esDocMetaClassDef.uqcn}.indexDescription
             |
             |

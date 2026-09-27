@@ -31,7 +31,7 @@ class EsIndexControlRegistry(
             val existingControl = this.controlsByName.put(bean.indexBaseNameAndVersion, bean)
 
             if (existingControl != null) {
-                throw RuntimeException("Duplicate control: esIndexName='${bean.indexName}', springBeanName='$beanName', type='${bean.javaClass.name}'")
+                throw RuntimeException("Duplicate control: indexBaseNameAndVersion='${bean.indexBaseNameAndVersion}', springBeanName='$beanName', type='${bean.javaClass.name}'")
             }
 
         }

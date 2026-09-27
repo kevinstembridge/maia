@@ -39,9 +39,6 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
             |    val indexBaseNameAndVersion = IndexBaseNameAndVersion(indexBaseName, indexVersion)
             |
             |
-            |    val indexName = EsIndexName(indexBaseName, EsIndexVersion(${this.esDocDef.esDocVersion}))
-            |
-            |
             |    const val indexDescription = "${this.esDocDef.indexDescription}"
             |
             |
