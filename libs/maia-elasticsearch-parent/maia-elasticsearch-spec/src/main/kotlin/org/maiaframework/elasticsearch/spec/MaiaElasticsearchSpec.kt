@@ -28,9 +28,7 @@ class MaiaElasticsearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
     }
 
 
-    val indexVersionIntType = intType("org.maiaframework.elasticsearch.index.model.EsIndexVersion") {
-        provided()
-    }
+    val indexVersionIntType = intType("org.maiaframework.elasticsearch.index.model.EsIndexVersion")
 
 
     val indexBaseNameAndVersionDtoDef = dataClass("org.maiaframework.elasticsearch.index.model", "IndexBaseNameAndVersion") {
