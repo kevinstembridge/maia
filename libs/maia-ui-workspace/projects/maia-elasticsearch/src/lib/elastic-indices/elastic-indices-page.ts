@@ -6,7 +6,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
-import {EsIndexStateDto} from './models/EsIndexStateDto';
+import {EsIndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
 import {ElasticIndicesApiService} from './services/elastic-indices-api-service';
 import {ElasticIndicesPageStore} from './state/elastic-indices-page-store';
 import {ElasticIndex} from './components/elastic-index/elastic-index';
@@ -80,14 +80,14 @@ export class ElasticIndicesPage implements OnInit {
     }
 
 
-    onCreateIndex(dto: EsIndexStateDto) {
+    onCreateIndex(dto: EsIndexStateResponseDto) {
         const dialogRef = this.dialog.open(CreateIndexDialog, {
             width: '400px',
             data: dto
         });
         dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.elasticIndicesService.createIndex(dto.indexName).subscribe(() => {
+            if (result && dto.managedIndexInfo) {
+                this.elasticIndicesService.createIndex(dto.managedIndexInfo.indexBaseName, dto.managedIndexInfo.indexVersion).subscribe(() => {
                     this.store.fetchAllIndices();
                 });
             }
@@ -95,13 +95,13 @@ export class ElasticIndicesPage implements OnInit {
     }
 
 
-    onSetIndexVersionActive(dto: EsIndexStateDto) {
+    onSetIndexVersionActive(dto: EsIndexStateResponseDto) {
         const dialogRef = this.dialog.open(SetIndexVersionActiveDialog, {
             data: dto
         });
         dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.elasticIndicesService.onSetIndexVersionActive(dto.indexName);
+            if (result && dto.managedIndexInfo) {
+                this.elasticIndicesService.onSetIndexVersionActive(dto.managedIndexInfo.indexBaseName, dto.managedIndexInfo.indexVersion);
             }
         });
     }

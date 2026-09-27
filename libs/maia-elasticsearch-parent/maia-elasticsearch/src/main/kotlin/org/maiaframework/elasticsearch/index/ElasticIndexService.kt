@@ -5,8 +5,7 @@ import co.elastic.clients.elasticsearch._types.Level
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
 import org.maiaframework.elasticsearch.index.model.EsIndexHealthResponseDto
-import org.maiaframework.elasticsearch.index.model.EsIndexName
-import org.maiaframework.elasticsearch.index.model.EsIndexStateDto
+import org.maiaframework.elasticsearch.index.model.EsIndexStateResponseDto
 import org.maiaframework.elasticsearch.index.model.EsIndexVersion
 import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
@@ -23,9 +22,9 @@ class ElasticIndexService(
     private val logger = getLogger<ElasticIndexService>()
 
 
-    fun getIndicesState(): List<EsIndexStateDto> {
+    fun getIndicesState(): List<EsIndexStateResponseDto> {
 
-        val stateDtosByName = mutableMapOf<IndexResolvedName, EsIndexStateDto>()
+        val stateDtosByName = mutableMapOf<IndexResolvedName, EsIndexStateResponseDto>()
 
         collectHealthDtos(stateDtosByName)
         collectSummaryDtos(stateDtosByName)
@@ -35,12 +34,12 @@ class ElasticIndexService(
     }
 
 
-    private fun collectHealthDtos(stateDtosByName: MutableMap<IndexResolvedName, EsIndexStateDto>) {
+    private fun collectHealthDtos(stateDtosByName: MutableMap<IndexResolvedName, EsIndexStateResponseDto>) {
 
         getIndexHealthsFromCluster().forEach { (indexName, indexHealthDto) ->
 
-            stateDtosByName.compute(indexName) { name: IndexResolvedName, existingStateDto: EsIndexStateDto? ->
-                existingStateDto?.copy(health = indexHealthDto) ?: EsIndexStateDto(name, null, indexHealthDto, exists = true)
+            stateDtosByName.compute(indexName) { name: IndexResolvedName, existingStateDto: EsIndexStateResponseDto? ->
+                existingStateDto?.copy(health = indexHealthDto) ?: EsIndexStateResponseDto(exists = true, health = indexHealthDto, indexName = name, managedIndexInfo = null)
             }
 
         }
@@ -62,14 +61,18 @@ class ElasticIndexService(
     }
 
 
-    private fun collectSummaryDtos(stateDtosByName: MutableMap<IndexResolvedName, EsIndexStateDto>) {
+    private fun collectSummaryDtos(stateDtosByName: MutableMap<IndexResolvedName, EsIndexStateResponseDto>) {
 
-        val indexSummaries = this.controlRegistry.getAllIndexSummaries()
-        indexSummaries.forEach { indexSummary ->
+        controlRegistry.getAllIndexSummaries().forEach { indexSummary ->
 
-            stateDtosByName.compute(indexSummary.indexResolvedName) { indexName: IndexResolvedName, existingStateDto: EsIndexStateDto? ->
+            stateDtosByName.compute(indexSummary.indexResolvedName) { indexName: IndexResolvedName, existingStateDto: EsIndexStateResponseDto? ->
                 existingStateDto?.copy(managedIndexInfo = indexSummary)
-                    ?: EsIndexStateDto(indexName, indexSummary, null, exists = false)
+                    ?: EsIndexStateResponseDto(
+                        exists = false,
+                        health = null,
+                        indexName,
+                        managedIndexInfo = indexSummary
+                    )
             }
 
         }

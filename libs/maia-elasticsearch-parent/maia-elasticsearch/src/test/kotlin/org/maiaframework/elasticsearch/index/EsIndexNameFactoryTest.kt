@@ -9,8 +9,6 @@ import org.maiaframework.elasticsearch.index.model.EsIndexVersion
 
 class EsIndexNameFactoryTest {
 
-    private val indexNameFactory = EsIndexNameFactory()
-
 
     @ParameterizedTest
     @CsvSource(
@@ -30,7 +28,7 @@ class EsIndexNameFactoryTest {
             versionString.toInt()
         }
 
-        val actual = indexNameFactory.indexNameFrom(indexName)
+        val actual = EsIndexNameFactory.indexNameFrom(indexName)
         val expected = EsIndexName(EsIndexBaseName(expectedBaseName), EsIndexVersion(version))
         assertThat(actual).isEqualTo(expected)
 

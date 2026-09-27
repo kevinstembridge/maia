@@ -18,11 +18,14 @@ class EsIndexActiveVersionManager(private val props: Props, private val propsMan
     }
 
 
-    fun isActive(indexName: EsIndexName): Boolean {
+    fun isActive(
+        indexName: EsIndexBaseName,
+        indexVersion: EsIndexVersion
+    ): Boolean {
 
-        val activeVersion = activeVersion(indexName.esIndexBaseName)
+        val activeVersion = activeVersion(indexName)
 
-        return indexName.indexVersion == activeVersion
+        return indexVersion == activeVersion
 
     }
 

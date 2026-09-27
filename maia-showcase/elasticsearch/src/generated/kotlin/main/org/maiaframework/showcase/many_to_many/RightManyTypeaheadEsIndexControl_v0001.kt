@@ -6,17 +6,13 @@ package org.maiaframework.showcase.many_to_many
 import co.elastic.clients.elasticsearch.ElasticsearchClient
 import co.elastic.clients.elasticsearch._types.mapping.TypeMapping
 import org.maiaframework.elasticsearch.index.AbstractEsIndexControl
-import org.maiaframework.elasticsearch.index.EsIndexActiveVersionManager
 import org.springframework.stereotype.Component
 
 
 @Component
 class RightManyTypeaheadEsIndexControl_v0001(
-    client: ElasticsearchClient,
-    esIndexActiveVersionManager: EsIndexActiveVersionManager
-) : AbstractEsIndexControl(
-    client,
-    esIndexActiveVersionManager
+    client: ElasticsearchClient
+) : AbstractEsIndexControl(client
 ) {
 
 

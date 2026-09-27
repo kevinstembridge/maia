@@ -54,7 +54,7 @@ class MaiaElasticsearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
 
 
     val indexStateDtoDef = simpleResponseDto("org.maiaframework.elasticsearch.index.model", "EsIndexState") {
-        field("indexName", FieldTypes.string)
+        field("indexName", indexResolvedNameStringType)
         field("managedIndexInfo", managedIndexInfoDtoDef) {
             nullable()
         }

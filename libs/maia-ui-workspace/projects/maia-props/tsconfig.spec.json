@@ -4,7 +4,12 @@
     "outDir": "../../out-tsc/spec",
     "types": [
       "vitest/globals"
-    ]
+    ],
+    "paths": {
+      "@app/*": [
+        "./src/generated/typescript/main/app/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.d.ts",

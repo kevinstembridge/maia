@@ -43,9 +43,9 @@ class MaiaElasticsearchAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun esIndexControlRegistry(): EsIndexControlRegistry {
+    fun esIndexControlRegistry(activeVersionManager: EsIndexActiveVersionManager): EsIndexControlRegistry {
 
-        return EsIndexControlRegistry()
+        return EsIndexControlRegistry(activeVersionManager)
 
     }
 

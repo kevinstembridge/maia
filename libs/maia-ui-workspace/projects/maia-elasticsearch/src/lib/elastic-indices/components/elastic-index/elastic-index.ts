@@ -1,7 +1,9 @@
 import {Component, computed, input, output} from '@angular/core';
-import {EsIndexStateDto} from '../../models/EsIndexStateDto';
 import {MatButtonModule} from '@angular/material/button';
 import {deriveDisplayStatus, STATUS_COLORS} from '../../state/elastic-indices-filtering';
+import {
+  EsIndexStateResponseDto
+} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
 
 @Component({
     imports: [MatButtonModule],
@@ -11,10 +13,10 @@ import {deriveDisplayStatus, STATUS_COLORS} from '../../state/elastic-indices-fi
 })
 export class ElasticIndex {
 
-    index = input.required<EsIndexStateDto>();
+    index = input.required<EsIndexStateResponseDto>();
 
-    createIndex = output<EsIndexStateDto>();
-    setIndexVersionActive = output<EsIndexStateDto>();
+    createIndex = output<EsIndexStateResponseDto>();
+    setIndexVersionActive = output<EsIndexStateResponseDto>();
 
     statusColor = computed<string | undefined>(() => {
         const status = deriveDisplayStatus(this.index());

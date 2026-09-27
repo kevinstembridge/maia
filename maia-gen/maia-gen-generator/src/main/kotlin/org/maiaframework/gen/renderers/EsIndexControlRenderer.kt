@@ -9,7 +9,6 @@ class EsIndexControlRenderer(private val esDocDef: EsDocDef) : AbstractKotlinRen
 
     init {
 
-        addConstructorArg(ClassFieldDef.aClassField("esIndexActiveVersionManager", Fqcns.ES_INDEX_ACTIVE_VERSION_MANAGER).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("client", Fqcns.ELASTIC_CLIENT).privat().build())
 
     }

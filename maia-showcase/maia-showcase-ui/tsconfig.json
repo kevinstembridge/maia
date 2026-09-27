@@ -17,7 +17,10 @@
     "paths": {
         "@app/*": [
             "./src/app/*",
-            "./src/generated/typescript/main/app/*"
+            "./src/generated/typescript/main/app/*",
+            "../../libs/maia-ui-workspace/projects/maia-elasticsearch/src/generated/typescript/main/app/*",
+            "../../libs/maia-ui-workspace/projects/maia-props/src/generated/typescript/main/app/*",
+            "../../libs/maia-ui-workspace/projects/maia-jobs/src/generated/typescript/main/app/*"
         ],
         "@maia/maia-ui": [
             "../../libs/maia-ui-workspace/projects/maia-ui/src/public-api.ts"

@@ -9,16 +9,20 @@ import {
     filterByStatus,
     parseElasticIndicesFiltersFromParams
 } from './elastic-indices-filtering';
-import {EsIndexStateDto} from '../models/EsIndexStateDto';
+import {EsIndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
 
 
-function indexDto(overrides: Partial<EsIndexStateDto> & {indexName: string}): EsIndexStateDto {
+function indexDto(overrides: Partial<EsIndexStateResponseDto> & {indexName: string}): EsIndexStateResponseDto {
     return {
-        indexExists: true,
-        summary: {indexName: overrides.indexName, description: '', isActiveVersion: false},
-        health: {indexName: overrides.indexName, status: 'green'},
-        ...overrides
-    } as EsIndexStateDto;
+        exists: true,
+        managedIndexInfo: {
+            indexName: {baseName: overrides.indexName, version: 1},
+            description: '',
+            isActiveVersion: false,
+        },
+        health: {status: 'green'},
+        ...overrides,
+    };
 }
 
 
@@ -64,22 +68,22 @@ describe('elastic-indices-filtering', () => {
     describe('deriveDisplayStatus()', () => {
 
         it('returns "not-created" when the index does not exist, even if health data is present', () => {
-            const index = indexDto({indexName: 'a', indexExists: false, health: {indexName: 'a', status: 'green'}});
+            const index = indexDto({indexName: 'a', exists: false, health: {status: 'green'}});
             expect(deriveDisplayStatus(index)).toEqual('not-created');
         });
 
         it('returns the lowercased health status for an existing index', () => {
-            const index = indexDto({indexName: 'a', indexExists: true, health: {indexName: 'a', status: 'YELLOW'}});
+            const index = indexDto({indexName: 'a', exists: true, health: {status: 'YELLOW'}});
             expect(deriveDisplayStatus(index)).toEqual('yellow');
         });
 
         it('returns undefined for an existing index with no health status', () => {
-            const index = indexDto({indexName: 'a', indexExists: true, health: undefined as unknown as EsIndexStateDto['health']});
+            const index = indexDto({indexName: 'a', exists: true, health: undefined});
             expect(deriveDisplayStatus(index)).toBeUndefined();
         });
 
         it('returns undefined for an existing index with an unrecognized health status', () => {
-            const index = indexDto({indexName: 'a', indexExists: true, health: {indexName: 'a', status: 'purple'}});
+            const index = indexDto({indexName: 'a', exists: true, health: {status: 'purple'}});
             expect(deriveDisplayStatus(index)).toBeUndefined();
         });
 
@@ -90,10 +94,10 @@ describe('elastic-indices-filtering', () => {
 
         it('counts every display status, including zeros for statuses with no matches', () => {
             const indices = [
-                indexDto({indexName: 'a', health: {indexName: 'a', status: 'GREEN'}}),
-                indexDto({indexName: 'b', health: {indexName: 'b', status: 'green'}}),
-                indexDto({indexName: 'c', health: {indexName: 'c', status: 'red'}}),
-                indexDto({indexName: 'd', indexExists: false})
+                indexDto({indexName: 'a', health: {status: 'GREEN'}}),
+                indexDto({indexName: 'b', health: {status: 'green'}}),
+                indexDto({indexName: 'c', health: {status: 'red'}}),
+                indexDto({indexName: 'd', exists: false})
             ];
             expect(countByDisplayStatus(indices)).toEqual({green: 2, yellow: 0, red: 1, 'not-created': 1});
         });
@@ -108,18 +112,18 @@ describe('elastic-indices-filtering', () => {
     describe('filterByStatus()', () => {
 
         it('returns all indices unchanged when status is null', () => {
-            const indices = [indexDto({indexName: 'a'}), indexDto({indexName: 'b', indexExists: false})];
+            const indices = [indexDto({indexName: 'a'}), indexDto({indexName: 'b', exists: false})];
             expect(filterByStatus(indices, null)).toEqual(indices);
         });
 
         it('returns only indices matching the given status', () => {
-            const green = indexDto({indexName: 'a', health: {indexName: 'a', status: 'green'}});
-            const red = indexDto({indexName: 'b', health: {indexName: 'b', status: 'red'}});
+            const green = indexDto({indexName: 'a', health: {status: 'green'}});
+            const red = indexDto({indexName: 'b', health: {status: 'red'}});
             expect(filterByStatus([green, red], 'red')).toEqual([red]);
         });
 
         it('matches "not-created" against indices that do not exist', () => {
-            const missing = indexDto({indexName: 'a', indexExists: false});
+            const missing = indexDto({indexName: 'a', exists: false});
             const existing = indexDto({indexName: 'b'});
             expect(filterByStatus([missing, existing], 'not-created')).toEqual([missing]);
         });

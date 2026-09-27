@@ -4,7 +4,12 @@
     "outDir": "../../out-tsc/lib",
     "declaration": true,
     "declarationMap": true,
-    "types": []
+    "types": [],
+    "paths": {
+      "@app/*": [
+        "./src/generated/typescript/main/app/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts"

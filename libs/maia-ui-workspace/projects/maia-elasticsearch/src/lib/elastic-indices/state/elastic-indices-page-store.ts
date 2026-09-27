@@ -4,7 +4,7 @@ import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {pipe, tap} from 'rxjs';
 import {debounceTime, switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
-import {EsIndexStateDto} from '../models/EsIndexStateDto';
+import {EsIndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
 import {ElasticIndicesApiService} from '../services/elastic-indices-api-service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {
@@ -18,7 +18,7 @@ import {
 
 type ElasticIndicesPageState = {
     hideSystemIndices: boolean;
-    indexStateDtos: EsIndexStateDto[];
+    indexStateDtos: EsIndexStateResponseDto[];
     isLoading: boolean;
     nameFilter: string;
     statusFilter: DisplayStatus | null;
@@ -39,16 +39,16 @@ export const ElasticIndicesPageStore = signalStore(
     withState(initialState),
 
     withComputed(({indexStateDtos, hideSystemIndices, nameFilter, statusFilter}) => {
-        const toggleFilteredIndexStateDtos = computed<EsIndexStateDto[]>(() =>
+        const toggleFilteredIndexStateDtos = computed<EsIndexStateResponseDto[]>(() =>
             filterBySystemIndices(indexStateDtos(), hideSystemIndices())
         );
-        const nameFilteredIndexStateDtos = computed<EsIndexStateDto[]>(() =>
+        const nameFilteredIndexStateDtos = computed<EsIndexStateResponseDto[]>(() =>
             filterAndSortByName(toggleFilteredIndexStateDtos(), nameFilter())
         );
         const statusCounts = computed<Record<DisplayStatus, number>>(() =>
             countByDisplayStatus(nameFilteredIndexStateDtos())
         );
-        const visibleIndexStateDtos = computed<EsIndexStateDto[]>(() =>
+        const visibleIndexStateDtos = computed<EsIndexStateResponseDto[]>(() =>
             filterByStatus(nameFilteredIndexStateDtos(), statusFilter())
         );
         const totalIndexCount = computed<number>(() => indexStateDtos().length);

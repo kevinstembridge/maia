@@ -2,7 +2,7 @@ package org.maiaframework.elasticsearch
 
 import org.maiaframework.elasticsearch.index.ElasticIndexService
 import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexStateDto
+import org.maiaframework.elasticsearch.index.model.EsIndexStateResponseDto
 import org.maiaframework.elasticsearch.index.model.EsIndexVersion
 import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
 import org.springframework.security.access.prepost.PreAuthorize
@@ -23,7 +23,7 @@ class ElasticSearchIndicesEndpoint(
 
     @GetMapping("/elastic_indices_state")
     @PreAuthorize("hasAuthority('${EsConstants.Authority.MAIA_ELASTICSEARCH_SYS_OPS_READ}')")
-    fun getElasticIndicesState(): List<EsIndexStateDto> {
+    fun getElasticIndicesState(): List<EsIndexStateResponseDto> {
 
         return this.elasticIndexService.getIndicesState()
 

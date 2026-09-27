@@ -5,16 +5,11 @@ import co.elastic.clients.elasticsearch._types.mapping.TypeMapping
 import org.slf4j.LoggerFactory
 
 abstract class AbstractEsIndexControl(
-    private val client: ElasticsearchClient,
-    private val esIndexActiveVersionManager: EsIndexActiveVersionManager
+    private val client: ElasticsearchClient
 ): EsIndexControl {
 
 
     private val logger = LoggerFactory.getLogger(AbstractEsIndexControl::class.java)
-
-
-    override val isActiveVersion: Boolean
-        get() = this.esIndexActiveVersionManager.isActive(this.indexName)
 
 
     protected abstract val typeMapping: TypeMapping

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 
-class EsIndexControlRegistry: ApplicationContextAware, InitializingBean {
+class EsIndexControlRegistry(
+    private val activeVersionManager: EsIndexActiveVersionManager
+): ApplicationContextAware, InitializingBean {
 
 
     private lateinit var applicationContext: ApplicationContext
@@ -53,12 +55,14 @@ class EsIndexControlRegistry: ApplicationContextAware, InitializingBean {
             val indexVersion = it.key.version
             val indexResolvedName = EsIndexNameFactory.indexNameFrom(indexBaseName, indexVersion)
 
+            val isActiveVersion = this.activeVersionManager.isActive(indexBaseName, indexVersion)
+
             ManagedEsIndexInfoResponseDto(
                 it.value.indexDescription,
                 indexBaseName,
                 indexResolvedName,
                 indexVersion,
-                it.value.isActiveVersion
+                isActiveVersion
             )
 
         }

@@ -16,9 +16,6 @@ interface EsIndexControl {
     val indexDescription: String
 
 
-    val isActiveVersion: Boolean
-
-
     fun createIndex()
 
 

@@ -1,7 +1,5 @@
 package org.maiaframework.elasticsearch.index.model
 
-import com.fasterxml.jackson.annotation.JsonValue
-
 
 data class EsIndexName(
     val esIndexBaseName: EsIndexBaseName,
@@ -9,19 +7,10 @@ data class EsIndexName(
 ) : Comparable<EsIndexName> {
 
 
-    @get:JsonValue
-    val resolvedName = "${esIndexBaseName}${indexVersion}"
-
-
     override fun compareTo(other: EsIndexName): Int {
 
         return compareBy<EsIndexName> { it.esIndexBaseName }.thenBy { it.indexVersion.value }.compare(this, other)
 
-    }
-
-
-    override fun toString(): String {
-        return resolvedName
     }
 
 
