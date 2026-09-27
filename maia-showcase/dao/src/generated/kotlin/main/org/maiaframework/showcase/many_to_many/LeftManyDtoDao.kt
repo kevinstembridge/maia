@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftManyDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class LeftManyDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = LeftManyDtoRowMapper(this.jdbcOps)

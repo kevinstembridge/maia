@@ -5,9 +5,7 @@ package org.maiaframework.props
 
 
 
-enum class Authority(
-    val displayName: String
-) {
+enum class Authority(val displayName: String) {
 
     MAIA_PROPS_READ("MAIA_PROPS_READ"),
 

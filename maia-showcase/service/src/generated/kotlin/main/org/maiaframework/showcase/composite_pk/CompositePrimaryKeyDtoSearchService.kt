@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class CompositePrimaryKeyDtoSearchService(
-    private val dtoRepo: CompositePrimaryKeyDtoRepo
-) {
+class CompositePrimaryKeyDtoSearchService(private val dtoRepo: CompositePrimaryKeyDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<CompositePrimaryKeyDto> {

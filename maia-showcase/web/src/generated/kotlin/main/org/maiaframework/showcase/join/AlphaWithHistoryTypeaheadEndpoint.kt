@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AlphaWithHistoryTypeaheadEndpoint(
-    private val typeaheadService: AlphaWithHistoryTypeaheadService
-) {
+class AlphaWithHistoryTypeaheadEndpoint(private val typeaheadService: AlphaWithHistoryTypeaheadService) {
 
 
     @GetMapping("/api/typeahead/alpha-with-history", produces = [MediaType.APPLICATION_JSON_VALUE])

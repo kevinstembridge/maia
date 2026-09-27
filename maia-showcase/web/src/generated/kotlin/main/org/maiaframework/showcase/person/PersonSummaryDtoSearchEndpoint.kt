@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class PersonSummaryDtoSearchEndpoint(
-    private val searchService: PersonSummaryDtoSearchService
-) {
+class PersonSummaryDtoSearchEndpoint(private val searchService: PersonSummaryDtoSearchService) {
 
 
     @PostMapping("/api/person-summary/search", produces = [MediaType.APPLICATION_JSON_VALUE])

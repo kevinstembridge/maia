@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class RightManyTypeaheadEndpoint(
-    private val typeaheadService: RightManyTypeaheadService
-) {
+class RightManyTypeaheadEndpoint(private val typeaheadService: RightManyTypeaheadService) {
 
 
     @GetMapping("/api/typeahead/right-many", produces = [MediaType.APPLICATION_JSON_VALUE])

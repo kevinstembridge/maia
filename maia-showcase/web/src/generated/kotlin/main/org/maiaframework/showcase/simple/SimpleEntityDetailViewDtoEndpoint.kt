@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class SimpleEntityDetailViewDtoEndpoint(
-    private val service: SimpleEntityDetailViewDtoService
-) {
+class SimpleEntityDetailViewDtoEndpoint(private val service: SimpleEntityDetailViewDtoService) {
 
 
     @GetMapping("/api/simple-entity-detail-view-dto/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])

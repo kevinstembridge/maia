@@ -11,9 +11,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CompositePrimaryKeyHistoryBlotterRowDtoRepo(
-    private val dao: CompositePrimaryKeyHistoryBlotterRowDtoDao
-) {
+class CompositePrimaryKeyHistoryBlotterRowDtoRepo(private val dao: CompositePrimaryKeyHistoryBlotterRowDtoDao) {
 
 
     fun getRows(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<CompositePrimaryKeyHistoryBlotterRowDto> {

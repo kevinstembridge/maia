@@ -6,9 +6,7 @@ package org.maiaframework.showcase.types
 import org.maiaframework.types.LongType
 
 
-class SomeLongType(
-    value: Long
-) : LongType<SomeLongType>(value
+class SomeLongType(value: Long) : LongType<SomeLongType>(value
 ) {
 
 

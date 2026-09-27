@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CharlieDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class CharlieDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = CharlieDtoRowMapper()

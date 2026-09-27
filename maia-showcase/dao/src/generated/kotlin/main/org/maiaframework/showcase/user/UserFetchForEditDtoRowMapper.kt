@@ -14,9 +14,7 @@ import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 
 
-class UserFetchForEditDtoRowMapper(
-    private val jdbcOps: JdbcOps
-) : MaiaRowMapper<UserFetchForEditDto> {
+class UserFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMapper<UserFetchForEditDto> {
 
 
     override fun mapRow(rsa: ResultSetAdapter): UserFetchForEditDto {

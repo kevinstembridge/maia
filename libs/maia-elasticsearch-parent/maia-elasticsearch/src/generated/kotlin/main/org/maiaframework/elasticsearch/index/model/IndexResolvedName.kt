@@ -7,9 +7,7 @@ import org.maiaframework.types.StringType
 import java.util.Locale
 
 
-class IndexResolvedName(
-    value: String
-) : StringType<IndexResolvedName>(value.lowercase(Locale.getDefault()))
+class IndexResolvedName(value: String) : StringType<IndexResolvedName>(value.lowercase(Locale.getDefault()))
  {
 
 

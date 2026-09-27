@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AllFieldTypesCrudEndpoint(
-    val crudService: AllFieldTypesCrudService
-) {
+class AllFieldTypesCrudEndpoint(val crudService: AllFieldTypesCrudService) {
 
 
     @PostMapping("/api/all-field-types/create")

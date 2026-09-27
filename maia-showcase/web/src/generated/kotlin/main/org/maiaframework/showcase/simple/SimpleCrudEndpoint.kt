@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class SimpleCrudEndpoint(
-    val crudService: SimpleCrudService
-) {
+class SimpleCrudEndpoint(val crudService: SimpleCrudService) {
 
 
     @PostMapping("/api/simple/create")

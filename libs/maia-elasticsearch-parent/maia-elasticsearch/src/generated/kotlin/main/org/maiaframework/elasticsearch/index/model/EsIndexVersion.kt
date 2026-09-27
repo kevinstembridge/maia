@@ -6,9 +6,7 @@ package org.maiaframework.elasticsearch.index.model
 import org.maiaframework.types.IntType
 
 
-class EsIndexVersion(
-    value: Int
-) : IntType<EsIndexVersion>(value
+class EsIndexVersion(value: Int) : IntType<EsIndexVersion>(value
 ) {
 
 

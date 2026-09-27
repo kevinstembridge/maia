@@ -13,9 +13,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class NonSurrogateIdPrimaryKeyHistoryBlotterRowDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class NonSurrogateIdPrimaryKeyHistoryBlotterRowDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = NonSurrogateIdPrimaryKeyHistoryBlotterRowDtoRowMapper()

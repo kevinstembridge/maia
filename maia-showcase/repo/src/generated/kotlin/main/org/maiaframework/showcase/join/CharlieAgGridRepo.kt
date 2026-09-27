@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CharlieAgGridRepo(
-    private val dao: CharlieAgGridDao
-) {
+class CharlieAgGridRepo(private val dao: CharlieAgGridDao) {
 
 
     private val logger = getLogger<CharlieAgGridRepo>()

@@ -15,9 +15,7 @@ import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
 
 
-class FeatureToggleHistoryBlotterRowDtoRowMapper(
-    private val jsonMapper: JsonMapper
-) : MaiaRowMapper<FeatureToggleHistoryBlotterRowDto> {
+class FeatureToggleHistoryBlotterRowDtoRowMapper(private val jsonMapper: JsonMapper) : MaiaRowMapper<FeatureToggleHistoryBlotterRowDto> {
 
 
     override fun mapRow(rsa: ResultSetAdapter): FeatureToggleHistoryBlotterRowDto {

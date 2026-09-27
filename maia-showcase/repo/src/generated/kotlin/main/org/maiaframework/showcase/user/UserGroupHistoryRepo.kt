@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class UserGroupHistoryRepo(
-    private val dao: UserGroupHistoryDao
-) {
+class UserGroupHistoryRepo(private val dao: UserGroupHistoryDao) {
 
 
     private val logger = getLogger<UserGroupHistoryRepo>()

@@ -65,9 +65,18 @@ class RequestDtoRenderer(
     }
 
 
-    override fun renderConstructorArgs(args: List<ConstructorArg>) {
+    override fun renderSingleArgConstructor(constructorArg: ConstructorArg) {
+
+        renderMultipleConstructorArgs(listOf(constructorArg))
+
+    }
+
+
+    override fun renderMultipleConstructorArgs(args: List<ConstructorArg>) {
 
         val argCount = args.size
+
+        appendLine("(")
 
         args.forEachIndexed { index, constructorArg ->
 
@@ -111,13 +120,17 @@ class RequestDtoRenderer(
                 "val "
             }
 
-            val constructorArgName = if (fieldIsNullable == false || isUrl || isPeriod || isNullableList) "${fieldName}_raw" else fieldName
-            val unwrappedFieldType = if (isPeriod) classField.copy(fieldType = FieldTypes.string) else classField.unWrapIfComplexType()
+            val constructorArgName =
+                if (fieldIsNullable == false || isUrl || isPeriod || isNullableList) "${fieldName}_raw" else fieldName
+            val unwrappedFieldType =
+                if (isPeriod) classField.copy(fieldType = FieldTypes.string) else classField.unWrapIfComplexType()
             addImportFor(unwrappedFieldType.fieldType)
 
             appendLine("    $visibility$variableType$constructorArgName: ${unwrappedFieldType.convertToNullable().unqualifiedToString}$commaOrNot")
 
         }
+
+        append(")")
 
     }
 

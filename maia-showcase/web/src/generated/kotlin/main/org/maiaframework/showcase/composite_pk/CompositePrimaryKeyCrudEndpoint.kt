@@ -20,9 +20,7 @@ import java.net.URLEncoder.encode
 
 
 @RestController
-class CompositePrimaryKeyCrudEndpoint(
-    val crudService: CompositePrimaryKeyCrudService
-) {
+class CompositePrimaryKeyCrudEndpoint(val crudService: CompositePrimaryKeyCrudService) {
 
 
     @PostMapping("/api/composite-primary-key/create")

@@ -6,9 +6,7 @@ package org.maiaframework.showcase.types
 import org.maiaframework.types.BooleanType
 
 
-class SomeBooleanType(
-    value: Boolean
-) : BooleanType<SomeBooleanType>(value
+class SomeBooleanType(value: Boolean) : BooleanType<SomeBooleanType>(value
 ) {
 
 

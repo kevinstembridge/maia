@@ -6,9 +6,7 @@ package la.org
 import org.maiaframework.types.StringType
 
 
-class OrgRoleKey(
-    value: String
-) : StringType<OrgRoleKey>(value)
+class OrgRoleKey(value: String) : StringType<OrgRoleKey>(value)
  {
 
 

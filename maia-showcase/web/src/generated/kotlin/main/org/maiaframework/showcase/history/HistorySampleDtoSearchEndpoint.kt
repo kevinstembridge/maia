@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class HistorySampleDtoSearchEndpoint(
-    private val searchService: HistorySampleDtoSearchService
-) {
+class HistorySampleDtoSearchEndpoint(private val searchService: HistorySampleDtoSearchService) {
 
 
     @PostMapping("/api/history-sample/search", produces = [MediaType.APPLICATION_JSON_VALUE])

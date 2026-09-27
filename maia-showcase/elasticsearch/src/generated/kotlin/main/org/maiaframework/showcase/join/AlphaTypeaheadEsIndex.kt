@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class AlphaTypeaheadEsIndex(
-    private val esIndexNameLookup: EsIndexNameLookup
-) {
+class AlphaTypeaheadEsIndex(private val esIndexNameLookup: EsIndexNameLookup) {
 
 
     private val indexBaseName = EsIndexBaseName("alpha-typeahead")

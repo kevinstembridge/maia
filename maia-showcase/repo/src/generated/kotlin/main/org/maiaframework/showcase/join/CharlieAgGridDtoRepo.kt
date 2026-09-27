@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CharlieAgGridDtoRepo(
-    private val dao: CharlieAgGridDtoDao
-) {
+class CharlieAgGridDtoRepo(private val dao: CharlieAgGridDtoDao) {
 
 
     fun getRows(searchModel: SearchModel): SearchResultPage<CharlieAgGridDto> {

@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class EmailAddressVerificationRepo(
-    private val dao: EmailAddressVerificationDao
-) {
+class EmailAddressVerificationRepo(private val dao: EmailAddressVerificationDao) {
 
 
     private val logger = getLogger<EmailAddressVerificationRepo>()

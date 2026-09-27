@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class OrgToOrgRoleRepo(
-    private val dao: OrgToOrgRoleDao
-) {
+class OrgToOrgRoleRepo(private val dao: OrgToOrgRoleDao) {
 
 
     private val logger = getLogger<OrgToOrgRoleRepo>()

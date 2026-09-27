@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class ForeignKeyChildRepo(
-    private val dao: ForeignKeyChildDao
-) {
+class ForeignKeyChildRepo(private val dao: ForeignKeyChildDao) {
 
 
     private val logger = getLogger<ForeignKeyChildRepo>()

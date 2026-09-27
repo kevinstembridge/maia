@@ -13,9 +13,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftManyHistoryBlotterRowDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class LeftManyHistoryBlotterRowDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = LeftManyHistoryBlotterRowDtoRowMapper()

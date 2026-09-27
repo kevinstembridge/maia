@@ -5,9 +5,7 @@ package org.maiaframework.showcase
 
 
 
-enum class Authority(
-    val displayName: String
-) {
+enum class Authority(val displayName: String) {
 
     MAIA_ELASTICSEARCH_SYS_OPS_READ("MAIA_ELASTICSEARCH_SYS_OPS_READ"),
 

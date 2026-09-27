@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class SomeVersionedDtoSearchEndpoint(
-    private val searchService: SomeVersionedDtoSearchService
-) {
+class SomeVersionedDtoSearchEndpoint(private val searchService: SomeVersionedDtoSearchService) {
 
 
     @PostMapping("/api/some-versioned/search", produces = [MediaType.APPLICATION_JSON_VALUE])

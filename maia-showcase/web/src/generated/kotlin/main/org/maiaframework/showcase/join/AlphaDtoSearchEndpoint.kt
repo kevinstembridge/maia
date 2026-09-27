@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AlphaDtoSearchEndpoint(
-    private val searchService: AlphaDtoSearchService
-) {
+class AlphaDtoSearchEndpoint(private val searchService: AlphaDtoSearchService) {
 
 
     @PostMapping("/api/alpha/search", produces = [MediaType.APPLICATION_JSON_VALUE])

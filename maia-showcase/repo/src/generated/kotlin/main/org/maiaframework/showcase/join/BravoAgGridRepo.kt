@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class BravoAgGridRepo(
-    private val dao: BravoAgGridDao
-) {
+class BravoAgGridRepo(private val dao: BravoAgGridDao) {
 
 
     private val logger = getLogger<BravoAgGridRepo>()

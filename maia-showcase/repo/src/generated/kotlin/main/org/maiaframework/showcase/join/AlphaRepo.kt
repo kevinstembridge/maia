@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class AlphaRepo(
-    private val dao: AlphaDao
-) {
+class AlphaRepo(private val dao: AlphaDao) {
 
 
     private val logger = getLogger<AlphaRepo>()

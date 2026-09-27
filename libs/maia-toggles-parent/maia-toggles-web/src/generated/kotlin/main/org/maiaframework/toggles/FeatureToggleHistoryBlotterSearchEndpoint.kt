@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class FeatureToggleHistoryBlotterSearchEndpoint(
-    private val searchService: FeatureToggleHistoryBlotterRowDtoSearchService
-) {
+class FeatureToggleHistoryBlotterSearchEndpoint(private val searchService: FeatureToggleHistoryBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/feature-toggle/{entityId}/history/search", produces = [MediaType.APPLICATION_JSON_VALUE])

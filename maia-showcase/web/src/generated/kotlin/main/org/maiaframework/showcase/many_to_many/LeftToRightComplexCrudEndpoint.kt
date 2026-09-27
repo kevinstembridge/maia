@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class LeftToRightComplexCrudEndpoint(
-    val crudService: LeftToRightComplexCrudService
-) {
+class LeftToRightComplexCrudEndpoint(val crudService: LeftToRightComplexCrudService) {
 
 
     @PostMapping("/api/left-to-right-complex/create")

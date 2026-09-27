@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AlphaCrudEndpoint(
-    val crudService: AlphaCrudService
-) {
+class AlphaCrudEndpoint(val crudService: AlphaCrudService) {
 
 
     @PostMapping("/api/alpha/create")

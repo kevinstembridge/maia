@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class PartyEmailAddressRepo(
-    private val dao: PartyEmailAddressDao
-) {
+class PartyEmailAddressRepo(private val dao: PartyEmailAddressDao) {
 
 
     private val logger = getLogger<PartyEmailAddressRepo>()

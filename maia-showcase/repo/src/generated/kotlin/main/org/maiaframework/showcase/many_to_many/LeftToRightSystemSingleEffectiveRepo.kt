@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftToRightSystemSingleEffectiveRepo(
-    private val dao: LeftToRightSystemSingleEffectiveDao
-) {
+class LeftToRightSystemSingleEffectiveRepo(private val dao: LeftToRightSystemSingleEffectiveDao) {
 
 
     private val logger = getLogger<LeftToRightSystemSingleEffectiveRepo>()

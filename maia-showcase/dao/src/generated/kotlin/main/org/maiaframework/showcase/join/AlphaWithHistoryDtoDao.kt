@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class AlphaWithHistoryDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class AlphaWithHistoryDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = AlphaWithHistoryDtoRowMapper()

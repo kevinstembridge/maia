@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class UserEntityDetailViewDtoRepo(
-    private val entityRepo: UserRepo
-) {
+class UserEntityDetailViewDtoRepo(private val entityRepo: UserRepo) {
 
 
     fun fetch(id: DomainId): UserEntityDetailViewDto {

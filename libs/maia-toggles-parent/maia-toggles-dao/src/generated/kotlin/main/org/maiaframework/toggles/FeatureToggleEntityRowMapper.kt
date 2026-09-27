@@ -14,9 +14,7 @@ import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
 
 
-class FeatureToggleEntityRowMapper(
-    private val jsonMapper: JsonMapper
-) : MaiaRowMapper<FeatureToggleEntity> {
+class FeatureToggleEntityRowMapper(private val jsonMapper: JsonMapper) : MaiaRowMapper<FeatureToggleEntity> {
 
 
     override fun mapRow(rsa: ResultSetAdapter): FeatureToggleEntity {

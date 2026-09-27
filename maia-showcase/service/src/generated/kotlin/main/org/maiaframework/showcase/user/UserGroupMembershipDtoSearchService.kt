@@ -11,9 +11,7 @@ import tools.jackson.databind.node.JsonNodeFactory
 
 
 @Service
-class UserGroupMembershipDtoSearchService(
-    private val dtoRepo: UserGroupMembershipDtoRepo
-) {
+class UserGroupMembershipDtoSearchService(private val dtoRepo: UserGroupMembershipDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<UserGroupMembershipDto> {

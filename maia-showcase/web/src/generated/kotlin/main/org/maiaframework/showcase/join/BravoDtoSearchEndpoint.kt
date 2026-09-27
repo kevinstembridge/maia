@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class BravoDtoSearchEndpoint(
-    private val searchService: BravoDtoSearchService
-) {
+class BravoDtoSearchEndpoint(private val searchService: BravoDtoSearchService) {
 
 
     @PostMapping("/api/bravo/search", produces = [MediaType.APPLICATION_JSON_VALUE])

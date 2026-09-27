@@ -13,9 +13,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class UserGroupHistoryBlotterRowDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class UserGroupHistoryBlotterRowDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = UserGroupHistoryBlotterRowDtoRowMapper()

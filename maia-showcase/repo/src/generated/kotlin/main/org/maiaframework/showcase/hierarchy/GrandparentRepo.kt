@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class GrandparentRepo(
-    private val dao: GrandparentDao
-) {
+class GrandparentRepo(private val dao: GrandparentDao) {
 
 
     private val logger = getLogger<GrandparentRepo>()

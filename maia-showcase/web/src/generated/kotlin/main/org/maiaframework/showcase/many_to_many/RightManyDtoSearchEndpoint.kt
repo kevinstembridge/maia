@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class RightManyDtoSearchEndpoint(
-    private val searchService: RightManyDtoSearchService
-) {
+class RightManyDtoSearchEndpoint(private val searchService: RightManyDtoSearchService) {
 
 
     @PostMapping("/api/right-many/search", produces = [MediaType.APPLICATION_JSON_VALUE])

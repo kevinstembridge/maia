@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class LeftToRightComplexEntityDetailViewDtoEndpoint(
-    private val service: LeftToRightComplexEntityDetailViewDtoService
-) {
+class LeftToRightComplexEntityDetailViewDtoEndpoint(private val service: LeftToRightComplexEntityDetailViewDtoService) {
 
 
     @GetMapping("/api/left-to-right-complex-entity-detail-view-dto/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])

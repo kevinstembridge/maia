@@ -192,14 +192,44 @@ abstract class AbstractKotlinRenderer protected constructor(
 
             renderConstructorAnnotations()
 
-            append("(")
-            newLine()
-            renderConstructorArgs(this.constructorArgs)
-            append(")")
+            if (this.constructorArgs.size == 1) {
+                renderSingleArgConstructor(this.constructorArgs.first())
+            } else {
+                renderMultipleConstructorArgs(this.constructorArgs)
+            }
 
         }
 
     }
+
+
+    protected open fun renderSingleArgConstructor(constructorArg: ConstructorArg) {
+
+        append("(")
+        append(renderedConstructorArg(constructorArg))
+        append(")")
+
+    }
+
+
+    protected open fun renderMultipleConstructorArgs(constructorArgs: List<ConstructorArg>) {
+
+        appendLine("(")
+        renderConstructorArgs(constructorArgs)
+        append(")")
+
+    }
+
+
+    protected fun renderedConstructorArg(constructorArg: ConstructorArg): String {
+
+        val annotationString = constructorArg.annotationDefs.map { it.toStringInKotlin() + " " }.joinToString("")
+        val classField = constructorArg.classFieldDef
+        val modifiers = modifiersFor(constructorArg)
+        return "$annotationString$modifiers${classField.classFieldName}: ${classField.unqualifiedToString}"
+
+    }
+
 
     /**
      * Subclasses may override to render any custom code in the body of the constructor after all the constructor
@@ -247,13 +277,20 @@ abstract class AbstractKotlinRenderer protected constructor(
         args.forEachIndexed { index, constructorArg ->
 
             val commaOrNot = if (index + 1 == argCount) "" else ","
-
-            val annotationString = constructorArg.annotationDefs.map { it.toStringInKotlin() + " " }.joinToString("")
-            val classField = constructorArg.classFieldDef
-            val modifiers = modifiersFor(constructorArg)
-            appendLine("    $annotationString$modifiers${classField.classFieldName}: ${classField.unqualifiedToString}$commaOrNot")
+            renderConstructorArg(constructorArg, commaOrNot)
 
         }
+
+    }
+
+
+    private fun renderConstructorArg(
+        constructorArg: ConstructorArg,
+        commaOrNot: String = ""
+    ) {
+
+        val arg = renderedConstructorArg(constructorArg)
+        appendLine("    $arg$commaOrNot")
 
     }
 

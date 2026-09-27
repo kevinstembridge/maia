@@ -11,9 +11,7 @@ import tools.jackson.databind.node.JsonNodeFactory
 
 
 @Service
-class SomeVersionedBlotterRowDtoSearchService(
-    private val dtoRepo: SomeVersionedBlotterRowDtoRepo
-) {
+class SomeVersionedBlotterRowDtoSearchService(private val dtoRepo: SomeVersionedBlotterRowDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<SomeVersionedBlotterRowDto> {

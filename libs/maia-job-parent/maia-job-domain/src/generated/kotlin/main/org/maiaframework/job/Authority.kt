@@ -5,9 +5,7 @@ package org.maiaframework.job
 
 
 
-enum class Authority(
-    val displayName: String
-) {
+enum class Authority(val displayName: String) {
 
     MAIA_JOB_READ("MAIA_JOB_READ"),
 

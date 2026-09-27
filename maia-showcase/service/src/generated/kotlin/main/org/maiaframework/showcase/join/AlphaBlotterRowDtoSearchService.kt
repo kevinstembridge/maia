@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class AlphaBlotterRowDtoSearchService(
-    private val dtoRepo: AlphaBlotterRowDtoRepo
-) {
+class AlphaBlotterRowDtoSearchService(private val dtoRepo: AlphaBlotterRowDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<AlphaBlotterRowDto> {

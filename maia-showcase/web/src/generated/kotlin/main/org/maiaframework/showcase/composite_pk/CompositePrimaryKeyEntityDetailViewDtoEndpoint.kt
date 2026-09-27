@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class CompositePrimaryKeyEntityDetailViewDtoEndpoint(
-    private val service: CompositePrimaryKeyEntityDetailViewDtoService
-) {
+class CompositePrimaryKeyEntityDetailViewDtoEndpoint(private val service: CompositePrimaryKeyEntityDetailViewDtoService) {
 
 
     @GetMapping("/api/composite-primary-key-entity-detail-view-dto/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])

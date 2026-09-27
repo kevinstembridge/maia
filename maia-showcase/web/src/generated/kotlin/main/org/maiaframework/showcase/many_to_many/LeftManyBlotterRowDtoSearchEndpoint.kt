@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class LeftManyBlotterRowDtoSearchEndpoint(
-    private val searchService: LeftManyBlotterRowDtoSearchService
-) {
+class LeftManyBlotterRowDtoSearchEndpoint(private val searchService: LeftManyBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/left-many-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])

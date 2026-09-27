@@ -11,9 +11,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class RefreshAlphaWithHistoryTypeaheadIndexJob(
-    private val service: AlphaWithHistoryTypeaheadIndexService
-) : MaiaJob {
+class RefreshAlphaWithHistoryTypeaheadIndexJob(private val service: AlphaWithHistoryTypeaheadIndexService) : MaiaJob {
 
 
     override val jobName = JobName("refreshAlphaWithHistoryTypeaheadIndex")

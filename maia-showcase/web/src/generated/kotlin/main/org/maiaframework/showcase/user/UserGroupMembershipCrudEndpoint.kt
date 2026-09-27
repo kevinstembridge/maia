@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class UserGroupMembershipCrudEndpoint(
-    val crudService: UserGroupMembershipCrudService
-) {
+class UserGroupMembershipCrudEndpoint(val crudService: UserGroupMembershipCrudService) {
 
 
     @PostMapping("/api/ops/user-group-membership/create")

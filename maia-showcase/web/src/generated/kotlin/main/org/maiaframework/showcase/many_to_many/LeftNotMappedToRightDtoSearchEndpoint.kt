@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class LeftNotMappedToRightDtoSearchEndpoint(
-    private val searchService: LeftNotMappedToRightDtoSearchService
-) {
+class LeftNotMappedToRightDtoSearchEndpoint(private val searchService: LeftNotMappedToRightDtoSearchService) {
 
 
     @PostMapping("/api/left-not-mapped-to-right/search", produces = [MediaType.APPLICATION_JSON_VALUE])

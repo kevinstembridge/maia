@@ -11,9 +11,7 @@ import tools.jackson.databind.node.JsonNodeFactory
 
 
 @Service
-class LeftNotMappedToRightDtoSearchService(
-    private val dtoRepo: LeftNotMappedToRightDtoRepo
-) {
+class LeftNotMappedToRightDtoSearchService(private val dtoRepo: LeftNotMappedToRightDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<LeftNotMappedToRightDto> {

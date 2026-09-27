@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class SimpleBlotterRowDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class SimpleBlotterRowDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = SimpleBlotterRowDtoRowMapper()

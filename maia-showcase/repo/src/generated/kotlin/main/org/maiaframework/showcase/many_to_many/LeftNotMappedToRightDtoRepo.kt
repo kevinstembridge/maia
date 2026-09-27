@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftNotMappedToRightDtoRepo(
-    private val dao: LeftNotMappedToRightDtoDao
-) {
+class LeftNotMappedToRightDtoRepo(private val dao: LeftNotMappedToRightDtoDao) {
 
 
     fun getRows(searchModel: AgGridSearchModel): SearchResultPage<LeftNotMappedToRightDto> {

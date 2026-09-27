@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class UserHistoryBlotterRowDtoSearchService(
-    private val repo: UserHistoryBlotterRowDtoRepo
-) {
+class UserHistoryBlotterRowDtoSearchService(private val repo: UserHistoryBlotterRowDtoRepo) {
 
 
     fun search(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<UserHistoryBlotterRowDto> {

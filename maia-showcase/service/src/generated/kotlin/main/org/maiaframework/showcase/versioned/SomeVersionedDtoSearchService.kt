@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class SomeVersionedDtoSearchService(
-    private val dtoRepo: SomeVersionedDtoRepo
-) {
+class SomeVersionedDtoSearchService(private val dtoRepo: SomeVersionedDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<SomeVersionedDto> {

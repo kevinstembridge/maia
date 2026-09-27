@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class BravoWithHistoryBlotterRowDtoSearchEndpoint(
-    private val searchService: BravoWithHistoryBlotterRowDtoSearchService
-) {
+class BravoWithHistoryBlotterRowDtoSearchEndpoint(private val searchService: BravoWithHistoryBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/bravo-with-history-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])

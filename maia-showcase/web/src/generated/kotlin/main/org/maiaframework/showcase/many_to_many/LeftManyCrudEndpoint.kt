@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class LeftManyCrudEndpoint(
-    val crudService: LeftManyCrudService
-) {
+class LeftManyCrudEndpoint(val crudService: LeftManyCrudService) {
 
 
     @PostMapping("/api/left-many/create")

@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class RightManyCheckForeignKeyReferencesEndpoint(
-    val service: RightManyForeignKeyReferencesService
-) {
+class RightManyCheckForeignKeyReferencesEndpoint(val service: RightManyForeignKeyReferencesService) {
 
     private val logger = LoggerFactory.getLogger(RightManyCheckForeignKeyReferencesEndpoint::class.java)
 

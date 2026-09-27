@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class RightManyTypeaheadEsIndexControl_v0001(
-    client: ElasticsearchClient
-) : AbstractEsIndexControl(client
+class RightManyTypeaheadEsIndexControl_v0001(client: ElasticsearchClient) : AbstractEsIndexControl(client
 ) {
 
 

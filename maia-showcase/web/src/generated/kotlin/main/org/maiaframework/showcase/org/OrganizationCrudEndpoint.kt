@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class OrganizationCrudEndpoint(
-    val crudService: OrganizationCrudService
-) {
+class OrganizationCrudEndpoint(val crudService: OrganizationCrudService) {
 
 
     @PostMapping("/api/organization/create")

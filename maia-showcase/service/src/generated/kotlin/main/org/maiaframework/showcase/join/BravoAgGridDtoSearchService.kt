@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class BravoAgGridDtoSearchService(
-    private val dtoRepo: BravoAgGridDtoRepo
-) {
+class BravoAgGridDtoSearchService(private val dtoRepo: BravoAgGridDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<BravoAgGridDto> {

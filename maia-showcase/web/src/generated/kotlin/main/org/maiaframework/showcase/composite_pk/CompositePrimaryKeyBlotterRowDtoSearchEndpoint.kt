@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class CompositePrimaryKeyBlotterRowDtoSearchEndpoint(
-    private val searchService: CompositePrimaryKeyBlotterRowDtoSearchService
-) {
+class CompositePrimaryKeyBlotterRowDtoSearchEndpoint(private val searchService: CompositePrimaryKeyBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/composite-primary-key-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])

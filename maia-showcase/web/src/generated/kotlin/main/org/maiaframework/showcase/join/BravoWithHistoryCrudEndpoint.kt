@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class BravoWithHistoryCrudEndpoint(
-    val crudService: BravoWithHistoryCrudService
-) {
+class BravoWithHistoryCrudEndpoint(val crudService: BravoWithHistoryCrudService) {
 
 
     @PostMapping("/api/bravo-with-history/create")

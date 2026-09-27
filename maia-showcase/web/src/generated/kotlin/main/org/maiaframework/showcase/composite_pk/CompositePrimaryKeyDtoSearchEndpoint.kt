@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class CompositePrimaryKeyDtoSearchEndpoint(
-    private val searchService: CompositePrimaryKeyDtoSearchService
-) {
+class CompositePrimaryKeyDtoSearchEndpoint(private val searchService: CompositePrimaryKeyDtoSearchService) {
 
 
     @PostMapping("/api/composite-primary-key/search", produces = [MediaType.APPLICATION_JSON_VALUE])

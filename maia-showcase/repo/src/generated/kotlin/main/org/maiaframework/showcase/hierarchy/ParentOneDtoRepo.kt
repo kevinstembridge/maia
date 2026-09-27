@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class ParentOneDtoRepo(
-    private val dao: ParentOneDtoDao
-) {
+class ParentOneDtoRepo(private val dao: ParentOneDtoDao) {
 
 
     fun getRows(searchModel: AgGridSearchModel): SearchResultPage<ParentOneDto> {

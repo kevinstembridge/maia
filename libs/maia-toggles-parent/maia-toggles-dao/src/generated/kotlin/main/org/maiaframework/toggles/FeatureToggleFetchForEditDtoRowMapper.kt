@@ -14,9 +14,7 @@ import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
 
 
-class FeatureToggleFetchForEditDtoRowMapper(
-    private val jsonMapper: JsonMapper
-) : MaiaRowMapper<FeatureToggleFetchForEditDto> {
+class FeatureToggleFetchForEditDtoRowMapper(private val jsonMapper: JsonMapper) : MaiaRowMapper<FeatureToggleFetchForEditDto> {
 
 
     override fun mapRow(rsa: ResultSetAdapter): FeatureToggleFetchForEditDto {

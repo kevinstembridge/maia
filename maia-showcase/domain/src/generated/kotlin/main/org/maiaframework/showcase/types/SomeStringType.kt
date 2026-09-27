@@ -7,9 +7,7 @@ import org.maiaframework.types.StringType
 import java.util.Locale
 
 
-class SomeStringType(
-    value: String
-) : StringType<SomeStringType>(value.lowercase(Locale.getDefault()))
+class SomeStringType(value: String) : StringType<SomeStringType>(value.lowercase(Locale.getDefault()))
  {
 
 

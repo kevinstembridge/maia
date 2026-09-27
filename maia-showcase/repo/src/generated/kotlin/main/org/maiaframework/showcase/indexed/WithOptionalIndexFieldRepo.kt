@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class WithOptionalIndexFieldRepo(
-    private val dao: WithOptionalIndexFieldDao
-) {
+class WithOptionalIndexFieldRepo(private val dao: WithOptionalIndexFieldDao) {
 
 
     private val logger = getLogger<WithOptionalIndexFieldRepo>()

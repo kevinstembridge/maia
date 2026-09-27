@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class AlphaWithHistoryDtoRepo(
-    private val dao: AlphaWithHistoryDtoDao
-) {
+class AlphaWithHistoryDtoRepo(private val dao: AlphaWithHistoryDtoDao) {
 
 
     fun getRows(searchModel: SearchModel): SearchResultPage<AlphaWithHistoryDto> {

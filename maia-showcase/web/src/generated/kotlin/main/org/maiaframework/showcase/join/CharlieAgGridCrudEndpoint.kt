@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class CharlieAgGridCrudEndpoint(
-    val crudService: CharlieAgGridCrudService
-) {
+class CharlieAgGridCrudEndpoint(val crudService: CharlieAgGridCrudService) {
 
 
     @PostMapping("/api/charlie-ag-grid/create")

@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class SimpleBlotterRowDtoSearchEndpoint(
-    private val searchService: SimpleBlotterRowDtoSearchService
-) {
+class SimpleBlotterRowDtoSearchEndpoint(private val searchService: SimpleBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/simple-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])

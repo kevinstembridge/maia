@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AlphaCheckForeignKeyReferencesEndpoint(
-    val service: AlphaForeignKeyReferencesService
-) {
+class AlphaCheckForeignKeyReferencesEndpoint(val service: AlphaForeignKeyReferencesService) {
 
     private val logger = LoggerFactory.getLogger(AlphaCheckForeignKeyReferencesEndpoint::class.java)
 

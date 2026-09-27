@@ -6,9 +6,7 @@ package org.maiaframework.showcase.types
 import org.maiaframework.types.IntType
 
 
-class SomeIntType(
-    value: Int
-) : IntType<SomeIntType>(value
+class SomeIntType(value: Int) : IntType<SomeIntType>(value
 ) {
 
 

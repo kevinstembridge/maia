@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class UserDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class UserDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = UserDtoRowMapper()

@@ -9,9 +9,7 @@ import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
 
 
-class JobExecutionEntityRowMapper(
-    private val jsonMapper: JsonMapper
-) : MaiaRowMapper<JobExecutionEntity> {
+class JobExecutionEntityRowMapper(private val jsonMapper: JsonMapper) : MaiaRowMapper<JobExecutionEntity> {
 
 
     override fun mapRow(rsa: ResultSetAdapter): JobExecutionEntity {

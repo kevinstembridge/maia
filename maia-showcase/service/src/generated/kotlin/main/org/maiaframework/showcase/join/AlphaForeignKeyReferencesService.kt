@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class AlphaForeignKeyReferencesService(
-    private val bravoRepo: BravoRepo
-) {
+class AlphaForeignKeyReferencesService(private val bravoRepo: BravoRepo) {
 
 
     private val logger = LoggerFactory.getLogger(AlphaForeignKeyReferencesService::class.java)

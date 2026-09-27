@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class FeatureToggleCrudEndpoint(
-    val crudService: FeatureToggleCrudService
-) {
+class FeatureToggleCrudEndpoint(val crudService: FeatureToggleCrudService) {
 
 
     @GetMapping("/api/maia-toggles/feature-toggle/fetch-for-edit", produces = [MediaType.APPLICATION_JSON_VALUE])

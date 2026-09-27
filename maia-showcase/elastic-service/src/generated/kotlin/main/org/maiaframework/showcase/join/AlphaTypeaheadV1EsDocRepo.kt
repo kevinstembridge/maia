@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class AlphaTypeaheadV1EsDocRepo(
-    private val entityRepo: AlphaRepo
-) {
+class AlphaTypeaheadV1EsDocRepo(private val entityRepo: AlphaRepo) {
 
 
     fun findByPrimaryKey(id: DomainId): AlphaTypeaheadV1EsDoc {

@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class CompositePrimaryKeyHistoryBlotterSearchEndpoint(
-    private val searchService: CompositePrimaryKeyHistoryBlotterRowDtoSearchService
-) {
+class CompositePrimaryKeyHistoryBlotterSearchEndpoint(private val searchService: CompositePrimaryKeyHistoryBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/composite-primary-key/{entityId}/history/search", produces = [MediaType.APPLICATION_JSON_VALUE])

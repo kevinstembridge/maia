@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class UserCrudEndpoint(
-    val crudService: UserCrudService
-) {
+class UserCrudEndpoint(val crudService: UserCrudService) {
 
 
     @PostMapping("/api/user/create")

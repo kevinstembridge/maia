@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class CompositePrimaryKeyEntityDetailViewDtoService(
-    private val repo: CompositePrimaryKeyEntityDetailViewDtoRepo
-) {
+class CompositePrimaryKeyEntityDetailViewDtoService(private val repo: CompositePrimaryKeyEntityDetailViewDtoRepo) {
 
 
     fun fetch(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyEntityDetailViewDto? {

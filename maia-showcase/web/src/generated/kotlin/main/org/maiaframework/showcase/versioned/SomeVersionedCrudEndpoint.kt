@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class SomeVersionedCrudEndpoint(
-    val crudService: SomeVersionedCrudService
-) {
+class SomeVersionedCrudEndpoint(val crudService: SomeVersionedCrudService) {
 
 
     @PostMapping("/api/some-versioned/create")

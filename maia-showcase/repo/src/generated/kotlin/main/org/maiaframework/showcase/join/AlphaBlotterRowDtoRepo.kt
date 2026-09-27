@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class AlphaBlotterRowDtoRepo(
-    private val dao: AlphaBlotterRowDtoDao
-) {
+class AlphaBlotterRowDtoRepo(private val dao: AlphaBlotterRowDtoDao) {
 
 
     fun getRows(searchModel: AgGridSearchModel): SearchResultPage<AlphaBlotterRowDto> {

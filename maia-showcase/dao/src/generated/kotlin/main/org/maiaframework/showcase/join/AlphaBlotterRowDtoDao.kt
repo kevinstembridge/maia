@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class AlphaBlotterRowDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class AlphaBlotterRowDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = AlphaBlotterRowDtoRowMapper()

@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class PersonHistoryBlotterSearchEndpoint(
-    private val searchService: PersonHistoryBlotterRowDtoSearchService
-) {
+class PersonHistoryBlotterSearchEndpoint(private val searchService: PersonHistoryBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/person/{entityId}/history/search", produces = [MediaType.APPLICATION_JSON_VALUE])

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class AlphaWithHistoryEntityDetailViewDtoService(
-    private val repo: AlphaWithHistoryEntityDetailViewDtoRepo
-) {
+class AlphaWithHistoryEntityDetailViewDtoService(private val repo: AlphaWithHistoryEntityDetailViewDtoRepo) {
 
 
     fun fetch(id: DomainId): AlphaWithHistoryEntityDetailViewDto? {

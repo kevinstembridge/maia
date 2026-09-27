@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class AllFieldTypesBlotterRowDtoSearchService(
-    private val dtoRepo: AllFieldTypesBlotterRowDtoRepo
-) {
+class AllFieldTypesBlotterRowDtoSearchService(private val dtoRepo: AllFieldTypesBlotterRowDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<AllFieldTypesBlotterRowDto> {

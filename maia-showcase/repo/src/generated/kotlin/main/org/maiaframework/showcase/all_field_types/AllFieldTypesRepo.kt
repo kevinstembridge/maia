@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class AllFieldTypesRepo(
-    private val dao: AllFieldTypesDao
-) {
+class AllFieldTypesRepo(private val dao: AllFieldTypesDao) {
 
 
     private val logger = getLogger<AllFieldTypesRepo>()

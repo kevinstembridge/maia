@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class CharlieAgGridDtoSearchService(
-    private val dtoRepo: CharlieAgGridDtoRepo
-) {
+class CharlieAgGridDtoSearchService(private val dtoRepo: CharlieAgGridDtoRepo) {
 
 
     fun search(searchModel: SearchModel): SearchResultPage<CharlieAgGridDto> {

@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class ChildOneDtoSearchService(
-    private val dtoRepo: ChildOneDtoRepo
-) {
+class ChildOneDtoSearchService(private val dtoRepo: ChildOneDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<ChildOneDto> {

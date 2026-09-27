@@ -5,9 +5,7 @@ package org.maiaframework.elasticsearch
 
 
 
-enum class Authority(
-    val displayName: String
-) {
+enum class Authority(val displayName: String) {
 
     MAIA_ELASTICSEARCH_READ("MAIA_ELASTICSEARCH_READ"),
 

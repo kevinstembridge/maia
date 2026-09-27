@@ -11,9 +11,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class RefreshLeftManyTypeaheadIndexJob(
-    private val service: LeftManyTypeaheadIndexService
-) : MaiaJob {
+class RefreshLeftManyTypeaheadIndexJob(private val service: LeftManyTypeaheadIndexService) : MaiaJob {
 
 
     override val jobName = JobName("refreshLeftManyTypeaheadIndex")

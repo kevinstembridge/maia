@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class HistorySampleEntityDetailViewDtoEndpoint(
-    private val service: HistorySampleEntityDetailViewDtoService
-) {
+class HistorySampleEntityDetailViewDtoEndpoint(private val service: HistorySampleEntityDetailViewDtoService) {
 
 
     @GetMapping("/api/history-sample-entity-detail-view-dto/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])

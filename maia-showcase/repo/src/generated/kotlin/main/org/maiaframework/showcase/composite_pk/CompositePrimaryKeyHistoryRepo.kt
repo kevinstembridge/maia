@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CompositePrimaryKeyHistoryRepo(
-    private val dao: CompositePrimaryKeyHistoryDao
-) {
+class CompositePrimaryKeyHistoryRepo(private val dao: CompositePrimaryKeyHistoryDao) {
 
 
     private val logger = getLogger<CompositePrimaryKeyHistoryRepo>()

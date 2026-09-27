@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class BravoAgGridDtoRepo(
-    private val dao: BravoAgGridDtoDao
-) {
+class BravoAgGridDtoRepo(private val dao: BravoAgGridDtoDao) {
 
 
     fun getRows(searchModel: AgGridSearchModel): SearchResultPage<BravoAgGridDto> {

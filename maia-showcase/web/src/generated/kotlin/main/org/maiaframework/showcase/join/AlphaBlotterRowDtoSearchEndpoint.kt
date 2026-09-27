@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AlphaBlotterRowDtoSearchEndpoint(
-    private val searchService: AlphaBlotterRowDtoSearchService
-) {
+class AlphaBlotterRowDtoSearchEndpoint(private val searchService: AlphaBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/alpha-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])

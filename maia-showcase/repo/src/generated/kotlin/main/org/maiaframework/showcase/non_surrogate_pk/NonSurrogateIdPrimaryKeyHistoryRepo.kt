@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class NonSurrogateIdPrimaryKeyHistoryRepo(
-    private val dao: NonSurrogateIdPrimaryKeyHistoryDao
-) {
+class NonSurrogateIdPrimaryKeyHistoryRepo(private val dao: NonSurrogateIdPrimaryKeyHistoryDao) {
 
 
     private val logger = getLogger<NonSurrogateIdPrimaryKeyHistoryRepo>()

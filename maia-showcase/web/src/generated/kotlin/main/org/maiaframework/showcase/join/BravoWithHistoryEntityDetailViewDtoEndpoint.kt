@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class BravoWithHistoryEntityDetailViewDtoEndpoint(
-    private val service: BravoWithHistoryEntityDetailViewDtoService
-) {
+class BravoWithHistoryEntityDetailViewDtoEndpoint(private val service: BravoWithHistoryEntityDetailViewDtoService) {
 
 
     @GetMapping("/api/bravo-with-history-entity-detail-view-dto/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])

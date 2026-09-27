@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftToRightComplexDtoRepo(
-    private val dao: LeftToRightComplexDtoDao
-) {
+class LeftToRightComplexDtoRepo(private val dao: LeftToRightComplexDtoDao) {
 
 
     fun getRows(searchModel: AgGridSearchModel): SearchResultPage<LeftToRightComplexDto> {

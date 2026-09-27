@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftManyDtoRepo(
-    private val dao: LeftManyDtoDao
-) {
+class LeftManyDtoRepo(private val dao: LeftManyDtoDao) {
 
 
     fun getRows(searchModel: AgGridSearchModel): SearchResultPage<LeftManyDto> {

@@ -11,9 +11,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class NonSurrogateIdPrimaryKeyHistoryBlotterRowDtoRepo(
-    private val dao: NonSurrogateIdPrimaryKeyHistoryBlotterRowDtoDao
-) {
+class NonSurrogateIdPrimaryKeyHistoryBlotterRowDtoRepo(private val dao: NonSurrogateIdPrimaryKeyHistoryBlotterRowDtoDao) {
 
 
     fun getRows(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<NonSurrogateIdPrimaryKeyHistoryBlotterRowDto> {

@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class AlphaDtoSearchService(
-    private val dtoRepo: AlphaDtoRepo
-) {
+class AlphaDtoSearchService(private val dtoRepo: AlphaDtoRepo) {
 
 
     fun search(searchModel: SearchModel): SearchResultPage<AlphaDto> {

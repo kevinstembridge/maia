@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class SimpleEntityDetailViewDtoService(
-    private val repo: SimpleEntityDetailViewDtoRepo
-) {
+class SimpleEntityDetailViewDtoService(private val repo: SimpleEntityDetailViewDtoRepo) {
 
 
     fun fetch(id: DomainId): SimpleEntityDetailViewDto? {

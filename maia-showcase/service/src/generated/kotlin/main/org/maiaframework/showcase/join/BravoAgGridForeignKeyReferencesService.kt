@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class BravoAgGridForeignKeyReferencesService(
-    private val charlieAgGridRepo: CharlieAgGridRepo
-) {
+class BravoAgGridForeignKeyReferencesService(private val charlieAgGridRepo: CharlieAgGridRepo) {
 
 
     private val logger = LoggerFactory.getLogger(BravoAgGridForeignKeyReferencesService::class.java)

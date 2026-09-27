@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class HistorySampleCrudEndpoint(
-    val crudService: HistorySampleCrudService
-) {
+class HistorySampleCrudEndpoint(val crudService: HistorySampleCrudService) {
 
 
     @PostMapping("/api/history-sample/create")

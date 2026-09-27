@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AlphaAgGridCheckForeignKeyReferencesEndpoint(
-    val service: AlphaAgGridForeignKeyReferencesService
-) {
+class AlphaAgGridCheckForeignKeyReferencesEndpoint(val service: AlphaAgGridForeignKeyReferencesService) {
 
     private val logger = LoggerFactory.getLogger(AlphaAgGridCheckForeignKeyReferencesEndpoint::class.java)
 

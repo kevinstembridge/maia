@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class PersonDtoRepo(
-    private val dao: PersonDtoDao
-) {
+class PersonDtoRepo(private val dao: PersonDtoDao) {
 
 
     fun getRows(searchModel: AgGridSearchModel): SearchResultPage<PersonDto> {

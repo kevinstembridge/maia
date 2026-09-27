@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class BravoAgGridDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class BravoAgGridDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = BravoAgGridDtoRowMapper()

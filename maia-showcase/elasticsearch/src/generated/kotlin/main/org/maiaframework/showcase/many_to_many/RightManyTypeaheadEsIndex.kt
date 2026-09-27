@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class RightManyTypeaheadEsIndex(
-    private val esIndexNameLookup: EsIndexNameLookup
-) {
+class RightManyTypeaheadEsIndex(private val esIndexNameLookup: EsIndexNameLookup) {
 
 
     private val indexBaseName = EsIndexBaseName("right-many-typeahead")

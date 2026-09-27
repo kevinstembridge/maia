@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AlphaTypeaheadEndpoint(
-    private val typeaheadService: AlphaTypeaheadService
-) {
+class AlphaTypeaheadEndpoint(private val typeaheadService: AlphaTypeaheadService) {
 
 
     @GetMapping("/api/typeahead/alpha", produces = [MediaType.APPLICATION_JSON_VALUE])

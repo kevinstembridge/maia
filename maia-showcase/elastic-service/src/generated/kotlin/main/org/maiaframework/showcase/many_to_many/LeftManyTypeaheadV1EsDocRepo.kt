@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class LeftManyTypeaheadV1EsDocRepo(
-    private val entityRepo: LeftManyRepo
-) {
+class LeftManyTypeaheadV1EsDocRepo(private val entityRepo: LeftManyRepo) {
 
 
     fun findByPrimaryKey(id: DomainId): LeftManyTypeaheadV1EsDoc {

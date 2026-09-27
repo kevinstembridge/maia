@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class LeftManyTypeaheadCrudListenerImpl(
-    private val indexService: LeftManyTypeaheadIndexService
-) : LeftManyCrudListener {
+class LeftManyTypeaheadCrudListenerImpl(private val indexService: LeftManyTypeaheadIndexService) : LeftManyCrudListener {
 
 
     override fun onLeftManyEntityCreated(entity: LeftManyEntity) {

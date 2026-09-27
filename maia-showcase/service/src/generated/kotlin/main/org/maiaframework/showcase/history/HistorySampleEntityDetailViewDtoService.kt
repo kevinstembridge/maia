@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class HistorySampleEntityDetailViewDtoService(
-    private val repo: HistorySampleEntityDetailViewDtoRepo
-) {
+class HistorySampleEntityDetailViewDtoService(private val repo: HistorySampleEntityDetailViewDtoRepo) {
 
 
     fun fetch(id: DomainId): HistorySampleEntityDetailViewDto? {

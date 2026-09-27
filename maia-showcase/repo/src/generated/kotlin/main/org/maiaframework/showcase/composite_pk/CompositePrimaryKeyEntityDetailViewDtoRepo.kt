@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CompositePrimaryKeyEntityDetailViewDtoRepo(
-    private val entityRepo: CompositePrimaryKeyRepo
-) {
+class CompositePrimaryKeyEntityDetailViewDtoRepo(private val entityRepo: CompositePrimaryKeyRepo) {
 
 
     fun fetch(primaryKey: CompositePrimaryKeyEntityPk): CompositePrimaryKeyEntityDetailViewDto {

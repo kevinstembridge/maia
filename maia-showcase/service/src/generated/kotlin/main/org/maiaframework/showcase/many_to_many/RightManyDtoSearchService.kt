@@ -11,9 +11,7 @@ import tools.jackson.databind.node.JsonNodeFactory
 
 
 @Service
-class RightManyDtoSearchService(
-    private val dtoRepo: RightManyDtoRepo
-) {
+class RightManyDtoSearchService(private val dtoRepo: RightManyDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<RightManyDto> {

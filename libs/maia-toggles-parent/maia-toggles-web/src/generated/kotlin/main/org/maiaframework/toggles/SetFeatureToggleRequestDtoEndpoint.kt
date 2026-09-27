@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class SetFeatureToggleRequestDtoEndpoint(
-    val handler: SetFeatureToggleRequestDtoHandler
-) {
+class SetFeatureToggleRequestDtoEndpoint(val handler: SetFeatureToggleRequestDtoHandler) {
 
 
     @PostMapping("/api/maia-toggles/set-feature-toggle")

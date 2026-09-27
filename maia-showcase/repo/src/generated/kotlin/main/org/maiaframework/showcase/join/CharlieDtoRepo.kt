@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CharlieDtoRepo(
-    private val dao: CharlieDtoDao
-) {
+class CharlieDtoRepo(private val dao: CharlieDtoDao) {
 
 
     fun getRows(searchModel: SearchModel): SearchResultPage<CharlieDto> {

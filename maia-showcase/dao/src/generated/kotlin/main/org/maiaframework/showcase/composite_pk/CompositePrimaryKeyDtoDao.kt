@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CompositePrimaryKeyDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class CompositePrimaryKeyDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = CompositePrimaryKeyDtoRowMapper()

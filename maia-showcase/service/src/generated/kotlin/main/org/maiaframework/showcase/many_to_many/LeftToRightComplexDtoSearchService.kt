@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class LeftToRightComplexDtoSearchService(
-    private val dtoRepo: LeftToRightComplexDtoRepo
-) {
+class LeftToRightComplexDtoSearchService(private val dtoRepo: LeftToRightComplexDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<LeftToRightComplexDto> {

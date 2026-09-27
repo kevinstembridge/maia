@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class AlphaWithHistoryTypeaheadEsIndex(
-    private val esIndexNameLookup: EsIndexNameLookup
-) {
+class AlphaWithHistoryTypeaheadEsIndex(private val esIndexNameLookup: EsIndexNameLookup) {
 
 
     private val indexBaseName = EsIndexBaseName("alpha-with-history-typeahead")

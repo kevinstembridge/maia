@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class EffectiveTimestampRepo(
-    private val dao: EffectiveTimestampDao
-) {
+class EffectiveTimestampRepo(private val dao: EffectiveTimestampDao) {
 
 
     private val logger = getLogger<EffectiveTimestampRepo>()

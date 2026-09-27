@@ -11,9 +11,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class OrgRoleHistoryBlotterRowDtoRepo(
-    private val dao: OrgRoleHistoryBlotterRowDtoDao
-) {
+class OrgRoleHistoryBlotterRowDtoRepo(private val dao: OrgRoleHistoryBlotterRowDtoDao) {
 
 
     fun getRows(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<OrgRoleHistoryBlotterRowDto> {

@@ -10,9 +10,7 @@ import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 
 
-class RightManyFetchForEditDtoRowMapper(
-    private val jdbcOps: JdbcOps
-) : MaiaRowMapper<RightManyFetchForEditDto> {
+class RightManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMapper<RightManyFetchForEditDto> {
 
 
     private val leftSimpleEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()

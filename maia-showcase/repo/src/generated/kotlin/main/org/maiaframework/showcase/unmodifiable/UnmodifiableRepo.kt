@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class UnmodifiableRepo(
-    private val dao: UnmodifiableDao
-) {
+class UnmodifiableRepo(private val dao: UnmodifiableDao) {
 
 
     private val logger = getLogger<UnmodifiableRepo>()

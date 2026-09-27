@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class RightManyCrudEndpoint(
-    val crudService: RightManyCrudService
-) {
+class RightManyCrudEndpoint(val crudService: RightManyCrudService) {
 
 
     @PostMapping("/api/right-many/create")

@@ -10,9 +10,7 @@ import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 
 
-class RightManyBlotterRowDtoRowMapper(
-    private val jdbcOps: JdbcOps
-) : MaiaRowMapper<RightManyBlotterRowDto> {
+class RightManyBlotterRowDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMapper<RightManyBlotterRowDto> {
 
 
     private val leftEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()

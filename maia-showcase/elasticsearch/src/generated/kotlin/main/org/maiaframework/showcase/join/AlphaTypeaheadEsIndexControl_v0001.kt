@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class AlphaTypeaheadEsIndexControl_v0001(
-    client: ElasticsearchClient
-) : AbstractEsIndexControl(client
+class AlphaTypeaheadEsIndexControl_v0001(client: ElasticsearchClient) : AbstractEsIndexControl(client
 ) {
 
 

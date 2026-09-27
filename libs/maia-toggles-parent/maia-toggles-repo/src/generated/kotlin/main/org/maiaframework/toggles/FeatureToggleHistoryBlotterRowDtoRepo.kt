@@ -11,9 +11,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class FeatureToggleHistoryBlotterRowDtoRepo(
-    private val dao: FeatureToggleHistoryBlotterRowDtoDao
-) {
+class FeatureToggleHistoryBlotterRowDtoRepo(private val dao: FeatureToggleHistoryBlotterRowDtoDao) {
 
 
     fun getRows(entityId: DomainId, searchModel: AgGridSearchModel): SearchResultPage<FeatureToggleHistoryBlotterRowDto> {

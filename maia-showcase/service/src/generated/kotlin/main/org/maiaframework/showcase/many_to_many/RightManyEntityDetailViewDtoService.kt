@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class RightManyEntityDetailViewDtoService(
-    private val repo: RightManyEntityDetailViewDtoRepo
-) {
+class RightManyEntityDetailViewDtoService(private val repo: RightManyEntityDetailViewDtoRepo) {
 
 
     fun fetch(id: DomainId): RightManyEntityDetailViewDto? {

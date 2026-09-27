@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class NonSurrogatePrimaryKeyHistoryBlotterSearchEndpoint(
-    private val searchService: NonSurrogatePrimaryKeyHistoryBlotterRowDtoSearchService
-) {
+class NonSurrogatePrimaryKeyHistoryBlotterSearchEndpoint(private val searchService: NonSurrogatePrimaryKeyHistoryBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/non-surrogate-primary-key/{entityId}/history/search", produces = [MediaType.APPLICATION_JSON_VALUE])

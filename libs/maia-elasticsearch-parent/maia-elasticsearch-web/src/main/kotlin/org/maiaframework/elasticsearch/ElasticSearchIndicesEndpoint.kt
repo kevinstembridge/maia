@@ -44,16 +44,16 @@ class ElasticSearchIndicesEndpoint(
     }
 
 
-    @PostMapping("/elastic_index/set_active/{indexName}/{indexVersion}")
+    @PostMapping("/elastic_index/set_active/{indexBaseName}/{indexVersion}")
     @PreAuthorize("hasAuthority('${EsConstants.Authority.MAIA_ELASTICSEARCH_SYS_OPS_WRITE}')")
     fun setIndexActiveVersion(
-        @PathVariable indexName: String,
+        @PathVariable indexBaseName: String,
         @PathVariable indexVersion: Int,
         principal: Principal
     ) {
 
         this.elasticIndexService.setIndexActiveVersion(
-            EsIndexBaseName(indexName),
+            EsIndexBaseName(indexBaseName),
             EsIndexVersion(indexVersion),
             principal
         )

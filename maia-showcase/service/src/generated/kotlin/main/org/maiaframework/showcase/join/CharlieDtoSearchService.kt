@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class CharlieDtoSearchService(
-    private val dtoRepo: CharlieDtoRepo
-) {
+class CharlieDtoSearchService(private val dtoRepo: CharlieDtoRepo) {
 
 
     fun search(searchModel: SearchModel): SearchResultPage<CharlieDto> {

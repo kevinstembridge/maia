@@ -9,9 +9,7 @@ import org.maiaframework.toggles.FeatureToggleEntity
 import org.maiaframework.toggles.FeatureToggleSerializer
 
 
-class HazelcastConfig(
-    private val featureToggleSerializer: FeatureToggleSerializer
-) {
+class HazelcastConfig(private val featureToggleSerializer: FeatureToggleSerializer) {
 
 
     val serializers: List<CompactSerializer<out Any>> = listOf(

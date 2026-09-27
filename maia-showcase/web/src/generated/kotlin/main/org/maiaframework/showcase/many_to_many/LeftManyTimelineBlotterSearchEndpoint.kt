@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class LeftManyTimelineBlotterSearchEndpoint(
-    private val searchService: LeftManyTimelineBlotterRowDtoSearchService
-) {
+class LeftManyTimelineBlotterSearchEndpoint(private val searchService: LeftManyTimelineBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/left-many/{entityId}/timeline/search", produces = [MediaType.APPLICATION_JSON_VALUE])

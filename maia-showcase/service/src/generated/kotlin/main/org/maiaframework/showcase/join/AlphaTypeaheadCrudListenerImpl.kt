@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class AlphaTypeaheadCrudListenerImpl(
-    private val indexService: AlphaTypeaheadIndexService
-) : AlphaCrudListener {
+class AlphaTypeaheadCrudListenerImpl(private val indexService: AlphaTypeaheadIndexService) : AlphaCrudListener {
 
 
     override fun onAlphaEntityCreated(entity: AlphaEntity) {

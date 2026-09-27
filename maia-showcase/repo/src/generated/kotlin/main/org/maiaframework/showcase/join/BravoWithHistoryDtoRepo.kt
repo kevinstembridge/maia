@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class BravoWithHistoryDtoRepo(
-    private val dao: BravoWithHistoryDtoDao
-) {
+class BravoWithHistoryDtoRepo(private val dao: BravoWithHistoryDtoDao) {
 
 
     fun getRows(searchModel: SearchModel): SearchResultPage<BravoWithHistoryDto> {

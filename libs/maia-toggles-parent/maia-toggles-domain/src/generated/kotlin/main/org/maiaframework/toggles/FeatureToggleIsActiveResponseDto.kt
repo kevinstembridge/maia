@@ -5,9 +5,7 @@ package org.maiaframework.toggles
 
 
 
-data class FeatureToggleIsActiveResponseDto(
-    val active: Boolean
-) {
+data class FeatureToggleIsActiveResponseDto(val active: Boolean) {
 
 
 }

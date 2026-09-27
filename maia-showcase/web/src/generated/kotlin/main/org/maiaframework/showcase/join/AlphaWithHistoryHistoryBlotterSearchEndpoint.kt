@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AlphaWithHistoryHistoryBlotterSearchEndpoint(
-    private val searchService: AlphaWithHistoryHistoryBlotterRowDtoSearchService
-) {
+class AlphaWithHistoryHistoryBlotterSearchEndpoint(private val searchService: AlphaWithHistoryHistoryBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/alpha-with-history/{entityId}/history/search", produces = [MediaType.APPLICATION_JSON_VALUE])

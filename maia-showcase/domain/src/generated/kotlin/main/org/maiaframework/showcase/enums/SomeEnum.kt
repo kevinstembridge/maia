@@ -5,9 +5,7 @@ package org.maiaframework.showcase.enums
 
 
 
-enum class SomeEnum(
-    val displayName: String
-) {
+enum class SomeEnum(val displayName: String) {
 
     NOT_OK("Not so good"),
 

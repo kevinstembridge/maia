@@ -5,9 +5,7 @@ package org.maiaframework.elasticsearch.index.model
 
 
 
-data class EsIndexHealthResponseDto(
-    val status: String
-) {
+data class EsIndexHealthResponseDto(val status: String) {
 
 
 }

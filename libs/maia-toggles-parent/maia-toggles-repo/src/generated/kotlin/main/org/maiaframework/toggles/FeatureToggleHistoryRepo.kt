@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class FeatureToggleHistoryRepo(
-    private val dao: FeatureToggleHistoryDao
-) {
+class FeatureToggleHistoryRepo(private val dao: FeatureToggleHistoryDao) {
 
 
     private val logger = getLogger<FeatureToggleHistoryRepo>()

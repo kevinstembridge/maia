@@ -11,9 +11,7 @@ import tools.jackson.databind.node.JsonNodeFactory
 
 
 @Service
-class CompositePrimaryKeyBlotterRowDtoSearchService(
-    private val dtoRepo: CompositePrimaryKeyBlotterRowDtoRepo
-) {
+class CompositePrimaryKeyBlotterRowDtoSearchService(private val dtoRepo: CompositePrimaryKeyBlotterRowDtoRepo) {
 
 
     fun search(searchModel: AgGridSearchModel): SearchResultPage<CompositePrimaryKeyBlotterRowDto> {

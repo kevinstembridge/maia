@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class CharlieAgGridDtoSearchEndpoint(
-    private val searchService: CharlieAgGridDtoSearchService
-) {
+class CharlieAgGridDtoSearchEndpoint(private val searchService: CharlieAgGridDtoSearchService) {
 
 
     @PostMapping("/api/charlie-ag-grid/search", produces = [MediaType.APPLICATION_JSON_VALUE])

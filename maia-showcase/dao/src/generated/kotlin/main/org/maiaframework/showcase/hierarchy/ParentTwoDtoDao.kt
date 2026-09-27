@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class ParentTwoDtoDao(
-    private val jdbcOps: JdbcOps
-) {
+class ParentTwoDtoDao(private val jdbcOps: JdbcOps) {
 
 
     private val dtoRowMapper = ParentTwoDtoRowMapper()

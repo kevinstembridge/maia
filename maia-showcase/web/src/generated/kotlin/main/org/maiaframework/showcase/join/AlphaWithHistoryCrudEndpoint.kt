@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AlphaWithHistoryCrudEndpoint(
-    val crudService: AlphaWithHistoryCrudService
-) {
+class AlphaWithHistoryCrudEndpoint(val crudService: AlphaWithHistoryCrudService) {
 
 
     @PostMapping("/api/alpha-with-history/create")

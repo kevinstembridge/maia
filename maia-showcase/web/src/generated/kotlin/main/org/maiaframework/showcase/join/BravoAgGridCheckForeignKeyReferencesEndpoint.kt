@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class BravoAgGridCheckForeignKeyReferencesEndpoint(
-    val service: BravoAgGridForeignKeyReferencesService
-) {
+class BravoAgGridCheckForeignKeyReferencesEndpoint(val service: BravoAgGridForeignKeyReferencesService) {
 
     private val logger = LoggerFactory.getLogger(BravoAgGridCheckForeignKeyReferencesEndpoint::class.java)
 

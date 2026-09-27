@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AllFieldTypesBlotterRowDtoSearchEndpoint(
-    private val searchService: AllFieldTypesBlotterRowDtoSearchService
-) {
+class AllFieldTypesBlotterRowDtoSearchEndpoint(private val searchService: AllFieldTypesBlotterRowDtoSearchService) {
 
 
     @PostMapping("/api/all-field-types-blotter/search", produces = [MediaType.APPLICATION_JSON_VALUE])

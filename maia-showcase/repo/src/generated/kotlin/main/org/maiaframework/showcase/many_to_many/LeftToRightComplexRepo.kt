@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class LeftToRightComplexRepo(
-    private val dao: LeftToRightComplexDao
-) {
+class LeftToRightComplexRepo(private val dao: LeftToRightComplexDao) {
 
 
     private val logger = getLogger<LeftToRightComplexRepo>()

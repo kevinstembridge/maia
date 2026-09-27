@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class AlphaAgGridRepo(
-    private val dao: AlphaAgGridDao
-) {
+class AlphaAgGridRepo(private val dao: AlphaAgGridDao) {
 
 
     private val logger = getLogger<AlphaAgGridRepo>()

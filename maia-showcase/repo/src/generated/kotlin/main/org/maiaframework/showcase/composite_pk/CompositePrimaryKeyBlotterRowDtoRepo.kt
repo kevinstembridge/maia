@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CompositePrimaryKeyBlotterRowDtoRepo(
-    private val dao: CompositePrimaryKeyBlotterRowDtoDao
-) {
+class CompositePrimaryKeyBlotterRowDtoRepo(private val dao: CompositePrimaryKeyBlotterRowDtoDao) {
 
 
     fun getRows(searchModel: AgGridSearchModel): SearchResultPage<CompositePrimaryKeyBlotterRowDto> {

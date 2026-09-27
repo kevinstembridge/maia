@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class ParentTwoDtoSearchEndpoint(
-    private val searchService: ParentTwoDtoSearchService
-) {
+class ParentTwoDtoSearchEndpoint(private val searchService: ParentTwoDtoSearchService) {
 
 
     @PostMapping("/api/parent-two/search", produces = [MediaType.APPLICATION_JSON_VALUE])
