@@ -6,8 +6,8 @@ package org.maiaframework.elasticsearch.index.model
 
 
 data class IndexBaseNameAndVersion(
-    val baseName: EsIndexBaseName,
-    val version: EsIndexVersion
+    val baseName: IndexBaseName,
+    val version: IndexVersion
 ) {
 
 

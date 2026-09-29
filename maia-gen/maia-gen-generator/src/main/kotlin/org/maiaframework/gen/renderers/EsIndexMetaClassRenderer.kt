@@ -29,10 +29,10 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
         append("""
             |
             |
-            |    val indexBaseName = EsIndexBaseName("${this.esDocDef.elasticIndexBaseName}")
+            |    val indexBaseName = IndexBaseName("${this.esDocDef.elasticIndexBaseName}")
             |
             |
-            |    val indexVersion = EsIndexVersion(${this.esDocDef.esDocVersion})
+            |    val indexVersion = IndexVersion(${this.esDocDef.esDocVersion})
             |
             |
             |    val indexBaseNameAndVersion = IndexBaseNameAndVersion(indexBaseName, indexVersion)

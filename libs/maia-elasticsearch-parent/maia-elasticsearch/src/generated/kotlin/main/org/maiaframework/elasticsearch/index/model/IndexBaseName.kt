@@ -7,7 +7,7 @@ import org.maiaframework.types.StringType
 import java.util.Locale
 
 
-class EsIndexBaseName(value: String) : StringType<EsIndexBaseName>(value.lowercase(Locale.getDefault()))
+class IndexBaseName(value: String) : StringType<IndexBaseName>(value.lowercase(Locale.getDefault()))
  {
 
 

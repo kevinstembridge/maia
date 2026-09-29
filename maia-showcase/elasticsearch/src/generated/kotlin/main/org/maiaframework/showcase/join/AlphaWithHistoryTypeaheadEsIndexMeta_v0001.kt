@@ -5,18 +5,18 @@ package org.maiaframework.showcase.join
 
 import co.elastic.clients.elasticsearch._types.mapping.Property
 import co.elastic.clients.elasticsearch._types.mapping.TypeMapping
-import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexVersion
+import org.maiaframework.elasticsearch.index.model.IndexBaseName
 import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
+import org.maiaframework.elasticsearch.index.model.IndexVersion
 
 
 object AlphaWithHistoryTypeaheadEsIndexMeta_v0001 {
 
 
-    val indexBaseName = EsIndexBaseName("alpha-with-history-typeahead")
+    val indexBaseName = IndexBaseName("alpha-with-history-typeahead")
 
 
-    val indexVersion = EsIndexVersion(1)
+    val indexVersion = IndexVersion(1)
 
 
     val indexBaseNameAndVersion = IndexBaseNameAndVersion(indexBaseName, indexVersion)

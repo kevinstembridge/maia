@@ -1,7 +1,7 @@
 package org.maiaframework.elasticsearch.index
 
-import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexVersion
+import org.maiaframework.elasticsearch.index.model.IndexBaseName
+import org.maiaframework.elasticsearch.index.model.IndexVersion
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 
 
@@ -10,16 +10,16 @@ class EsIndexNameLookup(
 ) {
 
 
-    private val theMap = mutableMapOf<EsIndexBaseName, MutableMap<EsIndexVersion, IndexResolvedName>>()
+    private val theMap = mutableMapOf<IndexBaseName, MutableMap<IndexVersion, IndexResolvedName>>()
 
 
-    fun activeVersionIndexName(esIndexBaseName: EsIndexBaseName): IndexResolvedName {
+    fun activeVersionIndexName(indexBaseName: IndexBaseName): IndexResolvedName {
 
-        val activeVersion = this.esIndexActiveVersionManager.activeVersion(esIndexBaseName)
+        val activeVersion = this.esIndexActiveVersionManager.activeVersion(indexBaseName)
 
-        val innerMap = this.theMap.computeIfAbsent(esIndexBaseName) { mutableMapOf() }
+        val innerMap = this.theMap.computeIfAbsent(indexBaseName) { mutableMapOf() }
         return innerMap.computeIfAbsent(activeVersion) { _ ->
-            EsIndexNameFactory.indexNameFrom(esIndexBaseName, activeVersion)
+            EsIndexNameFactory.indexNameFrom(indexBaseName, activeVersion)
         }
 
     }

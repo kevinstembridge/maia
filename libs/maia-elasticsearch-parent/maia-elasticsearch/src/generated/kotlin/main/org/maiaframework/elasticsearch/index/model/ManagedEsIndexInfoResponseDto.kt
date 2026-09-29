@@ -7,9 +7,9 @@ package org.maiaframework.elasticsearch.index.model
 
 data class ManagedEsIndexInfoResponseDto(
     val description: String,
-    val indexBaseName: EsIndexBaseName,
+    val indexBaseName: IndexBaseName,
     val indexResolvedName: IndexResolvedName,
-    val indexVersion: EsIndexVersion,
+    val indexVersion: IndexVersion,
     val isActiveVersion: Boolean
 ) {
 

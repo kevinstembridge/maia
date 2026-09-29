@@ -1,7 +1,7 @@
 package org.maiaframework.elasticsearch.index
 
-import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexVersion
+import org.maiaframework.elasticsearch.index.model.IndexBaseName
+import org.maiaframework.elasticsearch.index.model.IndexVersion
 import org.maiaframework.props.Props
 import org.maiaframework.props.PropsManager
 import java.security.Principal
@@ -9,17 +9,17 @@ import java.security.Principal
 class EsIndexActiveVersionManager(private val props: Props, private val propsManager: PropsManager) {
 
 
-    fun activeVersion(esIndexBaseName: EsIndexBaseName): EsIndexVersion {
+    fun activeVersion(indexBaseName: IndexBaseName): IndexVersion {
 
-        val value = props.getIntOrNull(propertyKey(esIndexBaseName)) ?: 1
-        return EsIndexVersion(value)
+        val value = props.getIntOrNull(propertyKey(indexBaseName)) ?: 1
+        return IndexVersion(value)
 
     }
 
 
     fun isActive(
-        indexName: EsIndexBaseName,
-        indexVersion: EsIndexVersion
+        indexName: IndexBaseName,
+        indexVersion: IndexVersion
     ): Boolean {
 
         val activeVersion = activeVersion(indexName)
@@ -30,8 +30,8 @@ class EsIndexActiveVersionManager(private val props: Props, private val propsMan
 
 
     fun setActiveVersion(
-        indexBaseName: EsIndexBaseName,
-        indexVersion: EsIndexVersion,
+        indexBaseName: IndexBaseName,
+        indexVersion: IndexVersion,
         principal: Principal
     ) {
 
@@ -45,7 +45,7 @@ class EsIndexActiveVersionManager(private val props: Props, private val propsMan
     }
 
 
-    private fun propertyKey(esIndexBaseName: EsIndexBaseName) = "app.elasticsearch.indices.$esIndexBaseName.active_version"
+    private fun propertyKey(indexBaseName: IndexBaseName) = "app.elasticsearch.indices.$indexBaseName.active_version"
 
 
 }

@@ -9,10 +9,10 @@ import {
     filterByStatus,
     parseElasticIndicesFiltersFromParams
 } from './elastic-indices-filtering';
-import {EsIndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
+import {IndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/IndexStateResponseDto';
 
 
-function indexDto(overrides: Partial<EsIndexStateResponseDto> & {indexName: string}): EsIndexStateResponseDto {
+function indexDto(overrides: Partial<IndexStateResponseDto> & {indexName: string}): IndexStateResponseDto {
     return {
         exists: true,
         managedIndexInfo: {

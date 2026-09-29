@@ -4,7 +4,7 @@ import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {pipe, tap} from 'rxjs';
 import {debounceTime, switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
-import {EsIndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
+import {IndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/IndexStateResponseDto';
 import {ElasticIndicesApiService} from '../services/elastic-indices-api-service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {
@@ -18,7 +18,7 @@ import {
 
 type ElasticIndicesPageState = {
     hideSystemIndices: boolean;
-    indexStateDtos: EsIndexStateResponseDto[];
+    indexStateDtos: IndexStateResponseDto[];
     isLoading: boolean;
     nameFilter: string;
     statusFilter: DisplayStatus | null;
@@ -39,16 +39,16 @@ export const ElasticIndicesPageStore = signalStore(
     withState(initialState),
 
     withComputed(({indexStateDtos, hideSystemIndices, nameFilter, statusFilter}) => {
-        const toggleFilteredIndexStateDtos = computed<EsIndexStateResponseDto[]>(() =>
+        const toggleFilteredIndexStateDtos = computed<IndexStateResponseDto[]>(() =>
             filterBySystemIndices(indexStateDtos(), hideSystemIndices())
         );
-        const nameFilteredIndexStateDtos = computed<EsIndexStateResponseDto[]>(() =>
+        const nameFilteredIndexStateDtos = computed<IndexStateResponseDto[]>(() =>
             filterAndSortByName(toggleFilteredIndexStateDtos(), nameFilter())
         );
         const statusCounts = computed<Record<DisplayStatus, number>>(() =>
             countByDisplayStatus(nameFilteredIndexStateDtos())
         );
-        const visibleIndexStateDtos = computed<EsIndexStateResponseDto[]>(() =>
+        const visibleIndexStateDtos = computed<IndexStateResponseDto[]>(() =>
             filterByStatus(nameFilteredIndexStateDtos(), statusFilter())
         );
         const totalIndexCount = computed<number>(() => indexStateDtos().length);

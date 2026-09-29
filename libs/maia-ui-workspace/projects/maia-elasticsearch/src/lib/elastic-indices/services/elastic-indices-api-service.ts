@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {EsIndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
+import {IndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/IndexStateResponseDto';
 import {ELASTIC_INDICES_API_BASE_URL} from './elastic-indices-api-base-url-token';
 
 @Injectable()
@@ -12,9 +12,9 @@ export class ElasticIndicesApiService {
 
     constructor(private http: HttpClient) {}
 
-    getIndexDefinitions(): Observable<EsIndexStateResponseDto[]> {
-        return this.http.get<EsIndexStateResponseDto[]>(`${this.baseUrl}/elastic_indices_state`).pipe(
-            catchError(this.handleError<EsIndexStateResponseDto[]>('getIndicesState', []))
+    getIndexDefinitions(): Observable<IndexStateResponseDto[]> {
+        return this.http.get<IndexStateResponseDto[]>(`${this.baseUrl}/elastic_indices_state`).pipe(
+            catchError(this.handleError<IndexStateResponseDto[]>('getIndicesState', []))
         );
     }
 

@@ -1,5 +1,5 @@
 import {ParamMap, Params} from '@angular/router';
-import {EsIndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
+import {IndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/IndexStateResponseDto';
 
 export type DisplayStatus = 'green' | 'yellow' | 'red' | 'not-created';
 
@@ -21,12 +21,12 @@ export interface ElasticIndicesFilters {
 const VALID_STATUS_FILTERS: string[] = ['green', 'yellow', 'red', 'not-created'];
 
 
-export function filterBySystemIndices(indices: EsIndexStateResponseDto[], hideSystemIndices: boolean): EsIndexStateResponseDto[] {
+export function filterBySystemIndices(indices: IndexStateResponseDto[], hideSystemIndices: boolean): IndexStateResponseDto[] {
     return indices.filter((it) => hideSystemIndices === false || it.indexName.startsWith('.') === false);
 }
 
 
-export function filterAndSortByName(indices: EsIndexStateResponseDto[], nameFilter: string): EsIndexStateResponseDto[] {
+export function filterAndSortByName(indices: IndexStateResponseDto[], nameFilter: string): IndexStateResponseDto[] {
     const normalizedFilter = nameFilter.toLowerCase();
     return indices
         .filter((it) => it.indexName.toLowerCase().includes(normalizedFilter))
@@ -34,7 +34,7 @@ export function filterAndSortByName(indices: EsIndexStateResponseDto[], nameFilt
 }
 
 
-export function deriveDisplayStatus(indexStateDto: EsIndexStateResponseDto): DisplayStatus | undefined {
+export function deriveDisplayStatus(indexStateDto: IndexStateResponseDto): DisplayStatus | undefined {
     if (!indexStateDto.exists) {
         return 'not-created';
     }
@@ -43,7 +43,7 @@ export function deriveDisplayStatus(indexStateDto: EsIndexStateResponseDto): Dis
 }
 
 
-export function countByDisplayStatus(indices: EsIndexStateResponseDto[]): Record<DisplayStatus, number> {
+export function countByDisplayStatus(indices: IndexStateResponseDto[]): Record<DisplayStatus, number> {
     const counts: Record<DisplayStatus, number> = {green: 0, yellow: 0, red: 0, 'not-created': 0};
     for (const index of indices) {
         const status = deriveDisplayStatus(index);
@@ -55,7 +55,7 @@ export function countByDisplayStatus(indices: EsIndexStateResponseDto[]): Record
 }
 
 
-export function filterByStatus(indices: EsIndexStateResponseDto[], status: DisplayStatus | null): EsIndexStateResponseDto[] {
+export function filterByStatus(indices: IndexStateResponseDto[], status: DisplayStatus | null): IndexStateResponseDto[] {
     return status === null ? indices : indices.filter((it) => deriveDisplayStatus(it) === status);
 }
 

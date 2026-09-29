@@ -4,7 +4,7 @@
 package org.maiaframework.showcase.join
 
 import org.maiaframework.elasticsearch.index.EsIndexNameLookup
-import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
+import org.maiaframework.elasticsearch.index.model.IndexBaseName
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 import org.springframework.stereotype.Component
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 class AlphaTypeaheadEsIndex(private val esIndexNameLookup: EsIndexNameLookup) {
 
 
-    private val indexBaseName = EsIndexBaseName("alpha-typeahead")
+    private val indexBaseName = IndexBaseName("alpha-typeahead")
 
 
     fun indexName(): IndexResolvedName {

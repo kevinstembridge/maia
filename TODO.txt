@@ -13,7 +13,6 @@ TODO * Props Dashboard
     TODO * Mask sensitive fields.
 
 TODO * Elastic Indices Dashboard
-    TODO * Operations such as create and setActiveVersion should use the baseName and version rather than the resolved name.
 
 TODO * Single Effective Record
     TODO * Define a many-to-many entity that is specified to have only one single effective record

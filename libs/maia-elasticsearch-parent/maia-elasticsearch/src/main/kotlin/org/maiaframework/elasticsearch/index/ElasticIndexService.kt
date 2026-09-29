@@ -3,10 +3,10 @@ package org.maiaframework.elasticsearch.index
 import co.elastic.clients.elasticsearch.ElasticsearchClient
 import co.elastic.clients.elasticsearch._types.Level
 import org.maiaframework.common.logging.getLogger
-import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexHealthResponseDto
-import org.maiaframework.elasticsearch.index.model.EsIndexStateResponseDto
-import org.maiaframework.elasticsearch.index.model.EsIndexVersion
+import org.maiaframework.elasticsearch.index.model.IndexBaseName
+import org.maiaframework.elasticsearch.index.model.IndexHealthResponseDto
+import org.maiaframework.elasticsearch.index.model.IndexStateResponseDto
+import org.maiaframework.elasticsearch.index.model.IndexVersion
 import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 import java.security.Principal
@@ -22,9 +22,9 @@ class ElasticIndexService(
     private val logger = getLogger<ElasticIndexService>()
 
 
-    fun getIndicesState(): List<EsIndexStateResponseDto> {
+    fun getIndicesState(): List<IndexStateResponseDto> {
 
-        val stateDtosByName = mutableMapOf<IndexResolvedName, EsIndexStateResponseDto>()
+        val stateDtosByName = mutableMapOf<IndexResolvedName, IndexStateResponseDto>()
 
         collectHealthDtos(stateDtosByName)
         collectSummaryDtos(stateDtosByName)
@@ -34,12 +34,12 @@ class ElasticIndexService(
     }
 
 
-    private fun collectHealthDtos(stateDtosByName: MutableMap<IndexResolvedName, EsIndexStateResponseDto>) {
+    private fun collectHealthDtos(stateDtosByName: MutableMap<IndexResolvedName, IndexStateResponseDto>) {
 
         getIndexHealthsFromCluster().forEach { (indexName, indexHealthDto) ->
 
-            stateDtosByName.compute(indexName) { name: IndexResolvedName, existingStateDto: EsIndexStateResponseDto? ->
-                existingStateDto?.copy(health = indexHealthDto) ?: EsIndexStateResponseDto(exists = true, health = indexHealthDto, indexName = name, managedIndexInfo = null)
+            stateDtosByName.compute(indexName) { name: IndexResolvedName, existingStateDto: IndexStateResponseDto? ->
+                existingStateDto?.copy(health = indexHealthDto) ?: IndexStateResponseDto(exists = true, health = indexHealthDto, indexName = name, managedIndexInfo = null)
             }
 
         }
@@ -47,27 +47,27 @@ class ElasticIndexService(
     }
 
 
-    private fun getIndexHealthsFromCluster(): Map<IndexResolvedName, EsIndexHealthResponseDto> {
+    private fun getIndexHealthsFromCluster(): Map<IndexResolvedName, IndexHealthResponseDto> {
 
         val clusterHealthResponse = this.client.cluster().health { h -> h.level(Level.Indices) }
 
         return clusterHealthResponse.indices().map { entry ->
             Pair(
                 IndexResolvedName(entry.key),
-                EsIndexHealthResponseDto(entry.value.status().name)
+                IndexHealthResponseDto(entry.value.status().name)
             )
         }.toMap()
 
     }
 
 
-    private fun collectSummaryDtos(stateDtosByName: MutableMap<IndexResolvedName, EsIndexStateResponseDto>) {
+    private fun collectSummaryDtos(stateDtosByName: MutableMap<IndexResolvedName, IndexStateResponseDto>) {
 
         controlRegistry.getAllIndexSummaries().forEach { indexSummary ->
 
-            stateDtosByName.compute(indexSummary.indexResolvedName) { indexName: IndexResolvedName, existingStateDto: EsIndexStateResponseDto? ->
+            stateDtosByName.compute(indexSummary.indexResolvedName) { indexName: IndexResolvedName, existingStateDto: IndexStateResponseDto? ->
                 existingStateDto?.copy(managedIndexInfo = indexSummary)
-                    ?: EsIndexStateResponseDto(
+                    ?: IndexStateResponseDto(
                         exists = false,
                         health = null,
                         indexName,
@@ -90,8 +90,8 @@ class ElasticIndexService(
 
 
     fun setIndexActiveVersion(
-        indexBaseName: EsIndexBaseName,
-        indexVersion: EsIndexVersion,
+        indexBaseName: IndexBaseName,
+        indexVersion: IndexVersion,
         principal: Principal
     ) {
 

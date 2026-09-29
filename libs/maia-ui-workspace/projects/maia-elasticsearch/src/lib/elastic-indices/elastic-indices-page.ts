@@ -6,7 +6,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
-import {EsIndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
+import {IndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/IndexStateResponseDto';
 import {ElasticIndicesApiService} from './services/elastic-indices-api-service';
 import {ElasticIndicesPageStore} from './state/elastic-indices-page-store';
 import {ElasticIndex} from './components/elastic-index/elastic-index';
@@ -80,7 +80,7 @@ export class ElasticIndicesPage implements OnInit {
     }
 
 
-    onCreateIndex(dto: EsIndexStateResponseDto) {
+    onCreateIndex(dto: IndexStateResponseDto) {
         const dialogRef = this.dialog.open(CreateIndexDialog, {
             width: '400px',
             data: dto
@@ -95,7 +95,7 @@ export class ElasticIndicesPage implements OnInit {
     }
 
 
-    onSetIndexVersionActive(dto: EsIndexStateResponseDto) {
+    onSetIndexVersionActive(dto: IndexStateResponseDto) {
         const dialogRef = this.dialog.open(SetIndexVersionActiveDialog, {
             data: dto
         });

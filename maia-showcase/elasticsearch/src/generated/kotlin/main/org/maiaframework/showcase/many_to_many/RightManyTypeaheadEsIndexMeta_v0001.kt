@@ -5,18 +5,18 @@ package org.maiaframework.showcase.many_to_many
 
 import co.elastic.clients.elasticsearch._types.mapping.Property
 import co.elastic.clients.elasticsearch._types.mapping.TypeMapping
-import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexVersion
+import org.maiaframework.elasticsearch.index.model.IndexBaseName
 import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
+import org.maiaframework.elasticsearch.index.model.IndexVersion
 
 
 object RightManyTypeaheadEsIndexMeta_v0001 {
 
 
-    val indexBaseName = EsIndexBaseName("right-many-typeahead")
+    val indexBaseName = IndexBaseName("right-many-typeahead")
 
 
-    val indexVersion = EsIndexVersion(1)
+    val indexVersion = IndexVersion(1)
 
 
     val indexBaseNameAndVersion = IndexBaseNameAndVersion(indexBaseName, indexVersion)

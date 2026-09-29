@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
-import {EsIndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/EsIndexStateResponseDto';
+import {IndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/IndexStateResponseDto';
 import {MatButtonModule} from '@angular/material/button';
 
 @Component({
@@ -12,7 +12,7 @@ export class SetIndexVersionActiveDialog {
 
     constructor(
         public dialogRef: MatDialogRef<SetIndexVersionActiveDialog>,
-        @Inject(MAT_DIALOG_DATA) public dto: EsIndexStateResponseDto
+        @Inject(MAT_DIALOG_DATA) public dto: IndexStateResponseDto
     ) {}
 
     onSubmit() {

@@ -1,9 +1,9 @@
 package org.maiaframework.elasticsearch
 
 import org.maiaframework.elasticsearch.index.ElasticIndexService
-import org.maiaframework.elasticsearch.index.model.EsIndexBaseName
-import org.maiaframework.elasticsearch.index.model.EsIndexStateResponseDto
-import org.maiaframework.elasticsearch.index.model.EsIndexVersion
+import org.maiaframework.elasticsearch.index.model.IndexBaseName
+import org.maiaframework.elasticsearch.index.model.IndexStateResponseDto
+import org.maiaframework.elasticsearch.index.model.IndexVersion
 import org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -23,7 +23,7 @@ class ElasticSearchIndicesEndpoint(
 
     @GetMapping("/elastic_indices_state")
     @PreAuthorize("hasAuthority('${EsConstants.Authority.MAIA_ELASTICSEARCH_SYS_OPS_READ}')")
-    fun getElasticIndicesState(): List<EsIndexStateResponseDto> {
+    fun getElasticIndicesState(): List<IndexStateResponseDto> {
 
         return this.elasticIndexService.getIndicesState()
 
@@ -38,7 +38,7 @@ class ElasticSearchIndicesEndpoint(
         principal: Principal
     ) {
 
-        val indexBaseNameAndVersion = IndexBaseNameAndVersion(EsIndexBaseName(indexBaseName), EsIndexVersion(indexVersion))
+        val indexBaseNameAndVersion = IndexBaseNameAndVersion(IndexBaseName(indexBaseName), IndexVersion(indexVersion))
         this.elasticIndexService.createIndex(indexBaseNameAndVersion, principal)
 
     }
@@ -53,8 +53,8 @@ class ElasticSearchIndicesEndpoint(
     ) {
 
         this.elasticIndexService.setIndexActiveVersion(
-            EsIndexBaseName(indexBaseName),
-            EsIndexVersion(indexVersion),
+            IndexBaseName(indexBaseName),
+            IndexVersion(indexVersion),
             principal
         )
 

@@ -21,7 +21,7 @@ class EsIndexRenderer(esIndexClassDef: ClassDef, private val elasticIndexBaseNam
 
         blankLine()
         blankLine()
-        appendLine("    private val indexBaseName = EsIndexBaseName(\"${this.elasticIndexBaseName}\")")
+        appendLine("    private val indexBaseName = IndexBaseName(\"${this.elasticIndexBaseName}\")")
 
     }
 
