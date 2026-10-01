@@ -36,6 +36,17 @@ export class JobMetricsNodeComponent {
     }
 
 
+    formatValue(value: unknown): string {
+
+        if (typeof value === 'number' && Number.isInteger(value)) {
+            return value.toLocaleString('en-US');
+        }
+
+        return String(value);
+
+    }
+
+
     formatSeconds(seconds: number | undefined): string {
 
         if (seconds === undefined) {

@@ -1,8 +1,11 @@
 <h1 mat-dialog-title>Job Metrics</h1>
 <div mat-dialog-content>
-    <maia-job-metrics-node [report]="metrics" />
+    <maia-job-metrics-node [report]="metrics()" />
 </div>
 <div mat-dialog-actions>
     <button mat-flat-button (click)="onClose()">Close</button>
-    <button mat-flat-button [cdkCopyToClipboard]="metrics | json"><mat-icon>content_copy</mat-icon></button>
+    <button mat-flat-button [cdkCopyToClipboard]="metrics() | json"><mat-icon>content_copy</mat-icon></button>
+    @if (canRefresh) {
+        <button mat-flat-button [disabled]="refreshing()" (click)="onRefresh()" aria-label="Refresh"><mat-icon>refresh</mat-icon></button>
+    }
 </div>

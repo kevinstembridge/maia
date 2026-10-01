@@ -1,4 +1,5 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
+import {map} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -26,7 +27,7 @@ const STATUS_LABELS: Record<JobStatus, string> = {
     idle: 'Idle',
 };
 import {JobStateComponent} from './components/job-state/job-state.component';
-import {JobMetricsDialogComponent} from './dialogs/job-metrics-dialog/job-metrics-dialog.component';
+import {JobMetricsDialogComponent, JobMetricsDialogData} from './dialogs/job-metrics-dialog/job-metrics-dialog.component';
 import {RunJobDialogComponent} from './dialogs/run-job-dialog/run-job-dialog.component';
 import {StacktraceDialogComponent} from './dialogs/stacktrace-dialog/stacktrace-dialog.component';
 
@@ -111,7 +112,16 @@ export class JobsDashboardPageComponent implements OnInit {
 
     onDisplayJobMetricsDialog(jobExecutionState: JobExecutionState) {
 
-        this.dialog.open(JobMetricsDialogComponent, {data: jobExecutionState.metrics, width: '90vw', maxWidth: '90vw'});
+        const data: JobMetricsDialogData = {
+            metrics: jobExecutionState.metrics,
+            refresh: () => this.jobsService.getJobsState().pipe(
+                map(jobStates => jobStates
+                    .flatMap(jobState => jobState.runningJobs)
+                    .find(execution => execution.id === jobExecutionState.id)?.metrics)
+            )
+        };
+
+        this.dialog.open(JobMetricsDialogComponent, {data, width: '90vw', maxWidth: '90vw'});
 
     }
 
