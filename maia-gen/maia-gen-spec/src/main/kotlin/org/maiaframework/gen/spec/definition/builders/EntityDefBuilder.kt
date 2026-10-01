@@ -637,6 +637,7 @@ class EntityDefBuilder(
             tableColumnName(TableColumnName.lastModifiedTimestamp.value)
             notCreatableByUser()
             modifiableBySystem()
+            nonDeltaField()
         }
 
     }
