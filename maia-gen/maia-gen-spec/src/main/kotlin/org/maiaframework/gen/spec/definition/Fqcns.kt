@@ -105,6 +105,7 @@ object Fqcns {
     val MAIA_HAZELCAST_ENTITY_CONFIG = Fqcn.valueOf("org.maiaframework.hazelcast.HazelcastEntityConfig")
     val MAIA_INDEX_SEARCH_RESULTS = Fqcn.valueOf("org.maiaframework.elasticsearch.results.IndexSearchResults")
     val MAIA_JDBC_AND_OR = Fqcn.valueOf("org.maiaframework.jdbc.sql.conditions.AndOr")
+    val MAIA_JDBC_BULK_OPTIMISTIC_LOCKING_EXCEPTION = Fqcn.valueOf("org.maiaframework.jdbc.BulkOptimisticLockingException")
     val MAIA_JDBC_DB_COLUMN = Fqcn.valueOf("org.maiaframework.jdbc.DbColumn")
     val MAIA_JDBC_OPS = Fqcn.valueOf("org.maiaframework.jdbc.JdbcOps")
     val MAIA_JDBC_OPTIMISTIC_LOCKING_EXCEPTION = Fqcn.valueOf("org.maiaframework.jdbc.OptimisticLockingException")
