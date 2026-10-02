@@ -14,6 +14,7 @@ import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import java.sql.PreparedStatement
+import java.sql.Types
 import java.time.Instant
 import java.time.LocalDate
 
@@ -219,6 +220,23 @@ class PropsDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<String>): List<PropsEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from props.props where property_name in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it }, Types.VARCHAR)
+            },
+            this.entityRowMapper
+        )
 
     }
 

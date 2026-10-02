@@ -13,6 +13,7 @@ import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.json.JsonFacade
 import org.springframework.data.domain.Pageable
 import tools.jackson.databind.json.JsonMapper
+import java.sql.Types
 import java.time.Instant
 
 
@@ -182,6 +183,23 @@ class JobExecutionDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<JobExecutionEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from jobs.job_execution where id in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.OTHER)
+            },
+            this.entityRowMapper
+        )
 
     }
 

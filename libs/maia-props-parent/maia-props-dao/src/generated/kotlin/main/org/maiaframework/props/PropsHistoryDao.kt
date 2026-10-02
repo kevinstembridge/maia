@@ -168,6 +168,13 @@ class PropsHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<PropsHistoryEntityPk>): List<PropsHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(propertyName: String, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
