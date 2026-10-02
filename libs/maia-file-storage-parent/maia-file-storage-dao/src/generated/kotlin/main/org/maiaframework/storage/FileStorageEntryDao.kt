@@ -11,6 +11,7 @@ import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.Types
 
 
 @Repository
@@ -160,6 +161,23 @@ class FileStorageEntryDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<FileStorageEntryEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from storage.file_storage_entry where id in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.OTHER)
+            },
+            this.entityRowMapper
+        )
 
     }
 

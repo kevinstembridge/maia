@@ -208,6 +208,13 @@ class FeatureToggleHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<FeatureToggleHistoryEntityPk>): List<FeatureToggleHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(featureName: FeatureName, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

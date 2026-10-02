@@ -131,6 +131,19 @@ class FeatureToggleRepo(
     }
 
 
+    fun bulkSetFields(updaters: List<FeatureToggleEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        try {
+            this.dao.bulkSetFields(updaters)
+        } finally {
+            updaters.forEach { updater -> this.cache.evict(updater.featureName) }
+        }
+
+    }
+
+
     fun upsertByFeatureName(upsertEntity: FeatureToggleEntity): FeatureToggleEntity {
 
         logger.debug("upsert {}", upsertEntity)

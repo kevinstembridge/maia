@@ -6,6 +6,7 @@ package org.maiaframework.toggles
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
+import org.maiaframework.jdbc.BulkOptimisticLockingException
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
@@ -21,6 +22,7 @@ import org.maiaframework.toggles.fields.TicketKey
 import org.springframework.data.domain.Pageable
 import tools.jackson.databind.json.JsonMapper
 import java.sql.PreparedStatement
+import java.sql.Types
 import java.time.Instant
 import java.time.LocalDate
 
@@ -279,6 +281,23 @@ class FeatureToggleDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<FeatureName>): List<FeatureToggleEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from toggles.feature_toggle where feature_name in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.VARCHAR)
+            },
+            this.entityRowMapper
+        )
 
     }
 
@@ -597,6 +616,58 @@ class FeatureToggleDao(
             "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "reviewDate" -> sqlParams.addValue("reviewDate", field.value as LocalDate?)
             "ticketKey" -> sqlParams.addValue("ticketKey", (field.value as TicketKey?)?.value)
+        }
+
+    }
+
+
+    fun bulkSetFields(updaters: List<FeatureToggleEntityUpdater>) {
+
+        val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
+        val failedUpdaters = mutableListOf<FeatureToggleEntityUpdater>()
+        val updatedIds = mutableListOf<FeatureName>()
+
+        groups.values.forEach { group ->
+
+            val representative = group.first()
+            val sql = StringBuilder()
+            sql.append("update toggles.feature_toggle set ")
+
+            val fieldClauses = representative.fields
+                .plus(FieldUpdate("version_incremented", "version", 0))
+                .joinToString(", ") { field -> "${field.dbColumnName} = :${field.classFieldName}" }
+
+            sql.append(fieldClauses)
+            sql.append(" where feature_name = :featureName")
+            sql.append(" and version = :version")
+
+            val sqlParamsList = group.map { updater ->
+                val sqlParams = SqlParams()
+                updater.fields.forEach { field -> addField(field, sqlParams) }
+
+                sqlParams.addValue("featureName", updater.featureName.value)
+                sqlParams.addValue("version", updater.version)
+                sqlParams.addValue("version_incremented", updater.version + 1)
+                sqlParams
+            }
+
+            val updateCounts = this.jdbcOps.batchUpdate(sql.toString(), sqlParamsList)
+
+            group.forEachIndexed { i, updater ->
+                if (updateCounts[i] == 0) {
+                    failedUpdaters.add(updater)
+                } else {
+                    updatedIds.add(updater.featureName)
+                }
+            }
+
+        }
+
+        val updatedEntities = findAllByPrimaryKeys(updatedIds)
+        bulkInsertHistory(updatedEntities, ChangeType.UPDATE)
+
+        if (failedUpdaters.isNotEmpty()) {
+            throw BulkOptimisticLockingException(FeatureToggleEntityMeta.TABLE_NAME, failedUpdaters.map { it.featureName to it.version })
         }
 
     }
