@@ -642,6 +642,16 @@ class JdbcDaoRenderer(
 
         if (entityHierarchy.hasSubclasses()) {
 
+            // NOTE: both callers of this hierarchy-dispatch bulkInsertHistory pass entities whose
+            // `.version` is ALREADY the target version to record in history - bulkInsert's freshly
+            // constructed entities already carry their initial version (see CrudServiceRenderer's
+            // `val version = 1L`), and bulkSetFields's entities are re-fetched post-UPDATE via
+            // findAllByPrimaryKeys, so `.version` already reflects the incremented value. Do not
+            // add `+ 1` here - that was a real bug (fixed once already; see git history) that silently
+            // recorded the wrong version for every hierarchy entity's history rows. The non-hierarchy
+            // bulkInsertHistory branch below, and single-row insertHistory, both correctly use
+            // `.version`/`entity.version` as-is for the same reason - keep this branch consistent with them.
+
             blankLine()
             blankLine()
             appendLine("    private fun bulkInsertHistory(entities: List<${entityDef.entityUqcn}>, changeType: ChangeType) {")
