@@ -85,6 +85,24 @@ class HistorySuperDaoTest: AbstractBlackBoxTest() {
     }
 
 
+    @Test
+    fun testFindAllByPrimaryKeys_returnsOnlyRequestedEntities() {
+
+        val entity1 = HistorySubOneEntityTestBuilder().build()
+        val entity2 = HistorySubOneEntityTestBuilder().build()
+        val entity3 = HistorySubOneEntityTestBuilder().build()
+
+        this.historySubOneDao.insert(entity1)
+        this.historySubOneDao.insert(entity2)
+        this.historySubOneDao.insert(entity3)
+
+        val result = this.historySubOneDao.findAllByPrimaryKeys(listOf(entity1.id, entity3.id))
+
+        assertThat(result.map { it.id }).containsExactlyInAnyOrder(entity1.id, entity3.id)
+
+    }
+
+
     // TODO test update of inline fields
 
 

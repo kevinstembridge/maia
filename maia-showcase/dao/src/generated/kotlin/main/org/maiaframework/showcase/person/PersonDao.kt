@@ -21,6 +21,7 @@ import org.maiaframework.showcase.user.UserHistoryDao
 import org.maiaframework.showcase.user.UserHistoryEntity
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.Types
 import java.time.Instant
 
 
@@ -373,6 +374,23 @@ class PersonDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<PersonEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from maia.v_party where id in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.OTHER)
+            },
+            this.entityRowMapper
+        )
 
     }
 

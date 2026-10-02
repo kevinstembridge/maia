@@ -153,6 +153,13 @@ class AlphaWithHistoryHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<AlphaWithHistoryHistoryEntityPk>): List<AlphaWithHistoryHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

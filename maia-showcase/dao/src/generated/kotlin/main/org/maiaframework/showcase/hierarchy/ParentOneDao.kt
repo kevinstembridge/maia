@@ -14,6 +14,7 @@ import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
+import java.sql.Types
 import java.time.Instant
 
 
@@ -216,6 +217,23 @@ class ParentOneDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<ParentOneEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from maia.grandparent where id in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.OTHER)
+            },
+            this.entityRowMapper
+        )
 
     }
 

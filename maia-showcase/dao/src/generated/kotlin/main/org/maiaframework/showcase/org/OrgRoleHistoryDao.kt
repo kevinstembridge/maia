@@ -184,6 +184,13 @@ class OrgRoleHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<OrgRoleHistoryEntityPk>): List<OrgRoleHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(key: OrgRoleKey, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

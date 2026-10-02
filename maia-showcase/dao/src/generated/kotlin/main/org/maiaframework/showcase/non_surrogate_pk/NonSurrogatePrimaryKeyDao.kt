@@ -16,6 +16,7 @@ import org.maiaframework.showcase.types.SomeStringValueClass
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
+import java.sql.Types
 
 
 @Repository
@@ -188,6 +189,23 @@ class NonSurrogatePrimaryKeyDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<SomeStringValueClass>): List<NonSurrogatePrimaryKeyEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from maia.non_surrogate_primary_key where some_string in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.VARCHAR)
+            },
+            this.entityRowMapper
+        )
 
     }
 

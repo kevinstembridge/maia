@@ -14,6 +14,7 @@ import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
+import java.sql.Types
 
 
 @Repository
@@ -133,6 +134,23 @@ class EmailAddressDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<EmailAddress>): List<EmailAddressEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from maia.email_address where email_address in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.VARCHAR)
+            },
+            this.entityRowMapper
+        )
 
     }
 

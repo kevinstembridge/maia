@@ -252,6 +252,13 @@ class PersonHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<PersonHistoryEntityPk>): List<PersonHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

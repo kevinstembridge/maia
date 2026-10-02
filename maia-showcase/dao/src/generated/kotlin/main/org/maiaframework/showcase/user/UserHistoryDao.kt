@@ -195,6 +195,13 @@ class UserHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<UserHistoryEntityPk>): List<UserHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

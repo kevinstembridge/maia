@@ -147,6 +147,13 @@ class NonSurrogateIdPrimaryKeyHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<NonSurrogateIdPrimaryKeyHistoryEntityPk>): List<NonSurrogateIdPrimaryKeyHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: SomeStringValueClass, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

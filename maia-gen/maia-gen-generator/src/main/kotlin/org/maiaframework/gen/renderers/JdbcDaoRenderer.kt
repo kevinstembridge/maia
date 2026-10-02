@@ -28,6 +28,7 @@ import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
+import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
@@ -274,6 +275,7 @@ class JdbcDaoRenderer(
         `render the countWithFilter function`()
         `render the findByPrimaryKey function`()
         `render the findByPrimaryKeyOrNull function`()
+        `render the findAllByPrimaryKeys function`()
         `render the findVersionByPrimaryKey function`()
         `render the existsByPrimaryKey function`()
         `render finders for indexes`()
@@ -879,6 +881,95 @@ class JdbcDaoRenderer(
         blankLine()
         appendLine("    }")
 
+
+    }
+
+
+    private fun `render the findAllByPrimaryKeys function`() {
+
+        blankLine()
+        blankLine()
+
+        if (entityDef.hasCompositePrimaryKey) {
+
+            appendLine("    fun findAllByPrimaryKeys(primaryKeys: List<${entityDef.entityPkClassDef.uqcn}>): List<${entityDef.entityUqcn}> {")
+            blankLine()
+            appendLine("        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }")
+            blankLine()
+            appendLine("    }")
+
+        } else {
+
+            val pkField = entityDef.primaryKeyFields.single()
+            val pkFieldType = pkField.fieldType
+
+            addImportFor(pkFieldType)
+            addImportFor(Fqcns.SQL_TYPES)
+
+            val pkTypeName = pkFieldType.unqualifiedToString
+            val sqlTypeName = pkFieldType.sqlType ?: "VARCHAR"
+            val rawValueMappingExpression = `raw value mapping expression for`(pkFieldType)
+
+            appendLine("    fun findAllByPrimaryKeys(ids: List<$pkTypeName>): List<${entityDef.entityUqcn}> {")
+            blankLine()
+            appendLine("        if (ids.isEmpty()) {")
+            appendLine("            return emptyList()")
+            appendLine("        }")
+            blankLine()
+            appendLine("        return jdbcOps.queryForList(")
+            appendLine("            \"${EffectiveTimestampRendererHelper.selectStarClause(entityDef)} from ${entityDef.schemaAndTableName} where ${pkField.tableColumnName} in (:ids)\",")
+            appendLine("            SqlParams().apply {")
+            appendLine("                addValue(\"ids\", ids.map { $rawValueMappingExpression }, Types.$sqlTypeName)")
+            appendLine("            },")
+            appendLine("            this.entityRowMapper")
+            appendLine("        )")
+            blankLine()
+            appendLine("    }")
+
+        }
+
+    }
+
+
+    /**
+     * The expression (using `it` as the list element) that unwraps a primary key value's
+     * underlying JDBC-compatible representation, for use inside `ids.map { ... }` when
+     * binding a list of primary key values for an `in (:ids)` clause.
+     */
+    private fun `raw value mapping expression for`(fieldType: FieldType): String {
+
+        return when (fieldType) {
+            is BooleanFieldType -> "it"
+            is BooleanTypeFieldType -> "it.value"
+            is BooleanValueClassFieldType -> "it.value"
+            is DataClassFieldType -> TODO("YAGNI?")
+            is DomainIdFieldType -> "it.value"
+            is DoubleFieldType -> "it"
+            is EnumFieldType -> "it.name"
+            is EsDocFieldType -> TODO("YAGNI?")
+            is ForeignKeyFieldType -> "it.value"
+            is FqcnFieldType -> TODO("YAGNI?")
+            is JoinFetchDtoFieldType -> TODO("YAGNI?")
+            is PkAndNameFieldType -> TODO("YAGNI?")
+            is InstantFieldType -> TODO("YAGNI?")
+            is IntFieldType -> "it"
+            is IntTypeFieldType -> "it.value"
+            is IntValueClassFieldType -> "it.value"
+            is ListFieldType -> TODO("YAGNI?")
+            is LocalDateFieldType -> TODO("YAGNI?")
+            is LongFieldType -> "it"
+            is LongTypeFieldType -> "it.value"
+            is MapFieldType -> TODO("YAGNI?")
+            is ObjectIdFieldType -> TODO("YAGNI?")
+            is PeriodFieldType -> TODO("YAGNI?")
+            is RequestDtoFieldType -> TODO("YAGNI?")
+            is SetFieldType -> TODO("YAGNI?")
+            is SimpleResponseDtoFieldType -> "it"
+            is StringFieldType -> "it"
+            is StringTypeFieldType -> "it.value"
+            is StringValueClassFieldType -> "it.value"
+            is UrlFieldType -> "it"
+        }
 
     }
 

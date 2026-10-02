@@ -14,6 +14,7 @@ import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.Types
 import java.time.Instant
 
 
@@ -206,6 +207,23 @@ class LeftManyDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<LeftManyEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from maia.left_many where id in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.OTHER)
+            },
+            this.entityRowMapper
+        )
 
     }
 

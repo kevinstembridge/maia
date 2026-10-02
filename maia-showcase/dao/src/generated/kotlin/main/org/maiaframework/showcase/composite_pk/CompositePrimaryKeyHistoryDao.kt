@@ -154,6 +154,13 @@ class CompositePrimaryKeyHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<CompositePrimaryKeyHistoryEntityPk>): List<CompositePrimaryKeyHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(someInt: Int, someString: String, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

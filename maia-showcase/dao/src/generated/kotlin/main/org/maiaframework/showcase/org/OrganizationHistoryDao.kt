@@ -177,6 +177,13 @@ class OrganizationHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<OrganizationHistoryEntityPk>): List<OrganizationHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

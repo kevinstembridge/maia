@@ -203,6 +203,13 @@ class CompositePrimaryKeyDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<CompositePrimaryKeyEntityPk>): List<CompositePrimaryKeyEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(someInt: Int, someString: String): Boolean {
 
         val count = jdbcOps.queryForInt(

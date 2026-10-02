@@ -294,6 +294,13 @@ class PartyHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<PartyHistoryEntityPk>): List<PartyHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

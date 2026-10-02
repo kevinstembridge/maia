@@ -20,6 +20,7 @@ import org.maiaframework.showcase.org.OrgUserGroupHistoryEntity
 import org.maiaframework.showcase.org.OrganizationDao
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.Types
 
 
 @Repository
@@ -338,6 +339,23 @@ class UserGroupDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<UserGroupEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from maia.user_group where id in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.OTHER)
+            },
+            this.entityRowMapper
+        )
 
     }
 

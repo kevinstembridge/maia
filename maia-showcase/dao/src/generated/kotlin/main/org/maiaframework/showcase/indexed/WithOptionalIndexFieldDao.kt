@@ -12,6 +12,7 @@ import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.showcase.types.SomeStringType
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.sql.Types
 
 
 @Repository
@@ -143,6 +144,23 @@ class WithOptionalIndexFieldDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<WithOptionalIndexFieldEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from maia.with_optional_index_field where id in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.OTHER)
+            },
+            this.entityRowMapper
+        )
 
     }
 

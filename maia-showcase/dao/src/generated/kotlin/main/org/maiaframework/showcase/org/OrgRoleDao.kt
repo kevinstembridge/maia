@@ -18,6 +18,7 @@ import org.maiaframework.showcase.party.PartyDao
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
+import java.sql.Types
 import java.time.Instant
 
 
@@ -231,6 +232,23 @@ class OrgRoleDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<OrgRoleKey>): List<OrgRoleEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from maia.org_role where key in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.VARCHAR)
+            },
+            this.entityRowMapper
+        )
 
     }
 

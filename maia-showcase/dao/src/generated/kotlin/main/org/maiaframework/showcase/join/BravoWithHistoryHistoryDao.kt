@@ -165,6 +165,13 @@ class BravoWithHistoryHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<BravoWithHistoryHistoryEntityPk>): List<BravoWithHistoryHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

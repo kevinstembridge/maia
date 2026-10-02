@@ -181,6 +181,13 @@ class HistorySubTwoHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<HistorySubTwoHistoryEntityPk>): List<HistorySubTwoHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

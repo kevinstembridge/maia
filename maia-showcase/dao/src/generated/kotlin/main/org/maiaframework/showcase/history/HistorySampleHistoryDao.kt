@@ -183,6 +183,13 @@ class HistorySampleHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<HistorySampleHistoryEntityPk>): List<HistorySampleHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

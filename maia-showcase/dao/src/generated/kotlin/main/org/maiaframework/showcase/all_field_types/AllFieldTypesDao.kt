@@ -17,6 +17,7 @@ import org.maiaframework.showcase.types.SomeStringType
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
+import java.sql.Types
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -370,6 +371,23 @@ class AllFieldTypesDao(
             },
             this.entityRowMapper
         ).firstOrNull()
+
+    }
+
+
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<AllFieldTypesEntity> {
+
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
+        return jdbcOps.queryForList(
+            "select * from maia.all_field_types where id in (:ids)",
+            SqlParams().apply {
+                addValue("ids", ids.map { it.value }, Types.OTHER)
+            },
+            this.entityRowMapper
+        )
 
     }
 

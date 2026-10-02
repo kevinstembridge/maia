@@ -159,6 +159,13 @@ class LeftManyHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<LeftManyHistoryEntityPk>): List<LeftManyHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(

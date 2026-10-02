@@ -181,6 +181,13 @@ class HistorySubOneHistoryDao(
     }
 
 
+    fun findAllByPrimaryKeys(primaryKeys: List<HistorySubOneHistoryEntityPk>): List<HistorySubOneHistoryEntity> {
+
+        return primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }
+
+    }
+
+
     fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
