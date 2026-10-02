@@ -37,7 +37,7 @@ Test command shape (swap the `--tests` class per task):
 
 ---
 
-### Task 1: Add `BulkOptimisticLockingException`
+### Task 1: Add `BulkOptimisticLockingException` ✅ DONE (commit `6a8c8343`)
 
 **Goal:** A new exception type that carries every failed-version-check row from a batch, not just the first.
 
@@ -46,14 +46,14 @@ Test command shape (swap the `--tests` class per task):
 - Modify: `maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/Fqcns.kt:107-108` (insert a new line between the existing `MAIA_JDBC_AND_OR` and `MAIA_JDBC_DB_COLUMN` entries)
 
 **Acceptance Criteria:**
-- [ ] `BulkOptimisticLockingException` compiles in `libs/maia-jdbc`
-- [ ] `Fqcns.MAIA_JDBC_BULK_OPTIMISTIC_LOCKING_EXCEPTION` resolves to `org.maiaframework.jdbc.BulkOptimisticLockingException`
+- [x] `BulkOptimisticLockingException` compiles in `libs/maia-jdbc`
+- [x] `Fqcns.MAIA_JDBC_BULK_OPTIMISTIC_LOCKING_EXCEPTION` resolves to `org.maiaframework.jdbc.BulkOptimisticLockingException`
 
 **Verify:** `./gradlew :libs:maia-jdbc:compileKotlin :maia-gen:maia-gen-spec:compileKotlin` → BUILD SUCCESSFUL
 
 **Steps:**
 
-- [ ] **Step 1: Create the exception class**, mirroring the existing `OptimisticLockingException.kt` in the same package exactly (same package = no imports needed for `TableName`/`MaiaDataAccessException`):
+- [x] **Step 1: Create the exception class**, mirroring the existing `OptimisticLockingException.kt` in the same package exactly (same package = no imports needed for `TableName`/`MaiaDataAccessException`):
 
 ```kotlin
 package org.maiaframework.jdbc
@@ -66,18 +66,18 @@ class BulkOptimisticLockingException(
 )
 ```
 
-- [ ] **Step 2: Add the Fqcns constant.** In `Fqcns.kt`, between line 107 (`MAIA_JDBC_AND_OR`) and line 108 (`MAIA_JDBC_DB_COLUMN`), insert:
+- [x] **Step 2: Add the Fqcns constant.** In `Fqcns.kt`, between line 107 (`MAIA_JDBC_AND_OR`) and line 108 (`MAIA_JDBC_DB_COLUMN`), insert:
 
 ```kotlin
     val MAIA_JDBC_BULK_OPTIMISTIC_LOCKING_EXCEPTION = Fqcn.valueOf("org.maiaframework.jdbc.BulkOptimisticLockingException")
 ```
 
-- [ ] **Step 3: Compile and verify**
+- [x] **Step 3: Compile and verify**
 
 Run: `./gradlew :libs:maia-jdbc:compileKotlin :maia-gen:maia-gen-spec:compileKotlin`
 Expected: BUILD SUCCESSFUL
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit** (recreated as `6a8c8343` after spec review caught the first attempt sweeping in an unrelated pre-existing staged file — see note below)
 
 ```bash
 git add libs/maia-jdbc/src/main/kotlin/org/maiaframework/jdbc/BulkOptimisticLockingException.kt maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/Fqcns.kt
@@ -88,18 +88,20 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 
 ---
 
-### Task 2: Add `findAllByPrimaryKeys` DAO helper
+### Task 2: Add `findAllByPrimaryKeys` DAO helper ✅ DONE (commits `1ee06ba0`, `b98ceeb8`)
 
 **Goal:** A generated DAO method to bulk re-fetch rows by primary key after a batch update, needed by `bulkSetFields`'s history step (Task 3+).
+
+**Deviation from this task's draft code (reviewed and approved):** the single-PK branch was generalized beyond the hardcoded `List<DomainId>` shown below — it now reads each entity's actual single-PK field type via a new `` `raw value mapping expression for`(fieldType: FieldType) `` helper, because this renderer is shared framework-wide and several real entities (`EmailAddressDao`, `NonSurrogatePrimaryKeyDao`, `OrgRoleDao`) don't key on `DomainId`. Regenerating also touched `libs/maia-job-parent`/`libs/maia-props-parent` (same shared renderer), committed separately in `b98ceeb8`. Code review flagged one non-blocking follow-up: the new helper duplicates `EntityFiltersRenderer.kt`'s existing `valueMappingTextFor` instead of extracting a shared helper — not fixed in this plan, noted for future cleanup.
 
 **Files:**
 - Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt` — insert a new call `` `render the findAllByPrimaryKeys function`() `` in the `renderFunctions()` dispatch, immediately after the existing call to `` `render the findByPrimaryKeyOrNull function`() `` (around line 276); add the new private function near `` `render the findByPrimaryKeyOrNull function`() `` (around line 883)
 - Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/history/HistorySuperDaoTest.kt` — add one test method
 
 **Acceptance Criteria:**
-- [ ] Single-PK entities (e.g. `HistorySubOneDao`) get `fun findAllByPrimaryKeys(ids: List<DomainId>): List<X>` doing one `where id in (:ids)` query
-- [ ] Composite-PK entities (e.g. `CompositePrimaryKeyDao`) get `fun findAllByPrimaryKeys(primaryKeys: List<XPk>): List<X>` — implemented as `primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }` (deliberately N single-row lookups rather than a dynamic OR-chain: composite-key `IN`-expansion isn't natively supported by Spring's named-parameter binding, and building one at the generator level is a nested-string-escaping hazard disproportionate to the win for what is already the less-common case — the actual perf-critical path, the UPDATE batch itself, is still a single JDBC batch for composite-PK entities too; only this secondary re-fetch-for-history step falls back to N queries)
-- [ ] `HistorySubOneDao.findAllByPrimaryKeys(listOf(id1, id3))` returns exactly those two entities
+- [x] Single-PK entities (e.g. `HistorySubOneDao`) get `fun findAllByPrimaryKeys(ids: List<DomainId>): List<X>` doing one `where id in (:ids)` query
+- [x] Composite-PK entities (e.g. `CompositePrimaryKeyDao`) get `fun findAllByPrimaryKeys(primaryKeys: List<XPk>): List<X>` — implemented as `primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }` (deliberately N single-row lookups rather than a dynamic OR-chain: composite-key `IN`-expansion isn't natively supported by Spring's named-parameter binding, and building one at the generator level is a nested-string-escaping hazard disproportionate to the win for what is already the less-common case — the actual perf-critical path, the UPDATE batch itself, is still a single JDBC batch for composite-PK entities too; only this secondary re-fetch-for-history step falls back to N queries)
+- [x] `HistorySubOneDao.findAllByPrimaryKeys(listOf(id1, id3))` returns exactly those two entities
 
 **Verify:** `./gradlew :maia-showcase:app:test --tests "org.maiaframework.showcase.history.HistorySuperDaoTest"` → all tests pass (including new one)
 
@@ -214,19 +216,21 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 
 ---
 
-### Task 3: Add `bulkSetFields` DAO renderer (core logic, all branches)
+### Task 3: Add `bulkSetFields` DAO renderer (core logic, all branches) ✅ DONE (commits `4dc81a25`, `61268e7a`)
 
 **Goal:** The main `bulkSetFields` generator function — field-set grouping, JDBC batching, aggregate optimistic-lock failure collection, bulk history re-insert — written once to cover every branch `setFields` already has (versioned/non-versioned, with/without history, effective-timestamp, composite PK). Validated here against the common case: `HistorySubOneDao` (single PK, versioned, with history, no effective timestamps).
+
+**Review notes:** Both reviews passed. Two legitimate fixes beyond the draft: PK param binding now reuses `renderSqlParamAddValueFor` (handles value-class-wrapped PKs correctly, matching `setFields`); `updatedIds`'s element type is derived the same way `findAllByPrimaryKeys` derives it (no hardcoded `DomainId`). Non-blocking follow-ups noted by reviewers (not fixed, spike branch): a cosmetic empty `else {}` block generated for versioned-but-no-history entities; `BulkOptimisticLockingException` doesn't expose `failures` as a queryable property (message-only, same as the pre-existing `OptimisticLockingException` convention). Branch structure for effective-timestamp and composite-PK was traced and confirmed structurally sound even though those entities get their own dedicated validation in Tasks 4–5.
 
 **Files:**
 - Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt` — insert dispatch call after `` `render the setFields function`() `` (around line 292); add the new private function near it
 - Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/history/HistorySuperDaoTest.kt` — add three test methods
 
 **Acceptance Criteria:**
-- [ ] A batch where every updater sets the same field runs as a single JDBC batch and updates all rows
-- [ ] A batch where updaters set *different* fields is split into multiple field-set groups, each updated correctly
-- [ ] A batch containing some stale-version updaters throws one `BulkOptimisticLockingException` listing every stale row, while still applying the valid updaters in the same batch
-- [ ] Every successfully-updated row gets exactly one new history row (via `findAllByPrimaryKeys` + `bulkInsertHistory`)
+- [x] A batch where every updater sets the same field runs as a single JDBC batch and updates all rows
+- [x] A batch where updaters set *different* fields is split into multiple field-set groups, each updated correctly
+- [x] A batch containing some stale-version updaters throws one `BulkOptimisticLockingException` listing every stale row, while still applying the valid updaters in the same batch
+- [x] Every successfully-updated row gets exactly one new history row (via `findAllByPrimaryKeys` + `bulkInsertHistory`)
 
 **Verify:** `./gradlew :maia-showcase:app:test --tests "org.maiaframework.showcase.history.HistorySuperDaoTest"` → all tests pass
 
@@ -563,18 +567,21 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 
 ---
 
-### Task 4: Validate non-versioned/non-history + effective-timestamp branch
+### Task 4: Validate non-versioned/non-history + effective-timestamp branch ✅ DONE (commit `d75dbeb8`)
 
 **Goal:** Prove the `bulkSetFields` function written in Task 3 handles the opposite end of the spectrum correctly: no version check, no history, and the `tstzrange(...)` effective-timestamp SQL branch. Target: `EffectiveTimestampDao` (not versioned, no history, has effective timestamps). No new renderer code is expected — this task's job is to write the test, find bugs the branches above didn't exercise, and fix them in the Task 3 function if needed.
 
+**Review notes:** No renderer bug found — Task 3's branch logic was already correct. The real gap was that `EffectiveTimestamp.someString` lacked `editableByUser()` in the showcase domain spec, making the "plain field + effective-range in one call" scenario inexpressible; fixed with a one-line, precedent-matching spec addition (mirrors `HistorySubOne.someString` exactly). Both reviews passed with no blocking issues; one optional suggestion (strengthen test with negative assertions proving untouched fields/rows stay unchanged) left for a future pass, not required.
+
 **Files:**
 - Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/effective_dated/EffectiveTimestampDaoTest.kt`
-- Modify (if bugs found): `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt`
+- Modify (if bugs found): `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt` (not needed — no bug found)
+- Modify (unplanned, justified): `maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec.kt` — added `editableByUser()` to `EffectiveTimestamp.someString`
 
 **Acceptance Criteria:**
-- [ ] Bulk-updating `effectiveFrom`+`effectiveTo` together works via the `tstzrange(:effectiveFrom, :effectiveTo)` clause
-- [ ] Bulk-updating a plain field (`someString`) alongside effective-timestamp updates in the same call groups correctly (different field-sets → different groups)
-- [ ] No `BulkOptimisticLockingException` class or version/history logic appears in the generated `EffectiveTimestampDao.bulkSetFields` (confirms the conditional branches in Task 3 correctly omit them for non-versioned entities)
+- [x] Bulk-updating `effectiveFrom`+`effectiveTo` together works via the `tstzrange(:effectiveFrom, :effectiveTo)` clause
+- [x] Bulk-updating a plain field (`someString`) alongside effective-timestamp updates in the same call groups correctly (different field-sets → different groups)
+- [x] No `BulkOptimisticLockingException` class or version/history logic appears in the generated `EffectiveTimestampDao.bulkSetFields` (confirms the conditional branches in Task 3 correctly omit them for non-versioned entities)
 
 **Verify:** `./gradlew :maia-showcase:app:test --tests "org.maiaframework.showcase.effective_dated.EffectiveTimestampDaoTest"` → PASS
 
@@ -653,9 +660,11 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 
 ---
 
-### Task 5: Validate composite primary key branch
+### Task 5: Validate composite primary key branch ✅ DONE (commits `ec1b4bc2`, `aa00e2b5`, `e964c1cf`)
 
 **Goal:** Prove `bulkSetFields` and `findAllByPrimaryKeys` work for composite-PK entities. Target: `CompositePrimaryKeyDao` (versioned, with history, two-column PK, exactly one modifiable field).
+
+**Review notes:** No renderer bug found. Both reviews passed; two follow-up fixes applied directly by the controller after review feedback: strengthened the stale-version test with version-number assertions (parity with the single-PK sibling test), and added history-row assertions to the happy-path test (its name claimed to verify history insertion but originally didn't). Known accepted limitation shared with Task 3: `BulkOptimisticLockingException` is message-only, so no test directly inspects its structured content — behavior was confirmed correct by reading the generated code instead.
 
 **Files:**
 - Create: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/composite_pk/CompositePrimaryKeyEntityTestBuilder.kt`
@@ -663,9 +672,9 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 - Modify (if bugs found): `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt`
 
 **Acceptance Criteria:**
-- [ ] `bulkSetFields` on `CompositePrimaryKeyDao` updates rows identified by `(someString, someInt)` correctly
-- [ ] `findAllByPrimaryKeys` (composite branch: `primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }`) correctly bulk re-fetches for the history step
-- [ ] A stale-version row in the batch is collected into the `BulkOptimisticLockingException`, keyed by `CompositePrimaryKeyEntityPk`, not a bare id
+- [x] `bulkSetFields` on `CompositePrimaryKeyDao` updates rows identified by `(someString, someInt)` correctly
+- [x] `findAllByPrimaryKeys` (composite branch: `primaryKeys.mapNotNull { findByPrimaryKeyOrNull(it) }`) correctly bulk re-fetches for the history step
+- [x] A stale-version row in the batch is collected into the `BulkOptimisticLockingException`, keyed by `CompositePrimaryKeyEntityPk`, not a bare id
 
 **Verify:** `./gradlew :maia-showcase:app:test --tests "org.maiaframework.showcase.composite_pk.CompositePrimaryKeyDaoTest"` → PASS
 
@@ -800,16 +809,19 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 
 ---
 
-### Task 6: Validate entity-hierarchy branch
+### Task 6: Validate entity-hierarchy branch ✅ DONE (commits `79bb93ca`, `04911ad9`)
 
 **Goal:** Prove that `bulkSetFields` on the abstract supertype's DAO (`HistorySuperDao`), given a mixed batch of updaters whose underlying rows are different concrete subtypes (`HistorySubOne`/`HistorySubTwo`), correctly dispatches history inserts to each subtype's own history DAO via the existing `bulkInsertHistory` hierarchy logic. No new renderer code is expected here — `bulkInsertHistory`'s hierarchy dispatch and `findAllByPrimaryKeys`'s supertype-typed return value were already written in Tasks 2–3; this is validation only.
 
+**Review notes — important finding:** this task uncovered a real, pre-existing bug in `bulkInsertHistory`'s hierarchy branch (used by `HistorySuperDao`/`PartyDao`/`PersonDao`/`UserGroupDao`), not something introduced by this plan: it computed history-row versions as `it.version + 1` instead of `it.version`, inconsistent with every other code path in the codebase. This bug predates this plan and affects `bulkInsert`'s existing CREATE path too, not just the new `bulkSetFields` UPDATE path — the highest blast-radius finding across all 6 tasks so far. Fixed, and independently re-verified via code tracing (confirming `bulkInsert`'s freshly-constructed entities and `bulkSetFields`'s re-fetched entities both already carry their target version) and the full 156-test showcase suite (one unrelated Playwright flake confirmed via 3 reruns). An explanatory `// NOTE:` comment was added at the fix site afterward per code review, to prevent a third regression. Minor gap noted (not fixed): no test directly exercises hierarchy-entity `bulkInsert`+history directly (only traced by reading code) — acceptable since no production code currently calls `bulkInsert` on these hierarchy DAOs.
+
 **Files:**
 - Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/history/HistorySuperDaoTest.kt` — add one autowired field + one test method
+- Modify (unplanned, bug fix): `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/JdbcDaoRenderer.kt` — fixed the `it.version + 1` → `it.version` bug described above
 
 **Acceptance Criteria:**
-- [ ] A single `bulkSetFields` call on `HistorySuperDao` with one `HistorySubOne`-backed updater and one `HistorySubTwo`-backed updater updates both rows
-- [ ] History rows land in `historySubOneHistoryDao` and `historySubTwoHistoryDao` respectively (not cross-wired)
+- [x] A single `bulkSetFields` call on `HistorySuperDao` with one `HistorySubOne`-backed updater and one `HistorySubTwo`-backed updater updates both rows
+- [x] History rows land in `historySubOneHistoryDao` and `historySubTwoHistoryDao` respectively (not cross-wired)
 
 **Verify:** `./gradlew :maia-showcase:app:test --tests "org.maiaframework.showcase.history.HistorySuperDaoTest"` → PASS
 
@@ -878,17 +890,19 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 
 ---
 
-### Task 7: Add `bulkSetFields` Repo passthrough (with cache eviction)
+### Task 7: Add `bulkSetFields` Repo passthrough (with cache eviction) ✅ DONE (commit `9435cf56`)
 
 **Goal:** Expose `bulkSetFields` on the generated Repo layer, mirroring `bulkInsert`'s passthrough, including the cache-eviction behavior the single-row `setFields` passthrough already has for `cacheable` entities.
+
+**Correction (found during implementation, confirmed by review):** this plan's premise below — "no showcase entity is cacheable" — was wrong. `SimpleEntityDef` and `CompositePrimaryKeyEntityDef` have both been `cacheable` for months, predating this plan. This is a net positive: the cacheable branch was genuinely compiled and generated correctly for both a single-PK (`SimpleRepo`) and composite-PK (`CompositePrimaryKeyRepo`) entity, not merely reviewed as originally expected. Separately, both reviews confirmed a pre-existing, unrelated gap: no test anywhere in this codebase (predating this plan) exercises Repo-layer cache eviction at all, single-row or bulk — left as a standalone backlog item, not blocking this task.
 
 **Files:**
 - Modify: `maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/EntityRepoRenderer.kt` — insert dispatch call after `` `render function setFields`() `` (around line 96); add the new private function near it
 - Modify: `maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/history/HistorySuperDaoTest.kt` — no change needed (Repo layer isn't exercised by existing DAO-level tests); verification here is compile-only
 
 **Acceptance Criteria:**
-- [ ] `HistorySuperRepo` (and every other showcase Repo) gets a `bulkSetFields` method compiling cleanly, delegating to `this.dao.bulkSetFields(updaters)`
-- [ ] No showcase entity is `cacheable`, so the cache-eviction branch cannot get integration-test coverage here — note this explicitly rather than silently skipping it; it is verified by code review against the existing single-row cacheable `setFields` passthrough (`EntityRepoRenderer.kt:576-605`) only
+- [x] `HistorySuperRepo` (and every other showcase Repo) gets a `bulkSetFields` method compiling cleanly, delegating to `this.dao.bulkSetFields(updaters)`
+- [x] Cache-eviction branch verified — better than planned: `SimpleRepo`/`CompositePrimaryKeyRepo` are genuinely `cacheable`, so this compiled for real rather than being code-review-only as this plan incorrectly assumed
 
 **Verify:** `./gradlew :maia-showcase:repo:compileKotlin` → BUILD SUCCESSFUL
 
