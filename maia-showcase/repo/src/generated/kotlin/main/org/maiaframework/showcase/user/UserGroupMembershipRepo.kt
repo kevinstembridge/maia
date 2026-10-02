@@ -147,6 +147,15 @@ class UserGroupMembershipRepo(private val dao: UserGroupMembershipDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<UserGroupMembershipEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun closeEffectiveRange(id: DomainId): Boolean {
 
         logger.debug("closeEffectiveRange {}", id)

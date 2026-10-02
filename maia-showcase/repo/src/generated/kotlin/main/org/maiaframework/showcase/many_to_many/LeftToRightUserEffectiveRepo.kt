@@ -140,6 +140,15 @@ class LeftToRightUserEffectiveRepo(private val dao: LeftToRightUserEffectiveDao)
     }
 
 
+    fun bulkSetFields(updaters: List<LeftToRightUserEffectiveEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

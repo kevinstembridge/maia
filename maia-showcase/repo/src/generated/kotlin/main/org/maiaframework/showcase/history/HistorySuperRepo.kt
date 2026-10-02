@@ -112,6 +112,15 @@ class HistorySuperRepo(private val dao: HistorySuperDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<HistorySuperEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

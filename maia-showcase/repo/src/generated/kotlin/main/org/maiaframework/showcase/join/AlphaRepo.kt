@@ -105,6 +105,15 @@ class AlphaRepo(private val dao: AlphaDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<AlphaEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

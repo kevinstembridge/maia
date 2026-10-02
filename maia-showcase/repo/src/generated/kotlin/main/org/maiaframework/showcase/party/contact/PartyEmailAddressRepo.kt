@@ -155,6 +155,15 @@ class PartyEmailAddressRepo(private val dao: PartyEmailAddressDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<PartyEmailAddressEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun closeEffectiveRange(id: DomainId): Boolean {
 
         logger.debug("closeEffectiveRange {}", id)

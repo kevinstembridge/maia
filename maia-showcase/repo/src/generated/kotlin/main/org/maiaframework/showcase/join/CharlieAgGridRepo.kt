@@ -112,6 +112,15 @@ class CharlieAgGridRepo(private val dao: CharlieAgGridDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<CharlieAgGridEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

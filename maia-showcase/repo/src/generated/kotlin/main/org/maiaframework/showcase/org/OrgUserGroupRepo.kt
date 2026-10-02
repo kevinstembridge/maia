@@ -105,5 +105,14 @@ class OrgUserGroupRepo(private val dao: OrgUserGroupDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<OrgUserGroupEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
 }
 

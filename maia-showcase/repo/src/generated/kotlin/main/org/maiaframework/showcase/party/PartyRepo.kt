@@ -98,6 +98,15 @@ class PartyRepo(private val dao: PartyDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<PartyEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

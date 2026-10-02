@@ -105,6 +105,15 @@ class LeftManyRepo(private val dao: LeftManyDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<LeftManyEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

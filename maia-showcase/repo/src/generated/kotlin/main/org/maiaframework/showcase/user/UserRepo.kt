@@ -105,6 +105,15 @@ class UserRepo(private val dao: UserDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<UserEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun pkAndNameFor(id: DomainId): UserPkAndNameDto {
 
         val entity = findByPrimaryKey(id)

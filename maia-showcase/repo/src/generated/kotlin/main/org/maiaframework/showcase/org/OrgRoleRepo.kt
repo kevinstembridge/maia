@@ -113,6 +113,15 @@ class OrgRoleRepo(private val dao: OrgRoleDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<OrgRoleEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun upsertByKey(upsertEntity: OrgRoleEntity): OrgRoleEntity {
 
         logger.debug("upsert {}", upsertEntity)

@@ -147,6 +147,15 @@ class LeftToRightComplexRepo(private val dao: LeftToRightComplexDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<LeftToRightComplexEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun closeEffectiveRange(id: DomainId): Boolean {
 
         logger.debug("closeEffectiveRange {}", id)

@@ -112,6 +112,15 @@ class BravoWithHistoryRepo(private val dao: BravoWithHistoryDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<BravoWithHistoryEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

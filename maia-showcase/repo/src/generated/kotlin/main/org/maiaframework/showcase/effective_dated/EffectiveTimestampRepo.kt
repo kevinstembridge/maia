@@ -112,6 +112,15 @@ class EffectiveTimestampRepo(private val dao: EffectiveTimestampDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<EffectiveTimestampEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

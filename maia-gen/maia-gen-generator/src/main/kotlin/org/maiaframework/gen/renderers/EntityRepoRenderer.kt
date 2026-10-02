@@ -94,6 +94,7 @@ class EntityRepoRenderer(
         `render function bulkInsert`()
         `render function bulkInsertOfCsvRecords`()
         `render function setFields`()
+        `render function bulkSetFields`()
         `render function closeEffectiveRange`()
         `render upsert for primary key`()
         `render upserts for indexes`()
@@ -620,6 +621,45 @@ class EntityRepoRenderer(
             )
 
         }
+
+    }
+
+
+    private fun `render function bulkSetFields`() {
+
+        if (this.entityDef.hasNoModifiableFields()) {
+            return
+        }
+
+        blankLine()
+        blankLine()
+        appendLine("    fun bulkSetFields(updaters: List<${entityDef.entityUpdaterClassDef.uqcn}>) {")
+        blankLine()
+        appendLine("        logger.debug(\"bulkSetFields {}\", updaters)")
+        blankLine()
+
+        if (cacheable) {
+
+            val primaryKeyUpdaterFields = if (entityDef.hasCompositePrimaryKey) {
+                "updater.primaryKey"
+            } else {
+                entityDef.primaryKeyClassFields.joinToString(", ") { "updater.${it.classFieldName}" }
+            }
+
+            appendLine("        try {")
+            appendLine("            this.dao.bulkSetFields(updaters)")
+            appendLine("        } finally {")
+            appendLine("            updaters.forEach { updater -> this.cache.evict($primaryKeyUpdaterFields) }")
+            appendLine("        }")
+
+        } else {
+
+            appendLine("        this.dao.bulkSetFields(updaters)")
+
+        }
+
+        blankLine()
+        appendLine("    }")
 
     }
 

@@ -105,6 +105,15 @@ class RightManyRepo(private val dao: RightManyDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<RightManyEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

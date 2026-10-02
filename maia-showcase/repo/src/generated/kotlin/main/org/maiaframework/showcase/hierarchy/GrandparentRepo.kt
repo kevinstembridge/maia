@@ -112,6 +112,15 @@ class GrandparentRepo(private val dao: GrandparentDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<GrandparentEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

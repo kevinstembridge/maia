@@ -244,6 +244,15 @@ class AllFieldTypesRepo(private val dao: AllFieldTypesDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<AllFieldTypesEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun upsertBySomeIntType(upsertEntity: AllFieldTypesEntity): AllFieldTypesEntity {
 
         logger.debug("upsert {}", upsertEntity)

@@ -98,6 +98,15 @@ class UserGroupRepo(private val dao: UserGroupDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<UserGroupEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun pkAndNameFor(id: DomainId): UserGroupPkAndNameDto {
 
         val entity = findByPrimaryKey(id)

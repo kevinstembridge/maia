@@ -112,6 +112,15 @@ class HistorySubOneRepo(private val dao: HistorySubOneDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<HistorySubOneEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

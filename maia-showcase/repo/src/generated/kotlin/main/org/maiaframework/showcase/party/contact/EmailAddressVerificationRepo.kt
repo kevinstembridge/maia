@@ -120,5 +120,14 @@ class EmailAddressVerificationRepo(private val dao: EmailAddressVerificationDao)
     }
 
 
+    fun bulkSetFields(updaters: List<EmailAddressVerificationEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
 }
 

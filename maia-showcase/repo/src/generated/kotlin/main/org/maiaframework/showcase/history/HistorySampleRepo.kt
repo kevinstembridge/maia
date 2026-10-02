@@ -140,6 +140,15 @@ class HistorySampleRepo(private val dao: HistorySampleDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<HistorySampleEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun upsertBySomeString(upsertEntity: HistorySampleEntity): HistorySampleEntity {
 
         logger.debug("upsert {}", upsertEntity)

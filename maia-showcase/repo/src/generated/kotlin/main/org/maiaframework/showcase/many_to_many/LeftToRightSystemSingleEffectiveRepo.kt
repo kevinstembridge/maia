@@ -140,6 +140,15 @@ class LeftToRightSystemSingleEffectiveRepo(private val dao: LeftToRightSystemSin
     }
 
 
+    fun bulkSetFields(updaters: List<LeftToRightSystemSingleEffectiveEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun closeEffectiveRange(id: DomainId): Boolean {
 
         logger.debug("closeEffectiveRange {}", id)

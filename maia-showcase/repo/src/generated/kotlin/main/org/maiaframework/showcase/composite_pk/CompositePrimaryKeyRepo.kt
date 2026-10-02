@@ -124,6 +124,19 @@ class CompositePrimaryKeyRepo(
     }
 
 
+    fun bulkSetFields(updaters: List<CompositePrimaryKeyEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        try {
+            this.dao.bulkSetFields(updaters)
+        } finally {
+            updaters.forEach { updater -> this.cache.evict(updater.primaryKey) }
+        }
+
+    }
+
+
     fun upsertBySomeStringAndSomeInt(upsertEntity: CompositePrimaryKeyEntity): CompositePrimaryKeyEntity {
 
         logger.debug("upsert {}", upsertEntity)

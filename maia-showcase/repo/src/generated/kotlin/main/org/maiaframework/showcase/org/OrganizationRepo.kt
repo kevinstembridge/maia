@@ -105,6 +105,15 @@ class OrganizationRepo(private val dao: OrganizationDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<OrganizationEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun pkAndNameFor(id: DomainId): OrganizationPkAndNameDto {
 
         val entity = findByPrimaryKey(id)

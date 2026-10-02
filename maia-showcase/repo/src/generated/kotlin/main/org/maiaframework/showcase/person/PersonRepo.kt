@@ -98,5 +98,14 @@ class PersonRepo(private val dao: PersonDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<PersonEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
 }
 

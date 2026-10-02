@@ -112,6 +112,15 @@ class HistorySubTwoRepo(private val dao: HistorySubTwoDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<HistorySubTwoEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

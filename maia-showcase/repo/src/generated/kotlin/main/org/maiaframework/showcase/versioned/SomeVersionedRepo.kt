@@ -126,6 +126,15 @@ class SomeVersionedRepo(private val dao: SomeVersionedDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<SomeVersionedEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun upsertBySomeInt(upsertEntity: SomeVersionedEntity): SomeVersionedEntity {
 
         logger.debug("upsert {}", upsertEntity)

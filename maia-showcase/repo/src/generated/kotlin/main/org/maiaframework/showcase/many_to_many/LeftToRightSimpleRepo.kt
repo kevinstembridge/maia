@@ -126,6 +126,15 @@ class LeftToRightSimpleRepo(private val dao: LeftToRightSimpleDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<LeftToRightSimpleEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

@@ -105,6 +105,15 @@ class AlphaWithHistoryRepo(private val dao: AlphaWithHistoryDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<AlphaWithHistoryEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId) {
 
         this.dao.deleteByPrimaryKey(id)

@@ -141,6 +141,15 @@ class OrgToOrgRoleRepo(private val dao: OrgToOrgRoleDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<OrgToOrgRoleEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun closeEffectiveRange(id: DomainId): Boolean {
 
         logger.debug("closeEffectiveRange {}", id)

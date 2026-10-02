@@ -133,6 +133,15 @@ class ParentOneRepo(private val dao: ParentOneDao) {
     }
 
 
+    fun bulkSetFields(updaters: List<ParentOneEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun upsertBySomeUniqueString(upsertEntity: ParentOneEntity): ParentOneEntity {
 
         logger.debug("upsert {}", upsertEntity)

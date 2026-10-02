@@ -146,6 +146,19 @@ class SimpleRepo(
     }
 
 
+    fun bulkSetFields(updaters: List<SimpleEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        try {
+            this.dao.bulkSetFields(updaters)
+        } finally {
+            updaters.forEach { updater -> this.cache.evict(updater.id) }
+        }
+
+    }
+
+
     fun upsertBySomeString(upsertEntity: SimpleEntity): SimpleEntity {
 
         logger.debug("upsert {}", upsertEntity)

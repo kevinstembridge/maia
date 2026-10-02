@@ -98,6 +98,15 @@ class NonSurrogateIdPrimaryKeyRepo(private val dao: NonSurrogateIdPrimaryKeyDao)
     }
 
 
+    fun bulkSetFields(updaters: List<NonSurrogateIdPrimaryKeyEntityUpdater>) {
+
+        logger.debug("bulkSetFields {}", updaters)
+
+        this.dao.bulkSetFields(updaters)
+
+    }
+
+
     fun upsertById(upsertEntity: NonSurrogateIdPrimaryKeyEntity): NonSurrogateIdPrimaryKeyEntity {
 
         logger.debug("upsert {}", upsertEntity)
