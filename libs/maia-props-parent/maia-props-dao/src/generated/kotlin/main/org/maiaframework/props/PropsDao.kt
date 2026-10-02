@@ -6,6 +6,7 @@ package org.maiaframework.props
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
+import org.maiaframework.jdbc.BulkOptimisticLockingException
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
@@ -493,6 +494,58 @@ class PropsDao(
             "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
             "propertyValue" -> sqlParams.addValue("propertyValue", field.value as String)
             "reviewDate" -> sqlParams.addValue("reviewDate", field.value as LocalDate?)
+        }
+
+    }
+
+
+    fun bulkSetFields(updaters: List<PropsEntityUpdater>) {
+
+        val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
+        val failedUpdaters = mutableListOf<PropsEntityUpdater>()
+        val updatedIds = mutableListOf<String>()
+
+        groups.values.forEach { group ->
+
+            val representative = group.first()
+            val sql = StringBuilder()
+            sql.append("update props.props set ")
+
+            val fieldClauses = representative.fields
+                .plus(FieldUpdate("version_incremented", "version", 0))
+                .joinToString(", ") { field -> "${field.dbColumnName} = :${field.classFieldName}" }
+
+            sql.append(fieldClauses)
+            sql.append(" where property_name = :propertyName")
+            sql.append(" and version = :version")
+
+            val sqlParamsList = group.map { updater ->
+                val sqlParams = SqlParams()
+                updater.fields.forEach { field -> addField(field, sqlParams) }
+
+                sqlParams.addValue("propertyName", updater.propertyName)
+                sqlParams.addValue("version", updater.version)
+                sqlParams.addValue("version_incremented", updater.version + 1)
+                sqlParams
+            }
+
+            val updateCounts = this.jdbcOps.batchUpdate(sql.toString(), sqlParamsList)
+
+            group.forEachIndexed { i, updater ->
+                if (updateCounts[i] == 0) {
+                    failedUpdaters.add(updater)
+                } else {
+                    updatedIds.add(updater.propertyName)
+                }
+            }
+
+        }
+
+        val updatedEntities = findAllByPrimaryKeys(updatedIds)
+        bulkInsertHistory(updatedEntities, ChangeType.UPDATE)
+
+        if (failedUpdaters.isNotEmpty()) {
+            throw BulkOptimisticLockingException(PropsEntityMeta.TABLE_NAME, failedUpdaters.map { it.propertyName to it.version })
         }
 
     }
