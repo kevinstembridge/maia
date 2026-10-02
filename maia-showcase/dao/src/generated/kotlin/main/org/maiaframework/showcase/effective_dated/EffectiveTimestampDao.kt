@@ -389,6 +389,7 @@ class EffectiveTimestampDao(
     private fun addField(field: FieldUpdate, sqlParams: SqlParams) {
 
         when (field.classFieldName) {
+            "someString" -> sqlParams.addValue("someString", field.value as String)
         }
 
     }

@@ -141,6 +141,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         withEffectiveTimestamps(hasSingleEffectiveRecord = true)
         field("someString", FieldTypes.string) {
+            editableByUser()
             lengthConstraint(max = 100)
         }
         index {

@@ -48,6 +48,13 @@ data class EffectiveTimestampEntityUpdater(
         }
 
 
+        fun someString(someString: String) {
+
+            this.fields.add(FieldUpdate("someString", "some_string", someString))
+
+        }
+
+
     }
 
 
