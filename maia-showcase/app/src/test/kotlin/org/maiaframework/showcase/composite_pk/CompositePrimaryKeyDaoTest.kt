@@ -68,7 +68,9 @@ class CompositePrimaryKeyDaoTest : AbstractBlackBoxTest() {
         val updatedValid = this.compositePrimaryKeyDao.findByPrimaryKey(validEntity.primaryKey)
 
         assertThat(updatedStale.someModifiableString).isEqualTo(staleEntity.someModifiableString)
+        assertThat(updatedStale.version).isEqualTo(1)
         assertThat(updatedValid.someModifiableString).isEqualTo("shouldApply")
+        assertThat(updatedValid.version).isEqualTo(2)
 
     }
 
