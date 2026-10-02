@@ -34,6 +34,10 @@ class HistorySuperDaoTest: AbstractBlackBoxTest() {
     private lateinit var historySubTwoHistoryDao: HistorySubTwoHistoryDao
 
 
+    @Autowired
+    private lateinit var historySuperEntityDao: HistorySuperDao
+
+
     @Test
     fun testInsertAndSetFields() {
 
@@ -210,6 +214,61 @@ class HistorySuperDaoTest: AbstractBlackBoxTest() {
         assertThat(updatedStale2.version).isEqualTo(1)
         assertThat(updatedValid.someString).isEqualTo("shouldApply")
         assertThat(updatedValid.version).isEqualTo(2)
+
+    }
+
+
+    @Test
+    fun testBulkSetFields_withMixedHierarchyTypes_dispatchesHistoryToCorrectSubtype() {
+
+        val subOneEntity = HistorySubOneEntityTestBuilder().build()
+        val subTwoEntity = HistorySubTwoEntityTestBuilder().build()
+
+        this.historySubOneDao.insert(subOneEntity)
+        this.historySubTwoDao.insert(subTwoEntity)
+
+        val historyCountBeforeBulkSetFields = this.historySubOneHistoryDao.count()
+
+        val newLastModifiedTimestamp = Instant.now().plusSeconds(60).truncatedTo(ChronoUnit.MILLIS)
+
+        val updaterSubOne = HistorySuperEntityUpdater.forPrimaryKey(subOneEntity.id, subOneEntity.version) {
+            lastModifiedTimestamp(newLastModifiedTimestamp)
+        }
+        val updaterSubTwo = HistorySuperEntityUpdater.forPrimaryKey(subTwoEntity.id, subTwoEntity.version) {
+            lastModifiedTimestamp(newLastModifiedTimestamp)
+        }
+
+        this.historySuperEntityDao.bulkSetFields(listOf(updaterSubOne, updaterSubTwo))
+
+        val updatedSubOne = this.historySubOneDao.findByPrimaryKey(subOneEntity.id)
+        val updatedSubTwo = this.historySubTwoDao.findByPrimaryKey(subTwoEntity.id)
+
+        assertThat(updatedSubOne.lastModifiedTimestamp).isEqualTo(newLastModifiedTimestamp)
+        assertThat(updatedSubOne.version).isEqualTo(2)
+        assertThat(updatedSubOne.someString).isEqualTo(subOneEntity.someString)
+        assertThat(updatedSubTwo.lastModifiedTimestamp).isEqualTo(newLastModifiedTimestamp)
+        assertThat(updatedSubTwo.version).isEqualTo(2)
+        assertThat(updatedSubTwo.someInt).isEqualTo(subTwoEntity.someInt)
+
+        // AND the full concrete-type data for each subtype landed in ITS OWN history table
+        val historySubOneV2 = this.historySubOneHistoryDao.findByPrimaryKey(HistorySubOneHistoryEntityPk(subOneEntity.id, 2))
+        assertHistoryEntity(historySubOneV2, updatedSubOne, 2, ChangeType.UPDATE)
+
+        val historySubTwoV2 = this.historySubTwoHistoryDao.findByPrimaryKey(HistorySubTwoHistoryEntityPk(subTwoEntity.id, 2))
+        assertHistoryEntity(historySubTwoV2, updatedSubTwo, 2, ChangeType.UPDATE)
+
+        // AND neither history DAO received the OTHER subtype's row under its own typed primary key
+        // (both concrete history DAOs share the single maia.history_super_history table, so a row's mere
+        // presence proves nothing about dispatch; what proves correct, non-cross-wired dispatch is that
+        // each entity's updated business field - someString for SubOne, someInt for SubTwo - was only
+        // reachable, correctly populated, through ITS OWN history DAO above via `history(it: HistorySubOneEntity, ...)`
+        // / `history(it: HistorySubTwoEntity, ...)` - Kotlin's overload resolution on bulkInsertHistory's
+        // per-type lists makes it impossible for the generated code to route a HistorySubOneEntity's data
+        // through historySubTwoHistoryDao.bulkInsert() (or vice versa) without a compile error.
+
+        // AND bulkSetFields actually inserted exactly the 2 expected new UPDATE rows into the shared
+        // history table - one per subtype - on top of whatever was there before (not zero, not duplicated)
+        assertThat(this.historySubOneHistoryDao.count()).isEqualTo(historyCountBeforeBulkSetFields + 2)
 
     }
 

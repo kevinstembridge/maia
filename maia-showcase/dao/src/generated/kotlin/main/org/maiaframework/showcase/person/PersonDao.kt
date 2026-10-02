@@ -243,11 +243,11 @@ class PersonDao(
         }
 
         val entitiesUSR: List<UserEntity> = entitiesByType["USR"] as? List<UserEntity> ?: emptyList()
-        val userHistoryEntityList = entitiesUSR.map { history(it, it.version + 1, changeType) }
+        val userHistoryEntityList = entitiesUSR.map { history(it, it.version, changeType) }
         this.userHistoryDao.bulkInsert(userHistoryEntityList)
 
         val entitiesPER: List<PersonEntity> = entitiesByType["PER"] as? List<PersonEntity> ?: emptyList()
-        val personHistoryEntityList = entitiesPER.map { history(it, it.version + 1, changeType) }
+        val personHistoryEntityList = entitiesPER.map { history(it, it.version, changeType) }
         this.personHistoryDao.bulkInsert(personHistoryEntityList)
 
     }

@@ -220,11 +220,11 @@ class UserGroupDao(
         }
 
         val entitiesOUG: List<OrgUserGroupEntity> = entitiesByType["OUG"] as? List<OrgUserGroupEntity> ?: emptyList()
-        val orgUserGroupHistoryEntityList = entitiesOUG.map { history(it, it.version + 1, changeType, this.organizationDao.findVersionByPrimaryKey(it.org)) }
+        val orgUserGroupHistoryEntityList = entitiesOUG.map { history(it, it.version, changeType, this.organizationDao.findVersionByPrimaryKey(it.org)) }
         this.orgUserGroupHistoryDao.bulkInsert(orgUserGroupHistoryEntityList)
 
         val entitiesUG: List<UserGroupEntity> = entitiesByType["UG"] as? List<UserGroupEntity> ?: emptyList()
-        val userGroupHistoryEntityList = entitiesUG.map { history(it, it.version + 1, changeType) }
+        val userGroupHistoryEntityList = entitiesUG.map { history(it, it.version, changeType) }
         this.userGroupHistoryDao.bulkInsert(userGroupHistoryEntityList)
 
     }

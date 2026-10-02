@@ -211,11 +211,11 @@ class HistorySuperDao(
         }
 
         val entitiesSUB1: List<HistorySubOneEntity> = entitiesByType["SUB1"] as? List<HistorySubOneEntity> ?: emptyList()
-        val historySubOneHistoryEntityList = entitiesSUB1.map { history(it, it.version + 1, changeType, this.partyDao.findVersionByPrimaryKey(it.createdBy), this.partyDao.findVersionByPrimaryKey(it.lastModifiedBy)) }
+        val historySubOneHistoryEntityList = entitiesSUB1.map { history(it, it.version, changeType, this.partyDao.findVersionByPrimaryKey(it.createdBy), this.partyDao.findVersionByPrimaryKey(it.lastModifiedBy)) }
         this.historySubOneHistoryDao.bulkInsert(historySubOneHistoryEntityList)
 
         val entitiesSUB2: List<HistorySubTwoEntity> = entitiesByType["SUB2"] as? List<HistorySubTwoEntity> ?: emptyList()
-        val historySubTwoHistoryEntityList = entitiesSUB2.map { history(it, it.version + 1, changeType, this.partyDao.findVersionByPrimaryKey(it.createdBy), this.partyDao.findVersionByPrimaryKey(it.lastModifiedBy)) }
+        val historySubTwoHistoryEntityList = entitiesSUB2.map { history(it, it.version, changeType, this.partyDao.findVersionByPrimaryKey(it.createdBy), this.partyDao.findVersionByPrimaryKey(it.lastModifiedBy)) }
         this.historySubTwoHistoryDao.bulkInsert(historySubTwoHistoryEntityList)
 
     }

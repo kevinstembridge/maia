@@ -665,7 +665,7 @@ class JdbcDaoRenderer(
                 appendLine("        val entities${entityDef.typeDiscriminator}: List<${entityDef.entityUqcn}> = entitiesByType[\"${entityDef.typeDiscriminator}\"] as? List<${entityDef.entityUqcn}> ?: emptyList()")
 
                 if (fkFieldDefs.isEmpty()) {
-                    appendLine("        val ${entityDef.historyEntityDef!!.entityUqcn.firstToLower()}List = entities${entityDef.typeDiscriminator}.map { history(it, it.version + 1, changeType) }")
+                    appendLine("        val ${entityDef.historyEntityDef!!.entityUqcn.firstToLower()}List = entities${entityDef.typeDiscriminator}.map { history(it, it.version, changeType) }")
                 } else {
                     val versionLookupsCsv = fkFieldDefs.joinToString(", ") { fk ->
                         val foreignEntityDef = fk.foreignKeyFieldDef!!.foreignEntityDef
@@ -676,7 +676,7 @@ class JdbcDaoRenderer(
                             "$daoRef.findVersionByPrimaryKey(it.${fk.classFieldName})"
                         }
                     }
-                    appendLine("        val ${entityDef.historyEntityDef!!.entityUqcn.firstToLower()}List = entities${entityDef.typeDiscriminator}.map { history(it, it.version + 1, changeType, $versionLookupsCsv) }")
+                    appendLine("        val ${entityDef.historyEntityDef!!.entityUqcn.firstToLower()}List = entities${entityDef.typeDiscriminator}.map { history(it, it.version, changeType, $versionLookupsCsv) }")
                 }
 
                 appendLine("        this.${entityDef.historyEntityDef!!.daoFqcn.uqcn.firstToLower()}.bulkInsert(${entityDef.historyEntityDef!!.entityUqcn.firstToLower()}List)")
