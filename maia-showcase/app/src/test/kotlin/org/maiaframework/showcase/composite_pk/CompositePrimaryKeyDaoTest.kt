@@ -3,6 +3,7 @@ package org.maiaframework.showcase.composite_pk
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
+import org.maiaframework.domain.ChangeType
 import org.maiaframework.jdbc.BulkOptimisticLockingException
 import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +14,10 @@ class CompositePrimaryKeyDaoTest : AbstractBlackBoxTest() {
 
     @Autowired
     private lateinit var compositePrimaryKeyDao: CompositePrimaryKeyDao
+
+
+    @Autowired
+    private lateinit var compositePrimaryKeyHistoryDao: CompositePrimaryKeyHistoryDao
 
 
     @Test
@@ -40,6 +45,18 @@ class CompositePrimaryKeyDaoTest : AbstractBlackBoxTest() {
         assertThat(updatedEntity1.version).isEqualTo(2)
         assertThat(updatedEntity2.someModifiableString).isEqualTo("updated2")
         assertThat(updatedEntity2.version).isEqualTo(2)
+
+        val historyEntity1V2 = this.compositePrimaryKeyHistoryDao.findByPrimaryKey(
+            CompositePrimaryKeyHistoryEntityPk(entity1.someInt, entity1.someString, 2)
+        )
+        assertThat(historyEntity1V2.someModifiableString).isEqualTo("updated1")
+        assertThat(historyEntity1V2.changeType).isEqualTo(ChangeType.UPDATE)
+
+        val historyEntity2V2 = this.compositePrimaryKeyHistoryDao.findByPrimaryKey(
+            CompositePrimaryKeyHistoryEntityPk(entity2.someInt, entity2.someString, 2)
+        )
+        assertThat(historyEntity2V2.someModifiableString).isEqualTo("updated2")
+        assertThat(historyEntity2V2.changeType).isEqualTo(ChangeType.UPDATE)
 
     }
 
