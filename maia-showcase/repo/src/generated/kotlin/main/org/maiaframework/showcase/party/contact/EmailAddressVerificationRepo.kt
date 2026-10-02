@@ -106,7 +106,7 @@ class EmailAddressVerificationRepo(private val dao: EmailAddressVerificationDao)
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

@@ -91,7 +91,7 @@ class OrgUserGroupRepo(private val dao: OrgUserGroupDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

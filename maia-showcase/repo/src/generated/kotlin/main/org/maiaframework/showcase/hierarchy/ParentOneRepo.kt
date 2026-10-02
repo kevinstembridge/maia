@@ -119,7 +119,7 @@ class ParentOneRepo(private val dao: ParentOneDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

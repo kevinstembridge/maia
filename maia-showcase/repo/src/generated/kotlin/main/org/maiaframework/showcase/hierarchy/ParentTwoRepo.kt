@@ -119,7 +119,7 @@ class ParentTwoRepo(private val dao: ParentTwoDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

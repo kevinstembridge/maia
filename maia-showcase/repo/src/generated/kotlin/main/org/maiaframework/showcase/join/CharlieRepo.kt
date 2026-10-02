@@ -98,7 +98,7 @@ class CharlieRepo(private val dao: CharlieDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

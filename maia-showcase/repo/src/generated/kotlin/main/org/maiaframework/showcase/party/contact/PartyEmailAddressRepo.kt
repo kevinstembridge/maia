@@ -141,7 +141,7 @@ class PartyEmailAddressRepo(private val dao: PartyEmailAddressDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

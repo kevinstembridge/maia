@@ -84,7 +84,7 @@ class UserGroupRepo(private val dao: UserGroupDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

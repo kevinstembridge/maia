@@ -91,7 +91,7 @@ class RightManyRepo(private val dao: RightManyDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

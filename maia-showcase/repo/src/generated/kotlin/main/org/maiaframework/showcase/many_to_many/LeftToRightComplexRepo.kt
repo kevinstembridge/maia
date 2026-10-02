@@ -133,7 +133,7 @@ class LeftToRightComplexRepo(private val dao: LeftToRightComplexDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

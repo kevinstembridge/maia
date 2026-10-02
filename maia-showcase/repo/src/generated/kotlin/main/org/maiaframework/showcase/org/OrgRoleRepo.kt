@@ -99,7 +99,7 @@ class OrgRoleRepo(private val dao: OrgRoleDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

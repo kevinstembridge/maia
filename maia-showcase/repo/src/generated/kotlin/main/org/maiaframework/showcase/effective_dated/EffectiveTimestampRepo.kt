@@ -98,7 +98,7 @@ class EffectiveTimestampRepo(private val dao: EffectiveTimestampDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

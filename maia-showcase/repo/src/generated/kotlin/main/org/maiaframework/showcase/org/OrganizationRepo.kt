@@ -91,7 +91,7 @@ class OrganizationRepo(private val dao: OrganizationDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

@@ -84,7 +84,7 @@ class PersonRepo(private val dao: PersonDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

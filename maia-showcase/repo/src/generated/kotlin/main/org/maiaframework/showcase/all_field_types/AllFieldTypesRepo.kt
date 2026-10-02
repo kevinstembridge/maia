@@ -230,7 +230,7 @@ class AllFieldTypesRepo(private val dao: AllFieldTypesDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

@@ -126,7 +126,7 @@ class LeftToRightSystemEffectiveRepo(private val dao: LeftToRightSystemEffective
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

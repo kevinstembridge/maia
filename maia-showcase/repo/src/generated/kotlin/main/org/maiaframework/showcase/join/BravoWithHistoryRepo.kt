@@ -98,7 +98,7 @@ class BravoWithHistoryRepo(private val dao: BravoWithHistoryDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

@@ -98,7 +98,7 @@ class HistorySubTwoRepo(private val dao: HistorySubTwoDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

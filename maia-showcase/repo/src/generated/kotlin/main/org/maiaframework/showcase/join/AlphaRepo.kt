@@ -91,7 +91,7 @@ class AlphaRepo(private val dao: AlphaDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

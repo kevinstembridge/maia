@@ -126,7 +126,7 @@ class HistorySampleRepo(private val dao: HistorySampleDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

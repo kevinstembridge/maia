@@ -91,7 +91,7 @@ class LeftManyRepo(private val dao: LeftManyDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

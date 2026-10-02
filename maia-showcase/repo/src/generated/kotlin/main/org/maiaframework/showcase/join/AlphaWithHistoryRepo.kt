@@ -91,7 +91,7 @@ class AlphaWithHistoryRepo(private val dao: AlphaWithHistoryDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

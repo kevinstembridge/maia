@@ -84,7 +84,7 @@ class NonSurrogatePrimaryKeyRepo(private val dao: NonSurrogatePrimaryKeyDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

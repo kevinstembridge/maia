@@ -98,7 +98,7 @@ class CharlieAgGridRepo(private val dao: CharlieAgGridDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

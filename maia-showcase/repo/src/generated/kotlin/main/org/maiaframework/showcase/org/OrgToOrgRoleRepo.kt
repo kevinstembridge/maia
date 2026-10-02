@@ -127,7 +127,7 @@ class OrgToOrgRoleRepo(private val dao: OrgToOrgRoleDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

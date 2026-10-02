@@ -98,7 +98,7 @@ class GrandparentRepo(private val dao: GrandparentDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

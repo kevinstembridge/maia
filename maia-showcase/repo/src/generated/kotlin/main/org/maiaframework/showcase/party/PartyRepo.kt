@@ -84,7 +84,7 @@ class PartyRepo(private val dao: PartyDao) {
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 

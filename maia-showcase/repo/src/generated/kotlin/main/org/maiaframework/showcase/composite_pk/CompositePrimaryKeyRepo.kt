@@ -104,7 +104,7 @@ class CompositePrimaryKeyRepo(
 
         logger.debug("setFields {}", updaters)
 
-        updaters.forEach { setFields(it) }
+        this.bulkSetFields(updaters)
 
     }
 
