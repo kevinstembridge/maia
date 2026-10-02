@@ -407,6 +407,37 @@ class SimpleDao(
     }
 
 
+    fun bulkSetFields(updaters: List<SimpleEntityUpdater>) {
+
+        val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
+
+        groups.values.forEach { group ->
+
+            val representative = group.first()
+            val sql = StringBuilder()
+            sql.append("update maia.simple set ")
+
+            val fieldClauses = representative.fields
+                .joinToString(", ") { field -> "${field.dbColumnName} = :${field.classFieldName}" }
+
+            sql.append(fieldClauses)
+            sql.append(" where id = :id")
+
+            val sqlParamsList = group.map { updater ->
+                val sqlParams = SqlParams()
+                updater.fields.forEach { field -> addField(field, sqlParams) }
+
+                sqlParams.addValue("id", updater.id)
+                sqlParams
+            }
+
+            this.jdbcOps.batchUpdate(sql.toString(), sqlParamsList)
+
+        }
+
+    }
+
+
     fun deleteByPrimaryKey(id: DomainId): Boolean {
 
         val existingEntity = findByPrimaryKeyOrNull(id) ?: return false

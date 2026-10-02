@@ -508,6 +508,54 @@ class UserGroupMembershipDao(
     }
 
 
+    fun bulkSetFields(updaters: List<UserGroupMembershipEntityUpdater>) {
+
+        val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
+
+        groups.values.forEach { group ->
+
+            val representative = group.first()
+            val sql = StringBuilder()
+            sql.append("update maia.user_group_membership set ")
+
+            val effectiveFromUpdate = representative.fields.find { it.classFieldName == "effectiveFrom" }
+            val effectiveToUpdate = representative.fields.find { it.classFieldName == "effectiveTo" }
+
+            val fieldClauses = representative.fields
+                .filterNot { it.classFieldName == "effectiveFrom" || it.classFieldName == "effectiveTo" }
+                .map { field -> "${field.dbColumnName} = :${field.classFieldName}" }
+                .plus(
+                    when {
+                        effectiveFromUpdate != null && effectiveToUpdate != null -> listOf("effective_range = tstzrange(:effectiveFrom, :effectiveTo)")
+                        effectiveFromUpdate != null -> listOf("effective_range = tstzrange(:effectiveFrom, upper(effective_range))")
+                        effectiveToUpdate != null -> listOf("effective_range = tstzrange(lower(effective_range), :effectiveTo)")
+                        else -> emptyList()
+                    }
+                )
+                .joinToString(", ")
+
+            sql.append(fieldClauses)
+            sql.append(" where id = :id")
+
+            val sqlParamsList = group.map { updater ->
+                val sqlParams = SqlParams()
+                updater.fields.forEach { field -> addField(field, sqlParams) }
+                val effectiveFrom = updater.fields.find { it.classFieldName == "effectiveFrom" }
+                val effectiveTo = updater.fields.find { it.classFieldName == "effectiveTo" }
+                effectiveFrom?.let { sqlParams.addValue("effectiveFrom", it.value as Instant?) }
+                effectiveTo?.let { sqlParams.addValue("effectiveTo", it.value as Instant?) }
+
+                sqlParams.addValue("id", updater.id)
+                sqlParams
+            }
+
+            this.jdbcOps.batchUpdate(sql.toString(), sqlParamsList)
+
+        }
+
+    }
+
+
     fun closeEffectiveRange(id: DomainId): Boolean {
 
         val updatedCount = this.jdbcOps.update(

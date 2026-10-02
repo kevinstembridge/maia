@@ -292,6 +292,7 @@ class JdbcDaoRenderer(
         `render upsert for primary key`()
         `render upserts for indexes`()
         `render the setFields function`()
+        `render the bulkSetFields function`()
         `render the closeEffectiveRange function`()
         `render the deleteByPrimaryKey function`()
         `render the deleteAll function`()
@@ -2406,6 +2407,207 @@ class JdbcDaoRenderer(
             }
 
         appendLine("        }")
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
+    private fun `render the bulkSetFields function`() {
+
+        if (entityDef.hasNoModifiableFields()) {
+            return
+        }
+
+        val needsOutcomeTracking = entityDef.versioned.value || entityDef.withVersionHistory.value
+        val pkField = if (entityDef.hasCompositePrimaryKey) null else entityDef.primaryKeyFields.single()
+
+        addImportFor(Fqcns.MAIA_FIELD_UPDATE)
+
+        blankLine()
+        blankLine()
+        appendLine("    fun bulkSetFields(updaters: List<${entityDef.entityUpdaterClassDef.uqcn}>) {")
+        blankLine()
+        appendLine("        val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }")
+
+        if (entityDef.versioned.value) {
+            addImportFor(Fqcns.MAIA_JDBC_BULK_OPTIMISTIC_LOCKING_EXCEPTION)
+            appendLine("        val failedUpdaters = mutableListOf<${entityDef.entityUpdaterClassDef.uqcn}>()")
+        }
+
+        if (entityDef.withVersionHistory.value) {
+
+            if (entityDef.hasCompositePrimaryKey) {
+
+                appendLine("        val updatedPrimaryKeys = mutableListOf<${entityDef.entityPkClassDef.uqcn}>()")
+
+            } else {
+
+                // NOTE: do not hardcode DomainId here. This expresses the non-composite primary
+                // key's actual Kotlin type, the exact same way `render the findAllByPrimaryKeys
+                // function`() does for its `ids: List<X>` parameter, so the two stay consistent
+                // for entities whose single PK field isn't DomainId-typed (e.g. EmailAddress,
+                // or a String value-class PK).
+                val pkFieldType = pkField!!.fieldType
+                addImportFor(pkFieldType)
+                val pkTypeName = pkFieldType.unqualifiedToString
+
+                appendLine("        val updatedIds = mutableListOf<$pkTypeName>()")
+
+            }
+
+        }
+
+        blankLine()
+        appendLine("        groups.values.forEach { group ->")
+        blankLine()
+        appendLine("            val representative = group.first()")
+        appendLine("            val sql = StringBuilder()")
+        appendLine("            sql.append(\"update ${entityDef.schemaAndTableName} set \")")
+        blankLine()
+
+        if (entityDef.hasEffectiveTimestamps) {
+
+            addImportFor<Instant>()
+            appendLine("            val effectiveFromUpdate = representative.fields.find { it.classFieldName == \"effectiveFrom\" }")
+            appendLine("            val effectiveToUpdate = representative.fields.find { it.classFieldName == \"effectiveTo\" }")
+            blankLine()
+            appendLine("            val fieldClauses = representative.fields")
+            appendLine("                .filterNot { it.classFieldName == \"effectiveFrom\" || it.classFieldName == \"effectiveTo\" }")
+
+            if (entityDef.versioned.value) {
+                appendLine("                .plus(FieldUpdate(\"version_incremented\", \"version\", 0))")
+            }
+
+            appendLine("                .map { field -> \"\${field.dbColumnName} = :\${field.classFieldName}\" }")
+            appendLine("                .plus(")
+            appendLine("                    when {")
+            appendLine("                        effectiveFromUpdate != null && effectiveToUpdate != null -> listOf(\"effective_range = tstzrange(:effectiveFrom, :effectiveTo)\")")
+            appendLine("                        effectiveFromUpdate != null -> listOf(\"effective_range = tstzrange(:effectiveFrom, upper(effective_range))\")")
+            appendLine("                        effectiveToUpdate != null -> listOf(\"effective_range = tstzrange(lower(effective_range), :effectiveTo)\")")
+            appendLine("                        else -> emptyList()")
+            appendLine("                    }")
+            appendLine("                )")
+            appendLine("                .joinToString(\", \")")
+
+        } else {
+
+            appendLine("            val fieldClauses = representative.fields")
+
+            if (entityDef.versioned.value) {
+                appendLine("                .plus(FieldUpdate(\"version_incremented\", \"version\", 0))")
+            }
+
+            appendLine("                .joinToString(\", \") { field -> \"\${field.dbColumnName} = :\${field.classFieldName}\" }")
+
+        }
+
+        blankLine()
+        appendLine("            sql.append(fieldClauses)")
+        appendLine("            sql.append(\" where ${entityDef.primaryKeyFields.joinToString(" and ") { "${it.tableColumnName} = :${it.classFieldName}" }}\")")
+
+        if (entityDef.versioned.value) {
+            appendLine("            sql.append(\" and version = :version\")")
+        }
+
+        blankLine()
+        appendLine("            val sqlParamsList = group.map { updater ->")
+        appendLine("                val sqlParams = SqlParams()")
+        appendLine("                updater.fields.forEach { field -> addField(field, sqlParams) }")
+
+        if (entityDef.hasEffectiveTimestamps) {
+            appendLine("                val effectiveFrom = updater.fields.find { it.classFieldName == \"effectiveFrom\" }")
+            appendLine("                val effectiveTo = updater.fields.find { it.classFieldName == \"effectiveTo\" }")
+            appendLine("                effectiveFrom?.let { sqlParams.addValue(\"effectiveFrom\", it.value as Instant?) }")
+            appendLine("                effectiveTo?.let { sqlParams.addValue(\"effectiveTo\", it.value as Instant?) }")
+        }
+
+        blankLine()
+
+        if (entityDef.hasCompositePrimaryKey) {
+
+            entityDef.primaryKeyFields.forEach {
+                append("                sqlParams.")
+                renderSqlParamAddValueFor(it, "", entityParameterName = "updater.primaryKey", 0, { line -> appendLine(line) })
+            }
+
+        } else {
+
+            append("                sqlParams.")
+            renderSqlParamAddValueFor(pkField!!, "", entityParameterName = "updater", 0, { line -> appendLine(line) })
+
+        }
+
+        if (entityDef.versioned.value) {
+            appendLine("                sqlParams.addValue(\"version\", updater.version)")
+            appendLine("                sqlParams.addValue(\"version_incremented\", updater.version + 1)")
+        }
+
+        appendLine("                sqlParams")
+        appendLine("            }")
+        blankLine()
+
+        if (needsOutcomeTracking) {
+
+            appendLine("            val updateCounts = this.jdbcOps.batchUpdate(sql.toString(), sqlParamsList)")
+            blankLine()
+            appendLine("            group.forEachIndexed { i, updater ->")
+            appendLine("                if (updateCounts[i] == 0) {")
+
+            if (entityDef.versioned.value) {
+                appendLine("                    failedUpdaters.add(updater)")
+            }
+
+            appendLine("                } else {")
+
+            if (entityDef.withVersionHistory.value) {
+
+                if (entityDef.hasCompositePrimaryKey) {
+                    appendLine("                    updatedPrimaryKeys.add(updater.primaryKey)")
+                } else {
+                    appendLine("                    updatedIds.add(updater.${pkField!!.classFieldName})")
+                }
+
+            }
+
+            appendLine("                }")
+            appendLine("            }")
+
+        } else {
+
+            appendLine("            this.jdbcOps.batchUpdate(sql.toString(), sqlParamsList)")
+
+        }
+
+        blankLine()
+        appendLine("        }")
+
+        if (entityDef.withVersionHistory.value) {
+
+            blankLine()
+
+            if (entityDef.hasCompositePrimaryKey) {
+                appendLine("        val updatedEntities = findAllByPrimaryKeys(updatedPrimaryKeys)")
+            } else {
+                appendLine("        val updatedEntities = findAllByPrimaryKeys(updatedIds)")
+            }
+
+            addImportFor<ChangeType>()
+            appendLine("        bulkInsertHistory(updatedEntities, ChangeType.UPDATE)")
+
+        }
+
+        if (entityDef.versioned.value) {
+
+            blankLine()
+            appendLine("        if (failedUpdaters.isNotEmpty()) {")
+
+            val primaryKeyExpr = if (entityDef.hasCompositePrimaryKey) "it.primaryKey" else "it.${pkField!!.classFieldName}"
+            appendLine("            throw BulkOptimisticLockingException(${entityDef.metaClassDef.uqcn}.TABLE_NAME, failedUpdaters.map { $primaryKeyExpr to it.version })")
+            appendLine("        }")
+
+        }
+
         blankLine()
         appendLine("    }")
 

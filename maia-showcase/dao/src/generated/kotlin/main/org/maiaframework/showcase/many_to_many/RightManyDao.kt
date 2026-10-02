@@ -7,6 +7,7 @@ import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
+import org.maiaframework.jdbc.BulkOptimisticLockingException
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
@@ -418,6 +419,58 @@ class RightManyDao(
         when (field.classFieldName) {
             "someInt" -> sqlParams.addValue("someInt", field.value as Int)
             "someString" -> sqlParams.addValue("someString", field.value as String)
+        }
+
+    }
+
+
+    fun bulkSetFields(updaters: List<RightManyEntityUpdater>) {
+
+        val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
+        val failedUpdaters = mutableListOf<RightManyEntityUpdater>()
+        val updatedIds = mutableListOf<DomainId>()
+
+        groups.values.forEach { group ->
+
+            val representative = group.first()
+            val sql = StringBuilder()
+            sql.append("update maia.right_many set ")
+
+            val fieldClauses = representative.fields
+                .plus(FieldUpdate("version_incremented", "version", 0))
+                .joinToString(", ") { field -> "${field.dbColumnName} = :${field.classFieldName}" }
+
+            sql.append(fieldClauses)
+            sql.append(" where id = :id")
+            sql.append(" and version = :version")
+
+            val sqlParamsList = group.map { updater ->
+                val sqlParams = SqlParams()
+                updater.fields.forEach { field -> addField(field, sqlParams) }
+
+                sqlParams.addValue("id", updater.id)
+                sqlParams.addValue("version", updater.version)
+                sqlParams.addValue("version_incremented", updater.version + 1)
+                sqlParams
+            }
+
+            val updateCounts = this.jdbcOps.batchUpdate(sql.toString(), sqlParamsList)
+
+            group.forEachIndexed { i, updater ->
+                if (updateCounts[i] == 0) {
+                    failedUpdaters.add(updater)
+                } else {
+                    updatedIds.add(updater.id)
+                }
+            }
+
+        }
+
+        val updatedEntities = findAllByPrimaryKeys(updatedIds)
+        bulkInsertHistory(updatedEntities, ChangeType.UPDATE)
+
+        if (failedUpdaters.isNotEmpty()) {
+            throw BulkOptimisticLockingException(RightManyEntityMeta.TABLE_NAME, failedUpdaters.map { it.id to it.version })
         }
 
     }

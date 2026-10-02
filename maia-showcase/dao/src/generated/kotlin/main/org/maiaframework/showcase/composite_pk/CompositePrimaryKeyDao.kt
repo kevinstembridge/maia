@@ -6,6 +6,7 @@ package org.maiaframework.showcase.composite_pk
 import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
+import org.maiaframework.jdbc.BulkOptimisticLockingException
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.OptimisticLockingException
@@ -444,6 +445,59 @@ class CompositePrimaryKeyDao(
 
         when (field.classFieldName) {
             "someModifiableString" -> sqlParams.addValue("someModifiableString", field.value as String)
+        }
+
+    }
+
+
+    fun bulkSetFields(updaters: List<CompositePrimaryKeyEntityUpdater>) {
+
+        val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
+        val failedUpdaters = mutableListOf<CompositePrimaryKeyEntityUpdater>()
+        val updatedPrimaryKeys = mutableListOf<CompositePrimaryKeyEntityPk>()
+
+        groups.values.forEach { group ->
+
+            val representative = group.first()
+            val sql = StringBuilder()
+            sql.append("update maia.composite_primary_key set ")
+
+            val fieldClauses = representative.fields
+                .plus(FieldUpdate("version_incremented", "version", 0))
+                .joinToString(", ") { field -> "${field.dbColumnName} = :${field.classFieldName}" }
+
+            sql.append(fieldClauses)
+            sql.append(" where some_string = :someString and some_int = :someInt")
+            sql.append(" and version = :version")
+
+            val sqlParamsList = group.map { updater ->
+                val sqlParams = SqlParams()
+                updater.fields.forEach { field -> addField(field, sqlParams) }
+
+                sqlParams.addValue("someString", updater.primaryKey.someString)
+                sqlParams.addValue("someInt", updater.primaryKey.someInt)
+                sqlParams.addValue("version", updater.version)
+                sqlParams.addValue("version_incremented", updater.version + 1)
+                sqlParams
+            }
+
+            val updateCounts = this.jdbcOps.batchUpdate(sql.toString(), sqlParamsList)
+
+            group.forEachIndexed { i, updater ->
+                if (updateCounts[i] == 0) {
+                    failedUpdaters.add(updater)
+                } else {
+                    updatedPrimaryKeys.add(updater.primaryKey)
+                }
+            }
+
+        }
+
+        val updatedEntities = findAllByPrimaryKeys(updatedPrimaryKeys)
+        bulkInsertHistory(updatedEntities, ChangeType.UPDATE)
+
+        if (failedUpdaters.isNotEmpty()) {
+            throw BulkOptimisticLockingException(CompositePrimaryKeyEntityMeta.TABLE_NAME, failedUpdaters.map { it.primaryKey to it.version })
         }
 
     }

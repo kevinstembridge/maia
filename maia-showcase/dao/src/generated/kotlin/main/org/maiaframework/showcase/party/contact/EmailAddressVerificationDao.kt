@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.domain.persist.FieldUpdate
+import org.maiaframework.jdbc.BulkOptimisticLockingException
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
@@ -444,6 +445,70 @@ class EmailAddressVerificationDao(
         when (field.classFieldName) {
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId?)
             "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
+        }
+
+    }
+
+
+    fun bulkSetFields(updaters: List<EmailAddressVerificationEntityUpdater>) {
+
+        val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
+        val failedUpdaters = mutableListOf<EmailAddressVerificationEntityUpdater>()
+
+        groups.values.forEach { group ->
+
+            val representative = group.first()
+            val sql = StringBuilder()
+            sql.append("update maia.email_address_verification set ")
+
+            val effectiveFromUpdate = representative.fields.find { it.classFieldName == "effectiveFrom" }
+            val effectiveToUpdate = representative.fields.find { it.classFieldName == "effectiveTo" }
+
+            val fieldClauses = representative.fields
+                .filterNot { it.classFieldName == "effectiveFrom" || it.classFieldName == "effectiveTo" }
+                .plus(FieldUpdate("version_incremented", "version", 0))
+                .map { field -> "${field.dbColumnName} = :${field.classFieldName}" }
+                .plus(
+                    when {
+                        effectiveFromUpdate != null && effectiveToUpdate != null -> listOf("effective_range = tstzrange(:effectiveFrom, :effectiveTo)")
+                        effectiveFromUpdate != null -> listOf("effective_range = tstzrange(:effectiveFrom, upper(effective_range))")
+                        effectiveToUpdate != null -> listOf("effective_range = tstzrange(lower(effective_range), :effectiveTo)")
+                        else -> emptyList()
+                    }
+                )
+                .joinToString(", ")
+
+            sql.append(fieldClauses)
+            sql.append(" where id = :id")
+            sql.append(" and version = :version")
+
+            val sqlParamsList = group.map { updater ->
+                val sqlParams = SqlParams()
+                updater.fields.forEach { field -> addField(field, sqlParams) }
+                val effectiveFrom = updater.fields.find { it.classFieldName == "effectiveFrom" }
+                val effectiveTo = updater.fields.find { it.classFieldName == "effectiveTo" }
+                effectiveFrom?.let { sqlParams.addValue("effectiveFrom", it.value as Instant?) }
+                effectiveTo?.let { sqlParams.addValue("effectiveTo", it.value as Instant?) }
+
+                sqlParams.addValue("id", updater.id)
+                sqlParams.addValue("version", updater.version)
+                sqlParams.addValue("version_incremented", updater.version + 1)
+                sqlParams
+            }
+
+            val updateCounts = this.jdbcOps.batchUpdate(sql.toString(), sqlParamsList)
+
+            group.forEachIndexed { i, updater ->
+                if (updateCounts[i] == 0) {
+                    failedUpdaters.add(updater)
+                } else {
+                }
+            }
+
+        }
+
+        if (failedUpdaters.isNotEmpty()) {
+            throw BulkOptimisticLockingException(EmailAddressVerificationEntityMeta.TABLE_NAME, failedUpdaters.map { it.id to it.version })
         }
 
     }

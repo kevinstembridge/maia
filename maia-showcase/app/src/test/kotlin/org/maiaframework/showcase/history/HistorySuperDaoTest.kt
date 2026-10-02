@@ -2,9 +2,13 @@ package org.maiaframework.showcase.history
 
 import org.maiaframework.domain.ChangeType
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
+import org.maiaframework.jdbc.BulkOptimisticLockingException
 import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 
 class HistorySuperDaoTest: AbstractBlackBoxTest() {
@@ -104,6 +108,110 @@ class HistorySuperDaoTest: AbstractBlackBoxTest() {
 
 
     // TODO test update of inline fields
+
+
+    @Test
+    fun testBulkSetFields_updatesAllRows_whenAllUpdatersSetTheSameField() {
+
+        val entity1 = HistorySubOneEntityTestBuilder().build()
+        val entity2 = HistorySubOneEntityTestBuilder().build()
+
+        this.historySubOneDao.insert(entity1)
+        this.historySubOneDao.insert(entity2)
+
+        val updater1 = HistorySubOneEntityUpdater.forPrimaryKey(entity1.id, entity1.version) {
+            someString("updated1")
+        }
+        val updater2 = HistorySubOneEntityUpdater.forPrimaryKey(entity2.id, entity2.version) {
+            someString("updated2")
+        }
+
+        this.historySubOneDao.bulkSetFields(listOf(updater1, updater2))
+
+        val updatedEntity1 = this.historySubOneDao.findByPrimaryKey(entity1.id)
+        val updatedEntity2 = this.historySubOneDao.findByPrimaryKey(entity2.id)
+
+        assertThat(updatedEntity1.someString).isEqualTo("updated1")
+        assertThat(updatedEntity1.version).isEqualTo(2)
+        assertThat(updatedEntity2.someString).isEqualTo("updated2")
+        assertThat(updatedEntity2.version).isEqualTo(2)
+
+        val historyEntity1V2 = this.historySubOneHistoryDao.findByPrimaryKey(HistorySubOneHistoryEntityPk(entity1.id, 2))
+        assertHistoryEntity(historyEntity1V2, updatedEntity1, ChangeType.UPDATE)
+
+        val historyEntity2V2 = this.historySubOneHistoryDao.findByPrimaryKey(HistorySubOneHistoryEntityPk(entity2.id, 2))
+        assertHistoryEntity(historyEntity2V2, updatedEntity2, ChangeType.UPDATE)
+
+    }
+
+
+    @Test
+    fun testBulkSetFields_groupsByFieldSet_whenUpdatersSetDifferentFields() {
+
+        val entity1 = HistorySubOneEntityTestBuilder().build()
+        val entity2 = HistorySubOneEntityTestBuilder().build()
+
+        this.historySubOneDao.insert(entity1)
+        this.historySubOneDao.insert(entity2)
+
+        val newTimestamp = Instant.now().plusSeconds(120).truncatedTo(ChronoUnit.MILLIS)
+
+        val updater1 = HistorySubOneEntityUpdater.forPrimaryKey(entity1.id, entity1.version) {
+            someString("updated1")
+        }
+        val updater2 = HistorySubOneEntityUpdater.forPrimaryKey(entity2.id, entity2.version) {
+            lastModifiedTimestamp(newTimestamp)
+        }
+
+        this.historySubOneDao.bulkSetFields(listOf(updater1, updater2))
+
+        val updatedEntity1 = this.historySubOneDao.findByPrimaryKey(entity1.id)
+        val updatedEntity2 = this.historySubOneDao.findByPrimaryKey(entity2.id)
+
+        assertThat(updatedEntity1.someString).isEqualTo("updated1")
+        assertThat(updatedEntity2.lastModifiedTimestamp).isEqualTo(newTimestamp)
+        assertThat(updatedEntity2.someString).isEqualTo(entity2.someString)
+
+    }
+
+
+    @Test
+    fun testBulkSetFields_throwsAggregateException_listingAllStaleRows_butStillUpdatesValidOnes() {
+
+        val staleEntity1 = HistorySubOneEntityTestBuilder().build()
+        val staleEntity2 = HistorySubOneEntityTestBuilder().build()
+        val validEntity = HistorySubOneEntityTestBuilder().build()
+
+        this.historySubOneDao.insert(staleEntity1)
+        this.historySubOneDao.insert(staleEntity2)
+        this.historySubOneDao.insert(validEntity)
+
+        val staleUpdater1 = HistorySubOneEntityUpdater.forPrimaryKey(staleEntity1.id, 999L) {
+            someString("shouldNotApply1")
+        }
+        val staleUpdater2 = HistorySubOneEntityUpdater.forPrimaryKey(staleEntity2.id, 999L) {
+            someString("shouldNotApply2")
+        }
+        val validUpdater = HistorySubOneEntityUpdater.forPrimaryKey(validEntity.id, validEntity.version) {
+            someString("shouldApply")
+        }
+
+        assertThatThrownBy {
+            this.historySubOneDao.bulkSetFields(listOf(staleUpdater1, validUpdater, staleUpdater2))
+        }.isInstanceOf(BulkOptimisticLockingException::class.java)
+
+        val updatedStale1 = this.historySubOneDao.findByPrimaryKey(staleEntity1.id)
+        val updatedStale2 = this.historySubOneDao.findByPrimaryKey(staleEntity2.id)
+        val updatedValid = this.historySubOneDao.findByPrimaryKey(validEntity.id)
+
+        assertThat(updatedStale1.someString).isEqualTo(staleEntity1.someString)
+        assertThat(updatedStale1.version).isEqualTo(1)
+        assertThat(updatedStale2.someString).isEqualTo(staleEntity2.someString)
+        assertThat(updatedStale2.version).isEqualTo(1)
+        assertThat(updatedValid.someString).isEqualTo("shouldApply")
+        assertThat(updatedValid.version).isEqualTo(2)
+
+    }
 
 
     private fun assertHistoryEntity(
