@@ -27,7 +27,8 @@ data class FeatureToggleResponseDto(
     val lastModifiedBy: String,
     val lastModifiedTimestamp: Instant,
     val reviewDate: LocalDate?,
-    val ticketKey: TicketKey?
+    val ticketKey: TicketKey?,
+    val version: Long
 ) {
 
 

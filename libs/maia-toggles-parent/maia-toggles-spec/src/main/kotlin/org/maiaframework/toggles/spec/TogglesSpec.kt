@@ -139,6 +139,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
         field("lastModifiedBy", FieldTypes.string)
         field("lastModifiedTimestamp", FieldTypes.instant)
         field("createdTimestamp", FieldTypes.instant)
+        field("version", FieldTypes.long)
     }
 
 

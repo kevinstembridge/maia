@@ -34,7 +34,10 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
     private val idCustomization = Customization.customization("**.id", ignoreValueMatcher)
 
 
-    private val jsonComparator = CustomComparator(JSONCompareMode.STRICT, createdTimestampCustomization, lastModifiedTimestampCustomization, idCustomization)
+    private val versionCustomization = Customization.customization("**.version", ignoreValueMatcher)
+
+
+    private val jsonComparator = CustomComparator(JSONCompareMode.STRICT, createdTimestampCustomization, lastModifiedTimestampCustomization, idCustomization, versionCustomization)
 
 
     private val jsonAssertComparator = JsonAssert.comparator(jsonComparator)
@@ -221,6 +224,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
                             "lastModifiedTimestamp" to "ignored",
                             "reviewDate" to null,
                             "ticketKey" to null,
+                            "version" to 1,
                         ),
                         mapOf(
                             "activationStrategies" to emptyList<String>(),
@@ -237,6 +241,7 @@ class FeatureToggleBlackBoxTest : AbstractBlackBoxTest() {
                             "lastModifiedTimestamp" to "ignored",
                             "reviewDate" to null,
                             "ticketKey" to null,
+                            "version" to 1,
                         ),
                     ),
                 ),

@@ -25,7 +25,8 @@ class ToggleService(
                 lastModifiedBy = it.lastModifiedByUsername,
                 lastModifiedTimestamp = it.lastModifiedTimestamp,
                 reviewDate = it.reviewDate,
-                ticketKey = it.ticketKey
+                ticketKey = it.ticketKey,
+                version = it.version
             )
 
         }.sortedBy { it.featureName.value }
