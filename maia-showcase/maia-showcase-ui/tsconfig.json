@@ -18,25 +18,25 @@
         "@app/*": [
             "./src/app/*",
             "./src/generated/typescript/main/app/*",
-            "../../libs/maia-ui-workspace/projects/maia-elasticsearch/src/generated/typescript/main/app/*",
-            "../../libs/maia-ui-workspace/projects/maia-props/src/generated/typescript/main/app/*",
-            "../../libs/maia-ui-workspace/projects/maia-toggles/src/generated/typescript/main/app/*",
-            "../../libs/maia-ui-workspace/projects/maia-jobs/src/generated/typescript/main/app/*"
+            "./maia-libs/maia-elasticsearch/src/generated/typescript/main/app/*",
+            "./maia-libs/maia-props/src/generated/typescript/main/app/*",
+            "./maia-libs/maia-toggles/src/generated/typescript/main/app/*",
+            "./maia-libs/maia-jobs/src/generated/typescript/main/app/*"
         ],
         "@maia/maia-ui": [
-            "../../libs/maia-ui-workspace/projects/maia-ui/src/public-api.ts"
+            "./maia-libs/maia-ui/src/public-api.ts"
         ],
         "@maia/maia-elasticsearch": [
-            "../../libs/maia-ui-workspace/projects/maia-elasticsearch/src/public-api.ts"
+            "./maia-libs/maia-elasticsearch/src/public-api.ts"
         ],
         "@maia/maia-props": [
-            "../../libs/maia-ui-workspace/projects/maia-props/src/public-api.ts"
+            "./maia-libs/maia-props/src/public-api.ts"
         ],
         "@maia/maia-toggles": [
-            "../../libs/maia-ui-workspace/projects/maia-toggles/src/public-api.ts"
+            "./maia-libs/maia-toggles/src/public-api.ts"
         ],
         "@maia/maia-jobs": [
-            "../../libs/maia-ui-workspace/projects/maia-jobs/src/public-api.ts"
+            "./maia-libs/maia-jobs/src/public-api.ts"
         ],
         "@angular/core": ["./node_modules/@angular/core"],
         "@angular/common": ["./node_modules/@angular/common"]

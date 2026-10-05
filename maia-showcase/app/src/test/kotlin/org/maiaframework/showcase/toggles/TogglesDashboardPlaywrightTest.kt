@@ -3,7 +3,6 @@ package org.maiaframework.showcase.toggles
 import com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.maiaframework.domain.auth.Authority as DomainAuthority
 import org.maiaframework.showcase.AbstractPlaywrightTest
@@ -12,10 +11,6 @@ import org.maiaframework.showcase.testing.fixtures.UserFixture
 import java.util.regex.Pattern
 
 
-// Verified passing when the app is built with a single copy of Angular. Disabled because maia-showcase-ui currently
-// bundles two copies (its own and libs/maia-ui-workspace/node_modules'), so every page hosted in a workspace library
-// fails with NG0203 ("The `_HttpHandler` token injection failed").
-@Disabled("NG0203: duplicate Angular copies in the maia-showcase-ui bundle")
 class TogglesDashboardPlaywrightTest : AbstractPlaywrightTest() {
 
 
