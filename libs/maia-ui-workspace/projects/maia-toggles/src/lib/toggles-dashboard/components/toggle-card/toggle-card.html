@@ -1,0 +1,75 @@
+<div class="card" [attr.data-testid]="'toggle-card-' + toggle().featureName">
+    <div class="accent" [class]="'accent-' + accentStatus()"></div>
+    <div class="card-inner">
+        <div class="tier-top">
+            <div class="identity">
+                <span class="toggle-name">{{toggle().featureName}}</span>
+                @if (toggle().description) {
+                    <span class="toggle-description">{{toggle().description}}</span>
+                }
+                @if (strategySummaries().length > 0) {
+                    <span class="strategies" data-testid="toggle-strategies">
+                        @for (summary of strategySummaries(); track $index) {
+                            <span class="strategy-chip">{{summary}}</span>
+                        }
+                    </span>
+                }
+            </div>
+            <div class="badges">
+                @if (toggle().enabled) {
+                    <span class="badge badge-enabled">Enabled</span>
+                } @else {
+                    <span class="badge badge-disabled">Disabled</span>
+                }
+                @if (overdue()) {
+                    <span class="badge badge-overdue">Overdue</span>
+                }
+            </div>
+            <div class="actions">
+                <button mat-icon-button
+                        [attr.aria-label]="(toggle().enabled ? 'Disable ' : 'Enable ') + toggle().featureName"
+                        (click)="onChangeState()">
+                    <mat-icon>{{toggle().enabled ? 'toggle_on' : 'toggle_off'}}</mat-icon>
+                </button>
+                <button mat-icon-button [attr.aria-label]="'Edit strategies for ' + toggle().featureName" (click)="onEditStrategies()">
+                    <mat-icon>tune</mat-icon>
+                </button>
+                <button mat-icon-button [attr.aria-label]="'History ' + toggle().featureName" (click)="onHistory()">
+                    <mat-icon>history</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="tier-bottom">
+            <div class="meta-item">
+                <div class="meta-label">Modified by</div>
+                <div class="meta-value">{{toggle().lastModifiedBy}}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Modified</div>
+                <div class="meta-value">{{toggle().lastModifiedTimestamp | date: 'EEE dd MMM yyyy, HH:mm:ss'}}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Contact</div>
+                <div class="meta-value">{{toggle().contactPerson ?? '—'}}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Ticket</div>
+                <div class="meta-value">
+                    @if (toggle().ticketKey && toggle().infoLink) {
+                        <a [href]="toggle().infoLink" target="_blank" rel="noopener noreferrer">{{toggle().ticketKey}}</a>
+                    } @else {
+                        {{toggle().ticketKey ?? '—'}}
+                    }
+                </div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Review date</div>
+                <div class="meta-value">{{toggle().reviewDate ? (toggle().reviewDate | date: 'EEE dd MMM yyyy') : '—'}}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Last comment</div>
+                <div class="meta-value">{{toggle().comment ?? '—'}}</div>
+            </div>
+        </div>
+    </div>
+</div>

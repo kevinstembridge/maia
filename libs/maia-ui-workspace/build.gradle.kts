@@ -17,6 +17,7 @@ node {
 val maiagenElasticsearch by configurations.creating
 val maiagenProps by configurations.creating
 val maiagenJob by configurations.creating
+val maiagenToggles by configurations.creating
 
 dependencies {
 
@@ -28,6 +29,9 @@ dependencies {
 
     maiagenJob(project(":maia-gen:maia-gen-generator"))
     maiagenJob(project(":libs:maia-job-parent:maia-job-spec"))
+
+    maiagenToggles(project(":maia-gen:maia-gen-generator"))
+    maiagenToggles(project(":libs:maia-toggles-parent:maia-toggles-spec"))
 
 }
 
@@ -67,9 +71,21 @@ tasks.register<JavaExec>("maiaGenerationJob") {
     )
 }
 
+tasks.register<JavaExec>("maiaGenerationToggles") {
+    group = "maia generation"
+    inputs.dir("../maia-toggles-parent/maia-toggles-spec/src/main/kotlin")
+    outputs.dir("projects/maia-toggles/src/generated")
+    classpath = configurations["maiagenToggles"].asFileTree
+    mainClass.set("org.maiaframework.gen.generator.AngularUiModuleGeneratorKt")
+    args(
+        "applicationSpecClassName=org.maiaframework.toggles.spec.TogglesApplicationSpec",
+        "generatedSourceDir=projects/maia-toggles/src/generated"
+    )
+}
+
 tasks.register("maiaGeneration") {
     group = "maia generation"
-    dependsOn("maiaGenerationElasticsearch", "maiaGenerationProps", "maiaGenerationJob")
+    dependsOn("maiaGenerationElasticsearch", "maiaGenerationProps", "maiaGenerationJob", "maiaGenerationToggles")
 }
 
 tasks.register<NpxTask>("buildAngularElasticsearch") {
@@ -102,9 +118,19 @@ tasks.register<NpxTask>("buildAngularJob") {
     outputs.dir("dist/maia-jobs")
 }
 
+tasks.register<NpxTask>("buildAngularToggles") {
+    dependsOn(tasks.npmInstall, "maiaGenerationToggles")
+    command.set("ng")
+    args.set(listOf("build", "maia-toggles"))
+    inputs.files("package.json", "package-lock.json", "angular.json")
+    inputs.dir("projects/maia-toggles/src")
+    inputs.dir(fileTree("node_modules").exclude(".cache"))
+    outputs.dir("dist/maia-toggles")
+}
+
 tasks.register("buildAngularLibs") {
     group = "maia generation"
-    dependsOn("buildAngularElasticsearch", "buildAngularProps", "buildAngularJob")
+    dependsOn("buildAngularElasticsearch", "buildAngularProps", "buildAngularJob", "buildAngularToggles")
 }
 
 tasks.named("assemble") {
@@ -116,5 +142,6 @@ tasks {
         delete("projects/maia-elasticsearch/src/generated")
         delete("projects/maia-props/src/generated")
         delete("projects/maia-jobs/src/generated")
+        delete("projects/maia-toggles/src/generated")
     }
 }

@@ -1,0 +1,31 @@
+mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.intro {
+    margin-top: 0;
+    color: var(--mat-sys-on-surface-variant);
+}
+
+.strategy-row {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 0.75rem 0;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 0.5rem;
+}
+
+.strategy-row-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.strategy-select {
+    flex: 1;
+}
+
+.strategy-parameters {
+    display: flex;
+    flex-direction: column;
+}

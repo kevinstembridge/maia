@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>Activation Strategies</h2>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <p class="intro">
+            <strong>{{data.featureName}}</strong> is active only when the toggle is enabled <em>and</em> every strategy below is active.
+            With no strategies it is active for everyone.
+        </p>
+        <div formArrayName="rows">
+            @for (row of rows.controls; track row; let i = $index) {
+                <div class="strategy-row" [formGroup]="row" [attr.data-testid]="'strategy-row-' + i">
+                    <div class="strategy-row-header">
+                        <mat-form-field class="strategy-select">
+                            <mat-label>Strategy</mat-label>
+                            <mat-select formControlName="id">
+                                @for (option of optionsFor(row); track option.id) {
+                                    <mat-option [value]="option.id">{{option.label}}</mat-option>
+                                }
+                            </mat-select>
+                            @if (descriptionFor(row); as description) {
+                                <mat-hint>{{description}}</mat-hint>
+                            }
+                        </mat-form-field>
+                        <button mat-icon-button type="button" aria-label="Remove strategy" (click)="removeRow(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                    <div formGroupName="parameters" class="strategy-parameters">
+                        @for (definition of parameterDefinitions(row); track definition.name) {
+                            <mat-form-field>
+                                <mat-label>{{definition.name}}{{definition.required ? '' : ' (optional)'}}</mat-label>
+                                <input matInput [formControlName]="definition.name">
+                                @if (definition.description) {
+                                    <mat-hint>{{definition.description}}</mat-hint>
+                                }
+                            </mat-form-field>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+        <div>
+            <button mat-button type="button" (click)="addRow()">
+                <mat-icon>add</mat-icon>
+                Add strategy
+            </button>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button type="button" (click)="onCancel()">Cancel</button>
+        <button mat-flat-button type="submit" [disabled]="form.invalid">Save</button>
+    </mat-dialog-actions>
+</form>

@@ -45,6 +45,12 @@
     },
     {
       "path": "./projects/maia-props/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/maia-toggles/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/maia-toggles/tsconfig.spec.json"
     }
   ]
 }

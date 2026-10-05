@@ -1,0 +1,67 @@
+<div class="toggles-filter-tiles">
+    <div class="toggles-filter-tile toggles-filter-tile-total">
+        <span class="toggles-filter-tile-dot" [style.background-color]="tileColors.total"></span>
+        <span class="toggles-filter-tile-count" aria-live="polite">{{store.visibleToggles().length}} of {{store.toggles().length}}</span>
+        <span class="toggles-filter-tile-label">Total</span>
+    </div>
+    <button
+        type="button"
+        class="toggles-filter-tile"
+        [class.active]="store.stateFilter() === 'enabled'"
+        [attr.aria-pressed]="store.stateFilter() === 'enabled'"
+        (click)="onStateFilterToggled('enabled')">
+        <span class="toggles-filter-tile-dot" [style.background-color]="tileColors.enabled"></span>
+        <span class="toggles-filter-tile-count">{{store.enabledCount()}}</span>
+        <span class="toggles-filter-tile-label">Enabled</span>
+    </button>
+    <button
+        type="button"
+        class="toggles-filter-tile"
+        [class.active]="store.stateFilter() === 'disabled'"
+        [attr.aria-pressed]="store.stateFilter() === 'disabled'"
+        (click)="onStateFilterToggled('disabled')">
+        <span class="toggles-filter-tile-dot" [style.background-color]="tileColors.disabled"></span>
+        <span class="toggles-filter-tile-count">{{store.disabledCount()}}</span>
+        <span class="toggles-filter-tile-label">Disabled</span>
+    </button>
+    <button
+        type="button"
+        class="toggles-filter-tile"
+        [class.active]="store.overdueOnly()"
+        [attr.aria-pressed]="store.overdueOnly()"
+        (click)="onOverdueOnlyToggled()">
+        <span class="toggles-filter-tile-dot" [style.background-color]="tileColors.overdue"></span>
+        <span class="toggles-filter-tile-count">{{store.overdueCount()}}</span>
+        <span class="toggles-filter-tile-label">Overdue</span>
+    </button>
+</div>
+
+<div class="toggles-dashboard-toolbar">
+    <mat-form-field class="name-filter">
+        <mat-label>Filter by name</mat-label>
+        <input matInput [value]="store.nameFilter()" (input)="onNameFilterInput($event)">
+    </mat-form-field>
+</div>
+
+@if (store.actionError(); as actionError) {
+    <div class="dashboard-error" role="alert" data-testid="toggles-action-error">
+        <span>{{actionError}}</span>
+        <button mat-button (click)="store.dismissActionError()">Dismiss</button>
+    </div>
+}
+
+@if (store.isLoading()) {
+    <mat-progress-spinner mode="indeterminate" diameter="32" />
+} @else if (store.error()) {
+    <p>{{store.error()}} <button mat-button (click)="store.retryFetch()">Retry</button></p>
+} @else {
+    <div class="toggles-card-list" data-testid="toggles-dashboard-card-list">
+        @for (toggle of store.visibleToggles(); track toggle.id) {
+            <maia-toggle-card
+                [toggle]="toggle"
+                (changeState)="onChangeState($event)"
+                (editStrategies)="onEditStrategies($event)"
+                (history)="onHistory($event)" />
+        }
+    </div>
+}
