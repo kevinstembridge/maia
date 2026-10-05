@@ -4,6 +4,7 @@
 package org.maiaframework.props
 
 import org.maiaframework.domain.ChangeType
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.BulkOptimisticLockingException
@@ -30,7 +31,7 @@ class PropsDao(
     private val entityRowMapper = PropsEntityRowMapper()
 
 
-    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readString("property_name") }
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: PropsEntity) {
@@ -40,6 +41,7 @@ class PropsDao(
             insert into props.props (
                 comment,
                 created_timestamp,
+                id,
                 last_modified_by_name,
                 last_modified_timestamp,
                 property_name,
@@ -49,6 +51,7 @@ class PropsDao(
             ) values (
                 :comment,
                 :createdTimestamp,
+                :id,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
                 :propertyName,
@@ -60,6 +63,7 @@ class PropsDao(
             SqlParams().apply {
                 addValue("comment", entity.comment)
                 addValue("createdTimestamp", entity.createdTimestamp)
+                addValue("id", entity.id)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("propertyName", entity.propertyName)
@@ -81,6 +85,7 @@ class PropsDao(
             insert into props.props (
                 comment,
                 created_timestamp,
+                id,
                 last_modified_by_name,
                 last_modified_timestamp,
                 property_name,
@@ -90,6 +95,7 @@ class PropsDao(
             ) values (
                 :comment,
                 :createdTimestamp,
+                :id,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
                 :propertyName,
@@ -102,6 +108,7 @@ class PropsDao(
                 SqlParams().apply {
                     addValue("comment", entity.comment)
                     addValue("createdTimestamp", entity.createdTimestamp)
+                    addValue("id", entity.id)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("propertyName", entity.propertyName)
@@ -145,6 +152,7 @@ class PropsDao(
         changeType: ChangeType
     ): PropsHistoryEntity {
 
+        val id = entity.id
         val comment = entity.comment
         val createdTimestamp = entity.createdTimestamp
         val lastModifiedByUsername = entity.lastModifiedByUsername
@@ -157,6 +165,7 @@ class PropsDao(
                 changeType,
                 comment,
                 createdTimestamp,
+                id,
                 lastModifiedByUsername,
                 lastModifiedTimestamp,
                 propertyName,
@@ -196,14 +205,14 @@ class PropsDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(propertyName: String): PropsEntity {
+    fun findByPrimaryKey(id: DomainId): PropsEntity {
 
-        return findByPrimaryKeyOrNull(propertyName)
+        return findByPrimaryKeyOrNull(id)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     PropsEntity::class.java,
                     mapOf(
-                        "propertyName" to propertyName,
+                        "id" to id,
                     )
                 ),
                 PropsEntityMeta.TABLE_NAME
@@ -212,12 +221,12 @@ class PropsDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(propertyName: String): PropsEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): PropsEntity? {
 
         return jdbcOps.queryForList(
-            "select * from props.props where property_name = :propertyName",
+            "select * from props.props where id = :id",
             SqlParams().apply {
-                addValue("propertyName", propertyName)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -225,16 +234,16 @@ class PropsDao(
     }
 
 
-    fun findAllByPrimaryKeys(ids: List<String>): List<PropsEntity> {
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<PropsEntity> {
 
         if (ids.isEmpty()) {
             return emptyList()
         }
 
         return jdbcOps.queryForList(
-            "select * from props.props where property_name in (:ids)",
+            "select * from props.props where id in (:ids)",
             SqlParams().apply {
-                addValue("ids", ids.map { it }, Types.VARCHAR)
+                addValue("ids", ids.map { it.value }, Types.OTHER)
             },
             this.entityRowMapper
         )
@@ -242,18 +251,55 @@ class PropsDao(
     }
 
 
-    fun existsByPrimaryKey(propertyName: String): Boolean {
+    fun findVersionByPrimaryKey(id: DomainId): Long {
+
+        return jdbcOps.queryForLong(
+            "select version from props.props where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from props.props where property_name = :propertyName",
+            "select count(*) from props.props where id = :id",
             SqlParams().apply {
-                addValue("propertyName", propertyName)
+                addValue("id", id)
            }
         )
        
         return count > 0
        
     }
+
+    fun findOneOrNullByPropertyName(propertyName: String): PropsEntity? {
+
+        return jdbcOps.queryForList(
+            """
+            select * from props.props
+            where property_name = :propertyName
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("propertyName", propertyName)
+            },
+            this.entityRowMapper
+        ).firstOrNull()
+
+    }
+
+
+    @Throws(EntityNotFoundException::class)
+    fun findOneByPropertyName(propertyName: String): PropsEntity {
+
+        return findOneOrNullByPropertyName(propertyName)
+            ?: throw EntityNotFoundException("No record with column [property_name = $propertyName] found in table props.props.", PropsEntityMeta.TABLE_NAME)
+
+    }
+
 
     fun findAll(): List<PropsEntity> {
 
@@ -298,7 +344,7 @@ class PropsDao(
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: PropsEntityFilter): Sequence<String> {
+    fun findPrimaryKeysAsSequence(filter: PropsEntityFilter): Sequence<DomainId> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -306,20 +352,20 @@ class PropsDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select property_name from props.props where $whereClause",
+            "select id from props.props where $whereClause",
             sqlParams,
-            this.primaryKeyRowMapper
+            { rsa -> rsa.readDomainId("id") }
         )
 
     }
 
 
-    fun findAllPrimaryKeysAsSequence(): Sequence<String> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select property_name from props.props;",
+            "select id from props.props;",
             SqlParams(),
-            this.primaryKeyRowMapper
+            { rsa -> rsa.readDomainId("id") }
         )
 
     }
@@ -378,6 +424,24 @@ class PropsDao(
     }
 
 
+    fun existsByPropertyName(propertyName: String): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            """
+            select count(*)
+            from props.props
+            where property_name = :propertyName
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("propertyName", propertyName)
+            }
+        )
+
+        return count > 0
+
+    }
+
+
     fun upsertByPropertyName(upsertEntity: PropsEntity): PropsEntity {
 
         val persistedEntity = jdbcOps.execute(
@@ -385,6 +449,7 @@ class PropsDao(
             insert into props.props (
                 comment,
                 created_timestamp,
+                id,
                 last_modified_by_name,
                 last_modified_timestamp,
                 property_name,
@@ -394,6 +459,7 @@ class PropsDao(
             ) values (
                 :comment,
                 :createdTimestamp,
+                :id,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
                 :propertyName,
@@ -414,6 +480,7 @@ class PropsDao(
             SqlParams().apply {
                 addValue("comment", upsertEntity.comment)
                 addValue("createdTimestamp", upsertEntity.createdTimestamp)
+                addValue("id", upsertEntity.id)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
                 addValue("propertyName", upsertEntity.propertyName)
@@ -428,7 +495,7 @@ class PropsDao(
             }
         )
 
-        val changeType = if (persistedEntity!!.primaryKey != upsertEntity.primaryKey) ChangeType.UPDATE else ChangeType.CREATE
+        val changeType = if (persistedEntity!!.id != upsertEntity.id) ChangeType.UPDATE else ChangeType.CREATE
         insertHistory(persistedEntity, persistedEntity.version, changeType)
 
         return persistedEntity!!
@@ -460,10 +527,10 @@ class PropsDao(
             }.joinToString(", ")
 
         sql.append(fieldClauses)
-        sql.append(" where property_name = :propertyName")
+        sql.append(" where id = :id")
         sql.append(" and version = :version")
 
-        sqlParams.addValue("propertyName", updater.propertyName)
+        sqlParams.addValue("id", updater.id)
 
         sqlParams.addValue("version", updater.version)
         sqlParams.addValue("version_incremented", updater.version + 1)
@@ -476,7 +543,7 @@ class PropsDao(
 
         } else {
 
-            val updatedEntity = findByPrimaryKey(updater.propertyName)
+            val updatedEntity = findByPrimaryKey(updater.id)
             insertHistory(updatedEntity, ChangeType.UPDATE)
 
         }
@@ -503,7 +570,7 @@ class PropsDao(
 
         val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
         val failedUpdaters = mutableListOf<PropsEntityUpdater>()
-        val updatedIds = mutableListOf<String>()
+        val updatedIds = mutableListOf<DomainId>()
 
         groups.values.forEach { group ->
 
@@ -516,14 +583,14 @@ class PropsDao(
                 .joinToString(", ") { field -> "${field.dbColumnName} = :${field.classFieldName}" }
 
             sql.append(fieldClauses)
-            sql.append(" where property_name = :propertyName")
+            sql.append(" where id = :id")
             sql.append(" and version = :version")
 
             val sqlParamsList = group.map { updater ->
                 val sqlParams = SqlParams()
                 updater.fields.forEach { field -> addField(field, sqlParams) }
 
-                sqlParams.addValue("propertyName", updater.propertyName)
+                sqlParams.addValue("id", updater.id)
                 sqlParams.addValue("version", updater.version)
                 sqlParams.addValue("version_incremented", updater.version + 1)
                 sqlParams
@@ -535,7 +602,7 @@ class PropsDao(
                 if (updateCounts[i] == 0) {
                     failedUpdaters.add(updater)
                 } else {
-                    updatedIds.add(updater.propertyName)
+                    updatedIds.add(updater.id)
                 }
             }
 
@@ -545,15 +612,49 @@ class PropsDao(
         bulkInsertHistory(updatedEntities, ChangeType.UPDATE)
 
         if (failedUpdaters.isNotEmpty()) {
-            throw BulkOptimisticLockingException(PropsEntityMeta.TABLE_NAME, failedUpdaters.map { it.propertyName to it.version })
+            throw BulkOptimisticLockingException(PropsEntityMeta.TABLE_NAME, failedUpdaters.map { it.id to it.version })
         }
 
     }
 
 
-    fun deleteByPrimaryKey(propertyName: String): Boolean {
+    fun deleteByPrimaryKey(id: DomainId): Boolean {
 
-        val existingEntity = findByPrimaryKeyOrNull(propertyName) ?: return false
+        val existingEntity = findByPrimaryKeyOrNull(id) ?: return false
+
+        val deletedCount = this.jdbcOps.update(
+            "delete from props.props where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+        if (deletedCount > 0) {
+
+            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
+        }
+
+        return deletedCount > 0
+
+    }
+
+
+    fun removeByPrimaryKey(id: DomainId): PropsEntity? {
+
+        val found = findByPrimaryKeyOrNull(id)
+
+        if (found != null) {
+            deleteByPrimaryKey(id)
+        }
+
+        return found
+
+    }
+
+
+    fun deleteByPropertyName(propertyName: String): Boolean {
+
+        val existingEntity = findOneOrNullByPropertyName(propertyName) ?: return false
 
         val deletedCount = this.jdbcOps.update(
             "delete from props.props where property_name = :propertyName",
@@ -568,19 +669,6 @@ class PropsDao(
         }
 
         return deletedCount > 0
-
-    }
-
-
-    fun removeByPrimaryKey(propertyName: String): PropsEntity? {
-
-        val found = findByPrimaryKeyOrNull(propertyName)
-
-        if (found != null) {
-            deleteByPrimaryKey(propertyName)
-        }
-
-        return found
 
     }
 

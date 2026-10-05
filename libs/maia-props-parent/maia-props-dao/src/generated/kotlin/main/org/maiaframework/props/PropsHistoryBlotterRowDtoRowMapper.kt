@@ -14,12 +14,12 @@ class PropsHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PropsHistoryBlotterRowD
     override fun mapRow(rsa: ResultSetAdapter): PropsHistoryBlotterRowDto {
 
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
-        val comment = rsa.readString("comment")
+        val comment = rsa.readStringOrNull("comment")
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val propertyName = rsa.readString("propertyName")
         val propertyValue = rsa.readString("propertyValue")
-        val reviewDate = rsa.readLocalDate("reviewDate")
+        val reviewDate = rsa.readLocalDateOrNull("reviewDate")
         val version = rsa.readLong("version")
 
         return PropsHistoryBlotterRowDto(

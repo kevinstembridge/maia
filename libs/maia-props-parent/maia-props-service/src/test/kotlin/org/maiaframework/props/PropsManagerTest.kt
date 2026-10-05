@@ -3,6 +3,7 @@ package org.maiaframework.props
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.maiaframework.domain.ChangeType
+import org.maiaframework.domain.DomainId
 import org.maiaframework.props.repo.InMemoryPropsRepo
 import org.maiaframework.props.repo.PropsRepo
 import org.springframework.core.env.MapPropertySource
@@ -208,6 +209,7 @@ class PropsManagerTest {
             changeType = ChangeType.UPDATE,
             comment = null,
             createdTimestamp = now,
+            id = DomainId.newId(),
             lastModifiedByUsername = "user",
             lastModifiedTimestamp = now,
             propertyName = propertyName,

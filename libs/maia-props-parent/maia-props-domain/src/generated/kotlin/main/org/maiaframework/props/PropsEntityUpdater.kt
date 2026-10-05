@@ -3,6 +3,7 @@
 
 package org.maiaframework.props
 
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.persist.FieldUpdate
 import java.time.Instant
 import java.time.LocalDate
@@ -10,18 +11,18 @@ import java.time.LocalDate
 
 data class PropsEntityUpdater(
     val fields: List<FieldUpdate>,
-    val propertyName: String,
+    val id: DomainId,
     val version: Long
 ) {
 
 
     val primaryKeyMap = mapOf(
-        "propertyName" to propertyName,
+        "id" to id,
     )
 
 
     class Builder(
-        val propertyName: String,
+        val id: DomainId,
         val version: Long
     ) {
 
@@ -33,7 +34,7 @@ data class PropsEntityUpdater(
 
             return PropsEntityUpdater(
                 this.fields,
-                this.propertyName,
+                this.id,
                 this.version
             )
 
@@ -82,13 +83,13 @@ data class PropsEntityUpdater(
 
 
         fun forPrimaryKey(
-            propertyName: String,
+            id: DomainId,
             version: Long,
             init: Builder.() -> Unit
         ): PropsEntityUpdater {
 
             val builder = Builder(
-                propertyName,
+                id,
                 version
             )
             builder.init()

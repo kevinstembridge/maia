@@ -4,6 +4,7 @@
 package org.maiaframework.props
 
 import org.maiaframework.common.BlankStringException
+import org.maiaframework.domain.DomainId
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.jdbc.sql.conditions.AndOr
 import org.maiaframework.jdbc.sql.conditions.SqlConditionOperator
@@ -53,6 +54,14 @@ class PropsEntityFilters {
         get() {
 
             return FieldFilter("created_timestamp", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+
+        }
+
+
+    val id: FieldFilter<DomainId> 
+        get() {
+
+            return FieldFilter("id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 

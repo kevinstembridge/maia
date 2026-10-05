@@ -56,7 +56,7 @@ class DatabasePropsRepo(
         comment: String?
     ) {
 
-        this.propsDao.deleteByPrimaryKey(propertyName)
+        this.propsDao.deleteByPropertyName(propertyName)
 
     }
 

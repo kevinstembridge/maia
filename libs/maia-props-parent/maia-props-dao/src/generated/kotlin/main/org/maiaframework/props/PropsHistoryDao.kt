@@ -3,6 +3,7 @@
 
 package org.maiaframework.props
 
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
@@ -30,6 +31,7 @@ class PropsHistoryDao(
                 change_type,
                 comment,
                 created_timestamp,
+                id,
                 last_modified_by_name,
                 last_modified_timestamp,
                 property_name,
@@ -40,6 +42,7 @@ class PropsHistoryDao(
                 :changeType,
                 :comment,
                 :createdTimestamp,
+                :id,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
                 :propertyName,
@@ -52,6 +55,7 @@ class PropsHistoryDao(
                 addValue("changeType", entity.changeType)
                 addValue("comment", entity.comment)
                 addValue("createdTimestamp", entity.createdTimestamp)
+                addValue("id", entity.id)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                 addValue("propertyName", entity.propertyName)
@@ -72,6 +76,7 @@ class PropsHistoryDao(
                 change_type,
                 comment,
                 created_timestamp,
+                id,
                 last_modified_by_name,
                 last_modified_timestamp,
                 property_name,
@@ -82,6 +87,7 @@ class PropsHistoryDao(
                 :changeType,
                 :comment,
                 :createdTimestamp,
+                :id,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
                 :propertyName,
@@ -95,6 +101,7 @@ class PropsHistoryDao(
                     addValue("changeType", entity.changeType)
                     addValue("comment", entity.comment)
                     addValue("createdTimestamp", entity.createdTimestamp)
+                    addValue("id", entity.id)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
                     addValue("propertyName", entity.propertyName)
@@ -144,7 +151,7 @@ class PropsHistoryDao(
                 EntityClassAndPk(
                     PropsHistoryEntity::class.java,
                     mapOf(
-                        "propertyName" to primaryKey.propertyName,
+                        "id" to primaryKey.id,
                         "version" to primaryKey.version,
                     )
                 ),
@@ -157,9 +164,9 @@ class PropsHistoryDao(
     fun findByPrimaryKeyOrNull(primaryKey: PropsHistoryEntityPk): PropsHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from props.props_history where property_name = :propertyName and version = :version",
+            "select * from props.props_history where id = :id and version = :version",
             SqlParams().apply {
-                addValue("propertyName", primaryKey.propertyName)
+                addValue("id", primaryKey.id)
                 addValue("version", primaryKey.version)
             },
             this.entityRowMapper
@@ -175,12 +182,12 @@ class PropsHistoryDao(
     }
 
 
-    fun existsByPrimaryKey(propertyName: String, version: Long): Boolean {
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from props.props_history where property_name = :propertyName and version = :version",
+            "select count(*) from props.props_history where id = :id and version = :version",
             SqlParams().apply {
-                addValue("propertyName", propertyName)
+                addValue("id", id)
                 addValue("version", version)
            }
         )
@@ -188,6 +195,22 @@ class PropsHistoryDao(
         return count > 0
        
     }
+
+    fun findByPropertyName(propertyName: String): List<PropsHistoryEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from props.props_history
+            where property_name = :propertyName
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("propertyName", propertyName)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
 
     fun findAllBy(filter: PropsHistoryEntityFilter): List<PropsHistoryEntity> {
 
@@ -213,7 +236,7 @@ class PropsHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select property_name, version from props.props_history where $whereClause",
+            "select id, version from props.props_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -224,7 +247,7 @@ class PropsHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<PropsHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select property_name, version from props.props_history;",
+            "select id, version from props.props_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )
