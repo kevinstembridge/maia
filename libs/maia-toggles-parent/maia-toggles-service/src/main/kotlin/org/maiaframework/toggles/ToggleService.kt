@@ -12,19 +12,20 @@ class ToggleService(
 
         return this.toggleRepo.findAllAsSequence().map {
             FeatureToggleResponseDto(
-                it.activationStrategies,
-                it.attributes,
-                it.comment,
-                it.contactPerson,
-                it.createdTimestamp,
-                it.description,
-                it.enabled,
-                it.featureName,
-                it.infoLink,
-                it.lastModifiedByUsername,
-                it.lastModifiedTimestamp,
-                it.reviewDate,
-                it.ticketKey
+                activationStrategies = it.activationStrategies,
+                attributes = it.attributes,
+                comment = it.comment,
+                contactPerson = it.contactPerson,
+                createdTimestamp = it.createdTimestamp,
+                description = it.description,
+                enabled = it.enabled,
+                featureName = it.featureName,
+                id = it.id,
+                infoLink = it.infoLink,
+                lastModifiedBy = it.lastModifiedByUsername,
+                lastModifiedTimestamp = it.lastModifiedTimestamp,
+                reviewDate = it.reviewDate,
+                ticketKey = it.ticketKey
             )
 
         }.sortedBy { it.featureName.value }
@@ -35,7 +36,9 @@ class ToggleService(
 
     override fun handleSetFeatureToggleRequestDto(requestDto: SetFeatureToggleRequestDto) {
 
-        val updater = FeatureToggleEntityUpdater.forPrimaryKey(requestDto.featureName, requestDto.version) {
+        val entity = this.toggleRepo.findOneByFeatureName(requestDto.featureName)
+
+        val updater = FeatureToggleEntityUpdater.forPrimaryKey(entity.id, requestDto.version) {
             enabled(requestDto.enabled)
             comment(requestDto.comment)
         }

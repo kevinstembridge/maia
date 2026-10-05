@@ -4,6 +4,7 @@
 package org.maiaframework.toggles
 
 import org.maiaframework.domain.ChangeType
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityFieldConverter
 import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 import org.maiaframework.toggles.fields.ContactPerson
@@ -41,6 +42,8 @@ class FeatureToggleHistoryEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "feature_name" -> // featureName
                 return (inputValue as FeatureName).value
+            "id" -> // id
+                return (inputValue as DomainId).value
             "info_link" -> // infoLink
                 return (inputValue as InfoLink).value
             "last_modified_by_name" -> // lastModifiedByUsername

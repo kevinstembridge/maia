@@ -9,9 +9,11 @@ import org.maiaframework.toggles.sample.SampleFeatureOne
 import org.maiaframework.toggles.sample.SampleFeatureTwo
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 
 @Configuration
+@EnableMethodSecurity
 class ToggleShowcaseConfiguration {
 
 

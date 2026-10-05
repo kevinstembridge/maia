@@ -27,6 +27,7 @@ class FeatureToggleFetchForEditDtoRowMapper(private val jsonMapper: JsonMapper) 
         val description = rsa.readStringOrNull("description") { Description(it) }
         val enabled = rsa.readBoolean("enabled")
         val featureName = rsa.readString("featureName") { FeatureName(it) }
+        val id = rsa.readDomainId("id")
         val infoLink = rsa.readStringOrNull("infoLink") { InfoLink(it) }
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
@@ -43,6 +44,7 @@ class FeatureToggleFetchForEditDtoRowMapper(private val jsonMapper: JsonMapper) 
             description,
             enabled,
             featureName,
+            id,
             infoLink,
             lastModifiedByUsername,
             lastModifiedTimestamp,

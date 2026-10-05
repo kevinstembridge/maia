@@ -6,6 +6,7 @@ package org.maiaframework.toggles
 import com.hazelcast.nio.serialization.compact.CompactReader
 import com.hazelcast.nio.serialization.compact.CompactSerializer
 import com.hazelcast.nio.serialization.compact.CompactWriter
+import org.maiaframework.domain.DomainId
 import org.maiaframework.hazelcast.serializers.CompactReaderExtension.readInstantNonNull
 import org.maiaframework.hazelcast.serializers.CompactReaderExtension.readInt64NonNull
 import org.maiaframework.hazelcast.serializers.CompactReaderExtension.readListOfCompact
@@ -54,6 +55,7 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
         val description = reader.readNullableString("description")?.let { Description(it) }
         val enabled = reader.readBoolean("enabled")
         val featureName = FeatureName(reader.readStringNonNull("featureName"))
+        val id = DomainId(reader.readStringNonNull("id"))
         val infoLink = reader.readNullableString("infoLink")?.let { InfoLink(it) }
         val lastModifiedByUsername = reader.readStringNonNull("lastModifiedByUsername")
         val lastModifiedTimestamp = reader.readInstantNonNull("lastModifiedTimestamp")
@@ -70,6 +72,7 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
             description,
             enabled,
             featureName,
+            id,
             infoLink,
             lastModifiedByUsername,
             lastModifiedTimestamp,
@@ -100,6 +103,7 @@ class FeatureToggleSerializer : CompactSerializer<FeatureToggleEntity> {
             writeString("description", dto.description?.value)
             writeBoolean("enabled", dto.enabled)
             writeString("featureName", dto.featureName.value)
+            writeString("id", dto.id.value)
             writeString("infoLink", dto.infoLink?.value)
             writeString("lastModifiedByUsername", dto.lastModifiedByUsername)
             writeTimestampWithTimezone("lastModifiedTimestamp", dto.lastModifiedTimestamp.atOffset(ZoneOffset.UTC))

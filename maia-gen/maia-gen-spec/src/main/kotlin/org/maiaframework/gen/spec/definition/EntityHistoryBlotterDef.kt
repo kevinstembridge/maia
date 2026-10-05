@@ -117,17 +117,26 @@ class EntityHistoryBlotterDef(val entityDef: EntityDef) {
     private val entityKebab = entityDef.entityBaseName.toKebabCase()
 
 
+    val authorityDef: AuthorityDef? = entityDef.historyBlotterConfig.authorityDef
+
+
+    private val pathPrefix = entityDef.historyBlotterConfig.pathPrefix ?: "/api"
+
+
+    val searchServiceBaseUrl = "$pathPrefix/$entityKebab"
+
+
     val searchEndpointPath = if (isJoinEntityHistory) {
-        "/api/${entityKebab}/history/search"
+        "$pathPrefix/${entityKebab}/history/search"
     } else {
-        "/api/${entityKebab}/{entityId}/history/search"
+        "$pathPrefix/${entityKebab}/{entityId}/history/search"
     }
 
 
     val countEndpointPath = if (isJoinEntityHistory) {
-        "/api/${entityKebab}/history/count"
+        "$pathPrefix/${entityKebab}/history/count"
     } else {
-        "/api/${entityKebab}/{entityId}/history/count"
+        "$pathPrefix/${entityKebab}/{entityId}/history/count"
     }
 
 
@@ -160,9 +169,9 @@ class EntityHistoryBlotterDef(val entityDef: EntityDef) {
 
 
     val searchEndpointUrlForTypescript = if (isJoinEntityHistory) {
-        "/api/${entityKebab}/history/search"
+        "$pathPrefix/${entityKebab}/history/search"
     } else {
-        $$"/api/$${entityKebab}/${this.entityId}/history/search"
+        $$"$${pathPrefix}/$${entityKebab}/${this.entityId}/history/search"
     }
 
 

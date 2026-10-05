@@ -27,6 +27,7 @@ class FeatureToggleEntityRowMapper(private val jsonMapper: JsonMapper) : MaiaRow
         val description = rsa.readStringOrNull("description") { Description(it) }
         val enabled = rsa.readBoolean("enabled")
         val featureName = rsa.readString("feature_name") { FeatureName(it) }
+        val id = rsa.readDomainId("id")
         val infoLink = rsa.readStringOrNull("info_link") { InfoLink(it) }
         val lastModifiedByUsername = rsa.readString("last_modified_by_name")
         val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
@@ -43,6 +44,7 @@ class FeatureToggleEntityRowMapper(private val jsonMapper: JsonMapper) : MaiaRow
                 description,
                 enabled,
                 featureName,
+                id,
                 infoLink,
                 lastModifiedByUsername,
                 lastModifiedTimestamp,

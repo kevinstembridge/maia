@@ -3,6 +3,7 @@
 
 package org.maiaframework.toggles
 
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
@@ -40,6 +41,7 @@ class FeatureToggleHistoryDao(
                 description,
                 enabled,
                 feature_name,
+                id,
                 info_link,
                 last_modified_by_name,
                 last_modified_timestamp,
@@ -56,6 +58,7 @@ class FeatureToggleHistoryDao(
                 :description,
                 :enabled,
                 :featureName,
+                :id,
                 :infoLink,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
@@ -74,6 +77,7 @@ class FeatureToggleHistoryDao(
                 addValue("description", entity.description?.value)
                 addValue("enabled", entity.enabled)
                 addValue("featureName", entity.featureName.value)
+                addValue("id", entity.id)
                 addValue("infoLink", entity.infoLink?.value)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
@@ -100,6 +104,7 @@ class FeatureToggleHistoryDao(
                 description,
                 enabled,
                 feature_name,
+                id,
                 info_link,
                 last_modified_by_name,
                 last_modified_timestamp,
@@ -116,6 +121,7 @@ class FeatureToggleHistoryDao(
                 :description,
                 :enabled,
                 :featureName,
+                :id,
                 :infoLink,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
@@ -135,6 +141,7 @@ class FeatureToggleHistoryDao(
                     addValue("description", entity.description?.value)
                     addValue("enabled", entity.enabled)
                     addValue("featureName", entity.featureName.value)
+                    addValue("id", entity.id)
                     addValue("infoLink", entity.infoLink?.value)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
@@ -184,7 +191,7 @@ class FeatureToggleHistoryDao(
                 EntityClassAndPk(
                     FeatureToggleHistoryEntity::class.java,
                     mapOf(
-                        "featureName" to primaryKey.featureName,
+                        "id" to primaryKey.id,
                         "version" to primaryKey.version,
                     )
                 ),
@@ -197,9 +204,9 @@ class FeatureToggleHistoryDao(
     fun findByPrimaryKeyOrNull(primaryKey: FeatureToggleHistoryEntityPk): FeatureToggleHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from toggles.feature_toggle_history where feature_name = :featureName and version = :version",
+            "select * from toggles.feature_toggle_history where id = :id and version = :version",
             SqlParams().apply {
-                addValue("featureName", primaryKey.featureName.value)
+                addValue("id", primaryKey.id)
                 addValue("version", primaryKey.version)
             },
             this.entityRowMapper
@@ -215,12 +222,12 @@ class FeatureToggleHistoryDao(
     }
 
 
-    fun existsByPrimaryKey(featureName: FeatureName, version: Long): Boolean {
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from toggles.feature_toggle_history where feature_name = :featureName and version = :version",
+            "select count(*) from toggles.feature_toggle_history where id = :id and version = :version",
             SqlParams().apply {
-                addValue("featureName", featureName.value)
+                addValue("id", id)
                 addValue("version", version)
            }
         )
@@ -228,6 +235,22 @@ class FeatureToggleHistoryDao(
         return count > 0
        
     }
+
+    fun findByFeatureName(featureName: FeatureName): List<FeatureToggleHistoryEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from toggles.feature_toggle_history
+            where feature_name = :featureName
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("featureName", featureName.value)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
 
     fun findAllBy(filter: FeatureToggleHistoryEntityFilter): List<FeatureToggleHistoryEntity> {
 
@@ -253,7 +276,7 @@ class FeatureToggleHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select feature_name, version from toggles.feature_toggle_history where $whereClause",
+            "select id, version from toggles.feature_toggle_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -264,7 +287,7 @@ class FeatureToggleHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<FeatureToggleHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select feature_name, version from toggles.feature_toggle_history;",
+            "select id, version from toggles.feature_toggle_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )

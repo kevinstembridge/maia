@@ -3,9 +3,11 @@
 
 package org.maiaframework.toggles
 
+import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -33,19 +35,20 @@ class FeatureToggleCrudService(
 
 
     @Transactional(readOnly = true)
-    fun fetchForEdit(featureName: FeatureName): FeatureToggleFetchForEditDto {
+    fun fetchForEdit(id: DomainId): FeatureToggleFetchForEditDto {
 
-        return this.entityRepo.fetchForEdit(featureName)
+        return this.entityRepo.fetchForEdit(id)
 
     }
 
 
     @Transactional
+    @PreAuthorize("hasAuthority('MAIA_TOGGLES_WRITE')")
     fun update(editDto: FeatureToggleUpdateRequestDto) {
 
-        val featureName = editDto.featureName
+        val id = editDto.id
         val version = editDto.version
-        val updater = FeatureToggleEntityUpdater.forPrimaryKey(featureName, version) {
+        val updater = FeatureToggleEntityUpdater.forPrimaryKey(id, version) {
             activationStrategies(editDto.activationStrategies)
             lastModifiedTimestamp(Instant.now())
         }
@@ -56,6 +59,7 @@ class FeatureToggleCrudService(
 
 
     @Transactional
+    @PreAuthorize("hasAuthority('MAIA_TOGGLES_WRITE')")
     fun updateActivationStrategies(editDto: FeatureToggleUpdate_activationStrategiesRequestDto) {
 
         val currentUsername = CurrentUserHolder.currentUsername
@@ -64,7 +68,7 @@ class FeatureToggleCrudService(
 
         val version = editDto.version
 
-        val updater = FeatureToggleEntityUpdater.forPrimaryKey(editDto.featureName, version) {
+        val updater = FeatureToggleEntityUpdater.forPrimaryKey(editDto.id, version) {
             activationStrategies(editDto.activationStrategies)
             lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestamp(Instant.now())
@@ -79,19 +83,19 @@ class FeatureToggleCrudService(
     fun setFields(updater: FeatureToggleEntityUpdater): Int {
 
         val count = this.entityRepo.setFields(updater)
-        this.featureToggleCrudNotifier.onEntityUpdated(updater.featureName)
+        this.featureToggleCrudNotifier.onEntityUpdated(updater.id)
         return count
         
     }
 
 
     @Transactional
-    fun delete(featureName: FeatureName) {
+    fun delete(id: DomainId) {
 
-        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(featureName)
+        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return
 
-        this.entityRepo.deleteByPrimaryKey(featureName)
+        this.entityRepo.deleteByPrimaryKey(id)
         this.featureToggleCrudNotifier.onEntityDeleted(entityToDelete)
 
     }

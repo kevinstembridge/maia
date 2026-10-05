@@ -3,6 +3,7 @@
 
 package org.maiaframework.toggles
 
+import org.maiaframework.domain.DomainId
 import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
@@ -21,6 +22,7 @@ class FeatureToggleEntity(
     val description: Description?,
     val enabled: Boolean,
     val featureName: FeatureName,
+    val id: DomainId,
     val infoLink: InfoLink?,
     val lastModifiedByUsername: String,
     val lastModifiedTimestamp: Instant,
@@ -28,9 +30,6 @@ class FeatureToggleEntity(
     val ticketKey: TicketKey?,
     val version: Long
 ) {
-
-
-    val primaryKey = featureName
 
 
     override fun toString(): String {
@@ -44,6 +43,7 @@ class FeatureToggleEntity(
                 "description = '" + this.description + '\'' + ", " + 
                 "enabled = '" + this.enabled + '\'' + ", " + 
                 "featureName = '" + this.featureName + '\'' + ", " + 
+                "id = '" + this.id + '\'' + ", " + 
                 "infoLink = '" + this.infoLink + '\'' + ", " + 
                 "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
@@ -58,6 +58,9 @@ class FeatureToggleEntity(
     companion object {
 
 
+        fun newId(): DomainId {
+            return DomainId.newId()
+        }
 
 
         @JvmStatic
@@ -76,6 +79,7 @@ class FeatureToggleEntity(
         ): FeatureToggleEntity {
 
             val createdTimestamp = Instant.now()
+            val id = newId()
             val lastModifiedTimestamp = createdTimestamp
             val version = 1L
 
@@ -88,6 +92,7 @@ class FeatureToggleEntity(
                 description,
                 enabled,
                 featureName,
+                id,
                 infoLink,
                 lastModifiedByUsername,
                 lastModifiedTimestamp,

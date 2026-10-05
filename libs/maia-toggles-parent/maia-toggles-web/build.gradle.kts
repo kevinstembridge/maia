@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("maia.kotlin-library-conventions")
+    id("maia.kotlin-library-spring-conventions")
     idea
 }
 
@@ -13,6 +13,7 @@ dependencies {
 
     implementation(project(":libs:maia-toggles-parent:maia-toggles-service"))
 
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     maiagen(project(":libs:maia-toggles-parent:maia-toggles-spec"))

@@ -3,19 +3,20 @@
 
 package org.maiaframework.toggles
 
+import org.maiaframework.domain.DomainId
 import java.net.URLDecoder
 import java.net.URLEncoder
 
 
 data class FeatureToggleHistoryEntityPk(
-    val featureName: FeatureName,
+    val id: DomainId,
     val version: Long
 ) {
 
 
     val encoded: String by lazy {
 
-        listOf(featureName, version).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+        listOf(id, version).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
 
     }
 
@@ -26,10 +27,10 @@ data class FeatureToggleHistoryEntityPk(
         fun from(pk: String): FeatureToggleHistoryEntityPk {
 
             val parts = pk.split(":")
-            val featureName = FeatureName(URLDecoder.decode(parts[0], "UTF-8"))
+            val id = DomainId(URLDecoder.decode(parts[0], "UTF-8"))
             val version = URLDecoder.decode(parts[1], "UTF-8").toLong()
 
-            return FeatureToggleHistoryEntityPk(featureName, version)
+            return FeatureToggleHistoryEntityPk(id, version)
 
         }
 

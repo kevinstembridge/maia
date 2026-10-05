@@ -3,6 +3,7 @@
 
 package org.maiaframework.toggles
 
+import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -36,10 +37,10 @@ class FeatureToggleCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(featureName: FeatureName) {
+    fun onEntityUpdated(id: DomainId) {
 
         this.featureToggleCrudListeners.forEach { (_, listener) ->
-            listener.onFeatureToggleEntityUpdated(featureName)
+            listener.onFeatureToggleEntityUpdated(id)
         }
 
     }

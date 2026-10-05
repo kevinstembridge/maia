@@ -3,12 +3,13 @@
 
 package org.maiaframework.toggles
 
+import org.maiaframework.domain.DomainId
 
 
 interface FeatureToggleCrudListener {
 
 
-    fun onFeatureToggleEntityUpdated(featureName: FeatureName)
+    fun onFeatureToggleEntityUpdated(id: DomainId)
 
 
 }

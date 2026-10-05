@@ -99,45 +99,46 @@ class EntityHistoryBlotterRowMapperRenderer(
 
         val fieldName = col.classFieldDef.classFieldName.value
         val columnName = fieldName
+        val orNull = if (col.nullable) "OrNull" else ""
 
         when (val fieldType = col.classFieldDef.fieldType) {
             is EnumFieldType -> {
                 addImportFor(fieldType.fqcn)
-                appendLine("        val $fieldName = rsa.readEnum(\"$columnName\", ${fieldType.fqcn.uqcn}::class.java)")
+                appendLine("        val $fieldName = rsa.readEnum$orNull(\"$columnName\", ${fieldType.fqcn.uqcn}::class.java)")
             }
-            is BooleanFieldType -> appendLine("        val $fieldName = rsa.readBoolean(\"$columnName\")")
+            is BooleanFieldType -> appendLine("        val $fieldName = rsa.readBoolean$orNull(\"$columnName\")")
             is BooleanTypeFieldType -> {
                 addImportFor(fieldType.fqcn)
-                appendLine("        val $fieldName = rsa.readBoolean(\"$columnName\") { ${fieldType.uqcn}(it) }")
+                appendLine("        val $fieldName = rsa.readBoolean$orNull(\"$columnName\") { ${fieldType.uqcn}(it) }")
             }
             is BooleanValueClassFieldType -> {
                 addImportFor(fieldType.fqcn)
-                appendLine("        val $fieldName = rsa.readBoolean(\"$columnName\") { ${fieldType.uqcn}(it) }")
+                appendLine("        val $fieldName = rsa.readBoolean$orNull(\"$columnName\") { ${fieldType.uqcn}(it) }")
             }
             is DataClassFieldType -> TODO()
-            is DomainIdFieldType -> appendLine("        val $fieldName = rsa.readDomainId(\"$columnName\")")
+            is DomainIdFieldType -> appendLine("        val $fieldName = rsa.readDomainId$orNull(\"$columnName\")")
             is DoubleFieldType -> appendLine("        val $fieldName = rsa.readDouble(\"$columnName\")")
             is EsDocFieldType -> TODO()
             is ForeignKeyFieldType -> when (val pkType = fieldType.pkFieldType) {
-                is DomainIdFieldType -> appendLine("        val $fieldName = rsa.readDomainId(\"$columnName\")")
+                is DomainIdFieldType -> appendLine("        val $fieldName = rsa.readDomainId$orNull(\"$columnName\")")
                 is StringTypeFieldType -> {
                     addImportFor(pkType.fqcn)
-                    appendLine("        val $fieldName = rsa.readString(\"$columnName\") { ${pkType.uqcn}(it) }")
+                    appendLine("        val $fieldName = rsa.readString$orNull(\"$columnName\") { ${pkType.uqcn}(it) }")
                 }
                 else -> TODO("FK to non-UUID, non-String PK not yet supported")
             }
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is PkAndNameFieldType -> TODO()
-            is InstantFieldType -> appendLine("        val $fieldName = rsa.readInstant(\"$columnName\")")
-            is IntFieldType -> appendLine("        val $fieldName = rsa.readInt(\"$columnName\")")
+            is InstantFieldType -> appendLine("        val $fieldName = rsa.readInstant$orNull(\"$columnName\")")
+            is IntFieldType -> appendLine("        val $fieldName = rsa.readInt$orNull(\"$columnName\")")
             is IntTypeFieldType -> {
                 addImportFor(fieldType.fqcn)
-                appendLine("        val $fieldName = rsa.readInt(\"$columnName\") { ${fieldType.uqcn}(it) }")
+                appendLine("        val $fieldName = rsa.readInt$orNull(\"$columnName\") { ${fieldType.uqcn}(it) }")
             }
             is IntValueClassFieldType -> {
                 addImportFor(fieldType.fqcn)
-                appendLine("        val $fieldName = rsa.readInt(\"$columnName\") { ${fieldType.uqcn}(it) }")
+                appendLine("        val $fieldName = rsa.readInt$orNull(\"$columnName\") { ${fieldType.uqcn}(it) }")
             }
             is ListFieldType -> {
                 when (val listElementFieldType = fieldType.parameterFieldType) {
@@ -165,11 +166,11 @@ class EntityHistoryBlotterRowMapperRenderer(
                     else -> throw NotImplementedError("No list row mapper implementation for element type ${listElementFieldType::class.simpleName} on field $fieldName")
                 }
             }
-            is LocalDateFieldType -> appendLine("        val $fieldName = rsa.readLocalDate(\"$columnName\")")
-            is LongFieldType -> appendLine("        val $fieldName = rsa.readLong(\"$columnName\")")
+            is LocalDateFieldType -> appendLine("        val $fieldName = rsa.readLocalDate$orNull(\"$columnName\")")
+            is LongFieldType -> appendLine("        val $fieldName = rsa.readLong$orNull(\"$columnName\")")
             is LongTypeFieldType -> {
                 addImportFor(fieldType.fqcn)
-                appendLine("        val $fieldName = rsa.readLong(\"$columnName\") { ${fieldType.uqcn}(it) }")
+                appendLine("        val $fieldName = rsa.readLong$orNull(\"$columnName\") { ${fieldType.uqcn}(it) }")
             }
             is MapFieldType -> {
                 addImportFor(Fqcns.JACKSON_TYPE_REFERENCE)
@@ -177,23 +178,23 @@ class EntityHistoryBlotterRowMapperRenderer(
                 appendLine("        val $fieldName = rsa.readString$nullableSuffix(\"$columnName\") { jsonMapper.readValue(it, object : TypeReference<${col.classFieldDef.unqualifiedToString}>() {}) }")
             }
             is ObjectIdFieldType -> appendLine("        val $fieldName = rsa.readObjectId(\"$columnName\")")
-            is PeriodFieldType -> appendLine("        val $fieldName = rsa.readPeriod(\"$columnName\")")
+            is PeriodFieldType -> appendLine("        val $fieldName = rsa.readPeriod$orNull(\"$columnName\")")
             is RequestDtoFieldType -> TODO()
             is SetFieldType -> TODO()
             is SimpleResponseDtoFieldType -> {
                 addImportFor(fieldType)
-                appendLine("        val $fieldName = rsa.readString(\"$columnName\") { jsonMapper.readValue(it, ${fieldType.uqcn}::class.java) }")
+                appendLine("        val $fieldName = rsa.readString$orNull(\"$columnName\") { jsonMapper.readValue(it, ${fieldType.uqcn}::class.java) }")
             }
-            is StringFieldType -> appendLine("        val $fieldName = rsa.readString(\"$columnName\")")
+            is StringFieldType -> appendLine("        val $fieldName = rsa.readString$orNull(\"$columnName\")")
             is StringTypeFieldType -> {
                 addImportFor(fieldType.fqcn)
-                appendLine("        val $fieldName = rsa.readString(\"$columnName\") { ${fieldType.uqcn}(it) }")
+                appendLine("        val $fieldName = rsa.readString$orNull(\"$columnName\") { ${fieldType.uqcn}(it) }")
             }
             is StringValueClassFieldType -> {
                 addImportFor(fieldType.fqcn)
-                appendLine("        val $fieldName = rsa.readString(\"$columnName\") { ${fieldType.uqcn}(it) }")
+                appendLine("        val $fieldName = rsa.readString$orNull(\"$columnName\") { ${fieldType.uqcn}(it) }")
             }
-            is UrlFieldType -> appendLine("        val $fieldName = rsa.readUrl(\"$columnName\")")
+            is UrlFieldType -> appendLine("        val $fieldName = rsa.readUrl$orNull(\"$columnName\")")
         }
 
     }

@@ -7,9 +7,8 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import org.hibernate.validator.constraints.Length
+import org.maiaframework.domain.DomainId
 import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 
 
@@ -19,10 +18,9 @@ class FeatureToggleUpdateRequestDto
     @field:NotNull
     @param:JsonProperty("activationStrategies", access = JsonProperty.Access.READ_WRITE) 
     private val activationStrategies_raw: List<ActivationStrategyDescriptor>?,
-    @field:NotBlank
-    @field:Length(max = 200)
-    @param:JsonProperty("featureName", access = JsonProperty.Access.READ_WRITE) 
-    private val featureName_raw: String?,
+    @field:NotNull
+    @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
+    private val id_raw: DomainId?,
     @field:NotNull
     @param:JsonProperty("version", access = JsonProperty.Access.READ_WRITE) 
     private val version_raw: Long?
@@ -34,8 +32,7 @@ class FeatureToggleUpdateRequestDto
 
 
     @get:JsonIgnore
-    val featureName
-        get() = FeatureName(featureName_raw!!)
+    val id: DomainId by lazy { id_raw!! }
 
 
     @get:JsonIgnore
@@ -46,7 +43,7 @@ class FeatureToggleUpdateRequestDto
 
         return "FeatureToggleUpdateRequestDto{" +
                 "activationStrategies = '" + this.activationStrategies + '\'' + ", " + 
-                "featureName = '" + this.featureName + '\'' + ", " + 
+                "id = '" + this.id + '\'' + ", " + 
                 "version = '" + this.version + '\'' +
                 "}"
 

@@ -3,6 +3,7 @@
 
 package org.maiaframework.toggles
 
+import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 import org.maiaframework.toggles.fields.ContactPerson
@@ -15,18 +16,18 @@ import java.time.LocalDate
 
 data class FeatureToggleEntityUpdater(
     val fields: List<FieldUpdate>,
-    val featureName: FeatureName,
+    val id: DomainId,
     val version: Long
 ) {
 
 
     val primaryKeyMap = mapOf(
-        "featureName" to featureName,
+        "id" to id,
     )
 
 
     class Builder(
-        val featureName: FeatureName,
+        val id: DomainId,
         val version: Long
     ) {
 
@@ -38,7 +39,7 @@ data class FeatureToggleEntityUpdater(
 
             return FeatureToggleEntityUpdater(
                 this.fields,
-                this.featureName,
+                this.id,
                 this.version
             )
 
@@ -129,13 +130,13 @@ data class FeatureToggleEntityUpdater(
 
 
         fun forPrimaryKey(
-            featureName: FeatureName,
+            id: DomainId,
             version: Long,
             init: Builder.() -> Unit
         ): FeatureToggleEntityUpdater {
 
             val builder = Builder(
-                featureName,
+                id,
                 version
             )
             builder.init()

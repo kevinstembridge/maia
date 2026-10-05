@@ -4,6 +4,7 @@
 package org.maiaframework.toggles
 
 import org.maiaframework.common.logging.getLogger
+import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Repository
 
 
@@ -28,9 +29,9 @@ class FeatureToggleHistoryRepo(private val dao: FeatureToggleHistoryDao) {
     }
 
 
-    fun existsByPrimaryKey(featureName: FeatureName, version: Long): Boolean {
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
-        return dao.existsByPrimaryKey(featureName, version)
+        return dao.existsByPrimaryKey(id, version)
 
     }
 
@@ -59,6 +60,13 @@ class FeatureToggleHistoryRepo(private val dao: FeatureToggleHistoryDao) {
     fun findAllBy(filter: FeatureToggleHistoryEntityFilter): List<FeatureToggleHistoryEntity> {
 
         return this.dao.findAllBy(filter)
+
+    }
+
+
+    fun findByFeatureName(featureName: FeatureName): List<FeatureToggleHistoryEntity> {
+
+        return dao.findByFeatureName(featureName)
 
     }
 

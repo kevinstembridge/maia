@@ -23,16 +23,16 @@ class FeatureToggleHistoryBlotterRowDtoRowMapper(private val jsonMapper: JsonMap
         val activationStrategies = rsa.readString("activationStrategies") { jsonMapper.readValue(it, object : TypeReference<List<ActivationStrategyDescriptor>>() {}) }
         val attributes = rsa.readStringOrNull("attributes") { jsonMapper.readValue(it, object : TypeReference<Map<String, String>?>() {}) }
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
-        val comment = rsa.readString("comment")
-        val contactPerson = rsa.readString("contactPerson") { ContactPerson(it) }
-        val description = rsa.readString("description") { Description(it) }
+        val comment = rsa.readStringOrNull("comment")
+        val contactPerson = rsa.readStringOrNull("contactPerson") { ContactPerson(it) }
+        val description = rsa.readStringOrNull("description") { Description(it) }
         val enabled = rsa.readBoolean("enabled")
         val featureName = rsa.readString("featureName") { FeatureName(it) }
-        val infoLink = rsa.readString("infoLink") { InfoLink(it) }
+        val infoLink = rsa.readStringOrNull("infoLink") { InfoLink(it) }
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
-        val reviewDate = rsa.readLocalDate("reviewDate")
-        val ticketKey = rsa.readString("ticketKey") { TicketKey(it) }
+        val reviewDate = rsa.readLocalDateOrNull("reviewDate")
+        val ticketKey = rsa.readStringOrNull("ticketKey") { TicketKey(it) }
         val version = rsa.readLong("version")
 
         return FeatureToggleHistoryBlotterRowDto(

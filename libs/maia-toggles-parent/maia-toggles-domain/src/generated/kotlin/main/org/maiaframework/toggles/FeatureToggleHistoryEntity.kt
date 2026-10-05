@@ -4,6 +4,7 @@
 package org.maiaframework.toggles
 
 import org.maiaframework.domain.ChangeType
+import org.maiaframework.domain.DomainId
 import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
@@ -23,6 +24,7 @@ class FeatureToggleHistoryEntity(
     val description: Description?,
     val enabled: Boolean,
     val featureName: FeatureName,
+    val id: DomainId,
     val infoLink: InfoLink?,
     val lastModifiedByUsername: String,
     val lastModifiedTimestamp: Instant,
@@ -32,7 +34,7 @@ class FeatureToggleHistoryEntity(
 ) {
 
 
-    val primaryKey = FeatureToggleHistoryEntityPk(featureName, version)
+    val primaryKey = FeatureToggleHistoryEntityPk(id, version)
 
 
     override fun toString(): String {
@@ -47,6 +49,7 @@ class FeatureToggleHistoryEntity(
                 "description = '" + this.description + '\'' + ", " + 
                 "enabled = '" + this.enabled + '\'' + ", " + 
                 "featureName = '" + this.featureName + '\'' + ", " + 
+                "id = '" + this.id + '\'' + ", " + 
                 "infoLink = '" + this.infoLink + '\'' + ", " + 
                 "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 

@@ -193,6 +193,21 @@ abstract class AbstractSpec protected constructor(
             )
         }
 
+        val nonSurrogateKeyViolations = entityDefs
+            .filter { it.withVersionHistory.value && !it.isManyToManyJoinEntity }
+            .filter { entityDef -> entityDef.primaryKeyFields.any { !it.isPrimaryKey.isSurrogate } }
+
+        if (nonSurrogateKeyViolations.isNotEmpty()) {
+            val details = nonSurrogateKeyViolations.joinToString("\n") { entityDef ->
+                val keyFields = entityDef.primaryKeyFields.joinToString { it.classFieldName.value }
+                "  - '${entityDef.entityBaseName}' has primary key field(s) [$keyFields]"
+            }
+            throw ModelDefinitionException(
+                "Entities that record version history must use the default surrogate primary key. " +
+                    "Replace primaryKey() with a unique index on the natural key:\n$details"
+            )
+        }
+
         val violations = entityDefs
             .filter { it.withVersionHistory.value }
             .flatMap { entityDef ->

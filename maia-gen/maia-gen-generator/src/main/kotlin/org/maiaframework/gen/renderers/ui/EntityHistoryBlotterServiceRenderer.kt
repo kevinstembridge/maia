@@ -62,7 +62,7 @@ class EntityHistoryBlotterServiceRenderer(
             appendLine("    public search(entityId: string, searchModel: any): Observable<SearchResultPage<${def.tsRowDtoClassName}>> {")
             blankLine()
             appendLine("        return this.http.post<SearchResultPage<${def.tsRowDtoClassName}>>(")
-            appendLine("                `/api/${def.entityDef.entityBaseName.toKebabCase()}/\${entityId}/history/search`,")
+            appendLine("                `${def.searchServiceBaseUrl}/\${entityId}/history/search`,")
             appendLine("                searchModel,")
             appendLine("                this.httpOptions);")
             blankLine()

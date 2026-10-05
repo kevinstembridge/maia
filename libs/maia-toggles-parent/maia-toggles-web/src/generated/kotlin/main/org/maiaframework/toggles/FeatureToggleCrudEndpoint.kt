@@ -4,7 +4,9 @@
 package org.maiaframework.toggles
 
 import jakarta.validation.Valid
+import org.maiaframework.domain.DomainId
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
@@ -13,18 +15,19 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class FeatureToggleCrudEndpoint(val crudService: FeatureToggleCrudService) {
+class FeatureToggleCrudEndpoint(val crudService: ToggleCrudService) {
 
 
-    @GetMapping("/api/maia-toggles/feature-toggle/fetch-for-edit", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun fetchForEdit(@PathVariable featureName: FeatureName): FeatureToggleFetchForEditDto {
+    @GetMapping("/api/ops/toggles/feature-toggle/fetch-for-edit/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun fetchForEdit(@PathVariable id: DomainId): FeatureToggleFetchForEditDto {
 
-        return this.crudService.fetchForEdit(featureName)
+        return this.crudService.fetchForEdit(id)
 
     }
 
 
-    @PutMapping("/api/maia_toggles/feature-toggle/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/ops/toggles/feature-toggle/update", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('MAIA_TOGGLES_WRITE')")
     fun update(@RequestBody @Valid editDto: FeatureToggleUpdateRequestDto) {
 
         this.crudService.update(editDto)
@@ -32,7 +35,8 @@ class FeatureToggleCrudEndpoint(val crudService: FeatureToggleCrudService) {
     }
 
 
-    @PutMapping("/api/maia-toggles/feature-toggle/inline/activation-strategies", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/ops/toggles/feature-toggle/inline/activation-strategies", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('MAIA_TOGGLES_WRITE')")
     fun updateActivationStrategies(@RequestBody @Valid editDto: FeatureToggleUpdate_activationStrategiesRequestDto) {
 
         this.crudService.updateActivationStrategies(editDto)

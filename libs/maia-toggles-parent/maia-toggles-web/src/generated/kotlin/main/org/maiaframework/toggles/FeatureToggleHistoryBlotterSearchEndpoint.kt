@@ -7,6 +7,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.search.AgGridSearchModel
 import org.maiaframework.domain.search.SearchResultPage
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 class FeatureToggleHistoryBlotterSearchEndpoint(private val searchService: FeatureToggleHistoryBlotterRowDtoSearchService) {
 
 
-    @PostMapping("/api/feature-toggle/{entityId}/history/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/ops/toggles/feature-toggle/{entityId}/history/search", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('MAIA_TOGGLES_READ')")
     fun search(
         @PathVariable entityId: DomainId,
         @RequestBody searchModel: AgGridSearchModel
@@ -28,7 +30,8 @@ class FeatureToggleHistoryBlotterSearchEndpoint(private val searchService: Featu
     }
 
 
-    @PostMapping("/api/feature-toggle/{entityId}/history/count")
+    @PostMapping("/api/ops/toggles/feature-toggle/{entityId}/history/count")
+    @PreAuthorize("hasAuthority('MAIA_TOGGLES_READ')")
     fun count(
         @PathVariable entityId: DomainId,
         @RequestBody searchModel: AgGridSearchModel

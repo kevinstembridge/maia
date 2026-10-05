@@ -4,6 +4,7 @@
 package org.maiaframework.toggles
 
 import jakarta.validation.Valid
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController
 class SetFeatureToggleRequestDtoEndpoint(val handler: SetFeatureToggleRequestDtoHandler) {
 
 
-    @PostMapping("/api/maia-toggles/set-feature-toggle")
+    @PostMapping("/api/ops/toggles/set-feature-toggle")
+    @PreAuthorize("hasAuthority('MAIA_TOGGLES_WRITE')")
     fun post(@RequestBody @Valid requestDto: SetFeatureToggleRequestDto) {
 
         this.handler.handleSetFeatureToggleRequestDto(requestDto)

@@ -5,6 +5,7 @@ package org.maiaframework.toggles
 
 import org.maiaframework.common.BlankStringException
 import org.maiaframework.domain.ChangeType
+import org.maiaframework.domain.DomainId
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.jdbc.sql.conditions.AndOr
 import org.maiaframework.jdbc.sql.conditions.SqlConditionOperator
@@ -107,6 +108,14 @@ class FeatureToggleHistoryEntityFilters {
         get() {
 
             return FieldFilter("feature_name", Types.VARCHAR, this.sqlParamCounter) { value -> value?.value }
+
+        }
+
+
+    val id: FieldFilter<DomainId> 
+        get() {
+
+            return FieldFilter("id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 

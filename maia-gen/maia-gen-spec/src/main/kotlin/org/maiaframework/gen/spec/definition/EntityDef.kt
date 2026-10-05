@@ -77,7 +77,8 @@ class EntityDef(
     val effectiveRangeDef: EffectiveRangeDef?,
     val cacheableDef: CacheableDef?,
     val angularFormSystem: AngularFormSystem,
-    val isManyToManyJoinEntity: Boolean = false
+    val isManyToManyJoinEntity: Boolean = false,
+    val historyBlotterConfig: EntityHistoryBlotterConfig = EntityHistoryBlotterConfig.DEFAULT
 ) {
 
 

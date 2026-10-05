@@ -49,7 +49,7 @@ class EntityHistoryBlotterSearchEndpointRenderer(
         append("""
             |
             |
-            |    @PostMapping("${def.searchEndpointPath}", produces = [MediaType.APPLICATION_JSON_VALUE])
+            |    @PostMapping("${def.searchEndpointPath}", produces = [MediaType.APPLICATION_JSON_VALUE])${preAuthorizeLine()}
             |    fun search(
             |        $params
             |    ): SearchResultPage<${def.rowDtoUqcn}> {
@@ -83,7 +83,7 @@ class EntityHistoryBlotterSearchEndpointRenderer(
         append("""
             |
             |
-            |    @PostMapping("${def.countEndpointPath}")
+            |    @PostMapping("${def.countEndpointPath}")${preAuthorizeLine()}
             |    fun count(
             |        $params
             |    ): Long {
@@ -92,6 +92,16 @@ class EntityHistoryBlotterSearchEndpointRenderer(
             |
             |    }
             |""".trimMargin())
+
+    }
+
+
+    private fun preAuthorizeLine(): String {
+
+        val authorityDef = def.authorityDef ?: return ""
+
+        addImportFor(Fqcns.SPRING_SECURITY_PRE_AUTHORIZE)
+        return "\n            |    @PreAuthorize(\"hasAuthority('${authorityDef.name}')\")"
 
     }
 

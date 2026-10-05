@@ -30,6 +30,8 @@ object FeatureToggleHistoryEntityMeta {
 
     const val featureName = "feature_name"
 
+    const val id = "id"
+
     const val infoLink = "info_link"
 
     const val lastModifiedByUsername = "last_modified_by_name"
@@ -53,6 +55,13 @@ object FeatureToggleHistoryEntityMeta {
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
 
+    object IndexName {
+
+        const val hist_feature_toggle_feature_name_idx = "hist_feature_toggle_feature_name_idx"
+
+    }
+
+
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
@@ -65,6 +74,7 @@ object FeatureToggleHistoryEntityMeta {
             "description" -> "description"
             "enabled" -> "enabled"
             "featureName" -> "feature_name"
+            "id" -> "id"
             "infoLink" -> "info_link"
             "lastModifiedByUsername" -> "last_modified_by_name"
             "lastModifiedTimestamp" -> "last_modified_timestamp"

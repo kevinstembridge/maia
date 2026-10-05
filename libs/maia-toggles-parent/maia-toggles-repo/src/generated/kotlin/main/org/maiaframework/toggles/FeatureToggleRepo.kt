@@ -6,6 +6,7 @@ package org.maiaframework.toggles
 import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.map.IMap
 import org.maiaframework.common.logging.getLogger
+import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Repository
 
 
@@ -19,32 +20,32 @@ class FeatureToggleRepo(
     private val logger = getLogger<FeatureToggleRepo>()
 
 
-    private val cache: IMap<FeatureName, FeatureToggleEntity> = this.hazelcastInstance.getMap("feature_toggle_entity")
+    private val cache: IMap<DomainId, FeatureToggleEntity> = this.hazelcastInstance.getMap("feature_toggle_entity")
 
 
-    fun findByPrimaryKeyOrNull(featureName: FeatureName): FeatureToggleEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): FeatureToggleEntity? {
 
-        return cache[featureName]
-            ?: dao.findByPrimaryKeyOrNull(featureName).also { entity ->
-                entity?.let { cache[featureName] = it }
+        return cache[id]
+            ?: dao.findByPrimaryKeyOrNull(id).also { entity ->
+                entity?.let { cache[id] = it }
             }
 
     }
 
 
-    fun findByPrimaryKey(featureName: FeatureName): FeatureToggleEntity {
+    fun findByPrimaryKey(id: DomainId): FeatureToggleEntity {
 
-        return cache[featureName]
-            ?: dao.findByPrimaryKey(featureName).also {
-                cache[featureName] = it
+        return cache[id]
+            ?: dao.findByPrimaryKey(id).also {
+                cache[id] = it
             }
 
     }
 
 
-    fun existsByPrimaryKey(featureName: FeatureName): Boolean {
+    fun existsByPrimaryKey(id: DomainId): Boolean {
 
-        return dao.existsByPrimaryKey(featureName)
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -56,14 +57,14 @@ class FeatureToggleRepo(
     }
 
 
-    fun findAllPrimaryKeysAsSequence(): Sequence<FeatureName> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return dao.findAllPrimaryKeysAsSequence()
 
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: FeatureToggleEntityFilter): Sequence<FeatureName> {
+    fun findPrimaryKeysAsSequence(filter: FeatureToggleEntityFilter): Sequence<DomainId> {
 
         return dao.findPrimaryKeysAsSequence(filter)
 
@@ -84,9 +85,30 @@ class FeatureToggleRepo(
     }
 
 
-    fun fetchForEdit(featureName: FeatureName): FeatureToggleFetchForEditDto {
+    fun findOneOrNullByFeatureName(featureName: FeatureName): FeatureToggleEntity? {
 
-        return this.dao.fetchForEdit(featureName)
+        return dao.findOneOrNullByFeatureName(featureName)
+
+    }
+
+
+    fun findOneByFeatureName(featureName: FeatureName): FeatureToggleEntity {
+
+        return dao.findOneByFeatureName(featureName)
+
+    }
+
+
+    fun existsByFeatureName(featureName: FeatureName): Boolean {
+
+        return dao.existsByFeatureName(featureName)
+
+    }
+
+
+    fun fetchForEdit(id: DomainId): FeatureToggleFetchForEditDto {
+
+        return this.dao.fetchForEdit(id)
 
     }
 
@@ -123,7 +145,7 @@ class FeatureToggleRepo(
         val updatedCount = this.dao.setFields(updater)
 
         if (updatedCount > 0) {
-            this.cache.evict(updater.featureName)
+            this.cache.evict(updater.id)
         }
 
         return updatedCount
@@ -138,7 +160,7 @@ class FeatureToggleRepo(
         try {
             this.dao.bulkSetFields(updaters)
         } finally {
-            updaters.forEach { updater -> this.cache.evict(updater.featureName) }
+            updaters.forEach { updater -> this.cache.evict(updater.id) }
         }
 
     }
@@ -149,26 +171,33 @@ class FeatureToggleRepo(
         logger.debug("upsert {}", upsertEntity)
 
         val upsertedEntity = dao.upsertByFeatureName(upsertEntity)
-        this.cache.evict(upsertedEntity.featureName)
+        this.cache.evict(upsertedEntity.id)
         return upsertedEntity
 
     }
 
 
-    fun deleteByPrimaryKey(featureName: FeatureName) {
+    fun deleteByPrimaryKey(id: DomainId) {
 
-        this.dao.deleteByPrimaryKey(featureName)
-        this.cache.evict(featureName)
+        this.dao.deleteByPrimaryKey(id)
+        this.cache.evict(id)
 
     }
 
 
-    fun removeByPrimaryKey(featureName: FeatureName): FeatureToggleEntity? {
+    fun deleteByFeatureName(featureName: FeatureName): Boolean {
 
-        val found = findByPrimaryKeyOrNull(featureName)
+        return dao.deleteByFeatureName(featureName)
+
+    }
+
+
+    fun removeByPrimaryKey(id: DomainId): FeatureToggleEntity? {
+
+        val found = findByPrimaryKeyOrNull(id)
        
         if (found != null) {
-            deleteByPrimaryKey(featureName)
+            deleteByPrimaryKey(id)
         }
        
         return found

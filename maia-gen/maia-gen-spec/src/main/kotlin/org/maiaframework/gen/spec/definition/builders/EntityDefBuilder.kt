@@ -9,6 +9,7 @@ import org.maiaframework.gen.spec.definition.ConfigurableSchemaPropertyName
 import org.maiaframework.gen.spec.definition.Description
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.EntityHistoryBlotterConfig
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EnumDef
 import org.maiaframework.gen.spec.definition.EnumDefs
@@ -99,6 +100,9 @@ class EntityDefBuilder(
     private val crudDefBuilder = CrudDefBuilder()
 
 
+    private var historyBlotterConfig: EntityHistoryBlotterConfig = EntityHistoryBlotterConfig.DEFAULT
+
+
     private var cacheableDef: CacheableDef? = null
 
 
@@ -159,7 +163,8 @@ class EntityDefBuilder(
             this.effectiveRangeDef,
             this.cacheableDef,
             this.angularFormSystem,
-            isManyToManyJoinEntity = this.isManyToManyJoinEntity
+            isManyToManyJoinEntity = this.isManyToManyJoinEntity,
+            historyBlotterConfig = this.historyBlotterConfig
         )
 
     }
@@ -267,6 +272,15 @@ class EntityDefBuilder(
     fun description(description: String) {
 
         this.description = Description(description)
+
+    }
+
+
+    fun historyBlotter(init: HistoryBlotterConfigBuilder.() -> Unit) {
+
+        val builder = HistoryBlotterConfigBuilder()
+        builder.init()
+        this.historyBlotterConfig = builder.build()
 
     }
 

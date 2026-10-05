@@ -8,7 +8,7 @@ class ToggleSyncer(private val toggleRepo: FeatureToggleRepo) {
 
     fun sync(feature: Feature) {
 
-        val existingFeatureEntity = this.toggleRepo.findByPrimaryKeyOrNull(feature.name)
+        val existingFeatureEntity = this.toggleRepo.findOneOrNullByFeatureName(feature.name)
 
         if (existingFeatureEntity == null) {
 
@@ -60,6 +60,7 @@ class ToggleSyncer(private val toggleRepo: FeatureToggleRepo) {
                 description = feature.description,
                 enabled = existingFeatureEntity.enabled,
                 featureName = feature.name,
+                id = existingFeatureEntity.id,
                 infoLink = feature.infoLink,
                 lastModifiedTimestamp = Instant.now(),
                 lastModifiedByUsername = "SYSTEM",

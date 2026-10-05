@@ -3,6 +3,7 @@
 
 package org.maiaframework.toggles
 
+import org.maiaframework.domain.DomainId
 import org.maiaframework.toggles.activation.ActivationStrategyDescriptor
 import org.maiaframework.toggles.fields.ContactPerson
 import org.maiaframework.toggles.fields.Description
@@ -21,6 +22,7 @@ data class FeatureToggleFetchForEditDto(
     val description: Description?,
     val enabled: Boolean,
     val featureName: FeatureName,
+    val id: DomainId,
     val infoLink: InfoLink?,
     val lastModifiedByUsername: String,
     val lastModifiedTimestamp: Instant,

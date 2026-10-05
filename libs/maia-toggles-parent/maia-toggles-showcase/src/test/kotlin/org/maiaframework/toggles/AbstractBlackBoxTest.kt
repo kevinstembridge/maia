@@ -35,7 +35,7 @@ abstract class AbstractBlackBoxTest {
 
 
     @Autowired
-    private lateinit var jsonMapper: JsonMapper
+    protected lateinit var jsonMapper: JsonMapper
 
 
     @BeforeAll

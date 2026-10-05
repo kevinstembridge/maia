@@ -16,7 +16,13 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes.mapFieldType
 class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaName = SchemaName("toggles")) {
 
 
-    val moduleName = ModuleName.of("maia_toggles")
+    val readAuthority = authority("MAIA_TOGGLES_READ")
+
+
+    val writeAuthority = authority("MAIA_TOGGLES_WRITE")
+
+
+    val moduleName = ModuleName.of("ops/toggles")
 
 
     val contactPersonValueDef = stringValueClass("org.maiaframework.toggles.fields", "ContactPerson")
@@ -55,11 +61,11 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
         deletable = Deletable.TRUE,
         allowFindAll = AllowFindAll.TRUE,
     ) {
-        moduleName("maia_toggles")
+        moduleName("ops/toggles")
         cacheable { }
         daoHasSpringAnnotation = false
         field("featureName", featureNameValueDef) {
-            primaryKey()
+            unique()
             lengthConstraint(max = 200)
         }
         field("enabled", FieldTypes.boolean) {
@@ -104,7 +110,13 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
             editableByUser()
 //            modifiableBySystem()
         }
+        historyBlotter {
+            authority(readAuthority)
+            pathPrefix("/api/ops/toggles")
+        }
         crud {
+            authority(writeAuthority)
+            customCrudServiceFqcn("org.maiaframework.toggles.ToggleCrudService")
             update {
                 api {}
             }
@@ -113,6 +125,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
 
 
     val featureToggleResponseDtoDef = simpleResponseDto("org.maiaframework.toggles", "FeatureToggle") {
+        field("id", FieldTypes.domainId)
         field("featureName", featureNameValueDef)
         field("enabled", FieldTypes.boolean)
         field("description", descriptionValueDef) { nullable() }
@@ -137,8 +150,10 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
     val setFeatureToggleRequestDtoDef = requestDto(
         "org.maiaframework.toggles",
         "SetFeatureToggle",
+        requestMappingPath = "/api/ops/toggles/set-feature-toggle",
         moduleName = moduleName
     ) {
+        withPreAuthorize("hasAuthority('MAIA_TOGGLES_WRITE')")
         field("featureName", featureNameValueDef)
         field("enabled", FieldTypes.boolean)
         field("comment", FieldTypes.string) { nullable() }
