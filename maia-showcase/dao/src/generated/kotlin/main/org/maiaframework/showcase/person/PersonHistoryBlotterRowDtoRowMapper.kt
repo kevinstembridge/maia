@@ -17,10 +17,10 @@ class PersonHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PersonHistoryBlotterRo
     override fun mapRow(rsa: ResultSetAdapter): PersonHistoryBlotterRowDto {
 
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
-        val createdBy = rsa.readDomainId("createdBy")
+        val createdBy = rsa.readDomainIdOrNull("createdBy")
         val displayName = rsa.readString("displayName")
-        val firstName = rsa.readString("firstName") { FirstName(it) }
-        val lastModifiedBy = rsa.readDomainId("lastModifiedBy")
+        val firstName = rsa.readStringOrNull("firstName") { FirstName(it) }
+        val lastModifiedBy = rsa.readDomainIdOrNull("lastModifiedBy")
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val lastName = rsa.readString("lastName") { LastName(it) }
         val lifecycleState = rsa.readEnum("lifecycleState", LifecycleState::class.java)

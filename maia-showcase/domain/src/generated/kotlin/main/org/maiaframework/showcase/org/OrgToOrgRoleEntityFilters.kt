@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
 import org.maiaframework.common.BlankStringException
 import org.maiaframework.domain.DomainId
 import org.maiaframework.jdbc.SqlParams
@@ -101,10 +100,10 @@ class OrgToOrgRoleEntityFilters {
         }
 
 
-    val role: FieldFilter<OrgRoleKey> 
+    val role: FieldFilter<DomainId> 
         get() {
 
-            return FieldFilter("role", Types.VARCHAR, this.sqlParamCounter) { value -> value?.value }
+            return FieldFilter("role_id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
 
         }
 

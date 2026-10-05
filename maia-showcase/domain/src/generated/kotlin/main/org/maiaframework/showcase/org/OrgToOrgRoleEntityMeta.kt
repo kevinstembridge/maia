@@ -22,7 +22,7 @@ object OrgToOrgRoleEntityMeta {
 
     const val org = "org_id"
 
-    const val role = "role"
+    const val role = "role_id"
 
     val ENTITY_KEY = EntityKey("OrgToOrgRole")
 
@@ -39,7 +39,7 @@ object OrgToOrgRoleEntityMeta {
 
         const val org_to_org_role_org_id_idx = "org_to_org_role_org_id_idx"
 
-        const val org_to_org_role_role_idx = "org_to_org_role_role_idx"
+        const val org_to_org_role_role_id_idx = "org_to_org_role_role_id_idx"
 
     }
 
@@ -52,7 +52,7 @@ object OrgToOrgRoleEntityMeta {
             "effectiveTo" -> "effective_to"
             "id" -> "id"
             "org" -> "org_id"
-            "role" -> "role"
+            "role" -> "role_id"
             else ->
                 throw IllegalArgumentException("Unknown classFieldName [$classFieldName]")
         }

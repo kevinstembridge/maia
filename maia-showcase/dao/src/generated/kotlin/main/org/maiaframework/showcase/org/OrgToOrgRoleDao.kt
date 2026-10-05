@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
@@ -39,7 +38,7 @@ class OrgToOrgRoleDao(
                 effective_range,
                 id,
                 org_id,
-                role
+                role_id
             ) values (
                 :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
@@ -70,7 +69,7 @@ class OrgToOrgRoleDao(
                 effective_range,
                 id,
                 org_id,
-                role
+                role_id
             ) values (
                 :createdTimestamp,
                 tstzrange(:effectiveFrom, :effectiveTo),
@@ -198,12 +197,12 @@ class OrgToOrgRoleDao(
     }
 
 
-    fun findByRole(role: OrgRoleKey): List<OrgToOrgRoleEntity> {
+    fun findByRole(role: DomainId): List<OrgToOrgRoleEntity> {
 
         return jdbcOps.queryForList(
             """
             select *, lower(effective_range) as effective_from, upper(effective_range) as effective_to from maia.org_to_org_role
-            where role = :role
+            where role_id = :role
             """.trimIndent(),
             SqlParams().apply {
                 addValue("role", role)
@@ -235,7 +234,7 @@ class OrgToOrgRoleDao(
     }
 
 
-    fun findEffectiveByRole(role: OrgRoleKey): List<OrgToOrgRoleEntity> {
+    fun findEffectiveByRole(role: DomainId): List<OrgToOrgRoleEntity> {
 
         return jdbcOps.queryForList(
             """
@@ -244,7 +243,7 @@ class OrgToOrgRoleDao(
                 lower(effective_range) as effective_from,
                 upper(effective_range) as effective_to
             from maia.org_to_org_role
-            where role = :role
+            where role_id = :role
             and effective_range @> current_timestamp
             """.trimIndent(),
             SqlParams().apply {
@@ -393,13 +392,13 @@ class OrgToOrgRoleDao(
     }
 
 
-    fun existsByRole(role: OrgRoleKey): Boolean {
+    fun existsByRole(role: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
             """
             select count(*)
             from maia.org_to_org_role
-            where role = :role
+            where role_id = :role
             """.trimIndent(),
             SqlParams().apply {
                 addValue("role", role)
@@ -470,7 +469,7 @@ class OrgToOrgRoleDao(
 
         when (field.classFieldName) {
             "org" -> sqlParams.addValue("org", field.value as DomainId)
-            "role" -> sqlParams.addValue("role", (field.value as OrgRoleKey).value)
+            "role" -> sqlParams.addValue("role", field.value as DomainId)
         }
 
     }

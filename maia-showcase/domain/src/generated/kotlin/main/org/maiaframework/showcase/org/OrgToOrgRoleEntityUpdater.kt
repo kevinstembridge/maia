@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.persist.FieldUpdate
 import java.time.Instant
@@ -56,9 +55,9 @@ data class OrgToOrgRoleEntityUpdater(
         }
 
 
-        fun role(role: OrgRoleKey) {
+        fun role(role: DomainId) {
 
-            this.fields.add(FieldUpdate("role", "role", role))
+            this.fields.add(FieldUpdate("role", "role_id", role))
 
         }
 

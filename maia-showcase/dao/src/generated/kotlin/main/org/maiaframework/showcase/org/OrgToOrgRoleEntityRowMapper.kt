@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 
@@ -18,7 +17,7 @@ class OrgToOrgRoleEntityRowMapper : MaiaRowMapper<OrgToOrgRoleEntity> {
         val effectiveTo = rsa.readInstantOrNull("effective_to")
         val id = rsa.readDomainId("id")
         val org = rsa.readDomainId("org_id")
-        val role = rsa.readString("role") { OrgRoleKey(it) }
+        val role = rsa.readDomainId("role_id")
 
         return OrgToOrgRoleEntity(
                 createdTimestamp,

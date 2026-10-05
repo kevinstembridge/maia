@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.persist.FieldUpdate
 import java.time.Instant
@@ -11,18 +10,18 @@ import java.time.Instant
 
 data class OrgRoleEntityUpdater(
     val fields: List<FieldUpdate>,
-    val key: OrgRoleKey,
+    val id: DomainId,
     val version: Long
 ) {
 
 
     val primaryKeyMap = mapOf(
-        "key" to key,
+        "id" to id,
     )
 
 
     class Builder(
-        val key: OrgRoleKey,
+        val id: DomainId,
         val version: Long
     ) {
 
@@ -34,7 +33,7 @@ data class OrgRoleEntityUpdater(
 
             return OrgRoleEntityUpdater(
                 this.fields,
-                this.key,
+                this.id,
                 this.version
             )
 
@@ -62,13 +61,13 @@ data class OrgRoleEntityUpdater(
 
 
         fun forPrimaryKey(
-            key: OrgRoleKey,
+            id: DomainId,
             version: Long,
             init: Builder.() -> Unit
         ): OrgRoleEntityUpdater {
 
             val builder = Builder(
-                key,
+                id,
                 version
             )
             builder.init()

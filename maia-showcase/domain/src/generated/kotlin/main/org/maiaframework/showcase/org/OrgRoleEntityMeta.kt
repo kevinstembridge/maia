@@ -20,6 +20,8 @@ object OrgRoleEntityMeta {
 
     const val displayName = "display_name"
 
+    const val id = "id"
+
     const val key = "key"
 
     const val lastModifiedBy = "last_modified_by_id"
@@ -39,6 +41,13 @@ object OrgRoleEntityMeta {
     val SCHEMA_AND_TABLE_NAME = SchemaAndTableName(SCHEMA_NAME, TABLE_NAME)
 
 
+    object IndexName {
+
+        const val org_role_key_uidx = "org_role_key_uidx"
+
+    }
+
+
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
@@ -46,6 +55,7 @@ object OrgRoleEntityMeta {
             "createdTimestamp" -> "created_timestamp"
             "description" -> "description"
             "displayName" -> "display_name"
+            "id" -> "id"
             "key" -> "key"
             "lastModifiedBy" -> "last_modified_by_id"
             "lastModifiedTimestamp" -> "last_modified_timestamp"

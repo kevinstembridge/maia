@@ -35,7 +35,7 @@ class OrgRoleDao(
     private val entityRowMapper = OrgRoleEntityRowMapper()
 
 
-    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readString("key") { OrgRoleKey(it) } }
+    private val primaryKeyRowMapper = MaiaRowMapper { rsa -> rsa.readDomainId("id") }
 
 
     fun insert(entity: OrgRoleEntity) {
@@ -47,6 +47,7 @@ class OrgRoleDao(
                 created_timestamp,
                 description,
                 display_name,
+                id,
                 key,
                 last_modified_by_id,
                 last_modified_timestamp,
@@ -56,6 +57,7 @@ class OrgRoleDao(
                 :createdTimestamp,
                 :description,
                 :displayName,
+                :id,
                 :key,
                 :lastModifiedBy,
                 :lastModifiedTimestamp,
@@ -67,6 +69,7 @@ class OrgRoleDao(
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("displayName", entity.displayName)
+                addValue("id", entity.id)
                 addValue("key", entity.key)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
@@ -88,6 +91,7 @@ class OrgRoleDao(
                 created_timestamp,
                 description,
                 display_name,
+                id,
                 key,
                 last_modified_by_id,
                 last_modified_timestamp,
@@ -97,6 +101,7 @@ class OrgRoleDao(
                 :createdTimestamp,
                 :description,
                 :displayName,
+                :id,
                 :key,
                 :lastModifiedBy,
                 :lastModifiedTimestamp,
@@ -109,6 +114,7 @@ class OrgRoleDao(
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description)
                     addValue("displayName", entity.displayName)
+                    addValue("id", entity.id)
                     addValue("key", entity.key)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
@@ -155,6 +161,7 @@ class OrgRoleDao(
         lastModifiedByVersion: Long
     ): OrgRoleHistoryEntity {
 
+        val id = entity.id
         val createdBy = entity.createdBy
         val createdTimestamp = entity.createdTimestamp
         val description = entity.description
@@ -170,6 +177,7 @@ class OrgRoleDao(
                 createdTimestamp,
                 description,
                 displayName,
+                id,
                 key,
                 lastModifiedBy,
                 lastModifiedByVersion,
@@ -208,14 +216,14 @@ class OrgRoleDao(
 
 
     @Throws(EntityNotFoundException::class)
-    fun findByPrimaryKey(key: OrgRoleKey): OrgRoleEntity {
+    fun findByPrimaryKey(id: DomainId): OrgRoleEntity {
 
-        return findByPrimaryKeyOrNull(key)
+        return findByPrimaryKeyOrNull(id)
             ?: throw EntityNotFoundException(
                 EntityClassAndPk(
                     OrgRoleEntity::class.java,
                     mapOf(
-                        "key" to key,
+                        "id" to id,
                     )
                 ),
                 OrgRoleEntityMeta.TABLE_NAME
@@ -224,12 +232,12 @@ class OrgRoleDao(
     }
 
 
-    fun findByPrimaryKeyOrNull(key: OrgRoleKey): OrgRoleEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): OrgRoleEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia.org_role where key = :key",
+            "select * from maia.org_role where id = :id",
             SqlParams().apply {
-                addValue("key", key)
+                addValue("id", id)
             },
             this.entityRowMapper
         ).firstOrNull()
@@ -237,16 +245,16 @@ class OrgRoleDao(
     }
 
 
-    fun findAllByPrimaryKeys(ids: List<OrgRoleKey>): List<OrgRoleEntity> {
+    fun findAllByPrimaryKeys(ids: List<DomainId>): List<OrgRoleEntity> {
 
         if (ids.isEmpty()) {
             return emptyList()
         }
 
         return jdbcOps.queryForList(
-            "select * from maia.org_role where key in (:ids)",
+            "select * from maia.org_role where id in (:ids)",
             SqlParams().apply {
-                addValue("ids", ids.map { it.value }, Types.VARCHAR)
+                addValue("ids", ids.map { it.value }, Types.OTHER)
             },
             this.entityRowMapper
         )
@@ -254,18 +262,55 @@ class OrgRoleDao(
     }
 
 
-    fun existsByPrimaryKey(key: OrgRoleKey): Boolean {
+    fun findVersionByPrimaryKey(id: DomainId): Long {
+
+        return jdbcOps.queryForLong(
+            "select version from maia.org_role where id = :id",
+            SqlParams().apply {
+                addValue("id", id)
+            }
+        )
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from maia.org_role where key = :key",
+            "select count(*) from maia.org_role where id = :id",
             SqlParams().apply {
-                addValue("key", key)
+                addValue("id", id)
            }
         )
        
         return count > 0
        
     }
+
+    fun findOneOrNullByKey(key: OrgRoleKey): OrgRoleEntity? {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.org_role
+            where key = :key
+            """.trimIndent(),
+            SqlParams().apply {
+            addValue("key", key)
+            },
+            this.entityRowMapper
+        ).firstOrNull()
+
+    }
+
+
+    @Throws(EntityNotFoundException::class)
+    fun findOneByKey(key: OrgRoleKey): OrgRoleEntity {
+
+        return findOneOrNullByKey(key)
+            ?: throw EntityNotFoundException("No record with column [key = $key] found in table maia.org_role.", OrgRoleEntityMeta.TABLE_NAME)
+
+    }
+
 
     fun findAllBy(filter: OrgRoleEntityFilter): List<OrgRoleEntity> {
 
@@ -283,7 +328,7 @@ class OrgRoleDao(
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: OrgRoleEntityFilter): Sequence<OrgRoleKey> {
+    fun findPrimaryKeysAsSequence(filter: OrgRoleEntityFilter): Sequence<DomainId> {
 
         val whereClause = filter.whereClause(this.fieldConverter)
         val sqlParams = SqlParams()
@@ -291,20 +336,20 @@ class OrgRoleDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select key from maia.org_role where $whereClause",
+            "select id from maia.org_role where $whereClause",
             sqlParams,
-            this.primaryKeyRowMapper
+            { rsa -> rsa.readDomainId("id") }
         )
 
     }
 
 
-    fun findAllPrimaryKeysAsSequence(): Sequence<OrgRoleKey> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return this.jdbcOps.queryForSequence(
-            "select key from maia.org_role;",
+            "select id from maia.org_role;",
             SqlParams(),
-            this.primaryKeyRowMapper
+            { rsa -> rsa.readDomainId("id") }
         )
 
     }
@@ -363,6 +408,24 @@ class OrgRoleDao(
     }
 
 
+    fun existsByKey(key: OrgRoleKey): Boolean {
+
+        val count = jdbcOps.queryForInt(
+            """
+            select count(*)
+            from maia.org_role
+            where key = :key
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("key", key)
+            }
+        )
+
+        return count > 0
+
+    }
+
+
     fun existsByCreatedBy(createdBy: DomainId): Boolean {
 
         val count = jdbcOps.queryForInt(
@@ -408,6 +471,7 @@ class OrgRoleDao(
                 created_timestamp,
                 description,
                 display_name,
+                id,
                 key,
                 last_modified_by_id,
                 last_modified_timestamp,
@@ -417,6 +481,7 @@ class OrgRoleDao(
                 :createdTimestamp,
                 :description,
                 :displayName,
+                :id,
                 :key,
                 :lastModifiedBy,
                 :lastModifiedTimestamp,
@@ -434,6 +499,7 @@ class OrgRoleDao(
                 addValue("createdTimestamp", upsertEntity.createdTimestamp)
                 addValue("description", upsertEntity.description)
                 addValue("displayName", upsertEntity.displayName)
+                addValue("id", upsertEntity.id)
                 addValue("key", upsertEntity.key)
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
@@ -446,7 +512,7 @@ class OrgRoleDao(
             }
         )
 
-        val changeType = if (persistedEntity!!.primaryKey != upsertEntity.primaryKey) ChangeType.UPDATE else ChangeType.CREATE
+        val changeType = if (persistedEntity!!.id != upsertEntity.id) ChangeType.UPDATE else ChangeType.CREATE
         insertHistory(persistedEntity, persistedEntity.version, changeType)
 
         return persistedEntity!!
@@ -478,10 +544,10 @@ class OrgRoleDao(
             }.joinToString(", ")
 
         sql.append(fieldClauses)
-        sql.append(" where key = :key")
+        sql.append(" where id = :id")
         sql.append(" and version = :version")
 
-        sqlParams.addValue("key", updater.key)
+        sqlParams.addValue("id", updater.id)
 
         sqlParams.addValue("version", updater.version)
         sqlParams.addValue("version_incremented", updater.version + 1)
@@ -494,7 +560,7 @@ class OrgRoleDao(
 
         } else {
 
-            val updatedEntity = findByPrimaryKey(updater.key)
+            val updatedEntity = findByPrimaryKey(updater.id)
             insertHistory(updatedEntity, ChangeType.UPDATE)
 
         }
@@ -518,7 +584,7 @@ class OrgRoleDao(
 
         val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
         val failedUpdaters = mutableListOf<OrgRoleEntityUpdater>()
-        val updatedIds = mutableListOf<OrgRoleKey>()
+        val updatedIds = mutableListOf<DomainId>()
 
         groups.values.forEach { group ->
 
@@ -531,14 +597,14 @@ class OrgRoleDao(
                 .joinToString(", ") { field -> "${field.dbColumnName} = :${field.classFieldName}" }
 
             sql.append(fieldClauses)
-            sql.append(" where key = :key")
+            sql.append(" where id = :id")
             sql.append(" and version = :version")
 
             val sqlParamsList = group.map { updater ->
                 val sqlParams = SqlParams()
                 updater.fields.forEach { field -> addField(field, sqlParams) }
 
-                sqlParams.addValue("key", updater.key)
+                sqlParams.addValue("id", updater.id)
                 sqlParams.addValue("version", updater.version)
                 sqlParams.addValue("version_incremented", updater.version + 1)
                 sqlParams
@@ -550,7 +616,7 @@ class OrgRoleDao(
                 if (updateCounts[i] == 0) {
                     failedUpdaters.add(updater)
                 } else {
-                    updatedIds.add(updater.key)
+                    updatedIds.add(updater.id)
                 }
             }
 
@@ -560,7 +626,7 @@ class OrgRoleDao(
         bulkInsertHistory(updatedEntities, ChangeType.UPDATE)
 
         if (failedUpdaters.isNotEmpty()) {
-            throw BulkOptimisticLockingException(OrgRoleEntityMeta.TABLE_NAME, failedUpdaters.map { it.key to it.version })
+            throw BulkOptimisticLockingException(OrgRoleEntityMeta.TABLE_NAME, failedUpdaters.map { it.id to it.version })
         }
 
     }

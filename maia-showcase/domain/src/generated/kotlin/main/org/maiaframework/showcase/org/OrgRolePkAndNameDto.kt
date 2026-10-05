@@ -3,11 +3,11 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
+import org.maiaframework.domain.DomainId
 
 
 data class OrgRolePkAndNameDto(
-    val id: OrgRoleKey,
+    val id: DomainId,
     val name: String
 ) {
 

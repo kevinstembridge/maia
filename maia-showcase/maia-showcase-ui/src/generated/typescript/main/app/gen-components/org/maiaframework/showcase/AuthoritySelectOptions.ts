@@ -35,6 +35,14 @@ export const AuthoritySelectOptions = [
         displayName: 'MAIA_PROPS_READ',
     },
     {
+        name: Authority.MAIA_TOGGLES_WRITE,
+        displayName: 'MAIA_TOGGLES_WRITE',
+    },
+    {
+        name: Authority.MAIA_TOGGLES_READ,
+        displayName: 'MAIA_TOGGLES_READ',
+    },
+    {
         name: Authority.WRITE,
         displayName: 'WRITE',
         description: 'Grants write access.'

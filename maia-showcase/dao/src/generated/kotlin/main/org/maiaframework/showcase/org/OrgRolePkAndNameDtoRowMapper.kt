@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 
@@ -13,7 +12,7 @@ class OrgRolePkAndNameDtoRowMapper : MaiaRowMapper<OrgRolePkAndNameDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): OrgRolePkAndNameDto {
 
-        val id = rsa.readString("key") { OrgRoleKey(it) }
+        val id = rsa.readDomainId("id")
         val name = rsa.readString("display_name")
 
         return OrgRolePkAndNameDto(

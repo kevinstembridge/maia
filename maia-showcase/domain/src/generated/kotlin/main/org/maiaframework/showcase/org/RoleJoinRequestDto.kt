@@ -7,8 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.validation.constraints.NotBlank
-import la.org.OrgRoleKey
+import jakarta.validation.constraints.NotNull
 import org.maiaframework.domain.DomainId
 import java.time.Instant
 
@@ -22,15 +21,14 @@ class RoleJoinRequestDto
     val effectiveTo: Instant?,
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     val id: DomainId?,
-    @field:NotBlank
+    @field:NotNull
     @param:JsonProperty("roleEntityId", access = JsonProperty.Access.READ_WRITE) 
-    private val roleEntityId_raw: String?
+    private val roleEntityId_raw: DomainId?
 ) {
 
 
     @get:JsonIgnore
-    val roleEntityId
-        get() = OrgRoleKey(roleEntityId_raw!!)
+    val roleEntityId: DomainId by lazy { roleEntityId_raw!! }
 
 
     override fun toString(): String {

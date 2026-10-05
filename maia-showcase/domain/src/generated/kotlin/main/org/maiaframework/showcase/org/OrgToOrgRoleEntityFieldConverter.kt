@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityFieldConverter
 import org.springframework.stereotype.Component
@@ -28,8 +27,8 @@ class OrgToOrgRoleEntityFieldConverter : EntityFieldConverter {
                 return (inputValue as DomainId).value
             "org_id" -> // org
                 return (inputValue as DomainId).value
-            "role" -> // role
-                return (inputValue as OrgRoleKey).value
+            "role_id" -> // role
+                return (inputValue as DomainId).value
              else -> throw RuntimeException("Unknown tableColumnName [$tableColumnName]")
         }
 

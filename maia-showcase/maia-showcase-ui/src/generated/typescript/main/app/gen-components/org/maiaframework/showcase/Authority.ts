@@ -23,6 +23,12 @@ export enum Authority {
     MAIA_PROPS_WRITE = 'MAIA_PROPS_WRITE',
 
 
+    MAIA_TOGGLES_READ = 'MAIA_TOGGLES_READ',
+
+
+    MAIA_TOGGLES_WRITE = 'MAIA_TOGGLES_WRITE',
+
+
     // Grants read access.
     READ = 'READ',
 

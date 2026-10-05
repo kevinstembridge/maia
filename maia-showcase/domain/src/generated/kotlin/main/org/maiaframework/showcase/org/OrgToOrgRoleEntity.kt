@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
 import org.maiaframework.domain.DomainId
 import java.time.Instant
 
@@ -14,7 +13,7 @@ class OrgToOrgRoleEntity(
     val effectiveTo: Instant?,
     val id: DomainId,
     val org: DomainId,
-    val role: OrgRoleKey
+    val role: DomainId
 ) {
 
 
@@ -45,7 +44,7 @@ class OrgToOrgRoleEntity(
             effectiveFrom: Instant?,
             effectiveTo: Instant?,
             org: DomainId,
-            role: OrgRoleKey
+            role: DomainId
         ): OrgToOrgRoleEntity {
 
             val createdTimestamp = Instant.now()

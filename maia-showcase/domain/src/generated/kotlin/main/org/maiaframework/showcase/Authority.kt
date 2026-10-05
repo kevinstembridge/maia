@@ -19,6 +19,10 @@ enum class Authority(val displayName: String) {
 
     MAIA_PROPS_WRITE("MAIA_PROPS_WRITE"),
 
+    MAIA_TOGGLES_READ("MAIA_TOGGLES_READ"),
+
+    MAIA_TOGGLES_WRITE("MAIA_TOGGLES_WRITE"),
+
     /**
      * Grants read access.
      */
@@ -38,6 +42,8 @@ enum class Authority(val displayName: String) {
         const val MAIA_JOB_WRITE = "MAIA_JOB_WRITE"
         const val MAIA_PROPS_READ = "MAIA_PROPS_READ"
         const val MAIA_PROPS_WRITE = "MAIA_PROPS_WRITE"
+        const val MAIA_TOGGLES_READ = "MAIA_TOGGLES_READ"
+        const val MAIA_TOGGLES_WRITE = "MAIA_TOGGLES_WRITE"
         const val READ = "READ"
         const val WRITE = "WRITE"
 

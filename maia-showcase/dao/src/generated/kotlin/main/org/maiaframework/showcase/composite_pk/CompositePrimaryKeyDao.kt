@@ -3,13 +3,11 @@
 
 package org.maiaframework.showcase.composite_pk
 
-import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.BulkOptimisticLockingException
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
-import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.springframework.data.domain.Pageable
@@ -20,7 +18,6 @@ import java.sql.PreparedStatement
 @Repository
 class CompositePrimaryKeyDao(
     private val fieldConverter: CompositePrimaryKeyEntityFieldConverter,
-    private val historyDao: CompositePrimaryKeyHistoryDao,
     private val jdbcOps: JdbcOps
 ) {
 
@@ -61,8 +58,6 @@ class CompositePrimaryKeyDao(
             }
         )
 
-        insertHistory(entity, ChangeType.CREATE)
-
     }
 
 
@@ -94,52 +89,6 @@ class CompositePrimaryKeyDao(
                 }
             }
         )
-
-        bulkInsertHistory(entities, ChangeType.CREATE)
-
-    }
-
-
-    private fun insertHistory(entity: CompositePrimaryKeyEntity, changeType: ChangeType) {
-
-        insertHistory(entity, entity.version, changeType)
-
-    }
-
-
-    private fun insertHistory(entity: CompositePrimaryKeyEntity, version: Long, changeType: ChangeType) {
-
-        this.historyDao.insert(history(entity, version, changeType))
-
-    }
-
-
-    private fun bulkInsertHistory(entities: List<CompositePrimaryKeyEntity>, changeType: ChangeType) {
-
-        val historyEntities = entities.map { history(it, it.version, changeType) }
-        this.historyDao.bulkInsert(historyEntities)
-
-    }
-
-
-    private fun history(
-        entity: CompositePrimaryKeyEntity,
-        version: Long,
-        changeType: ChangeType
-    ): CompositePrimaryKeyHistoryEntity {
-
-        val createdTimestamp = entity.createdTimestamp
-        val someInt = entity.someInt
-        val someModifiableString = entity.someModifiableString
-        val someString = entity.someString
-
-        return CompositePrimaryKeyHistoryEntity(
-                changeType,
-                createdTimestamp,
-                someInt,
-                someModifiableString,
-                someString,
-                version)
 
     }
 
@@ -382,9 +331,6 @@ class CompositePrimaryKeyDao(
             }
         )
 
-        val changeType = if (persistedEntity!!.primaryKey != upsertEntity.primaryKey) ChangeType.UPDATE else ChangeType.CREATE
-        insertHistory(persistedEntity, persistedEntity.version, changeType)
-
         return persistedEntity!!
 
     }
@@ -423,20 +369,7 @@ class CompositePrimaryKeyDao(
         sqlParams.addValue("version", updater.version)
         sqlParams.addValue("version_incremented", updater.version + 1)
 
-        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
-
-        if (updateCount == 0) {
-
-            throw OptimisticLockingException(CompositePrimaryKeyEntityMeta.TABLE_NAME, updater.primaryKey, updater.version)
-
-        } else {
-
-            val updatedEntity = findByPrimaryKey(updater.primaryKey)
-            insertHistory(updatedEntity, ChangeType.UPDATE)
-
-        }
-
-        return updateCount
+        return this.jdbcOps.update(sql.toString(), sqlParams)
 
     }
 
@@ -454,7 +387,6 @@ class CompositePrimaryKeyDao(
 
         val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
         val failedUpdaters = mutableListOf<CompositePrimaryKeyEntityUpdater>()
-        val updatedPrimaryKeys = mutableListOf<CompositePrimaryKeyEntityPk>()
 
         groups.values.forEach { group ->
 
@@ -487,14 +419,10 @@ class CompositePrimaryKeyDao(
                 if (updateCounts[i] == 0) {
                     failedUpdaters.add(updater)
                 } else {
-                    updatedPrimaryKeys.add(updater.primaryKey)
                 }
             }
 
         }
-
-        val updatedEntities = findAllByPrimaryKeys(updatedPrimaryKeys)
-        bulkInsertHistory(updatedEntities, ChangeType.UPDATE)
 
         if (failedUpdaters.isNotEmpty()) {
             throw BulkOptimisticLockingException(CompositePrimaryKeyEntityMeta.TABLE_NAME, failedUpdaters.map { it.primaryKey to it.version })
@@ -514,11 +442,6 @@ class CompositePrimaryKeyDao(
                 addValue("someInt", primaryKey.someInt)
             }
         )
-
-        if (deletedCount > 0) {
-
-            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
-        }
 
         return deletedCount > 0
 

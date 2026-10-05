@@ -15,9 +15,9 @@ class PartyHistoryBlotterRowDtoRowMapper : MaiaRowMapper<PartyHistoryBlotterRowD
     override fun mapRow(rsa: ResultSetAdapter): PartyHistoryBlotterRowDto {
 
         val changeType = rsa.readEnum("changeType", ChangeType::class.java)
-        val createdBy = rsa.readDomainId("createdBy")
+        val createdBy = rsa.readDomainIdOrNull("createdBy")
         val displayName = rsa.readString("displayName")
-        val lastModifiedBy = rsa.readDomainId("lastModifiedBy")
+        val lastModifiedBy = rsa.readDomainIdOrNull("lastModifiedBy")
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val lifecycleState = rsa.readEnum("lifecycleState", LifecycleState::class.java)
         val version = rsa.readLong("version")

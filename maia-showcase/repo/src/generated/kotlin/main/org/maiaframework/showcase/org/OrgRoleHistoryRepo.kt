@@ -30,9 +30,9 @@ class OrgRoleHistoryRepo(private val dao: OrgRoleHistoryDao) {
     }
 
 
-    fun existsByPrimaryKey(key: OrgRoleKey, version: Long): Boolean {
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
-        return dao.existsByPrimaryKey(key, version)
+        return dao.existsByPrimaryKey(id, version)
 
     }
 
@@ -61,6 +61,13 @@ class OrgRoleHistoryRepo(private val dao: OrgRoleHistoryDao) {
     fun findAllBy(filter: OrgRoleHistoryEntityFilter): List<OrgRoleHistoryEntity> {
 
         return this.dao.findAllBy(filter)
+
+    }
+
+
+    fun findByKey(key: OrgRoleKey): List<OrgRoleHistoryEntity> {
+
+        return dao.findByKey(key)
 
     }
 

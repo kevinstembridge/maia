@@ -3,14 +3,12 @@
 
 package org.maiaframework.showcase.non_surrogate_pk
 
-import org.maiaframework.domain.ChangeType
 import org.maiaframework.domain.EntityClassAndPk
 import org.maiaframework.domain.persist.FieldUpdate
 import org.maiaframework.jdbc.BulkOptimisticLockingException
 import org.maiaframework.jdbc.EntityNotFoundException
 import org.maiaframework.jdbc.JdbcOps
 import org.maiaframework.jdbc.MaiaRowMapper
-import org.maiaframework.jdbc.OptimisticLockingException
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.showcase.types.SomeStringValueClass
@@ -23,7 +21,6 @@ import java.sql.Types
 @Repository
 class NonSurrogateIdPrimaryKeyDao(
     private val fieldConverter: NonSurrogateIdPrimaryKeyEntityFieldConverter,
-    private val historyDao: NonSurrogateIdPrimaryKeyHistoryDao,
     private val jdbcOps: JdbcOps
 ) {
 
@@ -58,8 +55,6 @@ class NonSurrogateIdPrimaryKeyDao(
             }
         )
 
-        insertHistory(entity, ChangeType.CREATE)
-
     }
 
 
@@ -88,50 +83,6 @@ class NonSurrogateIdPrimaryKeyDao(
                 }
             }
         )
-
-        bulkInsertHistory(entities, ChangeType.CREATE)
-
-    }
-
-
-    private fun insertHistory(entity: NonSurrogateIdPrimaryKeyEntity, changeType: ChangeType) {
-
-        insertHistory(entity, entity.version, changeType)
-
-    }
-
-
-    private fun insertHistory(entity: NonSurrogateIdPrimaryKeyEntity, version: Long, changeType: ChangeType) {
-
-        this.historyDao.insert(history(entity, version, changeType))
-
-    }
-
-
-    private fun bulkInsertHistory(entities: List<NonSurrogateIdPrimaryKeyEntity>, changeType: ChangeType) {
-
-        val historyEntities = entities.map { history(it, it.version, changeType) }
-        this.historyDao.bulkInsert(historyEntities)
-
-    }
-
-
-    private fun history(
-        entity: NonSurrogateIdPrimaryKeyEntity,
-        version: Long,
-        changeType: ChangeType
-    ): NonSurrogateIdPrimaryKeyHistoryEntity {
-
-        val createdTimestamp = entity.createdTimestamp
-        val id = entity.id
-        val someModifiableString = entity.someModifiableString
-
-        return NonSurrogateIdPrimaryKeyHistoryEntity(
-                changeType,
-                createdTimestamp,
-                id,
-                someModifiableString,
-                version)
 
     }
 
@@ -354,9 +305,6 @@ class NonSurrogateIdPrimaryKeyDao(
             }
         )
 
-        val changeType = if (persistedEntity!!.primaryKey != upsertEntity.primaryKey) ChangeType.UPDATE else ChangeType.CREATE
-        insertHistory(persistedEntity, persistedEntity.version, changeType)
-
         return persistedEntity!!
 
     }
@@ -394,20 +342,7 @@ class NonSurrogateIdPrimaryKeyDao(
         sqlParams.addValue("version", updater.version)
         sqlParams.addValue("version_incremented", updater.version + 1)
 
-        val updateCount = this.jdbcOps.update(sql.toString(), sqlParams)
-
-        if (updateCount == 0) {
-
-            throw OptimisticLockingException(NonSurrogateIdPrimaryKeyEntityMeta.TABLE_NAME, updater.primaryKeyMap, updater.version)
-
-        } else {
-
-            val updatedEntity = findByPrimaryKey(updater.id)
-            insertHistory(updatedEntity, ChangeType.UPDATE)
-
-        }
-
-        return updateCount
+        return this.jdbcOps.update(sql.toString(), sqlParams)
 
     }
 
@@ -425,7 +360,6 @@ class NonSurrogateIdPrimaryKeyDao(
 
         val groups = updaters.groupBy { updater -> updater.fields.map { it.classFieldName }.toSet() }
         val failedUpdaters = mutableListOf<NonSurrogateIdPrimaryKeyEntityUpdater>()
-        val updatedIds = mutableListOf<SomeStringValueClass>()
 
         groups.values.forEach { group ->
 
@@ -457,14 +391,10 @@ class NonSurrogateIdPrimaryKeyDao(
                 if (updateCounts[i] == 0) {
                     failedUpdaters.add(updater)
                 } else {
-                    updatedIds.add(updater.id)
                 }
             }
 
         }
-
-        val updatedEntities = findAllByPrimaryKeys(updatedIds)
-        bulkInsertHistory(updatedEntities, ChangeType.UPDATE)
 
         if (failedUpdaters.isNotEmpty()) {
             throw BulkOptimisticLockingException(NonSurrogateIdPrimaryKeyEntityMeta.TABLE_NAME, failedUpdaters.map { it.id to it.version })
@@ -483,11 +413,6 @@ class NonSurrogateIdPrimaryKeyDao(
                 addValue("id", id.value)
             }
         )
-
-        if (deletedCount > 0) {
-
-            insertHistory(existingEntity, existingEntity.version + 1, ChangeType.DELETE)
-        }
 
         return deletedCount > 0
 

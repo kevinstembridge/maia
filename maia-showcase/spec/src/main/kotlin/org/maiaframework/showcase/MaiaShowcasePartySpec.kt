@@ -43,6 +43,12 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val propsReadAuthority = authority("MAIA_PROPS_READ")
 
 
+    val togglesWriteAuthority = authority("MAIA_TOGGLES_WRITE")
+
+
+    val togglesReadAuthority = authority("MAIA_TOGGLES_READ")
+
+
     val writeAuthority = authority("WRITE") {
         description = "Grants write access."
     }
@@ -161,7 +167,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         nameFieldForPkAndNameDto = "displayName"
     ) {
         field("key", orgRoleKeyStringType) {
-            primaryKey()
+            unique()
         }
         field("displayName", FieldTypes.string) {
             fieldDisplayName("Display Name")

@@ -16,6 +16,7 @@ class OrgRoleHistoryEntity(
     val createdTimestamp: Instant,
     val description: String,
     val displayName: String,
+    val id: DomainId,
     val key: OrgRoleKey,
     val lastModifiedBy: DomainId,
     val lastModifiedByVersion: Long,
@@ -24,7 +25,7 @@ class OrgRoleHistoryEntity(
 ) {
 
 
-    val primaryKey = OrgRoleHistoryEntityPk(key, version)
+    val primaryKey = OrgRoleHistoryEntityPk(id, version)
 
 
     override fun toString(): String {
@@ -36,6 +37,7 @@ class OrgRoleHistoryEntity(
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
+                "id = '" + this.id + '\'' + ", " + 
                 "key = '" + this.key + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedByVersion = '" + this.lastModifiedByVersion + '\'' + ", " + 

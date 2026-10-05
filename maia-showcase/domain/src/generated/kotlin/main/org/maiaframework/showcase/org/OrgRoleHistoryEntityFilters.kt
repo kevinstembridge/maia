@@ -91,6 +91,14 @@ class OrgRoleHistoryEntityFilters {
         }
 
 
+    val id: FieldFilter<DomainId> 
+        get() {
+
+            return FieldFilter("id", Types.OTHER, this.sqlParamCounter) { value -> value?.value }
+
+        }
+
+
     val key: FieldFilter<OrgRoleKey> 
         get() {
 

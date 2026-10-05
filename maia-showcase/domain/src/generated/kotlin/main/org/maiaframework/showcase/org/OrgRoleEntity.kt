@@ -13,14 +13,12 @@ class OrgRoleEntity(
     val createdTimestamp: Instant,
     val description: String,
     val displayName: String,
+    val id: DomainId,
     val key: OrgRoleKey,
     val lastModifiedBy: DomainId,
     val lastModifiedTimestamp: Instant,
     val version: Long
 ) {
-
-
-    val primaryKey = key
 
 
     override fun toString(): String {
@@ -30,6 +28,7 @@ class OrgRoleEntity(
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "description = '" + this.description + '\'' + ", " + 
                 "displayName = '" + this.displayName + '\'' + ", " + 
+                "id = '" + this.id + '\'' + ", " + 
                 "key = '" + this.key + '\'' + ", " + 
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
@@ -42,6 +41,9 @@ class OrgRoleEntity(
     companion object {
 
 
+        fun newId(): DomainId {
+            return DomainId.newId()
+        }
 
 
         @JvmStatic
@@ -53,6 +55,7 @@ class OrgRoleEntity(
         ): OrgRoleEntity {
 
             val createdTimestamp = Instant.now()
+            val id = newId()
             val lastModifiedTimestamp = createdTimestamp
             val lastModifiedBy = createdBy
             val version = 1L
@@ -62,6 +65,7 @@ class OrgRoleEntity(
                 createdTimestamp,
                 description,
                 displayName,
+                id,
                 key,
                 lastModifiedBy,
                 lastModifiedTimestamp,

@@ -20,6 +20,7 @@ class OrgRoleHistoryEntityRowMapper : MaiaRowMapper<OrgRoleHistoryEntity> {
         val createdTimestamp = rsa.readInstant("created_timestamp")
         val description = rsa.readString("description")
         val displayName = rsa.readString("display_name")
+        val id = rsa.readDomainId("id")
         val key = rsa.readString("key") { OrgRoleKey(it) }
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
         val lastModifiedByVersion = rsa.readLong("last_modified_by_version")
@@ -33,6 +34,7 @@ class OrgRoleHistoryEntityRowMapper : MaiaRowMapper<OrgRoleHistoryEntity> {
                 createdTimestamp,
                 description,
                 displayName,
+                id,
                 key,
                 lastModifiedBy,
                 lastModifiedByVersion,

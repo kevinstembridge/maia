@@ -16,23 +16,23 @@ class OrgRoleRepo(private val dao: OrgRoleDao) {
     private val logger = getLogger<OrgRoleRepo>()
 
 
-    fun findByPrimaryKeyOrNull(key: OrgRoleKey): OrgRoleEntity? {
+    fun findByPrimaryKeyOrNull(id: DomainId): OrgRoleEntity? {
 
-        return dao.findByPrimaryKeyOrNull(key)
-
-    }
-
-
-    fun findByPrimaryKey(key: OrgRoleKey): OrgRoleEntity {
-
-        return dao.findByPrimaryKey(key)
+        return dao.findByPrimaryKeyOrNull(id)
 
     }
 
 
-    fun existsByPrimaryKey(key: OrgRoleKey): Boolean {
+    fun findByPrimaryKey(id: DomainId): OrgRoleEntity {
 
-        return dao.existsByPrimaryKey(key)
+        return dao.findByPrimaryKey(id)
+
+    }
+
+
+    fun existsByPrimaryKey(id: DomainId): Boolean {
+
+        return dao.existsByPrimaryKey(id)
 
     }
 
@@ -44,14 +44,14 @@ class OrgRoleRepo(private val dao: OrgRoleDao) {
     }
 
 
-    fun findAllPrimaryKeysAsSequence(): Sequence<OrgRoleKey> {
+    fun findAllPrimaryKeysAsSequence(): Sequence<DomainId> {
 
         return dao.findAllPrimaryKeysAsSequence()
 
     }
 
 
-    fun findPrimaryKeysAsSequence(filter: OrgRoleEntityFilter): Sequence<OrgRoleKey> {
+    fun findPrimaryKeysAsSequence(filter: OrgRoleEntityFilter): Sequence<DomainId> {
 
         return dao.findPrimaryKeysAsSequence(filter)
 
@@ -61,6 +61,27 @@ class OrgRoleRepo(private val dao: OrgRoleDao) {
     fun findAllBy(filter: OrgRoleEntityFilter): List<OrgRoleEntity> {
 
         return this.dao.findAllBy(filter)
+
+    }
+
+
+    fun findOneOrNullByKey(key: OrgRoleKey): OrgRoleEntity? {
+
+        return dao.findOneOrNullByKey(key)
+
+    }
+
+
+    fun findOneByKey(key: OrgRoleKey): OrgRoleEntity {
+
+        return dao.findOneByKey(key)
+
+    }
+
+
+    fun existsByKey(key: OrgRoleKey): Boolean {
+
+        return dao.existsByKey(key)
 
     }
 
@@ -131,11 +152,11 @@ class OrgRoleRepo(private val dao: OrgRoleDao) {
     }
 
 
-    fun pkAndNameFor(key: OrgRoleKey): OrgRolePkAndNameDto {
+    fun pkAndNameFor(id: DomainId): OrgRolePkAndNameDto {
 
-        val entity = findByPrimaryKey(key)
+        val entity = findByPrimaryKey(id)
         return OrgRolePkAndNameDto(
-            entity.key,
+            entity.id,
             entity.displayName
         )
 

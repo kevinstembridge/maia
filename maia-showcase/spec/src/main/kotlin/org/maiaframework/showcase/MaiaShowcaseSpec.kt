@@ -1829,8 +1829,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "CompositePrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        versioned = true,
-        recordVersionHistory = true
+        versioned = true
     ) {
         cacheable {  }
         field("someString", FieldTypes.string) {
@@ -1914,8 +1913,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "NonSurrogatePrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        versioned = true,
-        recordVersionHistory = true
+        versioned = true
     ) {
         field("someString", someStringValueClassDef) {
             primaryKey()
@@ -1934,8 +1932,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "NonSurrogateIdPrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        versioned = true,
-        recordVersionHistory = true
+        versioned = true
     ) {
         field("id", someStringValueClassDef) {
             primaryKey()

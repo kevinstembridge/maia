@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Repository
@@ -72,7 +71,7 @@ class OrgToOrgRoleRepo(private val dao: OrgToOrgRoleDao) {
     }
 
 
-    fun findByRole(role: OrgRoleKey): List<OrgToOrgRoleEntity> {
+    fun findByRole(role: DomainId): List<OrgToOrgRoleEntity> {
 
         return dao.findByRole(role)
 
@@ -86,7 +85,7 @@ class OrgToOrgRoleRepo(private val dao: OrgToOrgRoleDao) {
     }
 
 
-    fun findEffectiveByRole(role: OrgRoleKey): List<OrgToOrgRoleEntity> {
+    fun findEffectiveByRole(role: DomainId): List<OrgToOrgRoleEntity> {
 
         return dao.findEffectiveByRole(role)
 
@@ -100,7 +99,7 @@ class OrgToOrgRoleRepo(private val dao: OrgToOrgRoleDao) {
     }
 
 
-    fun existsByRole(role: OrgRoleKey): Boolean {
+    fun existsByRole(role: DomainId): Boolean {
 
         return dao.existsByRole(role)
 

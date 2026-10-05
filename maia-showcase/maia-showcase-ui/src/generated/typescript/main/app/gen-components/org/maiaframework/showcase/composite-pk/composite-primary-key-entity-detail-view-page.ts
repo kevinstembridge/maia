@@ -61,13 +61,5 @@ export class CompositePrimaryKeyEntityDetailViewPage {
     }
 
 
-    onHistoryClicked(): void {
-        const id = this.entityId();
-        if (id) {
-            this.router.navigate(['/composite-primary-key/history', id]);
-        }
-    }
-
-
 }
 

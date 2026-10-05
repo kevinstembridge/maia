@@ -37,6 +37,7 @@ class OrgRoleHistoryDao(
                 created_timestamp,
                 description,
                 display_name,
+                id,
                 key,
                 last_modified_by_id,
                 last_modified_by_version,
@@ -49,6 +50,7 @@ class OrgRoleHistoryDao(
                 :createdTimestamp,
                 :description,
                 :displayName,
+                :id,
                 :key,
                 :lastModifiedBy,
                 :lastModifiedByVersion,
@@ -63,6 +65,7 @@ class OrgRoleHistoryDao(
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("description", entity.description)
                 addValue("displayName", entity.displayName)
+                addValue("id", entity.id)
                 addValue("key", entity.key)
                 addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
@@ -85,6 +88,7 @@ class OrgRoleHistoryDao(
                 created_timestamp,
                 description,
                 display_name,
+                id,
                 key,
                 last_modified_by_id,
                 last_modified_by_version,
@@ -97,6 +101,7 @@ class OrgRoleHistoryDao(
                 :createdTimestamp,
                 :description,
                 :displayName,
+                :id,
                 :key,
                 :lastModifiedBy,
                 :lastModifiedByVersion,
@@ -112,6 +117,7 @@ class OrgRoleHistoryDao(
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("description", entity.description)
                     addValue("displayName", entity.displayName)
+                    addValue("id", entity.id)
                     addValue("key", entity.key)
                     addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedByVersion", entity.lastModifiedByVersion)
@@ -160,7 +166,7 @@ class OrgRoleHistoryDao(
                 EntityClassAndPk(
                     OrgRoleHistoryEntity::class.java,
                     mapOf(
-                        "key" to primaryKey.key,
+                        "id" to primaryKey.id,
                         "version" to primaryKey.version,
                     )
                 ),
@@ -173,9 +179,9 @@ class OrgRoleHistoryDao(
     fun findByPrimaryKeyOrNull(primaryKey: OrgRoleHistoryEntityPk): OrgRoleHistoryEntity? {
 
         return jdbcOps.queryForList(
-            "select * from maia.org_role_history where key = :key and version = :version",
+            "select * from maia.org_role_history where id = :id and version = :version",
             SqlParams().apply {
-                addValue("key", primaryKey.key)
+                addValue("id", primaryKey.id)
                 addValue("version", primaryKey.version)
             },
             this.entityRowMapper
@@ -191,12 +197,12 @@ class OrgRoleHistoryDao(
     }
 
 
-    fun existsByPrimaryKey(key: OrgRoleKey, version: Long): Boolean {
+    fun existsByPrimaryKey(id: DomainId, version: Long): Boolean {
 
         val count = jdbcOps.queryForInt(
-            "select count(*) from maia.org_role_history where key = :key and version = :version",
+            "select count(*) from maia.org_role_history where id = :id and version = :version",
             SqlParams().apply {
-                addValue("key", key)
+                addValue("id", id)
                 addValue("version", version)
            }
         )
@@ -204,6 +210,22 @@ class OrgRoleHistoryDao(
         return count > 0
        
     }
+
+    fun findByKey(key: OrgRoleKey): List<OrgRoleHistoryEntity> {
+
+        return jdbcOps.queryForList(
+            """
+            select * from maia.org_role_history
+            where key = :key
+            """.trimIndent(),
+            SqlParams().apply {
+                addValue("key", key)
+            },
+            this.entityRowMapper
+        )
+
+    }
+
 
     fun findAllBy(filter: OrgRoleHistoryEntityFilter): List<OrgRoleHistoryEntity> {
 
@@ -229,7 +251,7 @@ class OrgRoleHistoryDao(
         filter.populateSqlParams(sqlParams)
 
         return this.jdbcOps.queryForSequence(
-            "select key, version from maia.org_role_history where $whereClause",
+            "select id, version from maia.org_role_history where $whereClause",
             sqlParams,
             this.primaryKeyRowMapper
         )
@@ -240,7 +262,7 @@ class OrgRoleHistoryDao(
     fun findAllPrimaryKeysAsSequence(): Sequence<OrgRoleHistoryEntityPk> {
 
         return this.jdbcOps.queryForSequence(
-            "select key, version from maia.org_role_history;",
+            "select id, version from maia.org_role_history;",
             SqlParams(),
             this.primaryKeyRowMapper
         )

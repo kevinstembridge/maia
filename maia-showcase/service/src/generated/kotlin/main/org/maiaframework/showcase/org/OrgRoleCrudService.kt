@@ -3,7 +3,7 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
+import org.maiaframework.domain.DomainId
 import org.maiaframework.problem.MaiaProblems
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component

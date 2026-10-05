@@ -3,20 +3,20 @@
 
 package org.maiaframework.showcase.org
 
-import la.org.OrgRoleKey
+import org.maiaframework.domain.DomainId
 import java.net.URLDecoder
 import java.net.URLEncoder
 
 
 data class OrgRoleHistoryEntityPk(
-    val key: OrgRoleKey,
+    val id: DomainId,
     val version: Long
 ) {
 
 
     val encoded: String by lazy {
 
-        listOf(key, version).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
+        listOf(id, version).joinToString(":") { URLEncoder.encode(it.toString(), "UTF-8") }
 
     }
 
@@ -27,10 +27,10 @@ data class OrgRoleHistoryEntityPk(
         fun from(pk: String): OrgRoleHistoryEntityPk {
 
             val parts = pk.split(":")
-            val key = OrgRoleKey(URLDecoder.decode(parts[0], "UTF-8"))
+            val id = DomainId(URLDecoder.decode(parts[0], "UTF-8"))
             val version = URLDecoder.decode(parts[1], "UTF-8").toLong()
 
-            return OrgRoleHistoryEntityPk(key, version)
+            return OrgRoleHistoryEntityPk(id, version)
 
         }
 

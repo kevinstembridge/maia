@@ -31,6 +31,8 @@ class OrgRoleHistoryEntityFieldConverter : EntityFieldConverter {
                 return inputValue
             "display_name" -> // displayName
                 return inputValue
+            "id" -> // id
+                return (inputValue as DomainId).value
             "key" -> // key
                 return (inputValue as OrgRoleKey).value
             "last_modified_by_id" -> // lastModifiedBy
