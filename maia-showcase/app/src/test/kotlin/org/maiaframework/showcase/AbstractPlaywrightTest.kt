@@ -51,6 +51,7 @@ import org.maiaframework.showcase.testing.pages.SomeVersionedBlotterPage
 import org.maiaframework.showcase.testing.pages.SomeVersionedCreatePage
 import org.maiaframework.showcase.testing.pages.SomeVersionedEditPage
 import org.maiaframework.showcase.testing.pages.SomeVersionedViewPage
+import org.maiaframework.showcase.testing.pages.TogglesDashboardPage
 import org.maiaframework.showcase.testing.pages.HomePage
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -182,6 +183,9 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var simpleEditPage: SimpleEditPage
 
 
+    protected lateinit var togglesDashboardPage: TogglesDashboardPage
+
+
     protected lateinit var userGroupMembershipBlotterPage: UserGroupMembershipBlotterPage
 
 
@@ -250,6 +254,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         someVersionedCreatePage = SomeVersionedCreatePage(page, urlHelper)
         someVersionedEditPage = SomeVersionedEditPage(page, urlHelper)
         someVersionedViewPage = SomeVersionedViewPage(page, urlHelper)
+        togglesDashboardPage = TogglesDashboardPage(page, urlHelper)
         userGroupMembershipBlotterPage = UserGroupMembershipBlotterPage(page, urlHelper)
         userGroupMembershipCreatePage = UserGroupMembershipCreatePage(page, urlHelper)
         userGroupMembershipEditPage = UserGroupMembershipEditPage(page, urlHelper)

@@ -20,6 +20,7 @@
             "./src/generated/typescript/main/app/*",
             "../../libs/maia-ui-workspace/projects/maia-elasticsearch/src/generated/typescript/main/app/*",
             "../../libs/maia-ui-workspace/projects/maia-props/src/generated/typescript/main/app/*",
+            "../../libs/maia-ui-workspace/projects/maia-toggles/src/generated/typescript/main/app/*",
             "../../libs/maia-ui-workspace/projects/maia-jobs/src/generated/typescript/main/app/*"
         ],
         "@maia/maia-ui": [
@@ -30,6 +31,9 @@
         ],
         "@maia/maia-props": [
             "../../libs/maia-ui-workspace/projects/maia-props/src/public-api.ts"
+        ],
+        "@maia/maia-toggles": [
+            "../../libs/maia-ui-workspace/projects/maia-toggles/src/public-api.ts"
         ],
         "@maia/maia-jobs": [
             "../../libs/maia-ui-workspace/projects/maia-jobs/src/public-api.ts"

@@ -75,6 +75,12 @@
                 <span>Props Dashboard</span>
             </button>
         }
+        @if (hasMaiaTogglesReadAuthority()) {
+            <button mat-menu-item routerLink="/toggles-dashboard">
+                <mat-icon>toggle_on</mat-icon>
+                <span>Feature Toggles</span>
+            </button>
+        }
         @if (hasReadAuthority()) {
             <button mat-menu-item routerLink="/right-many-blotter">
                 <mat-icon>dialpad</mat-icon>

@@ -18,6 +18,7 @@ import tools.jackson.databind.module.SimpleModule
     "org.maiaframework.json",
     "org.maiaframework.webapp",
     "org.maiaframework.props",
+    "org.maiaframework.toggles",
     "org.maiaframework.hazelcast"
 ])
 class MaiaShowcaseAppConfiguration {
@@ -50,7 +51,8 @@ class MaiaShowcaseAppConfiguration {
     @Bean
     fun createNewConfig(
         maiaHazelcastConfig: org.maiaframework.showcase.hazelcast.HazelcastConfig,
-        propsHazelcastConfig: org.maiaframework.props.hazelcast.HazelcastConfig
+        propsHazelcastConfig: org.maiaframework.props.hazelcast.HazelcastConfig,
+        togglesHazelcastConfig: org.maiaframework.toggles.hazelcast.HazelcastConfig
     ): Config {
 
         val config: Config = YamlConfigBuilder().build()
@@ -75,6 +77,14 @@ class MaiaShowcaseAppConfiguration {
         }
 
         propsHazelcastConfig.mapConfigs.forEach {
+            config.addMapConfig(it)
+        }
+
+        togglesHazelcastConfig.serializers.forEach {
+            compactSerializationConfig.addSerializer(it)
+        }
+
+        togglesHazelcastConfig.mapConfigs.forEach {
             config.addMapConfig(it)
         }
 

@@ -60,6 +60,11 @@ export class App {
     );
 
 
+    protected readonly hasMaiaTogglesReadAuthority = computed(() =>
+        this.currentUserAuthStore.hasMaiaTogglesReadAuthority()
+    );
+
+
     protected readonly hasMaiaPropsWriteAuthority = computed(() =>
         this.currentUserAuthStore.hasMaiaPropsWriteAuthority()
     );

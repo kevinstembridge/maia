@@ -8,6 +8,7 @@ import {someVersionedRoutes} from '@app/gen-components/org/maiaframework/showcas
 import {userRoutes} from '@app/gen-components/org/maiaframework/showcase/user/user-routes';
 import {alphaRoutes} from '@app/gen-components/org/maiaframework/showcase/join/alpha-routes';
 import {rightManyRoutes} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-routes';
+import {featureToggleRoutes} from '@app/gen-components/org/maiaframework/toggles/feature-toggle-routes';
 import {historySampleRoutes} from '@app/gen-components/org/maiaframework/showcase/history/history-sample-routes';
 import {
     leftToRightComplexRoutes
@@ -28,6 +29,7 @@ export const routes: Routes = [
     ...alphaRoutes,
     ...bravoRoutes,
     ...compositePrimaryKeyRoutes,
+    ...featureToggleRoutes,
     ...historySampleRoutes,
     ...leftManyRoutes,
     ...leftToRightComplexRoutes,
@@ -69,6 +71,13 @@ export const routes: Routes = [
         loadComponent: () =>
             import('./pages/job-history/job-history-page').then(
                 (m) => m.JobHistoryPage,
+            ),
+    },
+    {
+        path: 'toggles-dashboard',
+        loadComponent: () =>
+            import('./pages/toggles-dashboard/toggles-dashboard-page').then(
+                (m) => m.TogglesDashboardPage,
             ),
     },
     {
