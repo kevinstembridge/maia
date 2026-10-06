@@ -21,7 +21,7 @@ import {RightSystemEffectiveJoinRequestDto} from '@app/gen-components/org/maiafr
 import {RightSystemSingleEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightSystemSingleEffectiveJoinRequestDto';
 import {RightUserEffectiveJoinRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightUserEffectiveJoinRequestDto';
 import {LeftManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-crud-service';
-import {RightManyTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-typeahead-api.service';
+import {RightManyTypeaheadV1ApiService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-typeahead-v1-api.service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
@@ -49,7 +49,7 @@ import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, 
         ReactiveFormsModule,
     ],
     providers: [
-        RightManyTypeaheadApiService,
+        RightManyTypeaheadV1ApiService,
     ],
     selector: 'app-left-many-entity-edit-form',
     styleUrls: ['./left-many-entity-edit-form.scss'],
@@ -82,7 +82,7 @@ export class LeftManyEntityEditForm implements OnInit {
     rightSimpleEntitySearchControl = new FormControl('');
 
 
-    rightManyTypeaheadApiService = inject(RightManyTypeaheadApiService);
+    rightManyTypeaheadV1ApiService = inject(RightManyTypeaheadV1ApiService);
 
 
     @ViewChild('rightSimpleEntityInput') rightSimpleEntityInput!: ElementRef<HTMLInputElement>;
@@ -215,7 +215,7 @@ export class LeftManyEntityEditForm implements OnInit {
                 this.filteredRightSimpleEntities = [];
                 this.filteredRightSimpleEntitiesIsLoading.set(true);
             }),
-            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
+            switchMap(value => this.rightManyTypeaheadV1ApiService.search(value ?? '').pipe(
                 catchError(err => {
                     this.filteredRightSimpleEntitiesIsLoading.set(false);
                     console.error(err);
@@ -235,7 +235,7 @@ export class LeftManyEntityEditForm implements OnInit {
                 this.filteredRightSystemEffectiveEntities = [];
                 this.filteredRightSystemEffectiveEntitiesIsLoading.set(true);
             }),
-            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
+            switchMap(value => this.rightManyTypeaheadV1ApiService.search(value ?? '').pipe(
                 catchError(err => {
                     this.filteredRightSystemEffectiveEntitiesIsLoading.set(false);
                     console.error(err);
@@ -255,7 +255,7 @@ export class LeftManyEntityEditForm implements OnInit {
                 this.filteredRightSystemSingleEffectiveEntities = [];
                 this.filteredRightSystemSingleEffectiveEntitiesIsLoading.set(true);
             }),
-            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
+            switchMap(value => this.rightManyTypeaheadV1ApiService.search(value ?? '').pipe(
                 catchError(err => {
                     this.filteredRightSystemSingleEffectiveEntitiesIsLoading.set(false);
                     console.error(err);
@@ -275,7 +275,7 @@ export class LeftManyEntityEditForm implements OnInit {
                 this.filteredRightUserEffectiveEntities = [];
                 this.filteredRightUserEffectiveEntitiesIsLoading.set(true);
             }),
-            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
+            switchMap(value => this.rightManyTypeaheadV1ApiService.search(value ?? '').pipe(
                 catchError(err => {
                     this.filteredRightUserEffectiveEntitiesIsLoading.set(false);
                     console.error(err);
@@ -295,7 +295,7 @@ export class LeftManyEntityEditForm implements OnInit {
                 this.filteredRightEntities = [];
                 this.filteredRightEntitiesIsLoading.set(true);
             }),
-            switchMap(value => this.rightManyTypeaheadApiService.search(value ?? '').pipe(
+            switchMap(value => this.rightManyTypeaheadV1ApiService.search(value ?? '').pipe(
                 catchError(err => {
                     this.filteredRightEntitiesIsLoading.set(false);
                     console.error(err);

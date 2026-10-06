@@ -3,20 +3,20 @@
 
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {RightManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyTypeaheadV1EsDoc';
+import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/join/AlphaTypeaheadV1EsDoc';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 
 
 
 @Injectable()
-export class RightManyTypeaheadApiService {
+export class AlphaTypeaheadV1ApiService {
 
 
     private readonly http = inject(HttpClient);
 
 
-    search(term: string): Observable<RightManyTypeaheadV1EsDoc[]> {
+    search(term: string): Observable<AlphaTypeaheadV1EsDoc[]> {
 
         if (typeof term !== 'string') {
             return of([]);
@@ -26,8 +26,8 @@ export class RightManyTypeaheadApiService {
 
         const options = term ? { params: new HttpParams().set('q', term) } : {};
 
-        return this.http.get<RightManyTypeaheadV1EsDoc[]>('/api/typeahead/right-many', options).pipe(
-            catchError(this.handleError<RightManyTypeaheadV1EsDoc[]>('search', []))
+        return this.http.get<AlphaTypeaheadV1EsDoc[]>('/api/v1/alpha-typeahead', options).pipe(
+            catchError(this.handleError<AlphaTypeaheadV1EsDoc[]>('search', []))
         );
 
     }

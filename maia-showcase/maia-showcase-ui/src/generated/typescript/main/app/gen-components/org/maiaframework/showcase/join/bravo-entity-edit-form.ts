@@ -13,7 +13,7 @@ import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showc
 import {BravoFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoFetchForEditDto';
 import {BravoUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoUpdateRequestDto';
 import {bravo_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaRequiredValidator';
-import {AlphaTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-api.service';
+import {AlphaTypeaheadV1ApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-v1-api.service';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {of} from 'rxjs';
@@ -34,7 +34,7 @@ import {catchError, debounceTime, filter, map, switchMap, tap} from 'rxjs/operat
         ReactiveFormsModule,
     ],
     providers: [
-        AlphaTypeaheadApiService,
+        AlphaTypeaheadV1ApiService,
     ],
     selector: 'app-bravo-entity-edit-form',
     styleUrls: ['./bravo-entity-edit-form.scss'],
@@ -62,7 +62,7 @@ export class BravoEntityEditForm implements OnInit {
 
 
 
-    private readonly alphaTypeaheadApiService = inject(AlphaTypeaheadApiService);
+    private readonly alphaTypeaheadV1ApiService = inject(AlphaTypeaheadV1ApiService);
 
 
     formGroup: FormGroup;
@@ -98,7 +98,7 @@ export class BravoEntityEditForm implements OnInit {
                     this.filteredAlpha = [];
                     this.filteredAlphaIsLoading.set(true);
                 }),
-                switchMap(value => this.alphaTypeaheadApiService.search(value)
+                switchMap(value => this.alphaTypeaheadV1ApiService.search(value)
                     .pipe(
                         catchError(err => {
                             this.filteredAlphaIsLoading.set(false);

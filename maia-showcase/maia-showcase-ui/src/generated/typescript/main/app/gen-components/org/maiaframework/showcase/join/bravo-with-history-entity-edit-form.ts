@@ -13,7 +13,7 @@ import {AlphaWithHistoryTypeaheadV1EsDoc} from '@app/gen-components/org/maiafram
 import {BravoWithHistoryFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryFetchForEditDto';
 import {BravoWithHistoryUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryUpdateRequestDto';
 import {bravoWithHistory_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistory_alphaRequiredValidator';
-import {AlphaWithHistoryTypeaheadApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-with-history-typeahead-api.service';
+import {AlphaWithHistoryTypeaheadV1ApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-with-history-typeahead-v1-api.service';
 import {BravoWithHistoryCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-with-history-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {of} from 'rxjs';
@@ -34,7 +34,7 @@ import {catchError, debounceTime, filter, map, switchMap, tap} from 'rxjs/operat
         ReactiveFormsModule,
     ],
     providers: [
-        AlphaWithHistoryTypeaheadApiService,
+        AlphaWithHistoryTypeaheadV1ApiService,
     ],
     selector: 'app-bravo-with-history-entity-edit-form',
     styleUrls: ['./bravo-with-history-entity-edit-form.scss'],
@@ -62,7 +62,7 @@ export class BravoWithHistoryEntityEditForm implements OnInit {
 
 
 
-    private readonly alphaWithHistoryTypeaheadApiService = inject(AlphaWithHistoryTypeaheadApiService);
+    private readonly alphaWithHistoryTypeaheadV1ApiService = inject(AlphaWithHistoryTypeaheadV1ApiService);
 
 
     formGroup: FormGroup;
@@ -99,7 +99,7 @@ export class BravoWithHistoryEntityEditForm implements OnInit {
                     this.filteredAlphaWithHistory = [];
                     this.filteredAlphaWithHistoryIsLoading.set(true);
                 }),
-                switchMap(value => this.alphaWithHistoryTypeaheadApiService.search(value)
+                switchMap(value => this.alphaWithHistoryTypeaheadV1ApiService.search(value)
                     .pipe(
                         catchError(err => {
                             this.filteredAlphaWithHistoryIsLoading.set(false);

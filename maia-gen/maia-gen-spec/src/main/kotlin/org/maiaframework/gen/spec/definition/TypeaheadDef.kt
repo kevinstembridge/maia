@@ -6,6 +6,8 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
+import org.maiaframework.lang.text.StringFunctions
+import org.maiaframework.lang.text.StringFunctions.toKebabCase
 
 class TypeaheadDef(
     packageName: PackageName,
@@ -26,19 +28,25 @@ class TypeaheadDef(
     }
 
 
-    private val typeaheadNameAndVersion = "${typeaheadBaseName}V$indexVersion"
+    private val typeaheadName = "${typeaheadBaseName}Typeahead"
 
 
-    val angularServiceFileName = "${typeaheadBaseName.toKebabCase()}-typeahead-api.service"
+    private val typeaheadNameKebab = toKebabCase(typeaheadName)
 
 
-    val angularServiceClassName = "${typeaheadBaseName}TypeaheadApiService"
+    private val typeaheadNameAndVersion = "${typeaheadName}V$indexVersion"
 
 
-    val endpointUrl: String = "/api/typeahead/${typeaheadBaseName.toKebabCase()}"
+    val angularServiceFileName = "${typeaheadNameKebab}-v${indexVersion}-api.service"
 
 
-    val elasticIndexBaseName = ElasticIndexBaseName("${typeaheadBaseName.toKebabCase()}-typeahead")
+    val angularServiceClassName = "${typeaheadNameAndVersion}ApiService"
+
+
+    val endpointUrl = "/api/v${indexVersion}/${typeaheadNameKebab}"
+
+
+    val elasticIndexBaseName = ElasticIndexBaseName(typeaheadNameKebab)
 
 
     val entityUqcn = entityDef?.entityClassDef?.uqcn
@@ -53,35 +61,35 @@ class TypeaheadDef(
     val entityCrudApiDef = entityDef?.entityCrudApiDef
 
 
-    val esIndexClassDef = aClassDef(packageName.uqcn("${typeaheadBaseName}TypeaheadEsIndex"))
+    val esIndexClassDef = aClassDef(packageName.uqcn("${typeaheadName}EsIndex"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
-    val serviceClassDef = aClassDef(packageName.uqcn("${typeaheadBaseName}TypeaheadService"))
+    val serviceClassDef = aClassDef(packageName.uqcn("${typeaheadName}Service"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
     val crudListenerClassDef = entityCrudApiDef?.let {
-        aClassDef(packageName.uqcn("${typeaheadBaseName}TypeaheadCrudListenerImpl"))
+        aClassDef(packageName.uqcn("${typeaheadName}CrudListenerImpl"))
             .withClassAnnotation(AnnotationDefs.SPRING_SERVICE)
             .withInterfaces(ParameterizedType(it.entityDef.crudListenerClassDef.fqcn))
             .build()
     }
 
 
-    val indexServiceClassDef = aClassDef(packageName.uqcn("${typeaheadBaseName}TypeaheadIndexService"))
+    val indexServiceClassDef = aClassDef(packageName.uqcn("${typeaheadName}IndexService"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
-    val endpointClassDef = aClassDef(packageName.uqcn("${typeaheadBaseName}TypeaheadEndpoint"))
+    val endpointClassDef = aClassDef(packageName.uqcn("${typeaheadName}Endpoint"))
         .withClassAnnotation(AnnotationDefs.SPRING_REST_CONTROLLER)
         .build()
 
 
-    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${typeaheadBaseName}TypeaheadIndexJob"))
+    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${typeaheadName}IndexJob"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .withInterface(ParameterizedType(Fqcns.MAIA_JOB))
         .build()
@@ -104,7 +112,7 @@ class TypeaheadDef(
 
     val esDocDef = EsDocDef(
         packageName,
-        DtoBaseName("${typeaheadBaseName}Typeahead"),
+        DtoBaseName(typeaheadName),
         elasticIndexBaseName,
         indexVersion,
         Description("A typeahead index for the $searchTermFieldName field of $typeaheadBaseName records."),

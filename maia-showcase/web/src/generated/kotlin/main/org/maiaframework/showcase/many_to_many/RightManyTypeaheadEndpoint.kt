@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class RightManyTypeaheadEndpoint(private val typeaheadService: RightManyTypeaheadService) {
 
 
-    @GetMapping("/api/typeahead/right-many", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/v1/right-many-typeahead", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestParam("q") q: String): List<RightManyTypeaheadV1EsDoc> {
 
         return this.typeaheadService.search(SearchTerm(q))

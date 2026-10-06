@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class AlphaWithHistoryTypeaheadEndpoint(private val typeaheadService: AlphaWithHistoryTypeaheadService) {
 
 
-    @GetMapping("/api/typeahead/alpha-with-history", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/api/v1/alpha-with-history-typeahead", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun search(@RequestParam("q") q: String): List<AlphaWithHistoryTypeaheadV1EsDoc> {
 
         return this.typeaheadService.search(SearchTerm(q))
