@@ -4,7 +4,11 @@ import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.TypeaheadDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 
-class TypeaheadEndpointRenderer(private val typeaheadDef: TypeaheadDef) : AbstractKotlinRenderer(typeaheadDef.endpointClassDef) {
+class TypeaheadEndpointRenderer(
+    private val typeaheadDef: TypeaheadDef
+) : AbstractKotlinRenderer(
+    typeaheadDef.endpointClassDef
+) {
 
 
     private val esDocUqcn = this.typeaheadDef.esDocDef.uqcn

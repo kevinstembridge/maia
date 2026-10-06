@@ -1,6 +1,7 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.AuthoritiesDef
+import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
@@ -36,18 +37,31 @@ class EntityCrudRoutesRenderer(
 
     // Empty when there's no authority to require: an empty `data.authorities` array denies
     // everyone (including logged-in users), so it must never be rendered as `authorities: []`.
-    private val dataLine = if (routeAuthority != null && authoritiesDef != null) {
-        "\n        data: {authorities: [${authoritiesDef.enumDef.uqcn}.${routeAuthority.name}]},"
-    } else {
-        ""
-    }
+    private val dataLine = dataLineFor(routeAuthority)
+
+
+    // The history route uses the authority configured for the history blotter, which also secures
+    // its backend endpoints, and otherwise the same authority as the entity's other routes.
+    private val historyDataLine = dataLineFor(entityDef.historyBlotterDef?.authorityDef ?: routeAuthority)
 
 
     init {
         addImport("@angular/router", "Routes")
-        if (routeAuthority != null) {
+        val historyAuthority = entityDef.historyBlotterDef?.authorityDef
+        if (routeAuthority != null || historyAuthority != null) {
             authoritiesDef?.let { addImport(it.enumDef.typescriptImport) }
         }
+    }
+
+
+    private fun dataLineFor(authority: AuthorityDef?): String {
+
+        return if (authority != null && authoritiesDef != null) {
+            "\n        data: {authorities: [${authoritiesDef.enumDef.uqcn}.${authority.name}]},"
+        } else {
+            ""
+        }
+
     }
 
 
@@ -137,7 +151,7 @@ class EntityCrudRoutesRenderer(
 
         append("""
             |    {
-            |        path: '$path',$dataLine
+            |        path: '$path',$historyDataLine
             |        loadComponent: () =>
             |            import('./${def.blotterPageComponentNames.componentNameKebab}').then(m => m.${def.blotterPageComponentNames.componentName}),
             |    },

@@ -8,7 +8,7 @@ import {Authority} from '@app/gen-components/org/maiaframework/toggles/Authority
 export const featureToggleRoutes: Routes = [
     {
         path: 'ops/toggles/feature-toggle/history/:id',
-        data: {authorities: [Authority.MAIA_TOGGLES_WRITE]},
+        data: {authorities: [Authority.MAIA_TOGGLES_READ]},
         loadComponent: () =>
             import('./feature-toggle-history-blotter-page').then(m => m.FeatureToggleHistoryBlotterPage),
     },
