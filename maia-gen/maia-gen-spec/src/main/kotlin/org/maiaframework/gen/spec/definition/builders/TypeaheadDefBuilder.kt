@@ -6,9 +6,8 @@ import org.maiaframework.gen.spec.definition.EsDocMappingType
 import org.maiaframework.gen.spec.definition.EsDocMappingTypes
 import org.maiaframework.gen.spec.definition.TypeaheadDef
 import org.maiaframework.gen.spec.definition.TypeaheadFieldDef
-import org.maiaframework.gen.spec.definition.TypeaheadName
+import org.maiaframework.gen.spec.definition.TypeaheadBaseName
 import org.maiaframework.gen.spec.definition.flags.WithHandCodedEsDocRepo
-import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.PackageName
 
@@ -16,7 +15,7 @@ import org.maiaframework.gen.spec.definition.lang.PackageName
 @MaiaDslMarker
 class TypeaheadDefBuilder(
     private val packageName: PackageName,
-    private val typeaheadName: TypeaheadName,
+    private val typeaheadBaseName: TypeaheadBaseName,
     private val entityDef: EntityDef?,
     private val sortByFieldName: String,
     private val searchTermFieldName: String,
@@ -35,7 +34,7 @@ class TypeaheadDefBuilder(
 
         return TypeaheadDef(
             this.packageName,
-            this.typeaheadName,
+            this.typeaheadBaseName,
             this.entityDef,
             this.sortByFieldName,
             this.searchTermFieldName,
@@ -49,14 +48,14 @@ class TypeaheadDefBuilder(
 
     private fun `confirm exactly one ID field`() {
 
-        require(this.fieldDefs.count { it.isIdField } == 1) { "There must be exactly one ID field on typeahead $typeaheadName. Found ${this.fieldDefs.filter { it.isIdField }}" }
+        require(this.fieldDefs.count { it.isIdField } == 1) { "There must be exactly one ID field on typeahead $typeaheadBaseName. Found ${this.fieldDefs.filter { it.isIdField }}" }
 
     }
 
 
     private fun `confirm that a field exists with the provided searchTermFieldName`() {
 
-        require(this.fieldDefs.any { it.classFieldDef.classFieldName.value == this.searchTermFieldName }) { "No field name matches the searchTermFieldName '$searchTermFieldName' on typeahead $typeaheadName" }
+        require(this.fieldDefs.any { it.classFieldDef.classFieldName.value == this.searchTermFieldName }) { "No field name matches the searchTermFieldName '$searchTermFieldName' on typeahead $typeaheadBaseName" }
 
     }
 
@@ -150,7 +149,7 @@ class TypeaheadDefBuilder(
     private fun entityFieldDef(fieldName: String): EntityFieldDef {
 
         val entityDefNonNull = this.entityDef
-            ?: throw IllegalStateException("Cannot invoke fieldFromEntity without first providing an EntityDef. Typeahead name = ${this.typeaheadName}.")
+            ?: throw IllegalStateException("Cannot invoke fieldFromEntity without first providing an EntityDef. Typeahead name = ${this.typeaheadBaseName}.")
 
         return entityDefNonNull.findFieldByName(fieldName)
 

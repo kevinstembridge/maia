@@ -20,9 +20,9 @@ class RefreshTypeaheadIndexJobRenderer(private val typeaheadDef: TypeaheadDef) :
         addImportFor(Fqcns.MAIA_JOB_NAME)
 
         blankLine()
-        appendLine("    override val jobName = JobName(\"refresh${this.typeaheadDef.typeaheadName}TypeaheadIndex\")")
+        appendLine("    override val jobName = JobName(\"refresh${this.typeaheadDef.typeaheadBaseName}TypeaheadIndex\")")
         blankLine()
-        appendLine("    override val description = \"Refresh the Elastic Search index for ${this.typeaheadDef.typeaheadName} typeahead records.\"")
+        appendLine("    override val description = \"Refresh the Elastic Search index for ${this.typeaheadDef.typeaheadBaseName} typeahead records.\"")
 
     }
 

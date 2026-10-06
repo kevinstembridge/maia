@@ -3,4 +3,4 @@ package org.maiaframework.gen.spec.definition
 import org.maiaframework.types.StringType
 
 
-class TypeaheadName(value: String) : StringType<TypeaheadName>(value)
+class TypeaheadBaseName(value: String) : StringType<TypeaheadBaseName>(value)

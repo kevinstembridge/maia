@@ -51,7 +51,7 @@ import org.maiaframework.gen.spec.definition.SimpleResponseDtoDef
 import org.maiaframework.gen.spec.definition.StringTypeDef
 import org.maiaframework.gen.spec.definition.StringValueClassDef
 import org.maiaframework.gen.spec.definition.TypeaheadDef
-import org.maiaframework.gen.spec.definition.TypeaheadName
+import org.maiaframework.gen.spec.definition.TypeaheadBaseName
 import org.maiaframework.gen.spec.definition.builders.AngularFormDefBuilder
 import org.maiaframework.gen.spec.definition.builders.BlotterDefBuilder
 import org.maiaframework.gen.spec.definition.builders.ManyToManyEntityDefBuilder
@@ -1194,7 +1194,7 @@ abstract class AbstractSpec protected constructor(
 
         val builder = TypeaheadDefBuilder(
             PackageName(packageName),
-            TypeaheadName(typeaheadName),
+            TypeaheadBaseName(typeaheadName),
             entityDef,
             sortFieldName,
             searchTermFieldName,
@@ -1223,7 +1223,7 @@ abstract class AbstractSpec protected constructor(
 
         val builder = TypeaheadDefBuilder(
             PackageName(packageName),
-            TypeaheadName(typeaheadName),
+            TypeaheadBaseName(typeaheadName),
             entityDef,
             sortFieldName,
             searchTermFieldName,

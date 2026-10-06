@@ -97,7 +97,7 @@ abstract class AbstractCrudModalHtmlRenderer(
 
             } else {
 
-                val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
+                val formGroupFieldName = typeaheadDef.typeaheadBaseName.firstToLower()
 
                 appendLine("      <div class=\"form-group\">")
                 appendLine("        <label for=\"${formGroupFieldName}\">${classFieldDef.displayName}</label>")

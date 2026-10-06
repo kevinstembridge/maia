@@ -192,10 +192,10 @@ class AngularSignalFormComponentRenderer(
             append("""
                 |
                 |
-                |    filtered${typeaheadDef.typeaheadName}: ${esDocUqcn}[] = [];
+                |    filtered${typeaheadDef.typeaheadBaseName}: ${esDocUqcn}[] = [];
                 |
                 |
-                |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
+                |    filtered${typeaheadDef.typeaheadBaseName}IsLoading = signal(false);
                 |""".trimMargin())
 
         }
@@ -497,7 +497,7 @@ class AngularSignalFormComponentRenderer(
                     null -> "''"
                 }
 
-                appendLine("                ${typeaheadDef.typeaheadName.firstToLower()}: new FormControl($initialValue, { updateOn: 'change', validators: [$validators] }),")
+                appendLine("                ${typeaheadDef.typeaheadBaseName.firstToLower()}: new FormControl($initialValue, { updateOn: 'change', validators: [$validators] }),")
             }
 
         }
@@ -537,12 +537,12 @@ class AngularSignalFormComponentRenderer(
         this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
 
             val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
-            val filteredFieldName = "filtered${typeaheadDef.typeaheadName.firstToUpper()}"
+            val filteredFieldName = "filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}"
             val filteredFieldNameIsLoading = "${filteredFieldName}IsLoading"
 
             append("""
                 |
-                |        this.formGroup.controls['${typeaheadDef.typeaheadName.firstToLower()}'].valueChanges
+                |        this.formGroup.controls['${typeaheadDef.typeaheadBaseName.firstToLower()}'].valueChanges
                 |            .pipe(
                 |                debounceTime(300),
                 |                filter(value => typeof value === 'string'),
@@ -611,7 +611,7 @@ class AngularSignalFormComponentRenderer(
 
             blankLine()
             blankLine()
-            appendLine("    ${typeaheadDef.typeaheadName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
+            appendLine("    ${typeaheadDef.typeaheadBaseName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
 
         }
 
@@ -783,7 +783,7 @@ class AngularSignalFormComponentRenderer(
 
                 } else {
 
-                    val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
+                    val formGroupFieldName = typeaheadDef.typeaheadBaseName.firstToLower()
                     appendLine("            ${typeaheadDef.idField.fieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
 
                 }

@@ -25,7 +25,7 @@ class ForeignKeyFieldDef(
     val foreignEntityBaseName = foreignEntityDef.entityBaseName
 
 
-    val formGroupFieldName = typeaheadDef?.typeaheadName?.firstToLower() ?: searchableDtoDef?.dtoBaseName?.firstToLower()
+    val formGroupFieldName = typeaheadDef?.typeaheadBaseName?.firstToLower() ?: searchableDtoDef?.dtoBaseName?.firstToLower()
 
 
     val compareWithFunctionName = formGroupFieldName?.let { "compare${StringFunctions.firstToUpper(it)}" }

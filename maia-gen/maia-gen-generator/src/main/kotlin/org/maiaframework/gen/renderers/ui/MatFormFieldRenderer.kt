@@ -489,16 +489,16 @@ object MatFormFieldRenderer {
         val typeaheadDef = classFieldDef.typeaheadDef!!
         val classFieldName = classFieldDef.classFieldName
 
-        val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
+        val formGroupFieldName = typeaheadDef.typeaheadBaseName.firstToLower()
 
         r.appendLine("$indent<mat-form-field appearance=\"outline\">")
         r.appendLine("$indent    <mat-autocomplete #${classFieldName}Auto=\"matAutocomplete\" [displayWith]=\"${formGroupFieldName}ResultFormatter\">")
-        r.appendLine("$indent        @if (filtered${typeaheadDef.typeaheadName.firstToUpper()}IsLoading()) {")
+        r.appendLine("$indent        @if (filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}IsLoading()) {")
         r.appendLine("$indent            <mat-option>Loading...</mat-option>")
         r.appendLine("$indent        }")
-        r.appendLine("$indent        @if (!filtered${typeaheadDef.typeaheadName.firstToUpper()}IsLoading()) {")
+        r.appendLine("$indent        @if (!filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}IsLoading()) {")
         r.blankLine()
-        r.appendLine("$indent            @for (option of filtered${typeaheadDef.typeaheadName.firstToUpper()}; track option) {")
+        r.appendLine("$indent            @for (option of filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}; track option) {")
         r.appendLine("$indent                <mat-option [value]=\"option\">{{ option.${typeaheadDef.searchTermFieldName} }}</mat-option>")
         r.appendLine("$indent            }")
         r.blankLine()
@@ -561,16 +561,16 @@ object MatFormFieldRenderer {
         val typeaheadDef = classFieldDef.typeaheadDef!!
         val classFieldName = classFieldDef.classFieldName
 
-        val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
+        val formGroupFieldName = typeaheadDef.typeaheadBaseName.firstToLower()
 
         r.appendLine("$indent<mat-form-field appearance=\"outline\">")
         r.appendLine("$indent    <mat-autocomplete #${classFieldName}Auto=\"matAutocomplete\" [displayWith]=\"${formGroupFieldName}ResultFormatter\">")
-        r.appendLine("$indent        @if (filtered${typeaheadDef.typeaheadName.firstToUpper()}IsLoading()) {")
+        r.appendLine("$indent        @if (filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}IsLoading()) {")
         r.appendLine("$indent            <mat-option>Loading...</mat-option>")
         r.appendLine("$indent        }")
-        r.appendLine("$indent        @if (!filtered${typeaheadDef.typeaheadName.firstToUpper()}IsLoading()) {")
+        r.appendLine("$indent        @if (!filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}IsLoading()) {")
         r.blankLine()
-        r.appendLine("$indent            @for (option of filtered${typeaheadDef.typeaheadName.firstToUpper()}; track option) {")
+        r.appendLine("$indent            @for (option of filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}; track option) {")
         r.appendLine("$indent                <mat-option [value]=\"option\">{{ option.${typeaheadDef.searchTermFieldName} }}</mat-option>")
         r.appendLine("$indent            }")
         r.blankLine()

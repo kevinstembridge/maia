@@ -279,10 +279,10 @@ class AngularReactiveFormComponentRenderer(
             append("""
                 |
                 |
-                |    filtered${typeaheadDef.typeaheadName}: ${esDocUqcn}[] = [];
+                |    filtered${typeaheadDef.typeaheadBaseName}: ${esDocUqcn}[] = [];
                 |
                 |
-                |    filtered${typeaheadDef.typeaheadName}IsLoading = signal(false);
+                |    filtered${typeaheadDef.typeaheadBaseName}IsLoading = signal(false);
                 |""".trimMargin()
             )
 
@@ -666,12 +666,12 @@ class AngularReactiveFormComponentRenderer(
             addImport("rxjs/operators", "tap")
 
             val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
-            val filteredFieldName = "filtered${typeaheadDef.typeaheadName.firstToUpper()}"
+            val filteredFieldName = "filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}"
             val filteredFieldNameIsLoading = "${filteredFieldName}IsLoading"
 
             append("""
                 |
-                |        this.formGroup.controls['${typeaheadDef.typeaheadName.firstToLower()}'].valueChanges
+                |        this.formGroup.controls['${typeaheadDef.typeaheadBaseName.firstToLower()}'].valueChanges
                 |            .pipe(
                 |                debounceTime(300),
                 |                filter(value => typeof value === 'string'),
@@ -867,7 +867,7 @@ class AngularReactiveFormComponentRenderer(
 
             blankLine()
             blankLine()
-            appendLine("    ${typeaheadDef.typeaheadName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
+            appendLine("    ${typeaheadDef.typeaheadBaseName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
 
         }
 
@@ -1072,7 +1072,7 @@ class AngularReactiveFormComponentRenderer(
 
             } else {
 
-                val formGroupFieldName = typeaheadDef.typeaheadName.firstToLower()
+                val formGroupFieldName = typeaheadDef.typeaheadBaseName.firstToLower()
                 appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
 
             }
