@@ -211,6 +211,27 @@ class MaiaJobService(
     }
 
 
+    fun abandonJobExecution(jobExecutionId: DomainId): AbandonJobExecutionResult {
+
+        val entity = getJobExecutionEntity(jobExecutionId) ?: return AbandonJobExecutionResult.NOT_FOUND
+
+        if (entity.status != JobExecutionStatus.RUNNING) {
+            return AbandonJobExecutionResult.NOT_RUNNING
+        }
+
+        val stillRunningInThisJvm = this.runningJobs[entity.jobName]?.any { it.id == jobExecutionId } ?: false
+
+        if (stillRunningInThisJvm) {
+            return AbandonJobExecutionResult.STILL_RUNNING
+        }
+
+        this.jobExecutionRepo.jobAbandoned(jobExecutionId)
+        logger.info("Job execution $jobExecutionId (${entity.jobName}) marked ABANDONED")
+        return AbandonJobExecutionResult.ABANDONED
+
+    }
+
+
     fun getJobExecutionStacktrace(jobExecutionId: DomainId): String? {
 
         return getJobExecutionEntity(jobExecutionId)?.stackTrace
@@ -224,5 +245,15 @@ class MaiaJobService(
 
     }
 
+
+}
+
+
+enum class AbandonJobExecutionResult {
+
+    ABANDONED,
+    NOT_FOUND,
+    NOT_RUNNING,
+    STILL_RUNNING
 
 }

@@ -2,9 +2,9 @@ import {DateTime} from 'luxon';
 import {ParamMap, Params} from '@angular/router';
 import {JobExecutionHistoryItem} from '../../jobs-dashboard/models/JobExecutionHistoryItem';
 
-export type HistoryStatus = 'running' | 'success' | 'failed';
+export type HistoryStatus = 'running' | 'success' | 'failed' | 'abandoned';
 
-export type HistoryStatusFilter = 'RUNNING' | 'SUCCESS' | 'FAILED' | null;
+export type HistoryStatusFilter = 'RUNNING' | 'SUCCESS' | 'FAILED' | 'ABANDONED' | null;
 
 export interface HistoryFilters {
     jobNameFilter: string | null;
@@ -17,9 +17,10 @@ const STATUS_MAP: Record<JobExecutionHistoryItem['status'], HistoryStatus> = {
     RUNNING: 'running',
     SUCCESS: 'success',
     FAILED: 'failed',
+    ABANDONED: 'abandoned',
 };
 
-const VALID_STATUS_FILTERS: string[] = ['RUNNING', 'SUCCESS', 'FAILED'];
+const VALID_STATUS_FILTERS: string[] = ['RUNNING', 'SUCCESS', 'FAILED', 'ABANDONED'];
 
 
 export function deriveHistoryStatus(item: JobExecutionHistoryItem): HistoryStatus {

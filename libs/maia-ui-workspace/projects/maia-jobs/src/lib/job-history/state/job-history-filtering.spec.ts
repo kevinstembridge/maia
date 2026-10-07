@@ -38,6 +38,10 @@ describe('deriveHistoryStatus', () => {
         expect(deriveHistoryStatus(makeItem({status: 'FAILED'}))).toBe('failed');
     });
 
+    it('returns abandoned when status is ABANDONED', () => {
+        expect(deriveHistoryStatus(makeItem({status: 'ABANDONED'}))).toBe('abandoned');
+    });
+
 });
 
 describe('formatDuration', () => {

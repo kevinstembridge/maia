@@ -100,6 +100,17 @@ export const JobHistoryStore = signalStore(
                 search();
             },
 
+            abandonExecution(jobExecutionId: string): void {
+                jobsService.abandonJobExecution(jobExecutionId).subscribe({
+                    next: () => search(),
+                    error: (err) => {
+                        patchState(store, {error: 'Failed to abandon job execution.'});
+                        console.error(err);
+                        search();
+                    },
+                });
+            },
+
             retryFetch(): void {
                 search();
             },

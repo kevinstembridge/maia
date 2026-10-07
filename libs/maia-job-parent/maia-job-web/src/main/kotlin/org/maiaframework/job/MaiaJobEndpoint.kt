@@ -4,6 +4,7 @@ import org.maiaframework.webapp.domain.auth.CurrentUserHolder
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.search.SearchResultPage
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
 import java.time.Instant
 
 
@@ -85,6 +87,25 @@ class MaiaJobEndpoint(private val jobService: MaiaJobService) {
 
         val username = CurrentUserHolder.currentUsernameOrNull ?: "unknown"
         return this.jobService.runJob(JobName(jobName), username)
+
+    }
+
+
+    @PostMapping("/job/execution_abandon/{jobExecutionId}")
+    @PreAuthorize("hasAuthority('MAIA_JOB_WRITE')")
+    fun abandonExecution(
+        @PathVariable jobExecutionId: String
+    ) {
+
+        when (this.jobService.abandonJobExecution(DomainId(jobExecutionId))) {
+            AbandonJobExecutionResult.ABANDONED -> return
+            AbandonJobExecutionResult.NOT_FOUND ->
+                throw ResponseStatusException(HttpStatus.NOT_FOUND, "Job execution not found")
+            AbandonJobExecutionResult.NOT_RUNNING ->
+                throw ResponseStatusException(HttpStatus.CONFLICT, "Job execution is not in RUNNING status")
+            AbandonJobExecutionResult.STILL_RUNNING ->
+                throw ResponseStatusException(HttpStatus.CONFLICT, "Job execution is still running in this process")
+        }
 
     }
 

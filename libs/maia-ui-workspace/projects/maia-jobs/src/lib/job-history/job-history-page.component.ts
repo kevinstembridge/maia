@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, OnInit} from '@angular/core';
+import {Component, computed, effect, inject, input, OnInit} from '@angular/core';
 import {DateTime} from 'luxon';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
@@ -35,6 +35,8 @@ import {
 })
 export class JobHistoryPageComponent implements OnInit {
 
+
+    canAbandon = input<boolean>(false);
 
     readonly store = inject(JobHistoryStore);
 

@@ -84,6 +84,13 @@ export class JobsApiService {
     }
 
 
+    abandonJobExecution(jobExecutionId: string): Observable<void> {
+
+        return this.http.post<void>(`${this.baseUrl}/job/execution_abandon/${jobExecutionId}`, null);
+
+    }
+
+
     private handleError<T>(operation = 'operation', result?: T) {
 
         return (error: any): Observable<T> => {

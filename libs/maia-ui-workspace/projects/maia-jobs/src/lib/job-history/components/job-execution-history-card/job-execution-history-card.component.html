@@ -25,6 +25,9 @@
         @if (status() === 'failed') {
             <button mat-flat-button type="button" (click)="onDisplayStackTrace()">stacktrace</button>
         }
+        @if (status() === 'running' && canAbandon()) {
+            <button mat-stroked-button type="button" (click)="onAbandonExecution()">Abandon</button>
+        }
         <button mat-flat-button (click)="onDisplayJobMetrics()">Metrics</button>
     </div>
 </div>

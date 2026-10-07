@@ -23,6 +23,7 @@
             <mat-option value="RUNNING">Running</mat-option>
             <mat-option value="SUCCESS">Success</mat-option>
             <mat-option value="FAILED">Failed</mat-option>
+            <mat-option value="ABANDONED">Abandoned</mat-option>
         </mat-select>
     </mat-form-field>
 
@@ -60,8 +61,10 @@
         @for (item of store.items(); track item.jobExecutionId) {
             <maia-job-execution-history-card
                 [historyItem]="item"
+                [canAbandon]="canAbandon()"
                 (displayStackTrace)="onDisplayStackTrace($event)"
-                (displayJobMetrics)="onDisplayJobMetrics($event)">
+                (displayJobMetrics)="onDisplayJobMetrics($event)"
+                (abandonExecution)="store.abandonExecution($event)">
             </maia-job-execution-history-card>
         }
     </div>

@@ -8,12 +8,14 @@ const STATUS_COLORS: Record<HistoryStatus, string> = {
     running: '#2196f3',
     success: '#4caf50',
     failed: '#d32f2f',
+    abandoned: '#9e9e9e',
 };
 
 const STATUS_LABELS: Record<HistoryStatus, string> = {
     running: 'Running',
     success: 'Success',
     failed: 'Failed',
+    abandoned: 'Abandoned',
 };
 
 @Component({
@@ -28,9 +30,14 @@ export class JobExecutionHistoryCardComponent {
     historyItem = input.required<JobExecutionHistoryItem>();
 
 
+    canAbandon = input<boolean>(false);
+
+
     displayStackTrace = output<string>();
 
     displayJobMetrics = output<any>();
+
+    abandonExecution = output<string>();
 
 
     status = computed<HistoryStatus>(() => deriveHistoryStatus(this.historyItem()));
@@ -46,6 +53,11 @@ export class JobExecutionHistoryCardComponent {
 
     onDisplayStackTrace() {
         this.displayStackTrace.emit(this.historyItem().jobExecutionId);
+    }
+
+
+    onAbandonExecution() {
+        this.abandonExecution.emit(this.historyItem().jobExecutionId);
     }
 
 

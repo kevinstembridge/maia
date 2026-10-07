@@ -17,7 +17,7 @@ TODO * Props Dashboard
 
 TODO * Elastic Indices
     TODO * Refactor so that the EsDoc version propagates through the entire stack. We don't determine the index version at runtime.
-    TODO *
+    TODO * EsDocMapper is obsolete
 
 TODO * Single Effective Record
     TODO * Define a many-to-many entity that is specified to have only one single effective record

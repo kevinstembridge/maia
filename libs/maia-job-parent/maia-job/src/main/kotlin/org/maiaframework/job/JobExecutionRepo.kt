@@ -109,6 +109,18 @@ class JobExecutionRepo(private val jobExecutionDao: JobExecutionDao) {
     }
 
 
+    fun jobAbandoned(jobInstanceId: DomainId): Int {
+
+        val updater = JobExecutionEntityUpdater.forPrimaryKey(jobInstanceId) {
+            status(JobExecutionStatus.ABANDONED)
+            endTimestamp(Instant.now())
+        }
+
+        return this.jobExecutionDao.setFields(updater)
+
+    }
+
+
     fun recentFailedExecutions(jobNames: Iterable<JobName>): List<JobExecutionEntity> {
 
         val jobNameList = jobNames.toList()
