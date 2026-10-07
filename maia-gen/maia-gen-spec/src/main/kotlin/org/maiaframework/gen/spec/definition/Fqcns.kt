@@ -23,6 +23,7 @@ object Fqcns {
     val ES_INDEX_BASE_NAME = Fqcn.valueOf("org.maiaframework.elasticsearch.index.model.IndexBaseName")
     val ES_INDEX_BASE_NAME_AND_VERSION = Fqcn.valueOf("org.maiaframework.elasticsearch.index.model.IndexBaseNameAndVersion")
     val ES_INDEX_RESOLVED_NAME = Fqcn.valueOf("org.maiaframework.elasticsearch.index.model.IndexResolvedName")
+    val ES_INDEX_NAME_FACTORY = Fqcn.valueOf("org.maiaframework.elasticsearch.index.IndexNameFactory")
     val ES_INDEX_NAME_LOOKUP = Fqcn.valueOf("org.maiaframework.elasticsearch.index.EsIndexNameLookup")
     val ES_INDEX_VERSION = Fqcn.valueOf("org.maiaframework.elasticsearch.index.model.IndexVersion")
     val ES_PROPERTY = Fqcn.valueOf("co.elastic.clients.elasticsearch._types.mapping.Property")

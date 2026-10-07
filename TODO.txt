@@ -1,6 +1,7 @@
 
-TODO * Use the generator in the maia-ui-workspace projects to generate the DTOs.
+TODO * Use the generator to generate the DTOs in the maia-ui-workspace projects.
 
+TODO * Why does the OrgRole entity need a surrogate PK? Does it have history that can be deleted?
 
 
 TODO * Jobs

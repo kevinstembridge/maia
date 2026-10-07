@@ -9,6 +9,7 @@ plugins {
 
 val maiagen by configurations.creating
 val flyway by configurations.creating
+val schemaCheck by configurations.creating
 
 
 dependencies {
@@ -23,6 +24,9 @@ dependencies {
 
     maiagen(project(":maia-gen:maia-gen-generator"))
     maiagen(project(":maia-showcase:spec"))
+
+    schemaCheck(project(":maia-gen:maia-gen-schema-check"))
+    schemaCheck(project(":maia-showcase:spec"))
 
     flyway("org.flywaydb:flyway-core:11.14.1")
     flyway("org.flywaydb:flyway-database-postgresql:11.14.1")
@@ -59,6 +63,52 @@ tasks.register<JavaExec>("maiaGeneration") {
     classpath = configurations["maiagen"].asFileTree
     mainClass.set("org.maiaframework.gen.generator.DaoLayerModuleGeneratorKt")
     args("applicationSpecClassName=org.maiaframework.showcase.MaiaShowcaseApplicationSpec")
+
+}
+
+
+
+tasks.register<JavaExec>("schemaDiff") {
+
+    description = "Compares the schema implied by MaiaShowcaseApplicationSpec against the local database"
+    group = "verification"
+
+    val reportsDir = layout.buildDirectory.dir("reports/schema-diff")
+
+    classpath = configurations["schemaCheck"]
+    mainClass.set("org.maiaframework.gen.schemacheck.SchemaCheckMainKt")
+    args(
+        "applicationSpecClassName=org.maiaframework.showcase.MaiaShowcaseApplicationSpec",
+        "jdbcUrl=jdbc:postgresql://localhost:5433/maia_db",
+        "username=maia_owner",
+        "password=maia_owner_password",
+    )
+
+    doFirst {
+        val dir = reportsDir.get().asFile.apply { mkdirs() }
+        args("fixSqlOutputFile=${dir.resolve("schema-fix.sql")}")
+
+        // The tool prints to stdout unless given an outputFile, so tee stdout to the report file
+        val console = System.out
+        val file = dir.resolve("schema-diff.txt").outputStream()
+        standardOutput = object : java.io.OutputStream() {
+            override fun write(b: Int) {
+                console.write(b)
+                file.write(b)
+            }
+            override fun write(b: ByteArray, off: Int, len: Int) {
+                console.write(b, off, len)
+                file.write(b, off, len)
+            }
+            override fun flush() {
+                console.flush()
+                file.flush()
+            }
+            override fun close() {
+                file.close()
+            }
+        }
+    }
 
 }
 

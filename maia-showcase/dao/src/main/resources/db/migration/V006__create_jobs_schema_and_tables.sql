@@ -1,7 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS jobs;
 
 CREATE TABLE jobs.job_execution (
-    status text NOT NULL,
     created_timestamp timestamp(3) with time zone NOT NULL,
     end_timestamp timestamp(3) with time zone NULL,
     error_message text NULL,
@@ -12,6 +11,7 @@ CREATE TABLE jobs.job_execution (
     metrics jsonb NOT NULL,
     stack_trace text NULL,
     start_timestamp timestamp(3) with time zone NOT NULL,
+    status text NOT NULL,
     PRIMARY KEY(id)
 );
 CREATE INDEX jobName_idx ON jobs.job_execution(job_name);

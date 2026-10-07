@@ -17,7 +17,7 @@ class TypeaheadIndexServiceRenderer(
         addConstructorArg(aClassField("esIndexOps", Fqcns.MAIA_ES_INDEX_OPS).privat().build())
         addConstructorArg(aClassField("props", Fqcns.MAIA_PROPS).privat().build())
         addConstructorArg(aClassField("esDocRepo", this.typeaheadDef.esDocDef.esDocRepoClassDef.fqcn).privat().build())
-        addConstructorArg(aClassField("esIndex", this.typeaheadDef.esIndexClassDef.fqcn).privat().build())
+        addConstructorArg(aClassField("indexNameFactory", Fqcns.ES_INDEX_NAME_FACTORY).constructorOnly().build())
         addConstructorArg(aClassField("jsonMapper", Fqcns.JACKSON_JSON_MAPPER).privat().build())
 
     }

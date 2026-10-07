@@ -376,3 +376,15 @@ insert into maia.user_group_membership (
     (select id from maia.party where first_name = 'Admin' and last_name = 'System')
 );
 
+
+insert into maia.user_group_membership (
+    created_timestamp,
+    id,
+    user_group_id,
+    user_id
+) values (
+    current_timestamp,
+    'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+    (select id from maia.user_group where name = 'Sysops'),
+    (select id from maia.party where first_name = 'Sysops' and last_name = 'System')
+);
