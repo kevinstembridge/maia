@@ -19,7 +19,7 @@ import tools.jackson.databind.json.JsonMapper
 class AlphaTypeaheadV1IndexService(
     private val elasticClient: ElasticsearchClient,
     private val esDocRepo: AlphaTypeaheadV1EsDocRepo,
-    private val indexNameFactory: EsIndexNameFactory,
+    indexNameFactory: EsIndexNameFactory,
     private val esIndexOps: EsIndexOps,
     private val jsonMapper: JsonMapper,
     private val props: Props
@@ -29,7 +29,7 @@ class AlphaTypeaheadV1IndexService(
     private val logger = LoggerFactory.getLogger(AlphaTypeaheadV1IndexService::class.java)
 
 
-    private val indexResolvedName = this.indexNameFactory.indexNameFrom(AlphaTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion)
+    private val indexResolvedName = indexNameFactory.indexNameFrom(AlphaTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion)
 
 
     fun refreshById(id: DomainId) {
