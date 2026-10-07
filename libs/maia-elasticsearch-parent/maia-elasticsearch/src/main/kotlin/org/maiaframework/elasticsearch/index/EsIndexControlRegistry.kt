@@ -53,7 +53,7 @@ class EsIndexControlRegistry(
 
             val indexBaseName = it.key.baseName
             val indexVersion = it.key.version
-            val indexResolvedName = EsIndexNameFactory.indexNameFrom(indexBaseName, indexVersion)
+            val indexResolvedName = IndexNameFactory.indexNameFrom(indexBaseName, indexVersion)
 
             val isActiveVersion = this.activeVersionManager.isActive(indexBaseName, indexVersion)
 

@@ -54,12 +54,14 @@ CREATE TABLE maia.org_role (
     created_timestamp timestamp(3) with time zone NOT NULL,
     description text NOT NULL,
     display_name text NOT NULL,
+    id uuid NOT NULL,
     key text NOT NULL,
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
     last_modified_timestamp timestamp(3) with time zone NOT NULL,
     version bigint NOT NULL,
-    PRIMARY KEY(key)
+    PRIMARY KEY(id)
 );
+CREATE UNIQUE INDEX org_role_key_uidx ON maia.org_role(key);
 
 
 CREATE TABLE maia.org_role_history (
@@ -69,13 +71,15 @@ CREATE TABLE maia.org_role_history (
     created_timestamp timestamp(3) with time zone NOT NULL,
     description text NOT NULL,
     display_name text NOT NULL,
+    id uuid NOT NULL,
     key text NOT NULL,
     last_modified_by_id uuid NOT NULL,
     last_modified_by_version bigint NOT NULL,
     last_modified_timestamp timestamp(3) with time zone NOT NULL,
     version bigint NOT NULL,
-    PRIMARY KEY(key, version)
+    PRIMARY KEY(id, version)
 );
+CREATE INDEX hist_org_role_key_idx ON maia.org_role_history(key);
 ALTER TABLE maia.org_role_history ADD CONSTRAINT org_role_history_created_by_id_fkey FOREIGN KEY (created_by_id, created_by_version) REFERENCES maia.party_history(id, version);
 ALTER TABLE maia.org_role_history ADD CONSTRAINT org_role_history_last_modified_by_id_fkey FOREIGN KEY (last_modified_by_id, last_modified_by_version) REFERENCES maia.party_history(id, version);
 
@@ -84,12 +88,12 @@ CREATE TABLE maia.org_to_org_role (
     created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
     org_id uuid NOT NULL REFERENCES maia.party(id),
-    role text NOT NULL REFERENCES maia.org_role(key),
+    role_id uuid NOT NULL REFERENCES maia.org_role(id),
     effective_range tstzrange not null default tstzrange(now(), null),
     PRIMARY KEY(id)
 );
 CREATE INDEX org_to_org_role_org_id_idx ON maia.org_to_org_role(org_id);
-CREATE INDEX org_to_org_role_role_idx ON maia.org_to_org_role(role);
+CREATE INDEX org_to_org_role_role_id_idx ON maia.org_to_org_role(role_id);
 
 
 -- Type Discriminators:
@@ -615,17 +619,6 @@ CREATE TABLE maia.composite_primary_key (
 );
 
 
-CREATE TABLE maia.composite_primary_key_history (
-    change_type text NOT NULL,
-    created_timestamp timestamp(3) with time zone NOT NULL,
-    some_int integer NOT NULL,
-    some_modifiable_string text NOT NULL,
-    some_string text NOT NULL,
-    version bigint NOT NULL,
-    PRIMARY KEY(some_int, some_string, version)
-);
-
-
 CREATE TABLE maia.non_surrogate_primary_key (
     created_timestamp timestamp(3) with time zone NOT NULL,
     some_modifiable_string text NOT NULL,
@@ -635,30 +628,10 @@ CREATE TABLE maia.non_surrogate_primary_key (
 );
 
 
-CREATE TABLE maia.non_surrogate_primary_key_history (
-    change_type text NOT NULL,
-    created_timestamp timestamp(3) with time zone NOT NULL,
-    some_modifiable_string text NOT NULL,
-    some_string text NOT NULL,
-    version bigint NOT NULL,
-    PRIMARY KEY(some_string, version)
-);
-
-
 CREATE TABLE maia.non_surrogate_id_primary_key (
     created_timestamp timestamp(3) with time zone NOT NULL,
     id text NOT NULL,
     some_modifiable_string text NOT NULL,
     version bigint NOT NULL,
     PRIMARY KEY(id)
-);
-
-
-CREATE TABLE maia.non_surrogate_id_primary_key_history (
-    change_type text NOT NULL,
-    created_timestamp timestamp(3) with time zone NOT NULL,
-    id text NOT NULL,
-    some_modifiable_string text NOT NULL,
-    version bigint NOT NULL,
-    PRIMARY KEY(id, version)
 );

@@ -62,6 +62,7 @@ dependencies {
 
 val playwrightHeadless = providers.gradleProperty("playwright.headless").orElse("false")
 
+
 tasks.withType<Test>().configureEach {
     systemProperty("playwright.headless", playwrightHeadless.get())
 }

@@ -6,8 +6,8 @@ package org.maiaframework.showcase.join
 import co.elastic.clients.elasticsearch.ElasticsearchClient
 import org.maiaframework.domain.DomainId
 import org.maiaframework.elasticsearch.EsDocHolder
-import org.maiaframework.elasticsearch.index.EsIndexNameFactory
 import org.maiaframework.elasticsearch.index.EsIndexOps
+import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.metrics.JobMetrics
 import org.maiaframework.props.Props
 import org.slf4j.LoggerFactory
@@ -19,8 +19,8 @@ import tools.jackson.databind.json.JsonMapper
 class AlphaTypeaheadV1IndexService(
     private val elasticClient: ElasticsearchClient,
     private val esDocRepo: AlphaTypeaheadV1EsDocRepo,
-    indexNameFactory: EsIndexNameFactory,
     private val esIndexOps: EsIndexOps,
+    indexNameFactory: IndexNameFactory,
     private val jsonMapper: JsonMapper,
     private val props: Props
 ) {

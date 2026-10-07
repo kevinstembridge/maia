@@ -7,6 +7,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient
 import org.maiaframework.domain.DomainId
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.index.EsIndexOps
+import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.metrics.JobMetrics
 import org.maiaframework.props.Props
 import org.slf4j.LoggerFactory
@@ -18,8 +19,8 @@ import tools.jackson.databind.json.JsonMapper
 class AlphaWithHistoryTypeaheadV1IndexService(
     private val elasticClient: ElasticsearchClient,
     private val esDocRepo: AlphaWithHistoryTypeaheadV1EsDocRepo,
-    private val esIndex: AlphaWithHistoryTypeaheadV1EsIndex,
     private val esIndexOps: EsIndexOps,
+    indexNameFactory: IndexNameFactory,
     private val jsonMapper: JsonMapper,
     private val props: Props
 ) {
@@ -28,9 +29,12 @@ class AlphaWithHistoryTypeaheadV1IndexService(
     private val logger = LoggerFactory.getLogger(AlphaWithHistoryTypeaheadV1IndexService::class.java)
 
 
+    private val indexResolvedName = indexNameFactory.indexNameFrom(AlphaWithHistoryTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion)
+
+
     fun refreshById(id: DomainId) {
 
-        logger.debug("BEGIN: Refreshing typeahead index ${this.esIndex.indexName()} for id $id")
+        logger.debug("BEGIN: Refreshing typeahead index ${this.indexResolvedName} for id $id")
 
         val esDoc = this.esDocRepo.findByPrimaryKey(id)
         val (id, doc, indexName) = buildEsDocHolder(esDoc)
@@ -41,30 +45,30 @@ class AlphaWithHistoryTypeaheadV1IndexService(
                 .document(doc)
         }
 
-        logger.debug("END: Refreshing typeahead index ${this.esIndex.indexName()} for id $id with result ${indexResponse.result()}")
+        logger.debug("END: Refreshing typeahead index ${this.indexResolvedName} for id $id with result ${indexResponse.result()}")
 
     }
 
 
     fun deleteById(id: DomainId) {
 
-        logger.debug("BEGIN: Deleting from typeahead index ${this.esIndex.indexName()} for id $id")
+        logger.debug("BEGIN: Deleting from typeahead index ${this.indexResolvedName} for id $id")
 
-        val deleteResponse = this.esIndexOps.deleteById(id.value, this.esIndex.indexName())
+        val deleteResponse = this.esIndexOps.deleteById(id.value, this.indexResolvedName)
 
-        logger.debug("END: Deleting from typeahead index ${this.esIndex.indexName()} for id $id with result ${deleteResponse.result()}")
+        logger.debug("END: Deleting from typeahead index ${this.indexResolvedName} for id $id with result ${deleteResponse.result()}")
 
     }
 
 
     suspend fun refreshIndex(jm: JobMetrics) {
 
-        logger.info("BEGIN: Refresh index ${this.esIndex.indexName()}")
+        logger.info("BEGIN: Refresh index ${this.indexResolvedName}")
 
         val currentIds = upsertAllCurrentRecords(jm)
         removeDeletedRecordsFromIndex(currentIds, jm)
 
-        logger.info("END: Refresh index ${this.esIndex.indexName()}")
+        logger.info("END: Refresh index ${this.indexResolvedName}")
 
     }
 
@@ -90,14 +94,14 @@ class AlphaWithHistoryTypeaheadV1IndexService(
     private fun removeDeletedRecordsFromIndex(currentIds: Set<String>, jm: JobMetrics) {
 
         val chunkSize = this.props.getIntOrNull("alphaWithHistoryTypeaheadV1IndexService.bulkDelete.chunkSize") ?: 1000
-        this.esIndexOps.removeDeletedRecordsFromIndex(currentIds, this.esIndex.indexName(), chunkSize, jm)
+        this.esIndexOps.removeDeletedRecordsFromIndex(currentIds, this.indexResolvedName, chunkSize, jm)
 
     }
 
 
     private fun buildEsDocHolder(esDoc: AlphaWithHistoryTypeaheadV1EsDoc): EsDocHolder<AlphaWithHistoryTypeaheadV1EsDoc> {
 
-        return EsDocHolder(esDoc.id.value, esDoc, this.esIndex.indexName())
+        return EsDocHolder(esDoc.id.value, esDoc, this.indexResolvedName)
 
     }
 

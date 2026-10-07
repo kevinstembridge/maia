@@ -5,7 +5,7 @@ import org.maiaframework.elasticsearch.index.ElasticIndexHelper
 import org.maiaframework.elasticsearch.index.ElasticIndexService
 import org.maiaframework.elasticsearch.index.EsIndexActiveVersionManager
 import org.maiaframework.elasticsearch.index.EsIndexControlRegistry
-import org.maiaframework.elasticsearch.index.EsIndexNameFactory
+import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.elasticsearch.index.EsIndexNameLookup
 import org.maiaframework.elasticsearch.index.EsIndexOps
 import org.maiaframework.elasticsearch.search.EsSearchExecutor
@@ -25,9 +25,9 @@ class MaiaElasticsearchAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun esIndexNameFactory(): EsIndexNameFactory {
+    fun esIndexNameFactory(): IndexNameFactory {
 
-        return EsIndexNameFactory
+        return IndexNameFactory
 
     }
 

@@ -19,7 +19,7 @@ class EsIndexNameLookup(
 
         val innerMap = this.theMap.computeIfAbsent(indexBaseName) { mutableMapOf() }
         return innerMap.computeIfAbsent(activeVersion) { _ ->
-            EsIndexNameFactory.indexNameFrom(indexBaseName, activeVersion)
+            IndexNameFactory.indexNameFrom(indexBaseName, activeVersion)
         }
 
     }

@@ -7,7 +7,7 @@ import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 import org.maiaframework.lang.text.StringFunctions
 
 
-object EsIndexNameFactory {
+object IndexNameFactory {
 
 
     fun indexNameFrom(indexBaseNameAndVersion: IndexBaseNameAndVersion): IndexResolvedName {

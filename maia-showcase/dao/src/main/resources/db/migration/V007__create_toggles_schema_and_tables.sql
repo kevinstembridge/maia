@@ -1,0 +1,43 @@
+CREATE SCHEMA IF NOT EXISTS toggles;
+
+CREATE TABLE toggles.feature_toggle (
+    activation_strategies jsonb NOT NULL,
+    attributes jsonb NULL,
+    comment text NULL,
+    contact_person text NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
+    description text NULL,
+    enabled boolean NOT NULL,
+    feature_name text NOT NULL,
+    id uuid NOT NULL,
+    info_link text NULL,
+    last_modified_by_name text NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
+    review_date date NULL,
+    ticket_key text NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id)
+);
+CREATE UNIQUE INDEX feature_toggle_feature_name_uidx ON toggles.feature_toggle(feature_name);
+
+
+CREATE TABLE toggles.feature_toggle_history (
+    activation_strategies jsonb NOT NULL,
+    attributes jsonb NULL,
+    change_type text NOT NULL,
+    comment text NULL,
+    contact_person text NULL,
+    created_timestamp timestamp(3) with time zone NOT NULL,
+    description text NULL,
+    enabled boolean NOT NULL,
+    feature_name text NOT NULL,
+    id uuid NOT NULL,
+    info_link text NULL,
+    last_modified_by_name text NOT NULL,
+    last_modified_timestamp timestamp(3) with time zone NOT NULL,
+    review_date date NULL,
+    ticket_key text NULL,
+    version bigint NOT NULL,
+    PRIMARY KEY(id, version)
+);
+CREATE INDEX hist_feature_toggle_feature_name_idx ON toggles.feature_toggle_history(feature_name);

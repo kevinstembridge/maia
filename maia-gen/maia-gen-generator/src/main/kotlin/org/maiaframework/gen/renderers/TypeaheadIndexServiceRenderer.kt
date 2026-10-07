@@ -27,9 +27,14 @@ class TypeaheadIndexServiceRenderer(
 
         addImportFor(Fqcns.SLF4J_LOGGER_FACTORY)
 
-        blankLine()
-        blankLine()
-        appendLine("    private val logger = LoggerFactory.getLogger(${this.typeaheadDef.indexServiceClassDef.uqcn}::class.java)")
+        append("""
+            |
+            |
+            |    private val logger = LoggerFactory.getLogger(${this.typeaheadDef.indexServiceClassDef.uqcn}::class.java)
+            |
+            |
+            |    private val indexResolvedName = indexNameFactory.indexNameFrom(${this.typeaheadDef.esDocDef.esDocMetaClassDef.uqcn}.indexBaseNameAndVersion)
+            |""".trimMargin())
 
     }
 
@@ -53,7 +58,7 @@ class TypeaheadIndexServiceRenderer(
             |
             |    fun refreshById(id: DomainId) {
             |
-            |        logger.debug("BEGIN: Refreshing typeahead index ${this.esIndex.indexName()} for id $id")
+            |        logger.debug("BEGIN: Refreshing typeahead index ${this.indexResolvedName} for id $id")
             |
             |        val esDoc = this.esDocRepo.findByPrimaryKey(id)
             |        val (id, doc, indexName) = buildEsDocHolder(esDoc)
@@ -64,7 +69,7 @@ class TypeaheadIndexServiceRenderer(
             |                .document(doc)
             |        }
             |
-            |        logger.debug("END: Refreshing typeahead index ${this.esIndex.indexName()} for id $id with result ${indexResponse.result()}")
+            |        logger.debug("END: Refreshing typeahead index ${this.indexResolvedName} for id $id with result ${indexResponse.result()}")
             |
             |    }
             |""".trimMargin())
@@ -81,11 +86,11 @@ class TypeaheadIndexServiceRenderer(
             |
             |    fun deleteById(id: DomainId) {
             |
-            |        logger.debug("BEGIN: Deleting from typeahead index ${this.esIndex.indexName()} for id $id")
+            |        logger.debug("BEGIN: Deleting from typeahead index ${this.indexResolvedName} for id $id")
             |
-            |        val deleteResponse = this.esIndexOps.deleteById(id.value, this.esIndex.indexName())
+            |        val deleteResponse = this.esIndexOps.deleteById(id.value, this.indexResolvedName)
             |
-            |        logger.debug("END: Deleting from typeahead index ${this.esIndex.indexName()} for id $id with result ${deleteResponse.result()}")
+            |        logger.debug("END: Deleting from typeahead index ${this.indexResolvedName} for id $id with result ${deleteResponse.result()}")
             |
             |    }
             |""".trimMargin())
@@ -102,12 +107,12 @@ class TypeaheadIndexServiceRenderer(
             |
             |    suspend fun refreshIndex(jm: JobMetrics) {
             |
-            |        logger.info("BEGIN: Refresh index ${this.esIndex.indexName()}")
+            |        logger.info("BEGIN: Refresh index ${this.indexResolvedName}")
             |
             |        val currentIds = upsertAllCurrentRecords(jm)
             |        removeDeletedRecordsFromIndex(currentIds, jm)
             |
-            |        logger.info("END: Refresh index ${this.esIndex.indexName()}")
+            |        logger.info("END: Refresh index ${this.indexResolvedName}")
             |
             |    }
             |""".trimMargin())
@@ -148,7 +153,7 @@ class TypeaheadIndexServiceRenderer(
         appendLine("    private fun removeDeletedRecordsFromIndex(currentIds: Set<String>, jm: JobMetrics) {")
         blankLine()
         appendLine("        val chunkSize = this.props.getIntOrNull(\"${this.classDef.uqcn.firstToLower()}.bulkDelete.chunkSize\") ?: 1000")
-        appendLine("        this.esIndexOps.removeDeletedRecordsFromIndex(currentIds, this.esIndex.indexName(), chunkSize, jm)")
+        appendLine("        this.esIndexOps.removeDeletedRecordsFromIndex(currentIds, this.indexResolvedName, chunkSize, jm)")
         blankLine()
         appendLine("    }")
 
@@ -163,7 +168,7 @@ class TypeaheadIndexServiceRenderer(
         blankLine()
         appendLine("    private fun buildEsDocHolder(esDoc: ${this.typeaheadDef.esDocDef.uqcn}): EsDocHolder<${this.typeaheadDef.esDocDef.uqcn}> {")
         blankLine()
-        appendLine("        return EsDocHolder(esDoc.${this.typeaheadDef.idField.fieldName}.value, esDoc, this.esIndex.indexName())")
+        appendLine("        return EsDocHolder(esDoc.${this.typeaheadDef.idField.fieldName}.value, esDoc, this.indexResolvedName)")
         blankLine()
         appendLine("    }")
 
