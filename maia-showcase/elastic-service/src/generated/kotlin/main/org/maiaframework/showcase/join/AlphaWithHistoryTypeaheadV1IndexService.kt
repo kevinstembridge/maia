@@ -15,17 +15,17 @@ import tools.jackson.databind.json.JsonMapper
 
 
 @Component
-class AlphaWithHistoryTypeaheadIndexService(
+class AlphaWithHistoryTypeaheadV1IndexService(
     private val elasticClient: ElasticsearchClient,
     private val esDocRepo: AlphaWithHistoryTypeaheadV1EsDocRepo,
-    private val esIndex: AlphaWithHistoryTypeaheadEsIndex,
+    private val esIndex: AlphaWithHistoryTypeaheadV1EsIndex,
     private val esIndexOps: EsIndexOps,
     private val jsonMapper: JsonMapper,
     private val props: Props
 ) {
 
 
-    private val logger = LoggerFactory.getLogger(AlphaWithHistoryTypeaheadIndexService::class.java)
+    private val logger = LoggerFactory.getLogger(AlphaWithHistoryTypeaheadV1IndexService::class.java)
 
 
     fun refreshById(id: DomainId) {
@@ -72,7 +72,7 @@ class AlphaWithHistoryTypeaheadIndexService(
     private suspend fun upsertAllCurrentRecords(jm: JobMetrics): Set<String> {
 
         val upsertJob = jm.getOrCreateChildJob("upsertChunk")
-        val chunkSize = this.props.getIntOrNull("alphaWithHistoryTypeaheadIndexService.bulkUpsert.chunkSize") ?: 1000
+        val chunkSize = this.props.getIntOrNull("alphaWithHistoryTypeaheadV1IndexService.bulkUpsert.chunkSize") ?: 1000
 
         return this.esDocRepo.findAllAsSequence().chunked(chunkSize).map { chunkOfEsDocs ->
 
@@ -89,7 +89,7 @@ class AlphaWithHistoryTypeaheadIndexService(
 
     private fun removeDeletedRecordsFromIndex(currentIds: Set<String>, jm: JobMetrics) {
 
-        val chunkSize = this.props.getIntOrNull("alphaWithHistoryTypeaheadIndexService.bulkDelete.chunkSize") ?: 1000
+        val chunkSize = this.props.getIntOrNull("alphaWithHistoryTypeaheadV1IndexService.bulkDelete.chunkSize") ?: 1000
         this.esIndexOps.removeDeletedRecordsFromIndex(currentIds, this.esIndex.indexName(), chunkSize, jm)
 
     }

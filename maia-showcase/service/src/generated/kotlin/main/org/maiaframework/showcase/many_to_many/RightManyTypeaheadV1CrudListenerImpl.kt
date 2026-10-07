@@ -8,24 +8,24 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class LeftManyTypeaheadCrudListenerImpl(private val indexService: LeftManyTypeaheadIndexService) : LeftManyCrudListener {
+class RightManyTypeaheadV1CrudListenerImpl(private val indexService: RightManyTypeaheadV1IndexService) : RightManyCrudListener {
 
 
-    override fun onLeftManyEntityCreated(entity: LeftManyEntity) {
+    override fun onRightManyEntityCreated(entity: RightManyEntity) {
 
         this.indexService.refreshById(entity.id)
 
     }
 
 
-    override fun onLeftManyEntityUpdated(id: DomainId) {
+    override fun onRightManyEntityUpdated(id: DomainId) {
 
         this.indexService.refreshById(id)
 
     }
 
 
-    override fun onLeftManyEntityDeleted(entity: LeftManyEntity) {
+    override fun onRightManyEntityDeleted(entity: RightManyEntity) {
 
         this.indexService.deleteById(entity.id)
 

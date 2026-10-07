@@ -7,6 +7,7 @@ import com.microsoft.playwright.Locator
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
 import com.microsoft.playwright.Tracing
+import com.microsoft.playwright.assertions.PlaywrightAssertions
 import com.microsoft.playwright.options.AriaRole
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
@@ -320,7 +321,6 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         loginPage.apply {
 
             navigateToMe()
-            Thread.sleep(300)
             submitForm(
                 emailAddress,
                 rawPassword
@@ -336,13 +336,19 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
 
     protected fun `logout current user`() {
 
-        val locateButtonByAriaLabel = locateButtonByAriaLabel("User menu")
+        val userMenu = locateButtonByAriaLabel("User menu")
+        val loginLink = this.page.getByRole(AriaRole.LINK, Page.GetByRoleOptions().setName("Login"))
 
-        Thread.sleep(200)
+        // Wait until the app has settled into either the logged-in or logged-out state
+        userMenu.or(loginLink).first().waitFor()
 
-        if (locateButtonByAriaLabel.isVisible) {
-            locateButtonByAriaLabel.click()
+        if (userMenu.isVisible) {
+            userMenu.click()
             this.page.getByRole(AriaRole.MENUITEM, Page.GetByRoleOptions().setName("Logout")).click()
+
+            // Logout is asynchronous in the UI (POST /logout, then GET /csrf, then the current user is
+            // cleared and the router navigates away). The user menu disappears once that has completed.
+            PlaywrightAssertions.assertThat(userMenu).isHidden()
         }
 
     }
@@ -365,7 +371,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     @AfterAll
     fun destroyPlaywright() {
 
-        browserContext.tracing().stop(Tracing.StopOptions().setPath(Paths.get("playwright-trace.zip")))
+        browserContext.tracing().stop(Tracing.StopOptions().setPath(Paths.get("build/playwright-traces/${this.javaClass.simpleName}.zip")))
         playwright.close()
 
     }

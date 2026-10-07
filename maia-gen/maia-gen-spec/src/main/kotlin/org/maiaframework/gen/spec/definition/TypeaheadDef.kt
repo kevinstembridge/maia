@@ -61,35 +61,35 @@ class TypeaheadDef(
     val entityCrudApiDef = entityDef?.entityCrudApiDef
 
 
-    val esIndexClassDef = aClassDef(packageName.uqcn("${typeaheadName}EsIndex"))
+    val esIndexClassDef = aClassDef(packageName.uqcn("${typeaheadNameAndVersion}EsIndex"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
-    val serviceClassDef = aClassDef(packageName.uqcn("${typeaheadName}Service"))
+    val serviceClassDef = aClassDef(packageName.uqcn("${typeaheadNameAndVersion}SearchService"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
     val crudListenerClassDef = entityCrudApiDef?.let {
-        aClassDef(packageName.uqcn("${typeaheadName}CrudListenerImpl"))
+        aClassDef(packageName.uqcn("${typeaheadNameAndVersion}CrudListenerImpl"))
             .withClassAnnotation(AnnotationDefs.SPRING_SERVICE)
             .withInterfaces(ParameterizedType(it.entityDef.crudListenerClassDef.fqcn))
             .build()
     }
 
 
-    val indexServiceClassDef = aClassDef(packageName.uqcn("${typeaheadName}IndexService"))
+    val indexServiceClassDef = aClassDef(packageName.uqcn("${typeaheadNameAndVersion}IndexService"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
-    val endpointClassDef = aClassDef(packageName.uqcn("${typeaheadName}Endpoint"))
+    val endpointClassDef = aClassDef(packageName.uqcn("${typeaheadNameAndVersion}SearchEndpoint"))
         .withClassAnnotation(AnnotationDefs.SPRING_REST_CONTROLLER)
         .build()
 
 
-    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${typeaheadName}IndexJob"))
+    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${typeaheadNameAndVersion}IndexJob"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .withInterface(ParameterizedType(Fqcns.MAIA_JOB))
         .build()
@@ -136,7 +136,7 @@ class TypeaheadDef(
     init {
 
         require(this.fieldDefs.count { it.isIdField } == 1) {
-            "The ${typeaheadBaseName}Typeahead must have exactly one ID field. Found ${this.fieldDefs.filter { it.isIdField }}."
+            "The $typeaheadBaseName typeahead must have exactly one ID field. Found ${this.fieldDefs.filter { it.isIdField }}."
         }
 
     }

@@ -15,17 +15,17 @@ import tools.jackson.databind.json.JsonMapper
 
 
 @Component
-class RightManyTypeaheadIndexService(
+class LeftManyTypeaheadV1IndexService(
     private val elasticClient: ElasticsearchClient,
-    private val esDocRepo: RightManyTypeaheadV1EsDocRepo,
-    private val esIndex: RightManyTypeaheadEsIndex,
+    private val esDocRepo: LeftManyTypeaheadV1EsDocRepo,
+    private val esIndex: LeftManyTypeaheadV1EsIndex,
     private val esIndexOps: EsIndexOps,
     private val jsonMapper: JsonMapper,
     private val props: Props
 ) {
 
 
-    private val logger = LoggerFactory.getLogger(RightManyTypeaheadIndexService::class.java)
+    private val logger = LoggerFactory.getLogger(LeftManyTypeaheadV1IndexService::class.java)
 
 
     fun refreshById(id: DomainId) {
@@ -72,7 +72,7 @@ class RightManyTypeaheadIndexService(
     private suspend fun upsertAllCurrentRecords(jm: JobMetrics): Set<String> {
 
         val upsertJob = jm.getOrCreateChildJob("upsertChunk")
-        val chunkSize = this.props.getIntOrNull("rightManyTypeaheadIndexService.bulkUpsert.chunkSize") ?: 1000
+        val chunkSize = this.props.getIntOrNull("leftManyTypeaheadV1IndexService.bulkUpsert.chunkSize") ?: 1000
 
         return this.esDocRepo.findAllAsSequence().chunked(chunkSize).map { chunkOfEsDocs ->
 
@@ -89,13 +89,13 @@ class RightManyTypeaheadIndexService(
 
     private fun removeDeletedRecordsFromIndex(currentIds: Set<String>, jm: JobMetrics) {
 
-        val chunkSize = this.props.getIntOrNull("rightManyTypeaheadIndexService.bulkDelete.chunkSize") ?: 1000
+        val chunkSize = this.props.getIntOrNull("leftManyTypeaheadV1IndexService.bulkDelete.chunkSize") ?: 1000
         this.esIndexOps.removeDeletedRecordsFromIndex(currentIds, this.esIndex.indexName(), chunkSize, jm)
 
     }
 
 
-    private fun buildEsDocHolder(esDoc: RightManyTypeaheadV1EsDoc): EsDocHolder<RightManyTypeaheadV1EsDoc> {
+    private fun buildEsDocHolder(esDoc: LeftManyTypeaheadV1EsDoc): EsDocHolder<LeftManyTypeaheadV1EsDoc> {
 
         return EsDocHolder(esDoc.id.value, esDoc, this.esIndex.indexName())
 

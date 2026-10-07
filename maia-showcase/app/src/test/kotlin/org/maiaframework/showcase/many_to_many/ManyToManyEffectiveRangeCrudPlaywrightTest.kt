@@ -23,7 +23,7 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var rightManyTypeaheadEsIndex: RightManyTypeaheadEsIndex
+    private lateinit var rightManyTypeaheadEsIndex: RightManyTypeaheadV1EsIndex
 
 
     @Autowired

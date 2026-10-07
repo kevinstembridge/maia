@@ -21,7 +21,7 @@ class LeftManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var rightManyTypeaheadEsIndex: RightManyTypeaheadEsIndex
+    private lateinit var rightManyTypeaheadEsIndex: RightManyTypeaheadV1EsIndex
 
 
     private val rightAlpha = RightManyEntityTestBuilder(someString = "right-alpha").build()

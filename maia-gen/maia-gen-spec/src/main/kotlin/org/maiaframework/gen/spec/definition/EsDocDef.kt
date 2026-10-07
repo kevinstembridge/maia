@@ -34,13 +34,13 @@ class EsDocDef(
     private val dtoSuffix = DtoSuffix("EsDoc")
 
 
-    private val esDocBaseNameWithVersion = esDocBaseName.withSuffix("V$esDocVersion")
+    private val esDocBaseNameAndVersion = esDocBaseName.withSuffix("V$esDocVersion")
 
 
     private val allClassFields = fields.map { it.classFieldDef }
 
 
-    val dtoDef = DtoDefBuilder(packageName, esDocBaseNameWithVersion, dtoSuffix, allClassFields)
+    val dtoDef = DtoDefBuilder(packageName, esDocBaseNameAndVersion, dtoSuffix, allClassFields)
         .withCharacteristic(DtoCharacteristic.ELASTIC_SEARCH_DOC, DtoCharacteristic.RESPONSE_DTO)
         .build()
 
@@ -76,20 +76,20 @@ class EsDocDef(
         .build()
 
 
-    val refreshEsIndexJobName = "refresh${esDocBaseName}Index"
+    val refreshEsIndexJobName = "refresh${esDocBaseNameAndVersion}Index"
 
 
-    val indexServiceClassDef = aClassDef(packageName.uqcn("${esDocBaseName}IndexService"))
+    val indexServiceClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}IndexService"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
-    val esIndexClassDef = aClassDef(packageName.uqcn("${esDocBaseName}EsIndex"))
+    val esIndexClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}EsIndex"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
-    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${esDocBaseName.firstToUpper()}IndexJob"))
+    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${esDocBaseNameAndVersion.firstToUpper()}IndexJob"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .withInterface(ParameterizedType(Fqcns.MAIA_JOB))
         .build()

@@ -2,6 +2,7 @@ package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
 import com.microsoft.playwright.Page
+import com.microsoft.playwright.options.WaitForSelectorState
 import com.microsoft.playwright.options.AriaRole
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -51,8 +52,12 @@ class RightManyCreatePage(
 
     fun `click to confirm adding the Left entity`() {
 
-        page.locator(".join-mini-form button[type='button']").filter(Locator.FilterOptions().setHasText("Add"))
-            .click()
+        val addButton = page.locator(".join-mini-form button[type='button']").filter(Locator.FilterOptions().setHasText("Add"))
+        addButton.click()
+
+        // Confirming collapses the mini form, which moves everything below it (e.g. the Submit button).
+        // Wait for that so the next click doesn't target the pre-collapse layout.
+        addButton.waitFor(Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN))
 
     }
 

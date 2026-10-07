@@ -16,7 +16,7 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var alphaTypeaheadEsIndex: AlphaTypeaheadEsIndex
+    private lateinit var alphaTypeaheadEsIndex: AlphaTypeaheadV1EsIndex
 
 
     @Autowired

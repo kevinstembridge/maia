@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class RefreshRightManyTypeaheadIndexJob(private val service: RightManyTypeaheadIndexService) : MaiaJob {
+class RefreshRightManyTypeaheadV1IndexJob(private val service: RightManyTypeaheadV1IndexService) : MaiaJob {
 
 
-    override val jobName = JobName("refreshRightManyTypeaheadIndex")
+    override val jobName = JobName("refreshRightManyTypeaheadV1Index")
 
 
     override val description = "Refresh the Elastic Search index for RightManyTypeahead records. Index description: A typeahead index for the someString field of RightMany records."
