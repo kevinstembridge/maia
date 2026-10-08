@@ -100,12 +100,6 @@ class EsDocDef(
     }
 
 
-    val esDocMapperClassDef = aClassDef(this.dtoDef.fqcn.withSuffix("Mapper"))
-        .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
-        .withInterface(ParameterizedType(Fqcns.MAIA_ES_DOC_MAPPER, ParameterizedType(dtoDef.fqcn)))
-        .build()
-
-
     val esDocRepoClassDef = aClassDef(this.dtoDef.fqcn.withSuffix("Repo"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()

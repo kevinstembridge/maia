@@ -52,7 +52,6 @@ class TypeaheadServiceRenderer(private val typeaheadDef: TypeaheadDef) : Abstrac
     private fun `render function buildResults`() {
 
         addImportFor(Fqcns.ELASTIC_SEARCH_SEARCH_RESPONSE)
-        addImportFor(this.typeaheadDef.esDocDef.esDocMapperClassDef.fqcn)
 
         blankLine()
         blankLine()

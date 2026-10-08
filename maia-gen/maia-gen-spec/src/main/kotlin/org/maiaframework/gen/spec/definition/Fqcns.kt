@@ -97,7 +97,6 @@ object Fqcns {
     val MAIA_ENTITY_KEY = Fqcn.valueOf("org.maiaframework.domain.EntityKey")
     val MAIA_ENTITY_NOT_FOUND_EXCEPTION = Fqcn.valueOf("org.maiaframework.jdbc.EntityNotFoundException")
     val MAIA_ES_DOC_HOLDER = Fqcn.valueOf("org.maiaframework.elasticsearch.EsDocHolder")
-    val MAIA_ES_DOC_MAPPER = Fqcn.valueOf("org.maiaframework.elasticsearch.EsDocMapper")
     val MAIA_ES_INDEX_OPS = Fqcn.valueOf("org.maiaframework.elasticsearch.index.EsIndexOps")
     val MAIA_ES_SEARCH_EXECUTOR = Fqcn.valueOf("org.maiaframework.elasticsearch.search.EsSearchExecutor")
     val MAIA_FIELD_UPDATE = Fqcn.valueOf("org.maiaframework.domain.persist.FieldUpdate")

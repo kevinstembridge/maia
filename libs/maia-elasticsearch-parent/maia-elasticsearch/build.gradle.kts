@@ -12,7 +12,6 @@ dependencies {
 
     api(project(":libs:maia-common"))
     api(project(":libs:maia-domain"))
-    api(project(":libs:maia-esdocs"))
     api(project(":libs:maia-lang"))
     api(project(":libs:maia-metrics"))
     api(project(":libs:maia-props-parent:maia-props-api"))

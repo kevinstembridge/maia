@@ -3,6 +3,7 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.CrudNotifierRenderer
 import org.maiaframework.gen.renderers.CrudServiceRenderer
 import org.maiaframework.gen.renderers.ElasticSearchDtoSearchServiceRenderer
+import org.maiaframework.gen.renderers.EsDocBlotterRowDtoMapperRenderer
 import org.maiaframework.gen.renderers.EntityDetailDtoServiceRenderer
 import org.maiaframework.gen.renderers.EntityHistoryBlotterSearchServiceRenderer
 import org.maiaframework.gen.renderers.TimelineBlotterSearchServiceRenderer
@@ -144,7 +145,10 @@ class ServiceLayerModuleGenerator(
         this.applicationModelDef.blotterDefs.forEach {
 
             when (val blotterSourceDef = it.blotterSourceDef) {
-                is BlotterEsDocSourceDef -> ElasticSearchDtoSearchServiceRenderer(it.searchDtoDef, (blotterSourceDef).esDocDef).renderToDir(this.kotlinOutputDir)
+                is BlotterEsDocSourceDef -> {
+                    EsDocBlotterRowDtoMapperRenderer(it).renderToDir(this.kotlinOutputDir)
+                    ElasticSearchDtoSearchServiceRenderer(it.searchDtoDef, (blotterSourceDef).esDocDef).renderToDir(this.kotlinOutputDir)
+                }
                 is BlotterSearchableDtoSourceDef -> SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)
             }
 

@@ -30,7 +30,6 @@ class ModelGenerator(
         DomainModuleGenerator(this.maiaGenerationContext).generateSource(this.applicationModelDef)
         ElasticSearchModuleGenerator(this.maiaGenerationContext).generateSource(this.applicationModelDef)
         ElasticServiceModuleGenerator(this.maiaGenerationContext).generateSource(this.applicationModelDef)
-        EsDocsModuleGenerator(this.maiaGenerationContext).generateSource(this.applicationModelDef)
         JobModuleGenerator(this.maiaGenerationContext).generateSource(this.applicationModelDef)
         RepoLayerModuleGenerator(this.maiaGenerationContext).generateSource(this.applicationModelDef)
         ServiceLayerModuleGenerator(this.maiaGenerationContext).generateSource(this.applicationModelDef)
