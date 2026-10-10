@@ -7,3 +7,5 @@ export * from './lib/toggles-dashboard/services/toggles-api.service';
 export * from './lib/toggles-dashboard/dialogs/toggle-state-dialog/toggle-state-dialog';
 export * from './lib/toggles-dashboard/dialogs/edit-strategies-dialog/edit-strategies-dialog';
 export * from './lib/toggles-dashboard/toggles-dashboard-page';
+export * from './lib/toggle-history/toggle-history-row';
+export * from './lib/toggle-history/toggle-history-page';
