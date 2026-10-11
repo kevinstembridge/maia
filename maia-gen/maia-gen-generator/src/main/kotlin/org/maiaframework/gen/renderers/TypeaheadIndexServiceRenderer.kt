@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.TypeaheadDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 
+
 class TypeaheadIndexServiceRenderer(
     private val typeaheadDef: TypeaheadDef
 ) : AbstractKotlinRenderer(
