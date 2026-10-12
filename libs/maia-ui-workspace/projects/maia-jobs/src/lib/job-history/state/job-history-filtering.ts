@@ -1,7 +1,7 @@
 import {DateTime} from 'luxon';
 import {ParamMap, Params} from '@angular/router';
 import {JobExecutionHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionHistoryItemResponseDto';
-import {JobExecutionStatus} from '@app/gen-components/org/maiaframework/job/JobExecutionStatus';
+import {JobExecutionStatus} from '../../../generated/typescript/main/app/gen-components/org/maiaframework/job/JobExecutionStatus';
 
 export type HistoryStatus = 'running' | 'success' | 'failed' | 'abandoned';
 
