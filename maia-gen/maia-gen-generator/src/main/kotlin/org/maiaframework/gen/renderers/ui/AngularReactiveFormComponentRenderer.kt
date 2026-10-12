@@ -1262,6 +1262,10 @@ class AngularReactiveFormComponentRenderer(
             addImport("@angular/material/progress-spinner", "MatProgressSpinnerModule", isModule = true)
         }
 
+        if (angularFormDef.readOnlyFormFields.any { it.isUuid }) {
+            addImport("@maia/maia-ui", "ShortId", isModule = true)
+        }
+
         when (this.angularFormDef.formPurpose) {
             FormPurpose.create -> {
                 addImport("@maia/maia-ui", "EntityCreatedResponseDto")

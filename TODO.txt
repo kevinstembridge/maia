@@ -1,9 +1,6 @@
 
 TODO * Use the generator to generate the DTOs in the maia-ui-workspace projects.
 
-TODO * Why does the OrgRole entity need a surrogate PK? Does it have history that can be deleted?
-
-
 TODO * Jobs
     TODO * Introduce a new JobExecutionStatus.ABANDONED. Then add a feature that allows an Ops user to mark a job execution as abandoned.
     TODO * Jobs Dashboard

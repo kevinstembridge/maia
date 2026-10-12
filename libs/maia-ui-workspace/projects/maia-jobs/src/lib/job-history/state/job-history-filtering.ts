@@ -1,6 +1,7 @@
 import {DateTime} from 'luxon';
 import {ParamMap, Params} from '@angular/router';
-import {JobExecutionHistoryItem} from '../../jobs-dashboard/models/JobExecutionHistoryItem';
+import {JobExecutionHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionHistoryItemResponseDto';
+import {JobExecutionStatus} from '@app/gen-components/org/maiaframework/job/JobExecutionStatus';
 
 export type HistoryStatus = 'running' | 'success' | 'failed' | 'abandoned';
 
@@ -13,24 +14,24 @@ export interface HistoryFilters {
     toDate: string | null;
 }
 
-const STATUS_MAP: Record<JobExecutionHistoryItem['status'], HistoryStatus> = {
-    RUNNING: 'running',
-    SUCCESS: 'success',
-    FAILED: 'failed',
-    ABANDONED: 'abandoned',
+const STATUS_MAP: Record<JobExecutionStatus, HistoryStatus> = {
+    [JobExecutionStatus.RUNNING]: 'running',
+    [JobExecutionStatus.SUCCESS]: 'success',
+    [JobExecutionStatus.FAILED]: 'failed',
+    [JobExecutionStatus.ABANDONED]: 'abandoned',
 };
 
 const VALID_STATUS_FILTERS: string[] = ['RUNNING', 'SUCCESS', 'FAILED', 'ABANDONED'];
 
 
-export function deriveHistoryStatus(item: JobExecutionHistoryItem): HistoryStatus {
+export function deriveHistoryStatus(item: JobExecutionHistoryItemResponseDto): HistoryStatus {
     return STATUS_MAP[item.status];
 }
 
 
-export function formatDuration(startTimestamp: string, endTimestamp: string | null): string {
+export function formatDuration(startTimestamp: string, endTimestamp: string | null | undefined): string {
 
-    if (endTimestamp === null) {
+    if (endTimestamp == null) {
         return 'Running…';
     }
 

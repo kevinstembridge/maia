@@ -10,12 +10,12 @@ import {
     parseNameFilterFromParams,
     parseStatusFilterFromParams
 } from './jobs-filtering';
-import {JobState} from '../models/JobState';
-import {JobExecutionState} from '../models/JobExecutionState';
-import {JobExecutionSummary} from '../models/JobExecutionSummary';
+import {JobStateResponseDto} from '@app/gen-components/org/maiaframework/job/JobStateResponseDto';
+import {RunningJobStateResponseDto} from '@app/gen-components/org/maiaframework/job/RunningJobStateResponseDto';
+import {JobExecutionSummaryResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionSummaryResponseDto';
 
 
-function runningExecution(overrides: Partial<JobExecutionState> = {}): JobExecutionState {
+function runningExecution(overrides: Partial<RunningJobStateResponseDto> = {}): RunningJobStateResponseDto {
     return {
         id: 'exec-1',
         jobName: 'some-job',
@@ -23,11 +23,11 @@ function runningExecution(overrides: Partial<JobExecutionState> = {}): JobExecut
         startTimestamp: '2026-01-01T00:00:00.000Z',
         metrics: {},
         ...overrides
-    } as JobExecutionState;
+    } as RunningJobStateResponseDto;
 }
 
 
-function failedExecution(overrides: Partial<JobExecutionSummary> = {}): JobExecutionSummary {
+function failedExecution(overrides: Partial<JobExecutionSummaryResponseDto> = {}): JobExecutionSummaryResponseDto {
     return {
         jobExecutionId: 'exec-failed-1',
         jobName: 'some-job',
@@ -35,17 +35,17 @@ function failedExecution(overrides: Partial<JobExecutionSummary> = {}): JobExecu
         endTimestamp: '2026-01-01T00:05:00.000Z',
         errorMessage: 'boom',
         ...overrides
-    } as JobExecutionSummary;
+    } as JobExecutionSummaryResponseDto;
 }
 
 
-function jobState(overrides: Partial<JobState> & {jobName: string}): JobState {
+function jobState(overrides: Partial<JobStateResponseDto> & {jobName: string}): JobStateResponseDto {
     return {
         description: '',
         runningJobs: [],
         recentlyFailedExecutions: [],
         ...overrides
-    } as JobState;
+    } as JobStateResponseDto;
 }
 
 

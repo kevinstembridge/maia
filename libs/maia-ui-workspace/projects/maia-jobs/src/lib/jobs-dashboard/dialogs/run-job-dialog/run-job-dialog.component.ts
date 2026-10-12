@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
-import {JobState} from '../../models/JobState';
+import {JobStateResponseDto} from '@app/gen-components/org/maiaframework/job/JobStateResponseDto';
 
 @Component({
     selector: 'maia-run-job-dialog',
@@ -13,7 +13,7 @@ export class RunJobDialogComponent {
 
     constructor(
         public dialogRef: MatDialogRef<RunJobDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public jobState: JobState
+        @Inject(MAT_DIALOG_DATA) public jobState: JobStateResponseDto
     ) {}
 
 

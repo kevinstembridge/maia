@@ -1,7 +1,7 @@
 import {Component, computed, input, output} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
-import {JobExecutionHistoryItem} from '../../../jobs-dashboard/models/JobExecutionHistoryItem';
+import {JobExecutionHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionHistoryItemResponseDto';
 import {deriveHistoryStatus, formatDuration, HistoryStatus} from '../../state/job-history-filtering';
 
 const STATUS_COLORS: Record<HistoryStatus, string> = {
@@ -27,7 +27,7 @@ const STATUS_LABELS: Record<HistoryStatus, string> = {
 export class JobExecutionHistoryCardComponent {
 
 
-    historyItem = input.required<JobExecutionHistoryItem>();
+    historyItem = input.required<JobExecutionHistoryItemResponseDto>();
 
 
     canAbandon = input<boolean>(false);

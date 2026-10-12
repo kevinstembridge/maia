@@ -9,37 +9,38 @@ import {
     toEndOfDayIso,
     toStartOfDayIso
 } from './job-history-filtering';
-import {JobExecutionHistoryItem} from '../../jobs-dashboard/models/JobExecutionHistoryItem';
+import {JobExecutionHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionHistoryItemResponseDto';
+import {JobExecutionStatus} from '@app/gen-components/org/maiaframework/job/JobExecutionStatus';
 
-function makeItem(overrides: Partial<JobExecutionHistoryItem>): JobExecutionHistoryItem {
-    return Object.assign(new JobExecutionHistoryItem(), {
+function makeItem(overrides: Partial<JobExecutionHistoryItemResponseDto>): JobExecutionHistoryItemResponseDto {
+    return {
         jobExecutionId: 'exec-1',
         jobName: 'some-job',
         invokedBy: 'someone',
         startTimestamp: '2026-01-01T00:00:00Z',
         endTimestamp: '2026-01-01T00:00:10Z',
-        status: 'SUCCESS',
-        errorMessage: null,
+        status: JobExecutionStatus.SUCCESS,
         metrics: {},
-    }, overrides);
+        ...overrides,
+    };
 }
 
 describe('deriveHistoryStatus', () => {
 
     it('returns running when status is RUNNING', () => {
-        expect(deriveHistoryStatus(makeItem({status: 'RUNNING'}))).toBe('running');
+        expect(deriveHistoryStatus(makeItem({status: JobExecutionStatus.RUNNING}))).toBe('running');
     });
 
     it('returns success when status is SUCCESS', () => {
-        expect(deriveHistoryStatus(makeItem({status: 'SUCCESS'}))).toBe('success');
+        expect(deriveHistoryStatus(makeItem({status: JobExecutionStatus.SUCCESS}))).toBe('success');
     });
 
     it('returns failed when status is FAILED', () => {
-        expect(deriveHistoryStatus(makeItem({status: 'FAILED'}))).toBe('failed');
+        expect(deriveHistoryStatus(makeItem({status: JobExecutionStatus.FAILED}))).toBe('failed');
     });
 
     it('returns abandoned when status is ABANDONED', () => {
-        expect(deriveHistoryStatus(makeItem({status: 'ABANDONED'}))).toBe('abandoned');
+        expect(deriveHistoryStatus(makeItem({status: JobExecutionStatus.ABANDONED}))).toBe('abandoned');
     });
 
 });
@@ -93,7 +94,7 @@ describe('toEndOfDayIso()', () => {
 describe('parseHistoryFiltersFromParams()', () => {
 
     it('parses all four filters when all params are present', () => {
-        const params = convertToParamMap({jobName: 'nightly-job', status: 'FAILED', from: '2026-09-01', to: '2026-09-10'});
+        const params = convertToParamMap({jobName: 'nightly-job', status: JobExecutionStatus.FAILED, from: '2026-09-01', to: '2026-09-10'});
         expect(parseHistoryFiltersFromParams(params)).toEqual({
             jobNameFilter: 'nightly-job',
             statusFilter: 'FAILED',
@@ -121,11 +122,11 @@ describe('parseHistoryFiltersFromParams()', () => {
 describe('buildHistoryFilterQueryParams()', () => {
 
     it('round-trips a fully-populated filter set back to its URL param form', () => {
-        const params = convertToParamMap({jobName: 'nightly-job', status: 'FAILED', from: '2026-09-01', to: '2026-09-10'});
+        const params = convertToParamMap({jobName: 'nightly-job', status: JobExecutionStatus.FAILED, from: '2026-09-01', to: '2026-09-10'});
         const filters = parseHistoryFiltersFromParams(params);
         expect(buildHistoryFilterQueryParams(filters)).toEqual({
             jobName: 'nightly-job',
-            status: 'FAILED',
+            status: JobExecutionStatus.FAILED,
             from: '2026-09-01',
             to: '2026-09-10',
         });

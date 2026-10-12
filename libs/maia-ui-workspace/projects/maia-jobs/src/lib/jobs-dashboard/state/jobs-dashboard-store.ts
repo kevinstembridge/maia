@@ -4,14 +4,14 @@ import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {pipe, tap, timer} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
-import {JobState} from '../models/JobState';
+import {JobStateResponseDto} from '@app/gen-components/org/maiaframework/job/JobStateResponseDto';
 import {JobsApiService} from '../services/jobs-api.service';
 import {countByStatus, deriveJobStatus, filterAndSortByName, JobStatus} from './jobs-filtering';
 
 const POLL_INTERVAL_MS = 15_000;
 
 type JobsDashboardState = {
-    jobStates: JobState[];
+    jobStates: JobStateResponseDto[];
     isLoading: boolean;
     error: string | null;
     nameFilter: string;
@@ -33,7 +33,7 @@ export const JobsDashboardStore = signalStore(
     withState(initialState),
 
     withComputed(({jobStates, nameFilter, statusFilter}) => {
-        const nameFilteredJobStates = computed<JobState[]>(() =>
+        const nameFilteredJobStates = computed<JobStateResponseDto[]>(() =>
             filterAndSortByName(jobStates(), nameFilter())
         );
         const statusCounts = computed<Record<JobStatus, number>>(() =>
@@ -44,7 +44,7 @@ export const JobsDashboardStore = signalStore(
         );
         const totalCount = computed<number>(() => nameFilteredJobStates().length);
         const totalCountAll = computed<number>(() => jobStates().length);
-        const visibleJobStates = computed<JobState[]>(() => {
+        const visibleJobStates = computed<JobStateResponseDto[]>(() => {
             const status = statusFilter();
             return status === null
                 ? nameFilteredJobStates()

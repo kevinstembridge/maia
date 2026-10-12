@@ -261,7 +261,8 @@ class EntityUpdateApiDef(
         entityDef.crudAngularComponentNames.serviceTypescriptImport,
         angularFormSystem,
         fetchForEditDtoDef = entityDef.fetchForEditDtoDef,
-        entityIdInjectType = entityIdInjectType
+        entityIdInjectType = entityIdInjectType,
+        readOnlyFormFields = editHtmlFormFields.filter { !it.isEditable }
     ) }
 
 

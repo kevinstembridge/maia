@@ -6,6 +6,7 @@ import {Component, effect, inject, input} from '@angular/core';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {AllFieldTypesEntityDetailViewDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesEntityDetailViewDto';
 import {AllFieldTypesEntityDetailViewService} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-entity-detail-view-service';
+import {ShortId} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -14,7 +15,8 @@ import {Observable} from 'rxjs';
     imports: [
         AsyncPipe,
         DatePipe,
-        MatProgressSpinner
+        MatProgressSpinner,
+        ShortId
     ],
     selector: 'app-all-field-types-entity-detail-view',
     templateUrl: './all-field-types-entity-detail-view.html'

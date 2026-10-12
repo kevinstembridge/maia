@@ -6,6 +6,7 @@ import {Component, effect, inject, input} from '@angular/core';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {AlphaWithHistoryEntityDetailViewDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaWithHistoryEntityDetailViewDto';
 import {AlphaWithHistoryEntityDetailViewService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-with-history-entity-detail-view-service';
+import {ShortId} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -14,7 +15,8 @@ import {Observable} from 'rxjs';
     imports: [
         AsyncPipe,
         DatePipe,
-        MatProgressSpinner
+        MatProgressSpinner,
+        ShortId
     ],
     selector: 'app-alpha-with-history-entity-detail-view',
     templateUrl: './alpha-with-history-entity-detail-view.html'

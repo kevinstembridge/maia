@@ -49,6 +49,18 @@ sealed class FieldType(
     abstract val jdbcCompatibleType: JdbcCompatibleType
 
 
+    /**
+     * True if this is a single-valued field stored as a UUID (including foreign keys and value classes
+     * whose underlying type is a UUID). Collections of UUIDs are not included.
+     */
+    val isUuid: Boolean
+        get() = when (this) {
+            is ListFieldType, is SetFieldType, is MapFieldType -> false
+            is FqcnFieldType -> providedJdbcCompatibleType == JdbcCompatibleType.uuid
+            else -> jdbcCompatibleType == JdbcCompatibleType.uuid
+        }
+
+
     override fun toString(): String {
 
         return unqualifiedToString
@@ -749,7 +761,7 @@ class PkAndNameFieldType internal constructor(
 class FqcnFieldType internal constructor(
     fqcn: Fqcn,
     typescriptCompatibleType: TypescriptCompatibleType?,
-    private val providedJdbcCompatibleType: JdbcCompatibleType?,
+    val providedJdbcCompatibleType: JdbcCompatibleType?,
     sqlType: String?,
     elasticMappingType: EsDocMappingType?,
     hazelcastCompatibleType: HazelcastCompatibleType?

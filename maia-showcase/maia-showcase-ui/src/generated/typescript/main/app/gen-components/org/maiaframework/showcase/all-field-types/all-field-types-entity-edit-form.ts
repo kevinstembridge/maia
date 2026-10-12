@@ -20,7 +20,7 @@ import {AllFieldTypesUpdateRequestDto} from '@app/gen-components/org/maiaframewo
 import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-crud-service';
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnumSelectOptions';
-import {ProblemDetail} from '@maia/maia-ui';
+import {ProblemDetail, ShortId} from '@maia/maia-ui';
 
 
 
@@ -38,6 +38,7 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatTimepickerInput,
         MatTimepickerToggle,
         ReactiveFormsModule,
+        ShortId,
     ],
     selector: 'app-all-field-types-entity-edit-form',
     styleUrls: ['./all-field-types-entity-edit-form.scss'],

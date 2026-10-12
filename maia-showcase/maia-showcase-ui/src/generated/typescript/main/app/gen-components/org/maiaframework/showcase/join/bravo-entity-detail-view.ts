@@ -6,6 +6,7 @@ import {Component, effect, inject, input} from '@angular/core';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {BravoEntityDetailViewDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoEntityDetailViewDto';
 import {BravoEntityDetailViewService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-entity-detail-view-service';
+import {ShortId} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -14,7 +15,8 @@ import {Observable} from 'rxjs';
     imports: [
         AsyncPipe,
         DatePipe,
-        MatProgressSpinner
+        MatProgressSpinner,
+        ShortId
     ],
     selector: 'app-bravo-entity-detail-view',
     templateUrl: './bravo-entity-detail-view.html'

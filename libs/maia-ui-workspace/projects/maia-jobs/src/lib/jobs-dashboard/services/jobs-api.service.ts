@@ -2,10 +2,10 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {JobState} from '../models/JobState';
-import {JobExecutionDetail} from '../models/JobExecutionDetail';
-import {JobExecutionHistoryItem} from '../models/JobExecutionHistoryItem';
-import {SearchResultPage} from '../models/SearchResultPage';
+import {JobStateResponseDto} from '@app/gen-components/org/maiaframework/job/JobStateResponseDto';
+import {JobExecutionDetailResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionDetailResponseDto';
+import {JobExecutionHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionHistoryItemResponseDto';
+import {SearchResultPage} from '@maia/maia-ui';
 import {JOBS_API_BASE_URL} from './jobs-api-base-url.token';
 
 
@@ -19,19 +19,19 @@ export class JobsApiService {
     constructor(private http: HttpClient) {}
 
 
-    getJobsState(): Observable<JobState[]> {
+    getJobsState(): Observable<JobStateResponseDto[]> {
 
-        return this.http.get<JobState[]>(`${this.baseUrl}/jobs/current_state`).pipe(
-            catchError(this.handleError<JobState[]>('getJobsState', []))
+        return this.http.get<JobStateResponseDto[]>(`${this.baseUrl}/jobs/current_state`).pipe(
+            catchError(this.handleError<JobStateResponseDto[]>('getJobsState', []))
         );
 
     }
 
 
-    getJobExecutionDetail(jobExecutionId: string): Observable<JobExecutionDetail> {
+    getJobExecutionDetail(jobExecutionId: string): Observable<JobExecutionDetailResponseDto> {
 
-        return this.http.get<JobExecutionDetail>(`${this.baseUrl}/job/execution_detail/${jobExecutionId}`).pipe(
-            catchError(this.handleError<JobExecutionDetail>('getJobExecutionDetail'))
+        return this.http.get<JobExecutionDetailResponseDto>(`${this.baseUrl}/job/execution_detail/${jobExecutionId}`).pipe(
+            catchError(this.handleError<JobExecutionDetailResponseDto>('getJobExecutionDetail'))
         );
 
     }
@@ -44,7 +44,7 @@ export class JobsApiService {
         to: string | null;
         offset: number;
         limit: number;
-    }): Observable<SearchResultPage<JobExecutionHistoryItem>> {
+    }): Observable<SearchResultPage<JobExecutionHistoryItemResponseDto>> {
 
         let params = new HttpParams()
             .set('offset', criteria.offset)
@@ -63,7 +63,7 @@ export class JobsApiService {
             params = params.set('to', criteria.to);
         }
 
-        return this.http.get<SearchResultPage<JobExecutionHistoryItem>>(`${this.baseUrl}/job/execution_history`, {params});
+        return this.http.get<SearchResultPage<JobExecutionHistoryItemResponseDto>>(`${this.baseUrl}/job/execution_history`, {params});
 
     }
 

@@ -15,7 +15,7 @@ import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/show
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
-import {ProblemDetail} from '@maia/maia-ui';
+import {ProblemDetail, ShortId} from '@maia/maia-ui';
 
 
 
@@ -30,6 +30,7 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatSelect,
         MatTooltip,
         ReactiveFormsModule,
+        ShortId,
     ],
     selector: 'app-user-entity-edit-form',
     styleUrls: ['./user-entity-edit-form.scss'],

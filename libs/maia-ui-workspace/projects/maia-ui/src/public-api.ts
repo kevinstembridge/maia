@@ -8,6 +8,7 @@ export * from './lib/components/icon-ag-grid-cell-renderer/icon-ag-grid-cell-ren
 export * from './lib/components/message-panel/message-details';
 export * from './lib/components/message-panel/message-panel.component';
 export * from './lib/components/page-layout/page-layout';
+export * from './lib/components/short-id/short-id';
 export * from './lib/model/EntityCreatedResponseDto';
 export * from './lib/model/FormValidationResponseDto';
 export * from './lib/problem/ProblemDetail';

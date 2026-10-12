@@ -7,6 +7,9 @@ class EntityDetailViewComponentRenderer(
 ) : AbstractTypescriptRenderer() {
 
 
+    private val hasDomainIdField = entityDetailViewDef.dtoDef.allFields.any { it.fieldType.isUuid }
+
+
     init {
 
         addImport("@angular/core", "Component")
@@ -17,6 +20,9 @@ class EntityDetailViewComponentRenderer(
         addImport("@angular/common", "DatePipe")
         addImport("rxjs", "Observable")
         addImport("@angular/material/progress-spinner", "MatProgressSpinner")
+        if (hasDomainIdField) {
+            addImport("@maia/maia-ui", "ShortId")
+        }
         addImport(entityDetailViewDef.viewContentAngularComponentNames.serviceTypescriptImport)
         addImport(entityDetailViewDef.dtoDef.typescriptDtoImport)
 
@@ -39,7 +45,7 @@ class EntityDetailViewComponentRenderer(
             |    imports: [
             |        AsyncPipe,
             |        DatePipe,
-            |        MatProgressSpinner
+            |        MatProgressSpinner${if (hasDomainIdField) ",\n            |        ShortId" else ""}
             |    ],
             |    selector: '${this.entityDetailViewDef.viewContentAngularComponentNames.componentSelector}',
             |    templateUrl: './${this.entityDetailViewDef.viewContentAngularComponentNames.htmlFileName}'

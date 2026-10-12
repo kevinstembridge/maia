@@ -2,22 +2,22 @@ import {describe, expect, it} from 'vitest';
 import {TestBed} from '@angular/core/testing';
 import {provideZonelessChangeDetection} from '@angular/core';
 import {JobExecutionHistoryCardComponent} from './job-execution-history-card.component';
-import {JobExecutionHistoryItem} from '../../../jobs-dashboard/models/JobExecutionHistoryItem';
+import {JobExecutionHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionHistoryItemResponseDto';
+import {JobExecutionStatus} from '@app/gen-components/org/maiaframework/job/JobExecutionStatus';
 
-function makeItem(overrides: Partial<JobExecutionHistoryItem>): JobExecutionHistoryItem {
-    return Object.assign(new JobExecutionHistoryItem(), {
+function makeItem(overrides: Partial<JobExecutionHistoryItemResponseDto>): JobExecutionHistoryItemResponseDto {
+    return {
         jobExecutionId: 'exec-1',
         jobName: 'some-job',
         invokedBy: 'someone',
         startTimestamp: '2026-01-01T00:00:00Z',
-        endTimestamp: null,
-        status: 'RUNNING',
-        errorMessage: null,
+        status: JobExecutionStatus.RUNNING,
         metrics: {},
-    }, overrides);
+        ...overrides,
+    };
 }
 
-async function render(item: JobExecutionHistoryItem, canAbandon?: boolean) {
+async function render(item: JobExecutionHistoryItemResponseDto, canAbandon?: boolean) {
     await TestBed.configureTestingModule({
         imports: [JobExecutionHistoryCardComponent],
         providers: [provideZonelessChangeDetection()],
@@ -40,27 +40,27 @@ function abandonButton(fixture: {nativeElement: HTMLElement}): HTMLButtonElement
 describe('JobExecutionHistoryCardComponent abandon button', () => {
 
     it('is shown for a RUNNING execution when canAbandon is true', async () => {
-        const fixture = await render(makeItem({status: 'RUNNING'}), true);
+        const fixture = await render(makeItem({status: JobExecutionStatus.RUNNING}), true);
         expect(abandonButton(fixture)).toBeDefined();
     });
 
     it('is hidden when canAbandon is false', async () => {
-        const fixture = await render(makeItem({status: 'RUNNING'}), false);
+        const fixture = await render(makeItem({status: JobExecutionStatus.RUNNING}), false);
         expect(abandonButton(fixture)).toBeUndefined();
     });
 
     it('is hidden by default', async () => {
-        const fixture = await render(makeItem({status: 'RUNNING'}));
+        const fixture = await render(makeItem({status: JobExecutionStatus.RUNNING}));
         expect(abandonButton(fixture)).toBeUndefined();
     });
 
-    it.each(['SUCCESS', 'FAILED', 'ABANDONED'] as const)('is hidden for a %s execution', async (status) => {
+    it.each([JobExecutionStatus.SUCCESS, JobExecutionStatus.FAILED, JobExecutionStatus.ABANDONED])('is hidden for a %s execution', async (status) => {
         const fixture = await render(makeItem({status, endTimestamp: '2026-01-01T00:00:10Z'}), true);
         expect(abandonButton(fixture)).toBeUndefined();
     });
 
     it('emits the execution id when clicked', async () => {
-        const fixture = await render(makeItem({status: 'RUNNING'}), true);
+        const fixture = await render(makeItem({status: JobExecutionStatus.RUNNING}), true);
         const emitted: string[] = [];
         fixture.componentInstance.abandonExecution.subscribe((id: string) => emitted.push(id));
         abandonButton(fixture)!.click();

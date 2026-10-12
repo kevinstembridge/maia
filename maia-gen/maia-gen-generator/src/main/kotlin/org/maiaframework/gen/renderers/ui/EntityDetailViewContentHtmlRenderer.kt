@@ -40,6 +40,16 @@ class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: Entit
                     |""".trimMargin()
                 )
 
+            } else if (fieldType.isUuid) {
+
+                append("""
+                    |    <div class="detail-row">
+                    |      <div class="detail-label">${classFieldDef.displayName}</div>
+                    |      <div class="detail-value"><maia-short-id [id]="detailDto.${classFieldDef.classFieldName}" /></div>
+                    |    </div>
+                    |""".trimMargin()
+                )
+
             } else if (fieldType is ListFieldType && fieldType.parameterFieldType is PkAndNameFieldType) {
 
                 append("""

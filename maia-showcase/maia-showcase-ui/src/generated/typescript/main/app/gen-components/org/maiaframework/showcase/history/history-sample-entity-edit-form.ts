@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 import {HistorySampleFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/history/HistorySampleFetchForEditDto';
 import {HistorySampleUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/history/HistorySampleUpdateRequestDto';
 import {HistorySampleCrudService} from '@app/gen-components/org/maiaframework/showcase/history/history-sample-crud-service';
-import {ProblemDetail} from '@maia/maia-ui';
+import {ProblemDetail, ShortId} from '@maia/maia-ui';
 
 
 
@@ -23,6 +23,7 @@ import {ProblemDetail} from '@maia/maia-ui';
         MatInputModule,
         MatProgressSpinnerModule,
         ReactiveFormsModule,
+        ShortId,
     ],
     selector: 'app-history-sample-entity-edit-form',
     styleUrls: ['./history-sample-entity-edit-form.scss'],

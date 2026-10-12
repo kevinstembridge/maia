@@ -6,6 +6,7 @@ import {Component, effect, inject, input} from '@angular/core';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {LeftToRightComplexEntityDetailViewDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftToRightComplexEntityDetailViewDto';
 import {LeftToRightComplexEntityDetailViewService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-complex-entity-detail-view-service';
+import {ShortId} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -14,7 +15,8 @@ import {Observable} from 'rxjs';
     imports: [
         AsyncPipe,
         DatePipe,
-        MatProgressSpinner
+        MatProgressSpinner,
+        ShortId
     ],
     selector: 'app-left-to-right-complex-entity-detail-view',
     templateUrl: './left-to-right-complex-entity-detail-view.html'

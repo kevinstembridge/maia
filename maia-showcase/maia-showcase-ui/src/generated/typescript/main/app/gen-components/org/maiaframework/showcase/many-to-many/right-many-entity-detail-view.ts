@@ -6,6 +6,7 @@ import {Component, effect, inject, input} from '@angular/core';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {RightManyEntityDetailViewDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyEntityDetailViewDto';
 import {RightManyEntityDetailViewService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-entity-detail-view-service';
+import {ShortId} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -14,7 +15,8 @@ import {Observable} from 'rxjs';
     imports: [
         AsyncPipe,
         DatePipe,
-        MatProgressSpinner
+        MatProgressSpinner,
+        ShortId
     ],
     selector: 'app-right-many-entity-detail-view',
     templateUrl: './right-many-entity-detail-view.html'

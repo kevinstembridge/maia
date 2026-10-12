@@ -1,10 +1,4 @@
 // Public API Surface of maia-jobs
-export * from './lib/jobs-dashboard/models/JobExecutionDetail';
-export * from './lib/jobs-dashboard/models/JobExecutionState';
-export * from './lib/jobs-dashboard/models/JobExecutionSummary';
-export * from './lib/jobs-dashboard/models/JobState';
-export * from './lib/jobs-dashboard/models/JobExecutionHistoryItem';
-export * from './lib/jobs-dashboard/models/SearchResultPage';
 export * from './lib/jobs-dashboard/services/jobs-api-base-url.token';
 export * from './lib/jobs-dashboard/services/jobs-api.service';
 export * from './lib/jobs-dashboard/components/job-state/job-state.component';

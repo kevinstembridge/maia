@@ -6,6 +6,9 @@
       "vitest/globals"
     ],
     "paths": {
+      "@maia/maia-ui": [
+        "../../dist/maia-ui"
+      ],
       "@app/*": [
         "./src/generated/typescript/main/app/*"
       ]

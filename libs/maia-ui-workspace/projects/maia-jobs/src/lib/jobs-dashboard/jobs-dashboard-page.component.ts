@@ -7,8 +7,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {JobState} from './models/JobState';
-import {JobExecutionState} from './models/JobExecutionState';
+import {JobStateResponseDto} from '@app/gen-components/org/maiaframework/job/JobStateResponseDto';
+import {RunningJobStateResponseDto} from '@app/gen-components/org/maiaframework/job/RunningJobStateResponseDto';
 import {JobsApiService} from './services/jobs-api.service';
 import {JobsDashboardStore} from './state/jobs-dashboard-store';
 import {
@@ -28,6 +28,7 @@ const STATUS_LABELS: Record<JobStatus, string> = {
 };
 import {JobStateComponent} from './components/job-state/job-state.component';
 import {JobMetricsDialogComponent, JobMetricsDialogData} from './dialogs/job-metrics-dialog/job-metrics-dialog.component';
+import {JobMetricsReport} from './models/JobMetricsReport';
 import {RunJobDialogComponent} from './dialogs/run-job-dialog/run-job-dialog.component';
 import {StacktraceDialogComponent} from './dialogs/stacktrace-dialog/stacktrace-dialog.component';
 
@@ -89,7 +90,7 @@ export class JobsDashboardPageComponent implements OnInit {
     }
 
 
-    onRunJob(jobState: JobState) {
+    onRunJob(jobState: JobStateResponseDto) {
 
       const dialogRef = this.dialog.open(RunJobDialogComponent, {data: jobState});
         dialogRef.afterClosed().subscribe(result => {
@@ -110,14 +111,14 @@ export class JobsDashboardPageComponent implements OnInit {
     }
 
 
-    onDisplayJobMetricsDialog(jobExecutionState: JobExecutionState) {
+    onDisplayJobMetricsDialog(jobExecutionState: RunningJobStateResponseDto) {
 
         const data: JobMetricsDialogData = {
-            metrics: jobExecutionState.metrics,
+            metrics: jobExecutionState.metrics as unknown as JobMetricsReport,
             refresh: () => this.jobsService.getJobsState().pipe(
                 map(jobStates => jobStates
                     .flatMap(jobState => jobState.runningJobs)
-                    .find(execution => execution.id === jobExecutionState.id)?.metrics)
+                    .find(execution => execution.id === jobExecutionState.id)?.metrics as unknown as JobMetricsReport | undefined)
             )
         };
 

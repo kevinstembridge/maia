@@ -37,7 +37,8 @@ class AngularFormDef(
     formServiceTypescriptImport: TypescriptImport? = null,
     val angularFormSystem: AngularFormSystem,
     val fetchForEditDtoDef: FetchForEditDtoDef? = null,
-    val entityIdInjectType: String = "string"
+    val entityIdInjectType: String = "string",
+    val readOnlyFormFields: List<AngularFormFieldDef> = emptyList()
 ) {
 
 

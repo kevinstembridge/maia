@@ -2,8 +2,8 @@ import {Component, computed, input, output, signal} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {JobState} from '../../models/JobState';
-import {JobExecutionState} from '../../models/JobExecutionState';
+import {JobStateResponseDto} from '@app/gen-components/org/maiaframework/job/JobStateResponseDto';
+import {RunningJobStateResponseDto} from '@app/gen-components/org/maiaframework/job/RunningJobStateResponseDto';
 import {deriveJobStatus, formatElapsed, JobStatus} from '../../state/jobs-filtering';
 
 const STATUS_COLORS: Record<JobStatus, string> = {
@@ -27,16 +27,16 @@ const STATUS_LABELS: Record<JobStatus, string> = {
 export class JobStateComponent {
 
 
-    jobState = input.required<JobState>();
+    jobState = input.required<JobStateResponseDto>();
 
     now = input.required<number>();
 
 
-    runJob = output<JobState>();
+    runJob = output<JobStateResponseDto>();
 
     displayStackTrace = output<string>();
 
-    displayJobMetrics = output<JobExecutionState>();
+    displayJobMetrics = output<RunningJobStateResponseDto>();
 
 
     failuresExpanded = signal(false);
@@ -66,7 +66,7 @@ export class JobStateComponent {
     }
 
 
-    onDisplayJobMetrics(jobExecution: JobExecutionState) {
+    onDisplayJobMetrics(jobExecution: RunningJobStateResponseDto) {
         this.displayJobMetrics.emit(jobExecution);
     }
 

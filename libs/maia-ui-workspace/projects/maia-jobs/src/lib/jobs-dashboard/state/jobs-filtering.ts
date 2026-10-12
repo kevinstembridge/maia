@@ -1,5 +1,5 @@
 import {ParamMap, Params} from '@angular/router';
-import {JobState} from '../models/JobState';
+import {JobStateResponseDto} from '@app/gen-components/org/maiaframework/job/JobStateResponseDto';
 
 export type JobStatus = 'running' | 'failed' | 'idle';
 
@@ -12,7 +12,7 @@ export const STATUS_COLORS: Record<JobStatus, string> = {
 };
 
 
-export function filterAndSortByName(jobs: JobState[], nameFilter: string): JobState[] {
+export function filterAndSortByName(jobs: JobStateResponseDto[], nameFilter: string): JobStateResponseDto[] {
     const normalizedFilter = nameFilter.toLowerCase();
     return jobs
         .filter((it) => it.jobName.toLowerCase().includes(normalizedFilter))
@@ -20,7 +20,7 @@ export function filterAndSortByName(jobs: JobState[], nameFilter: string): JobSt
 }
 
 
-export function deriveJobStatus(jobState: JobState): JobStatus {
+export function deriveJobStatus(jobState: JobStateResponseDto): JobStatus {
     if (jobState.runningJobs.length > 0) {
         return 'running';
     }
@@ -31,7 +31,7 @@ export function deriveJobStatus(jobState: JobState): JobStatus {
 }
 
 
-export function countByStatus(jobs: JobState[]): Record<JobStatus, number> {
+export function countByStatus(jobs: JobStateResponseDto[]): Record<JobStatus, number> {
     const counts: Record<JobStatus, number> = {running: 0, failed: 0, idle: 0};
     for (const job of jobs) {
         counts[deriveJobStatus(job)]++;

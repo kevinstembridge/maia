@@ -34,6 +34,9 @@ class AngularFormFieldDef(
     val isTypeahead = classFieldDef.typeaheadDef != null
 
 
+    val isUuid = classFieldDef.fieldType.isUuid && !isTypeahead
+
+
     val fieldType = classFieldDef.fieldType
 
 

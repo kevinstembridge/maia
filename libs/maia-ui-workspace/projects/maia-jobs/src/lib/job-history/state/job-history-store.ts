@@ -4,12 +4,12 @@ import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {pipe, tap} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
-import {JobExecutionHistoryItem} from '../../jobs-dashboard/models/JobExecutionHistoryItem';
+import {JobExecutionHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionHistoryItemResponseDto';
 import {JobsApiService} from '../../jobs-dashboard/services/jobs-api.service';
 import {HistoryFilters, HistoryStatusFilter} from './job-history-filtering';
 
 type JobHistoryState = {
-    items: JobExecutionHistoryItem[];
+    items: JobExecutionHistoryItemResponseDto[];
     totalCount: number;
     isLoading: boolean;
     error: string | null;

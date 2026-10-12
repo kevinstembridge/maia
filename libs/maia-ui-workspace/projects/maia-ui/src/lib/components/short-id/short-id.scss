@@ -1,0 +1,26 @@
+:host {
+  display: inline-block;
+}
+
+.short-id {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.short-id-text {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.short-id-copy {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  --mat-icon-button-state-layer-size: 1.5rem;
+
+  .mat-icon {
+    width: 1rem;
+    height: 1rem;
+    font-size: 1rem;
+  }
+}

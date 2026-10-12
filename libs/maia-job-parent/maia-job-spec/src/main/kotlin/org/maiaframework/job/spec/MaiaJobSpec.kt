@@ -24,6 +24,12 @@ class MaiaJobSpec: AbstractSpec(appKey = AppKey("jobs"), defaultSchemaName = Sch
 
     val jobExecutionStatusEnumDef = enumDef("org.maiaframework.job.JobExecutionStatus") {
         provided()
+        withTypescript()
+        // listed explicitly: the provided enum lives in maia-job-domain, which cannot be on this spec's classpath
+        value("RUNNING")
+        value("SUCCESS")
+        value("FAILED")
+        value("ABANDONED")
     }
 
     val jobExecutionEntityDef = entity("org.maiaframework.job", "JobExecution") {

@@ -42,11 +42,11 @@
         </mat-form-field>
         <div class="detail-row">
             <span class="detail-label">Created By</span>
-            <span class="detail-value">{{ formGroup.getRawValue().createdBy }}</span>
+            <span class="detail-value"><maia-short-id [id]="formGroup.getRawValue().createdBy" /></span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Last Modified By</span>
-            <span class="detail-value">{{ formGroup.getRawValue().lastModifiedBy }}</span>
+            <span class="detail-value"><maia-short-id [id]="formGroup.getRawValue().lastModifiedBy" /></span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Lifecycle State</span>

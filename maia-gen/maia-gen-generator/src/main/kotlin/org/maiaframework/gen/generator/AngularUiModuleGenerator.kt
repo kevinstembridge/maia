@@ -579,7 +579,8 @@ class AngularUiModuleGenerator(
                 onSubmitServiceFunctionName = "edit",
                 onSuccessUrl = viewPageDef?.viewPageUrl,
                 requestDtoDef = entityEditPageDef.updateApiDef.requestDtoDef,
-                submitButtonText = null
+                submitButtonText = null,
+                readOnlyFormFields = entityEditPageDef.updateApiDef.editHtmlFormFields.filter { !it.isEditable }
             )
 
             val providerServices = angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } +

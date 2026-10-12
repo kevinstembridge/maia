@@ -1,0 +1,9 @@
+<span class="short-id" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+  <span class="short-id-text" [matTooltip]="id() ?? ''" [matTooltipShowDelay]="tooltipDelay">{{ shortId() }}</span>
+  @if (showCopy() && id()) {
+    <button matIconButton type="button" class="short-id-copy" aria-label="Copy ID to clipboard"
+            (click)="copy($event)">
+      <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
+    </button>
+  }
+</span>

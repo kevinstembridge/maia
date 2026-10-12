@@ -50,6 +50,16 @@ object MatFormFieldRenderer {
         val fieldLabel = htmlFormField.fieldLabel ?: return
         val fieldName = htmlFormField.fieldName
 
+        if (htmlFormField.isUuid) {
+            r.append("""
+                |${indent}<div class="detail-row">
+                |${indent}    <span class="detail-label">${fieldLabel}</span>
+                |${indent}    <span class="detail-value"><maia-short-id [id]="formGroup.getRawValue().${fieldName}" /></span>
+                |${indent}</div>
+                |""".trimMargin())
+            return
+        }
+
         val valueExpr = if (htmlFormField.isTypeahead) {
             "formGroup.getRawValue().${fieldName}?.name"
         } else {
