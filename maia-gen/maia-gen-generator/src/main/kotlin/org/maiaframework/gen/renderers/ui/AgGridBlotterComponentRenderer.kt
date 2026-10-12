@@ -35,6 +35,12 @@ class AgGridBlotterComponentRenderer(
     val requiresDialog = blotterDef.hasDeleteActionColumn
 
 
+    private val customActionColumns = blotterDef.actionColumnFields
+        .filterNot { it.actionName == ActionName.view }
+        .filterNot { it.actionName == ActionName.edit }
+        .filterNot { it.actionName == ActionName.delete }
+
+
     init {
 
         if (requiresRouter) {
@@ -57,6 +63,11 @@ class AgGridBlotterComponentRenderer(
         addImport("@angular/core", "Component")
         addImport("@angular/core", "EnvironmentInjector")
         addImport("@angular/core", "inject")
+
+        if (customActionColumns.isNotEmpty()) {
+            addImport("@angular/core", "output")
+        }
+
         addImport("@angular/core", "runInInjectionContext")
 
         authoritiesDef?.let {
@@ -102,6 +113,11 @@ class AgGridBlotterComponentRenderer(
         `render @Component decorator`()
 
         appendLine("export class ${this.blotterDef.blotterComponent.componentName} {")
+
+        customActionColumns.forEach { actionColumnDef ->
+            blankLine()
+            appendLine("    readonly ${actionColumnDef.actionName} = output<${this.blotterDef.dtoUqcn}>();")
+        }
 
         `render dataTypeDefinitions field`()
 

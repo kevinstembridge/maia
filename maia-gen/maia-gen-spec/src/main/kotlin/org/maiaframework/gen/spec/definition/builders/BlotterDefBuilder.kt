@@ -92,10 +92,12 @@ class BlotterDefBuilder(
 
     fun actionColumn(
         actionName: String,
-        cellRendererDef: AgGridCellRendererDef
+        cellRendererDef: AgGridCellRendererDef,
+        init: (BlotterActionColumnDefBuilder.() -> Unit)? = null
     ) {
 
         val builder = BlotterActionColumnDefBuilder(ActionName(actionName), cellRendererDef)
+        init?.invoke(builder)
         this.columnDefs.add(builder.build())
 
     }
