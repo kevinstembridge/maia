@@ -636,9 +636,10 @@ class DomainModuleGenerator(
 
     private fun `render CrudListeners`() {
 
-        this.applicationModelDef.entityCrudApiDefs.forEach { entityCrudApiDef ->
-            CrudListenerRenderer(entityCrudApiDef).renderToDir(this.kotlinOutputDir)
-        }
+        this.applicationModelDef.entityHierarchies
+            .map { it.entityDef }
+            .filter { it.crudDef.withCrudListener.value }
+            .forEach { CrudListenerRenderer(it).renderToDir(this.kotlinOutputDir) }
 
     }
 

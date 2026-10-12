@@ -1,11 +1,11 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.EntityCrudApiDef
+import org.maiaframework.gen.spec.definition.EntityDef
 
 class CrudListenerRenderer(
-    private val entityCrudApiDef: EntityCrudApiDef
+    private val entityDef: EntityDef
 ) : AbstractKotlinRenderer(
-    entityCrudApiDef.entityDef.crudListenerClassDef
+    entityDef.crudListenerClassDef
 ) {
 
 
@@ -20,9 +20,9 @@ class CrudListenerRenderer(
 
     private fun `render function onCreate`() {
 
-        this.entityCrudApiDef.createApiDef?.let { _ ->
+        this.entityDef.entityCrudApiDef?.createApiDef?.let { _ ->
 
-            val entityUqcn = this.entityCrudApiDef.entityDef.entityUqcn
+            val entityUqcn = this.entityDef.entityUqcn
 
             blankLine()
             blankLine()
@@ -35,14 +35,14 @@ class CrudListenerRenderer(
 
     private fun `render function onEntityUpdated`() {
 
-        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityCrudApiDef.entityDef.primaryKeyClassFields)
+        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
 
-        this.entityCrudApiDef.entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
+        this.entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
 
-        if (this.entityCrudApiDef.updateApiDef != null || this.entityCrudApiDef.entityDef.hasModifiableFields()) {
+        if (this.entityDef.entityCrudApiDef?.updateApiDef != null || this.entityDef.hasModifiableFields()) {
             blankLine()
             blankLine()
-            appendLine("    fun on${this.entityCrudApiDef.entityDef.entityUqcn}Updated($primaryKeyFieldNamesAndTypesCsv)")
+            appendLine("    fun on${this.entityDef.entityUqcn}Updated($primaryKeyFieldNamesAndTypesCsv)")
         }
 
     }
@@ -50,10 +50,10 @@ class CrudListenerRenderer(
 
     private fun `render function onDelete`() {
 
-        this.entityCrudApiDef.deleteApiDef?.let {
+        this.entityDef.entityCrudApiDef?.deleteApiDef?.let {
             blankLine()
             blankLine()
-            appendLine("    fun on${this.entityCrudApiDef.entityDef.entityUqcn}Deleted(entity: ${this.entityCrudApiDef.entityDef.entityUqcn})")
+            appendLine("    fun on${this.entityDef.entityUqcn}Deleted(entity: ${this.entityDef.entityUqcn})")
         }
 
     }
