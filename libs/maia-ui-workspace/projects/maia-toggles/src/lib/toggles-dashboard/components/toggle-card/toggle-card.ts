@@ -2,7 +2,7 @@ import {Component, computed, input, output} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {FeatureToggleResponseDto} from '../../models/FeatureToggleResponseDto';
+import {FeatureToggleResponseDto} from '@app/gen-components/org/maiaframework/toggles/FeatureToggleResponseDto';
 import {isOverdue} from '../../state/toggles-dashboard-filtering';
 import {describeStrategy} from '../../state/toggles-strategy-editing';
 

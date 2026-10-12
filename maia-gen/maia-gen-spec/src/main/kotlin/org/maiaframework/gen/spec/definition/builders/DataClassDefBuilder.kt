@@ -32,6 +32,7 @@ class DataClassDefBuilder(
     private val dataClassFieldDefBuilders = LinkedList<DataClassFieldDefBuilder>()
     private var dataClassKeyOptional = Optional.empty<DataClassKey>()
     private var withHandcodedSubclass = WithHandCodedSubclass.FALSE
+    private var withTypescript = false
 
 
     fun build(): DataClassDef {
@@ -44,7 +45,8 @@ class DataClassDefBuilder(
             this.packageName,
             fieldDefs,
             this.cacheableDefBuilder?.build(),
-            this.withHandcodedSubclass
+            this.withHandcodedSubclass,
+            this.withTypescript
         )
 
     }
@@ -53,6 +55,16 @@ class DataClassDefBuilder(
     private fun buildFieldDefs(): List<DataClassFieldDef> {
 
         return this.dataClassFieldDefBuilders.map { it.build() }.sorted()
+
+    }
+
+
+    /**
+     * Also generate a Typescript interface for this data class, for use by generated Typescript DTOs.
+     */
+    fun withTypescript() {
+
+        this.withTypescript = true
 
     }
 

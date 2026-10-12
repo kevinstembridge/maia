@@ -13,7 +13,8 @@ class DataClassDef private constructor(
     packageName: PackageName,
     fieldDefs: List<DataClassFieldDef>,
     val cacheableDef: CacheableDef?,
-    private val withHandcodedSubclass: WithHandCodedSubclass
+    private val withHandcodedSubclass: WithHandCodedSubclass,
+    val withTypescript: Boolean
 ) {
 
 
@@ -29,6 +30,14 @@ class DataClassDef private constructor(
 
     val uqcn: Uqcn
         get() = this.classDef.uqcn
+
+
+    val typescriptImport: TypescriptImport
+        get() = TypescriptImport(uqcn.value, "@${GeneratedTypescriptDir.forPackage(fqcn.packageName)}/$uqcn")
+
+
+    val renderedTypescriptFilePath: String
+        get() = "/app/gen-components/${fqcn.packageName.asTypescriptDirs()}/$uqcn.ts"
 
 
     val isWithHandcodedSubclass: Boolean = this.withHandcodedSubclass.value
@@ -96,7 +105,8 @@ class DataClassDef private constructor(
             packageName: PackageName,
             classFieldDefs: List<DataClassFieldDef>,
             cacheableDef: CacheableDef?,
-            withHandcodedSubclass: WithHandCodedSubclass
+            withHandcodedSubclass: WithHandCodedSubclass,
+            withTypescript: Boolean
         ): DataClassDef {
 
             return DataClassDef(
@@ -105,7 +115,8 @@ class DataClassDef private constructor(
                 packageName,
                 classFieldDefs,
                 cacheableDef,
-                withHandcodedSubclass
+                withHandcodedSubclass,
+                withTypescript
             )
 
         }

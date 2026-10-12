@@ -9,7 +9,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {PropsApiService} from './services/props-api.service';
 import {PropsDashboardStore} from './state/props-dashboard-store';
 import {buildPropsQueryParams, parsePropsFiltersFromParams, PROPS_TILE_COLORS} from './state/props-dashboard-filtering';
-import {PropertyResponseDto} from './models/PropertyResponseDto';
+import {PropertyResponseDto} from '@app/gen-components/org/maiaframework/props/PropertyResponseDto';
 import {EditPropertyDialog, EditPropertyDialogData, EditPropertyDialogResult} from './dialogs/edit-property-dialog/edit-property-dialog';
 import {RemoveOverrideDialog, RemoveOverrideDialogData, RemoveOverrideDialogResult} from './dialogs/remove-override-dialog/remove-override-dialog';
 import {PropertyHistoryDialog, PropertyHistoryDialogData} from './dialogs/property-history-dialog/property-history-dialog';
@@ -97,8 +97,8 @@ export class PropsDashboardPage implements OnInit {
 
         this.openEditDialog({
             propertyName: row.propertyName,
-            currentValue: row.isSensitive ? null : row.effectiveValue,
-            currentReviewDate: row.reviewDate,
+            currentValue: row.isSensitive ? null : (row.effectiveValue ?? null),
+            currentReviewDate: row.reviewDate ?? null,
             isSensitive: row.isSensitive,
         });
 

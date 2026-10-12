@@ -4,7 +4,7 @@ import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {pipe, tap} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
-import {FeatureToggleResponseDto} from '../models/FeatureToggleResponseDto';
+import {FeatureToggleResponseDto} from '@app/gen-components/org/maiaframework/toggles/FeatureToggleResponseDto';
 import {ActivationStrategyDefinitionDto} from '../models/ActivationStrategyDefinitionDto';
 import {TogglesApiService} from '../services/toggles-api.service';
 import {countDisabled, countEnabled, countOverdue, filterToggles, ToggleStateFilter} from './toggles-dashboard-filtering';

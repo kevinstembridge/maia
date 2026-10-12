@@ -2,11 +2,11 @@ import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {IDatasource, IGetRowsParams} from 'ag-grid-community';
 import {TOGGLES_API_BASE_URL} from '../toggles-dashboard/services/toggles-api-base-url.token';
-import {ToggleHistoryRow} from './toggle-history-row';
+import {FeatureToggleHistoryBlotterRowDto} from '@app/gen-components/org/maiaframework/toggles/FeatureToggleHistoryBlotterRowDto';
 
 
 interface ToggleHistorySearchResult {
-    results: ToggleHistoryRow[];
+    results: FeatureToggleHistoryBlotterRowDto[];
     totalResultCount: number;
 }
 

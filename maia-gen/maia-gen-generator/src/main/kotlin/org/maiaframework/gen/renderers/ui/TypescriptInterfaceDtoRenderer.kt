@@ -169,6 +169,7 @@ open class TypescriptInterfaceDtoRenderer(
             is BooleanFieldType -> "boolean"
             is BooleanTypeFieldType -> "boolean"
             is BooleanValueClassFieldType -> "boolean"
+            is DataClassFieldType -> if (parameterFieldType.dataClassDef.withTypescript) parameterFieldType.uqcn.value else "object"
             is DomainIdFieldType -> "string"
             is DoubleFieldType -> "number"
             is EnumFieldType -> parameterFieldType.uqcn.value

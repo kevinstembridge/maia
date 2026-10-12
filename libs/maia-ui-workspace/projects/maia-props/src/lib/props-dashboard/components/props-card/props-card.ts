@@ -2,7 +2,7 @@ import {Component, computed, input, output} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {PropertyResponseDto} from '../../models/PropertyResponseDto';
+import {PropertyResponseDto} from '@app/gen-components/org/maiaframework/props/PropertyResponseDto';
 import {isOverdue} from '../../state/props-dashboard-filtering';
 
 

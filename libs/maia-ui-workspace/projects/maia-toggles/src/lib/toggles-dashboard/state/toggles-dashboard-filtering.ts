@@ -1,6 +1,6 @@
 import {ParamMap, Params} from '@angular/router';
 import {DateTime} from 'luxon';
-import {FeatureToggleResponseDto} from '../models/FeatureToggleResponseDto';
+import {FeatureToggleResponseDto} from '@app/gen-components/org/maiaframework/toggles/FeatureToggleResponseDto';
 
 
 export type ToggleStateFilter = 'all' | 'enabled' | 'disabled';
@@ -26,9 +26,9 @@ function todayIsoString(): string {
 }
 
 
-export function isOverdue(reviewDate: string | null): boolean {
+export function isOverdue(reviewDate: string | null | undefined): boolean {
 
-    return reviewDate !== null && reviewDate < todayIsoString();
+    return reviewDate != null && reviewDate < todayIsoString();
 
 }
 

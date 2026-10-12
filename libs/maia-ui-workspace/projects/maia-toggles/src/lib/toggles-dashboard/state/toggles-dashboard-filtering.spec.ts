@@ -1,20 +1,13 @@
 import {convertToParamMap} from '@angular/router';
 import {Settings} from 'luxon';
 import {buildTogglesQueryParams, countDisabled, countEnabled, countOverdue, filterToggles, isOverdue, parseTogglesFiltersFromParams} from './toggles-dashboard-filtering';
-import {FeatureToggleResponseDto} from '../models/FeatureToggleResponseDto';
+import {FeatureToggleResponseDto} from '@app/gen-components/org/maiaframework/toggles/FeatureToggleResponseDto';
 
 function aToggle(overrides: Partial<FeatureToggleResponseDto> = {}): FeatureToggleResponseDto {
     return {
         id: '00000000-0000-0000-0000-000000000001',
         featureName: 'SampleFeature',
         enabled: false,
-        description: null,
-        ticketKey: null,
-        reviewDate: null,
-        contactPerson: null,
-        infoLink: null,
-        attributes: null,
-        comment: null,
         activationStrategies: [],
         lastModifiedBy: 'SYSTEM',
         lastModifiedTimestamp: '2026-09-26T10:00:00Z',

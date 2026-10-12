@@ -1,5 +1,3 @@
-export * from './lib/props-dashboard/models/PropertyResponseDto';
-export * from './lib/props-dashboard/models/PropertyHistoryItemResponseDto';
 export * from './lib/props-dashboard/services/props-api-base-url.token';
 export * from './lib/props-dashboard/services/props-api.service';
 export * from './lib/props-dashboard/dialogs/edit-property-dialog/edit-property-dialog';

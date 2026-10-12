@@ -19,6 +19,7 @@ import org.maiaframework.gen.renderers.ui.BlotterServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.CurrentUserStoreRenderer
+import org.maiaframework.gen.renderers.ui.DataClassTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.DtoCrudServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogReactiveFormHtmlRenderer
@@ -221,6 +222,7 @@ class AngularUiModuleGenerator(
         renderEntityCrudRoutes()
         renderEntityDetailsDtos()
         renderEnums()
+        renderDataClasses()
         renderEsDocs()
         renderFetchForEditDtos()
         renderForeignKeyDialogs()
@@ -234,6 +236,15 @@ class AngularUiModuleGenerator(
         renderTypeaheadDtos()
         renderTypeaheadServices()
         renderValidatorsForTypeaheadFields()
+
+    }
+
+
+    private fun renderDataClasses() {
+
+        this.applicationModelDef.dataClassDefs.filter { it.withTypescript }.forEach {
+            DataClassTypescriptRenderer(it).renderToDir(this.typescriptOutputDir)
+        }
 
     }
 

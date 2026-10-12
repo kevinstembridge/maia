@@ -1,5 +1,6 @@
 import {ActivationStrategyDefinitionDto, ActivationStrategyParameterDefinitionDto} from '../models/ActivationStrategyDefinitionDto';
-import {ActivationStrategyDescriptor, ActivationStrategyParameter} from '../models/ActivationStrategyDescriptor';
+import {ActivationStrategyDescriptor} from '@app/gen-components/org/maiaframework/toggles/activation/ActivationStrategyDescriptor';
+import {ActivationStrategyParameter} from '@app/gen-components/org/maiaframework/toggles/activation/ActivationStrategyParameter';
 
 
 export interface StrategyRowValue {
@@ -16,7 +17,7 @@ export interface StrategyRowValue {
 export function parameterDefinitionsFor(
     strategyId: string,
     definitions: ActivationStrategyDefinitionDto[],
-    currentParameters: ActivationStrategyParameter[]
+    currentParameters: ReadonlyArray<ActivationStrategyParameter>
 ): ActivationStrategyParameterDefinitionDto[] {
 
     const definition = definitions.find(d => d.id === strategyId);

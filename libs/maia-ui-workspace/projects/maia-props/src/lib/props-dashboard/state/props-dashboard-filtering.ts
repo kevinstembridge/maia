@@ -1,6 +1,6 @@
 import {ParamMap, Params} from '@angular/router';
 import {DateTime} from 'luxon';
-import {PropertyResponseDto} from '../models/PropertyResponseDto';
+import {PropertyResponseDto} from '@app/gen-components/org/maiaframework/props/PropertyResponseDto';
 
 
 export interface PropsFilters {
@@ -24,9 +24,9 @@ function todayIsoString(): string {
 }
 
 
-export function isOverdue(reviewDate: string | null): boolean {
+export function isOverdue(reviewDate: string | null | undefined): boolean {
 
-    return reviewDate !== null && reviewDate < todayIsoString();
+    return reviewDate != null && reviewDate < todayIsoString();
 
 }
 

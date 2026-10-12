@@ -1,9 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {FeatureToggleResponseDto} from '../models/FeatureToggleResponseDto';
+import {FeatureToggleResponseDto} from '@app/gen-components/org/maiaframework/toggles/FeatureToggleResponseDto';
 import {ActivationStrategyDefinitionDto} from '../models/ActivationStrategyDefinitionDto';
-import {ActivationStrategyDescriptor} from '../models/ActivationStrategyDescriptor';
+import {ActivationStrategyDescriptor} from '@app/gen-components/org/maiaframework/toggles/activation/ActivationStrategyDescriptor';
+import {SetFeatureToggleRequestDto} from '@app/gen-components/org/maiaframework/toggles/SetFeatureToggleRequestDto';
+import {FeatureToggleUpdateRequestDto} from '@app/gen-components/org/maiaframework/toggles/FeatureToggleUpdateRequestDto';
 import {TOGGLES_API_BASE_URL} from './toggles-api-base-url.token';
 
 
@@ -32,23 +34,27 @@ export class TogglesApiService {
 
     setToggle(featureName: string, enabled: boolean, comment: string | null, version: number): Observable<void> {
 
-        return this.http.post<void>(`${this.baseUrl}/set-feature-toggle`, {
+        const request: SetFeatureToggleRequestDto = {
             featureName,
             enabled,
-            comment,
+            comment: comment ?? undefined,
             version,
-        });
+        };
+
+        return this.http.post<void>(`${this.baseUrl}/set-feature-toggle`, request);
 
     }
 
 
-    updateActivationStrategies(id: string, version: number, activationStrategies: ActivationStrategyDescriptor[]): Observable<void> {
+    updateActivationStrategies(id: string, version: number, activationStrategies: ReadonlyArray<ActivationStrategyDescriptor>): Observable<void> {
 
-        return this.http.put<void>(`${this.baseUrl}/feature-toggle/inline/activation-strategies`, {
+        const request: FeatureToggleUpdateRequestDto = {
             id,
             version,
             activationStrategies,
-        });
+        };
+
+        return this.http.put<void>(`${this.baseUrl}/feature-toggle/inline/activation-strategies`, request);
 
     }
 

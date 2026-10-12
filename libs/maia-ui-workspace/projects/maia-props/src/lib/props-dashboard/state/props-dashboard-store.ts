@@ -4,7 +4,7 @@ import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {pipe, tap} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {tapResponse} from '@ngrx/operators';
-import {PropertyResponseDto} from '../models/PropertyResponseDto';
+import {PropertyResponseDto} from '@app/gen-components/org/maiaframework/props/PropertyResponseDto';
 import {PropsApiService} from '../services/props-api.service';
 import {countOverdue, countOverridden, countRedundant, filterProperties} from './props-dashboard-filtering';
 

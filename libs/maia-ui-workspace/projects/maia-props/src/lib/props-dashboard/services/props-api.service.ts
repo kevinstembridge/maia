@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PropertyResponseDto} from '../models/PropertyResponseDto';
-import {PropertyHistoryItemResponseDto} from '../models/PropertyHistoryItemResponseDto';
+import {PropertyResponseDto} from '@app/gen-components/org/maiaframework/props/PropertyResponseDto';
+import {PropertyHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/props/PropertyHistoryItemResponseDto';
 import {PROPS_API_BASE_URL} from './props-api-base-url.token';
 
 

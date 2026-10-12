@@ -9,7 +9,7 @@ import {TogglesApiService} from './services/toggles-api.service';
 import {TOGGLES_HISTORY_ROUTE} from './services/toggles-history-route.token';
 import {TogglesDashboardStore} from './state/toggles-dashboard-store';
 import {buildTogglesQueryParams, parseTogglesFiltersFromParams, ToggleStateFilter, TOGGLES_TILE_COLORS} from './state/toggles-dashboard-filtering';
-import {FeatureToggleResponseDto} from './models/FeatureToggleResponseDto';
+import {FeatureToggleResponseDto} from '@app/gen-components/org/maiaframework/toggles/FeatureToggleResponseDto';
 import {ToggleStateDialog, ToggleStateDialogData, ToggleStateDialogResult} from './dialogs/toggle-state-dialog/toggle-state-dialog';
 import {EditStrategiesDialog, EditStrategiesDialogData, EditStrategiesDialogResult} from './dialogs/edit-strategies-dialog/edit-strategies-dialog';
 import {ToggleCard} from './components/toggle-card/toggle-card';

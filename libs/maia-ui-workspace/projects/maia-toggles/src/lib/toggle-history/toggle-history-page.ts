@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, GridReadyEvent, RowModelType, Theme, themeMaterial} from 'ag-grid-community';
 import {ToggleHistoryDatasource} from './toggle-history-datasource';
-import {ToggleHistoryRow} from './toggle-history-row';
+import {FeatureToggleHistoryBlotterRowDto} from '@app/gen-components/org/maiaframework/toggles/FeatureToggleHistoryBlotterRowDto';
 
 
 /**
@@ -46,7 +46,7 @@ export class ToggleHistoryPage implements OnInit {
         sortable: true,
     };
 
-    protected readonly columnDefs: ColDef<ToggleHistoryRow>[] = [
+    protected readonly columnDefs: ColDef<FeatureToggleHistoryBlotterRowDto>[] = [
         {field: 'version', headerName: 'Version', cellDataType: 'number'},
         {field: 'changeType', headerName: 'Change Type'},
         {field: 'featureName', headerName: 'Feature'},
@@ -74,7 +74,7 @@ export class ToggleHistoryPage implements OnInit {
     }
 
 
-    protected onGridReady(event: GridReadyEvent<ToggleHistoryRow>): void {
+    protected onGridReady(event: GridReadyEvent<FeatureToggleHistoryBlotterRowDto>): void {
 
         event.api.setGridOption('datasource', this.datasource);
 

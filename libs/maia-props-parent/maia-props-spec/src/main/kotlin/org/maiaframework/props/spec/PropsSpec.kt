@@ -22,6 +22,7 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
 
     val changeTypeEnumDef = enumDef("org.maiaframework.domain.ChangeType") {
         provided()
+        withTypescript()
     }
 
 

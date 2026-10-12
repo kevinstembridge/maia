@@ -7,12 +7,12 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ActivationStrategyDefinitionDto, ActivationStrategyParameterDefinitionDto} from '../../models/ActivationStrategyDefinitionDto';
-import {ActivationStrategyDescriptor} from '../../models/ActivationStrategyDescriptor';
+import {ActivationStrategyDescriptor} from '@app/gen-components/org/maiaframework/toggles/activation/ActivationStrategyDescriptor';
 import {parameterDefinitionsFor, StrategyRowValue, toDescriptors} from '../../state/toggles-strategy-editing';
 
 export interface EditStrategiesDialogData {
     featureName: string;
-    strategies: ActivationStrategyDescriptor[];
+    strategies: ReadonlyArray<ActivationStrategyDescriptor>;
     definitions: ActivationStrategyDefinitionDto[];
 }
 

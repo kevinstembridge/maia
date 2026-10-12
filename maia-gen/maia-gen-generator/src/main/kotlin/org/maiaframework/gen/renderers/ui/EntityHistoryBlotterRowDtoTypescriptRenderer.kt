@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.GeneratedTypescriptDir
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
@@ -61,6 +62,7 @@ class EntityHistoryBlotterRowDtoTypescriptRenderer(
      */
     private fun registerImportsFor(fieldType: FieldType) {
         when (fieldType) {
+            is DataClassFieldType -> if (fieldType.dataClassDef.withTypescript) addImport(fieldType.dataClassDef.typescriptImport)
             is SimpleResponseDtoFieldType -> addImport(fieldType.responseDtoDef.dtoDef.typescriptDtoImport)
             is ListFieldType -> registerImportsFor(fieldType.parameterFieldType)
             else -> {}
@@ -78,6 +80,7 @@ class EntityHistoryBlotterRowDtoTypescriptRenderer(
             is IntValueClassFieldType -> "number"
             is LongFieldType -> "number"
             is LongTypeFieldType -> "number"
+            is DataClassFieldType -> if (fieldType.dataClassDef.withTypescript) fieldType.uqcn.value else "object"
             is EnumFieldType -> "string"
             is ListFieldType -> "ReadonlyArray<${toTypescriptType(fieldType.parameterFieldType)}>"
             else -> {

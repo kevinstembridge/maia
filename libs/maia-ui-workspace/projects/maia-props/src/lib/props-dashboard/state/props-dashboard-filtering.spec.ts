@@ -1,7 +1,7 @@
 import {convertToParamMap} from '@angular/router';
 import {Settings} from 'luxon';
 import {buildPropsQueryParams, countOverdue, countOverridden, countRedundant, filterProperties, isOverdue, parsePropsFiltersFromParams} from './props-dashboard-filtering';
-import {PropertyResponseDto} from '../models/PropertyResponseDto';
+import {PropertyResponseDto} from '@app/gen-components/org/maiaframework/props/PropertyResponseDto';
 
 function aProperty(overrides: Partial<PropertyResponseDto> = {}): PropertyResponseDto {
     return {
@@ -12,10 +12,6 @@ function aProperty(overrides: Partial<PropertyResponseDto> = {}): PropertyRespon
         isSensitive: false,
         environmentValue: '3200',
         sourceName: 'applicationConfig',
-        lastModifiedByUsername: null,
-        lastModifiedTimestamp: null,
-        comment: null,
-        reviewDate: null,
         ...overrides,
     };
 }
@@ -108,7 +104,7 @@ describe('filterProperties', () => {
         it('excludes properties with a null reviewDate when overdueOnly is true', () => {
             const properties = [
                 aProperty({propertyName: 'a', reviewDate: '2026-09-01'}),
-                aProperty({propertyName: 'b', reviewDate: null}),
+                aProperty({propertyName: 'b', reviewDate: undefined}),
             ];
             const result = filterProperties(properties, '', false, false, true);
             expect(result.map(p => p.propertyName)).toEqual(['a']);
@@ -246,7 +242,7 @@ describe('countOverdue', () => {
     it('excludes properties with a null reviewDate', () => {
         const properties = [
             aProperty({propertyName: 'a', reviewDate: '2026-09-01'}),
-            aProperty({propertyName: 'b', reviewDate: null}),
+            aProperty({propertyName: 'b', reviewDate: undefined}),
         ];
         expect(countOverdue(properties)).toBe(1);
     });

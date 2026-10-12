@@ -1,6 +1,7 @@
 package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
+import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
@@ -40,6 +41,10 @@ abstract class AbstractTypescriptRenderer: AbstractSourceFileRenderer() {
 
         if (fieldType is EnumFieldType) {
             addImport(fieldType.enumDef.typescriptImport)
+        }
+
+        if (fieldType is DataClassFieldType && fieldType.dataClassDef.withTypescript) {
+            addImport(fieldType.dataClassDef.typescriptImport)
         }
 
         if (fieldType is SimpleResponseDtoFieldType) {

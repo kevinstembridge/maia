@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
-import {PropertyHistoryItemResponseDto} from '../../models/PropertyHistoryItemResponseDto';
+import {PropertyHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/props/PropertyHistoryItemResponseDto';
 
 export interface PropertyHistoryDialogData {
     propertyName: string;
