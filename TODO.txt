@@ -1,9 +1,6 @@
 
-TODO * Use the generator to generate the DTOs in the maia-ui-workspace projects.
-
 TODO * Jobs
     TODO * Jobs Dashboard
-        TODO * Add a Refresh button to the Metrics dialog.
 
 
 
