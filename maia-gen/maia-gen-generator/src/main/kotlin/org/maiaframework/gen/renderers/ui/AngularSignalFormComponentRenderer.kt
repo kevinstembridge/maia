@@ -497,7 +497,7 @@ class AngularSignalFormComponentRenderer(
                     null -> "''"
                 }
 
-                appendLine("                ${typeaheadDef.typeaheadBaseName.firstToLower()}: new FormControl($initialValue, { updateOn: 'change', validators: [$validators] }),")
+                appendLine("                ${classFieldDef.classFieldName}: new FormControl($initialValue, { updateOn: 'change', validators: [$validators] }),")
             }
 
         }
@@ -542,7 +542,7 @@ class AngularSignalFormComponentRenderer(
 
             append("""
                 |
-                |        this.formGroup.controls['${typeaheadDef.typeaheadBaseName.firstToLower()}'].valueChanges
+                |        this.formGroup.controls['${requestDtoFieldDef.classFieldDef.classFieldName}'].valueChanges
                 |            .pipe(
                 |                debounceTime(300),
                 |                filter(value => typeof value === 'string'),
@@ -783,8 +783,7 @@ class AngularSignalFormComponentRenderer(
 
                 } else {
 
-                    val formGroupFieldName = typeaheadDef.typeaheadBaseName.firstToLower()
-                    appendLine("            ${typeaheadDef.idField.fieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
+                    appendLine("            ${typeaheadDef.idField.fieldName}: this.formGroup.getRawValue().${requestDtoFieldDef.classFieldDef.classFieldName}.${typeaheadDef.esDocIdFieldName},")
 
                 }
 

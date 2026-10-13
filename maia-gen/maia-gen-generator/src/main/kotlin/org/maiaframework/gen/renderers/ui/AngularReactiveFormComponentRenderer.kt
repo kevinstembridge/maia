@@ -671,7 +671,7 @@ class AngularReactiveFormComponentRenderer(
 
             append("""
                 |
-                |        this.formGroup.controls['${typeaheadDef.typeaheadBaseName.firstToLower()}'].valueChanges
+                |        this.formGroup.controls['${requestDtoFieldDef.classFieldDef.classFieldName}'].valueChanges
                 |            .pipe(
                 |                debounceTime(300),
                 |                filter(value => typeof value === 'string'),
@@ -1072,8 +1072,7 @@ class AngularReactiveFormComponentRenderer(
 
             } else {
 
-                val formGroupFieldName = typeaheadDef.typeaheadBaseName.firstToLower()
-                appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().${formGroupFieldName}.${typeaheadDef.esDocIdFieldName},")
+                appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().${dtoFieldName}.${typeaheadDef.esDocIdFieldName},")
 
             }
 

@@ -45,12 +45,12 @@
             </mat-autocomplete>
             <mat-label>Alpha</mat-label>
             <input
-                formControlName="alphaWithHistory"
+                formControlName="alpha"
                 matInput
                 type="text"
                 [matAutocomplete]="alphaAuto"
             />
-            @if (formGroup.controls['alphaWithHistory'].hasError('required')) {
+            @if (formGroup.controls['alpha'].hasError('required')) {
                 <mat-error>Alpha is required.</mat-error>
             }
         </mat-form-field>

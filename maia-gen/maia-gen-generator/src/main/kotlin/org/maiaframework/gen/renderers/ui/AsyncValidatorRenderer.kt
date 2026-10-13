@@ -86,9 +86,9 @@ class AsyncValidatorRenderer(
             val typeaheadDef = indexFieldDef.entityFieldDef.typeaheadDef
 
             if (typeaheadDef != null) {
-                val controlName = "${typeaheadDef.typeaheadBaseName.firstToLower()}Control"
+                val controlName = "${indexFieldDef.entityFieldDef.classFieldName}Control"
                 controlNames.add(controlName)
-                appendLine("        const $controlName = ctrl.get('${typeaheadDef.typeaheadBaseName.firstToLower()}');")
+                appendLine("        const $controlName = ctrl.get('${indexFieldDef.entityFieldDef.classFieldName}');")
             } else {
                 val controlName = "${indexFieldDef.entityFieldDef.classFieldName}Control"
                 controlNames.add(controlName)
@@ -114,7 +114,7 @@ class AsyncValidatorRenderer(
 
                 if (typeaheadDef != null) {
                     // TODO The name of the form control field may be different that the we have to find the field name of the EsDoc field, not the field name of the entity field.
-                    appendLine("                $entityFieldName: ${typeaheadDef.typeaheadBaseName.firstToLower()}Control.value.$entityFieldName,")
+                    appendLine("                $entityFieldName: ${entityFieldName.firstToLower()}Control.value.$entityFieldName,")
                 } else {
                     appendLine("                $entityFieldName: ${entityFieldName.firstToLower()}Control.value,")
                 }
@@ -159,7 +159,7 @@ class AsyncValidatorRenderer(
             val typeaheadDef = indexFieldDef.entityFieldDef.typeaheadDef
 
             if (typeaheadDef != null) {
-                appendLine("            ${indexFieldDef.entityFieldDef.classFieldName}: ${typeaheadDef.typeaheadBaseName.firstToLower()}.value.${indexFieldDef.entityFieldDef.classFieldName}")
+                appendLine("            ${indexFieldDef.entityFieldDef.classFieldName}: ctrl.value.${indexFieldDef.entityFieldDef.classFieldName}")
             } else {
                 appendLine("            ${indexFieldDef.entityFieldDef.classFieldName}: ctrl.value")
             }

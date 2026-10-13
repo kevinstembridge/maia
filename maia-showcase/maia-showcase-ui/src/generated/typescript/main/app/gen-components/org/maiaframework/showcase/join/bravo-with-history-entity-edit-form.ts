@@ -91,7 +91,7 @@ export class BravoWithHistoryEntityEditForm implements OnInit {
 
     ngOnInit() {
 
-        this.formGroup.controls['alphaWithHistory'].valueChanges
+        this.formGroup.controls['alpha'].valueChanges
             .pipe(
                 debounceTime(300),
                 filter(value => typeof value === 'string'),
@@ -145,7 +145,7 @@ export class BravoWithHistoryEntityEditForm implements OnInit {
         }
 
         const requestDto = {
-            alpha: this.formGroup.getRawValue().alphaWithHistory.id,
+            alpha: this.formGroup.getRawValue().alpha.id,
             id: this.formGroup.getRawValue().id,
             someInt: this.formGroup.getRawValue().someInt,
             someString: this.formGroup.getRawValue().someString,

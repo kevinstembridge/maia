@@ -516,7 +516,7 @@ object MatFormFieldRenderer {
         r.appendLine("$indent    </mat-autocomplete>")
         r.appendLine("$indent    <mat-label>${classFieldDef.displayName}</mat-label>")
         r.appendLine("$indent    <input")
-        r.appendLine("$indent        [formField]=\"dialogForm.$formGroupFieldName\"")
+        r.appendLine("$indent        [formField]=\"dialogForm.$classFieldName\"")
         r.appendLine("$indent        matInput")
         r.appendLine("$indent        type=\"text\"")
         r.appendLine("$indent        [matAutocomplete]=\"${classFieldName}Auto\"")
@@ -528,7 +528,7 @@ object MatFormFieldRenderer {
         r.appendLine("$indent    />")
 
         if (classFieldDef.nullable == false) {
-            r.appendLine("$indent    @if (formGroup.controls['$formGroupFieldName'].hasError('required')) {")
+            r.appendLine("$indent    @if (formGroup.controls['$classFieldName'].hasError('required')) {")
             r.appendLine("$indent        <mat-error>${classFieldDef.displayName} is required.</mat-error>")
             r.appendLine("$indent    }")
         }
@@ -588,7 +588,7 @@ object MatFormFieldRenderer {
         r.appendLine("$indent    </mat-autocomplete>")
         r.appendLine("$indent    <mat-label>${classFieldDef.displayName}</mat-label>")
         r.appendLine("$indent    <input")
-        r.appendLine("$indent        formControlName=\"$formGroupFieldName\"")
+        r.appendLine("$indent        formControlName=\"$classFieldName\"")
         r.appendLine("$indent        matInput")
         r.appendLine("$indent        type=\"text\"")
         r.appendLine("$indent        [matAutocomplete]=\"${classFieldName}Auto\"")
@@ -600,7 +600,7 @@ object MatFormFieldRenderer {
         r.appendLine("$indent    />")
 
         if (classFieldDef.nullable == false) {
-            r.appendLine("$indent    @if (formGroup.controls['$formGroupFieldName'].hasError('required')) {")
+            r.appendLine("$indent    @if (formGroup.controls['$classFieldName'].hasError('required')) {")
             r.appendLine("$indent        <mat-error>${classFieldDef.displayName} is required.</mat-error>")
             r.appendLine("$indent    }")
         }

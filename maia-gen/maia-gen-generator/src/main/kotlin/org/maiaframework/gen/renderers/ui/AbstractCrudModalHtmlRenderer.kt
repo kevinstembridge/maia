@@ -102,7 +102,7 @@ abstract class AbstractCrudModalHtmlRenderer(
                 appendLine("      <div class=\"form-group\">")
                 appendLine("        <label for=\"${formGroupFieldName}\">${classFieldDef.displayName}</label>")
                 appendLine("        <input")
-                appendLine("          formControlName=\"$formGroupFieldName\"")
+                appendLine("          formControlName=\"${classFieldDef.classFieldName}\"")
                 appendLine("          id=\"${formGroupFieldName}\"")
                 appendLine("          type=\"text\"")
                 appendLine("          class=\"form-control\"")
@@ -112,12 +112,12 @@ abstract class AbstractCrudModalHtmlRenderer(
                 appendLine("          [inputFormatter]=\"${formGroupFieldName}InputFormatter\"")
                 appendLine("          [editable]=\"false\"")
                 appendLine("          [showHint]=\"true\"")
-                appendLine("          [ngClass]=\"{ 'is-invalid': submitted && f.${formGroupFieldName}.errors }\" />")
+                appendLine("          [ngClass]=\"{ 'is-invalid': submitted && f.${classFieldDef.classFieldName}.errors }\" />")
 
                 if (classFieldDef.nullable == false) {
 
-                    appendLine("        <div *ngIf=\"submitted && f.$formGroupFieldName.errors\" class=\"form-control-invalid\">")
-                    appendLine("          <div *ngIf=\"f.$formGroupFieldName.errors.required\">${classFieldDef.displayName} is required.</div>")
+                    appendLine("        <div *ngIf=\"submitted && f.${classFieldDef.classFieldName}.errors\" class=\"form-control-invalid\">")
+                    appendLine("          <div *ngIf=\"f.${classFieldDef.classFieldName}.errors.required\">${classFieldDef.displayName} is required.</div>")
                     appendLine("        </div>")
 
                 }
