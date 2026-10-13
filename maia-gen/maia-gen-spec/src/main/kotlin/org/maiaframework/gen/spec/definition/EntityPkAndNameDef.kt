@@ -12,7 +12,8 @@ class EntityPkAndNameDef(
     val dtoBaseName: DtoBaseName,
     val pkEntityFieldDef: EntityFieldDef,
     val nameEntityFieldDef: EntityFieldDef,
-    val entityRepoClassDef: ClassDef
+    val entityRepoClassDef: ClassDef,
+    val shortcodeEntityFieldDef: EntityFieldDef? = null
 ) {
 
 
@@ -20,9 +21,10 @@ class EntityPkAndNameDef(
         packageName,
         dtoBaseName.withSuffix("PkAndName"),
         DtoSuffix("Dto"),
-        listOf(
+        listOfNotNull(
             aClassField("id", pkEntityFieldDef.fieldType).build(),
             aClassField("name", nameEntityFieldDef.fieldType).build(),
+            shortcodeEntityFieldDef?.let { aClassField("shortcode", it.fieldType).build() },
         )
     ).build()
 
@@ -32,9 +34,10 @@ class EntityPkAndNameDef(
 
     val rowMapperDef = RowMapperDef(
         dtoDef.fqcn,
-        listOf(
+        listOfNotNull(
             EntityFieldRowMapperFieldDef(ClassFieldName("id"), pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
-            EntityFieldRowMapperFieldDef(ClassFieldName("name"), nameEntityFieldDef, nameEntityFieldDef.tableColumnName.value)
+            EntityFieldRowMapperFieldDef(ClassFieldName("name"), nameEntityFieldDef, nameEntityFieldDef.tableColumnName.value),
+            shortcodeEntityFieldDef?.let { EntityFieldRowMapperFieldDef(ClassFieldName("shortcode"), it, it.tableColumnName.value) }
         ),
         dtoDef.rowMapperClassDef,
         isForEditDto = true,
@@ -43,6 +46,22 @@ class EntityPkAndNameDef(
 
 
     val dtoUqcn = dtoDef.uqcn
+
+
+    /**
+     * Kotlin source for constructing the DTO from an entity held in a variable named [entityVar].
+     */
+    fun constructionFrom(entityVar: String, indent: String): String {
+
+        val args = listOfNotNull(
+            pkEntityFieldDef,
+            nameEntityFieldDef,
+            shortcodeEntityFieldDef
+        ).joinToString(",\n") { "$indent    $entityVar.${it.classFieldName}" }
+
+        return "$dtoUqcn(\n$args\n$indent)"
+
+    }
 
 
     val pkAndNameDtoImportStatement = "import { ${pkAndNameDtoFqcn.uqcn} } from '@${GeneratedTypescriptDir.forPackage(pkAndNameDtoFqcn.packageName)}/${pkAndNameDtoFqcn.uqcn}';"

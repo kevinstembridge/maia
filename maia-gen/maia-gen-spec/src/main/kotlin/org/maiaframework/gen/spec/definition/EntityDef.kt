@@ -78,7 +78,12 @@ class EntityDef(
     val cacheableDef: CacheableDef?,
     val angularFormSystem: AngularFormSystem,
     val isManyToManyJoinEntity: Boolean = false,
-    val historyBlotterConfig: EntityHistoryBlotterConfig = EntityHistoryBlotterConfig.DEFAULT
+    val historyBlotterConfig: EntityHistoryBlotterConfig = EntityHistoryBlotterConfig.DEFAULT,
+    /**
+     * Optional. The name of the entity field to expose as `shortcode` in the PkAndName DTO.
+     * Requires [nameFieldForPkAndNameDto].
+     */
+    private val shortcodeFieldForPkAndNameDto: String? = null
 ) {
 
 
@@ -258,6 +263,14 @@ class EntityDef(
     val hasPkAndNameDtoDef = this.nameFieldForPkAndNameDto != null
 
 
+    /**
+     * True if a create endpoint for this entity can return the PkAndName DTO instead of
+     * a bare `{id}` EntityCreatedResponseDto.
+     */
+    val createReturnsPkAndName: Boolean
+        get() = this.hasPkAndNameDtoDef && this.primaryKeyFields.size == 1
+
+
     val entityPkAndNameDef: EntityPkAndNameDef
         get() {
 
@@ -272,12 +285,15 @@ class EntityDef(
 
             val nameEntityFieldDef = findFieldByName(this.nameFieldForPkAndNameDto)
 
+            val shortcodeEntityFieldDef = this.shortcodeFieldForPkAndNameDto?.let { findFieldByName(it) }
+
             return EntityPkAndNameDef(
                 packageName,
                 DtoBaseName(entityBaseName.value),
                 primaryKeyEntityFieldDef,
                 nameEntityFieldDef,
-                entityRepoClassDef
+                entityRepoClassDef,
+                shortcodeEntityFieldDef
             )
 
         }
@@ -739,6 +755,12 @@ class EntityDef(
 
         nameFieldForPkAndNameDto?.let { findFieldByNameOrNull(it)
             ?: throw IllegalStateException("nameFieldForPkAndNameDto references a non-existent field $nameFieldForPkAndNameDto on entity $entityBaseName")
+        }
+
+        shortcodeFieldForPkAndNameDto?.let {
+            check(nameFieldForPkAndNameDto != null) { "shortcodeFieldForPkAndNameDto requires nameFieldForPkAndNameDto on entity $entityBaseName" }
+            findFieldByNameOrNull(it)
+                ?: throw IllegalStateException("shortcodeFieldForPkAndNameDto references a non-existent field $it on entity $entityBaseName")
         }
 
         if (withHandCodedDao.value) {

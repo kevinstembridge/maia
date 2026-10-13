@@ -63,7 +63,8 @@ class EntityDefBuilder(
     private val withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
     private val withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
     defaultSchemaName: SchemaName,
-    private val isManyToManyJoinEntity: Boolean = false
+    private val isManyToManyJoinEntity: Boolean = false,
+    private val shortcodeFieldForPkAndNameDto: String? = null
 ) {
 
 
@@ -164,7 +165,8 @@ class EntityDefBuilder(
             this.cacheableDef,
             this.angularFormSystem,
             isManyToManyJoinEntity = this.isManyToManyJoinEntity,
-            historyBlotterConfig = this.historyBlotterConfig
+            historyBlotterConfig = this.historyBlotterConfig,
+            shortcodeFieldForPkAndNameDto = this.shortcodeFieldForPkAndNameDto
         )
 
     }

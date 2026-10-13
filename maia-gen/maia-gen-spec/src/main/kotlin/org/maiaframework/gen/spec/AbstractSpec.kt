@@ -677,6 +677,7 @@ abstract class AbstractSpec protected constructor(
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
         nameFieldForPkAndNameDto: String? = null,
+        shortcodeFieldForPkAndNameDto: String? = null,
         init: EntityDefBuilder.() -> Unit
     ): EntityDef {
 
@@ -694,7 +695,8 @@ abstract class AbstractSpec protected constructor(
             nameFieldForPkAndNameDto,
             withHandcodedDao,
             withHandcodedEntityDao,
-            this.defaultSchemaName
+            this.defaultSchemaName,
+            shortcodeFieldForPkAndNameDto = shortcodeFieldForPkAndNameDto
         )
 
         builder.init()

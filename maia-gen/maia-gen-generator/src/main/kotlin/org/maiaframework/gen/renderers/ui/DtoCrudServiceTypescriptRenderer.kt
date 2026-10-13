@@ -60,16 +60,27 @@ class DtoCrudServiceTypescriptRenderer(
     }
 
 
+    private fun createResponseTypeName(): String {
+
+        val entityDef = this.entityCrudApiDef.entityDef
+
+        return if (entityDef.createReturnsPkAndName) entityDef.entityPkAndNameDef.dtoUqcn.toString() else "EntityCreatedResponseDto"
+
+    }
+
+
     private fun `render the create function`() {
 
         this.entityCrudApiDef.createApiDef?.let { apiDef ->
 
             val createRequestDtoDef = apiDef.requestDtoDef
 
+            val createResponseType = createResponseTypeName()
+
             append("""
-                |    public create(requestDto: ${createRequestDtoDef.uqcn}): Observable<EntityCreatedResponseDto> {
+                |    public create(requestDto: ${createRequestDtoDef.uqcn}): Observable<$createResponseType> {
                 |
-                |        return this.http.post<EntityCreatedResponseDto>(
+                |        return this.http.post<$createResponseType>(
                 |                '${apiDef.endpointUrl}',
                 |                requestDto,
                 |                this.httpOptions);
@@ -205,7 +216,11 @@ class DtoCrudServiceTypescriptRenderer(
 
         this.entityCrudApiDef.createApiDef?.let {
             addImport(it.requestDtoDef.typescriptImport)
-            addImport("@maia/maia-ui", "EntityCreatedResponseDto")
+            if (this.entityCrudApiDef.entityDef.createReturnsPkAndName) {
+                addImport(this.entityCrudApiDef.entityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
+            } else {
+                addImport("@maia/maia-ui", "EntityCreatedResponseDto")
+            }
         }
         this.entityCrudApiDef.updateApiDef?.let { addImport(it.requestDtoDef.typescriptImport) }
         this.entityCrudApiDef.entityDef.fetchForEditDtoDef?.let { addImport(it.typescriptImport) }

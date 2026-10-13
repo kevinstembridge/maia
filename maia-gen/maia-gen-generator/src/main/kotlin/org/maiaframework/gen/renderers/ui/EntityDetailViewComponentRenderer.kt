@@ -47,6 +47,7 @@ class EntityDetailViewComponentRenderer(
             |        DatePipe,
             |        MatProgressSpinner${if (hasDomainIdField) ",\n            |        ShortId" else ""}
             |    ],
+            |    host: {class: 'entity-detail-view'},
             |    selector: '${this.entityDetailViewDef.viewContentAngularComponentNames.componentSelector}',
             |    templateUrl: './${this.entityDetailViewDef.viewContentAngularComponentNames.htmlFileName}'
             |})

@@ -914,10 +914,7 @@ class EntityRepoRenderer(
             |    fun pkAndNameFor($primaryKeyFieldNamesAndTypesCsv): ${entityPkAndNameDef.dtoUqcn} {
             |
             |        val entity = findByPrimaryKey($primaryKeyFieldNamesCsv)
-            |        return ${entityPkAndNameDef.dtoUqcn}(
-            |            entity.${entityPkAndNameDef.pkEntityFieldDef.classFieldName},
-            |            entity.${entityPkAndNameDef.nameEntityFieldDef.classFieldName}
-            |        )
+            |        return ${entityPkAndNameDef.constructionFrom("entity", "        ")}
             |
             |    }
             |""".trimMargin()

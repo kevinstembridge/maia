@@ -536,7 +536,8 @@ class AngularUiModuleGenerator(
                 formServiceTypescriptImport = entityCreatePageDef.entityDef.crudAngularComponentNames.serviceTypescriptImport,
                 angularFormSystem = AngularFormSystem.REACTIVE,
                 fetchForEditDtoDef = null,
-                entityIdInjectType = "string"
+                entityIdInjectType = "string",
+                createdEntityDef = entityCreatePageDef.entityDef
             )
 
             AngularReactiveFormComponentRenderer(

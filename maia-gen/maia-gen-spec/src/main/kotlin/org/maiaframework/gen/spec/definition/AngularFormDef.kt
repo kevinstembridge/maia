@@ -38,8 +38,23 @@ class AngularFormDef(
     val angularFormSystem: AngularFormSystem,
     val fetchForEditDtoDef: FetchForEditDtoDef? = null,
     val entityIdInjectType: String = "string",
-    val readOnlyFormFields: List<AngularFormFieldDef> = emptyList()
+    val readOnlyFormFields: List<AngularFormFieldDef> = emptyList(),
+    /**
+     * Set only for the generated inline entity create form. Such forms always emit the
+     * create response on success, and navigate to [onSuccessUrl] only if the host allows it.
+     */
+    val createdEntityDef: EntityDef? = null
 ) {
+
+
+    val isEntityCreateForm: Boolean =
+        createdEntityDef != null && formPurpose == FormPurpose.create && inlineFormOrDialog == InlineFormOrDialog.INLINE_FORM
+
+
+    /** The TypeScript type of the response to the create request, for entity create forms. */
+    val createResponseTypeName: String
+        get() = createdEntityDef?.takeIf { it.createReturnsPkAndName }?.entityPkAndNameDef?.dtoUqcn?.toString() ?: "EntityCreatedResponseDto"
+
 
 
     init {

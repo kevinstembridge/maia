@@ -188,7 +188,22 @@ class AngularReactiveFormComponentRenderer(
 
     private fun `render class field for onSuccess output signal`() {
 
-        if (this.angularFormDef.emitEventOnSuccess.value) {
+        if (this.angularFormDef.isEntityCreateForm) {
+
+            addImport("@angular/core", "input")
+
+            append("""
+                |
+                |
+                |    readonly onSuccess = output<${this.angularFormDef.createResponseTypeName}>();
+                |
+                |
+                |    /** Set to false when embedding the form to stay on the current page after a successful create. */
+                |    readonly navigateOnSuccess = input(true);
+                |""".trimMargin()
+            )
+
+        } else if (this.angularFormDef.emitEventOnSuccess.value) {
 
             append("""
                 |
@@ -1118,11 +1133,26 @@ class AngularReactiveFormComponentRenderer(
             when (this.angularFormDef.formPurpose) {
                 FormPurpose.create -> {
 
-                    append("""
-                        |            next: (dto: EntityCreatedResponseDto) => {
-                        |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}', dto.id]);
-                        |            },
-                        |""".trimMargin())
+                    if (this.angularFormDef.isEntityCreateForm) {
+
+                        append("""
+                            |            next: (dto: ${this.angularFormDef.createResponseTypeName}) => {
+                            |                this.onSuccess.emit(dto);
+                            |                if (this.navigateOnSuccess()) {
+                            |                    this.router.navigate(['${this.angularFormDef.onSuccessUrl}', dto.id]);
+                            |                }
+                            |            },
+                            |""".trimMargin())
+
+                    } else {
+
+                        append("""
+                            |            next: (dto: EntityCreatedResponseDto) => {
+                            |                this.router.navigate(['${this.angularFormDef.onSuccessUrl}', dto.id]);
+                            |            },
+                            |""".trimMargin())
+
+                    }
 
                 }
                 FormPurpose.edit -> {
@@ -1267,7 +1297,12 @@ class AngularReactiveFormComponentRenderer(
 
         when (this.angularFormDef.formPurpose) {
             FormPurpose.create -> {
-                addImport("@maia/maia-ui", "EntityCreatedResponseDto")
+                val createdEntityDef = this.angularFormDef.createdEntityDef
+                if (this.angularFormDef.isEntityCreateForm && createdEntityDef != null && createdEntityDef.createReturnsPkAndName) {
+                    addImport(createdEntityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
+                } else {
+                    addImport("@maia/maia-ui", "EntityCreatedResponseDto")
+                }
             }
             FormPurpose.edit -> {}
             FormPurpose.submit -> {}
