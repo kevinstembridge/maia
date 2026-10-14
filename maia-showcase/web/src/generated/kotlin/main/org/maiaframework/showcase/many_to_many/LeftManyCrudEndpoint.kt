@@ -5,7 +5,6 @@ package org.maiaframework.showcase.many_to_many
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
-import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -26,12 +25,14 @@ class LeftManyCrudEndpoint(val crudService: LeftManyCrudService) {
     @PostMapping("/api/left-many/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: LeftManyCreateRequestDto): EntityCreatedResponseDto {
+    fun create(@RequestBody @Valid createDto: LeftManyCreateRequestDto): LeftManyPkAndNameDto {
 
         val entity = this.crudService.create(createDto)
-        val id = entity.id.value
 
-        return EntityCreatedResponseDto(id)
+        return LeftManyPkAndNameDto(
+            entity.id,
+            entity.someString
+        )
 
     }
 

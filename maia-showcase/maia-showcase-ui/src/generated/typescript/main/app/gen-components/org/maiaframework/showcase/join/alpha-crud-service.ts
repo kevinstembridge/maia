@@ -5,8 +5,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {AlphaCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaCreateRequestDto';
 import {AlphaFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaFetchForEditDto';
+import {AlphaPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaPkAndNameDto';
 import {AlphaUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaUpdateRequestDto';
-import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -23,9 +23,9 @@ export class AlphaCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: AlphaCreateRequestDto): Observable<EntityCreatedResponseDto> {
+    public create(requestDto: AlphaCreateRequestDto): Observable<AlphaPkAndNameDto> {
 
-        return this.http.post<EntityCreatedResponseDto>(
+        return this.http.post<AlphaPkAndNameDto>(
                 '/api/alpha/create',
                 requestDto,
                 this.httpOptions);

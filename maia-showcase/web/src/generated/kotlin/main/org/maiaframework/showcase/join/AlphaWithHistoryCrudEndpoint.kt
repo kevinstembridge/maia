@@ -5,7 +5,6 @@ package org.maiaframework.showcase.join
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
-import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -26,12 +25,14 @@ class AlphaWithHistoryCrudEndpoint(val crudService: AlphaWithHistoryCrudService)
     @PostMapping("/api/alpha-with-history/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: AlphaWithHistoryCreateRequestDto): EntityCreatedResponseDto {
+    fun create(@RequestBody @Valid createDto: AlphaWithHistoryCreateRequestDto): AlphaWithHistoryPkAndNameDto {
 
         val entity = this.crudService.create(createDto)
-        val id = entity.id.value
 
-        return EntityCreatedResponseDto(id)
+        return AlphaWithHistoryPkAndNameDto(
+            entity.id,
+            entity.someString
+        )
 
     }
 

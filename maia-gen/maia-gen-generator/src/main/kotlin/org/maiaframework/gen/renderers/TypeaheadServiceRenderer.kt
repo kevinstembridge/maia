@@ -14,11 +14,21 @@ class TypeaheadServiceRenderer(private val typeaheadDef: TypeaheadDef) : Abstrac
     init {
 
         addConstructorArg(ClassFieldDef.aClassField("elasticClient", Fqcns.ELASTIC_CLIENT).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("esIndex", typeaheadDef.esIndexClassDef.fqcn).privat().build())
+        addConstructorArg(ClassFieldDef.aClassField("indexNameFactory", Fqcns.ES_INDEX_NAME_FACTORY).constructorOnly().build())
         addConstructorArg(ClassFieldDef.aClassField("props", Fqcns.MAIA_PROPS).privat().build())
 
     }
 
+
+    override fun renderPreClassFields() {
+
+        append("""
+            |
+            |
+            |    private val indexResolvedName = indexNameFactory.indexNameFrom(${typeaheadDef.esDocDef.esDocMetaClassDef.uqcn}.indexBaseNameAndVersion)
+            |""".trimMargin())
+
+    }
 
     override fun renderFunctions() {
 
@@ -81,7 +91,7 @@ class TypeaheadServiceRenderer(private val typeaheadDef: TypeaheadDef) : Abstrac
             |    private fun searchRequest(searchTerm: SearchTerm): SearchRequest {
             |
             |        return SearchRequest.of { r ->
-            |            r.index(this.esIndex.indexName().value)
+            |            r.index(this.indexResolvedName.value)
             |                .query { q ->
             |                    q.multiMatch { m ->
             |                        m.query(searchTerm.value)

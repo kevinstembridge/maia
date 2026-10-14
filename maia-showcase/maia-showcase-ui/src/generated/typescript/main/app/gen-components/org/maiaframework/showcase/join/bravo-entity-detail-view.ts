@@ -18,6 +18,7 @@ import {Observable} from 'rxjs';
         MatProgressSpinner,
         ShortId
     ],
+    host: {class: 'entity-detail-view'},
     selector: 'app-bravo-entity-detail-view',
     templateUrl: './bravo-entity-detail-view.html'
 })

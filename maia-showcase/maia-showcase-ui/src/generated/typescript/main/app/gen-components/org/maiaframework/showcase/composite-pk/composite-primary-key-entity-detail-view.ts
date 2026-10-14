@@ -16,6 +16,7 @@ import {Observable} from 'rxjs';
         DatePipe,
         MatProgressSpinner
     ],
+    host: {class: 'entity-detail-view'},
     selector: 'app-composite-primary-key-entity-detail-view',
     templateUrl: './composite-primary-key-entity-detail-view.html'
 })

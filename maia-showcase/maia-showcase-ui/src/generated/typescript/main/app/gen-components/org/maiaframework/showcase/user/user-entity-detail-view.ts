@@ -18,6 +18,7 @@ import {Observable} from 'rxjs';
         MatProgressSpinner,
         ShortId
     ],
+    host: {class: 'entity-detail-view'},
     selector: 'app-user-entity-detail-view',
     templateUrl: './user-entity-detail-view.html'
 })

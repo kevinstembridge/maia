@@ -5,7 +5,6 @@ package org.maiaframework.showcase.user
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
-import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -25,12 +24,14 @@ class UserCrudEndpoint(val crudService: UserCrudService) {
     @PostMapping("/api/user/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: UserCreateRequestDto): EntityCreatedResponseDto {
+    fun create(@RequestBody @Valid createDto: UserCreateRequestDto): UserPkAndNameDto {
 
         val entity = this.crudService.create(createDto)
-        val id = entity.id.value
 
-        return EntityCreatedResponseDto(id)
+        return UserPkAndNameDto(
+            entity.id,
+            entity.displayName
+        )
 
     }
 

@@ -5,8 +5,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
 import {UserFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/user/UserFetchForEditDto';
+import {UserPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/user/UserPkAndNameDto';
 import {UserUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserUpdateRequestDto';
-import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -23,9 +23,9 @@ export class UserCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: UserCreateRequestDto): Observable<EntityCreatedResponseDto> {
+    public create(requestDto: UserCreateRequestDto): Observable<UserPkAndNameDto> {
 
-        return this.http.post<EntityCreatedResponseDto>(
+        return this.http.post<UserPkAndNameDto>(
                 '/api/user/create',
                 requestDto,
                 this.httpOptions);

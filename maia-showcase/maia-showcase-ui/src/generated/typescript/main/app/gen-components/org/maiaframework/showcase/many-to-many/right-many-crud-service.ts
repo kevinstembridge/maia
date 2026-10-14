@@ -5,8 +5,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {RightManyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyCreateRequestDto';
 import {RightManyFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyFetchForEditDto';
+import {RightManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyPkAndNameDto';
 import {RightManyUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyUpdateRequestDto';
-import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -23,9 +23,9 @@ export class RightManyCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: RightManyCreateRequestDto): Observable<EntityCreatedResponseDto> {
+    public create(requestDto: RightManyCreateRequestDto): Observable<RightManyPkAndNameDto> {
 
-        return this.http.post<EntityCreatedResponseDto>(
+        return this.http.post<RightManyPkAndNameDto>(
                 '/api/right-many/create',
                 requestDto,
                 this.httpOptions);

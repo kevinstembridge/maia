@@ -5,7 +5,6 @@ package org.maiaframework.showcase.org
 
 import jakarta.validation.Valid
 import org.maiaframework.domain.DomainId
-import org.maiaframework.webapp.domain.EntityCreatedResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
@@ -23,12 +22,14 @@ class OrganizationCrudEndpoint(val crudService: OrganizationCrudService) {
 
     @PostMapping("/api/organization/create")
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody @Valid createDto: OrganizationCreateRequestDto): EntityCreatedResponseDto {
+    fun create(@RequestBody @Valid createDto: OrganizationCreateRequestDto): OrganizationPkAndNameDto {
 
         val entity = this.crudService.create(createDto)
-        val id = entity.id.value
 
-        return EntityCreatedResponseDto(id)
+        return OrganizationPkAndNameDto(
+            entity.id,
+            entity.orgName
+        )
 
     }
 

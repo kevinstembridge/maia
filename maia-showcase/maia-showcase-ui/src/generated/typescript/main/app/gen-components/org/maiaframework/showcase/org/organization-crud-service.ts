@@ -5,8 +5,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {OrganizationCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/org/OrganizationCreateRequestDto';
 import {OrganizationFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/org/OrganizationFetchForEditDto';
+import {OrganizationPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/org/OrganizationPkAndNameDto';
 import {OrganizationUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/org/OrganizationUpdateRequestDto';
-import {EntityCreatedResponseDto} from '@maia/maia-ui';
 import {Observable} from 'rxjs';
 
 
@@ -23,9 +23,9 @@ export class OrganizationCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: OrganizationCreateRequestDto): Observable<EntityCreatedResponseDto> {
+    public create(requestDto: OrganizationCreateRequestDto): Observable<OrganizationPkAndNameDto> {
 
-        return this.http.post<EntityCreatedResponseDto>(
+        return this.http.post<OrganizationPkAndNameDto>(
                 '/api/organization/create',
                 requestDto,
                 this.httpOptions);
