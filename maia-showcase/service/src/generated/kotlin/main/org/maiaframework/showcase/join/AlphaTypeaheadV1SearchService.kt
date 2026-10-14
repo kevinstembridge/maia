@@ -8,6 +8,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.TextQueryType
 import co.elastic.clients.elasticsearch.core.SearchRequest
 import co.elastic.clients.elasticsearch.core.SearchResponse
 import org.maiaframework.elasticsearch.SearchTerm
+import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.props.Props
 import org.springframework.stereotype.Component
 
@@ -15,9 +16,12 @@ import org.springframework.stereotype.Component
 @Component
 class AlphaTypeaheadV1SearchService(
     private val elasticClient: ElasticsearchClient,
-    private val esIndex: AlphaTypeaheadV1EsIndex,
+    indexNameFactory: IndexNameFactory,
     private val props: Props
 ) {
+
+
+    private val indexResolvedName = indexNameFactory.indexNameFrom(AlphaTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion)
 
 
     fun search(searchTerm: SearchTerm): List<AlphaTypeaheadV1EsDoc> {
@@ -33,7 +37,7 @@ class AlphaTypeaheadV1SearchService(
     private fun searchRequest(searchTerm: SearchTerm): SearchRequest {
 
         return SearchRequest.of { r ->
-            r.index(this.esIndex.indexName().value)
+            r.index(this.indexResolvedName.value)
                 .query { q ->
                     q.multiMatch { m ->
                         m.query(searchTerm.value)
