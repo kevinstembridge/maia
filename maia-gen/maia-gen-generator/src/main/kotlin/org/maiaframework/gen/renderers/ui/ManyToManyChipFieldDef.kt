@@ -51,6 +51,9 @@ data class ManyToManyChipFieldDef(
     val filteredIsLoadingFieldName: String = "${filteredFieldName}IsLoading"
 
 
+    val filteredHasSearchedFieldName: String = "${filteredFieldName}HasSearched"
+
+
     val searchControlFieldName: String = "${uniqueFieldName}EntitySearchControl"
 
 

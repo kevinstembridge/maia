@@ -42,6 +42,7 @@ data class ManyToManyTimestampedFieldDef(
     val effectiveToControlName: String = "add${uniqueFieldNameUpper}JoinEffectiveToControl"
     val filteredFieldName: String = "filtered${uniqueFieldNameUpper}Entities"
     val filteredIsLoadingFieldName: String = "${filteredFieldName}IsLoading"
+    val filteredHasSearchedFieldName: String = "${filteredFieldName}HasSearched"
     val confirmMethodName: String = "confirmAdd${uniqueFieldNameUpper}Join"
     val cancelMethodName: String = "cancelAdd${uniqueFieldNameUpper}Join"
     val removeMethodName: String = "remove${uniqueFieldNameUpper}Join"

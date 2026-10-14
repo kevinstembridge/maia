@@ -61,6 +61,9 @@ export class BravoEntityEditForm implements OnInit {
     filteredAlphaIsLoading = signal(false);
 
 
+    filteredAlphaHasSearched = signal(false);
+
+
 
     private readonly alphaTypeaheadV1ApiService = inject(AlphaTypeaheadV1ApiService);
 
@@ -110,6 +113,7 @@ export class BravoEntityEditForm implements OnInit {
                 tap(() => this.filteredAlphaIsLoading.set(false))
             ).subscribe(res => {
                 this.filteredAlpha = res;
+                this.filteredAlphaHasSearched.set(true);
             });
 
         this.formService.fetchForEdit(this.entityId()).subscribe({

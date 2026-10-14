@@ -298,6 +298,9 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    filtered${typeaheadDef.typeaheadBaseName}IsLoading = signal(false);
+                |
+                |
+                |    filtered${typeaheadDef.typeaheadBaseName}HasSearched = signal(false);
                 |""".trimMargin()
             )
 
@@ -395,6 +398,9 @@ class AngularReactiveFormComponentRenderer(
                 |    ${chip.filteredIsLoadingFieldName} = signal(false);
                 |
                 |
+                |    ${chip.filteredHasSearchedFieldName} = signal(false);
+                |
+                |
                 |    ${chip.searchControlFieldName} = new FormControl('');
                 |""".trimMargin()
             )
@@ -477,6 +483,9 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    ${field.filteredIsLoadingFieldName} = signal(false);
+                |
+                |
+                |    ${field.filteredHasSearchedFieldName} = signal(false);
                 |""".trimMargin())
 
             if (renderedServiceFieldNames.add(field.serviceFieldName)) {
@@ -706,6 +715,7 @@ class AngularReactiveFormComponentRenderer(
                 |                tap(() => this.${filteredFieldNameIsLoading}.set(false))
                 |            ).subscribe(res => {
                 |                this.${filteredFieldName} = res;
+                |                this.${filteredFieldName}HasSearched.set(true);
                 |            });
                 |""".trimMargin())
 
@@ -742,6 +752,7 @@ class AngularReactiveFormComponentRenderer(
                 |            tap(() => this.${chip.filteredIsLoadingFieldName}.set(false))
                 |        ).subscribe(res => {
                 |            this.${chip.filteredFieldName} = res;
+                |            this.${chip.filteredHasSearchedFieldName}.set(true);
                 |        });
                 |""".trimMargin())
 
@@ -777,6 +788,7 @@ class AngularReactiveFormComponentRenderer(
                 |            tap(() => this.${field.filteredIsLoadingFieldName}.set(false))
                 |        ).subscribe(res => {
                 |            this.${field.filteredFieldName} = res;
+                |            this.${field.filteredHasSearchedFieldName}.set(true);
                 |        });
                 |""".trimMargin())
 
@@ -966,6 +978,7 @@ class AngularReactiveFormComponentRenderer(
 
             append("""
                 |        this.${field.filteredFieldName} = [];
+                |        this.${field.filteredHasSearchedFieldName}.set(false);
                 |        this.${field.showFormSignalName}.set(false);
                 |
                 |    }
@@ -996,6 +1009,7 @@ class AngularReactiveFormComponentRenderer(
 
             append("""
                 |        this.${field.filteredFieldName} = [];
+                |        this.${field.filteredHasSearchedFieldName}.set(false);
                 |        this.${field.showFormSignalName}.set(false);
                 |
                 |    }

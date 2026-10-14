@@ -196,6 +196,9 @@ class AngularSignalFormComponentRenderer(
                 |
                 |
                 |    filtered${typeaheadDef.typeaheadBaseName}IsLoading = signal(false);
+                |
+                |
+                |    filtered${typeaheadDef.typeaheadBaseName}HasSearched = signal(false);
                 |""".trimMargin())
 
         }
@@ -562,6 +565,7 @@ class AngularSignalFormComponentRenderer(
                 |                tap(() => this.${filteredFieldNameIsLoading}.set(false))
                 |            ).subscribe(res => {
                 |                this.${filteredFieldName} = res;
+                |                this.${filteredFieldName}HasSearched.set(true);
                 |            });
                 |""".trimMargin())
 

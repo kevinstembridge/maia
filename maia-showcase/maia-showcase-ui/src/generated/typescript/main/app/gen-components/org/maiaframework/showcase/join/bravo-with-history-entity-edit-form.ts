@@ -61,6 +61,9 @@ export class BravoWithHistoryEntityEditForm implements OnInit {
     filteredAlphaWithHistoryIsLoading = signal(false);
 
 
+    filteredAlphaWithHistoryHasSearched = signal(false);
+
+
 
     private readonly alphaWithHistoryTypeaheadV1ApiService = inject(AlphaWithHistoryTypeaheadV1ApiService);
 
@@ -111,6 +114,7 @@ export class BravoWithHistoryEntityEditForm implements OnInit {
                 tap(() => this.filteredAlphaWithHistoryIsLoading.set(false))
             ).subscribe(res => {
                 this.filteredAlphaWithHistory = res;
+                this.filteredAlphaWithHistoryHasSearched.set(true);
             });
 
         this.formService.fetchForEdit(this.entityId()).subscribe({

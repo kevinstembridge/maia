@@ -54,6 +54,9 @@ class EntityEditDialogHtmlRenderer(
                 |                @for (option of ${chip.filteredFieldName}; track option.${chip.esDocIdFieldName}) {
                 |                    <mat-option [value]="option">{{ option.${chip.searchTermFieldName} }}</mat-option>
                 |                }
+                |                @if (${chip.filteredFieldName}.length === 0 && ${chip.filteredHasSearchedFieldName}()) {
+                |                    <mat-option disabled>No results found</mat-option>
+                |                }
                 |            </mat-autocomplete>
                 |        </mat-form-field>
                 |""".trimMargin())

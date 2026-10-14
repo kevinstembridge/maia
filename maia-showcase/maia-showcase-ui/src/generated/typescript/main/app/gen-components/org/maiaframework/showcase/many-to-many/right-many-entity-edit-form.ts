@@ -79,6 +79,9 @@ export class RightManyEntityEditForm implements OnInit {
     filteredLeftSimpleEntitiesIsLoading = signal(false);
 
 
+    filteredLeftSimpleEntitiesHasSearched = signal(false);
+
+
     leftSimpleEntitySearchControl = new FormControl('');
 
 
@@ -109,6 +112,9 @@ export class RightManyEntityEditForm implements OnInit {
     filteredLeftSystemEffectiveEntitiesIsLoading = signal(false);
 
 
+    filteredLeftSystemEffectiveEntitiesHasSearched = signal(false);
+
+
     leftSystemSingleEffectiveJoins: {
         id: string | null;
         entityId: string;
@@ -128,6 +134,9 @@ export class RightManyEntityEditForm implements OnInit {
 
 
     filteredLeftSystemSingleEffectiveEntitiesIsLoading = signal(false);
+
+
+    filteredLeftSystemSingleEffectiveEntitiesHasSearched = signal(false);
 
 
     leftUserEffectiveJoins: {
@@ -157,6 +166,9 @@ export class RightManyEntityEditForm implements OnInit {
     filteredLeftUserEffectiveEntitiesIsLoading = signal(false);
 
 
+    filteredLeftUserEffectiveEntitiesHasSearched = signal(false);
+
+
     leftJoins: {
         id: string | null;
         entityId: string;
@@ -180,6 +192,9 @@ export class RightManyEntityEditForm implements OnInit {
 
 
     filteredLeftEntitiesIsLoading = signal(false);
+
+
+    filteredLeftEntitiesHasSearched = signal(false);
 
 
     formGroup: FormGroup;
@@ -225,6 +240,7 @@ export class RightManyEntityEditForm implements OnInit {
             tap(() => this.filteredLeftSimpleEntitiesIsLoading.set(false))
         ).subscribe(res => {
             this.filteredLeftSimpleEntities = res;
+            this.filteredLeftSimpleEntitiesHasSearched.set(true);
         });
 
         this.addLeftSystemEffectiveJoinEntityControl.valueChanges.pipe(
@@ -245,6 +261,7 @@ export class RightManyEntityEditForm implements OnInit {
             tap(() => this.filteredLeftSystemEffectiveEntitiesIsLoading.set(false))
         ).subscribe(res => {
             this.filteredLeftSystemEffectiveEntities = res;
+            this.filteredLeftSystemEffectiveEntitiesHasSearched.set(true);
         });
 
         this.addLeftSystemSingleEffectiveJoinEntityControl.valueChanges.pipe(
@@ -265,6 +282,7 @@ export class RightManyEntityEditForm implements OnInit {
             tap(() => this.filteredLeftSystemSingleEffectiveEntitiesIsLoading.set(false))
         ).subscribe(res => {
             this.filteredLeftSystemSingleEffectiveEntities = res;
+            this.filteredLeftSystemSingleEffectiveEntitiesHasSearched.set(true);
         });
 
         this.addLeftUserEffectiveJoinEntityControl.valueChanges.pipe(
@@ -285,6 +303,7 @@ export class RightManyEntityEditForm implements OnInit {
             tap(() => this.filteredLeftUserEffectiveEntitiesIsLoading.set(false))
         ).subscribe(res => {
             this.filteredLeftUserEffectiveEntities = res;
+            this.filteredLeftUserEffectiveEntitiesHasSearched.set(true);
         });
 
         this.addLeftJoinEntityControl.valueChanges.pipe(
@@ -305,6 +324,7 @@ export class RightManyEntityEditForm implements OnInit {
             tap(() => this.filteredLeftEntitiesIsLoading.set(false))
         ).subscribe(res => {
             this.filteredLeftEntities = res;
+            this.filteredLeftEntitiesHasSearched.set(true);
         });
 
         this.formService.fetchForEdit(this.entityId()).subscribe({
@@ -392,6 +412,7 @@ export class RightManyEntityEditForm implements OnInit {
         });
         this.addLeftSystemEffectiveJoinEntityControl.reset();
         this.filteredLeftSystemEffectiveEntities = [];
+        this.filteredLeftSystemEffectiveEntitiesHasSearched.set(false);
         this.showLeftSystemEffectiveJoinForm.set(false);
 
     }
@@ -408,6 +429,7 @@ export class RightManyEntityEditForm implements OnInit {
 
         this.addLeftSystemEffectiveJoinEntityControl.reset();
         this.filteredLeftSystemEffectiveEntities = [];
+        this.filteredLeftSystemEffectiveEntitiesHasSearched.set(false);
         this.showLeftSystemEffectiveJoinForm.set(false);
 
     }
@@ -432,6 +454,7 @@ export class RightManyEntityEditForm implements OnInit {
         });
         this.addLeftSystemSingleEffectiveJoinEntityControl.reset();
         this.filteredLeftSystemSingleEffectiveEntities = [];
+        this.filteredLeftSystemSingleEffectiveEntitiesHasSearched.set(false);
         this.showLeftSystemSingleEffectiveJoinForm.set(false);
 
     }
@@ -448,6 +471,7 @@ export class RightManyEntityEditForm implements OnInit {
 
         this.addLeftSystemSingleEffectiveJoinEntityControl.reset();
         this.filteredLeftSystemSingleEffectiveEntities = [];
+        this.filteredLeftSystemSingleEffectiveEntitiesHasSearched.set(false);
         this.showLeftSystemSingleEffectiveJoinForm.set(false);
 
     }
@@ -474,6 +498,7 @@ export class RightManyEntityEditForm implements OnInit {
         this.addLeftUserEffectiveJoinEffectiveFromControl.reset();
         this.addLeftUserEffectiveJoinEffectiveToControl.reset();
         this.filteredLeftUserEffectiveEntities = [];
+        this.filteredLeftUserEffectiveEntitiesHasSearched.set(false);
         this.showLeftUserEffectiveJoinForm.set(false);
 
     }
@@ -492,6 +517,7 @@ export class RightManyEntityEditForm implements OnInit {
         this.addLeftUserEffectiveJoinEffectiveFromControl.reset();
         this.addLeftUserEffectiveJoinEffectiveToControl.reset();
         this.filteredLeftUserEffectiveEntities = [];
+        this.filteredLeftUserEffectiveEntitiesHasSearched.set(false);
         this.showLeftUserEffectiveJoinForm.set(false);
 
     }
@@ -518,6 +544,7 @@ export class RightManyEntityEditForm implements OnInit {
         this.addLeftJoinEntityControl.reset();
         this.addLeftJoinSomeIntOnComplexControl.reset();
         this.filteredLeftEntities = [];
+        this.filteredLeftEntitiesHasSearched.set(false);
         this.showLeftJoinForm.set(false);
 
     }
@@ -535,6 +562,7 @@ export class RightManyEntityEditForm implements OnInit {
         this.addLeftJoinEntityControl.reset();
         this.addLeftJoinSomeIntOnComplexControl.reset();
         this.filteredLeftEntities = [];
+        this.filteredLeftEntitiesHasSearched.set(false);
         this.showLeftJoinForm.set(false);
 
     }

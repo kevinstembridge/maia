@@ -54,6 +54,9 @@
                 @for (option of filteredRightSimpleEntities; track option.id) {
                     <mat-option [value]="option">{{ option.someString }}</mat-option>
                 }
+                @if (filteredRightSimpleEntities.length === 0 && filteredRightSimpleEntitiesHasSearched()) {
+                    <mat-option disabled>No results found</mat-option>
+                }
             </mat-autocomplete>
         </mat-form-field>
         <div class="join-entries">
@@ -85,6 +88,9 @@
                         }
                         @for (option of filteredRightSystemEffectiveEntities; track option.id) {
                             <mat-option [value]="option">{{ option.someString }}</mat-option>
+                        }
+                        @if (filteredRightSystemEffectiveEntities.length === 0 && filteredRightSystemEffectiveEntitiesHasSearched()) {
+                            <mat-option disabled>No results found</mat-option>
                         }
                     </mat-autocomplete>
                 </mat-form-field>
@@ -121,6 +127,9 @@
                         }
                         @for (option of filteredRightSystemSingleEffectiveEntities; track option.id) {
                             <mat-option [value]="option">{{ option.someString }}</mat-option>
+                        }
+                        @if (filteredRightSystemSingleEffectiveEntities.length === 0 && filteredRightSystemSingleEffectiveEntitiesHasSearched()) {
+                            <mat-option disabled>No results found</mat-option>
                         }
                     </mat-autocomplete>
                 </mat-form-field>
@@ -186,6 +195,9 @@
                         @for (option of filteredRightUserEffectiveEntities; track option.id) {
                             <mat-option [value]="option">{{ option.someString }}</mat-option>
                         }
+                        @if (filteredRightUserEffectiveEntities.length === 0 && filteredRightUserEffectiveEntitiesHasSearched()) {
+                            <mat-option disabled>No results found</mat-option>
+                        }
                     </mat-autocomplete>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
@@ -249,6 +261,9 @@
                         }
                         @for (option of filteredRightEntities; track option.id) {
                             <mat-option [value]="option">{{ option.someString }}</mat-option>
+                        }
+                        @if (filteredRightEntities.length === 0 && filteredRightEntitiesHasSearched()) {
+                            <mat-option disabled>No results found</mat-option>
                         }
                     </mat-autocomplete>
                 </mat-form-field>

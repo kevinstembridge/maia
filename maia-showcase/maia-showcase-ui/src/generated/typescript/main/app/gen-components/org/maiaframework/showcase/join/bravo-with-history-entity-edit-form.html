@@ -40,6 +40,9 @@
                     @for (option of filteredAlphaWithHistory; track option) {
                         <mat-option [value]="option">{{ option.someString }}</mat-option>
                     }
+                    @if (filteredAlphaWithHistory.length === 0 && filteredAlphaWithHistoryHasSearched()) {
+                        <mat-option disabled>No results found</mat-option>
+                    }
 
                 }
             </mat-autocomplete>
