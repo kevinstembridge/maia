@@ -5,3 +5,8 @@
 - At the end of each plan, give me a list of unresolved questions to answer, if any.
 
 
+# Build
+The command to run a full clean build is...
+
+    ./gradlew clean build -Dplaywright.headless=true
+
