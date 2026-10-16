@@ -1,0 +1,112 @@
+{
+  "planPath": "docs/superpowers/plans/2026-10-14-es-enabled-searchable-dto-auto-refresh.md",
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Task 1: Transaction-scoped EsRefreshCollector",
+      "status": "completed",
+      "description": "**Goal:** Tx-scoped dedupe + after-commit chunked flush.\n\n```json:metadata\n{\"files\": [\"libs/maia-elasticsearch-parent/maia-elasticsearch/src/main/kotlin/org/maiaframework/elasticsearch/refresh/EsRefreshCollector.kt\"], \"verifyCommand\": \"./gradlew :libs:maia-elasticsearch-parent:maia-elasticsearch:test --tests '*EsRefreshCollectorTest'\", \"acceptanceCriteria\": [\"no flush before commit or on rollback\", \"dedupe\", \"chunked\", \"immediate flush without tx\", \"errors logged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 2: elasticsearchEnabled() DSL + derived EsDocDef",
+      "status": "completed",
+      "description": "**Goal:** searchableDto declares ES versions; EsDocDefs derived.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/SearchableDtoDefBuilder.kt\", \"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/SearchableDtoEsDocFactory.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:test --tests '*SearchableDtoEsDocTest'\", \"acceptanceCriteria\": [\"EsDocDef derived\", \"findById forced\", \"composite id rejected\", \"mapping defaults/override\", \"multi-version\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 3: Register derived EsDocs + ES-sourced blotter",
+      "status": "completed",
+      "blockedBy": [
+        2
+      ],
+      "description": "**Goal:** Derived EsDocs flow through existing generators; blotters use ES source.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/AbstractSpec.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:test --tests '*ElasticsearchEnabledBlotterTest'\", \"acceptanceCriteria\": [\"esDocsDefs includes derived\", \"blotter uses BlotterEsDocSourceDef latest version\", \"non-ES unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 4: DAO/Repo findByIds + findAllAsSequence",
+      "status": "completed",
+      "blockedBy": [
+        2
+      ],
+      "description": "**Goal:** Batch load DTO rows.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/SearchableDtoJdbcDaoRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/SearchableDtoRepoRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:test --tests '*SearchableDtoJdbcDaoRendererTest'\", \"acceptanceCriteria\": [\"only when ES-enabled\", \"findByIds empty-safe\", \"findAllAsSequence\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 5,
+      "subject": "Task 5: Generated EsDoc repo + index service",
+      "status": "completed",
+      "blockedBy": [
+        1,
+        3,
+        4
+      ],
+      "description": "**Goal:** Generate index service implementing EsRefreshTarget.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/SearchableDtoEsIndexServiceRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/SearchableDtoEsDocRepoRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/generator/ElasticServiceModuleGenerator.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:test --tests '*SearchableDtoEsIndexServiceRendererTest'\", \"acceptanceCriteria\": [\"refreshByIds upserts found and deletes missing\", \"refreshIndex compatible with job\", \"EsIndexControl emitted\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 6,
+      "subject": "Task 6: Listener API (before, after) + BeforeDelete",
+      "status": "completed",
+      "description": "**Goal:** Change generated CrudListener/Notifier/CrudService contract and regenerate all modules.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CrudListenerRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CrudNotifierRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/CrudServiceRenderer.kt\", \"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/TypeaheadCrudListenerRenderer.kt\"], \"verifyCommand\": \"./gradlew build\", \"acceptanceCriteria\": [\"new signatures\", \"before loaded in setFields\", \"beforeDelete before row delete\", \"typeahead listener correct entity\", \"build green\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 7,
+      "subject": "Task 7: Refresh dependency model",
+      "status": "completed",
+      "blockedBy": [
+        2
+      ],
+      "description": "**Goal:** Per contributing entity: watched fields + reverse path.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/EsRefreshDependencyDef.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:test --tests '*EsRefreshDependencyDefTest'\", \"acceptanceCriteria\": [\"root watched incl join keys\", \"multi-hop path\", \"m2m\", \"merged paths\", \"withCrudListener required\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 8,
+      "subject": "Task 8: Reverse-join DAO queries",
+      "status": "completed",
+      "blockedBy": [
+        4,
+        7
+      ],
+      "description": "**Goal:** findRootIdsVia<Entity> generated.\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/SearchableDtoJdbcDaoRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:test --tests '*SearchableDtoJdbcDaoRendererTest'\", \"acceptanceCriteria\": [\"one method per non-root dependency\", \"union for multiple paths\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 9,
+      "subject": "Task 9: Generated EsDoc CrudListeners",
+      "status": "completed",
+      "blockedBy": [
+        1,
+        5,
+        6,
+        8
+      ],
+      "description": "**Goal:** Listener per (EsDoc version, contributing entity).\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-generator/src/main/kotlin/org/maiaframework/gen/renderers/SearchableDtoEsDocCrudListenerRenderer.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-generator:test --tests '*SearchableDtoEsDocCrudListenerRendererTest'\", \"acceptanceCriteria\": [\"skipped when autoRefresh false\", \"root and non-root behaviours\", \"beforeDelete capture\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 10,
+      "subject": "Task 10: esDoc{} must declare autoRefresh",
+      "status": "completed",
+      "blockedBy": [
+        3
+      ],
+      "description": "**Goal:** Fail generation unless hand-built EsDocs declare autoRefresh(false).\n\n```json:metadata\n{\"files\": [\"maia-gen/maia-gen-spec/src/main/kotlin/org/maiaframework/gen/spec/definition/builders/EsDocDefBuilder.kt\"], \"verifyCommand\": \"./gradlew :maia-gen:maia-gen-spec:test\", \"acceptanceCriteria\": [\"undeclared fails\", \"false accepted\", \"callers updated\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 11,
+      "subject": "Task 11: Showcase proof + ES integration test",
+      "status": "completed",
+      "blockedBy": [
+        9,
+        10
+      ],
+      "description": "**Goal:** End-to-end tests against real ES.\n\n```json:metadata\n{\"files\": [\"maia-showcase/spec/src/main/kotlin/org/maiaframework/showcase/MaiaShowcaseSpec.kt\", \"maia-showcase/app/src/test/kotlin/org/maiaframework/showcase/es/EsDocAutoRefreshIntegrationTest.kt\"], \"verifyCommand\": \"./gradlew :maia-showcase:app:test --tests '*EsDocAutoRefreshIntegrationTest'\", \"acceptanceCriteria\": [\"8 scenarios pass\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 12,
+      "subject": "Task 12: Docs + cleanup",
+      "status": "completed",
+      "blockedBy": [
+        11
+      ],
+      "description": "**Goal:** Document feature.\n\n```json:metadata\n{\"files\": [\"docs/es-enabled-searchable-dto.md\"], \"verifyCommand\": \"./gradlew build\", \"acceptanceCriteria\": [\"doc written\", \"build green\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-10-14"
+}

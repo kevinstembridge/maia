@@ -13,6 +13,12 @@ export const leftManyRoutes: Routes = [
             import('./left-many-blotter-page').then(m => m.LeftManyBlotterPage),
     },
     {
+        path: 'left-many-es-blotter',
+        data: {authorities: [Authority.WRITE]},
+        loadComponent: () =>
+            import('./left-many-es-blotter-page').then(m => m.LeftManyEsBlotterPage),
+    },
+    {
         path: 'left-many/view/:id',
         data: {authorities: [Authority.WRITE]},
         loadComponent: () =>

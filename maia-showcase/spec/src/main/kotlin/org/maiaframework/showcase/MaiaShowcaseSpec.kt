@@ -1846,11 +1846,21 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedDto = WithGeneratedDto.TRUE,
     ) {
         elasticsearchEnabled(version = 1, autoRefresh = true)
-        elasticsearchEnabled(version = 2, autoRefresh = true)
         field("someStringFromLeft", "someString")
         field("someIntFromLeft", "someInt")
         manyToManyField("rightEntities", leftToRightComplexEntityDef)
     }
+
+
+    val leftManyEsBlotterDef = blotter(leftManyEsSearchableDtoDef) {
+        columnFromDto("id")
+        columnFromDto("someStringFromLeft")
+        columnFromDto("someIntFromLeft")
+        columnFromDto("rightEntities") { header("Right Entities") }
+    }
+
+
+    val leftManyEsBlotterPageDef = blotterPage(leftManyEsBlotterDef)
 
 
     val unmodifiableEntityDef = entity(

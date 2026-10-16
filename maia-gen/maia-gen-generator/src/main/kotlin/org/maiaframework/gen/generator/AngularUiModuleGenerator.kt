@@ -75,6 +75,7 @@ import org.maiaframework.gen.renderers.ui.UserSummaryDtoRenderer
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormSystem
+import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
@@ -462,9 +463,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityDetailViews() {
 
-        val blotterPageByEntity = this.applicationModelDef.blotterPageDefs
-            .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
-            .toMap()
+        val blotterPageByEntity = blotterPagesByEntity().mapValues { it.value.first() }
 
         val timelineBlotterByEntity = this.applicationModelDef.timelineBlotterDefs
             .associateBy { it.entityDef }
@@ -497,9 +496,7 @@ class AngularUiModuleGenerator(
 
     private fun renderEntityCreatePages() {
 
-        val blotterPageByEntity = this.applicationModelDef.blotterPageDefs
-            .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
-            .toMap()
+        val blotterPageByEntity = blotterPagesByEntity().mapValues { it.value.first() }
 
         this.applicationModelDef.entityCreatePageDefs.forEach { entityCreatePageDef ->
 
@@ -645,11 +642,20 @@ class AngularUiModuleGenerator(
     }
 
 
+    // An entity can have several blotter pages (one per blotter DTO); each gets its own route, keyed
+    // by the DTO base name. Pages that link back to "the" blotter (create, detail view) use the first declared.
+    private fun blotterPagesByEntity(): Map<EntityDef, List<BlotterPageDef>> {
+
+        return this.applicationModelDef.blotterPageDefs
+            .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
+            .groupBy({ it.first }, { it.second })
+
+    }
+
+
     private fun renderEntityCrudRoutes() {
 
-        val blotterPageByEntity = this.applicationModelDef.blotterPageDefs
-            .mapNotNull { pageDef -> pageDef.blotterDef.blotterSourceDef.rootEntityDef?.let { it to pageDef } }
-            .toMap()
+        val blotterPagesByEntity = blotterPagesByEntity()
 
         val viewPageByEntity = this.applicationModelDef.entityDetailViewDefs
             .associateBy { it.entityDef }
@@ -668,7 +674,7 @@ class AngularUiModuleGenerator(
             .associateBy { it.entityDef }
 
         val allEntities = (
-                blotterPageByEntity.keys
+                blotterPagesByEntity.keys
                 + viewPageByEntity.keys
                 + createPageByEntity.keys
                 + editPageByEntity.keys
@@ -680,7 +686,7 @@ class AngularUiModuleGenerator(
             EntityCrudRoutesRenderer(
                 entityDef = entityDef,
                 authoritiesDef = this.applicationModelDef.authoritiesDef,
-                blotterPageDef = blotterPageByEntity[entityDef],
+                blotterPageDefs = blotterPagesByEntity[entityDef].orEmpty(),
                 entityDetailViewDef = viewPageByEntity[entityDef],
                 entityCreatePageDef = createPageByEntity[entityDef],
                 entityEditPageDef = editPageByEntity[entityDef],

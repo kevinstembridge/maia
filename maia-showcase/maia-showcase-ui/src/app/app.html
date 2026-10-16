@@ -57,6 +57,12 @@
                 <span>Left Many</span>
             </button>
         }
+        @if (hasWriteAuthority()) {
+            <button mat-menu-item routerLink="/left-many-es-blotter">
+                <mat-icon>dialpad</mat-icon>
+                <span>Left Many (Elasticsearch)</span>
+            </button>
+        }
         @if (hasReadAuthority()) {
             <button mat-menu-item routerLink="/left-to-right-simple-blotter">
                 <mat-icon>history</mat-icon>

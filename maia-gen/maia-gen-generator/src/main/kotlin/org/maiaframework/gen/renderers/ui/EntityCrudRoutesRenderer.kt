@@ -15,7 +15,7 @@ import org.maiaframework.gen.spec.definition.TimelineBlotterDef
 class EntityCrudRoutesRenderer(
     private val entityDef: EntityDef,
     private val authoritiesDef: AuthoritiesDef? = null,
-    private val blotterPageDef: BlotterPageDef? = null,
+    private val blotterPageDefs: List<BlotterPageDef> = emptyList(),
     private val entityDetailViewDef: EntityDetailViewDef? = null,
     private val entityCreatePageDef: EntityCreatePageDef? = null,
     private val entityEditPageDef: EntityEditPageDef? = null,
@@ -76,7 +76,7 @@ class EntityCrudRoutesRenderer(
 
         blankLine()
         appendLine("export const $constName: Routes = [")
-        blotterPageDef?.let { renderBlotterRoute(it) }
+        blotterPageDefs.forEach { renderBlotterRoute(it) }
         entityDetailViewDef?.let { renderViewRoute(it) }
         entityDef.historyBlotterDef?.let { renderHistoryRoute(it) }
         timelineBlotterDef?.let { renderTimelineRoute(it) }
