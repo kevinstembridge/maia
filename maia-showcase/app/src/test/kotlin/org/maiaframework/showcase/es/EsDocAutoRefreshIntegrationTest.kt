@@ -41,9 +41,7 @@ import org.maiaframework.showcase.many_to_many.LeftManyDao
 import org.maiaframework.showcase.many_to_many.LeftManyEntity
 import org.maiaframework.showcase.many_to_many.LeftManyEntityMeta
 import org.maiaframework.showcase.many_to_many.LeftManyEsEsIndexControl_v0001
-import org.maiaframework.showcase.many_to_many.LeftManyEsEsIndexControl_v0002
 import org.maiaframework.showcase.many_to_many.LeftManyEsEsIndexMeta_v0001
-import org.maiaframework.showcase.many_to_many.LeftManyEsEsIndexMeta_v0002
 import org.maiaframework.showcase.many_to_many.LeftManyEsV1IndexService
 import org.maiaframework.showcase.many_to_many.LeftManyUpdateRequestDto
 import org.maiaframework.showcase.many_to_many.LeftToRightComplexDao
@@ -101,10 +99,6 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var leftManyEsIndexControlV2: LeftManyEsEsIndexControl_v0002
-
-
-    @Autowired
     private lateinit var bravoEsSearchService: BravoEsBlotterRowDtoSearchService
 
 
@@ -158,9 +152,6 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
     private val leftManyIndex: IndexResolvedName = IndexNameFactory.indexNameFrom(LeftManyEsEsIndexMeta_v0001.indexBaseNameAndVersion)
 
 
-    private val leftManyIndexV2: IndexResolvedName = IndexNameFactory.indexNameFrom(LeftManyEsEsIndexMeta_v0002.indexBaseNameAndVersion)
-
-
     private val alphaTypeaheadIndex: IndexResolvedName = IndexNameFactory.indexNameFrom(AlphaTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion)
 
 
@@ -174,7 +165,6 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
 
         recreateIndex(bravoIndex) { bravoEsIndexControl.createIndex() }
         recreateIndex(leftManyIndex) { leftManyEsIndexControl.createIndex() }
-        recreateIndex(leftManyIndexV2) { leftManyEsIndexControlV2.createIndex() }
 
         // Alpha CrudService events also write to the typeahead index; make sure it exists with its
         // real mapping rather than being auto-created with a dynamic one.
@@ -627,7 +617,6 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
         val right = createRightMany("right")
         val left = createLeftMany("left", right)
         assertThat(rightEntitiesOf(left.id, leftManyIndex)).containsExactly(right.id.value to "right")
-        assertThat(rightEntitiesOf(left.id, leftManyIndexV2)).containsExactly(right.id.value to "right")
 
         val rightEntity = rightManyDao.findByPrimaryKey(right.id)
         Mockito.clearInvocations(esIndexOps)
@@ -641,9 +630,7 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
         )
 
         assertThat(rightEntitiesOf(left.id, leftManyIndex)).containsExactly(right.id.value to "right-renamed")
-        assertThat(rightEntitiesOf(left.id, leftManyIndexV2)).containsExactly(right.id.value to "right-renamed")
         assertThat(bulkUpsertCallsFor(leftManyIndex)).hasSize(1)
-        assertThat(bulkUpsertCallsFor(leftManyIndexV2)).hasSize(1)
 
     }
 

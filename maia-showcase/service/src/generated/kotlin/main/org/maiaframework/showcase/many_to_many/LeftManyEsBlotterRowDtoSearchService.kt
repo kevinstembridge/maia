@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 @Service
 class LeftManyEsBlotterRowDtoSearchService(
     private val esDocMapper: LeftManyEsBlotterRowDtoEsDocMapper,
-    private val esIndex: LeftManyEsV2EsIndex,
+    private val esIndex: LeftManyEsV1EsIndex,
     private val esSearchExecutor: EsSearchExecutor
 ) {
 
@@ -23,7 +23,7 @@ class LeftManyEsBlotterRowDtoSearchService(
             searchModel,
             this.esIndex.indexName(),
             LeftManyEsBlotterRowDtoFieldNameMapper.mappingFunction,
-            LeftManyEsV2EsDoc::class.java,
+            LeftManyEsV1EsDoc::class.java,
             { esDoc -> esDocMapper.mapEsDoc(esDoc) }
         )
 

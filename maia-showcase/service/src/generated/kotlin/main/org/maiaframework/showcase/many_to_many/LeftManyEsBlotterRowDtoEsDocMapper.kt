@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 class LeftManyEsBlotterRowDtoEsDocMapper {
 
 
-    fun mapEsDoc(esDoc: LeftManyEsV2EsDoc): LeftManyEsBlotterRowDto {
+    fun mapEsDoc(esDoc: LeftManyEsV1EsDoc): LeftManyEsBlotterRowDto {
 
         return LeftManyEsBlotterRowDto(
             esDoc.id,
