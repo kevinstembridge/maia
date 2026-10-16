@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.join
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,19 @@ class CharlieCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: CharlieEntity, after: CharlieEntity) {
 
         this.charlieCrudListeners.forEach { (_, listener) ->
-            listener.onCharlieEntityUpdated(id)
+            listener.onCharlieEntityUpdated(before, after)
+        }
+
+    }
+
+
+    fun onEntityBeforeDelete(entity: CharlieEntity) {
+
+        this.charlieCrudListeners.forEach { (_, listener) ->
+            listener.onCharlieEntityBeforeDelete(entity)
         }
 
     }

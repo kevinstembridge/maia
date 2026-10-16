@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import org.maiaframework.domain.DomainId
 
 
 interface OrganizationCrudListener {
@@ -12,7 +11,7 @@ interface OrganizationCrudListener {
     fun onOrganizationEntityCreated(entity: OrganizationEntity)
 
 
-    fun onOrganizationEntityUpdated(id: DomainId)
+    fun onOrganizationEntityUpdated(before: OrganizationEntity, after: OrganizationEntity)
 
 
 }

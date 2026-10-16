@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.many_to_many
 
-import org.maiaframework.domain.DomainId
 
 
 interface RightManyCrudListener {
@@ -12,7 +11,10 @@ interface RightManyCrudListener {
     fun onRightManyEntityCreated(entity: RightManyEntity)
 
 
-    fun onRightManyEntityUpdated(id: DomainId)
+    fun onRightManyEntityUpdated(before: RightManyEntity, after: RightManyEntity)
+
+
+    fun onRightManyEntityBeforeDelete(entity: RightManyEntity) {}
 
 
     fun onRightManyEntityDeleted(entity: RightManyEntity)

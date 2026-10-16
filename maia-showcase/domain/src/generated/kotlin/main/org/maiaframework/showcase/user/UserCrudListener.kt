@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.user
 
-import org.maiaframework.domain.DomainId
 
 
 interface UserCrudListener {
@@ -12,7 +11,7 @@ interface UserCrudListener {
     fun onUserEntityCreated(entity: UserEntity)
 
 
-    fun onUserEntityUpdated(id: DomainId)
+    fun onUserEntityUpdated(before: UserEntity, after: UserEntity)
 
 
 }

@@ -238,7 +238,7 @@ class CrudServiceRenderer(
                 val isSystemManaged = manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
                 if (isSystemManaged) addImportFor<Instant>()
                 val joinDtoFieldName = "${otherSideFieldName}Entities"
-                val effectiveFromValue = if (isSystemManaged) "Instant.now()" else "joinDto.effectiveFrom"
+                val effectiveFromValue = if (isSystemManaged) "this.${joinRepoFieldName}.currentDbTimestamp()" else "joinDto.effectiveFrom"
                 val effectiveToValue = if (isSystemManaged) "null" else "joinDto.effectiveTo"
                 val extraArgs = manyToManyEntityDef.entityDef.allFieldsRequiredInCreateRequest
                     .asSequence()
@@ -607,7 +607,7 @@ class CrudServiceRenderer(
 
                 val isSystemManaged = manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
                 val findByMethodName = if (isSystemManaged) "findEffectiveBy${thisSideFieldNameCapitalized}" else "findBy${thisSideFieldNameCapitalized}"
-                val effectiveFromValue = if (isSystemManaged) "Instant.now()" else "joinDto.effectiveFrom"
+                val effectiveFromValue = if (isSystemManaged) "this.${joinRepoFieldName}.currentDbTimestamp()" else "joinDto.effectiveFrom"
                 val effectiveToValue = if (isSystemManaged) "null" else "joinDto.effectiveTo"
 
                 // findEffectiveBy returns a single nullable entity (not a List) when hasSingleEffectiveRecord is set.
@@ -937,8 +937,9 @@ class CrudServiceRenderer(
             return
         }
 
+        // The repo's findByPrimaryKey functions take the PK class for a composite key, else the key field(s).
         val primaryKeyFieldNamesCsv = if (this.entityDef.hasCompositePrimaryKey) {
-            this.entityDef.primaryKeyClassFields.joinToString(", ") { "updater.primaryKey.${it.classFieldName.value}" }
+            "updater.primaryKey"
         } else {
             this.entityDef.primaryKeyClassFields.joinToString(", ") { "updater.${it.classFieldName.value}" }
         }
@@ -947,22 +948,37 @@ class CrudServiceRenderer(
         blankLine()
         blankLine()
         appendTransactional()
-        append("""    fun setFields(updater: ${this.entityDef.entityBaseName}EntityUpdater): Int {
-            |
-            |        val count = this.entityRepo.setFields(updater)
-            |""".trimMargin()
-        )
 
         if (this.entityDef.crudDef.withCrudListener.value) {
-            appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityUpdated($primaryKeyFieldNamesCsv)")
-        }
 
-        append("""
-            |        return count
-            |        
-            |    }
-            |""".trimMargin()
-        )
+            append("""    fun setFields(updater: ${this.entityDef.entityBaseName}EntityUpdater): Int {
+                |
+                |        val before = this.entityRepo.findByPrimaryKeyOrNull($primaryKeyFieldNamesCsv)
+                |        val count = this.entityRepo.setFields(updater)
+                |
+                |        if (count > 0 && before != null) {
+                |            val after = this.entityRepo.findByPrimaryKey($primaryKeyFieldNamesCsv)
+                |            this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityUpdated(before, after)
+                |        }
+                |
+                |        return count
+                |
+                |    }
+                |""".trimMargin()
+            )
+
+        } else {
+
+            append("""    fun setFields(updater: ${this.entityDef.entityBaseName}EntityUpdater): Int {
+                |
+                |        val count = this.entityRepo.setFields(updater)
+                |        return count
+                |        
+                |    }
+                |""".trimMargin()
+            )
+
+        }
 
     }
 
@@ -1005,6 +1021,8 @@ class CrudServiceRenderer(
             blankLine()
             appendLine("        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull($primaryKeyFieldNamesCsv)")
             appendLine("                ?: return")
+            blankLine()
+            appendLine("        this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityBeforeDelete(entityToDelete)")
 
         }
 

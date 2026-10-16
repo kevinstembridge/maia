@@ -1111,6 +1111,29 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoBlotterPageDef = blotterPage(bravoBlotterDef)
 
 
+    val bravoEsSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "BravoEs",
+        entityDef = bravoEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        elasticsearchEnabled(version = 1, autoRefresh = true)
+        field("dtoStringFromAlpha", "alpha.someString")
+        field("dtoStringFromBravo", "someString")
+        field("dtoIntFromBravo", "someInt")
+        field("createdTimestamp")
+    }
+
+
+    val bravoEsBlotterDef = blotter(bravoEsSearchableDtoDef) {
+        columnFromDto("id")
+        columnFromDto("dtoStringFromAlpha")
+        columnFromDto("dtoStringFromBravo")
+        columnFromDto("dtoIntFromBravo")
+        columnFromDto("createdTimestamp")
+    }
+
+
     val charlieSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.join",
         "Charlie",
@@ -1267,7 +1290,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val alphaWithHistoryTypeaheadDef = typeahead(
         "org.maiaframework.showcase.join",
         "AlphaWithHistory",
-        alphaEntityDef,
+        alphaWithHistoryEntityDef,
         sortFieldName = "someString",
         searchTermFieldName = "someString",
         indexVersion = 1
@@ -1813,6 +1836,20 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("createdTimestamp", "createdTimestamp")
         field("someIntFromLeft", "someInt")
         field("someStringFromLeft", "someString")
+    }
+
+
+    val leftManyEsSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.many_to_many",
+        "LeftManyEs",
+        entityDef = leftManyEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        elasticsearchEnabled(version = 1, autoRefresh = true)
+        elasticsearchEnabled(version = 2, autoRefresh = true)
+        field("someStringFromLeft", "someString")
+        field("someIntFromLeft", "someInt")
+        manyToManyField("rightEntities", leftToRightComplexEntityDef)
     }
 
 

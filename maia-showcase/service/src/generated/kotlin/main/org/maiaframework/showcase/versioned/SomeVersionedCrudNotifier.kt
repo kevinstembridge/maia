@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.versioned
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,19 @@ class SomeVersionedCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: SomeVersionedEntity, after: SomeVersionedEntity) {
 
         this.someVersionedCrudListeners.forEach { (_, listener) ->
-            listener.onSomeVersionedEntityUpdated(id)
+            listener.onSomeVersionedEntityUpdated(before, after)
+        }
+
+    }
+
+
+    fun onEntityBeforeDelete(entity: SomeVersionedEntity) {
+
+        this.someVersionedCrudListeners.forEach { (_, listener) ->
+            listener.onSomeVersionedEntityBeforeDelete(entity)
         }
 
     }

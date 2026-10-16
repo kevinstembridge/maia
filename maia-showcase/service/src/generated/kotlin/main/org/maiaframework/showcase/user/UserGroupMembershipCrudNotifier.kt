@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.user
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,10 @@ class UserGroupMembershipCrudNotifier : ApplicationContextAware, InitializingBea
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: UserGroupMembershipEntity, after: UserGroupMembershipEntity) {
 
         this.userGroupMembershipCrudListeners.forEach { (_, listener) ->
-            listener.onUserGroupMembershipEntityUpdated(id)
+            listener.onUserGroupMembershipEntityUpdated(before, after)
         }
 
     }

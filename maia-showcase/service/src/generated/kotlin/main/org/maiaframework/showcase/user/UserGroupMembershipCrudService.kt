@@ -128,10 +128,16 @@ class UserGroupMembershipCrudService(
     @Transactional
     fun setFields(updater: UserGroupMembershipEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
         val count = this.entityRepo.setFields(updater)
-        this.userGroupMembershipCrudNotifier.onEntityUpdated(updater.id)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.id)
+            this.userGroupMembershipCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 

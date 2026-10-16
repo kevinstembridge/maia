@@ -389,10 +389,16 @@ class AllFieldTypesCrudService(
     @Transactional
     fun setFields(updater: AllFieldTypesEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
         val count = this.entityRepo.setFields(updater)
-        this.allFieldTypesCrudNotifier.onEntityUpdated(updater.id)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.id)
+            this.allFieldTypesCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 
@@ -402,6 +408,8 @@ class AllFieldTypesCrudService(
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return
+
+        this.allFieldTypesCrudNotifier.onEntityBeforeDelete(entityToDelete)
 
         this.entityRepo.deleteByPrimaryKey(id)
         this.allFieldTypesCrudNotifier.onEntityDeleted(entityToDelete)

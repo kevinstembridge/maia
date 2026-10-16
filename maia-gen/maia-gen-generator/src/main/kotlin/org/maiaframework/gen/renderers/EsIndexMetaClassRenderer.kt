@@ -91,7 +91,10 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
 
     private fun appendLineFor(fieldName: String, mappingType: EsDocMappingType) {
 
-        appendLine("            m.properties(\"$fieldName\", Property.of { p -> p.$mappingType { it } })")
+        // the ES client's builder method for some types is a Kotlin keyword (e.g. object), so it must be backtick-escaped
+        val builderMethodName = if (mappingType is ObjectEsDocMappingType) "`$mappingType`" else "$mappingType"
+
+        appendLine("            m.properties(\"$fieldName\", Property.of { p -> p.$builderMethodName { it } })")
 
     }
 

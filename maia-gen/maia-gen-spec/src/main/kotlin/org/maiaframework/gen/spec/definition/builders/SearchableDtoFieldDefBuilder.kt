@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition.builders
 
 import org.maiaframework.domain.persist.SortDirection
 import org.maiaframework.gen.spec.definition.EntityAndField
+import org.maiaframework.gen.spec.definition.EsDocMappingType
 import org.maiaframework.gen.spec.definition.FieldDisplayName
 import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.ResponseDtoFieldDef
@@ -42,6 +43,9 @@ class SearchableDtoFieldDefBuilder(
 
 
     private var isFilterable = true
+
+
+    private var esMappingOverride: EsDocMappingType? = null
 
 
     private val fieldReaderParameterizedType: ParameterizedType? = null
@@ -85,7 +89,8 @@ class SearchableDtoFieldDefBuilder(
             responseDtoFieldDef,
             this.entityAndField,
             this.fieldPath,
-            this.sortIndexAndDirection
+            this.sortIndexAndDirection,
+            this.esMappingOverride
         )
 
     }
@@ -101,6 +106,15 @@ class SearchableDtoFieldDefBuilder(
         this.isMasked = true
         return this
 
+    }
+
+
+    /**
+     * Overrides the type-derived default Elasticsearch mapping for this field.
+     * Required when the field type has no default mapping.
+     */
+    fun esMapping(type: EsDocMappingType) {
+        this.esMappingOverride = type
     }
 
 

@@ -104,10 +104,16 @@ class CharlieCrudService(
     @Transactional
     fun setFields(updater: CharlieEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
         val count = this.entityRepo.setFields(updater)
-        this.charlieCrudNotifier.onEntityUpdated(updater.id)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.id)
+            this.charlieCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 
@@ -116,6 +122,8 @@ class CharlieCrudService(
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return
+
+        this.charlieCrudNotifier.onEntityBeforeDelete(entityToDelete)
 
         this.entityRepo.deleteByPrimaryKey(id)
         this.charlieCrudNotifier.onEntityDeleted(entityToDelete)

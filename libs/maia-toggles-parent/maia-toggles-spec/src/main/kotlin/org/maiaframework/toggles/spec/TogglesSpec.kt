@@ -117,6 +117,7 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
             pathPrefix("/api/ops/toggles")
         }
         crud {
+            withCrudListener(false)
             authority(writeAuthority)
             customCrudServiceFqcn("org.maiaframework.toggles.ToggleCrudService")
             update {

@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.join
 
-import org.maiaframework.domain.DomainId
 
 
 interface CharlieAgGridCrudListener {
@@ -12,7 +11,10 @@ interface CharlieAgGridCrudListener {
     fun onCharlieAgGridEntityCreated(entity: CharlieAgGridEntity)
 
 
-    fun onCharlieAgGridEntityUpdated(id: DomainId)
+    fun onCharlieAgGridEntityUpdated(before: CharlieAgGridEntity, after: CharlieAgGridEntity)
+
+
+    fun onCharlieAgGridEntityBeforeDelete(entity: CharlieAgGridEntity) {}
 
 
     fun onCharlieAgGridEntityDeleted(entity: CharlieAgGridEntity)

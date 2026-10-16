@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.all_field_types
 
-import org.maiaframework.domain.DomainId
 
 
 interface AllFieldTypesCrudListener {
@@ -12,7 +11,10 @@ interface AllFieldTypesCrudListener {
     fun onAllFieldTypesEntityCreated(entity: AllFieldTypesEntity)
 
 
-    fun onAllFieldTypesEntityUpdated(id: DomainId)
+    fun onAllFieldTypesEntityUpdated(before: AllFieldTypesEntity, after: AllFieldTypesEntity)
+
+
+    fun onAllFieldTypesEntityBeforeDelete(entity: AllFieldTypesEntity) {}
 
 
     fun onAllFieldTypesEntityDeleted(entity: AllFieldTypesEntity)

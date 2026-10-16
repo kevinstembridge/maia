@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.join
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,19 @@ class BravoWithHistoryCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: BravoWithHistoryEntity, after: BravoWithHistoryEntity) {
 
         this.bravoWithHistoryCrudListeners.forEach { (_, listener) ->
-            listener.onBravoWithHistoryEntityUpdated(id)
+            listener.onBravoWithHistoryEntityUpdated(before, after)
+        }
+
+    }
+
+
+    fun onEntityBeforeDelete(entity: BravoWithHistoryEntity) {
+
+        this.bravoWithHistoryCrudListeners.forEach { (_, listener) ->
+            listener.onBravoWithHistoryEntityBeforeDelete(entity)
         }
 
     }

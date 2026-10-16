@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.many_to_many
 
-import org.maiaframework.domain.DomainId
 
 
 interface LeftManyCrudListener {
@@ -12,7 +11,10 @@ interface LeftManyCrudListener {
     fun onLeftManyEntityCreated(entity: LeftManyEntity)
 
 
-    fun onLeftManyEntityUpdated(id: DomainId)
+    fun onLeftManyEntityUpdated(before: LeftManyEntity, after: LeftManyEntity)
+
+
+    fun onLeftManyEntityBeforeDelete(entity: LeftManyEntity) {}
 
 
     fun onLeftManyEntityDeleted(entity: LeftManyEntity)

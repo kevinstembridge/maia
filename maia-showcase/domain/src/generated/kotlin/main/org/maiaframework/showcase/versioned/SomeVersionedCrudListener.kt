@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.versioned
 
-import org.maiaframework.domain.DomainId
 
 
 interface SomeVersionedCrudListener {
@@ -12,7 +11,10 @@ interface SomeVersionedCrudListener {
     fun onSomeVersionedEntityCreated(entity: SomeVersionedEntity)
 
 
-    fun onSomeVersionedEntityUpdated(id: DomainId)
+    fun onSomeVersionedEntityUpdated(before: SomeVersionedEntity, after: SomeVersionedEntity)
+
+
+    fun onSomeVersionedEntityBeforeDelete(entity: SomeVersionedEntity) {}
 
 
     fun onSomeVersionedEntityDeleted(entity: SomeVersionedEntity)

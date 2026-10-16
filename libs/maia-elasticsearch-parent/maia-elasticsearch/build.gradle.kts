@@ -21,6 +21,7 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm")
 
     implementation("org.springframework:spring-context")
+    implementation("org.springframework:spring-tx")
     implementation("org.apache.logging.log4j:log4j-to-slf4j")
 
     testImplementation("org.assertj:assertj-core")

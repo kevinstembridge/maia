@@ -112,10 +112,16 @@ class CompositePrimaryKeyCrudService(
     @Transactional
     fun setFields(updater: CompositePrimaryKeyEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.primaryKey)
         val count = this.entityRepo.setFields(updater)
-        this.compositePrimaryKeyCrudNotifier.onEntityUpdated(updater.primaryKey.someInt, updater.primaryKey.someString)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.primaryKey)
+            this.compositePrimaryKeyCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 
@@ -125,6 +131,8 @@ class CompositePrimaryKeyCrudService(
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(primaryKey)
                 ?: return
+
+        this.compositePrimaryKeyCrudNotifier.onEntityBeforeDelete(entityToDelete)
 
         this.entityRepo.deleteByPrimaryKey(primaryKey)
         this.compositePrimaryKeyCrudNotifier.onEntityDeleted(entityToDelete)

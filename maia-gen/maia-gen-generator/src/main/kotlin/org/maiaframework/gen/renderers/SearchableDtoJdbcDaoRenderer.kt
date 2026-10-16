@@ -1,8 +1,12 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.domain.types.TypeDiscriminator
 import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.spec.definition.ApplicationModelDef
+import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.JoinHop
 import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SimpleSearchableDtoFieldDef
@@ -14,13 +18,16 @@ import org.maiaframework.gen.spec.definition.lang.Fqcn
 
 class SearchableDtoJdbcDaoRenderer(
     private val searchableDtoDef: SearchableDtoDef,
-    applicationModelDef: ApplicationModelDef
+    private val applicationModelDef: ApplicationModelDef
 ): AbstractKotlinRenderer(
     searchableDtoDef.dtoDaoClassDef
 ) {
 
 
     private val entityDef = searchableDtoDef.dtoRootEntityDef
+
+
+    private val esEnabled = searchableDtoDef.esDocDefs.isNotEmpty()
 
 
     private val dtoUqcn = searchableDtoDef.uqcn
@@ -153,23 +160,10 @@ class SearchableDtoJdbcDaoRenderer(
 
     private fun `render typeDiscriminatorExpression class field`() {
 
-        when {
+        typeDiscriminatorPredicate("type_discriminator")?.let {
 
-            typeDiscriminators.size == 1 -> {
-
-                blankLine()
-                appendLine("    private val typeDiscriminatorExpression = \"type_discriminator = '${typeDiscriminators.first()}'\"")
-
-            }
-
-            typeDiscriminators.size > 1 -> {
-
-                val text = typeDiscriminators.joinToString(", ") { "'${it.value}'" }
-
-                blankLine()
-                appendLine("    private val typeDiscriminatorExpression = \"type_discriminator in ($text)\"")
-
-            }
+            blankLine()
+            appendLine("    private val typeDiscriminatorExpression = \"$it\"")
 
         }
 
@@ -179,6 +173,9 @@ class SearchableDtoJdbcDaoRenderer(
     override fun renderFunctions() {
 
         `render function findById`()
+        `render function findByIds`()
+        `render function findAllAsSequence`()
+        `render functions findRootIdsVia`()
         `render function search`()
         `render function count`()
 //        `render function buildWhereClauseFor`()
@@ -205,17 +202,192 @@ class SearchableDtoJdbcDaoRenderer(
         appendLine("        val sqlParams = SqlParams().addValue(\"id\", id)")
         blankLine()
         appendLine("        val sql = \"\"\"")
-        appendLine("            select ")
-        renderStrings(selectColumns, indent = 16)
-        newLine()
-        appendLine("            from $rootEntitySchemaAndTable")
-        joinClauses.forEach { appendLine("            $it") }
-        appendLine("            where id = :id")
+        renderSelectFromAndJoins()
+        appendLine("            where ${rootIdColumn()} = :id")
         appendLine("            \"\"\".trimIndent()")
         blankLine()
         appendLine("        return this.jdbcOps.queryForObjectOrNull(sql, sqlParams, this.dtoRowMapper)")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render function findByIds`() {
+
+        if (esEnabled.not()) {
+            return
+        }
+
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
+        addImportFor(Fqcns.SQL_TYPES)
+
+        blankLine()
+        blankLine()
+        appendLine("    fun findByIds(ids: Collection<DomainId>): List<$dtoUqcn> {")
+        blankLine()
+        appendLine("        if (ids.isEmpty()) return emptyList()")
+        blankLine()
+        appendLine("        val sqlParams = SqlParams().addValue(\"ids\", ids.map { it.value }, Types.OTHER)")
+        blankLine()
+        appendLine("        val sql = \"\"\"")
+        renderSelectFromAndJoins()
+        appendLine("            where ${rootIdColumn()} in (:ids)")
+        typeDiscriminatorPredicate()?.let { appendLine("            and $it") }
+        appendLine("            \"\"\".trimIndent()")
+        blankLine()
+        appendLine("        return this.jdbcOps.queryForList(sql, sqlParams, this.dtoRowMapper)")
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
+    private fun `render function findAllAsSequence`() {
+
+        if (esEnabled.not()) {
+            return
+        }
+
+        addImportFor(Fqcns.MAIA_SQL_PARAMS)
+
+        blankLine()
+        blankLine()
+        appendLine("    fun findAllAsSequence(): Sequence<$dtoUqcn> {")
+        blankLine()
+        appendLine("        val sql = \"\"\"")
+        renderSelectFromAndJoins()
+        typeDiscriminatorPredicate()?.let { appendLine("            where $it") }
+        appendLine("            \"\"\".trimIndent()")
+        blankLine()
+        appendLine("        return this.jdbcOps.queryForSequence(sql, SqlParams(), this.dtoRowMapper)")
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
+    private fun `render functions findRootIdsVia`() {
+
+        EsReverseJoins.reverseJoinsFor(searchableDtoDef).forEach { reverseJoin ->
+
+            addImportFor(Fqcns.MAIA_DOMAIN_ID)
+            addImportFor(Fqcns.MAIA_SQL_PARAMS)
+
+            blankLine()
+            blankLine()
+            appendLine("    fun ${reverseJoin.functionName}(id: DomainId): List<DomainId> {")
+            blankLine()
+            appendLine("        val sqlParams = SqlParams().addValue(\"id\", id)")
+            blankLine()
+            appendLine("        val sql = \"\"\"")
+
+            reverseJoin.dependency.pathsFromRoot.forEachIndexed { index, path ->
+
+                if (index > 0) {
+                    appendLine("            union")
+                }
+
+                renderReverseJoinSelect(path, reverseJoin.primaryKeyField)
+
+            }
+
+            appendLine("            \"\"\".trimIndent()")
+            blankLine()
+            appendLine("        return this.jdbcOps.queryForList(sql, sqlParams) { rsa -> rsa.readDomainId(\"id\") }")
+            blankLine()
+            appendLine("    }")
+
+        }
+
+    }
+
+
+    /**
+     * One select of the root ids reachable from a row of the path's last entity. Each hop's table is
+     * aliased by its index so the same table can appear more than once in a path; the root table stays
+     * unaliased, as in the other queries of this DAO.
+     */
+    private fun renderReverseJoinSelect(path: List<JoinHop>, primaryKeyField: EntityFieldDef) {
+
+        appendLine("            select distinct ${rootIdColumn()} as id")
+        appendLine("            from $rootEntitySchemaAndTable")
+
+        path.forEachIndexed { index, hop ->
+
+            val source = if (index == 0) rootEntitySchemaAndTable else hopAlias(index - 1)
+
+            appendLine("            inner join ${hop.toEntity.schemaAndTableName} ${hopAlias(index)}")
+            appendLine("                    on $source.${hop.fromField.tableColumnName} = ${hopAlias(index)}.${hop.toField.tableColumnName}")
+
+        }
+
+        appendLine("            where ${hopAlias(path.lastIndex)}.${primaryKeyField.tableColumnName} = :id")
+
+        typeDiscriminatorPredicate()?.let { appendLine("            and $it") }
+
+        path.forEachIndexed { index, hop ->
+            subclassTypeDiscriminatorPredicate(hop.toEntity, "${hopAlias(index)}.type_discriminator")?.let { appendLine("            and $it") }
+        }
+
+    }
+
+
+    private fun hopAlias(hopIndex: Int) = "h$hopIndex"
+
+
+    /**
+     * A subclass entity shares its superclass's table, so rows reached through a hop into it are
+     * restricted to the discriminators of that entity and its own subclasses.
+     */
+    private fun subclassTypeDiscriminatorPredicate(entityDef: EntityDef, column: String): String? {
+
+        if (entityDef.superclassEntityDef == null) {
+            return null
+        }
+
+        val discriminators = applicationModelDef.entityHierarchyFor(entityDef).typeDiscriminators()
+
+        return typeDiscriminatorPredicate(column, discriminators)
+
+    }
+
+
+    private fun renderSelectFromAndJoins() {
+
+        appendLine("            select ")
+        renderStrings(selectColumns, indent = 16)
+        newLine()
+        appendLine("            from $rootEntitySchemaAndTable")
+        joinClauses.forEach { appendLine("            $it") }
+
+    }
+
+
+    // The root id must be qualified because joined tables also have an "id" column.
+    private fun rootIdColumn() = "$rootEntitySchemaAndTable.id"
+
+
+    // Same predicate as typeDiscriminatorExpression, but qualified with the root table because a joined
+    // table in a type-discriminator hierarchy would also have a type_discriminator column.
+    private fun typeDiscriminatorPredicate(): String? {
+
+        return typeDiscriminatorPredicate("$rootEntitySchemaAndTable.type_discriminator")
+
+    }
+
+
+    private fun typeDiscriminatorPredicate(
+        column: String,
+        discriminators: Collection<TypeDiscriminator> = typeDiscriminators
+    ): String? {
+
+        return when {
+            discriminators.size == 1 -> "$column = '${discriminators.first()}'"
+            discriminators.size > 1 -> "$column in (${discriminators.joinToString(", ") { "'${it.value}'" }})"
+            else -> null
+        }
 
     }
 

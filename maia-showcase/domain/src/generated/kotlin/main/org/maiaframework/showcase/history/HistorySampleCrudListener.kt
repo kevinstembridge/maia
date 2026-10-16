@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.history
 
-import org.maiaframework.domain.DomainId
 
 
 interface HistorySampleCrudListener {
@@ -12,7 +11,10 @@ interface HistorySampleCrudListener {
     fun onHistorySampleEntityCreated(entity: HistorySampleEntity)
 
 
-    fun onHistorySampleEntityUpdated(id: DomainId)
+    fun onHistorySampleEntityUpdated(before: HistorySampleEntity, after: HistorySampleEntity)
+
+
+    fun onHistorySampleEntityBeforeDelete(entity: HistorySampleEntity) {}
 
 
     fun onHistorySampleEntityDeleted(entity: HistorySampleEntity)

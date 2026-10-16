@@ -154,10 +154,16 @@ class LeftToRightComplexCrudService(
     @Transactional
     fun setFields(updater: LeftToRightComplexEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
         val count = this.entityRepo.setFields(updater)
-        this.leftToRightComplexCrudNotifier.onEntityUpdated(updater.id)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.id)
+            this.leftToRightComplexCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 
@@ -167,6 +173,8 @@ class LeftToRightComplexCrudService(
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return
+
+        this.leftToRightComplexCrudNotifier.onEntityBeforeDelete(entityToDelete)
 
         this.entityRepo.deleteByPrimaryKey(id)
         this.leftToRightComplexCrudNotifier.onEntityDeleted(entityToDelete)

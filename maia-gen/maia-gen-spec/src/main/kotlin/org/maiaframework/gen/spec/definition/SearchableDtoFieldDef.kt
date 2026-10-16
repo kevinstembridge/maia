@@ -33,7 +33,8 @@ class SimpleSearchableDtoFieldDef(
     val responseDtoFieldDef: ResponseDtoFieldDef,
     val entityAndField: EntityAndField,
     val fieldPath: FieldPath,
-    sortIndexAndDirection: SortIndexAndDirection?
+    sortIndexAndDirection: SortIndexAndDirection?,
+    val esMappingOverride: EsDocMappingType? = null
 ): SearchableDtoFieldDef(
     responseDtoFieldDef.classFieldDef,
     sortIndexAndDirection
@@ -71,7 +72,8 @@ class SimpleSearchableDtoFieldDef(
             this.responseDtoFieldDef.copyWithFieldName(dtoFieldName),
             this.entityAndField,
             this.fieldPath,
-            this.sortIndexAndDirection
+            this.sortIndexAndDirection,
+            this.esMappingOverride
         )
 
     }

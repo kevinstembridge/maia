@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.simple
 
-import org.maiaframework.domain.DomainId
 
 
 interface SimpleCrudListener {
@@ -12,7 +11,10 @@ interface SimpleCrudListener {
     fun onSimpleEntityCreated(entity: SimpleEntity)
 
 
-    fun onSimpleEntityUpdated(id: DomainId)
+    fun onSimpleEntityUpdated(before: SimpleEntity, after: SimpleEntity)
+
+
+    fun onSimpleEntityBeforeDelete(entity: SimpleEntity) {}
 
 
     fun onSimpleEntityDeleted(entity: SimpleEntity)

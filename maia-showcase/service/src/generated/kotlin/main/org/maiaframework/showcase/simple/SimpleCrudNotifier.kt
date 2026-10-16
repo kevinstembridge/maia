@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.simple
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,19 @@ class SimpleCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: SimpleEntity, after: SimpleEntity) {
 
         this.simpleCrudListeners.forEach { (_, listener) ->
-            listener.onSimpleEntityUpdated(id)
+            listener.onSimpleEntityUpdated(before, after)
+        }
+
+    }
+
+
+    fun onEntityBeforeDelete(entity: SimpleEntity) {
+
+        this.simpleCrudListeners.forEach { (_, listener) ->
+            listener.onSimpleEntityBeforeDelete(entity)
         }
 
     }

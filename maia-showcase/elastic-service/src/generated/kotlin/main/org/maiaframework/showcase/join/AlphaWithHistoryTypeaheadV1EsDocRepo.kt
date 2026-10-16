@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class AlphaWithHistoryTypeaheadV1EsDocRepo(private val entityRepo: AlphaRepo) {
+class AlphaWithHistoryTypeaheadV1EsDocRepo(private val entityRepo: AlphaWithHistoryRepo) {
 
 
     fun findByPrimaryKey(id: DomainId): AlphaWithHistoryTypeaheadV1EsDoc {
@@ -26,7 +26,7 @@ class AlphaWithHistoryTypeaheadV1EsDocRepo(private val entityRepo: AlphaRepo) {
     }
 
 
-    private fun buildEsDoc(entity: AlphaEntity): AlphaWithHistoryTypeaheadV1EsDoc {
+    private fun buildEsDoc(entity: AlphaWithHistoryEntity): AlphaWithHistoryTypeaheadV1EsDoc {
 
         val id = entity.id
         val someString = entity.someString

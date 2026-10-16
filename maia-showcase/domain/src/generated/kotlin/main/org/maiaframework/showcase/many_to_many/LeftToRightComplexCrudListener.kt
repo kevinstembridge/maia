@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.many_to_many
 
-import org.maiaframework.domain.DomainId
 
 
 interface LeftToRightComplexCrudListener {
@@ -12,7 +11,10 @@ interface LeftToRightComplexCrudListener {
     fun onLeftToRightComplexEntityCreated(entity: LeftToRightComplexEntity)
 
 
-    fun onLeftToRightComplexEntityUpdated(id: DomainId)
+    fun onLeftToRightComplexEntityUpdated(before: LeftToRightComplexEntity, after: LeftToRightComplexEntity)
+
+
+    fun onLeftToRightComplexEntityBeforeDelete(entity: LeftToRightComplexEntity) {}
 
 
     fun onLeftToRightComplexEntityDeleted(entity: LeftToRightComplexEntity)

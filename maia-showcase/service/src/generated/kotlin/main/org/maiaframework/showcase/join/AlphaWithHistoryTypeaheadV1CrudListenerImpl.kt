@@ -3,29 +3,28 @@
 
 package org.maiaframework.showcase.join
 
-import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Service
 
 
 @Service
-class AlphaWithHistoryTypeaheadV1CrudListenerImpl(private val indexService: AlphaWithHistoryTypeaheadV1IndexService) : AlphaCrudListener {
+class AlphaWithHistoryTypeaheadV1CrudListenerImpl(private val indexService: AlphaWithHistoryTypeaheadV1IndexService) : AlphaWithHistoryCrudListener {
 
 
-    override fun onAlphaEntityCreated(entity: AlphaEntity) {
+    override fun onAlphaWithHistoryEntityCreated(entity: AlphaWithHistoryEntity) {
 
         this.indexService.refreshById(entity.id)
 
     }
 
 
-    override fun onAlphaEntityUpdated(id: DomainId) {
+    override fun onAlphaWithHistoryEntityUpdated(before: AlphaWithHistoryEntity, after: AlphaWithHistoryEntity) {
 
-        this.indexService.refreshById(id)
+        this.indexService.refreshById(after.id)
 
     }
 
 
-    override fun onAlphaEntityDeleted(entity: AlphaEntity) {
+    override fun onAlphaWithHistoryEntityDeleted(entity: AlphaWithHistoryEntity) {
 
         this.indexService.deleteById(entity.id)
 

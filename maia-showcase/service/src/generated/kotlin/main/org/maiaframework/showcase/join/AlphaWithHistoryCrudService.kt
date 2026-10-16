@@ -133,10 +133,16 @@ class AlphaWithHistoryCrudService(
     @Transactional
     fun setFields(updater: AlphaWithHistoryEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
         val count = this.entityRepo.setFields(updater)
-        this.alphaWithHistoryCrudNotifier.onEntityUpdated(updater.id)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.id)
+            this.alphaWithHistoryCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 
@@ -154,6 +160,8 @@ class AlphaWithHistoryCrudService(
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return
+
+        this.alphaWithHistoryCrudNotifier.onEntityBeforeDelete(entityToDelete)
 
         this.entityRepo.deleteByPrimaryKey(id)
         this.alphaWithHistoryCrudNotifier.onEntityDeleted(entityToDelete)

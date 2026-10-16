@@ -94,7 +94,7 @@ class OrganizationCrudService(
         createDto.roleEntities.forEach { joinDto ->
             this.orgToOrgRoleRepo.insert(
                 OrgToOrgRoleEntity.newInstance(
-                    effectiveFrom = Instant.now(),
+                    effectiveFrom = this.orgToOrgRoleRepo.currentDbTimestamp(),
                     effectiveTo = null,
                     org = entity.id,
                     role = joinDto.roleEntityId
@@ -165,7 +165,7 @@ class OrganizationCrudService(
 
         val newJoins = submitted.filter { it.id == null }.map { joinDto ->
             OrgToOrgRoleEntity.newInstance(
-                effectiveFrom = Instant.now(),
+                effectiveFrom = this.orgToOrgRoleRepo.currentDbTimestamp(),
                 effectiveTo = null,
                 org = id,
                 role = joinDto.roleEntityId
@@ -200,10 +200,16 @@ class OrganizationCrudService(
     @Transactional
     fun setFields(updater: OrganizationEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
         val count = this.entityRepo.setFields(updater)
-        this.organizationCrudNotifier.onEntityUpdated(updater.id)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.id)
+            this.organizationCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 

@@ -6,6 +6,7 @@ package org.maiaframework.showcase.many_to_many
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Repository
+import java.time.Instant
 
 
 @Repository
@@ -53,6 +54,13 @@ class LeftToRightComplexRepo(private val dao: LeftToRightComplexDao) {
     fun findPrimaryKeysAsSequence(filter: LeftToRightComplexEntityFilter): Sequence<DomainId> {
 
         return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
+    fun currentDbTimestamp(): Instant {
+
+        return this.dao.currentDbTimestamp()
 
     }
 

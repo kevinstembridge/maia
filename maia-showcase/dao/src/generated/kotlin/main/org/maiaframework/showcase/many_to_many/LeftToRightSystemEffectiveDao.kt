@@ -255,6 +255,13 @@ class LeftToRightSystemEffectiveDao(
     }
 
 
+    fun currentDbTimestamp(): Instant {
+
+        return this.jdbcOps.queryForObjectOrNull("select clock_timestamp() as now", SqlParams()) { rsa -> rsa.readInstant("now") }!!
+
+    }
+
+
     fun findAllBy(filter: LeftToRightSystemEffectiveEntityFilter): List<LeftToRightSystemEffectiveEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)

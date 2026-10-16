@@ -7,6 +7,7 @@ import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.contact.EmailAddress
 import org.springframework.stereotype.Repository
+import java.time.Instant
 
 
 @Repository
@@ -54,6 +55,13 @@ class PartyEmailAddressRepo(private val dao: PartyEmailAddressDao) {
     fun findPrimaryKeysAsSequence(filter: PartyEmailAddressEntityFilter): Sequence<DomainId> {
 
         return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
+    fun currentDbTimestamp(): Instant {
+
+        return this.dao.currentDbTimestamp()
 
     }
 

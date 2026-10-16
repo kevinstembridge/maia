@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.org
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,10 @@ class OrganizationCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: OrganizationEntity, after: OrganizationEntity) {
 
         this.organizationCrudListeners.forEach { (_, listener) ->
-            listener.onOrganizationEntityUpdated(id)
+            listener.onOrganizationEntityUpdated(before, after)
         }
 
     }

@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.join
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,19 @@ class CharlieAgGridCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: CharlieAgGridEntity, after: CharlieAgGridEntity) {
 
         this.charlieAgGridCrudListeners.forEach { (_, listener) ->
-            listener.onCharlieAgGridEntityUpdated(id)
+            listener.onCharlieAgGridEntityUpdated(before, after)
+        }
+
+    }
+
+
+    fun onEntityBeforeDelete(entity: CharlieAgGridEntity) {
+
+        this.charlieAgGridCrudListeners.forEach { (_, listener) ->
+            listener.onCharlieAgGridEntityBeforeDelete(entity)
         }
 
     }

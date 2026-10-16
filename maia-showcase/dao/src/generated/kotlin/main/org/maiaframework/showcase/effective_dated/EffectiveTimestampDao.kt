@@ -212,6 +212,13 @@ class EffectiveTimestampDao(
     }
 
 
+    fun currentDbTimestamp(): Instant {
+
+        return this.jdbcOps.queryForObjectOrNull("select clock_timestamp() as now", SqlParams()) { rsa -> rsa.readInstant("now") }!!
+
+    }
+
+
     fun findAllBy(filter: EffectiveTimestampEntityFilter): List<EffectiveTimestampEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)

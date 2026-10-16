@@ -14,7 +14,21 @@ import org.maiaframework.gen.spec.definition.lang.Fqcn
 class CrudDefBuilder {
 
 
+    /**
+     * Declaring `crud {}` generates a CrudListener interface and CrudNotifier for the entity, and the generated
+     * CrudService notifies them of every create, update and delete. Call `withCrudListener(false)` inside the
+     * `crud {}` block to leave them out. Typeaheads and Elasticsearch-enabled searchable DTOs that depend on the
+     * entity need the listener, and fail generation if it is turned off.
+     */
     var withCrudListener = WithCrudListener.FALSE
+        internal set
+
+
+    fun withCrudListener(enabled: Boolean) {
+
+        this.withCrudListener = WithCrudListener(enabled)
+
+    }
 
 
     private var authority: AuthorityDef? = null

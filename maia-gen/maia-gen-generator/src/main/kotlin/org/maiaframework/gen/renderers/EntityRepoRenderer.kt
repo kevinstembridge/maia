@@ -85,6 +85,7 @@ class EntityRepoRenderer(
         `render function findAllPrimaryKeysAsSequence`()
         `render function findPrimaryKeysAsSequence`()
         `render function findAllEffective`()
+        `render function currentDbTimestamp`()
         `render function findAllByFilter`()
         `render function findAllByFilterAsSequence`()
         `render finders for indexes`()
@@ -501,6 +502,24 @@ class EntityRepoRenderer(
         appendLine("    fun bulkInsertOfCsvRecords(csvPersistableRecords: List<CsvPersistableRecord>) {")
         blankLine()
         appendLine("        dao.bulkInsertOfCsvRecords(csvPersistableRecords)")
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
+    private fun `render function currentDbTimestamp`() {
+
+        if (!this.entityDef.hasSystemManagedTimestampEffectiveRange()) {
+            return
+        }
+
+        addImportFor<Instant>()
+        blankLine()
+        blankLine()
+        appendLine("    fun currentDbTimestamp(): Instant {")
+        blankLine()
+        appendLine("        return this.dao.currentDbTimestamp()")
         blankLine()
         appendLine("    }")
 

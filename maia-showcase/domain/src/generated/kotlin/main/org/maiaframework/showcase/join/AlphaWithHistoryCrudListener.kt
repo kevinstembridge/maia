@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.join
 
-import org.maiaframework.domain.DomainId
 
 
 interface AlphaWithHistoryCrudListener {
@@ -12,7 +11,10 @@ interface AlphaWithHistoryCrudListener {
     fun onAlphaWithHistoryEntityCreated(entity: AlphaWithHistoryEntity)
 
 
-    fun onAlphaWithHistoryEntityUpdated(id: DomainId)
+    fun onAlphaWithHistoryEntityUpdated(before: AlphaWithHistoryEntity, after: AlphaWithHistoryEntity)
+
+
+    fun onAlphaWithHistoryEntityBeforeDelete(entity: AlphaWithHistoryEntity) {}
 
 
     fun onAlphaWithHistoryEntityDeleted(entity: AlphaWithHistoryEntity)

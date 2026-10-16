@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.many_to_many
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,19 @@ class LeftManyCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: LeftManyEntity, after: LeftManyEntity) {
 
         this.leftManyCrudListeners.forEach { (_, listener) ->
-            listener.onLeftManyEntityUpdated(id)
+            listener.onLeftManyEntityUpdated(before, after)
+        }
+
+    }
+
+
+    fun onEntityBeforeDelete(entity: LeftManyEntity) {
+
+        this.leftManyCrudListeners.forEach { (_, listener) ->
+            listener.onLeftManyEntityBeforeDelete(entity)
         }
 
     }

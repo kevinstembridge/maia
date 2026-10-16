@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.history
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,19 @@ class HistorySampleCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: HistorySampleEntity, after: HistorySampleEntity) {
 
         this.historySampleCrudListeners.forEach { (_, listener) ->
-            listener.onHistorySampleEntityUpdated(id)
+            listener.onHistorySampleEntityUpdated(before, after)
+        }
+
+    }
+
+
+    fun onEntityBeforeDelete(entity: HistorySampleEntity) {
+
+        this.historySampleCrudListeners.forEach { (_, listener) ->
+            listener.onHistorySampleEntityBeforeDelete(entity)
         }
 
     }

@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers
 
-import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.TypeaheadDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 
@@ -67,15 +66,16 @@ class TypeaheadCrudListenerRenderer(
 
     private fun `render function onUpdate`() {
 
-        addImportFor(Fqcns.MAIA_DOMAIN_ID)
-
         this.entityCrudApiDef.updateApiDef?.let {
+
+            val entityUqcn = this.entityCrudApiDef.entityDef.entityUqcn
+
             append("""
                 |
                 |
-                |    override fun on${this.entityCrudApiDef.entityDef.entityUqcn}Updated(id: DomainId) {
+                |    override fun on${entityUqcn}Updated(before: $entityUqcn, after: $entityUqcn) {
                 |
-                |        this.indexService.refreshById(id)
+                |        this.indexService.refreshById(after.id)
                 |
                 |    }
                 |""".trimMargin())

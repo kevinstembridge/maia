@@ -21,6 +21,22 @@ class EsDocDefBuilder(
 
     private val fieldDefs = mutableListOf<EsDocFieldDef>()
 
+    /** `null` means the spec author has not declared a refresh strategy. */
+    var autoRefresh: Boolean? = null
+        private set
+
+
+    /**
+     * Declares how this hand-built EsDoc's index is refreshed. Only `false` is accepted: it means the spec author
+     * refreshes the index themselves (a hand-written index service and/or the scheduled refresh job). Automatic
+     * refresh is only generated for `searchableDto { elasticsearchEnabled() }`.
+     */
+    fun autoRefresh(enabled: Boolean) {
+
+        this.autoRefresh = enabled
+
+    }
+
 
     fun build(): EsDocDef {
 

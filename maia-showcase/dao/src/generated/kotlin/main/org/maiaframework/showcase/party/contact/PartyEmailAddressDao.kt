@@ -294,6 +294,13 @@ class PartyEmailAddressDao(
     }
 
 
+    fun currentDbTimestamp(): Instant {
+
+        return this.jdbcOps.queryForObjectOrNull("select clock_timestamp() as now", SqlParams()) { rsa -> rsa.readInstant("now") }!!
+
+    }
+
+
     fun findAllBy(filter: PartyEmailAddressEntityFilter): List<PartyEmailAddressEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)

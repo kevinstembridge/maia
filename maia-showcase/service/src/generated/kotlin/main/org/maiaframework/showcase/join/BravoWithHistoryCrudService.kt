@@ -153,10 +153,16 @@ class BravoWithHistoryCrudService(
     @Transactional
     fun setFields(updater: BravoWithHistoryEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
         val count = this.entityRepo.setFields(updater)
-        this.bravoWithHistoryCrudNotifier.onEntityUpdated(updater.id)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.id)
+            this.bravoWithHistoryCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 
@@ -166,6 +172,8 @@ class BravoWithHistoryCrudService(
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return
+
+        this.bravoWithHistoryCrudNotifier.onEntityBeforeDelete(entityToDelete)
 
         this.entityRepo.deleteByPrimaryKey(id)
         this.bravoWithHistoryCrudNotifier.onEntityDeleted(entityToDelete)

@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.many_to_many
 
-import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Service
 
 
@@ -18,9 +17,9 @@ class LeftManyTypeaheadV1CrudListenerImpl(private val indexService: LeftManyType
     }
 
 
-    override fun onLeftManyEntityUpdated(id: DomainId) {
+    override fun onLeftManyEntityUpdated(before: LeftManyEntity, after: LeftManyEntity) {
 
-        this.indexService.refreshById(id)
+        this.indexService.refreshById(after.id)
 
     }
 

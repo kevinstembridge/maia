@@ -110,7 +110,7 @@ class LeftManyCrudService(
         createDto.rightSystemEffectiveEntities.forEach { joinDto ->
             this.leftToRightSystemEffectiveRepo.insert(
                 LeftToRightSystemEffectiveEntity.newInstance(
-                    effectiveFrom = Instant.now(),
+                    effectiveFrom = this.leftToRightSystemEffectiveRepo.currentDbTimestamp(),
                     effectiveTo = null,
                     leftSystemEffective = entity.id,
                     rightSystemEffective = joinDto.rightSystemEffectiveEntityId
@@ -129,7 +129,7 @@ class LeftManyCrudService(
         createDto.rightSystemSingleEffectiveEntities.forEach { joinDto ->
             this.leftToRightSystemSingleEffectiveRepo.insert(
                 LeftToRightSystemSingleEffectiveEntity.newInstance(
-                    effectiveFrom = Instant.now(),
+                    effectiveFrom = this.leftToRightSystemSingleEffectiveRepo.currentDbTimestamp(),
                     effectiveTo = null,
                     leftSystemSingleEffective = entity.id,
                     rightSystemSingleEffective = joinDto.rightSystemSingleEffectiveEntityId
@@ -167,7 +167,7 @@ class LeftManyCrudService(
         createDto.rightEntities.forEach { joinDto ->
             this.leftToRightComplexRepo.insert(
                 LeftToRightComplexEntity.newInstance(
-                    effectiveFrom = Instant.now(),
+                    effectiveFrom = this.leftToRightComplexRepo.currentDbTimestamp(),
                     effectiveTo = null,
                     left = entity.id,
                     right = joinDto.rightEntityId,
@@ -270,7 +270,7 @@ class LeftManyCrudService(
 
         val newJoins = submitted.filter { it.id == null }.map { joinDto ->
             LeftToRightSystemEffectiveEntity.newInstance(
-                effectiveFrom = Instant.now(),
+                effectiveFrom = this.leftToRightSystemEffectiveRepo.currentDbTimestamp(),
                 effectiveTo = null,
                 leftSystemEffective = id,
                 rightSystemEffective = joinDto.rightSystemEffectiveEntityId
@@ -316,7 +316,7 @@ class LeftManyCrudService(
 
         val newJoins = submitted.filter { it.id == null }.map { joinDto ->
             LeftToRightSystemSingleEffectiveEntity.newInstance(
-                effectiveFrom = Instant.now(),
+                effectiveFrom = this.leftToRightSystemSingleEffectiveRepo.currentDbTimestamp(),
                 effectiveTo = null,
                 leftSystemSingleEffective = id,
                 rightSystemSingleEffective = joinDto.rightSystemSingleEffectiveEntityId
@@ -422,7 +422,7 @@ class LeftManyCrudService(
 
         val newJoins = (submitted.filter { it.id == null } + modifiedDtos).map { joinDto ->
             LeftToRightComplexEntity.newInstance(
-                effectiveFrom = Instant.now(),
+                effectiveFrom = this.leftToRightComplexRepo.currentDbTimestamp(),
                 effectiveTo = null,
                 left = id,
                 right = joinDto.rightEntityId,
@@ -478,10 +478,16 @@ class LeftManyCrudService(
     @Transactional
     fun setFields(updater: LeftManyEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
         val count = this.entityRepo.setFields(updater)
-        this.leftManyCrudNotifier.onEntityUpdated(updater.id)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.id)
+            this.leftManyCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 
@@ -511,6 +517,8 @@ class LeftManyCrudService(
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return
+
+        this.leftManyCrudNotifier.onEntityBeforeDelete(entityToDelete)
 
         this.entityRepo.deleteByPrimaryKey(id)
         this.leftManyCrudNotifier.onEntityDeleted(entityToDelete)

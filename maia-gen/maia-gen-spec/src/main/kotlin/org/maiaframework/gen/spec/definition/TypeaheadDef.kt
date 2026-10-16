@@ -58,7 +58,12 @@ class TypeaheadDef(
     val entityRepoFqcn = entityDef?.entityRepoFqcn
 
 
-    val entityCrudApiDef = entityDef?.entityCrudApiDef
+    val entityCrudApiDef = entityDef?.entityCrudApiDef?.also {
+        require(it.entityDef.crudDef.withCrudListener.value) {
+            "Typeahead $typeaheadNameAndVersion keeps its index in step through the CrudListener of entity " +
+                "${it.entityDef.entityBaseName}, but that entity declares withCrudListener(false) in its crud {} block"
+        }
+    }
 
 
     val esIndexClassDef = aClassDef(packageName.uqcn("${typeaheadNameAndVersion}EsIndex"))

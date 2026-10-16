@@ -116,6 +116,7 @@ class CrudNotifierRenderer(
 
         `render function onEntityCreated`()
         `render function onEntityUpdated`()
+        `render function onEntityBeforeDelete`()
         `render function onEntityDeleted`()
 
     }
@@ -199,16 +200,30 @@ class CrudNotifierRenderer(
 
         if (someEntityDef.crudDef.withCrudListener.value) {
 
-            val primaryKeyFieldNamesCsv = fieldNamesCsv(someEntityDef.primaryKeyClassFields)
-
             blankLine()
             appendLine("        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
-            appendLine("            listener.on${someEntityDef.entityUqcn}Updated($primaryKeyFieldNamesCsv)")
+            appendLine("            listener.on${someEntityDef.entityUqcn}Updated(before, after)")
             appendLine("        }")
 
         }
 
         someEntityDef.superclassEntityDef?.let { renderNotificationOfUpdateListeners(it) }
+
+    }
+
+
+    private fun renderNotificationOfBeforeDeleteListeners(someEntityDef: EntityDef) {
+
+        someEntityDef.entityCrudApiDef?.deleteApiDef?.let {
+
+            blankLine()
+            appendLine("        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
+            appendLine("            listener.on${it.entityDef.entityUqcn}BeforeDelete(entity)")
+            appendLine("        }")
+
+        }
+
+        someEntityDef.superclassEntityDef?.let { renderNotificationOfBeforeDeleteListeners(it) }
 
     }
 
@@ -449,14 +464,12 @@ class CrudNotifierRenderer(
             return
         }
 
-        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
-
-        this.entityDef.primaryKeyClassFields.forEach { addImportFor(it.fieldType)}
+        val entityUqcn = this.entityDef.entityUqcn
 
         append("""
             |
             |
-            |    fun onEntityUpdated($primaryKeyFieldNamesAndTypesCsv) {
+            |    fun onEntityUpdated(before: $entityUqcn, after: $entityUqcn) {
             |""".trimMargin()
         )
 
@@ -469,6 +482,26 @@ class CrudNotifierRenderer(
             |    }
             |""".trimMargin()
         )
+
+    }
+
+
+    private fun `render function onEntityBeforeDelete`() {
+
+        if (this.entityDef.isNotDeletable) {
+            return
+        }
+
+        blankLine()
+        blankLine()
+        appendLine("    fun onEntityBeforeDelete(entity: ${this.entityDef.entityUqcn}) {")
+
+        if (this.entityDef.crudDef.withCrudListener.value) {
+            renderNotificationOfBeforeDeleteListeners(this.entityDef)
+        }
+
+        blankLine()
+        appendLine("    }")
 
     }
 

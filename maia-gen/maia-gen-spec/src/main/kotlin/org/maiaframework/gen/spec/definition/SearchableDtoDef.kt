@@ -41,7 +41,8 @@ class SearchableDtoDef(
     val generateFindById: GenerateFindById,
     val searchModelType: SearchModelType,
     val withProvidedFieldConverter: WithProvidedFieldConverter,
-    val manyToManyJoinEntityDefs: List<JoinEntityDef>
+    val manyToManyJoinEntityDefs: List<JoinEntityDef>,
+    val esVersions: List<EsVersionSpec> = emptyList()
 ) {
 
 
@@ -92,6 +93,34 @@ class SearchableDtoDef(
 
 
     val allFieldsSorted = rootDtoFieldDefs.sortedBy { it.classFieldDef.classFieldName }
+
+
+    val esDocDefs: List<EsDocDef> = esVersions.map { SearchableDtoEsDocFactory.build(packageName, dtoBaseName, allFieldsSorted, idField?.classFieldName, dtoRootEntityDef, it) }
+
+
+    /** The highest-version [EsDocDef], or null when Elasticsearch is not enabled on this searchable DTO. */
+    val esDocDef: EsDocDef? get() = esDocDefs.maxByOrNull { it.esDocVersion }
+
+
+    /**
+     * The entities whose changes can alter this DTO's EsDocs, with the join paths from the root
+     * entity to each of them. Empty unless Elasticsearch is enabled.
+     *
+     * Computed lazily: the CrudListener validation runs on first read. Its consumers, the reverse-join
+     * DTO DAO renderer (Task 8) and the EsDoc CrudListener renderer (Task 9), must read it for every
+     * ES-enabled DTO with at least one `autoRefresh = true` version, so generation fails fast.
+     * Versions with `autoRefresh = false` still trigger validation if this is read, so consumers must
+     * only read it when at least one of [esVersions] has `autoRefresh = true`.
+     */
+    val esRefreshDependencies: List<EsRefreshDependencyDef> by lazy {
+
+        if (esVersions.isEmpty()) {
+            emptyList()
+        } else {
+            EsRefreshDependencyFactory.build(dtoRootEntityDef, dtoBaseName, allFieldsSorted, manyToManyJoinEntityDefs)
+        }
+
+    }
 
 
     val nonManyToManyFields = allFieldsSorted.filterIsInstance<SimpleSearchableDtoFieldDef>()

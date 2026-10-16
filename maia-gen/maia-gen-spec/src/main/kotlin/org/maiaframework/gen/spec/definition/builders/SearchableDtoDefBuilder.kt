@@ -1,9 +1,11 @@
 package org.maiaframework.gen.spec.definition.builders
 
+import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.DtoBaseName
 import org.maiaframework.gen.spec.definition.EntityAndField
 import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.EsVersionSpec
 import org.maiaframework.gen.spec.definition.FieldPath
 import org.maiaframework.gen.spec.definition.JoinEntityDef
 import org.maiaframework.gen.spec.definition.JoinType
@@ -64,6 +66,30 @@ class SearchableDtoDefBuilder(
     private var generateFindById: GenerateFindById = GenerateFindById.FALSE
 
 
+    private val esVersions = mutableListOf<EsVersionSpec>()
+
+
+    /**
+     * Enables Elasticsearch for this searchable DTO, deriving one EsDocDef per declared [version].
+     * Forces generation of find-by-id. May be declared once per version.
+     * [autoRefresh] is currently only recorded; it is consumed by later generator work.
+     */
+    fun elasticsearchEnabled(version: Int = 1, autoRefresh: Boolean = true) {
+
+        require(this.esVersions.none { it.version == version }) { "ES version $version already declared on $dtoBaseName" }
+
+        val pk = this.rootEntityDef.primaryKeyFields.singleOrNull()
+
+        require(pk != null && pk.classFieldDef.fieldType is DomainIdFieldType && pk.tableColumnName.value == "id") {
+            "elasticsearchEnabled on $dtoBaseName requires the root entity ${this.rootEntityDef.entityBaseName} to have a single DomainId primary key named 'id'; found ${this.rootEntityDef.primaryKeyFields.map { it.classFieldName }}"
+        }
+
+        this.esVersions.add(EsVersionSpec(version, autoRefresh))
+        this.generateFindById = GenerateFindById.TRUE
+
+    }
+
+
     fun build(): SearchableDtoDef {
 
         return SearchableDtoDef(
@@ -81,7 +107,8 @@ class SearchableDtoDefBuilder(
             this.generateFindById,
             this.searchModelType,
             this.withProvidedFieldConverter,
-            this.manyToManyJoinEntityDefs.toList()
+            this.manyToManyJoinEntityDefs.toList(),
+            this.esVersions.toList()
         )
 
     }

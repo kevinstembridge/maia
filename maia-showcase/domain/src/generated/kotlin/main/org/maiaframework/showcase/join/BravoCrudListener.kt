@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.join
 
-import org.maiaframework.domain.DomainId
 
 
 interface BravoCrudListener {
@@ -12,7 +11,10 @@ interface BravoCrudListener {
     fun onBravoEntityCreated(entity: BravoEntity)
 
 
-    fun onBravoEntityUpdated(id: DomainId)
+    fun onBravoEntityUpdated(before: BravoEntity, after: BravoEntity)
+
+
+    fun onBravoEntityBeforeDelete(entity: BravoEntity) {}
 
 
     fun onBravoEntityDeleted(entity: BravoEntity)

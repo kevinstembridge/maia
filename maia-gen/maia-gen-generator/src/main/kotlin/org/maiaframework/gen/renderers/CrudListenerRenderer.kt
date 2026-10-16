@@ -2,6 +2,39 @@ package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.EntityDef
 
+
+/**
+ * Which callbacks an entity's CrudListener interface declares. Shared by every renderer that renders or
+ * implements that interface, so that implementations can never diverge from the interface.
+ */
+internal object CrudListenerCallbacks {
+
+
+    fun hasCreateCallback(entityDef: EntityDef): Boolean {
+
+        return entityDef.entityCrudApiDef?.createApiDef != null
+
+    }
+
+
+    fun hasUpdateCallback(entityDef: EntityDef): Boolean {
+
+        return entityDef.entityCrudApiDef?.updateApiDef != null || entityDef.hasModifiableFields()
+
+    }
+
+
+    /** Covers both `on<E>BeforeDelete` (default no-op) and `on<E>Deleted`. */
+    fun hasDeleteCallback(entityDef: EntityDef): Boolean {
+
+        return entityDef.entityCrudApiDef?.deleteApiDef != null
+
+    }
+
+
+}
+
+
 class CrudListenerRenderer(
     private val entityDef: EntityDef
 ) : AbstractKotlinRenderer(
@@ -20,7 +53,7 @@ class CrudListenerRenderer(
 
     private fun `render function onCreate`() {
 
-        this.entityDef.entityCrudApiDef?.createApiDef?.let { _ ->
+        if (CrudListenerCallbacks.hasCreateCallback(this.entityDef)) {
 
             val entityUqcn = this.entityDef.entityUqcn
 
@@ -35,14 +68,12 @@ class CrudListenerRenderer(
 
     private fun `render function onEntityUpdated`() {
 
-        val primaryKeyFieldNamesAndTypesCsv = fieldNamesAndTypesCsv(this.entityDef.primaryKeyClassFields)
+        val entityUqcn = this.entityDef.entityUqcn
 
-        this.entityDef.primaryKeyFields.forEach { addImportFor(it.fieldType) }
-
-        if (this.entityDef.entityCrudApiDef?.updateApiDef != null || this.entityDef.hasModifiableFields()) {
+        if (CrudListenerCallbacks.hasUpdateCallback(this.entityDef)) {
             blankLine()
             blankLine()
-            appendLine("    fun on${this.entityDef.entityUqcn}Updated($primaryKeyFieldNamesAndTypesCsv)")
+            appendLine("    fun on${entityUqcn}Updated(before: $entityUqcn, after: $entityUqcn)")
         }
 
     }
@@ -50,10 +81,17 @@ class CrudListenerRenderer(
 
     private fun `render function onDelete`() {
 
-        this.entityDef.entityCrudApiDef?.deleteApiDef?.let {
+        if (CrudListenerCallbacks.hasDeleteCallback(this.entityDef)) {
+
+            val entityUqcn = this.entityDef.entityUqcn
+
             blankLine()
             blankLine()
-            appendLine("    fun on${this.entityDef.entityUqcn}Deleted(entity: ${this.entityDef.entityUqcn})")
+            appendLine("    fun on${entityUqcn}BeforeDelete(entity: $entityUqcn) {}")
+            blankLine()
+            blankLine()
+            appendLine("    fun on${entityUqcn}Deleted(entity: $entityUqcn)")
+
         }
 
     }

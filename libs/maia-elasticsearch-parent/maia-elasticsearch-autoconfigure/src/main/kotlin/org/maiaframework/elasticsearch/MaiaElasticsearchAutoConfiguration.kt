@@ -5,9 +5,10 @@ import org.maiaframework.elasticsearch.index.ElasticIndexHelper
 import org.maiaframework.elasticsearch.index.ElasticIndexService
 import org.maiaframework.elasticsearch.index.EsIndexActiveVersionManager
 import org.maiaframework.elasticsearch.index.EsIndexControlRegistry
-import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.elasticsearch.index.EsIndexNameLookup
 import org.maiaframework.elasticsearch.index.EsIndexOps
+import org.maiaframework.elasticsearch.index.IndexNameFactory
+import org.maiaframework.elasticsearch.refresh.EsRefreshCollector
 import org.maiaframework.elasticsearch.search.EsSearchExecutor
 import org.maiaframework.elasticsearch.search.EsSearchRequestFactory
 import org.maiaframework.props.Props
@@ -118,6 +119,15 @@ class MaiaElasticsearchAutoConfiguration {
     ): EsIndexNameLookup {
 
         return EsIndexNameLookup(esIndexActiveVersionManager)
+
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun esRefreshCollector(props: Props): EsRefreshCollector {
+
+        return EsRefreshCollector(props)
 
     }
 

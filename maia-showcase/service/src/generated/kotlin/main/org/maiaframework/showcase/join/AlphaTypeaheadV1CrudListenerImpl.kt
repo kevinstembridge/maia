@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.join
 
-import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Service
 
 
@@ -18,9 +17,9 @@ class AlphaTypeaheadV1CrudListenerImpl(private val indexService: AlphaTypeaheadV
     }
 
 
-    override fun onAlphaEntityUpdated(id: DomainId) {
+    override fun onAlphaEntityUpdated(before: AlphaEntity, after: AlphaEntity) {
 
-        this.indexService.refreshById(id)
+        this.indexService.refreshById(after.id)
 
     }
 

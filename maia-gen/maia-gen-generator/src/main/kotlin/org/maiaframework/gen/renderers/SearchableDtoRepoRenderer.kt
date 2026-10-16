@@ -12,6 +12,9 @@ class SearchableDtoRepoRenderer(
 ) {
 
 
+    private val esEnabled = searchableDtoDef.esDocDefs.isNotEmpty()
+
+
     init {
 
         addConstructorArg(aClassField("dao", searchableDtoDef.dtoDaoClassDef.fqcn).privat().build())
@@ -22,6 +25,9 @@ class SearchableDtoRepoRenderer(
     override fun renderFunctions() {
 
         `render function findById`()
+        `render function findByIds`()
+        `render function findAllAsSequence`()
+        `render functions findRootIdsVia`()
         `render function getRows`()
         `render function countRows`()
 
@@ -43,6 +49,61 @@ class SearchableDtoRepoRenderer(
         appendLine("        return this.dao.findById(id)")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render function findByIds`() {
+
+        if (esEnabled.not()) {
+            return
+        }
+
+        addImportFor(Fqcns.MAIA_DOMAIN_ID)
+
+        blankLine()
+        blankLine()
+        appendLine("    fun findByIds(ids: Collection<DomainId>): List<${searchableDtoDef.uqcn}> {")
+        blankLine()
+        appendLine("        return this.dao.findByIds(ids)")
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
+    private fun `render function findAllAsSequence`() {
+
+        if (esEnabled.not()) {
+            return
+        }
+
+        blankLine()
+        blankLine()
+        appendLine("    fun findAllAsSequence(): Sequence<${searchableDtoDef.uqcn}> {")
+        blankLine()
+        appendLine("        return this.dao.findAllAsSequence()")
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
+    private fun `render functions findRootIdsVia`() {
+
+        EsReverseJoins.reverseJoinsFor(searchableDtoDef).forEach { reverseJoin ->
+
+            addImportFor(Fqcns.MAIA_DOMAIN_ID)
+
+            blankLine()
+            blankLine()
+            appendLine("    fun ${reverseJoin.functionName}(id: DomainId): List<DomainId> {")
+            blankLine()
+            appendLine("        return this.dao.${reverseJoin.functionName}(id)")
+            blankLine()
+            appendLine("    }")
+
+        }
 
     }
 

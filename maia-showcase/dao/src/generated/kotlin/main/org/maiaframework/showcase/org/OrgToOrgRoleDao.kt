@@ -255,6 +255,13 @@ class OrgToOrgRoleDao(
     }
 
 
+    fun currentDbTimestamp(): Instant {
+
+        return this.jdbcOps.queryForObjectOrNull("select clock_timestamp() as now", SqlParams()) { rsa -> rsa.readInstant("now") }!!
+
+    }
+
+
     fun findAllBy(filter: OrgToOrgRoleEntityFilter): List<OrgToOrgRoleEntity> {
 
         val whereClause = filter.whereClause(this.fieldConverter)

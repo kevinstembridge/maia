@@ -281,6 +281,7 @@ class JdbcDaoRenderer(
         `render finders for indexes`()
         `render findAll`()
         `render findAllEffective`()
+        `render currentDbTimestamp`()
         `render the findAllByFilter function`()
         `render the findAllByFilterAsSequence function`()
         `render the findPrimaryKeysAsSequence function`()
@@ -1066,6 +1067,28 @@ class JdbcDaoRenderer(
         appendLine("            SqlParams(),")
         appendLine("            this.entityRowMapper")
         appendLine("        )")
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
+    /**
+     * System-managed effective ranges are compared with the database clock (`current_timestamp`), so the
+     * timestamps they start from must come from that clock too, not from a JVM clock that may be skewed.
+     */
+    private fun `render currentDbTimestamp`() {
+
+        if (!this.entityDef.hasSystemManagedTimestampEffectiveRange()) {
+            return
+        }
+
+        addImportFor<Instant>()
+        blankLine()
+        blankLine()
+        appendLine("    fun currentDbTimestamp(): Instant {")
+        blankLine()
+        appendLine("        return this.jdbcOps.queryForObjectOrNull(\"select clock_timestamp() as now\", SqlParams()) { rsa -> rsa.readInstant(\"now\") }!!")
         blankLine()
         appendLine("    }")
 

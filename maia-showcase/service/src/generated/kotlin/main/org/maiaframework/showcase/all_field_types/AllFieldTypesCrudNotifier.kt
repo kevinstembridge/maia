@@ -3,7 +3,6 @@
 
 package org.maiaframework.showcase.all_field_types
 
-import org.maiaframework.domain.DomainId
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -41,10 +40,19 @@ class AllFieldTypesCrudNotifier : ApplicationContextAware, InitializingBean {
     }
 
 
-    fun onEntityUpdated(id: DomainId) {
+    fun onEntityUpdated(before: AllFieldTypesEntity, after: AllFieldTypesEntity) {
 
         this.allFieldTypesCrudListeners.forEach { (_, listener) ->
-            listener.onAllFieldTypesEntityUpdated(id)
+            listener.onAllFieldTypesEntityUpdated(before, after)
+        }
+
+    }
+
+
+    fun onEntityBeforeDelete(entity: AllFieldTypesEntity) {
+
+        this.allFieldTypesCrudListeners.forEach { (_, listener) ->
+            listener.onAllFieldTypesEntityBeforeDelete(entity)
         }
 
     }

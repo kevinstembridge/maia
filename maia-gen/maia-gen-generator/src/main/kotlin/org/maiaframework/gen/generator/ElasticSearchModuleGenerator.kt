@@ -4,7 +4,9 @@ import org.maiaframework.gen.renderers.EsDocFieldNameMapperRenderer
 import org.maiaframework.gen.renderers.EsIndexControlRenderer
 import org.maiaframework.gen.renderers.EsIndexMetaClassRenderer
 import org.maiaframework.gen.renderers.EsIndexRenderer
+import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.EsDocDef
 
 
 fun main(args: Array<String>) {
@@ -22,6 +24,17 @@ fun main(args: Array<String>) {
 }
 
 
+/**
+ * The EsDocs derived from searchable DTOs declared with `elasticsearchEnabled`. Manual `esDoc {}` EsDocs
+ * are deliberately excluded because their control classes are hand written.
+ */
+fun derivedEsDocDefs(applicationModelDef: ApplicationModelDef): List<EsDocDef> {
+
+    return applicationModelDef.searchableDtoDefs.flatMap { it.esDocDefs }
+
+}
+
+
 class ElasticSearchModuleGenerator(
     maiaGenerationContext: MaiaGenerationContext
 ): AbstractModuleGenerator(
@@ -33,6 +46,7 @@ class ElasticSearchModuleGenerator(
 
         renderEsIndexes()
         renderTypeaheadEsIndexes()
+        renderDerivedEsIndexControls()
         renderEsDocMetaClasses()
         renderEsDocFieldNameMappers()
 
@@ -54,6 +68,16 @@ class ElasticSearchModuleGenerator(
             EsIndexRenderer(typeaheadDef.esIndexClassDef, typeaheadDef.elasticIndexBaseName).renderToDir(this.kotlinOutputDir)
             EsIndexMetaClassRenderer(typeaheadDef.esDocDef).renderToDir(this.kotlinOutputDir)
             EsIndexControlRenderer(typeaheadDef.esDocDef).renderToDir(this.kotlinOutputDir)
+        }
+
+    }
+
+
+    private fun renderDerivedEsIndexControls() {
+
+        // the EsIndex and Meta classes of derived EsDocs are rendered with all esDocsDefs
+        derivedEsDocDefs(this.applicationModelDef).forEach { esDocDef ->
+            EsIndexControlRenderer(esDocDef).renderToDir(this.kotlinOutputDir)
         }
 
     }

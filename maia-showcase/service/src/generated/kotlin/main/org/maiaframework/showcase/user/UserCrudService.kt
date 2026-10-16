@@ -103,7 +103,7 @@ class UserCrudService(
         createDto.userGroupEntities.forEach { joinDto ->
             this.userGroupMembershipRepo.insert(
                 UserGroupMembershipEntity.newInstance(
-                    effectiveFrom = Instant.now(),
+                    effectiveFrom = this.userGroupMembershipRepo.currentDbTimestamp(),
                     effectiveTo = null,
                     user = entity.id,
                     userGroup = joinDto.userGroupEntityId
@@ -215,10 +215,16 @@ class UserCrudService(
     @Transactional
     fun setFields(updater: UserEntityUpdater): Int {
 
+        val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
         val count = this.entityRepo.setFields(updater)
-        this.userCrudNotifier.onEntityUpdated(updater.id)
+
+        if (count > 0 && before != null) {
+            val after = this.entityRepo.findByPrimaryKey(updater.id)
+            this.userCrudNotifier.onEntityUpdated(before, after)
+        }
+
         return count
-        
+
     }
 
 

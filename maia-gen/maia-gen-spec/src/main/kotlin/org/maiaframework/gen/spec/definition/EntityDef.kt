@@ -414,6 +414,14 @@ class EntityDef(
     val hasEffectiveTimestamps: Boolean = this.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
 
 
+    /** True when the system, not the caller, stamps the start of the timestamp effective range. */
+    fun hasSystemManagedTimestampEffectiveRange(): Boolean {
+
+        return this.hasEffectiveTimestamps && this.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
+
+    }
+
+
     val hasSingleEffectiveRecord: HasSingleEffectiveRecord = this.effectiveRangeDef?.hasSingleEffectiveRecord ?: HasSingleEffectiveRecord.FALSE
 
 

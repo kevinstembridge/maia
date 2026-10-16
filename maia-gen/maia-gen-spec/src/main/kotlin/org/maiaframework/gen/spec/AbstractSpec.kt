@@ -1009,6 +1009,7 @@ abstract class AbstractSpec protected constructor(
 
         val def = builder.build()
         this.searchableDtoDefs.add(def)
+        registerEsDocDefs(def.esDocDefs)
 
         return def
 
@@ -1066,10 +1067,16 @@ abstract class AbstractSpec protected constructor(
 
         }
 
+        // ES-enabled DTOs use their highest-version EsDoc as the blotter data source.
+        val blotterSourceDef = when (val esDocDef = searchableDtoDef.esDocDef) {
+            null -> BlotterSearchableDtoSourceDef(searchableDtoDef)
+            else -> BlotterEsDocSourceDef(esDocDef)
+        }
+
         val builder = BlotterDefBuilder(
             searchableDtoDef.packageName,
             searchableDtoDef.dtoBaseName,
-            blotterSourceDef = BlotterSearchableDtoSourceDef(searchableDtoDef),
+            blotterSourceDef = blotterSourceDef,
             entityCreatePageDef = entityCreatePageDef,
             entityEditPageDef = entityEditPageDef,
             entityDetailViewDef = entityViewPageDef,
@@ -1267,9 +1274,61 @@ abstract class AbstractSpec protected constructor(
         )
 
         builder.init()
+
+        val esDocDescription = "$packageName.$esDocName V$esDocVersion"
+
+        when (builder.autoRefresh) {
+            null -> throw IllegalArgumentException(
+                "EsDoc $esDocDescription must declare how its index is refreshed: call autoRefresh(false) to " +
+                    "indicate that you refresh it yourself (a hand-written index service and/or the scheduled " +
+                    "refresh job). Automatic refresh is only generated for searchableDto { elasticsearchEnabled() }."
+            )
+            true -> throw IllegalArgumentException(
+                "autoRefresh(true) is only supported for elasticsearchEnabled searchable DTOs; hand-built " +
+                    "EsDoc $esDocDescription must declare autoRefresh(false)."
+            )
+            false -> Unit
+        }
+
         val def = builder.build()
-        this.esDocDefs.add(def)
+        registerEsDocDefs(listOf(def))
         return def
+
+    }
+
+
+    /**
+     * Fail-fast uniqueness check shared by [searchableDto] and [esDoc]. Typeahead EsDocs are deliberately not
+     * registered here because their index names carry a '-typeahead' suffix, so they cannot collide.
+     */
+    private fun registerEsDocDefs(newDefs: List<EsDocDef>) {
+
+        newDefs.forEach { newDef ->
+
+            this.esDocDefs.firstOrNull { existing -> existing.collidesWith(newDef) }?.let { existing ->
+                throw IllegalArgumentException(
+                    "Duplicate Elasticsearch index '${newDef.elasticIndexBaseName.value}' version ${newDef.esDocVersion} declared by " +
+                        "${newDef.packageName.value}.${newDef.esDocBaseName.value} and " +
+                        "${existing.packageName.value}.${existing.esDocBaseName.value}."
+                )
+            }
+
+            this.esDocDefs.add(newDef)
+
+        }
+
+    }
+
+
+    private fun EsDocDef.collidesWith(other: EsDocDef): Boolean {
+
+        val sameIndex = this.elasticIndexBaseName == other.elasticIndexBaseName && this.esDocVersion == other.esDocVersion
+
+        val sameClass = this.packageName == other.packageName
+            && this.esDocBaseName == other.esDocBaseName
+            && this.esDocVersion == other.esDocVersion
+
+        return sameIndex || sameClass
 
     }
 

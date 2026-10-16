@@ -81,6 +81,7 @@ class EsDocDef(
 
     val indexServiceClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}IndexService"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
+        .withInterface(ParameterizedType(Fqcns.ES_REFRESH_TARGET))
         .build()
 
 

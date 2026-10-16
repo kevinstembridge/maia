@@ -6,6 +6,7 @@ package org.maiaframework.showcase.user
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Repository
+import java.time.Instant
 
 
 @Repository
@@ -53,6 +54,13 @@ class UserGroupMembershipRepo(private val dao: UserGroupMembershipDao) {
     fun findPrimaryKeysAsSequence(filter: UserGroupMembershipEntityFilter): Sequence<DomainId> {
 
         return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
+    fun currentDbTimestamp(): Instant {
+
+        return this.dao.currentDbTimestamp()
 
     }
 

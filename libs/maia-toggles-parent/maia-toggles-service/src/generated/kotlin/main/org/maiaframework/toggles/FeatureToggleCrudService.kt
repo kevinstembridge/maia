@@ -16,7 +16,6 @@ import java.time.Instant
 @Component
 class FeatureToggleCrudService(
     private val entityRepo: FeatureToggleRepo,
-    private val featureToggleCrudNotifier: FeatureToggleCrudNotifier,
     private val maiaProblems: MaiaProblems
 ) {
 
@@ -28,7 +27,6 @@ class FeatureToggleCrudService(
     fun create(entity: FeatureToggleEntity): FeatureToggleEntity {
 
         this.entityRepo.insert(entity)
-        this.featureToggleCrudNotifier.onEntityCreated(entity)
         return entity
 
     }
@@ -83,7 +81,6 @@ class FeatureToggleCrudService(
     fun setFields(updater: FeatureToggleEntityUpdater): Int {
 
         val count = this.entityRepo.setFields(updater)
-        this.featureToggleCrudNotifier.onEntityUpdated(updater.id)
         return count
         
     }
@@ -92,11 +89,7 @@ class FeatureToggleCrudService(
     @Transactional
     fun delete(id: DomainId) {
 
-        val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
-                ?: return
-
         this.entityRepo.deleteByPrimaryKey(id)
-        this.featureToggleCrudNotifier.onEntityDeleted(entityToDelete)
 
     }
 

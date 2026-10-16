@@ -6,6 +6,7 @@ package org.maiaframework.showcase.effective_dated
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.springframework.stereotype.Repository
+import java.time.Instant
 
 
 @Repository
@@ -53,6 +54,13 @@ class EffectiveTimestampRepo(private val dao: EffectiveTimestampDao) {
     fun findPrimaryKeysAsSequence(filter: EffectiveTimestampEntityFilter): Sequence<DomainId> {
 
         return dao.findPrimaryKeysAsSequence(filter)
+
+    }
+
+
+    fun currentDbTimestamp(): Instant {
+
+        return this.dao.currentDbTimestamp()
 
     }
 
