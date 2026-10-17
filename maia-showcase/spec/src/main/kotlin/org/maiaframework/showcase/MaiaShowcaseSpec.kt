@@ -115,6 +115,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val loginFormDef = angularForm(loginRequestDtoDef) {
+        ofType(AngularFormSystem.SIGNAL)
         delegateFormSubmission()
         formPurpose(FormPurpose.submit)
         field("emailAddress") {

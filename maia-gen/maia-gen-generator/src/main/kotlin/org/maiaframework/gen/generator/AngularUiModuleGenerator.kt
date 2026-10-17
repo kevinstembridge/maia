@@ -58,6 +58,7 @@ import org.maiaframework.gen.renderers.ui.EnumTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.ForeignKeyReferenceServiceRenderer
 import org.maiaframework.gen.renderers.ui.ForeignKeyReferencesExistResponseDtoRenderer
 import org.maiaframework.gen.renderers.ui.FormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.SignalFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.FormScssRenderer
 import org.maiaframework.gen.renderers.ui.ManyToManyChipFieldDef
 import org.maiaframework.gen.renderers.ui.ManyToManyTimestampedFieldDef
@@ -321,7 +322,11 @@ class AngularUiModuleGenerator(
 
         this.applicationModelDef.angularFormDefs.forEach {
 
-            FormHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
+            when (it.angularFormSystem) {
+                AngularFormSystem.REACTIVE -> FormHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
+                AngularFormSystem.SIGNAL -> SignalFormHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
+            }
+
             renderEntityForm(it, it.componentNames)
             FormScssRenderer(it).renderToDir(this.typescriptOutputDir)
             AngularFormServiceRenderer(it).renderToDir(this.typescriptOutputDir)

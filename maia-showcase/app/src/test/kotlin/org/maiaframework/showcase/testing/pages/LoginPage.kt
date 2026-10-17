@@ -4,6 +4,7 @@ import com.microsoft.playwright.Page
 import com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat
 import org.maiaframework.domain.contact.EmailAddress
 import org.maiaframework.webtesting.AbstractPage
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import org.maiaframework.webtesting.UrlHelper
 
 class LoginPage(
@@ -17,13 +18,13 @@ class LoginPage(
 ) {
 
 
-    private val emailAddressInput = this.page.locator("input[name=emailAddress]")
+    private val emailAddressInput = this.page.inputForField("emailAddress")
 
 
-    private val passwordInput = this.page.locator("input[name=password]")
+    private val passwordInput = this.page.inputForField("password")
 
 
-    private val passwordVisibilityToggle = this.page.locator("mat-form-field:has(input[name=password]) button")
+    private val passwordVisibilityToggle = this.page.locator("mat-form-field:has(input[name=password], input[id=password]) button")
 
 
     fun submitForm(
