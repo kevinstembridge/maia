@@ -7,7 +7,9 @@ import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
 class EntityEditSignalFormHtmlRenderer(
     private val apiDef: EntityUpdateApiDef,
-    private val componentNamesOverride: AngularComponentNames? = null
+    private val componentNamesOverride: AngularComponentNames? = null,
+    override val chipFields: List<ManyToManyChipFieldDef> = emptyList(),
+    override val timestampedFields: List<ManyToManyTimestampedFieldDef> = emptyList()
 ) : AbstractCrudFormHtmlRenderer(
     apiDef.entityDef,
     InlineFormOrDialog.INLINE_FORM

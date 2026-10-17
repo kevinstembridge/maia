@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+<form novalidate (submit)="onSubmit($event)">
     <div>
         @if (problemDetail()) {
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
@@ -6,42 +6,47 @@
         <mat-form-field appearance="outline">
             <mat-label>Some Int</mat-label>
             <input
-                formControlName="someInt"
-                name="someInt"
-                type="text"
+                [formField]="dialogForm.someInt"
+                id="someInt"
+                type="number"
                 matInput
             />
-            @if (formGroup.controls['someInt'].hasError('required')) {
-                <mat-error>Some Int is required.</mat-error>
+
+            @if (dialogForm.someInt().touched() && dialogForm.someInt().invalid()) {
+                @for (error of dialogForm.someInt().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some String</mat-label>
             <input
-                formControlName="someString"
-                name="someString"
+                [formField]="dialogForm.someString"
+                id="someString"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someString'].hasError('required')) {
-                <mat-error>Some String is required.</mat-error>
+
+            @if (dialogForm.someString().touched() && dialogForm.someString().invalid()) {
+                @for (error of dialogForm.someString().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someString'].hasError('maxlength')) {
-                <mat-error>Some String must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
         <app-right-many-typeahead-v1
             chips
             label="Right Simple Entities"
             placeholder="Search Right Simple Entities..."
-            [selected]="selectedRightSimpleEntities"
+            [selected]="selectedRightSimpleEntities()"
             (added)="addRightSimpleEntity($event)"
             (removed)="removeRightSimpleEntity($event)"
         ></app-right-many-typeahead-v1>
         <div class="join-entries">
-            @for (join of rightSystemEffectiveJoins; track join.entityId) {
+            @for (join of rightSystemEffectiveJoinsForm; track join) {
                 <div class="join-entry">
-                    <span>{{ join.entityName }}</span>
+                    <span>{{ join().value().entityName }}</span>
                     <button mat-icon-button type="button" class="join-remove-button" (click)="removeRightSystemEffectiveJoin($index)">
                         <mat-icon>delete</mat-icon>
                     </button>
@@ -54,7 +59,7 @@
         @if (showRightSystemEffectiveJoinForm()) {
             <div class="join-mini-form">
                 <app-right-many-typeahead-v1
-                    [formControl]="addRightSystemEffectiveJoinEntityControl"
+                    [formField]="addRightSystemEffectiveJoinForm.entity"
                     label="Right System Effective Entities"
                     placeholder="Search Right System Effective Entities..."
                 ></app-right-many-typeahead-v1>
@@ -63,9 +68,9 @@
             </div>
         }
         <div class="join-entries">
-            @for (join of rightSystemSingleEffectiveJoins; track join.entityId) {
+            @for (join of rightSystemSingleEffectiveJoinsForm; track join) {
                 <div class="join-entry">
-                    <span>{{ join.entityName }}</span>
+                    <span>{{ join().value().entityName }}</span>
                     <button mat-icon-button type="button" class="join-remove-button" (click)="removeRightSystemSingleEffectiveJoin($index)">
                         <mat-icon>delete</mat-icon>
                     </button>
@@ -78,7 +83,7 @@
         @if (showRightSystemSingleEffectiveJoinForm()) {
             <div class="join-mini-form">
                 <app-right-many-typeahead-v1
-                    [formControl]="addRightSystemSingleEffectiveJoinEntityControl"
+                    [formField]="addRightSystemSingleEffectiveJoinForm.entity"
                     label="Right System Single Effective Entities"
                     placeholder="Search Right System Single Effective Entities..."
                 ></app-right-many-typeahead-v1>
@@ -87,34 +92,34 @@
             </div>
         }
         <div class="join-entries">
-            @for (join of rightUserEffectiveJoins; track join.entityId) {
+            @for (join of rightUserEffectiveJoinsForm; track join) {
                 <div class="join-entry">
-                    <span>{{ join.entityName }}</span>
+                    <span>{{ join().value().entityName }}</span>
                     <mat-form-field appearance="outline">
                         <mat-label>Effective From Date</mat-label>
                         <input matInput class="join-effective-from-date" [matDatepicker]="effectiveFromDatePicker"
-                            [(ngModel)]="join.effectiveFrom" [ngModelOptions]="{standalone: true}" />
+                            [formField]="join.effectiveFrom" />
                         <mat-datepicker-toggle matIconSuffix [for]="effectiveFromDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #effectiveFromDatePicker></mat-datepicker>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Effective From Time</mat-label>
                         <input matInput class="join-effective-from-time" [matTimepicker]="effectiveFromTimePicker"
-                            [(ngModel)]="join.effectiveFrom" [ngModelOptions]="{standalone: true}" />
+                            [formField]="join.effectiveFrom" />
                         <mat-timepicker #effectiveFromTimePicker></mat-timepicker>
                         <mat-timepicker-toggle matSuffix [for]="effectiveFromTimePicker"></mat-timepicker-toggle>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Effective To Date</mat-label>
                         <input matInput class="join-effective-to-date" [matDatepicker]="effectiveToDatePicker"
-                            [(ngModel)]="join.effectiveTo" [ngModelOptions]="{standalone: true}" />
+                            [formField]="join.effectiveTo" />
                         <mat-datepicker-toggle matIconSuffix [for]="effectiveToDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #effectiveToDatePicker></mat-datepicker>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Effective To Time</mat-label>
                         <input matInput class="join-effective-to-time" [matTimepicker]="effectiveToTimePicker"
-                            [(ngModel)]="join.effectiveTo" [ngModelOptions]="{standalone: true}" />
+                            [formField]="join.effectiveTo" />
                         <mat-timepicker #effectiveToTimePicker></mat-timepicker>
                         <mat-timepicker-toggle matSuffix [for]="effectiveToTimePicker"></mat-timepicker-toggle>
                     </mat-form-field>
@@ -130,35 +135,35 @@
         @if (showRightUserEffectiveJoinForm()) {
             <div class="join-mini-form">
                 <app-right-many-typeahead-v1
-                    [formControl]="addRightUserEffectiveJoinEntityControl"
+                    [formField]="addRightUserEffectiveJoinForm.entity"
                     label="Right User Effective Entities"
                     placeholder="Search Right User Effective Entities..."
                 ></app-right-many-typeahead-v1>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective From Date</mat-label>
                     <input matInput [matDatepicker]="effectiveFromPickerrightUserEffective"
-                        [formControl]="addRightUserEffectiveJoinEffectiveFromControl" />
+                        [formField]="addRightUserEffectiveJoinForm.effectiveFrom" />
                     <mat-datepicker-toggle matIconSuffix [for]="effectiveFromPickerrightUserEffective"></mat-datepicker-toggle>
                     <mat-datepicker #effectiveFromPickerrightUserEffective></mat-datepicker>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective From Time</mat-label>
                     <input matInput [matTimepicker]="effectiveFromTimepickerrightUserEffective"
-                        [formControl]="addRightUserEffectiveJoinEffectiveFromControl" />
+                        [formField]="addRightUserEffectiveJoinForm.effectiveFrom" />
                     <mat-timepicker #effectiveFromTimepickerrightUserEffective></mat-timepicker>
                     <mat-timepicker-toggle matSuffix [for]="effectiveFromTimepickerrightUserEffective"></mat-timepicker-toggle>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective To Date</mat-label>
                     <input matInput [matDatepicker]="effectiveToPickerrightUserEffective"
-                        [formControl]="addRightUserEffectiveJoinEffectiveToControl" />
+                        [formField]="addRightUserEffectiveJoinForm.effectiveTo" />
                     <mat-datepicker-toggle matIconSuffix [for]="effectiveToPickerrightUserEffective"></mat-datepicker-toggle>
                     <mat-datepicker #effectiveToPickerrightUserEffective></mat-datepicker>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective To Time</mat-label>
                     <input matInput [matTimepicker]="effectiveToTimepickerrightUserEffective"
-                        [formControl]="addRightUserEffectiveJoinEffectiveToControl" />
+                        [formField]="addRightUserEffectiveJoinForm.effectiveTo" />
                     <mat-timepicker #effectiveToTimepickerrightUserEffective></mat-timepicker>
                     <mat-timepicker-toggle matSuffix [for]="effectiveToTimepickerrightUserEffective"></mat-timepicker-toggle>
                 </mat-form-field>
@@ -167,9 +172,9 @@
             </div>
         }
         <div class="join-entries">
-            @for (join of rightJoins; track join.entityId) {
+            @for (join of rightJoinsForm; track join) {
                 <div class="join-entry">
-                    <span>{{ join.entityName }}</span>
+                    <span>{{ join().value().entityName }}</span>
                     <button mat-icon-button type="button" class="join-remove-button" (click)="removeRightJoin($index)">
                         <mat-icon>delete</mat-icon>
                     </button>
@@ -182,13 +187,13 @@
         @if (showRightJoinForm()) {
             <div class="join-mini-form">
                 <app-right-many-typeahead-v1
-                    [formControl]="addRightJoinEntityControl"
+                    [formField]="addRightJoinForm.entity"
                     label="Right Entities"
                     placeholder="Search Right Entities..."
                 ></app-right-many-typeahead-v1>
                 <mat-form-field appearance="outline">
                     <mat-label>Some Int On Complex</mat-label>
-                    <input matInput type="number" [formControl]="addRightJoinSomeIntOnComplexControl" />
+                    <input matInput type="number" [formField]="addRightJoinForm.someIntOnComplex" />
                 </mat-form-field>
                 <button mat-flat-button type="button" (click)="confirmAddRightJoin()">Add</button>
                 <button mat-flat-button type="button" (click)="cancelAddRightJoin()">Cancel</button>

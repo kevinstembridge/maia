@@ -1433,6 +1433,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         nameFieldForPkAndNameDto = "someString",
         recordVersionHistory = true,
     ) {
+        angularFormSystem(AngularFormSystem.SIGNAL)
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")
             editableByUser()
@@ -1487,6 +1488,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         nameFieldForPkAndNameDto = "someString",
         recordVersionHistory = true
     ) {
+        angularFormSystem(AngularFormSystem.SIGNAL)
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")
             editableByUser()

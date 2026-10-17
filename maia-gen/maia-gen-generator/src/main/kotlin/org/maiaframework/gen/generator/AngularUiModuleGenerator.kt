@@ -557,10 +557,12 @@ class AngularUiModuleGenerator(
                     AngularSignalFormComponentRenderer(
                         angularFormDef,
                         entityCreatePageDef.createFormAngularComponentNames,
-                        providerServices
+                        providerServices,
+                        chipFields,
+                        timestampedFields
                     ).renderToDir(this.typescriptOutputDir)
 
-                    EntityCreateSignalFormHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
+                    EntityCreateSignalFormHtmlRenderer(entityCreatePageDef, chipFields, timestampedFields).renderToDir(this.typescriptOutputDir)
 
                 }
 
@@ -634,10 +636,12 @@ class AngularUiModuleGenerator(
                     AngularSignalFormComponentRenderer(
                         angularFormDef,
                         entityEditPageDef.editFormAngularComponentNames,
-                        providerServices
+                        providerServices,
+                        chipFields,
+                        timestampedFields
                     ).renderToDir(this.typescriptOutputDir)
 
-                    EntityEditSignalFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames).renderToDir(this.typescriptOutputDir)
+                    EntityEditSignalFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames, chipFields, timestampedFields).renderToDir(this.typescriptOutputDir)
 
                 }
 

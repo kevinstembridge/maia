@@ -5,7 +5,9 @@ import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
 class EntityCreateSignalFormHtmlRenderer(
-    private val entityCreatePageDef: EntityCreatePageDef
+    private val entityCreatePageDef: EntityCreatePageDef,
+    override val chipFields: List<ManyToManyChipFieldDef> = emptyList(),
+    override val timestampedFields: List<ManyToManyTimestampedFieldDef> = emptyList()
 ) : AbstractCrudFormHtmlRenderer(
     entityCreatePageDef.entityDef,
     InlineFormOrDialog.INLINE_FORM

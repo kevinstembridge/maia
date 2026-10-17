@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+<form novalidate (submit)="onSubmit($event)">
     <div>
         @if (problemDetail()) {
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
@@ -6,42 +6,47 @@
         <mat-form-field appearance="outline">
             <mat-label>Some Int</mat-label>
             <input
-                formControlName="someInt"
-                name="someInt"
-                type="text"
+                [formField]="dialogForm.someInt"
+                id="someInt"
+                type="number"
                 matInput
             />
-            @if (formGroup.controls['someInt'].hasError('required')) {
-                <mat-error>Some Int is required.</mat-error>
+
+            @if (dialogForm.someInt().touched() && dialogForm.someInt().invalid()) {
+                @for (error of dialogForm.someInt().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some String</mat-label>
             <input
-                formControlName="someString"
-                name="someString"
+                [formField]="dialogForm.someString"
+                id="someString"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someString'].hasError('required')) {
-                <mat-error>Some String is required.</mat-error>
+
+            @if (dialogForm.someString().touched() && dialogForm.someString().invalid()) {
+                @for (error of dialogForm.someString().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someString'].hasError('maxlength')) {
-                <mat-error>Some String must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
         <app-left-many-typeahead-v1
             chips
             label="Left Simple Entities"
             placeholder="Search Left Simple Entities..."
-            [selected]="selectedLeftSimpleEntities"
+            [selected]="selectedLeftSimpleEntities()"
             (added)="addLeftSimpleEntity($event)"
             (removed)="removeLeftSimpleEntity($event)"
         ></app-left-many-typeahead-v1>
         <div class="join-entries">
-            @for (join of leftSystemEffectiveJoins; track join.entityId) {
+            @for (join of leftSystemEffectiveJoinsForm; track join) {
                 <div class="join-entry">
-                    <span>{{ join.entityName }}</span>
+                    <span>{{ join().value().entityName }}</span>
                     <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftSystemEffectiveJoin($index)">
                         <mat-icon>delete</mat-icon>
                     </button>
@@ -54,7 +59,7 @@
         @if (showLeftSystemEffectiveJoinForm()) {
             <div class="join-mini-form">
                 <app-left-many-typeahead-v1
-                    [formControl]="addLeftSystemEffectiveJoinEntityControl"
+                    [formField]="addLeftSystemEffectiveJoinForm.entity"
                     label="Left System Effective Entities"
                     placeholder="Search Left System Effective Entities..."
                 ></app-left-many-typeahead-v1>
@@ -63,9 +68,9 @@
             </div>
         }
         <div class="join-entries">
-            @for (join of leftSystemSingleEffectiveJoins; track join.entityId) {
+            @for (join of leftSystemSingleEffectiveJoinsForm; track join) {
                 <div class="join-entry">
-                    <span>{{ join.entityName }}</span>
+                    <span>{{ join().value().entityName }}</span>
                     <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftSystemSingleEffectiveJoin($index)">
                         <mat-icon>delete</mat-icon>
                     </button>
@@ -78,7 +83,7 @@
         @if (showLeftSystemSingleEffectiveJoinForm()) {
             <div class="join-mini-form">
                 <app-left-many-typeahead-v1
-                    [formControl]="addLeftSystemSingleEffectiveJoinEntityControl"
+                    [formField]="addLeftSystemSingleEffectiveJoinForm.entity"
                     label="Left System Single Effective Entities"
                     placeholder="Search Left System Single Effective Entities..."
                 ></app-left-many-typeahead-v1>
@@ -87,34 +92,34 @@
             </div>
         }
         <div class="join-entries">
-            @for (join of leftUserEffectiveJoins; track join.entityId) {
+            @for (join of leftUserEffectiveJoinsForm; track join) {
                 <div class="join-entry">
-                    <span>{{ join.entityName }}</span>
+                    <span>{{ join().value().entityName }}</span>
                     <mat-form-field appearance="outline">
                         <mat-label>Effective From Date</mat-label>
                         <input matInput class="join-effective-from-date" [matDatepicker]="effectiveFromDatePicker"
-                            [(ngModel)]="join.effectiveFrom" [ngModelOptions]="{standalone: true}" />
+                            [formField]="join.effectiveFrom" />
                         <mat-datepicker-toggle matIconSuffix [for]="effectiveFromDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #effectiveFromDatePicker></mat-datepicker>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Effective From Time</mat-label>
                         <input matInput class="join-effective-from-time" [matTimepicker]="effectiveFromTimePicker"
-                            [(ngModel)]="join.effectiveFrom" [ngModelOptions]="{standalone: true}" />
+                            [formField]="join.effectiveFrom" />
                         <mat-timepicker #effectiveFromTimePicker></mat-timepicker>
                         <mat-timepicker-toggle matSuffix [for]="effectiveFromTimePicker"></mat-timepicker-toggle>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Effective To Date</mat-label>
                         <input matInput class="join-effective-to-date" [matDatepicker]="effectiveToDatePicker"
-                            [(ngModel)]="join.effectiveTo" [ngModelOptions]="{standalone: true}" />
+                            [formField]="join.effectiveTo" />
                         <mat-datepicker-toggle matIconSuffix [for]="effectiveToDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #effectiveToDatePicker></mat-datepicker>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Effective To Time</mat-label>
                         <input matInput class="join-effective-to-time" [matTimepicker]="effectiveToTimePicker"
-                            [(ngModel)]="join.effectiveTo" [ngModelOptions]="{standalone: true}" />
+                            [formField]="join.effectiveTo" />
                         <mat-timepicker #effectiveToTimePicker></mat-timepicker>
                         <mat-timepicker-toggle matSuffix [for]="effectiveToTimePicker"></mat-timepicker-toggle>
                     </mat-form-field>
@@ -130,35 +135,35 @@
         @if (showLeftUserEffectiveJoinForm()) {
             <div class="join-mini-form">
                 <app-left-many-typeahead-v1
-                    [formControl]="addLeftUserEffectiveJoinEntityControl"
+                    [formField]="addLeftUserEffectiveJoinForm.entity"
                     label="Left User Effective Entities"
                     placeholder="Search Left User Effective Entities..."
                 ></app-left-many-typeahead-v1>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective From Date</mat-label>
                     <input matInput [matDatepicker]="effectiveFromPickerleftUserEffective"
-                        [formControl]="addLeftUserEffectiveJoinEffectiveFromControl" />
+                        [formField]="addLeftUserEffectiveJoinForm.effectiveFrom" />
                     <mat-datepicker-toggle matIconSuffix [for]="effectiveFromPickerleftUserEffective"></mat-datepicker-toggle>
                     <mat-datepicker #effectiveFromPickerleftUserEffective></mat-datepicker>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective From Time</mat-label>
                     <input matInput [matTimepicker]="effectiveFromTimepickerleftUserEffective"
-                        [formControl]="addLeftUserEffectiveJoinEffectiveFromControl" />
+                        [formField]="addLeftUserEffectiveJoinForm.effectiveFrom" />
                     <mat-timepicker #effectiveFromTimepickerleftUserEffective></mat-timepicker>
                     <mat-timepicker-toggle matSuffix [for]="effectiveFromTimepickerleftUserEffective"></mat-timepicker-toggle>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective To Date</mat-label>
                     <input matInput [matDatepicker]="effectiveToPickerleftUserEffective"
-                        [formControl]="addLeftUserEffectiveJoinEffectiveToControl" />
+                        [formField]="addLeftUserEffectiveJoinForm.effectiveTo" />
                     <mat-datepicker-toggle matIconSuffix [for]="effectiveToPickerleftUserEffective"></mat-datepicker-toggle>
                     <mat-datepicker #effectiveToPickerleftUserEffective></mat-datepicker>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective To Time</mat-label>
                     <input matInput [matTimepicker]="effectiveToTimepickerleftUserEffective"
-                        [formControl]="addLeftUserEffectiveJoinEffectiveToControl" />
+                        [formField]="addLeftUserEffectiveJoinForm.effectiveTo" />
                     <mat-timepicker #effectiveToTimepickerleftUserEffective></mat-timepicker>
                     <mat-timepicker-toggle matSuffix [for]="effectiveToTimepickerleftUserEffective"></mat-timepicker-toggle>
                 </mat-form-field>
@@ -167,9 +172,9 @@
             </div>
         }
         <div class="join-entries">
-            @for (join of leftJoins; track join.entityId) {
+            @for (join of leftJoinsForm; track join) {
                 <div class="join-entry">
-                    <span>{{ join.entityName }}</span>
+                    <span>{{ join().value().entityName }}</span>
                     <button mat-icon-button type="button" class="join-remove-button" (click)="removeLeftJoin($index)">
                         <mat-icon>delete</mat-icon>
                     </button>
@@ -182,13 +187,13 @@
         @if (showLeftJoinForm()) {
             <div class="join-mini-form">
                 <app-left-many-typeahead-v1
-                    [formControl]="addLeftJoinEntityControl"
+                    [formField]="addLeftJoinForm.entity"
                     label="Left Entities"
                     placeholder="Search Left Entities..."
                 ></app-left-many-typeahead-v1>
                 <mat-form-field appearance="outline">
                     <mat-label>Some Int On Complex</mat-label>
-                    <input matInput type="number" [formControl]="addLeftJoinSomeIntOnComplexControl" />
+                    <input matInput type="number" [formField]="addLeftJoinForm.someIntOnComplex" />
                 </mat-form-field>
                 <button mat-flat-button type="button" (click)="confirmAddLeftJoin()">Add</button>
                 <button mat-flat-button type="button" (click)="cancelAddLeftJoin()">Cancel</button>

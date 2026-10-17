@@ -17,7 +17,9 @@ import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
 class AngularSignalFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     angularComponentNames: AngularComponentNames,
-    providerServices: List<String>
+    providerServices: List<String>,
+    private val chipFields: List<ManyToManyChipFieldDef> = emptyList(),
+    private val timestampedFields: List<ManyToManyTimestampedFieldDef> = emptyList()
 ) : AbstractAngularComponentRenderer(
     angularComponentNames,
     providerServices
@@ -117,6 +119,28 @@ class AngularSignalFormComponentRenderer(
             addImport(typeaheadDef.typescriptComponentImport)
         }
 
+        chipFields.forEach { chip ->
+            addImport(chip.typeaheadDef.typescriptComponentImport)
+            addImport(chip.esDocImport)
+        }
+
+        if (timestampedFields.isNotEmpty()) {
+
+            addImport("@angular/material/icon", "MatIconModule", isModule = true)
+            addImport("@angular/material/datepicker", "MatDatepicker", isModule = true)
+            addImport("@angular/material/datepicker", "MatDatepickerInput", isModule = true)
+            addImport("@angular/material/datepicker", "MatDatepickerToggle", isModule = true)
+            addImport("@angular/material/timepicker", "MatTimepicker", isModule = true)
+            addImport("@angular/material/timepicker", "MatTimepickerInput", isModule = true)
+            addImport("@angular/material/timepicker", "MatTimepickerToggle", isModule = true)
+
+            timestampedFields.forEach { field ->
+                addImport(field.typeaheadDef.typescriptComponentImport)
+                addImport(field.esDocImport)
+            }
+
+        }
+
         if (this.angularFormDef.hasAnyBooleanFields) {
             addImport("@angular/material/checkbox", "MatCheckbox", isModule = true)
         }
@@ -164,6 +188,8 @@ class AngularSignalFormComponentRenderer(
 
         `render class fields`()
         `render function ngOnInit`()
+        `render chip entity methods`()
+        `render timestamped join methods`()
         `render function onSubmit`()
         `render function onCancel`()
 
@@ -186,6 +212,8 @@ class AngularSignalFormComponentRenderer(
         `render class field dialogFormModel`()
         `render class field dialogForm`()
         `render class field loading`()
+        `render class fields for chip fields`()
+        `render class fields for timestamped fields`()
         `render class fields for linked fields`()
         `render class field dialogRef`()
         `render class field context`()
@@ -351,14 +379,27 @@ class AngularSignalFormComponentRenderer(
 
     private val modelTypeName: String
         get() {
-            val dtoType = "Required<${this.angularFormDef.requestDtoDef.uqcn}>"
+
+            val requiredDtoType = "Required<${this.angularFormDef.requestDtoDef.uqcn}>"
+
+            // The request DTO may have fields that are not part of the form, e.g. many-to-many associations
+            val dtoType = if (modelFields.size == requestDtoFieldNames.size) {
+                requiredDtoType
+            } else {
+                "Pick<$requiredDtoType, ${modelFields.joinToString(" | ") { "'${it.fieldName}'" }}>"
+            }
+
             // A typeahead holds the selected document (or the text being typed) until it is mapped to its id on submit.
             val overrides = numberFields.map { "${it.fieldName}: number | null" } + typeaheadFields.map { "${it.fieldName}: any" }
+
             if (overrides.isEmpty()) {
                 return dtoType
             }
+
             val omitted = (numberFields + typeaheadFields).joinToString(" | ") { "'${it.fieldName}'" }
+
             return "Omit<$dtoType, $omitted> & { ${overrides.joinToString("; ")} }"
+
         }
 
 
@@ -577,6 +618,59 @@ class AngularSignalFormComponentRenderer(
     }
 
 
+    private fun `render class fields for chip fields`() {
+
+        chipFields.forEach { chip ->
+
+            append("""
+                |
+                |
+                |    ${chip.selectedFieldName} = signal<${chip.esDocClassName}[]>([]);
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class fields for timestamped fields`() {
+
+        timestampedFields.forEach { field ->
+
+            val extraRowFields = field.extraJoinFields.joinToString("") { "\n        ${it.name}: ${if (it.isNumber) "number" else "string"};" }
+            val extraModelFields = field.extraJoinFields.joinToString("") { "; ${it.name}: ${it.tsType}" }
+            val extraModelValues = field.extraJoinFields.joinToString("") { ", ${it.name}: ${it.emptyValue}" }
+
+            append("""
+                |
+                |
+                |    ${field.joinsFieldName} = signal<{
+                |        id: string | null;
+                |        entityId: string;
+                |        entityName: string;
+                |        effectiveFrom: Date | null;
+                |        effectiveTo: Date | null;$extraRowFields
+                |    }[]>([]);
+                |
+                |
+                |    ${field.joinsFormFieldName} = form(this.${field.joinsFieldName});
+                |
+                |
+                |    ${field.showFormSignalName} = signal(false);
+                |
+                |
+                |    ${field.addModelFieldName} = signal<{ entity: ${field.esDocClassName} | null; effectiveFrom: Date | null; effectiveTo: Date | null$extraModelFields }>({ entity: null, effectiveFrom: null, effectiveTo: null$extraModelValues });
+                |
+                |
+                |    ${field.addFormFieldName} = form(this.${field.addModelFieldName});
+                |""".trimMargin())
+
+        }
+
+    }
+
+
     private fun `render class fields for linked fields`() {
 
         linkedFields.forEach { fieldDef ->
@@ -677,6 +771,29 @@ class AngularSignalFormComponentRenderer(
 
         append("""
             |                }));
+            |""".trimMargin())
+
+        chipFields.forEach { chip ->
+            appendLine("                this.${chip.selectedFieldName}.set(dto.${chip.fetchForEditDtoFieldName}.map(r => ({")
+            appendLine("                    ${chip.esDocIdFieldName}: r.${chip.esDocIdFieldName},")
+            appendLine("                    ${chip.searchTermFieldName}: r.name,")
+            appendLine("                })));")
+        }
+
+        timestampedFields.forEach { field ->
+            appendLine("                this.${field.joinsFieldName}.set(dto.${field.fetchForEditDtoFieldName}?.map(e => ({")
+            appendLine("                    id: e.id,")
+            appendLine("                    entityId: e.entityId,")
+            appendLine("                    entityName: e.name,")
+            appendLine("                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,")
+            appendLine("                    effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,")
+            field.extraJoinFields.forEach { extra ->
+                appendLine("                    ${extra.name}: e.${extra.name} ?? ${extra.defaultValue},")
+            }
+            appendLine("                })) ?? []);")
+        }
+
+        append("""
             |                this.loading.set(false);
             |            },
             |            error: (err) => {
@@ -688,6 +805,82 @@ class AngularSignalFormComponentRenderer(
             |    }
             |""".trimMargin()
         )
+
+    }
+
+
+    private fun `render chip entity methods`() {
+
+        chipFields.forEach { chip ->
+
+            append("""
+                |
+                |
+                |    ${chip.addMethodName}(entity: ${chip.esDocClassName}): void {
+                |        this.${chip.selectedFieldName}.update(selected =>
+                |            selected.some(e => e.${chip.esDocIdFieldName} === entity.${chip.esDocIdFieldName}) ? selected : [...selected, entity]
+                |        );
+                |    }
+                |
+                |
+                |    ${chip.removeMethodName}(entity: ${chip.esDocClassName}): void {
+                |        this.${chip.selectedFieldName}.update(selected => selected.filter(e => e.${chip.esDocIdFieldName} !== entity.${chip.esDocIdFieldName}));
+                |    }
+                |""".trimMargin())
+
+        }
+
+    }
+
+
+    private fun `render timestamped join methods`() {
+
+        timestampedFields.forEach { field ->
+
+            val effectiveFromValue = if (field.isManagedBySystem) "null" else "model.effectiveFrom"
+            val effectiveToValue = if (field.isManagedBySystem) "null" else "model.effectiveTo"
+            val extraRowValues = field.extraJoinFields.joinToString("") { "\n                ${it.name}: model.${it.name} ?? ${it.defaultValue}," }
+            val extraModelValues = field.extraJoinFields.joinToString("") { ", ${it.name}: ${it.emptyValue}" }
+            val emptyModel = "{ entity: null, effectiveFrom: null, effectiveTo: null$extraModelValues }"
+
+            append("""
+                |
+                |
+                |    ${field.confirmMethodName}(): void {
+                |
+                |        const model = this.${field.addModelFieldName}();
+                |        const entity = model.entity;
+                |        if (!entity) return;
+                |        if (this.${field.joinsFieldName}().some(j => j.entityId === entity.${field.esDocIdFieldName})) return;
+                |        this.${field.joinsFieldName}.update(joins => [...joins, {
+                |                id: null,
+                |                entityId: entity.${field.esDocIdFieldName},
+                |                entityName: entity.${field.searchTermFieldName},
+                |                effectiveFrom: $effectiveFromValue,
+                |                effectiveTo: $effectiveToValue,$extraRowValues
+                |        }]);
+                |        this.${field.addModelFieldName}.set($emptyModel);
+                |        this.${field.showFormSignalName}.set(false);
+                |
+                |    }
+                |
+                |
+                |    ${field.removeMethodName}(index: number): void {
+                |
+                |        this.${field.joinsFieldName}.update(joins => joins.filter((_, i) => i !== index));
+                |
+                |    }
+                |
+                |
+                |    ${field.cancelMethodName}(): void {
+                |
+                |        this.${field.addModelFieldName}.set($emptyModel);
+                |        this.${field.showFormSignalName}.set(false);
+                |
+                |    }
+                |""".trimMargin())
+
+        }
 
     }
 
@@ -732,26 +925,41 @@ class AngularSignalFormComponentRenderer(
 
         val requestDtoType = this.angularFormDef.requestDtoDef.uqcn
 
-        if (typeaheadFields.isEmpty()) {
+        if (typeaheadFields.isEmpty() && chipFields.isEmpty() && timestampedFields.isEmpty()) {
 
             appendLine("            const requestDto = value as $requestDtoType;")
-
-        } else {
-
-            appendLine("            const requestDto = {")
-            appendLine("                ...value,")
-
-            typeaheadFields.forEach { fieldDef ->
-
-                val typeaheadDef = fieldDef.classFieldDef.typeaheadDef!!
-
-                appendLine("                ${fieldDef.fieldName}: value.${fieldDef.fieldName}.${typeaheadDef.esDocIdFieldName},")
-
-            }
-
-            appendLine("            } as $requestDtoType;")
+            return
 
         }
+
+        appendLine("            const requestDto = {")
+        appendLine("                ...value,")
+
+        typeaheadFields.forEach { fieldDef ->
+
+            val typeaheadDef = fieldDef.classFieldDef.typeaheadDef!!
+
+            appendLine("                ${fieldDef.fieldName}: value.${fieldDef.fieldName}.${typeaheadDef.esDocIdFieldName},")
+
+        }
+
+        chipFields.forEach { chip ->
+            appendLine("                ${chip.requestDtoFieldName}: this.${chip.selectedFieldName}().map(e => e.${chip.esDocIdFieldName}),")
+        }
+
+        timestampedFields.forEach { field ->
+            appendLine("                ${field.requestDtoFieldName}: this.${field.joinsFieldName}().map(j => ({")
+            appendLine("                    id: j.id,")
+            appendLine("                    ${field.joinEntityIdFieldName}: j.entityId,")
+            appendLine("                    effectiveFrom: j.effectiveFrom?.toISOString() ?? null,")
+            appendLine("                    effectiveTo: j.effectiveTo?.toISOString() ?? null,")
+            field.extraJoinFields.forEach { extra ->
+                appendLine("                    ${extra.name}: j.${extra.name},")
+            }
+            appendLine("                })),")
+        }
+
+        appendLine("            } as $requestDtoType;")
 
     }
 

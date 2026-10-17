@@ -6,7 +6,7 @@ import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
 class EntityEditDialogHtmlRenderer(
     private val updateApiDef: EntityUpdateApiDef,
-    private val chipFields: List<ManyToManyChipFieldDef> = emptyList()
+    override val chipFields: List<ManyToManyChipFieldDef> = emptyList()
 ) : AbstractCrudFormHtmlRenderer(
     updateApiDef.entityDef,
     InlineFormOrDialog.DIALOG

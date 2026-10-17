@@ -5,6 +5,12 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
 import org.maiaframework.gen.spec.definition.TypeaheadDef
+import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
+import org.maiaframework.gen.spec.definition.lang.IntFieldType
+import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.LongFieldType
+import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.lang.text.StringFunctions
 import org.maiaframework.lang.text.StringFunctions.firstToUpper
@@ -66,5 +72,47 @@ data class ManyToManyTimestampedFieldDef(
     val searchPlaceholder: String = "Search $labelText..."
     val autocompleteRefName: String = "${uniqueFieldName}JoinEntityAuto"
     val displayWithMethodName: String = "display${uniqueFieldNameUpper}Entity"
+
+    // Signal forms: the joins are a signal of rows with a form over them, and a small form is used to add a join.
+    val joinsFormFieldName: String = "${uniqueFieldName}JoinsForm"
+    val addModelFieldName: String = "add${uniqueFieldNameUpper}JoinModel"
+    val addFormFieldName: String = "add${uniqueFieldNameUpper}JoinForm"
+
+    /**
+     * Fields of the join entity beyond the standard id, entity id and effective range.
+     * They are entered in the form that adds a join.
+     */
+    val extraJoinFields: List<ExtraJoinField> by lazy {
+
+        val knownFieldNames = setOf("id", joinEntityIdFieldName, "effectiveFrom", "effectiveTo")
+
+        joinRequestDtoDef.classFieldDefs
+            .filterNot { it.classFieldName.value in knownFieldNames }
+            .map { classFieldDef ->
+                val isNumber = classFieldDef.fieldType is IntFieldType || classFieldDef.fieldType is IntTypeFieldType
+                    || classFieldDef.fieldType is IntValueClassFieldType || classFieldDef.fieldType is LongFieldType
+                    || classFieldDef.fieldType is LongTypeFieldType || classFieldDef.fieldType is DoubleFieldType
+                ExtraJoinField(
+                    name = classFieldDef.classFieldName.value,
+                    label = StringFunctions.toTitleCase(classFieldDef.classFieldName.value),
+                    isNumber = isNumber
+                )
+            }
+
+    }
+
+}
+
+
+/** A field of a join entity that is entered when adding a join. Numbers are `number | null` so that an empty input is null. */
+data class ExtraJoinField(val name: String, val label: String, val isNumber: Boolean) {
+
+    val tsType: String = if (isNumber) "number | null" else "string"
+
+    val emptyValue: String = if (isNumber) "null" else "''"
+
+    val defaultValue: String = if (isNumber) "0" else "''"
+
+    val htmlInputType: String = if (isNumber) "number" else "text"
 
 }
