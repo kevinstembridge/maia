@@ -3,38 +3,29 @@
 
 import {Component, OnInit, inject, input, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Router} from '@angular/router';
-import {AlphaWithHistoryTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/join/AlphaWithHistoryTypeaheadV1EsDoc';
 import {BravoWithHistoryFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryFetchForEditDto';
 import {BravoWithHistoryUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryUpdateRequestDto';
 import {bravoWithHistory_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistory_alphaRequiredValidator';
-import {AlphaWithHistoryTypeaheadV1ApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-with-history-typeahead-v1-api.service';
+import {AlphaWithHistoryTypeaheadV1Component} from '@app/gen-components/org/maiaframework/showcase/join/alpha-with-history-typeahead-v1';
 import {BravoWithHistoryCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-with-history-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
-import {of} from 'rxjs';
-import {catchError, debounceTime, filter, map, switchMap, tap} from 'rxjs/operators';
 
 
 
 @Component({
     imports: [
+        AlphaWithHistoryTypeaheadV1Component,
         FormsModule,
-        MatAutocomplete,
-        MatAutocompleteTrigger,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        MatOption,
         MatProgressSpinnerModule,
         ReactiveFormsModule,
-    ],
-    providers: [
-        AlphaWithHistoryTypeaheadV1ApiService,
     ],
     selector: 'app-bravo-with-history-entity-edit-form',
     styleUrls: ['./bravo-with-history-entity-edit-form.scss'],
@@ -53,19 +44,6 @@ export class BravoWithHistoryEntityEditForm implements OnInit {
 
 
     problemDetail = signal<ProblemDetail | null>(null);
-
-
-    filteredAlphaWithHistory: AlphaWithHistoryTypeaheadV1EsDoc[] = [];
-
-
-    filteredAlphaWithHistoryIsLoading = signal(false);
-
-
-    filteredAlphaWithHistoryHasSearched = signal(false);
-
-
-
-    private readonly alphaWithHistoryTypeaheadV1ApiService = inject(AlphaWithHistoryTypeaheadV1ApiService);
 
 
     formGroup: FormGroup;
@@ -94,29 +72,6 @@ export class BravoWithHistoryEntityEditForm implements OnInit {
 
     ngOnInit() {
 
-        this.formGroup.controls['alpha'].valueChanges
-            .pipe(
-                debounceTime(300),
-                filter(value => typeof value === 'string'),
-                tap(() => {
-                    this.filteredAlphaWithHistory = [];
-                    this.filteredAlphaWithHistoryIsLoading.set(true);
-                }),
-                switchMap(value => this.alphaWithHistoryTypeaheadV1ApiService.search(value)
-                    .pipe(
-                        catchError(err => {
-                            this.filteredAlphaWithHistoryIsLoading.set(false);
-                            console.error(err);
-                            return of([]);
-                        })
-                    )
-                ),
-                tap(() => this.filteredAlphaWithHistoryIsLoading.set(false))
-            ).subscribe(res => {
-                this.filteredAlphaWithHistory = res;
-                this.filteredAlphaWithHistoryHasSearched.set(true);
-            });
-
         this.formService.fetchForEdit(this.entityId()).subscribe({
             next: (dto: BravoWithHistoryFetchForEditDto) => {
                 this.formGroup.patchValue({
@@ -135,9 +90,6 @@ export class BravoWithHistoryEntityEditForm implements OnInit {
         });
 
     }
-
-
-    alphaWithHistoryResultFormatter = (result: any) => result.someString;
 
 
     onSubmit() {

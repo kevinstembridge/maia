@@ -1,6 +1,7 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.EntityFieldDef
+import org.maiaframework.gen.spec.definition.EsDocDef
 import org.maiaframework.gen.spec.definition.EsRefreshDependencyDef
 import org.maiaframework.gen.spec.definition.EsRefreshRole
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
@@ -11,7 +12,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 /**
  * The `findRootIdsVia<Entity>` reverse joins of an ES-enabled searchable DTO: one per [EsRefreshRole.PATH] or
  * [EsRefreshRole.OTHER_SIDE] dependency that has a CrudListener and a single DomainId primary key field. A
- * [EsRefreshRole.JOIN] entity gets none: its auto-refresh listener reads the root id straight from its foreign
+ * [EsRefreshRole.CHILD] entity gets none: its auto-refresh listener reads the root id straight from its foreign
  * key to the root. Shared by the DTO DAO and repo renderers and the EsDoc auto-refresh CrudListener renderer, so
  * that all of them agree on exactly the same set of functions.
  */
@@ -26,6 +27,16 @@ internal object EsReverseJoins {
 
         val functionName = "findRootIdsVia${dependency.entityDef.entityBaseName}"
 
+
+    }
+
+
+    /** The reverse joins of a hand-built EsDoc: one per [EsRefreshRole.PATH] source declared with `watchesVia`. */
+    fun reverseJoinsFor(esDocDef: EsDocDef): List<ReverseJoin> {
+
+        return esDocDef.refreshDependencies
+            .filter { it.role == EsRefreshRole.PATH }
+            .map { ReverseJoin(it, it.entityDef.primaryKeyFields.single()) }
 
     }
 
@@ -56,7 +67,7 @@ internal object EsReverseJoins {
 /**
  * The EsDoc auto-refresh CrudListeners of a searchable DTO: one per (EsDoc version with `autoRefresh = true`) x
  * (the [EsRefreshRole.ROOT] dependency; each dependency that has a `findRootIdsVia<Entity>` reverse join per
- * [EsReverseJoins], so a listener never calls a repo method that is not rendered; and each [EsRefreshRole.JOIN]
+ * [EsReverseJoins], so a listener never calls a repo method that is not rendered; and each [EsRefreshRole.CHILD]
  * entity with a CrudListener whose foreign key to the root is a DomainId, read directly with no query).
  */
 internal object EsRefreshListeners {
@@ -76,7 +87,7 @@ internal object EsRefreshListeners {
         val dependencies = searchableDtoDef.esRefreshDependencies.filter { dependency ->
             when (dependency.role) {
                 EsRefreshRole.ROOT -> true
-                EsRefreshRole.JOIN -> dependency.hasCrudListener && rootForeignKeyFieldOf(dependency) != null
+                EsRefreshRole.CHILD -> dependency.hasCrudListener && rootForeignKeyFieldOf(dependency) != null
                 EsRefreshRole.PATH, EsRefreshRole.OTHER_SIDE -> reverseJoinDependencies.any { it === dependency }
             }
         }
@@ -84,6 +95,18 @@ internal object EsRefreshListeners {
         return searchableDtoDef.esDocDefs
             .filter { it.esDocVersion in autoRefreshVersions }
             .flatMap { esDocDef -> dependencies.map { SearchableDtoEsDocCrudListenerRenderer(searchableDtoDef, esDocDef, it) } }
+
+    }
+
+
+    /**
+     * The listeners of a hand-built EsDoc declared with `autoRefresh(true)`: one per declared source entity. Same-row
+     * (ROOT) and foreign-key child (CHILD) sources need no query; `watchesVia` (PATH) sources call the
+     * `findRootIdsVia<Entity>` queries of the [EsDocRefreshRepoRenderer]'s repo. Empty for any other EsDoc.
+     */
+    fun renderersFor(esDocDef: EsDocDef): List<SearchableDtoEsDocCrudListenerRenderer> {
+
+        return esDocDef.refreshDependencies.map { SearchableDtoEsDocCrudListenerRenderer(null, esDocDef, it) }
 
     }
 

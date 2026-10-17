@@ -30,35 +30,14 @@
                 <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Left Simple Entities</mat-label>
-            <mat-chip-grid #leftSimpleEntityChipGrid>
-                @for (entity of selectedLeftSimpleEntities; track entity.id) {
-                    <mat-chip-row (removed)="removeLeftSimpleEntity(entity)">
-                        {{ entity.someString }}
-                        <button matChipRemove type="button"><mat-icon>cancel</mat-icon></button>
-                    </mat-chip-row>
-                }
-            </mat-chip-grid>
-            <input
-                #leftSimpleEntityInput
-                placeholder="Search Left Simple Entities..."
-                [formControl]="leftSimpleEntitySearchControl"
-                [matChipInputFor]="leftSimpleEntityChipGrid"
-                [matAutocomplete]="leftSimpleEntityAuto"
-            />
-            <mat-autocomplete #leftSimpleEntityAuto="matAutocomplete" (optionSelected)="addLeftSimpleEntity($event)">
-                @if (filteredLeftSimpleEntitiesIsLoading()) {
-                    <mat-option disabled>Loading...</mat-option>
-                }
-                @for (option of filteredLeftSimpleEntities; track option.id) {
-                    <mat-option [value]="option">{{ option.someString }}</mat-option>
-                }
-                @if (filteredLeftSimpleEntities.length === 0 && filteredLeftSimpleEntitiesHasSearched()) {
-                    <mat-option disabled>No results found</mat-option>
-                }
-            </mat-autocomplete>
-        </mat-form-field>
+        <app-left-many-typeahead-v1
+            chips
+            label="Left Simple Entities"
+            placeholder="Search Left Simple Entities..."
+            [selected]="selectedLeftSimpleEntities"
+            (added)="addLeftSimpleEntity($event)"
+            (removed)="removeLeftSimpleEntity($event)"
+        ></app-left-many-typeahead-v1>
         <div class="join-entries">
             @for (join of leftSystemEffectiveJoins; track join.entityId) {
                 <div class="join-entry">
@@ -74,26 +53,11 @@
         </button>
         @if (showLeftSystemEffectiveJoinForm()) {
             <div class="join-mini-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Left System Effective Entities</mat-label>
-                    <input
-                        matInput
-                        [formControl]="addLeftSystemEffectiveJoinEntityControl"
-                        [matAutocomplete]="leftSystemEffectiveJoinEntityAuto"
-                        placeholder="Search Left System Effective Entities..."
-                    />
-                    <mat-autocomplete #leftSystemEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftSystemEffectiveEntity">
-                        @if (filteredLeftSystemEffectiveEntitiesIsLoading()) {
-                            <mat-option disabled>Loading...</mat-option>
-                        }
-                        @for (option of filteredLeftSystemEffectiveEntities; track option.id) {
-                            <mat-option [value]="option">{{ option.someString }}</mat-option>
-                        }
-                        @if (filteredLeftSystemEffectiveEntities.length === 0 && filteredLeftSystemEffectiveEntitiesHasSearched()) {
-                            <mat-option disabled>No results found</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
+                <app-left-many-typeahead-v1
+                    [formControl]="addLeftSystemEffectiveJoinEntityControl"
+                    label="Left System Effective Entities"
+                    placeholder="Search Left System Effective Entities..."
+                ></app-left-many-typeahead-v1>
                 <button mat-flat-button type="button" (click)="confirmAddLeftSystemEffectiveJoin()">Add</button>
                 <button mat-flat-button type="button" (click)="cancelAddLeftSystemEffectiveJoin()">Cancel</button>
             </div>
@@ -113,26 +77,11 @@
         </button>
         @if (showLeftSystemSingleEffectiveJoinForm()) {
             <div class="join-mini-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Left System Single Effective Entities</mat-label>
-                    <input
-                        matInput
-                        [formControl]="addLeftSystemSingleEffectiveJoinEntityControl"
-                        [matAutocomplete]="leftSystemSingleEffectiveJoinEntityAuto"
-                        placeholder="Search Left System Single Effective Entities..."
-                    />
-                    <mat-autocomplete #leftSystemSingleEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftSystemSingleEffectiveEntity">
-                        @if (filteredLeftSystemSingleEffectiveEntitiesIsLoading()) {
-                            <mat-option disabled>Loading...</mat-option>
-                        }
-                        @for (option of filteredLeftSystemSingleEffectiveEntities; track option.id) {
-                            <mat-option [value]="option">{{ option.someString }}</mat-option>
-                        }
-                        @if (filteredLeftSystemSingleEffectiveEntities.length === 0 && filteredLeftSystemSingleEffectiveEntitiesHasSearched()) {
-                            <mat-option disabled>No results found</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
+                <app-left-many-typeahead-v1
+                    [formControl]="addLeftSystemSingleEffectiveJoinEntityControl"
+                    label="Left System Single Effective Entities"
+                    placeholder="Search Left System Single Effective Entities..."
+                ></app-left-many-typeahead-v1>
                 <button mat-flat-button type="button" (click)="confirmAddLeftSystemSingleEffectiveJoin()">Add</button>
                 <button mat-flat-button type="button" (click)="cancelAddLeftSystemSingleEffectiveJoin()">Cancel</button>
             </div>
@@ -180,26 +129,11 @@
         </button>
         @if (showLeftUserEffectiveJoinForm()) {
             <div class="join-mini-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Left User Effective Entities</mat-label>
-                    <input
-                        matInput
-                        [formControl]="addLeftUserEffectiveJoinEntityControl"
-                        [matAutocomplete]="leftUserEffectiveJoinEntityAuto"
-                        placeholder="Search Left User Effective Entities..."
-                    />
-                    <mat-autocomplete #leftUserEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftUserEffectiveEntity">
-                        @if (filteredLeftUserEffectiveEntitiesIsLoading()) {
-                            <mat-option disabled>Loading...</mat-option>
-                        }
-                        @for (option of filteredLeftUserEffectiveEntities; track option.id) {
-                            <mat-option [value]="option">{{ option.someString }}</mat-option>
-                        }
-                        @if (filteredLeftUserEffectiveEntities.length === 0 && filteredLeftUserEffectiveEntitiesHasSearched()) {
-                            <mat-option disabled>No results found</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
+                <app-left-many-typeahead-v1
+                    [formControl]="addLeftUserEffectiveJoinEntityControl"
+                    label="Left User Effective Entities"
+                    placeholder="Search Left User Effective Entities..."
+                ></app-left-many-typeahead-v1>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective From Date</mat-label>
                     <input matInput [matDatepicker]="effectiveFromPickerleftUserEffective"
@@ -247,26 +181,11 @@
         </button>
         @if (showLeftJoinForm()) {
             <div class="join-mini-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Left Entities</mat-label>
-                    <input
-                        matInput
-                        [formControl]="addLeftJoinEntityControl"
-                        [matAutocomplete]="leftJoinEntityAuto"
-                        placeholder="Search Left Entities..."
-                    />
-                    <mat-autocomplete #leftJoinEntityAuto="matAutocomplete" [displayWith]="displayLeftEntity">
-                        @if (filteredLeftEntitiesIsLoading()) {
-                            <mat-option disabled>Loading...</mat-option>
-                        }
-                        @for (option of filteredLeftEntities; track option.id) {
-                            <mat-option [value]="option">{{ option.someString }}</mat-option>
-                        }
-                        @if (filteredLeftEntities.length === 0 && filteredLeftEntitiesHasSearched()) {
-                            <mat-option disabled>No results found</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
+                <app-left-many-typeahead-v1
+                    [formControl]="addLeftJoinEntityControl"
+                    label="Left Entities"
+                    placeholder="Search Left Entities..."
+                ></app-left-many-typeahead-v1>
                 <mat-form-field appearance="outline">
                     <mat-label>Some Int On Complex</mat-label>
                     <input matInput type="number" [formControl]="addLeftJoinSomeIntOnComplexControl" />

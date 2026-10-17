@@ -68,6 +68,7 @@ import org.maiaframework.gen.renderers.ui.TimelineBlotterHtmlRenderer
 import org.maiaframework.gen.renderers.ui.TimelineBlotterPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.TimelineBlotterPageHtmlRenderer
 import org.maiaframework.gen.renderers.ui.TimelineBlotterRowDtoTypescriptRenderer
+import org.maiaframework.gen.renderers.ui.TypeaheadAngularComponentRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadAngularServiceRenderer
 import org.maiaframework.gen.renderers.ui.TypeaheadFieldValidatorRenderer
 import org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
@@ -335,8 +336,8 @@ class AngularUiModuleGenerator(
         chipFields: List<ManyToManyChipFieldDef> = emptyList()
     ) {
 
-        val providerServices = def.allTypeaheadDefs.map { it.angularServiceClassName } +
-                chipFields.map { it.serviceClassName }
+        // The typeahead components provide their own API services, so the forms no longer need to.
+        val providerServices = emptyList<String>()
 
         when (def.angularFormSystem) {
 
@@ -509,9 +510,8 @@ class AngularUiModuleGenerator(
             val chipFields = manyToManyChipFieldsFor(entityCreatePageDef.entityDef, entityCreatePageDef.entityDef.manyToManyAssociations)
             val timestampedFields = manyToManyTimestampedFieldsFor(entityCreatePageDef.entityDef, entityCreatePageDef.entityDef.manyToManyAssociations)
 
-            val providerServices = entityCreatePageDef.entityDef.allTypeaheadDefs.map { it.angularServiceClassName } +
-                chipFields.map { it.serviceClassName } +
-                timestampedFields.map { it.serviceClassName }
+            // The typeahead components provide their own API services.
+            val providerServices = emptyList<String>()
 
             val angularFormDef = AngularFormDef(
                 componentBaseName = entityCreatePageDef.entityDef.crudAngularComponentBaseName,
@@ -592,9 +592,8 @@ class AngularUiModuleGenerator(
                 readOnlyFormFields = entityEditPageDef.updateApiDef.editHtmlFormFields.filter { !it.isEditable }
             )
 
-            val providerServices = angularFormDef.allTypeaheadDefs.map { it.angularServiceClassName } +
-                chipFields.map { it.serviceClassName } +
-                timestampedFields.map { it.serviceClassName }
+            // The typeahead components provide their own API services.
+            val providerServices = emptyList<String>()
 
             AngularReactiveFormComponentRenderer(
                 angularFormDef,
@@ -884,6 +883,7 @@ class AngularUiModuleGenerator(
 
         this.applicationModelDef.typeaheadDefs.forEach {
             TypeaheadAngularServiceRenderer(it).renderToDir(this.typescriptOutputDir)
+            TypeaheadAngularComponentRenderer(it).renderToDir(this.typescriptOutputDir)
         }
 
     }

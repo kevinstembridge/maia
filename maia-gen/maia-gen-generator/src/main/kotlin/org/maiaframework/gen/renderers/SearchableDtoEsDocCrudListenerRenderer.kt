@@ -20,11 +20,11 @@ import org.maiaframework.gen.spec.definition.lang.ParameterizedType
  * [CrudListenerCallbacks]). Use [EsRefreshListeners.renderersFor] to get the full set for a searchable DTO.
  */
 class SearchableDtoEsDocCrudListenerRenderer(
-    private val searchableDtoDef: SearchableDtoDef,
+    private val searchableDtoDef: SearchableDtoDef?,
     private val esDocDef: EsDocDef,
     val dependency: EsRefreshDependencyDef
 ) : AbstractKotlinRenderer(
-    esRefreshListenerClassDef(searchableDtoDef, esDocDef, dependency)
+    esRefreshListenerClassDef(esDocDef, dependency)
 ) {
 
 
@@ -37,18 +37,19 @@ class SearchableDtoEsDocCrudListenerRenderer(
     private val role = this.dependency.role
 
 
-    private val reverseJoin: EsReverseJoins.ReverseJoin? = if (this.role == EsRefreshRole.ROOT || this.role == EsRefreshRole.JOIN) {
+    private val reverseJoin: EsReverseJoins.ReverseJoin? = if (this.role == EsRefreshRole.ROOT || this.role == EsRefreshRole.CHILD) {
         null
     } else {
-        EsReverseJoins.reverseJoinsFor(this.searchableDtoDef).singleOrNull { it.dependency === this.dependency }
+        (searchableDtoDef?.let { EsReverseJoins.reverseJoinsFor(it) } ?: EsReverseJoins.reverseJoinsFor(this.esDocDef))
+            .singleOrNull { it.dependency === this.dependency }
             ?: throw IllegalArgumentException(
-                "No findRootIdsVia${this.entityDef.entityBaseName} reverse join is rendered for searchable DTO ${this.searchableDtoDef.dtoBaseName}; " +
+                "No findRootIdsVia${this.entityDef.entityBaseName} reverse join is rendered for ${this.esDocDef.esDocBaseName}; " +
                     "cannot render an EsDoc auto-refresh listener for it"
             )
     }
 
 
-    private val idProperty = if (this.role == EsRefreshRole.JOIN) {
+    private val idProperty = if (this.role == EsRefreshRole.CHILD) {
         null
     } else {
         (this.reverseJoin?.primaryKeyField ?: this.entityDef.primaryKeyFields.single()).classFieldName
@@ -56,10 +57,10 @@ class SearchableDtoEsDocCrudListenerRenderer(
 
 
     /** On a many-to-many join entity, its foreign key to the root: the root id itself. */
-    private val rootForeignKeyField: EntityFieldDef? = if (this.role == EsRefreshRole.JOIN) {
+    private val rootForeignKeyField: EntityFieldDef? = if (this.role == EsRefreshRole.CHILD) {
         EsRefreshListeners.rootForeignKeyFieldOf(this.dependency)
             ?: throw IllegalArgumentException(
-                "Join entity ${this.entityDef.entityBaseName} on searchable DTO ${this.searchableDtoDef.dtoBaseName} has no single DomainId foreign key to the root; " +
+                "Join entity ${this.entityDef.entityBaseName} on ${this.esDocDef.esDocBaseName} has no single DomainId foreign key to the root; " +
                     "cannot render an EsDoc auto-refresh listener for it"
             )
     } else {
@@ -85,7 +86,8 @@ class SearchableDtoEsDocCrudListenerRenderer(
         addConstructorArg(aClassField("collector", Fqcns.ES_REFRESH_COLLECTOR).privat().build())
 
         if (this.reverseJoin != null) {
-            addConstructorArg(aClassField("repo", this.searchableDtoDef.dtoRepoClassDef.fqcn).privat().build())
+            val repoClassDef = this.searchableDtoDef?.dtoRepoClassDef ?: this.esDocDef.refreshRepoClassDef
+            addConstructorArg(aClassField("repo", repoClassDef.fqcn).privat().build())
         }
 
         addConstructorArg(aClassField("indexService", this.esDocDef.indexServiceClassDef.fqcn).privat().build())
@@ -119,7 +121,7 @@ class SearchableDtoEsDocCrudListenerRenderer(
             }
             EsRefreshRole.PATH -> "when a field the EsDoc reads changes, or before a row is deleted, the documents of every root\n" +
                 " * that reaches the row are refreshed."
-            EsRefreshRole.JOIN -> "creating a join row, changing a field the EsDoc reads, or deleting it refreshes the\n" +
+            EsRefreshRole.CHILD -> "creating a join or child row, changing a field the EsDoc reads, or deleting it refreshes the\n" +
                 " * document of the root it joins (before and after, if the row moves to another root). The root id is read\n" +
                 " * straight from the join row's foreign key to the root, so no query is needed."
             EsRefreshRole.OTHER_SIDE -> "every update, and every delete, refreshes the documents of the roots the row is\n" +
@@ -170,7 +172,7 @@ class SearchableDtoEsDocCrudListenerRenderer(
 
         val body = when (this.role) {
             EsRefreshRole.ROOT -> listOf(enlistOwnId("entity"))
-            EsRefreshRole.JOIN -> listOf(enlistRootForeignKey("entity"))
+            EsRefreshRole.CHILD -> listOf(enlistRootForeignKey("entity"))
             // a new row cannot yet be referenced by any root
             EsRefreshRole.PATH, EsRefreshRole.OTHER_SIDE -> emptyList()
         }
@@ -195,7 +197,7 @@ class SearchableDtoEsDocCrudListenerRenderer(
             // an update does not change the foreign key path from a root to the row, so the roots can be
             // resolved from committed state, outside the caller's transaction
             EsRefreshRole.PATH -> ifWatchedFieldsChanged(enlistRootsAfterCommit())
-            EsRefreshRole.JOIN -> ifWatchedFieldsChanged(listOf(
+            EsRefreshRole.CHILD -> ifWatchedFieldsChanged(listOf(
                 "        this.collector.enlistRefresh(this.indexService, ${this.listOfRootIds}(before.${this.rootForeignKeyProperty}, after.${this.rootForeignKeyProperty}).distinct())"
             ))
             EsRefreshRole.OTHER_SIDE -> listOf(enlistRootsNow("before")) + enlistRootsAfterCommit()
@@ -215,13 +217,13 @@ class SearchableDtoEsDocCrudListenerRenderer(
         // path and other-side rows are resolved before the delete, while the rows referencing them still exist
         val beforeDeleteBody = when (this.role) {
             EsRefreshRole.PATH, EsRefreshRole.OTHER_SIDE -> listOf(enlistRootsNow("entity"))
-            EsRefreshRole.ROOT, EsRefreshRole.JOIN -> emptyList()
+            EsRefreshRole.ROOT, EsRefreshRole.CHILD -> emptyList()
         }
 
         // the index service deletes the documents of ids whose row no longer exists
         val deletedBody = when (this.role) {
             EsRefreshRole.ROOT -> listOf(enlistOwnId("entity"))
-            EsRefreshRole.JOIN -> listOf(enlistRootForeignKey("entity"))
+            EsRefreshRole.CHILD -> listOf(enlistRootForeignKey("entity"))
             EsRefreshRole.PATH, EsRefreshRole.OTHER_SIDE -> emptyList()
         }
 
@@ -302,14 +304,13 @@ class SearchableDtoEsDocCrudListenerRenderer(
 
 
 private fun esRefreshListenerClassDef(
-    searchableDtoDef: SearchableDtoDef,
     esDocDef: EsDocDef,
     dependency: EsRefreshDependencyDef
 ): ClassDef {
 
     val className = "${esDocDef.esDocBaseName}V${esDocDef.esDocVersion}EsRefresh${dependency.entityDef.entityBaseName}CrudListener"
 
-    return aClassDef(searchableDtoDef.packageName.uqcn(className))
+    return aClassDef(esDocDef.packageName.uqcn(className))
         .withClassAnnotation(AnnotationDefs.SPRING_SERVICE)
         .withInterface(ParameterizedType(dependency.entityDef.crudListenerClassDef.fqcn))
         .build()

@@ -3,38 +3,29 @@
 
 import {Component, OnInit, inject, input, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Router} from '@angular/router';
-import {AlphaTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/join/AlphaTypeaheadV1EsDoc';
 import {BravoFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoFetchForEditDto';
 import {BravoUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoUpdateRequestDto';
 import {bravo_alphaRequiredValidator} from '@app/gen-components/org/maiaframework/showcase/join/Bravo_alphaRequiredValidator';
-import {AlphaTypeaheadV1ApiService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-v1-api.service';
+import {AlphaTypeaheadV1Component} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-v1';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
-import {of} from 'rxjs';
-import {catchError, debounceTime, filter, map, switchMap, tap} from 'rxjs/operators';
 
 
 
 @Component({
     imports: [
+        AlphaTypeaheadV1Component,
         FormsModule,
-        MatAutocomplete,
-        MatAutocompleteTrigger,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        MatOption,
         MatProgressSpinnerModule,
         ReactiveFormsModule,
-    ],
-    providers: [
-        AlphaTypeaheadV1ApiService,
     ],
     selector: 'app-bravo-entity-edit-form',
     styleUrls: ['./bravo-entity-edit-form.scss'],
@@ -53,19 +44,6 @@ export class BravoEntityEditForm implements OnInit {
 
 
     problemDetail = signal<ProblemDetail | null>(null);
-
-
-    filteredAlpha: AlphaTypeaheadV1EsDoc[] = [];
-
-
-    filteredAlphaIsLoading = signal(false);
-
-
-    filteredAlphaHasSearched = signal(false);
-
-
-
-    private readonly alphaTypeaheadV1ApiService = inject(AlphaTypeaheadV1ApiService);
 
 
     formGroup: FormGroup;
@@ -93,29 +71,6 @@ export class BravoEntityEditForm implements OnInit {
 
     ngOnInit() {
 
-        this.formGroup.controls['alpha'].valueChanges
-            .pipe(
-                debounceTime(300),
-                filter(value => typeof value === 'string'),
-                tap(() => {
-                    this.filteredAlpha = [];
-                    this.filteredAlphaIsLoading.set(true);
-                }),
-                switchMap(value => this.alphaTypeaheadV1ApiService.search(value)
-                    .pipe(
-                        catchError(err => {
-                            this.filteredAlphaIsLoading.set(false);
-                            console.error(err);
-                            return of([]);
-                        })
-                    )
-                ),
-                tap(() => this.filteredAlphaIsLoading.set(false))
-            ).subscribe(res => {
-                this.filteredAlpha = res;
-                this.filteredAlphaHasSearched.set(true);
-            });
-
         this.formService.fetchForEdit(this.entityId()).subscribe({
             next: (dto: BravoFetchForEditDto) => {
                 this.formGroup.patchValue({
@@ -133,9 +88,6 @@ export class BravoEntityEditForm implements OnInit {
         });
 
     }
-
-
-    alphaResultFormatter = (result: any) => result.someString;
 
 
     onSubmit() {

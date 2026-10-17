@@ -24,7 +24,12 @@ class EsDocDef(
     renderFieldEnum: Boolean,
     val generateRefreshIndexJob: Boolean,
     val disableRendering: Boolean,
-    val entityDef: EntityDef?
+    val entityDef: EntityDef?,
+    /**
+     * For a hand-built EsDoc declared with `autoRefresh(true)`: the entities whose changes refresh it. Empty for an
+     * EsDoc derived from a searchable DTO, whose dependencies come from [SearchableDtoDef.esRefreshDependencies].
+     */
+    val refreshDependencies: List<EsRefreshDependencyDef> = emptyList()
 ) {
 
 
@@ -99,6 +104,15 @@ class EsDocDef(
     fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef {
         return this.dtoDef.findFieldByPath(fieldPath)
     }
+
+
+    /**
+     * For a hand-built EsDoc that watches entities through foreign-key paths: the generated repo holding the
+     * `findRootIdsVia<Entity>` queries that the refresh listeners call.
+     */
+    val refreshRepoClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}EsRefreshRepo"))
+        .withClassAnnotation(AnnotationDefs.SPRING_REPOSITORY)
+        .build()
 
 
     val esDocRepoClassDef = aClassDef(this.dtoDef.fqcn.withSuffix("Repo"))

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 /**
  * Generated. Keeps [LeftManyEsV1IndexService] in step with changes to [LeftToRightComplexEntity] that raise CrudListener events:
- * creating a join row, changing a field the EsDoc reads, or deleting it refreshes the
+ * creating a join or child row, changing a field the EsDoc reads, or deleting it refreshes the
  * document of the root it joins (before and after, if the row moves to another root). The root id is read
  * straight from the join row's foreign key to the root, so no query is needed.
  * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed.

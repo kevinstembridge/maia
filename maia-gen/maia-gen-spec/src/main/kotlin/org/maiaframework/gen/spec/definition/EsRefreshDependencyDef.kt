@@ -64,8 +64,11 @@ enum class EsRefreshRole {
     /** Reached from the root through foreign keys: affected root ids are resolved by a reverse query. */
     PATH,
 
-    /** The join entity of a many-to-many: its foreign key to the root is the affected root id. */
-    JOIN,
+    /**
+     * A row that holds a foreign key to the root: the join entity of a many-to-many, or a child entity of a
+     * hand-built EsDoc. Its foreign key to the root is the affected root id.
+     */
+    CHILD,
 
     /** The other side of a many-to-many: affected root ids are resolved twice (before the change and after commit). */
     OTHER_SIDE;
@@ -79,7 +82,7 @@ enum class EsRefreshRole {
             return when {
                 isRoot -> ROOT
                 isManyToManyMembership && refreshOnAnyUpdate -> OTHER_SIDE
-                isManyToManyMembership -> JOIN
+                isManyToManyMembership -> CHILD
                 else -> PATH
             }
 

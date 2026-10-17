@@ -1,7 +1,9 @@
 package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.EsDocRepoRenderer
+import org.maiaframework.gen.renderers.EsDocRefreshRepoRenderer
 import org.maiaframework.gen.renderers.EsRefreshListeners
+import org.maiaframework.gen.renderers.EsReverseJoins
 import org.maiaframework.gen.renderers.SearchableDtoEsDocRepoRenderer
 import org.maiaframework.gen.renderers.SearchableDtoEsIndexServiceRenderer
 import org.maiaframework.gen.renderers.TypeaheadIndexServiceRenderer
@@ -35,6 +37,7 @@ class ElasticServiceModuleGenerator(
         renderTypeaheadEsDocRepos()
         renderSearchableDtoEsIndexServices()
         renderSearchableDtoEsRefreshListeners()
+        renderHandBuiltEsDocRefreshListeners()
 
     }
 
@@ -80,6 +83,25 @@ class ElasticServiceModuleGenerator(
 
         this.applicationModelDef.searchableDtoDefs.forEach { searchableDtoDef ->
             EsRefreshListeners.renderersFor(searchableDtoDef).forEach { it.renderToDir(this.kotlinOutputDir) }
+        }
+
+    }
+
+
+    /**
+     * Hand-built EsDocs declared with `autoRefresh(true)`: their listeners call the hand-written index service,
+     * which must implement EsRefreshTarget.
+     */
+    private fun renderHandBuiltEsDocRefreshListeners() {
+
+        this.applicationModelDef.esDocsDefs.forEach { esDocDef ->
+
+            EsRefreshListeners.renderersFor(esDocDef).forEach { it.renderToDir(this.kotlinOutputDir) }
+
+            if (EsReverseJoins.reverseJoinsFor(esDocDef).isNotEmpty()) {
+                EsDocRefreshRepoRenderer(esDocDef, this.applicationModelDef).renderToDir(this.kotlinOutputDir)
+            }
+
         }
 
     }

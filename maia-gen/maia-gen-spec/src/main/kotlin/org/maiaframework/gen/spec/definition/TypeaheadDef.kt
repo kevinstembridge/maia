@@ -138,6 +138,22 @@ class TypeaheadDef(
     val typescriptServiceImport = TypescriptImport(angularServiceClassName, "@app/gen-components/${packageName.asTypescriptDirs()}/${this.angularServiceFileName}")
 
 
+    val angularComponentFileName = "${typeaheadNameKebab}-v${indexVersion}"
+
+
+    val angularComponentClassName = "${typeaheadNameAndVersion}Component"
+
+
+    val angularComponentSelector = "app-${typeaheadNameKebab}-v${indexVersion}"
+
+
+    val typescriptComponentRenderedFilePath = "app/gen-components/${packageName.asTypescriptDirs()}/${this.angularComponentFileName}.ts"
+
+
+    /** A standalone component, so it goes into the `imports` array of the components that use it. */
+    val typescriptComponentImport = TypescriptImport(angularComponentClassName, "@app/gen-components/${packageName.asTypescriptDirs()}/${this.angularComponentFileName}", isModule = true)
+
+
     init {
 
         require(this.fieldDefs.count { it.isIdField } == 1) {

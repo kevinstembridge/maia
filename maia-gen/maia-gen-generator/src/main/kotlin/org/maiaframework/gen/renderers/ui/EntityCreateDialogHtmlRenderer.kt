@@ -31,35 +31,14 @@ class EntityCreateDialogHtmlRenderer(
 
         chipFields.forEach { chip ->
             append("""
-                |        <mat-form-field appearance="outline">
-                |            <mat-label>${chip.labelText}</mat-label>
-                |            <mat-chip-grid #chipGrid>
-                |                @for (entity of ${chip.selectedFieldName}; track entity.${chip.esDocIdFieldName}) {
-                |                    <mat-chip-row (removed)="${chip.removeMethodName}(entity)">
-                |                        {{ entity.${chip.searchTermFieldName} }}
-                |                        <button matChipRemove type="button"><mat-icon>cancel</mat-icon></button>
-                |                    </mat-chip-row>
-                |                }
-                |            </mat-chip-grid>
-                |            <input
-                |                #${chip.inputRefName}
-                |                placeholder="${chip.searchPlaceholder}"
-                |                [formControl]="${chip.searchControlFieldName}"
-                |                [matChipInputFor]="chipGrid"
-                |                [matAutocomplete]="${chip.autocompleteRefName}"
-                |            />
-                |            <mat-autocomplete #${chip.autocompleteRefName}="matAutocomplete" (optionSelected)="${chip.addMethodName}(${'$'}event)">
-                |                @if (${chip.filteredIsLoadingFieldName}()) {
-                |                    <mat-option disabled>Loading...</mat-option>
-                |                }
-                |                @for (option of ${chip.filteredFieldName}; track option.${chip.esDocIdFieldName}) {
-                |                    <mat-option [value]="option">{{ option.${chip.searchTermFieldName} }}</mat-option>
-                |                }
-                |                @if (${chip.filteredFieldName}.length === 0 && ${chip.filteredHasSearchedFieldName}()) {
-                |                    <mat-option disabled>No results found</mat-option>
-                |                }
-                |            </mat-autocomplete>
-                |        </mat-form-field>
+                |        <${chip.typeaheadDef.angularComponentSelector}
+                |            chips
+                |            label="${chip.labelText}"
+                |            placeholder="${chip.searchPlaceholder}"
+                |            [selected]="${chip.selectedFieldName}"
+                |            (added)="${chip.addMethodName}(${'$'}event)"
+                |            (removed)="${chip.removeMethodName}(${'$'}event)"
+                |        ></${chip.typeaheadDef.angularComponentSelector}>
                 |""".trimMargin())
         }
 

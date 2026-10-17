@@ -93,26 +93,11 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
                 |        </button>
                 |        @if (${field.showFormSignalName}()) {
                 |            <div class="join-mini-form">
-                |                <mat-form-field appearance="outline">
-                |                    <mat-label>${field.labelText}</mat-label>
-                |                    <input
-                |                        matInput
-                |                        [formControl]="${field.addEntityControlName}"
-                |                        [matAutocomplete]="${field.autocompleteRefName}"
-                |                        placeholder="${field.searchPlaceholder}"
-                |                    />
-                |                    <mat-autocomplete #${field.autocompleteRefName}="matAutocomplete" [displayWith]="${field.displayWithMethodName}">
-                |                        @if (${field.filteredIsLoadingFieldName}()) {
-                |                            <mat-option disabled>Loading...</mat-option>
-                |                        }
-                |                        @for (option of ${field.filteredFieldName}; track option.${field.esDocIdFieldName}) {
-                |                            <mat-option [value]="option">{{ option.${field.searchTermFieldName} }}</mat-option>
-                |                        }
-                |                        @if (${field.filteredFieldName}.length === 0 && ${field.filteredHasSearchedFieldName}()) {
-                |                            <mat-option disabled>No results found</mat-option>
-                |                        }
-                |                    </mat-autocomplete>
-                |                </mat-form-field>
+                |                <${field.typeaheadDef.angularComponentSelector}
+                |                    [formControl]="${field.addEntityControlName}"
+                |                    label="${field.labelText}"
+                |                    placeholder="${field.searchPlaceholder}"
+                |                ></${field.typeaheadDef.angularComponentSelector}>
                 |""".trimMargin())
 
             if (!field.isManagedBySystem) {
@@ -173,38 +158,15 @@ abstract class AbstractCrudReactiveFormHtmlRenderer(
 
         chipFields.forEach { chip ->
 
-            val chipGridRefName = "${chip.fieldName}EntityChipGrid"
-
             append("""
-                |        <mat-form-field appearance="outline">
-                |            <mat-label>${chip.labelText}</mat-label>
-                |            <mat-chip-grid #$chipGridRefName>
-                |                @for (entity of ${chip.selectedFieldName}; track entity.${chip.esDocIdFieldName}) {
-                |                    <mat-chip-row (removed)="${chip.removeMethodName}(entity)">
-                |                        {{ entity.${chip.searchTermFieldName} }}
-                |                        <button matChipRemove type="button"><mat-icon>cancel</mat-icon></button>
-                |                    </mat-chip-row>
-                |                }
-                |            </mat-chip-grid>
-                |            <input
-                |                #${chip.inputRefName}
-                |                placeholder="${chip.searchPlaceholder}"
-                |                [formControl]="${chip.searchControlFieldName}"
-                |                [matChipInputFor]="$chipGridRefName"
-                |                [matAutocomplete]="${chip.autocompleteRefName}"
-                |            />
-                |            <mat-autocomplete #${chip.autocompleteRefName}="matAutocomplete" (optionSelected)="${chip.addMethodName}(${'$'}event)">
-                |                @if (${chip.filteredIsLoadingFieldName}()) {
-                |                    <mat-option disabled>Loading...</mat-option>
-                |                }
-                |                @for (option of ${chip.filteredFieldName}; track option.${chip.esDocIdFieldName}) {
-                |                    <mat-option [value]="option">{{ option.${chip.searchTermFieldName} }}</mat-option>
-                |                }
-                |                @if (${chip.filteredFieldName}.length === 0 && ${chip.filteredHasSearchedFieldName}()) {
-                |                    <mat-option disabled>No results found</mat-option>
-                |                }
-                |            </mat-autocomplete>
-                |        </mat-form-field>
+                |        <${chip.typeaheadDef.angularComponentSelector}
+                |            chips
+                |            label="${chip.labelText}"
+                |            placeholder="${chip.searchPlaceholder}"
+                |            [selected]="${chip.selectedFieldName}"
+                |            (added)="${chip.addMethodName}(${'$'}event)"
+                |            (removed)="${chip.removeMethodName}(${'$'}event)"
+                |        ></${chip.typeaheadDef.angularComponentSelector}>
                 |""".trimMargin())
 
         }

@@ -66,9 +66,6 @@ class AngularReactiveFormComponentRenderer(
     private val typeaheadDefs = this.angularFormDef.allTypeaheadDefs
 
 
-    private val renderedServiceFieldNames = mutableSetOf<String>()
-
-
     init {
 
         `add imports`()
@@ -85,8 +82,6 @@ class AngularReactiveFormComponentRenderer(
         `render constructor`()
 
         `render function ngOnInit`()
-
-        `render TypeaheadResultFormatters`()
 
         `render chip entity methods`()
 
@@ -122,10 +117,6 @@ class AngularReactiveFormComponentRenderer(
         `render class field for problemDetail`()
 
         `render class fields for async validators`()
-
-        `render class fields for typeahead fields`()
-
-        `render class fields for typeahead services`()
 
         `render class fields for enum MatSelect fields`()
 
@@ -285,49 +276,6 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `render class fields for typeahead fields`() {
-
-        this.typeaheadDefs.forEach { typeaheadDef ->
-
-            val esDocUqcn = typeaheadDef.esDocDef.dtoDef.uqcn.value
-
-            append("""
-                |
-                |
-                |    filtered${typeaheadDef.typeaheadBaseName}: ${esDocUqcn}[] = [];
-                |
-                |
-                |    filtered${typeaheadDef.typeaheadBaseName}IsLoading = signal(false);
-                |
-                |
-                |    filtered${typeaheadDef.typeaheadBaseName}HasSearched = signal(false);
-                |""".trimMargin()
-            )
-
-        }
-
-    }
-
-
-    private fun `render class fields for typeahead services`() {
-
-        this.typeaheadDefs.forEach { typeaheadDef ->
-
-            val serviceFieldName = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
-
-            append("""
-                |
-                |
-                |
-                |    private readonly $serviceFieldName = inject(${typeaheadDef.angularServiceClassName});
-                |""".trimMargin()
-            )
-
-        }
-
-    }
-
-
     private fun `render class fields for enum MatSelect fields`() {
 
         val enumFields = formGroupFields
@@ -390,34 +338,6 @@ class AngularReactiveFormComponentRenderer(
                 |
                 |
                 |    ${chip.selectedFieldName}: ${chip.esDocClassName}[] = [];
-                |
-                |
-                |    ${chip.filteredFieldName}: ${chip.esDocClassName}[] = [];
-                |
-                |
-                |    ${chip.filteredIsLoadingFieldName} = signal(false);
-                |
-                |
-                |    ${chip.filteredHasSearchedFieldName} = signal(false);
-                |
-                |
-                |    ${chip.searchControlFieldName} = new FormControl('');
-                |""".trimMargin()
-            )
-
-            if (renderedServiceFieldNames.add(chip.serviceFieldName)) {
-                append("""
-                    |
-                    |
-                    |    ${chip.serviceFieldName} = inject(${chip.serviceClassName});
-                    |""".trimMargin()
-                )
-            }
-
-            append("""
-                |
-                |
-                |    @ViewChild('${chip.inputRefName}') ${chip.inputRefName}!: ElementRef<HTMLInputElement>;
                 |""".trimMargin()
             )
         }
@@ -430,7 +350,6 @@ class AngularReactiveFormComponentRenderer(
         timestampedFields.forEach { field ->
 
             addImport(field.esDocImport)
-            addImport(field.serviceImport)
             addImport(field.joinRequestDtoTypescriptImport)
 
             val extraDtoFields = extraTimestampedJoinFields(field)
@@ -473,26 +392,6 @@ class AngularReactiveFormComponentRenderer(
                     |
                     |
                     |    $controlName = new FormControl<$tsType | null>(null);
-                    |""".trimMargin())
-            }
-
-            append("""
-                |
-                |
-                |    ${field.filteredFieldName}: ${field.esDocClassName}[] = [];
-                |
-                |
-                |    ${field.filteredIsLoadingFieldName} = signal(false);
-                |
-                |
-                |    ${field.filteredHasSearchedFieldName} = signal(false);
-                |""".trimMargin())
-
-            if (renderedServiceFieldNames.add(field.serviceFieldName)) {
-                append("""
-                    |
-                    |
-                    |    ${field.serviceFieldName} = inject(${field.serviceClassName});
                     |""".trimMargin())
             }
 
@@ -679,121 +578,6 @@ class AngularReactiveFormComponentRenderer(
             |    ngOnInit() {
             |""".trimMargin())
 
-        this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
-
-            addImport("rxjs", "of")
-            addImport("rxjs/operators", "catchError")
-            addImport("rxjs/operators", "debounceTime")
-            addImport("rxjs/operators", "filter")
-            addImport("rxjs/operators", "map")
-            addImport("rxjs/operators", "switchMap")
-            addImport("rxjs/operators", "tap")
-
-            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
-            val filteredFieldName = "filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}"
-            val filteredFieldNameIsLoading = "${filteredFieldName}IsLoading"
-
-            append("""
-                |
-                |        this.formGroup.controls['${requestDtoFieldDef.classFieldDef.classFieldName}'].valueChanges
-                |            .pipe(
-                |                debounceTime(300),
-                |                filter(value => typeof value === 'string'),
-                |                tap(() => {
-                |                    this.$filteredFieldName = [];
-                |                    this.$filteredFieldNameIsLoading.set(true);
-                |                }),
-                |                switchMap(value => this.${StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)}.search(value)
-                |                    .pipe(
-                |                        catchError(err => {
-                |                            this.${filteredFieldNameIsLoading}.set(false);
-                |                            console.error(err);
-                |                            return of([]);
-                |                        })
-                |                    )
-                |                ),
-                |                tap(() => this.${filteredFieldNameIsLoading}.set(false))
-                |            ).subscribe(res => {
-                |                this.${filteredFieldName} = res;
-                |                this.${filteredFieldName}HasSearched.set(true);
-                |            });
-                |""".trimMargin())
-
-        }
-
-        chipFields.forEach { chip ->
-
-            addImport("rxjs", "of")
-            addImport("rxjs/operators", "catchError")
-            addImport("rxjs/operators", "debounceTime")
-            addImport("rxjs/operators", "distinctUntilChanged")
-            addImport("rxjs/operators", "filter")
-            addImport("rxjs/operators", "map")
-            addImport("rxjs/operators", "switchMap")
-            addImport("rxjs/operators", "tap")
-
-            append("""
-                |
-                |        this.${chip.searchControlFieldName}.valueChanges.pipe(
-                |            debounceTime(300),
-                |            distinctUntilChanged(),
-                |            filter(value => typeof value === 'string'),
-                |            tap(() => {
-                |                this.${chip.filteredFieldName} = [];
-                |                this.${chip.filteredIsLoadingFieldName}.set(true);
-                |            }),
-                |            switchMap(value => this.${chip.serviceFieldName}.search(value ?? '').pipe(
-                |                catchError(err => {
-                |                    this.${chip.filteredIsLoadingFieldName}.set(false);
-                |                    console.error(err);
-                |                    return of([]);
-                |                })
-                |            )),
-                |            tap(() => this.${chip.filteredIsLoadingFieldName}.set(false))
-                |        ).subscribe(res => {
-                |            this.${chip.filteredFieldName} = res;
-                |            this.${chip.filteredHasSearchedFieldName}.set(true);
-                |        });
-                |""".trimMargin())
-
-        }
-
-        timestampedFields.forEach { field ->
-
-            addImport("rxjs", "of")
-            addImport("rxjs/operators", "catchError")
-            addImport("rxjs/operators", "debounceTime")
-            addImport("rxjs/operators", "distinctUntilChanged")
-            addImport("rxjs/operators", "filter")
-            addImport("rxjs/operators", "switchMap")
-            addImport("rxjs/operators", "tap")
-
-            append("""
-                |
-                |        this.${field.addEntityControlName}.valueChanges.pipe(
-                |            debounceTime(300),
-                |            distinctUntilChanged(),
-                |            filter(value => typeof value === 'string'),
-                |            tap(() => {
-                |                this.${field.filteredFieldName} = [];
-                |                this.${field.filteredIsLoadingFieldName}.set(true);
-                |            }),
-                |            switchMap(value => this.${field.serviceFieldName}.search(value ?? '').pipe(
-                |                catchError(err => {
-                |                    this.${field.filteredIsLoadingFieldName}.set(false);
-                |                    console.error(err);
-                |                    return of([]);
-                |                })
-                |            )),
-                |            tap(() => this.${field.filteredIsLoadingFieldName}.set(false))
-                |        ).subscribe(res => {
-                |            this.${field.filteredFieldName} = res;
-                |            this.${field.filteredHasSearchedFieldName}.set(true);
-                |        });
-                |""".trimMargin())
-
-        }
-
         if (this.angularFormDef.formModelFields.any { it.linksToAField }) {
 
             blankLine()
@@ -886,21 +670,6 @@ class AngularReactiveFormComponentRenderer(
     }
 
 
-    private fun `render TypeaheadResultFormatters`() {
-
-        this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
-
-            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
-
-            blankLine()
-            blankLine()
-            appendLine("    ${typeaheadDef.typeaheadBaseName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
-
-        }
-
-    }
-
-
     private fun `render chip entity methods`() {
 
         chipFields.forEach { chip ->
@@ -908,14 +677,11 @@ class AngularReactiveFormComponentRenderer(
             blankLine()
             blankLine()
             append("""
-                |    ${chip.addMethodName}(event: MatAutocompleteSelectedEvent): void {
+                |    ${chip.addMethodName}(entity: ${chip.esDocClassName}): void {
                 |
-                |        const entity: ${chip.esDocClassName} = event.option.value;
                 |        if (!this.${chip.selectedFieldName}.some(e => e.${chip.esDocIdFieldName} === entity.${chip.esDocIdFieldName})) {
                 |            this.${chip.selectedFieldName}.push(entity);
                 |        }
-                |        this.${chip.inputRefName}.nativeElement.value = '';
-                |        this.${chip.searchControlFieldName}.setValue('', { emitEvent: false });
                 |
                 |    }
                 |
@@ -977,8 +743,6 @@ class AngularReactiveFormComponentRenderer(
             }
 
             append("""
-                |        this.${field.filteredFieldName} = [];
-                |        this.${field.filteredHasSearchedFieldName}.set(false);
                 |        this.${field.showFormSignalName}.set(false);
                 |
                 |    }
@@ -1008,16 +772,9 @@ class AngularReactiveFormComponentRenderer(
             }
 
             append("""
-                |        this.${field.filteredFieldName} = [];
-                |        this.${field.filteredHasSearchedFieldName}.set(false);
                 |        this.${field.showFormSignalName}.set(false);
                 |
                 |    }
-                |
-                |
-                |    ${field.displayWithMethodName} = (entity: ${field.esDocClassName} | null): string => {
-                |        return entity ? entity.${field.searchTermFieldName} : '';
-                |    };
                 |""".trimMargin())
 
         }
@@ -1344,35 +1101,24 @@ class AngularReactiveFormComponentRenderer(
         addImportsForFieldTypes(formGroupFields)
 
         this.typeaheadDefs.forEach { typeaheadDef ->
-            addImport(typeaheadDef.typescriptServiceImport)
-            addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
+            addImport(typeaheadDef.typescriptComponentImport)
         }
 
         this.angularFormDef.formModelFields.forEach { angularFieldDef ->
             angularFieldDef.typeaheadRequiredValidatorTypescriptImport?.let { addImport(it) }
         }
 
-        if (chipFields.isNotEmpty()) {
-            addImport("@angular/core", "ElementRef")
-            addImport("@angular/core", "ViewChild")
-            addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
-            addImport("@angular/material/autocomplete", "MatAutocompleteSelectedEvent")
-            addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
-            addImport("@angular/material/autocomplete", "MatOption", isModule = true)
-            addImport("@angular/material/chips", "MatChipsModule", isModule = true)
-            addImport("@angular/material/icon", "MatIconModule", isModule = true)
-            chipFields.forEach { chip ->
-                addImport(chip.serviceImport)
-                addImport(chip.esDocImport)
-            }
+        chipFields.forEach { chip ->
+            addImport(chip.typeaheadDef.typescriptComponentImport)
+            addImport(chip.esDocImport)
         }
 
         if (timestampedFields.isNotEmpty()) {
             `add imports for date and time pickers`()
             addImport("@angular/material/icon", "MatIconModule", isModule = true)
-            addImport("@angular/material/autocomplete", "MatAutocomplete", isModule = true)
-            addImport("@angular/material/autocomplete", "MatAutocompleteTrigger", isModule = true)
-            addImport("@angular/material/autocomplete", "MatOption", isModule = true)
+            timestampedFields.forEach { field ->
+                addImport(field.typeaheadDef.typescriptComponentImport)
+            }
         }
 
     }
@@ -1394,7 +1140,7 @@ class AngularReactiveFormComponentRenderer(
                 is DoubleFieldType -> {}
                 is EnumFieldType -> `add imports for Material Select component`(fieldType)
                 is EsDocFieldType -> {}
-                is ForeignKeyFieldType -> `add imports for Material Autocomplete`()
+                is ForeignKeyFieldType -> if (!angularFormFieldDef.isTypeahead) `add imports for Material Autocomplete`()
                 is FqcnFieldType -> {}
                 is JoinFetchDtoFieldType -> TODO("YAGNI?")
                 is InstantFieldType -> `add imports for date and time pickers`()

@@ -499,44 +499,15 @@ object MatFormFieldRenderer {
         val typeaheadDef = classFieldDef.typeaheadDef!!
         val classFieldName = classFieldDef.classFieldName
 
-        val formGroupFieldName = typeaheadDef.typeaheadBaseName.firstToLower()
-
-        r.appendLine("$indent<mat-form-field appearance=\"outline\">")
-        r.appendLine("$indent    <mat-autocomplete #${classFieldName}Auto=\"matAutocomplete\" [displayWith]=\"${formGroupFieldName}ResultFormatter\">")
-        r.appendLine("$indent        @if (filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}IsLoading()) {")
-        r.appendLine("$indent            <mat-option>Loading...</mat-option>")
-        r.appendLine("$indent        }")
-        r.appendLine("$indent        @if (!filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}IsLoading()) {")
-        r.blankLine()
-        r.appendLine("$indent            @for (option of filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}; track option) {")
-        r.appendLine("$indent                <mat-option [value]=\"option\">{{ option.${typeaheadDef.searchTermFieldName} }}</mat-option>")
-        r.appendLine("$indent            }")
-        r.appendLine("$indent            @if (filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}.length === 0 && filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}HasSearched()) {")
-        r.appendLine("$indent                <mat-option disabled>No results found</mat-option>")
-        r.appendLine("$indent            }")
-        r.blankLine()
-        r.appendLine("$indent        }")
-        r.appendLine("$indent    </mat-autocomplete>")
-        r.appendLine("$indent    <mat-label>${classFieldDef.displayName}</mat-label>")
-        r.appendLine("$indent    <input")
-        r.appendLine("$indent        [formField]=\"dialogForm.$classFieldName\"")
-        r.appendLine("$indent        matInput")
-        r.appendLine("$indent        type=\"text\"")
-        r.appendLine("$indent        [matAutocomplete]=\"${classFieldName}Auto\"")
+        r.appendLine("$indent<${typeaheadDef.angularComponentSelector}")
+        r.appendLine("$indent    [formField]=\"dialogForm.$classFieldName\"")
+        r.appendLine("$indent    label=\"${classFieldDef.displayName}\"")
 
         htmlFormField.placeholder?.let {
-            r.appendLine("$indent        placeholder=\"${classFieldDef.formPlaceholderText}\"")
+            r.appendLine("$indent    placeholder=\"${classFieldDef.formPlaceholderText}\"")
         }
 
-        r.appendLine("$indent    />")
-
-        if (classFieldDef.nullable == false) {
-            r.appendLine("$indent    @if (formGroup.controls['$classFieldName'].hasError('required')) {")
-            r.appendLine("$indent        <mat-error>${classFieldDef.displayName} is required.</mat-error>")
-            r.appendLine("$indent    }")
-        }
-
-        r.appendLine("$indent</mat-form-field>")
+        r.appendLine("$indent></${typeaheadDef.angularComponentSelector}>")
 
     }
 
@@ -574,44 +545,15 @@ object MatFormFieldRenderer {
         val typeaheadDef = classFieldDef.typeaheadDef!!
         val classFieldName = classFieldDef.classFieldName
 
-        val formGroupFieldName = typeaheadDef.typeaheadBaseName.firstToLower()
-
-        r.appendLine("$indent<mat-form-field appearance=\"outline\">")
-        r.appendLine("$indent    <mat-autocomplete #${classFieldName}Auto=\"matAutocomplete\" [displayWith]=\"${formGroupFieldName}ResultFormatter\">")
-        r.appendLine("$indent        @if (filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}IsLoading()) {")
-        r.appendLine("$indent            <mat-option>Loading...</mat-option>")
-        r.appendLine("$indent        }")
-        r.appendLine("$indent        @if (!filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}IsLoading()) {")
-        r.blankLine()
-        r.appendLine("$indent            @for (option of filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}; track option) {")
-        r.appendLine("$indent                <mat-option [value]=\"option\">{{ option.${typeaheadDef.searchTermFieldName} }}</mat-option>")
-        r.appendLine("$indent            }")
-        r.appendLine("$indent            @if (filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}.length === 0 && filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}HasSearched()) {")
-        r.appendLine("$indent                <mat-option disabled>No results found</mat-option>")
-        r.appendLine("$indent            }")
-        r.blankLine()
-        r.appendLine("$indent        }")
-        r.appendLine("$indent    </mat-autocomplete>")
-        r.appendLine("$indent    <mat-label>${classFieldDef.displayName}</mat-label>")
-        r.appendLine("$indent    <input")
-        r.appendLine("$indent        formControlName=\"$classFieldName\"")
-        r.appendLine("$indent        matInput")
-        r.appendLine("$indent        type=\"text\"")
-        r.appendLine("$indent        [matAutocomplete]=\"${classFieldName}Auto\"")
+        r.appendLine("$indent<${typeaheadDef.angularComponentSelector}")
+        r.appendLine("$indent    formControlName=\"$classFieldName\"")
+        r.appendLine("$indent    label=\"${classFieldDef.displayName}\"")
 
         htmlFormField.placeholder?.let {
-            r.appendLine("$indent        placeholder=\"${classFieldDef.formPlaceholderText}\"")
+            r.appendLine("$indent    placeholder=\"${classFieldDef.formPlaceholderText}\"")
         }
 
-        r.appendLine("$indent    />")
-
-        if (classFieldDef.nullable == false) {
-            r.appendLine("$indent    @if (formGroup.controls['$classFieldName'].hasError('required')) {")
-            r.appendLine("$indent        <mat-error>${classFieldDef.displayName} is required.</mat-error>")
-            r.appendLine("$indent    }")
-        }
-
-        r.appendLine("$indent</mat-form-field>")
+        r.appendLine("$indent></${typeaheadDef.angularComponentSelector}>")
 
     }
 

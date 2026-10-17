@@ -591,10 +591,10 @@ class EsRefreshDependencyDefTest {
             .containsExactly("Order=ROOT", "Customer=PATH", "Region=PATH")
 
         assertThat(spec.leftDto.esRefreshDependencies.map { "${it.entityDef.entityBaseName}=${it.role}" })
-            .containsExactly("Left=ROOT", "LeftRight=JOIN", "Right=OTHER_SIDE")
+            .containsExactly("Left=ROOT", "LeftRight=CHILD", "Right=OTHER_SIDE")
 
         assertThat(spec.leftJoinQualifiedDto.esRefreshDependencies.map { "${it.entityDef.entityBaseName}=${it.role}" })
-            .containsExactly("Left=ROOT", "LeftRight=JOIN", "Right=OTHER_SIDE")
+            .containsExactly("Left=ROOT", "LeftRight=CHILD", "Right=OTHER_SIDE")
 
     }
 

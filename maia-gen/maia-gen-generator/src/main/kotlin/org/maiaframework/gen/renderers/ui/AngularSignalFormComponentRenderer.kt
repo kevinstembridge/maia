@@ -78,7 +78,6 @@ class AngularSignalFormComponentRenderer(
         addImport(this.requestDtoDef.typescriptImport)
         addImport("@angular/material/button", "MatButtonModule", isModule = true)
         addImport("@angular/material/core", "MatOptionModule", isModule = true)
-        addImport("@angular/material/autocomplete", "MatAutocompleteModule", isModule = true)
         addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
 
@@ -89,8 +88,7 @@ class AngularSignalFormComponentRenderer(
         addImport("@app/gen-components/common/model/ProblemDetail", "ProblemDetail")
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
-            addImport(typeaheadDef.typescriptServiceImport)
-            addImport(typeaheadDef.esDocDef.dtoDef.typescriptDtoImport)
+            addImport(typeaheadDef.typescriptComponentImport)
         }
 
         this.angularFormDef.formModelFields.forEach { angularFieldDef ->
@@ -136,7 +134,6 @@ class AngularSignalFormComponentRenderer(
         `render class fields`()
         `render constructor`()
         `render function ngOnInit`()
-        `render TypeaheadResultFormatters`()
         `render function onSubmit`()
         `render function onCancel`()
 
@@ -185,23 +182,6 @@ class AngularSignalFormComponentRenderer(
 
         }
 
-        this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
-
-            val esDocUqcn = typeaheadDef.esDocDef.dtoDef.uqcn.value
-
-            append("""
-                |
-                |
-                |    filtered${typeaheadDef.typeaheadBaseName}: ${esDocUqcn}[] = [];
-                |
-                |
-                |    filtered${typeaheadDef.typeaheadBaseName}IsLoading = signal(false);
-                |
-                |
-                |    filtered${typeaheadDef.typeaheadBaseName}HasSearched = signal(false);
-                |""".trimMargin())
-
-        }
 
 
         this.angularFormDef.enumsForMatSelectFields
@@ -438,14 +418,6 @@ class AngularSignalFormComponentRenderer(
             appendLine("    private readonly router = inject(Router);")
         }
 
-        this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
-
-            val serviceUqcn = StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)
-            blankLine()
-            blankLine()
-            appendLine("    private readonly $serviceUqcn = inject(${typeaheadDef.angularServiceClassName});")
-
-        }
 
         this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
             blankLine()
@@ -537,40 +509,6 @@ class AngularSignalFormComponentRenderer(
             |    ngOnInit() {
             |""".trimMargin())
 
-        this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
-
-            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
-            val filteredFieldName = "filtered${typeaheadDef.typeaheadBaseName.firstToUpper()}"
-            val filteredFieldNameIsLoading = "${filteredFieldName}IsLoading"
-
-            append("""
-                |
-                |        this.formGroup.controls['${requestDtoFieldDef.classFieldDef.classFieldName}'].valueChanges
-                |            .pipe(
-                |                debounceTime(300),
-                |                filter(value => typeof value === 'string'),
-                |                tap(() => {
-                |                    this.$filteredFieldName = [];
-                |                    this.$filteredFieldNameIsLoading.set(true);
-                |                }),
-                |                switchMap(value => this.${StringFunctions.firstToLower(typeaheadDef.angularServiceClassName)}.search(value)
-                |                    .pipe(
-                |                        catchError(err => {
-                |                            this.${filteredFieldNameIsLoading}.set(false);
-                |                            console.error(err);
-                |                            return of([]);
-                |                        })
-                |                    )
-                |                ),
-                |                tap(() => this.${filteredFieldNameIsLoading}.set(false))
-                |            ).subscribe(res => {
-                |                this.${filteredFieldName} = res;
-                |                this.${filteredFieldName}HasSearched.set(true);
-                |            });
-                |""".trimMargin())
-
-        }
-
         if (this.angularFormDef.formModelFields.any { it.linksToAField }) {
 
             blankLine()
@@ -607,19 +545,6 @@ class AngularSignalFormComponentRenderer(
     }
 
 
-    private fun `render TypeaheadResultFormatters`() {
-
-        this.allRequestDtoFields.filter { it.classFieldDef.typeaheadDef != null }.forEach { requestDtoFieldDef ->
-
-            val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef!!
-
-            blankLine()
-            blankLine()
-            appendLine("    ${typeaheadDef.typeaheadBaseName.firstToLower()}ResultFormatter = (result: any) => result.${typeaheadDef.searchTermFieldName};")
-
-        }
-
-    }
 
 
     private fun `render function onSubmit`() {

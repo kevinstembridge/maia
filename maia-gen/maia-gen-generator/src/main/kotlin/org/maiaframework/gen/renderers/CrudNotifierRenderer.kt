@@ -182,7 +182,7 @@ class CrudNotifierRenderer(
 
     private fun renderNotificationOfCreateListeners(someEntityDef: EntityDef) {
 
-        someEntityDef.entityCrudApiDef?.createApiDef?.let { _ ->
+        if (CrudListenerCallbacks.hasCreateCallback(someEntityDef)) {
 
             blankLine()
             appendLine("        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")

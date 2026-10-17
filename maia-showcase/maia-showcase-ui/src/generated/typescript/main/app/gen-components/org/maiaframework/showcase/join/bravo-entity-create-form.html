@@ -30,33 +30,10 @@
                 <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-autocomplete #alphaAuto="matAutocomplete" [displayWith]="alphaResultFormatter">
-                @if (filteredAlphaIsLoading()) {
-                    <mat-option>Loading...</mat-option>
-                }
-                @if (!filteredAlphaIsLoading()) {
-
-                    @for (option of filteredAlpha; track option) {
-                        <mat-option [value]="option">{{ option.someString }}</mat-option>
-                    }
-                    @if (filteredAlpha.length === 0 && filteredAlphaHasSearched()) {
-                        <mat-option disabled>No results found</mat-option>
-                    }
-
-                }
-            </mat-autocomplete>
-            <mat-label>Alpha</mat-label>
-            <input
-                formControlName="alpha"
-                matInput
-                type="text"
-                [matAutocomplete]="alphaAuto"
-            />
-            @if (formGroup.controls['alpha'].hasError('required')) {
-                <mat-error>Alpha is required.</mat-error>
-            }
-        </mat-form-field>
+        <app-alpha-typeahead-v1
+            formControlName="alpha"
+            label="Alpha"
+        ></app-alpha-typeahead-v1>
     </div>
     <div class="form-actions">
         <button mat-flat-button type="submit" color="primary">Submit</button>

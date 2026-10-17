@@ -29,6 +29,112 @@ class EsDocAutoRefreshDeclarationTest {
     }
 
 
+    private class PartySourcesSpec : AbstractSpec(AppKey("Test")) {
+
+        val party = entity("com.example", "Party") {
+            isAbstract = true
+            field("displayName", FieldTypes.string)
+            crud {}
+        }
+
+        val person = entity("com.example", "Person") {
+            superclass(party)
+            typeDiscriminator("PERSON")
+            field("firstName", FieldTypes.string)
+            crud {}
+        }
+
+        val partyEmail = entity("com.example", "PartyEmail") {
+            foreignKey("party", party)
+            field("email", FieldTypes.string)
+            crud {}
+        }
+
+        val partyEsDoc = esDoc("com.example", "Party", indexDescription = "manual") {
+            autoRefresh(true)
+            sourceEntity(party)
+            watchesSubclass(person, "firstName")
+            watchesChild(partyEmail, "party")
+            field("id", FieldTypes.string) { isIdField() }
+        }
+
+    }
+
+
+    private class SourcesWithoutAutoRefreshSpec : AbstractSpec(AppKey("Test")) {
+
+        val party = entity("com.example", "Party") {
+            field("displayName", FieldTypes.string)
+            crud {}
+        }
+
+        val partyEsDoc = esDoc("com.example", "Party", indexDescription = "manual") {
+            autoRefresh(false)
+            sourceEntity(party)
+            field("id", FieldTypes.string) { isIdField() }
+        }
+
+    }
+
+
+    private class BadForeignKeySpec : AbstractSpec(AppKey("Test")) {
+
+        val party = entity("com.example", "Party") {
+            field("displayName", FieldTypes.string)
+            crud {}
+        }
+
+        val other = entity("com.example", "Other") {
+            field("name", FieldTypes.string)
+            crud {}
+        }
+
+        val child = entity("com.example", "Child") {
+            foreignKey("other", other)
+            crud {}
+        }
+
+        val partyEsDoc = esDoc("com.example", "Party", indexDescription = "manual") {
+            autoRefresh(true)
+            sourceEntity(party)
+            watchesChild(child, "other")
+            field("id", FieldTypes.string) { isIdField() }
+        }
+
+    }
+
+
+    private class NoListenerSourceSpec : AbstractSpec(AppKey("Test")) {
+
+        val plain = entity("com.example", "Plain") {
+            field("name", FieldTypes.string)
+        }
+
+        val plainEsDoc = esDoc("com.example", "Plain", indexDescription = "manual") {
+            autoRefresh(true)
+            sourceEntity(plain)
+            field("id", FieldTypes.string) { isIdField() }
+        }
+
+    }
+
+
+    private class UnknownWatchedFieldSpec : AbstractSpec(AppKey("Test")) {
+
+        val party = entity("com.example", "Party") {
+            field("displayName", FieldTypes.string)
+            crud {}
+        }
+
+        val partyEsDoc = esDoc("com.example", "Party", indexDescription = "manual") {
+            autoRefresh(true)
+            sourceEntity(party, "nope")
+            field("id", FieldTypes.string) { isIdField() }
+        }
+
+    }
+
+
     private class AutoRefreshFalseSpec : AbstractSpec(AppKey("Test")) {
 
         val manual = esDoc("com.example", "SelfRefreshed", esDocVersion = 2, indexDescription = "manual") {
@@ -70,12 +176,79 @@ class EsDocAutoRefreshDeclarationTest {
 
 
     @Test
-    fun `autoRefresh true is rejected for a hand-built EsDoc`() {
+    fun `autoRefresh true without a source entity is rejected for a hand-built EsDoc`() {
 
         assertThatThrownBy { AutoRefreshTrueSpec() }
             .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessageContaining("only supported for elasticsearchEnabled")
+            .hasMessageContaining("requires sourceEntity")
             .hasMessageContaining("com.example.WantsAuto V1")
+
+    }
+
+
+    @Test
+    fun `sources are rejected without autoRefresh true`() {
+
+        assertThatThrownBy { SourcesWithoutAutoRefreshSpec() }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("not autoRefresh(true)")
+
+    }
+
+
+    @Test
+    fun `declared sources become refresh dependencies`() {
+
+        val spec = PartySourcesSpec()
+        val dependencies = spec.partyEsDoc.refreshDependencies
+
+        assertThat(dependencies.map { it.entityDef.entityBaseName.value to it.role })
+            .containsExactly(
+                "Party" to EsRefreshRole.ROOT,
+                "Person" to EsRefreshRole.ROOT,
+                "PartyEmail" to EsRefreshRole.CHILD
+            )
+
+        val party = dependencies[0]
+        assertThat(party.refreshOnAnyUpdate).isTrue()
+
+        val person = dependencies[1]
+        assertThat(person.watchedFields.map { it.value }).containsExactly("firstName")
+        assertThat(person.refreshOnAnyUpdate).isFalse()
+
+        val email = dependencies[2]
+        assertThat(email.watchedFields.map { it.value }).containsExactlyInAnyOrder("email", "party")
+        assertThat(email.pathsFromRoot.single().single().toField.classFieldName.value).isEqualTo("party")
+
+    }
+
+
+    @Test
+    fun `a child that is not linked to the source entity by a foreign key is rejected`() {
+
+        assertThatThrownBy { BadForeignKeySpec() }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("must be a foreign key to Party")
+
+    }
+
+
+    @Test
+    fun `a source entity without a CrudListener is rejected`() {
+
+        assertThatThrownBy { NoListenerSourceSpec() }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("requires entity Plain to have a CrudListener")
+
+    }
+
+
+    @Test
+    fun `a watched field that does not exist is rejected`() {
+
+        assertThatThrownBy { UnknownWatchedFieldSpec() }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("has no field 'nope' to watch")
 
     }
 

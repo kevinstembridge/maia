@@ -10,9 +10,13 @@ import org.maiaframework.gen.spec.definition.EntityDef
 internal object CrudListenerCallbacks {
 
 
+    /**
+     * True when the entity declares a create operation, with or without an API: the generated CrudService's
+     * `create(entity)` notifies listeners either way.
+     */
     fun hasCreateCallback(entityDef: EntityDef): Boolean {
 
-        return entityDef.entityCrudApiDef?.createApiDef != null
+        return entityDef.entityCrudApiDef?.createApiDef != null || entityDef.crudDef.crudOperationDefs.createOperationDef != null
 
     }
 

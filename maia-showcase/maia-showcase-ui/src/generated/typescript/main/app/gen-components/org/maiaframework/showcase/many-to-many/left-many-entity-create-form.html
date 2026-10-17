@@ -30,35 +30,14 @@
                 <mat-error>Some String must not be more than 100 characters.</mat-error>
             }
         </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Right Simple Entities</mat-label>
-            <mat-chip-grid #rightSimpleEntityChipGrid>
-                @for (entity of selectedRightSimpleEntities; track entity.id) {
-                    <mat-chip-row (removed)="removeRightSimpleEntity(entity)">
-                        {{ entity.someString }}
-                        <button matChipRemove type="button"><mat-icon>cancel</mat-icon></button>
-                    </mat-chip-row>
-                }
-            </mat-chip-grid>
-            <input
-                #rightSimpleEntityInput
-                placeholder="Search Right Simple Entities..."
-                [formControl]="rightSimpleEntitySearchControl"
-                [matChipInputFor]="rightSimpleEntityChipGrid"
-                [matAutocomplete]="rightSimpleEntityAuto"
-            />
-            <mat-autocomplete #rightSimpleEntityAuto="matAutocomplete" (optionSelected)="addRightSimpleEntity($event)">
-                @if (filteredRightSimpleEntitiesIsLoading()) {
-                    <mat-option disabled>Loading...</mat-option>
-                }
-                @for (option of filteredRightSimpleEntities; track option.id) {
-                    <mat-option [value]="option">{{ option.someString }}</mat-option>
-                }
-                @if (filteredRightSimpleEntities.length === 0 && filteredRightSimpleEntitiesHasSearched()) {
-                    <mat-option disabled>No results found</mat-option>
-                }
-            </mat-autocomplete>
-        </mat-form-field>
+        <app-right-many-typeahead-v1
+            chips
+            label="Right Simple Entities"
+            placeholder="Search Right Simple Entities..."
+            [selected]="selectedRightSimpleEntities"
+            (added)="addRightSimpleEntity($event)"
+            (removed)="removeRightSimpleEntity($event)"
+        ></app-right-many-typeahead-v1>
         <div class="join-entries">
             @for (join of rightSystemEffectiveJoins; track join.entityId) {
                 <div class="join-entry">
@@ -74,26 +53,11 @@
         </button>
         @if (showRightSystemEffectiveJoinForm()) {
             <div class="join-mini-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Right System Effective Entities</mat-label>
-                    <input
-                        matInput
-                        [formControl]="addRightSystemEffectiveJoinEntityControl"
-                        [matAutocomplete]="rightSystemEffectiveJoinEntityAuto"
-                        placeholder="Search Right System Effective Entities..."
-                    />
-                    <mat-autocomplete #rightSystemEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayRightSystemEffectiveEntity">
-                        @if (filteredRightSystemEffectiveEntitiesIsLoading()) {
-                            <mat-option disabled>Loading...</mat-option>
-                        }
-                        @for (option of filteredRightSystemEffectiveEntities; track option.id) {
-                            <mat-option [value]="option">{{ option.someString }}</mat-option>
-                        }
-                        @if (filteredRightSystemEffectiveEntities.length === 0 && filteredRightSystemEffectiveEntitiesHasSearched()) {
-                            <mat-option disabled>No results found</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
+                <app-right-many-typeahead-v1
+                    [formControl]="addRightSystemEffectiveJoinEntityControl"
+                    label="Right System Effective Entities"
+                    placeholder="Search Right System Effective Entities..."
+                ></app-right-many-typeahead-v1>
                 <button mat-flat-button type="button" (click)="confirmAddRightSystemEffectiveJoin()">Add</button>
                 <button mat-flat-button type="button" (click)="cancelAddRightSystemEffectiveJoin()">Cancel</button>
             </div>
@@ -113,26 +77,11 @@
         </button>
         @if (showRightSystemSingleEffectiveJoinForm()) {
             <div class="join-mini-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Right System Single Effective Entities</mat-label>
-                    <input
-                        matInput
-                        [formControl]="addRightSystemSingleEffectiveJoinEntityControl"
-                        [matAutocomplete]="rightSystemSingleEffectiveJoinEntityAuto"
-                        placeholder="Search Right System Single Effective Entities..."
-                    />
-                    <mat-autocomplete #rightSystemSingleEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayRightSystemSingleEffectiveEntity">
-                        @if (filteredRightSystemSingleEffectiveEntitiesIsLoading()) {
-                            <mat-option disabled>Loading...</mat-option>
-                        }
-                        @for (option of filteredRightSystemSingleEffectiveEntities; track option.id) {
-                            <mat-option [value]="option">{{ option.someString }}</mat-option>
-                        }
-                        @if (filteredRightSystemSingleEffectiveEntities.length === 0 && filteredRightSystemSingleEffectiveEntitiesHasSearched()) {
-                            <mat-option disabled>No results found</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
+                <app-right-many-typeahead-v1
+                    [formControl]="addRightSystemSingleEffectiveJoinEntityControl"
+                    label="Right System Single Effective Entities"
+                    placeholder="Search Right System Single Effective Entities..."
+                ></app-right-many-typeahead-v1>
                 <button mat-flat-button type="button" (click)="confirmAddRightSystemSingleEffectiveJoin()">Add</button>
                 <button mat-flat-button type="button" (click)="cancelAddRightSystemSingleEffectiveJoin()">Cancel</button>
             </div>
@@ -180,26 +129,11 @@
         </button>
         @if (showRightUserEffectiveJoinForm()) {
             <div class="join-mini-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Right User Effective Entities</mat-label>
-                    <input
-                        matInput
-                        [formControl]="addRightUserEffectiveJoinEntityControl"
-                        [matAutocomplete]="rightUserEffectiveJoinEntityAuto"
-                        placeholder="Search Right User Effective Entities..."
-                    />
-                    <mat-autocomplete #rightUserEffectiveJoinEntityAuto="matAutocomplete" [displayWith]="displayRightUserEffectiveEntity">
-                        @if (filteredRightUserEffectiveEntitiesIsLoading()) {
-                            <mat-option disabled>Loading...</mat-option>
-                        }
-                        @for (option of filteredRightUserEffectiveEntities; track option.id) {
-                            <mat-option [value]="option">{{ option.someString }}</mat-option>
-                        }
-                        @if (filteredRightUserEffectiveEntities.length === 0 && filteredRightUserEffectiveEntitiesHasSearched()) {
-                            <mat-option disabled>No results found</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
+                <app-right-many-typeahead-v1
+                    [formControl]="addRightUserEffectiveJoinEntityControl"
+                    label="Right User Effective Entities"
+                    placeholder="Search Right User Effective Entities..."
+                ></app-right-many-typeahead-v1>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective From Date</mat-label>
                     <input matInput [matDatepicker]="effectiveFromPickerrightUserEffective"
@@ -247,26 +181,11 @@
         </button>
         @if (showRightJoinForm()) {
             <div class="join-mini-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Right Entities</mat-label>
-                    <input
-                        matInput
-                        [formControl]="addRightJoinEntityControl"
-                        [matAutocomplete]="rightJoinEntityAuto"
-                        placeholder="Search Right Entities..."
-                    />
-                    <mat-autocomplete #rightJoinEntityAuto="matAutocomplete" [displayWith]="displayRightEntity">
-                        @if (filteredRightEntitiesIsLoading()) {
-                            <mat-option disabled>Loading...</mat-option>
-                        }
-                        @for (option of filteredRightEntities; track option.id) {
-                            <mat-option [value]="option">{{ option.someString }}</mat-option>
-                        }
-                        @if (filteredRightEntities.length === 0 && filteredRightEntitiesHasSearched()) {
-                            <mat-option disabled>No results found</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
+                <app-right-many-typeahead-v1
+                    [formControl]="addRightJoinEntityControl"
+                    label="Right Entities"
+                    placeholder="Search Right Entities..."
+                ></app-right-many-typeahead-v1>
                 <mat-form-field appearance="outline">
                     <mat-label>Some Int On Complex</mat-label>
                     <input matInput type="number" [formControl]="addRightJoinSomeIntOnComplexControl" />

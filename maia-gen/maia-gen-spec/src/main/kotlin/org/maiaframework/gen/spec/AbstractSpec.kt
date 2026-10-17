@@ -1277,17 +1277,13 @@ abstract class AbstractSpec protected constructor(
 
         val esDocDescription = "$packageName.$esDocName V$esDocVersion"
 
-        when (builder.autoRefresh) {
-            null -> throw IllegalArgumentException(
+        if (builder.autoRefresh == null) {
+            throw IllegalArgumentException(
                 "EsDoc $esDocDescription must declare how its index is refreshed: call autoRefresh(false) to " +
                     "indicate that you refresh it yourself (a hand-written index service and/or the scheduled " +
-                    "refresh job). Automatic refresh is only generated for searchableDto { elasticsearchEnabled() }."
+                    "refresh job), or autoRefresh(true) with sourceEntity(...) and watches...(...) to have the " +
+                    "generator refresh it when the source rows change."
             )
-            true -> throw IllegalArgumentException(
-                "autoRefresh(true) is only supported for elasticsearchEnabled searchable DTOs; hand-built " +
-                    "EsDoc $esDocDescription must declare autoRefresh(false)."
-            )
-            false -> Unit
         }
 
         val def = builder.build()
