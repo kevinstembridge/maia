@@ -20,8 +20,8 @@ At the heart of Maia is a code generator. That's already going to put a lot of
 people off because code generators are unloved. Even the Spring 
 Boot documentation proudly states that their framework contains "Absolutely 
 no code generation". But this framework embraces it. To understand
-why we think the good outweighs the bad, see our discussion in 
-the [Code Generation](code_generation/code_generation.md) section.
+why we think the good outweighs the bad, see 
+[Generate source code instead of using runtime proxies](adr/0002-generate-code-instead-of-runtime-proxies.md).
 
 See the [Getting Started](getting_started.md) section to begin creating your first application.
 
