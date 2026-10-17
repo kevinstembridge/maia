@@ -33,7 +33,7 @@ class DatabaseIndexDef(
     val existsByUrl = "/api/$modulePath${baseName.toSnakeCase()}/$existsByFunctionNameSnakeCase"
 
 
-    val asyncValidator = AsyncValidatorDef(this.packageName, "${baseName.firstToUpper()}$fieldNamesAnded")
+    val asyncValidator = AsyncValidatorDef(this.packageName, "${baseName.firstToUpper()}$fieldNamesAnded", existsByFunctionName)
 
 
     val validatorName = asyncValidator.asyncValidatorName

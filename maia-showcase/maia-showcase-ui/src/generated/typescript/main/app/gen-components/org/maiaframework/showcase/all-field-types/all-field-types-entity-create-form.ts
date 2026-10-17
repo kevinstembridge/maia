@@ -2,7 +2,8 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AngularSignalFormComponentRenderer
 
 import {Component, inject, input, output, signal} from '@angular/core';
-import {FormField, form, maxLength, required, submit} from '@angular/forms/signals';
+import {rxResource} from '@angular/core/rxjs-interop';
+import {FormField, form, maxLength, required, submit, validateAsync} from '@angular/forms/signals';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
@@ -13,6 +14,11 @@ import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/m
 import {MatTooltip} from '@angular/material/tooltip';
 import {Router} from '@angular/router';
 import {AllFieldTypesCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesCreateRequestDto';
+import {AllFieldTypesSomeIntTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeIntTypeRequestDto';
+import {AllFieldTypesSomeLongTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeLongTypeRequestDto';
+import {AllFieldTypesSomeStringNullableRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeStringNullableRequestDto';
+import {AllFieldTypesSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeStringRequestDto';
+import {AllFieldTypesSomeStringTypeRequestDto} from '@app/gen-components/org/maiaframework/showcase/all-field-types/AllFieldTypesSomeStringTypeRequestDto';
 import {AllFieldTypesCrudService} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-crud-service';
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
 import {SomeEnumSelectOptions} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnumSelectOptions';
@@ -110,8 +116,28 @@ export class AllFieldTypesEntityCreateForm {
         required(schemaPath.someInstantModifiable, { message: 'Some Instant Modifiable is required.' });
         required(schemaPath.someInt, { message: 'Some Int is required.' });
         required(schemaPath.someIntModifiable, { message: 'Some Int Modifiable is required.' });
+        validateAsync(schemaPath.someIntType, {
+            params: ({value}) => value() !== null ? { someIntType: value() } as AllFieldTypesSomeIntTypeRequestDto : undefined,
+            factory: (params) => rxResource({
+                params,
+                stream: ({params}) => this.formService.existsBySomeIntType(params),
+            }),
+            when: ({state}) => state.dirty(),
+            onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
+            onError: () => null,
+        });
         required(schemaPath.someIntType, { message: 'Some Int Type is required.' });
         required(schemaPath.someIntTypeProvided, { message: 'Some Int Type Provided is required.' });
+        validateAsync(schemaPath.someLongType, {
+            params: ({value}) => value() !== null ? { someLongType: value() } as AllFieldTypesSomeLongTypeRequestDto : undefined,
+            factory: (params) => rxResource({
+                params,
+                stream: ({params}) => this.formService.existsBySomeLongType(params),
+            }),
+            when: ({state}) => state.dirty(),
+            onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
+            onError: () => null,
+        });
         required(schemaPath.someLongType, { message: 'Some Long Type is required.' });
         required(schemaPath.someLongTypeProvided, { message: 'Some Long Type Provided is required.' });
         required(schemaPath.someLocalDateModifiable, { message: 'Some LocalDate Modifiable is required.' });
@@ -121,11 +147,41 @@ export class AllFieldTypesEntityCreateForm {
         required(schemaPath.someEnum, { message: 'Some Enum is required.' });
         maxLength(schemaPath.someEnum, 100, { message: 'Some Enum must not be more than 100 characters.' });
         maxLength(schemaPath.someEnumNullable, 100, { message: 'Some Enum Nullable must not be more than 100 characters.' });
+        validateAsync(schemaPath.someString, {
+            params: ({value}) => !!value() ? { someString: value() } as AllFieldTypesSomeStringRequestDto : undefined,
+            factory: (params) => rxResource({
+                params,
+                stream: ({params}) => this.formService.existsBySomeString(params),
+            }),
+            when: ({state}) => state.dirty(),
+            onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
+            onError: () => null,
+        });
         required(schemaPath.someString, { message: 'Some String is required.' });
         maxLength(schemaPath.someString, 100, { message: 'Some String must not be more than 100 characters.' });
         required(schemaPath.someStringModifiable, { message: 'Some String Modifiable is required.' });
         maxLength(schemaPath.someStringModifiable, 100, { message: 'Some String Modifiable must not be more than 100 characters.' });
+        validateAsync(schemaPath.someStringNullable, {
+            params: ({value}) => !!value() ? { someStringNullable: value() } as AllFieldTypesSomeStringNullableRequestDto : undefined,
+            factory: (params) => rxResource({
+                params,
+                stream: ({params}) => this.formService.existsBySomeStringNullable(params),
+            }),
+            when: ({state}) => state.dirty(),
+            onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
+            onError: () => null,
+        });
         maxLength(schemaPath.someStringNullable, 100, { message: 'Some String Nullable must not be more than 100 characters.' });
+        validateAsync(schemaPath.someStringType, {
+            params: ({value}) => !!value() ? { someStringType: value() } as AllFieldTypesSomeStringTypeRequestDto : undefined,
+            factory: (params) => rxResource({
+                params,
+                stream: ({params}) => this.formService.existsBySomeStringType(params),
+            }),
+            when: ({state}) => state.dirty(),
+            onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
+            onError: () => null,
+        });
         required(schemaPath.someStringType, { message: 'Some String Type is required.' });
         maxLength(schemaPath.someStringType, 100, { message: 'Some String Type must not be more than 100 characters.' });
         maxLength(schemaPath.someStringTypeNullable, 100, { message: 'Some String Type Nullable must not be more than 100 characters.' });

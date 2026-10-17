@@ -421,11 +421,48 @@ class AngularSignalFormComponentRenderer(
     }
 
 
+    private fun `render async validation`(angularFormFieldDef: AngularFormFieldDef) {
+
+        val asyncValidatorDef = angularFormFieldDef.asyncValidatorDef ?: return
+        val classFieldDef = angularFormFieldDef.classFieldDef
+        val classFieldName = classFieldDef.classFieldName
+        val typeaheadDef = classFieldDef.typeaheadDef
+        val requestDtoName = asyncValidatorDef.asyncValidationDtoName
+
+        addImport("@angular/forms/signals", "validateAsync")
+        addImport("@angular/core/rxjs-interop", "rxResource")
+        addImport(asyncValidatorDef.asyncValidationDtoTypescriptImport)
+
+        val valueExpression = if (typeaheadDef == null) "value()" else "value().${typeaheadDef.esDocIdFieldName}"
+
+        // An empty number input is null, which is not the same as zero.
+        val hasValueExpression = if (angularFormFieldDef.isNumberInput) "value() !== null" else "!!value()"
+
+        // The check is skipped until the user has changed the field, so that an unchanged value, which already
+        // exists, is not reported as a duplicate of itself.
+        append("""
+            |        validateAsync(schemaPath.$classFieldName, {
+            |            params: ({value}) => $hasValueExpression ? { $classFieldName: $valueExpression } as $requestDtoName : undefined,
+            |            factory: (params) => rxResource({
+            |                params,
+            |                stream: ({params}) => this.formService.${asyncValidatorDef.existsByFunctionName}(params),
+            |            }),
+            |            when: ({state}) => state.dirty(),
+            |            onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
+            |            onError: () => null,
+            |        });
+            |""".trimMargin())
+
+    }
+
+
     private fun `render dialogForm field`(angularFormFieldDef: AngularFormFieldDef) {
 
         val classFieldDef = angularFormFieldDef.classFieldDef
         val classFieldName = classFieldDef.classFieldName
         val fieldLabel = angularFormFieldDef.fieldLabel
+
+        `render async validation`(angularFormFieldDef)
 
         if (angularFormFieldDef.isTypeahead) {
 

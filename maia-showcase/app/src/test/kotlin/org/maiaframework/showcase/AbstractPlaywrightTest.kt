@@ -283,13 +283,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected fun `log out`() {
 
         homePage.tryToNavigateToMe()
-        Thread.sleep(300)
-        val logoutLink = page.getByText("Logout")
-
-        if (logoutLink.isVisible) {
-            logoutLink.click()
-            Thread.sleep(300)
-        }
+        `logout current user`()
 
     }
 

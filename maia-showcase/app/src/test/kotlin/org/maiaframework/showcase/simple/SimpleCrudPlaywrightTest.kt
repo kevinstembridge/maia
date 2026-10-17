@@ -64,4 +64,34 @@ class SimpleCrudPlaywrightTest : AbstractPlaywrightTest() {
     }
 
 
+    @Test
+    fun `create form rejects a value that already exists`() {
+
+        `log in as admin user`()
+
+        `navigate to the`(simpleBlotterPage)
+
+        simpleBlotterPage.clickAddButton()
+
+        simpleCreatePage.apply {
+            assertOnPage()
+            fillCreateForm(someString = "duplicate-string")
+            clickSubmitButton()
+        }
+
+        simpleViewPage.assertOnPage()
+
+        `navigate to the`(simpleBlotterPage)
+
+        simpleBlotterPage.clickAddButton()
+
+        simpleCreatePage.apply {
+            assertOnPage()
+            fillCreateForm(someString = "duplicate-string")
+            assertDuplicateErrorIsShown()
+        }
+
+    }
+
+
 }

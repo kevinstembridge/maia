@@ -5,7 +5,12 @@ import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.gen.spec.definition.lang.Uqcn
 import org.maiaframework.lang.text.StringFunctions
 
-class AsyncValidatorDef(packageName: PackageName, baseName: String) {
+class AsyncValidatorDef(
+    packageName: PackageName,
+    baseName: String,
+    /** The name of the API service function that checks whether a value already exists. */
+    val existsByFunctionName: String
+) {
 
 
     private val genComponentsBaseDir = GeneratedTypescriptDir.forPackage(packageName)

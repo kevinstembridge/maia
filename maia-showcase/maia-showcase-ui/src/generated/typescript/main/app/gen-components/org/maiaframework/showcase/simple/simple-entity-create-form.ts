@@ -2,12 +2,14 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AngularSignalFormComponentRenderer
 
 import {Component, inject, input, output, signal} from '@angular/core';
-import {FormField, form, maxLength, minLength, required, submit} from '@angular/forms/signals';
+import {rxResource} from '@angular/core/rxjs-interop';
+import {FormField, form, maxLength, minLength, required, submit, validateAsync} from '@angular/forms/signals';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {Router} from '@angular/router';
 import {SimpleCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleCreateRequestDto';
+import {SimpleSomeStringRequestDto} from '@app/gen-components/org/maiaframework/showcase/simple/SimpleSomeStringRequestDto';
 import {SimpleCrudService} from '@app/gen-components/org/maiaframework/showcase/simple/simple-crud-service';
 import {EntityCreatedResponseDto, ProblemDetail} from '@maia/maia-ui';
 import {firstValueFrom} from 'rxjs';
@@ -50,6 +52,16 @@ export class SimpleEntityCreateForm {
 
 
     dialogForm = form(this.dialogFormModel, (schemaPath) => {
+        validateAsync(schemaPath.someString, {
+            params: ({value}) => !!value() ? { someString: value() } as SimpleSomeStringRequestDto : undefined,
+            factory: (params) => rxResource({
+                params,
+                stream: ({params}) => this.formService.existsBySomeString(params),
+            }),
+            when: ({state}) => state.dirty(),
+            onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
+            onError: () => null,
+        });
         required(schemaPath.someString, { message: 'Some String is required.' });
         minLength(schemaPath.someString, 3, { message: 'Some String must be at least 3 characters.' });
         maxLength(schemaPath.someString, 100, { message: 'Some String must not be more than 100 characters.' });
