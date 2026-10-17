@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -21,6 +21,7 @@ import {PropsCard} from './components/props-card/props-card';
     templateUrl: './props-dashboard-page.html',
     styleUrl: './props-dashboard-page.scss',
     imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, PropsCard],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [PropsApiService, PropsDashboardStore]
 })
 export class PropsDashboardPage implements OnInit {

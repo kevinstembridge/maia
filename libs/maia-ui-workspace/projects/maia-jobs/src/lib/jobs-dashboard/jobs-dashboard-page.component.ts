@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -38,6 +38,7 @@ import {StacktraceDialogComponent} from './dialogs/stacktrace-dialog/stacktrace-
     providers: [JobsApiService, JobsDashboardStore],
     selector: 'maia-jobs-dashboard-page',
     templateUrl: './jobs-dashboard-page.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './jobs-dashboard-page.component.scss'
 })
 export class JobsDashboardPageComponent implements OnInit {

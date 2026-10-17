@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth-service';
 import {LoginRequestDto} from '@app/gen-components/org/maiaframework/showcase/LoginRequestDto';
@@ -12,6 +12,7 @@ import {LoginForm} from '@app/gen-components/org/maiaframework/showcase/login/lo
         LoginForm
     ],
     templateUrl: './login-page.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './login-page.scss'
 })
 export class LoginPage implements OnInit {

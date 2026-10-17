@@ -1,4 +1,4 @@
-import {Component, computed, input, signal} from '@angular/core';
+import {Component, computed, input, signal, ChangeDetectionStrategy} from '@angular/core';
 import {KeyValuePipe} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -8,6 +8,7 @@ import {JobMetricsReport} from '../../../../models/JobMetricsReport';
     selector: 'maia-job-metrics-node',
     templateUrl: './job-metrics-node.component.html',
     styleUrl: './job-metrics-node.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [KeyValuePipe, MatButtonModule, MatIconModule, JobMetricsNodeComponent]
 })
 export class JobMetricsNodeComponent {

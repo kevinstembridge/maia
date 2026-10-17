@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {JobStateResponseDto} from '@app/gen-components/org/maiaframework/job/JobStateResponseDto';
@@ -6,6 +6,7 @@ import {JobStateResponseDto} from '@app/gen-components/org/maiaframework/job/Job
 @Component({
     selector: 'maia-run-job-dialog',
     templateUrl: './run-job-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule]
 })
 export class RunJobDialogComponent {

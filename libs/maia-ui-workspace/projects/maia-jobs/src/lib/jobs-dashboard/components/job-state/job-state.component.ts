@@ -1,4 +1,4 @@
-import {Component, computed, input, output, signal} from '@angular/core';
+import {Component, computed, input, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -22,6 +22,7 @@ const STATUS_LABELS: Record<JobStatus, string> = {
     selector: 'maia-job-state',
     templateUrl: './job-state.component.html',
     styleUrl: './job-state.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButtonModule, MatIconModule, RouterLink]
 })
 export class JobStateComponent {

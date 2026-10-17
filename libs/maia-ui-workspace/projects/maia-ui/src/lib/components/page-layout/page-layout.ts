@@ -1,9 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
   selector: 'maia-page-layout',
   standalone: true,
   styleUrl: './page-layout.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './page-layout.html'
 })
 export class PageLayout {

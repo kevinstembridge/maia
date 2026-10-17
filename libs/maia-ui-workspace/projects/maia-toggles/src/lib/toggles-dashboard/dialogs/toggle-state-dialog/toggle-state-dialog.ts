@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -18,6 +18,7 @@ export interface ToggleStateDialogResult {
     selector: 'maia-toggle-state-dialog',
     templateUrl: './toggle-state-dialog.html',
     styleUrl: './toggle-state-dialog.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule]
 })
 export class ToggleStateDialog {

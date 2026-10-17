@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
@@ -6,6 +6,7 @@ import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDi
 @Component({
     selector: 'maia-stacktrace-dialog',
     templateUrl: './stacktrace-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule]
 })
 export class StacktraceDialogComponent {

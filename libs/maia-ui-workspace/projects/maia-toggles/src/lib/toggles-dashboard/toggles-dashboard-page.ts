@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -20,6 +20,7 @@ import {ToggleCard} from './components/toggle-card/toggle-card';
     templateUrl: './toggles-dashboard-page.html',
     styleUrl: './toggles-dashboard-page.scss',
     imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule, ToggleCard],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [TogglesApiService, TogglesDashboardStore]
 })
 export class TogglesDashboardPage implements OnInit {

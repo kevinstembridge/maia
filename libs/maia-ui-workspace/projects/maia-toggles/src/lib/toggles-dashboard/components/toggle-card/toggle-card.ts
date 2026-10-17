@@ -1,4 +1,4 @@
-import {Component, computed, input, output} from '@angular/core';
+import {Component, computed, input, output, ChangeDetectionStrategy} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -11,6 +11,7 @@ import {describeStrategy} from '../../state/toggles-strategy-editing';
     selector: 'maia-toggle-card',
     imports: [DatePipe, MatButtonModule, MatIconModule],
     templateUrl: './toggle-card.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './toggle-card.scss'
 })
 export class ToggleCard {

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {ICellRendererAngularComp} from 'ag-grid-angular';
 import {ICellRendererParams} from 'ag-grid-community';
 
@@ -12,6 +12,7 @@ import {ICellRendererParams} from 'ag-grid-community';
             }
         </div>
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: [`
         .chips-container { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; height: 100%; }
         .chip-item { background: #e0e0e0; border-radius: 16px; padding: 2px 8px; font-size: 12px; white-space: nowrap; }

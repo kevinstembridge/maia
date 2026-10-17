@@ -11,7 +11,7 @@
     @if (messageDetails().errorDetails?.context) {
       <div>
         <ul>
-          @for (item of messageDetails().errorDetails?.context | keyvalue; track item.key) {
+          @for (item of $safeNavigationMigration(messageDetails().errorDetails?.context) | keyvalue; track item.key) {
             <li>
               <b>{{item.key}}</b> {{item.value}}
             </li>

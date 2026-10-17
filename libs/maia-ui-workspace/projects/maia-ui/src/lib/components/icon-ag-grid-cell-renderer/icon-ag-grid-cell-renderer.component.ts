@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 
@@ -10,6 +10,7 @@ interface IconCellRendererParams extends ICellRendererParams {
 
 @Component({
     imports: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<span class="material-icons" style="cursor:pointer;font-size:20px">{{iconName}}</span>`,
 })
 export class IconAgGridCellRendererComponent implements ICellRendererAngularComp {

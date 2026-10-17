@@ -1,4 +1,4 @@
-import {Component, Inject, signal, WritableSignal} from '@angular/core';
+import {Component, Inject, signal, WritableSignal, ChangeDetectionStrategy} from '@angular/core';
 import {JsonPipe} from '@angular/common';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatButtonModule} from '@angular/material/button';
@@ -17,6 +17,7 @@ export interface JobMetricsDialogData {
 @Component({
     selector: 'maia-job-metrics-dialog',
     templateUrl: './job-metrics-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, ClipboardModule, MatIconModule, JsonPipe, JobMetricsNodeComponent]
 })
 export class JobMetricsDialogComponent {

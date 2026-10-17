@@ -1,4 +1,4 @@
-import {Component, input, Input, OnInit} from '@angular/core';
+import {Component, input, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import { MessageDetails } from './message-details';
 import { KeyValuePipe } from '@angular/common';
 
@@ -6,6 +6,7 @@ import { KeyValuePipe } from '@angular/common';
 @Component({
     imports: [KeyValuePipe],
     selector: 'app-message-panel',
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './message-panel.component.html'
 })
 export class MessagePanelComponent implements OnInit {

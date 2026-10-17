@@ -1,4 +1,4 @@
-import {Component, computed, input, output} from '@angular/core';
+import {Component, computed, input, output, ChangeDetectionStrategy} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {JobExecutionHistoryItemResponseDto} from '@app/gen-components/org/maiaframework/job/JobExecutionHistoryItemResponseDto';
@@ -22,6 +22,7 @@ const STATUS_LABELS: Record<HistoryStatus, string> = {
     selector: 'maia-job-execution-history-card',
     templateUrl: './job-execution-history-card.component.html',
     styleUrl: './job-execution-history-card.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButtonModule, DatePipe]
 })
 export class JobExecutionHistoryCardComponent {

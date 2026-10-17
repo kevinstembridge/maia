@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, input, OnInit} from '@angular/core';
+import {Component, computed, effect, inject, input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {DateTime} from 'luxon';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
@@ -31,6 +31,7 @@ import {
     providers: [JobsApiService, JobHistoryStore],
     selector: 'maia-job-history-page',
     templateUrl: './job-history-page.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './job-history-page.component.scss'
 })
 export class JobHistoryPageComponent implements OnInit {

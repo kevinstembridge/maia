@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import {FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -28,6 +28,7 @@ type StrategyRowForm = FormGroup<{ id: FormControl<string>; parameters: Paramete
     selector: 'maia-edit-strategies-dialog',
     templateUrl: './edit-strategies-dialog.html',
     styleUrl: './edit-strategies-dialog.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule]
 })
 export class EditStrategiesDialog {
