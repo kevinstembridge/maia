@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+<form novalidate (submit)="onSubmit($event)">
     <div>
         @if (problemDetail()) {
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
@@ -6,32 +6,37 @@
         <mat-form-field appearance="outline">
             <mat-label>Some Int</mat-label>
             <input
-                formControlName="someInt"
-                name="someInt"
-                type="text"
+                [formField]="dialogForm.someInt"
+                id="someInt"
+                type="number"
                 matInput
             />
-            @if (formGroup.controls['someInt'].hasError('required')) {
-                <mat-error>Some Int is required.</mat-error>
+
+            @if (dialogForm.someInt().touched() && dialogForm.someInt().invalid()) {
+                @for (error of dialogForm.someInt().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some String</mat-label>
             <input
-                formControlName="someString"
-                name="someString"
+                [formField]="dialogForm.someString"
+                id="someString"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someString'].hasError('required')) {
-                <mat-error>Some String is required.</mat-error>
+
+            @if (dialogForm.someString().touched() && dialogForm.someString().invalid()) {
+                @for (error of dialogForm.someString().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someString'].hasError('maxlength')) {
-                <mat-error>Some String must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
         <app-alpha-typeahead-v1
-            formControlName="alpha"
+            [formField]="dialogForm.alpha"
             label="Alpha"
         ></app-alpha-typeahead-v1>
     </div>

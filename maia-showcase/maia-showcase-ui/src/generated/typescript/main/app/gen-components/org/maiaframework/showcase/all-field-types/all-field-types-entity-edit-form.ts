@@ -121,7 +121,8 @@ export class AllFieldTypesEntityEditForm implements OnInit {
 
         await submit(this.dialogForm, async (form) => {
 
-            const requestDto = form().value() as AllFieldTypesUpdateRequestDto;
+            const value = form().value();
+            const requestDto = value as AllFieldTypesUpdateRequestDto;
 
             try {
                 await firstValueFrom(this.formService.edit(requestDto));

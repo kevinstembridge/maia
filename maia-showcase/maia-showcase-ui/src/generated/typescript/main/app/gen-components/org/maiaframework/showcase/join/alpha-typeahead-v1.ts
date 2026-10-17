@@ -75,7 +75,7 @@ import {catchError, debounceTime, filter, switchMap, tap} from 'rxjs/operators';
                     <mat-option disabled>No results found</mat-option>
                 }
             </mat-autocomplete>
-            @if (ngControl?.hasError('required')) {
+            @if (ngControl?.errors?.['required']) {
                 <mat-error>{{ label() }} is required.</mat-error>
             }
         </mat-form-field>

@@ -34,6 +34,9 @@ class AngularSignalFormComponentRenderer(
     private val numberFields = modelFields.filter { it.isNumberInput }
 
 
+    private val typeaheadFields = modelFields.filter { it.isTypeahead }
+
+
     private val linkedFields = modelFields.filter { it.linksToAField }
 
 
@@ -349,12 +352,13 @@ class AngularSignalFormComponentRenderer(
     private val modelTypeName: String
         get() {
             val dtoType = "Required<${this.angularFormDef.requestDtoDef.uqcn}>"
-            if (numberFields.isEmpty()) {
+            // A typeahead holds the selected document (or the text being typed) until it is mapped to its id on submit.
+            val overrides = numberFields.map { "${it.fieldName}: number | null" } + typeaheadFields.map { "${it.fieldName}: any" }
+            if (overrides.isEmpty()) {
                 return dtoType
             }
-            val omitted = numberFields.joinToString(" | ") { "'${it.fieldName}'" }
-            val overrides = numberFields.joinToString("; ") { "${it.fieldName}: number | null" }
-            return "Omit<$dtoType, $omitted> & { $overrides }"
+            val omitted = (numberFields + typeaheadFields).joinToString(" | ") { "'${it.fieldName}'" }
+            return "Omit<$dtoType, $omitted> & { ${overrides.joinToString("; ")} }"
         }
 
 
@@ -422,6 +426,26 @@ class AngularSignalFormComponentRenderer(
         val classFieldDef = angularFormFieldDef.classFieldDef
         val classFieldName = classFieldDef.classFieldName
         val fieldLabel = angularFormFieldDef.fieldLabel
+
+        if (angularFormFieldDef.isTypeahead) {
+
+            if (!classFieldDef.nullable) {
+
+                addImport("@angular/forms/signals", "validate")
+
+                append("""
+                    |        validate(schemaPath.$classFieldName, ({value}) => {
+                    |            return value() && typeof value() === 'object'
+                    |                ? null
+                    |                : { kind: 'required', message: '$fieldLabel is required.' };
+                    |        });
+                    |""".trimMargin())
+
+            }
+
+            return
+
+        }
 
         if (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
             || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java)
@@ -644,8 +668,10 @@ class AngularSignalFormComponentRenderer(
             |
             |        await submit(this.dialogForm, async (form) => {
             |
-            |            const requestDto = form().value() as ${this.angularFormDef.requestDtoDef.uqcn};
+            |            const value = form().value();
             |""".trimMargin())
+
+        `render requestDto construction`()
 
         if (this.angularFormDef.delegateFormSubmission.value) {
 
@@ -661,6 +687,34 @@ class AngularSignalFormComponentRenderer(
         appendLine("        });")
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render requestDto construction`() {
+
+        val requestDtoType = this.angularFormDef.requestDtoDef.uqcn
+
+        if (typeaheadFields.isEmpty()) {
+
+            appendLine("            const requestDto = value as $requestDtoType;")
+
+        } else {
+
+            appendLine("            const requestDto = {")
+            appendLine("                ...value,")
+
+            typeaheadFields.forEach { fieldDef ->
+
+                val typeaheadDef = fieldDef.classFieldDef.typeaheadDef!!
+
+                appendLine("                ${fieldDef.fieldName}: value.${fieldDef.fieldName}.${typeaheadDef.esDocIdFieldName},")
+
+            }
+
+            appendLine("            } as $requestDtoType;")
+
+        }
 
     }
 

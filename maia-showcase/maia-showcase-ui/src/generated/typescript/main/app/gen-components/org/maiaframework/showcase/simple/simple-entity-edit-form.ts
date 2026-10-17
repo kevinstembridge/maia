@@ -94,7 +94,8 @@ export class SimpleEntityEditForm implements OnInit {
 
         await submit(this.dialogForm, async (form) => {
 
-            const requestDto = form().value() as SimpleUpdateRequestDto;
+            const value = form().value();
+            const requestDto = value as SimpleUpdateRequestDto;
 
             try {
                 await firstValueFrom(this.formService.edit(requestDto));

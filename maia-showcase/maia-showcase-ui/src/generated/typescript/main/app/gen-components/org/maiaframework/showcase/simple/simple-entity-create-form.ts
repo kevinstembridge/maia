@@ -67,7 +67,8 @@ export class SimpleEntityCreateForm {
 
         await submit(this.dialogForm, async (form) => {
 
-            const requestDto = form().value() as SimpleCreateRequestDto;
+            const value = form().value();
+            const requestDto = value as SimpleCreateRequestDto;
 
             try {
                 const dto = await firstValueFrom(this.formService.create(requestDto));

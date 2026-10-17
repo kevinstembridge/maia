@@ -147,7 +147,8 @@ export class AllFieldTypesEntityCreateForm {
 
         await submit(this.dialogForm, async (form) => {
 
-            const requestDto = form().value() as AllFieldTypesCreateRequestDto;
+            const value = form().value();
+            const requestDto = value as AllFieldTypesCreateRequestDto;
 
             try {
                 const dto = await firstValueFrom(this.formService.create(requestDto));

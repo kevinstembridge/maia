@@ -1011,6 +1011,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
+        angularFormSystem(AngularFormSystem.SIGNAL)
         foreignKey("alpha", alphaEntityDef) {
             fieldDisplayName("Alpha")
             typeaheadField(alphaTypeaheadDef)
