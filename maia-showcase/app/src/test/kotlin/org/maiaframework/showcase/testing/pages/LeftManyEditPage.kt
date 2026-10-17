@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.AriaRole
 import com.microsoft.playwright.options.WaitForSelectorState
@@ -69,7 +70,7 @@ class LeftManyEditPage(
         someString: String = "testleft_edited",
     ) {
 
-        page.locator("input[name='someString']").fill(someString)
+        page.inputForField("someString").fill(someString)
 
     }
 

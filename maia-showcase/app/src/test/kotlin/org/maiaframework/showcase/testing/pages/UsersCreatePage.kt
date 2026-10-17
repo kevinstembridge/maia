@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.AriaRole
 import com.microsoft.playwright.options.WaitForSelectorState
@@ -26,9 +27,9 @@ class UsersCreatePage(
         vararg authorities: String
     ) {
         authorities.forEach { selectAuthority(it) }
-        page.locator("input[name='firstName']").fill(firstName)
-        page.locator("input[name='lastName']").fill(lastName)
-        page.locator("input[name='lastName']").press("Tab")
+        page.inputForField("firstName").fill(firstName)
+        page.inputForField("lastName").fill(lastName)
+        page.inputForField("lastName").press("Tab")
         page.mouse().move(0.0, 0.0)
         Thread.sleep(1000)
     }

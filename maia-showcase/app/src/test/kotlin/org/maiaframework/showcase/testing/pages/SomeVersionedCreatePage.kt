@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Page
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.options.AriaRole
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -21,8 +22,8 @@ class SomeVersionedCreatePage(
         someString: String = "hello",
         someInt: String = "1"
     ) {
-        page.locator("input[name='someString']").fill(someString)
-        page.locator("input[name='someInt']").fill(someInt)
+        page.inputForField("someString").fill(someString)
+        page.inputForField("someInt").fill(someInt)
         Thread.sleep(1000)
     }
 

@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.AriaRole
 import com.microsoft.playwright.options.WaitForSelectorState
@@ -42,22 +43,22 @@ class AllFieldTypesCreatePage(
         page.locator("mat-checkbox[formcontrolname='someBooleanType']").click()
         page.locator("mat-checkbox[formcontrolname='someBooleanTypeProvided']").click()
 
-        page.locator("input[name='someInt']").fill(someInt)
-        page.locator("input[name='someIntModifiable']").fill(someIntModifiable)
-        page.locator("input[name='someIntType']").fill(someIntType)
-        page.locator("input[name='someIntTypeProvided']").fill(someIntTypeProvided)
-        page.locator("input[name='someLongType']").fill(someLongType)
-        page.locator("input[name='someLongTypeProvided']").fill(someLongTypeProvided)
-        page.locator("input[name='someLocalDateModifiable']").fill(someLocalDateModifiable)
-        page.locator("input[name='someInstant']").fill(someInstantDate)
-        page.locator("input[name='someInstantTime']").fill(someInstantTime)
-        page.locator("input[name='someInstantModifiable']").fill(someInstantModifiableDate)
-        page.locator("input[name='someInstantModifiableTime']").fill(someInstantModifiableTime)
-        page.locator("input[name='somePeriodModifiable']").fill(somePeriodModifiable)
-        page.locator("input[name='someString']").fill(someString)
-        page.locator("input[name='someStringModifiable']").fill(someStringModifiable)
-        page.locator("input[name='someStringType']").fill(someStringType)
-        page.locator("input[name='someProvidedStringType']").fill(someProvidedStringType)
+        page.inputForField("someInt").fill(someInt)
+        page.inputForField("someIntModifiable").fill(someIntModifiable)
+        page.inputForField("someIntType").fill(someIntType)
+        page.inputForField("someIntTypeProvided").fill(someIntTypeProvided)
+        page.inputForField("someLongType").fill(someLongType)
+        page.inputForField("someLongTypeProvided").fill(someLongTypeProvided)
+        page.inputForField("someLocalDateModifiable").fill(someLocalDateModifiable)
+        page.inputForField("someInstant").fill(someInstantDate)
+        page.inputForField("someInstantTime").fill(someInstantTime)
+        page.inputForField("someInstantModifiable").fill(someInstantModifiableDate)
+        page.inputForField("someInstantModifiableTime").fill(someInstantModifiableTime)
+        page.inputForField("somePeriodModifiable").fill(somePeriodModifiable)
+        page.inputForField("someString").fill(someString)
+        page.inputForField("someStringModifiable").fill(someStringModifiable)
+        page.inputForField("someStringType").fill(someStringType)
+        page.inputForField("someProvidedStringType").fill(someProvidedStringType)
         page.locator("mat-select[formControlName='someEnum']").click()
         page.getByRole(AriaRole.OPTION, Page.GetByRoleOptions().setName(someEnum)).click()
         page.mouse().move(0.0, 0.0)

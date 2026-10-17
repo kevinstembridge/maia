@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Page
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.options.AriaRole
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -17,8 +18,8 @@ class SimpleEditPage(
 
 
     fun fillEditForm(someString: String = "edited-string") {
-        page.waitForFunction("() => (document.querySelector('input[name=\"someString\"]')?.value ?? '') !== ''")
-        page.locator("input[name='someString']").fill(someString)
+        page.waitForFunction("() => (document.querySelector('input[name=\"someString\"], input[name$=\".someString\"]')?.value ?? '') !== ''")
+        page.inputForField("someString").fill(someString)
         // Wait for async validators (debounced ~300ms)
         Thread.sleep(1000)
     }

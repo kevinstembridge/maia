@@ -4,14 +4,14 @@ import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.HtmlInputType
+import org.maiaframework.gen.spec.definition.TypescriptImports
 import org.maiaframework.gen.spec.definition.flags.FormPurpose
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
-import org.maiaframework.gen.spec.definition.lang.ClassFieldName
+import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotNullConstraintDef
 import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
-import org.maiaframework.lang.text.StringFunctions
 
 
 class AngularSignalFormComponentRenderer(
@@ -24,28 +24,35 @@ class AngularSignalFormComponentRenderer(
 ) {
 
 
-    private val formGroupFields = this.angularFormDef.formModelFields
+    private val linkedFields = this.angularFormDef.formModelFields.filter { it.linksToAField }
 
 
-    private val requestDtoDef = this.angularFormDef.requestDtoDef
-
-
-    private val allRequestDtoFields = this.requestDtoDef.dtoFieldDefs
+    private val withFetchForEdit = this.angularFormDef.fetchForEditDtoDef != null
 
 
     init {
 
         addImport("@angular/core", "Component")
         addImport("@angular/core", "inject")
-        addImport("@angular/core", "OnInit")
         addImport("@angular/core", "output")
         addImport("@angular/core", "signal")
+
+        if (withFetchForEdit) {
+            addImport("@angular/core", "OnInit")
+        }
+
+        if (angularFormDef.formPurpose == FormPurpose.edit || angularFormDef.isEntityCreateForm) {
+            addImport("@angular/core", "input")
+        }
+
+        if (linkedFields.isNotEmpty()) {
+            addImport("@angular/core", "computed")
+        }
 
         addImport("@angular/forms/signals", "form")
         addImport("@angular/forms/signals", "FormField", isModule = true)
         addImport("@angular/forms/signals", "submit")
-        addImport("@angular/forms", "FormsModule", isModule = true)
-        addImport("@angular/forms", "ReactiveFormsModule", isModule = true)
+        addImport("rxjs", "firstValueFrom")
 
         if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
             addImport("@angular/material/dialog", "MatDialog")
@@ -55,7 +62,7 @@ class AngularSignalFormComponentRenderer(
             addImport("@angular/material/dialog", "MatDialogActions", isModule = true)
         }
 
-        if (angularFormDef.formPurpose == FormPurpose.edit || angularFormDef.context != null) {
+        if (angularFormDef.context != null) {
             addImport("@angular/material/dialog", "MAT_DIALOG_DATA")
         }
 
@@ -63,21 +70,23 @@ class AngularSignalFormComponentRenderer(
             addImport("@angular/router", "Router")
         }
 
-        addImport("rxjs", "Observable")
-        addImport("rxjs", "Subject")
-        addImport("rxjs", "of")
-        addImport("rxjs/operators", "catchError")
-        addImport("rxjs/operators", "debounceTime")
-        addImport("rxjs/operators", "distinctUntilChanged")
-        addImport("rxjs/operators", "filter")
-        addImport("rxjs/operators", "map")
-        addImport("rxjs/operators", "switchMap")
-        addImport("rxjs/operators", "tap")
+        this.angularFormDef.fetchForEditDtoDef?.let { fetchForEditDtoDef ->
+            addImport(fetchForEditDtoDef.typescriptImport)
+        }
+
+        if (angularFormDef.formPurpose == FormPurpose.create && angularFormDef.isEntityCreateForm) {
+            val createdEntityDef = this.angularFormDef.createdEntityDef
+            if (createdEntityDef != null && createdEntityDef.createReturnsPkAndName) {
+                addImport(createdEntityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
+            } else {
+                addImport("@maia/maia-ui", "EntityCreatedResponseDto")
+            }
+        }
+
         addImport(this.angularFormDef.formServiceTypescriptImport)
         this.angularFormDef.context?.let { addImport(it.typescriptImport) }
-        addImport(this.requestDtoDef.typescriptImport)
+        addImport(this.angularFormDef.requestDtoDef.typescriptImport)
         addImport("@angular/material/button", "MatButtonModule", isModule = true)
-        addImport("@angular/material/core", "MatOptionModule", isModule = true)
         addImport("@angular/material/input", "MatInputModule", isModule = true)
         addImport("@angular/material/form-field", "MatFormFieldModule", isModule = true)
 
@@ -85,27 +94,15 @@ class AngularSignalFormComponentRenderer(
             addImport("@angular/material/icon", "MatIconModule", isModule = true)
         }
 
-        addImport("@app/gen-components/common/model/ProblemDetail", "ProblemDetail")
+        if (angularFormDef.readOnlyFormFields.any { it.isUuid }) {
+            addImport("@maia/maia-ui", "ShortId", isModule = true)
+        }
+
+        addImport(TypescriptImports.problemDetail)
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
             addImport(typeaheadDef.typescriptComponentImport)
         }
-
-        this.angularFormDef.formModelFields.forEach { angularFieldDef ->
-            angularFieldDef.typeaheadRequiredValidatorTypescriptImport?.let { addImport(it) }
-        }
-
-//        this.angularFormDef.uniqueIndexDefs.forEach { databaseIndexDef ->
-//            addImport(databaseIndexDef.asyncValidator.asyncValidatorTypescriptImport)
-//        }
-
-        if (this.angularFormDef.uniqueIndexDefs.isNotEmpty()) {
-            addImport("@angular/forms/signals", "validateHttp")
-        }
-
-//        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-//            addImport(asyncValidatorDef.asyncValidatorTypescriptImport)
-//        }
 
         if (this.angularFormDef.hasAnyMatSelectFields) {
 
@@ -120,19 +117,16 @@ class AngularSignalFormComponentRenderer(
 
         }
 
-        if (this.angularFormDef.formModelFields.any { it.hasValidationConstraint(UrlConstraintDef::class.java) }) {
-            addImport("@app/validators/CustomValidators", "CustomValidators")
-        }
-
     }
 
 
     override fun renderComponentSource() {
 
-        appendLine("export class $className implements OnInit {")
+        val implementsOnInit = if (withFetchForEdit) " implements OnInit" else ""
+
+        appendLine("export class $className$implementsOnInit {")
 
         `render class fields`()
-        `render constructor`()
         `render function ngOnInit`()
         `render function onSubmit`()
         `render function onCancel`()
@@ -146,11 +140,40 @@ class AngularSignalFormComponentRenderer(
 
     private fun `render class fields`() {
 
+        `render class field entityId`()
+        `render class fields for outputs`()
+        `render class field formService`()
+        `render class field problemDetail`()
+        `render class fields for enum MatSelect fields`()
+        `render class fields for password visibility toggle`()
         `render class field dialogFormModel`()
         `render class field dialogForm`()
-        `render class field problemDetail`()
+        `render class field loading`()
+        `render class fields for linked fields`()
+        `render class field dialogRef`()
+        `render class field context`()
+        `render class field router`()
 
-        `render class fields for password visibility toggle`()
+    }
+
+
+    private fun `render class field entityId`() {
+
+        if (angularFormDef.formPurpose == FormPurpose.edit) {
+
+            append("""
+                |
+                |
+                |    entityId = input.required<${angularFormDef.entityIdInjectType}>();
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class fields for outputs`() {
 
         if (this.angularFormDef.delegateFormSubmission.value) {
 
@@ -158,17 +181,32 @@ class AngularSignalFormComponentRenderer(
                 |
                 |
                 |    readonly onFormSubmission = output<${this.angularFormDef.requestDtoDef.uqcn}>();
-                |""".trimMargin())
+                |""".trimMargin()
+            )
 
         }
 
-        if (this.angularFormDef.emitEventOnSuccess.value) {
+        if (this.angularFormDef.isEntityCreateForm) {
 
             append("""
                 |
                 |
-                |    readonly onSuccessEvent = output();
-                |""".trimMargin())
+                |    readonly onSuccess = output<${this.angularFormDef.createResponseTypeName}>();
+                |
+                |
+                |    /** Set to false when embedding the form to stay on the current page after a successful create. */
+                |    readonly navigateOnSuccess = input(true);
+                |""".trimMargin()
+            )
+
+        } else if (this.angularFormDef.emitEventOnSuccess.value) {
+
+            append("""
+                |
+                |
+                |    readonly onSuccess = output();
+                |""".trimMargin()
+            )
 
         }
 
@@ -178,11 +216,50 @@ class AngularSignalFormComponentRenderer(
                 |
                 |
                 |    readonly onErrorEvent = output<any>();
-                |""".trimMargin())
+                |""".trimMargin()
+            )
 
         }
 
+        if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.INLINE_FORM) {
 
+            append("""
+                |
+                |
+                |    onCancel = output();
+                |""".trimMargin()
+            )
+
+        }
+
+    }
+
+
+    private fun `render class field formService`() {
+
+        append("""
+            |
+            |
+            |    private readonly formService = inject(${this.angularFormDef.formServiceClassName});
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render class field problemDetail`() {
+
+        append("""
+            |
+            |
+            |    problemDetail = signal<ProblemDetail | null>(null);
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render class fields for enum MatSelect fields`() {
 
         this.angularFormDef.enumsForMatSelectFields
             .filter { it.withEnumSelectionOptions }
@@ -197,27 +274,8 @@ class AngularSignalFormComponentRenderer(
 
         }
 
-        this.angularFormDef.formModelFields.filter { it.linksToAField }.forEach { fieldDef ->
-
-            append("""
-                |
-                |
-                |    ${fieldDef.classFieldDef.classFieldName}IsVisible = signal<boolean>(false);
-                |""".trimMargin())
-
-        }
-
     }
 
-    private fun `render class field problemDetail`() {
-        append(
-            """
-                |
-                |
-                |    problemDetail = signal<ProblemDetail | null>(null);
-                |""".trimMargin()
-        )
-    }
 
     private fun `render class fields for password visibility toggle`() {
 
@@ -234,6 +292,7 @@ class AngularSignalFormComponentRenderer(
         }
 
     }
+
 
     private fun `render class field dialogFormModel`() {
 
@@ -267,284 +326,236 @@ class AngularSignalFormComponentRenderer(
         blankLine()
         blankLine()
 
-        if (this.angularFormDef.hasAnyValidationConstraints) {
+        if (this.angularFormDef.hasAnyValidationConstraints || linkedFields.isNotEmpty()) {
+
             appendLine("    dialogForm = form(this.dialogFormModel, (schemaPath) => {")
+
+            this.angularFormDef.formModelFields.forEach { `render dialogForm field`(it) }
+
+            linkedFields.forEach { fieldDef ->
+
+                val fieldLinkedTo = fieldDef.classFieldDef.fieldLinkedTo!!
+
+                addImport("@angular/forms/signals", "disabled")
+
+                appendLine("        disabled(schemaPath.${fieldDef.classFieldDef.classFieldName}, ({valueOf}) => valueOf(schemaPath.${fieldLinkedTo.classFieldName}) !== ${fieldLinkedTo.fieldType}.OTHER);")
+
+            }
+
+            appendLine("    }, { name: '${this.angularComponentNames.componentSelector}' });")
+
         } else {
-            appendLine("    dialogForm = form(this.dialogFormModel)")
+
+            appendLine("    dialogForm = form(this.dialogFormModel, { name: '${this.angularComponentNames.componentSelector}' });")
+
         }
 
-        this.angularFormDef.formModelFields.forEach { `render dialogForm field`(it) }
+    }
 
-        this.angularFormDef.formModelFields.filter { it.linksToAField }.forEach { fieldDef ->
+
+    private fun `render dialogForm field`(angularFormFieldDef: AngularFormFieldDef) {
+
+        val classFieldDef = angularFormFieldDef.classFieldDef
+        val classFieldName = classFieldDef.classFieldName
+        val fieldLabel = angularFormFieldDef.fieldLabel
+
+        if (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
+            || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java)
+        ) {
+
+            addImport("@angular/forms/signals", "required")
+
+            appendLine("        required(schemaPath.$classFieldName, { message: '$fieldLabel is required.' });")
+
+        }
+
+        if (classFieldDef.hasValidationConstraint(EmailConstraintDef::class.java)) {
+
+            addImport("@angular/forms/signals", "email")
+
+            appendLine("        email(schemaPath.$classFieldName, { message: '$fieldLabel must be valid.' });")
+
+        }
+
+        if (classFieldDef.hasValidationConstraint(UrlConstraintDef::class.java)) {
+
+            addImport("@angular/forms/signals", "validate")
 
             append("""
-                |        ${fieldDef.classFieldDef.classFieldName}: '',
+                |        validate(schemaPath.$classFieldName, ({value}) => {
+                |            if (!value()) {
+                |                return null;
+                |            }
+                |            try {
+                |                new URL(value());
+                |                return null;
+                |            } catch {
+                |                return { kind: 'invalidUrl', message: '$fieldLabel must be a valid URL.' };
+                |            }
+                |        });
+                |""".trimMargin())
+
+        }
+
+        classFieldDef.minConstraint?.minValue?.let { minValue ->
+
+            addImport("@angular/forms/signals", "min")
+
+            appendLine("        min(schemaPath.$classFieldName, $minValue, { message: '$fieldLabel must be at least $minValue.' });")
+
+        }
+
+        classFieldDef.maxConstraint?.maxValue?.let { maxValue ->
+
+            addImport("@angular/forms/signals", "max")
+
+            appendLine("        max(schemaPath.$classFieldName, $maxValue, { message: '$fieldLabel must not be more than $maxValue.' });")
+
+        }
+
+        classFieldDef.lengthConstraint?.min?.let { minLength ->
+
+            addImport("@angular/forms/signals", "minLength")
+
+            appendLine("        minLength(schemaPath.$classFieldName, $minLength, { message: '$fieldLabel must be at least $minLength characters.' });")
+
+        }
+
+        classFieldDef.lengthConstraint?.max?.let { maxLength ->
+
+            addImport("@angular/forms/signals", "maxLength")
+
+            appendLine("        maxLength(schemaPath.$classFieldName, $maxLength, { message: '$fieldLabel must not be more than $maxLength characters.' });")
+
+        }
+
+    }
+
+
+    private fun `render class field loading`() {
+
+        if (withFetchForEdit) {
+
+            append("""
+                |
+                |
+                |    loading = signal(true);
                 |""".trimMargin()
             )
 
         }
 
-        appendLine("    });")
-
     }
 
-    
-    private fun `render dialogForm field`(angularFormFieldDef: AngularFormFieldDef) {
-        
-        val classFieldDef = angularFormFieldDef.classFieldDef
-        val classFieldName = classFieldDef.classFieldName
-        val fieldLabel = angularFormFieldDef.fieldLabel
 
-        if (classFieldDef.hasAnyValidationConstraints() || classFieldDef.isUnique) {
+    private fun `render class fields for linked fields`() {
 
-            if (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
-                || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java)
-            ) {
+        linkedFields.forEach { fieldDef ->
 
-                addImport("@angular/forms/signals", "required")
+            val fieldLinkedTo = fieldDef.classFieldDef.fieldLinkedTo!!
 
-                appendLine("        required(schemaPath.$classFieldName, { message: '$fieldLabel is required' })")
-
-            }
-
-            if (classFieldDef.hasValidationConstraint(EmailConstraintDef::class.java)) {
-
-                addImport("@angular/forms/signals", "email")
-
-                appendLine("        email(schemaPath.$classFieldName, { message: '$fieldLabel must be valid' })")
-
-            }
-
-            if (classFieldDef.hasValidationConstraint(UrlConstraintDef::class.java)) {
-                appendLine("        @if (formGroup.controls['$classFieldName'].hasError('invalidUrl')) {")
-                appendLine("            <mat-error>${fieldLabel} must be a valid URL.</mat-error>")
-                appendLine("        }")
-            }
-
-            classFieldDef.minConstraint?.minValue?.let { minValue ->
-
-                addImport("@angular/forms/signals", "min")
-
-                appendLine("        min(schemaPath.$classFieldName, { message: '$fieldLabel must be at least $minValue.'})")
-
-            }
-
-            classFieldDef.maxConstraint?.maxValue?.let { maxValue ->
-
-                addImport("@angular/forms/signals", "max")
-
-                appendLine("        max(schemaPath.$classFieldName, { message: '$fieldLabel must not be more than $maxValue.'})")
-
-            }
-
-            classFieldDef.lengthConstraint?.min?.let { minLength ->
-
-                addImport("@angular/forms/signals", "minLength")
-
-                appendLine("        minLength(schemaPath.$classFieldName, $minLength)")
-
-            }
-
-            classFieldDef.lengthConstraint?.max?.let { maxLength ->
-
-                addImport("@angular/forms/signals", "maxLength")
-
-                appendLine("        maxLength(schemaPath.$classFieldName, $maxLength)")
-
-            }
-
-            if (classFieldDef.isUnique) {
-
-                addImport("@angular/forms/signals", "validateHttp")
-
-                append("""
-                    |        validateHttp(schemaPath.$classFieldName, {
-                    |            request: ({value}) => {
-                    |                return {
-                    |                    url: '${classFieldDef.classFieldName}.huh',
-                    |                    body: value(),
-                    |                }
-                    |            },
-                    |            onSuccess: (response: any) => {
-                    |                if (response.huh) {
-                    |                    return {
-                    |                        kind: 'huh',
-                    |                        message: 'huh'
-                    |                    };
-                    |                }
-                    |                return null;
-                    |            },
-                    |            onError: (error) => ({
-                    |                kind: 'huh',
-                    |                message: 'huh'
-                    |            }),
-                    |        });
-                    |""".trimMargin())
-
-            }
+            append("""
+                |
+                |
+                |    ${fieldDef.classFieldDef.classFieldName}IsVisible = computed(() => this.dialogFormModel().${fieldLinkedTo.classFieldName} === ${fieldLinkedTo.fieldType}.OTHER);
+                |""".trimMargin())
 
         }
 
     }
 
 
-    private fun `render constructor`() {
+    private fun `render class field dialogRef`() {
 
         if (this.angularFormDef.inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
-            blankLine()
-            blankLine()
-            appendLine("    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);")
+
+            append("""
+                |
+                |
+                |    readonly dialogRef = inject(MatDialogRef<${this.angularFormDef.componentNames.componentName}>);
+                |""".trimMargin()
+            )
+
         }
 
-        blankLine()
-        blankLine()
-        appendLine("    private readonly formService = inject(${this.angularFormDef.formServiceClassName});")
+    }
 
-        if (angularFormDef.formPurpose == FormPurpose.edit) {
-            blankLine()
-            blankLine()
-            appendLine("    private readonly dto = inject<any>(MAT_DIALOG_DATA);")
-        }
+
+    private fun `render class field context`() {
 
         this.angularFormDef.context?.let { context ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);")
+
+            append("""
+                |
+                |
+                |    private readonly context = inject<${context.uqcn}>(MAT_DIALOG_DATA);
+                |""".trimMargin()
+            )
+
         }
+
+    }
+
+
+    private fun `render class field router`() {
 
         this.angularFormDef.onSuccessUrl?.let {
-            blankLine()
-            blankLine()
-            appendLine("    private readonly router = inject(Router);")
-        }
 
-
-        this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
-            blankLine()
-            blankLine()
-            appendLine("    private readonly ${databaseIndexDef.validatorFieldName} = inject(${databaseIndexDef.validatorName});")
-        }
-
-//        this.angularFormDef.formModelFields.mapNotNull { it.asyncValidatorDef }.forEach { asyncValidatorDef ->
-//            appendLine("    private readonly ${asyncValidatorDef.validatorFieldName} = inject(${asyncValidatorDef.asyncValidatorName});")
-//        }
-
-        if (true) {
-            return
+            append("""
+                |
+                |
+                |    private readonly router = inject(Router);
+                |""".trimMargin()
+            )
 
         }
-
-        append("""
-            |    ) {
-            |
-            |        this.formGroup = new FormGroup(
-            |            {
-            |""".trimMargin())
-
-        this.formGroupFields.forEach { angularFormFieldDef ->
-
-            val classFieldDef = angularFormFieldDef.classFieldDef
-            val typeaheadDef = classFieldDef.typeaheadDef
-
-            if (typeaheadDef == null) {
-
-                val newFormControl = FormControlRendererHelper.renderFormControlFor(
-                    angularFormFieldDef,
-                    angularFormDef.formPurpose,
-                    indentSize = 16,
-                    { line -> appendLine(line) },
-                    { fieldType -> addImportsFor(fieldType) },
-                    { typescriptImport -> addImport(typescriptImport) },
-                )
-
-//                appendLine("                ${classFieldDef.classFieldName}: $newFormControl,")
-
-            } else {
-
-                val validators = if (classFieldDef.nullable) "" else "${angularFormFieldDef.typeaheadRequiredValidatorFunctionName}()"
-
-                val initialValue = when (angularFormDef.formPurpose) {
-                    FormPurpose.create -> "''"
-                    FormPurpose.submit -> "''"
-                    FormPurpose.edit -> typeaheadDef.fieldDefs.map { "${it.fieldName}: this.dto.${it.fieldName}" }
-                        .joinToString(prefix = "{ ", separator = ", ", postfix = " }")
-
-                    null -> "''"
-                }
-
-                appendLine("                ${classFieldDef.classFieldName}: new FormControl($initialValue, { updateOn: 'change', validators: [$validators] }),")
-            }
-
-        }
-
-        appendLine("            },")
-
-        if (this.angularFormDef.multiFieldUniqueIndexDefs.isNotEmpty()) {
-
-            appendLine("            {")
-            appendLine("                asyncValidators: [")
-
-            this.angularFormDef.multiFieldUniqueIndexDefs.forEach { databaseIndexDef ->
-                appendLine("                    this.${databaseIndexDef.validatorFieldName}.validate.bind(this.${databaseIndexDef.validatorFieldName}),")
-            }
-
-            appendLine("                ],")
-            appendLine("                updateOn: 'blur'")
-            appendLine("            }")
-
-        }
-
-        appendLine("        );")
-        blankLine()
-        appendLine("    }")
 
     }
 
 
     private fun `render function ngOnInit`() {
 
+        val fetchForEditDtoDef = this.angularFormDef.fetchForEditDtoDef ?: return
+
         append("""
             |
             |
             |    ngOnInit() {
-            |""".trimMargin())
+            |
+            |        this.formService.fetchForEdit(this.entityId()).subscribe({
+            |            next: (dto: ${fetchForEditDtoDef.uqcn}) => {
+            |                this.dialogFormModel.update(model => ({
+            |                    ...model,
+            |""".trimMargin()
+        )
 
-        if (this.angularFormDef.formModelFields.any { it.linksToAField }) {
+        this.angularFormDef.formModelFields.sortedBy { it.fieldName }.forEach { angularFormFieldDef ->
 
-            blankLine()
-            appendLine("        this.formGroup.valueChanges.subscribe(form => {")
+            val classFieldDef = angularFormFieldDef.classFieldDef
+            val formFieldName = angularFormFieldDef.fieldName
 
-            this.angularFormDef.formModelFields.filter { it.linksToAField }.forEach { formFieldDef ->
-
-                val fieldName = formFieldDef.fieldName
-                val fieldLinkedTo = formFieldDef.classFieldDef.fieldLinkedTo!!
-
-                append("""
-                    |
-                    |            const ${fieldName}IsSelected = form.${formFieldDef.classFieldDef.fieldLinkedTo!!.classFieldName} === ${fieldLinkedTo.fieldType}.OTHER;
-                    |
-                    |            if (${fieldName}IsSelected) {
-                    |                this.formGroup.get('$fieldName').enable();
-                    |            } else {
-                    |                this.formGroup.get('$fieldName').disable();
-                    |            }
-                    |
-                    |            this.${fieldName}IsVisible.set(${fieldName}IsSelected);
-                    |
-                    |""".trimMargin())
-
+            // Non-typeahead FK fields are skipped because the DTO uses a PkAndName object shape.
+            if (classFieldDef.typeaheadDef != null || classFieldDef.fieldType !is ForeignKeyFieldType) {
+                appendLine("                    ${formFieldName}: dto.${formFieldName},")
             }
-
-            appendLine("        });")
 
         }
 
-        blankLine()
-        appendLine("    }")
+        append("""
+            |                }));
+            |                this.loading.set(false);
+            |            },
+            |            error: (err) => {
+            |                this.problemDetail.set(err.error);
+            |                this.loading.set(false);
+            |            }
+            |        });
+            |
+            |    }
+            |""".trimMargin()
+        )
 
     }
-
-
 
 
     private fun `render function onSubmit`() {
@@ -560,11 +571,12 @@ class AngularSignalFormComponentRenderer(
             |
             |        await submit(this.dialogForm, async (form) => {
             |
+            |            const requestDto = form().value();
             |""".trimMargin())
 
         if (this.angularFormDef.delegateFormSubmission.value) {
 
-            appendLine("        this.onFormSubmission.emit(requestDto);")
+            appendLine("            this.onFormSubmission.emit(requestDto);")
 
         } else {
 
@@ -582,44 +594,37 @@ class AngularSignalFormComponentRenderer(
 
     private fun `render formService request`() {
 
-        append("""
-            |            this.formService.${angularFormDef.onSubmitServiceFunctionName}(form().value())
-            |                .subscribe({
-            |""".trimMargin()
-        )
+        appendLine("")
+        appendLine("            try {")
+        val assignDto = if (angularFormDef.formPurpose == FormPurpose.create) "const dto = " else ""
 
-        `render formService request next function`()
-        `render formService request error function`()
+        appendLine("                ${assignDto}await firstValueFrom(this.formService.${angularFormDef.onSubmitServiceFunctionName}(requestDto));")
 
-        appendLine("                });")
+        `render success handling`()
+
+        appendLine("            } catch (err: any) {")
+
+        `render error handling`()
+
+        appendLine("            }")
 
     }
 
 
-    private fun `render formService request next function`() {
+    private fun `render success handling`() {
 
-        if (this.angularFormDef.onSuccessUrl.isNullOrEmpty()) {
+        val onSuccessUrl = this.angularFormDef.onSuccessUrl
+
+        if (onSuccessUrl.isNullOrEmpty()) {
 
             when (this.angularFormDef.inlineFormOrDialog) {
 
                 InlineFormOrDialog.INLINE_FORM -> {
 
-                    if (this.angularFormDef.emitEventOnSuccess.value) {
-
-                        append("""
-                            |                    next: () => {
-                            |                        this.onSuccessEvent.emit();
-                            |                    },
-                            |""".trimMargin())
-
-                    } else {
-
-                        append("""
-                            |                    next: () => {
-                            |                        // TODO maybe emit an event?
-                            |                    },
-                            |""".trimMargin())
-
+                    if (this.angularFormDef.isEntityCreateForm) {
+                        appendLine("                this.onSuccess.emit(dto);")
+                    } else if (this.angularFormDef.emitEventOnSuccess.value) {
+                        appendLine("                this.onSuccess.emit();")
                     }
 
                 }
@@ -627,115 +632,89 @@ class AngularSignalFormComponentRenderer(
                 InlineFormOrDialog.DIALOG -> {
 
                     if (this.angularFormDef.emitEventOnSuccess.value) {
-
-                        append("""
-                            |                    next: () => {
-                            |                        this.onSuccessEvent.emit();
-                            |                    },
-                            |""".trimMargin())
-
+                        appendLine("                this.onSuccess.emit();")
                     } else {
-
-                        append("""
-                            |                    next: () => {
-                            |                        this.dialogRef.close(true);
-                            |                    },
-                            |""".trimMargin())
-
+                        appendLine("                this.dialogRef.close(true);")
                     }
 
                 }
 
             }
 
-        } else {
-
-            append("""
-                |                    next: (_) => {
-                |                        this.router.navigate(['${this.angularFormDef.onSuccessUrl}']);
-                |                    },
-                |""".trimMargin())
+            return
 
         }
 
-    }
+        when (this.angularFormDef.formPurpose) {
 
+            FormPurpose.create -> {
 
-    private fun `render formService request error function`() {
+                if (this.angularFormDef.isEntityCreateForm) {
 
-        if (this.angularFormDef.emitEventOnError.value) {
-
-            append("""
-                |                    error: err => {
-                |                        this.onErrorEvent.emit(err);
-                |                    }
-                |""".trimMargin())
-
-        } else {
-
-            append("""
-                |                    error: err => {
-                |                        this.problemDetail.set(err.error);
-                |                    }
-                |""".trimMargin())
-
-        }
-
-    }
-
-
-    private fun renderRequestDtoConstruction() {
-
-        appendLine("        const requestDto = {")
-
-        this.angularFormDef.context?.let {
-            appendLine("            context: this.context,")
-        }
-
-        this.allRequestDtoFields
-            .forEach { requestDtoFieldDef ->
-
-                val dtoFieldName = requestDtoFieldDef.classFieldDef.classFieldName
-                val typeaheadDef = requestDtoFieldDef.classFieldDef.typeaheadDef
-
-                if (typeaheadDef == null) {
-
-                    if (dtoFieldName == ClassFieldName.context) {
-
-                        if (this.angularFormDef.context == null) {
-                            appendLine("            context: this.context,")
-                        }
-
-                    } else {
-                        appendLine("            ${dtoFieldName}: this.formGroup.getRawValue().$dtoFieldName,")
-                    }
+                    append("""
+                        |                this.onSuccess.emit(dto);
+                        |                if (this.navigateOnSuccess()) {
+                        |                    this.router.navigate(['$onSuccessUrl', dto.id]);
+                        |                }
+                        |""".trimMargin())
 
                 } else {
 
-                    appendLine("            ${typeaheadDef.idField.fieldName}: this.formGroup.getRawValue().${requestDtoFieldDef.classFieldDef.classFieldName}.${typeaheadDef.esDocIdFieldName},")
+                    appendLine("                this.router.navigate(['$onSuccessUrl', dto.id]);")
 
                 }
 
             }
 
-        appendLine("        } as ${this.angularFormDef.requestDtoDef.uqcn};")
+            FormPurpose.edit -> appendLine("                this.router.navigate(['$onSuccessUrl', this.entityId()]);")
+
+            else -> appendLine("                this.router.navigate(['$onSuccessUrl']);")
+
+        }
+
+    }
+
+
+    private fun `render error handling`() {
+
+        if (this.angularFormDef.emitEventOnError.value) {
+            appendLine("                this.onErrorEvent.emit(err);")
+        } else {
+            appendLine("                this.problemDetail.set(err.error);")
+        }
 
     }
 
 
     private fun `render function onCancel`() {
 
-        if (this.angularFormDef.inlineFormOrDialog != InlineFormOrDialog.DIALOG) {
-            return
-        }
+        when (this.angularFormDef.inlineFormOrDialog) {
 
-        append("""
-            |
-            |
-            |    onCancel(): void {
-            |        this.dialogRef.close();
-            |    }
-            |""".trimMargin())
+            InlineFormOrDialog.DIALOG -> {
+
+                append("""
+                    |
+                    |
+                    |    onCancel(): void {
+                    |        this.dialogRef.close();
+                    |    }
+                    |""".trimMargin())
+
+            }
+
+            InlineFormOrDialog.INLINE_FORM -> {
+
+                append("""
+                    |
+                    |
+                    |    onCancelClicked(): void {
+                    |        this.onCancel.emit();
+                    |    }
+                    |""".trimMargin())
+
+            }
+
+        }
 
     }
 

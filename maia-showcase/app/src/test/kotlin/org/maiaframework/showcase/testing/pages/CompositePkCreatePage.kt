@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Page
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.options.AriaRole
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -22,9 +23,9 @@ class CompositePkCreatePage(
         someInt: String = "1",
         someModifiableString: String = "initial"
     ) {
-        page.locator("input[name='someString']").fill(someString)
-        page.locator("input[name='someInt']").fill(someInt)
-        page.locator("input[name='someModifiableString']").fill(someModifiableString)
+        page.inputForField("someString").fill(someString)
+        page.inputForField("someInt").fill(someInt)
+        page.inputForField("someModifiableString").fill(someModifiableString)
         Thread.sleep(1000)
     }
 

@@ -17,6 +17,17 @@ abstract class AbstractCrudFormHtmlRenderer(
     protected abstract val formFields: List<AngularFormFieldDef>
 
 
+    protected open val withFetchForEditLoading: Boolean = false
+
+
+    protected open val withCancelButton: Boolean = false
+
+
+    protected open fun renderSingleFormField(formFieldDef: AngularFormFieldDef) {
+        MatFormFieldRenderer.renderSignalFormField(formFieldDef, this)
+    }
+
+
     // TODO MTM:
     protected open fun renderManyToManyChipFields() {}
 
@@ -32,6 +43,17 @@ abstract class AbstractCrudFormHtmlRenderer(
             appendLine("<h1 mat-dialog-title>${this.dialogTitle}</h1>")
         }
 
+        if (this.withFetchForEditLoading) {
+            append("""
+                |
+                |@if (loading()) {
+                |    <div style="display: flex; justify-content: center; padding: 24px;">
+                |        <mat-spinner diameter="40"></mat-spinner>
+                |    </div>
+                |} @else {
+                |""".trimMargin())
+        }
+
         appendLine($$"""
             |<form novalidate (submit)="onSubmit($event)">
             |    <div$$matDialogContentText>
@@ -39,16 +61,8 @@ abstract class AbstractCrudFormHtmlRenderer(
             |            <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
             |        }""".trimMargin())
 
-        if (this.entityDef.multiFieldUniqueIndexDefs.isNotEmpty()) {
-            append("""
-                |        @if (formGroup.errors?.message && (formGroup.touched || formGroup.dirty)) {
-                |            {{ formGroup.errors.message }}
-                |        }
-                |""".trimMargin())
-        }
-
         formFields.forEach { formFieldDef ->
-            MatFormFieldRenderer.renderSignalFormField(formFieldDef, this)
+            renderSingleFormField(formFieldDef)
         }
 
         // TODO MTM:
@@ -65,10 +79,16 @@ abstract class AbstractCrudFormHtmlRenderer(
 
         if (inlineFormOrDialog == InlineFormOrDialog.DIALOG) {
             appendLine("        <button mat-flat-button type=\"button\" (click)=\"onCancel()\">Cancel</button>")
+        } else if (withCancelButton) {
+            appendLine("        <button mat-flat-button type=\"button\" (click)=\"onCancelClicked()\">Cancel</button>")
         }
 
         appendLine("    </div>")
         appendLine("</form>")
+
+        if (this.withFetchForEditLoading) {
+            appendLine("}")
+        }
 
         return sourceCode.toString()
 

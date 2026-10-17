@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Page
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.options.AriaRole
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -20,8 +21,8 @@ class CompositePkEditPage(
     fun fillEditForm(
         someModifiableString: String = "edited"
     ) {
-        page.waitForFunction("() => (document.querySelector('input[name=\"someModifiableString\"]')?.value ?? '') !== ''")
-        page.locator("input[name='someModifiableString']").fill(someModifiableString)
+        page.waitForFunction("() => (document.querySelector('input[name=\"someModifiableString\"], input[name$=\".someModifiableString\"]')?.value ?? '') !== ''")
+        page.inputForField("someModifiableString").fill(someModifiableString)
         Thread.sleep(1000)
     }
 

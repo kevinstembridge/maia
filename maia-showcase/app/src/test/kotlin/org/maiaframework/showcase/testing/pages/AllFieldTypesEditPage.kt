@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Page
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.options.AriaRole
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
@@ -28,14 +29,14 @@ class AllFieldTypesEditPage(
         // after ngOnInit() completes the HTTP call. Without this wait, patchValue() can overwrite
         // our fills (and reset id to '' which causes a silent backend error on submit).
         page.waitForFunction(
-            "() => (document.querySelector('input[name=\"someStringModifiable\"]')?.value ?? '') !== ''"
+            "() => (document.querySelector('input[name=\"someStringModifiable\"], input[name$=\".someStringModifiable\"]')?.value ?? '') !== ''"
         )
-        page.locator("input[name='someIntModifiable']").fill(someIntModifiable)
-        page.locator("input[name='someLocalDateModifiable']").fill(someLocalDateModifiable)
-        page.locator("input[name='someInstantModifiable']").fill(someInstantModifiableDate)
-        page.locator("input[name='someInstantModifiableTime']").fill(someInstantModifiableTime)
-        page.locator("input[name='somePeriodModifiable']").fill(somePeriodModifiable)
-        page.locator("input[name='someStringModifiable']").fill(someStringModifiable)
+        page.inputForField("someIntModifiable").fill(someIntModifiable)
+        page.inputForField("someLocalDateModifiable").fill(someLocalDateModifiable)
+        page.inputForField("someInstantModifiable").fill(someInstantModifiableDate)
+        page.inputForField("someInstantModifiableTime").fill(someInstantModifiableTime)
+        page.inputForField("somePeriodModifiable").fill(somePeriodModifiable)
+        page.inputForField("someStringModifiable").fill(someStringModifiable)
     }
 
 

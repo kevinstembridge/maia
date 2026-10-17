@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.AriaRole
 import com.microsoft.playwright.options.WaitForSelectorState
@@ -26,12 +27,12 @@ class UsersEditPage(
     ) {
         // Wait for fetchForEdit() to populate the form — lastName is required so it will be non-empty
         // once patchValue() has run. The form template has no spinner, so we poll the DOM directly.
-        page.waitForFunction("() => (document.querySelector('input[name=\"lastName\"]')?.value ?? '') !== ''")
-        page.locator("input[name='firstName']").waitFor()
-        page.locator("input[name='firstName']").fill(firstName)
-        val existingLastName = page.locator("input[name='lastName']").inputValue()
-        page.locator("input[name='lastName']").fill(existingLastName)
-        page.locator("input[name='lastName']").press("Tab")
+        page.waitForFunction("() => (document.querySelector('input[name=\"lastName\"], input[name$=\".lastName\"]')?.value ?? '') !== ''")
+        page.inputForField("firstName").waitFor()
+        page.inputForField("firstName").fill(firstName)
+        val existingLastName = page.inputForField("lastName").inputValue()
+        page.inputForField("lastName").fill(existingLastName)
+        page.inputForField("lastName").press("Tab")
         additionalAuthorities.forEach { selectAuthority(it) }
         page.mouse().move(0.0, 0.0)
         Thread.sleep(1000)

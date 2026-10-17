@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.WaitForSelectorState
 import com.microsoft.playwright.options.AriaRole
@@ -24,8 +25,8 @@ class RightManyCreatePage(
         someString: String = "testright",
     ) {
 
-        page.locator("input[name='someInt']").fill(someInt)
-        page.locator("input[name='someString']").fill(someString)
+        page.inputForField("someInt").fill(someInt)
+        page.inputForField("someString").fill(someString)
 
     }
 

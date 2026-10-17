@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.AriaRole
 import org.maiaframework.webtesting.AbstractPage
@@ -21,8 +22,8 @@ class BravoEditPage(
     fun fillEditForm(
         someString: String = "testbravo_edited",
     ) {
-        page.waitForFunction("() => (document.querySelector('input[name=\"someString\"]')?.value ?? '') !== ''")
-        page.locator("input[name='someString']").fill(someString)
+        page.waitForFunction("() => (document.querySelector('input[name=\"someString\"], input[name$=\".someString\"]')?.value ?? '') !== ''")
+        page.inputForField("someString").fill(someString)
     }
 
 

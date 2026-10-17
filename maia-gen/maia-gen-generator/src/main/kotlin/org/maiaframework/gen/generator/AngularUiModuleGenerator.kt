@@ -25,6 +25,7 @@ import org.maiaframework.gen.renderers.ui.EntityCreateDialogHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogReactiveFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateDialogScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormHtmlRenderer
+import org.maiaframework.gen.renderers.ui.EntityCreateSignalFormHtmlRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreateFormScssRenderer
 import org.maiaframework.gen.renderers.ui.EntityCreatePageHtmlRenderer
@@ -501,8 +502,6 @@ class AngularUiModuleGenerator(
 
         this.applicationModelDef.entityCreatePageDefs.forEach { entityCreatePageDef ->
 
-            // TODO account for Signal forms vs Reactive forms
-
             val viewPageDef = this.applicationModelDef.findViewEntityPage(entityCreatePageDef.entityDef)
 
             val blotterPageDef = blotterPageByEntity[entityCreatePageDef.entityDef]
@@ -531,22 +530,43 @@ class AngularUiModuleGenerator(
                 multiFieldDatabaseIndexDefs = emptyList(),
                 onSubmitServiceFunctionName = "create",
                 formServiceTypescriptImport = entityCreatePageDef.entityDef.crudAngularComponentNames.serviceTypescriptImport,
-                angularFormSystem = AngularFormSystem.REACTIVE,
+                angularFormSystem = entityCreatePageDef.entityDef.angularFormSystem,
                 fetchForEditDtoDef = null,
                 entityIdInjectType = "string",
                 createdEntityDef = entityCreatePageDef.entityDef
             )
 
-            AngularReactiveFormComponentRenderer(
-                angularFormDef,
-                entityCreatePageDef.createFormAngularComponentNames,
-                providerServices,
-                chipFields,
-                timestampedFields
-            ).renderToDir(this.typescriptOutputDir)
+            when (angularFormDef.angularFormSystem) {
+
+                AngularFormSystem.REACTIVE -> {
+
+                    AngularReactiveFormComponentRenderer(
+                        angularFormDef,
+                        entityCreatePageDef.createFormAngularComponentNames,
+                        providerServices,
+                        chipFields,
+                        timestampedFields
+                    ).renderToDir(this.typescriptOutputDir)
+
+                    EntityCreateReactiveFormHtmlRenderer(entityCreatePageDef, chipFields, timestampedFields).renderToDir(this.typescriptOutputDir)
+
+                }
+
+                AngularFormSystem.SIGNAL -> {
+
+                    AngularSignalFormComponentRenderer(
+                        angularFormDef,
+                        entityCreatePageDef.createFormAngularComponentNames,
+                        providerServices
+                    ).renderToDir(this.typescriptOutputDir)
+
+                    EntityCreateSignalFormHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
+
+                }
+
+            }
 
             EntityCreateFormScssRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
-            EntityCreateReactiveFormHtmlRenderer(entityCreatePageDef, chipFields, timestampedFields).renderToDir(this.typescriptOutputDir)
             EntityCreateFormPageComponentRenderer(entityCreatePageDef, blotterPageDef).renderToDir(this.typescriptOutputDir)
             EntityCreatePageHtmlRenderer(entityCreatePageDef).renderToDir(this.typescriptOutputDir)
 
@@ -559,8 +579,6 @@ class AngularUiModuleGenerator(
 
         this.applicationModelDef.entityEditPageDefs.forEach { entityEditPageDef ->
 
-            // TODO account for Signal forms vs Reactive forms
-
             val viewPageDef = this.applicationModelDef.findViewEntityPage(entityEditPageDef.entityDef)
 
             val fetchForEditDtoDef = entityEditPageDef.entityDef.fetchForEditDtoDef
@@ -569,7 +587,7 @@ class AngularUiModuleGenerator(
             val timestampedFields = manyToManyTimestampedFieldsForEdit(entityEditPageDef.entityDef, entityEditPageDef.entityDef.manyToManyAssociations)
 
             val angularFormDef = AngularFormDef(
-                angularFormSystem = AngularFormSystem.REACTIVE,
+                angularFormSystem = entityEditPageDef.entityDef.angularFormSystem,
                 componentBaseName = entityEditPageDef.entityDef.crudAngularComponentBaseName,
                 context = null,
                 formPurpose = FormPurpose.edit,
@@ -595,17 +613,38 @@ class AngularUiModuleGenerator(
             // The typeahead components provide their own API services.
             val providerServices = emptyList<String>()
 
-            AngularReactiveFormComponentRenderer(
-                angularFormDef,
-                entityEditPageDef.editFormAngularComponentNames,
-                providerServices,
-                chipFields,
-                timestampedFields
-            ).renderToDir(this.typescriptOutputDir)
+            when (angularFormDef.angularFormSystem) {
+
+                AngularFormSystem.REACTIVE -> {
+
+                    AngularReactiveFormComponentRenderer(
+                        angularFormDef,
+                        entityEditPageDef.editFormAngularComponentNames,
+                        providerServices,
+                        chipFields,
+                        timestampedFields
+                    ).renderToDir(this.typescriptOutputDir)
+
+                    EntityEditReactiveFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames, chipFields, timestampedFields).renderToDir(this.typescriptOutputDir)
+
+                }
+
+                AngularFormSystem.SIGNAL -> {
+
+                    AngularSignalFormComponentRenderer(
+                        angularFormDef,
+                        entityEditPageDef.editFormAngularComponentNames,
+                        providerServices
+                    ).renderToDir(this.typescriptOutputDir)
+
+                    EntityEditSignalFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames).renderToDir(this.typescriptOutputDir)
+
+                }
+
+            }
 
 //            EntityEditFormComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
             EntityEditFormScssRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
-            EntityEditReactiveFormHtmlRenderer(entityEditPageDef.updateApiDef, entityEditPageDef.editFormAngularComponentNames, chipFields, timestampedFields).renderToDir(this.typescriptOutputDir)
             EntityEditFormPageComponentRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
             EntityEditPageHtmlRenderer(entityEditPageDef).renderToDir(this.typescriptOutputDir)
 

@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.AriaRole
 import com.microsoft.playwright.options.WaitForSelectorState
@@ -23,10 +24,10 @@ class UserGroupMembershipEditPage(
         page.locator("mat-spinner").waitFor(
             Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN)
         )
-        page.locator("input[name='userGroup']").waitFor()
-        page.locator("input[name='userGroup']").fill(userGroupId)
-        page.locator("input[name='user']").fill(userId)
-        page.locator("input[name='user']").press("Tab")
+        page.inputForField("userGroup").waitFor()
+        page.inputForField("userGroup").fill(userGroupId)
+        page.inputForField("user").fill(userId)
+        page.inputForField("user").press("Tab")
         page.mouse().move(0.0, 0.0)
         Thread.sleep(1000)
     }

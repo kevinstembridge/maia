@@ -1,11 +1,13 @@
 package org.maiaframework.gen.renderers.ui
 
+import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
 class EntityEditSignalFormHtmlRenderer(
-    private val apiDef: EntityUpdateApiDef
+    private val apiDef: EntityUpdateApiDef,
+    private val componentNamesOverride: AngularComponentNames? = null
 ) : AbstractCrudFormHtmlRenderer(
     apiDef.entityDef,
     InlineFormOrDialog.INLINE_FORM
@@ -15,12 +17,24 @@ class EntityEditSignalFormHtmlRenderer(
     override val dialogTitle = "ignored"
 
 
-    override val formFields: List<AngularFormFieldDef> = apiDef.htmlFormFields
+    override val withCancelButton = true
+
+
+    override val formFields: List<AngularFormFieldDef> = apiDef.editHtmlFormFields
+
+
+    override fun renderSingleFormField(formFieldDef: AngularFormFieldDef) {
+        if (formFieldDef.isEditable) {
+            MatFormFieldRenderer.renderSignalFormField(formFieldDef, this)
+        } else {
+            MatFormFieldRenderer.renderSignalReadOnlyField(formFieldDef, this)
+        }
+    }
 
 
     override fun renderedFilePath(): String {
 
-        return this.apiDef.angularFormComponentNames.htmlRenderedFilePath
+        return (componentNamesOverride ?: this.apiDef.angularFormComponentNames).htmlRenderedFilePath
 
     }
 

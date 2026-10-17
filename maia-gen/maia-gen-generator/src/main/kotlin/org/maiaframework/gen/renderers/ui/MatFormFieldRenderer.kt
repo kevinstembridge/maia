@@ -75,6 +75,40 @@ object MatFormFieldRenderer {
     }
 
 
+    fun renderSignalReadOnlyField(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indentSize: Int = 8
+    ) {
+        val indent = " ".repeat(indentSize)
+        val fieldLabel = htmlFormField.fieldLabel ?: return
+        val fieldName = htmlFormField.fieldName
+
+        if (htmlFormField.isUuid) {
+            r.append("""
+                |${indent}<div class="detail-row">
+                |${indent}    <span class="detail-label">${fieldLabel}</span>
+                |${indent}    <span class="detail-value"><maia-short-id [id]="dialogFormModel().${fieldName}" /></span>
+                |${indent}</div>
+                |""".trimMargin())
+            return
+        }
+
+        val valueExpr = if (htmlFormField.isTypeahead) {
+            "dialogFormModel().${fieldName}?.name"
+        } else {
+            "dialogFormModel().${fieldName}"
+        }
+
+        r.append("""
+            |${indent}<div class="detail-row">
+            |${indent}    <span class="detail-label">${fieldLabel}</span>
+            |${indent}    <span class="detail-value">{{ ${valueExpr} }}</span>
+            |${indent}</div>
+            |""".trimMargin())
+    }
+
+
     fun renderFormField(
         htmlFormField: AngularFormFieldDef,
         r: AbstractSourceRenderer,
