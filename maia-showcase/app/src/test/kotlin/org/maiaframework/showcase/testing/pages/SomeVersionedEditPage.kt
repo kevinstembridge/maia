@@ -22,7 +22,7 @@ class SomeVersionedEditPage(
         someString: String = "hello_edited",
         someInt: String = "1"
     ) {
-        page.waitForFunction("() => (document.querySelector('input[name=\"someString\"], input[name$=\".someString\"]')?.value ?? '') !== ''")
+        page.waitForFunction("() => (document.querySelector('input[name=\"someString\"], input[id=\"someString\"]')?.value ?? '') !== ''")
         page.inputForField("someString").fill(someString)
         page.inputForField("someInt").fill(someInt)
         Thread.sleep(1000)

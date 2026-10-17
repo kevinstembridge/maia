@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.selectForField
 import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.AriaRole
@@ -52,7 +53,7 @@ class UsersCreatePage(
 
 
     private fun selectAuthority(authority: String) {
-        page.locator("mat-select[formcontrolname='authorities']").click()
+        page.selectForField("authorities").click()
         page.locator("mat-option").filter(Locator.FilterOptions().setHasText(Pattern.compile("^${authority}$"))).click()
         page.mouse().move(0.0, 0.0)
         page.evaluate("document.querySelector('.cdk-overlay-transparent-backdrop')?.click()")

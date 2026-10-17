@@ -158,6 +158,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowFindAll = AllowFindAll.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
+        angularFormSystem(AngularFormSystem.SIGNAL)
         field("someBoolean", FieldTypes.boolean) {
             fieldDisplayName("Some Boolean")
         }

@@ -16,11 +16,27 @@ object PageExtensions {
 
     /**
      * Locates the text input for a form field, whichever Angular form system generated the page.
-     * Reactive forms render `name="field"`; signal forms render `name="<form>.field"`.
+     * Reactive forms render `name="field"`. Signal forms own the `name` attribute, so they render `id="field"`.
      */
     fun Page.inputForField(fieldName: String): Locator {
 
-        return locator("input[name='$fieldName'], input[name\$='.$fieldName']")
+        return locator("input[name='$fieldName'], input[id='$fieldName']")
+
+    }
+
+
+    /** Locates the Material checkbox for a form field, whichever Angular form system generated the page. */
+    fun Page.checkboxForField(fieldName: String): Locator {
+
+        return locator("mat-checkbox[formcontrolname='$fieldName'], mat-checkbox[id='$fieldName']")
+
+    }
+
+
+    /** Locates the Material select for a form field, whichever Angular form system generated the page. */
+    fun Page.selectForField(fieldName: String): Locator {
+
+        return locator("mat-select[formcontrolname='$fieldName'], mat-select[id='$fieldName']")
 
     }
 

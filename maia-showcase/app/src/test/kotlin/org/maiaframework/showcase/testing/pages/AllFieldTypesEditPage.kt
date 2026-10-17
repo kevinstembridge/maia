@@ -29,7 +29,7 @@ class AllFieldTypesEditPage(
         // after ngOnInit() completes the HTTP call. Without this wait, patchValue() can overwrite
         // our fills (and reset id to '' which causes a silent backend error on submit).
         page.waitForFunction(
-            "() => (document.querySelector('input[name=\"someStringModifiable\"], input[name$=\".someStringModifiable\"]')?.value ?? '') !== ''"
+            "() => (document.querySelector('input[name=\"someStringModifiable\"], input[id=\"someStringModifiable\"]')?.value ?? '') !== ''"
         )
         page.inputForField("someIntModifiable").fill(someIntModifiable)
         page.inputForField("someLocalDateModifiable").fill(someLocalDateModifiable)

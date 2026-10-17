@@ -6,12 +6,29 @@ import org.maiaframework.gen.spec.definition.HtmlInputType
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.DoubleFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
+import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
+import org.maiaframework.gen.spec.definition.lang.IntFieldType
+import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
+import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.ListFieldType
+import org.maiaframework.gen.spec.definition.lang.LongFieldType
+import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotNullConstraintDef
 import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
+
+/** True if the field is entered through a native `<input type="number">`, whose signal-form value is `number | null`. */
+val AngularFormFieldDef.isNumberInput: Boolean
+    get() = !isTypeahead && when (fieldType) {
+        is IntFieldType, is IntTypeFieldType, is IntValueClassFieldType,
+        is LongFieldType, is LongTypeFieldType, is DoubleFieldType -> true
+        else -> false
+    }
+
 
 object MatFormFieldRenderer {
 
@@ -28,15 +45,150 @@ object MatFormFieldRenderer {
 
             renderFieldWithTypeahead(htmlFormField, r, indent)
 
+        } else if (htmlFormField.fieldType is ListFieldType
+            && !htmlFormField.isEnumList
+            && htmlFormField.stringValueClassListEnumOptionsDef == null
+        ) {
+
+            // There is no input for a free list of values yet. The model keeps the list's default value.
+            return
+
+        } else if (htmlFormField.isEnumList) {
+
+            renderSignalFormMultiSelect(htmlFormField, htmlFormField.enumListDef!!.selectOptionsUqcn, r, indent)
+
+        } else if (htmlFormField.stringValueClassListEnumOptionsDef != null) {
+
+            renderSignalFormMultiSelect(htmlFormField, htmlFormField.stringValueClassListEnumOptionsDef!!.selectOptionsUqcn, r, indent)
+
         } else if (htmlFormField.isEnum) {
 
             renderSelectFieldForEnum(htmlFormField, r, indent)
+
+        } else if (htmlFormField.fieldType is InstantFieldType) {
+
+            renderSignalFormDatepickerField(htmlFormField, r, indent)
+
+        } else if (htmlFormField.fieldType is BooleanFieldType
+            || htmlFormField.fieldType is BooleanTypeFieldType
+            || htmlFormField.fieldType is BooleanValueClassFieldType
+        ) {
+
+            renderSignalFormCheckboxField(htmlFormField, r, indent)
 
         } else {
 
             renderHtmlInputField(htmlFormField, r, indent)
 
         }
+
+    }
+
+
+    /**
+     * Signal forms own the `name` attribute of a control, so each control is given an `id` for tests to locate it by.
+     */
+    private fun renderSignalFormFieldErrors(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+
+        val classFieldDef = htmlFormField.classFieldDef
+        val classFieldName = classFieldDef.classFieldName
+
+        if (classFieldDef.hasAnyValidationConstraints() || classFieldDef.isUnique) {
+
+            r.blankLine()
+            r.appendLine("$indent@if (dialogForm.$classFieldName().touched() && dialogForm.$classFieldName().invalid()) {")
+            r.appendLine("$indent    @for (error of dialogForm.$classFieldName().errors(); track error) {")
+            r.appendLine("$indent        <mat-error>{{ error.message }}</mat-error>")
+            r.appendLine("$indent    }")
+            r.appendLine("$indent}")
+
+        }
+
+    }
+
+
+    private fun renderSignalFormDatepickerField(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+
+        val classFieldName = htmlFormField.classFieldDef.classFieldName
+        val fieldLabel = htmlFormField.fieldLabel
+
+        r.appendLine("$indent<mat-form-field appearance=\"outline\">")
+        r.appendLine("$indent    <mat-label>${fieldLabel} Date</mat-label>")
+        r.appendLine("$indent    <input")
+        r.appendLine("$indent        matInput")
+        r.appendLine("$indent        [matDatepicker]=\"${classFieldName}Picker\"")
+        r.appendLine("$indent        [formField]=\"dialogForm.$classFieldName\"")
+        r.appendLine("$indent        id=\"$classFieldName\"")
+        r.appendLine("$indent    />")
+        r.appendLine("$indent    <mat-datepicker-toggle matIconSuffix [for]=\"${classFieldName}Picker\"></mat-datepicker-toggle>")
+        r.appendLine("$indent    <mat-datepicker #${classFieldName}Picker></mat-datepicker>")
+
+        renderSignalFormFieldErrors(htmlFormField, r, "$indent    ")
+
+        r.appendLine("$indent</mat-form-field>")
+        r.appendLine("$indent<mat-form-field appearance=\"outline\">")
+        r.appendLine("$indent    <mat-label>${fieldLabel} Time</mat-label>")
+        r.appendLine("$indent    <input")
+        r.appendLine("$indent        matInput")
+        r.appendLine("$indent        [matTimepicker]=\"${classFieldName}Timepicker\"")
+        r.appendLine("$indent        [formField]=\"dialogForm.$classFieldName\"")
+        r.appendLine("$indent        id=\"${classFieldName}Time\"")
+        r.appendLine("$indent    />")
+        r.appendLine("$indent    <mat-timepicker #${classFieldName}Timepicker></mat-timepicker>")
+        r.appendLine("$indent    <mat-timepicker-toggle matSuffix [for]=\"${classFieldName}Timepicker\"></mat-timepicker-toggle>")
+        r.appendLine("$indent</mat-form-field>")
+
+    }
+
+
+    private fun renderSignalFormCheckboxField(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+
+        val classFieldDef = htmlFormField.classFieldDef
+        val classFieldName = classFieldDef.classFieldName
+
+        r.appendLine("$indent<mat-checkbox")
+        r.appendLine("$indent    [formField]=\"dialogForm.$classFieldName\"")
+        r.appendLine("$indent    id=\"$classFieldName\"")
+        r.appendLine("$indent>")
+        r.appendLine("$indent    ${htmlFormField.fieldLabel}")
+        r.appendLine("$indent</mat-checkbox>")
+
+    }
+
+
+    private fun renderSignalFormMultiSelect(
+        htmlFormField: AngularFormFieldDef,
+        selectOptionsUqcn: Any,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+
+        val classFieldName = htmlFormField.classFieldDef.classFieldName
+
+        r.append("""
+            |$indent<mat-form-field appearance="outline">
+            |$indent    <mat-label>${htmlFormField.fieldLabel}</mat-label>
+            |$indent    <mat-select [formField]="dialogForm.$classFieldName" id="$classFieldName" multiple>
+            |$indent        @for ($classFieldName of $selectOptionsUqcn; track $classFieldName.name) {
+            |$indent            <div [matTooltip]="$classFieldName.description" matTooltipShowDelay="1000">
+            |$indent                <mat-option [value]="$classFieldName.name">{{$classFieldName.displayName}}</mat-option>
+            |$indent            </div>
+            |$indent        }
+            |$indent    </mat-select>
+            |$indent</mat-form-field>
+            |""".trimMargin())
 
     }
 
@@ -84,20 +236,22 @@ object MatFormFieldRenderer {
         val fieldLabel = htmlFormField.fieldLabel ?: return
         val fieldName = htmlFormField.fieldName
 
-        if (htmlFormField.isUuid) {
+        val isNamedReference = htmlFormField.isTypeahead || htmlFormField.fieldType is ForeignKeyFieldType
+
+        if (htmlFormField.isUuid && !isNamedReference) {
             r.append("""
                 |${indent}<div class="detail-row">
                 |${indent}    <span class="detail-label">${fieldLabel}</span>
-                |${indent}    <span class="detail-value"><maia-short-id [id]="dialogFormModel().${fieldName}" /></span>
+                |${indent}    <span class="detail-value"><maia-short-id [id]="fetchedDto()?.${fieldName}" /></span>
                 |${indent}</div>
                 |""".trimMargin())
             return
         }
 
-        val valueExpr = if (htmlFormField.isTypeahead) {
-            "dialogFormModel().${fieldName}?.name"
+        val valueExpr = if (isNamedReference) {
+            "fetchedDto()?.${fieldName}?.name"
         } else {
-            "dialogFormModel().${fieldName}"
+            "fetchedDto()?.${fieldName}"
         }
 
         r.append("""
@@ -171,6 +325,7 @@ object MatFormFieldRenderer {
 
         r.appendLine("$indent    <input")
         r.appendLine("$indent        [formField]=\"dialogForm.$classFieldName\"")
+        r.appendLine("$indent        id=\"$classFieldName\"")
 
         htmlFormField.placeholder?.let {
             r.appendLine("$indent        placeholder=\"${it}\"")
@@ -183,7 +338,8 @@ object MatFormFieldRenderer {
         if (htmlFormField.htmlInputType == HtmlInputType.password) {
             r.appendLine("$indent        [type]=\"${classFieldName}PasswordVisible() ? 'text' : 'password'\"")
         } else {
-            r.appendLine("$indent        type=\"${htmlFormField.htmlInputType}\"")
+            val inputType = if (htmlFormField.isNumberInput) "number" else "${htmlFormField.htmlInputType}"
+            r.appendLine("$indent        type=\"$inputType\"")
         }
 
         htmlFormField.autocomplete?.let {
@@ -399,7 +555,7 @@ object MatFormFieldRenderer {
         r.append("""
             |$indent<mat-form-field appearance="outline">
             |$indent    <mat-label>$label</mat-label>
-            |$indent    <mat-select formControlName="$classFieldName">
+            |$indent    <mat-select [formField]="dialogForm.$classFieldName" id="$classFieldName">
             |$indent        @for ($classFieldName of ${enumDef.selectOptionsUqcn}; track $classFieldName.name) {
             |$indent            <div [matTooltip]="$classFieldName.description" matTooltipShowDelay="1000">
             |$indent                <mat-option [value]="$classFieldName.name">{{$classFieldName.displayName}}</mat-option>
@@ -408,18 +564,7 @@ object MatFormFieldRenderer {
             |$indent    </mat-select>
             |""".trimMargin())
 
-        if (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
-            || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java)) {
-            r.appendLine("$indent    @if (formGroup.controls['$classFieldName'].hasError('required')) {")
-            r.appendLine("$indent        <mat-error>$label is required.</mat-error>")
-            r.appendLine("$indent    }")
-        }
-
-        if (classFieldDef.isUnique) {
-            r.appendLine("$indent    @if (formGroup.controls['$classFieldName'].hasError('notUnique')) {")
-            r.appendLine("$indent        <mat-error>{{ formGroup.controls['$classFieldName'].errors.message }}</mat-error>")
-            r.appendLine("$indent    }")
-        }
+        renderSignalFormFieldErrors(htmlFormField, r, "$indent    ")
 
         r.appendLine("$indent</mat-form-field>")
 

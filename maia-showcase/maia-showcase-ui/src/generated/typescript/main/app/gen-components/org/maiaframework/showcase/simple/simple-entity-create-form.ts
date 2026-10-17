@@ -44,7 +44,7 @@ export class SimpleEntityCreateForm {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    dialogFormModel = signal<SimpleCreateRequestDto>({
+    dialogFormModel = signal<Required<SimpleCreateRequestDto>>({
         someString: '',
     });
 
@@ -53,7 +53,7 @@ export class SimpleEntityCreateForm {
         required(schemaPath.someString, { message: 'Some String is required.' });
         minLength(schemaPath.someString, 3, { message: 'Some String must be at least 3 characters.' });
         maxLength(schemaPath.someString, 100, { message: 'Some String must not be more than 100 characters.' });
-    }, { name: 'app-simple-entity-create-form' });
+    });
 
 
     private readonly router = inject(Router);
@@ -67,7 +67,7 @@ export class SimpleEntityCreateForm {
 
         await submit(this.dialogForm, async (form) => {
 
-            const requestDto = form().value();
+            const requestDto = form().value() as SimpleCreateRequestDto;
 
             try {
                 const dto = await firstValueFrom(this.formService.create(requestDto));

@@ -21,7 +21,7 @@ class CompositePkEditPage(
     fun fillEditForm(
         someModifiableString: String = "edited"
     ) {
-        page.waitForFunction("() => (document.querySelector('input[name=\"someModifiableString\"], input[name$=\".someModifiableString\"]')?.value ?? '') !== ''")
+        page.waitForFunction("() => (document.querySelector('input[name=\"someModifiableString\"], input[id=\"someModifiableString\"]')?.value ?? '') !== ''")
         page.inputForField("someModifiableString").fill(someModifiableString)
         Thread.sleep(1000)
     }

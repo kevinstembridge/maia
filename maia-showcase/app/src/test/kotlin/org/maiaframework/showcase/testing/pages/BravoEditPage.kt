@@ -22,7 +22,7 @@ class BravoEditPage(
     fun fillEditForm(
         someString: String = "testbravo_edited",
     ) {
-        page.waitForFunction("() => (document.querySelector('input[name=\"someString\"], input[name$=\".someString\"]')?.value ?? '') !== ''")
+        page.waitForFunction("() => (document.querySelector('input[name=\"someString\"], input[id=\"someString\"]')?.value ?? '') !== ''")
         page.inputForField("someString").fill(someString)
     }
 

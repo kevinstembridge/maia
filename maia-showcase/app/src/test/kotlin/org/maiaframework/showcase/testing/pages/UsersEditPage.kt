@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.selectForField
 import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.AriaRole
@@ -27,7 +28,7 @@ class UsersEditPage(
     ) {
         // Wait for fetchForEdit() to populate the form — lastName is required so it will be non-empty
         // once patchValue() has run. The form template has no spinner, so we poll the DOM directly.
-        page.waitForFunction("() => (document.querySelector('input[name=\"lastName\"], input[name$=\".lastName\"]')?.value ?? '') !== ''")
+        page.waitForFunction("() => (document.querySelector('input[name=\"lastName\"], input[id=\"lastName\"]')?.value ?? '') !== ''")
         page.inputForField("firstName").waitFor()
         page.inputForField("firstName").fill(firstName)
         val existingLastName = page.inputForField("lastName").inputValue()
@@ -46,7 +47,7 @@ class UsersEditPage(
 
 
     private fun selectAuthority(authority: String) {
-        page.locator("mat-select[formcontrolname='authorities']").click()
+        page.selectForField("authorities").click()
         page.locator("mat-option").filter(Locator.FilterOptions().setHasText(Pattern.compile("^${authority}$"))).click()
         page.mouse().move(0.0, 0.0)
         page.evaluate("document.querySelector('.cdk-overlay-transparent-backdrop')?.click()")

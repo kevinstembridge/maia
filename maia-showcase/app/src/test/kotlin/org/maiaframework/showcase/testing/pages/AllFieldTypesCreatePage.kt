@@ -1,6 +1,8 @@
 package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
+import org.maiaframework.webtesting.PageExtensions.selectForField
+import org.maiaframework.webtesting.PageExtensions.checkboxForField
 import org.maiaframework.webtesting.PageExtensions.inputForField
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.AriaRole
@@ -39,9 +41,9 @@ class AllFieldTypesCreatePage(
         someEnum: String = "OK",
     ) {
 
-        page.locator("mat-checkbox[formcontrolname='someBoolean']").click()
-        page.locator("mat-checkbox[formcontrolname='someBooleanType']").click()
-        page.locator("mat-checkbox[formcontrolname='someBooleanTypeProvided']").click()
+        page.checkboxForField("someBoolean").click()
+        page.checkboxForField("someBooleanType").click()
+        page.checkboxForField("someBooleanTypeProvided").click()
 
         page.inputForField("someInt").fill(someInt)
         page.inputForField("someIntModifiable").fill(someIntModifiable)
@@ -59,7 +61,7 @@ class AllFieldTypesCreatePage(
         page.inputForField("someStringModifiable").fill(someStringModifiable)
         page.inputForField("someStringType").fill(someStringType)
         page.inputForField("someProvidedStringType").fill(someProvidedStringType)
-        page.locator("mat-select[formControlName='someEnum']").click()
+        page.selectForField("someEnum").click()
         page.getByRole(AriaRole.OPTION, Page.GetByRoleOptions().setName(someEnum)).click()
         page.mouse().move(0.0, 0.0)
         page.evaluate("document.querySelector('.cdk-overlay-transparent-backdrop')?.click()")

@@ -1,52 +1,55 @@
-<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+<form novalidate (submit)="onSubmit($event)">
     <div>
         @if (problemDetail()) {
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
         }
         <div class="detail-row">
             <span class="detail-label">Some Boolean</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someBoolean }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someBoolean }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Boolean Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someBooleanNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someBooleanNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Boolean Type</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someBooleanType }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someBooleanType }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Boolean Type Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someBooleanTypeNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someBooleanTypeNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Boolean Type Provided</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someBooleanTypeProvided }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someBooleanTypeProvided }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Boolean Type Provided Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someBooleanTypeProvidedNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someBooleanTypeProvidedNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Instant</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someInstant }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someInstant }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Instant Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someInstantNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someInstantNullable }}</span>
         </div>
         <mat-form-field appearance="outline">
             <mat-label>Some Instant Modifiable Date</mat-label>
             <input
                 matInput
                 [matDatepicker]="someInstantModifiablePicker"
-                formControlName="someInstantModifiable"
-                name="someInstantModifiable"
+                [formField]="dialogForm.someInstantModifiable"
+                id="someInstantModifiable"
             />
             <mat-datepicker-toggle matIconSuffix [for]="someInstantModifiablePicker"></mat-datepicker-toggle>
             <mat-datepicker #someInstantModifiablePicker></mat-datepicker>
-            @if (formGroup.controls['someInstantModifiable'].hasError('required')) {
-                <mat-error>Some Instant Modifiable is required.</mat-error>
+
+            @if (dialogForm.someInstantModifiable().touched() && dialogForm.someInstantModifiable().invalid()) {
+                @for (error of dialogForm.someInstantModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -54,8 +57,8 @@
             <input
                 matInput
                 [matTimepicker]="someInstantModifiableTimepicker"
-                formControlName="someInstantModifiable"
-                name="someInstantModifiableTime"
+                [formField]="dialogForm.someInstantModifiable"
+                id="someInstantModifiableTime"
             />
             <mat-timepicker #someInstantModifiableTimepicker></mat-timepicker>
             <mat-timepicker-toggle matSuffix [for]="someInstantModifiableTimepicker"></mat-timepicker-toggle>
@@ -65,8 +68,8 @@
             <input
                 matInput
                 [matDatepicker]="someInstantModifiableNullablePicker"
-                formControlName="someInstantModifiableNullable"
-                name="someInstantModifiableNullable"
+                [formField]="dialogForm.someInstantModifiableNullable"
+                id="someInstantModifiableNullable"
             />
             <mat-datepicker-toggle matIconSuffix [for]="someInstantModifiableNullablePicker"></mat-datepicker-toggle>
             <mat-datepicker #someInstantModifiableNullablePicker></mat-datepicker>
@@ -76,174 +79,173 @@
             <input
                 matInput
                 [matTimepicker]="someInstantModifiableNullableTimepicker"
-                formControlName="someInstantModifiableNullable"
-                name="someInstantModifiableNullableTime"
+                [formField]="dialogForm.someInstantModifiableNullable"
+                id="someInstantModifiableNullableTime"
             />
             <mat-timepicker #someInstantModifiableNullableTimepicker></mat-timepicker>
             <mat-timepicker-toggle matSuffix [for]="someInstantModifiableNullableTimepicker"></mat-timepicker-toggle>
         </mat-form-field>
         <div class="detail-row">
             <span class="detail-label">Some Int</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someInt }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someInt }}</span>
         </div>
         <mat-form-field appearance="outline">
             <mat-label>Some Int Modifiable</mat-label>
             <input
-                formControlName="someIntModifiable"
-                name="someIntModifiable"
-                type="text"
+                [formField]="dialogForm.someIntModifiable"
+                id="someIntModifiable"
+                type="number"
                 matInput
             />
-            @if (formGroup.controls['someIntModifiable'].hasError('required')) {
-                <mat-error>Some Int Modifiable is required.</mat-error>
+
+            @if (dialogForm.someIntModifiable().touched() && dialogForm.someIntModifiable().invalid()) {
+                @for (error of dialogForm.someIntModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some Int Nullable</mat-label>
             <input
-                formControlName="someIntNullable"
-                name="someIntNullable"
-                type="text"
+                [formField]="dialogForm.someIntNullable"
+                id="someIntNullable"
+                type="number"
                 matInput
             />
+
         </mat-form-field>
         <div class="detail-row">
             <span class="detail-label">Some Int Type</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someIntType }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someIntType }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Int Type Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someIntTypeNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someIntTypeNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Int Type Provided</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someIntTypeProvided }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someIntTypeProvided }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Int Type Provided Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someIntTypeProvidedNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someIntTypeProvidedNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Long Type</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someLongType }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someLongType }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Long Type Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someLongTypeNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someLongTypeNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Long Type Provided</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someLongTypeProvided }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someLongTypeProvided }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Long Type Provided Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someLongTypeProvidedNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someLongTypeProvidedNullable }}</span>
         </div>
         <mat-form-field appearance="outline">
             <mat-label>Some LocalDate Modifiable</mat-label>
             <input
-                formControlName="someLocalDateModifiable"
-                name="someLocalDateModifiable"
+                [formField]="dialogForm.someLocalDateModifiable"
+                id="someLocalDateModifiable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someLocalDateModifiable'].hasError('required')) {
-                <mat-error>Some LocalDate Modifiable is required.</mat-error>
+
+            @if (dialogForm.someLocalDateModifiable().touched() && dialogForm.someLocalDateModifiable().invalid()) {
+                @for (error of dialogForm.someLocalDateModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some Period Modifiable</mat-label>
             <input
-                formControlName="somePeriodModifiable"
-                name="somePeriodModifiable"
+                [formField]="dialogForm.somePeriodModifiable"
+                id="somePeriodModifiable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['somePeriodModifiable'].hasError('required')) {
-                <mat-error>Some Period Modifiable is required.</mat-error>
+
+            @if (dialogForm.somePeriodModifiable().touched() && dialogForm.somePeriodModifiable().invalid()) {
+                @for (error of dialogForm.somePeriodModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['somePeriodModifiable'].hasError('maxlength')) {
-                <mat-error>Some Period Modifiable must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
         <div class="detail-row">
             <span class="detail-label">Some Period Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().somePeriodNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.somePeriodNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Enum</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someEnum }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someEnum }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Enum Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someEnumNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someEnumNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some String</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someString }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someString }}</span>
         </div>
         <mat-form-field appearance="outline">
             <mat-label>Some String Modifiable</mat-label>
             <input
-                formControlName="someStringModifiable"
-                name="someStringModifiable"
+                [formField]="dialogForm.someStringModifiable"
+                id="someStringModifiable"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someStringModifiable'].hasError('required')) {
-                <mat-error>Some String Modifiable is required.</mat-error>
+
+            @if (dialogForm.someStringModifiable().touched() && dialogForm.someStringModifiable().invalid()) {
+                @for (error of dialogForm.someStringModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someStringModifiable'].hasError('maxlength')) {
-                <mat-error>Some String Modifiable must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
         <div class="detail-row">
             <span class="detail-label">Some String Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someStringNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someStringNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some String Type</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someStringType }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someStringType }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some String Type Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someStringTypeNullable }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someStringTypeNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Provided String Type</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someProvidedStringType }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someProvidedStringType }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Some Provided String Type Nullable</span>
-            <span class="detail-value">{{ formGroup.getRawValue().someProvidedStringTypeNullable }}</span>
-        </div>
-        <mat-form-field appearance="outline">
-            <mat-label>Some List Of Strings</mat-label>
-            <input
-                formControlName="someListOfStrings"
-                name="someListOfStrings"
-                type="text"
-                matInput
-            />
-            @if (formGroup.controls['someListOfStrings'].hasError('required')) {
-                <mat-error>Some List Of Strings is required.</mat-error>
-            }
-        </mat-form-field>
-        <div class="detail-row">
-            <span class="detail-label">Created By</span>
-            <span class="detail-value">{{ formGroup.getRawValue().createdByUsername }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Last Modified By</span>
-            <span class="detail-value">{{ formGroup.getRawValue().lastModifiedByUsername }}</span>
+            <span class="detail-value">{{ fetchedDto()?.someProvidedStringTypeNullable }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Created By</span>
-            <span class="detail-value"><maia-short-id [id]="formGroup.getRawValue().createdBy" /></span>
+            <span class="detail-value">{{ fetchedDto()?.createdByUsername }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Last Modified By</span>
-            <span class="detail-value"><maia-short-id [id]="formGroup.getRawValue().lastModifiedBy" /></span>
+            <span class="detail-value">{{ fetchedDto()?.lastModifiedByUsername }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Created By</span>
+            <span class="detail-value">{{ fetchedDto()?.createdBy?.name }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Last Modified By</span>
+            <span class="detail-value">{{ fetchedDto()?.lastModifiedBy?.name }}</span>
         </div>
     </div>
     <div class="form-actions">

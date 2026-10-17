@@ -41,7 +41,7 @@ export class SimpleEntityEditForm implements OnInit {
     problemDetail = signal<ProblemDetail | null>(null);
 
 
-    dialogFormModel = signal<SimpleUpdateRequestDto>({
+    dialogFormModel = signal<Required<SimpleUpdateRequestDto>>({
         id: '',
         someString: '',
     });
@@ -52,10 +52,14 @@ export class SimpleEntityEditForm implements OnInit {
         minLength(schemaPath.someString, 3, { message: 'Some String must be at least 3 characters.' });
         maxLength(schemaPath.someString, 100, { message: 'Some String must not be more than 100 characters.' });
         required(schemaPath.id, { message: 'ID is required.' });
-    }, { name: 'app-simple-entity-edit-form' });
+    });
 
 
     loading = signal(true);
+
+
+    /** The fetched DTO, from which the read-only fields are displayed. */
+    fetchedDto = signal<SimpleFetchForEditDto | null>(null);
 
 
     private readonly router = inject(Router);
@@ -65,6 +69,7 @@ export class SimpleEntityEditForm implements OnInit {
 
         this.formService.fetchForEdit(this.entityId()).subscribe({
             next: (dto: SimpleFetchForEditDto) => {
+                this.fetchedDto.set(dto);
                 this.dialogFormModel.update(model => ({
                     ...model,
                     id: dto.id,
@@ -89,7 +94,7 @@ export class SimpleEntityEditForm implements OnInit {
 
         await submit(this.dialogForm, async (form) => {
 
-            const requestDto = form().value();
+            const requestDto = form().value() as SimpleUpdateRequestDto;
 
             try {
                 await firstValueFrom(this.formService.edit(requestDto));

@@ -24,7 +24,17 @@ class AngularSignalFormComponentRenderer(
 ) {
 
 
-    private val linkedFields = this.angularFormDef.formModelFields.filter { it.linksToAField }
+    private val requestDtoFieldNames = this.angularFormDef.requestDtoDef.dtoFieldDefs.map { it.classFieldDef.classFieldName }.toSet()
+
+
+    /** The form model holds only the fields of the request DTO. Read-only fields are displayed from the fetched DTO. */
+    private val modelFields = this.angularFormDef.formModelFields.filter { it.classFieldDef.classFieldName in requestDtoFieldNames }
+
+
+    private val numberFields = modelFields.filter { it.isNumberInput }
+
+
+    private val linkedFields = modelFields.filter { it.linksToAField }
 
 
     private val withFetchForEdit = this.angularFormDef.fetchForEditDtoDef != null
@@ -94,7 +104,7 @@ class AngularSignalFormComponentRenderer(
             addImport("@angular/material/icon", "MatIconModule", isModule = true)
         }
 
-        if (angularFormDef.readOnlyFormFields.any { it.isUuid }) {
+        if (angularFormDef.readOnlyFormFields.any { it.isUuid && it.fieldType !is ForeignKeyFieldType }) {
             addImport("@maia/maia-ui", "ShortId", isModule = true)
         }
 
@@ -102,6 +112,29 @@ class AngularSignalFormComponentRenderer(
 
         this.angularFormDef.allTypeaheadDefs.forEach { typeaheadDef ->
             addImport(typeaheadDef.typescriptComponentImport)
+        }
+
+        if (this.angularFormDef.hasAnyBooleanFields) {
+            addImport("@angular/material/checkbox", "MatCheckbox", isModule = true)
+        }
+
+        if (this.angularFormDef.hasAnyInstantFields) {
+            addImport("@angular/material/datepicker", "MatDatepicker", isModule = true)
+            addImport("@angular/material/datepicker", "MatDatepickerInput", isModule = true)
+            addImport("@angular/material/datepicker", "MatDatepickerToggle", isModule = true)
+            addImport("@angular/material/timepicker", "MatTimepicker", isModule = true)
+            addImport("@angular/material/timepicker", "MatTimepickerInput", isModule = true)
+            addImport("@angular/material/timepicker", "MatTimepickerToggle", isModule = true)
+        }
+
+        if (this.angularFormDef.htmlFormFields.any { it.stringValueClassListEnumOptionsDef != null }) {
+            addImport("@angular/material/select", "MatSelect", isModule = true)
+            addImport("@angular/material/select", "MatOption", isModule = true)
+            addImport("@angular/material/tooltip", "MatTooltip", isModule = true)
+        }
+
+        this.angularFormDef.htmlFormFields.mapNotNull { it.stringValueClassListEnumOptionsDef }.forEach {
+            addImport(it.selectOptionsTypescriptImport)
         }
 
         if (this.angularFormDef.hasAnyMatSelectFields) {
@@ -145,6 +178,7 @@ class AngularSignalFormComponentRenderer(
         `render class field formService`()
         `render class field problemDetail`()
         `render class fields for enum MatSelect fields`()
+        `render class fields for string value class list options`()
         `render class fields for password visibility toggle`()
         `render class field dialogFormModel`()
         `render class field dialogForm`()
@@ -277,6 +311,24 @@ class AngularSignalFormComponentRenderer(
     }
 
 
+    private fun `render class fields for string value class list options`() {
+
+        this.angularFormDef.htmlFormFields
+            .mapNotNull { it.stringValueClassListEnumOptionsDef }
+            .distinctBy { it.selectOptionsUqcn }
+            .forEach { enumOptionsDef ->
+
+            append("""
+                |
+                |
+                |    protected readonly ${enumOptionsDef.selectOptionsUqcn} = ${enumOptionsDef.selectOptionsUqcn};
+                |""".trimMargin())
+
+        }
+
+    }
+
+
     private fun `render class fields for password visibility toggle`() {
 
         this.angularFormDef.htmlFormFields
@@ -294,16 +346,28 @@ class AngularSignalFormComponentRenderer(
     }
 
 
+    private val modelTypeName: String
+        get() {
+            val dtoType = "Required<${this.angularFormDef.requestDtoDef.uqcn}>"
+            if (numberFields.isEmpty()) {
+                return dtoType
+            }
+            val omitted = numberFields.joinToString(" | ") { "'${it.fieldName}'" }
+            val overrides = numberFields.joinToString("; ") { "${it.fieldName}: number | null" }
+            return "Omit<$dtoType, $omitted> & { $overrides }"
+        }
+
+
     private fun `render class field dialogFormModel`() {
 
         append("""
             |
             |
-            |    dialogFormModel = signal<${this.angularFormDef.requestDtoDef.uqcn}>({
+            |    dialogFormModel = signal<$modelTypeName>({
             |""".trimMargin()
         )
 
-        this.angularFormDef.formModelFields.sortedBy { it.fieldName }.forEach { fieldDef ->
+        modelFields.sortedBy { it.fieldName }.forEach { fieldDef ->
 
             append(
                 """
@@ -326,11 +390,11 @@ class AngularSignalFormComponentRenderer(
         blankLine()
         blankLine()
 
-        if (this.angularFormDef.hasAnyValidationConstraints || linkedFields.isNotEmpty()) {
+        if (modelFields.any { it.hasAnyValidationConstraint() } || linkedFields.isNotEmpty()) {
 
             appendLine("    dialogForm = form(this.dialogFormModel, (schemaPath) => {")
 
-            this.angularFormDef.formModelFields.forEach { `render dialogForm field`(it) }
+            modelFields.forEach { `render dialogForm field`(it) }
 
             linkedFields.forEach { fieldDef ->
 
@@ -342,11 +406,11 @@ class AngularSignalFormComponentRenderer(
 
             }
 
-            appendLine("    }, { name: '${this.angularComponentNames.componentSelector}' });")
+            appendLine("    });")
 
         } else {
 
-            appendLine("    dialogForm = form(this.dialogFormModel, { name: '${this.angularComponentNames.componentSelector}' });")
+            appendLine("    dialogForm = form(this.dialogFormModel);")
 
         }
 
@@ -434,12 +498,16 @@ class AngularSignalFormComponentRenderer(
 
     private fun `render class field loading`() {
 
-        if (withFetchForEdit) {
+        this.angularFormDef.fetchForEditDtoDef?.let { fetchForEditDtoDef ->
 
             append("""
                 |
                 |
                 |    loading = signal(true);
+                |
+                |
+                |    /** The fetched DTO, from which the read-only fields are displayed. */
+                |    fetchedDto = signal<${fetchForEditDtoDef.uqcn} | null>(null);
                 |""".trimMargin()
             )
 
@@ -524,19 +592,24 @@ class AngularSignalFormComponentRenderer(
             |
             |        this.formService.fetchForEdit(this.entityId()).subscribe({
             |            next: (dto: ${fetchForEditDtoDef.uqcn}) => {
+            |                this.fetchedDto.set(dto);
             |                this.dialogFormModel.update(model => ({
             |                    ...model,
             |""".trimMargin()
         )
 
-        this.angularFormDef.formModelFields.sortedBy { it.fieldName }.forEach { angularFormFieldDef ->
+        modelFields.sortedBy { it.fieldName }.forEach { angularFormFieldDef ->
 
             val classFieldDef = angularFormFieldDef.classFieldDef
             val formFieldName = angularFormFieldDef.fieldName
 
             // Non-typeahead FK fields are skipped because the DTO uses a PkAndName object shape.
             if (classFieldDef.typeaheadDef != null || classFieldDef.fieldType !is ForeignKeyFieldType) {
-                appendLine("                    ${formFieldName}: dto.${formFieldName},")
+                if (classFieldDef.nullable) {
+                    appendLine("                    ${formFieldName}: dto.${formFieldName} ?? model.${formFieldName},")
+                } else {
+                    appendLine("                    ${formFieldName}: dto.${formFieldName},")
+                }
             }
 
         }
@@ -571,7 +644,7 @@ class AngularSignalFormComponentRenderer(
             |
             |        await submit(this.dialogForm, async (form) => {
             |
-            |            const requestDto = form().value();
+            |            const requestDto = form().value() as ${this.angularFormDef.requestDtoDef.uqcn};
             |""".trimMargin())
 
         if (this.angularFormDef.delegateFormSubmission.value) {
