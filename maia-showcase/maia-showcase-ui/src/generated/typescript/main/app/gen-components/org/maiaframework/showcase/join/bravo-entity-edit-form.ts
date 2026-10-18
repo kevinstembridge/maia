@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AngularSignalFormComponentRenderer
 
 import {Component, OnInit, inject, input, output, signal} from '@angular/core';
-import {FormField, form, maxLength, required, submit, validate} from '@angular/forms/signals';
+import {FormField, SchemaPath, form, maxLength, required, submit, validate} from '@angular/forms/signals';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -56,7 +56,7 @@ export class BravoEntityEditForm implements OnInit {
         required(schemaPath.someString, { message: 'Some String is required.' });
         maxLength(schemaPath.someString, 100, { message: 'Some String must not be more than 100 characters.' });
         required(schemaPath.id, { message: 'ID is required.' });
-        validate(schemaPath.alpha, ({value}) => {
+        validate(schemaPath.alpha as unknown as SchemaPath<any>, ({value}) => {
             return value() && typeof value() === 'object'
                 ? null
                 : { kind: 'required', message: 'Alpha is required.' };

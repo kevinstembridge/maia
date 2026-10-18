@@ -43,6 +43,9 @@ export class SimpleEntityCreateForm {
     private readonly formService = inject(SimpleCrudService);
 
 
+    private readonly simpleCrudService = inject(SimpleCrudService);
+
+
     problemDetail = signal<ProblemDetail | null>(null);
 
 
@@ -56,7 +59,7 @@ export class SimpleEntityCreateForm {
             params: ({value}) => !!value() ? { someString: value() } as SimpleSomeStringRequestDto : undefined,
             factory: (params) => rxResource({
                 params,
-                stream: ({params}) => this.formService.existsBySomeString(params),
+                stream: ({params}) => this.simpleCrudService.existsBySomeString(params),
             }),
             when: ({state}) => state.dirty(),
             onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,

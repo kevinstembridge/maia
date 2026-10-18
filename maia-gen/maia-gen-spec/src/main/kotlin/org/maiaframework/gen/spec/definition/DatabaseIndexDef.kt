@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.lang.PackageName
+import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.lang.text.StringFunctions
 
 class DatabaseIndexDef(
@@ -8,7 +9,8 @@ class DatabaseIndexDef(
     val packageName: PackageName,
     baseName: DatabaseIndexBaseName,
     val moduleName: ModuleName?,
-    val apiServiceName: String
+    val apiServiceName: String,
+    val apiServiceTypescriptImport: TypescriptImport
 ) {
 
 
@@ -33,7 +35,14 @@ class DatabaseIndexDef(
     val existsByUrl = "/api/$modulePath${baseName.toSnakeCase()}/$existsByFunctionNameSnakeCase"
 
 
-    val asyncValidator = AsyncValidatorDef(this.packageName, "${baseName.firstToUpper()}$fieldNamesAnded", existsByFunctionName)
+    val asyncValidator = AsyncValidatorDef(
+        this.packageName,
+        "${baseName.firstToUpper()}$fieldNamesAnded",
+        existsByFunctionName,
+        apiServiceName,
+        apiServiceTypescriptImport,
+        indexDef.entityFieldDefs.map { it.classFieldName.value }
+    )
 
 
     val validatorName = asyncValidator.asyncValidatorName

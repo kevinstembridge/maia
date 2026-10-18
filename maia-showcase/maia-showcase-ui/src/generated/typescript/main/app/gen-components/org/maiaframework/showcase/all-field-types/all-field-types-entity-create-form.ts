@@ -68,6 +68,9 @@ export class AllFieldTypesEntityCreateForm {
     private readonly formService = inject(AllFieldTypesCrudService);
 
 
+    private readonly allFieldTypesCrudService = inject(AllFieldTypesCrudService);
+
+
     problemDetail = signal<ProblemDetail | null>(null);
 
 
@@ -121,7 +124,7 @@ export class AllFieldTypesEntityCreateForm {
             params: ({value}) => value() !== null ? { someIntType: value() } as AllFieldTypesSomeIntTypeRequestDto : undefined,
             factory: (params) => rxResource({
                 params,
-                stream: ({params}) => this.formService.existsBySomeIntType(params),
+                stream: ({params}) => this.allFieldTypesCrudService.existsBySomeIntType(params),
             }),
             when: ({state}) => state.dirty(),
             onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
@@ -133,7 +136,7 @@ export class AllFieldTypesEntityCreateForm {
             params: ({value}) => value() !== null ? { someLongType: value() } as AllFieldTypesSomeLongTypeRequestDto : undefined,
             factory: (params) => rxResource({
                 params,
-                stream: ({params}) => this.formService.existsBySomeLongType(params),
+                stream: ({params}) => this.allFieldTypesCrudService.existsBySomeLongType(params),
             }),
             when: ({state}) => state.dirty(),
             onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
@@ -168,7 +171,7 @@ export class AllFieldTypesEntityCreateForm {
             params: ({value}) => !!value() ? { someString: value() } as AllFieldTypesSomeStringRequestDto : undefined,
             factory: (params) => rxResource({
                 params,
-                stream: ({params}) => this.formService.existsBySomeString(params),
+                stream: ({params}) => this.allFieldTypesCrudService.existsBySomeString(params),
             }),
             when: ({state}) => state.dirty(),
             onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
@@ -182,7 +185,7 @@ export class AllFieldTypesEntityCreateForm {
             params: ({value}) => !!value() ? { someStringNullable: value() } as AllFieldTypesSomeStringNullableRequestDto : undefined,
             factory: (params) => rxResource({
                 params,
-                stream: ({params}) => this.formService.existsBySomeStringNullable(params),
+                stream: ({params}) => this.allFieldTypesCrudService.existsBySomeStringNullable(params),
             }),
             when: ({state}) => state.dirty(),
             onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
@@ -193,7 +196,7 @@ export class AllFieldTypesEntityCreateForm {
             params: ({value}) => !!value() ? { someStringType: value() } as AllFieldTypesSomeStringTypeRequestDto : undefined,
             factory: (params) => rxResource({
                 params,
-                stream: ({params}) => this.formService.existsBySomeStringType(params),
+                stream: ({params}) => this.allFieldTypesCrudService.existsBySomeStringType(params),
             }),
             when: ({state}) => state.dirty(),
             onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,

@@ -9,8 +9,16 @@ class AsyncValidatorDef(
     packageName: PackageName,
     baseName: String,
     /** The name of the API service function that checks whether a value already exists. */
-    val existsByFunctionName: String
+    val existsByFunctionName: String,
+    /** The class name of the service, which may belong to a different form, that has [existsByFunctionName]. */
+    val apiServiceName: String,
+    val apiServiceTypescriptImport: TypescriptImport,
+    /** The names of the request DTO fields, which are the entity fields of the unique index being checked. */
+    val requestFieldNames: List<String>
 ) {
+
+
+    val apiServiceFieldName = StringFunctions.firstToLower(apiServiceName)
 
 
     private val genComponentsBaseDir = GeneratedTypescriptDir.forPackage(packageName)

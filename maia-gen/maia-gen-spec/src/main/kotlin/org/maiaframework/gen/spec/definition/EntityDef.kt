@@ -619,7 +619,8 @@ class EntityDef(
             this.packageName,
             DatabaseIndexBaseName(this.entityBaseName.value),
             this.moduleName,
-            crudAngularComponentNames.serviceName
+            crudAngularComponentNames.serviceName,
+            crudAngularComponentNames.serviceTypescriptImport
         ) }
 
 
@@ -637,7 +638,8 @@ class EntityDef(
                 this.packageName,
                 DatabaseIndexBaseName(this.entityBaseName.value),
                 this.moduleName,
-                crudAngularComponentNames.serviceName
+                crudAngularComponentNames.serviceName,
+                crudAngularComponentNames.serviceTypescriptImport
             ) }
 
 

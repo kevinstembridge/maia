@@ -420,7 +420,7 @@ object MatFormFieldRenderer {
             r.appendLine("$indent        placeholder=\"${it}\"")
         }
 
-        htmlFormField.inputEventText?.let {
+        htmlFormField.signalFormInputEventText?.let {
             r.appendLine("$indent        $it")
         }
 

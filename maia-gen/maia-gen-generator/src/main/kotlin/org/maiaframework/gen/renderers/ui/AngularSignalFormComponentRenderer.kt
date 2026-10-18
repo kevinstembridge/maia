@@ -222,6 +222,7 @@ class AngularSignalFormComponentRenderer(
         `render class field entityId`()
         `render class fields for outputs`()
         `render class field formService`()
+        `render class fields for async validation services`()
         `render class field problemDetail`()
         `render class fields for enum MatSelect fields`()
         `render class fields for string value class list options`()
@@ -325,6 +326,29 @@ class AngularSignalFormComponentRenderer(
             |    private readonly formService = inject(${this.angularFormDef.formServiceClassName});
             |""".trimMargin()
         )
+
+    }
+
+
+    /**
+     * The exists-by function belongs to the service of the entity that owns the unique index, which is not
+     * necessarily the form's own service.
+     */
+    private fun `render class fields for async validation services`() {
+
+        modelFields
+            .mapNotNull { it.asyncValidatorDef }
+            .distinctBy { it.apiServiceFieldName }
+            .forEach { asyncValidatorDef ->
+
+                append("""
+                    |
+                    |
+                    |    private readonly ${asyncValidatorDef.apiServiceFieldName} = inject(${asyncValidatorDef.apiServiceName});
+                    |""".trimMargin()
+                )
+
+            }
 
     }
 
@@ -490,6 +514,10 @@ class AngularSignalFormComponentRenderer(
         addImport("@angular/forms/signals", "validateAsync")
         addImport("@angular/core/rxjs-interop", "rxResource")
         addImport(asyncValidatorDef.asyncValidationDtoTypescriptImport)
+        addImport(asyncValidatorDef.apiServiceTypescriptImport)
+
+        // The request DTO is keyed by the unique index's entity field, which can differ from the form field's name.
+        val requestFieldName = asyncValidatorDef.requestFieldNames.singleOrNull() ?: classFieldName
 
         val valueExpression = if (typeaheadDef == null) "value()" else "value().${typeaheadDef.esDocIdFieldName}"
 
@@ -500,10 +528,10 @@ class AngularSignalFormComponentRenderer(
         // exists, is not reported as a duplicate of itself.
         append("""
             |        validateAsync(schemaPath.$classFieldName, {
-            |            params: ({value}) => $hasValueExpression ? { $classFieldName: $valueExpression } as $requestDtoName : undefined,
+            |            params: ({value}) => $hasValueExpression ? { $requestFieldName: $valueExpression } as $requestDtoName : undefined,
             |            factory: (params) => rxResource({
             |                params,
-            |                stream: ({params}) => this.formService.${asyncValidatorDef.existsByFunctionName}(params),
+            |                stream: ({params}) => this.${asyncValidatorDef.apiServiceFieldName}.${asyncValidatorDef.existsByFunctionName}(params),
             |            }),
             |            when: ({state}) => state.dirty(),
             |            onSuccess: (response) => response.invalid ? { kind: 'notUnique', message: response.message } : null,
@@ -526,10 +554,12 @@ class AngularSignalFormComponentRenderer(
 
             if (!classFieldDef.nullable) {
 
+                addImport("@angular/forms/signals", "SchemaPath")
                 addImport("@angular/forms/signals", "validate")
 
+                // The model holds the typeahead's value as any, which Signal Forms types as a tree of fields rather than a leaf.
                 append("""
-                    |        validate(schemaPath.$classFieldName, ({value}) => {
+                    |        validate(schemaPath.$classFieldName as unknown as SchemaPath<any>, ({value}) => {
                     |            return value() && typeof value() === 'object'
                     |                ? null
                     |                : { kind: 'required', message: '$fieldLabel is required.' };

@@ -96,4 +96,13 @@ class AngularFormFieldDef(
     }
 
 
+
+    /** The same case conversion for a signal form, where the control is `dialogForm.<field>` and its value is a writable signal. */
+    val signalFormInputEventText = when (classFieldDef.textCase) {
+        TextCase.ORIGINAL -> null
+        TextCase.LOWER -> "(input)=\"dialogForm.${classFieldDef.classFieldName}().value.set(dialogForm.${classFieldDef.classFieldName}().value().toLowerCase())\""
+        TextCase.UPPER -> "(input)=\"dialogForm.${classFieldDef.classFieldName}().value.set(dialogForm.${classFieldDef.classFieldName}().value().toUpperCase())\""
+    }
+
+
 }
