@@ -1,0 +1,46 @@
+<h1 mat-dialog-title>Send Feedback</h1>
+<form novalidate (submit)="onSubmit($event)">
+    <div mat-dialog-content>
+
+        @if (problemDetail()) {
+            <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
+        }
+
+        <mat-form-field appearance="outline">
+            <mat-label>Comment</mat-label>
+            <input
+                [formField]="dialogForm.comment"
+                id="comment"
+                type="text"
+                matInput
+            />
+
+            @if (dialogForm.comment().touched() && dialogForm.comment().invalid()) {
+                @for (error of dialogForm.comment().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
+            }
+
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Rating</mat-label>
+            <input
+                [formField]="dialogForm.rating"
+                id="rating"
+                type="number"
+                matInput
+            />
+
+            @if (dialogForm.rating().touched() && dialogForm.rating().invalid()) {
+                @for (error of dialogForm.rating().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
+            }
+
+        </mat-form-field>
+    </div>
+    <div class="form-actions" mat-dialog-actions>
+        <button mat-flat-button color="primary" type="submit" name="submitFeedbackDialogBtn">Send</button>
+        <button mat-flat-button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+</form>

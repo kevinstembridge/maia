@@ -34,6 +34,7 @@ import org.maiaframework.showcase.testing.pages.RightManyEditPage
 import org.maiaframework.showcase.testing.pages.RightManyHistoryBlotterPage
 import org.maiaframework.showcase.testing.pages.RightManyViewPage
 import org.maiaframework.showcase.testing.pages.SimpleBlotterPage
+import org.maiaframework.showcase.testing.pages.DialogFormPage
 import org.maiaframework.showcase.testing.pages.SimpleCreatePage
 import org.maiaframework.showcase.testing.pages.SimpleEditPage
 import org.maiaframework.showcase.testing.pages.SimpleViewPage
@@ -176,6 +177,9 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var simpleBlotterPage: SimpleBlotterPage
 
 
+    protected lateinit var dialogFormPage: DialogFormPage
+
+
     protected lateinit var simpleCreatePage: SimpleCreatePage
 
 
@@ -250,6 +254,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         rightManyViewPage = RightManyViewPage(page, urlHelper)
         loginPage = LoginPage(page, urlHelper)
         simpleBlotterPage = SimpleBlotterPage(page, urlHelper)
+        dialogFormPage = DialogFormPage(page, urlHelper)
         simpleCreatePage = SimpleCreatePage(page, urlHelper)
         simpleEditPage = SimpleEditPage(page, urlHelper)
         simpleViewPage = SimpleViewPage(page, urlHelper)

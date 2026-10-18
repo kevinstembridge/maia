@@ -1,0 +1,11 @@
+<section data-page-id="dialog_form_page">
+    <h1>Dialog Form</h1>
+
+    <button mat-flat-button color="primary" type="button" id="openFeedbackDialog" (click)="openFeedbackDialog()">
+        Send feedback
+    </button>
+
+    @if (received(); as dto) {
+        <p id="feedbackReceived">Received: {{ dto.comment }} ({{ dto.rating }})</p>
+    }
+</section>

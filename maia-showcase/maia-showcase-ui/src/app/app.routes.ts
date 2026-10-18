@@ -39,6 +39,13 @@ export const routes: Routes = [
     ...someVersionedRoutes,
     ...userRoutes,
     {
+        path: 'dialog-form',
+        loadComponent: () =>
+            import('./pages/dialog-form/dialog-form-page').then(
+                (m) => m.DialogFormPage,
+            ),
+    },
+    {
         path: 'login',
         loadComponent: () =>
             import('./pages/login/login-page').then(

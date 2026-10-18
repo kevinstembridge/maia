@@ -99,6 +99,36 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val feedbackRequestDtoDef = requestDto(
+        "org.maiaframework.showcase.dialog",
+        "Feedback",
+        requestMappingPath = "/api/feedback",
+        withGeneratedEndpoint = false
+    ) {
+        field("comment", FieldTypes.string)
+        field("rating", FieldTypes.int) {
+            withMinSize(1)
+            withMaxSize(5)
+        }
+    }
+
+
+    val feedbackFormDef = angularForm(feedbackRequestDtoDef) {
+        ofType(AngularFormSystem.SIGNAL)
+        asDialog("Send Feedback")
+        delegateFormSubmission()
+        formPurpose(FormPurpose.submit)
+        field("comment") {
+            withLabel("Comment")
+            withNotBlankConstraint()
+        }
+        field("rating") {
+            withLabel("Rating")
+        }
+        submitButtonText("Send")
+    }
+
+
     val loginRequestDtoDef = requestDto(
         "org.maiaframework.showcase.login",
         "Login",
