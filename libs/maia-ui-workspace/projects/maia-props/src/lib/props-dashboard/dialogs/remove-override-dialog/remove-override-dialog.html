@@ -1,10 +1,10 @@
 <h2 mat-dialog-title>Remove Override</h2>
-<form [formGroup]="form" (ngSubmit)="onConfirm()">
+<form novalidate (submit)="onConfirm($event)">
     <mat-dialog-content>
         <p>Remove the override for <strong>{{data.propertyName}}</strong>? It will revert to its environment-resolved value, if any.</p>
         <mat-form-field>
             <mat-label>Comment (optional)</mat-label>
-            <input matInput name="comment" formControlName="comment">
+            <input matInput id="comment" [formField]="form.comment">
         </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>

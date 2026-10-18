@@ -1,5 +1,5 @@
-import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
+import {form, FormField} from '@angular/forms/signals';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -19,7 +19,7 @@ export interface ToggleStateDialogResult {
     templateUrl: './toggle-state-dialog.html',
     styleUrl: './toggle-state-dialog.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule]
+    imports: [FormField, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule]
 })
 export class ToggleStateDialog {
 
@@ -27,14 +27,16 @@ export class ToggleStateDialog {
 
     private readonly dialogRef = inject(MatDialogRef<ToggleStateDialog>);
 
-    readonly form = inject(FormBuilder).group({
-        comment: [''],
-    });
+    private readonly model = signal({comment: ''});
 
-    onConfirm(): void {
+    readonly form = form(this.model);
+
+    onConfirm(event: Event): void {
+
+        event.preventDefault();
 
         const result: ToggleStateDialogResult = {
-            comment: this.form.getRawValue().comment?.trim() || null,
+            comment: this.model().comment.trim() || null,
         };
 
         this.dialogRef.close(result);

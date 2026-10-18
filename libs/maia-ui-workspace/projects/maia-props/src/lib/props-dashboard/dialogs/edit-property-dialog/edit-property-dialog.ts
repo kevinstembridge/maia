@@ -1,5 +1,5 @@
-import {Component, Inject} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Component, inject, signal} from '@angular/core';
+import {form, FormField, readonly, required} from '@angular/forms/signals';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -25,41 +25,42 @@ export interface EditPropertyDialogResult {
     selector: 'maia-edit-property-dialog',
     templateUrl: './edit-property-dialog.html',
     styleUrl: './edit-property-dialog.scss',
-    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepickerModule]
+    imports: [FormField, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepickerModule]
 })
 export class EditPropertyDialog {
 
-    readonly isAdding: boolean;
-    readonly form;
+    readonly dialogRef = inject(MatDialogRef<EditPropertyDialog>);
 
-    constructor(
-        public dialogRef: MatDialogRef<EditPropertyDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: EditPropertyDialogData,
-        private formBuilder: FormBuilder
-    ) {
+    readonly data = inject<EditPropertyDialogData>(MAT_DIALOG_DATA);
 
-        this.isAdding = this.data.propertyName === null;
+    readonly isAdding = this.data.propertyName === null;
 
-        this.form = this.formBuilder.group({
-            propertyName: this.formBuilder.control(this.data.propertyName ?? '', Validators.required),
-            propertyValue: this.formBuilder.control(this.data.currentValue ?? '', Validators.required),
-            comment: this.formBuilder.control(''),
-            reviewDate: this.formBuilder.control<DateTime | null>(this.data.currentReviewDate ? DateTime.fromISO(this.data.currentReviewDate) : null),
-        });
+    private readonly model = signal({
+        propertyName: this.data.propertyName ?? '',
+        propertyValue: this.data.currentValue ?? '',
+        comment: '',
+        reviewDate: (this.data.currentReviewDate ? DateTime.fromISO(this.data.currentReviewDate) : null) as DateTime | null,
+    });
 
-    }
+    readonly form = form(this.model, (schemaPath) => {
+        required(schemaPath.propertyName);
+        required(schemaPath.propertyValue);
+        readonly(schemaPath.propertyName, () => !this.isAdding);
+    });
 
-    onSubmit() {
+    onSubmit(event: Event) {
 
-        if (this.form.invalid) {
+        event.preventDefault();
+
+        if (this.form().invalid()) {
             return;
         }
 
-        const value = this.form.getRawValue();
+        const value = this.model();
 
         const result: EditPropertyDialogResult = {
-            propertyName: value.propertyName!,
-            propertyValue: value.propertyValue!,
+            propertyName: value.propertyName,
+            propertyValue: value.propertyValue,
             comment: value.comment || null,
             reviewDate: value.reviewDate?.toISODate() ?? null,
         };

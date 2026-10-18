@@ -1,5 +1,5 @@
-import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
-import {FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
+import {applyEach, form, FormField, required, validate} from '@angular/forms/signals';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -20,16 +20,21 @@ export interface EditStrategiesDialogResult {
     strategies: ActivationStrategyDescriptor[];
 }
 
-// Its controls are added and removed at runtime as the selected strategy changes.
-type ParametersForm = FormGroup;
-type StrategyRowForm = FormGroup<{ id: FormControl<string>; parameters: ParametersForm }>;
+interface StrategyRowModel {
+    id: string;
+    // Keyed by parameter name. The keys change as the selected strategy changes.
+    parameters: Record<string, string>;
+    // Parameters saved for the row at open time, used to keep the parameters of strategies that
+    // the server no longer knows about.
+    savedParameters: ActivationStrategyDescriptor['parameters'];
+}
 
 @Component({
     selector: 'maia-edit-strategies-dialog',
     templateUrl: './edit-strategies-dialog.html',
     styleUrl: './edit-strategies-dialog.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule]
+    imports: [FormField, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule]
 })
 export class EditStrategiesDialog {
 
@@ -37,84 +42,85 @@ export class EditStrategiesDialog {
 
     private readonly dialogRef = inject(MatDialogRef<EditStrategiesDialog>);
 
-    private readonly formBuilder = inject(NonNullableFormBuilder);
+    private readonly model = signal<{ rows: StrategyRowModel[] }>({
+        rows: this.data.strategies.map(strategy => ({
+            id: strategy.id,
+            parameters: this.parametersFor(strategy.id, strategy.parameters, strategy.parameters),
+            savedParameters: strategy.parameters,
+        })),
+    });
 
-    readonly rows: FormArray<StrategyRowForm> = this.formBuilder.array<StrategyRowForm>([]);
-
-    readonly form = this.formBuilder.group({rows: this.rows});
-
-    // Parameters saved for each row at open time, used to keep the parameters of strategies that
-    // the server no longer knows about.
-    private readonly savedParametersByRow = new Map<StrategyRowForm, ActivationStrategyDescriptor['parameters']>();
-
-    constructor() {
-
-        this.data.strategies.forEach(strategy => this.addRow(strategy));
-
-    }
-
-    addRow(strategy?: ActivationStrategyDescriptor): void {
-
-        const row: StrategyRowForm = this.formBuilder.group({
-            id: this.formBuilder.control(strategy?.id ?? '', Validators.required),
-            parameters: new FormGroup({}),
+    readonly form = form(this.model, (schemaPath) => {
+        applyEach(schemaPath.rows, (row) => {
+            required(row.id);
+            validate(row, ({value}) => {
+                const {id, parameters, savedParameters} = value();
+                const missing = parameterDefinitionsFor(id, this.data.definitions, savedParameters)
+                    .some(definition => definition.required && (parameters[definition.name] ?? '') === '');
+                return missing ? {kind: 'requiredParameter', message: 'A required parameter is missing.'} : null;
+            });
         });
+    });
 
-        this.savedParametersByRow.set(row, strategy?.parameters ?? []);
-        this.rebuildParameters(row, strategy?.parameters ?? []);
-        row.controls.id.valueChanges.subscribe(() => this.rebuildParameters(row, []));
+    addRow(): void {
 
-        this.rows.push(row);
+        this.model.update(m => ({rows: [...m.rows, {id: '', parameters: {}, savedParameters: []}]}));
 
     }
 
     removeRow(index: number): void {
 
-        this.savedParametersByRow.delete(this.rows.at(index));
-        this.rows.removeAt(index);
+        this.model.update(m => ({rows: m.rows.filter((_, i) => i !== index)}));
 
     }
 
-    parameterDefinitions(row: StrategyRowForm): ActivationStrategyParameterDefinitionDto[] {
+    onStrategyChanged(index: number, id: string): void {
 
-        return parameterDefinitionsFor(
-            row.controls.id.value,
-            this.data.definitions,
-            this.savedParametersByRow.get(row) ?? []
-        );
+        this.model.update(m => ({
+            rows: m.rows.map((row, i) =>
+                i === index ? {...row, id, parameters: this.parametersFor(id, row.savedParameters, [])} : row
+            ),
+        }));
+
+    }
+
+    parameterDefinitions(row: StrategyRowModel): ActivationStrategyParameterDefinitionDto[] {
+
+        return parameterDefinitionsFor(row.id, this.data.definitions, row.savedParameters);
 
     }
 
     /** The strategy ids to offer for a row, including its current id if the server doesn't know it. */
-    optionsFor(row: StrategyRowForm): { id: string; label: string }[] {
+    optionsFor(row: StrategyRowModel): { id: string; label: string }[] {
 
         const options = this.data.definitions.map(d => ({id: d.id, label: d.id}));
-        const currentId = row.controls.id.value;
 
-        if (currentId !== '' && !options.some(o => o.id === currentId)) {
-            options.push({id: currentId, label: `${currentId} (unknown)`});
+        if (row.id !== '' && !options.some(o => o.id === row.id)) {
+            options.push({id: row.id, label: `${row.id} (unknown)`});
         }
 
         return options;
 
     }
 
-    descriptionFor(row: StrategyRowForm): string | null {
+    descriptionFor(row: StrategyRowModel): string | null {
 
-        return this.data.definitions.find(d => d.id === row.controls.id.value)?.description ?? null;
+        return this.data.definitions.find(d => d.id === row.id)?.description ?? null;
 
     }
 
-    onSubmit(): void {
+    onSubmit(event: Event): void {
 
-        if (this.form.invalid) {
-            this.form.markAllAsTouched();
+        event.preventDefault();
+
+        if (this.form().invalid()) {
+            this.form().markAsTouched();
             return;
         }
 
-        const rowValues: StrategyRowValue[] = this.rows.controls.map(row => ({
-            id: row.controls.id.value,
-            parameters: row.controls.parameters.getRawValue() as Record<string, string>,
+        const rowValues: StrategyRowValue[] = this.model().rows.map(row => ({
+            id: row.id,
+            parameters: row.parameters,
         }));
 
         const result: EditStrategiesDialogResult = {strategies: toDescriptors(rowValues)};
@@ -126,21 +132,19 @@ export class EditStrategiesDialog {
         this.dialogRef.close();
     }
 
-    private rebuildParameters(row: StrategyRowForm, savedParameters: ActivationStrategyDescriptor['parameters']): void {
+    private parametersFor(
+        id: string,
+        savedParameters: ActivationStrategyDescriptor['parameters'],
+        values: ActivationStrategyDescriptor['parameters']
+    ): Record<string, string> {
 
-        const parameters = row.controls.parameters;
+        const parameters: Record<string, string> = {};
 
-        Object.keys(parameters.controls).forEach(name => parameters.removeControl(name));
-
-        const definitions = parameterDefinitionsFor(row.controls.id.value, this.data.definitions, this.savedParametersByRow.get(row) ?? []);
-
-        definitions.forEach(definition => {
-            const savedValue = savedParameters.find(p => p.name === definition.name)?.value ?? '';
-            parameters.addControl(
-                definition.name,
-                this.formBuilder.control(savedValue, definition.required ? Validators.required : [])
-            );
+        parameterDefinitionsFor(id, this.data.definitions, savedParameters).forEach(definition => {
+            parameters[definition.name] = values.find(p => p.name === definition.name)?.value ?? '';
         });
+
+        return parameters;
 
     }
 

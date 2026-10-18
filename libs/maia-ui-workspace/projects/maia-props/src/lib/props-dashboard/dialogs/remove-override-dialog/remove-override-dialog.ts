@@ -1,5 +1,5 @@
-import {Component, Inject} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {Component, inject, signal} from '@angular/core';
+import {form, FormField} from '@angular/forms/signals';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -16,32 +16,24 @@ export interface RemoveOverrideDialogResult {
 @Component({
     selector: 'maia-remove-override-dialog',
     templateUrl: './remove-override-dialog.html',
-    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule]
+    imports: [FormField, MatDialogTitle, MatDialogContent, MatDialogActions, MatFormFieldModule, MatInputModule, MatButtonModule]
 })
 export class RemoveOverrideDialog {
 
-    readonly form;
+    readonly dialogRef = inject(MatDialogRef<RemoveOverrideDialog>);
 
-    constructor(
-        public dialogRef: MatDialogRef<RemoveOverrideDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: RemoveOverrideDialogData,
-        private formBuilder: FormBuilder
-    ) {
+    readonly data = inject<RemoveOverrideDialogData>(MAT_DIALOG_DATA);
 
-        this.form = this.formBuilder.group({
-            comment: this.formBuilder.control(''),
-        });
+    private readonly model = signal({comment: ''});
 
-    }
+    readonly form = form(this.model);
 
-    onConfirm() {
+    onConfirm(event: Event) {
 
-        if (this.form.invalid) {
-            return;
-        }
+        event.preventDefault();
 
         const result: RemoveOverrideDialogResult = {
-            comment: this.form.getRawValue().comment || null,
+            comment: this.model().comment || null,
         };
 
         this.dialogRef.close(result);
