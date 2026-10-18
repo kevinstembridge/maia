@@ -101,7 +101,7 @@ class TypeaheadDef(
 
 
     val esDocIdFieldName: String = fieldDefs.firstOrNull {
-        it.entityFieldDef?.classFieldName == ClassFieldName.id
+        it.isIdField
     }?.classFieldDef?.classFieldName?.value ?: "id"
 
 
