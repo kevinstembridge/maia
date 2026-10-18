@@ -4,12 +4,16 @@ import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import java.net.MalformedURLException
 import java.time.Period
+import java.time.format.DateTimeParseException
 
 
 class PeriodConstraintValidator : ConstraintValidator<PeriodConstraint, String> {
 
 
-    override fun isValid(value: String?, validatorContext: ConstraintValidatorContext): Boolean {
+    override fun isValid(
+        value: String?,
+        validatorContext: ConstraintValidatorContext
+    ): Boolean {
 
         if (value.isNullOrBlank()) {
             return true
@@ -18,7 +22,7 @@ class PeriodConstraintValidator : ConstraintValidator<PeriodConstraint, String> 
         try {
             Period.parse(value)
             return true
-        } catch (_: MalformedURLException) {
+        } catch (_: DateTimeParseException) {
             validatorContext.disableDefaultConstraintViolation()
             validatorContext.buildConstraintViolationWithTemplate("Invalid value [$value]. Expected a valid Period.").addConstraintViolation()
             return false

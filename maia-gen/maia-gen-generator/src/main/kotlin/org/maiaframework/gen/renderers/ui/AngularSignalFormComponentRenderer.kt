@@ -11,6 +11,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotNullConstraintDef
+import org.maiaframework.gen.spec.definition.validation.PeriodConstraintDef
 import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
 
 
@@ -37,6 +38,9 @@ class AngularSignalFormComponentRenderer(
 
 
     private val typeaheadFields = modelFields.filter { it.isTypeahead }
+
+
+    private val localDateFields = modelFields.filter { it.isLocalDate }
 
 
     private val linkedFields = modelFields.filter { it.linksToAField }
@@ -145,10 +149,13 @@ class AngularSignalFormComponentRenderer(
             addImport("@angular/material/checkbox", "MatCheckbox", isModule = true)
         }
 
-        if (this.angularFormDef.hasAnyInstantFields) {
+        if (this.angularFormDef.hasAnyInstantFields || localDateFields.isNotEmpty()) {
             addImport("@angular/material/datepicker", "MatDatepicker", isModule = true)
             addImport("@angular/material/datepicker", "MatDatepickerInput", isModule = true)
             addImport("@angular/material/datepicker", "MatDatepickerToggle", isModule = true)
+        }
+
+        if (this.angularFormDef.hasAnyInstantFields) {
             addImport("@angular/material/timepicker", "MatTimepicker", isModule = true)
             addImport("@angular/material/timepicker", "MatTimepickerInput", isModule = true)
             addImport("@angular/material/timepicker", "MatTimepickerToggle", isModule = true)
@@ -525,8 +532,11 @@ class AngularSignalFormComponentRenderer(
 
         }
 
-        if (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
-            || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java)
+        // A checkbox is valid when unchecked, and a free list has no input through which it could become valid.
+        if (!angularFormFieldDef.isCheckbox
+            && !angularFormFieldDef.isFreeList
+            && (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
+                || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java))
         ) {
 
             addImport("@angular/forms/signals", "required")
@@ -558,6 +568,24 @@ class AngularSignalFormComponentRenderer(
                 |            } catch {
                 |                return { kind: 'invalidUrl', message: '$fieldLabel must be a valid URL.' };
                 |            }
+                |        });
+                |""".trimMargin())
+
+        }
+
+        if (classFieldDef.hasValidationConstraint(PeriodConstraintDef::class.java)) {
+
+            addImport("@angular/forms/signals", "validate")
+
+            // The same syntax that java.time.Period.parse accepts, such as P1Y2M3D or P2W. The back end rejects anything else.
+            append($$"""
+                |        validate(schemaPath.$$classFieldName, ({value}) => {
+                |            if (!value()) {
+                |                return null;
+                |            }
+                |            return /^[-+]?P(?=.*[YMWD])([-+]?\d+Y)?([-+]?\d+M)?([-+]?\d+W)?([-+]?\d+D)?$/i.test(value())
+                |                ? null
+                |                : { kind: 'invalidPeriod', message: '$$fieldLabel must be a valid period, such as P1Y2M3D.' };
                 |        });
                 |""".trimMargin())
 
@@ -925,7 +953,7 @@ class AngularSignalFormComponentRenderer(
 
         val requestDtoType = this.angularFormDef.requestDtoDef.uqcn
 
-        if (typeaheadFields.isEmpty() && chipFields.isEmpty() && timestampedFields.isEmpty()) {
+        if (typeaheadFields.isEmpty() && localDateFields.isEmpty() && chipFields.isEmpty() && timestampedFields.isEmpty()) {
 
             appendLine("            const requestDto = value as $requestDtoType;")
             return
@@ -941,6 +969,11 @@ class AngularSignalFormComponentRenderer(
 
             appendLine("                ${fieldDef.fieldName}: value.${fieldDef.fieldName}.${typeaheadDef.esDocIdFieldName},")
 
+        }
+
+        // The calendar yields a date object, but the request carries an ISO date such as 2026-01-15.
+        localDateFields.forEach { fieldDef ->
+            appendLine("                ${fieldDef.fieldName}: (value.${fieldDef.fieldName} as any)?.toISODate?.() ?? value.${fieldDef.fieldName},")
         }
 
         chipFields.forEach { chip ->

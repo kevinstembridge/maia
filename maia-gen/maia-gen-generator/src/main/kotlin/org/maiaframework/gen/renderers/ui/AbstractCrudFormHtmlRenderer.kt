@@ -208,6 +208,15 @@ abstract class AbstractCrudFormHtmlRenderer(
             InlineFormOrDialog.INLINE_FORM -> ""
         }
 
+        appendLine($$"""
+            |        <!-- TEMPORARY: form validation state, for debugging -->
+            |        <pre class="form-debug" style="font-size: 12px; background: #f5f5f5; padding: 8px;">valid: {{ dialogForm().valid() }}
+            |invalid: {{ dialogForm().invalid() }}
+            |pending: {{ dialogForm().pending() }}
+            |touched: {{ dialogForm().touched() }}
+            |@for (error of dialogForm().errorSummary(); track $index) {
+            |{{ error.fieldTree().name() }}: {{ error.kind }}{{ error.message ? ' - ' + error.message : '' }}
+            |}</pre>""".trimMargin())
         appendLine("    </div>")
         appendLine("    <div class=\"form-actions\"$matDialogActionsText>")
         appendLine("        <button mat-flat-button type=\"submit\" color=\"primary\">Submit</button>")

@@ -150,18 +150,19 @@
         <mat-form-field appearance="outline">
             <mat-label>Some LocalDate Modifiable</mat-label>
             <input
+                matInput
+                [matDatepicker]="someLocalDateModifiablePicker"
                 [formField]="dialogForm.someLocalDateModifiable"
                 id="someLocalDateModifiable"
-                type="text"
-                matInput
             />
+            <mat-datepicker-toggle matIconSuffix [for]="someLocalDateModifiablePicker"></mat-datepicker-toggle>
+            <mat-datepicker #someLocalDateModifiablePicker></mat-datepicker>
 
             @if (dialogForm.someLocalDateModifiable().touched() && dialogForm.someLocalDateModifiable().invalid()) {
                 @for (error of dialogForm.someLocalDateModifiable().errors(); track error) {
                     <mat-error>{{ error.message }}</mat-error>
                 }
             }
-
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Some Period Modifiable</mat-label>
@@ -247,6 +248,14 @@
             <span class="detail-label">Last Modified By</span>
             <span class="detail-value">{{ fetchedDto()?.lastModifiedBy?.name }}</span>
         </div>
+        <!-- TEMPORARY: form validation state, for debugging -->
+        <pre class="form-debug" style="font-size: 12px; background: #f5f5f5; padding: 8px;">valid: {{ dialogForm().valid() }}
+invalid: {{ dialogForm().invalid() }}
+pending: {{ dialogForm().pending() }}
+touched: {{ dialogForm().touched() }}
+@for (error of dialogForm().errorSummary(); track $index) {
+{{ error.fieldTree().name() }}: {{ error.kind }}{{ error.message ? ' - ' + error.message : '' }}
+}</pre>
     </div>
     <div class="form-actions">
         <button mat-flat-button type="submit" color="primary">Submit</button>

@@ -9,7 +9,6 @@ TODO * Props Dashboard
     TODO * Mask sensitive fields.
 
 TODO * Elastic Indices
-    TODO * Refactor so that the EsDoc version propagates through the entire stack. We don't determine the index version at runtime.
 
 TODO * Single Effective Record
     TODO * Define a many-to-many entity that is specified to have only one single effective record

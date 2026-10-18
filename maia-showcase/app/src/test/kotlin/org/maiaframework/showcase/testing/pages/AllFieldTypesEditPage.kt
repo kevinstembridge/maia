@@ -19,7 +19,7 @@ class AllFieldTypesEditPage(
 
     fun fillEditForm(
         someIntModifiable: String = "200",
-        someLocalDateModifiable: String = "2026-06-01",
+        someLocalDateModifiable: String = "06/01/2026",
         someInstantModifiableDate: String = "06/01/2026",
         someInstantModifiableTime: String = "12:00",
         somePeriodModifiable: String = "P2Y",

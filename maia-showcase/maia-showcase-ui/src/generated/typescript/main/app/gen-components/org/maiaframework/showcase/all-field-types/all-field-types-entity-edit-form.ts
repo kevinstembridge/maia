@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AngularSignalFormComponentRenderer
 
 import {Component, OnInit, inject, input, output, signal} from '@angular/core';
-import {FormField, form, maxLength, required, submit} from '@angular/forms/signals';
+import {FormField, form, maxLength, required, submit, validate} from '@angular/forms/signals';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -67,10 +67,17 @@ export class AllFieldTypesEntityEditForm implements OnInit {
         required(schemaPath.someIntModifiable, { message: 'Some Int Modifiable is required.' });
         required(schemaPath.someLocalDateModifiable, { message: 'Some LocalDate Modifiable is required.' });
         required(schemaPath.somePeriodModifiable, { message: 'Some Period Modifiable is required.' });
+        validate(schemaPath.somePeriodModifiable, ({value}) => {
+            if (!value()) {
+                return null;
+            }
+            return /^[-+]?P(?=.*[YMWD])([-+]?\d+Y)?([-+]?\d+M)?([-+]?\d+W)?([-+]?\d+D)?$/i.test(value())
+                ? null
+                : { kind: 'invalidPeriod', message: 'Some Period Modifiable must be a valid period, such as P1Y2M3D.' };
+        });
         maxLength(schemaPath.somePeriodModifiable, 100, { message: 'Some Period Modifiable must not be more than 100 characters.' });
         required(schemaPath.someStringModifiable, { message: 'Some String Modifiable is required.' });
         maxLength(schemaPath.someStringModifiable, 100, { message: 'Some String Modifiable must not be more than 100 characters.' });
-        required(schemaPath.someListOfStrings, { message: 'Some List Of Strings is required.' });
         required(schemaPath.id, { message: 'ID is required.' });
     });
 
@@ -122,7 +129,10 @@ export class AllFieldTypesEntityEditForm implements OnInit {
         await submit(this.dialogForm, async (form) => {
 
             const value = form().value();
-            const requestDto = value as AllFieldTypesUpdateRequestDto;
+            const requestDto = {
+                ...value,
+                someLocalDateModifiable: (value.someLocalDateModifiable as any)?.toISODate?.() ?? value.someLocalDateModifiable,
+            } as AllFieldTypesUpdateRequestDto;
 
             try {
                 await firstValueFrom(this.formService.edit(requestDto));

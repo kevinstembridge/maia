@@ -16,6 +16,7 @@ import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.LongFieldType
 import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.LocalDateFieldType
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotNullConstraintDef
@@ -28,6 +29,21 @@ val AngularFormFieldDef.isNumberInput: Boolean
         is LongFieldType, is LongTypeFieldType, is DoubleFieldType -> true
         else -> false
     }
+
+/** True if the field is rendered as a checkbox. An unchecked checkbox (`false`) is a valid value, so it is never `required`. */
+val AngularFormFieldDef.isCheckbox: Boolean
+    get() = when (fieldType) {
+        is BooleanFieldType, is BooleanTypeFieldType, is BooleanValueClassFieldType -> true
+        else -> false
+    }
+
+/** True if the field is a list of free values, which has no signal-form input yet. */
+val AngularFormFieldDef.isFreeList: Boolean
+    get() = fieldType is ListFieldType && !isEnumList && stringValueClassListEnumOptionsDef == null
+
+/** True if the field is a date without a time, entered through a calendar. */
+val AngularFormFieldDef.isLocalDate: Boolean
+    get() = !isTypeahead && fieldType is LocalDateFieldType
 
 
 object MatFormFieldRenderer {
@@ -45,10 +61,7 @@ object MatFormFieldRenderer {
 
             renderFieldWithTypeahead(htmlFormField, r, indent)
 
-        } else if (htmlFormField.fieldType is ListFieldType
-            && !htmlFormField.isEnumList
-            && htmlFormField.stringValueClassListEnumOptionsDef == null
-        ) {
+        } else if (htmlFormField.isFreeList) {
 
             // There is no input for a free list of values yet. The model keeps the list's default value.
             return
@@ -68,6 +81,10 @@ object MatFormFieldRenderer {
         } else if (htmlFormField.fieldType is InstantFieldType) {
 
             renderSignalFormDatepickerField(htmlFormField, r, indent)
+
+        } else if (htmlFormField.isLocalDate) {
+
+            renderSignalFormLocalDateField(htmlFormField, r, indent)
 
         } else if (htmlFormField.fieldType is BooleanFieldType
             || htmlFormField.fieldType is BooleanTypeFieldType
@@ -144,6 +161,32 @@ object MatFormFieldRenderer {
         r.appendLine("$indent    />")
         r.appendLine("$indent    <mat-timepicker #${classFieldName}Timepicker></mat-timepicker>")
         r.appendLine("$indent    <mat-timepicker-toggle matSuffix [for]=\"${classFieldName}Timepicker\"></mat-timepicker-toggle>")
+        r.appendLine("$indent</mat-form-field>")
+
+    }
+
+
+    private fun renderSignalFormLocalDateField(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+
+        val classFieldName = htmlFormField.classFieldDef.classFieldName
+
+        r.appendLine("$indent<mat-form-field appearance=\"outline\">")
+        r.appendLine("$indent    <mat-label>${htmlFormField.fieldLabel}</mat-label>")
+        r.appendLine("$indent    <input")
+        r.appendLine("$indent        matInput")
+        r.appendLine("$indent        [matDatepicker]=\"${classFieldName}Picker\"")
+        r.appendLine("$indent        [formField]=\"dialogForm.$classFieldName\"")
+        r.appendLine("$indent        id=\"$classFieldName\"")
+        r.appendLine("$indent    />")
+        r.appendLine("$indent    <mat-datepicker-toggle matIconSuffix [for]=\"${classFieldName}Picker\"></mat-datepicker-toggle>")
+        r.appendLine("$indent    <mat-datepicker #${classFieldName}Picker></mat-datepicker>")
+
+        renderSignalFormFieldErrors(htmlFormField, r, "$indent    ")
+
         r.appendLine("$indent</mat-form-field>")
 
     }

@@ -28,7 +28,7 @@ class AllFieldTypesCreatePage(
         someIntTypeProvided: String = "2",
         someLongType: String = "1000",
         someLongTypeProvided: String = "2000",
-        someLocalDateModifiable: String = "2026-01-15",
+        someLocalDateModifiable: String = "01/15/2026",
         someInstantDate: String = "01/15/2026",
         someInstantTime: String = "10:00",
         someInstantModifiableDate: String = "01/15/2026",

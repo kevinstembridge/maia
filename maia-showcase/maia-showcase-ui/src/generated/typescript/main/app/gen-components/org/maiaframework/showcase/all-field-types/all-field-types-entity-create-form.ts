@@ -3,7 +3,7 @@
 
 import {Component, inject, input, output, signal} from '@angular/core';
 import {rxResource} from '@angular/core/rxjs-interop';
-import {FormField, form, maxLength, required, submit, validateAsync} from '@angular/forms/signals';
+import {FormField, form, maxLength, required, submit, validate, validateAsync} from '@angular/forms/signals';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
@@ -109,9 +109,6 @@ export class AllFieldTypesEntityCreateForm {
 
 
     dialogForm = form(this.dialogFormModel, (schemaPath) => {
-        required(schemaPath.someBoolean, { message: 'Some Boolean is required.' });
-        required(schemaPath.someBooleanType, { message: 'Some Boolean Type is required.' });
-        required(schemaPath.someBooleanTypeProvided, { message: 'Some Boolean Type Provided is required.' });
         required(schemaPath.someInstant, { message: 'Some Instant is required.' });
         required(schemaPath.someInstantModifiable, { message: 'Some Instant Modifiable is required.' });
         required(schemaPath.someInt, { message: 'Some Int is required.' });
@@ -142,7 +139,23 @@ export class AllFieldTypesEntityCreateForm {
         required(schemaPath.someLongTypeProvided, { message: 'Some Long Type Provided is required.' });
         required(schemaPath.someLocalDateModifiable, { message: 'Some LocalDate Modifiable is required.' });
         required(schemaPath.somePeriodModifiable, { message: 'Some Period Modifiable is required.' });
+        validate(schemaPath.somePeriodModifiable, ({value}) => {
+            if (!value()) {
+                return null;
+            }
+            return /^[-+]?P(?=.*[YMWD])([-+]?\d+Y)?([-+]?\d+M)?([-+]?\d+W)?([-+]?\d+D)?$/i.test(value())
+                ? null
+                : { kind: 'invalidPeriod', message: 'Some Period Modifiable must be a valid period, such as P1Y2M3D.' };
+        });
         maxLength(schemaPath.somePeriodModifiable, 100, { message: 'Some Period Modifiable must not be more than 100 characters.' });
+        validate(schemaPath.somePeriodNullable, ({value}) => {
+            if (!value()) {
+                return null;
+            }
+            return /^[-+]?P(?=.*[YMWD])([-+]?\d+Y)?([-+]?\d+M)?([-+]?\d+W)?([-+]?\d+D)?$/i.test(value())
+                ? null
+                : { kind: 'invalidPeriod', message: 'Some Period Nullable must be a valid period, such as P1Y2M3D.' };
+        });
         maxLength(schemaPath.somePeriodNullable, 100, { message: 'Some Period Nullable must not be more than 100 characters.' });
         required(schemaPath.someEnum, { message: 'Some Enum is required.' });
         maxLength(schemaPath.someEnum, 100, { message: 'Some Enum must not be more than 100 characters.' });
@@ -188,7 +201,6 @@ export class AllFieldTypesEntityCreateForm {
         required(schemaPath.someProvidedStringType, { message: 'Some Provided String Type is required.' });
         maxLength(schemaPath.someProvidedStringType, 100, { message: 'Some Provided String Type must not be more than 100 characters.' });
         maxLength(schemaPath.someProvidedStringTypeNullable, 100, { message: 'Some Provided String Type Nullable must not be more than 100 characters.' });
-        required(schemaPath.someListOfStrings, { message: 'Some List Of Strings is required.' });
     });
 
 
@@ -204,7 +216,10 @@ export class AllFieldTypesEntityCreateForm {
         await submit(this.dialogForm, async (form) => {
 
             const value = form().value();
-            const requestDto = value as AllFieldTypesCreateRequestDto;
+            const requestDto = {
+                ...value,
+                someLocalDateModifiable: (value.someLocalDateModifiable as any)?.toISODate?.() ?? value.someLocalDateModifiable,
+            } as AllFieldTypesCreateRequestDto;
 
             try {
                 const dto = await firstValueFrom(this.formService.create(requestDto));
