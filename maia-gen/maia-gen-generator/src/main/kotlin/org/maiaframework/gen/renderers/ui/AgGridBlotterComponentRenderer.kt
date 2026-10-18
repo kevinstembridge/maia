@@ -149,7 +149,7 @@ class AgGridBlotterComponentRenderer(
             |    public rowModelType: RowModelType = 'infinite';
             |
             |
-            |    public cacheBlockSize = 100;
+            |    public cacheBlockSize = ${blotterDef.paginationPageSize ?: 100};
             |
             |
             |    public cacheOverflowSize = 2;
@@ -162,6 +162,14 @@ class AgGridBlotterComponentRenderer(
             |
             |
             |    public maxBlocksInCache = 10;
+            |
+            |    public pagination = ${blotterDef.isPaginated};
+            |
+            |
+            |    public paginationPageSize = ${blotterDef.paginationPageSize ?: 100};
+            |
+            |
+            |    public paginationPageSizeSelector = [${pageSizeSelectorOptions()}];
             |
             |
             |    public rowData!: ${blotterDef.dtoUqcn}[];
@@ -304,6 +312,15 @@ class AgGridBlotterComponentRenderer(
         }
 
         appendLine("})")
+
+    }
+
+
+    private fun pageSizeSelectorOptions(): String {
+
+        val pageSize = blotterDef.paginationPageSize ?: 100
+
+        return (setOf(25, 50, 100, 200) + pageSize).sorted().joinToString(", ")
 
     }
 

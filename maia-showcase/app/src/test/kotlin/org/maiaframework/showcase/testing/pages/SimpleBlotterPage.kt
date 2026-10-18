@@ -34,4 +34,10 @@ class SimpleBlotterPage(
     }
 
 
+    fun assertNoPagingPanel() {
+        page.locator(".ag-row").first().waitFor()
+        com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat(page.locator(".ag-paging-panel")).isHidden()
+    }
+
+
 }

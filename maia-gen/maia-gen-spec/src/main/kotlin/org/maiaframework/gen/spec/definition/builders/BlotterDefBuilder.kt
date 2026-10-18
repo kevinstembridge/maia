@@ -36,6 +36,9 @@ class BlotterDefBuilder(
     private var moduleName: ModuleName? = null
 
 
+    private var paginationPageSize: Int? = BlotterDef.DEFAULT_PAGINATION_PAGE_SIZE
+
+
     fun build(): BlotterDef {
 
         val clickableTableRowDef = this.clickableRowBuilder?.build()
@@ -56,7 +59,8 @@ class BlotterDefBuilder(
             this.withGeneratedEndpoint,
             this.withGeneratedTypescriptService,
             this.withGeneratedFindAllFunction,
-            this.searchModelType
+            this.searchModelType,
+            this.paginationPageSize
         )
 
     }
@@ -124,6 +128,22 @@ class BlotterDefBuilder(
 
         val builder = BlotterActionColumnDefBuilder(ActionName.delete, AgGridCellRendererDefs.deleteAction).icon("delete").header("")
         this.columnDefs.add(builder.build())
+
+    }
+
+
+    fun pagination(pageSize: Int = BlotterDef.DEFAULT_PAGINATION_PAGE_SIZE) {
+
+        require(pageSize > 0) { "pageSize must be positive but was $pageSize" }
+
+        this.paginationPageSize = pageSize
+
+    }
+
+
+    fun infiniteScroll() {
+
+        this.paginationPageSize = null
 
     }
 

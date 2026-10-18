@@ -27,8 +27,12 @@ class BlotterDef(
     withGeneratedEndpoint: WithGeneratedEndpoint,
     withGeneratedTypescriptService: WithGeneratedTypescriptService,
     withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
-    val searchModelType: SearchModelType
+    val searchModelType: SearchModelType,
+    val paginationPageSize: Int? = DEFAULT_PAGINATION_PAGE_SIZE
 ) {
+
+
+    val isPaginated get() = paginationPageSize != null
 
 
     val angularDeleteDialogComponentNames
@@ -223,6 +227,13 @@ class BlotterDef(
 
 
     val dtoUqcn = dtoDef.uqcn
+
+
+    companion object {
+
+        const val DEFAULT_PAGINATION_PAGE_SIZE = 100
+
+    }
 
 
 }

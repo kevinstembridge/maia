@@ -86,6 +86,14 @@ _Avoid_: View, query model
 The AG Grid table that displays a Searchable DTO.
 _Avoid_: Grid, table, list view
 
+**Paginated blotter**:
+A Blotter that shows its results one page at a time, with controls to move between pages and choose the page size. The default mode.
+_Avoid_: Paged grid
+
+**Infinite-scroll blotter**:
+A Blotter that loads more results as the user scrolls down. Declared with `infiniteScroll()`.
+_Avoid_: Endless list
+
 **Blotter page**:
 The Angular page that hosts a Blotter, declared with `blotterPage()` or `withBlotterPage {}`.
 _Avoid_: List page

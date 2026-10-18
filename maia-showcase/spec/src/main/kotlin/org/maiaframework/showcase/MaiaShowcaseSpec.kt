@@ -557,6 +557,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedEndpoint = WithGeneratedEndpoint.TRUE,
         withGeneratedFindAllFunction = WithGeneratedFindAllFunction.TRUE,
     ) {
+        infiniteScroll()
+
         viewActionColumn()
         editActionColumn()
         columnFromDto("someString")

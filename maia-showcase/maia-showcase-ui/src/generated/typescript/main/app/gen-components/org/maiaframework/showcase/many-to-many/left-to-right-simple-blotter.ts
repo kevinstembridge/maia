@@ -72,6 +72,14 @@ export class LeftToRightSimpleBlotter {
 
     public maxBlocksInCache = 10;
 
+    public pagination = true;
+
+
+    public paginationPageSize = 100;
+
+
+    public paginationPageSizeSelector = [25, 50, 100, 200];
+
 
     public rowData!: LeftToRightSimpleBlotterRowDto[];
 

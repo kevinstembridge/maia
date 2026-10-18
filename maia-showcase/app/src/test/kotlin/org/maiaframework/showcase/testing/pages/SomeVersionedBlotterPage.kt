@@ -105,4 +105,36 @@ class SomeVersionedBlotterPage(
     }
 
 
+    fun assertPagingPanelIsVisible() {
+        page.locator(".ag-paging-panel").waitFor()
+    }
+
+
+    fun assertNoPagingPanel() {
+        // Wait for rows so the grid has rendered before asserting absence
+        page.locator(".ag-row").first().waitFor()
+        com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat(page.locator(".ag-paging-panel")).isHidden()
+    }
+
+
+    fun assertPagingSummaryEquals(expected: String) {
+        com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat(page.locator(".ag-paging-row-summary-panel"))
+            .containsText(expected)
+    }
+
+
+    fun clickNextPage() {
+        page.locator(".ag-paging-button[aria-label='Next Page']").click()
+    }
+
+
+    fun selectPageSize(pageSize: Int) {
+        page.locator(".ag-paging-page-size .ag-picker-field-wrapper").click()
+        page.locator(".ag-rich-select-list .ag-rich-select-row, .ag-list-item")
+            .filter(Locator.FilterOptions().setHasText(pageSize.toString()))
+            .first()
+            .click()
+    }
+
+
 }
