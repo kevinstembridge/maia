@@ -57,8 +57,8 @@ export class SimpleEntityCreateForm {
     dialogForm = form(this.dialogFormModel, (schemaPath) => {
         validateAsync(schemaPath.someString, {
             params: ({value}) => !!value() ? { someString: value() } as SimpleSomeStringRequestDto : undefined,
-            factory: (params) => rxResource({
-                params,
+            factory: (requestParams) => rxResource({
+                params: requestParams,
                 stream: ({params}) => this.simpleCrudService.existsBySomeString(params),
             }),
             when: ({state}) => state.dirty(),
