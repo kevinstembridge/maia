@@ -6,8 +6,10 @@ import {rxResource} from '@angular/core/rxjs-interop';
 import {FormField, form, maxLength, required, submit, validate, validateAsync} from '@angular/forms/signals';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
+import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
@@ -32,10 +34,12 @@ import {firstValueFrom} from 'rxjs';
         FormField,
         MatButtonModule,
         MatCheckbox,
+        MatChipsModule,
         MatDatepicker,
         MatDatepickerInput,
         MatDatepickerToggle,
         MatFormFieldModule,
+        MatIconModule,
         MatInputModule,
         MatOption,
         MatSelect,
@@ -201,10 +205,25 @@ export class AllFieldTypesEntityCreateForm {
         required(schemaPath.someProvidedStringType, { message: 'Some Provided String Type is required.' });
         maxLength(schemaPath.someProvidedStringType, 100, { message: 'Some Provided String Type must not be more than 100 characters.' });
         maxLength(schemaPath.someProvidedStringTypeNullable, 100, { message: 'Some Provided String Type Nullable must not be more than 100 characters.' });
+        required(schemaPath.someListOfStrings, { message: 'Some List Of Strings is required.' });
     });
 
 
     private readonly router = inject(Router);
+
+
+    addSomeListOfStrings(event: MatChipInputEvent): void {
+        const item = (event.value || '').trim();
+        if (item) {
+            this.dialogForm.someListOfStrings().value.update(items => [...items, item]);
+        }
+        event.chipInput.clear();
+    }
+
+
+    removeSomeListOfStrings(index: number): void {
+        this.dialogForm.someListOfStrings().value.update(items => items.filter((_, i) => i !== index));
+    }
 
 
     async onSubmit(e: Event) {

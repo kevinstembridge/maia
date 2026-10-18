@@ -57,6 +57,8 @@ class AllFieldTypesCreatePage(
         page.inputForField("someInstantModifiable").fill(someInstantModifiableDate)
         page.inputForField("someInstantModifiableTime").fill(someInstantModifiableTime)
         page.inputForField("somePeriodModifiable").fill(somePeriodModifiable)
+        page.inputForField("someListOfStrings").fill("first")
+        page.inputForField("someListOfStrings").press("Enter")
         page.inputForField("someString").fill(someString)
         page.inputForField("someStringModifiable").fill(someStringModifiable)
         page.inputForField("someStringType").fill(someStringType)

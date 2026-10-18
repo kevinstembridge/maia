@@ -43,6 +43,9 @@ class AngularSignalFormComponentRenderer(
     private val localDateFields = modelFields.filter { it.isLocalDate }
 
 
+    private val freeListFields = modelFields.filter { it.isFreeList }
+
+
     private val linkedFields = modelFields.filter { it.linksToAField }
 
 
@@ -123,6 +126,12 @@ class AngularSignalFormComponentRenderer(
             addImport(typeaheadDef.typescriptComponentImport)
         }
 
+        if (freeListFields.isNotEmpty()) {
+            addImport("@angular/material/chips", "MatChipsModule", isModule = true)
+            addImport("@angular/material/chips", "MatChipInputEvent")
+            addImport("@angular/material/icon", "MatIconModule", isModule = true)
+        }
+
         chipFields.forEach { chip ->
             addImport(chip.typeaheadDef.typescriptComponentImport)
             addImport(chip.esDocImport)
@@ -195,6 +204,7 @@ class AngularSignalFormComponentRenderer(
 
         `render class fields`()
         `render function ngOnInit`()
+        `render free list methods`()
         `render chip entity methods`()
         `render timestamped join methods`()
         `render function onSubmit`()
@@ -532,9 +542,8 @@ class AngularSignalFormComponentRenderer(
 
         }
 
-        // A checkbox is valid when unchecked, and a free list has no input through which it could become valid.
+        // A checkbox is valid when unchecked.
         if (!angularFormFieldDef.isCheckbox
-            && !angularFormFieldDef.isFreeList
             && (classFieldDef.hasValidationConstraint(NotNullConstraintDef::class.java)
                 || classFieldDef.hasValidationConstraint(NotBlankConstraintDef::class.java))
         ) {
@@ -833,6 +842,34 @@ class AngularSignalFormComponentRenderer(
             |    }
             |""".trimMargin()
         )
+
+    }
+
+
+    private fun `render free list methods`() {
+
+        freeListFields.forEach { fieldDef ->
+
+            val classFieldName = fieldDef.classFieldDef.classFieldName
+
+            append("""
+                |
+                |
+                |    ${fieldDef.freeListAddMethodName}(event: MatChipInputEvent): void {
+                |        const item = (event.value || '').trim();
+                |        if (item) {
+                |            this.dialogForm.$classFieldName().value.update(items => [...items, item]);
+                |        }
+                |        event.chipInput.clear();
+                |    }
+                |
+                |
+                |    ${fieldDef.freeListRemoveMethodName}(index: number): void {
+                |        this.dialogForm.$classFieldName().value.update(items => items.filter((_, i) => i !== index));
+                |    }
+                |""".trimMargin())
+
+        }
 
     }
 

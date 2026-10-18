@@ -232,6 +232,31 @@
             <span class="detail-label">Some Provided String Type Nullable</span>
             <span class="detail-value">{{ fetchedDto()?.someProvidedStringTypeNullable }}</span>
         </div>
+        <mat-form-field appearance="outline">
+            <mat-label>Some List Of Strings</mat-label>
+            <mat-chip-grid #someListOfStringsGrid>
+                @for (item of dialogForm.someListOfStrings().value(); track $index) {
+                    <mat-chip-row (removed)="removeSomeListOfStrings($index)">
+                        {{ item }}
+                        <button matChipRemove type="button" [attr.aria-label]="'Remove ' + item">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
+                }
+                <input
+                    id="someListOfStrings"
+                    [matChipInputFor]="someListOfStringsGrid"
+                    [matChipInputAddOnBlur]="true"
+                    (matChipInputTokenEnd)="addSomeListOfStrings($event)"
+                />
+            </mat-chip-grid>
+            <mat-hint>Press Enter to add</mat-hint>
+        </mat-form-field>
+        @if (dialogForm.someListOfStrings().touched() && dialogForm.someListOfStrings().invalid()) {
+            @for (error of dialogForm.someListOfStrings().errors(); track error) {
+                <div class="mat-mdc-form-field-error">{{ error.message }}</div>
+            }
+        }
         <div class="detail-row">
             <span class="detail-label">Created By</span>
             <span class="detail-value">{{ fetchedDto()?.createdByUsername }}</span>

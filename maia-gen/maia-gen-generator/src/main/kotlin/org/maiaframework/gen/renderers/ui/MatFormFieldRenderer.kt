@@ -37,9 +37,17 @@ val AngularFormFieldDef.isCheckbox: Boolean
         else -> false
     }
 
-/** True if the field is a list of free values, which has no signal-form input yet. */
+/** True if the field is a list of free values, entered as chips. */
 val AngularFormFieldDef.isFreeList: Boolean
     get() = fieldType is ListFieldType && !isEnumList && stringValueClassListEnumOptionsDef == null
+
+
+val AngularFormFieldDef.freeListAddMethodName: String
+    get() = "add" + classFieldDef.classFieldName.value.replaceFirstChar { it.uppercase() }
+
+
+val AngularFormFieldDef.freeListRemoveMethodName: String
+    get() = "remove" + classFieldDef.classFieldName.value.replaceFirstChar { it.uppercase() }
 
 /** True if the field is a date without a time, entered through a calendar. */
 val AngularFormFieldDef.isLocalDate: Boolean
@@ -63,8 +71,7 @@ object MatFormFieldRenderer {
 
         } else if (htmlFormField.isFreeList) {
 
-            // There is no input for a free list of values yet. The model keeps the list's default value.
-            return
+            renderSignalFormFreeListField(htmlFormField, r, indent)
 
         } else if (htmlFormField.isEnumList) {
 
@@ -162,6 +169,45 @@ object MatFormFieldRenderer {
         r.appendLine("$indent    <mat-timepicker #${classFieldName}Timepicker></mat-timepicker>")
         r.appendLine("$indent    <mat-timepicker-toggle matSuffix [for]=\"${classFieldName}Timepicker\"></mat-timepicker-toggle>")
         r.appendLine("$indent</mat-form-field>")
+
+    }
+
+
+    private fun renderSignalFormFreeListField(
+        htmlFormField: AngularFormFieldDef,
+        r: AbstractSourceRenderer,
+        indent: String
+    ) {
+
+        val classFieldName = htmlFormField.classFieldDef.classFieldName
+
+        r.append("""
+            |$indent<mat-form-field appearance="outline">
+            |$indent    <mat-label>${htmlFormField.fieldLabel}</mat-label>
+            |$indent    <mat-chip-grid #${classFieldName}Grid>
+            |$indent        @for (item of dialogForm.$classFieldName().value(); track ${'$'}index) {
+            |$indent            <mat-chip-row (removed)="${htmlFormField.freeListRemoveMethodName}(${'$'}index)">
+            |$indent                {{ item }}
+            |$indent                <button matChipRemove type="button" [attr.aria-label]="'Remove ' + item">
+            |$indent                    <mat-icon>cancel</mat-icon>
+            |$indent                </button>
+            |$indent            </mat-chip-row>
+            |$indent        }
+            |$indent        <input
+            |$indent            id="$classFieldName"
+            |$indent            [matChipInputFor]="${classFieldName}Grid"
+            |$indent            [matChipInputAddOnBlur]="true"
+            |$indent            (matChipInputTokenEnd)="${htmlFormField.freeListAddMethodName}(${'$'}event)"
+            |$indent        />
+            |$indent    </mat-chip-grid>
+            |$indent    <mat-hint>Press Enter to add</mat-hint>
+            |$indent</mat-form-field>
+            |$indent@if (dialogForm.$classFieldName().touched() && dialogForm.$classFieldName().invalid()) {
+            |$indent    @for (error of dialogForm.$classFieldName().errors(); track error) {
+            |$indent        <div class="mat-mdc-form-field-error">{{ error.message }}</div>
+            |$indent    }
+            |$indent}
+            |""".trimMargin())
 
     }
 

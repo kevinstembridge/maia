@@ -66,3 +66,9 @@ val playwrightHeadless = providers.gradleProperty("playwright.headless").orElse(
 tasks.withType<Test>().configureEach {
     systemProperty("playwright.headless", playwrightHeadless.get())
 }
+
+
+// The Angular app is built into this module's static resources, so it must be finished before they are packaged.
+tasks.processResources {
+    dependsOn(":maia-showcase:maia-showcase-ui:buildAngularApp")
+}
