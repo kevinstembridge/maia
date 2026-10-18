@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+<form novalidate (submit)="onSubmit($event)">
     <div>
         @if (problemDetail()) {
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
@@ -6,17 +6,18 @@
         <mat-form-field appearance="outline">
             <mat-label>Some Modifiable String</mat-label>
             <input
-                formControlName="someModifiableString"
-                name="someModifiableString"
+                [formField]="dialogForm.someModifiableString"
+                id="someModifiableString"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['someModifiableString'].hasError('required')) {
-                <mat-error>Some Modifiable String is required.</mat-error>
+
+            @if (dialogForm.someModifiableString().touched() && dialogForm.someModifiableString().invalid()) {
+                @for (error of dialogForm.someModifiableString().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['someModifiableString'].hasError('maxlength')) {
-                <mat-error>Some Modifiable String must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
     </div>
     <div class="form-actions">

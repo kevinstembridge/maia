@@ -1,11 +1,11 @@
-<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+<form novalidate (submit)="onSubmit($event)">
     <div>
         @if (problemDetail()) {
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
         }
         <mat-form-field appearance="outline">
             <mat-label>Authorities</mat-label>
-            <mat-select formControlName="authorities" multiple>
+            <mat-select [formField]="dialogForm.authorities" id="authorities" multiple>
                 @for (authorities of AuthoritySelectOptions; track authorities.name) {
                     <div [matTooltip]="authorities.description" matTooltipShowDelay="1000">
                         <mat-option [value]="authorities.name">{{authorities.displayName}}</mat-option>
@@ -16,29 +16,34 @@
         <mat-form-field appearance="outline">
             <mat-label>First Name</mat-label>
             <input
-                formControlName="firstName"
-                name="firstName"
+                [formField]="dialogForm.firstName"
+                id="firstName"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['firstName'].hasError('maxlength')) {
-                <mat-error>First Name must not be more than 100 characters.</mat-error>
+
+            @if (dialogForm.firstName().touched() && dialogForm.firstName().invalid()) {
+                @for (error of dialogForm.firstName().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Last Name</mat-label>
             <input
-                formControlName="lastName"
-                name="lastName"
+                [formField]="dialogForm.lastName"
+                id="lastName"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['lastName'].hasError('required')) {
-                <mat-error>Last Name is required.</mat-error>
+
+            @if (dialogForm.lastName().touched() && dialogForm.lastName().invalid()) {
+                @for (error of dialogForm.lastName().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
-            @if (formGroup.controls['lastName'].hasError('maxlength')) {
-                <mat-error>Last Name must not be more than 100 characters.</mat-error>
-            }
+
         </mat-form-field>
     </div>
     <div class="form-actions">

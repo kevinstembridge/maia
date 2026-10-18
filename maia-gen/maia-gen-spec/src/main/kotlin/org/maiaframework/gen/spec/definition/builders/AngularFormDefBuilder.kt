@@ -61,7 +61,7 @@ class AngularFormDefBuilder(
     private var formPurpose: FormPurpose = FormPurpose.edit
 
 
-    private var angularFormSystem: AngularFormSystem = AngularFormSystem.REACTIVE
+    private var angularFormSystem: AngularFormSystem = AngularFormSystem.SIGNAL
 
 
     fun field(

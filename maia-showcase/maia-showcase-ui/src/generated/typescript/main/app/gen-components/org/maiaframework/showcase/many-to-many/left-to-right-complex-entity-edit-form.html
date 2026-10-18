@@ -1,51 +1,63 @@
-<form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+<form novalidate (submit)="onSubmit($event)">
     <div>
         @if (problemDetail()) {
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
         }
         <div class="detail-row">
             <span class="detail-label">Effective From</span>
-            <span class="detail-value">{{ formGroup.getRawValue().effectiveFrom }}</span>
+            <span class="detail-value">{{ fetchedDto()?.effectiveFrom }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label">Effective To</span>
-            <span class="detail-value">{{ formGroup.getRawValue().effectiveTo }}</span>
+            <span class="detail-value">{{ fetchedDto()?.effectiveTo }}</span>
         </div>
         <mat-form-field appearance="outline">
             <mat-label>Some Int On Complex</mat-label>
             <input
-                formControlName="someIntOnComplex"
-                name="someIntOnComplex"
-                type="text"
+                [formField]="dialogForm.someIntOnComplex"
+                id="someIntOnComplex"
+                type="number"
                 matInput
             />
-            @if (formGroup.controls['someIntOnComplex'].hasError('required')) {
-                <mat-error>Some Int On Complex is required.</mat-error>
+
+            @if (dialogForm.someIntOnComplex().touched() && dialogForm.someIntOnComplex().invalid()) {
+                @for (error of dialogForm.someIntOnComplex().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Left</mat-label>
             <input
-                formControlName="left"
-                name="left"
+                [formField]="dialogForm.left"
+                id="left"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['left'].hasError('required')) {
-                <mat-error>Left is required.</mat-error>
+
+            @if (dialogForm.left().touched() && dialogForm.left().invalid()) {
+                @for (error of dialogForm.left().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Right</mat-label>
             <input
-                formControlName="right"
-                name="right"
+                [formField]="dialogForm.right"
+                id="right"
                 type="text"
                 matInput
             />
-            @if (formGroup.controls['right'].hasError('required')) {
-                <mat-error>Right is required.</mat-error>
+
+            @if (dialogForm.right().touched() && dialogForm.right().invalid()) {
+                @for (error of dialogForm.right().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
             }
+
         </mat-form-field>
     </div>
     <div class="form-actions">

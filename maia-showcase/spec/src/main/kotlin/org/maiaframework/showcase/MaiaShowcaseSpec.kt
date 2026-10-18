@@ -3,7 +3,6 @@ package org.maiaframework.showcase
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.ReferencedEntity
-import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.EsDocMappingTypes
 import org.maiaframework.gen.spec.definition.HtmlInputType
@@ -114,7 +113,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val feedbackFormDef = angularForm(feedbackRequestDtoDef) {
-        ofType(AngularFormSystem.SIGNAL)
         asDialog("Send Feedback")
         delegateFormSubmission()
         formPurpose(FormPurpose.submit)
@@ -145,7 +143,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val loginFormDef = angularForm(loginRequestDtoDef) {
-        ofType(AngularFormSystem.SIGNAL)
         delegateFormSubmission()
         formPurpose(FormPurpose.submit)
         field("emailAddress") {
@@ -189,7 +186,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowFindAll = AllowFindAll.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
-        angularFormSystem(AngularFormSystem.SIGNAL)
         field("someBoolean", FieldTypes.boolean) {
             fieldDisplayName("Some Boolean")
         }
@@ -503,7 +499,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
         cacheable {  }
-        angularFormSystem(AngularFormSystem.SIGNAL)
         field("someString", FieldTypes.string) {
             fieldDisplayName("Some String")
             lengthConstraint(min = 3, max = 100)
@@ -1042,7 +1037,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
-        angularFormSystem(AngularFormSystem.SIGNAL)
         foreignKey("alpha", alphaEntityDef) {
             fieldDisplayName("Alpha")
             typeaheadField(alphaTypeaheadDef)
@@ -1464,7 +1458,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         nameFieldForPkAndNameDto = "someString",
         recordVersionHistory = true,
     ) {
-        angularFormSystem(AngularFormSystem.SIGNAL)
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")
             editableByUser()
@@ -1519,7 +1512,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         nameFieldForPkAndNameDto = "someString",
         recordVersionHistory = true
     ) {
-        angularFormSystem(AngularFormSystem.SIGNAL)
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")
             editableByUser()

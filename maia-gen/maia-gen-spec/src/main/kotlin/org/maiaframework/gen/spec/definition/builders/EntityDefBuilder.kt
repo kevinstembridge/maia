@@ -83,7 +83,7 @@ class EntityDefBuilder(
     private var moduleName: ModuleName? = null
 
 
-    private var angularFormSystem: AngularFormSystem = AngularFormSystem.REACTIVE
+    private var angularFormSystem: AngularFormSystem = AngularFormSystem.SIGNAL
 
 
     private var description: Description? = null
