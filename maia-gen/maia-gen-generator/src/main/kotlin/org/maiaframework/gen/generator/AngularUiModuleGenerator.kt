@@ -946,18 +946,24 @@ class AngularUiModuleGenerator(
     }
 
 
+    /**
+     * Only reactive forms use these validator classes. Signal forms declare the same check inline in the form component.
+     */
     private fun renderAsyncValidatorsForIndexes() {
 
-        this.applicationModelDef.entityCrudApiDefs.filter { it.entityDef.isConcrete }.forEach { entityCrudApiDef ->
+        this.applicationModelDef.entityCrudApiDefs
+            .filter { it.entityDef.isConcrete }
+            .filter { it.entityDef.angularFormSystem == AngularFormSystem.REACTIVE }
+            .forEach { entityCrudApiDef ->
 
-            entityCrudApiDef.entityDef.uniqueIndexDefs
-                .filter { it.isNotIdAndVersionIndex }
-                .filter { it.withExistsEndpoint }
-                .forEach { databaseIndexDef ->
-                    AsyncValidatorRenderer(databaseIndexDef, entityCrudApiDef).renderToDir(this.typescriptOutputDir)
-                }
+                entityCrudApiDef.entityDef.uniqueIndexDefs
+                    .filter { it.isNotIdAndVersionIndex }
+                    .filter { it.withExistsEndpoint }
+                    .forEach { databaseIndexDef ->
+                        AsyncValidatorRenderer(databaseIndexDef, entityCrudApiDef).renderToDir(this.typescriptOutputDir)
+                    }
 
-        }
+            }
 
     }
 
