@@ -529,8 +529,8 @@ class AngularSignalFormComponentRenderer(
         append("""
             |        validateAsync(schemaPath.$classFieldName, {
             |            params: ({value}) => $hasValueExpression ? { $requestFieldName: $valueExpression } as $requestDtoName : undefined,
-            |            factory: (params) => rxResource({
-            |                params,
+            |            factory: (requestParams) => rxResource({
+            |                params: requestParams,
             |                stream: ({params}) => this.${asyncValidatorDef.apiServiceFieldName}.${asyncValidatorDef.existsByFunctionName}(params),
             |            }),
             |            when: ({state}) => state.dirty(),
