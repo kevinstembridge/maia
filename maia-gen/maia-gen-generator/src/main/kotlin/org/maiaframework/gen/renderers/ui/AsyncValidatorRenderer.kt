@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.EntityCrudApiDef
 import org.maiaframework.gen.spec.definition.DatabaseIndexDef
 import org.maiaframework.gen.spec.definition.IndexFieldDef
 
+// TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
 class AsyncValidatorRenderer(
     private val databaseIndexDef: DatabaseIndexDef,
     private val entityCrudApiDef: EntityCrudApiDef

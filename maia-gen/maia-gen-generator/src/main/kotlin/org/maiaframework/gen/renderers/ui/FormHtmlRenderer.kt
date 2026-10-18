@@ -4,6 +4,7 @@ import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
+// TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
 class FormHtmlRenderer(private val angularFormDef: AngularFormDef) : AbstractSourceFileRenderer() {
 
 

@@ -323,6 +323,7 @@ class AngularUiModuleGenerator(
         this.applicationModelDef.angularFormDefs.forEach {
 
             when (it.angularFormSystem) {
+                // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
                 AngularFormSystem.REACTIVE -> FormHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
                 AngularFormSystem.SIGNAL -> SignalFormHtmlRenderer(it).renderToDir(this.typescriptOutputDir)
             }
@@ -347,6 +348,7 @@ class AngularUiModuleGenerator(
 
         when (def.angularFormSystem) {
 
+            // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
             AngularFormSystem.REACTIVE ->
                 AngularReactiveFormComponentRenderer(
                     def,
@@ -543,6 +545,7 @@ class AngularUiModuleGenerator(
 
             when (angularFormDef.angularFormSystem) {
 
+                // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
                 AngularFormSystem.REACTIVE -> {
 
                     AngularReactiveFormComponentRenderer(
@@ -622,6 +625,7 @@ class AngularUiModuleGenerator(
 
             when (angularFormDef.angularFormSystem) {
 
+                // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
                 AngularFormSystem.REACTIVE -> {
 
                     AngularReactiveFormComponentRenderer(
@@ -770,6 +774,7 @@ class AngularUiModuleGenerator(
         // TODO MTM:
         val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.entityDef.manyToManyAssociations)
         when (apiDef.angularDialogDef.angularFormSystem) {
+            // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
             AngularFormSystem.REACTIVE -> EntityCreateDialogReactiveFormHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
             AngularFormSystem.SIGNAL -> EntityCreateDialogHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
         }
@@ -780,6 +785,7 @@ class AngularUiModuleGenerator(
     private fun renderEntityCreateHtmlForm(apiDef: EntityCreateApiDef) {
 
         when (apiDef.angularDialogDef.angularFormSystem) {
+            // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
             AngularFormSystem.REACTIVE -> {} // EntityCreateReactiveFormHtmlRenderer migrated to EntityCreatePageDef
             AngularFormSystem.SIGNAL -> EntityCreateFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
         }
@@ -791,6 +797,7 @@ class AngularUiModuleGenerator(
     private fun renderEntityEditHtmlForm(apiDef: EntityUpdateApiDef) {
 
         when (apiDef.angularDialogDef.angularFormSystem) {
+            // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
             AngularFormSystem.REACTIVE -> EntityEditReactiveFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
             AngularFormSystem.SIGNAL -> EntityEditSignalFormHtmlRenderer(apiDef).renderToDir(this.typescriptOutputDir)
         }
@@ -869,6 +876,7 @@ class AngularUiModuleGenerator(
         // TODO MTM:
         val chipFields = manyToManyChipFieldsFor(apiDef.entityDef, apiDef.entityDef.manyToManyAssociations)
         when (apiDef.angularDialogDef.angularFormSystem) {
+            // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
             AngularFormSystem.REACTIVE -> EntityEditReactiveDialogHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
             AngularFormSystem.SIGNAL -> EntityEditDialogHtmlRenderer(apiDef, chipFields).renderToDir(this.typescriptOutputDir)
         }
@@ -946,6 +954,7 @@ class AngularUiModuleGenerator(
     }
 
 
+    // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
     /**
      * Only reactive forms use these validator classes. Signal forms declare the same check inline in the form component.
      */

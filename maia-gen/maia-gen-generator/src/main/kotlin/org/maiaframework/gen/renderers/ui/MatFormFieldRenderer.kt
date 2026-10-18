@@ -465,6 +465,7 @@ object MatFormFieldRenderer {
     }
 
 
+    // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
     private fun renderReactiveFormHtmlInputField(
         htmlFormField: AngularFormFieldDef,
         r: AbstractSourceRenderer,
@@ -584,6 +585,7 @@ object MatFormFieldRenderer {
     }
 
 
+    // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
     private fun renderReactiveFormDatepickerField(
         htmlFormField: AngularFormFieldDef,
         r: AbstractSourceRenderer,
@@ -660,6 +662,7 @@ object MatFormFieldRenderer {
     }
 
 
+    // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
     private fun renderReactiveFormMultiSelectFieldForEnumList(
         htmlFormField: AngularFormFieldDef,
         r: AbstractSourceRenderer,
@@ -688,6 +691,7 @@ object MatFormFieldRenderer {
     }
 
 
+    // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
     private fun renderReactiveFormMultiSelectForStringValueClassList(
         htmlFormField: AngularFormFieldDef,
         r: AbstractSourceRenderer,
@@ -715,6 +719,7 @@ object MatFormFieldRenderer {
     }
 
 
+    // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
     private fun renderReactiveFormSelectFieldForEnum(
         htmlFormField: AngularFormFieldDef,
         r: AbstractSourceRenderer,
@@ -780,6 +785,7 @@ object MatFormFieldRenderer {
     }
 
 
+    // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
     private fun renderReactiveFormCheckboxField(
         htmlFormField: AngularFormFieldDef,
         r: AbstractSourceRenderer,
@@ -803,6 +809,7 @@ object MatFormFieldRenderer {
     }
 
 
+    // TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
     private fun renderReactiveFormFieldWithTypeahead(
         htmlFormField: AngularFormFieldDef,
         r: AbstractSourceRenderer,

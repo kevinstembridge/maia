@@ -42,6 +42,7 @@ import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 import org.maiaframework.lang.text.StringFunctions
 
 
+// TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
 class AngularReactiveFormComponentRenderer(
     private val angularFormDef: AngularFormDef,
     formAngularComponentNames: AngularComponentNames,

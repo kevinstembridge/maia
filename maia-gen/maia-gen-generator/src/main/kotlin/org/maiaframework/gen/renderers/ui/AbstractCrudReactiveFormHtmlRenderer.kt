@@ -12,6 +12,7 @@ import org.maiaframework.gen.spec.definition.lang.LongFieldType
 import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.lang.text.StringFunctions
 
+// TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
 abstract class AbstractCrudReactiveFormHtmlRenderer(
     protected val entityDef: EntityDef,
     private val inlineFormOrDialog: InlineFormOrDialog,

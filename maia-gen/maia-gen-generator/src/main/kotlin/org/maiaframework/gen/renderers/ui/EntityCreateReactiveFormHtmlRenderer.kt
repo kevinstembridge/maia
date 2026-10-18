@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
+// TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
 class EntityCreateReactiveFormHtmlRenderer(
     private val entityCreatePageDef: EntityCreatePageDef,
     override val chipFields: List<ManyToManyChipFieldDef> = emptyList(),

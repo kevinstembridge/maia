@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.AngularFormFieldDef
 import org.maiaframework.gen.spec.definition.EntityUpdateApiDef
 import org.maiaframework.gen.spec.definition.flags.InlineFormOrDialog
 
+// TODO Delete after cooling off: 2027-01-18. Part of reactive forms, replaced by signal forms.
 class EntityEditReactiveFormHtmlRenderer(
     private val apiDef: EntityUpdateApiDef,
     private val componentNamesOverride: AngularComponentNames? = null,
