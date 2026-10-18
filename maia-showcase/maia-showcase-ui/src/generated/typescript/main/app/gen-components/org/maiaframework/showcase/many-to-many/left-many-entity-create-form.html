@@ -199,14 +199,6 @@
                 <button mat-flat-button type="button" (click)="cancelAddRightJoin()">Cancel</button>
             </div>
         }
-        <!-- TEMPORARY: form validation state, for debugging -->
-        <pre class="form-debug" style="font-size: 12px; background: #f5f5f5; padding: 8px;">valid: {{ dialogForm().valid() }}
-invalid: {{ dialogForm().invalid() }}
-pending: {{ dialogForm().pending() }}
-touched: {{ dialogForm().touched() }}
-@for (error of dialogForm().errorSummary(); track $index) {
-{{ error.fieldTree().name() }}: {{ error.kind }}{{ error.message ? ' - ' + error.message : '' }}
-}</pre>
     </div>
     <div class="form-actions">
         <button mat-flat-button type="submit" color="primary">Submit</button>

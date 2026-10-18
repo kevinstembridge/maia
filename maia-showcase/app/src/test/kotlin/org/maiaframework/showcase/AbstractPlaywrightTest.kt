@@ -1,5 +1,6 @@
 package org.maiaframework.showcase
 
+import com.microsoft.playwright.Browser
 import com.microsoft.playwright.BrowserContext
 import com.microsoft.playwright.BrowserType
 import com.microsoft.playwright.ConsoleMessage
@@ -218,7 +219,8 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         playwright = Playwright.create()
         val headless = System.getProperty("playwright.headless", "false").toBoolean()
         val browser = playwright.chromium().launch(BrowserType.LaunchOptions().setHeadless(headless))
-        browserContext = browser.newContext()
+        // Dates are typed in the browser locale, so pin it for the same result on every machine.
+        browserContext = browser.newContext(Browser.NewContextOptions().setLocale("en-US"))
         browserContext.tracing().start(Tracing.StartOptions().setSnapshots(true).setScreenshots(true))
         page = browserContext.newPage()
         page.onConsoleMessage { msg: ConsoleMessage -> println(msg.text()) }
