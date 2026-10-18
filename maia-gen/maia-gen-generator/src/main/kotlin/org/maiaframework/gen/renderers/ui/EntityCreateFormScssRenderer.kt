@@ -16,7 +16,7 @@ class EntityCreateFormScssRenderer(private val entityCreatePageDef: EntityCreate
     override fun renderSourceBody() {
 
         blankLine()
-        appendLine(".mat-mdc-form-field {")
+        appendLine(":host ::ng-deep .mat-mdc-form-field {")
         appendLine("  width: 100%;")
         appendLine("}")
 
