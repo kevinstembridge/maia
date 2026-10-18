@@ -203,14 +203,12 @@ class AngularUiModuleGenerator(
         renderAuthorityEnum()
         renderCommonModel()
         renderCrudServices()
-//        renderCrudBlotters() TODO delete after cooling off. 2026-05-24
         renderBlotterHtml()
         renderDtoServices()
         renderBlotterComponents()
         renderDtosForAsyncValidation()
         renderDtosForFormDefs()
 //        renderEntityCreateDialogComponent()
-//        renderEntityCreateFormComponent() TODO delete this after cooling off. 2026-05-21
 //        renderEntityCreateDialogHtml()
         renderEntityDeleteDialogComponent()
         renderEntityDeleteDialogHtml()

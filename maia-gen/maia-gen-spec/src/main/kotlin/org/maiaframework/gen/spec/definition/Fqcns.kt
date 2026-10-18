@@ -198,7 +198,6 @@ object Fqcns {
     val STRING_TYPE = Fqcn.valueOf("org.maiaframework.types.StringType")
     val TOTAL_HITS = Fqcn.valueOf("common.model.TotalHits")
     val TOTAL_HITS_RELATION = Fqcn.valueOf("common.model.TotalHitsRelation")
-    val UNIQUE_INDEX_VIOLATION_HELPER = Fqcn.valueOf("org.maiaframework.webapp.domain.UniqueIndexViolationHelper")
     val VALIDATOR_CONSTRAINT_EMAIL = Fqcn.valueOf("jakarta.validation.constraints.Email")
     val VALIDATOR_CONSTRAINT_URL = Fqcn.valueOf("org.maiaframework.common.validation.UrlConstraint")
     val VALIDATOR_CONSTRAINT_ENUM = Fqcn.valueOf("org.maiaframework.common.validation.EnumConstraint")
