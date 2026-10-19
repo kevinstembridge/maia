@@ -116,14 +116,14 @@ class SearchableDtoDefBuilder(
 
     fun manyToManyJoin(joinEntityDef: ManyToManyEntityDef, joinType: JoinType = JoinType.INNER) {
 
-        this.manyToManyJoinEntityDefs.add(JoinEntityDef(joinEntityDef.entityDef, joinType))
+        this.manyToManyJoinEntityDefs.add(JoinEntityDef(joinEntityDef.entityDef, joinType, joinEntityDef))
 
     }
 
 
     fun manyToManyField(fieldName: String, manyToManyEntityDef: ManyToManyEntityDef) {
 
-        this.manyToManyJoinEntityDefs.add(JoinEntityDef(manyToManyEntityDef.entityDef, JoinType.INNER))
+        this.manyToManyJoinEntityDefs.add(JoinEntityDef(manyToManyEntityDef.entityDef, JoinType.INNER, manyToManyEntityDef))
 
         val otherEntityDef = `find the Entity on the other side of`(manyToManyEntityDef)
 
@@ -207,8 +207,22 @@ class SearchableDtoDefBuilder(
             defaultFieldTypeFieldWriterProvider
         )
 
+        if (this.isReachedThroughAnOuterJoin(fieldPath)) {
+            builder.nullable()
+        }
+
         init?.invoke(builder)
         fieldDefs.add(builder.build())
+
+    }
+
+
+    /** A field read through an outer-joined many-to-many entity has no value when there is no matching join row. */
+    private fun isReachedThroughAnOuterJoin(fieldPath: FieldPath): Boolean {
+
+        val entityBaseName = EntityBaseName(fieldPath.head())
+
+        return this.manyToManyJoinEntityDefs.any { it.entityDef.entityBaseName == entityBaseName && it.joinType != JoinType.INNER }
 
     }
 

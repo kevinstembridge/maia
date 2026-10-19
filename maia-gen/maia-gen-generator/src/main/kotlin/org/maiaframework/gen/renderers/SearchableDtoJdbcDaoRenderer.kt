@@ -6,7 +6,11 @@ import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
+import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
+import org.maiaframework.gen.spec.definition.JoinEntityDef
 import org.maiaframework.gen.spec.definition.JoinHop
+import org.maiaframework.gen.spec.definition.JoinType
 import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.SimpleSearchableDtoFieldDef
@@ -65,7 +69,7 @@ class SearchableDtoJdbcDaoRenderer(
     private val rootEntitySchemaAndTable = searchableDtoDef.schemaAndTableName
 
 
-    private val joinClauses = joinClauses(foreignKeyFieldsSortedByDepth, foreignKeyTableCount)
+    private val joinClauses = manyToManyJoinClauses() + joinClauses(foreignKeyFieldsSortedByDepth, foreignKeyTableCount)
 
 
     init {
@@ -481,6 +485,53 @@ class SearchableDtoJdbcDaoRenderer(
     }
 
 
+    /**
+     * Joins the root table to each many-to-many entity that one of the DTO's fields is read through. These
+     * come before the foreign key joins because those hang off the many-to-many entity's table. A system
+     * managed effective range restricts the join to the current row, in the ON clause so that an outer join
+     * keeps root rows that have no current row.
+     */
+    private fun manyToManyJoinClauses(): List<String> {
+
+        return searchableDtoDef.manyToManyJoinEntityDefs
+            .filter { joinEntityDef -> joinEntityDef.isReadByAnyField() }
+            .map { joinEntityDef ->
+
+                val manyToManyEntityDef = joinEntityDef.manyToManyEntityDef
+                    ?: throw IllegalStateException("Join entity ${joinEntityDef.entityDef.entityBaseName} has no ManyToManyEntityDef")
+                val joinTable = joinEntityDef.entityDef.schemaAndTableName
+                val rootColumn = manyToManyEntityDef.idTableColumnName(searchableDtoDef.dtoRootEntityDef)
+                val effectiveRangeDef = joinEntityDef.entityDef.effectiveRangeDef
+                val isSystemManagedTimestampRange = effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
+                    && effectiveRangeDef.dateType == EffectiveRangeDateType.TIMESTAMP
+                val effectiveRangeCondition = if (isSystemManagedTimestampRange) "\n                    and $joinTable.effective_range @> current_timestamp" else ""
+
+                """${joinEntityDef.joinType.sql} join $joinTable
+                    on ${rootEntitySchemaAndTable}.id = $joinTable.$rootColumn$effectiveRangeCondition""".trimIndent()
+
+            }
+
+    }
+
+
+    private fun JoinEntityDef.isReadByAnyField(): Boolean {
+
+        return searchableDtoDef.nonManyToManyFields.any { it.fieldPath.head() == this.entityDef.entityBaseName.value }
+
+    }
+
+
+    /** The join type to use for a field's foreign key joins: that of the many-to-many entity it is read through, else inner. */
+    private fun joinTypeSqlFor(searchableDtoFieldDef: SimpleSearchableDtoFieldDef): String {
+
+        return searchableDtoDef.manyToManyJoinEntityDefs
+            .firstOrNull { it.entityDef.entityBaseName.value == searchableDtoFieldDef.fieldPath.head() }
+            ?.joinType?.sql
+            ?: JoinType.INNER.sql
+
+    }
+
+
     private fun joinClauses(
         foreignKeyFieldsSortedByDepth: List<SimpleSearchableDtoFieldDef>,
         foreignKeyTableCount: Map<String, Int>
@@ -496,7 +547,7 @@ class SearchableDtoJdbcDaoRenderer(
                 val referencedTableAlias =
                     if (tableIsReferencedCount > 1) quotedSqlIdentifier(referencedEntityField.classFieldName) else searchableDtoFieldDef.schemaAndTableName
 
-                """inner join ${searchableDtoFieldDef.schemaAndTableName}${if (tableIsReferencedCount > 1) " ${quotedSqlIdentifier(referencedEntityField.classFieldName)}" else ""}
+                """${joinTypeSqlFor(searchableDtoFieldDef)} join ${searchableDtoFieldDef.schemaAndTableName}${if (tableIsReferencedCount > 1) " ${quotedSqlIdentifier(referencedEntityField.classFieldName)}" else ""}
                     on ${referencedEntityField.schemaAndTableName}.${referencedEntityField.databaseColumnName} = ${referencedTableAlias}.id""".trimIndent()
 
             }

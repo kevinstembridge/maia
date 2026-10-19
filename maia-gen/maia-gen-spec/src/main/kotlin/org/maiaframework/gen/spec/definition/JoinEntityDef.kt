@@ -2,5 +2,6 @@ package org.maiaframework.gen.spec.definition
 
 data class JoinEntityDef(
     val entityDef: EntityDef,
-    val joinType: JoinType
+    val joinType: JoinType,
+    val manyToManyEntityDef: ManyToManyEntityDef? = null
 )

@@ -7,9 +7,13 @@ import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.ApplicationSpec
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.ApplicationModelDef
+import org.maiaframework.gen.spec.definition.JoinType
 import org.maiaframework.gen.spec.definition.ModelDef
+import org.maiaframework.gen.spec.definition.ReferencedEntity
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
+import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
+import org.maiaframework.gen.spec.definition.lang.Nullability
 import java.io.File
 
 class SearchableDtoJdbcDaoRendererTest {
@@ -68,6 +72,38 @@ class SearchableDtoJdbcDaoRendererTest {
             field("doors")
         }
 
+        val owner = entity("com.example", "Owner", nameFieldForPkAndNameDto = "name") {
+            field("name", FieldTypes.string)
+            crud {}
+        }
+
+        val asset = entity("com.example", "Asset", nameFieldForPkAndNameDto = "label") {
+            field("label", FieldTypes.string)
+            crud {}
+        }
+
+        val ownerAsset = manyToManyEntity(
+            "com.example",
+            "OwnerAsset",
+            leftEntity = ReferencedEntity("owner", "Owner", owner, IsEditableByUser.TRUE),
+            rightEntity = ReferencedEntity("asset", "Asset", asset, IsEditableByUser.TRUE)
+        ) {
+            withEffectiveTimestamps(hasSingleEffectiveRecord = true)
+            crud {}
+        }
+
+        val assetWithOwnerOuterDto = searchableDto(baseName = "AssetWithOwnerOuter", entityDef = asset) {
+            manyToManyJoin(ownerAsset, JoinType.LEFT_OUTER)
+            field("label")
+            field("ownerName", ownerAsset.entityDef.fieldPathOf("owner.name"))
+        }
+
+        val assetWithOwnerInnerDto = searchableDto(baseName = "AssetWithOwnerInner", entityDef = asset) {
+            manyToManyJoin(ownerAsset)
+            field("label")
+            field("ownerName", ownerAsset.entityDef.fieldPathOf("owner.name"))
+        }
+
     }
 
 
@@ -122,6 +158,37 @@ class SearchableDtoJdbcDaoRendererTest {
     private fun selectToWhere(functionBody: String): String {
 
         return functionBody.substringAfter("select").substringBefore("where")
+
+    }
+
+
+    @Test
+    fun `a field read through a many-to-many join entity joins the link table from the root`(@TempDir tempDir: File) {
+
+        val dao = renderDao(spec.assetWithOwnerOuterDto, tempDir)
+        val body = functionBody(dao, "fun search(searchModel: AgGridSearchModel): SearchResultPage<AssetWithOwnerOuterDto> {")
+
+        val linkJoin = body.indexOf("left outer join test.owner_asset\n")
+        val ownerJoin = body.indexOf("left outer join test.owner\n")
+        assertThat(linkJoin).isPositive()
+        assertThat(ownerJoin).isPositive()
+        assertThat(body).contains("on test.asset.id = test.owner_asset.asset_id")
+        assertThat(body).contains("and test.owner_asset.effective_range @> current_timestamp")
+        assertThat(body).contains("on test.owner_asset.owner_id = test.owner.id")
+        assertThat(ownerJoin).isGreaterThan(linkJoin)
+
+    }
+
+
+    @Test
+    fun `an inner many-to-many join renders inner joins and a non-nullable field`(@TempDir tempDir: File) {
+
+        val dao = renderDao(spec.assetWithOwnerInnerDto, tempDir)
+
+        assertThat(dao).contains("inner join test.owner_asset")
+        assertThat(dao).doesNotContain("outer join")
+        assertThat(spec.assetWithOwnerInnerDto.allFieldsSorted.first { it.classFieldName.value == "ownerName" }.nullability).isEqualTo(Nullability.NOT_NULLABLE)
+        assertThat(spec.assetWithOwnerOuterDto.allFieldsSorted.first { it.classFieldName.value == "ownerName" }.nullability).isEqualTo(Nullability.NULLABLE)
 
     }
 
